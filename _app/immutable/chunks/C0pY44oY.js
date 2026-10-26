@@ -1,0 +1,227 @@
+const s="hpbn",n="xmlhttprequest",a="XMLHttpRequest: طلبات الشبكة داخل المتصفح",p="index",e="XMLHttpRequest: طلبات الشبكة داخل المتصفح",l=[{depth:2,id:"مقدمة",text:"مقدمة"},{depth:2,id:"نبذة-تاريخية-عن-xhr",text:"نبذة تاريخية عن XHR"},{depth:2,id:"مشاركة-الموارد-عبر-الأصول-cross-origin-resource-sharing-cors",text:"مشاركة الموارد عبر الأصول (Cross-Origin Resource Sharing, CORS)"},{depth:2,id:"تنزيل-البيانات-عبر-xhr",text:"تنزيل البيانات عبر XHR"},{depth:2,id:"رفع-البيانات-عبر-xhr",text:"رفع البيانات عبر XHR"},{depth:2,id:"مراقبة-تقدم-التنزيل-والرفع",text:"مراقبة تقدّم التنزيل والرفع"},{depth:2,id:"بث-البيانات-عبر-xhr",text:"بثّ البيانات عبر XHR"},{depth:2,id:"الإشعارات-الفورية-وتسليمها",text:"الإشعارات الفورية وتسليمها"},{depth:3,id:"الاستطلاع-عبر-xhr",text:"الاستطلاع عبر XHR"},{depth:3,id:"الاستطلاع-الطويل-عبر-xhr",text:"الاستطلاع الطويل عبر XHR"},{depth:2,id:"حالات-استخدام-xhr-والأداء",text:"حالات استخدام XHR والأداء"}],t=`<h2 id="مقدمة">مقدمة</h2>
+<p>XMLHttpRequest (XHR) هي واجهة برمجة تطبيقات (API) على مستوى المتصفح تتيح للعميل برمجة عمليات نقل البيانات عبر JavaScript. ظهرت XHR لأول مرة في Internet Explorer 5، ثم صارت إحدى التقنيات الرئيسية التي تقوم عليها ثورة «JavaScript و XML غير المتزامنة» (Asynchronous JavaScript and XML, AJAX)، وهي اليوم لبنة أساسية في كل تطبيق ويب حديث تقريبًا.</p>
+<blockquote>
+<p>غيّرت XMLHTTP كل شيء. هي وضعت حرف «D» في DHTML. سمحت لنا بالحصول على البيانات من الخادم بشكل غير متزامن مع الحفاظ على حالة المستند في العميل… رغبة فريق Outlook Web Access (OWA) في بناء تطبيق غني شبيه بـ Win32 داخل المتصفح دفعت هذه التقنية إلى IE، وهو ما أتاح لـ AJAX أن يصبح واقعًا.</p>
+<blockquote>
+<p>Jim Van Eaton، Outlook Web Access: محفّز لتطور الويب</p>
+</blockquote>
+</blockquote>
+<p>قبل XHR، كان على صفحة الويب أن تُحدَّث (تُحمَّل من جديد) لإرسال أو جلب أي تحديثات للحالة بين العميل والخادم. ومع XHR، بات بإمكاننا تنفيذ سير العمل هذا بشكل غير متزامن وتحت تحكّم كامل في شيفرة JavaScript للتطبيق. XHR هي ما أتاح لنا القفزة من بناء الصفحات إلى بناء تطبيقات ويب تفاعلية داخل المتصفح. غير أن قوة XHR ليست في أنها مكّنت التواصل غير المتزامن داخل المتصفح فحسب، بل في أنها جعلت ذلك بسيطًا أيضًا. XHR هي واجهة برمجة تطبيقات (API) يوفّرها المتصفح، أي أن المتصفح يتولى تلقائيًا كل إدارة الاتصالات منخفضة المستوى، والتفاوض على البروتوكول، وصياغة طلبات HTTP، وغيرها الكثير:</p>
+<p>متحرّرون من التفكير في كل التفاصيل منخفضة المستوى، لتتمكن تطبيقاتنا من التركيز على منطق العمل: إطلاق الطلبات، وإدارة تقدّمها، ومعالجة البيانات العائدة من الخادم. ويجعل جمع واجهة برمجة تطبيقات بسيطة مع توافرها في كل المتصفحات XHR «سكين الجيش السويسري» (Swiss Army knife) في عالم الشبكات داخل المتصفح. ونتيجةً لذلك، يمكن لكل حالة استخدام شبكية تقريبًا (التنزيلات المُبرمَجة، والرفع، والبثّ، وحتى الإشعارات الفورية) أن تُبنى فوق XHR — بل قد بُنيت فعلاً. وبالطبع، لا يعني هذا أن XHR هي أنقل وسيلة نقل في كل حالة — بل سنرى أن الأمر بعيد عن ذلك — لكنها تظل مع ذلك تُستخدم كثيرًا كوسيلة نقل احتياطية (fallback) للعملاء الأقدم، الذين قد لا تتوفر لديهم واجهات برمجة تطبيقات شبكية أحدث في المتصفح. وفي ضوء ذلك، فلنُلقِ نظرة أقرب على أحدث قدرات XHR، وحالات استخدامها، وما يُستحسن وما يُتجنَّب من ممارسات الأداء. أما التحليل الشامل لكامل واجهة XHR وقدراتها فهو خارج نطاق مناقشتنا — محورنا هو الأداء! ارجع إلى معيار W3C الرسمي للحصول على نظرة عامة على واجهة XMLHttpRequest.</p>
+<h2 id="نبذة-تاريخية-عن-xhr">نبذة تاريخية عن XHR</h2>
+<p>على الرغم من اسمه، لم يقصد أبدًا أن يقتصر XHR على XML تحديدًا. فبادئة XML أثر باقٍ (vestige) لقرار إصدار أول نسخة مما صار معروفًا بـ XHR كجزء من مكتبة MSXML في Internet Explorer 5:</p>
+<blockquote>
+<p>كانت تلك أيام الخير القديمة حين كانت الميزات الجوهرية تُحشر في أيام قليلة قبل الإصدار… أدركت أن مكتبة MSXML كانت تُشحن مع IE، وأن لديَّ بعض الصلات الجيدة في فريق XML الذين كان من المرجّح أن يساعدوني — فتواصلت مع Jean Paoli الذي كان يقود ذلك الفريق آنذاك، وسرعان ما اتفقنا على إطلاق الأمر كجزء من مكتبة MSXML. وهذا هو التفسير الحقيقي لمصدر الاسم XMLHTTP — فالشيء في معظمه يتعلق بـ HTTP ولا تربطه صلة محددة بـ XML، عدا أن XML كانت أسهل ذريعة لإطلاقه، ولذلك اضطررت إلى دفع XML داخل الاسم.</p>
+<blockquote>
+<p>Alex Hopmann، قصة XMLHTTP</p>
+</blockquote>
+</blockquote>
+<p>نمذلت Mozilla تنفيذها الخاص لـ XHR على أساس تنفيذ Microsoft، وكشفت عنها عبر واجهة XMLHttpRequest. ثم تبعتها Safari و Opera والمتصفحات الأخرى، فأصبح XHR معيارًا فعليًا (de facto) في جميع المتصفحات الكبرى — ومن هنا الاسم ولماذا ظل. وفي الواقع، لم تُنشر مواصفة مسودة العمل (Working Draft) الرسمية من W3C الخاصة بـ XHR إلا عام 2006، بعد انتشار XHR على نطاق واسع بوقت طويل! غير أن XHR، رغم شعبيته ودوره المحوري في ثورة AJAX، كان في إصداراته الأولى محدود القدرات: نقل بيانات نصية فقط، ودعم محدود للتعامل مع عمليات الرفع، وعجز عن التعامل مع الطلبات عبر النطاقات (cross-domain). ولمعالجة هذه القصور، نُشرت مسودة «XMLHttpRequest Level 2» عام 2008، وأضافت عددًا من الميزات الجديدة:</p>
+<p>وفي عام 2011، دُمجت مواصفة «XMLHttpRequest Level 2» مع مسودة العمل الأصلية لـ XMLHttpRequest. ومن ثمّ، وإن كنت ستجد في الكثير من الأماكن إشارات إلى «إصدار» XHR أو «المستوى 1» و«المستوى 2»، فإن هذه التمييزات لم تعد ذات صلة؛ فاليوم توجد مواصفة XHR واحدة موحّدة فقط. وفي الواقع، تُقدَّم جميع ميزات وقدرات XHR2 الجديدة عبر واجهة XMLHttpRequest نفسها: الواجهة نفسها، مع مزيد من الميزات. وتدعم جميع المتصفحات الحديثة الآن ميزات XHR2 الجديدة؛ راجع <a href="http://caniuse.com/xhr2">caniuse.com/xhr2</a>. ومن ثمّ، كلما أشرنا إلى XHR، فإننا نشير ضمنًا إلى معيار XHR2.</p>
+<h2 id="مشاركة-الموارد-عبر-الأصول-cross-origin-resource-sharing-cors">مشاركة الموارد عبر الأصول (Cross-Origin Resource Sharing, CORS)</h2>
+<p>XHR هي واجهة برمجة تطبيقات على مستوى المتصفح تتولى تلقائيًا تفاصيل منخفضة المستوى كثيرة، مثل التخزين المؤقت (caching)، ومعالجة إعادة التوجيه (redirects)، والتفاوض على المحتوى (content negotiation)، والمصادقة (authentication)، وغيرها الكثير. ويؤدي هذا غرضين. أولًا، يجعل واجهات برمجة التطبيقات أسهل بكثير في الاستخدام، مما يتيح لنا التركيز على منطق العمل. وثانيًا، يتيح للمتصفح أن يعزل التطبيق في بيئة معزولة (sandbox) ويفرض مجموعة من قيود الأمن والسياسة على شيفرة التطبيق. وواجهة XHR تفرض دلالات HTTP صارمة على كل طلب: فالتطبيق يوفّر البيانات وعنوان URL، والمتصفح يصوغ الطلب ويتولى دورة الحياة الكاملة لكل اتصال. وعلى نحو مماثل، بينما تسمح واجهة XHR للتطبيق بإضافة ترويسات HTTP مخصّصة (عبر طريقة <code>setRequestHeader()</code>)، هناك عدد من الترويسات المحميّة (protected headers) التي لا يجوز لشيفرة التطبيق المساس بها:</p>
+<p>سترفض المتصفح تجاوز أيٍّ من الترويسات غير الآمنة، ما يضمن أن التطبيق لا يستطيع انتحال وكيل مستخدم (user-agent) أو مستخدم أو أصل (origin) زائف من حيث يُرسَل الطلب. وفي الواقع، فإن حماية ترويسة الأصل بالغة الأهمية، لأنها المفتاح الأساسي في «سياسة المصدر نفسه» (same-origin policy) المطبَّقة على جميع طلبات XHR. ويُعرَّف «الأصل» (origin) بأنه ثلاثية من بروتوكول التطبيق واسم النطاق ورقم المنفذ — مثالًا، يُعدّ (http, example.com, 80) و (https, example.com, 443) أصلين مختلفين. ولمزيد من التفاصيل، راجع <a href="http://tools.ietf.org/html/draft-abarth-origin">مفهوم أصل الويب (The Web Origin Concept)</a>. أما دافع سياسة المصدر نفسه فهو بسيط: فالمتصفح يخزّن بيانات المستخدم، مثل رموز المصادقة (authentication tokens) وملفات تعريف الارتباط (cookies) وبيانات وصفية خاصة أخرى، ولا يجوز تسريبها عبر تطبيقات مختلفة — مثالًا، من دون عزل المصدر نفسه، يمكن لسكربت عشوائي في <em>example.com</em> أن يصل إلى بيانات المستخدمين في <em>thirdparty.com</em> ويعدّلها! ولمعالجة هذه المشكلة تحديدًا، قيّدت الإصدارات الأولى من XHR الطلبات بمصدر واحد فقط، حيث كان يلزم أن يطابق أصل الطلب أصل المورد المطلوب: فطلب XHR يبدأ من <em>example.com</em> لا يمكنه طلب مورد آخر إلا من الأصل نفسه <em>example.com</em>. وبدلًا من ذلك، إذا أخفق شرط المصدر نفسه، فإن المتصفح ببساطة يرفض بدء طلب XHR ويطلق خطأً. غير أن سياسة المصدر نفسه، رغم ضرورتها، تفرض قيودًا شديدة على نفعية XHR: فماذا لو أراد الخادم تقديم مورد إلى سكربت يعمل في أصل مختلف؟ هنا يأتي دور «مشاركة الموارد عبر الأصول» (CORS)! وتوفّر CORS آلية آمنة تتطلّب موافقة مسبقة (opt-in) لطلبات العميل عبر الأصول:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// script origin: (http, example.com, 80)</span>
+<span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;/resource.js&#x27;</span>); 
+xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { ... };
+xhr.<span class="hljs-title function_">send</span>();
+
+<span class="hljs-keyword">var</span> cors_xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+cors_xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;http://thirdparty.com/resource.js&#x27;</span>); 
+cors_xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { ... };
+cors_xhr.<span class="hljs-title function_">send</span>();
+</code></pre>
+<p>تستخدم طلبات CORS واجهة XHR نفسها، والفارق الوحيد أن عنوان URL للمورد المطلوب مرتبط بأصل مختلف عن الأصل الذي يُنفَّذ فيه السكربت: في المثال السابق، يُنفَّذ السكربت من <em>(http, example.com, 80)</em>، بينما يصل الطلب الثاني لـ XHR إلى <code>resource.js</code> من <em>(http, thirdparty.com, 80)</em>. وتُعالَج آلية الموافقة (opt-in) الخاصة بالمصادقة في طلب CORS على طبقة أدنى: فعند إرسال الطلب، يضيف المتصفح تلقائيًا ترويسة HTTP المحميّة <em>Origin</em>، التي تعلن عن الأصل الذي يُرسَل منه الطلب. وبدورها، يستطيع الخادم البعيد فحص ترويسة <em>Origin</em> وتقرير ما إذا كان يسمح بالطلب بإعادة ترويسة <em>Access-Control-Allow-Origin</em> في استجابته:</p>
+<pre><code>=&gt; Request
+GET /resource.js HTTP/1.1
+Host: thirdparty.com
+Origin: http://example.com 
+...
+
+&lt;= Response
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: http://example.com 
+...
+</code></pre>
+<p>وفي المثال السابق، قرر <em>thirdparty.com</em> الموافقة على مشاركة الموارد عبر الأصول مع <em>example.com</em> بإعادة ترويسة تحكّم في الوصول مناسبة في استجابته. وبدلًا من ذلك، فإن أراد منع الوصول، فيمكنه ببساطة الامتناع عن إدراج ترويسة <em>Access-Control-Allow-Origin</em>، عندئذٍ سيفشل المتصفح في العميل تلقائيًا في الطلب المُرسَل. وإذا لم يكن خادم الطرف الثالث مدركًا لـ CORS، فسينشل طلب العميل، لأن العميل يتحقق دائمًا من وجود ترويسة الموافقة. وكحالة خاصة، تسمح CORS أيضًا للخادم بإعادة رمز بديل (wildcard) (<code>Access-Control-Allow-Origin: *</code>) للإشارة إلى أنه يسمح بالوصول من أي أصل. غير أن فكّر مرتين قبل تفعيل هذه السياسة! وبهذا، هل انتهينا؟ تبيّن أن الأمر ليس كذلك تمامًا، إذ تتخذ CORS عددًا من احتياطات الأمان الإضافية لضمان أن يكون الخادم مدركًا لـ CORS:</p>
+<p>ولتفعيل ملفات تعريف الارتباط ومصادقة HTTP، يجب أن يضبط العميل خاصية إضافية (<code>withCredentials</code>) على كائن XHR عند إرسال الطلب، ويجب أن يستجيب الخادم أيضًا بترويسة مناسبة (<em>Access-Control-Allow-Credentials</em>) للإشارة إلى أنه يسمح عن علم للتطبيق بإدراج بيانات المستخدم الخاصة. وعلى نحو مماثل، إذا احتاج العميل إلى كتابة أو قراءة ترويسات HTTP مخصّصة أو أراد استخدام «طريقة غير بسيطة» (non-simple method) في الطلب، فيتعين عليه أولًا أن يطلب الإذن من خادم الطرف الثالث بإرسال طلب تحقّق مسبق (preflight request):</p>
+<pre><code>=&gt; Preflight request
+OPTIONS /resource.js HTTP/1.1 
+Host: thirdparty.com
+Origin: http://example.com
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: My-Custom-Header
+...
+
+&lt;= Preflight response
+HTTP/1.1 200 OK 
+Access-Control-Allow-Origin: http://example.com
+Access-Control-Allow-Methods: GET, POST, PUT
+Access-Control-Allow-Headers: My-Custom-Header
+...
+
+(actual HTTP request)
+</code></pre>
+<p>تحدّد مواصفة W3C الرسمية لـ CORS متى وأين يجب استخدام طلب التحقّق المسبق: فيمكن للطلبات «البسيطة» تخطّيه، لكن هناك مجموعة متنوعة من الشروط التي تستدعيه وتضيف رحلة شبكية كاملة على الأقل من زمن الاستجابة للتحقق من الأذونات. والخبر السار أنه بمجرد إرسال طلب تحقّق مسبق، يمكن للعميل تخزينه مؤقتًا لتفادي التحقق نفسه في كل طلب. وتدعم جميع المتصفحات الحديثة CORS؛ راجع caniuse.com/cors. ولمزيد من التعمّق في سياسات CORS المختلفة وطرق تنفيذها، ارجع إلى معيار W3C الرسمي.</p>
+<h2 id="تنزيل-البيانات-عبر-xhr">تنزيل البيانات عبر XHR</h2>
+<p>يستطيع XHR نقل البيانات النصية والبيانات الثنائية معًا. وفي الواقع، يوفّر المتصفح ترميزًا وفك ترميز تلقائيين لمجموعة متنوعة من أنواع البيانات الأصلية، مما يتيح للتطبيق تمرير هذه الأنواع مباشرة إلى XHR ليُرمَّز كل منها على النحو الصحيح، وبالمقابل تُفك رموز الأنواع تلقائيًا بواسطة المتصفح: <code>ArrayBuffer</code> مخزن بيانات ثنائي ثابت الطول <code>Blob</code> كائن ثنائي كبير من بيانات غير قابلة للتغيير <code>Document</code> مستند HTML أو XML مُحلَّل <code>JSON</code> كائن JavaScript يمثّل بنية بيانات بسيطة <code>Text</code> سلسلة نصية بسيطة إما أن يعتمد المتصفح على التفاوض على نوع المحتوى في HTTP لاستنتاج نوع البيانات المناسب (مثالًا، فك ترميز استجابة <em>application/json</em> إلى كائن JSON)، أو أن يتجاوز التطبيق نوع البيانات صراحةً عند إطلاق طلب XHR:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;/images/photo.webp&#x27;</span>);
+xhr.<span class="hljs-property">responseType</span> = <span class="hljs-string">&#x27;blob&#x27;</span>; 
+
+xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+ <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">status</span> == <span class="hljs-number">200</span>) {
+ <span class="hljs-keyword">var</span> img = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;img&#x27;</span>);
+ img.<span class="hljs-property">src</span> = <span class="hljs-variable language_">window</span>.<span class="hljs-property">URL</span>.<span class="hljs-title function_">createObjectURL</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">response</span>); 
+ img.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+ <span class="hljs-variable language_">window</span>.<span class="hljs-property">URL</span>.<span class="hljs-title function_">revokeObjectURL</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">src</span>); 
+ }
+ <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(img);
+ }
+};
+
+xhr.<span class="hljs-title function_">send</span>();
+</code></pre>
+<p>لاحظ أننا ننقل أصل صورة بصيغته الأصلية، دون الاعتماد على ترميز base64، ودون إضافة عنصر صورة إلى الصفحة بالاعتماد على معطيات URI (data URIs). فلا يوجد أي حمل زائد في النقل عبر الشبكة ولا في الترميز عند التعامل مع البيانات الثنائية المستلمة في JavaScript! وتتيح لنا واجهة XHR كتابة تطبيقات فعّالة وديناميكية، مهما كان نوع البيانات، كل ذلك من داخل JavaScript. وواجهة blob جزء من واجهة HTML5 File API، وتعمل كمرجع معتم (opaque reference) لأي مقطع من البيانات (ثنائي أو نصي). وبحد ذاتها، تملك مرجع blob إمكانات محدودة: يمكنك الاستعلام عن حجمه ونوع MIME وتقسيمه إلى blobs أصغر. غير أن دوره الحقيقي هو أن يكون آلية تبادل فعّالة بين واجهات برمجة تطبيقات JavaScript المختلفة.</p>
+<h2 id="رفع-البيانات-عبر-xhr">رفع البيانات عبر XHR</h2>
+<p>رفع البيانات عبر XHR بسيط وفعّال تمامًا لجميع أنواع البيانات. وفي الواقع، الشيفرة فعليًا واحدة، والفارق الوحيد أن نمرّر أيضًا كائن بيانات عند استدعاء <em>send()</em> على طلب XHR. وكل ما تبقى يتولّاه المتصفح:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;POST&#x27;</span>,<span class="hljs-string">&#x27;/upload&#x27;</span>);
+xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { ... };
+xhr.<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;text string&quot;</span>); 
+
+<span class="hljs-keyword">var</span> formData = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FormData</span>(); 
+formData.<span class="hljs-title function_">append</span>(<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-number">123456</span>);
+formData.<span class="hljs-title function_">append</span>(<span class="hljs-string">&#x27;topic&#x27;</span>, <span class="hljs-string">&#x27;performance&#x27;</span>);
+
+<span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;POST&#x27;</span>, <span class="hljs-string">&#x27;/upload&#x27;</span>);
+xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { ... };
+xhr.<span class="hljs-title function_">send</span>(formData); 
+
+<span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;POST&#x27;</span>, <span class="hljs-string">&#x27;/upload&#x27;</span>);
+xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { ... };
+<span class="hljs-keyword">var</span> uInt8Array = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Uint8Array</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]); 
+xhr.<span class="hljs-title function_">send</span>(uInt8Array.<span class="hljs-property">buffer</span>);
+</code></pre>
+<p>تقبل طريقة <em>send()</em> في XHR أحد كائنات <code>DOMString</code> أو <code>Document</code> أو <code>FormData</code> أو <code>Blob</code> أو <code>File</code> أو <code>ArrayBuffer</code>، وتُجري الترميز المناسب تلقائيًا، وتضبط نوع المحتوى المناسب في HTTP، وتُرسِل الطلب. هل تحتاج إلى إرسال blob ثنائي أو رفع ملف يقدّمه المستخدم؟ بسيط: خُذ مرجعًا إلى الكائن ومرّره إلى XHR. وفي الواقع، ببضع خطوات إضافية، يمكننا أيضًا تقسيم ملف كبير إلى أجزاء أصغر:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> blob = ...; 
+
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">BYTES_PER_CHUNK</span> = <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>; 
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SIZE</span> = blob.<span class="hljs-property">size</span>;
+
+<span class="hljs-keyword">var</span> start = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">var</span> end = <span class="hljs-variable constant_">BYTES_PER_CHUNK</span>;
+
+<span class="hljs-keyword">while</span>(start &lt; <span class="hljs-variable constant_">SIZE</span>) { 
+ <span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+ xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;POST&#x27;</span>, <span class="hljs-string">&#x27;/upload&#x27;</span>);
+ xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { ... };
+
+ xhr.<span class="hljs-title function_">setRequestHeader</span>(<span class="hljs-string">&#x27;Content-Range&#x27;</span>, start+<span class="hljs-string">&#x27;-&#x27;</span>+end+<span class="hljs-string">&#x27;/&#x27;</span>+<span class="hljs-variable constant_">SIZE</span>); 
+ xhr.<span class="hljs-title function_">send</span>(blob.<span class="hljs-title function_">slice</span>(start, end)); 
+
+ start = end;
+ end = start + <span class="hljs-variable constant_">BYTES_PER_CHUNK</span>;
+}
+</code></pre>
+<p>لا يدعم XHR بثّ الطلبات (request streaming)، ما يعني أننا ملزمون على تقديم الحمولة كاملة عند استدعاء <em>send()</em>. غير أن هذا المثال يوضّح حلاً مبسّطًا: يُقسَّم الملف ويُرفع على أجزاء عبر طلبات XHR متعددة. وهذا النمط للتنفيذ ليس بديلًا البتّة عن واجهة برمجة تطبيقات حقيقية لبثّ الطلبات، لكنه يظل مع ذلك حلاً قابلاً للتطبيق في بعض الحالات. وتقطيع عمليات رفع الملفات الكبيرة أسلوب جيّد لتوفير واجهة برمجة تطبيقات أكثر متانة حين تكون الاتصالية غير مستقرة أو متقطّعة — مثالًا، إذا فشلت جزء ما بسبب انقطاع الاتصال، فيستطيع التطبيق إعادة المحاولة أو استئناف الرفع لاحقًا بدلًا من إعادة النقل كاملًا من البداية.</p>
+<h2 id="مراقبة-تقدم-التنزيل-والرفع">مراقبة تقدّم التنزيل والرفع</h2>
+<p>قد تكون الاتصالية بالشبكة متقطّعة، كما أن زمن الاستجابة (latency) والنطاق الترددي (bandwidth) شديدا التغيّر. فكيف نعرف ما إذا كان طلب XHR قد نجح أو انتهت مهلته (timed out) أو فشل؟ يوفّر كائن XHR واجهة برمجة تطبيقات مريحة للاستماع إلى أحداث التقدّم (progress events) (الجدول 15-1)، وهي تحدّد الحالة الراهنة للطلب.</p>
+<p>الجدول 15-1. أحداث التقدّم في XHR يبدأ كل نقل عبر XHR بحدث <em>loadstart</em> وينتهي بحدث <em>loadend</em>، وبينهما يُطلق حدث واحد أو أكثر للإشارة إلى حالة النقل. ومن ثمّ، لمراقبة التقدّم، يستطيع التطبيق تسجيل مجموعة من مستمعي أحداث JavaScript على كائن XHR:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;GET&#x27;</span>,<span class="hljs-string">&#x27;/resource&#x27;</span>);
+xhr.<span class="hljs-property">timeout</span> = <span class="hljs-number">5000</span>; 
+
+xhr.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;load&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { ... }); 
+xhr.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { ... }); 
+
+<span class="hljs-keyword">var</span> onProgressHandler = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) {
+ <span class="hljs-keyword">if</span>(event.<span class="hljs-property">lengthComputable</span>) {
+ <span class="hljs-keyword">var</span> progress = (event.<span class="hljs-property">loaded</span> / event.<span class="hljs-property">total</span>) * <span class="hljs-number">100</span>; 
+ ...
+ }
+}
+
+xhr.<span class="hljs-property">upload</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;progress&#x27;</span>, onProgressHandler); 
+xhr.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;progress&#x27;</span>, onProgressHandler); 
+xhr.<span class="hljs-title function_">send</span>();
+</code></pre>
+<p>سيُطلق إما حدث <em>load</em> أو حدث <em>error</em> مرة واحدة للإشارة إلى الحالة النهائية لنقل XHR، في حين يمكن لحدث <em>progress</em> أن يُطلق أي عدد من المرات، وهو يوفّر واجهة برمجة تطبيقات مريحة لتتبّع حالة النقل: يمكننا مقارنة الخاصية <em>loaded</em> بالخاصية <em>total</em> لتقدير حجم البيانات المنقولة. ولتقدير حجم البيانات المنقولة، يجب أن يوفّر الخادم طول المحتوى (content length) في استجابته: فلا يمكننا تقدير تقدّم عمليات النقل المقسّمة إلى أجزاء (chunked transfers)، لأن حجم الاستجابة الكلي مجهول بحكم التعريف. كما أن طلبات XHR لا تملك مهلة افتراضية (default timeout)، ما يعني أن الطلب قد يظل «قيد التنفيذ» إلى أجل غير مسمى. وكأفضل ممارسة، اضبط دائمًا مهلة ذات معنى لتطبيقك وتعامل مع الخطأ!</p>
+<h2 id="بث-البيانات-عبر-xhr">بثّ البيانات عبر XHR</h2>
+<p>في بعض الحالات قد يحتاج التطبيق أو يريد معالجة تدفّق من البيانات على نحو تدريجي: رفع البيانات إلى الخادم فور توفّرها عند العميل، أو معالجة البيانات المنزَّلة فور وصولها من الخادم. للأسف، رغم أن هذه حالة استخدام مهمة، لا توجد اليوم واجهة برمجة تطبيقات بسيطة وفعّالة ومتّسقة عبر المتصفحات لبثّ البيانات عبر XHR:</p>
+<p>لم يكن البثّ (streaming) يومًا حالة استخدام رسمية ضمن مواصفة XHR الرسمية. ونتيجةً لذلك، فلا شيء سوى التقسيم اليدوي للرفع إلى طلبات XHR فردية أصغر، لا توجد واجهة برمجة تطبيقات لبثّ البيانات من العميل إلى الخادم. وعلى نحو مماثل، بينما توفّر مواصفة XHR2 بعض القدرة على قراءة استجابة جزئية من الخادم، فإن التنفيذ غير فعّال ومحدود للغاية. هذه هي الأخبار السيئة. أما الخبر الجيد فهو أن الأمل يلوح في الأفق! فغياب دعم البثّ كحالة استخدام من الدرجة الأولى في XHR قيدٌ معترف به على نطاق واسع، وهناك عمل جارٍ لمعالجة المشكلة:</p>
+<blockquote>
+<p>ينبغي أن تتمتع تطبيقات الويب بالقدرة على اكتساب البيانات ومعالجتها بصور متنوعة على نطاق واسع، بما في ذلك في صورة تسلسل من البيانات التي تُتاح تدريجيًا مع مرور الوقت. وتعرّف هذه المواصفة التمثيل الأساسي لـ Streams، والأخطاء التي يرفعها Streams، والطرق البرمجية لقراءة Streams وإنشائها.</p>
+<blockquote>
+<p>W3C Streams API</p>
+</blockquote>
+</blockquote>
+<p>سينمكّن الجمع بين XHR وواجهة Streams API من تفعيل بثّ XHR الفعّال داخل المتصفح. غير أن واجهة Streams API ما تزال قيد النقاش النشط، ولم تتاح بعد في أي متصفح. وهكذا، فنحن محتجزون إذن، صحيح؟ حسنًا، ليس تمامًا. كما لاحظنا سابقًا، فإن رفع البيانات عبر البثّ مع XHR ليس خيارًا متاحًا، لكن لدينا دعم محدود لبثّ التنزيلات عبر XHR:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;/stream&#x27;</span>);
+xhr.<span class="hljs-property">seenBytes</span> = <span class="hljs-number">0</span>;
+
+xhr.<span class="hljs-property">onreadystatechange</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { 
+ <span class="hljs-keyword">if</span>(xhr.<span class="hljs-property">readyState</span> &gt; <span class="hljs-number">2</span>) {
+ <span class="hljs-keyword">var</span> newData = xhr.<span class="hljs-property">responseText</span>.<span class="hljs-title function_">substr</span>(xhr.<span class="hljs-property">seenBytes</span>); 
+ <span class="hljs-comment">// process newData</span>
+
+ xhr.<span class="hljs-property">seenBytes</span> = xhr.<span class="hljs-property">responseText</span>.<span class="hljs-property">length</span>; 
+ }
+};
+
+xhr.<span class="hljs-title function_">send</span>();
+</code></pre>
+<p>سيعمل هذا المثال في معظم المتصفحات الحديثة. غير أن الأداء ليس جيدًا، وهناك عدد كبير من تحذيرات التنفيذ والمزالق (gotchas):</p>
+<p>باختصار، XHR حاليًا ليس فعّالًا ولا مريحًا للبثّ، والأسوأ من ذلك أن غياب مواصفة موحّدة يعني أيضًا أن التنفيذات تختلف من متصفح إلى آخر. ونتيجةً لذلك، وعلى الأقل حتى تتاح واجهة Streams API، لا يناسب XHR البثّ. ولا داعي لليأس! فبينما قد لا تستوفي XHR المعايير، لدينا وسائل نقل أخرى مُحسّنة لحالة استخدام البثّ: إذ تقدّم Server-Sent Events واجهة برمجة تطبيقات مريحة لبثّ البيانات النصية من الخادم إلى العميل، وتقدّم WebSocket بثًّا ثنائي الاتجاه فعّالًا لكل من البيانات الثنائية والنصية.</p>
+<h4>واجهات برمجة تطبيقات خاصة وإضافات لبثّ XHR</h4>
+<p>يوفّر كل من Firefox و Internet Explorer إضافات «بثّ XHR» (streaming XHR extensions) مخصّصة:</p>
+<p>بضبط الخاصية <code>responseType</code> على كائن XHR إلى أحد الأنواع السابقة، يتجنّب كلا المتصفحين تخزين الاستجابة كاملة، ويتيحان أيضًا قراءة استجابة ثنائية على نحو تدريجي من كائن XHR. للأسف، لا توجد واجهات برمجة تطبيقات مكافئة في Chrome أو Opera أو غيرها من المتصفحات الشائعة. ونتيجةً لذلك، لا يزال بثّ XHR وسيلة نقل غير عملية للتطبيقات متعددة المتصفحات.</p>
+<h2 id="الإشعارات-الفورية-وتسليمها">الإشعارات الفورية وتسليمها</h2>
+<p>يتيح XHR طريقة بسيطة وفعّالة لمزامنة تحديثات العميل مع الخادم: كلما لزم، يُطلق العميل طلب XHR لتحديث البيانات المناسبة على الخادم. لكن المشكلة نفسها، وباتجاه معاكس، أصعب بكثير. فإذا حُدِّثت البيانات على الخادم، فكيف يُشعر الخادم العميل؟ لا يوفّر HTTP أي طريقة ليبدأ الخادم اتصالًا جديدًا مع العميل. ونتيجةً لذلك، لاستقبال الإشعارات الفورية، لا بدّ للعميل إما أن يستطلع الخادم بحثًا عن تحديثات (polling) أو أن يستثمر وسيلة نقل داعمة للبثّ لتتيح للخادم دفع الإشعارات الجديدة فور توفّرها. للأسف، كما رأينا في القسم السابق، فإن دعم بثّ XHR محدود، ما يتركنا مع الاستطلاع عبر XHR. ولكل تطبيق معنى مختلف لـ«الوقت الفعلي» (real-time): فبعض التطبيقات تتطلب عبءً دون الميلي ثانية، بينما قد تكتفي تطبيقات أخرى بتأخير يُقاس بالدقائق. ولتحديد وسيلة النقل المثلى، عرّف أولًا أهدافًا واضحة لزمن الاستجابة والعبء الزائد لتطبيقك!</p>
+<h3 id="الاستطلاع-عبر-xhr">الاستطلاع عبر XHR</h3>
+<p>من أبسط الاستراتيجيات لاسترجاع التحديثات من الخادم أن يقوم العميل بفحص دوري: يستطيع العميل إطلاق طلب XHR في الخلفية على فترات منتظمة (استطلاع الخادم) للتحقق من وجود تحديثات. وإذا كانت هناك بيانات جديدة متاحة على الخادم، فإنها تُعاد في الاستجابة، وإلا فستكون الاستجابة فارغة. الاستطلاع سهل التنفيذ لكنه كثيرًا ما يكون أيضًا شديد عدم الكفاءة. واختيار فترة الاستطلاع حاسم: ففترات الاستطلاع الطويلة تعني تأخيرًا في تسليم التحديثات، بينما الفترات القصيرة تنتج حركة مرور غير ضرورية وعبءً زائدًا كبيرًا على العميل والخادم معًا. ولنتأمّل أبسط مثال ممكن:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">checkUpdates</span>(<span class="hljs-params">url</span>) {
+ <span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+ xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;GET&#x27;</span>, url);
+ xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { ... }; 
+ xhr.<span class="hljs-title function_">send</span>();
+}
+
+<span class="hljs-built_in">setInterval</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { <span class="hljs-title function_">checkUpdates</span>(<span class="hljs-string">&#x27;/updates&#x27;</span>) }, <span class="hljs-number">60000</span>);
+</code></pre>
+<p>ما هي فترة الاستطلاع المثلى؟ لا توجد فترة مثلى. فالتكرار يعتمد على متطلبات التطبيق، وهناك مضاربة متأصلة (trade-off) بين الكفاءة وزمن وصول الرسالة. ونتيجةً لذلك، يناسب الاستطلاع التطبيقات التي تكون فيها فترات الاستطلاع طويلة، وتصل فيها الأحداث الجديدة بمعدل يمكن التنبؤ به، وتكون فيها الحمولات المنقولة كبيرة. وهذه المجموعة تعوّض عبء HTTP الإضافي وتقلّل تأخير تسليم الرسائل.</p>
+<h4>نمذجة أداء الاستطلاع عبر XHR</h4>
+<p>لأغراض توضيح المضاربة بين زمن الاستجابة والعبء الزائد في الاستطلاع عبر XHR، فلنتأمّل تطبيق بريد إلكتروني بسيط يستخدم الاستطلاع عبر XHR للتحقق من تحديثات الرسائل على الخادم. والتنفيذ على النحو التالي:</p>
+<p>ما هو متوسط تأخير وصول الرسالة؟ إذا وصلت رسالة جديدة إلى الخادم قبل أن يفحص العميل عن التحديثات بقليل، فإن التأخير يكون ضئيلًا — لا شيء سوى زمن الاستجابة بين العميل والخادم. وبالمقابل، قد تصل الرسالة الجديدة نفسها بعد لحظات من فحص العميل، وعندئذٍ ستنتظر الرسالة حتى الفحص التالي من العميل (60 ثانية). ومن ثمّ، إذا كان معدل وصول الرسائل عشوائيًا، فإن الرسالة ستنتظر في المتوسط 30 ثانية على الخادم قبل أن يصل إليها العميل. وما عبء الاستطلاع؟ يضيف طلب HTTP 1.x متوسطه 800 بايت من بيانات الطلب والاستجابة (راجع «قياس التحكّم في الحمل الزائد للبروتوكول» (Measuring and Controlling Protocol Overhead)). ولأن العميل مسجّل الدخول، سنحصل أيضًا على ملف تعريف ارتباط إضافي للمصادقة ومعرّف الرسالة؛ ولنفترض أن هذا يضيف 50 بايت أخرى. ومن ثمّ، فإن الطلب الذي لا يعيد أي رسائل جديدة سيتحمّل 850 بايت! والآن تخيّل لدينا 10,000 عميل، جميعهم يستطلعون على فاصل 60 ثانية: يرسل كل عميل 850 بايت من البيانات في كل طلب، أي ما يعادل 167 طلبًا في الثانية ومعدلًا ثابتًا قدره 1.13 ميغابت في الثانية من حركة الدخول على الخادم! وهذا معدل ثابت دون تسليم أي رسائل جديدة فعليًا إلى أيٍّ من العملاء. هل تأخير الثلاثين ثانية مرتفع أكثر مما ينبغي؟ يمكننا تقليل فترة الاستطلاع، لكننا بذلك سنتحمّل إنتاجية وعبء زائد أعلى: العملاء العشرة آلاف نفسها، لكن بفاصل مدته ثانية واحدة، ستولّد أكثر من 60 ميغابت في الثانية من الإنتاجية! باختصار، ما لم تكن فترات الاستطلاع طويلة، فإن الاستطلاع مكلف.</p>
+<h3 id="الاستطلاع-الطويل-عبر-xhr">الاستطلاع الطويل عبر XHR</h3>
+<p>التحدي في الاستطلاع الدوري هو احتمال حدوث فحوص كثيرة غير ضرورية وفارغة. وفي ضوء ذلك، ماذا لو عدّلنا قليلًا (الشكل 15-1) سير عمل الاستطلاع: بدلًا من إعادة استجابة فارغة عند عدم توفر تحديثات، هل يمكننا إبقاء الاتصال خاملًا حتى يتوفّر تحديث؟ <img src="/arabic-cs-library/images/hpbn/xmlhttprequest-4ee6145071a2992920f9681c069824a4.svg.svg" alt=""> الشكل 15-1. زمن الاستجابة للاستطلاع (يسار) مقابل الاستطلاع الطويل (يمين) تُعرف التقنية التي تستثمر طلب HTTP محفوظًا لفترة طويلة («GET معلّق») للسماح للخادم بدفع البيانات إلى المتصفح عادةً باسم «Comet». لكنك قد تصادفها أيضًا بأسماء أخرى، مثل «AJAX عكسي» (reverse AJAX)، و«دفع AJAX» (AJAX push)، و«دفع HTTP» (HTTP push). وبالإبقاء على الاتصال مفتوحًا حتى يتوفّر تحديث (الاستطلاع الطويل)، يمكن إرسال البيانات إلى العميل فور توفّرها على الخادم. ونتيجةً لذلك، يقدّم الاستطلاع الطويل أفضل حالة ممكنة من حيث زمن وصول الرسالة، كما أنه يلغي الفحوص الفارغة، ما يقلّل عدد طلبات XHR والعبء الزائد الكلي للاستطلاع. وبمجرد تسليم التحديث، ينتهي طلب الاستطلاع الطويل ويستطيع العميل إطلاق طلب استطلاع طويل جديد وانتظار الرسالة التالية المتاحة:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">checkUpdates</span>(<span class="hljs-params">url</span>) {
+ <span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+ xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;GET&#x27;</span>, url);
+ xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) { 
+ ...
+ <span class="hljs-title function_">checkUpdates</span>(<span class="hljs-string">&#x27;/updates&#x27;</span>); 
+ };
+ xhr.<span class="hljs-title function_">send</span>();
+}
+
+<span class="hljs-title function_">checkUpdates</span>(<span class="hljs-string">&#x27;/updates&#x27;</span>);
+</code></pre>
+<p>وبهذا، هل يكون الاستطلاع الطويل دائمًا خيارًا أفضل من الاستطلاع الدوري؟ ما لم يكن معدل وصول الرسائل معروفًا وثابتًا، فإن الاستطلاع الطويل سيقدّم دائمًا زمن وصول أفضل للرسائل. وإن كان ذلك هو المعيار الأساسي، فإن الاستطلاع الطويل هو الفائز. من جهة أخرى، تتطلب مناقشة العبء الزائد رؤية أكثر دقة. أولًا، لاحظ أن كل رسالة مسلَّمة تظل تتحمّل عبء HTTP نفسه؛ فكل رسالة جديدة هي طلب HTTP مستقل. غير أن إذا كان معدل وصول الرسائل مرتفعًا، فإن الاستطلاع الطويل سيُطلق طلبات XHR أكثر من الاستطلاع الدوري! إذ يتكيّف الاستطلاع الطويل ديناميكيًا مع معدل وصول الرسائل عبر تصغير زمن وصول الرسالة، وهو سلوك قد ترغب فيه أو لا. وإذا كان هناك بعض التسامح مع زمن وصول الرسالة، فقد يكون الاستطلاع وسيلة نقل أكثر كفاءة — مثالًا، إذا كان معدل التحديث مرتفعًا، فإن الاستطلاع يوفّر آلية بسيطة لـ«تجميع الرسائل» (message aggregation)، ما يمكن أن يقلّل عدد الطلبات ويحسّن عمر البطارية في الهواتف المحمولة. عمليًا، لا تتساوى جميع الرسائل في الأولوية أو متطلبات زمن الوصول. ونتيجةً لذلك، قد ترغب في التفكير في مزيج من الاستراتيجيات: تجميع التحديثات منخفضة الأولوية على الخادم، وإطلاق التسليم الفوري للتحديثات عالية الأولوية؛ راجع Nagle و«الدفع الفعّال من الخادم» (Efficient Server Push).</p>
+<h4>محادثة Facebook عبر الاستطلاع الطويل باستخدام XHR</h4>
+<p>عمليًا، لقد أصبح الاستطلاع الطويل إحدى أكثر الطرق انتشارًا لتسليم الإشعارات الفورية عبر XHR. وبينما قد لا يكون أنقل وسائل النقل، فهو بسيط ومتّين ومدعوم من أي متصفح يدعم XHR. وقد نُشر منتج شهير مثل «دردشة Facebook» (Facebook Chat) لأول مرة عام 2008 عبر هذه الطريقة بالضبط:</p>
+<blockquote>
+<p>الطريقة التي اخترناها لنقل النص من مستخدم إلى آخر تتطلّب تحميل إطار iframe في كل صفحة من صفحات Facebook، وجعل JavaScript في ذلك الإطار ينفّذ طلب HTTP GET عبر اتصال دائم لا يعود حتى تتوفّر لدى الخادم بيانات للعميل. ويُعاد إنشاء الطلب إذا انقطع أو انتهت مهلته. وهذه ليست تقنية جديدة بأي حال من الأحوال: إنها تنويعة على Comet، وتحديدًا الاستطلاع الطويل عبر XHR، و/أو BOSH.</p>
+<blockquote>
+<p>Facebook Chat، مدوّنة Facebook الهندسية</p>
+</blockquote>
+</blockquote>
+<p>اليوم، يمكننا تقديم الوظيفة نفسها بكفاءة أكبر بكثير عبر Server-Sent Events و WebSocket. ومع ذلك، لا يزال XHR استراتيجية احتياطية شائعة لكثير من أطر العمل الفورية. وإذا فشل كل شيء، فالملاذ الأخير هو الاستطلاع الطويل!</p>
+<h2 id="حالات-استخدام-xhr-والأداء">حالات استخدام XHR والأداء</h2>
+<p>XMLHttpRequest هي ما أتاح لنا القفزة من بناء الصفحات إلى بناء تطبيقات ويب تفاعلية داخل المتصفح. أولًا، مكّنت التواصل غير المتزامن داخل المتصفح، لكن الأهم من ذلك أنها جعلت العملية بسيطة أيضًا. فإطلاق طلب HTTP مُبرمَج والتحكّم فيه لا يستغرق سوى بضعة أسطر من شيفرة JavaScript، والمتصفح يتولّى كل ما تبقى:</p>
+<p>وعليه، فإن XHR وسيلة نقل متعددة الاستخدامات وعالية الأداء لأي عملية نقل تتبع دورة طلب-استجابة في HTTP. هل تحتاج إلى جلب مورد يتطلّب مصادقة، ينبغي ضغطه أثناء النقل، وينبغي تخزينه مؤقتًا لعمليات الجلب اللاحقة؟ المتصفح يتولّى كل ذلك وأكثر، مما يتيح لنا التركيز على منطق التطبيق! غير أن XHR له حدوده أيضًا. فكما رأينا، لم يكن البثّ يومًا حالة استخدام رسمية في معيار XHR، والدعم محدود: فبثّ البيانات عبر XHR ليس فعّالًا ولا مريحًا. وتختلف سلوكيات المتصفحات المختلفة، ويصبح بثّ البيانات الثنائية بكفاءة مستحيلًا. باختصار، لا يناسب XHR البثّ. وعلى نحو مماثل، لا توجد استراتيجية واحدة أفضل من غيرها لتسليم التحديثات الفورية عبر XHR. فالاستطلاع الدوري يفرض عبئًا زائدًا مرتفعًا وتأخيرات في زمن وصول الرسائل. والاستطلاع الطويل يقدّم زمن وصول منخفضًا لكنه يظل يحمل العبء نفسه لكل رسالة؛ فكل رسالة هي طلب HTTP خاص بها. ولأن نحصل على زمن وصول منخفض وعبء زائد منخفض في آنٍ واحد، نحتاج إلى بثّ XHR! ونتيجةً لذلك، بينما يمثّل XHR آلية شائعة للتسليم «الفوري»، فقد لا يكون أفضل وسيلة نقل أداءً لهذه المهمة. وتدعم المتصفحات الحديثة كلًا من الخيارين الأبسط والأكثر كفاءة، مثل Server-Sent Events و WebSocket. ومن ثمّ، ما لم يكن لديك سبب محدد يجعل الاستطلاع عبر XHR ضروريًا، فاستخدمهما.</p>
+`,r={book:s,chapter:n,chapterTitle:a,slug:p,title:e,headings:l,html:t};export{s as book,n as chapter,a as chapterTitle,r as default,l as headings,t as html,p as slug,e as title};

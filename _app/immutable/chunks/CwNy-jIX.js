@@ -1,0 +1,102 @@
+const s="tanstack-router",a="router",t="دورة TanStack Router الكاملة",n="navigation-links",o="روابط التنقّل (Navigation Links)",e=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"أين-نضع-روابط-التنقل",text:"أين نضع روابط التنقّل؟"},{depth:3,id:"مكون-link-التنقل-داخل-التطبيق",text:"مكوّن Link: التنقّل داخل التطبيق"},{depth:3,id:"إبراز-الرابط-النشط",text:"إبراز الرابط النشطّ"},{depth:3,id:"جعل-التنقل-آمن-الأنواع",text:"جعل التنقّل آمن الأنواع"},{depth:3,id:"إلى-أين-بعد-هذا",text:"إلى أين بعد هذا؟"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],c=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في الدرس السابق بنينا موجّهًا بشجرةٍ بسيطة، لكنّ المستخدم لا يستطيع الانتقال بين صفحاتها: لا يوجد في التطبيق أيّ رابطٍ ينقله من صفحة البداية إلى صفحة <code>About</code> أو العكس. في هذا الدرس نضيف شريطَ تنقّل مشتركًا، ونربطه بصفحات التطبيق عبر مكوّن <code>Link</code> الخاص بـ TanStack Router.</p>
+<p>مع ذلك لا يكفي أن يعمل الرابط؛ فالتنقّل في هذه المكتبة آمنُ الأنواع، وأمانُ الأنواع هنا ليس رفاهيةً بل شرطٌ في كلّ عملية تنقّل تكتبها. سنرى هنا كيف يكتسب <code>Link</code> قدرته على رفض المسارات غير الموجودة، وكيف نبرز الرابطَ الذي يناسب الصفحة الحالية.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="أين-نضع-روابط-التنقل">أين نضع روابط التنقّل؟</h3>
+<p>الجوابُ في المكان المشترك بين الصفحات. ومكوّنُ المسار الجذر يشارك في صفحتَي البداية و<code>About</code> معًا، فهو أنسبُ مكانٍ لشريطٍ يظهر فوق كلّ صفحة في التطبيق. (ولاحقًا في الدورة سنرى تخطيطاتٍ مشتركةً أخرى تخدم مجموعاتٍ من الصفحات بدل التطبيق كلّه.)</p>
+<p>وهذا المكوّنُ الجذرُ بعد إضافته شريط التنقّل، وقد تحوّل لونه إلى الأزرق الداكن ليبرز الشريطُ الفيروزي أمامه:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> rootRoute = <span class="hljs-title function_">createRootRoute</span>({
+  <span class="hljs-attr">component</span>: <span class="hljs-function">() =&gt;</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-blue-950 p-2&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-2xl font-bold&quot;</span>&gt;</span>Root Route<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;p-2 flex gap-2 mb-4 bg-teal-600&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/&quot;</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;[&amp;.active]:font-bold&quot;</span>&gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;[&amp;.active]:font-bold&quot;</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/about&quot;</span>&gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Outlet</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">TanStackRouterDevtools</span> <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;top-right&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  ),
+});
+</code></pre>
+<p>ونركّز على الشريط نفسِه:</p>
+<pre><code class="language-tsx">      &lt;div className=<span class="hljs-string">&quot;p-2 flex gap-2 mb-4 bg-teal-600&quot;</span>&gt;
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/&quot;</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;[&amp;.active]:font-bold&quot;</span>&gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span>
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;[&amp;.active]:font-bold&quot;</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/about&quot;</span>&gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span>
+      &lt;/div&gt;
+</code></pre>
+<p>الوعاءُ الذي يحتضن الرابطين <code>&lt;div&gt;</code> يحمل خمس خصائص تنسيق: <code>p-2</code> لتوسيع الحشو، و<code>flex</code> لصفّ العناصر أفقيًا، و<code>gap-2</code> للتباعد بينها، و<code>mb-4</code> لهامشٍ سفلي يفصل الشريطَ عن محتوى الصفحة، و<code>bg-teal-600</code> لخلفيةٍ تجعل الرابطين مقروءين فوق الشريط الداكن. ولاحظ أنّ الرابطين كُتبا بترتيبٍ مختلفٍ لخصائصهما، الأوّلُ يضع <code>to</code> قبل <code>className</code> والثاني بالعكس، ولا فرق بين الأمرين.</p>
+<h3 id="مكون-link-التنقل-داخل-التطبيق">مكوّن Link: التنقّل داخل التطبيق</h3>
+<p>في TanStack Router لا تستعمل وسم <code>&lt;a&gt;</code> عاديًا للتنقّل بين الصفحات، بل المكوّنَ <code>Link</code> الذي يُستورَد من <code>@tanstack/react-router</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  <span class="hljs-title class_">Link</span>,
+  <span class="hljs-title class_">Outlet</span>,
+  <span class="hljs-title class_">RouterProvider</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+</code></pre>
+<p>وكلُّ ما يحتاجه الرابطُ هو خاصيةُ <code>to</code> التي تحدّد العنوانَ المقصود: <code>to=&quot;/&quot;</code> لصفحة البداية، و<code>to=&quot;/about&quot;</code> لصفحة <code>About</code>. ويعرض <code>Link</code> في النهاية وسم <code>&lt;a&gt;</code> حقيقيًا بعنوانٍ صالح، فيعمل بالنقر كما يعمل أيُّ رابطٍ آخر في الصفحة.</p>
+<h3 id="إبراز-الرابط-النشط">إبراز الرابط النشطّ</h3>
+<p>الرابطُ الذي يناسب الصفحة الحالية يجب أن يبدو مختلفًا عن بقيّة الروابط، وإلا ضاع المستخدم. ولحسن الحظ يضيف <code>Link</code> إلى العنصر المعروض سمتين تلقائيًا: السمةُ <code>data-status</code> التي تكون قيمتُها <code>active</code> عند تفعيل الرابط، وصنفًا اسمه <code>active</code>. وقد أتاح <code>Link</code> أيضًا خاصيةَ <code>activeProps</code> التي تُرجع سماتٍ إضافية تُطبَّق في حالة التفعيل.</p>
+<p>ونحن نستغلّ الصنف <code>active</code> مع Tailwind، عبر الصيغة <code>[&amp;.active]:font-bold</code>، أي: طَبِّق <code>font-bold</code> على هذا العنصر عندما يحمل الصنف <code>active</code>:</p>
+<pre><code class="language-tsx">        &lt;<span class="hljs-title class_">Link</span> to=<span class="hljs-string">&quot;/&quot;</span> className=<span class="hljs-string">&quot;[&amp;.active]:font-bold&quot;</span>&gt;
+          <span class="hljs-title class_">Home</span>
+        &lt;/<span class="hljs-title class_">Link</span>&gt;
+</code></pre>
+<p>والنتيجةُ أنّ الرابطَ المطابقَ للصفحة الحالية يظهر بخطٍّ عريض، وهذا ما يظهر في الصورة أسفل الصفحة.</p>
+<p>ولنا طريقتان بديلتان للتمييز نفسه: الأولى أن نمرّر <code>activeProps</code> ونعطيه تنسيقًا مباشرًا مثل <code>activeProps={{ style: { fontWeight: &quot;bold&quot; } }}</code>، والثانية أن نُنسّق عبر السمة <code>data-status</code> بدل الصنف فنكتب تنسيقًا يشترط <code>data-status=&quot;active&quot;</code>. أمّا الطريقةُ المستعملة هنا، الصنفُ <code>active</code> مع Tailwind، فهي أبسطها.</p>
+<h3 id="جعل-التنقل-آمن-الأنواع">جعل التنقّل آمن الأنواع</h3>
+<p>هنا تظهر المشكلة: لو كتبتَ في <code>to</code> عنوانًا لا وجودَ له في التطبيق، فلن يعترض عليك مُصرِّف TypeScript شيئًا، مع أنّ أمانَ الأنواع من أبرز مزايا هذه المكتبة. والسببُ أنّ الموجّه لم يُسجَّل بعد في نظام أنواع المكتبة.</p>
+<p>ولأجل ذلك نضيف، بعد تعريف الموجّه، كتلةَ تعريف وحدةٍ تُخبر المكتبةَ بنوع موجّهنا:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> routeTree = rootRoute.<span class="hljs-title function_">addChildren</span>([indexRoute, aboutRoute]);
+
+<span class="hljs-keyword">const</span> router = <span class="hljs-title function_">createRouter</span>({ routeTree });
+
+<span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span> {
+  <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Register</span> {
+    <span class="hljs-attr">router</span>: <span class="hljs-keyword">typeof</span> router;
+  }
+}
+</code></pre>
+<p>بهذه الكتلة صارت المكتبةُ على علمٍ بشجرة مساراتك وبمواضع كلّ مسارٍ فيها، فصار <code>Link</code> آمنًا: عنوانُ غير موجودٍ يظهر خطأً في المحرّر، والعنوانُ الصحيح يُكمله المحرّرُ تلقائيًا إلى قائمة المسارات الموجودة، والعناوينُ النسبية تصير معروفةً أيضًا.</p>
+<p>وتنطبق هذه الحمايةُ على كلّ ما يتعلّق بالتنقّل في التطبيق، لا على <code>Link</code> وحده. فالحلُّ نفسه، تسجيلُ نوع الموجّه في واجهة <code>Register</code>، يجعل التنقّل آمنَ الأنواع في كلّ موضعٍ منه، فيُرصد الخطأُ في المحرّر قبل أن يصل إلى المتصفّح.</p>
+<h3 id="إلى-أين-بعد-هذا">إلى أين بعد هذا؟</h3>
+<p>يختم الدرسُ بملاحظةٍ مهمّة: كلُّ ما رأيناه هنا بُني بالشيفرة في ملفٍ واحد، من غير أيّ ملفّاتٍ تُعرّف المسارات. وهذا ليس الأسلوبَ المفضّل في TanStack Router. فمع كثرة المسارات والتداخل، يبقى عليك أن تعرّف كلَّ مسارٍ بنفسك وتذكر أبوه وعنوانه ومكوّنه وتركّب الشجرةَ يدويًا، وهو أمرٌ يزيد احتمالَ الأخطاء.</p>
+<p>أمّا الأسلوبُ المبني على الملفات فيولّد لك ذلك كلَّه: تنشئ مجلّداتٍ وأشجارًا من الملفات، فتولّد المكتبةُ إعدادَ المسارات والشجرةَ تلقائيًا، فلا تذكر المسارَ الأب ولا العنوانَ ولا تركّب الشجرةَ بنفسك. ويذكر التوثيقُ أنّ هذا هو الأسلوبُ المفضّل وأنّ معظمَ أمثلته مكتوبةٌ به. والدرسُ التالي يحوّل تطبيقَ هذا الدرس إلى الأسلوب المبني على الملفات، ثم نكمل بقيةَ الدورة عليه.</p>
+<blockquote>
+<p><strong>توضيح من عندي:</strong> كلُّ ما يمكن إنجازه بالأسلوب المبني على الملفات يمكن إنجازه بالأسلوب المبني على الكود أيضًا. والاختيارُ بينهما يعود إلى تفضيلك وتفضيل فريقك.</p>
+</blockquote>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--navigation-links--about.png" alt="شريطُ تنقّل في أعلى الصفحة يحوي رابط Home ورابط About، وتحته صفحة About وردية"></p>
+<p>في الصورة صفحةُ <code>/about</code>: الشريطُ الداكن في الأعلى هو المسارُ الجذر بعنوانه «Root Route»، وتحته الشريطُ الفيروزي الذي يحوي رابطَي <code>Home</code> و<code>About</code>. الرابطُ <code>About</code> وحده هو الغامق لأنّه الرابطُ النشطّ في هذه الصفحة، بينما يبقى <code>Home</code> بوزنٍ عادي. وتحتُه الكتلةُ الوردية هي محتوى <code>About</code> المعروضَ في <code>&lt;Outlet /&gt;</code>، وفي الزاوية العليا اليمنى تظهر أداةُ المطوّر.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>استنسخ مستودعَ الدورة وانتقل إلى فرع <code>navigation-links</code>، ثم افتح <code>src/main.tsx</code>.</li>
+<li>أضِف <code>Link</code> إلى قائمة الاستيراد من <code>@tanstack/react-router</code>.</li>
+<li>داخل مكوّن المسار الجذر، قبل <code>&lt;Outlet /&gt;</code>، أضف <code>&lt;div&gt;</code> يحوي رابطين: <code>to=&quot;/&quot;</code> بنصّ <code>Home</code> و<code>to=&quot;/about&quot;</code> بنصّ <code>About</code>، ثم نسّق الوعاءَ بخاصية <code>flex</code> و<code>gap-2</code> ولون خلفية.</li>
+<li>أضِف <code>className=&quot;[&amp;.active]:font-bold&quot;</code> إلى الرابطَين، ثم شغّل <code>npm run dev</code> وتأكّد أنّ الرابطَ المطابقَ للصفحة الحالية غامقٌ وحده.</li>
+<li>أضف كتلةَ تعريف الوحدة بعد تعريف الموجّه، وسجّل فيها <code>router: typeof router</code> في واجهة <code>Register</code>.</li>
+<li>بعد التسجيل، غيّر عنوانَ أحد الروابط إلى عنوانٍ غير موجود وتأكّد من ظهور الخطأ في المحرّر، ثم أعِده وتأكّد من اكتمال العنوان تلقائيًا.</li>
+<li>جرّب بديلًا للإبراز: مرِّر <code>activeProps={{ style: { fontWeight: &quot;bold&quot; } }}</code> إلى أحد الروابط بدل صنف <code>active</code>، وقارن النتيجة.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=883s">فيديو الدرس: Navigation Links</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/navigation-links">شيفرة الدرس: فرع navigation-links</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/overview">التوثيق الرسمي لـ TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Navigation Links» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,l={book:s,chapter:a,chapterTitle:t,slug:n,title:o,headings:e,html:c};export{s as book,a as chapter,t as chapterTitle,l as default,e as headings,c as html,n as slug,o as title};

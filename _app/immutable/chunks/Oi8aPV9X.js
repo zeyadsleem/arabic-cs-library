@@ -1,0 +1,759 @@
+const s="kinney",a="react-performance",n="أداء React",l="tree-shaking-optimization",p="تحسين اهتزاز الشجرة",t=[{depth:2,id:"كيف-يعمل-اهتزاز-الشجرة",text:"كيف يعمل اهتزاز الشجرة"},{depth:3,id:"عملية-التحليل-الساكن",text:"عملية التحليل الساكن"},{depth:2,id:"إخفاقات-شائعة-في-اهتزاز-الشجرة",text:"إخفاقات شائعة في اهتزاز الشجرة"},{depth:3,id:"المشكلة-1-استيرادات-الآثار-الجانبية",text:"المشكلة 1: استيرادات الآثار الجانبية"},{depth:3,id:"المشكلة-2-التصديرات-الافتراضية-وملفات-البرميل",text:"المشكلة 2: التصديرات الافتراضية وملفات البرميل"},{depth:3,id:"المشكلة-3-إنشاء-نسخ-الأصناف",text:"المشكلة 3: إنشاء نسخ الأصناف"},{depth:2,id:"تحسين-استيرادات-مكتبات-الأطراف-الثالثة",text:"تحسين استيرادات مكتبات الأطراف الثالثة"},{depth:3,id:"تحسين-lodash",text:"تحسين Lodash"},{depth:3,id:"تحسين-material-ui-mui",text:"تحسين Material-UI / MUI"},{depth:3,id:"تحسين-react-icons",text:"تحسين React Icons"},{depth:2,id:"تهيئة-متقدمة-لاهتزاز-الشجرة",text:"تهيئة متقدّمة لاهتزاز الشجرة"},{depth:3,id:"تحسين-webpack",text:"تحسين Webpack"},{depth:3,id:"إعلان-الآثار-الجانبية-في-packagejson",text:"إعلان الآثار الجانبية في package.json"},{depth:2,id:"اختبار-فعالية-اهتزاز-الشجرة",text:"اختبار فعالية اهتزاز الشجرة"},{depth:3,id:"تحليل-الحزمة-لأجل-اهتزاز-الشجرة",text:"تحليل الحزمة لأجل اهتزاز الشجرة"},{depth:3,id:"التحقق-من-اهتزاز-الشجرة-وقت-التشغيل",text:"التحقق من اهتزاز الشجرة وقت التشغيل"},{depth:2,id:"تحسينات-خاصة-بكل-مكتبة",text:"تحسينات خاصة بكل مكتبة"},{depth:3,id:"مكتبات-التواريخ",text:"مكتبات التواريخ"},{depth:3,id:"مكتبات-الأيقونات",text:"مكتبات الأيقونات"},{depth:3,id:"مكتبات-الأدوات-المساعدة",text:"مكتبات الأدوات المساعدة"},{depth:2,id:"مراقبة-اهتزاز-الشجرة-في-cicd",text:"مراقبة اهتزاز الشجرة في CI/CD"},{depth:2,id:"الدمج-مع-تحليل-الحزمة",text:"الدمج مع تحليل الحزمة"},{depth:2,id:"مزالق-شائعة-وحلولها",text:"مزالق شائعة وحلولها"},{depth:3,id:"مزلق-الآثار-الجانبية-في-الدوال-النقية",text:"مَزلق: الآثار الجانبية في الدوال النقية"},{depth:3,id:"مزلق-الاستيرادات-الديناميكية-تكسر-التحليل-الساكن",text:"مَزلق: الاستيرادات الديناميكية تكسر التحليل الساكن"},{depth:3,id:"مزلق-إعادة-التصدير-دون-اهتزاز-الشجرة",text:"مَزلق: إعادة التصدير دون اهتزاز الشجرة"},{depth:2,id:"الخطوات-التالية",text:"الخطوات التالية"}],e=`<p>اهتزاز الشجرة (tree shaking) هو عملية إزالة الشيفرة الميتة من حزمتك — أي الشيفرة المستوردة لكن غير المستخدمة فعليًا. نظريًا، يبدو الأمر بسيطًا: إذا استوردت دالة ولم تنادها قط، فلا تضمّنها في الحزمة النهائية. أما عمليًا، فطبيعة JavaScript الديناميكية ووحدات CommonJS والآثار الجانبية (side effects) تجعل اهتزاز الشجرة تحسينًا معقدًا يتطلب فهم كيفية تحليل أدوات التجميع لاعتمادات شيفرتك.</p>
+<p>والمخاطر عالية: استيراد مكتبة واحدة سيئ التحسين قد يضخّم حزمتك بمئات الكيلوبايتات. أتستورد مكتبة Lodash كاملة وأنت لا تحتاج إلا <code>debounce</code>؟ ذاك 70KB من الشيفرة غير المستخدمة. أتستورد كل أيقونات Material-UI وأنت لا تستخدم إلا خمسًا؟ ذاك أكثر من 500KB من الهدر. أتقن اهتزاز الشجرة، ولن تُرسل إلا الشيفرة التي يحتاجها مستخدموك فعلًا.</p>
+<h2 id="كيف-يعمل-اهتزاز-الشجرة">كيف يعمل اهتزاز الشجرة</h2>
+<p>يعتمد اهتزاز الشجرة على التحليل الساكن لوحدات ES6. فتحلّل أدوات التجميع مثل Webpack وRollup وVite عبارات الاستيراد والتصدير لديك لبناء رسم بياني للاعتمادات، ثم تحذف أي تصديرات لا تُستورد في أي موضع.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// utils.ts - Library with multiple exports</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">add</span> = (<span class="hljs-params"><span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">b</span>: <span class="hljs-built_in">number</span></span>) =&gt; a + b;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">subtract</span> = (<span class="hljs-params"><span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">b</span>: <span class="hljs-built_in">number</span></span>) =&gt; a - b;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">multiply</span> = (<span class="hljs-params"><span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">b</span>: <span class="hljs-built_in">number</span></span>) =&gt; a * b;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">divide</span> = (<span class="hljs-params"><span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">b</span>: <span class="hljs-built_in">number</span></span>) =&gt; a / b;
+
+<span class="hljs-comment">// Also includes a large utility (pretend this is 50KB)</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">heavyFunction</span> = (<span class="hljs-params"></span>) =&gt; {
+  <span class="hljs-comment">// Lots of code here...</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;heavy computation result&#x27;</span>;
+};
+
+<span class="hljs-comment">// main.ts - App only uses one function</span>
+<span class="hljs-keyword">import</span> { add } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./utils&#x27;</span>;
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">add</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>));
+
+<span class="hljs-comment">// Result: Only \`add\` function is included in bundle</span>
+<span class="hljs-comment">// The heavy function and other math operations are eliminated</span>
+</code></pre>
+<p>يعمل اهتزاز الشجرة لأن وحدات ES6 ذات <strong>بنية ساكنة</strong> — إذ يمكن تحديد الاستيرادات والتصديرات وقت الترجمة دون تنفيذ الشيفرة.</p>
+<h3 id="عملية-التحليل-الساكن">عملية التحليل الساكن</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Bundler analysis process:</span>
+
+<span class="hljs-comment">// 1. Parse all modules and build dependency graph</span>
+<span class="hljs-keyword">const</span> dependencyGraph = {
+  <span class="hljs-string">&#x27;main.js&#x27;</span>: [<span class="hljs-string">&#x27;utils.js::add&#x27;</span>],
+  <span class="hljs-string">&#x27;utils.js&#x27;</span>: [], <span class="hljs-comment">// No imports</span>
+};
+
+<span class="hljs-comment">// 2. Mark all reachable exports</span>
+<span class="hljs-keyword">const</span> reachableExports = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>([
+  <span class="hljs-string">&#x27;main.js::default&#x27;</span>, <span class="hljs-comment">// Entry point</span>
+  <span class="hljs-string">&#x27;utils.js::add&#x27;</span>, <span class="hljs-comment">// Used by main.js</span>
+]);
+
+<span class="hljs-comment">// 3. Eliminate unreachable exports</span>
+<span class="hljs-keyword">const</span> eliminatedExports = [
+  <span class="hljs-string">&#x27;utils.js::subtract&#x27;</span>,
+  <span class="hljs-string">&#x27;utils.js::multiply&#x27;</span>,
+  <span class="hljs-string">&#x27;utils.js::divide&#x27;</span>,
+  <span class="hljs-string">&#x27;utils.js::heavyFunction&#x27;</span>,
+];
+</code></pre>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>لا يعمل اهتزاز الشجرة إلا مع وحدات ES6 (import/export). أما وحدات CommonJS (require/module.exports) فلا يمكن تحليلها ساكنًا، فتُضمَّن دائمًا كاملة.</p>
+</blockquote>
+<h2 id="إخفاقات-شائعة-في-اهتزاز-الشجرة">إخفاقات شائعة في اهتزاز الشجرة</h2>
+<h3 id="المشكلة-1-استيرادات-الآثار-الجانبية">المشكلة 1: استيرادات الآثار الجانبية</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ This prevents tree shaking of the entire module</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;some-library&#x27;</span>; <span class="hljs-comment">// Side effect import</span>
+<span class="hljs-keyword">import</span> { specificFunction } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;some-library&#x27;</span>;
+
+<span class="hljs-comment">// Even though you only need specificFunction, the entire library</span>
+<span class="hljs-comment">// is included because of the side effect import</span>
+
+<span class="hljs-comment">// ✅ Better: Only import what you need</span>
+<span class="hljs-keyword">import</span> { specificFunction } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;some-library&#x27;</span>;
+
+<span class="hljs-comment">// ✅ Or if you need side effects, be explicit</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;some-library/styles.css&#x27;</span>; <span class="hljs-comment">// Specific side effect</span>
+<span class="hljs-keyword">import</span> { specificFunction } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;some-library&#x27;</span>;
+</code></pre>
+<h3 id="المشكلة-2-التصديرات-الافتراضية-وملفات-البرميل">المشكلة 2: التصديرات الافتراضية وملفات البرميل</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Barrel files can prevent tree shaking</span>
+<span class="hljs-comment">// components/index.ts</span>
+<span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">Button</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Button&#x27;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">Input</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Input&#x27;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">Modal</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Modal&#x27;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">DataTable</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./DataTable&#x27;</span>; <span class="hljs-comment">// Large component</span>
+
+<span class="hljs-comment">// main.ts</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Button</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./components&#x27;</span>; <span class="hljs-comment">// Might import everything!</span>
+
+<span class="hljs-comment">// ✅ Better: Direct imports</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Button</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./components/Button&#x27;</span>;
+
+<span class="hljs-comment">// ✅ Or properly configured barrel exports</span>
+<span class="hljs-comment">// components/index.ts - with proper tree shaking setup</span>
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">Button</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Button&#x27;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">Input</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Input&#x27;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">Modal</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Modal&#x27;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">DataTable</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./DataTable&#x27;</span>;
+</code></pre>
+<h3 id="المشكلة-3-إنشاء-نسخ-الأصناف">المشكلة 3: إنشاء نسخ الأصناف</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Class instantiation can pull in entire classes</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">UtilityClass</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;big-library&#x27;</span>;
+
+<span class="hljs-keyword">const</span> instance = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UtilityClass</span>(); <span class="hljs-comment">// Entire class included</span>
+
+<span class="hljs-comment">// ✅ Better: Functional approach when possible</span>
+<span class="hljs-keyword">import</span> { utilityFunction } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;big-library&#x27;</span>;
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-title function_">utilityFunction</span>(); <span class="hljs-comment">// Only the function included</span>
+</code></pre>
+<h2 id="تحسين-استيرادات-مكتبات-الأطراف-الثالثة">تحسين استيرادات مكتبات الأطراف الثالثة</h2>
+<h3 id="تحسين-lodash">تحسين Lodash</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Imports entire Lodash library (~70KB)</span>
+<span class="hljs-keyword">import</span> _ <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> _ <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash&#x27;</span>;
+
+<span class="hljs-keyword">const</span> debouncedFn = _.<span class="hljs-title function_">debounce</span>(myFunction, <span class="hljs-number">300</span>);
+
+<span class="hljs-comment">// ✅ Import specific functions</span>
+<span class="hljs-keyword">import</span> debounce <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash/debounce&#x27;</span>;
+<span class="hljs-keyword">import</span> throttle <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash/throttle&#x27;</span>;
+
+<span class="hljs-keyword">const</span> debouncedFn = <span class="hljs-title function_">debounce</span>(myFunction, <span class="hljs-number">300</span>);
+
+<span class="hljs-comment">// ✅ Even better: Use lodash-es for better tree shaking</span>
+<span class="hljs-keyword">import</span> { debounce, throttle } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash-es&#x27;</span>;
+
+<span class="hljs-comment">// ✅ Best: Consider alternatives that are tree-shake friendly</span>
+<span class="hljs-keyword">import</span> { debounce } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;es-toolkit&#x27;</span>; <span class="hljs-comment">// Modern, smaller alternative</span>
+</code></pre>
+<h3 id="تحسين-material-ui-mui">تحسين Material-UI / MUI</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Imports entire component library</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Button</span>, <span class="hljs-title class_">TextField</span>, <span class="hljs-title class_">Dialog</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mui/material&#x27;</span>;
+
+<span class="hljs-comment">// ✅ Individual component imports</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Button</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mui/material/Button&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">TextField</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mui/material/TextField&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Dialog</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mui/material/Dialog&#x27;</span>;
+
+<span class="hljs-comment">// ✅ With babel plugin for automatic optimization</span>
+<span class="hljs-comment">// babel.config.js</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">plugins</span>: [
+    [
+      <span class="hljs-string">&#x27;babel-plugin-import&#x27;</span>,
+      {
+        <span class="hljs-attr">libraryName</span>: <span class="hljs-string">&#x27;@mui/material&#x27;</span>,
+        <span class="hljs-attr">libraryDirectory</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+        <span class="hljs-attr">camel2DashComponentName</span>: <span class="hljs-literal">false</span>,
+      },
+    ],
+  ],
+};
+
+<span class="hljs-comment">// ✅ Icons optimization</span>
+<span class="hljs-comment">// Instead of:</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Home</span>, <span class="hljs-title class_">Settings</span>, <span class="hljs-title class_">User</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mui/icons-material&#x27;</span>;
+
+<span class="hljs-comment">// Use individual imports:</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">HomeIcon</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mui/icons-material/Home&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">SettingsIcon</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mui/icons-material/Settings&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">UserIcon</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mui/icons-material/User&#x27;</span>;
+</code></pre>
+<h3 id="تحسين-react-icons">تحسين React Icons</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Bad: Imports all icon sets</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">FaHome</span>, <span class="hljs-title class_">MdSettings</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-icons/fa&#x27;</span>;
+
+<span class="hljs-comment">// ✅ Good: Import from specific icon sets</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">FaHome</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-icons/fa&#x27;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">MdSettings</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-icons/md&#x27;</span>;
+
+<span class="hljs-comment">// ✅ Even better: Use a custom icon component</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Icon</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./components/Icon&#x27;</span>;
+
+<span class="hljs-comment">// components/Icon.tsx - Lazy load icons</span>
+<span class="hljs-keyword">import</span> { lazy } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> iconMap = {
+  <span class="hljs-attr">home</span>: <span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;react-icons/fa&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">icons</span>) =&gt;</span> ({ <span class="hljs-attr">default</span>: icons.<span class="hljs-property">FaHome</span> }))),
+  <span class="hljs-attr">settings</span>: <span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;react-icons/md&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">icons</span>) =&gt;</span> ({ <span class="hljs-attr">default</span>: icons.<span class="hljs-property">MdSettings</span> }))),
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Icon</span>(<span class="hljs-params">{ name, ...props }: { name: keyof <span class="hljs-keyword">typeof</span> iconMap }</span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-title class_">IconComponent</span> = iconMap[name];
+
+  <span class="hljs-keyword">if</span> (!<span class="hljs-title class_">IconComponent</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  }
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;icon-placeholder&quot;</span> /&gt;</span>}&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">IconComponent</span> {<span class="hljs-attr">...props</span>} /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="تهيئة-متقدمة-لاهتزاز-الشجرة">تهيئة متقدّمة لاهتزاز الشجرة</h2>
+<h3 id="تحسين-webpack">تحسين Webpack</h3>
+<pre><code class="language-javascript"><span class="hljs-comment">// webpack.config.js</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">mode</span>: <span class="hljs-string">&#x27;production&#x27;</span>,
+
+  <span class="hljs-attr">optimization</span>: {
+    <span class="hljs-comment">// Enable tree shaking</span>
+    <span class="hljs-attr">usedExports</span>: <span class="hljs-literal">true</span>,
+
+    <span class="hljs-comment">// Mark the bundle as side-effect-free</span>
+    <span class="hljs-attr">sideEffects</span>: <span class="hljs-literal">false</span>,
+
+    <span class="hljs-comment">// Or specify files that have side effects</span>
+    <span class="hljs-attr">sideEffects</span>: [<span class="hljs-string">&#x27;*.css&#x27;</span>, <span class="hljs-string">&#x27;*.scss&#x27;</span>, <span class="hljs-string">&#x27;./src/polyfills.js&#x27;</span>, <span class="hljs-string">&#x27;./src/registerServiceWorker.js&#x27;</span>],
+
+    <span class="hljs-comment">// Advanced tree shaking options</span>
+    <span class="hljs-attr">innerGraph</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Analyze dependencies within modules</span>
+    <span class="hljs-attr">providedExports</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Track what each module exports</span>
+
+    <span class="hljs-comment">// Minification that removes dead code</span>
+    <span class="hljs-attr">minimize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">minimizer</span>: [
+      <span class="hljs-keyword">new</span> <span class="hljs-title class_">TerserPlugin</span>({
+        <span class="hljs-attr">terserOptions</span>: {
+          <span class="hljs-attr">compress</span>: {
+            <span class="hljs-attr">drop_console</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Remove console.log statements</span>
+            <span class="hljs-attr">drop_debugger</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Remove debugger statements</span>
+            <span class="hljs-attr">pure_funcs</span>: [<span class="hljs-string">&#x27;console.log&#x27;</span>, <span class="hljs-string">&#x27;console.info&#x27;</span>, <span class="hljs-string">&#x27;console.debug&#x27;</span>, <span class="hljs-string">&#x27;console.warn&#x27;</span>],
+          },
+        },
+      }),
+    ],
+  },
+
+  <span class="hljs-attr">module</span>: {
+    <span class="hljs-attr">rules</span>: [
+      {
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\\.[jt]sx?$/</span>,
+        <span class="hljs-attr">exclude</span>: <span class="hljs-regexp">/node_modules/</span>,
+        <span class="hljs-attr">use</span>: {
+          <span class="hljs-attr">loader</span>: <span class="hljs-string">&#x27;babel-loader&#x27;</span>,
+          <span class="hljs-attr">options</span>: {
+            <span class="hljs-attr">presets</span>: [
+              [
+                <span class="hljs-string">&#x27;@babel/preset-env&#x27;</span>,
+                {
+                  <span class="hljs-attr">modules</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// Keep ES6 modules for tree shaking</span>
+                  <span class="hljs-attr">useBuiltIns</span>: <span class="hljs-string">&#x27;usage&#x27;</span>,
+                  <span class="hljs-attr">corejs</span>: <span class="hljs-number">3</span>,
+                },
+              ],
+              <span class="hljs-string">&#x27;@babel/preset-react&#x27;</span>,
+              <span class="hljs-string">&#x27;@babel/preset-typescript&#x27;</span>,
+            ],
+          },
+        },
+      },
+    ],
+  },
+
+  <span class="hljs-attr">resolve</span>: {
+    <span class="hljs-comment">// Prefer module field for better tree shaking</span>
+    <span class="hljs-attr">mainFields</span>: [<span class="hljs-string">&#x27;module&#x27;</span>, <span class="hljs-string">&#x27;browser&#x27;</span>, <span class="hljs-string">&#x27;main&#x27;</span>],
+  },
+};
+</code></pre>
+<h3 id="إعلان-الآثار-الجانبية-في-packagejson">إعلان الآثار الجانبية في package.json</h3>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;my-react-app&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;sideEffects&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+
+  <span class="hljs-attr">&quot;dependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;pure-library&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^1.0.0&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;side-effect-library&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.0.0&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+
+  <span class="hljs-attr">&quot;resolutions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;side-effect-library&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.0.0&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+
+<span class="hljs-comment">// For libraries you publish:</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;my-utility-library&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;main&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lib/index.js&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;module&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;es/index.js&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// ES6 modules for better tree shaking</span>
+  <span class="hljs-attr">&quot;sideEffects&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;./src/setupGlobals.js&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;*.css&quot;</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+
+  <span class="hljs-attr">&quot;exports&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;.&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;import&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./es/index.js&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;require&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./lib/index.js&quot;</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;./utils&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;import&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./es/utils.js&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;require&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./lib/utils.js&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h2 id="اختبار-فعالية-اهتزاز-الشجرة">اختبار فعالية اهتزاز الشجرة</h2>
+<h3 id="تحليل-الحزمة-لأجل-اهتزاز-الشجرة">تحليل الحزمة لأجل اهتزاز الشجرة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// analyze-tree-shaking.js</span>
+<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>);
+<span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;webpack&#x27;</span>);
+<span class="hljs-keyword">const</span> { <span class="hljs-title class_">BundleAnalyzerPlugin</span> } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;webpack-bundle-analyzer&#x27;</span>);
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeShakingAnalyzer</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">webpackConfig</span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span> = webpackConfig;
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">analyzeTreeShaking</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">// Create two builds: one with tree shaking, one without</span>
+    <span class="hljs-keyword">const</span> withTreeShaking = { ...<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span> };
+    <span class="hljs-keyword">const</span> withoutTreeShaking = {
+      ...<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>,
+      <span class="hljs-attr">optimization</span>: {
+        ...<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">optimization</span>,
+        <span class="hljs-attr">usedExports</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-attr">sideEffects</span>: <span class="hljs-literal">undefined</span>,
+      },
+    };
+
+    <span class="hljs-keyword">const</span> [treeShakenStats, fullStats] = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">runBuild</span>(withTreeShaking),
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">runBuild</span>(withoutTreeShaking),
+    ]);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">compareStats</span>(treeShakenStats, fullStats);
+  }
+
+  <span class="hljs-title function_">runBuild</span>(<span class="hljs-params">config</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+      <span class="hljs-title function_">webpack</span>(config, <span class="hljs-function">(<span class="hljs-params">err, stats</span>) =&gt;</span> {
+        <span class="hljs-keyword">if</span> (err) <span class="hljs-title function_">reject</span>(err);
+        <span class="hljs-keyword">else</span> <span class="hljs-title function_">resolve</span>(stats.<span class="hljs-title function_">toJson</span>());
+      });
+    });
+  }
+
+  <span class="hljs-title function_">compareStats</span>(<span class="hljs-params">treeShakenStats, fullStats</span>) {
+    <span class="hljs-keyword">const</span> treeShakenSize = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getTotalSize</span>(treeShakenStats);
+    <span class="hljs-keyword">const</span> fullSize = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getTotalSize</span>(fullStats);
+    <span class="hljs-keyword">const</span> savings = fullSize - treeShakenSize;
+    <span class="hljs-keyword">const</span> savingsPercent = (savings / fullSize) * <span class="hljs-number">100</span>;
+
+    <span class="hljs-keyword">const</span> moduleComparison = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">compareModules</span>(treeShakenStats.<span class="hljs-property">modules</span>, fullStats.<span class="hljs-property">modules</span>);
+
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">summary</span>: {
+        <span class="hljs-attr">originalSize</span>: fullSize,
+        <span class="hljs-attr">treeShakenSize</span>: treeShakenSize,
+        <span class="hljs-attr">savings</span>: savings,
+        <span class="hljs-attr">savingsPercent</span>: savingsPercent,
+      },
+      moduleComparison,
+    };
+  }
+
+  <span class="hljs-title function_">getTotalSize</span>(<span class="hljs-params">stats</span>) {
+    <span class="hljs-keyword">return</span> stats.<span class="hljs-property">assets</span>
+      .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">asset</span>) =&gt;</span> asset.<span class="hljs-property">name</span>.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">&#x27;.js&#x27;</span>))
+      .<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">total, asset</span>) =&gt;</span> total + asset.<span class="hljs-property">size</span>, <span class="hljs-number">0</span>);
+  }
+
+  <span class="hljs-title function_">compareModules</span>(<span class="hljs-params">treeShakenModules, fullModules</span>) {
+    <span class="hljs-keyword">const</span> eliminated = [];
+    <span class="hljs-keyword">const</span> kept = [];
+
+    <span class="hljs-keyword">const</span> treeShakenNames = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(treeShakenModules.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">m</span>) =&gt;</span> m.<span class="hljs-property">name</span>));
+
+    fullModules.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-variable language_">module</span></span>) =&gt;</span> {
+      <span class="hljs-keyword">if</span> (treeShakenNames.<span class="hljs-title function_">has</span>(<span class="hljs-variable language_">module</span>.<span class="hljs-property">name</span>)) {
+        kept.<span class="hljs-title function_">push</span>({
+          <span class="hljs-attr">name</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">name</span>,
+          <span class="hljs-attr">size</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span>,
+          <span class="hljs-attr">reasons</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">reasons</span>?.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> r.<span class="hljs-property">moduleName</span>) || [],
+        });
+      } <span class="hljs-keyword">else</span> {
+        eliminated.<span class="hljs-title function_">push</span>({
+          <span class="hljs-attr">name</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">name</span>,
+          <span class="hljs-attr">size</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span>,
+          <span class="hljs-attr">potentialSavings</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span>,
+        });
+      }
+    });
+
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">eliminated</span>: eliminated.<span class="hljs-title function_">sort</span>(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> b.<span class="hljs-property">size</span> - a.<span class="hljs-property">size</span>),
+      <span class="hljs-attr">kept</span>: kept.<span class="hljs-title function_">sort</span>(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> b.<span class="hljs-property">size</span> - a.<span class="hljs-property">size</span>),
+    };
+  }
+}
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">analyzeTreeShaking</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> analyzer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeShakingAnalyzer</span>(<span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./webpack.config.js&#x27;</span>));
+  <span class="hljs-keyword">const</span> analysis = <span class="hljs-keyword">await</span> analyzer.<span class="hljs-title function_">analyzeTreeShaking</span>();
+
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;🌳 Tree Shaking Analysis Results\\n&#x27;</span>);
+
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`📊 Bundle Size Comparison:\`</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`   Original: <span class="hljs-subst">\${(analysis.summary.originalSize / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB\`</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`   Tree-shaken: <span class="hljs-subst">\${(analysis.summary.treeShakenSize / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB\`</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+    <span class="hljs-string">\`   Savings: <span class="hljs-subst">\${(analysis.summary.savings / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB (<span class="hljs-subst">\${analysis.summary.savingsPercent.toFixed(<span class="hljs-number">1</span>)}</span>%)\`</span>,
+  );
+
+  <span class="hljs-keyword">if</span> (analysis.<span class="hljs-property">moduleComparison</span>.<span class="hljs-property">eliminated</span>.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`\\n🗑️ Eliminated modules (<span class="hljs-subst">\${analysis.moduleComparison.eliminated.length}</span>):\`</span>);
+    analysis.<span class="hljs-property">moduleComparison</span>.<span class="hljs-property">eliminated</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-variable language_">module</span></span>) =&gt;</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`   - <span class="hljs-subst">\${<span class="hljs-variable language_">module</span>.name}</span>: <span class="hljs-subst">\${(<span class="hljs-variable language_">module</span>.size / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB saved\`</span>);
+    });
+  }
+
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`\\n📦 Largest remaining modules:\`</span>);
+  analysis.<span class="hljs-property">moduleComparison</span>.<span class="hljs-property">kept</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-variable language_">module</span></span>) =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`   - <span class="hljs-subst">\${<span class="hljs-variable language_">module</span>.name}</span>: <span class="hljs-subst">\${(<span class="hljs-variable language_">module</span>.size / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB\`</span>);
+  });
+}
+</code></pre>
+<h3 id="التحقق-من-اهتزاز-الشجرة-وقت-التشغيل">التحقق من اهتزاز الشجرة وقت التشغيل</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Development utility to detect unused imports</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">detectUnusedImports</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> !== <span class="hljs-string">&#x27;development&#x27;</span>) <span class="hljs-keyword">return</span>;
+
+  <span class="hljs-keyword">const</span> importTracker = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&lt;
+    <span class="hljs-built_in">string</span>,
+    {
+      <span class="hljs-attr">imported</span>: <span class="hljs-title class_">Set</span>&lt;<span class="hljs-built_in">string</span>&gt;;
+      <span class="hljs-attr">used</span>: <span class="hljs-title class_">Set</span>&lt;<span class="hljs-built_in">string</span>&gt;;
+    }
+  &gt;();
+
+  <span class="hljs-comment">// Track imports (this would be done by a babel plugin in practice)</span>
+  <span class="hljs-variable language_">window</span>.<span class="hljs-property">__TRACK_IMPORT__</span> = <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">moduleName</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">importName</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (!importTracker.<span class="hljs-title function_">has</span>(moduleName)) {
+      importTracker.<span class="hljs-title function_">set</span>(moduleName, {
+        <span class="hljs-attr">imported</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(),
+        <span class="hljs-attr">used</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(),
+      });
+    }
+    importTracker.<span class="hljs-title function_">get</span>(moduleName)!.<span class="hljs-property">imported</span>.<span class="hljs-title function_">add</span>(importName);
+  };
+
+  <span class="hljs-comment">// Track usage</span>
+  <span class="hljs-variable language_">window</span>.<span class="hljs-property">__TRACK_USAGE__</span> = <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">moduleName</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">importName</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (importTracker.<span class="hljs-title function_">has</span>(moduleName)) {
+      importTracker.<span class="hljs-title function_">get</span>(moduleName)!.<span class="hljs-property">used</span>.<span class="hljs-title function_">add</span>(importName);
+    }
+  };
+
+  <span class="hljs-comment">// Report unused imports after page load</span>
+  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;🔍 Unused Import Analysis:&#x27;</span>);
+
+    importTracker.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">data, moduleName</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> unused = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(data.<span class="hljs-property">imported</span>).<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">importName</span>) =&gt;</span> !data.<span class="hljs-property">used</span>.<span class="hljs-title function_">has</span>(importName));
+
+      <span class="hljs-keyword">if</span> (unused.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`📦 <span class="hljs-subst">\${moduleName}</span>:\`</span>);
+        unused.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">importName</span>) =&gt;</span> {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`   🚫 Unused: <span class="hljs-subst">\${importName}</span>\`</span>);
+        });
+      }
+    });
+  }, <span class="hljs-number">5000</span>);
+}
+
+<span class="hljs-comment">// Babel plugin to inject tracking (simplified example)</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">{ types: t }</span>) {
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">visitor</span>: {
+      <span class="hljs-title class_">ImportDeclaration</span>(path) {
+        <span class="hljs-keyword">const</span> moduleName = path.<span class="hljs-property">node</span>.<span class="hljs-property">source</span>.<span class="hljs-property">value</span>;
+
+        path.<span class="hljs-property">node</span>.<span class="hljs-property">specifiers</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">spec</span>) =&gt;</span> {
+          <span class="hljs-keyword">if</span> (t.<span class="hljs-title function_">isImportSpecifier</span>(spec)) {
+            <span class="hljs-comment">// Track named import</span>
+            <span class="hljs-keyword">const</span> trackingCall = t.<span class="hljs-title function_">callExpression</span>(
+              t.<span class="hljs-title function_">memberExpression</span>(t.<span class="hljs-title function_">identifier</span>(<span class="hljs-string">&#x27;window&#x27;</span>), t.<span class="hljs-title function_">identifier</span>(<span class="hljs-string">&#x27;__TRACK_IMPORT__&#x27;</span>)),
+              [t.<span class="hljs-title function_">stringLiteral</span>(moduleName), t.<span class="hljs-title function_">stringLiteral</span>(spec.<span class="hljs-property">imported</span>.<span class="hljs-property">name</span>)],
+            );
+            path.<span class="hljs-title function_">insertAfter</span>(t.<span class="hljs-title function_">expressionStatement</span>(trackingCall));
+          }
+        });
+      },
+
+      <span class="hljs-comment">// Track when imported functions are actually called</span>
+      <span class="hljs-title class_">CallExpression</span>(path) {
+        <span class="hljs-keyword">if</span> (t.<span class="hljs-title function_">isIdentifier</span>(path.<span class="hljs-property">node</span>.<span class="hljs-property">callee</span>)) {
+          <span class="hljs-keyword">const</span> functionName = path.<span class="hljs-property">node</span>.<span class="hljs-property">callee</span>.<span class="hljs-property">name</span>;
+          <span class="hljs-comment">// This is simplified - real implementation would track binding origins</span>
+        }
+      },
+    },
+  };
+};
+</code></pre>
+<h2 id="تحسينات-خاصة-بكل-مكتبة">تحسينات خاصة بكل مكتبة</h2>
+<h3 id="مكتبات-التواريخ">مكتبات التواريخ</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Moment.js - not tree-shakeable, includes all locales</span>
+<span class="hljs-keyword">import</span> moment <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;moment&#x27;</span>;
+<span class="hljs-keyword">const</span> formatted = <span class="hljs-title function_">moment</span>().<span class="hljs-title function_">format</span>(<span class="hljs-string">&#x27;YYYY-MM-DD&#x27;</span>);
+
+<span class="hljs-comment">// ✅ date-fns - fully tree-shakeable</span>
+<span class="hljs-keyword">import</span> { format } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;date-fns&#x27;</span>;
+<span class="hljs-keyword">const</span> formatted = <span class="hljs-title function_">format</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(), <span class="hljs-string">&#x27;yyyy-MM-dd&#x27;</span>);
+
+<span class="hljs-comment">// ✅ Day.js - smaller alternative with similar API</span>
+<span class="hljs-keyword">import</span> dayjs <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;dayjs&#x27;</span>;
+<span class="hljs-keyword">const</span> formatted = <span class="hljs-title function_">dayjs</span>().<span class="hljs-title function_">format</span>(<span class="hljs-string">&#x27;YYYY-MM-DD&#x27;</span>);
+</code></pre>
+<h3 id="مكتبات-الأيقونات">مكتبات الأيقونات</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Custom tree-shakeable icon solution</span>
+<span class="hljs-comment">// icons/index.ts</span>
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">ReactComponent</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">HomeIcon</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./home.svg&#x27;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">ReactComponent</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">SettingsIcon</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./settings.svg&#x27;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">ReactComponent</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">UserIcon</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./user.svg&#x27;</span>;
+
+<span class="hljs-comment">// components/Icon.tsx</span>
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">Icons</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../icons&#x27;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">IconName</span> = keyof <span class="hljs-keyword">typeof</span> <span class="hljs-title class_">Icons</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">IconProps</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-title class_">IconName</span>;
+  <span class="hljs-attr">size</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">className</span>?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Icon</span>(<span class="hljs-params">{ name, size = <span class="hljs-number">24</span>, className }: <span class="hljs-title class_">IconProps</span></span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-title class_">IconComponent</span> = <span class="hljs-title class_">Icons</span>[name];
+
+  <span class="hljs-keyword">if</span> (!<span class="hljs-title class_">IconComponent</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">\`Icon &quot;<span class="hljs-subst">\${name}</span>&quot; not found\`</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  }
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">IconComponent</span> <span class="hljs-attr">width</span>=<span class="hljs-string">{size}</span> <span class="hljs-attr">height</span>=<span class="hljs-string">{size}</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{className}</span> /&gt;</span></span>;
+}
+
+<span class="hljs-comment">// Usage - only imports the icons you actually use</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Icon</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./components/Icon&#x27;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Icon</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;HomeIcon&quot;</span> <span class="hljs-attr">size</span>=<span class="hljs-string">{32}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Icon</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;SettingsIcon&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h3 id="مكتبات-الأدوات-المساعدة">مكتبات الأدوات المساعدة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Create your own tree-shakeable utility library</span>
+<span class="hljs-comment">// utils/index.ts</span>
+<span class="hljs-keyword">export</span> { debounce } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./debounce&#x27;</span>;
+<span class="hljs-keyword">export</span> { throttle } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./throttle&#x27;</span>;
+<span class="hljs-keyword">export</span> { deepClone } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./deepClone&#x27;</span>;
+<span class="hljs-keyword">export</span> { formatCurrency } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./formatCurrency&#x27;</span>;
+
+<span class="hljs-comment">// utils/debounce.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> debounce&lt;T <span class="hljs-title function_">extends</span> (...<span class="hljs-attr">args</span>: <span class="hljs-built_in">any</span>[]) =&gt; <span class="hljs-built_in">any</span>&gt;(
+  <span class="hljs-attr">func</span>: T,
+  <span class="hljs-attr">wait</span>: <span class="hljs-built_in">number</span>,
+): <span class="hljs-function">(<span class="hljs-params">...<span class="hljs-attr">args</span>: <span class="hljs-title class_">Parameters</span>&lt;T&gt;</span>) =&gt;</span> <span class="hljs-built_in">void</span> {
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">timeout</span>: <span class="hljs-title class_">NodeJS</span>.<span class="hljs-property">Timeout</span>;
+
+  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">...<span class="hljs-attr">args</span>: <span class="hljs-title class_">Parameters</span>&lt;T&gt;</span>) =&gt;</span> {
+    <span class="hljs-built_in">clearTimeout</span>(timeout);
+    timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">func</span>(...args), wait);
+  };
+}
+
+<span class="hljs-comment">// Better than importing large libraries for simple utilities</span>
+<span class="hljs-keyword">import</span> { debounce, formatCurrency } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./utils&#x27;</span>;
+</code></pre>
+<h2 id="مراقبة-اهتزاز-الشجرة-في-cicd">مراقبة اهتزاز الشجرة في CI/CD</h2>
+<pre><code class="language-javascript"><span class="hljs-comment">// ci/check-tree-shaking.js</span>
+<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>);
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>);
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeShakingMonitor</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">thresholds</span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">thresholds</span> = thresholds;
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">checkTreeShaking</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">const</span> stats = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">loadWebpackStats</span>();
+    <span class="hljs-keyword">const</span> analysis = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">analyzeBundle</span>(stats);
+
+    <span class="hljs-keyword">const</span> violations = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">checkViolations</span>(analysis);
+
+    <span class="hljs-keyword">if</span> (violations.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;❌ Tree shaking violations found:&#x27;</span>);
+      violations.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">violation</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">\`  <span class="hljs-subst">\${violation}</span>\`</span>));
+      process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;✅ Tree shaking optimization checks passed&#x27;</span>);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">generateReport</span>(analysis);
+  }
+
+  <span class="hljs-title function_">loadWebpackStats</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(fs.<span class="hljs-title function_">readFileSync</span>(<span class="hljs-string">&#x27;dist/stats.json&#x27;</span>, <span class="hljs-string">&#x27;utf8&#x27;</span>));
+  }
+
+  <span class="hljs-title function_">analyzeBundle</span>(<span class="hljs-params">stats</span>) {
+    <span class="hljs-keyword">const</span> analysis = {
+      <span class="hljs-attr">totalSize</span>: <span class="hljs-number">0</span>,
+      <span class="hljs-attr">modules</span>: [],
+      <span class="hljs-attr">largeModules</span>: [],
+      <span class="hljs-attr">potentialOptimizations</span>: [],
+    };
+
+    stats.<span class="hljs-property">modules</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-variable language_">module</span></span>) =&gt;</span> {
+      analysis.<span class="hljs-property">totalSize</span> += <span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span>;
+      analysis.<span class="hljs-property">modules</span>.<span class="hljs-title function_">push</span>({
+        <span class="hljs-attr">name</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">name</span>,
+        <span class="hljs-attr">size</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span>,
+        <span class="hljs-attr">reasons</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">reasons</span>,
+      });
+
+      <span class="hljs-comment">// Flag large modules for review</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span> &gt; <span class="hljs-number">50000</span>) {
+        <span class="hljs-comment">// &gt; 50KB</span>
+        analysis.<span class="hljs-property">largeModules</span>.<span class="hljs-title function_">push</span>(<span class="hljs-variable language_">module</span>);
+      }
+
+      <span class="hljs-comment">// Detect potential tree shaking issues</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">module</span>.<span class="hljs-property">name</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&#x27;node_modules&#x27;</span>)) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">module</span>.<span class="hljs-property">name</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&#x27;lodash&#x27;</span>) &amp;&amp; <span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span> &gt; <span class="hljs-number">10000</span>) {
+          analysis.<span class="hljs-property">potentialOptimizations</span>.<span class="hljs-title function_">push</span>({
+            <span class="hljs-attr">module</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">name</span>,
+            <span class="hljs-attr">issue</span>: <span class="hljs-string">&#x27;Large lodash import - consider individual functions&#x27;</span>,
+            <span class="hljs-attr">potentialSavings</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span> * <span class="hljs-number">0.8</span>, <span class="hljs-comment">// Estimate 80% savings</span>
+          });
+        }
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">module</span>.<span class="hljs-property">name</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&#x27;@mui&#x27;</span>) &amp;&amp; <span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span> &gt; <span class="hljs-number">20000</span>) {
+          analysis.<span class="hljs-property">potentialOptimizations</span>.<span class="hljs-title function_">push</span>({
+            <span class="hljs-attr">module</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">name</span>,
+            <span class="hljs-attr">issue</span>: <span class="hljs-string">&#x27;Large MUI import - consider individual components&#x27;</span>,
+            <span class="hljs-attr">potentialSavings</span>: <span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span> * <span class="hljs-number">0.6</span>, <span class="hljs-comment">// Estimate 60% savings</span>
+          });
+        }
+      }
+    });
+
+    <span class="hljs-keyword">return</span> analysis;
+  }
+
+  <span class="hljs-title function_">checkViolations</span>(<span class="hljs-params">analysis</span>) {
+    <span class="hljs-keyword">const</span> violations = [];
+
+    <span class="hljs-comment">// Check total bundle size</span>
+    <span class="hljs-keyword">if</span> (analysis.<span class="hljs-property">totalSize</span> &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">thresholds</span>.<span class="hljs-property">maxBundleSize</span>) {
+      violations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">\`Bundle size <span class="hljs-subst">\${(analysis.totalSize / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB exceeds threshold <span class="hljs-subst">\${(<span class="hljs-variable language_">this</span>.thresholds.maxBundleSize / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB\`</span>,
+      );
+    }
+
+    <span class="hljs-comment">// Check for large modules</span>
+    analysis.<span class="hljs-property">largeModules</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-variable language_">module</span></span>) =&gt;</span> {
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">module</span>.<span class="hljs-property">size</span> &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">thresholds</span>.<span class="hljs-property">maxModuleSize</span>) {
+        violations.<span class="hljs-title function_">push</span>(
+          <span class="hljs-string">\`Module <span class="hljs-subst">\${<span class="hljs-variable language_">module</span>.name}</span> (<span class="hljs-subst">\${(<span class="hljs-variable language_">module</span>.size / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB) exceeds threshold\`</span>,
+        );
+      }
+    });
+
+    <span class="hljs-keyword">return</span> violations;
+  }
+
+  <span class="hljs-title function_">generateReport</span>(<span class="hljs-params">analysis</span>) {
+    <span class="hljs-keyword">const</span> report = <span class="hljs-string">\`
+# Tree Shaking Report
+
+## Bundle Analysis
+- **Total Size**: <span class="hljs-subst">\${(analysis.totalSize / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB
+- **Module Count**: <span class="hljs-subst">\${analysis.modules.length}</span>
+- **Large Modules**: <span class="hljs-subst">\${analysis.largeModules.length}</span>
+
+## Potential Optimizations
+<span class="hljs-subst">\${analysis.potentialOptimizations
+  .map(
+    (opt) =&gt;
+      <span class="hljs-string">\`- **<span class="hljs-subst">\${opt.<span class="hljs-variable language_">module</span>}</span>**: <span class="hljs-subst">\${opt.issue}</span> (potential savings: <span class="hljs-subst">\${(opt.potentialSavings / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB)\`</span>,
+  )
+  .join(<span class="hljs-string">&#x27;\\n&#x27;</span>)}</span>
+
+## Largest Modules
+<span class="hljs-subst">\${analysis.largeModules
+  .sort((a, b) =&gt; b.size - a.size)
+  .slice(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>)
+  .map((<span class="hljs-variable language_">module</span>) =&gt; <span class="hljs-string">\`- <span class="hljs-subst">\${<span class="hljs-variable language_">module</span>.name}</span>: <span class="hljs-subst">\${(<span class="hljs-variable language_">module</span>.size / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">1</span>)}</span>KB\`</span>)
+  .join(<span class="hljs-string">&#x27;\\n&#x27;</span>)}</span>
+\`</span>;
+
+    fs.<span class="hljs-title function_">writeFileSync</span>(<span class="hljs-string">&#x27;tree-shaking-report.md&#x27;</span>, report);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;📊 Tree shaking report generated: tree-shaking-report.md&#x27;</span>);
+  }
+}
+
+<span class="hljs-comment">// Run the check</span>
+<span class="hljs-keyword">const</span> monitor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeShakingMonitor</span>({
+  <span class="hljs-attr">maxBundleSize</span>: <span class="hljs-number">500</span> * <span class="hljs-number">1024</span>, <span class="hljs-comment">// 500KB</span>
+  <span class="hljs-attr">maxModuleSize</span>: <span class="hljs-number">100</span> * <span class="hljs-number">1024</span>, <span class="hljs-comment">// 100KB</span>
+});
+
+monitor.<span class="hljs-title function_">checkTreeShaking</span>().<span class="hljs-title function_">catch</span>(<span class="hljs-variable language_">console</span>.<span class="hljs-property">error</span>);
+</code></pre>
+<h2 id="الدمج-مع-تحليل-الحزمة">الدمج مع تحليل الحزمة</h2>
+<p>عند استخدام webpack-bundle-analyzer مع اهتزاز الشجرة، ركّز على:</p>
+<ul>
+<li><strong>التصديرات غير المستخدمة</strong>: وحدات تستورد أكثر مما تستخدم</li>
+<li><strong>ملفات الآثار الجانبية</strong>: ملفات موسومة بـ sideEffects لكنها غير مطلوبة فعليًا</li>
+<li><strong>الاعتمادات الكبيرة</strong>: مكتبات لا ينجح اهتزاز شجرتها جيدًا</li>
+</ul>
+<p>لتقنيات تحليل الحزمة المفصّلة، انظر <a href="https://stevekinney.com/courses/react-performance/bundle-analysis-deep-dive">تحليل الحزم بعمق</a>.</p>
+<h2 id="مزالق-شائعة-وحلولها">مزالق شائعة وحلولها</h2>
+<h3 id="مزلق-الآثار-الجانبية-في-الدوال-النقية">مَزلق: الآثار الجانبية في الدوال النقية</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ This looks pure but has side effects</span>
+<span class="hljs-keyword">let</span> globalCounter = <span class="hljs-number">0</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">incrementCounter</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> ++globalCounter; <span class="hljs-comment">// Side effect!</span>
+}
+
+<span class="hljs-comment">// The bundler can&#x27;t tree shake this safely because it modifies global state</span>
+
+<span class="hljs-comment">// ✅ Pure function version</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createCounter</span>(<span class="hljs-params">initialValue = <span class="hljs-number">0</span></span>) {
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">value</span>: initialValue,
+    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) {
+      <span class="hljs-keyword">return</span> { ...<span class="hljs-variable language_">this</span>, <span class="hljs-attr">value</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> + <span class="hljs-number">1</span> };
+    },
+  };
+}
+</code></pre>
+<h3 id="مزلق-الاستيرادات-الديناميكية-تكسر-التحليل-الساكن">مَزلق: الاستيرادات الديناميكية تكسر التحليل الساكن</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Dynamic require breaks tree shaking</span>
+<span class="hljs-keyword">const</span> utils = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./utils&#x27;</span>);
+<span class="hljs-keyword">const</span> functionName = someCondition ? <span class="hljs-string">&#x27;add&#x27;</span> : <span class="hljs-string">&#x27;subtract&#x27;</span>;
+<span class="hljs-keyword">const</span> result = utils[functionName](a, b);
+
+<span class="hljs-comment">// ✅ Static imports enable tree shaking</span>
+<span class="hljs-keyword">import</span> { add, subtract } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./utils&#x27;</span>;
+<span class="hljs-keyword">const</span> result = someCondition ? <span class="hljs-title function_">add</span>(a, b) : <span class="hljs-title function_">subtract</span>(a, b);
+</code></pre>
+<h3 id="مزلق-إعادة-التصدير-دون-اهتزاز-الشجرة">مَزلق: إعادة التصدير دون اهتزاز الشجرة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ This might export everything from lodash</span>
+<span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash&#x27;</span>;
+
+<span class="hljs-comment">// ✅ Explicit re-exports</span>
+<span class="hljs-keyword">export</span> { debounce, throttle, clone } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash&#x27;</span>;
+
+<span class="hljs-comment">// ✅ Even better: selective imports with re-export</span>
+<span class="hljs-keyword">import</span> { debounce } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash/debounce&#x27;</span>;
+<span class="hljs-keyword">import</span> { throttle } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash/throttle&#x27;</span>;
+
+<span class="hljs-keyword">export</span> { debounce, throttle };
+</code></pre>
+<h2 id="الخطوات-التالية">الخطوات التالية</h2>
+<p>يتطلّب اهتزاز الشجرة الفعّال ما يلي:</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,e as html,l as slug,p as title};

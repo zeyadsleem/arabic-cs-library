@@ -1,0 +1,255 @@
+const s="kinney",a="enterprise-ui",n="واجهات المؤسسات",t="island-architecture",p="معمارية الجزر (Island Architecture)",l=[{depth:2,id:"نسخة-ساذجة-للغاية",text:"نسخة ساذجة للغاية"},{depth:3,id:"نسخة-ساذجة-للغاية-مع-react",text:"نسخة ساذجة للغاية — مع React"},{depth:2,id:"كيف-يعمل",text:"كيف يعمل"},{depth:2,id:"ما-الذي-يعد-جزيرة",text:"ما الذي يُعدّ جزيرة"},{depth:2,id:"لماذا-تبدو-سريعة-إلى-هذا-الحد",text:"لماذا تبدو سريعة إلى هذا الحد"},{depth:2,id:"المصطلحات-التي-يخلطها-الناس",text:"المصطلحات التي يخلطها الناس"},{depth:2,id:"علاقته-بالتصيير-على-الخادم-ssr",text:"علاقته بالتصيير على الخادم (SSR)"},{depth:2,id:"علاقته-بالتصيير-التدفقي-ssr",text:"علاقته بالتصيير التدفقي SSR"},{depth:2,id:"علاقته-بمكونات-الخادم-في-react",text:"علاقته بمكوّنات الخادم في React"},{depth:2,id:"علاقته-بقابلية-الاستئناف",text:"علاقته بقابلية الاستئناف"},{depth:2,id:"علاقته-باتحاد-الوحدات-وتركيب-المستودع-الأحادي",text:"علاقته باتحاد الوحدات وتركيب المستودع الأحادي"},{depth:2,id:"كيف-تبدو-التنفيذات-الحقيقية",text:"كيف تبدو التنفيذات الحقيقية"},{depth:2,id:"جزر-العميل-وجزر-الخادم",text:"جزر العميل وجزر الخادم"},{depth:2,id:"اعتبارات-تشغيلية",text:"اعتبارات تشغيلية"},{depth:3,id:"الحالة-والتركيب",text:"الحالة والتركيب"},{depth:3,id:"توقيت-الترطيب",text:"توقيت الترطيب"},{depth:3,id:"التخزين-المؤقت-والتخصيص",text:"التخزين المؤقت والتخصيص"},{depth:2,id:"أخطاء-شائعة",text:"أخطاء شائعة"},{depth:2,id:"متى-تختارها",text:"متى تختارها"},{depth:2,id:"النسخة-المختصرة",text:"النسخة المختصرة"}],e=`<p>معظم الصفحات ليست تطبيقات تفاعلية بالكامل. فصفحة منتج أو مقال أو صفحة توثيق أو صفحة أسعار أو نظرة عامة على حساب تحتوي عادةً على قدر كبير من الترميز الساكن وعلى عدد محدود من عناصر التحكم الديناميكية. ومع ذلك يظل الترطيب (hydration) التقليدي للصفحة كاملة يُرسل JavaScript وعمل ترطيب لشجرة التطبيق بأكملها، بما في ذلك مناطق لم تكن تحتاج أصلًا إلى تفاعلية في المتصفح.</p>
+<p><strong>معمارية الجزر</strong> نمط تصيير يعطي HTML الأولوية، إذ يُصيَّر معظم الصفحة كـ HTML ساكن أو مُصيَّر على الخادم، ولا تحصل إلا المناطق التفاعلية الصغيرة على JavaScript وتُترطَّب باستقلال. ويعود المصطلح إلى Katie Sylor-Miller وذاع صيته بفضل <a href="https://jasonformat.com/islands-architecture/">مقال Jason Miller</a>، الذي صاغ الصفحة كمستند ساكن في معظمه مع بضع «جزر» مكتفية بذاتها من التفاعلية. ثم دفع Astro النمط إلى التيار العام، لكن الفكرة أوسع من أي إطار عمل واحد.</p>
+<p>أو بعبارة أقل لباقة: تُوقف الجزر إرسال كاتدرائية واجهة أمامية كاملة فقط لتدور دوّارة صور واحدة.</p>
+<h2 id="نسخة-ساذجة-للغاية">نسخة ساذجة للغاية</h2>
+<p>هذا تصوّري أكثر منه عملي. تحمّلني قليلًا.</p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Mostly HTML<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>No JavaScript for any of this.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;counter&quot;</span>&gt;</span>Clicks: 0<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="language-javascript">
+  <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">const</span> btn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;#counter&#x27;</span>);
+  btn.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    count += <span class="hljs-number">1</span>;
+    btn.<span class="hljs-property">textContent</span> = <span class="hljs-string">\`Clicks: <span class="hljs-subst">\${count}</span>\`</span>;
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<h3 id="نسخة-ساذجة-للغاية-مع-react">نسخة ساذجة للغاية — مع React</h3>
+<p>يمكن أن تكون لدينا صفحة HTML كهذه.</p>
+<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>DIY React Islands<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Mostly HTML<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This content never hydrates. It stays plain HTML.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">hr</span> /&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Island A<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;island-a&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Island B<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;island-b&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Island C<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;island-c&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/client.tsx&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+
+</code></pre>
+<p>وحينها قد تبدو شفرتنا السخيفة هكذا…</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, { useState } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+<span class="hljs-keyword">import</span> { createRoot } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-dom/client&#x27;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Counter</span>(<span class="hljs-params">{ label }: { label: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> [count, setCount] = <span class="hljs-title function_">useState</span>(<span class="hljs-number">0</span>);
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setCount((c) =&gt; c + 1)}&gt;
+      {label}: {count}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">mount</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">el</span>: <span class="hljs-title class_">React</span>.<span class="hljs-title class_">ReactNode</span></span>) {
+  <span class="hljs-keyword">const</span> node = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(id);
+  <span class="hljs-keyword">if</span> (!node) <span class="hljs-keyword">return</span>; <span class="hljs-comment">// page might not include every island</span>
+  <span class="hljs-title function_">createRoot</span>(node).<span class="hljs-title function_">render</span>(el);
+}
+
+<span class="hljs-title function_">mount</span>(<span class="hljs-string">&#x27;island-a&#x27;</span>, <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Counter</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;A clicks&quot;</span> /&gt;</span></span>);
+<span class="hljs-title function_">mount</span>(<span class="hljs-string">&#x27;island-b&#x27;</span>, <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Counter</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;B clicks&quot;</span> /&gt;</span></span>);
+<span class="hljs-title function_">mount</span>(<span class="hljs-string">&#x27;island-c&#x27;</span>, <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Counter</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;C clicks&quot;</span> /&gt;</span></span>);
+</code></pre>
+<p>لا شيء من هذا هو <em>حقًا</em> كيف يعمل الأمر. أنا فقط أحاول تبسيطه.</p>
+<h2 id="كيف-يعمل">كيف يعمل</h2>
+<p>الآلية الجوهرية واضحة:</p>
+<pre><code>request
+  → server renders page shell to HTML
+  → static regions are sent as plain HTML
+  → interactive regions are marked as islands
+  → browser paints the page immediately
+  → each island loads its own JS when needed
+  → each island hydrates independently
+</code></pre>
+<p>هذا الاستقلال هو النقطة الحقيقية. ففي تطبيق تقليدي مُرطَّب، تتصرف الصفحة كبرنامج واحد كبير في المتصفح. أما في نظام جزر، فالصفحة أقرب إلى مستند ساكن فيه بضعة تطبيقات مدمجة. وتصوغه <a href="https://deno.com/blog/intro-to-islands">توثيقات Fresh من Deno</a> بصراحة: أطر JavaScript العادية تُرطّب <em>صفحة</em>، بينما أطر الجزر تُرطّب <em>مكوّنات</em>.</p>
+<p>لكل جزيرة سكربت الترطيب الخاص بها وتُنفَّذ باستقلال، لذا يقلّ احتمال أن يجرّ مكوّن بطيء واحد بقية الصفحة معه.</p>
+<h2 id="ما-الذي-يعد-جزيرة">ما الذي يُعدّ جزيرة</h2>
+<p>في الاستخدام الشائع، <strong>جزيرة العميل</strong> مكوّن واجهة تفاعلي يُرطَّب بمعزل عن بقية الصفحة. و<a href="https://docs.astro.build/en/concepts/islands/">تصف Astro</a> الجزيرة بأنها مكوّن واجهة مُعزَّز على صفحة HTML ساكنة عدا ذلك، وتميّز تحديدًا جزر العميل من <strong>جزر الخادم</strong>: فجزر العميل عناصر تفاعلية مُرطَّبة، بينما جزر الخادم شذرات ديناميكية مُصيَّرة على الخادم تُصيَّر بمعزل عن استجابة الصفحة الرئيسية.</p>
+<p>هذا التمييز مهم. فقد تكون في الصفحة متون مقال ساكنة، وجزيرة عميل لمحرّر التعليقات، وجزيرة خادم لصندوق مخصّص بعنوان «حسابك». وكلتاهما «جزيرة» بمعنى أنها معزولة عن تصيير الصفحة الرئيسية، لكن إحداهما تعزل عمل الترطيب في المتصفح والأخرى تعزل عمل التصيير على الخادم. وتُخرج جزر الخادم في Astro منطق الخادم البطيء أو المخصّص من مسار التصيير الحرج حتى يمكن تخزين بقية الصفحة في ذاكرة مؤقتة بجرأة أكبر.</p>
+<h2 id="لماذا-تبدو-سريعة-إلى-هذا-الحد">لماذا تبدو سريعة إلى هذا الحد</h2>
+<p>الفائدة الواضحة هي انخفاض حجم JavaScript. و<a href="https://docs.astro.build/en/concepts/islands/">توثيقات Astro</a> صريحة: يتحول معظم الصفحة إلى HTML ساكن سريع، ولا تُحمَّل JavaScript إلا للمكوّنات التي تحتاجها. ولأن JavaScript مكلفة بالبايت، فكل بايت لا ترسله مهم.</p>
+<p>الفائدة الثانية هي <strong>الجدولة</strong>. في Astro تُضبط التفاعلية لكل مكوّن، لذا يمكن أن تُرطَّب جزر مختلفة بأولويات مختلفة. فيمكن أن يُحمَّل بحث الترويسة فورًا، بينما تُرطَّب دوّارة صور أسفل الصفحة فقط عند ظهورها أو عند خمول المتصفح. وتشمل توجيهات العميل في Astro كلا من <code>client:load</code> و<code>client:idle</code> و<code>client:visible</code> و<code>client:media</code> و<code>client:only</code>. والجزيرة منخفضة الأولوية لا تعيق جزيرة عالية الأولوية، وإن لم تدخل جزيرة مجال الرؤية أبدًا فإنها لا تُحمَّل أبدًا.</p>
+<p>الفائدة الثالثة هي <strong>نطاق الأثر</strong>. و<a href="https://www.patterns.dev/vanilla/islands-architecture/">تلاحظ Patterns.dev</a> أن الترطيب التدريجي عادةً ما تتحكم فيه الصفحة ويكون تنازليًا من الأعلى، بينما تُنفَّذ الجزر بصورة غير متزامنة ومستقلة. فلا ينبغي أن تؤخّر جزيرة أبطأ بقية الصفحة. وهذا لا يجعل مشكلات الأداء تختفي — فالبشر يبقون مبدعين — لكنه يحصرها في نطاق محلي.</p>
+<h2 id="المصطلحات-التي-يخلطها-الناس">المصطلحات التي يخلطها الناس</h2>
+<p>يستخدم الناس «الجزر» و«الترطيب الجزئي» و«الترطيب الانتقائي» بارتخاء، وهكذا يتحول مفردات الواجهة الأمامية إلى غاز مستنقعات.</p>
+<table>
+<thead>
+<tr>
+<th>المفهوم</th>
+<th>ما الذي يقلّله</th>
+<th>مستوى التفصيل</th>
+<th>متى تُرسل JavaScript</th>
+<th>أمثلة من الأطر</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الترطيب الكامل</td>
+<td>لا شيء (خط الأساس)</td>
+<td>التطبيق بأكمله</td>
+<td>دائمًا، لكل شيء</td>
+<td>React SPA, Vue SPA</td>
+</tr>
+<tr>
+<td>الترطيب الجزئي</td>
+<td>قدر عمل الترطيب</td>
+<td>متغيّر</td>
+<td>للمناطق التفاعلية فقط</td>
+<td>Gatsby (Partial Hydration)</td>
+</tr>
+<tr>
+<td>الجزر</td>
+<td>قدر عمل الترطيب</td>
+<td>لكل مكوّن/منطقة</td>
+<td>لكل جزيرة، باستقلال</td>
+<td>Astro, Fresh, Bridgetown</td>
+</tr>
+<tr>
+<td>التصيير التدفقي SSR</td>
+<td>زمن الوصول إلى البايت الأول</td>
+<td>لكل حد Suspense</td>
+<td>تدريجيًا مع حلول البيانات</td>
+<td>React 18, Qwik</td>
+</tr>
+<tr>
+<td>مكوّنات الخادم في React</td>
+<td>حجم حزمة المتصفح</td>
+<td>لكل حد وحدة</td>
+<td>لوحدات <code>'use client'</code> فقط</td>
+<td>Next.js App Router</td>
+</tr>
+<tr>
+<td>قابلية الاستئناف</td>
+<td>كلفة إعادة تشغيل الترطيب</td>
+<td>ما دون المكوّن</td>
+<td>عند التفاعل (بشكل كسول)</td>
+<td>Qwik, Marko</td>
+</tr>
+</tbody>
+</table>
+<p>تصف Astro معمارية الجزر بأنها مبنية على تقنية تُعرف أيضًا بالترطيب الجزئي أو الانتقائي. غير أن <a href="https://www.gatsbyjs.com/docs/conceptual/partial-hydration/">Gatsby</a> تبيّن صراحةً أن ترطيبها الجزئي ليس التنفيذ نفسه الذي تعتمده جزر Astro، حتى لو بدت النتائج متشابهة.</p>
+<p>الطريقة المفيدة للتفكير في الأمر: <strong>الترطيب الجزئي</strong> اسم العائلة العريضة من التقنيات التي تتجنب ترطيب الصفحة كاملة. و<strong>الجزر</strong> اسم معمارية محددة لتحقيق ذلك عبر عزل المناطق التفاعلية كوحدات منفصلة.</p>
+<h2 id="علاقته-بالتصيير-على-الخادم-ssr">علاقته بالتصيير على الخادم (SSR)</h2>
+<p>التصيير على الخادم والجزر ليسا الشيء نفسه. فالتصيير على الخادم يجيب فقط عن <em>من أين</em> يأتي HTML الأولي. ويمكن لتطبيق React مُصيَّر تقليديًا على الخادم أن يظل يُرطّب الصفحة كاملة في المتصفح بعد ذلك. أما الجزر فتحافظ على فوائد التصيير على الخادم لكنها تغيّر معمارية الترطيب بحيث لا تصبح في المتصفح برامج إلا مناطق مختارة.</p>
+<p>وتوضح <a href="https://www.gatsbyjs.com/docs/conceptual/partial-hydration/">توثيقات Gatsby</a> ذلك صراحةً: فالترطيب الكامل يظل يرسل JavaScript للأجزاء الساكنة ويعيد بناء الحالة في المتصفح للصفحة كاملة، بينما يحدّ الترطيب الجزئي ذلك العمل بالمناطق التفاعلية.</p>
+<p>لهذا ليس «تطبيق SSR» و«تطبيق الجزر» وصفين متنافسين. فتطبيق الجزر يظل عادة مُصيَّرًا على الخادم أو مولَّدًا بشكل ساكن. والجدال يدور حول ما يحدث <em>بعد</em> وصول HTML، لا عمّا إذا كان HTML موجودًا.</p>
+<h2 id="علاقته-بالتصيير-التدفقي-ssr">علاقته بالتصيير التدفقي SSR</h2>
+<p>التصيير التدفقي SSR محور مختلف. فالتدفق يغيّر <em>متى</em> يُسلَّم HTML. والجزر تغيّر <em>ما الذي</em> يُرطَّب. وتدفّق دالة <a href="https://react.dev/reference/react-dom/server/renderToPipeableStream"><code>renderToPipeableStream</code></a> في React الهيكل أولًا ثم المحتوى اللاحق كلما حُلّت حدود Suspense. تلك استراتيجية تسليم. أما الجزر فاستراتيجية ترطيب وتركيب. ويمكن الجمع بينهما تمامًا — فقد تتدفق صفحة هيكلها بصيغة HTML وتظل تُرطّب بضع جزر عميل فقط.</p>
+<p>فمن يتعامل مع التدفق على أنه «الشيء نفسه الذي تفعله الجزر» يخلط النقل بالتنفيذ. أحدهما يقرر متى تصل البايتات. والآخر يقرر أي أجزاء الصفحة تصبح تطبيقات JavaScript أصلًا.</p>
+<h2 id="علاقته-بمكونات-الخادم-في-react">علاقته بمكوّنات الخادم في React</h2>
+<p><a href="https://react.dev/reference/rsc/server-components">مكوّنات الخادم في React</a> تدور حول مكان تشغيل شفرة المكوّنات ومكان حد الخادم/العميل في مخطط الوحدات. تُصيَّر مكوّنات الخادم مسبقًا في بيئة منفصلة عن تطبيق العميل أو عن خادم التصيير على الخادم، ويُنشئ <code>'use client'</code> حدًا في شجرة اعتماد الوحدات.</p>
+<p>وهذا مختلف جوهريًا عن النموذج الذهني للجزر، الذي يبدأ من صفحة HTML ساكنة في معظمها ويضيف فوقها مناطق مكوّنات تفاعلية. فمكوّنات الخادم في React نموذج لتوزيع الشفرة داخل معمارية React. أما الجزر فمعمارية صفحة يمكن أن توجد مع React أو بدونه. ويمكن أن تكون لديك جزر مع Astro أو Fresh أو حتى أنظمة قائمة على مكوّنات الويب. مقابض مختلفة، وألم مختلف.</p>
+<h2 id="علاقته-بقابلية-الاستئناف">علاقته بقابلية الاستئناف</h2>
+<p>تقلّل الجزر <em>قدر</em> الترطيب. أما قابلية الاستئناف فتحاول تجنّب إعادة تشغيل الترطيب كليًا.</p>
+<p>وتُعرّف <a href="https://qwik.dev/docs/concepts/resumable/">توثيقات Qwik</a> الترطيب بأنه إعادة بناء المستمعات وشجرة المكوّنات وحالة التطبيق في المتصفح بعد التصيير على الخادم، وترى أن إعادة التشغيل هذه مكلفة لأن الإطار يجب أن ينزّل شفرة المكوّنات وينفّذ القوالب من جديد. وجواب Qwik هو تسلسل معلومات كافية داخل HTML بحيث <em>يستأنف</em> التطبيق بدل أن يُرطَّب.</p>
+<p>و<a href="https://markojs.com/docs/explanation/fine-grained-bundling">Marko</a> يسير في اتجاه مختلف — إذ يُجري مترجمه تحليلًا لتجميع JavaScript التفاعلية فعلًا فقط على مستوى القوالب الفرعية، لا على مستوى المكوّن.</p>
+<p>تقابل مفيد: الجزر ترسم حدودًا حول <em>المكوّنات</em>، وقابلية الاستئناف تتجنب إعادة تشغيل <em>التطبيق</em>، والتجميع دقيق الحبيبات يرسل <em>حبيبات</em> التفاعل الدقيقة فقط لا جزر المكوّنات كاملة.</p>
+<h2 id="علاقته-باتحاد-الوحدات-وتركيب-المستودع-الأحادي">علاقته باتحاد الوحدات وتركيب المستودع الأحادي</h2>
+<p>يجيب اتحاد الوحدات والتركيب وقت البناء (المستودعات الأحادية بمساحات عمل) عن السؤال نفسه: كيف تقسّم تطبيق JavaScript إلى قطع تُطوَّر باستقلال؟ وتُفترض الصفحة هنا تطبيقًا كاملًا في المتصفح. والخلاف الوحيد هو من أين تأتي الشفرة ومتى تُحلّ.</p>
+<p>أما معمارية الجزر فتجيب عن سؤال مختلف: هل ينبغي أن تكون الصفحة تطبيق JavaScript أصلًا؟</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>اتحاد الوحدات</th>
+<th>وقت البناء (مستودع أحادي)</th>
+<th>الجزر</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>وحدة التركيب</td>
+<td>تطبيق ريموت منشور</td>
+<td>حزمة مساحة عمل</td>
+<td>مكوّن فردي</td>
+</tr>
+<tr>
+<td>التصيير الافتراضي</td>
+<td>JavaScript في المتصفح</td>
+<td>JavaScript في المتصفح</td>
+<td>HTML ساكن</td>
+</tr>
+<tr>
+<td>ميزانية JavaScript</td>
+<td>تطبيق كامل لكل ريموت</td>
+<td>تطبيق كامل بحزمة واحدة</td>
+<td>المناطق التفاعلية فقط</td>
+</tr>
+<tr>
+<td>الحالة عبر الحدود</td>
+<td>تحتاج إلى nanostores</td>
+<td>React Context يكفي</td>
+<td>تحتاج إلى إشارات بين الجزر</td>
+</tr>
+<tr>
+<td>الهدف الأساسي</td>
+<td>نشر مستقل</td>
+<td>تنظيم الشفرة</td>
+<td>تقليل JavaScript</td>
+</tr>
+</tbody>
+</table>
+<p>المحاور متعامدة. فاتحاد الوحدات يحل مشكلة تنظيمية (فرق تحتاج إلى وتائر نشر مستقلة). ويحل التركيب وقت البناء مشكلة في تجربة المطوّر (أمان الأنواع، وإعادة التحميل السريع، وخادم تطوير واحد). وتحل الجزر مشكلة أداء (فمعظم صفحات المحتوى لا ينبغي أن تكون تطبيقات JavaScript كاملة).</p>
+<p>ويمكن أيضًا الجمع بينها. فقد تحتوي صفحة Astro على جزيرة عميل تحمّل ريموتًا من اتحاد الوحدات. وقد ينتج المستودع الأحادي لوحة تحكم SPA (تركيب وقت البناء بين الحزم) وموقع تسويق (جزر) معًا. تعمل الأنماط على مستويات مختلفة من المكدّس ولا تتنافس فيما بينها.</p>
+<p>النمط المضاد هو التلهّف إلى الخيار الخطأ. فاتحاد الوحدات على صفحة محتواها ساكن بنسبة 90% يعني الدفع مقابل استقلالية نشر لم يطلبها أحد. والجزر على لوحة تحكم كثيفة وذات حالة تعني مصارعة المعمارية في كل منعطف. إذا كانت الصفحة تفاعلية في معظمها فأنت في نطاق تركيب التطبيقات (اتحاد أو مستودع أحادي). وإذا كانت الصفحة في معظمها محتوى مع بضعة عناصر تحكم تفاعلية، فالجزر هي الإطار الصحيح.</p>
+<h2 id="كيف-تبدو-التنفيذات-الحقيقية">كيف تبدو التنفيذات الحقيقية</h2>
+<p><strong>Astro</strong> هو التنفيذ الأبرز في التيار العام. تُصيَّر مكوّنات <code>.astro</code> فيه إلى HTML ساكن دون أي وقت تشغيل في المتصفح. وتُدخل مكوّنات أطر محددة إلى سلوك المتصفح عبر توجيهات:</p>
+<pre><code class="language-astro">---
+import SearchBox from '../components/SearchBox.jsx';
+import Carousel from '../components/Carousel.jsx';
+import Avatar from '../components/Avatar.astro';
+import GenericAvatar from '../components/GenericAvatar.astro';
+---
+
+&lt;ProductDetails /&gt;
+
+&lt;SearchBox client:load /&gt;
+&lt;Carousel client:visible /&gt;
+
+&lt;Avatar server:defer&gt;
+  &lt;GenericAvatar slot=&quot;fallback&quot; /&gt;
+&lt;/Avatar&gt;
+</code></pre>
+<p>هذه المقتطفة وحدها تُظهر معظم النموذج. فـ<code>ProductDetails</code> يبقى HTML عاديًا. و<code>SearchBox</code> يُرطَّب فورًا لأنه مهم. و<code>Carousel</code> ينتظر حتى يصبح مرئيًا، لأن إرسال JS لشيء لا يصل إليه المستخدم أبدًا هواية سخيفة. أما <code>Avatar</code> فجزيرة خادم: تُصيَّر الصفحة الآن، وتُجلب الشذرة المخصّصة على حدة، ويملأ البديل الفراغ حتى وصولها.</p>
+<p>كما يتيح Astro <a href="https://docs.astro.build/it/guides/framework-components/">خلط الأطر</a> في الصفحة نفسها، مع إرسال وقت تشغيل كل إطار مرة واحدة فقط لكل إطار مستخدم. مفيد للترحيل التدريجي أو للفرق ذات المكدّسات الأمامية المختلطة.</p>
+<p><strong><a href="https://fresh.deno.dev/docs/1.x/concepts/architecture">Fresh</a></strong> يتبنى موقفًا مشابهًا يعطي HTML الأولوية من نظام بيئي مختلف. فترسل التطبيقات HTML خالصًا افتراضيًا، ولا يُعاد ترطيب إلا عناصر واجهة محددة. وتعيش الجزر في مجلد <code>islands/</code>، وتُصيَّر على الخادم وفي المتصفح معًا، ويمكن أن تستقبل JSX مُصيَّرًا على الخادم كخصائص. ويوثّق Fresh عدة طرق لمشاركة الحالة بين الجزر، منها الإشارات المشتركة.</p>
+<p><strong><a href="https://www.bridgetownrb.com/docs/islands">Bridgetown</a></strong> يُظهر أن هذا النمط ليس مرتبطًا بأنظمة المكوّنات الشبيهة بـ React إطلاقًا. فدعمه للجزر مبني حول أشجار مكوّنات مستقلة ومكوّن الويب الصغير <code>&lt;is-land&gt;</code>، الذي يمكنه تحميل جزيرة بشكل كسول عند ظهورها أو عند التفاعل معها. تذكير جيد بأن معمارية الجزر نمط معماري أولًا وميزة إطار ثانيًا.</p>
+<h2 id="جزر-العميل-وجزر-الخادم">جزر العميل وجزر الخادم</h2>
+<p>يسمع معظم الناس كلمة «جزر» ولا يفكرون إلا في جزر الترطيب في المتصفح. و<a href="https://docs.astro.build/en/guides/server-islands/">جزر الخادم في Astro</a> تمدّ الفكرة إلى الشذرات البطيئة أو المخصّصة المُصيَّرة على الخادم عبر تأجيلها خارج تصيير الصفحة الرئيسية وجلبها على حدة، مع عرض محتوى بديل في الأثناء. وتصبح كل جزيرة مؤجَّلة مسارًا خاصًا بها في الخفاء، ويمكن أن تصبح الصفحة مرئية قبل أن تنتهي تلك الشذرات الأبطأ.</p>
+<p>هذا امتداد ذو دلالة لأنه يتيح فصل نوعين مختلفين من الكلفة. فجزر العميل تعزل عمل المتصفح. وجزر الخادم تعزل عمل الخادم البطيء. وفي متجر حقيقي، قد يكون وصف المنتج وهيكل المراجعات ساكنين ومخزّنين في ذاكرة مؤقتة بكثافة، وقد يكون درج سلة الشراء جزيرة عميل، وقد تكون صورة الحساب المخصّصة جزيرة خادم. الصفحة نفسها، واستراتيجيات عزل مختلفة.</p>
+<h2 id="اعتبارات-تشغيلية">اعتبارات تشغيلية</h2>
+<h3 id="الحالة-والتركيب">الحالة والتركيب</h3>
+<p>حين تتوقف عن التفكير في الصفحة كتطبيق متصفح واحد، تصبح الحالة المشتركة خيارًا معماريًا صريحًا. و<a href="https://docs.astro.build/en/recipes/sharing-state-islands/">توصي Astro</a> بمخازن خفيفة مستقلة عن إطار العمل مثل Nano Stores للتواصل بين الجزر. ويعرض Fresh إشارات مشتركة تُستخدم عبر جزر منفصلة. وإذا كانت واجهتك تعتمد على أشجار مزوّدات عميقة وسياق شامل للتطبيق في كل شيء، فستبدو الجزر أقل أناقة وأشبه بأوراق جمركية.</p>
+<h3 id="توقيت-الترطيب">توقيت الترطيب</h3>
+<p>و<a href="https://docs.astro.build/it/guides/framework-components/">تحذّر Astro صراحةً</a> من أن JavaScript المتعلقة بإمكانية الوصول يجب أن تُحمَّل في الوقت المناسب. فلا ينبغي تأجيل زر قائمة أو مُشغّل نافذة حوار أو عنصر تحكم حرج للوحة المفاتيح بحدّة تجعل الواجهة المرئية تصل قبل سلوكها بوقت طويل. فـ<code>client:visible</code> ممتازة للإضافات أسفل الجزء المرئي. وهي اختيار سيئ جدًا لعنصر التنقل الوحيد في الترويسة.</p>
+<h3 id="التخزين-المؤقت-والتخصيص">التخزين المؤقت والتخصيص</h3>
+<p>تستخدم <a href="https://docs.astro.build/en/guides/server-islands/">جزر الخادم</a> في Astro طلبات <code>GET</code> ويمكن تخزينها مؤقتًا بتوجيهات <code>Cache-Control</code> العادية، ما يجعلها مناسبة تمامًا لشذرات مخصّصة في صفحات قابلة للتخزين المؤقت عدا ذلك. لكن جزر الخادم تعمل في سياق معزول خارج طلب الصفحة، لذا يجب التعامل بحذر مع الافتراضات المتعلقة بعنوان URL للصفحة أو بسياق الطلب — خصوصًا في الصفحات المُصيَّرة مسبقًا.</p>
+<h2 id="أخطاء-شائعة">أخطاء شائعة</h2>
+<p><strong>استخدام الجزر لصفحة هي في الواقع هيكل تطبيق.</strong> إذا كان معظم السطح تفاعليًا ومتناسقًا بإحكام، فأنت تصارع نسيج المعمارية. فقد صُمّم النمط لصفحات فيها جيوب تفاعل معزولة، لا للتظاهر بأن محطة تداول هي في السر مقال مدونة.</p>
+<p><strong>افتراض أن الجزر تلغي JavaScript كليًا.</strong> إنها لا تفعل ذلك. بل تلغي JavaScript <em>غير الضرورية</em> للمناطق غير التفاعلية وتعزل الباقي. فالجزر التفاعلية ما زالت تحتاج شفرة، وما زالت تُرطَّب، وما زالت تفرض كلفة حزمة وكلفة تنفيذ.</p>
+<p><strong>السماح لكل إشارة إتاحة صغيرة بأن تصبح جزيرة خاصة بها.</strong> فالمعمارية تدعو إلى التفكيك، وهذا جيد، لكن التفكيك ليس مجانيًا. فكل جزيرة تضيف قرارات حول توقيت التحميل والحالة المشتركة والبدائل ومعالجة الأخطاء. وتكون الجزر في أفضل حالاتها عندما تتوافق مع مناطق تفاعلية ذات معنى، لا عندما ينشئ كل مربع اختيار هوية سياسية مستقلة.</p>
+<h2 id="متى-تختارها">متى تختارها</h2>
+<p>اختر الجزر عندما تكون الصفحة في معظمها محتوى ساكنًا أو مُصيَّرًا على الخادم، وتكون التفاعلات المهمة محصورة محليًا، ويهمّك التحميل الأولي والسلوك الذي يعطي HTML الأولوية، وتريد تحكمًا صريحًا في توقيت استيقاظ شفرة المتصفح. وهي قوية بشكل خاص للمواقع التسويقية، ومواقع المحتوى، وصفحات التجارة الإلكترونية، والتوثيقات، والصفحات المختلطة التي فيها تفاعلية تكفي لتُهمّ لكنها لا تكفي لتبرير تطبيق كامل يُرطَّب دائمًا.</p>
+<p>تجنّب اللجوء إليها كردّ فعل تلقائي عندما يكون منتجك في الحقيقة تطبيقًا كثيفًا ذا حالة تكون فيه معظم المناطق حيّة ومنسّقة بعمق. في هذا العالم، قد يتحول العزل الذي يجعل الجزر أنيقة في الصفحات الغنية بالمحتوى إلى احتكاك. استخدم المعمارية حيث تناسب شكل الواجهة، لا لأن العبارة تبدو حديثة ووارفة.</p>
+<h2 id="النسخة-المختصرة">النسخة المختصرة</h2>
+<p>صيّر الصفحة كـ HTML أولًا. وأدخل المناطق التفاعلية فعلًا فقط في ترطيب مستقل في المتصفح. وأحيانًا أدخل الشذرات الخادمية البطيئة أو المخصّصة في تصيير مؤجَّل منفصل أيضًا. وادفع ثمن التفاعلية حيث يحتاجها المستخدم فعلًا فقط.</p>
+<p>هذا افتراضي أكثر رشدًا بكثير من معاملة كل صفحة كتطبيق JavaScript عملاق ينتظر الإذن ليتحول إلى مستند.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:p,headings:l,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,l as headings,e as html,t as slug,p as title};

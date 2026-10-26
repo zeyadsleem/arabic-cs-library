@@ -1,0 +1,110 @@
+const s="tanstack-router",a="router",n="دورة TanStack Router الكاملة",e="caching-options",t="خيارات التخزين المؤقّت",o=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"أين-تضبط-هذه-الخيارات",text:"أين تُضبط هذه الخيارات؟"},{depth:2,id:"ساحة-التجربة-مسار-random-word",text:"ساحة التجربة: مسار random-word"},{depth:2,id:"بقاء-الجلب-المسبق-طازجا-preloadstaletime",text:"بقاء الجلب المسبق طازجًا: preloadStaleTime"},{depth:2,id:"وتظل-بيانات-التنقل-طازجة-staletime",text:"وتظل بيانات التنقّل طازجة: staleTime"},{depth:2,id:"gctime-متى-تحذف-البيانات-من-الذاكرة",text:"gcTime: متى تُحذف البيانات من الذاكرة"},{depth:2,id:"إبطال-كل-شيء-بـ-routerinvalidate",text:"إبطال كلّ شيء بـ router.invalidate()"},{depth:2,id:"دالة-shouldreload-تحكم-أدق-في-إعادة-التحميل",text:"دالّة shouldReload: تحكّم أدقّ في إعادة التحميل"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],l=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>من دروس المُحمِّل (loader) والجلب المسبق (preloading) صار مسار <code>random-word</code> يجلب كلمةً عشوائية من واجهة برمجية خارجية: يُشغَّل المُحمِّل عند زيارة المسار، ويستبق ذلك فيُجلب البيانات عند تمرير المؤشّر فوق رابطه. لكن كلَّ هذا كان سلوكًا افتراضيًّا لم نضبطه: النتائج تُحفظ في الذاكرة المؤقّتة (cache)، ويقرّر الموجّه وحده متى يعيد طلبها بصمت. في هذا الدرس نتسلّم الأزمنة بيدنا: متى تُعدّ نتيجةُ الجلب المسبق طازجةً، ومتى تصبح بياناتُ الزيارة قديمةً تحتاج تجديدًا (<code>stale</code>)، ومتى تُحذف من الذاكرة كليًّا.</p>
+<p>سنضبط ثلاثة خيارات زمنية على المسار: <code>preloadStaleTime</code> لنتائج الجلب المسبق، و<code>staleTime</code> لبيانات الزيارة الفعلية، و<code>gcTime</code> للمدة التي تبقى فيها البيانات في الذاكرة قبل حذفها. وكلّ خيارٍ نضعه هنا على مسار واحد يمكن ضبطه عالميًّا عند تعريف الموجّه في <code>src/main.tsx</code> أيضًا، كما سترى في الشيفرة أدناه. وبعد الخيارات الزمنية نتعلم وسيلتين تتجاوزان الزمن كليًّا: استدعاء <code>router.invalidate()</code> الذي يُبطل كلّ شيء فورًا، ودالّة <code>shouldReload</code> التي تجعل قرار إعادة تشغيل المُحمِّل قرارًا منطقيًّا تكتبه أنت.</p>
+<p>وسنقضي أغلب وقت هذا الدرس في علامة تبويب الشبكة داخل أدوات المطوّر؛ فطلب مسار <code>random-word</code> يستغرق ثانيةً كاملة، فترى بعينك متى انطلق الطلب ومتى لم ينطلق.</p>
+<h2 id="أين-تضبط-هذه-الخيارات">أين تُضبط هذه الخيارات؟</h2>
+<p>ملفّ <code>src/main.tsx</code> يحمل تعريف الموجّه الذي بنيناه في الدروس السابقة، ولم يتغيّر منه في هذا الدرس إلا سطر واحد — وهو معلَّق وسط الخيارات:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> router = <span class="hljs-title function_">createRouter</span>({
+  routeTree,
+  <span class="hljs-attr">notFoundMode</span>: <span class="hljs-string">&quot;fuzzy&quot;</span>,
+  <span class="hljs-attr">defaultPreload</span>: <span class="hljs-string">&quot;intent&quot;</span>,
+  <span class="hljs-comment">// defaultPreloadDelay: 1000,</span>
+  <span class="hljs-attr">defaultNotFoundComponent</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Default Not Found<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+  <span class="hljs-attr">context</span>: {
+    <span class="hljs-attr">user</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">login</span>: <span class="hljs-function">() =&gt;</span> {},
+    <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> {},
+  },
+});
+</code></pre>
+<p>الخيار <code>defaultPreload: &quot;intent&quot;</code> من درس الجلب المسبق ما زال حاكمًا: تمرير المؤشّر فوق رابط يطلق طلبَ بيانات الرابط. أمّا السطر المعلَّق <code>// defaultPreloadDelay: 1000,</code> فله في هذا الدرس حكاية: أثناء التجربة لاحظنا أنّ التمرير ينتظر مهلة ثانيةٍ كاملة قبل أن يطلق الطلب، فتبيّن أنّ سببها هذا الخيار الذي أضافه درسٌ سابق، فعلّقنا سطرَه ليغدو التمرير مباشرًا من دون مهلة. وبذلك صار كل تمرير يطلق الجلبَ المسبق فورًا، وبقي الزمن الذي يعود بعده الطلب في أيدنا بالخيارات القادمة.</p>
+<h2 id="ساحة-التجربة-مسار-random-word">ساحة التجربة: مسار <code>random-word</code></h2>
+<p>دالّة المُحمِّل في المسار تعمّد أن يستغرق طلبُها ثانيةً كاملةً قبل أن تعود بالنتيجة، فلا تخفى عليك حركتُها في علامة تبويب الشبكة. مقتطفُها كما هو في فرعنا:</p>
+<pre><code class="language-tsx">  <span class="hljs-attr">loaderDeps</span>: <span class="hljs-function">(<span class="hljs-params">{ search }</span>) =&gt;</span> ({ <span class="hljs-attr">lang</span>: search.<span class="hljs-property">lang</span> }),
+  <span class="hljs-attr">loader</span>: <span class="hljs-title function_">async</span> ({ deps }) =&gt; {
+    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(
+      <span class="hljs-string">\`https://random-words-api.kushcreates.com/api?words=1&amp;language=<span class="hljs-subst">\${deps.lang || <span class="hljs-string">&quot;en&quot;</span>}</span>\`</span>
+    );
+    <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> <span class="hljs-built_in">setTimeout</span>(r, <span class="hljs-number">1000</span>));
+    <span class="hljs-keyword">const</span> resJSON = <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>();
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">word</span>: resJSON[<span class="hljs-number">0</span>]?.<span class="hljs-property">word</span> };
+  },
+</code></pre>
+<p>السطر الأول <code>loaderDeps</code> يستخلص قيمة اللغة من معاملات البحث (search params) ويجعلها اعتمادًا للمُحمِّل، ودالّة المُحمِّل تقرأ ذلك الاعتماد من <code>deps</code> وتبني به عنوان الطلب في <code>fetch</code>، ثم يتأخّر الطلبُ ثانيةً كاملةً بالسطر <code>await new Promise((r) =&gt; setTimeout(r, 1000))</code> فترى حركتَه في الشبكة بوضوح. وتغذّيه أربعةُ روابط للغات:</p>
+<pre><code class="language-tsx">      &lt;div className=<span class="hljs-string">&quot;bg-gray-800 p-2 rounded-md mb-4&quot;</span>&gt;
+        {[<span class="hljs-string">&quot;en&quot;</span>, <span class="hljs-string">&quot;es&quot;</span>, <span class="hljs-string">&quot;fr&quot;</span>, <span class="hljs-string">&quot;zh&quot;</span>].<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">lang</span>) =&gt;</span> (
+          <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Link</span>
+            <span class="hljs-attr">key</span>=<span class="hljs-string">{lang}</span>
+            <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;.&quot;</span>
+            <span class="hljs-attr">search</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">lang:</span> <span class="hljs-attr">lang</span> <span class="hljs-attr">as</span> <span class="hljs-attr">LangType</span> }}
+            <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;[&amp;.active]:font-bold mx-2&quot;</span>
+          &gt;</span>
+            {lang}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span>
+        ))}
+      &lt;/div&gt;
+</code></pre>
+<p>كلّ رابط منها يكتب قيمة لغةٍ في معامل البحث <code>lang</code> عبر خاصية <code>search</code>. وبما أنّ اللغة اعتمادٌ للمُحمِّل، فكل نقرة على لغةٍ جديدة تعني طلبًا جديدًا بلغةٍ جديدة — وهذا السلوك الذي ستتتبّعه في لوحة الشبكة طول الدرس.</p>
+<h2 id="بقاء-الجلب-المسبق-طازجا-preloadstaletime">بقاء الجلب المسبق طازجًا: <code>preloadStaleTime</code></h2>
+<p>هذان خيارا التخزين المؤقّت على تعريف المسار، وبجانبهما خياران عهدناهما في الدروس السابقة:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/random-word&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">validateSearch</span>: <span class="hljs-title function_">zodValidator</span>(randomWordSearchParamsSchema),
+  <span class="hljs-attr">preloadStaleTime</span>: <span class="hljs-number">5_000</span>,
+  <span class="hljs-attr">staleTime</span>: <span class="hljs-number">30_000</span>,
+</code></pre>
+<p>خيارا <code>component</code> و<code>validateSearch</code> معهودان من درس المكوّنات ومعاملات البحث، والخياران الجديدان هما <code>preloadStaleTime: 5_000</code> و<code>staleTime: 30_000</code>. نبدأ بالأول: <code>preloadStaleTime</code> هو مدّة الاعتبار طازجةً لنتيجة الجلب المسبق. مرّرتَ فوق رابطٍ فجُلبت بياناته وحُفظت في الذاكرة؛ فمرّرتَ مرةً أخرى قبل انقضاء تلك المدة فلا طلب جديد، وإن مضت المدة فسيعود الطلبُ من جديد.</p>
+<p>المدة الافتراضية ثلاثون ثانية، ونحن ضبطناها هنا على خمس ثوانٍ كما في المقتطف أعلاه لترى أثرها في الشبكة بالعين. جرّب: مرّر المؤشّر فوق رابط Random Word فيظهر الطلب في الشبكة؛ ثم مرّر ثانيةً أخرى قبل انقضاء الخمس ثوانٍ فلا طلب جديد؛ انتظر حتى تنقضي خمسُ ثوانٍ ثم مرّر فيعود الطلب من جديد. وهكذا مرةً بعد مرة: لا طلب جديد إلا بعد انقضاء <code>preloadStaleTime</code>.</p>
+<h2 id="وتظل-بيانات-التنقل-طازجة-staletime">وتظل بيانات التنقّل طازجة: <code>staleTime</code></h2>
+<p>الخيار الثاني مختلف تمامًا عن الأول: <code>preloadStaleTime</code> خاصٌّ بنتائج الجلب المسبق، أمّا <code>staleTime</code> فهو عدد الميلّي ثوانٍ التي تُعدّ خلالها بياناتُ المسار طازجةً عند محاولة تحميلها في زيارةٍ فعلية. وافتراضيًّا صفر، وصفر معناه أنّ بيانات المسار تُعدّ منتهيةَ الصلاحية كلّما استُعملت: تُعرض من الذاكرة المؤقّتة أولًا، ثم يُطلق في الخلفية طلبٌ يجدّدها.</p>
+<p>جرّب هذا السلوك على مسارنا: انتقل إلى <code>about</code> ثم عُد إلى <code>random-word</code> — سترى الكلمة نفسها التي رأيتها قبل قليل، ثم يُطلق في الخلفية طلبٌ يجلب كلمةً جديدة؛ لأنّ الكلمة المخزَّنة تُعدّ غيرَ طازجة (<code>stale</code>) ما دام <code>staleTime</code> صفرًا. وكلُّ زيارة وعودةٍ تكرّر ذلك: عرضٌ من الذاكرة أولًا وتجديدٌ في الخلفية.</p>
+<p>وعند ضبط <code>staleTime: 30_000</code> كما في مقتطف المسار أعلاه، صارت بيانات المسار طازجةً ثلاثين ثانيةً كاملة: تقلّب بين <code>about</code> و<code>random-word</code> وطالما مضى أقلّ من ثلاثين ثانية فستُعرض الكلمة المخزَّنة نفسها، ولا طلب في الخلفية. وبعد انقضاء الثلاثين ثانية تنتهي صلاحية الكلمة، فإذا عُرضت من الذاكرة انطلق معها طلبٌ خلفي يجدّدها.</p>
+<h2 id="gctime-متى-تحذف-البيانات-من-الذاكرة"><code>gcTime</code>: متى تُحذف البيانات من الذاكرة</h2>
+<p>الخيار الزمني الثالث يخصّ عمر البيانات في الذاكرة: <code>gcTime</code> هو مدّة بقاء بيانات المسار في الذاكرة المؤقّتة قبل حذفها منها كليًّا. الافتراضي ثلاثون دقيقة: فإذا مضت على بيانات مسارٍ مخزَّنٍ ثلاثون دقيقة من دون استعمال، فستُحذف تمامًا من الذاكرة المؤقّتة. ولم نحتج إلى ضبطه في درسنا، لكنه خيارٌ قابل للضبط كخيارَي سلفه متى احتجت إليه.</p>
+<h2 id="إبطال-كل-شيء-بـ-routerinvalidate">إبطال كلّ شيء بـ <code>router.invalidate()</code></h2>
+<p>الخيارات الزمنية قواعد يعمل بها الموجّه من تلقاء نفسه. لكن بعض الأحداث تحتاج أن يُعاد كل شيء من جديد فورًا ولو لم يكن الزمن قد انقضى — ومن ذلك تغيّر حالة تسجيل الدخول. لهذه الحالات يخدمك استدعاء <code>router.invalidate()</code>: يفرض على كل المسارات النشطة إعادة تشغيل دالة المُحمّل فورًا، ويجعل كلَّ بيانات المسارات المخزَّنة غيرَ طازجة.</p>
+<p>وفي تطبيقنا يمرّ هذا عبر زرّ تسجيل الدخول «Login» الذي في مسار الجذر: دالتا <code>login</code> و<code>logout</code> معرَّفان في <code>src/main.tsx</code> ويصلان إلى الواجهة عبر السياق (context) الذي نمرّره للموجّه، وكلٌّ منهما ينادي <code>router.invalidate()</code> مباشرةً:</p>
+<pre><code class="language-tsx">  <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">login</span>(<span class="hljs-params"><span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span></span>) {
+    <span class="hljs-title function_">flushSync</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">setUser</span>(user);
+    });
+    router.<span class="hljs-title function_">invalidate</span>();
+  }
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">logout</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-title function_">flushSync</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">setUser</span>(<span class="hljs-literal">null</span>);
+    });
+    router.<span class="hljs-title function_">invalidate</span>();
+  }
+</code></pre>
+<p>تُنهي كل دالةٍ تحديثَ الحالة (state) عبر <code>flushSync</code> ثم تنادي <code>router.invalidate()</code> مباشرةً، فيعاد تشغيل كلّ المُحمِّلات النشطة فورًا. فإذا نقرتَ «Login» بينما تعرض الشاشة كلمةً ما فسترى كلمةً جديدةً فورًا؛ لأنّ الاستدعاء أجبر المُحمِّل النشطَ على إعادة التشغيل وجعل كلَّ البيانات المخزَّنة غيرَ طازجة.</p>
+<h2 id="دالة-shouldreload-تحكم-أدق-في-إعادة-التحميل">دالّة <code>shouldReload</code>: تحكّم أدقّ في إعادة التحميل</h2>
+<p>آخر ما نتناوله في هذا الدرس ليس خيارًا زمنيًّا بل دالّة تُعرَّف في المسار نفسه: <code>shouldReload</code>. وظيفتها أن تقرّر متى بالضبط يُعاد تشغيل المُحمِّل. وهي هنا مقتطفةً معلَّقةً من تعريف مسارنا:</p>
+<pre><code class="language-tsx">  <span class="hljs-comment">// shouldReload: ({context, params, deps, route}) =&gt; {</span>
+
+  <span class="hljs-comment">// },</span>
+</code></pre>
+<p>مبدأ عملها: تُعيد الدالة <code>true</code> فيُعاد تشغيل دالة المُحمِّل، وتُعيد <code>false</code> فلا. وهذا تحكّم يتجاوز المواعيدَ الزمنية: قرارُ التجديد هنا شرطٌ منطقيّ تكتبه أنت. وتستلم الدالةُ المعطياتَ نفسَها التي تستلمها دالّة <code>beforeLoad</code> التي رأيناها في درسٍ سابق: السياق <code>context</code> ومعاملات المسار <code>params</code> واعتماديات المُحمِّل <code>deps</code> ومعلوماتُ المسار <code>route</code> — أي تقريبًا كلَّ ما تحتاجه لتقرير متى بالضبط يُعاد تشغيل دالة المُحمّل.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p>بعد هذا الدرس صار مسار <code>random-word</code> مضبوطًا بالكامل: نتيجة التمرير تبقى طازجةً خمس ثوانٍ (<code>preloadStaleTime</code>)، وزيارة المسار تعرض الكلمة من الذاكرة ثلاثين ثانيةً قبل طلب خلفي (<code>staleTime</code>)، ونقر «Login» يُطلق استدعاءَ <code>router.invalidate()</code> الذي يعيد كلّ شيء فورًا. وعلّقنا <code>defaultPreloadDelay</code> فصار التمرير يطلق طلبًا مباشرًا بلا مهلة. وبقيت دالّة <code>shouldReload</code> معلَّقةً في الشيفرة كمرجعٍ: متى أردت قرارًا منطقيًّا في إعادة التشغيل فمكانها جاهز.</p>
+<p>وهذه لقطة من الفرع: صفحة Random Word تعرض الكلمة من الذاكرة المؤقّتة:</p>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--caching-options--random-word.png" alt="مسار random-word يعرض كلمة serendipity وتحتها روابط اللغات الأربع en وes وfr وzh، مع شريط تنقّل الجذر Root Route في الأعلى وشارة أدوات المطوّر في الزاوية العلوية اليمنى"></p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>مرّر المؤشّر فوق رابط Random Word وراقب الشبكة: مرّر قبل انقضاء خمس ثوانٍ فلا طلب جديد، ومرّر بعدها فيظهر الطلب — هذا هو أثر <code>preloadStaleTime</code>.</li>
+<li>تقلّب بين <code>about</code> و<code>random-word</code> بضعة مرات في أقل من 30 ثانية: تظل الكلمة المخزَّنة تُعرض من دون تجديد ولا طلب في الخلفية؛ ثم أعِد التجربة بعد انقضاء 30 ثانية: تعود الكلمة من الذاكرة ويُطلق طلبٌ خلفي يجدّدها.</li>
+<li>انتقل من <code>en</code> إلى <code>es</code> ثم عُد إلى <code>en</code>: تُعرض الكلمة الإنجليزية السابقة فورًا ثم ينطلق طلبٌ في الخلفية لكلمة إنجليزية جديدة؛ فاللغة اعتمادٌ للمُحمِّل عبر <code>loaderDeps</code>.</li>
+<li>بينما تُعرض صفحة <code>random-word</code> كلمةً ما، انقر زرّ «Login»: ستظهر كلمة جديدة فورًا لأنّ <code>router.invalidate()</code> أعاد تشغيل المُحمّل.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=11794s">فيديو الدرس: خيارات التخزين المؤقّت</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/caching-2">شيفرة الدرس: فرع <code>caching-2</code></a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/data-loading">دليل توثيق TanStack Router: تحميل البيانات والتخزين المؤقّت</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/preloading">دليل توثيق TanStack Router: الجلب المسبق</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «خيارات التخزين المؤقّت» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,c={book:s,chapter:a,chapterTitle:n,slug:e,title:t,headings:o,html:l};export{s as book,a as chapter,n as chapterTitle,c as default,o as headings,l as html,e as slug,t as title};

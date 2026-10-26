@@ -1,0 +1,129 @@
+const e="kinney",t="self-testing-ai-agents",n="وكلاء ذكاء اصطناعي يختبرون أنفسهم",s="lab-generate-and-heal-with-playwright-agents",o="مختبر",l=[{depth:2,id:"إعداد-تعريفات-الوكلاء",text:"إعداد تعريفات الوكلاء"},{depth:2,id:"اكتب-اختبار-الزرع",text:"اكتب اختبار الزرع"},{depth:2,id:"خطط-لسير-عمل-تقييم-الكتاب-على-الرف",text:"خطّط لسير عمل تقييم الكتاب على الرفّ"},{depth:2,id:"ولد-الاختبارات",text:"ولّد الاختبارات"},{depth:2,id:"أصلح-أي-إخفاقات",text:"أصلح أي إخفاقات"},{depth:2,id:"اكسر-الواجهة-ثم-أصلحها",text:"اكسر الواجهة، ثم أصلحها"},{depth:2,id:"معايير-القبول",text:"معايير القبول"},{depth:2,id:"أهداف-إضافية",text:"أهداف إضافية"},{depth:2,id:"الشيء-الوحيد-الذي-يجب-تذكره",text:"الشيء الوحيد الذي يجب تذكّره"},{depth:2,id:"قراءات-إضافية",text:"قراءات إضافية"}],a=`<p>يضعك هذا المختبر أمام سير عمل حقيقي لوكلاء اختبار Playwright الثلاثة على تطبيق Shelf. ستخطّط لمجموعة اختبارات، ثم تولّدها، وتتحقّق من نجاحها، وتكسر الواجهة عمدًا، ثم تشاهد المُصلِح يُغلق الحلقة. والهدف أن ترى أين يوفّر الوكلاء وقتك وأين تحتاج أنت إلى إعمال حكمك.</p>
+<blockquote>
+<p><strong>المتطلبات المسبقة</strong></p>
+<p>تحتاج إلى <a href="https://playwright.dev/">Playwright</a> 1.56 أو أحدث، وإلى تهيئة Shelf عاملة مع مصادقة حالة التخزين ومشروع Playwright باسم <code>authenticated</code> معدّ سلفًا. وكلاهما ينتج من مختبر حالة التخزين السابق، والدالة المساعدة <code>resetShelfContent</code> التي ستستخدمها في الزرع تنتج من مختبر إعادة هيكلة الـ fixtures. وإن لم تكن قد أنجزت هذين المختبرين بعد، فاذهب وأنجزهما أولًا — فالمخطِّط يحتاج جلسة مسجّلة الدخول ليستكشف التطبيق، ودالة الزرع المساعدة يجب أن تكون موجودة قبل أن تستطيع الاختبارات المولّدة الاعتماد على رفّ مستقرّ.</p>
+</blockquote>
+<h2 id="إعداد-تعريفات-الوكلاء">إعداد تعريفات الوكلاء</h2>
+<p>ابدأ بتوليد تعريفات الوكلاء لأداة البرمجة التي تستخدمها. فإن كنت تستخدم <a href="https://docs.claude.com/en/docs/claude-code/overview">Claude Code</a>:</p>
+<pre><code class="language-bash">npx playwright init-agents --loop=claude
+</code></pre>
+<p>ينشئ هذا تعريفات الوكلاء في <code>.claude/agents/</code> وتهيئة خادم MCP في <code>.mcp.json</code>. وتحقق من أن <code>.claude/agents/</code> قد أُنشئ ويحتوي ملفات الوكلاء الثلاثة (المخطِّط، والمولِّد، والمُصلِح) قبل أن تمضي قدمًا.</p>
+<blockquote>
+<p><strong><code>init-agents</code> يستبدل <code>.mcp.json</code></strong></p>
+<p>إن كان لديك بالفعل ملف <code>.mcp.json</code> في جذر المستودع، فسيستبدله <code>init-agents</code> بملف جديد لا يسجّل إلا <code>playwright-test</code>. والنسخة الانطلاقية الحالية من Shelf <strong>تشحن</strong> فعلًا ملف <code>.mcp.json</code> من أجل Svelte MCP، فخُذ نسخة احتياطية منه أولًا ثم أعد دمج مُدخل <code>playwright-test</code> فيه بعد ذلك، بدلًا من أن تدهس التهيئة الموجودة.</p>
+</blockquote>
+<h2 id="اكتب-اختبار-الزرع">اكتب اختبار الزرع</h2>
+<p>يحتاج المخطِّط إلى اختبار زرع يهيّئ التطبيق إلى حالة قابلة للاستخدام. أنشئ <code>tests/seed.spec.ts</code> يستخدم مشروعك الموثّق بالمصادقة، ويستدعي دالة الزرع المساعدة، وينتقل إلى الرفّ:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { expect, test } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@playwright/test&#x27;</span>;
+<span class="hljs-keyword">import</span> { resetShelfContent } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./helpers/seed&#x27;</span>;
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;seed&#x27;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">resetShelfContent</span>();
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/shelf&#x27;</span>);
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;heading&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/shelf/i</span> })).<span class="hljs-title function_">toBeVisible</span>();
+});
+</code></pre>
+<p>يفعل اختبار الزرع شيئين: يمرّ على أي تهيئة عامة واعتماديات مشروع يعرّفها <code>playwright.config.ts</code> لديك (ومنها مصادقة حالة التخزين)، ويمنح المخطِّط صفحة بداية يستكشف منها. شغّله مرة واحدة للتأكد من نجاحه:</p>
+<pre><code class="language-bash">npx playwright <span class="hljs-built_in">test</span> tests/seed.spec.ts --project=authenticated
+</code></pre>
+<blockquote>
+<p><strong>شرط مشروع <code>authenticated</code></strong></p>
+<p>تفترض الراية <code>--project=authenticated</code> أن كتلة مشاريع Playwright معدّة بالفعل من <a href="https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication">مختبر مصادقة حالة التخزين</a>. فالنسخة الانطلاقية المشحونة من Shelf لا تحتوي في <code>playwright.config.ts</code> على أي مشاريع ولا على أي بنية لمصادقة حالة التخزين، لذا لا يعمل هذا الأمر إلا بعد أن يُنجَز ذلك المختبر السابق.</p>
+</blockquote>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>إن فشل اختبار الزرع، فتحقّق من أن مصادقة حالة التخزين معدّة — فملف <code>playwright.config.ts</code> في Shelf يشغّل التطبيق عبر <code>webServer</code>، فلا تحتاج إلى تشغيله يدويًا. راجع <a href="https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication">مصادقة حالة التخزين</a> إن لم تكن قد أنجزت ذلك الإعداد بعد.</p>
+</blockquote>
+<h2 id="خطط-لسير-عمل-تقييم-الكتاب-على-الرف">خطّط لسير عمل تقييم الكتاب على الرفّ</h2>
+<p>اطلب من المخطِّط أن يولّد خطة اختبار لسير العمل الأساسي في Shelf: تصفّح الرفّ، وتقييم كتاب، والتحقق من أن التقييم يبقى محفوظًا. وأدرج اختبار الزرع في سياق الطلب حتى يعرف المخطِّط من أين يبدأ وأي أسلوب يتبع.</p>
+<blockquote>
+<p><strong>طلب نموذجي</strong></p>
+<p>في Claude Code، جرّب: «استخدم وكيل playwright-test-planner لتخطيط اختبارات سير عمل تقييم الكتب. اختبار الزرع في <code>tests/seed.spec.ts</code>.»</p>
+</blockquote>
+<p>سيشغّل المخطِّط متصفحًا، ويتنقّل في التطبيق، وينتج خطة Markdown في <code>specs/</code>. اقرأ المخرجات بعناية. وتحقق من أن الخطوات تطابق ما يفعله التطبيق فعلًا — فالمخطِّط يستكشف مباشرةً، لكنه قد يُفوّت أشياء أو يصف سيرًا بشكل خاطئ.</p>
+<p>أمور يجب مراقبتها في الخطة:</p>
+<ul>
+<li>هل يشير إلى مسارات الصفحات الصحيحة (<code>/shelf</code>، لا <code>/books</code>)؟</li>
+<li>هل تطابق النتائج المتوقعة نصوص واجهة Shelf الفعلية؟ («أُضيف إلى رفّك» مقابل «أُضيف الكتاب» مقابل أيًّا كان ما تقوله Shelf فعلًا.)</li>
+<li>هل تراعي نمط التفاعل الخاص بنافذة التقييم المنبثقة؟</li>
+<li>هل هناك سيناريوهات تريدها وقد فوّتها المخطِّط؟</li>
+</ul>
+<p>إن كان في الخطة خطأ أو نقص، فحرّر خطة Markdown مباشرةً قبل الانتقال إلى الخطوة التالية. فالخطة ملف عادي — عاملها كأي مواصفة تراجعها في طلب سحب.</p>
+<h2 id="ولد-الاختبارات">ولّد الاختبارات</h2>
+<p>سلّم الخطة إلى وكيل التوليد. وأدرج ملف المواصفة من <code>specs/</code> في سياق الطلب. وسينتج المولِّد ملفات اختبار تحت <code>tests/</code> تنفّذ كل سيناريو من الخطة.</p>
+<blockquote>
+<p><strong>طلب نموذجي</strong></p>
+<p>«استخدم وكيل playwright-test-generator لتوليد الاختبارات من <code>specs/&lt;your-plan&gt;.md</code>.» استخدم اسم الملف الفعلي الذي أنشأه المخطِّط في الخطوة السابقة.</p>
+</blockquote>
+<p>بعد توليد الاختبارات، اقرأها. وتحقق من:</p>
+<ul>
+<li>محدّدات <code>getByRole</code> (لا محدّدات CSS).</li>
+<li>تأكيدات <code>expect</code> بإعادة محاولة تلقائية (لا <code>textContent()</code> مع مقارنة يدوية).</li>
+<li>غياب أي استدعاءات <code>waitForTimeout</code>.</li>
+<li>تعليقات تربط كل اختبار بمواصفته وباختبار الزرع.</li>
+</ul>
+<p>إن كانت في الاختبارات المولّدة مشكلات تطابق الأنماط المضادة من الدروس السابقة — محدّدات CSS، ومهل سحرية، و<code>.first()</code> بلا تحديد نطاق — فسجّلها لكن لا تصلحها بيدك الآن. دع المُصلِح يحاول الإصلاح أولًا لتري ما يفعله وتحكم على عمله. وشغّل المجموعة أولًا:</p>
+<pre><code class="language-bash">npx playwright <span class="hljs-built_in">test</span> --project=authenticated
+</code></pre>
+<p>إن فشلت الاختبارات في هذه المرحلة، فذلك متوقّع. فالمولِّد يتحقق من المحدّدات مباشرةً لكنه لا يصيب التأكيدات دائمًا من المحاولة الأولى. وهنا يكسب المُصلِح قيمته.</p>
+<h2 id="أصلح-أي-إخفاقات">أصلح أي إخفاقات</h2>
+<p>لكل اختبار فاشل، استدعِ وكيل الإصلاح باسم الاختبار (يظهر استدلال المُصلِح وتصحيحاتُه في مخرجات أداة البرمجة لديك — ويعرض Claude Code كل خطوة وهو يعيد التشغيل، ويفحص، ويصحّح). وانتبه إلى <em>نوع</em> الإصلاح الذي يطبّقه.</p>
+<blockquote>
+<p><strong>طلب نموذجي</strong></p>
+<p>«استخدم وكيل playwright-test-healer لإصلاح الاختبار الفاشل في <code>tests/&lt;failing-spec&gt;.spec.ts</code>.»</p>
+</blockquote>
+<p>إصلاحات جيدة من المُصلِح:</p>
+<ul>
+<li>تحديث محدّد ليطابق تسمية أو دورًا تغيّر.</li>
+<li>إضافة <code>waitForResponse</code> حيث كان الاختبار ينقصه انتظار شبكة.</li>
+<li>تعديل تأكيد ليطابق نص الواجهة الفعلي.</li>
+</ul>
+<p>إصلاحات مريبة من المُصلِح:</p>
+<ul>
+<li>إضافة <code>waitForTimeout</code> (وهذا لا ينبغي أن يحدث أبدًا مع وكلاء Playwright الحاليين، لكن تحقّق).</li>
+<li>إضعاف تأكيد ليجعله ينجح (بتغيير <code>toHaveText('Thanks for rating!')</code> إلى <code>toBeVisible()</code>، مثلًا).</li>
+<li>وسم اختبار بـ <code>test.fixme()</code> دون تفسير واضح.</li>
+</ul>
+<p>إن وسم المُصلِح اختبارًا بـ <code>test.fixme()</code>، فحقّق. إما أن الميزة معطوبة في Shelf (وهذا محتمل — راجع التطبيق يدويًا) أو أن المُصلِح لم يستطع إيجاد الإصلاح الصحيح (وهذا محتمل أيضًا — أصلحه بيدك مستعينًا بالأنماط من الدورة).</p>
+<p>شغّل المجموعة كاملة مرة أخرى بعد الإصلاح. وينبغي أن يكون كل شيء أخضر:</p>
+<pre><code class="language-bash">npx playwright <span class="hljs-built_in">test</span> --project=authenticated
+</code></pre>
+<h2 id="اكسر-الواجهة-ثم-أصلحها">اكسر الواجهة، ثم أصلحها</h2>
+<p>الآن يأتي الجزء الممتع. أودِع عملك الحالي (أو أنشئ فرعًا) قبل إجراء التغيير التالي، حتى تستطيع التراجع بنظافة دون فقدان تقدّم غير ذي صلة. وأجرِ في Shelf تغييرًا مقصودًا في الواجهة يكسر الاختبارات التي ولّدتها للتوّ. اختر واحدًا مما يلي:</p>
+<ul>
+<li>غيّر اسم زر «أضف إلى الرفّ» إلى «احفظ في المكتبة» في المكوّن.</li>
+<li>غيّر نص التأكيد في نافذة التقييم المنبثقة من «شكرًا» إلى «حُفظ التقييم».</li>
+<li>انقل عنوان الرفّ من <code>h1</code> إلى <code>h2</code>.</li>
+</ul>
+<p>شغّل الاختبارات. وينبغي أن تفشل. ثم استدعِ المُصلِح على كل إخفاق وشاهده يتكيّف. وينبغي أن يحدّث المُصلِح المحدّدات أو التأكيدات لتطابق الواجهة الجديدة دون تغيير ما <em>يتحقّق منه</em> الاختبار.</p>
+<p>بعد الإصلاح، افحص الفرق. وينبغي أن تكون تصحيحات المُصلِح ضئيلة: نص متغيّر هنا، ودور محدَّث هناك. وإن أعاد المُصلِح كتابة الاختبار كله أو أضاف حلولًا ملتوية، فذلك إشارة إلى أن الاختبار الأصلي كان مقترنًا اقترانًا شديدًا بتفاصيل التنفيذ بدلًا من السلوك.</p>
+<p>وتراجع عن تغيير الواجهة حين تنتهي. وينبغي أن تفشل الاختبارات مرة أخرى (فهي الآن تطابق الواجهة <em>المتغيّرة</em>)، وأن يعيد الإصلاح مرة أخرى إلى شكلها الأصلي.</p>
+<h2 id="معايير-القبول">معايير القبول</h2>
+<ul>
+<li>تعريفات الوكلاء موجودة تحت <code>.claude/agents/</code>، وملف <code>.mcp.json</code> موجود، وكلاهما مولّد بـ <code>npx playwright init-agents --loop=claude</code>.</li>
+<li>اختبار زرع في <code>tests/seed.spec.ts</code> ينجح ويستخدم مشروع المصادقة مع <code>resetShelfContent()</code>.</li>
+<li>خطة Markdown واحدة على الأقل في <code>specs/</code> تغطّي سير عمل تقييم الكتاب على الرفّ.</li>
+<li>ملفات اختبار مولّدة موجودة تحت <code>tests/</code> مع تعليقات تربطها بمواصفاتها.</li>
+<li>الأمر <code>rg &quot;waitForTimeout&quot; tests/</code> لا يعيد شيئًا في أي اختبار ولّده وكيل.</li>
+<li>لا محدّدات CSS خام عبر <code>page.locator()</code> في الاختبارات المولّدة. فضّل المحدّدات الدلالية (<code>getByRole</code>، <code>getByLabel</code>، <code>getByText</code>)، ولا تستخدم <code>getByTestId</code> إلا كملاذ أخير.</li>
+<li>الشريحة الموثّقة المولّدة تنجح: <code>npx playwright test --project=authenticated</code> يخرج بصفر.</li>
+<li>تكون قد كسرت عنصر واجهة بنجاح، وأصلحت الاختبارات، وتحقّقت من أن تصحيح المُصلِح يطابق معايير «إصلاحات المُصلِح الجيدة» من قسم الإصلاح أعلاه.</li>
+</ul>
+<h2 id="أهداف-إضافية">أهداف إضافية</h2>
+<p>إن انتهيت مبكرًا:</p>
+<ul>
+<li>اطلب من المخطِّط أن يولّد خطة لسير عمل ثانٍ — إضافة كتاب جديد إلى الرفّ عبر صفحة البحث. وولّد اختباراته وأصلحها. وراقب كم من الخطة تحتاج إلى تحرير مقابل كم يصيب فيه المخطِّط من تلقاء نفسه.</li>
+<li>شغّل المجموعة كاملة مع <code>--repeat-each=10</code> وراقب هل يتذبذب أي من الاختبارات المولّدة بواسطة الوكيل. فإن تذبذب، شخّص السبب — أهو مشكلة محدّد، أم مشكلة توقيت، أم زرع مفقود؟ أصلحه بيدك وقارن إصلاحك بما كان المُصلِح سيفعله.</li>
+<li>جرّب المُصلِح على أحد الاختبارات المكتوبة يدويًا من المختبرات السابقة. هل يحسّن شيئًا؟ هل يكسر شيئًا؟</li>
+</ul>
+<h2 id="الشيء-الوحيد-الذي-يجب-تذكره">الشيء الوحيد الذي يجب تذكّره</h2>
+<p>يتولّى وكلاء الاختبار العمل الميكانيكي: الاستكشاف، وتوليد المحدّدات، وتصحيح المحدّدات المنزاحة. أما الحكم — ما الذي يجب اختباره، وهل الخطة منطقية، وهل تخطّي المُصلِح يعني أن الاختبار خاطئ أم أن الميزة معطوبة — فيبقى معك. استخدم الوكلاء لتُسرِع، واستخدم عينيك لتصيب.</p>
+<h2 id="قراءات-إضافية">قراءات إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/generate-and-heal-with-playwright-agents-solution">الحل</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/playwright-test-agents">وكلاء اختبار Playwright</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy">المحدّدات وتدرّج إمكانية الوصول</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story">حكاية الانتظار</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation">الحالة الحتمية وعزل الاختبارات</a></li>
+</ul>
+`,c={book:e,chapter:t,chapterTitle:n,slug:s,title:o,headings:l,html:a};export{e as book,t as chapter,n as chapterTitle,c as default,l as headings,a as html,s as slug,o as title};

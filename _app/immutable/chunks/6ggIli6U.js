@@ -1,0 +1,91 @@
+const e="tanstack-form",s="form",a="دورة TanStack Form الكاملة",o="field-level-validations",c="التحقّق من الصحة على مستوى الحقل (Field Level Validations)",n=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"التوقيت-قرار-منفصل-عن-القاعدة",text:"التوقيت قرار منفصل عن القاعدة"},{depth:3,id:"المحقق-دالة-تأخذ-القيمة-وتعيد-رسالة",text:"المحقّق دالة تأخذ القيمة وتعيد رسالة"},{depth:3,id:"أين-تصل-الأخطاء-fieldstatemeta",text:"أين تصل الأخطاء: field.state.meta"},{depth:3,id:"عرض-الخطأ-تحت-حقل-الإدخال",text:"عرض الخطأ تحت حقل الإدخال"},{depth:3,id:"تغيير-التوقيت-من-الكتابة-إلى-مغادرة-الحقل",text:"تغيير التوقيت: من الكتابة إلى مغادرة الحقل"},{depth:3,id:"محققان-على-الحقل-نفسه",text:"محقّقان على الحقل نفسه"},{depth:3,id:"زر-الإرسال-يقرأ-cansubmit",text:"زرّ الإرسال يقرأ canSubmit"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],d=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>حتى هذه اللحظة تقبل استمارتنا كل ما يُكتب فيها: اسم من حرف واحد، وحقل فارغ، وقيمة لا معنى لها. في هذا الدرس نضيف أول طبقة حماية حقيقية، وهي التحقّق من الصحة (validation) على مستوى الحقل (field): قاعدة يملكها الحقل نفسه، وتُشغَّل في اللحظة التي نختارها لا في اللحظة التي تفرضها المكتبة.</p>
+<p>سنعلن <code>validators</code> على <code>form.Field</code>، ونرى كيف تتحوّل القيمة العائدة من القاعدة إلى خطأ، وأين تتجمّع الأخطاء في <code>field.state.meta</code>، وكيف نعرضها تحت حقل الإدخال. ثم نغيّر توقيت التشغيل من الكتابة إلى مغادرة الحقل، ونجمع محقّقَين على الحقل نفسه. وننتهي بأثر مرئي مباشر: زرّ إرسال يعطّل نفسه ما دام في الاستمارة خطأ.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="التوقيت-قرار-منفصل-عن-القاعدة">التوقيت قرار منفصل عن القاعدة</h3>
+<p>التحقّق من الصحة سؤالان لا سؤال واحد: ما الذي يُعدّ خطأً؟ ومتى نسأل؟ يخلط كثير من المكتبات بينهما وتفرض عليك فحصًا عند كل تغيير، أما TanStack Form فيفصلهما: الحقل يقبل كائن <code>validators</code>، ومفاتيح هذا الكائن هي نفسها لحظات التشغيل. <code>onChange</code> تعني مع كل ضغطة مفتاح، <code>onBlur</code> تعني عند خروج التركيز من الحقل، <code>onSubmit</code> تعني عند الإرسال. ولكل واحدة أخ غير متزامن (<code>onChangeAsync</code> و<code>onBlurAsync</code> و<code>onSubmitAsync</code>) حين يحتاج الفحص إلى نداء شبكة، ولاحقًا <code>onDynamic</code> لقواعد تتغيّر بحقل آخر.</p>
+<p>لماذا هذا الفصل مهم؟ لأن ثمن الفحص يختلف باختلاف القاعدة. فحص طول النص عملية رخيصة، ولا ضير في تشغيلها مع كل حرف. أما التحقّق من أن بريدًا غير مسجّل لدى الخادم فهو نداء شبكة، وتشغيله مع كل ضغطة مفتاح يعني إغراق الخادم بطلبات لا لزوم لها. تسمية المفتاح هي التصريح بالتوقيت، فلا حاجة إلى رايات ولا إلى حالة إضافية تديرها بنفسك.</p>
+<h3 id="المحقق-دالة-تأخذ-القيمة-وتعيد-رسالة">المحقّق دالة تأخذ القيمة وتعيد رسالة</h3>
+<p>نبدأ بأبسط قاعدة: الاسم الأول لا يقبل أقل من حرفين. نضيف داخل كائن <code>validators</code> المدخل التالي:</p>
+<pre><code class="language-tsx">            <span class="hljs-attr">onChange</span>: <span class="hljs-function">(<span class="hljs-params">{ value }</span>) =&gt;</span> {
+              <span class="hljs-keyword">if</span> (value.<span class="hljs-property">length</span> &lt; <span class="hljs-number">2</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;First name must be at least 2 characters&quot;</span>;
+              }
+            },
+</code></pre>
+<p>الدالة تستقبل كائنًا واحدًا نفكّ منه <code>value</code>، وهي القيمة الحالية للحقل. فإن كان طولها أقل من اثنين أعدنا نصًّا، وهذا كل شيء. لاحظ ما لا يوجد هنا: لا استدعاء لدالة تُثبّت الخطأ، ولا <code>setError</code>. القيمة العائدة هي الخطأ، وإن انتهت الدالة دون أن تعيد شيئًا فالقاعدة مرّت. فتصير القاعدة دالة نقية تُختبر وحدها وتُنقل إلى ملف آخر بلا اعتماد على الاستمارة.</p>
+<p>والرسالة نفسها من تأليفك: المكتبة لا تعرف أن الاسم يجب أن يكون حرفين، ولا تعرف لغتك. اكتبها بالعربية إن أردت، فالفرع يكتبها بالإنجليزية لأن واجهته كلها إنجليزية، ولن يتغيّر السلوك.</p>
+<h3 id="أين-تصل-الأخطاء-fieldstatemeta">أين تصل الأخطاء: <code>field.state.meta</code></h3>
+<p>نُعيد طباعة بيانات الحقل التي عرفناها في درس سابق، فنرى ما أضافه المحقّق إليها:</p>
+<pre><code class="language-tsx">                &lt;pre&gt;{<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(field.<span class="hljs-property">state</span>.<span class="hljs-property">meta</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>)}&lt;/pre&gt;
+</code></pre>
+<p>تظهر الأخطاء في ثلاثة أماكن مختلفة، ولكل مكان وظيفة:</p>
+<ul>
+<li><code>errors</code>: مصفوفة، وليست نصًّا واحدًا. السبب مباشر: الحقل قد يحمل أكثر من محقّق، وكل محقّق فاشل يضيف عنصرًا. ولذلك يظهر في الصورة عنصران لا عنصر.</li>
+<li><code>errorMap</code>: كائن مفتاحه اسم المحقّق الذي أنتج الخطأ، أي <code>onChange</code> أو <code>onBlur</code> هنا. يفيدك حين تريد صياغة مختلفة لكل توقيت.</li>
+<li><code>errorSourceMap</code>: يخبرك من أين جاء الخطأ: من الحقل نفسه أم من محقّق على مستوى الاستمارة. في هذا الدرس القيمة <code>field</code> في الحالتين، لأن كل القواعد معلنة على الحقل.</li>
+</ul>
+<p>إلى جانبها <code>isValid</code>، وهو حاصل جمع ما سبق: يصير <code>false</code> بمجرّد أن تحمل المصفوفة خطأً. وأعلام الدرس السابق (<code>isTouched</code> و<code>isBlurred</code> و<code>isDirty</code>) لا تتأثّر بالتحقّق، بل تسجّل تفاعل المستخدم.</p>
+<h3 id="عرض-الخطأ-تحت-حقل-الإدخال">عرض الخطأ تحت حقل الإدخال</h3>
+<p>البيانات وحدها لا تكفي؛ يجب أن يرى المستخدم الرسالة. نضيف بعد عنصر <code>input</code> شرطًا يعتمد على <code>isValid</code>:</p>
+<pre><code class="language-tsx">                {!field.<span class="hljs-property">state</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">isValid</span> &amp;&amp; (
+                  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-red-500 mt-2&quot;</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;alert&quot;</span>&gt;</span>
+                    {field.state.meta.errors.join(&quot;, &quot;)}
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+                )}
+</code></pre>
+<p>ثلاثة قرارات في هذه الكتلة الصغيرة. الأول أن الشرط <code>!isValid</code> لا <code>errors.length</code>: كلاهما يعمل، لكن <code>isValid</code> يقرأ النتيجة النهائية للحقل بدل أن يعيد الحساب يدويًا. الثاني أن <code>errors</code> مصفوفة، فتحتاج إلى تحويلها إلى نص قبل العرض، و<code>join(&quot;, &quot;)</code> تفعل ذلك وتفصل بين الرسائل بفاصلة. الثالث <code>role=&quot;alert&quot;</code>، وهو ما يجعل قارئ الشاشة يعلن الرسالة عند ظهورها بدل أن يتركها تغييرًا صامتًا في الصفحة.</p>
+<p>والفرق بين <code>isValid</code> و<code>isTouched</code> هنا جوهري، لأن كليهما موجود في <code>meta</code> لكنهما يجيبان عن سؤالين. <code>isValid</code> يقول: هل يوجد خطأ الآن؟ و<code>isTouched</code> يقول: هل لمس المستخدم الحقل؟ الشرط في هذا الفرع يستعمل <code>isValid</code> وحده، أي أن الرسالة تظهر بمجرّد أن يعيد المحقّق خطأً، لا بمجرّد أن يغادر المستخدم الحقل. فإن أردت تأجيل التوبيخ حتى يبدأ المستخدم فعلًا جمعت الشرطين، وسنجرّب ذلك في التمارين.</p>
+<h3 id="تغيير-التوقيت-من-الكتابة-إلى-مغادرة-الحقل">تغيير التوقيت: من الكتابة إلى مغادرة الحقل</h3>
+<p>لنفترض أن الفحص عند كل حرف يزعج المستخدم، أو أنه مكلف. ننقل القاعدة إلى مفتاح آخر داخل الكائن نفسه:</p>
+<pre><code class="language-tsx">            <span class="hljs-attr">onBlur</span>: <span class="hljs-function">(<span class="hljs-params">{ value }</span>) =&gt;</span> {
+              <span class="hljs-keyword">if</span> (value !== <span class="hljs-string">&quot;John&quot;</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Your name must be John.&quot;</span>;
+              }
+            },
+</code></pre>
+<p>الآن لن يحدث شيء أثناء الكتابة: يمكنك أن تكتب حرفًا واحدًا وتبقى في الحقل فلا تظهر رسالة. وبمجرّد أن تخرج منه يعمل المحقّق مرة واحدة، فإن لم يكن الاسم <code>John</code> ظهرت الرسالة.</p>
+<p>لكن هذا التوقيت لا يعمل من تلقاء نفسه، بل بسبب سطر موجود في حقل الإدخال: <code>onBlur={field.handleBlur}</code>. لو حذفته لما عرف الحقل أن التركيز خرج، ولما عمل المحقّق أبدًا. وبالمثل يبقى <code>onChange={field.handleChange}</code> ضروريًا مهما كان توقيت التحقّق، لأن التغيير يجب أن يصل إلى الاستمارة أولًا حتى يكون هناك ما يُفحص. القاعدة العامة: اسم المفتاح في <code>validators</code> يحدّد متى يُفحص، ومعالج الحدث في عنصر <code>input</code> هو ما يجعل الحدث يصل إلى الحقل.</p>
+<h3 id="محققان-على-الحقل-نفسه">محقّقان على الحقل نفسه</h3>
+<p>لا يمنعك شيء من الجمع بين التوقيتين، وهذا ما يستقرّ عليه الفرع في نهايته: <code>onChange</code> يفحص الطول أثناء الكتابة، و<code>onBlur</code> يفحص شرطًا آخر عند المغادرة. النتيجة أن <code>errors</code> تحمل الخطأين معًا، و<code>errorMap</code> تحملهما تحت مفتاحَيهما. وهنا الفرق العملي بين المصفوفة والخريطة: الأولى تجيب «ما كل ما يمنع صحّة الحقل؟»، والثانية تجيب «أيّ محقّق اعترض، وبأيّ رسالة؟».</p>
+<p>وقد يبدو شرط <code>onBlur</code> في هذا الفرع تعسّفيًا، وهو كذلك فعلًا: الغرض تعليمي، أي أن نرى خطأين من مصدرين مختلفين. المهم الأثر: أي خطأ من أي محقّق يجعل <code>isValid</code> كاذبًا، وتعرض المنطقة الحمراء الرسالتين معًا بعد <code>join</code>.</p>
+<h3 id="زر-الإرسال-يقرأ-cansubmit">زرّ الإرسال يقرأ <code>canSubmit</code></h3>
+<p>بقي أن نمنع إرسال استمارة مليئة بالأخطاء. لا نقرأ <code>form.state</code> أثناء التصيير، لأن الدرس السابق أثبت أن تلك القراءة تعطي صورة قديمة؛ بل نشترك في العلم الذي يهمّنا وحده:</p>
+<pre><code class="language-tsx">        &lt;form.<span class="hljs-property">Subscribe</span> selector={<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> state.<span class="hljs-property">canSubmit</span>}&gt;
+          {<span class="hljs-function">(<span class="hljs-params">canSubmit</span>) =&gt;</span> (
+            <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+              <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!canSubmit}</span>
+              <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-yellow-500 text-black p-2 mt-4 disabled:opacity-40 disabled:cursor-not-allowed&quot;</span>
+              <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>
+            &gt;</span>
+              Submit
+            <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+          )}
+        &lt;/form.<span class="hljs-property">Subscribe</span>&gt;
+</code></pre>
+<p>دالة المحدِّد (<code>selector</code>) تختار <code>state.canSubmit</code> وحده، فلا يُعاد تصيير الزرّ عند تغيّر أي شيء آخر في الاستمارة، وهذا معنى الاشتراك: أن تدفع ثمن ما تحتاجه فقط. و<code>canSubmit</code> يصير <code>false</code> حين يكون في الاستمارة حقل غير صالح، فيعطّل <code>disabled</code> الزرّ، وتُخفّف أدوات Tailwind مظهره عبر <code>disabled:opacity-40</code> وتُبدّل المؤشّر عبر <code>disabled:cursor-not-allowed</code>.</p>
+<p>وثمّة تفصيل يستحقّ الانتباه: <code>canSubmit</code> لا يصير <code>false</code> من أول تحميل الصفحة، بل يبقى <code>true</code> حتى يتفاعل المستخدم مع الاستمارة ولو كانت بعض الحقول مخالفة لقواعدها. فإذا فتحت الصفحة والاسم فارغ بدا الزرّ مفعّلًا، وينقلب إلى <code>false</code> بمجرّد أن تبدأ الكتابة وتُشغَّل القاعدة. وثانيًا، توقيت <code>onBlur</code> لا يعني أن الإرسال يفلت من الفحص: المحقّقات تُشغَّل أيضًا عند محاولة الإرسال حين تكون الاستمارة غير صالحة، فيعود الخطأ ويُمنع الإرسال.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--field-level-validations--field-error.png" alt="كتلة بيانات الحقل الوصفية وفيها مصفوفة الأخطاء وخريطتا الأخطاء ومصدرها، وتحتها حقل الاسم الأول وفيه حرف واحد ورسالتا خطأ بالأحمر، ثم بقية الحقول وزرّ إرسال باهت"></p>
+<p>في أعلى الصورة كتلة بيانات الحقل مطبوعة كما هي: <code>isValid</code> كاذبة، و<code>errors</code> مصفوفة تحمل <code>&quot;First name must be at least 2 characters&quot;</code> و<code>&quot;Your name must be John.&quot;</code>، و<code>errorMap</code> تحمل الرسالتين تحت مفتاحَي <code>onChange</code> و<code>onBlur</code>، و<code>errorSourceMap</code> تشير إلى <code>field</code> في الحالتين، وإلى جانبها أعلام التفاعل: <code>isTouched</code> و<code>isBlurred</code> و<code>isDirty</code> صحيحة.</p>
+<p>تحت الكتلة حقل الاسم الأول وفيه الحرف <code>A</code>، وتحته سطر أحمر بالرسالتين مجتمعتين بفاصلة، ثم بقية الحقول: الاسم الأخير، والشارع، والمهارات الثلاث بمستواها الافتراضي، ومربّع الشروط غير المحدّد، وزرّ الإرسال الباهت لأن <code>canSubmit</code> كاذبة. وأسفل الصفحة كتلة القيم، وفيها <code>firstName</code> بالحرف نفسه.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>أضف <code>field.state.meta.isTouched</code> إلى شرط عرض الخطأ، ثم اكتب حرفًا واحدًا وابقَ داخل الحقل: الخطأ موجود في <code>meta</code> لكنه لا يظهر حتى تخرج من الحقل.</li>
+<li>احذف مفتاح <code>onChange</code> وأبقِ <code>onBlur</code> وحده، ثم اكتب اسمًا من حرف واحد وابقَ في الحقل، ولاحظ أن السطر الأحمر لا يظهر إلا عند المغادرة.</li>
+<li>استبدل <code>errors.join(&quot;, &quot;)</code> بـ<code>field.state.meta.errorMap.onChange</code> وحدها. ستختفي رسالة <code>onBlur</code> من الشاشة مع بقائها في <code>meta</code> وبقاء الزرّ معطّلًا، وهذا يبيّن الفرق بين ما تعرضه وما تحكم به الاستمارة.</li>
+<li>غيّر الحدّ من حرفين إلى ثلاثة، ثم اكتب حرفين: تظهر الرسالة ويبقى الزرّ معطّلًا. أكمل الحرف الثالث فيختفي خطأ الطول، ويبقى خطأ <code>onBlur</code> حتى تكتب <code>John</code> فيعود الزرّ مفعّلًا.</li>
+<li>استبدل <code>disabled={!canSubmit}</code> بـ<code>aria-disabled={!canSubmit}</code> مع إبقاء التنسيق، وستجد الزرّ ما زال قابلًا للنقر لأن <code>aria-disabled</code> يعلن الحالة ولا يمنع الفعل؛ فإن أردت المنع فعلًا أضفت فحصًا قبل <code>form.handleSubmit</code>.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=2651s">فيديو الدرس: Field Level Validations</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/validation-1">شيفرة الدرس: فرع validation-1</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/guides/validation">التوثيق الرسمي: التحقّق من صحة النماذج والحقول</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/overview">التوثيق الرسمي: نظرة عامة على TanStack Form</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Field Level Validations» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي، وما أضافه المعدّ من توضيح لا يُنسب إلى المؤلف.</p>
+</blockquote>
+`,t={book:e,chapter:s,chapterTitle:a,slug:o,title:c,headings:n,html:d};export{e as book,s as chapter,a as chapterTitle,t as default,n as headings,d as html,o as slug,c as title};

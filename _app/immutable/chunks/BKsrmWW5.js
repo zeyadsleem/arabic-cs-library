@@ -1,0 +1,1170 @@
+const s="kinney",a="react-performance",n="أداء React",l="production-performance-monitoring",p="مراقبة الأداء في الإنتاج",t=[{depth:2,id:"فهم-المراقبة-الحقيقية-للمستخدمين-rum",text:"فهم المراقبة الحقيقية للمستخدمين (RUM)"},{depth:2,id:"تنفيذ-مراقبة-مؤشرات-الويب-الأساسية",text:"تنفيذ مراقبة مؤشرات الويب الأساسية"},{depth:3,id:"دمج-مكتبة-web-vitals",text:"دمج مكتبة Web Vitals"},{depth:3,id:"مراقبة-الأداء-الخاصة-بـ-react",text:"مراقبة الأداء الخاصة بـ React"},{depth:2,id:"الربط-بين-الأخطاء-والأداء",text:"الربط بين الأخطاء والأداء"},{depth:2,id:"نظام-التنبيهات-على-الأداء",text:"نظام التنبيهات على الأداء"},{depth:2,id:"الدمج-مع-التحليلات",text:"الدمج مع التحليلات"},{depth:2,id:"لوحة-المعلومات-والتقارير",text:"لوحة المعلومات والتقارير"}],e=`<p>تطبيق React لديك يجتاز كل اختبارات الأداء في التطوير، ويحصد درجات Lighthouse كاملة في CI، ويبدو فائق السرعة على حاسوبك المحمول. ثم تنشره إلى الإنتاج لتكتشف الواقع القاسي: مستخدموك على أجهزة بطيئة، وشبكات غير موثوقة، ومتصفحات قديمة. فتحميل الصفحة في ثانيتين يصير ثماني ثوانٍ على جهاز Moto G4 عبر شبكة 3G في الهند. ومن دون مراقبة أداء الإنتاج، فأنت تطير على غير هدى.</p>
+<p>تسدّ المراقبة الحقيقية للمستخدمين (RUM) الفجوة بين الاختبارات الاصطناعية وتجربة المستخدم الفعلية. فهي تلتقط بيانات الأداء من مستخدمين حقيقيين عبر أجهزة حقيقية، وشبكات حقيقية، وأنماط استخدام حقيقية. وتكشف هذه البيانات مشكلات أداء تفوت الاختبارات الاصطناعية: عربة التسوّق البطيئة فقط حين تحتوي أكثر من 50 عنصرًا، أو البحث الذي يتدهور مع المستخدمين المتزامنين، أو علّة iOS التي لا تصيب إلا Safari 14.1.</p>
+<h2 id="فهم-المراقبة-الحقيقية-للمستخدمين-rum">فهم المراقبة الحقيقية للمستخدمين (RUM)</h2>
+<p>تجمع المراقبة الحقيقية للمستخدمين مقاييس الأداء من جلسات مستخدمين فعلية، وتقدّم لك رؤى حول كيفية أداء تطبيق React لديك في العالم الحقيقي:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Real User Monitoring architecture</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">RUMData</span> {
+  <span class="hljs-comment">// Core Web Vitals - Google&#x27;s user experience metrics</span>
+  <span class="hljs-attr">vitals</span>: {
+    <span class="hljs-attr">LCP</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Largest Contentful Paint</span>
+    <span class="hljs-attr">FID</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// First Input Delay</span>
+    <span class="hljs-attr">CLS</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Cumulative Layout Shift</span>
+    <span class="hljs-attr">FCP</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// First Contentful Paint</span>
+    <span class="hljs-attr">TTFB</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Time to First Byte</span>
+  };
+
+  <span class="hljs-comment">// React-specific metrics</span>
+  <span class="hljs-attr">react</span>: {
+    <span class="hljs-attr">renderTime</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Component render duration</span>
+    <span class="hljs-attr">hydrationTime</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// SSR hydration duration</span>
+    <span class="hljs-attr">bundleSize</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// JavaScript bundle size</span>
+    <span class="hljs-attr">componentCount</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Number of components rendered</span>
+    <span class="hljs-attr">reRenderCount</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Unnecessary re-renders</span>
+  };
+
+  <span class="hljs-comment">// User context</span>
+  <span class="hljs-attr">context</span>: {
+    <span class="hljs-attr">userId</span>?: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">sessionId</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">userAgent</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">viewport</span>: { <span class="hljs-attr">width</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">height</span>: <span class="hljs-built_in">number</span> };
+    <span class="hljs-attr">connection</span>: <span class="hljs-string">&#x27;slow-2g&#x27;</span> | <span class="hljs-string">&#x27;2g&#x27;</span> | <span class="hljs-string">&#x27;3g&#x27;</span> | <span class="hljs-string">&#x27;4g&#x27;</span> | <span class="hljs-string">&#x27;wifi&#x27;</span>;
+    <span class="hljs-attr">deviceMemory</span>?: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">hardwareConcurrency</span>?: <span class="hljs-built_in">number</span>;
+  };
+
+  <span class="hljs-comment">// Page context</span>
+  <span class="hljs-attr">page</span>: {
+    <span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">referrer</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">loadType</span>: <span class="hljs-string">&#x27;navigation&#x27;</span> | <span class="hljs-string">&#x27;reload&#x27;</span> | <span class="hljs-string">&#x27;back-forward&#x27;</span>;
+    <span class="hljs-attr">route</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">timestamp</span>: <span class="hljs-built_in">number</span>;
+  };
+}
+</code></pre>
+<p>وبخلاف المراقبة الاصطناعية التي تعمل في بيئات مضبوطة، تلتقط المراقبة الحقيقية للمستخدمين فوضى الاستخدام في العالم الواقعي: مستخدمون على شبكات بطيئة، وأجهزة قديمة، مع إضافات للمتصفح، وبرامج مكافحة فيروسات، وعشرات من علامات التبويب الأخرى المفتوحة.</p>
+<h2 id="تنفيذ-مراقبة-مؤشرات-الويب-الأساسية">تنفيذ مراقبة مؤشرات الويب الأساسية</h2>
+<h3 id="دمج-مكتبة-web-vitals">دمج مكتبة Web Vitals</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// rum/web-vitals-collector.ts</span>
+<span class="hljs-keyword">import</span> { getLCP, getFID, getCLS, getFCP, getTTFB } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;web-vitals&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">WebVitalMetric</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">value</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">delta</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">rating</span>: <span class="hljs-string">&#x27;good&#x27;</span> | <span class="hljs-string">&#x27;needs-improvement&#x27;</span> | <span class="hljs-string">&#x27;poor&#x27;</span>;
+  <span class="hljs-attr">entries</span>: <span class="hljs-title class_">PerformanceEntry</span>[];
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">WebVitalsCollector</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">metrics</span>: <span class="hljs-title class_">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">WebVitalMetric</span>&gt; = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();
+  <span class="hljs-keyword">private</span> isEnabled = <span class="hljs-literal">true</span>;
+
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
+    <span class="hljs-keyword">private</span> <span class="hljs-attr">config</span>: {
+      sampleRate?: <span class="hljs-built_in">number</span>;
+      endpoint?: <span class="hljs-built_in">string</span>;
+      debug?: <span class="hljs-built_in">boolean</span>;
+    } = {},
+  </span>) {
+    <span class="hljs-comment">// Sample only a percentage of users to manage data volume</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">isEnabled</span> = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() &lt; (config.<span class="hljs-property">sampleRate</span> || <span class="hljs-number">0.1</span>);
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">isEnabled</span>) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setupCollection</span>();
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">setupCollection</span>(): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// Largest Contentful Paint</span>
+    <span class="hljs-title function_">getLCP</span>(<span class="hljs-function">(<span class="hljs-params">metric</span>) =&gt;</span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">collectMetric</span>(metric);
+
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">debug</span>) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">highlightLCPElement</span>(metric);
+      }
+    });
+
+    <span class="hljs-comment">// First Input Delay</span>
+    <span class="hljs-title function_">getFID</span>(<span class="hljs-function">(<span class="hljs-params">metric</span>) =&gt;</span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">collectMetric</span>(metric);
+    });
+
+    <span class="hljs-comment">// Cumulative Layout Shift</span>
+    <span class="hljs-title function_">getCLS</span>(<span class="hljs-function">(<span class="hljs-params">metric</span>) =&gt;</span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">collectMetric</span>(metric);
+
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">debug</span>) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">logLayoutShifts</span>(metric);
+      }
+    });
+
+    <span class="hljs-comment">// First Contentful Paint</span>
+    <span class="hljs-title function_">getFCP</span>(<span class="hljs-function">(<span class="hljs-params">metric</span>) =&gt;</span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">collectMetric</span>(metric);
+    });
+
+    <span class="hljs-comment">// Time to First Byte</span>
+    <span class="hljs-title function_">getTTFB</span>(<span class="hljs-function">(<span class="hljs-params">metric</span>) =&gt;</span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">collectMetric</span>(metric);
+    });
+
+    <span class="hljs-comment">// Send metrics when page is unloaded</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setupBeaconSending</span>();
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">collectMetric</span>(<span class="hljs-attr">metric</span>: <span class="hljs-title class_">WebVitalMetric</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span>.<span class="hljs-title function_">set</span>(metric.<span class="hljs-property">name</span>, metric);
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">debug</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`📊 <span class="hljs-subst">\${metric.name}</span>: <span class="hljs-subst">\${metric.value}</span>ms (<span class="hljs-subst">\${metric.rating}</span>)\`</span>);
+    }
+
+    <span class="hljs-comment">// Send individual metric immediately for critical issues</span>
+    <span class="hljs-keyword">if</span> (metric.<span class="hljs-property">rating</span> === <span class="hljs-string">&#x27;poor&#x27;</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">endpoint</span>) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">sendMetric</span>(metric);
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">highlightLCPElement</span>(<span class="hljs-attr">metric</span>: <span class="hljs-title class_">WebVitalMetric</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// Highlight the LCP element in development</span>
+    <span class="hljs-keyword">const</span> lcpEntry = metric.<span class="hljs-property">entries</span>[metric.<span class="hljs-property">entries</span>.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>;
+    <span class="hljs-keyword">if</span> (lcpEntry?.<span class="hljs-property">element</span>) {
+      lcpEntry.<span class="hljs-property">element</span>.<span class="hljs-property">style</span>.<span class="hljs-property">outline</span> = <span class="hljs-string">&#x27;3px solid red&#x27;</span>;
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;🎯 LCP Element:&#x27;</span>, lcpEntry.<span class="hljs-property">element</span>);
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">logLayoutShifts</span>(<span class="hljs-attr">metric</span>: <span class="hljs-title class_">WebVitalMetric</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// Log layout shift sources</span>
+    metric.<span class="hljs-property">entries</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">entry</span>: <span class="hljs-built_in">any</span></span>) =&gt;</span> {
+      <span class="hljs-keyword">if</span> (entry.<span class="hljs-property">sources</span>) {
+        entry.<span class="hljs-property">sources</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">source</span>: <span class="hljs-built_in">any</span></span>) =&gt;</span> {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;📏 Layout shift source:&#x27;</span>, source.<span class="hljs-property">node</span>);
+        });
+      }
+    });
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">setupBeaconSending</span>(): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// Send data when user leaves the page</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">sendBeacon</span> = (<span class="hljs-params"></span>) =&gt; {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">sendAllMetrics</span>();
+    };
+
+    <span class="hljs-comment">// Multiple events to catch page unload</span>
+    <span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;beforeunload&#x27;</span>, sendBeacon);
+    <span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;pagehide&#x27;</span>, sendBeacon);
+    <span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;visibilitychange&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">document</span>.<span class="hljs-property">visibilityState</span> === <span class="hljs-string">&#x27;hidden&#x27;</span>) {
+        <span class="hljs-title function_">sendBeacon</span>();
+      }
+    });
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">sendMetric</span>(<span class="hljs-attr">metric</span>: <span class="hljs-title class_">WebVitalMetric</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">endpoint</span>) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">const</span> payload = {
+      metric,
+      <span class="hljs-attr">context</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getContext</span>(),
+      <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+    };
+
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-comment">// Use sendBeacon for reliability</span>
+      <span class="hljs-keyword">if</span> (navigator.<span class="hljs-property">sendBeacon</span>) {
+        navigator.<span class="hljs-title function_">sendBeacon</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">endpoint</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(payload));
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// Fallback to fetch with keepalive</span>
+        <span class="hljs-title function_">fetch</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">endpoint</span>, {
+          <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+          <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(payload),
+          <span class="hljs-attr">headers</span>: { <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span> },
+          <span class="hljs-attr">keepalive</span>: <span class="hljs-literal">true</span>,
+        }).<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =&gt;</span> {
+          <span class="hljs-comment">// Fail silently to avoid affecting user experience</span>
+        });
+      }
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-comment">// Fail silently</span>
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">sendAllMetrics</span>(): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">endpoint</span> || <span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span>.<span class="hljs-property">size</span> === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">const</span> payload = {
+      <span class="hljs-attr">metrics</span>: <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">fromEntries</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span>),
+      <span class="hljs-attr">context</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getContext</span>(),
+      <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+    };
+
+    <span class="hljs-keyword">if</span> (navigator.<span class="hljs-property">sendBeacon</span>) {
+      navigator.<span class="hljs-title function_">sendBeacon</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">endpoint</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(payload));
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">getContext</span>(): <span class="hljs-built_in">any</span> {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">url</span>: location.<span class="hljs-property">href</span>,
+      <span class="hljs-attr">userAgent</span>: navigator.<span class="hljs-property">userAgent</span>,
+      <span class="hljs-attr">viewport</span>: {
+        <span class="hljs-attr">width</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>,
+        <span class="hljs-attr">height</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>,
+      },
+      <span class="hljs-attr">connection</span>: (navigator <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">connection</span>?.<span class="hljs-property">effectiveType</span>,
+      <span class="hljs-attr">deviceMemory</span>: (navigator <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">deviceMemory</span>,
+      <span class="hljs-attr">hardwareConcurrency</span>: navigator.<span class="hljs-property">hardwareConcurrency</span>,
+      <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+    };
+  }
+
+  <span class="hljs-title function_">getMetrics</span>(): <span class="hljs-title class_">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">WebVitalMetric</span>&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span>);
+  }
+}
+
+<span class="hljs-comment">// Initialize Web Vitals collection</span>
+<span class="hljs-keyword">const</span> webVitalsCollector = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebVitalsCollector</span>({
+  <span class="hljs-attr">sampleRate</span>: <span class="hljs-number">0.1</span>, <span class="hljs-comment">// Monitor 10% of users</span>
+  <span class="hljs-attr">endpoint</span>: <span class="hljs-string">&#x27;/api/vitals&#x27;</span>,
+  <span class="hljs-attr">debug</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;development&#x27;</span>,
+});
+</code></pre>
+<h3 id="مراقبة-الأداء-الخاصة-بـ-react">مراقبة الأداء الخاصة بـ React</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// rum/react-performance-monitor.ts</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Profiler</span>, <span class="hljs-title class_">ProfilerOnRenderCallback</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ReactPerformanceData</span> {
+  <span class="hljs-attr">componentName</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">phase</span>: <span class="hljs-string">&#x27;mount&#x27;</span> | <span class="hljs-string">&#x27;update&#x27;</span>;
+  <span class="hljs-attr">actualDuration</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">baseDuration</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">startTime</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">commitTime</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">interactions</span>: <span class="hljs-title class_">Set</span>&lt;<span class="hljs-built_in">any</span>&gt;;
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ReactPerformanceMonitor</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">renderData</span>: <span class="hljs-title class_">ReactPerformanceData</span>[] = [];
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">slowRenders</span>: <span class="hljs-title class_">ReactPerformanceData</span>[] = [];
+  <span class="hljs-keyword">private</span> componentCounts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">number</span>&gt;();
+
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
+    <span class="hljs-keyword">private</span> <span class="hljs-attr">config</span>: {
+      slowRenderThreshold?: <span class="hljs-built_in">number</span>;
+      maxDataPoints?: <span class="hljs-built_in">number</span>;
+      reportingEndpoint?: <span class="hljs-built_in">string</span>;
+    } = {},
+  </span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">slowRenderThreshold</span> = config.<span class="hljs-property">slowRenderThreshold</span> || <span class="hljs-number">16</span>; <span class="hljs-comment">// 60fps</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">maxDataPoints</span> = config.<span class="hljs-property">maxDataPoints</span> || <span class="hljs-number">1000</span>;
+  }
+
+  <span class="hljs-title function_">createProfilerCallback</span>(<span class="hljs-attr">componentName</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">ProfilerOnRenderCallback</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">id, phase, actualDuration, baseDuration, startTime, commitTime, interactions</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> <span class="hljs-attr">renderData</span>: <span class="hljs-title class_">ReactPerformanceData</span> = {
+        componentName,
+        phase,
+        actualDuration,
+        baseDuration,
+        startTime,
+        commitTime,
+        interactions,
+      };
+
+      <span class="hljs-comment">// Track render data</span>
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderData</span>.<span class="hljs-title function_">push</span>(renderData);
+
+      <span class="hljs-comment">// Track component render counts</span>
+      <span class="hljs-keyword">const</span> currentCount = <span class="hljs-variable language_">this</span>.<span class="hljs-property">componentCounts</span>.<span class="hljs-title function_">get</span>(componentName) || <span class="hljs-number">0</span>;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">componentCounts</span>.<span class="hljs-title function_">set</span>(componentName, currentCount + <span class="hljs-number">1</span>);
+
+      <span class="hljs-comment">// Flag slow renders</span>
+      <span class="hljs-keyword">if</span> (actualDuration &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">slowRenderThreshold</span>!) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">slowRenders</span>.<span class="hljs-title function_">push</span>(renderData);
+
+        <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;development&#x27;</span>) {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(
+            <span class="hljs-string">\`🐌 Slow render detected in <span class="hljs-subst">\${componentName}</span>: <span class="hljs-subst">\${actualDuration.toFixed(<span class="hljs-number">2</span>)}</span>ms\`</span>,
+          );
+        }
+      }
+
+      <span class="hljs-comment">// Limit data to prevent memory leaks</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">renderData</span>.<span class="hljs-property">length</span> &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">maxDataPoints</span>!) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderData</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderData</span>.<span class="hljs-title function_">slice</span>(-<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">maxDataPoints</span>! / <span class="hljs-number">2</span>);
+      }
+
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">slowRenders</span>.<span class="hljs-property">length</span> &gt; <span class="hljs-number">100</span>) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">slowRenders</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">slowRenders</span>.<span class="hljs-title function_">slice</span>(-<span class="hljs-number">50</span>);
+      }
+    };
+  }
+
+  <span class="hljs-title function_">generateReport</span>(): {
+    <span class="hljs-attr">totalRenders</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">slowRenders</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">averageRenderTime</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">slowestComponents</span>: <span class="hljs-title class_">Array</span>&lt;{ <span class="hljs-attr">component</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">avgTime</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">count</span>: <span class="hljs-built_in">number</span> }&gt;;
+    <span class="hljs-attr">recommendations</span>: <span class="hljs-built_in">string</span>[];
+  } {
+    <span class="hljs-keyword">const</span> totalRenders = <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderData</span>.<span class="hljs-property">length</span>;
+    <span class="hljs-keyword">const</span> slowRenderCount = <span class="hljs-variable language_">this</span>.<span class="hljs-property">slowRenders</span>.<span class="hljs-property">length</span>;
+
+    <span class="hljs-keyword">const</span> avgRenderTime =
+      totalRenders &gt; <span class="hljs-number">0</span>
+        ? <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderData</span>.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">sum, data</span>) =&gt;</span> sum + data.<span class="hljs-property">actualDuration</span>, <span class="hljs-number">0</span>) / totalRenders
+        : <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">// Analyze slowest components</span>
+    <span class="hljs-keyword">const</span> componentStats = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&lt;<span class="hljs-built_in">string</span>, { <span class="hljs-attr">totalTime</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">count</span>: <span class="hljs-built_in">number</span> }&gt;();
+
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderData</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> existing = componentStats.<span class="hljs-title function_">get</span>(data.<span class="hljs-property">componentName</span>) || { <span class="hljs-attr">totalTime</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">count</span>: <span class="hljs-number">0</span> };
+      componentStats.<span class="hljs-title function_">set</span>(data.<span class="hljs-property">componentName</span>, {
+        <span class="hljs-attr">totalTime</span>: existing.<span class="hljs-property">totalTime</span> + data.<span class="hljs-property">actualDuration</span>,
+        <span class="hljs-attr">count</span>: existing.<span class="hljs-property">count</span> + <span class="hljs-number">1</span>,
+      });
+    });
+
+    <span class="hljs-keyword">const</span> slowestComponents = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(componentStats.<span class="hljs-title function_">entries</span>())
+      .<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">[component, stats]</span>) =&gt;</span> ({
+        component,
+        <span class="hljs-attr">avgTime</span>: stats.<span class="hljs-property">totalTime</span> / stats.<span class="hljs-property">count</span>,
+        <span class="hljs-attr">count</span>: stats.<span class="hljs-property">count</span>,
+      }))
+      .<span class="hljs-title function_">sort</span>(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> b.<span class="hljs-property">avgTime</span> - a.<span class="hljs-property">avgTime</span>)
+      .<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>);
+
+    <span class="hljs-comment">// Generate recommendations</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">recommendations</span>: <span class="hljs-built_in">string</span>[] = [];
+
+    <span class="hljs-keyword">if</span> (slowRenderCount / totalRenders &gt; <span class="hljs-number">0.1</span>) {
+      recommendations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">&#x27;High percentage of slow renders detected - review component optimization&#x27;</span>,
+      );
+    }
+
+    <span class="hljs-keyword">if</span> (slowestComponents.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span> &amp;&amp; slowestComponents[<span class="hljs-number">0</span>].<span class="hljs-property">avgTime</span> &gt; <span class="hljs-number">50</span>) {
+      recommendations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">\`Consider optimizing <span class="hljs-subst">\${slowestComponents[<span class="hljs-number">0</span>].component}</span> - average render time: <span class="hljs-subst">\${slowestComponents[<span class="hljs-number">0</span>].avgTime.toFixed(<span class="hljs-number">2</span>)}</span>ms\`</span>,
+      );
+    }
+
+    <span class="hljs-keyword">const</span> frequentReRenders = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">componentCounts</span>.<span class="hljs-title function_">entries</span>())
+      .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">[, count]</span>) =&gt;</span> count &gt; <span class="hljs-number">100</span>)
+      .<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">[component]</span>) =&gt;</span> component);
+
+    <span class="hljs-keyword">if</span> (frequentReRenders.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) {
+      recommendations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">\`These components re-render frequently: <span class="hljs-subst">\${frequentReRenders.join(<span class="hljs-string">&#x27;, &#x27;</span>)}</span>\`</span>,
+      );
+    }
+
+    <span class="hljs-keyword">return</span> {
+      totalRenders,
+      <span class="hljs-attr">slowRenders</span>: slowRenderCount,
+      <span class="hljs-attr">averageRenderTime</span>: avgRenderTime,
+      slowestComponents,
+      recommendations,
+    };
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">sendReport</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">reportingEndpoint</span>) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">const</span> report = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">generateReport</span>();
+    <span class="hljs-keyword">const</span> payload = {
+      ...report,
+      <span class="hljs-attr">context</span>: {
+        <span class="hljs-attr">url</span>: location.<span class="hljs-property">href</span>,
+        <span class="hljs-attr">userAgent</span>: navigator.<span class="hljs-property">userAgent</span>,
+        <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+      },
+    };
+
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">if</span> (navigator.<span class="hljs-property">sendBeacon</span>) {
+        navigator.<span class="hljs-title function_">sendBeacon</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">reportingEndpoint</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(payload));
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-title function_">fetch</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">reportingEndpoint</span>, {
+          <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+          <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(payload),
+          <span class="hljs-attr">headers</span>: { <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span> },
+          <span class="hljs-attr">keepalive</span>: <span class="hljs-literal">true</span>,
+        }).<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =&gt;</span> {}); <span class="hljs-comment">// Fail silently</span>
+      }
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-comment">// Fail silently</span>
+    }
+  }
+}
+
+<span class="hljs-comment">// Global monitor instance</span>
+<span class="hljs-keyword">const</span> reactPerformanceMonitor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReactPerformanceMonitor</span>({
+  <span class="hljs-attr">slowRenderThreshold</span>: <span class="hljs-number">16</span>,
+  <span class="hljs-attr">reportingEndpoint</span>: <span class="hljs-string">&#x27;/api/react-performance&#x27;</span>,
+});
+
+<span class="hljs-comment">// HOC for automatic profiling</span>
+<span class="hljs-keyword">function</span> withPerformanceMonitoring&lt;T <span class="hljs-keyword">extends</span> {}&gt;(
+  <span class="hljs-title class_">Component</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">ComponentType</span>&lt;T&gt;,
+  <span class="hljs-attr">componentName</span>?: <span class="hljs-built_in">string</span>,
+): <span class="hljs-title class_">React</span>.<span class="hljs-property">ComponentType</span>&lt;T&gt; {
+  <span class="hljs-keyword">const</span> name = componentName || <span class="hljs-title class_">Component</span>.<span class="hljs-property">displayName</span> || <span class="hljs-title class_">Component</span>.<span class="hljs-property">name</span> || <span class="hljs-string">&#x27;UnknownComponent&#x27;</span>;
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">MonitoredComponent</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: T</span>) {
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Profiler</span> <span class="hljs-attr">id</span>=<span class="hljs-string">{name}</span> <span class="hljs-attr">onRender</span>=<span class="hljs-string">{reactPerformanceMonitor.createProfilerCallback(name)}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Component</span> {<span class="hljs-attr">...props</span>} /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Profiler</span>&gt;</span></span>
+    );
+  };
+}
+
+<span class="hljs-comment">// Hook for component-level monitoring</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">usePerformanceMonitoring</span>(<span class="hljs-params"><span class="hljs-attr">componentName</span>: <span class="hljs-built_in">string</span></span>) {
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">onRender</span>: reactPerformanceMonitor.<span class="hljs-title function_">createProfilerCallback</span>(componentName),
+    <span class="hljs-attr">generateReport</span>: <span class="hljs-function">() =&gt;</span> reactPerformanceMonitor.<span class="hljs-title function_">generateReport</span>(),
+  };
+}
+</code></pre>
+<h2 id="الربط-بين-الأخطاء-والأداء">الربط بين الأخطاء والأداء</h2>
+<pre><code class="language-typescript"><span class="hljs-comment">// rum/error-performance-correlator.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">PerformanceError</span> {
+  <span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>;
+  <span class="hljs-attr">context</span>: {
+    <span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">userAgent</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">timestamp</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">performanceData</span>: {
+      <span class="hljs-attr">renderTime</span>?: <span class="hljs-built_in">number</span>;
+      <span class="hljs-attr">memoryUsage</span>?: <span class="hljs-built_in">number</span>;
+      <span class="hljs-attr">networkSpeed</span>?: <span class="hljs-built_in">string</span>;
+    };
+  };
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ErrorPerformanceCorrelator</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">errors</span>: <span class="hljs-title class_">PerformanceError</span>[] = [];
+  <span class="hljs-keyword">private</span> performanceThresholds = {
+    <span class="hljs-attr">slowRender</span>: <span class="hljs-number">100</span>, <span class="hljs-comment">// ms</span>
+    <span class="hljs-attr">highMemory</span>: <span class="hljs-number">100</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>, <span class="hljs-comment">// 100MB</span>
+    <span class="hljs-attr">slowNetwork</span>: [<span class="hljs-string">&#x27;slow-2g&#x27;</span>, <span class="hljs-string">&#x27;2g&#x27;</span>],
+  };
+
+  <span class="hljs-title function_">captureError</span>(<span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>, <span class="hljs-attr">performanceData</span>?: <span class="hljs-built_in">any</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">errorData</span>: <span class="hljs-title class_">PerformanceError</span> = {
+      error,
+      <span class="hljs-attr">context</span>: {
+        <span class="hljs-attr">url</span>: location.<span class="hljs-property">href</span>,
+        <span class="hljs-attr">userAgent</span>: navigator.<span class="hljs-property">userAgent</span>,
+        <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+        <span class="hljs-attr">performanceData</span>: {
+          <span class="hljs-attr">renderTime</span>: performanceData?.<span class="hljs-property">renderTime</span>,
+          <span class="hljs-attr">memoryUsage</span>: (performance <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">memory</span>?.<span class="hljs-property">usedJSHeapSize</span>,
+          <span class="hljs-attr">networkSpeed</span>: (navigator <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">connection</span>?.<span class="hljs-property">effectiveType</span>,
+        },
+      },
+    };
+
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">errors</span>.<span class="hljs-title function_">push</span>(errorData);
+
+    <span class="hljs-comment">// Analyze correlation</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">analyzeCorrelation</span>(errorData);
+
+    <span class="hljs-comment">// Send to error tracking service</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">sendErrorReport</span>(errorData);
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">analyzeCorrelation</span>(<span class="hljs-attr">errorData</span>: <span class="hljs-title class_">PerformanceError</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">const</span> { performanceData } = errorData.<span class="hljs-property">context</span>;
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">correlations</span>: <span class="hljs-built_in">string</span>[] = [];
+
+    <span class="hljs-comment">// Check for slow render correlation</span>
+    <span class="hljs-keyword">if</span> (
+      performanceData.<span class="hljs-property">renderTime</span> &amp;&amp;
+      performanceData.<span class="hljs-property">renderTime</span> &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">performanceThresholds</span>.<span class="hljs-property">slowRender</span>
+    ) {
+      correlations.<span class="hljs-title function_">push</span>(<span class="hljs-string">\`slow-render-<span class="hljs-subst">\${performanceData.renderTime}</span>ms\`</span>);
+    }
+
+    <span class="hljs-comment">// Check for high memory correlation</span>
+    <span class="hljs-keyword">if</span> (
+      performanceData.<span class="hljs-property">memoryUsage</span> &amp;&amp;
+      performanceData.<span class="hljs-property">memoryUsage</span> &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">performanceThresholds</span>.<span class="hljs-property">highMemory</span>
+    ) {
+      correlations.<span class="hljs-title function_">push</span>(<span class="hljs-string">\`high-memory-<span class="hljs-subst">\${<span class="hljs-built_in">Math</span>.round(performanceData.memoryUsage / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span>)}</span>MB\`</span>);
+    }
+
+    <span class="hljs-comment">// Check for slow network correlation</span>
+    <span class="hljs-keyword">if</span> (
+      performanceData.<span class="hljs-property">networkSpeed</span> &amp;&amp;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">performanceThresholds</span>.<span class="hljs-property">slowNetwork</span>.<span class="hljs-title function_">includes</span>(performanceData.<span class="hljs-property">networkSpeed</span>)
+    ) {
+      correlations.<span class="hljs-title function_">push</span>(<span class="hljs-string">\`slow-network-<span class="hljs-subst">\${performanceData.networkSpeed}</span>\`</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (correlations.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">\`🔗 Error correlated with performance issues: <span class="hljs-subst">\${correlations.join(<span class="hljs-string">&#x27;, &#x27;</span>)}</span>\`</span>);
+
+      <span class="hljs-comment">// Add correlation data to error</span>
+      (errorData <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">performanceCorrelations</span> = correlations;
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">sendErrorReport</span>(<span class="hljs-attr">errorData</span>: <span class="hljs-title class_">PerformanceError</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-comment">// Send to error tracking service (Sentry, Bugsnag, etc.)</span>
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;/api/errors&#x27;</span>, {
+        <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+        <span class="hljs-attr">headers</span>: { <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span> },
+        <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(errorData),
+        <span class="hljs-attr">keepalive</span>: <span class="hljs-literal">true</span>,
+      });
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-comment">// Fail silently</span>
+    }
+  }
+
+  <span class="hljs-title function_">generateCorrelationReport</span>(): {
+    <span class="hljs-attr">totalErrors</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">performanceCorrelatedErrors</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">topCorrelations</span>: <span class="hljs-title class_">Array</span>&lt;{ <span class="hljs-attr">correlation</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">count</span>: <span class="hljs-built_in">number</span> }&gt;;
+  } {
+    <span class="hljs-keyword">const</span> performanceCorrelatedErrors = <span class="hljs-variable language_">this</span>.<span class="hljs-property">errors</span>.<span class="hljs-title function_">filter</span>(
+      <span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> (error <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">performanceCorrelations</span>?.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>,
+    );
+
+    <span class="hljs-comment">// Count correlation patterns</span>
+    <span class="hljs-keyword">const</span> correlationCounts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">number</span>&gt;();
+
+    performanceCorrelatedErrors.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> correlations = (error <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">performanceCorrelations</span> || [];
+      correlations.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">correlation</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> count = correlationCounts.<span class="hljs-title function_">get</span>(correlation) || <span class="hljs-number">0</span>;
+        correlationCounts.<span class="hljs-title function_">set</span>(correlation, count + <span class="hljs-number">1</span>);
+      });
+    });
+
+    <span class="hljs-keyword">const</span> topCorrelations = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(correlationCounts.<span class="hljs-title function_">entries</span>())
+      .<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">[correlation, count]</span>) =&gt;</span> ({ correlation, count }))
+      .<span class="hljs-title function_">sort</span>(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> b.<span class="hljs-property">count</span> - a.<span class="hljs-property">count</span>)
+      .<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>);
+
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">totalErrors</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">errors</span>.<span class="hljs-property">length</span>,
+      <span class="hljs-attr">performanceCorrelatedErrors</span>: performanceCorrelatedErrors.<span class="hljs-property">length</span>,
+      topCorrelations,
+    };
+  }
+}
+
+<span class="hljs-comment">// Global error correlation instance</span>
+<span class="hljs-keyword">const</span> errorCorrelator = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ErrorPerformanceCorrelator</span>();
+
+<span class="hljs-comment">// React Error Boundary with performance correlation</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PerformanceAwareErrorBoundary</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span>&lt;
+  { <span class="hljs-attr">children</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactNode</span> },
+  { <span class="hljs-attr">hasError</span>: <span class="hljs-built_in">boolean</span> }
+&gt; {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-built_in">any</span></span>) {
+    <span class="hljs-variable language_">super</span>(props);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = { <span class="hljs-attr">hasError</span>: <span class="hljs-literal">false</span> };
+  }
+
+  <span class="hljs-keyword">static</span> <span class="hljs-title function_">getDerivedStateFromError</span>(<span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>): { <span class="hljs-attr">hasError</span>: <span class="hljs-built_in">boolean</span> } {
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">hasError</span>: <span class="hljs-literal">true</span> };
+  }
+
+  <span class="hljs-title function_">componentDidCatch</span>(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>, <span class="hljs-attr">errorInfo</span>: <span class="hljs-title class_">React</span>.<span class="hljs-title class_">ErrorInfo</span></span>) {
+    <span class="hljs-comment">// Capture performance data at time of error</span>
+    <span class="hljs-keyword">const</span> performanceData = {
+      <span class="hljs-attr">renderTime</span>: performance.<span class="hljs-title function_">now</span>(), <span class="hljs-comment">// Time since navigation start</span>
+      <span class="hljs-attr">memoryUsage</span>: (performance <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">memory</span>?.<span class="hljs-property">usedJSHeapSize</span>,
+      <span class="hljs-attr">networkSpeed</span>: (navigator <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">connection</span>?.<span class="hljs-property">effectiveType</span>,
+    };
+
+    <span class="hljs-comment">// Send error with performance correlation</span>
+    errorCorrelator.<span class="hljs-title function_">captureError</span>(error, performanceData);
+
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;React Error Boundary caught error:&#x27;</span>, error, errorInfo);
+  }
+
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">hasError</span>) {
+      <span class="hljs-keyword">return</span> (
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;error-fallback&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Something went wrong<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Please refresh the page to continue.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> window.location.reload()}&gt;Refresh Page<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+      );
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">children</span>;
+  }
+}
+</code></pre>
+<h2 id="نظام-التنبيهات-على-الأداء">نظام التنبيهات على الأداء</h2>
+<pre><code class="language-typescript"><span class="hljs-comment">// rum/performance-alerting.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">PerformanceAlert</span> {
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;web-vital&#x27;</span> | <span class="hljs-string">&#x27;react-performance&#x27;</span> | <span class="hljs-string">&#x27;error-spike&#x27;</span> | <span class="hljs-string">&#x27;memory-leak&#x27;</span>;
+  <span class="hljs-attr">severity</span>: <span class="hljs-string">&#x27;low&#x27;</span> | <span class="hljs-string">&#x27;medium&#x27;</span> | <span class="hljs-string">&#x27;high&#x27;</span> | <span class="hljs-string">&#x27;critical&#x27;</span>;
+  <span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">data</span>: <span class="hljs-built_in">any</span>;
+  <span class="hljs-attr">timestamp</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PerformanceAlertingSystem</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">alerts</span>: <span class="hljs-title class_">PerformanceAlert</span>[] = [];
+  <span class="hljs-keyword">private</span> thresholds = {
+    <span class="hljs-attr">lcp</span>: { <span class="hljs-attr">good</span>: <span class="hljs-number">2500</span>, <span class="hljs-attr">poor</span>: <span class="hljs-number">4000</span> },
+    <span class="hljs-attr">fid</span>: { <span class="hljs-attr">good</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">poor</span>: <span class="hljs-number">300</span> },
+    <span class="hljs-attr">cls</span>: { <span class="hljs-attr">good</span>: <span class="hljs-number">0.1</span>, <span class="hljs-attr">poor</span>: <span class="hljs-number">0.25</span> },
+    <span class="hljs-attr">renderTime</span>: { <span class="hljs-attr">good</span>: <span class="hljs-number">16</span>, <span class="hljs-attr">poor</span>: <span class="hljs-number">100</span> },
+    <span class="hljs-attr">memoryUsage</span>: { <span class="hljs-attr">good</span>: <span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>, <span class="hljs-attr">poor</span>: <span class="hljs-number">200</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span> },
+  };
+
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">alertHandlers</span>: <span class="hljs-title class_">Array</span>&lt;<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">alert</span>: <span class="hljs-title class_">PerformanceAlert</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>&gt; = [];
+
+  <span class="hljs-title function_">onAlert</span>(<span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">alert</span>: <span class="hljs-title class_">PerformanceAlert</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">alertHandlers</span>.<span class="hljs-title function_">push</span>(handler);
+  }
+
+  <span class="hljs-title function_">checkWebVital</span>(<span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">value</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">const</span> threshold = <span class="hljs-variable language_">this</span>.<span class="hljs-property">thresholds</span>[name <span class="hljs-keyword">as</span> keyof <span class="hljs-keyword">typeof</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">thresholds</span>];
+    <span class="hljs-keyword">if</span> (!threshold) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">severity</span>: <span class="hljs-title class_">PerformanceAlert</span>[<span class="hljs-string">&#x27;severity&#x27;</span>] = <span class="hljs-string">&#x27;low&#x27;</span>;
+
+    <span class="hljs-keyword">if</span> (name === <span class="hljs-string">&#x27;cls&#x27;</span>) {
+      <span class="hljs-comment">// CLS uses different scale</span>
+      <span class="hljs-keyword">if</span> (value &gt; threshold.<span class="hljs-property">poor</span>) severity = <span class="hljs-string">&#x27;critical&#x27;</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (value &gt; threshold.<span class="hljs-property">good</span>) severity = <span class="hljs-string">&#x27;medium&#x27;</span>;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">if</span> (value &gt; threshold.<span class="hljs-property">poor</span>) severity = <span class="hljs-string">&#x27;critical&#x27;</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (value &gt; threshold.<span class="hljs-property">good</span>) severity = <span class="hljs-string">&#x27;medium&#x27;</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (severity !== <span class="hljs-string">&#x27;low&#x27;</span>) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">createAlert</span>({
+        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;web-vital&#x27;</span>,
+        severity,
+        <span class="hljs-attr">message</span>: <span class="hljs-string">\`<span class="hljs-subst">\${name.toUpperCase()}</span> is <span class="hljs-subst">\${severity}</span>: <span class="hljs-subst">\${value}</span><span class="hljs-subst">\${name === <span class="hljs-string">&#x27;cls&#x27;</span> ? <span class="hljs-string">&#x27;&#x27;</span> : <span class="hljs-string">&#x27;ms&#x27;</span>}</span>\`</span>,
+        <span class="hljs-attr">data</span>: { <span class="hljs-attr">metric</span>: name, value, threshold },
+        <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+      });
+    }
+  }
+
+  <span class="hljs-title function_">checkReactPerformance</span>(<span class="hljs-attr">componentName</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">renderTime</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">severity</span>: <span class="hljs-title class_">PerformanceAlert</span>[<span class="hljs-string">&#x27;severity&#x27;</span>] = <span class="hljs-string">&#x27;low&#x27;</span>;
+
+    <span class="hljs-keyword">if</span> (renderTime &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">thresholds</span>.<span class="hljs-property">renderTime</span>.<span class="hljs-property">poor</span>) {
+      severity = <span class="hljs-string">&#x27;high&#x27;</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (renderTime &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">thresholds</span>.<span class="hljs-property">renderTime</span>.<span class="hljs-property">good</span>) {
+      severity = <span class="hljs-string">&#x27;medium&#x27;</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (severity !== <span class="hljs-string">&#x27;low&#x27;</span>) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">createAlert</span>({
+        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;react-performance&#x27;</span>,
+        severity,
+        <span class="hljs-attr">message</span>: <span class="hljs-string">\`Slow render in <span class="hljs-subst">\${componentName}</span>: <span class="hljs-subst">\${renderTime.toFixed(<span class="hljs-number">2</span>)}</span>ms\`</span>,
+        <span class="hljs-attr">data</span>: { <span class="hljs-attr">component</span>: componentName, renderTime },
+        <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+      });
+    }
+  }
+
+  <span class="hljs-title function_">checkMemoryUsage</span>(<span class="hljs-attr">usage</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">severity</span>: <span class="hljs-title class_">PerformanceAlert</span>[<span class="hljs-string">&#x27;severity&#x27;</span>] = <span class="hljs-string">&#x27;low&#x27;</span>;
+
+    <span class="hljs-keyword">if</span> (usage &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">thresholds</span>.<span class="hljs-property">memoryUsage</span>.<span class="hljs-property">poor</span>) {
+      severity = <span class="hljs-string">&#x27;critical&#x27;</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (usage &gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">thresholds</span>.<span class="hljs-property">memoryUsage</span>.<span class="hljs-property">good</span>) {
+      severity = <span class="hljs-string">&#x27;medium&#x27;</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (severity !== <span class="hljs-string">&#x27;low&#x27;</span>) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">createAlert</span>({
+        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;memory-leak&#x27;</span>,
+        severity,
+        <span class="hljs-attr">message</span>: <span class="hljs-string">\`High memory usage: <span class="hljs-subst">\${(usage / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span>).toFixed(<span class="hljs-number">2</span>)}</span>MB\`</span>,
+        <span class="hljs-attr">data</span>: { <span class="hljs-attr">memoryUsage</span>: usage },
+        <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+      });
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">createAlert</span>(<span class="hljs-attr">alert</span>: <span class="hljs-title class_">PerformanceAlert</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">alerts</span>.<span class="hljs-title function_">push</span>(alert);
+
+    <span class="hljs-comment">// Limit stored alerts</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">alerts</span>.<span class="hljs-property">length</span> &gt; <span class="hljs-number">100</span>) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">alerts</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">alerts</span>.<span class="hljs-title function_">slice</span>(-<span class="hljs-number">50</span>);
+    }
+
+    <span class="hljs-comment">// Notify handlers</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">alertHandlers</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">handler</span>) =&gt;</span> {
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-title function_">handler</span>(alert);
+      } <span class="hljs-keyword">catch</span> (error) {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Alert handler error:&#x27;</span>, error);
+      }
+    });
+
+    <span class="hljs-comment">// Log critical alerts</span>
+    <span class="hljs-keyword">if</span> (alert.<span class="hljs-property">severity</span> === <span class="hljs-string">&#x27;critical&#x27;</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;🚨 Critical Performance Alert:&#x27;</span>, alert.<span class="hljs-property">message</span>);
+    }
+  }
+
+  <span class="hljs-title function_">getAlerts</span>(<span class="hljs-attr">severity</span>?: <span class="hljs-title class_">PerformanceAlert</span>[<span class="hljs-string">&#x27;severity&#x27;</span>]): <span class="hljs-title class_">PerformanceAlert</span>[] {
+    <span class="hljs-keyword">return</span> severity ? <span class="hljs-variable language_">this</span>.<span class="hljs-property">alerts</span>.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">alert</span>) =&gt;</span> alert.<span class="hljs-property">severity</span> === severity) : [...<span class="hljs-variable language_">this</span>.<span class="hljs-property">alerts</span>];
+  }
+
+  <span class="hljs-title function_">generateAlertReport</span>(): {
+    <span class="hljs-attr">totalAlerts</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">alertsBySeverity</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">number</span>&gt;;
+    <span class="hljs-attr">recentCriticalAlerts</span>: <span class="hljs-title class_">PerformanceAlert</span>[];
+  } {
+    <span class="hljs-keyword">const</span> alertsBySeverity = <span class="hljs-variable language_">this</span>.<span class="hljs-property">alerts</span>.<span class="hljs-title function_">reduce</span>(
+      <span class="hljs-function">(<span class="hljs-params">acc, alert</span>) =&gt;</span> {
+        acc[alert.<span class="hljs-property">severity</span>] = (acc[alert.<span class="hljs-property">severity</span>] || <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> acc;
+      },
+      {} <span class="hljs-keyword">as</span> <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">number</span>&gt;,
+    );
+
+    <span class="hljs-keyword">const</span> oneDayAgo = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - <span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>;
+    <span class="hljs-keyword">const</span> recentCriticalAlerts = <span class="hljs-variable language_">this</span>.<span class="hljs-property">alerts</span>
+      .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">alert</span>) =&gt;</span> alert.<span class="hljs-property">severity</span> === <span class="hljs-string">&#x27;critical&#x27;</span> &amp;&amp; alert.<span class="hljs-property">timestamp</span> &gt; oneDayAgo)
+      .<span class="hljs-title function_">slice</span>(-<span class="hljs-number">10</span>);
+
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">totalAlerts</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">alerts</span>.<span class="hljs-property">length</span>,
+      alertsBySeverity,
+      recentCriticalAlerts,
+    };
+  }
+}
+
+<span class="hljs-comment">// Global alerting system</span>
+<span class="hljs-keyword">const</span> performanceAlerting = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceAlertingSystem</span>();
+
+<span class="hljs-comment">// Setup alert handlers</span>
+performanceAlerting.<span class="hljs-title function_">onAlert</span>(<span class="hljs-function">(<span class="hljs-params">alert</span>) =&gt;</span> {
+  <span class="hljs-comment">// Send critical alerts to monitoring service immediately</span>
+  <span class="hljs-keyword">if</span> (alert.<span class="hljs-property">severity</span> === <span class="hljs-string">&#x27;critical&#x27;</span>) {
+    <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;/api/alerts&#x27;</span>, {
+      <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+      <span class="hljs-attr">headers</span>: { <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span> },
+      <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(alert),
+      <span class="hljs-attr">keepalive</span>: <span class="hljs-literal">true</span>,
+    }).<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =&gt;</span> {}); <span class="hljs-comment">// Fail silently</span>
+  }
+});
+
+<span class="hljs-comment">// Setup visual alerts for development</span>
+<span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;development&#x27;</span>) {
+  performanceAlerting.<span class="hljs-title function_">onAlert</span>(<span class="hljs-function">(<span class="hljs-params">alert</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (alert.<span class="hljs-property">severity</span> === <span class="hljs-string">&#x27;high&#x27;</span> || alert.<span class="hljs-property">severity</span> === <span class="hljs-string">&#x27;critical&#x27;</span>) {
+      <span class="hljs-comment">// Show toast notification in development</span>
+      <span class="hljs-keyword">const</span> toast = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;div&#x27;</span>);
+      toast.<span class="hljs-property">style</span>.<span class="hljs-property">cssText</span> = <span class="hljs-string">\`
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: <span class="hljs-subst">\${alert.severity === <span class="hljs-string">&#x27;critical&#x27;</span> ? <span class="hljs-string">&#x27;#d32f2f&#x27;</span> : <span class="hljs-string">&#x27;#f57c00&#x27;</span>}</span>;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 4px;
+        z-index: 10000;
+        font-family: monospace;
+        font-size: 12px;
+        max-width: 300px;
+      \`</span>;
+      toast.<span class="hljs-property">textContent</span> = alert.<span class="hljs-property">message</span>;
+
+      <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(toast);
+
+      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> {
+        <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">removeChild</span>(toast);
+      }, <span class="hljs-number">5000</span>);
+    }
+  });
+}
+</code></pre>
+<h2 id="الدمج-مع-التحليلات">الدمج مع التحليلات</h2>
+<pre><code class="language-typescript"><span class="hljs-comment">// rum/analytics-integration.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">AnalyticsEvent</span> {
+  <span class="hljs-attr">category</span>: <span class="hljs-string">&#x27;Performance&#x27;</span>;
+  <span class="hljs-attr">action</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">label</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">value</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">customDimensions</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span>&gt;;
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PerformanceAnalytics</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">queue</span>: <span class="hljs-title class_">AnalyticsEvent</span>[] = [];
+  <span class="hljs-keyword">private</span> isOnline = navigator.<span class="hljs-property">onLine</span>;
+
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
+    <span class="hljs-keyword">private</span> <span class="hljs-attr">config</span>: {
+      googleAnalyticsId?: <span class="hljs-built_in">string</span>;
+      customEndpoint?: <span class="hljs-built_in">string</span>;
+      batchSize?: <span class="hljs-built_in">number</span>;
+    } = {},
+  </span>) {
+    <span class="hljs-comment">// Monitor online status</span>
+    <span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;online&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">isOnline</span> = <span class="hljs-literal">true</span>;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">flushQueue</span>();
+    });
+
+    <span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;offline&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">isOnline</span> = <span class="hljs-literal">false</span>;
+    });
+
+    <span class="hljs-comment">// Flush queue periodically</span>
+    <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">flushQueue</span>(), <span class="hljs-number">30000</span>); <span class="hljs-comment">// Every 30 seconds</span>
+  }
+
+  <span class="hljs-title function_">trackWebVital</span>(<span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">value</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">rating</span>: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">track</span>({
+      <span class="hljs-attr">category</span>: <span class="hljs-string">&#x27;Performance&#x27;</span>,
+      <span class="hljs-attr">action</span>: <span class="hljs-string">&#x27;Web Vital&#x27;</span>,
+      <span class="hljs-attr">label</span>: name,
+      <span class="hljs-attr">value</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(value),
+      <span class="hljs-attr">customDimensions</span>: {
+        rating,
+        <span class="hljs-attr">url</span>: location.<span class="hljs-property">pathname</span>,
+        <span class="hljs-attr">device</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getDeviceType</span>(),
+        <span class="hljs-attr">connection</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getConnectionType</span>(),
+      },
+    });
+  }
+
+  <span class="hljs-title function_">trackReactRender</span>(<span class="hljs-attr">componentName</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">duration</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">phase</span>: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// Only track slow renders to reduce noise</span>
+    <span class="hljs-keyword">if</span> (duration &gt; <span class="hljs-number">16</span>) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">track</span>({
+        <span class="hljs-attr">category</span>: <span class="hljs-string">&#x27;Performance&#x27;</span>,
+        <span class="hljs-attr">action</span>: <span class="hljs-string">&#x27;Slow React Render&#x27;</span>,
+        <span class="hljs-attr">label</span>: componentName,
+        <span class="hljs-attr">value</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(duration),
+        <span class="hljs-attr">customDimensions</span>: {
+          phase,
+          <span class="hljs-attr">url</span>: location.<span class="hljs-property">pathname</span>,
+        },
+      });
+    }
+  }
+
+  <span class="hljs-title function_">trackBundle</span>(<span class="hljs-attr">bundleName</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">size</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">loadTime</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">track</span>({
+      <span class="hljs-attr">category</span>: <span class="hljs-string">&#x27;Performance&#x27;</span>,
+      <span class="hljs-attr">action</span>: <span class="hljs-string">&#x27;Bundle Load&#x27;</span>,
+      <span class="hljs-attr">label</span>: bundleName,
+      <span class="hljs-attr">value</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(loadTime),
+      <span class="hljs-attr">customDimensions</span>: {
+        <span class="hljs-attr">size</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(size / <span class="hljs-number">1024</span>), <span class="hljs-comment">// KB</span>
+        <span class="hljs-attr">url</span>: location.<span class="hljs-property">pathname</span>,
+      },
+    });
+  }
+
+  <span class="hljs-title function_">trackError</span>(<span class="hljs-attr">error</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">performanceContext</span>: <span class="hljs-built_in">any</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">track</span>({
+      <span class="hljs-attr">category</span>: <span class="hljs-string">&#x27;Performance&#x27;</span>,
+      <span class="hljs-attr">action</span>: <span class="hljs-string">&#x27;Performance Related Error&#x27;</span>,
+      <span class="hljs-attr">label</span>: error,
+      <span class="hljs-attr">customDimensions</span>: {
+        <span class="hljs-attr">memoryUsage</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>((performanceContext.<span class="hljs-property">memoryUsage</span> || <span class="hljs-number">0</span>) / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span>), <span class="hljs-comment">// MB</span>
+        <span class="hljs-attr">renderTime</span>: performanceContext.<span class="hljs-property">renderTime</span>,
+        <span class="hljs-attr">url</span>: location.<span class="hljs-property">pathname</span>,
+      },
+    });
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">track</span>(<span class="hljs-attr">event</span>: <span class="hljs-title class_">AnalyticsEvent</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-title function_">push</span>(event);
+
+    <span class="hljs-comment">// Send immediately if online and queue is not too large</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">isOnline</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-property">length</span> &gt;= (<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">batchSize</span> || <span class="hljs-number">10</span>)) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">flushQueue</span>();
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">flushQueue</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">isOnline</span> || <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">const</span> events = <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-title function_">splice</span>(<span class="hljs-number">0</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">batchSize</span> || <span class="hljs-number">10</span>);
+
+    <span class="hljs-comment">// Send to Google Analytics</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">googleAnalyticsId</span> &amp;&amp; <span class="hljs-keyword">typeof</span> gtag !== <span class="hljs-string">&#x27;undefined&#x27;</span>) {
+      events.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+        <span class="hljs-title function_">gtag</span>(<span class="hljs-string">&#x27;event&#x27;</span>, event.<span class="hljs-property">action</span>, {
+          <span class="hljs-attr">event_category</span>: event.<span class="hljs-property">category</span>,
+          <span class="hljs-attr">event_label</span>: event.<span class="hljs-property">label</span>,
+          <span class="hljs-attr">value</span>: event.<span class="hljs-property">value</span>,
+          <span class="hljs-attr">custom_map</span>: event.<span class="hljs-property">customDimensions</span>,
+        });
+      });
+    }
+
+    <span class="hljs-comment">// Send to custom endpoint</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">customEndpoint</span>) {
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">customEndpoint</span>, {
+          <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+          <span class="hljs-attr">headers</span>: { <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span> },
+          <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ events }),
+          <span class="hljs-attr">keepalive</span>: <span class="hljs-literal">true</span>,
+        });
+
+        <span class="hljs-keyword">if</span> (!response.<span class="hljs-property">ok</span>) {
+          <span class="hljs-comment">// Re-queue events on failure</span>
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-title function_">unshift</span>(...events);
+        }
+      } <span class="hljs-keyword">catch</span> (error) {
+        <span class="hljs-comment">// Re-queue events on failure</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">queue</span>.<span class="hljs-title function_">unshift</span>(...events);
+      }
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">getDeviceType</span>(): <span class="hljs-built_in">string</span> {
+    <span class="hljs-keyword">const</span> width = <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>;
+    <span class="hljs-keyword">if</span> (width &lt; <span class="hljs-number">768</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;mobile&#x27;</span>;
+    <span class="hljs-keyword">if</span> (width &lt; <span class="hljs-number">1024</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;tablet&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;desktop&#x27;</span>;
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">getConnectionType</span>(): <span class="hljs-built_in">string</span> {
+    <span class="hljs-keyword">return</span> (navigator <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">connection</span>?.<span class="hljs-property">effectiveType</span> || <span class="hljs-string">&#x27;unknown&#x27;</span>;
+  }
+}
+
+<span class="hljs-comment">// Global analytics instance</span>
+<span class="hljs-keyword">const</span> performanceAnalytics = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceAnalytics</span>({
+  <span class="hljs-attr">googleAnalyticsId</span>: <span class="hljs-string">&#x27;GA_MEASUREMENT_ID&#x27;</span>,
+  <span class="hljs-attr">customEndpoint</span>: <span class="hljs-string">&#x27;/api/performance-analytics&#x27;</span>,
+  <span class="hljs-attr">batchSize</span>: <span class="hljs-number">5</span>,
+});
+</code></pre>
+<h2 id="لوحة-المعلومات-والتقارير">لوحة المعلومات والتقارير</h2>
+<pre><code class="language-typescript"><span class="hljs-comment">// rum/performance-dashboard.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">DashboardData</span> {
+  <span class="hljs-attr">webVitals</span>: {
+    <span class="hljs-attr">lcp</span>: { <span class="hljs-attr">p50</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">p75</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">p95</span>: <span class="hljs-built_in">number</span> };
+    <span class="hljs-attr">fid</span>: { <span class="hljs-attr">p50</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">p75</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">p95</span>: <span class="hljs-built_in">number</span> };
+    <span class="hljs-attr">cls</span>: { <span class="hljs-attr">p50</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">p75</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">p95</span>: <span class="hljs-built_in">number</span> };
+  };
+  <span class="hljs-attr">reactMetrics</span>: {
+    <span class="hljs-attr">averageRenderTime</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">slowRenders</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">topSlowComponents</span>: <span class="hljs-title class_">Array</span>&lt;{ <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">avgTime</span>: <span class="hljs-built_in">number</span> }&gt;;
+  };
+  <span class="hljs-attr">errors</span>: {
+    <span class="hljs-attr">total</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">performanceRelated</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">topErrors</span>: <span class="hljs-title class_">Array</span>&lt;{ <span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">count</span>: <span class="hljs-built_in">number</span> }&gt;;
+  };
+  <span class="hljs-attr">trends</span>: {
+    <span class="hljs-attr">performanceScore</span>: <span class="hljs-built_in">number</span>[];
+    <span class="hljs-attr">memoryUsage</span>: <span class="hljs-built_in">number</span>[];
+    <span class="hljs-attr">bundleSize</span>: <span class="hljs-built_in">number</span>[];
+  };
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PerformanceDashboard</span> {
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">fetchDashboardData</span>(<span class="hljs-attr">timeRange</span>: <span class="hljs-string">&#x27;1h&#x27;</span> | <span class="hljs-string">&#x27;24h&#x27;</span> | <span class="hljs-string">&#x27;7d&#x27;</span> | <span class="hljs-string">&#x27;30d&#x27;</span> = <span class="hljs-string">&#x27;24h&#x27;</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">DashboardData</span>&gt; {
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/performance-dashboard?range=<span class="hljs-subst">\${timeRange}</span>\`</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Failed to fetch dashboard data:&#x27;</span>, error);
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getEmptyDashboardData</span>();
+    }
+  }
+
+  <span class="hljs-title function_">generatePerformanceScore</span>(<span class="hljs-attr">data</span>: <span class="hljs-title class_">DashboardData</span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-comment">// Calculate overall performance score (0-100)</span>
+    <span class="hljs-keyword">const</span> webVitalsScore = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">calculateWebVitalsScore</span>(data.<span class="hljs-property">webVitals</span>);
+    <span class="hljs-keyword">const</span> reactScore = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">calculateReactScore</span>(data.<span class="hljs-property">reactMetrics</span>);
+    <span class="hljs-keyword">const</span> errorScore = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">calculateErrorScore</span>(data.<span class="hljs-property">errors</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(webVitalsScore * <span class="hljs-number">0.5</span> + reactScore * <span class="hljs-number">0.3</span> + errorScore * <span class="hljs-number">0.2</span>);
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">calculateWebVitalsScore</span>(<span class="hljs-attr">vitals</span>: <span class="hljs-title class_">DashboardData</span>[<span class="hljs-string">&#x27;webVitals&#x27;</span>]): <span class="hljs-built_in">number</span> {
+    <span class="hljs-comment">// Score based on Google&#x27;s thresholds</span>
+    <span class="hljs-keyword">const</span> lcpScore = vitals.<span class="hljs-property">lcp</span>.<span class="hljs-property">p75</span> &lt;= <span class="hljs-number">2500</span> ? <span class="hljs-number">100</span> : vitals.<span class="hljs-property">lcp</span>.<span class="hljs-property">p75</span> &lt;= <span class="hljs-number">4000</span> ? <span class="hljs-number">50</span> : <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">const</span> fidScore = vitals.<span class="hljs-property">fid</span>.<span class="hljs-property">p75</span> &lt;= <span class="hljs-number">100</span> ? <span class="hljs-number">100</span> : vitals.<span class="hljs-property">fid</span>.<span class="hljs-property">p75</span> &lt;= <span class="hljs-number">300</span> ? <span class="hljs-number">50</span> : <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">const</span> clsScore = vitals.<span class="hljs-property">cls</span>.<span class="hljs-property">p75</span> &lt;= <span class="hljs-number">0.1</span> ? <span class="hljs-number">100</span> : vitals.<span class="hljs-property">cls</span>.<span class="hljs-property">p75</span> &lt;= <span class="hljs-number">0.25</span> ? <span class="hljs-number">50</span> : <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">return</span> (lcpScore + fidScore + clsScore) / <span class="hljs-number">3</span>;
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">calculateReactScore</span>(<span class="hljs-attr">reactMetrics</span>: <span class="hljs-title class_">DashboardData</span>[<span class="hljs-string">&#x27;reactMetrics&#x27;</span>]): <span class="hljs-built_in">number</span> {
+    <span class="hljs-comment">// Score based on React performance</span>
+    <span class="hljs-keyword">const</span> avgRenderScore =
+      reactMetrics.<span class="hljs-property">averageRenderTime</span> &lt;= <span class="hljs-number">16</span> ? <span class="hljs-number">100</span> : reactMetrics.<span class="hljs-property">averageRenderTime</span> &lt;= <span class="hljs-number">50</span> ? <span class="hljs-number">70</span> : <span class="hljs-number">40</span>;
+
+    <span class="hljs-keyword">const</span> slowRenderScore =
+      reactMetrics.<span class="hljs-property">slowRenders</span> === <span class="hljs-number">0</span> ? <span class="hljs-number">100</span> : reactMetrics.<span class="hljs-property">slowRenders</span> &lt; <span class="hljs-number">10</span> ? <span class="hljs-number">80</span> : <span class="hljs-number">50</span>;
+
+    <span class="hljs-keyword">return</span> (avgRenderScore + slowRenderScore) / <span class="hljs-number">2</span>;
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">calculateErrorScore</span>(<span class="hljs-attr">errors</span>: <span class="hljs-title class_">DashboardData</span>[<span class="hljs-string">&#x27;errors&#x27;</span>]): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">if</span> (errors.<span class="hljs-property">total</span> === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">100</span>;
+
+    <span class="hljs-keyword">const</span> errorRate = errors.<span class="hljs-property">performanceRelated</span> / errors.<span class="hljs-property">total</span>;
+
+    <span class="hljs-keyword">if</span> (errorRate &lt; <span class="hljs-number">0.01</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">100</span>; <span class="hljs-comment">// &lt; 1%</span>
+    <span class="hljs-keyword">if</span> (errorRate &lt; <span class="hljs-number">0.05</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">80</span>; <span class="hljs-comment">// &lt; 5%</span>
+    <span class="hljs-keyword">if</span> (errorRate &lt; <span class="hljs-number">0.1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">60</span>; <span class="hljs-comment">// &lt; 10%</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">40</span>;
+  }
+
+  <span class="hljs-title function_">generateRecommendations</span>(<span class="hljs-attr">data</span>: <span class="hljs-title class_">DashboardData</span>): <span class="hljs-built_in">string</span>[] {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">recommendations</span>: <span class="hljs-built_in">string</span>[] = [];
+
+    <span class="hljs-comment">// Web Vitals recommendations</span>
+    <span class="hljs-keyword">if</span> (data.<span class="hljs-property">webVitals</span>.<span class="hljs-property">lcp</span>.<span class="hljs-property">p75</span> &gt; <span class="hljs-number">2500</span>) {
+      recommendations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">&#x27;Optimize Largest Contentful Paint - consider image optimization, preloading critical resources&#x27;</span>,
+      );
+    }
+
+    <span class="hljs-keyword">if</span> (data.<span class="hljs-property">webVitals</span>.<span class="hljs-property">cls</span>.<span class="hljs-property">p75</span> &gt; <span class="hljs-number">0.1</span>) {
+      recommendations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">&#x27;Reduce Cumulative Layout Shift - ensure images have dimensions, avoid dynamic content insertion&#x27;</span>,
+      );
+    }
+
+    <span class="hljs-keyword">if</span> (data.<span class="hljs-property">webVitals</span>.<span class="hljs-property">fid</span>.<span class="hljs-property">p75</span> &gt; <span class="hljs-number">100</span>) {
+      recommendations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">&#x27;Improve First Input Delay - reduce JavaScript execution time, use code splitting&#x27;</span>,
+      );
+    }
+
+    <span class="hljs-comment">// React recommendations</span>
+    <span class="hljs-keyword">if</span> (data.<span class="hljs-property">reactMetrics</span>.<span class="hljs-property">averageRenderTime</span> &gt; <span class="hljs-number">16</span>) {
+      recommendations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">&#x27;Optimize React render performance - review component memoization and state management&#x27;</span>,
+      );
+    }
+
+    <span class="hljs-keyword">if</span> (data.<span class="hljs-property">reactMetrics</span>.<span class="hljs-property">slowRenders</span> &gt; <span class="hljs-number">50</span>) {
+      recommendations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">\`High number of slow renders (<span class="hljs-subst">\${data.reactMetrics.slowRenders}</span>) - investigate top slow components\`</span>,
+      );
+    }
+
+    <span class="hljs-comment">// Error recommendations</span>
+    <span class="hljs-keyword">if</span> (data.<span class="hljs-property">errors</span>.<span class="hljs-property">performanceRelated</span> / data.<span class="hljs-property">errors</span>.<span class="hljs-property">total</span> &gt; <span class="hljs-number">0.05</span>) {
+      recommendations.<span class="hljs-title function_">push</span>(
+        <span class="hljs-string">&#x27;High rate of performance-related errors - review error-performance correlations&#x27;</span>,
+      );
+    }
+
+    <span class="hljs-keyword">return</span> recommendations;
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">getEmptyDashboardData</span>(): <span class="hljs-title class_">DashboardData</span> {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">webVitals</span>: {
+        <span class="hljs-attr">lcp</span>: { <span class="hljs-attr">p50</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">p75</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">p95</span>: <span class="hljs-number">0</span> },
+        <span class="hljs-attr">fid</span>: { <span class="hljs-attr">p50</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">p75</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">p95</span>: <span class="hljs-number">0</span> },
+        <span class="hljs-attr">cls</span>: { <span class="hljs-attr">p50</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">p75</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">p95</span>: <span class="hljs-number">0</span> },
+      },
+      <span class="hljs-attr">reactMetrics</span>: {
+        <span class="hljs-attr">averageRenderTime</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">slowRenders</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">topSlowComponents</span>: [],
+      },
+      <span class="hljs-attr">errors</span>: {
+        <span class="hljs-attr">total</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">performanceRelated</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">topErrors</span>: [],
+      },
+      <span class="hljs-attr">trends</span>: {
+        <span class="hljs-attr">performanceScore</span>: [],
+        <span class="hljs-attr">memoryUsage</span>: [],
+        <span class="hljs-attr">bundleSize</span>: [],
+      },
+    };
+  }
+}
+
+<span class="hljs-comment">// React component for performance dashboard</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">PerformanceDashboardComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [data, setData] = useState&lt;<span class="hljs-title class_">DashboardData</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [loading, setLoading] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">true</span>);
+  <span class="hljs-keyword">const</span> dashboard = <span class="hljs-title function_">useRef</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceDashboard</span>());
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">loadData</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+      <span class="hljs-title function_">setLoading</span>(<span class="hljs-literal">true</span>);
+      <span class="hljs-keyword">const</span> dashboardData = <span class="hljs-keyword">await</span> dashboard.<span class="hljs-property">current</span>.<span class="hljs-title function_">fetchDashboardData</span>(<span class="hljs-string">&#x27;24h&#x27;</span>);
+      <span class="hljs-title function_">setData</span>(dashboardData);
+      <span class="hljs-title function_">setLoading</span>(<span class="hljs-literal">false</span>);
+    };
+
+    <span class="hljs-title function_">loadData</span>();
+
+    <span class="hljs-comment">// Refresh every 5 minutes</span>
+    <span class="hljs-keyword">const</span> interval = <span class="hljs-built_in">setInterval</span>(loadData, <span class="hljs-number">5</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">clearInterval</span>(interval);
+  }, []);
+
+  <span class="hljs-keyword">if</span> (loading) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading performance data...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  <span class="hljs-keyword">if</span> (!data) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Failed to load performance data<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+
+  <span class="hljs-keyword">const</span> performanceScore = dashboard.<span class="hljs-property">current</span>.<span class="hljs-title function_">generatePerformanceScore</span>(data);
+  <span class="hljs-keyword">const</span> recommendations = dashboard.<span class="hljs-property">current</span>.<span class="hljs-title function_">generateRecommendations</span>(data);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;performance-dashboard&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Performance Dashboard<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;performance-score&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Overall Score: {performanceScore}/100<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;web-vitals&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Core Web Vitals<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>LCP (p75): {data.webVitals.lcp.p75}ms<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>FID (p75): {data.webVitals.fid.p75}ms<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>CLS (p75): {data.webVitals.cls.p75}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;react-metrics&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>React Performance<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Average Render Time: {data.reactMetrics.averageRenderTime.toFixed(2)}ms<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Slow Renders: {data.reactMetrics.slowRenders}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;recommendations&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Recommendations<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+          {recommendations.map((rec, index) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{index}</span>&gt;</span>{rec}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+          ))}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+`,r={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,r as default,t as headings,e as html,l as slug,p as title};

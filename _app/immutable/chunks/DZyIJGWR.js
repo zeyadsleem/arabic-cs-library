@@ -1,0 +1,282 @@
+const s="kinney",n="self-testing-ai-agents",a="وكلاء ذكاء اصطناعي يختبرون أنفسهم",e="route-based-network-interception",t="اعتراض الشبكة القائم على المسارات",l=[{depth:2,id:"الأساسيات-اعتراض-طلب",text:"الأساسيات: اعتراض طلب"},{depth:2,id:"استعادة-المسارات",text:"استعادة المسارات"},{depth:3,id:"1-اجعل-المسار-ينتهي-تلقائيا",text:"1. اجعل المسار ينتهي تلقائيًا"},{depth:3,id:"2-إزالة-مسار-محدد-واحد",text:"2. إزالة مسار محدد واحد"},{depth:3,id:"3-مسح-كل-شيء",text:"3. مسح كل شيء"},{depth:2,id:"التوجيه-برمجية-وسيطة-وليس-سحرا",text:"التوجيه برمجية وسيطة، وليس سحرًا"},{depth:2,id:"ثلاثة-أشياء-يمكنك-فعلها-بمسار",text:"ثلاثة أشياء يمكنك فعلها بمسار"},{depth:3,id:"fulfill-تقديم-استجابة-مزيفة",text:"fulfill: تقديم استجابة مزيفة"},{depth:3,id:"abort-إلغاء-الطلب",text:"abort: إلغاء الطلب"},{depth:3,id:"continue-دعه-يمر-ربما-معدلا",text:"continue: دعه يمر، ربما معدلًا"},{depth:2,id:"تعديل-الاستجابات",text:"تعديل الاستجابات"},{depth:2,id:"أنماط-url-العامة-glob",text:"أنماط URL العامة (Glob)"},{depth:2,id:"مراقبة-أحداث-الشبكة",text:"مراقبة أحداث الشبكة"},{depth:2,id:"مأزق-الـ-service-worker",text:"مأزق الـ service worker"},{depth:2,id:"للنوافذ-المنبثقة-وwebsockets-حالات-حدية-خاصة",text:"للنوافذ المنبثقة وWebSockets حالات حدية خاصة"},{depth:2,id:"متى-تستخدم-المسارات-مقابل-har",text:"متى تستخدم المسارات مقابل HAR"},{depth:2,id:"قواعد-الوكيل",text:"قواعد الوكيل"},{depth:2,id:"الشيء-الوحيد-الذي-يجب-تذكره",text:"الشيء الوحيد الذي يجب تذكره"},{depth:2,id:"قراءة-إضافية",text:"قراءة إضافية"}],p=`<p>غطّت <a href="https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation">دروس HAR</a> نهج «سجّل كل شيء، وأعِد تشغيله إلى الأبد» في عزل الشبكة. هذه هي الأداة الصحيحة عندما تحاكي سطح API واسعًا—عشرات من نقاط النهاية، واستجابات متداخلة، ورموز ترقيم صفحات. لكنك لا تحتاج دائمًا إلى تسجيل كامل. تحتاج إلى محاكاة نقطة نهاية <em>واحدة</em>، أو حجب الصور، أو محاكاة استجابة 500 من الخادم، أو إزالة ترويسة قبل أن تصل إلى تطبيقك. هنا يأتي دور <a href="https://playwright.dev/docs/mock"><code>page.route</code></a> ويستحق مكانه.</p>
+<p>الاعتراض القائم على المسارات هو واجهة Playwright البرمجية لاعتراض طلبات الشبكة الفردية وتقرير ما يجب فعله بها: تقديم استجابة مزيفة، أو تعديل الاستجابة الحقيقية، أو إلغاء الطلب بالكامل. إنه أكثر صراحة من إعادة تشغيل HAR، وأكثر مرونة، وللمحاكاة الصغيرة أقل تكلفة بكثير.</p>
+<h2 id="الأساسيات-اعتراض-طلب">الأساسيات: اعتراض طلب</h2>
+<p>يأخذ <a href="https://playwright.dev/docs/api/class-page#page-route"><code>page.route</code></a> نمط URL ودالة معالج. كل طلب يطابق النمط يمر عبر معالجك بدلًا من الشبكة الحقيقية:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/api/shelf&#x27;</span>, <span class="hljs-title function_">async</span> (route) =&gt; {
+  <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fulfill</span>({
+    <span class="hljs-attr">status</span>: <span class="hljs-number">200</span>,
+    <span class="hljs-attr">contentType</span>: <span class="hljs-string">&#x27;application/json&#x27;</span>,
+    <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">books</span>: [{ <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;Station Eleven&#x27;</span> }] }),
+  });
+});
+</code></pre>
+<p>هذا كل شيء. أي طلب إلى URL ينتهي بـ <code>/api/shelf</code> يحصل على استجابتك الجاهزة بدلًا من الوصول إلى الخادم. الاختبار حتمي وسريع، ويمكنك قراءة المحاكاة مباشرة في ملف الاختبار.</p>
+<p>يمكنك أيضًا حصر الاعتراض في سياق متصفح كامل باستخدام <a href="https://playwright.dev/docs/api/class-browsercontext#browser-context-route"><code>context.route</code></a>، وهو ينطبق على كل صفحة في السياق—بما في ذلك النوافذ المنبثقة والروابط المفتوحة:</p>
+<pre><code class="language-typescript">test.<span class="hljs-title function_">beforeEach</span>(<span class="hljs-title function_">async</span> ({ context }) =&gt; {
+  <span class="hljs-keyword">await</span> context.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/api/analytics/**&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">route</span>) =&gt;</span> route.<span class="hljs-title function_">abort</span>());
+});
+</code></pre>
+<p>الفرق مهم. <code>page.route</code> يعترض فقط الطلبات الصادرة من تلك الصفحة تحديدًا. أما <code>context.route</code> فيعترض الطلبات من كل صفحة يفتحها السياق. في معظم سيناريوهات الاختبار، <code>page.route</code> هو ما تريده. والجأ إلى <code>context.route</code> عندما تحتاج إلى حجب شيء على المستوى العام—التحليلات، ووحدات تتبع البكسل، ونصوص الأطراف الثالثة—عبر كل الصفحات في الاختبار.</p>
+<p>القاعدة السريعة هي:</p>
+<ul>
+<li>استخدم <code>page.route()</code> عندما تنتمي المحاكاة إلى صفحة واحدة وسيناريو واحد</li>
+<li>استخدم <code>browserContext.route()</code> عندما تكون المحاكاة جزءًا من بيئة الاختبار بأكمله</li>
+</ul>
+<p>أمثلة ملموسة:</p>
+<ul>
+<li><strong>استخدم <code>page.route()</code></strong> في حالات مثل «يجب أن ترى صفحة الرف هذه استجابة 500 من <code>/api/shelf</code>» أو «يجب أن يحصل مسار الدفع هذا على استجابة ضريبية مزيفة». المسار محلي بالنسبة للصفحة قيد الاختبار، وعندما تختفي الصفحة ينتهي العمر المفيد للمحاكاة أيضًا.</li>
+<li><strong>استخدم <code>browserContext.route()</code></strong> لحجب التحليلات في كل صفحة، أو لاعتراض حركة النوافذ المنبثقة من أول طلب، أو لضبط استجابة خلفية مزيفة واحدة تصطدم بها كل من الصفحة الرئيسية والنافذة المنبثقة أثناء الاختبار نفسه.</li>
+<li><strong>استخدم <code>browserContext.route()</code></strong> كلما لم تكن تملك كائن الصفحة الهدف بعد. أول طلب من نافذة منبثقة هو الحالة الكلاسيكية. بحلول الوقت الذي تحصل فيه على مقبض <code>Page</code> للنافذة المنبثقة، يكون ذلك الطلب قد حدث بالفعل.</li>
+<li><strong>فضّل <code>page.route()</code></strong> عندما يجعل النطاق الأوسع المحاكاة خفية جدًا. المسار على مستوى السياق هو في الواقع بنية اختبار محيطة؛ وهذا جيد عندما يكون بنية حقيقية وسيئًا عندما يغيّر صفحات غير ذات صلة بهدوء.</li>
+</ul>
+<p>من القواعد الجديرة بالتذكر أيضًا قاعدة الأسبقية الواردة في التوثيق: إذا تطابق الاثنان، يفوز <code>page.route()</code> على <code>browserContext.route()</code> بالنسبة للطلبات القادمة من تلك الصفحة. يتيح لك ذلك الاحتفاظ بافتراضي واسع على مستوى السياق وتجاوز نقطة نهاية واحدة بدقة على الصفحة التي تحتاج إلى سلوك مختلف.</p>
+<p>وثمة تفصيل آخر من توثيق <a href="https://playwright.dev/docs/api/class-page">واجهة Page</a> يسهل تفويته: تفعيل التوجيه يعطّل ذاكرة التخزين المؤقت لـ HTTP في المتصفح لتلك الصفحة أو السياق. هذا غالبًا ما تريده في الاختبارات. ويعني أيضًا أن «تطبيقي أصبح أبطأ بعد إضافة المسارات» ليس من نسج خيالك.</p>
+<h2 id="استعادة-المسارات">استعادة المسارات</h2>
+<p>إضافة المسار نصف العمل فقط. إذا ثبّتت مسارًا في منتصف اختبار طويل، أو داخل دالة مساعدة قابلة لإعادة الاستخدام تُنفّذ أكثر من مرة، فأنت تحتاج أيضًا إلى معرفة كيفية التخلص منه.</p>
+<p>في Playwright Test العادي، غالبًا ما يكون أرخص تنظيف هو حد الاختبار نفسه: كل اختبار يحصل على سياق متصفح جديد، لذا لا تتسرب المسارات التي تضيفها في اختبار إلى الاختبار التالي. لكن داخل اختبار واحد أو دالة مساعدة واحدة، تنظيف المسارات مسؤوليتك.</p>
+<p>هناك ثلاثة أنماط جديرة بالمعرفة.</p>
+<h3 id="1-اجعل-المسار-ينتهي-تلقائيا">1. اجعل المسار ينتهي تلقائيًا</h3>
+<p>إذا كان ينبغي تطبيق المحاكاة مرة واحدة فقط، فاستخدم خيار <code>times</code> في المسار ودع Playwright يزيله بعد هذا العدد من المطابقات:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(
+  <span class="hljs-string">&#x27;**/api/shelf&#x27;</span>,
+  <span class="hljs-title function_">async</span> (route) =&gt; {
+    <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fulfill</span>({
+      <span class="hljs-attr">status</span>: <span class="hljs-number">200</span>,
+      <span class="hljs-attr">contentType</span>: <span class="hljs-string">&#x27;application/json&#x27;</span>,
+      <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">books</span>: [] }),
+    });
+  },
+  { <span class="hljs-attr">times</span>: <span class="hljs-number">1</span> },
+);
+</code></pre>
+<p>هذا هو الخيار الأنظف عندما تعترض طلب تهيئة واحدًا ثم تريد أن تعود الصفحة إلى الشبكة الحقيقية.</p>
+<h3 id="2-إزالة-مسار-محدد-واحد">2. إزالة مسار محدد واحد</h3>
+<p>استخدم <a href="https://playwright.dev/docs/api/class-page#page-unroute"><code>page.unroute()</code></a> أو <a href="https://playwright.dev/docs/api/class-browsercontext#browser-context-unroute"><code>browserContext.unroute()</code></a> عندما تريد إزالة معالج محدد:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">mockShelf</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">route</span>) =&gt; {
+  <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fulfill</span>({
+    <span class="hljs-attr">status</span>: <span class="hljs-number">200</span>,
+    <span class="hljs-attr">contentType</span>: <span class="hljs-string">&#x27;application/json&#x27;</span>,
+    <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">books</span>: [{ <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;Station Eleven&#x27;</span> }] }),
+  });
+};
+
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/api/shelf&#x27;</span>, mockShelf);
+
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/shelf&#x27;</span>);
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Station Eleven&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+} <span class="hljs-keyword">finally</span> {
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">unroute</span>(<span class="hljs-string">&#x27;**/api/shelf&#x27;</span>, mockShelf);
+}
+</code></pre>
+<p>تمرير المعالج مهم عندما يكون لديك أكثر من مسار واحد على نمط URL نفسه. إذا حذفته، يزيل Playwright <strong>كل</strong> المسارات لذلك الـ URL على تلك الصفحة أو السياق.</p>
+<p><code>try</code> / <code>finally</code> هو الشكل الصحيح في الدوال المساعدة. الاختبارات تفشل. والتنظيف يجب أن يحدث رغم ذلك.</p>
+<h3 id="3-مسح-كل-شيء">3. مسح كل شيء</h3>
+<p>إذا كانت دالة مساعدة تثبّت عدة مسارات، أو تخلط المسارات اليدوية مع إعادة تشغيل HAR، فاستخدم <a href="https://playwright.dev/docs/api/class-page#page-unroute-all"><code>page.unrouteAll()</code></a> أو <a href="https://playwright.dev/docs/api/class-browsercontext#browser-context-unroute-all"><code>browserContext.unrouteAll()</code></a>. هذه تزيل المسارات التي سجلتها بواسطة <code>route()</code> ومعالجات HAR التي سجلتها بواسطة <code>routeFromHAR()</code> معًا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/api/shelf&#x27;</span>, <span class="hljs-title function_">async</span> (route) =&gt; {
+  <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fulfill</span>({ <span class="hljs-attr">status</span>: <span class="hljs-number">500</span>, <span class="hljs-attr">body</span>: <span class="hljs-string">&#x27;boom&#x27;</span> });
+});
+
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">routeFromHAR</span>(<span class="hljs-string">&#x27;tests/fixtures/open-library.har&#x27;</span>, {
+  <span class="hljs-attr">notFound</span>: <span class="hljs-string">&#x27;fallback&#x27;</span>,
+});
+
+<span class="hljs-comment">// ... run the scenario ...</span>
+
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">unrouteAll</span>({ <span class="hljs-attr">behavior</span>: <span class="hljs-string">&#x27;wait&#x27;</span> });
+</code></pre>
+<p>خيار <code>behavior</code> ليس زينة.</p>
+<ul>
+<li><code>'wait'</code> ينتظر انتهاء المعالجات الجارية حاليًا قبل إزالتها.</li>
+<li><code>'ignoreErrors'</code> يزيل فورًا ويبتلع أخطاء المعالجات اللاحقة.</li>
+<li><code>'default'</code> يزيل فورًا ويمكنه مع ذلك إظهار أخطاء غير معالجة من معالج كان يعمل بالفعل.</li>
+</ul>
+<p>استخدم <code>'wait'</code> ما لم يكن لديك سبب محدد لخلاف ذلك. إنها نسخة التفكيك التي تتصرّف بنضج.</p>
+<h2 id="التوجيه-برمجية-وسيطة-وليس-سحرا">التوجيه برمجية وسيطة، وليس سحرًا</h2>
+<p>سلسلة التوجيه في Playwright لها دلالات برمجية وسيطة حقيقية.</p>
+<ul>
+<li>تُنفّذ المسارات بترتيب <strong>عكسي لترتيب التسجيل</strong>. أحدث مسار مطابق مسجّل هو الذي يحصل على الفرصة الأولى.</li>
+<li>معالج <code>page.route(...)</code> يتغلب على معالج <code>browserContext.route(...)</code> المطابق بالنسبة للطلبات القادمة من تلك الصفحة.</li>
+<li><a href="https://playwright.dev/docs/api/class-route#route-fallback"><code>route.fallback()</code></a> يمرر الطلب إلى المعالج المطابق التالي، مع إمكانية تجاوزات على الطلب.</li>
+<li><a href="https://playwright.dev/docs/api/class-route#route-continue"><code>route.continue()</code></a> يرسل الطلب مباشرة إلى الشبكة ويوقف السلسلة.</li>
+</ul>
+<p>هذا التمييز مهم جدًا عندما يكون لديك أكثر من معالج واحد:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/*&#x27;</span>, <span class="hljs-title function_">async</span> (route, request) =&gt; {
+  <span class="hljs-keyword">if</span> (request.<span class="hljs-title function_">method</span>() !== <span class="hljs-string">&#x27;POST&#x27;</span>) <span class="hljs-keyword">return</span> route.<span class="hljs-title function_">fallback</span>();
+
+  <span class="hljs-keyword">return</span> route.<span class="hljs-title function_">fallback</span>({
+    <span class="hljs-attr">headers</span>: {
+      ...request.<span class="hljs-title function_">headers</span>(),
+      <span class="hljs-string">&#x27;x-test-mode&#x27;</span>: <span class="hljs-string">&#x27;1&#x27;</span>,
+    },
+  });
+});
+
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/api/**&#x27;</span>, <span class="hljs-title function_">async</span> (route) =&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fetch</span>({ <span class="hljs-attr">maxRetries</span>: <span class="hljs-number">2</span> });
+  <span class="hljs-keyword">const</span> json = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+  json.<span class="hljs-property">debug</span> = <span class="hljs-literal">true</span>;
+  <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fulfill</span>({ response, json });
+});
+</code></pre>
+<p>بالتسجيل بهذا الترتيب، يعمل معالج <code>**/api/**</code> أولًا، ويعمل المعالج الواسع <code>**/*</code> لاحقًا فقط إذا تراجع الأول. إذا استخدمت <code>continue()</code> في المعالج الواسع، فلن يحصل المعالج الأضيق على دوره أبدًا.</p>
+<h2 id="ثلاثة-أشياء-يمكنك-فعلها-بمسار">ثلاثة أشياء يمكنك فعلها بمسار</h2>
+<p>كل معالج مسار ينتهي باستدعاء واحدة من ثلاث طرق على كائن <code>route</code>. كل واحدة منها تجيب على سؤال مختلف.</p>
+<h3 id="fulfill-تقديم-استجابة-مزيفة">fulfill: تقديم استجابة مزيفة</h3>
+<p><a href="https://playwright.dev/docs/api/class-route#route-fulfill"><code>route.fulfill</code></a> يستبدل الاستجابة الحقيقية بالكامل. الطلب لا يغادر المتصفح أبدًا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/api/shelf&#x27;</span>, <span class="hljs-title function_">async</span> (route) =&gt; {
+  <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fulfill</span>({
+    <span class="hljs-attr">status</span>: <span class="hljs-number">200</span>,
+    <span class="hljs-attr">contentType</span>: <span class="hljs-string">&#x27;application/json&#x27;</span>,
+    <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">books</span>: [] }),
+  });
+});
+</code></pre>
+<p>هذا هو الخيار الذي ستلجأ إليه أكثر من غيره في الاختبارات. حاكِ نقطة النهاية، وتحكم في الاستجابة، وتحقق من الواجهة التي تعرضها. لا شبكة، ولا تقلّب، ولا اعتماد على خادم شخص آخر.</p>
+<p>يمكنك التقديم بأكثر من مجرد جسم. المجموعة الكاملة من الخيارات تشمل <code>status</code> و<code>headers</code> و<code>contentType</code> و<code>body</code> و<code>path</code> (تقديم ملف من القرص). على سبيل المثال، تقديم ملف JSON ثابت:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fulfill</span>({
+  <span class="hljs-attr">status</span>: <span class="hljs-number">200</span>,
+  <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;tests/fixtures/shelf-response.json&#x27;</span>,
+});
+</code></pre>
+<h3 id="abort-إلغاء-الطلب">abort: إلغاء الطلب</h3>
+<p><a href="https://playwright.dev/docs/api/class-route#route-abort"><code>route.abort</code></a> يوقف الطلب تمامًا. يحصل المتصفح على خطأ شبكة، كما لو كان الخادم غير قابل للوصول:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Block all image requests.</span>
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/*.{png,jpg,jpeg,webp}&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">route</span>) =&gt;</span> route.<span class="hljs-title function_">abort</span>());
+</code></pre>
+<p>هذا مفيد لشيئين. أولًا، تسريع الاختبارات التي لا تهتم بالصور أو الخطوط أو نصوص الأطراف الثالثة—فحجبها يقتطع وقتًا من كل تحميل صفحة. ثانيًا، اختبار كيفية تعامل تطبيقك مع أعطال الشبكة. إذا أردت التحقق من أن صفحة الرف تعرض حالة خطأ عندما يكون الـ API معطلًا، فألغِ مسار الـ API وتحقق من واجهة الخطأ:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/api/shelf&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">route</span>) =&gt;</span> route.<span class="hljs-title function_">abort</span>());
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/shelf&#x27;</span>);
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Unable to load your shelf&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>يمكنك أيضًا الإلغاء بشكل انتقائي حسب نوع المورد بدلًا من الـ URL:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/*&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">route</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> route.<span class="hljs-title function_">request</span>().<span class="hljs-title function_">resourceType</span>() === <span class="hljs-string">&#x27;image&#x27;</span> ? route.<span class="hljs-title function_">abort</span>() : route.<span class="hljs-title function_">continue</span>();
+});
+</code></pre>
+<h3 id="continue-دعه-يمر-ربما-معدلا">continue: دعه يمر، ربما معدلًا</h3>
+<p><a href="https://playwright.dev/docs/api/class-route#route-continue"><code>route.continue</code></a> يرسل الطلب إلى الخادم الحقيقي، لكنه يتيح لك تعديله في طريقه. يمكنك تغيير الطريقة أو الـ URL أو الترويسات أو بيانات ما بعد الإرسال:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Strip a custom header before the request reaches the server.</span>
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/*&#x27;</span>, <span class="hljs-title function_">async</span> (route) =&gt; {
+  <span class="hljs-keyword">const</span> headers = route.<span class="hljs-title function_">request</span>().<span class="hljs-title function_">headers</span>();
+  <span class="hljs-keyword">delete</span> headers[<span class="hljs-string">&#x27;X-Debug-Token&#x27;</span>];
+  <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">continue</span>({ headers });
+});
+</code></pre>
+<p>هذا هو الأقل شيوعًا من الثلاثة في كود الاختبار، لكنه يظهر عندما تحتاج إلى محاكاة بيئة عميل محددة (تغيير <code>User-Agent</code> على سبيل المثال) أو عندما تحتاج إلى إزالة ترويسات تضيفها بنية اختبارك لكن الخادم لا يتوقعها.</p>
+<p>هناك تحذير مزعج واحد من <a href="https://playwright.dev/docs/api/class-route">واجهة Route</a>: لا يمكنك تجاوز ترويسة <code>Cookie</code> بهذه الطريقة. يملأ المتصفح ملف تعريف الارتباط من جرار الكوكيز الخاص به، لا من تجاوزك المصنوع يدويًا. إذا كانت حالة الكوكيز مهمة، فاستخدم <code>browserContext.addCookies()</code> أو <code>storageState</code> بدلًا من محاولة تهريبها عبر <code>continue()</code>.</p>
+<h2 id="تعديل-الاستجابات">تعديل الاستجابات</h2>
+<p>أحيانًا تريد الاستجابة <em>الحقيقية</em> من الخادم، لكن مع تغيير شيء واحد—حقل مضاف، أو حقل محذوف، أو رمز حالة مبدل. النمط هو: اجلب الاستجابة الأصلية عبر المسار، وعدّلها، ثم قدّم النسخة المعدلة.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-string">&#x27;**/api/shelf&#x27;</span>, <span class="hljs-title function_">async</span> (route) =&gt; {
+  <span class="hljs-comment">// Fetch the real response.</span>
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fetch</span>();
+  <span class="hljs-keyword">const</span> json = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+
+  <span class="hljs-comment">// Add a field the test needs.</span>
+  json.<span class="hljs-property">books</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">book</span>) =&gt;</span> {
+    book.<span class="hljs-property">testId</span> = <span class="hljs-string">\`book-<span class="hljs-subst">\${book.id}</span>\`</span>;
+  });
+
+  <span class="hljs-keyword">await</span> route.<span class="hljs-title function_">fulfill</span>({
+    response,
+    <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(json),
+    <span class="hljs-attr">headers</span>: {
+      ...response.<span class="hljs-title function_">headers</span>(),
+      <span class="hljs-string">&#x27;content-type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span>,
+    },
+  });
+});
+</code></pre>
+<p><a href="https://playwright.dev/docs/api/class-route#route-fetch"><code>route.fetch</code></a> يرسل الطلب إلى الخادم الحقيقي ويعطيك كائن الاستجابة. تعدّل ما تحتاجه، ثم تستدعي <code>route.fulfill</code> بالنسخة المعدلة. يرى المتصفح الاستجابة المعدلة كما لو جاءت من الخادم مباشرة.</p>
+<p>يأخذ <code>route.fetch()</code> أيضًا بعض خيارات الضبط المفيدة الخاصة به. وأهم اثنين في كود الاختبار هما <code>maxRedirects</code> و<code>maxRetries</code>. تدفقات المصادقة المليئة بإعادة التوجيه، أو إعادة الضبط العابرة أحيانًا في استدعاء خلفي، أسهل بكثير في النمذجة هناك من أغلفة إعادة المحاولة المكتوبة يدويًا حول معالج المسار.</p>
+<p>هذا قوي لاختبار الحالات الحدية دون بناء خادم اختبار منفصل. أتريد اختبار ما يحدث عندما يعيد الـ API استجابة 500؟ اجلب الاستجابة الحقيقية، وتجاهلها، وقدّم استجابة 500. أتريد اختبار ما يحدث عند غياب حقل واحد؟ اجلب الاستجابة الحقيقية، واحذف الحقل، وقدّمها. الخادم الحقيقي يوفر خط الأساس؛ وأنت توفر التباين.</p>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>إذا وجدت نفسك تعدّل الاستجابات لأكثر من مسارين أو ثلاثة في الاختبار نفسه، فمن المحتمل أنك تجاوزت حدود الاعتراض القائم على المسارات. انتقل إلى إعادة تشغيل HAR بملف HAR محرّر مسبقًا، أو ابنِ نظام تجهيزات مناسبًا. معالجات المسارات رائعة للمحاكاة الجراحية؛ لكنها تصبح ثقيلة عندما تحاكي سطح API بأكمله.</p>
+</blockquote>
+<h2 id="أنماط-url-العامة-glob">أنماط URL العامة (Glob) <span class="content-anchor" id="glob-url-patterns"></span></h2>
+<p>يستخدم Playwright صيغة glob المبسطة الخاصة به لمطابقة الـ URL في <code>page.route</code> و<code>page.waitForResponse</code> وفي كل مكان آخر يقبل نمط URL. وفيما يلي بعض القواعد الجديرة بالاستيعاب:</p>
+<ul>
+<li><code>*</code> المفردة تطابق أي أحرف <em>عدا</em> <code>/</code>. لذا <code>https://example.com/*.js</code> يطابق <code>https://example.com/app.js</code> لكنه لا يطابق <code>https://example.com/scripts/app.js</code>.</li>
+<li><code>**</code> المزدوجة تطابق أي أحرف <em>بما في ذلك</em> <code>/</code>. لذا <code>**/*.js</code> يطابق كليهما.</li>
+<li><code>?</code> يطابق علامة استفهام حرفية، وليس «أي حرف واحد». هذا يختلف عن أنماط shell العامة. إذا أردت مطابقة أي حرف، فاستخدم <code>*</code>.</li>
+<li>الأقواس المعقوفة <code>{}</code> تطابق قائمة بدائل مفصولة بفواصل: <code>**/*.{png,jpg,jpeg}</code> يطابق أنواع الصور الثلاثة.</li>
+<li>يجب أن يطابق النمط الـ URL <em>بالكامل</em>، لا مجرد سلسلة فرعية. <code>*.js</code> لن يطابق شيئًا لأن عناوين URL تبدأ بـ <code>https://</code>.</li>
+</ul>
+<p>عندما لا تكون أنماط glob معبّرة بما يكفي، مرّر تعبيرًا نمطيًا بدلًا منها:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">route</span>(<span class="hljs-regexp">/openlibrary\\.org\\/search\\.json/</span>, <span class="hljs-title function_">async</span> (route) =&gt; {
+  <span class="hljs-comment">// ...</span>
+});
+</code></pre>
+<p>تطابق أنماط regex سلسلة الـ URL الكاملة، لذا لا تحتاج إلى مطابقة البروتوكول والنطاق إن لم تكن تهتم بهما—المطابقة الجزئية كافية.</p>
+<h2 id="مراقبة-أحداث-الشبكة">مراقبة أحداث الشبكة</h2>
+<p>أحيانًا لا تريد اعتراض الطلبات—بل تريد مراقبتها. يعرّض Playwright حدثي <code>request</code> و<code>response</code> على كل من الصفحة والسياق:</p>
+<pre><code class="language-typescript">page.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">request</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;&gt;&gt;&#x27;</span>, request.<span class="hljs-title function_">method</span>(), request.<span class="hljs-title function_">url</span>()));
+page.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;response&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;&lt;&lt;&#x27;</span>, response.<span class="hljs-title function_">status</span>(), response.<span class="hljs-title function_">url</span>()));
+</code></pre>
+<p>يُشغَّل هذان الحدثان مع <em>كل</em> طلب، بما في ذلك الطلبات التي وجّهتها. إنهما مفيدان لتصحيح الأخطاء—إذا لم يكن هناك مسار مطابق، فإن حدث <code>request</code> يريك بالضبط أي URL يطلبه المتصفح كي تصحح نمط glob الخاص بك.</p>
+<p>في كود الاختبار، نادرًا ما تحتاج إلى مستمعي أحداث خام. <code>page.waitForResponse</code> (المغطى في <a href="https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story">قصة الانتظار</a>) هو الأداة الصحيحة لـ «انتظر حتى ينتهي هذا الطلب، ثم تحقق». مستمعو الأحداث مفيدون عندما تحتاج إلى جمع <em>كل</em> حركة الشبكة لتقرير اختبار أو ملف أدلة فشل.</p>
+<h2 id="مأزق-الـ-service-worker">مأزق الـ service worker</h2>
+<p>إذا سجّل تطبيقك <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">service worker</a>، فإن هذا العامل يجلس بين المتصفح والشبكة—ويعترض الطلبات <em>قبل</em> أن تراها معالجات المسارات في Playwright. هذا يعني أن استدعاءات <code>page.route</code> الخاصة بك قد لا تُنفّذ أبدًا، لأن الـ service worker يقدم استجابات مخزنة مؤقتًا بدلًا من تمرير الطلبات إلى طبقة الشبكة.</p>
+<p>الإصلاح واضح ومباشر:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> context = <span class="hljs-keyword">await</span> browser.<span class="hljs-title function_">newContext</span>({
+  <span class="hljs-attr">serviceWorkers</span>: <span class="hljs-string">&#x27;block&#x27;</span>,
+});
+</code></pre>
+<p>أو في <code>playwright.config.ts</code>:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">use</span>: {
+    <span class="hljs-attr">serviceWorkers</span>: <span class="hljs-string">&#x27;block&#x27;</span>,
+  },
+});
+</code></pre>
+<p>هذا يعطّل عمال الخدمة بالكامل لسياق الاختبار. تعمل مساراتك كما هو متوقع، ولا تخسر شيئًا—فالتخزين المؤقت لعامل الخدمة مسألة إنتاج، لا مسألة اختبار.</p>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p>إذا كنت تستخدم <a href="https://mswjs.io/">Mock Service Worker (MSW)</a> لمحاكاة الـ API في تطبيقك، فهو يسجّل عامل خدمة خاصًا به. سيعترض هذا العامل الطلبات قبل معالجات مسارات Playwright، مما يجعل مساراتك غير مرئية. إذا أردت اعتراض المسارات على مستوى Playwright، فإما أن تعطّل MSW في بيئة الاختبار أو تستخدم التوجيه المدمج في Playwright بدلًا من MSW.</p>
+</blockquote>
+<h2 id="للنوافذ-المنبثقة-وwebsockets-حالات-حدية-خاصة">للنوافذ المنبثقة وWebSockets حالات حدية خاصة</h2>
+<p>هناك مأزقان في المسارات يستحقان التدوين لأنهما يبدوان كأن «Playwright معطوب» حتى تعرف القاعدة.</p>
+<p>أولًا: <code>page.route()</code> <strong>لا</strong> يلتقط أول طلب لصفحة منبثقة. يحدث ذلك الطلب قبل أن يكون لديك مقبض على كائن الصفحة المنبثقة. إذا كنت تحتاج إلى اعتراض حركة النوافذ المنبثقة من البداية، فسجّل المعالج على سياق المتصفح باستخدام <code>browserContext.route()</code>.</p>
+<p>ثانيًا: التطبيقات المثقلة بمقابس الاتصال لديها الآن <a href="https://playwright.dev/docs/api/class-browsercontext#browser-context-route-web-socket"><code>browserContext.routeWebSocket()</code></a> عندما تحتاج إلى مراقبة حركة WebSocket أو تعديلها. قاعدة التوقيت صارمة: فقط المقابس المنشأة <strong>بعد</strong> تسجيل التوجيه يتم اعتراضها. أعدّ التوجيه قبل أن تنشئ الصفحة الاتصال، أو لا تتظاهر بأن المسار سيراها.</p>
+<h2 id="متى-تستخدم-المسارات-مقابل-har">متى تستخدم المسارات مقابل HAR</h2>
+<p>القرار عادة واضح بمجرد أن تصوغ السؤال بوضوح:</p>
+<ul>
+<li><strong>نقطة نهاية أو نقطتان باستجابات معروفة:</strong> استخدم <code>page.route</code> مع <code>route.fulfill</code>. المحاكاة تعيش في الاختبار، وهي مقروءة وصريحة.</li>
+<li><strong>محاكاة الأخطاء أو الحالات الحدية:</strong> استخدم <code>page.route</code> مع <code>route.abort</code> أو <code>route.fulfill</code> مخصص برمز حالة غير 200. تُسجّل ملفات HAR الجلسات <em>الناجحة</em>—وهي ليست مصممة لمحاكاة الأخطاء.</li>
+<li><strong>سطح API واسع بنقاط نهاية كثيرة:</strong> استخدم إعادة تشغيل HAR. تسجيل عشر نقاط نهاية أسهل من كتابة عشرة معالجات مسارات.</li>
+<li><strong>تعديل الاستجابة:</strong> استخدم <code>route.fetch</code> + <code>route.fulfill</code> عندما تريد الاستجابة الحقيقية مع تغيير شيء واحد. واستخدم HAR معدلًا عندما تحتاج إلى ذلك عبر اختبارات كثيرة.</li>
+</ul>
+<p>الأداتان تتعايشان. يمكنك إعادة تشغيل HAR لمعظم نقاط النهاية وإضافة <code>page.route</code> فوقها لنقطة النهاية الوحيدة التي تحتاج إلى محاكاة فشلها. معالج المسار له الأولوية على إعادة تشغيل HAR بالنسبة للطلبات المطابقة.</p>
+<h2 id="قواعد-الوكيل">قواعد الوكيل</h2>
+<pre><code class="language-markdown"><span class="hljs-section">## Route-based network mocking</span>
+
+<span class="hljs-bullet">-</span> Use <span class="hljs-code">\`page.route\`</span> with <span class="hljs-code">\`route.fulfill\`</span> for mocking one or two endpoints
+  with known responses. Use HAR replay for larger API surfaces.
+<span class="hljs-bullet">-</span> Treat routing as middleware. Use <span class="hljs-code">\`route.fallback()\`</span> when later handlers
+  still need to run; use <span class="hljs-code">\`route.continue()\`</span> only when the chain should end.
+<span class="hljs-bullet">-</span> Use <span class="hljs-code">\`route.abort\`</span> to simulate network failures and to block non-essential
+  resources (images, fonts, analytics) that slow down tests.
+<span class="hljs-bullet">-</span> Never use <span class="hljs-code">\`route.continue\`</span> to silently modify request headers without
+  documenting why in a comment. Header manipulation is invisible in the
+  test output and easy to forget about.
+<span class="hljs-bullet">-</span> Do not try to override cookies through <span class="hljs-code">\`route.continue()\`</span>. Use
+  <span class="hljs-code">\`addCookies()\`</span> or storage state for cookie setup.
+<span class="hljs-bullet">-</span> If routes aren&#x27;t intercepting as expected, check for service workers.
+  Set <span class="hljs-code">\`serviceWorkers: &#x27;block&#x27;\`</span> in the test context when using route-based
+  interception or HAR replay.
+<span class="hljs-bullet">-</span> If popup traffic or WebSockets are involved, move the interception to
+  the browser context layer before debugging anything else.
+<span class="hljs-bullet">-</span> If a helper installs temporary routes, clean them up with <span class="hljs-code">\`times\`</span>,
+  <span class="hljs-code">\`unroute()\`</span>, or <span class="hljs-code">\`unrouteAll({ behavior: &#x27;wait&#x27; })\`</span> before returning.
+</code></pre>
+<h2 id="الشيء-الوحيد-الذي-يجب-تذكره">الشيء الوحيد الذي يجب تذكره</h2>
+<p><code>page.route</code> هو الأداة الجراحية. وإعادة تشغيل HAR هي المطرقة الثقيلة. استخدم <code>route.fulfill</code> عندما تعرف بالضبط الاستجابة التي تريدها، و<code>route.abort</code> عندما تريد محاكاة الفشل، و<code>route.continue</code> عندما تريد الاستجابة الحقيقية مع تعديل طفيف. وعندما تصبح المحاكاة كبيرة لدرجة أن معالجات المسارات تزدحم بها ملف الاختبار، فانتقل إلى HAR.</p>
+<h2 id="قراءة-إضافية">قراءة إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation">تسجيل HAR لعزل الشبكة</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording">مقاربات في تسجيل HAR</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story">قصة الانتظار</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation">الحالة الحتمية وعزل الاختبار</a></li>
+</ul>
+`,o={book:s,chapter:n,chapterTitle:a,slug:e,title:t,headings:l,html:p};export{s as book,n as chapter,a as chapterTitle,o as default,l as headings,p as html,e as slug,t as title};

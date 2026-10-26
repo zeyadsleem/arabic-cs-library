@@ -1,0 +1,256 @@
+const s="kinney",e="self-testing-ai-agents",n="وكلاء ذكاء اصطناعي يختبرون أنفسهم",t="playwright-test-agents",a="وكلاء الاختبار في Playwright",o=[{depth:2,id:"الوكلاء-الثلاثة",text:"الوكلاء الثلاثة"},{depth:2,id:"البدء",text:"البدء"},{depth:2,id:"خيارات-سطر-الأوامر-التي-تهم-فعلا",text:"خيارات سطر الأوامر التي تهم فعلًا"},{depth:3,id:"loop-ltloopgt",text:"--loop &lt;loop&gt;"},{depth:3,id:"c-config-ltfilegt",text:"-c, --config &lt;file&gt;"},{depth:3,id:"project-ltprojectgt",text:"--project &lt;project&gt;"},{depth:3,id:"prompts",text:"--prompts"},{depth:3,id:"h-help",text:"-h, --help"},{depth:2,id:"المخطط",text:"المخطِّط"},{depth:2,id:"المولد",text:"المولِّد"},{depth:2,id:"المعالج",text:"المعالِج"},{depth:2,id:"بنية-المخرجات",text:"بنية المخرجات"},{depth:2,id:"أين-تقع-وكلاء-الاختبار-في-الحلقة",text:"أين تقع وكلاء الاختبار في الحلقة"},{depth:2,id:"قواعد-الوكيل",text:"قواعد الوكيل"},{depth:2,id:"الشيء-الوحيد-الذي-يجب-تذكره",text:"الشيء الوحيد الذي يجب تذكره"},{depth:2,id:"قراءة-إضافية",text:"قراءة إضافية"}],p=`<p>أطلقت <a href="https://playwright.dev/">Playwright</a> الإصدار 1.56 بشيء جديد حقًا: ثلاثة وكلاء مدمجين—<strong>المخطِّط</strong> و<strong>المولِّد</strong> و<strong>المعالِج</strong>—يمكنهم كتابة حزمة اختباراتك وصيانتها من داخل حلقة وكيل البرمجة الخاص بك. ليس «إكمالًا تلقائيًا بمساعدة الذكاء الاصطناعي لكود الاختبار». بل وكلاء فعليون يملكون أدوات وتعليمات وقدرة على تشغيل متصفح، وفحص النتيجة، والتكرار.</p>
+<p>هذا يهمنا لأنه يغيّر شكل حلقة التغذية الراجعة. حتى الآن، كان الوكيل يكتب الكود، ويشغّل الاختبارات، ويقرأ المخرجات، ويحاول مرة أخرى. مع وكلاء الاختبار في Playwright، يمكن للوكيل أيضًا <em>كتابة الاختبارات نفسها</em>—وعندما تتعطل تلك الاختبارات، يعالجها دون أن تلصق أثر المكدس مرة أخرى. تصبح طبقة التحقق شيئًا يمكن للوكيل بناؤه <em>وصيانته</em>، لا مجرد استهلاكه.</p>
+<h2 id="الوكلاء-الثلاثة">الوكلاء الثلاثة</h2>
+<p>يتولى كل وكيل مرحلة واحدة من دورة حياة الاختبار. يمكنك استخدامها بشكل مستقل، أو ربطها ببعضها، أو تركها تعمل كحلقة.</p>
+<ul>
+<li><strong>المخطِّط:</strong> يستكشف تطبيقك في متصفح حقيقي وينتج خطة اختبار Markdown منظمة.</li>
+<li><strong>المولِّد:</strong> يأخذ خطة Markdown تلك ويحوّلها إلى ملفات اختبار Playwright قابلة للتنفيذ، ويتحقق من المحددات والتأكيدات مباشرة أثناء ذلك.</li>
+<li><strong>المعالِج:</strong> يشغّل اختبارًا فاشلًا، ويفحص الواجهة الحالية، ويصلح الاختبار، ويعيد التشغيل حتى ينجح—أو يعلّمه بـ <code>test.fixme()</code> إذا بدت الوظيفة نفسها معطلة.</li>
+</ul>
+<p>الفكرة الأساسية هي أنها قابلة للتركيب. لا يحتاج المخطِّط إلى المولِّد، ولا يحتاج المعالِج إلى أي من الاثنين الآخرين. لكن عندما تربط الثلاثة، تحصل على خط أنابيب يمتد من «هذا تطبيقي» إلى «هذه حزمة اختبارات ناجحة» إلى «الاختبارات ما زالت تنجح بعد إعادة الهيكلة» دون أن تكتب محددًا واحدًا.</p>
+<blockquote>
+<p><strong>هؤلاء الوكلاء أدوات، لا سحر</strong></p>
+<p>إنهم ينتجون ملفات اختبار Playwright حقيقية—نفس كتل <code>test()</code> وتأكيدات <code>expect()</code> ومحددات <code>getByRole()</code> التي كنت ستكتبها يدويًا. يمكنك (بل وينبغي لك) قراءة المخرجات وتحريرها وإيداعها. إنهم مسرّعات للحلقة، وليسوا بديلًا عن فهم ما تفعله الاختبارات. إذا تعطّل وكيل أو أخطأ، فأعد تشغيله—لكن راجع الفروق أولًا، لأن تشغيلًا جزئيًا ربما عدّل ملفات بالفعل.</p>
+</blockquote>
+<h2 id="البدء">البدء</h2>
+<p>أضف تعريفات الوكلاء إلى مشروعك بالأمر <code>init-agents</code>. هذه التعريفات عبارة عن مجموعات من أدوات <a href="https://modelcontextprotocol.io/">MCP</a> وتعليمات يوفرها Playwright، وينبغي إعادة توليدها كلما حدّثت Playwright لالتقاط القدرات الجديدة.</p>
+<p>لـ <a href="https://docs.claude.com/en/docs/claude-code/overview">Claude Code</a>:</p>
+<pre><code class="language-bash">npx playwright init-agents --loop=claude
+</code></pre>
+<p>لـ <a href="https://code.visualstudio.com/">VS Code</a>:</p>
+<pre><code class="language-bash">npx playwright init-agents --loop=vscode
+</code></pre>
+<p>لـ <a href="https://github.com/features/copilot">GitHub Copilot</a>:</p>
+<pre><code class="language-bash">npx playwright init-agents --loop=copilot
+</code></pre>
+<p>لـ <a href="https://opencode.ai/">OpenCode</a>:</p>
+<pre><code class="language-bash">npx playwright init-agents --loop=opencode
+</code></pre>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>تحتاج إلى VS Code الإصدار 1.105 أو أحدث لكي تعمل التجربة الوكيلة بشكل صحيح.</p>
+</blockquote>
+<p>بالنسبة إلى Claude Code، ينشئ هذا ثلاثة تعريفات وكلاء في <code>.claude/agents/</code> (المخطِّط والمولِّد والمعالِج) وإعداد خادم MCP في <code>.mcp.json</code>. وقد ينشئ أيضًا ملف <code>specs/README.md</code> واختبار بذرة افتراضيًا إذا لم يكن أي منهما موجودًا. أما الأدوات الأخرى فتضع التعريفات في أماكن أخرى—يستخدم VS Code وCopilot المسار <code>.github/agents/</code> ويكتبان إضافةً إلى ذلك <code>.github/workflows/copilot-setup-steps.yml</code> وملف <code>.vscode/mcp.json</code> مُلحَقًا، بينما يكتب OpenCode مطالبات الوكلاء تحت <code>.opencode/prompts/</code> مع ملف <code>opencode.json</code> في جذر المستودع. توقّع ملفات خارج مجلد الوكلاء الأعلى في تلك الحلقات، وراجع الفروق كاملة بعد تشغيل <code>init-agents</code>.</p>
+<p>ثمة أمر يجب معرفته: <code>init-agents</code> يستبدل ملف <code>.mcp.json</code> الخاص بالمستودع. لا يشحن Shelf هذا الملف، لذا الأمر غير ضار داخل الورشة. أما إذا كنت تشغّله على مستودعك الخاص الذي يسجّل خوادم MCP بالفعل، فخذ نسخة احتياطية من الملف أولًا ثم ادمج <code>playwright-test</code> بعده.</p>
+<p>بمجرد توليد الوكلاء، توجّههم عبر أداة الذكاء الاصطناعي التي تختارها. تتبع المخرجات المولّدة بنية نظيفة سنلقي نظرة عليها بعد قليل.</p>
+<h2 id="خيارات-سطر-الأوامر-التي-تهم-فعلا">خيارات سطر الأوامر التي تهم فعلًا</h2>
+<p>مخرجات المساعدة لـ <code>init-agents</code> قصيرة:</p>
+<pre><code>--loop &lt;loop&gt;
+-c, --config &lt;file&gt;
+--project &lt;project&gt;
+--prompts
+-h, --help
+</code></pre>
+<p>المساعدة القصيرة لطيفة. لكنها أيضًا ليست شرحًا كافيًا بحد ذاتها.</p>
+<h3 id="loop-ltloopgt"><code>--loop &lt;loop&gt;</code></h3>
+<p>هذا هو القرار الوحيد المطلوب. يخبر Playwright بمضيف الوكيل الذي ينبغي تهيئته:</p>
+<ul>
+<li><code>claude</code>: يكتب تعريفات وكلاء Claude Code تحت <code>.claude/agents/</code> وإعداد MCP في <code>.mcp.json</code></li>
+<li><code>copilot</code>: يكتب تعريفات وكلاء بنمط GitHub Copilot تحت <code>.github/agents/</code></li>
+<li><code>opencode</code>: يكتب إعداد OpenCode مع مطالبات الوكلاء تحت <code>.opencode/</code></li>
+<li><code>vscode</code>: يستخدم تخطيط وكيل VS Code / GitHub الحالي تحت <code>.github/agents/</code></li>
+<li><code>vscode-legacy</code>: يستخدم تخطيط أوضاع الدردشة (chatmodes) الأقدم في VS Code تحت <code>.github/chatmodes/</code> و<code>.vscode/mcp.json</code></li>
+</ul>
+<p>اعتبارًا من Playwright 1.59، يوجّه <code>--loop=vscode</code> و<code>--loop=copilot</code> إلى المولِّد نفسه، وينتج عنهما مخرجات متطابقة. العلمان مترادفان اليوم؛ اختر الاسم الأوضح في سير عملك.</p>
+<p>التمييز المهم هو أن <code>vscode</code> هو المسار الحالي. أما <code>vscode-legacy</code> فيوجد لإعدادات VS Code الأقدم التي ما زالت تتوقع أوضاع الدردشة بدلًا من صيغة تعريف الوكيل الأحدث.</p>
+<h3 id="c-config-ltfilegt"><code>-c, --config &lt;file&gt;</code></h3>
+<p>يوجّه هذا <code>init-agents</code> إلى ملف إعداد Playwright الذي ينبغي تحميله قبل محاولة العثور على مشروع بذرة.</p>
+<p>استخدمه عندما:</p>
+<ul>
+<li>لا يكون إعدادك هو <code>playwright.config.ts</code> الافتراضي في المجلد الحالي</li>
+<li>يكون لديك عدة إعدادات Playwright في المستودع</li>
+<li>تشغّل <code>init-agents</code> من مجلد فرعي ولا تريد أن يخمّن Playwright</li>
+</ul>
+<p>هذا العلم مهم لأن المولِّد يستخدم الإعداد المحمّل للعثور على <code>testDir</code> الخاص بالمشروع، ثم يبحث في ذلك المشروع عن ملف يتضمن اسمه <code>seed</code>. وإذا لم يجد واحدًا، ينشئ <code>seed.spec.ts</code> افتراضيًا في <code>testDir</code> لذلك المشروع.</p>
+<h3 id="project-ltprojectgt"><code>--project &lt;project&gt;</code></h3>
+<p>هذا يختار مشروع Playwright الذي سيُعامَل بوصفه <strong>مشروع البذرة الأساسي</strong>.</p>
+<p>إذا حذفته، يستخدم Playwright أول مشروع من المستوى الأعلى في الإعداد المحمّل. هذا مقبول عندما يحتوي إعدادك على مشروع رئيسي واحد واضح. لكنه غير مقبول عندما يحتوي إعدادك على أدوار أو بيئات متعددة، ويصادف أن أول مشروع شيء غريب مثل <code>setup</code> أو <code>firefox</code> أو <code>mobile</code>.</p>
+<p>استخدم <code>--project</code> عندما ينبغي أن تأتي البذرة بوضوح من مشروع محدد واحد:</p>
+<pre><code class="language-bash">npx playwright init-agents --loop=claude --project=authenticated
+</code></pre>
+<p>هذا يخبر Playwright بمكان البحث عن ملف بذرة موجود، وبمكان إنشاء الملف الافتراضي إذا لم تكن هناك بذرة بعد.</p>
+<h3 id="prompts"><code>--prompts</code></h3>
+<p>هذا يخبر Playwright بكتابة قوالب المطالبات إلى جانب تهيئة الوكيل بدلًا من كتابة تعريفات الوكلاء فقط.</p>
+<p>عمليًا، يعني ذلك مجلدات مطالبات خاصة بكل مزوّد مثل:</p>
+<ul>
+<li><code>.claude/prompts/</code></li>
+<li><code>.opencode/prompts/</code></li>
+<li><code>.github/prompts/</code></li>
+</ul>
+<p>هذا مفيد عندما تريد نص المطالبة تحت تحكم الإصدارات كقطعة أثرية قابلة للتحرير بدلًا من أن يعيش فقط داخل ملفات الوكلاء المولّدة.</p>
+<p>ثمة فارق دقيق: <code>--prompts</code> ذو معنى لتخطيطات Claude وCopilot وOpenCode وVS Code الحديثة الحالية. وهو ليس العلم المثير في وضع <code>vscode-legacy</code>، لأن ذلك المسار الأقدم مبني حول chatmodes بدلًا من تخطيط قوالب المطالبات الأحدث.</p>
+<h3 id="h-help"><code>-h, --help</code></h3>
+<p>هذا يطبع مساعدة الأمر ويخرج فحسب:</p>
+<pre><code class="language-bash">npx playwright init-agents --<span class="hljs-built_in">help</span>
+</code></pre>
+<p>يبدو ذلك تافهًا، لكنه أسرع طريقة للتأكد من مزوّدي الحلقات الذين يدعمهم إصدار Playwright المثبّت لديك فعلًا، قبل أن تبدأ في تقليد الأمثلة من مقالة مدونة كُتبت لإصدار مختلف.</p>
+<h2 id="المخطط">المخطِّط</h2>
+<p>يستكشف وكيل المخطِّط تطبيقك العامل في متصفح حقيقي وينتج خطة اختبار Markdown. إنه يفعل ما يفعله مهندس ضمان الجودة في أول جولة له في تطبيق غير مألوف: ينقر هنا وهناك، ويلاحظ ما يفعله التطبيق، ويكتب ما ينبغي اختباره.</p>
+<p><strong>ما يحتاجه منك:</strong></p>
+<ul>
+<li>طلب واضح—«أنشئ خطة لمسار الدفع كزائر» أو «خطّط لاختبارات سير عمل تقييم الكتب على الرف».</li>
+<li><strong>اختبار بذرة</strong> يهيئ البيئة التي يحتاجها تطبيقك. يشغّل المخطِّط اختبار البذرة لتهيئة البيئة—الإعداد العام، وتبعيات المشروع، والتجهيزات، والخطافات—ثم يستكشف من هناك. ويقرأ أيضًا بنية البذرة كمرجع أسلوبي للخطة المولّدة.</li>
+<li>اختياريًا، وثيقة PRD أو وثيقة متطلبات لسياق إضافي.</li>
+</ul>
+<p>اختبار البذرة هو مجرد اختبار Playwright عادي يضع التطبيق في حالة قابلة للاستخدام:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { test, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@playwright/test&#x27;</span>;
+<span class="hljs-keyword">import</span> { resetShelfContent } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./helpers/seed&#x27;</span>;
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;seed&#x27;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">resetShelfContent</span>();
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/shelf&#x27;</span>);
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;heading&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/shelf/i</span> })).<span class="hljs-title function_">toBeVisible</span>();
+});
+</code></pre>
+<p>إذا كنت قد وصلت بالفعل إلى مختبر ملف أدلة الفشل وأضفت <code>tests/fixtures.ts</code>، فالاستيراد من <code>./fixtures</code> مقبول أيضًا. الجزء المهم هنا هو نقطة البداية المهيأة والمصادَقة—لا ملف الغلاف.</p>
+<p>في Shelf، ستكون تلك البذرة <code>tests/seed.spec.ts</code>—ملف ستنشئه في المختبر المرافق، لا ملفًا يأتي مع المشروع الأولي. وبعد أن يحدث التوليد ويصبح اختبار ما أحمر، يُوجّه المعالِج عادة إلى ملف ملموس واحد تحت <code>tests/&lt;failing-spec&gt;.spec.ts</code>. هذان المساران هما نقطتا التسليم للحلقة بأكملها.</p>
+<p><strong>ما ينتجه:</strong></p>
+<p>ملف Markdown في <code>specs/</code>—شيء مثل <code>specs/basic-operations.md</code>. الخطة مقروءة بشريًا لكنها دقيقة بما يكفي لكي يعمل المولِّد عليها آليًا. يتضمن كل سيناريو خطوات مرقّمة ونتائج متوقعة وسياقًا كافيًا بحيث لو سلّمتها لمختبِر بشري لعرف ما يجب فعله.</p>
+<p>وهذا مثال مبتور من نوع المخرجات التي ينبغي أن تحصل عليها:</p>
+<pre><code class="language-markdown"><span class="hljs-section"># TodoMVC Application - Basic Operations Test Plan</span>
+
+<span class="hljs-section">## Application Overview</span>
+
+The TodoMVC application is a React-based todo list manager. Key features
+include task management, bulk operations, filtering by status, a real-time
+counter, edit-in-place, and state persistence during navigation.
+
+<span class="hljs-section">## Test Scenarios</span>
+
+<span class="hljs-section">### Adding New Todos</span>
+
+<span class="hljs-strong">**Seed:**</span> <span class="hljs-code">\`tests/seed.spec.ts\`</span>
+
+<span class="hljs-section">#### Add Valid Todo</span>
+
+<span class="hljs-strong">**Steps:**</span>
+
+<span class="hljs-bullet">1.</span> Click in the &quot;What needs to be done?&quot; input field
+<span class="hljs-bullet">2.</span> Type &quot;Buy groceries&quot;
+<span class="hljs-bullet">3.</span> Press Enter key
+
+<span class="hljs-strong">**Expected Results:**</span>
+
+<span class="hljs-bullet">-</span> Todo appears in the list with unchecked checkbox
+<span class="hljs-bullet">-</span> Counter shows &quot;1 item left&quot;
+<span class="hljs-bullet">-</span> Input field is cleared and ready for next entry
+</code></pre>
+<p>لاحظ البنية: كل سيناريو يسمّي بذرته، ويسرد خطوات ملموسة، ويحدد نتائج متوقعة قابلة للملاحظة. هذه ليست وثيقة متطلبات غامضة—إنها خطة اختبار يمكن لوكيل (أو إنسان) تنفيذها خطوة بخطوة.</p>
+<h2 id="المولد">المولِّد</h2>
+<p>يأخذ المولِّد خطة Markdown من <code>specs/</code> وينتج ملفات اختبار Playwright قابلة للتنفيذ. الأمر المهم: إنه لا يترجم النص إلى كود فحسب. بل يتحقق من المحددات والتأكيدات <em>مباشرة</em> أثناء تنفيذه كل سيناريو، لذا تعكس الاختبارات المولّدة ما يفعله التطبيق فعلًا، لا ما خمّنته الخطة.</p>
+<p>يزوّد Playwright المولِّد بتلميحات توليد وكتالوج من التأكيدات، لذا تميل المخرجات إلى الاستقرار على محددات <code>getByRole</code> وتأكيدات تعيد المحاولة تلقائيًا—وهي بالضبط الأنماط التي كنا نبني نحوها في هذه الدورة.</p>
+<p><strong>ما يحتاجه منك:</strong></p>
+<ul>
+<li>خطة Markdown من <code>specs/</code>. أدرج الملف في سياق مطالبتك كي يعرف المولِّد أين يجده.</li>
+</ul>
+<p><strong>ما ينتجه:</strong></p>
+<p>ملفات اختبار تحت <code>tests/</code>، بمقابلة واحد لواحد مع سيناريوهات المواصفة. قد تكون للاختبارات المولّدة مشكلات أولية—محددات لا تتطابق تمامًا، وتأكيدات تحتاج إلى إحكام—وهنا يأتي دور المعالِج.</p>
+<p>قد يبدو اختبار مولّد هكذا:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// spec: specs/basic-operations.md</span>
+<span class="hljs-comment">// seed: tests/seed.spec.ts</span>
+
+<span class="hljs-keyword">import</span> { test, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../fixtures&#x27;</span>;
+
+test.<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;Adding New Todos&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;Add Valid Todo&#x27;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+    <span class="hljs-keyword">const</span> todoInput = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;textbox&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;What needs to be done?&#x27;</span> });
+    <span class="hljs-keyword">await</span> todoInput.<span class="hljs-title function_">click</span>();
+    <span class="hljs-keyword">await</span> todoInput.<span class="hljs-title function_">fill</span>(<span class="hljs-string">&#x27;Buy groceries&#x27;</span>);
+    <span class="hljs-keyword">await</span> todoInput.<span class="hljs-title function_">press</span>(<span class="hljs-string">&#x27;Enter&#x27;</span>);
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Buy groceries&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+
+    <span class="hljs-keyword">const</span> todoCheckbox = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;checkbox&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Toggle Todo&#x27;</span> });
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(todoCheckbox).<span class="hljs-title function_">toBeVisible</span>();
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(todoCheckbox).<span class="hljs-property">not</span>.<span class="hljs-title function_">toBeChecked</span>();
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;1 item left&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(todoInput).<span class="hljs-title function_">toHaveValue</span>(<span class="hljs-string">&#x27;&#x27;</span>);
+  });
+});
+</code></pre>
+<p>ثمة أمران يستحقان الملاحظة. أولًا، التعليقات في الأعلى تتعقب الاختبار عائدًا إلى مواصفته وبذرته—حتى تتمكن دائمًا من العثور على الخطة التي ولّدت اختبارًا معينًا. ثانيًا، إنه يستخدم <code>getByRole</code> وتأكيدات تعيد المحاولة تلقائيًا، لا محددات CSS و<code>waitForTimeout</code>. لقد استوعب المولِّد هرمية المحددات التي غطيناها سابقًا في هذه الدورة.</p>
+<h2 id="المعالج">المعالِج</h2>
+<p>هذا هو الوكيل الذي يغلق الحلقة. عندما يفشل اختبار—لأن الواجهة تغيرت، أو انزلق محدد، أو لم يكن الكود المولّد صحيحًا تمامًا—يعيد المعالِج تشغيل الخطوات الفاشلة، ويفحص الحالة الحالية للواجهة، ويصلح الاختبار.</p>
+<p><strong>ما يفعله:</strong></p>
+<ul>
+<li>يعيد تشغيل خطوات الاختبار الفاشلة في متصفح حقيقي.</li>
+<li>يفحص DOM الحالي للعثور على عناصر أو تدفقات مكافئة.</li>
+<li>يقترح تصحيحًا: تحديث محدد، أو تعديل انتظار، أو إصلاح بيانات.</li>
+<li>يعيد تشغيل الاختبار للتحقق من نجاح التصحيح.</li>
+<li>يكرر حتى ينجح الاختبار، أو حتى توقفه الحواجز. إذا استمر الخطأ وكان المعالِج واثقًا من صحة الاختبار، فإنه يعلّم الاختبار بـ <code>test.fixme()</code> ويضيف تعليقًا قبل الخطوة الفاشلة يشرح ما يحدث بدلًا من السلوك المتوقع.</li>
+</ul>
+<p>تلك النقطة الأخيرة دقيقة ومهمة. المعالِج الجيد لا يُجبر الاختبارات على النجاح فحسب. بل يميّز بين «الاختبار قديم» و«الميزة معطلة». عندما يتخطى المعالِج اختبارًا، فهو يخبرك بشيء يستحق التحقيق.</p>
+<p><strong>ما يحتاجه منك:</strong></p>
+<ul>
+<li>اسم الاختبار الفاشل.</li>
+</ul>
+<p><strong>ما ينتجه:</strong></p>
+<ul>
+<li>اختبار ناجح، أو تعليق <code>test.fixme()</code> مع تعليق يشرح سبب اعتقاد المعالِج أن الوظيفة نفسها معطلة. ويبدو الاختبار الذي تخطاه المعالِج هكذا:</li>
+</ul>
+<pre><code class="language-typescript"><span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;Rate a book from the shelf&#x27;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/shelf&#x27;</span>);
+  <span class="hljs-comment">// Healer: the &quot;Rate this book&quot; button no longer appears in the shelf view.</span>
+  <span class="hljs-comment">// This looks like a removed feature, not a stale locator.</span>
+  test.<span class="hljs-title function_">fixme</span>();
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Rate this book&#x27;</span> }).<span class="hljs-title function_">click</span>();
+  <span class="hljs-comment">// ...</span>
+});
+</code></pre>
+<h2 id="بنية-المخرجات">بنية المخرجات</h2>
+<p>ينتج الوكلاء ملفات في تخطيط متوقع:</p>
+<pre><code>repo/
+  .claude/agents/             # agent definitions for Claude Code
+  .mcp.json                   # MCP server config for the test agents
+  specs/                      # human-readable test plans from the planner
+    basic-operations.md
+  tests/                      # generated Playwright tests
+    seed.spec.ts              # seed test for environment bootstrap
+    create/
+      add-valid-todo.spec.ts  # generated from specs/basic-operations.md
+  playwright.config.ts
+</code></pre>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>يضع VS Code وCopilot تعريفات الوكلاء تحت <code>.github/agents/</code> بدلًا من ذلك. ويستخدم OpenCode المسار <code>.opencode/prompts/</code>. التخطيط أعلاه يعكس الافتراضي في Claude Code.</p>
+</blockquote>
+<p><strong>تعريفات الوكلاء</strong> توفرها Playwright وينبغي إعادة توليدها عند تحديث إصدارات Playwright. إنها تحتوي على تعريفات أدوات MCP والتعليمات التي تشغّل كل وكيل.</p>
+<p><strong>المواصفات</strong> في <code>specs/</code> هي الخطط المنظمة. إنها تحت تحكم الإصدارات، وقابلة للمراجعة، وقابلة للتحرير. إذا لم تكن خطة المخطِّط صحيحة تمامًا، يمكنك تحرير Markdown قبل تسليمها إلى المولِّد.</p>
+<p><strong>الاختبارات</strong> في <code>tests/</code> هي اختبارات Playwright المولّدة. إنها ملفات <code>.spec.ts</code> عادية—لا شيء مميز فيها. تُودعها، وتراجعها في طلبات السحب، وتشغّلها في CI مثل أي اختبار آخر.</p>
+<p><strong>اختبارات البذرة</strong> مثل <code>seed.spec.ts</code> توفر السياق الابتدائي. إنها تتولى المصادقة، وإعداد التجهيزات، وأي شيء آخر يحتاجه المخطِّط للاستكشاف من حالة معروفة.</p>
+<p>أودع تعريفات الوكلاء في تحكم الإصدارات. إنها ملفات Markdown صغيرة، وإبقاؤها في المستودع يعني أن كل مطور في الفريق يحصل على سلوك الوكيل نفسه.</p>
+<h2 id="أين-تقع-وكلاء-الاختبار-في-الحلقة">أين تقع وكلاء الاختبار في الحلقة</h2>
+<p>تندرج وكلاء الاختبار في حلقة التغذية الراجعة عند نقطة محددة: إنها الطبقة بين «كتب الوكيل بعض الكود» و«يعرف الوكيل ما إذا كان الكود يعمل». وهكذا يبدو ذلك عمليًا.</p>
+<p>بدون وكلاء الاختبار، تكون الحلقة: اكتب الكود ← شغّل الاختبارات الموجودة ← اقرأ الإخفاقات ← أصلح ← كرر. الاختبارات ثابتة—شخص ما (أنت) كتبها، والوكيل يجريها فقط.</p>
+<p>مع وكلاء الاختبار، تتوسع الحلقة: اكتب الكود ← خطّط لاختبارات السلوك الجديد ← ولّد الاختبارات ← شغّلها ← عالج ما يفشل منها ← أبلغ. يمكن للوكيل الآن <em>توسيع</em> حزمة الاختبارات كجزء من سير عمله، لا مجرد استهلاك ما هو موجود بالفعل.</p>
+<p>هذا تحول ذو معنى. فهو يعني أن وكيلًا يعمل على ميزة جديدة يمكنه أيضًا إنتاج التحقق لتلك الميزة، في المحادثة نفسها. يستكشف المخطِّط ما تفعله الميزة فعلًا (لا ما قالته المطالبة إنه ينبغي أن تفعله)، ويكتب المولِّد اختبارات تطابق الواجهة الحقيقية، ويُبقي المعالِج تلك الاختبارات حية مع تطور الكود.</p>
+<p>يستعرض المختبر هذا الخط مرة واحدة، من البداية إلى النهاية. عمليًا، تعود إلى المخطِّط كلما تغيرت المتطلبات أو اكتسب التطبيق تدفقات جديدة.</p>
+<p>التحذير—وأريد أن أكون صريحًا بشأنه—هو أن جودة الاختبارات المولّدة من الوكيل لا تتجاوز جودة الخطة. إذا أساء المخطِّط فهم الميزة، فسينتج المولِّد بأمانة اختبارات للشيء الخطأ، وسيحافظ المعالِج بأمانة على نجاح تلك الاختبارات الخاطئة. ما زلت بحاجة إلى مراجعة المواصفات في <code>specs/</code> بالعناية نفسها التي تراجع بها أي اختبار. الوكلاء يسرّعون العمل الميكانيكي. أما الحكم على <em>ما يجب اختباره</em> فما زال لك.</p>
+<h2 id="قواعد-الوكيل">قواعد الوكيل</h2>
+<p>إذا كنت تستخدم وكلاء الاختبار في مشروعك، فأضف شيئًا مثل هذا إلى ملف التعليمات:</p>
+<pre><code class="language-markdown"><span class="hljs-section">## Playwright Test Agents</span>
+
+<span class="hljs-bullet">-</span> The planner, generator, and healer agent definitions live under
+  <span class="hljs-code">\`.claude/agents/\`</span> with an MCP config in <span class="hljs-code">\`.mcp.json\`</span>. Regenerate them
+  with <span class="hljs-code">\`npx playwright init-agents --loop=claude\`</span> after updating Playwright.
+<span class="hljs-bullet">-</span> Plans live in <span class="hljs-code">\`specs/\`</span>. Review them before generating tests—the generator
+  will faithfully implement whatever the plan says, including mistakes.
+<span class="hljs-bullet">-</span> Generated tests live in <span class="hljs-code">\`tests/\`</span>. They are regular Playwright tests—commit
+  them, review them in PRs, run them in CI.
+<span class="hljs-bullet">-</span> When a test fails after a UI change, try the healer before manually fixing
+  the test. If the healer skips the test, investigate—it believes the feature
+  is broken, not just the test.
+<span class="hljs-bullet">-</span> Seed tests (<span class="hljs-code">\`seed.spec.ts\`</span>) must use the project&#x27;s custom fixtures. Do not
+  bypass fixtures or global setup in seed tests.
+</code></pre>
+<h2 id="الشيء-الوحيد-الذي-يجب-تذكره">الشيء الوحيد الذي يجب تذكره</h2>
+<p>تحوّل وكلاء الاختبار في Playwright طبقة التحقق من شيء تبنيه <em>من أجل</em> الوكيل إلى شيء يمكن للوكيل بناؤه <em>معك</em>. المخطِّط يستكشف، والمولِّد يكتب، والمعالِج يصون. يصبح العمل الميكانيكي لإبقاء حزمة الاختبارات محدثة أرخص. أما الحكم على ما يهم—ما يجب تخطيطه، وما يجب مراجعته، ومتى تتجاوز المعالِج—فيبقى معك.</p>
+<h2 id="قراءة-إضافية">قراءة إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy">المحددات وهرمية إمكانية الوصول</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story">قصة الانتظار</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation">الحالة الحتمية وعزل الاختبار</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/lab-generate-and-heal-with-playwright-agents">مختبر: توليد حزمة اختبارات ومعالجتها بوكلاء Playwright</a></li>
+</ul>
+`,l={book:s,chapter:e,chapterTitle:n,slug:t,title:a,headings:o,html:p};export{s as book,e as chapter,n as chapterTitle,l as default,o as headings,p as html,t as slug,a as title};

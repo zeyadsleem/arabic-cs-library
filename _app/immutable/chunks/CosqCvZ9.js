@@ -1,0 +1,111 @@
+const s="tanstack-router",a="router",n="دورة TanStack Router الكاملة",t="protecting-multiple-routes-with-layouts",e="حماية مجموعة مسارات بتخطيط واحد",o=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"أين-يجب-أن-يقف-الشرط",text:"أين يجب أن يقف الشرط؟"},{depth:3,id:"إنشاء-التخطيط-المحمي",text:"إنشاء التخطيط المحميّ"},{depth:3,id:"إعادة-about-ابنا-للتخطيط",text:"إعادة about ابنًا للتخطيط"},{depth:3,id:"مسار-ثان-يدخل-تحت-الحماية",text:"مسار ثانٍ يدخل تحت الحماية"},{depth:3,id:"حين-تريد-المنع-بلا-تحويل",text:"حين تريد المنع بلا تحويل"},{depth:3,id:"القاعدة-التي-تلخص-الدرس",text:"القاعدة التي تُلخّص الدرس"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],c=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في الدرس السابق حمينا صفحة واحدة، <code>/about</code>، بشرط مكتوب داخل ملفها: إن لم يكن في السياق مستخدم، ارمِ تحويلًا إلى <code>/login</code>. هذا حلٌّ صحيح لصفحة واحدة، لكنّه لا يتوسّع. كلّ صفحة جديدة تريد حمايتها تعيد كتابة الشرط نفسه، وأخطر من التكرار أنّ نسيانه مرة واحدة يكفي لتسريب صفحة كاملة.</p>
+<p>الفكرة التي يثبتها هذا الدرس أنّ الحماية صفةٌ تُورَّث، لا شرطٌ يُنسخ. نُنشئ مسارًا أبًا لا مقطع له في العنوان، ونضع فيه التحقّق مرة واحدة، ثم نجعل كلّ مسار محميّ ابنًا له. فيصبح سؤال «هل هذا المسار محميّ؟» سؤالًا عن موضعه في الشجرة، لا عن محتوى ملفّه.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="أين-يجب-أن-يقف-الشرط">أين يجب أن يقف الشرط؟</h3>
+<p>الصفحة المحميّة قد تجلب بياناتها من الشبكة، والجلب يحدث في المُحمِّل (loader). فإن وقف الشرط داخل المكوّن، بعد أن يكون المُحمِّل قد عمل، فقد تأخّرت الحماية: الزائر لا يرى المحتوى، لكنّ الطلب انطلق فعلًا. أمّا <code>beforeLoad</code> فمكانه قبل <code>loader</code> وقبل التصيير، ويستقبل الخصائص نفسها التي يستقبلها <code>loader</code>، ومنها <code>context</code> و<code>location</code>.</p>
+<p>والخصلة التي تجعل الأب صالحًا لهذا الدور هي الترتيب: <code>beforeLoad</code> الخاصّ بالأب يُنادى قبل <code>beforeLoad</code> كلّ ابن من أبنائه، ورمي استثناء فيه يمنع تحميل الأبناء جميعًا. فالأب حاجزٌ واحد على مدخل مجموعة كاملة، لا شرطٌ مكرَّر في كلّ غرفة.</p>
+<h3 id="إنشاء-التخطيط-المحمي">إنشاء التخطيط المحميّ</h3>
+<p>ننشئ ملف <code>src/routes/_authenticated.tsx</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute, <span class="hljs-title class_">Outlet</span>, redirect } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/_authenticated&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">beforeLoad</span>: <span class="hljs-function">(<span class="hljs-params">{ context, location }</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (!context.<span class="hljs-property">user</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-title function_">redirect</span>({
+        <span class="hljs-attr">to</span>: <span class="hljs-string">&quot;/login&quot;</span>,
+        <span class="hljs-attr">search</span>: {
+          <span class="hljs-attr">redirect</span>: location.<span class="hljs-property">href</span>,
+        },
+      });
+    }
+  },
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">RouteComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Outlet</span> /&gt;</span></span>;
+}
+</code></pre>
+<p>الشرط في <code>beforeLoad</code> منقول كما هو من درس الحماية السابق: لا مستخدم في السياق ⇒ تحويل إلى <code>/login</code> ومعه عنوان الصفحة المقصودة في معامل <code>redirect</code>، ليُعاد الزائر إليه بعد الدخول. والمكوّن لا يعرض إلا <code>&lt;Outlet /&gt;</code>، أي أنّه لا يضيف شيئًا مرئيًا: هو مكان عرض الابن فحسب. وهذا اختيار مقصود؛ لو أضفت شريط تنقّل أو عنوانًا هنا لظهر في كلّ صفحة محميّة، وهذا شأن تخطيط الواجهة لا شأن حاجز الأمان.</p>
+<p>أمّا دلالة الاسم ففي الشرطة السفلية الأولى. في TanStack Router كلّ ملف أو مجلّد يبدأ اسمه بـ<code>_</code> يبقى في شجرة المسارات لكنّه لا يُسهم في بناء العنوان. فالأب موجود في الشجرة بمعرّف <code>/_authenticated</code>، لكنّ الزائر لا يرى هذا المقطع في شريط العنوان أبدًا. والبديل — أبٌ عادي له مقطع عنوان — كان سيفرض على كلّ صفحة محميّة عنوانًا مثل <code>/authenticated/about</code>، أي أنّه كان سيغيّر واجهة الموقع لا حمايته فقط.</p>
+<p>في سجلّ الفرع يظهر أنّ الملف <code>src/routes/about.tsx</code> أُعيدت تسميته إلى <code>src/routes/_authenticated.tsx</code>. هذا أثرٌ للمسار العملي الذي سلكه المؤلف: أخذ ملف الصفحة المحميّة، ونزع منه واجهة الصفحة وأبقى الشرط، فصار الملف حاجزًا. ولهذا كان لا بدّ من ملف جديد للصفحة نفسها.</p>
+<h3 id="إعادة-about-ابنا-للتخطيط">إعادة <code>about</code> ابنًا للتخطيط</h3>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute, redirect } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/_authenticated/about&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-comment">// beforeLoad: ({ context, location }) =&gt; {</span>
+  <span class="hljs-comment">//   if (!context.user) {</span>
+  <span class="hljs-comment">//     throw redirect({</span>
+  <span class="hljs-comment">//       to: &quot;/login&quot;,</span>
+  <span class="hljs-comment">//       search: {</span>
+  <span class="hljs-comment">//         redirect: location.href,</span>
+  <span class="hljs-comment">//       },</span>
+  <span class="hljs-comment">//     });</span>
+  <span class="hljs-comment">//   }</span>
+  <span class="hljs-comment">// },</span>
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">RouteComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;p-2 bg-pink-600&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-xl font-bold&quot;</span>&gt;</span>About<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>اسم الملف <code>_authenticated.about.tsx</code> يقرأه المولّد سطرًا واحدًا: النقطة تفصل الأب عن الابن في أسلوب المسارات المسطّحة، فالمعرّف <code>/_authenticated/about</code>. أمّا العنوان فيبقى <code>/about</code>، لأنّ مقطع الأب لا يُسهم فيه. لا رابط في التطبيق يحتاج تعديلًا، ولا إشارة مرجعية في أيّ <code>&lt;Link&gt;</code> تنكسر؛ هذه هي ميزة الحماية بتخطيط: تتغيّر الشجرة، ويثبت العنوان.</p>
+<p>ولاحظ الشرط المعلَّق في أعلى الملف والاستيراد الذي بقي. الشرط انتقل إلى الأب، ولو بقي هنا فعّالًا لعمل مرتين على المسار نفسه: مرة في الأب ومرة في الابن. أمّا إبقاؤه معلَّقًا فيوثّق من أين جاء، ويسهّل العودة إليه إن أردت مسارًا محميًّا خارج هذه المجموعة. والملف القديم <code>src/routes/about.tsx</code> لم يبق له وجود، لأنّه صار التخطيط نفسه؛ ولو بقي لتنازع الملفّان على العنوان <code>/about</code>.</p>
+<h3 id="مسار-ثان-يدخل-تحت-الحماية">مسار ثانٍ يدخل تحت الحماية</h3>
+<p>لنُثبت أنّ الأمر يتكرّر بلا شرط جديد، ننقل صفحة الكلمة العشوائية إلى المجموعة نفسها. تعريفها في الفرع:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">type</span> <span class="hljs-title class_">LangType</span> = z.<span class="hljs-property">infer</span>&lt;<span class="hljs-keyword">typeof</span> randomWordSearchParamsSchema&gt;[<span class="hljs-string">&quot;lang&quot;</span>];
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/_authenticated/random-word&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">validateSearch</span>: <span class="hljs-title function_">zodValidator</span>(randomWordSearchParamsSchema),
+  <span class="hljs-attr">preloadStaleTime</span>: <span class="hljs-number">5_000</span>,
+  <span class="hljs-attr">staleTime</span>: <span class="hljs-number">30_000</span>,
+  <span class="hljs-comment">// shouldReload: ({context, params, deps, route}) =&gt; {</span>
+
+  <span class="hljs-comment">// },</span>
+  <span class="hljs-attr">loaderDeps</span>: <span class="hljs-function">(<span class="hljs-params">{ search }</span>) =&gt;</span> ({ <span class="hljs-attr">lang</span>: search.<span class="hljs-property">lang</span> }),
+  <span class="hljs-attr">loader</span>: <span class="hljs-title function_">async</span> ({ deps }) =&gt; {
+    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(
+      <span class="hljs-string">\`https://random-words-api.kushcreates.com/api?words=1&amp;language=<span class="hljs-subst">\${deps.lang || <span class="hljs-string">&quot;en&quot;</span>}</span>\`</span>
+    );
+    <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> <span class="hljs-built_in">setTimeout</span>(r, <span class="hljs-number">1000</span>));
+    <span class="hljs-keyword">const</span> resJSON = <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>();
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">word</span>: resJSON[<span class="hljs-number">0</span>]?.<span class="hljs-property">word</span> };
+  },
+});
+</code></pre>
+<p>في الفرع أُعيدت تسمية <code>src/routes/random-word.tsx</code> إلى <code>src/routes/_authenticated.random-word.tsx</code>، وتغيّر المعرّف في <code>createFileRoute</code> إلى <code>/_authenticated/random-word</code>. العنوان ظلّ <code>/random-word</code>، لكنّ ما تغيّر فعليًا أهمّ من العنوان: صار <code>loader</code> هذا المسار تحت أبٍ يرفض قبل أن يعمل أيّ ابن. فزائر غير مسجَّل يفتح <code>/random-word</code> لا يصل إلى الجلب أصلًا؛ يُحوَّل إلى <code>/login</code> قبل أن يُنادى المُحمِّل.</p>
+<p>وهذه هي الفائدة العملية التي تستحقّ الملاحظة: الحماية لم تُلغِ كود الصفحة ولا بياناتها، بل غيّرت موضعها في الشجرة، فورثت الحاجز. ولو احتجت لاحقًا إلى صفحة عامّة من النوع نفسه، أخرجتها من تحت التخطيط بإعادة تسمية معاكسة، وعادت عامّة بلا حذف شرط ولا كتابته.</p>
+<h3 id="حين-تريد-المنع-بلا-تحويل">حين تريد المنع بلا تحويل</h3>
+<p>الجزء الأخير من الدرس يجرّب بديلًا للتحويل: أن يبقى الزائر في مكانه ويرى رسالة «لا تملك صلاحية» بدل صفحة الدخول. الطريقة الأولى التي يجرّبها المؤلف أن يعرض مكوّن التخطيط رسالةً بدل <code>&lt;Outlet /&gt;</code>، بالاعتماد على <code>Route.useRouteContext()</code> لقراءة المستخدم. الرسالة تظهر، ويبدو الحلّ مكتملًا، لكنّ لوحة الشبكة في أدوات المطوّر تكشف الخطأ: طلب بيانات الصفحة المحميّة أُرسل رغم أنّ شيئًا منها لم يُعرض. السبب أنّ المنع وقع في مرحلة التصيير، أي بعد أن عمل المُحمِّل. وإخفاء نتيجة الطلب ليس منعًا له؛ ومع بيانات حسّاسة أو أثر جانبي في <code>loader</code> يكون الفرق جوهريًّا.</p>
+<p>لذلك يعود المؤلف إلى <code>beforeLoad</code> في التخطيط، لكنّه هذه المرة يرمي خطأً بدل التحويل. والرمي هناك يوقف الأبناء قبل تحميلهم، فتصبح الحماية حقيقية لا بصرية. وثمن ذلك أنّ الخطأ يُلتقط عند حدّ الأخطاء، فإن أردت رسالة عربية مفهومة بدل واجهة الخطأ الافتراضية مرّرت <code>errorComponent</code> للتخطيط، وتفحص فيه نوع الخطأ لتميّز خطأ المصادقة عن غيره. والفرق بين الأسلوبين في تجربة الزائر: التحويل ينقله إلى <code>/login</code> ويحفظ وجهته، والخطأ يُبقيه في صفحته ويعرض له سبب المنع.</p>
+<h3 id="القاعدة-التي-تلخص-الدرس">القاعدة التي تُلخّص الدرس</h3>
+<p>التخطيط يضيف أبًا في الشجرة، والشرطة السفلية تمنعه من إضافة مقطع في العنوان. فإذا نُقل مسار من الجذر إلى تحت الحماية لم يتغيّر عنوانه، ولم يحتج أيّ رابط إلى تعديل. ولهذا تكون خطوة الحماية في هذا الأسلوب «نقل ملفّ» بدل «إعادة كتابة ملفّ»: تعديل في اسم الملف والمعرّف، ثم لا شيء.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--protecting-multiple-routes-with-layouts--login.png" alt="صفحة الدخول بعد منع فتح مسار محميّ: تخطيط الجذر يعرض  و وزرّ ، وتحته شريط التنقّل  و و، ثم محتوى  وزرّ الدخول"></p>
+<p>في الصورة نرى النتيجة المباشرة للحماية: الزائر غير المسجَّل طلب <code>/about</code>، فلم تُعرض صفحة «About» الوردية ولا أيّ جزء منها، ووصل بدلًا منها إلى صفحة الدخول. التخطيط الجذر بقي كاملًا حوله — الترويسة، ورسالة الترحيب بالزائر، وزرّ <code>Login</code>، وشريط التنقّل — لأنّ الحماية وقعت في فرعٍ من الشجرة لا في الموجّه كلّه. وتحت ذلك يظهر محتوى <code>/login</code> مع زرّ الدخول، حاملًا معامل <code>redirect</code> الذي يعيد الزائر إلى <code>/about</code> بعد نجاح الدخول. ولاحظ أنّ شريط التنقّل ما زال يعرض <code>About</code> و<code>Random Word</code>؛ الحماية لا تُخفي الروابط، بل تمنع بلوغ الصفحات.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>اجعل المستخدم في <code>main.tsx</code> يبدأ بقيمة <code>null</code>، ثم افتح <code>/about</code> وراقب شريط العنوان: ستجد التحويل إلى <code>/login</code> ومعه معامل <code>redirect</code> يحمل العنوان المطلوب. اضغط زرّ الدخول وتأكّد من العودة إلى <code>/about</code> نفسها.</li>
+<li>جرّب <code>/random-word</code> وأنت غير مسجَّل، ثم افتح لوحة الشبكة في أدوات المطوّر وأعد المحاولة: لا ينبغي أن يظهر أيّ طلب إلى واجهة الكلمات العشوائية.</li>
+<li>علّق <code>beforeLoad</code> في <code>_authenticated.tsx</code> مؤقّتًا، ثم افتح <code>/about</code> و<code>/random-word</code>: يعود المساران عامّين معًا، وهذا برهان أنّ الحماية في الأب لا في الأبناء.</li>
+<li>أعد <code>beforeLoad</code> إلى العمل، ثم استبدل <code>&lt;Outlet /&gt;</code> في مكوّن التخطيط بشرط يعرض رسالة منع عند غياب المستخدم، وانتقل من <code>/about</code> إلى <code>/random-word</code> وأنت تنظر إلى لوحة الشبكة: الطلب يحدث رغم أنّ المحتوى مخفيّ.</li>
+<li>أضف مسارًا جديدًا <code>_authenticated.secret.tsx</code> وضع فيه رابطًا في شريط التنقّل الجذر، ثم تحقّق من أنّه محميّ تلقائيًا بلا سطر تحقّق واحد فيه.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=12776s">فيديو الدرس: Protecting Multiple Routes with Layouts</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/auth-2">شيفرة الدرس: فرع auth-2</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/authenticated-routes">التوثيق الرسمي: المسارات المحميّة في TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Protecting Multiple Routes with Layouts» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، وما زاده المترجم من شرحٍ أو توضيحٍ لا يُنسب إلى المؤلف، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,l={book:s,chapter:a,chapterTitle:n,slug:t,title:e,headings:o,html:c};export{s as book,a as chapter,n as chapterTitle,l as default,o as headings,c as html,t as slug,e as title};

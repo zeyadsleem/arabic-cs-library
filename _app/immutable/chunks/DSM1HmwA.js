@@ -1,0 +1,214 @@
+const s="kinney",n="enterprise-ui",e="واجهات المؤسسات",a="mock-service-worker",p="Mock Service Worker: طبقة سلوك الشبكة",t=[{depth:2,id:"ما-الذي-يفعله-msw-فعلا",text:"ما الذي يفعله MSW فعلًا"},{depth:2,id:"النموذج-الذهني",text:"النموذج الذهني"},{depth:2,id:"إعداد-المتصفح",text:"إعداد المتصفح"},{depth:2,id:"إعداد-node",text:"إعداد Node"},{depth:2,id:"كيف-يعمل-مطابقة-الطلبات",text:"كيف يعمل مطابقة الطلبات"},{depth:2,id:"معالجة-الاستجابات",text:"معالجة الاستجابات"},{depth:2,id:"تجاوزات-وقت-التشغيل",text:"تجاوزات وقت التشغيل"},{depth:2,id:"فلسفة-الاختبار",text:"فلسفة الاختبار"},{depth:2,id:"ما-هو-أبعد-من-rest",text:"ما هو أبعد من REST"},{depth:2,id:"أين-يقع-الناس-في-المشكلات",text:"أين يقع الناس في المشكلات"},{depth:2,id:"هيكلة-إعداد-msw",text:"هيكلة إعداد MSW"},{depth:2,id:"الخلاصة-السريعة-tldr",text:"الخلاصة السريعة (TL;DR)"},{depth:3,id:"الاعتراض-على-مستوى-الشبكة",text:"الاعتراض على مستوى الشبكة"},{depth:3,id:"تشريح-المعالج",text:"تشريح المعالج"},{depth:3,id:"تجاوزات-وقت-التشغيل",text:"تجاوزات وقت التشغيل"}],o=`<p>Mock Service Worker — ويُختصر عادةً إلى MSW — أسهل ما يُفهم به أنه طبقة سلوك شبكي. فأنت لا تُبدّل <code>fetch</code>، ولا تعدّل Axios، ولا تعلّم React Query خادمًا خلفيًا مزيفًا. بل تصف كيف ينبغي أن تتصرّف الشبكة، ويواصل التطبيق إجراء طلبات حقيقية. ويعترضها MSW عند الحدّ الذي يلتقي فيه تطبيقك بالشبكة، لا عند موضع النداء الذي صادف أن أصدر مكتب ما الطلب منه.</p>
+<p>يعمل MSW في المتصفح وفي Node.js، ويدعم محاكاة HTTP وGraphQL وWebSocket، و<a href="https://mswjs.io/docs/">الوثائق الحالية</a> تتمحور حول واجهة v2: <code>http</code> و<code>HttpResponse</code> و<code>setupWorker</code> و<code>setupServer</code>. وكان MSW 2.0 إعادة الضبط الكبرى للواجهة البرمجية ويشترط Node 18 أو أحدث.</p>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p>ما زال قدر كبير من محتوى MSW القديم ينتشر باستخدام <code>rest.get()</code> و<code>res(ctx.json())</code>. وإن رأيت ذلك الأسلوب، فأنت تقرأ <a href="https://v1.mswjs.io/docs/api/rest">مواد من حقبة v1</a>. أما MSW الحالي فيستخدم معالجات طلبات <code>http.*</code> و<code>HttpResponse</code>. فالدروس القديمة تتوالد أسرع من عادات الصيانة الجيدة.</p>
+</blockquote>
+<h2 id="ما-الذي-يفعله-msw-فعلا">ما الذي يفعله MSW فعلًا</h2>
+<p>في المتصفح، يسجّل MSW عامل خدمة حقيقيًا ويعترض الطلبات على مستوى الشبكة. ولأنه يقف <em>أسفل</em> عميل طلباتك، تعمل المحاكاة نفسها سواء استخدم التطبيق <code>fetch</code> الأصلي أو Axios أو Apollo أو React Query أو شيئًا آخر تمامًا. و<a href="https://mswjs.io/docs/integrations/browser/">الوثائق الرسمية</a> تصف ذلك بأنه محايد تجاه العميل—فأنت لا تغيّر شيئًا في شيفرة التطبيق لمجرد محاكاة الواجهة البرمجية.</p>
+<p>وفي Node.js لا يوجد عامل خدمة، لذا يستخدم MSW <a href="https://mswjs.io/docs/api/setup-server/"><code>setupServer()</code></a> من <code>msw/node</code> لاعتراض الحركة الصادرة داخل العملية الحالية. ورغم الاسم، فهو لا ينشئ خادم HTTP. فتكامل Node يعمل بزيادة الوحدات الأصلية المُصدِرة للطلبات مثل <code>http</code> و<code>https</code>، ووُجد كي تعيد استخدام المعالجات نفسها التي كتبتها للمتصفح.</p>
+<p>وهذا هو السبب الجوهري في أن MSW يبدو أفضل من تبديل عميل الطلبات في قواعد الشيفرة الأكبر. فتصير المحاكاة مصدر حقيقة مستقلًا لسلوك الشبكة يمكن إعادة استخدامه في التطوير المحلي، والتنقيح، واختبارات التكامل، وStorybook، والعروض التوضيحية—بدل إعادة تنفيذه منفصلًا في كل أداة.</p>
+<h2 id="النموذج-الذهني">النموذج الذهني</h2>
+<p>معالجات الطلبات هي عقد واجهتك البرمجية المُحاكاة. و<code>setupWorker()</code> و<code>setupServer()</code> مهايئات بيئة. والتجاوزات وقت التشغيل انحرافات لكل اختبار أو لكل جلسة عن العقد الافتراضي. و<a href="https://mswjs.io/docs/">وثائق MSW نفسها توصي</a> بالتفكير من حيث وصف الشبكة مرة واحدة وإعادة استخدام ذلك الوصف في كل مكان.</p>
+<p>وللمعالج جزءان. فـ<strong>المُسند</strong> (predicate) يقرّر أي الطلبات تطابق. و<strong>المُحلِّل</strong> (resolver) يقرّر ما يُفعل بالطلب المطابق. و<a href="https://mswjs.io/docs/api/http/">فضاء الأسماء <code>http</code></a> هو نقطة الدخول الرئيسية لعمل على نمط REST، وهو يحاكي توابع HTTP—<code>get</code> و<code>post</code> و<code>put</code> و<code>delete</code>:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// src/mocks/handlers.ts</span>
+<span class="hljs-keyword">import</span> { http, <span class="hljs-title class_">HttpResponse</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;msw&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> handlers = [
+  http.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;https://api.example.com/users/:id&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">{ params }</span>) =&gt;</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">HttpResponse</span>.<span class="hljs-title function_">json</span>({
+      <span class="hljs-attr">id</span>: params.<span class="hljs-property">id</span>,
+      <span class="hljs-attr">firstName</span>: <span class="hljs-string">&#x27;Ada&#x27;</span>,
+      <span class="hljs-attr">lastName</span>: <span class="hljs-string">&#x27;Lovelace&#x27;</span>,
+    });
+  }),
+
+  http.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;https://api.example.com/login&#x27;</span>, <span class="hljs-title function_">async</span> ({ request }) =&gt; {
+    <span class="hljs-keyword">const</span> body = (<span class="hljs-keyword">await</span> request.<span class="hljs-title function_">clone</span>().<span class="hljs-title function_">json</span>()) <span class="hljs-keyword">as</span> { <span class="hljs-attr">email</span>?: <span class="hljs-built_in">string</span> };
+
+    <span class="hljs-keyword">if</span> (!body.<span class="hljs-property">email</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpResponse</span>(<span class="hljs-string">&#x27;Missing email&#x27;</span>, { <span class="hljs-attr">status</span>: <span class="hljs-number">400</span> });
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">HttpResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">ok</span>: <span class="hljs-literal">true</span> });
+  }),
+];
+</code></pre>
+<p>تُقرأ المعالجات كتعريفات مسارات. ومعاملات المسار متاحة كـ<code>params</code>. ووسيط <code>request</code> هو <code>Request</code> عادي من Fetch، فتقرأ JSON والنص وبيانات النماذج والكائنات الثنائية والدفق بالطريقة نفسها التي تقرؤها بها في أي مكان آخر على منصة الويب. وإن كنت تنوي تمرير الطلب عبره أو إعادة تشغيله، فانسخه قبل قراءة جسمه كي لا تستهلك الدفق مرتين.</p>
+<p>وللردود، يتيح لك MSW إعادة <code>Response</code> عادي من Fetch، لكن الوثائق توصي بـ<a href="https://mswjs.io/docs/api/http-response/"><code>HttpResponse</code></a> لأنه بديل جاهز بإمكانيات أفضل وميزات شبيهة بالخادم—معالجة كوكيز الاستجابة مثلًا—لا يعرضها <code>Response</code> العادي جيدًا في المحاكاة.</p>
+<h2 id="إعداد-المتصفح">إعداد المتصفح</h2>
+<p>لإعداد المتصفح جزء متحرك إضافي ينساه الناس ثم يلومون القمر: سكربت العامل نفسه. فإن كان تطبيقك يستخدم MSW في المتصفح، فعليه استضافة <code>mockServiceWorker.js</code> وخدمته. و<a href="https://mswjs.io/docs/integrations/browser/">أمر الواجهة البرمجية الرسمي</a> ينسخ العامل إلى مجلد أصولك العام:</p>
+<pre><code class="language-bash">npm i -D msw
+npx msw init public --save
+</code></pre>
+<p>ثم أنشئ نقطة تكامل متصفح بـ<code>setupWorker()</code> وابدأها أثناء إقلاع التطبيق:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// src/mocks/browser.ts</span>
+<span class="hljs-keyword">import</span> { setupWorker } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;msw/browser&#x27;</span>;
+<span class="hljs-keyword">import</span> { handlers } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./handlers&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> worker = <span class="hljs-title function_">setupWorker</span>(...handlers);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-comment">// src/main.ts</span>
+<span class="hljs-keyword">import</span> { worker } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./mocks/browser&#x27;</span>;
+
+<span class="hljs-keyword">await</span> worker.<span class="hljs-title function_">start</span>();
+</code></pre>
+<p>و<a href="https://mswjs.io/docs/api/setup-worker/start/"><code>worker.start()</code></a> غير متزامن لأن عامل الخدمة يجب أن يُسجَّل ويُنشَّط. والوثائق صريحة: انتظره بـ<code>await</code> لتجنب حالات التسابق بين إقلاع التطبيق واعتراض الطلبات. وهو يبحث افتراضيًا عن سكربت العامل في <code>/mockServiceWorker.js</code>، ويهمّ مسار التسجيل لأن عامل الخدمة لا يستطيع التحكم إلا في الصفحات الواقعة في مستواه وأدناه—ولهذا يكون التسجيل في الجذر هو الخيار الصحيح عادةً.</p>
+<h2 id="إعداد-node">إعداد Node</h2>
+<p>إعداد Node أبسط لأنه لا يوجد ملف عامل. عرّف المعالجات نفسها، وأنشئ تكامل خادم بـ<code>setupServer()</code> من <code>msw/node</code>، وتمكينه في عملية Node التي تعمل فيها اختباراتك. و<a href="https://mswjs.io/docs/integrations/node/">الوثائق توصي</a> بذلك في أبكر وقت ممكن كي تتأثر كل الطلبات الصادرة.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// src/mocks/node.ts</span>
+<span class="hljs-keyword">import</span> { setupServer } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;msw/node&#x27;</span>;
+<span class="hljs-keyword">import</span> { handlers } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./handlers&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> server = <span class="hljs-title function_">setupServer</span>(...handlers);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-comment">// vitest.setup.ts</span>
+<span class="hljs-keyword">import</span> { beforeAll, afterEach, afterAll } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vitest&#x27;</span>;
+<span class="hljs-keyword">import</span> { server } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./src/mocks/node&#x27;</span>;
+
+<span class="hljs-title function_">beforeAll</span>(<span class="hljs-function">() =&gt;</span> {
+  server.<span class="hljs-title function_">listen</span>({ <span class="hljs-attr">onUnhandledRequest</span>: <span class="hljs-string">&#x27;error&#x27;</span> });
+});
+
+<span class="hljs-title function_">afterEach</span>(<span class="hljs-function">() =&gt;</span> {
+  server.<span class="hljs-title function_">resetHandlers</span>();
+});
+
+<span class="hljs-title function_">afterAll</span>(<span class="hljs-function">() =&gt;</span> {
+  server.<span class="hljs-title function_">close</span>();
+});
+</code></pre>
+<p>ودورة الحياة تلك ليست طقسًا اعتباطيًا. فـ<a href="https://mswjs.io/docs/integrations/node/">وثائق تكامل Node</a> تذكر الخطوات الثلاث الحاسمة: تمكين الاعتراض قبل الاختبارات، وإعادة ضبط تجاوزات وقت التشغيل بين الاختبارات، واستعادة سلوك الطلبات الأصلي بعد انتهاء المجموعة. و<code>server.listen()</code> متزامن—بخلاف <code>worker.start()</code>—لأنه لا يوجد عامل متصفح يُسجَّل.</p>
+<p>ويمكن مشاركة قائمة المعالجات نفسها بين المتصفح وNode، لكن المشاركة ليست سحرًا. فإن وصل معالج إلى واجهات خاصة بالمتصفح مثل <code>location</code> أو <code>localStorage</code>، فلن توجد في Node إلا إن وفرتها بدائل أو اخترت بيئة اختبار توفّرها. أبقِ المعالجات مركّزة على منطق الطلب والاستجابة بدل مهمات بيئية جانبية.</p>
+<h2 id="كيف-يعمل-مطابقة-الطلبات">كيف يعمل مطابقة الطلبات</h2>
+<p>إن <a href="https://mswjs.io/docs/http/intercepting-requests/">مطابقة الطلبات</a> في MSW شبيهة بالمسارات عن قصد. فيمكن أن يكون المُسند عنوانًا نسبيًا، أو عنوانًا مطلقًا، أو تعبيرًا نمطيًا، أو دالة مُسند مخصّصة. وتدعم مُسندات النصوص الرموز البديلة ومعاملات المسارات المسماة مثل <code>:id</code>، والمطابقة تعمل بـ<code>path-to-regexp</code>—فتشعرها مألوفة إن عملت بـExpress أو أي موجّه خادم آخر.</p>
+<p>وتهمّ بعض القواعد عمليًا:</p>
+<ul>
+<li>تُحلّ العناوين النسبية مقابل المستند الحالي في المتصفح، وهو مناسب هناك لكنه دقيق في Node لأن Node لا يملك <code>location</code>.</li>
+<li>معاملات الاستعلام <em>ليست</em> جزءًا من مُسند المسار. لا تُدرجها. فهي تُجرَّد للمطابقة—واقرأها من عنوان الطلب داخل المُحلِّل بدلًا من ذلك.</li>
+<li>وعندما تحتاج شيئًا أكثر تخصيصًا، يمكن أن يكون المُسند دالة تعيد قيمة منطقية.</li>
+</ul>
+<p>وذلك التصميم يدفعك إلى نمذجة الموارد كما تفعل الخوادم، لا كما تفعله الاختبارات غالبًا. فأنت لا تطابق «نداء الجلب من <code>users.ts</code>»، بل تطابق <code>GET /users/:id</code>. وذلك عقد أصح، ويعمّر أطول من ربط محاكاتك بأي تجريد عميل تعلّق به الفريق في ذلك الربع.</p>
+<h2 id="معالجة-الاستجابات">معالجة الاستجابات</h2>
+<p>أكثر ما يفعله المُحلِّل شيوعًا هو إعادة استجابة مُحاكاة. ويعامل MSW تلك الاستجابة ككائن معياري للويب، فتستخدم محاكاتك الأشكال والدلالات نفسها التي تستخدمها شيفرة الشبكة الحقيقية. لكن الاستجابات المُحاكاة ليست الخيار الوحيد—فيمكن <a href="https://mswjs.io/docs/api/passthrough/">تمرير الطلب إلى الشبكة الحقيقية</a>، أو أن يجمع المُحلِّل بيانات حيّة وأخرى مُحاكاة عند الحاجة.</p>
+<p><code>passthrough()</code> و<code>bypass()</code> هما الواجهتان التي يخلط الناس بينهما. فـ**<code>passthrough()</code>** تقول «دع هذا الطلب المعترَض يكمل إلى الشبكة الحقيقية كما هو»—وهي لا تنشئ طلبًا إضافيًا. أما <strong><code>bypass()</code></strong> فتُجري طلبًا <em>إضافيًا</em> خارج خوارزمية الاعتراض في MSW، ما يجعلها مفيدة لترقيع الاستجابات عندما تريد جلب الاستجابة الحقيقية ثم تعديلها قبل إعادة نتيجة معزّزة بالمحاكاة.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { http, <span class="hljs-title class_">HttpResponse</span>, passthrough, bypass } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;msw&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> handlers = [
+  http.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/feature-flags&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">{ request }</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (request.<span class="hljs-property">headers</span>.<span class="hljs-title function_">has</span>(<span class="hljs-string">&#x27;x-use-live-flags&#x27;</span>)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">passthrough</span>();
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">HttpResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">checkoutV2</span>: <span class="hljs-literal">true</span> });
+  }),
+
+  http.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/user&#x27;</span>, <span class="hljs-title function_">async</span> ({ request }) =&gt; {
+    <span class="hljs-keyword">const</span> realUser = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-title function_">bypass</span>(request)).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> res.<span class="hljs-title function_">json</span>());
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">HttpResponse</span>.<span class="hljs-title function_">json</span>({
+      ...realUser,
+      <span class="hljs-attr">role</span>: <span class="hljs-string">&#x27;admin&#x27;</span>,
+    });
+  }),
+];
+</code></pre>
+<p><code>passthrough()</code> للواقع الشرطي. و<code>bypass()</code> لـ«نادِ الواقع من داخل المحاكاة ورقّع الجواب». والبشر يحبون إعطاء واجهتين متصلتين أسماء شبه متطابقة، فها نحن هنا.</p>
+<h2 id="تجاوزات-وقت-التشغيل">تجاوزات وقت التشغيل</h2>
+<p>ينبغي أن تصف قائمة المعالجات الافتراضية المسار السعيد. و<a href="https://mswjs.io/docs/best-practices/structuring-handlers/">وثائق أفضل الممارسات</a> في MSW توصي بوحدة <code>handlers</code> عليا واحدة لذلك السلوك الأساسي، ثم <a href="https://mswjs.io/docs/best-practices/network-behavior-overrides/">تجاوزات وقت التشغيل</a> للحالات الخاصة—أخطاء 401، وأخطاء 500، والحالات الفارغة، أو حالات حدّية فردية في اختبارات بعينها.</p>
+<p>و<code>.use()</code> تُقدّم معالجات جديدة فتصبح لها الأولوية على المعالجات الأولية. وهذا ما يجعل تجاوزات كل اختبار تعمل بنظافة. فأنت لا تستبدل الواجهة البرمجية المُحاكاة كاملة—بل تحجب مسارًا واحدًا مؤقتًا. ويدعم MSW أيضًا تجاوزات لمرة واحدة عبر <code>{ once: true }</code>، وهي تستنفد نفسها بعد أول تطابق:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { http, <span class="hljs-title class_">HttpResponse</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;msw&#x27;</span>;
+<span class="hljs-keyword">import</span> { server } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./mocks/node&#x27;</span>;
+
+server.<span class="hljs-title function_">use</span>(
+  http.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;https://api.example.com/users/:id&#x27;</span>, <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpResponse</span>(<span class="hljs-literal">null</span>, { <span class="hljs-attr">status</span>: <span class="hljs-number">500</span> }), {
+    <span class="hljs-attr">once</span>: <span class="hljs-literal">true</span>,
+  }),
+);
+</code></pre>
+<p>و<a href="https://mswjs.io/docs/api/setup-server/reset-handlers/"><code>resetHandlers()</code></a> تزيل تجاوزات وقت التشغيل وتعيدك إلى مجموعة المعالجات الأولية. وإن مرّرت قائمة معالجات جديدة إلى <code>resetHandlers()</code>، فهي تستبدل المجموعة الأولية تمامًا. و<code>restoreHandlers()</code> تعيد تسليح معالجات لمرة واحدة مستنفدة كي تطابق مجددًا. وهذه القواعد تستحق التذكّر لأنها الفرق بين اختبارات معزولة وكارثة التلوث بطيئة الحركة المعتادة.</p>
+<h2 id="فلسفة-الاختبار">فلسفة الاختبار</h2>
+<p>لMSW فلسفة اختبار صارمة جدًا، وهي الصحيحة. فـ<a href="https://mswjs.io/docs/best-practices/avoid-request-assertions/">الوثائق توصي صراحةً</a> بتجنب تأكيدات الطلبات مثل «هل نادينا هذا العنوان»، أو «هل أرسلنا هذا الجسم»، أو «هل عمل المعالج X». فتلك تأكيدات على تفاصيل التنفيذ. إنها تختبر <em>كيف</em> كُتبت شيفرتك صدفةً بدل <em>ما</em> السلوك المرئي للمستخدم.</p>
+<p>والنمط الأفضل: تحقّق من صحة الطلب داخل المعالج ودع التطبيق يتفاعل مع الاستجابة الناتجة. فإن كان طلب تسجيل الدخول يفتقد حقل <code>email</code>، يعيد المعالج الخطأ 400. ويؤكّد اختبارك أن الواجهة تعرض خطأً، أو تعطّل الإرسال، أو تعيد المحاولة—أي السلوك الحقيقي المهم. وهذا يبقي عقد الشبكة واقعيًا ويجعل الطلبات المعطوبة تفشل بالطريقة نفسها التي ستفشل بها أمام خادم خلفي حقيقي.</p>
+<p>وللحركة غير المعالَجة، اضبط <code>onUnhandledRequest: 'error'</code> في الاختبارات كي تفشل الطلبات المجهولة بصوت عالٍ بدل أن تنزلق بهدوء إلى الشبكة الحقيقية. وللحالات الحدّية التي لا أثر مرئي للمنتج فيها—التحليلات، والمراقبة، والقياس عن بعد الذي لا ينتظر ردًا—استخدم <a href="https://mswjs.io/docs/runbook/">واجهة أحداث دورة الحياة</a> لمراقبة الطلبات والاستجابات مباشرةً:</p>
+<pre><code class="language-typescript">server.<span class="hljs-property">events</span>.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;request:start&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">{ request }</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Outgoing request:&#x27;</span>, request.<span class="hljs-property">method</span>, request.<span class="hljs-property">url</span>);
+});
+</code></pre>
+<p>وواجهة الأحداث تلك هي أيضًا أول ما يوصي به <a href="https://mswjs.io/docs/runbook/">دليل التنقيح</a> الرسمي عندما يبدو أن MSW لا يعمل. فإن لم يعمل <code>request:start</code>، فالمشكلة في الإعداد. وإن كان يعمل <em>لكن</em> يطابق المعالج الخطأ، فالمشكلة في وصف شبكتك. وهذا وحده سيوفر عليك كثيرًا من الشتم بلا طائل.</p>
+<h2 id="ما-هو-أبعد-من-rest">ما هو أبعد من REST</h2>
+<p>MSW ليس مجرد محاكي مسارات HTTP. فوثائقه الحالية تغطّي <a href="https://mswjs.io/docs/api/graphql/">دعم GraphQL</a> من الدرجة الأولى عبر فضاء الأسماء <code>graphql</code>، الذي يتعامل مع الاستعلامات والتغييرات مباشرةً. (اشتراكات GraphQL غير مدعومة هناك بعد.)</p>
+<p>ولدى MSW أيضًا <a href="https://mswjs.io/docs/websocket/">دعم WebSocket</a> من الدرجة الأولى عبر فضاء الأسماء <code>ws</code>. ونموذج WebSocket معياري المنحى أيضًا—فتعمل مع أحداث الاتصال والرسائل وفق نموذج WebSocket من WHATWG، وتستطيع اعتراض أحداث العميل الصادرة وأحداث الخادم الواردة معًا. وهذا يجعل MSW مفيدًا لأبعد من شاشات CRUD، وهو أمر منعش في عالم كل «دليل ويب كامل» فيه يعني سرًا تطبيق مهام مع هوية تجارية.</p>
+<h2 id="أين-يقع-الناس-في-المشكلات">أين يقع الناس في المشكلات</h2>
+<p><strong>المتصفح</strong>: أكثر المشكلات شيوعًا أخطاء إعداد مملة. فملف العامل مفقود، أو يُخدم من موضع خاطئ، أو يُسجَّل في نطاق لا يغطّي الصفحة التي تجري الطلبات. وعدم انتظار <code>worker.start()</code> ينشئ حالات تسابق تهرب فيها الطلبات المبكرة قبل تفعيل المحاكاة.</p>
+<p><strong>Node</strong>: تفشل المعالجات المشتركة التي تعتمد على عموميات المتصفح، وافتراضات العناوين النسبية لا تنتقل لأن Node بلا موضع مستند، و<a href="https://mswjs.io/docs/api/setup-server/">صفحة القيود</a> تحذّر من أن الطلبات المُجراة عبر مسارات <code>net.connect()</code> أو <code>net.createConnection()</code> المباشرة—بما فيها بعض عملاء Undici—غير مرئية لـMSW. فـ«محايد تجاه العميل» صحيح في الحالة العادية، لكن Node ما زال فيه حواف حادّة يفلت عبرها بعض العملاء الأدنى مستوى من الاعتراض.</p>
+<p><strong>Jest</strong>: <a href="https://mswjs.io/docs/faq/">الأسئلة الشائعة الرسمية</a> تقول إن أخطاءً مثل <code>Request is not defined</code> أو <code>Response is not defined</code> أو <code>TextEncoder is not defined</code> تأتي غالبًا من استبدال <code>jest-environment-jsdom</code> لوحدات Node المدمجة ببدائل تكسر التوافق. وتوصي الوثائق بـ<code>jest-fixed-jsdom</code> بدلًا منه.</p>
+<h2 id="هيكلة-إعداد-msw">هيكلة إعداد MSW</h2>
+<p>أبقِه مملًا عن قصد:</p>
+<pre><code>src/
+  mocks/
+    handlers/
+      user.ts
+      auth.ts
+      checkout.ts
+      index.ts
+    browser.ts
+    node.ts
+</code></pre>
+<p>ملفات معالجات مجمّعة حسب النطاق، مع <code>index.ts</code> يجمعها في تصدير <code>handlers</code> واحد. وهذا يطابق <a href="https://mswjs.io/docs/best-practices/structuring-handlers/">إرشاد</a> MSW بالحفاظ على وصف شبكة أساسي للمسار السعيد وتجميع المعالجات حسب منطقة المنتج بدل إلقاء كل شيء في ملف عملاق واحد. ويبقى <code>browser.ts</code> و<code>node.ts</code> مهايئَي بيئة رقيقين. وتستخدم الاختبارات تجاوزات وقت التشغيل بدل تفرّع مجموعة المعالجات الرئيسية.</p>
+<p>وبمجرد أن يُرتّب على هذا النحو، يتوقف MSW عن الإحساس بأنه صمغ اختبارات ويبدأ في الإحساس بأنه بنية تحتية—من النوع الممتع فعلًا في صيانته، وهو أمر مريب بلا شك.</p>
+<hr>
+<h2 id="الخلاصة-السريعة-tldr">الخلاصة السريعة (TL;DR)</h2>
+<h3 id="الاعتراض-على-مستوى-الشبكة">الاعتراض على مستوى الشبكة</h3>
+<blockquote>
+<p>يعترض MSW عند حدّ الشبكة، لا عند موضع النداء.</p>
+</blockquote>
+<ul>
+<li>يعمل مع <code>fetch</code> وAxios وApollo وReact Query—وكل ما يجري طلبات HTTP.</li>
+<li><strong>المتصفح:</strong> يعترض عامل الخدمة الطلبات الصادرة. ويتطلب <code>mockServiceWorker.js</code> في أصولك العامة.</li>
+<li><strong>Node:</strong> اعتراض لوحدات أصلية. بلا ملف عامل، وبلا بدائل.</li>
+<li>المعالجات نفسها تعمل في البيئتين. اكتب مرة، واستخدم في الاختبارات وStorybook والتطوير المحلي.</li>
+</ul>
+<hr>
+<h3 id="تشريح-المعالج">تشريح المعالج</h3>
+<blockquote>
+<p>جزءان: مُسند (أي الطلبات تطابق) ومُحلِّل (ما يُعاد).</p>
+</blockquote>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { http, <span class="hljs-title class_">HttpResponse</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;msw&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> handlers = [
+  http.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users/:id&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">{ params }</span>) =&gt;</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">HttpResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">id</span>: params.<span class="hljs-property">id</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Ada Lovelace&#x27;</span> });
+  }),
+
+  http.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>, <span class="hljs-title function_">async</span> ({ request }) =&gt; {
+    <span class="hljs-keyword">const</span> body = <span class="hljs-keyword">await</span> request.<span class="hljs-title function_">json</span>();
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">HttpResponse</span>.<span class="hljs-title function_">json</span>(body, { <span class="hljs-attr">status</span>: <span class="hljs-number">201</span> });
+  }),
+];
+</code></pre>
+<ul>
+<li>مطابقة على نمط المسارات بمعاملات مسار ودعم التعبيرات النمطية والرموز البديلة.</li>
+<li>يستقبل المُحلِّلون كائن <code>request</code> كاملًا—اقرأ الترويسات والجسم والكوكيز.</li>
+</ul>
+<hr>
+<h3 id="تجاوزات-وقت-التشغيل">تجاوزات وقت التشغيل</h3>
+<blockquote>
+<p>المعالجات الأساسية تحدّد المسار السعيد. وتجاوزات كل اختبار تتولّى الاستثناءات.</p>
+</blockquote>
+<pre><code class="language-typescript"><span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;shows an error when the API fails&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+  server.<span class="hljs-title function_">use</span>(
+    http.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users/:id&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpResponse</span>(<span class="hljs-literal">null</span>, { <span class="hljs-attr">status</span>: <span class="hljs-number">500</span> });
+    }),
+  );
+  <span class="hljs-comment">// ...assert the error UI appears</span>
+});
+</code></pre>
+<ul>
+<li><code>server.use()</code> تقدّم معالجات لمدة الاختبار.</li>
+<li><code>server.resetHandlers()</code> في <code>afterEach</code> تعيد المعالجات الأساسية.</li>
+<li>أضف <code>{ once: true }</code> لتجاوزات لمرة واحدة تُزال تلقائيًا.</li>
+<li>تجنّب التأكيد <em>على أن</em> طلبًا جرى. أكّد <em>السلوك المرئي للمستخدم</em> الناتج عنه.</li>
+</ul>
+`,l={book:s,chapter:n,chapterTitle:e,slug:a,title:p,headings:t,html:o};export{s as book,n as chapter,e as chapterTitle,l as default,t as headings,o as html,a as slug,p as title};

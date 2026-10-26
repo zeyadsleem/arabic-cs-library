@@ -1,0 +1,72 @@
+const e="tanstack-router",o="router",s="دورة TanStack Router الكاملة",t="catch-all-routes",c="المسارات الشاملة (Catch-All Routes)",d=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"من-مقطع-ديناميكي-واحد-إلى-عدة-مقاطع",text:"من مقطعٍ ديناميكي واحد إلى عدة مقاطع"},{depth:2,id:"علامة-الدولار-من-غير-اسم-تلتقط-كل-ما-يتبقى",text:"علامة الدولار من غير اسم تلتقط كلَّ ما يتبقى"},{depth:2,id:"ملف-المسار-كما-صار-عند-نهاية-الدرس",text:"ملف المسار كما صار عند نهاية الدرس"},{depth:2,id:"معرف-مستقل-للملف-إلى-جانب-الملتقط",text:"معرّف مستقلّ للملف إلى جانب الملتقَط"},{depth:2,id:"بادئة-قبل-المعرف",text:"بادئة قبل المعرّف"},{depth:2,id:"لواحقة-txt-في-آخر-العنوان",text:"لواحقة .txt في آخر العنوان"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],a=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>تعلّمتَ في درس المقاطع الديناميكية التقاطَ مقطعٍ واحد ديناميكيّ من العنوان: مسار <code>/posts/$postId</code> يلتقط معرّف المنشور بعد <code>posts</code>، ويقف الالتقاط عند أول شطبة تالية. غير أنّ العناوين كثيرة تتجاوز ذلك: فمسارٌ يشبه مسارَ ملف، مثل <code>/file/x/y/z.txt</code>، يكون كلُّ ما بعد <code>file</code> فيه عنوانَ الملف نفسه، فتصير <code>x</code> و<code>y</code> و<code>z.txt</code> مقاطعَ ديناميكية تُلتقط جميعًا في مسارٍ واحد، ولا يكفي هنا معاملٌ يلتقط مقطعًا واحدًا. يسمّي توثيق TanStack Router المسارَ الذي يأخذ الباقي كله المسارَ الملتقِط (splat)، وهو المقابل لما يُعرَف بالمسارات الشاملة (<code>catch-all routes</code>).</p>
+<p>سنمضي في الدرس على خطوات المؤلف: أولًا مسارٌ يبتلع كلَّ ما يتبقى من العنوان مهما تعددت مقاطعه، وما التقطه يُقرأ من داخل المكوّن. ثم نضيف إلى هذا المسار معرّفًا مستقلًّا للملف، ثم بادئةَ نصٍّ قبل المعرّف، فلواحقةَ <code>.txt</code> في آخر العنوان. وفي الختام يكون اسم ملف المسار قد اجتمع فيه ذلك كله: <code>file.file-{$fileId}.{$}[.]txt.tsx</code>.</p>
+<h2 id="من-مقطع-ديناميكي-واحد-إلى-عدة-مقاطع">من مقطعٍ ديناميكي واحد إلى عدة مقاطع</h2>
+<p>تذكّر الانطلاقة: هذا ملف المسار الذي كتبناه في درس المقاطع الديناميكية، وفيه ما تعلّمناه من التقاط مقطع واحد:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Post</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./-components/Post&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/posts/$postId&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">RouteComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Post</span> /&gt;</span></span>;
+}
+</code></pre>
+<p>المعامل <code>$postId</code> هنا معامل مسار مسمّى (path param)، وفائدته كما رأينا أنّه يلتقط قيمةً واحدةً بين شطبَين ثم يقف. أمّا المطلوب اليوم فقد أوضحه المؤلف من أوّل الفيديو بعناوين الملفات: فصفحةٌ تخدم ملفًا في نظام الملفات لها عناوين مثل <code>/file/x/y/z.txt</code>، يصير كلُّ ما بعد <code>file</code> فيها عنوانَ ذلك الملف، فتصير المقاطع <code>x</code> و<code>y</code> و<code>z.txt</code> جميعها ديناميكية، ولا بد أن يُلتقط الباقي كله دفعةً واحدة لا مقطعًا وحده. وهي حاجة عرفتها موجّهات أخرى من قبل، وأتاحها TanStack Router على هذه الصورة.</p>
+<h2 id="علامة-الدولار-من-غير-اسم-تلتقط-كل-ما-يتبقى">علامة الدولار من غير اسم تلتقط كلَّ ما يتبقى</h2>
+<p>في أسماء ملفات التوجيه، النقطة في اسم الملف تفصل مقاطع المسار، فملف <code>posts.$postId.tsx</code> مثلًا بنى المسار <code>/posts/$postId</code>. الحلّ إذن كما طلبه المؤلف: أنشئ في مجلد <code>src/routes</code> ملفًا تسمّيه <code>file</code> ثم نقطة، ثم ضع <code>$</code> من غير أي اسم بعدها، ثم الامتداد <code>.tsx</code>. فيكون اسم الملف <code>file.$.tsx</code>، ويقابله الموجّه مسار <code>/file/$</code>.</p>
+<p>ونبّه المؤلف إلى الفيصل الذي يحكم الاسم: ما دام على المقطع الديناميكي اسمٌ مثل <code>$postId</code> ظلّ التقاطه مقطعًا واحدًا، والإبقاء على علامة الدولار من غير اسم هو الذي يجعلها تلتقط كلَّ ما يتبقى من العنوان حتى نهايته مهما تعددت مقاطعه. فإذا زرتَ <code>/file/x/y/z.txt</code> طابَق المسارُ العنوانَ، وجُمع ما يتبقى بعد <code>file</code> في قيمةٍ واحدة محفوظة على صورتها: <code>x/y/z.txt</code>، وقد أظهرها المؤلف في الصفحة بعد سطر الترحيب بعنوان <code>File Path</code>.</p>
+<p>أما وصول القيمة إلى المكوّن فمن الخُطّاف (hook) المعتاد <code>Route.useParams()</code>، غير أنّ مفتاح القيمة هنا ليس اسمًا اخترتَه، بل هو الخاص <code>_splat</code>؛ والسبب أنّك لم تسمِّ المقطعَ، فتلقاه الموجّه بوصفه القسمَ الملتقَط من العنوان كله.</p>
+<h2 id="ملف-المسار-كما-صار-عند-نهاية-الدرس">ملف المسار كما صار عند نهاية الدرس</h2>
+<p>لم يكتف المؤلف بهذا الشكل، فقد أعاد تسمية الملف في الفيديو أكثر من مرة حتى استقرّ في فرع الدرس <code>rest-params</code> على اسم يجمع إضافات الدرس كلها: <code>file.file-{$fileId}.{$}[.]txt.tsx</code>. ونفكّك في الأقسام الثلاثة التالية كلَّ إضافةٍ منها خطوةً خطوة، وهذا هو الملف كاملًا كما صار عندها:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/file/file-{$fileId}/{$}.txt&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">RouteComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { _splat, fileId } = <span class="hljs-title class_">Route</span>.<span class="hljs-title function_">useParams</span>();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      Hello &quot;/file/$&quot;! <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span> File Path: {_splat} <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span> File ID: {fileId}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>لاحظ أثر اسم الملف في سلسلة المسار التي يكتبها الموجّه تلقائيًا: <code>/file/file-{$fileId}/{$}.txt</code>. وفي المكوّن تُفكّ معاملات العنوان في مفتاحين: <code>_splat</code> للقسم الملتقَط، و<code>fileId</code> للمعرّف، ثم يُعرض كلٌّ على حدة بعد سطر الترحيب. فالتغييرات كلها محتواة في اسم الملف وسلسلة المسار وفي المفاتيح التي يفكّها المكوّن، وبقية الملف بسيط كما في ملفات التوجيه السابقة.</p>
+<h2 id="معرف-مستقل-للملف-إلى-جانب-الملتقط">معرّف مستقلّ للملف إلى جانب الملتقَط</h2>
+<p>الإضافة الأولى: معرّفٌ للملف يُقتطى في معامل مستقلّ، ويبقى ما بعده للملتقِط. أضف قبل علامة الدولار معاملًا مسمّى باسم <code>$fileId</code>، ثم نقطة، ثم <code>$</code> مجهولة الاسم لما بعد المعرّف، فينتقل الاسم من <code>file.$</code> إلى <code>file.$fileId.$</code>. ولماذا تعقِب المقطعَ علامةُ دولار أخرى؟ لأنّ معاملات المسار المسمّاة تلتقط مقطعًا واحدًا فحسب كما رأينا مع <code>$postId</code>؛ فبعد أن اقتطعت <code>$fileId</code> مقطعَ المعرّف إلى معاملٍ لنفسها بقي بعده من العنوان ما لا يلتقطه شيء، فجاءت <code>$</code> المجهولة تلتقط كلَّ ما يقع بعد هذا المعرّف، كما وصفها المؤلف في الفيديو.</p>
+<p>وبهذا صارت زيارة عنوان مثل <code>/file/123/x/y/z.txt</code> تعطي القيمتين منفصلتَين: <code>fileId</code> تحمل <code>123</code>، و<code>_splat</code> تبقى تحمل كلَّ ما بعد المعرّف كما هي: <code>x/y/z.txt</code>. وإذا احتجتَ المعرّف فاقرأه من المعاملات باسمه، وقد أظهره المؤلف في الصفحة بعنوان <code>File ID</code> إلى جانب <code>File Path</code>.</p>
+<h2 id="بادئة-قبل-المعرف">بادئة قبل المعرّف</h2>
+<p>في الإضافة الثانية أراد المؤلف أن يكون المقطع الذي فيه المعرّف أقرب إلى أشكال العناوين الواقعية: يسبق المعرّفَ نصٌّ ثابت، فيكون المقطع مثلًا <code>file-123</code>، والعنوان مثل <code>/file/file-123/x/y/z.txt</code>. وحين جرّب هذا الشكل قبل تعديل الاسم ظهرت المشكلة: جاءت <code>fileId</code> تحمل <code>file-123</code> مع بادئتها؛ لأنّ المعامل المسمّى يلتقط ما بين شطبَين كاملاً. والمنشود التقاط الرقم وحده؛ الحلّ الأقواس المعقوصة <code>{}</code>: تلفّ اسم المعامل بينهما وتجعل النصَّ الثابت قبلهما نصًّا حرفيًّا من اسم المقطع لا من المعامل، فيصير المقطع في اسم الملف <code>file-{$fileId}</code>، ويصير اسم الملف <code>file.file-{$fileId}.$</code>. وبذلك تعود القيمة <code>123</code> من غير البادئة، إذ صارت البادئة (<code>prefix</code>) شرطًا يُطابَق في العنوان، لا جزءًا من القيمة المُعادة.</p>
+<h2 id="لواحقة-txt-في-آخر-العنوان">لواحقة <code>.txt</code> في آخر العنوان</h2>
+<p>الإضافة الأخيرة منحت المسار لواحقة (<code>suffix</code>): أن ينتهي عنوانه دائمًا بامتداد <code>.txt</code> من غير أن يدخل هذا الامتداد في القيمة المُعادة. فقبل التعديل كان الملتقَط يجمعه معه: في عنوان مثل <code>/file/file-9/x/y/notes.txt</code> كانت <code>_splat</code> تحمل <code>x/y/notes.txt</code> بامتداده، والمرغوب حصولك على <code>x/y/notes</code> فحسب.</p>
+<p>والعائق هو النقطة: فقد رأينا النقطةَ في اسم ملف التوجيه فاصلاً بين المقاطع؛ فلو كتبتَها على وجهها في آخر الاسم لاعتُبرت فاصلاً بين مقاطع، وصار بعدها معلَنًا عن مسار ابن، من غير أن تكون حرفًا في العنوان، وهو ما نبّه إليه المؤلف في الفيديو. الحلّ أن تحيطَ النقطةَ بقوسين مربعين: <code>[.]</code>، فتفقد معناها الفاصل وتصير حرفًا عاديًا في المسار، ثم يُكتب بعد القوسَين النصُّ الحرفي <code>txt</code>، فتكون لواحقةً على الملتقِط: <code>{$}[.]txt</code>.</p>
+<p>لاحظ أنّ علامة الدولار نفسها لُفّت بين أقواس معقوصة: <code>{$}</code>، كما فعلنا بـ<code>$fileId</code> حين جاورها نص؛ حتى تنفصل حدود المقطع عن النص الحرفي الذي يليه. وبذلك يكتمل اسم الملف: <code>file.file-{$fileId}.{$}[.]txt.tsx</code>.</p>
+<p>وبهذا يعود عنوان مثل <code>/file/file-9/x/y/notes.txt</code> بقيمة <code>_splat</code> هي <code>x/y/notes</code>، فما يُلتقط هو ما بعد المعرّف وقبل اللواحقة الحرفية، و<code>fileId</code> تحمل <code>9</code>. واختتم المؤلف بأنّ لك هنا أن تجاوزَ الحدود، فجمع بادئةٍ ولواحقةٍ ومعاملاتٍ مسمّاةٍ وملتقِطٍ في المسار نفسه يفتح أمامك أشكالًا ديناميكية كثيرة.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p>أضاف هذا الدرس إلى مجلد <code>src/routes</code> ملف مسار واحدًا باسم <code>file.file-{$fileId}.{$}[.]txt.tsx</code>، فصار التطبيق يخدم العناوين الشبيهة بمسارات الملفات تحت <code>file</code>. فزيارة مثل <code>/file/file-42/docs/june/report.txt</code> تعرض الصفحةَ التي فيها سطر الترحيب المعتاد، وتحته القيمتان المأخوذتان من العنوان: <code>File Path: docs/june/report</code> و<code>File ID: 42</code>. فبقي القسمُ بعد المعرّف ملتقَطًا مهما تعددت مقاطعه، من غير الامتداد، والبادئة <code>file-</code> واللواحقة <code>.txt</code> شرطان في العنوان لم يدخلا القيمتَين المُعادتَين.</p>
+<p>واللقطة التالية ملتقطة من فرع الدرس، وهي للعنوان <code>/file/file-123/report.txt</code>: سطر الترحيب المعتاد، وتحته <code>File Path: report</code> في <code>_splat</code> من غير الامتداد، ثم <code>File ID: 123</code> في <code>fileId</code>:</p>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--catch-all-routes--file-route.png" alt="لقطة من فرع الدرس: صفحة مسار الملفات في التطبيق تعرض سطر الترحيب ثم File Path بقيمة report ثم File ID بقيمة 123"></p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>افتح العناوين التالية واحدًا بعد الآخر وراقب ما يعرضه مكوّن المسار: <code>/file/file-3/readme.txt</code> ثم <code>/file/file-3/docs/2026/notes.txt</code> ثم <code>/file/file-77/a/b/c.txt</code>. سترى بعنوان <code>File Path</code> القيمةَ <code>readme</code> في الأولى، و<code>docs/2026/notes</code> في الثانية، و<code>a/b/c</code> في الثالثة؛ وبعنوان <code>File ID</code> رقم المقطع الأول في كل مرّة.</li>
+<li>افتح عنوانًا من غير الامتداد مثل <code>/file/file-3/readme</code>، فلن يجد الموجّه مسارًا يطابقه؛ إذ إنّ لواحقة <code>.txt</code> شرطٌ في المسار لا اختيار.</li>
+<li>غيّر اللواحقة في اسم الملف فقط من <code>[.]txt</code> إلى <code>[.]pdf</code>، ثم عُد إلى الملف: ستجد سلسلة المسار في <code>createFileRoute</code> قد مُدّدت تلقائيًا إلى <code>&quot;/file/file-{$fileId}/{$}.pdf&quot;</code>.</li>
+<li>أنشئ مسارًا من تأليفك يجمع ما تعلمتَه: بادئة، ومعامل مسمّى، وملتقِط، ولواحقة؛ فإذا سميتَه مثل <code>archive-{$year}.{$}[.]md.tsx</code> طابق العناوين الممتدة بـ<code>.md</code>، فزُرها وتتبّع القيم المرتدّة.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=3786s">فيديو الدرس: المسارات الشاملة في دورة TanStack Router</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/rest-params">شيفرة الدرس: فرع <code>rest-params</code> في مستودع الدورة</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/routing/routing-concepts">توثيق المفاهيم: مسارات الالتقاط (Splat / Catch-All Routes) في TanStack Router</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/path-params">توثيق معاملات المسار: البادئات واللواحقات (Path Params) في TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعاد صياغته عن درس «المسارات الشاملة (Catch-All Routes)» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع <code>rest-params</code> للمستودع الأصلي، وما زاده المترجم من شرحٍ أو توضيحٍ لا يُنسب إلى المؤلف، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,l={book:e,chapter:o,chapterTitle:s,slug:t,title:c,headings:d,html:a};export{e as book,o as chapter,s as chapterTitle,l as default,d as headings,a as html,t as slug,c as title};

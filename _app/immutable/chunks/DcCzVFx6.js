@@ -1,0 +1,121 @@
+const s="kinney",a="tailwind",n="Tailwind CSS",l="clsx-and-tailwind-merge",p="دمج أسماء الأصناف وإزالة التكرار منها",t=[{depth:2,id:"clsx",text:"clsx"},{depth:2,id:"clsx-وtailwind-merge",text:"clsx وtailwind-merge"},{depth:2,id:"الجمع-بينهما",text:"الجمع بينهما"},{depth:2,id:"هل-هو-ضروري-حقا",text:"هل هو ضروري حقًا؟"},{depth:2,id:"بدائل",text:"بدائل"}],c=`<p>كثيرًا ما تحتاج، أثناء بناء مكوّنات، إلى السماح للمكوّن بأن يُوسَّع بأصناف إضافية، لكن كيف تمنع هذه الأصناف من التعارض مع الأصناف التي عرّفتها بالفعل؟</p>
+<p>الحمد لله، هذه مشكلة شائعة جدًا، وهناك مكتبتان تساعداننا في ذلك. الأولى مكتبة عامة الغرض للعمل مع أسماء أصناف CSS، والثانية خاصة بـ Tailwind:</p>
+<ul>
+<li><a href="https://npm.im/clsx"><code>clsx</code></a> يتولّى منطق <code>className</code> الشرطي (مثل <code>clsx('base', { 'active': isActive })</code>)</li>
+<li><a href="https://npm.im/tailwind-merge"><code>tailwind-merge</code></a> يحلّ التعارضات بين أصناف Tailwind المساعدة</li>
+</ul>
+<h2 id="clsx"><code>clsx</code></h2>
+<p>بدون أيٍّ منهما، قد تجد نفسك تفعل شيئًا كهذا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">ComponentProps</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;preact&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">ButtonProps</span> = <span class="hljs-title class_">ComponentProps</span>&lt;<span class="hljs-string">&#x27;button&#x27;</span>&gt;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">Button</span> = (<span class="hljs-params">{ className, ...props }: <span class="hljs-title class_">ButtonProps</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">{</span>\`<span class="hljs-attr">rounded-md</span> <span class="hljs-attr">bg-blue-600</span> <span class="hljs-attr">px-3</span> <span class="hljs-attr">py-2</span> <span class="hljs-attr">text-sm</span> <span class="hljs-attr">font-semibold</span> <span class="hljs-attr">text-white</span> <span class="hljs-attr">shadow-xs</span> <span class="hljs-attr">hover:bg-blue-500</span> \${<span class="hljs-attr">className</span> || &#x27;&#x27;}\`}
+      {<span class="hljs-attr">...props</span>}
+    /&gt;</span></span>
+  );
+};
+</code></pre>
+<p>هناك بعض المشكلات هنا:</p>
+<ul>
+<li>قد ينتهي بك المطاف إلى صنفين مساعدين مختلفين يفعلان الشيء نفسه على الأرجح.</li>
+<li>يصبح الأمر أكثر سوءًا إذا أردت تنفيذ أي منطق شرطي.</li>
+</ul>
+<p>تتفوّق مكتبة <code>clsx</code> في مثال مكوّن Button هذا بتنظيف دمج النصوص اليدوي والمنطق الشرطي الذي تتعامل معه حاليًا عبر القوالب النصية (template literals). بدلًا من <code>\${className || ''}</code> والقلق بشأن المسافات الزائدة، يمكنك كتابة <code>clsx('rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500', className)</code> الذي يتعامل تلقائيًا مع قيم undefined/null ومع المسافات الصحيحة. والأهم من ذلك، إن احتجت لاحقًا إلى أصناف شرطية — مثل <code>disabled:opacity-50</code> عندما تكون خاصية <code>disabled</code> صحيحة، أو أحجام مختلفة بناءً على خاصية <code>size</code> — تجعل <code>clsx</code> هذا الأمر تافهًا عبر صيغة الكائن التي توفّرها: <code>clsx('base-classes', { 'disabled:opacity-50': disabled, 'px-6 py-3': size === 'large' }, className)</code>. هذا يُبقي مكوّنك نظيفًا ومقروءًا مع التخلص من التلاعب اليدوي بالنصوص الذي يصبح مرهقًا كلما ازدادت المكوّنات تعقيدًا.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">ComponentProps</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;preact&#x27;</span>;
+<span class="hljs-keyword">import</span> { clsx } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;clsx&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">ButtonProps</span> = <span class="hljs-title class_">ComponentProps</span>&lt;<span class="hljs-string">&#x27;button&#x27;</span>&gt; &amp; {
+  <span class="hljs-attr">size</span>?: <span class="hljs-string">&#x27;sm&#x27;</span> | <span class="hljs-string">&#x27;md&#x27;</span> | <span class="hljs-string">&#x27;lg&#x27;</span>;
+  <span class="hljs-attr">disabled</span>?: <span class="hljs-built_in">boolean</span>;
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">Button</span> = (<span class="hljs-params">{ className, size = <span class="hljs-string">&#x27;md&#x27;</span>, disabled = <span class="hljs-literal">false</span>, ...props }: <span class="hljs-title class_">ButtonProps</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">{clsx(</span>
+        &#x27;<span class="hljs-attr">rounded-md</span> <span class="hljs-attr">bg-blue-600</span> <span class="hljs-attr">text-sm</span> <span class="hljs-attr">font-semibold</span> <span class="hljs-attr">text-white</span> <span class="hljs-attr">shadow-xs</span> <span class="hljs-attr">hover:bg-blue-500</span>&#x27;,
+        {
+          &#x27;<span class="hljs-attr">px-2</span> <span class="hljs-attr">py-1</span> <span class="hljs-attr">text-xs</span>&#x27;<span class="hljs-attr">:</span> <span class="hljs-attr">size</span> === <span class="hljs-string">&#x27;sm&#x27;</span>,
+          &#x27;<span class="hljs-attr">px-3</span> <span class="hljs-attr">py-2</span> <span class="hljs-attr">text-sm</span>&#x27;<span class="hljs-attr">:</span> <span class="hljs-attr">size</span> === <span class="hljs-string">&#x27;md&#x27;</span>,
+          &#x27;<span class="hljs-attr">px-4</span> <span class="hljs-attr">py-3</span> <span class="hljs-attr">text-base</span>&#x27;<span class="hljs-attr">:</span> <span class="hljs-attr">size</span> === <span class="hljs-string">&#x27;lg&#x27;</span>,
+        },
+        {
+          &#x27;<span class="hljs-attr">cursor-not-allowed</span> <span class="hljs-attr">opacity-50</span> <span class="hljs-attr">hover:bg-blue-600</span>&#x27;<span class="hljs-attr">:</span> <span class="hljs-attr">disabled</span>,
+        },
+        <span class="hljs-attr">className</span>,
+      )}
+      <span class="hljs-attr">disabled</span>=<span class="hljs-string">{disabled}</span>
+      {<span class="hljs-attr">...props</span>}
+    /&gt;</span></span>
+  );
+};
+</code></pre>
+<h2 id="clsx-وtailwind-merge"><code>clsx</code> و<code>tailwind-merge</code></h2>
+<p>بدون هذه التركيبة، قد تكتب شيئًا كالتالي:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> className = <span class="hljs-title function_">clsx</span>(<span class="hljs-string">&#x27;px-2 py-1&#x27;</span>, { <span class="hljs-string">&#x27;px-4&#x27;</span>: isLarge });
+<span class="hljs-comment">// Result when isLarge=true: &quot;px-2 py-1 px-4&quot;</span>
+<span class="hljs-comment">// Problem: Both px-2 and px-4 are applied!</span>
+</code></pre>
+<p>مع <code>tailwind-merge</code>:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { twMerge } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;tailwind-merge&#x27;</span>;
+
+<span class="hljs-keyword">const</span> className = <span class="hljs-title function_">twMerge</span>(<span class="hljs-title function_">clsx</span>(<span class="hljs-string">&#x27;px-2 py-1&#x27;</span>, { <span class="hljs-string">&#x27;px-4&#x27;</span>: isLarge }));
+<span class="hljs-comment">// Result when isLarge=true: &quot;py-1 px-4&quot;</span>
+<span class="hljs-comment">// px-2 is intelligently removed since px-4 overrides it</span>
+</code></pre>
+<p>لذلك، قد يبدو مثالنا السابق الآن شيئًا كهذا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">Button</span> = (<span class="hljs-params">{ className, size = <span class="hljs-string">&#x27;md&#x27;</span>, disabled = <span class="hljs-literal">false</span>, ...props }: <span class="hljs-title class_">ButtonProps</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">{twMerge(</span>
+        <span class="hljs-attr">clsx</span>(
+          // <span class="hljs-attr">Base</span> <span class="hljs-attr">styles</span>
+          &#x27;<span class="hljs-attr">rounded-md</span> <span class="hljs-attr">bg-blue-600</span> <span class="hljs-attr">text-sm</span> <span class="hljs-attr">font-semibold</span> <span class="hljs-attr">text-white</span> <span class="hljs-attr">shadow-xs</span> <span class="hljs-attr">hover:bg-blue-500</span>&#x27;,
+          // <span class="hljs-attr">Size</span> <span class="hljs-attr">variants</span>
+          {
+            &#x27;<span class="hljs-attr">px-2</span> <span class="hljs-attr">py-1</span> <span class="hljs-attr">text-xs</span>&#x27;<span class="hljs-attr">:</span> <span class="hljs-attr">size</span> === <span class="hljs-string">&#x27;sm&#x27;</span>,
+            &#x27;<span class="hljs-attr">px-3</span> <span class="hljs-attr">py-2</span> <span class="hljs-attr">text-sm</span>&#x27;<span class="hljs-attr">:</span> <span class="hljs-attr">size</span> === <span class="hljs-string">&#x27;md&#x27;</span>,
+            &#x27;<span class="hljs-attr">px-4</span> <span class="hljs-attr">py-3</span> <span class="hljs-attr">text-base</span>&#x27;<span class="hljs-attr">:</span> <span class="hljs-attr">size</span> === <span class="hljs-string">&#x27;lg&#x27;</span>,
+          },
+          // <span class="hljs-attr">Conditional</span> <span class="hljs-attr">styles</span>
+          {
+            &#x27;<span class="hljs-attr">cursor-not-allowed</span> <span class="hljs-attr">opacity-50</span> <span class="hljs-attr">hover:bg-blue-600</span>&#x27;<span class="hljs-attr">:</span> <span class="hljs-attr">disabled</span>,
+          },
+          // <span class="hljs-attr">User-provided</span> <span class="hljs-attr">classes</span> (<span class="hljs-attr">will</span> <span class="hljs-attr">override</span> <span class="hljs-attr">conflicts</span>)
+          <span class="hljs-attr">className</span>,
+        ),
+      )}
+      <span class="hljs-attr">disabled</span>=<span class="hljs-string">{disabled}</span>
+      {<span class="hljs-attr">...props</span>}
+    /&gt;</span></span>
+  );
+};
+</code></pre>
+<p>تُظهر هذه النسخة المحسّنة المرونة الحقيقية في الجمع بين المكتبتين. الآن، عندما يستخدم أحدهم مكوّن <code>&lt;Button /&gt;</code> الخاص بك هكذا <code>&lt;Button className=&quot;px-8 bg-red-500&quot;&gt;Click me&lt;/Button&gt;</code>، تضمن غلاف <code>tailwind-merge</code> أن تستبدل <code>px-8</code> حشوة المكوّن المعتمدة على الحجم استبدالًا كاملًا (بدلًا من تطبيق الاثنتين)، وأن تستبدل <code>bg-red-500</code> القيمة الافتراضية <code>bg-blue-600</code>. وبدون <code>tailwind-merge</code>، كنت ستنتهي إلى أصناف متعارضة تُطبَّق فيها أصناف المكوّن وأصناف المستخدم معًا في الحشوة والخلفية، ما يؤدّي إلى نتائج تنسيق غير متوقّعة. يجعل هذا النمط مكوّناتك قابلة للتخصيص حقًا ويمنع لحظات الإحباط من نوع «لماذا لا يعمل التجاوز الذي أجريته؟».</p>
+<h2 id="الجمع-بينهما">الجمع بينهما</h2>
+<p>كثيرًا ما أصنع أداة مساعدة بسيطة أسّمّيها <code>cn</code>.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { clsx, <span class="hljs-keyword">type</span> <span class="hljs-title class_">ClassValue</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;clsx&#x27;</span>;
+<span class="hljs-keyword">import</span> { twMerge } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;tailwind-merge&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">cn</span>(<span class="hljs-params">...<span class="hljs-attr">inputs</span>: <span class="hljs-title class_">ClassValue</span>[]</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">twMerge</span>(<span class="hljs-title function_">clsx</span>(inputs));
+}
+</code></pre>
+<h2 id="هل-هو-ضروري-حقا">هل هو ضروري حقًا؟</h2>
+<p>في الحالات البسيطة، على الأرجح لا. لكنه يصير قيّمًا عندما:</p>
+<ul>
+<li>تبني مكوّنات قابلة لإعادة الاستخدام تقبل خصائص className</li>
+<li>تتعامل مع أنظمة تنسيق تعتمد على التنويعات</li>
+<li>تعمل مع مكتبات المكوّنات حيث تكون تعارضات الأصناف شائعة</li>
+</ul>
+<h2 id="بدائل">بدائل</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/tailwind/cva-tailwind">Class Variance Authority</a>: يجمع <code>cva</code> المفهومين معًا</li>
+<li><code>clsx</code> وحده إن كنت حذرًا بشأن تعارضات الأصناف</li>
+<li>اكتب المنطق الشرطي يدويًا ببساطة في الحالات البسيطة</li>
+</ul>
+`,e={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:c};export{s as book,a as chapter,n as chapterTitle,e as default,t as headings,c as html,l as slug,p as title};

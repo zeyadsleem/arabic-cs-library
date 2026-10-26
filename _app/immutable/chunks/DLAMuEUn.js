@@ -1,0 +1,183 @@
+const s="kinney",a="react-typescript",n="React مع TypeScript",l="react-typescript-mental-models",p="النماذج الذهنية لـ React مع TypeScript",t=[{depth:2,id:"jsx-ليست-إلا-استدعاءات-دوال",text:"JSX ليست إلا استدعاءات دوال"},{depth:3,id:"المكونات-ليست-إلا-دوال",text:"المكوّنات ليست إلا دوال"},{depth:2,id:"واقع-وقت-التصريف-مقابل-وقت-التشغيل",text:"واقع وقت التصريف مقابل وقت التشغيل"},{depth:3,id:"الأنواع-تختفي-عند-وقت-التشغيل",text:"الأنواع تختفي عند وقت التشغيل"},{depth:3,id:"خصائص-المكونات-تعيش-في-العالمين",text:"خصائص المكوّنات تعيش في العالمين"},{depth:2,id:"الأنواع-بوصفها-توثيقا-للتصميم",text:"الأنواع بوصفها توثيقًا للتصميم"},{depth:3,id:"أنواع-تروي-القصة",text:"أنواع تروي القصة"},{depth:2,id:"حلقة-التغذية-الراجعة-بين-typescript-وreact",text:"حلقة التغذية الراجعة بين TypeScript وReact"},{depth:3,id:"إعادة-البناء-بثقة",text:"إعادة البناء بثقة"},{depth:3,id:"الأنواع-توجه-التنفيذ",text:"الأنواع توجّه التنفيذ"},{depth:2,id:"تجميع-كل-شيء",text:"تجميع كل شيء"}],e=`<p>سر إتقان React مع TypeScript ليس حفظ توقيع كل خُطّاف (hook) أو قيد كل نوع عام (generic)، بل بناء النماذج الذهنية الصحيحة. حين تفهم كيف تتحوّل JSX إلى استدعاءات دوال، ولماذا تختفي الأنواع عند وقت التشغيل، وكيف يصبح TypeScript توثيقًا للتصميم، تتّضح كل بقيّة الأمور من تلقاء نفسها.</p>
+<p>لنبُنِ هذه النماذج الذهنية من القاع، بدءًا من التحول الأساسي الذي يغيّر طريقة تفكيرك في مكوّنات React (components) إلى الأبد.</p>
+<h2 id="jsx-ليست-إلا-استدعاءات-دوال">JSX ليست إلا استدعاءات دوال</h2>
+<p>هذه الحقيقة التي تغيّر كل شيء: JSX ليست وسومًا سحرية، بل هي سكر نحوي (syntactic sugar) لاستدعاءات دوال. حين تستوعب هذا، تبدأ مكوّنات React في أن تصبح مفهومة بطريقة جديدة كليًا.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ This JSX...</span>
+<span class="hljs-keyword">const</span> element = <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span>Hello, world!<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+
+<span class="hljs-comment">// ✅ ...becomes this function call</span>
+<span class="hljs-keyword">const</span> element = <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;div&#x27;</span>, { <span class="hljs-attr">className</span>: <span class="hljs-string">&#x27;container&#x27;</span> }, <span class="hljs-string">&#x27;Hello, world!&#x27;</span>);
+</code></pre>
+<p>يشرح هذا النموذج الذهني لماذا يمكنك فعل أشياء تبدو مستحيلة مع HTML:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ You can store JSX in variables (because it&#x27;s just function return values)</span>
+<span class="hljs-keyword">const</span> greeting = <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>;
+
+<span class="hljs-comment">// ✅ You can pass JSX as props (because it&#x27;s just values)</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">Modal</span> = (<span class="hljs-params">{ children }: { children: React.ReactNode }</span>) =&gt; (
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;modal&quot;</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+);
+
+<span class="hljs-comment">// ✅ You can return JSX from functions (because functions can return values)</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">getWelcomeMessage</span> = (<span class="hljs-params"><span class="hljs-attr">isLoggedIn</span>: <span class="hljs-built_in">boolean</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> isLoggedIn ? <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Welcome</span> /&gt;</span></span> : <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Login</span> /&gt;</span></span>;
+};
+</code></pre>
+<h3 id="المكونات-ليست-إلا-دوال">المكوّنات ليست إلا دوال</h3>
+<p>بما أن JSX تُترجَم إلى استدعاءات دوال، فمكوّنات React حرفيًا دوال تُعيد ما تتوقعه <code>React.createElement</code>:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ A component is a function that returns JSX</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UserProfile</span>(<span class="hljs-params">{ name, email }: { name: <span class="hljs-built_in">string</span>; email: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>{name}<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{email}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// ✅ Which means you can call it like any function</span>
+<span class="hljs-keyword">const</span> profile = <span class="hljs-title class_">UserProfile</span>({ <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Alice&#x27;</span>, <span class="hljs-attr">email</span>: <span class="hljs-string">&#x27;alice@example.com&#x27;</span> });
+</code></pre>
+<p>لهذا تعمل الخصائص (props) على النحو الذي تعمل به — فهي مجرّد وسائط دوال. ولذلك يستطيع TypeScript أن يمنحك تلميحات IntelliSense دقيقة للغاية: فهو يعرف تمامًا ما تتوقعه كل دالة من وسائط.</p>
+<h2 id="واقع-وقت-التصريف-مقابل-وقت-التشغيل">واقع وقت التصريف مقابل وقت التشغيل</h2>
+<p>توجد أنواع TypeScript في عالم موازٍ يختفي عند تشغيل شيفرتك. يخلق هذا ثنائيةً عجيبة تُحيّر مطوّرين كثيرين، لكن حين تفهمها ستكتب شيفرة React أفضل.</p>
+<h3 id="الأنواع-تختفي-عند-وقت-التشغيل">الأنواع تختفي عند وقت التشغيل</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ At compile time, TypeScript knows about these types</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UserCard</span>(<span class="hljs-params">{ user }: { user: User }</span>) {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+
+<span class="hljs-comment">// ❌ At runtime, there&#x27;s no User interface—it&#x27;s gone!</span>
+<span class="hljs-comment">// This compiled JavaScript has no type information:</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UserCard</span>(<span class="hljs-params">{ user }</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;div&#x27;</span>, <span class="hljs-literal">null</span>, user.<span class="hljs-property">name</span>);
+}
+</code></pre>
+<p>لهذا تحتاج إلى تحقّقٍ وقت التشغيل (runtime validation) للبيانات الخارجية:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ TypeScript can&#x27;t protect you from bad API data</span>
+<span class="hljs-keyword">const</span> fetchUser = <span class="hljs-title function_">async</span> (<span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">User</span>&gt; =&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/users/<span class="hljs-subst">\${id}</span>\`</span>);
+  <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+  <span class="hljs-keyword">return</span> data; <span class="hljs-comment">// TypeScript says this is a User, but what if it&#x27;s not?</span>
+};
+
+<span class="hljs-comment">// ✅ Runtime validation bridges the gap</span>
+<span class="hljs-keyword">import</span> { z } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;zod&#x27;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">UserSchema</span> = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">id</span>: z.<span class="hljs-title function_">number</span>(),
+  <span class="hljs-attr">name</span>: z.<span class="hljs-title function_">string</span>(),
+  <span class="hljs-attr">email</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">email</span>(),
+});
+
+<span class="hljs-keyword">const</span> fetchUser = <span class="hljs-title function_">async</span> (<span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">User</span>&gt; =&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/users/<span class="hljs-subst">\${id}</span>\`</span>);
+  <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">UserSchema</span>.<span class="hljs-title function_">parse</span>(data); <span class="hljs-comment">// Now we&#x27;re safe!</span>
+};
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">User</span> = z.<span class="hljs-property">infer</span>&lt;<span class="hljs-keyword">typeof</span> <span class="hljs-title class_">UserSchema</span>&gt;;
+</code></pre>
+<h3 id="خصائص-المكونات-تعيش-في-العالمين">خصائص المكوّنات تعيش في العالمين</h3>
+<p>الخصائص ممتعة لأنها موجودة عند وقت التصريف (من أجل TypeScript) وعند وقت التشغيل (من أجل React):</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Compile-time: TypeScript enforces the contract</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> {
+  <span class="hljs-attr">variant</span>: <span class="hljs-string">&#x27;primary&#x27;</span> | <span class="hljs-string">&#x27;secondary&#x27;</span>;
+  <span class="hljs-attr">disabled</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">onClick</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">event</span>: <span class="hljs-title class_">MouseEvent</span>&lt;<span class="hljs-title class_">HTMLButtonElement</span>&gt;</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Button</span>(<span class="hljs-params">{ variant, disabled = <span class="hljs-literal">false</span>, onClick }: <span class="hljs-title class_">ButtonProps</span></span>) {
+  <span class="hljs-comment">// ✅ Runtime: JavaScript receives actual values</span>
+  <span class="hljs-keyword">const</span> className = <span class="hljs-string">\`btn btn--<span class="hljs-subst">\${variant}</span>\`</span>;
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{className}</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">{disabled}</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>&gt;</span>
+      Click me
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="الأنواع-بوصفها-توثيقا-للتصميم">الأنواع بوصفها توثيقًا للتصميم</h2>
+<p>أفضل شيفرة React مع TypeScript تعامل أنواعَها بوصفها توثيقًا للتصميم قابلًا للتنفيذ. يجب أن تروي أنواعك قصة غرض مكوّنك وقيوده وعلاقاته.</p>
+<h3 id="أنواع-تروي-القصة">أنواع تروي القصة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Vague types that don&#x27;t communicate intent</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Props</span> {
+  <span class="hljs-attr">data</span>: <span class="hljs-built_in">any</span>[];
+  <span class="hljs-attr">loading</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">error</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>;
+}
+
+<span class="hljs-comment">// ✅ Types that document your design decisions</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserListProps</span> {
+  <span class="hljs-comment">/** The users to display. Empty array shows &quot;no users&quot; message. */</span>
+  <span class="hljs-attr">users</span>: <span class="hljs-title class_">User</span>[];
+  <span class="hljs-comment">/** Whether we&#x27;re currently fetching users from the API */</span>
+  <span class="hljs-attr">isLoading</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-comment">/** Error message to display if user fetching failed */</span>
+  <span class="hljs-attr">fetchError</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>;
+  <span class="hljs-comment">/** Called when user clicks on a user card */</span>
+  <span class="hljs-attr">onUserSelect</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">userId</span>: <span class="hljs-title class_">User</span>[<span class="hljs-string">&#x27;id&#x27;</span>]</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+</code></pre>
+<h2 id="حلقة-التغذية-الراجعة-بين-typescript-وreact">حلقة التغذية الراجعة بين TypeScript وReact</h2>
+<p>أقوى جانب في العمل بـ React مع TypeScript هو حلقة التغذية الراجعة الوثيقة بين أنواعك وتنفيذك. يبثّ التغيير في موضعٍ واحد أثره عبر شيفرتك كاملةً، فيلتقط الأخطاء قبل أن تتحوّل إلى عللًا (bugs).</p>
+<h3 id="إعادة-البناء-بثقة">إعادة البناء بثقة</h3>
+<p>عندما تغيّر واجهةً، يُظهر لك TypeScript كل موضعٍ يحتاج إلى تحديث:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Before: Simple user interface</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-comment">// ✅ After: Add email field</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// TypeScript will now error everywhere this is missing</span>
+}
+
+<span class="hljs-comment">// ✅ TypeScript forces you to update all usage sites</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UserCard</span>(<span class="hljs-params">{ user }: { user: User }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>{user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{user.email}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span> {/* Had to add this */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h3 id="الأنواع-توجه-التنفيذ">الأنواع توجّه التنفيذ</h3>
+<p>يمكن للأنواع المصمّمة بعناية أن توجّهك نحو بنية مكوّنات أفضل:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ This type suggests a clear separation of concerns</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProductProps</span> {
+  <span class="hljs-attr">product</span>: <span class="hljs-title class_">Product</span>;
+  <span class="hljs-attr">displayMode</span>: <span class="hljs-string">&#x27;card&#x27;</span> | <span class="hljs-string">&#x27;list&#x27;</span> | <span class="hljs-string">&#x27;grid&#x27;</span>;
+  <span class="hljs-attr">onAddToCart</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">productId</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onToggleWishlist</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">productId</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-comment">// ✅ The implementation naturally follows the type structure</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ProductItem</span>(<span class="hljs-params">{ product, displayMode, onAddToCart, onToggleWishlist }: <span class="hljs-title class_">ProductProps</span></span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleAddToCart</span> = (<span class="hljs-params"></span>) =&gt; <span class="hljs-title function_">onAddToCart</span>(product.<span class="hljs-property">id</span>);
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleToggleWishlist</span> = (<span class="hljs-params"></span>) =&gt; <span class="hljs-title function_">onToggleWishlist</span>(product.<span class="hljs-property">id</span>);
+
+  <span class="hljs-keyword">const</span> baseClasses = <span class="hljs-string">&#x27;product-item&#x27;</span>;
+  <span class="hljs-keyword">const</span> modeClasses = <span class="hljs-string">\`product-item--<span class="hljs-subst">\${displayMode}</span>\`</span>;
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>\`\${<span class="hljs-attr">baseClasses</span>} \${<span class="hljs-attr">modeClasses</span>}\`}&gt;</span>
+      {/* Implementation guided by the type contract */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="تجميع-كل-شيء">تجميع كل شيء</h2>
+<p>تعمل هذه النماذج الذهنية معًا لخلق تجربة تطوير قوية. فهمُ JSX بوصفها استدعاءات دوال يساعدك في فهم تركيب المكوّنات. والوعي بالفرق بين وقت التصريف ووقت التشغيل يبقيك آمنًا أمام البيانات الخارجية. والأنواع بوصفها توثيقًا تجعل شيفرتك تشرح نفسها بنفسها. وتحسينات React 19 تجعل كل شيء أكثر سلاسة. وحلقة التغذية الراجعة تساعدك في بناء برمجيات أفضل.</p>
+<p>الفكرة الأساسية هي أن TypeScript مع React لا يضيفان تعقيدًا، بل يكشفان تعقيدًا كان موجودًا بالفعل ويمنحانك أدوات لإدارته بأسلوب منهجي. حين تستوعب هذه النماذج الذهنية ستجد نفسك تكتب مكوّنات أيسر فهمًا وتعديلًا وتصحيحًا (debug). وجمال النماذج الذهنية أنها تتضاعف أثرها؛ فكل نموذج تستوعبه يجعل النموذج الذي بعده أسهل إدراكًا، حتى تلاحظ فجأة أنك تفكر بـ React مع TypeScript بطلاقة — وتتساءل كيف سبق لك أن بنيتَ واجهات المستخدم بطريقة أخرى.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,e as html,l as slug,p as title};

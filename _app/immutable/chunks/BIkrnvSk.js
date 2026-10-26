@@ -1,0 +1,147 @@
+const s="tanstack-router",a="router",n="دورة TanStack Router الكاملة",t="passing-state-in-context",e="تمرير الحالة في السياق (Passing State in Context)",o=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"السياق-ليس-تمرير-خصائص-من-طبقة-إلى-طبقة",text:"السياق ليس تمرير خصائص من طبقة إلى طبقة"},{depth:3,id:"نقل-نوع-user-إلى-ملف-مشترك",text:"نقل نوع User إلى ملف مشترك"},{depth:3,id:"لماذا-نحتاج-مكون-app-أصلا",text:"لماذا نحتاج مكوّن App أصلًا؟"},{depth:3,id:"القيمة-الابتدائية-في-maintsx",text:"القيمة الابتدائية في main.tsx"},{depth:3,id:"الحالة-والدالتان-في-مكون-app",text:"الحالة والدالّتان في مكوّن App"},{depth:3,id:"توسيع-واجهة-السياق-في-مسار-الجذر",text:"توسيع واجهة السياق في مسار الجذر"},{depth:3,id:"القراءة-والاستعمال-في-المكون-الجذر",text:"القراءة والاستعمال في المكوّن الجذر"},{depth:3,id:"لماذا-لا-تتغير-الواجهة-routerinvalidate",text:"لماذا لا تتغيّر الواجهة: router.invalidate()"},{depth:3,id:"ترتيب-التحديث-لماذا-flushsync",text:"ترتيب التحديث: لماذا flushSync؟"},{depth:3,id:"فحص-السياق-في-أدوات-التطوير",text:"فحص السياق في أدوات التطوير"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],l=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في الدرس السابق عرّفنا سياقًا لمسار الجذر، لكنّ قيمته كانت ثابتة: كائن نكتبه مرّة واحدة عند إنشاء الموجّه فلا يتغيّر بعد ذلك. التطبيق الحقيقي لا يعمل بهذه الطريقة؛ حالة المستخدم تتبدّل حين يدخل وحين يخرج، ومصدرها الأصلي ليس الموجّه بل <code>React</code> نفسها: خُطّاف <code>useState</code>، أو موفّر مصادقة، أو خُطّاف يعيد بيانات المستخدم. والمعضلة أنّ الموجّه يُنشأ في أعلى <code>main.tsx</code> على مستوى الوحدة، أي خارج أي مكوّن، والخُطّافات لا تُستدعى إلا داخل مكوّنات <code>React</code>.</p>
+<p>يبني هذا الدرس الحلّ على ثلاث طبقات: ننقل حالة المستخدم ودالّتَي <code>login</code> و<code>logout</code> إلى مكوّن <code>App</code> يجلس فوق الموجّه، ثم نمرّرها إليه عبر خاصيّة <code>context</code> في <code>RouterProvider</code> بدل قيمة <code>createRouter</code> الثابتة، ثم نقرأها في المكوّنات بخُطّاف <code>Route.useRouteContext()</code> فنرى الواجهة تتبدّل فورًا. وفي الطريق نصطدم بمشكلة ترتيب حقيقية: تغيير الحالة لا يُعلم الموجّه من تلقاء نفسه، و<code>router.invalidate()</code> وحدها لا تكفي إن سبقت تطبيق الحالة؛ فنحلّها بـ<code>flushSync</code>.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="السياق-ليس-تمرير-خصائص-من-طبقة-إلى-طبقة">السياق ليس تمرير خصائص من طبقة إلى طبقة</h3>
+<p>حين تحتاج قيمةً في مكوّن بعيد، فالطريق المعتاد في <code>React</code> أن تمرّرها خصائص (<code>props</code>) من الأب إلى الابن، وعلى كل مكوّن في الطريق أن يعرفها ويقبلها ويعيد تمريرها وإن لم يستعملها. هذا هو تمرير الخصائص المتسلسل (<code>props-drilling</code>): كلّ طبقة تُضاف إلى الشجرة تفرض تعديلًا في الطبقات التي فوقها، ويصير التعديل الواحد موزّعًا على ملفات لا علاقة لها بالموضوع.</p>
+<p>السياق في <code>TanStack Router</code> يقطع هذه السلسلة: القيمة تُعلن مرّة واحدة في مسار الجذر، وتسير مع شجرة المسارات نفسها، فيقرؤها مكوّن أيّ مسار — ولو كان في العمق — دون أن يمرّ بها أحد في الطريق. والفرق الثاني أهمّ في درسنا: السياق لا يحمل قيمةً فقط، بل يحمل أيضًا الدوالّ التي تغيّرها، فكل مستهلك يستطيع أن ينادي <code>login</code> أو <code>logout</code> بلا أن يملك الحالة ولا أن يعرف كيف تُخزَّن. والفرق الثالث أنّ النوع يُعلن مرّة، فيراه <code>TypeScript</code> في موضع الضبط وفي كل موضع قراءة.</p>
+<p>وليس السياق بديلًا عن سياق <code>React</code>؛ هما يعملان معًا: تأخذ القيمة من خُطّاف أو من موفّر مصادقة داخل <code>React</code>، ثم تضعها في سياق الموجّه لينالها ما لا يستطيع استعمال الخُطّافات، مثل دوالّ التحميل.</p>
+<h3 id="نقل-نوع-user-إلى-ملف-مشترك">نقل نوع <code>User</code> إلى ملف مشترك</h3>
+<p>كان نوع المستخدم معرَّفًا داخل <code>src/routes/__root.tsx</code>، وقد صار مطلوبًا في ملفين: تعريف السياق في مسار الجذر، ومكوّن <code>App</code> الذي يملك الحالة. فبدل نسخه مرّتين نُخرجه إلى ملف مشترك ونصدّره:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+}
+</code></pre>
+<p>الحقلان <code>id</code> و<code>name</code> هما كل ما يعرفه التطبيق عن المستخدم، ولا شيء فيهما يخصّ الموجّه؛ ولهذا موضعهما الطبيعي مجلّد الأنواع لا ملف مسار.</p>
+<h3 id="لماذا-نحتاج-مكون-app-أصلا">لماذا نحتاج مكوّن <code>App</code> أصلًا؟</h3>
+<p>الموجّه يُنشأ في <code>main.tsx</code> خارج أي مكوّن، وخُطّافات <code>React</code> لا تُستدعى في ذلك الموضع؛ فلا <code>useState</code> ولا خُطّاف مصادقة. الحلّ أن ننقل <code>RouterProvider</code> إلى مكوّن <code>App</code>، فيصير لنا موضع داخل <code>React</code> نملك فيه الحالة ونستطيع استعمال أيّ خُطّاف، ثم نمرّر ناتجها إلى الموجّه. الموجّه نفسه لا يتغيّر، لكنّ مصدر السياق انتقل من كائن مكتوب في الملف إلى حالة حيّة يملكها <code>React</code>.</p>
+<h3 id="القيمة-الابتدائية-في-maintsx">القيمة الابتدائية في <code>main.tsx</code></h3>
+<p>نبدأ من أعلى <code>main.tsx</code>: الاستيرادات، ثم إنشاء الموجّه بقيمة ابتدائية للسياق.</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">StrictMode</span>, useState } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+<span class="hljs-keyword">import</span> { createRoot } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom/client&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;./index.css&quot;</span>;
+<span class="hljs-keyword">import</span> { createRouter, <span class="hljs-title class_">RouterProvider</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+<span class="hljs-keyword">import</span> { routeTree } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./routeTree.gen&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">User</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./types&quot;</span>;
+<span class="hljs-keyword">import</span> { flushSync } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span>;
+
+<span class="hljs-keyword">const</span> router = <span class="hljs-title function_">createRouter</span>({
+  routeTree,
+  <span class="hljs-attr">context</span>: {
+    <span class="hljs-attr">user</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">login</span>: <span class="hljs-function">() =&gt;</span> {},
+    <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> {},
+  },
+});
+</code></pre>
+<p>لاحظ ثلاثة أمور: استيراد <code>flushSync</code> من <code>react-dom</code> وسنعود إليه، واستيراد النوع <code>User</code> من الملف المشترك، وخيار <code>context</code> وقد صار يحمل قيمًا مؤقّتة: <code>user</code> يساوي <code>null</code>، ودالّتان فارغتان لـ<code>login</code> و<code>logout</code>. القيم المؤقّتة ليست عبثًا: نوع سياق الجذر يطالب بهذه الحقول الثلاثة، فلو غاب أحدها لما مرّ الملف من <code>TypeScript</code>؛ وهي ستُستبدل لحظة التصيير بالقيم الحقيقية القادمة من <code>App</code>. أمّا كتلة <code>declare module</code> التي تلي إنشاء الموجّه، فهي تُعلِم <code>TanStack Router</code> بنوعه كي تستنتج أنواع المسارات في المشروع كلّه.</p>
+<h3 id="الحالة-والدالتان-في-مكون-app">الحالة والدالّتان في مكوّن <code>App</code></h3>
+<p>هنا يقع قلب الدرس: مكوّن واحد يملك الحالة، ويعرّف الدالّتين اللتين تعدّلانها، ثم يسلّم الثلاثة إلى الموجّه.</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [user, setUser] = useState&lt;<span class="hljs-title class_">User</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">login</span>(<span class="hljs-params"><span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span></span>) {
+    <span class="hljs-title function_">flushSync</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">setUser</span>(user);
+    });
+    router.<span class="hljs-title function_">invalidate</span>();
+  }
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">logout</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-title function_">flushSync</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">setUser</span>(<span class="hljs-literal">null</span>);
+    });
+    router.<span class="hljs-title function_">invalidate</span>();
+  }
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">RouterProvider</span> <span class="hljs-attr">router</span>=<span class="hljs-string">{router}</span> <span class="hljs-attr">context</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">user</span>, <span class="hljs-attr">login</span>, <span class="hljs-attr">logout</span> }} /&gt;</span></span>;
+}
+</code></pre>
+<p>سطرًا سطرًا: <code>useState&lt;User | null&gt;(null)</code> تبدأ بـ<code>null</code>، أي أنّ الزائر غير مسجّل عند أول تحميل. ودالّة <code>login</code> تأخذ مستخدمًا وتضعه في الحالة، ودالّة <code>logout</code> تعيد الحالة إلى <code>null</code>، وكلتاهما تنادي <code>router.invalidate()</code> بعد التعديل. والسطر الأخير هو العقد الجديد: <code>RouterProvider</code> يقبل خاصيّة <code>context</code> مستقلّة، وهي تُقدَّم فوق القيمة الابتدائية التي مرّرناها إلى <code>createRouter</code>؛ فما دام التطبيق يعمل، السياق الذي تقرؤه المسارات هو هذا الكائن الحيّ لا ذاك الثابت. ولهذا صحّ أن نترك الدالّتين الفارغتين في <code>createRouter</code>: دورهما إرضاء النوع في لحظة الإنشاء فقط.</p>
+<p>أمّا <code>async</code> على <code>login</code> فهي بقية من محاولة أوسط سنراها بعد قليل؛ الدالّة لا تنتظر شيئًا الآن، و<code>flushSync</code> هو ما يؤدّي الغرض.</p>
+<h3 id="توسيع-واجهة-السياق-في-مسار-الجذر">توسيع واجهة السياق في مسار الجذر</h3>
+<p>في <code>src/routes/__root.tsx</code> يتغيّر أمران: النوع <code>User</code> يصير مستوردًا، والواجهة تكبر من حقل واحد إلى ثلاثة.</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">Link</span>,
+  <span class="hljs-title class_">Outlet</span>,
+  createRootRouteWithContext,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">TanStackRouterDevtools</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router-devtools&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">User</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../types&quot;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">RootRouteContext</span> {
+  <span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span> | <span class="hljs-literal">null</span>;
+  <span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = createRootRouteWithContext&lt;<span class="hljs-title class_">RootRouteContext</span>&gt;()({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RootComponent</span>,
+});
+</code></pre>
+<p><code>login</code> دالّة تأخذ <code>User</code> ولا تعيد شيئًا، و<code>logout</code> لا تأخذ شيئًا ولا تعيد شيئًا. بهذا يعرف <code>TypeScript</code> في أيّ مسار أنّ <code>login</code> تقبل مستخدمًا وأنّ <code>logout</code> لا تُمرَّر لها وسائط، فما خالف ذلك لا يُترجم. و<code>createRootRouteWithContext</code> هي نفسها التي عرفناها، لكنّها الآن تربط الموجّه بعقد أكبر من مجرّد قراءة: عقدٌ فيه حالة ودوالّ تعديلها.</p>
+<h3 id="القراءة-والاستعمال-في-المكون-الجذر">القراءة والاستعمال في المكوّن الجذر</h3>
+<p>يبقى المكوّن نفسه، وهو الآن أقصر مما كان: لا <code>useState</code> فيه، ولا دالّة محليّة واحدة.</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">RootComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { user, login, logout } = <span class="hljs-title class_">Route</span>.<span class="hljs-title function_">useRouteContext</span>();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-blue-950 p-2&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-2xl font-bold&quot;</span>&gt;</span>Root Route<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      {user ? (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;mb-4&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-xl font-bold&quot;</span>&gt;</span>Welcome, {user.name}!<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{logout}</span>&gt;</span>Logout<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      ) : (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;mb-4&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-xl font-bold&quot;</span>&gt;</span>Welcome, Guest!<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> login({ id: &quot;dwdw&quot;, name: &quot;Test&quot; })}&gt;
+            Login
+          <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;p-2 flex gap-2 mb-4 bg-teal-600 border-2&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/&quot;</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;[&amp;.active]:font-bold&quot;</span>&gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;[&amp;.active]:font-bold&quot;</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/about&quot;</span>&gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Outlet</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">TanStackRouterDevtools</span> <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;top-right&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>السطر الأول يستخرج الحقول الثلاثة من السياق دفعةً واحدة. فإن وُجد <code>user</code> عرض الترحيب باسمه وزرّ الخروج، وإن غاب عرض ترحيب الزائِر وزرّ الدخول. وزرّ الدخول ينادي <code>login</code> بمستخدم وهمي، أمّا زرّ الخروج فيمرّر الدالّة نفسها مباشرة لأنها لا تحتاج وسائط. والمكوّن لا يعرف من أين جاءت الحالة ولا كيف تُحدَّث؛ يعرف فقط أنّ في السياق مستخدمًا ودالّتين. هذا هو الفصل المقصود: العرض في مكان، وملكية الحالة في أعلى مكان واحد.</p>
+<h3 id="لماذا-لا-تتغير-الواجهة-routerinvalidate">لماذا لا تتغيّر الواجهة: <code>router.invalidate()</code></h3>
+<p>جرّب المؤلف في الفيديو: يضغط زرّ الدخول فلا يحدث شيء، ثم ينتقل إلى مسار آخر فيرى الاسم وزرّ الخروج. السبب أنّ الموجّه حسب سياقه ومساره مرّة واحدة، وما لم يُطلب منه إعادة الحساب فلن يعرف أنّ مصدر القيمة تغيّر تحت يديه؛ فحالة <code>React</code> خارج شجرة الموجّه ولا يصله إشعار عنها.</p>
+<p><code>router.invalidate()</code> هي ذلك الإشعار: تقول للموجّه إنّ ما حسَبه صار قديمًا، فيعيد حساب السياق ويعيد تشغيل ما يعتمد عليه من <code>beforeLoad</code> و<code>loader</code> وتصيير. ولهذا هي ضرورية لما هو أبعد من الواجهة: حارسٌ في <code>beforeLoad</code> يقرأ <code>context.user</code> ليقرّر المنع أو السماح لا يعيد قراره إلا إذا أُعيد تشغيله؛ فإن غاب الإبطال بقي الحارس على جوابه القديم بعد الدخول أو بعد الخروج، فيمنع مسجّلًا أو يسمح لزائر خرج للتوّ.</p>
+<h3 id="ترتيب-التحديث-لماذا-flushsync">ترتيب التحديث: لماذا <code>flushSync</code>؟</h3>
+<p>لكن إضافة <code>router.invalidate()</code> بعد <code>setUser</code> لم تكفِ في المحاولة الأولى، وهذا وجه المشكلة الأهمّ. تحديث حالة <code>React</code> غير متزامن: <code>setUser</code> تسجّل الطلب ولا تطبّقه فورًا، والنفاذ إلى السطر التالي يرى القيمة القديمة. فحين يصل التنفيذ إلى <code>router.invalidate()</code> مباشرةً بعد <code>setUser</code>، يعيد الموجّه الحساب بقيمة <code>user</code> القديمة — أي <code>null</code> — فيبدو الأمر كأنّ شيئًا لم يحدث.</p>
+<p>جرّب المؤلف أولًا حلًّا مؤقّتًا: جعل الدالّة <code>async</code> وانتظر جزءًا من الثانية قبل الإبطال، فنجح العرض بعد الانتظار، لكنه وصفه بأنه حلّ ملتوٍ: مدّة لا يضمنها شيء، وتأخيرٌ مصطنع في كل دخول.</p>
+<p>الحلّ الصحيح <code>flushSync</code> المستورد من <code>react-dom</code>: تأخذ دالّة، وتطبّق ما فيها من تحديثات حالة تطبيقًا فوريًّا قبل أن يعود التنفيذ إلى السطر التالي. فتصير الحالة محدَّثة عند وصول التنفيذ إلى <code>router.invalidate()</code>، ويعيد الموجّه الحساب بالقيمة الجديدة. ولهذا غُلّف <code>setUser</code> داخل <code>flushSync</code> في الدالّتين، فصار الدخول والخروج يحدّثان الواجهة فورًا بلا حاجة إلى تنقّل.</p>
+<h3 id="فحص-السياق-في-أدوات-التطوير">فحص السياق في أدوات التطوير</h3>
+<p>إذا شككت في قيمة يراها مسار، فـ<code>TanStackRouterDevtools</code> يعرضها: اختر أيّ مسار في الشجرة، وسترى كائن سياقه كما يقرؤه الموجّه — <code>user</code> و<code>login</code> و<code>logout</code> — فيصير التصحيح بالنظر لا بالتخمين.</p>
+<p>ويبقى في الموضوع فرعٌ لم نأتِه بعد: حصر السياق بفرعٍ من الشجرة بدل الجذر كلّه، وهو ما سيأتي مع دوالّ التحميل.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--passing-state-in-context--posts.png" alt="ترويسة الجذر تعرض ترحيبًا بالزائِر وزرّ دخول فوق شريط التنقّل وصفحة المنشورات"></p>
+<p>اللقطة ملتقطة والتطبيق في حالة زائر: أعلى الصفحة عنوان <code>Root Route</code>، وتحته <code>Welcome, Guest!</code> وزرّ <code>Login</code> أسود، ثم شريط التنقّل الذي يبرز فيه رابط <code>Home</code> لأننا على المسار الرئيسي، وأسفل الشريط محتوى مسار المنشورات. بعد الضغط على الزرّ يتبدّل السطران إلى <code>Welcome, Test!</code> وزرّ <code>Logout</code> في اللحظة نفسها. هذا هو أثر الدرس: حالة واحدة في <code>App</code>، وسياق واحد يقرؤه كل مسار، وإبطال يجعل الموجّه يعيد حساب ما بناه على تلك الحالة.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>اضغط <code>Login</code> وراقب الترويسة: تتبدّل فورًا. ثم أزل <code>flushSync</code> من الدالّتين وأعد التجربة، وسترى الواجهة تبقى على حالها حتى تنتقل إلى مسار آخر.</li>
+<li>غيّر المستخدم الوهمي في <code>onClick</code> إلى اسمك ومعرّف آخر، وتأكّد أنّ الاسم الجديد هو ما يظهر في الترويسة، إذ لا شيء في المكوّن يخزّن الاسم بنفسه.</li>
+<li>اقرأ السياق من مسار ابن لا من الجذر: افتح <code>src/routes/posts.index.tsx</code> وأضف <code>const { user } = Route.useRouteContext();</code> داخل <code>RouteComponent</code> واعرض <code>user.name</code>، فتتأكّد عمليًّا من وصول السياق إلى العمق بلا تمرير خصائص.</li>
+<li>احذف <code>login</code> و<code>logout</code> من كائن <code>context</code> في <code>createRouter</code> فقط، لا من الواجهة، ولاحظ خطأ الأنواع؛ ثم أعدهما وافهم أنّ القيمة الابتدائية ليست تفصيلًا شكليًّا.</li>
+<li>افتح <code>TanStackRouterDevtools</code> واختر مسارًا داخليًّا مثل <code>posts</code>، ثم اضغط <code>Login</code> وأعد النظر إلى السياق: القيمة التي يراها الموجّه هي الحالة الحيّة نفسها.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=7125s">فيديو الدرس: Passing State in Context</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/context-2">شيفرة الدرس: فرع <code>context-2</code> في مستودع الدورة</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/router-context">توثيق سياق الموجّه في TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعاد صياغته عن درس «Passing State in Context» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع <code>context-2</code> للمستودع الأصلي، وما زاده المترجم من شرحٍ أو توضيحٍ لا يُنسب إلى المؤلف، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:e,headings:o,html:l};export{s as book,a as chapter,n as chapterTitle,c as default,o as headings,l as html,t as slug,e as title};

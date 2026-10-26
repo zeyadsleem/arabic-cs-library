@@ -1,0 +1,99 @@
+const s="tanstack-form",a="form",n="دورة TanStack Form الكاملة",t="installation",c="تثبيت TanStack Form وإعداد أدوات التطوير",o=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"نقطة-البداية-المشروع-الذي-نبني-عليه",text:"نقطة البداية: المشروع الذي نبني عليه"},{depth:3,id:"الحزم-الثلاث-التي-نحتاجها",text:"الحزم الثلاث التي نحتاجها"},{depth:3,id:"ما-الذي-تغير-في-packagejson",text:"ما الذي تغيّر في package.json"},{depth:3,id:"تركيب-اللوحة-في-نقطة-الدخول",text:"تركيب اللوحة في نقطة الدخول"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],e=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>قبل أن نكتب أوّل استمارة، نحتاج إلى أرضية صالحة: مشروع <code>React</code> مع <code>TypeScript</code> يبنيه <code>Vite</code>، ثم ثلاث حزم من <code>TanStack</code> تُضاف إليه. هذه الحزم ليست واحدة: واحدة تحمل منطق الاستمارات نفسها، وواحدة تبني لوحة أدوات التطوير، وواحدة تربط الاستمارات بهذه اللوحة. في هذا الدرس نثبّت الثلاث، ونركّب اللوحة في نقطة دخول التطبيق، ونقرأ ما تغيّر في <code>package.json</code> بندًا بندًا لنفهم وظيفة كل حزمة وما الذي ينكسر بدونها.</p>
+<p>لا استمارة في نهاية هذا الدرس، ولا حقل واحد. الفكرة التي يثبتها الدرس أنّ الاستمارة القادمة تحتاج إلى شيء واحد فقط قبل أن تُكتب: أن تكون الحزمة موجودة في المشروع، وأن تكون أدوات الفحص مركّبة، حتى نرى ما يجري داخل الاستمارة حين نبدأ ببنائها في الدرس التالي بدل أن نخمّن.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="نقطة-البداية-المشروع-الذي-نبني-عليه">نقطة البداية: المشروع الذي نبني عليه</h3>
+<p>المشروع في فرع الدرس ليس فارغًا. هو مشروع <code>React</code> أنشأه <code>Vite</code> بقالب <code>TypeScript</code>، وأُضيفت إليه <code>Tailwind CSS</code> بإصدارها الرابع عبر الملحق <code>@tailwindcss/vite</code>، وأُضيف <code>shadcn/ui</code> لتوليد مكوّنات الواجهة. لا يهمّ أن تعيد إنشاء المشروع حرفيًا: يمكنك استنساخ فرع الدرس، أو العمل على مشروعك الخاص، أو اتّباع تعليمات <code>Vite</code> و<code>shadcn/ui</code> لإنشاء واحد جديد. الشرط الوحيد أن يكون لديك جذر تصيير واحد في <code>index.html</code> ومعرّفه <code>root</code>، وملف <code>src/main.tsx</code> هو نقطة الدخول.</p>
+<p>قبل التثبيت، لنقرأ إعداد <code>Vite</code> في الفرع، لأنّه يفسّر شيئًا ستعتمد عليه مكوّنات <code>shadcn/ui</code> لاحقًا:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vite&#x27;</span>
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;path&quot;</span>
+<span class="hljs-keyword">import</span> tailwindcss <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tailwindcss/vite&quot;</span>
+<span class="hljs-keyword">import</span> react <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@vitejs/plugin-react&#x27;</span>
+
+<span class="hljs-comment">// https://vite.dev/config/</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">react</span>(), <span class="hljs-title function_">tailwindcss</span>()],
+  <span class="hljs-attr">resolve</span>: {
+    <span class="hljs-attr">alias</span>: {
+      <span class="hljs-string">&quot;@&quot;</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./src&quot;</span>),
+    },
+  },
+})
+</code></pre>
+<p>الملحقان في <code>plugins</code> هما مصدر التحويل: <code>react()</code> يفعّل دعم <code>JSX</code> والتحديث السريع، و<code>tailwindcss()</code> يولّد أنماط <code>Tailwind</code> من ملف <code>src/index.css</code> دون ملف إعداد منفصل، وهو أسلوب الإصدار الرابع. أمّا <code>resolve.alias</code> فيجعل الرمز <code>@</code> يشير إلى مجلّد <code>src</code>؛ من دونه تفشل كل استيرادات <code>shadcn/ui</code> التي تُكتب على الشكل <code>@/lib/utils</code>, لأنّ <code>Vite</code> لن يعرف إلى أين يذهب. ولهذا نجد في الفرع ملف الأدوات المساعدة نفسه:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { clsx, <span class="hljs-keyword">type</span> <span class="hljs-title class_">ClassValue</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;clsx&quot;</span>
+<span class="hljs-keyword">import</span> { twMerge } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;tailwind-merge&quot;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">cn</span>(<span class="hljs-params">...<span class="hljs-attr">inputs</span>: <span class="hljs-title class_">ClassValue</span>[]</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">twMerge</span>(<span class="hljs-title function_">clsx</span>(inputs))
+}
+</code></pre>
+<p>دالة <code>cn</code> هذه هي الأنبوب الذي تمرّ منه أصناف <code>Tailwind</code> في مكوّنات <code>shadcn/ui</code>: تجمع الأصناف الشرطية عبر <code>clsx</code>, ثم يحلّ <code>twMerge</code> التعارض بينها حين تتكرّر خاصية واحدة بإصدارين. وهي سبب وجود <code>clsx</code> و<code>tailwind-merge</code> في قائمة التبعيات، لا لأنّ الاستمارة تحتاجهما.</p>
+<h3 id="الحزم-الثلاث-التي-نحتاجها">الحزم الثلاث التي نحتاجها</h3>
+<p>نبدأ من الحزمة الأساسية: حزمة الاستمارات الخاصة بـ<code>React</code>. هذه هي التي تعطينا <code>useForm</code> والحقول والتحقّق من الصحة، وكلّ ما سنكتبه في الدروس القادمة يستورد منها. الأمر الذي استعمله المؤلف في الفيديو هو <code>npm install @tanstack/react-form</code>, وهو يضيف الحزمة إلى <code>dependencies</code> ويثبّت أحدث إصدار متاح.</p>
+<p>ثم نضيف أدوات التطوير بأمر واحد: <code>npm install @tanstack/react-devtools @tanstack/react-form-devtools</code>. هنا نقطة يخطئ فيها كثيرون: الحزمتان ليستا بديلًا عن بعضهما. <code>@tanstack/react-devtools</code> هي اللوحة العائمة نفسها، وهي حزمة عامّة تخدم كلّ مكتبات <code>TanStack</code> وتُصيَّر مرّة واحدة في التطبيق. أمّا <code>@tanstack/react-form-devtools</code> فهي المُلحق (plugin) الذي يعرف شكل حالة الاستمارة ويكشفها داخل اللوحة. بلا اللوحة لن يظهر شيء، وبلا المُلحق ستظهر لوحة فارغة لا تعرض شيئًا عن الاستمارة.</p>
+<p>الأمران مكتوبان بصيغة <code>npm</code> لأنّها ما يستعمله المؤلف في الفيديو؛ إن كنت تستعمل <code>pnpm</code> أو <code>yarn</code> أو <code>bun</code> فالمكافئ واضح، والنتيجة واحدة. ونقطة ثانية تخصّ الإصدارات: نكتب اسم الحزمة بلا رقم لنحصل على أحدث إصدار متوافق، وهذا ما جرى في الفرع فعلًا، فظهرت الإصدارات في <code>package.json</code> مسبوقة بالرمز <code>^</code>.</p>
+<h3 id="ما-الذي-تغير-في-packagejson">ما الذي تغيّر في <code>package.json</code></h3>
+<p>هذا مقتطف حرفي من <code>package.json</code> في الفرع، من قسم الأوامر إلى نهاية التبعيات:</p>
+<pre><code class="language-json">  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;dev&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tsc -b &amp;&amp; vite build&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;lint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;eslint .&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;preview&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite preview&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;dependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;@tailwindcss/vite&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.1.14&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;@tanstack/react-devtools&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^0.7.4&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;@tanstack/react-form&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^1.23.6&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;@tanstack/react-form-devtools&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^0.1.6&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;class-variance-authority&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^0.7.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;clsx&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.1.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;lucide-react&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^0.545.0&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;react&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^19.1.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;react-dom&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^19.1.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;tailwind-merge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.3.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;tailwindcss&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.1.14&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+</code></pre>
+<p>لاحظ ثلاثة أمور. الأول أنّ الحزم الثلاث دخلت قسم <code>dependencies</code> لا قسم <code>devDependencies</code>, وهذا ما نتج عن أمر التثبيت العادي؛ والتوثيق الرسمي يقترح تثبيت حزمتَي أدوات التطوير كتبعية تطوير لأنّها لا تُشحن إلى الإنتاج، فإن أردت الدقّة أضف <code>--save-dev</code> إلى الأمر الثاني. لا أثر وظيفي لهذا الفرق في التطوير، لكنّه يغيّر ما يُحزَّم عند البناء. الثاني أنّ الأرقام مسبوقة بـ<code>^</code>, أي أنّ التثبيت التالي يجلب أحدث إصدار داخل النطاق نفسه دون تغيير الرقم الرئيسي، فيصلك إصلاح الأخطاء ولا يصلك ما يكسر الواجهة البرمجية. والنطاق يضيق في الحزم التي يبدأ إصدارها بـ<code>0.</code>, فحزمتا أدوات التطوير هنا لا تتجاوزان إصلاحات الخطأ داخل الرقم الثاني. الثالث أنّ ترتيب البنود أبجدي، وهذا أثر <code>npm</code> وحده ولا يعني شيئًا.</p>
+<p>أمّا بقية القائمة فهي البنية التي جاءت مع المشروع: <code>react</code> و<code>react-dom</code> للإصدار التاسع عشر، و<code>tailwindcss</code> مع ملحقه، و<code>class-variance-authority</code> لتعريف أشكال المكوّنات، و<code>lucide-react</code> للأيقونات. كلّها موجودة في الفرع لأنّ مكوّنات <code>shadcn/ui</code> تعتمد عليها، لا لأنّ الاستمارة تحتاج إليها. وليس في القائمة <code>zod</code> ولا أيّ مكتبة تحقّق خارجية؛ ستُضاف حين نحتاج إلى مخطط (schema) للتحقّق، لا قبل ذلك.</p>
+<h3 id="تركيب-اللوحة-في-نقطة-الدخول">تركيب اللوحة في نقطة الدخول</h3>
+<p>الخطوة الأخيرة هي تصيير اللوحة. نفتح <code>src/main.tsx</code> ونضيف سطرين إلى ما كان فيه:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">StrictMode</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+<span class="hljs-keyword">import</span> { createRoot } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom/client&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;./index.css&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./App.tsx&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">TanStackDevtools</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-devtools&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">FormDevtoolsPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form-devtools&quot;</span>;
+
+<span class="hljs-title function_">createRoot</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;root&quot;</span>)!).<span class="hljs-title function_">render</span>(
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">StrictMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">TanStackDevtools</span> <span class="hljs-attr">plugins</span>=<span class="hljs-string">{[FormDevtoolsPlugin()]}</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">StrictMode</span>&gt;</span></span>
+);
+</code></pre>
+<p>الترتيب هنا مقصود. <code>TanStackDevtools</code> مكوّن عادي، لا مزوّد ولا سياق يغلّف التطبيق، فيُصيَّر شقيقًا لـ<code>&lt;App /&gt;</code> داخل <code>StrictMode</code>. وخاصية <code>plugins</code> تأخذ مصفوفة، لأنّ اللوحة الواحدة قد تحمل عدّة مُلحقات في وقت واحد — للاستمارات وللجداول وللموجّه. وهذا سبب استدعاء <code>FormDevtoolsPlugin()</code> بأقواس: الدالة مصنع يُرجع إعداد المُلحق، فإن نسيت الأقواس مرّرت الدالة نفسها فلم تعرف اللوحة أيّ مكتبة تعرض. أمّا علامة التعجّب بعد <code>document.getElementById(&quot;root&quot;)</code> فهي تأكيد لـ<code>TypeScript</code> بأنّ العنصر موجود، لأنّ نوع الإرجاع يحتمل <code>null</code> ونحن نعرف أنّ <code>index.html</code> يحوي <code>#root</code>.</p>
+<p>لا حاجة إلى أيّ إعداد آخر: لا ملف إعداد للوحة، ولا تسجيل يدوي، ولا استيراد أنماط. المكوّن يجد المُلحق في المصفوفة، ويرسم زرًّا عائمًا في طرف الصفحة، ومنه تُفتح لوحة تعرض حالة كلّ استمارة مسجّلة.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p>لا شيء تغيّر في واجهة التطبيق: الصفحة ما زالت تعرض <code>&lt;h1&gt;Hello&lt;/h1&gt;</code> كما كانت، ولم نكتب حقلًا واحدًا. الذي تغيّر هو قائمة التبعيات في <code>package.json</code>, إذ صارت تضمّ <code>@tanstack/react-form</code> بإصدار <code>1.23.6</code>, و<code>@tanstack/react-devtools</code> بإصدار <code>0.7.4</code>, و<code>@tanstack/react-form-devtools</code> بإصدار <code>0.1.6</code>, ثم ملف <code>src/main.tsx</code> الذي صار يصيّر مكوّن <code>TanStackDevtools</code> بجانب التطبيق ومعه مُلحق الاستمارات. وإذا شغّلت <code>npm run dev</code> وفتحت الصفحة، فستجد زرًّا عائمًا للوحة في طرف النافذة؛ فتحه الآن يعطي لوحة فارغة، وهذا هو المتوقّع تمامًا: المُلحق مركّب، ولم تُسجَّل استمارة بعد. حين ننشئ أوّل استمارة في الدرس التالي ستمتلئ هذه اللوحة بالقيم والأخطاء وحالة كلّ حقل، بلا سطر طباعة واحد في الشيفرة.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>احذف سطر <code>&lt;TanStackDevtools … /&gt;</code> مؤقّتًا من <code>src/main.tsx</code> وأعد تحميل الصفحة، ثم أعده: الفرق هو دليل أنّ اللوحة مكوّن مستقلّ عن التطبيق لا جزء منه.</li>
+<li>انقل <code>@tanstack/react-devtools</code> و<code>@tanstack/react-form-devtools</code> من <code>dependencies</code> إلى <code>devDependencies</code> في <code>package.json</code>, ثم شغّل <code>npm install</code> و<code>npm run build</code> وتأكّد من نجاح البناء.</li>
+<li>انسَ الأقواس واكتب <code>plugins={[FormDevtoolsPlugin]}</code> بدل <code>plugins={[FormDevtoolsPlugin()]}</code>, ثم أعد تحميل الصفحة ولاحظ ما يحدث قبل أن تتراجع.</li>
+<li>شغّل <code>npm ls @tanstack/react-form</code> وقارن الإصدار المثبّت فعليًا بالرقم المكتوب في <code>package.json</code>, ثم جرّب <code>npm install @tanstack/react-form@latest</code> ولاحظ كيف يتغيّر النطاق في الملف.</li>
+<li>أعد إنشاء المشروع من الصفر بمشروع <code>Vite</code> جديد وقالب <code>React</code> مع <code>TypeScript</code>, ثم ثبّت الحزم الثلاث وحدها وشغّل التطبيق: ستحصل على لوحة تعمل بلا <code>Tailwind</code> ولا <code>shadcn/ui</code>, وهذا يبيّن أيّ التبعيات تخصّ الاستمارة وأيّها يخصّ الواجهة.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=164s">فيديو الدرس: Installation</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/installing-tanstack-form">شيفرة الدرس: فرع installing-tanstack-form</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/installation">التوثيق الرسمي: تثبيت TanStack Form</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/overview">التوثيق الرسمي: نظرة عامة على TanStack Form</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Installation» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي. وما أضافه المترجم من توضيح لا يُنسب إلى المؤلف.</p>
+</blockquote>
+`,l={book:s,chapter:a,chapterTitle:n,slug:t,title:c,headings:o,html:e};export{s as book,a as chapter,n as chapterTitle,l as default,o as headings,e as html,t as slug,c as title};

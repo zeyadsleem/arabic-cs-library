@@ -1,0 +1,4 @@
+const o="kinney",t="storybook",s="بناء أنظمة التصميم في Storybook",e="storybook-in-figma",a="Storybook داخل Figma",i=[],n=`<p>ستحتاج إلى أن يكون مشروعك منشورًا على <a href="https://stevekinney.com/courses/storybook/visual-tests">Chromatic</a>. ولكن، بمجرد أن يتوفّر لديك ذلك، اذهب إلى مشروعك وانسخ رابط المكوّن المعيّن الذي تريد ربطه بـ Figma.</p>
+<p>في <a href="https://stevekinney.com/courses/figma/dev-mode">وضع المطوّر في Figma</a>، اذهب إلى لوحة الإضافات وابحث عن Storybook. ستحتاج إلى ربط Figma بـ Chromatic، لكن بعد ذلك ستتمكّن من لصق رابط قصتك ورؤيتهما جنبًا إلى جنب.</p>
+<p><img src="/arabic-cs-library/images/kinney/72c14cc5213ee1e0.webp" alt="Storybook مدمجًا في Figma"></p>
+`,c={book:o,chapter:t,chapterTitle:s,slug:e,title:a,headings:i,html:n};export{o as book,t as chapter,s as chapterTitle,c as default,i as headings,n as html,e as slug,a as title};

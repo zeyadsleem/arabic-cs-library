@@ -1,0 +1,127 @@
+const s="kinney",a="tailwind",e="Tailwind CSS",n="truncation-and-wrapping",l="الاقتطاع والالتفاف",t=[{depth:2,id:"التحكم-في-التفاف-النص",text:"التحكّم في التفاف النص"},{depth:3,id:"قطع-الكلمات-word-break",text:"قطع الكلمات (word-break)"},{depth:3,id:"الالتفاف-عند-الفيض-overflow-wrap",text:"الالتفاف عند الفيض (overflow-wrap)"},{depth:3,id:"التحكم-في-المسافات-البيضاء-white-space",text:"التحكّم في المسافات البيضاء (white-space)"},{depth:3,id:"التحكم-في-القطع-داخل-الأعمدة-والصفحات",text:"التحكّم في القطع داخل الأعمدة والصفحات"},{depth:3,id:"الوصل-بالخط-hyphens",text:"الوصل بالخط (hyphens)"},{depth:3,id:"الالتفاف-العام-للنص-text-wrap",text:"الالتفاف العام للنص (text-wrap)"},{depth:2,id:"إدارة-اقتطاع-النص",text:"إدارة اقتطاع النص"},{depth:3,id:"الاقتطاع-في-سطر-واحد-text-overflow",text:"الاقتطاع في سطر واحد (text-overflow)"},{depth:3,id:"التقييد-متعدد-الأسطر-line-clamp",text:"التقييد متعدّد الأسطر (line-clamp)"}],p=`<p>سلوك النص داخل الحاويات أمر أساسي للواجهات المهيكلة جيدًا. ويوفّر Tailwind أصنافًا مساعِدة للتحكّم في التفاف النص واقتطاعه.</p>
+<h2 id="التحكم-في-التفاف-النص">التحكّم في التفاف النص</h2>
+<p>يوفّر Tailwind أصنافًا مساعِدة للتحكّم في كيفية تدفّق النص وانقطاعه عبر الأسطر.</p>
+<h3 id="قطع-الكلمات-word-break">قطع الكلمات (<code>word-break</code>)</h3>
+<p>تتحكّم الخاصية <code>word-break</code> في كيفية قطع الكلمات لمنع الفيض.</p>
+<ul>
+<li><strong><code>break-normal</code></strong>: السلوك الافتراضي، يقطع فقط عند نقاط قطع الكلمات الطبيعية</li>
+<li><strong><code>break-all</code></strong>: يقطع عند أي نقطة، حتى داخل الكلمات</li>
+<li><strong><code>break-keep</code></strong>: يمنع القطع في النصوص الصينية أو اليابانية أو الكورية (CJK). ومع النصوص غير الـCJK يتصرّف مثل <code>break-normal</code></li>
+</ul>
+<p>طَبِّقه بشكل شرطي مع نقاط التوقّف:</p>
+<p><em>قطع الكلمات (word-break) — المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/f0ea3e97a6104d70c722a9f5f585b595afec3d23560fd55b7347999dae3ca39a.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;break-all md:break-normal&quot;</span>&gt;</span>Thisisasuperlongwordthatwillbreakanywherenecessary.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</code></pre>
+<h3 id="الالتفاف-عند-الفيض-overflow-wrap">الالتفاف عند الفيض (<code>overflow-wrap</code>)</h3>
+<p>تحدّد الخاصية <code>overflow-wrap</code> ما إذا كان على المتصفحات قطع الأسطر داخل الكلمات لمنع الفيض.</p>
+<ul>
+<li><strong><code>wrap-normal</code></strong>: السلوك الافتراضي، يقطع فقط عند نقاط الالتفاف الطبيعية مثل المسافات والشرطات</li>
+<li><strong><code>wrap-break-word</code></strong>: يتيح فواصل الأسطر بين الحروف عند الحاجة لمنع الفيض</li>
+<li><strong><code>wrap-anywhere</code></strong>: مشابه لـ<code>wrap-break-word</code> لكنه يأخذ في الحسبان القطع في منتصف الكلمة عند حساب الحجم الضمني. وهو مفيد لحاويات flex حيث ستحتاج إلى <code>min-width: 0</code> لولا ذلك</li>
+</ul>
+<p><em>الالتفاف عند الفيض (overflow-wrap) — المثال 2 — <a href="https://stevekinney.com/generated/playgrounds/a3204cf71a475c3d8d7420c79c4537be109f9e1b812dd6cb8dc1379ab3c5a79f.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex w-32&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;wrap-anywhere&quot;</span>&gt;</span>Anotherlongwordtobreakanywhere.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="التحكم-في-المسافات-البيضاء-white-space">التحكّم في المسافات البيضاء (<code>white-space</code>)</h3>
+<p>تتحكّم الخاصية <code>white-space</code> في كيفية التعامل مع المسافات البيضاء وفواصل الأسطر.</p>
+<ul>
+<li><strong><code>whitespace-normal</code></strong>: يلفّ النص بشكل طبيعي، وتُدمج فواصل الأسطر والمسافات</li>
+<li><strong><code>whitespace-nowrap</code></strong>: يمنع الالتفاف، ويفيض النص عند الحاجة. وتُدمج فواصل الأسطر والمسافات</li>
+<li><strong><code>whitespace-pre</code></strong>: يحافظ على فواصل الأسطر والمسافات تمامًا كما كُتبت. ولا يلتفّ النص</li>
+<li><strong><code>whitespace-pre-line</code></strong>: يحافظ على فواصل الأسطر لكنه يدمج المسافات. ويلتفّ النص بشكل طبيعي</li>
+<li><strong><code>whitespace-pre-wrap</code></strong>: يحافظ على فواصل الأسطر والمسافات. ويلتفّ النص بشكل طبيعي</li>
+<li><strong><code>whitespace-break-spaces</code></strong>: يحافظ على فواصل الأسطر والمسافات، بما في ذلك في نهايات الأسطر</li>
+</ul>
+<p><em>التحكّم في المسافات البيضاء (white-space) — المثال 3 — <a href="https://stevekinney.com/generated/playgrounds/302e64e93b8654d6025ae250a1742ce91dd3d95f6acbde245ebb4ca572c7bf38.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;overflow-hidden text-ellipsis whitespace-nowrap&quot;</span>&gt;</span>
+  This text will not wrap and will be truncated with an ellipsis if it overflows.
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;whitespace-pre-wrap&quot;</span>&gt;</span>This text preserves newlines and spaces, and wraps normally.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</code></pre>
+<h3 id="التحكم-في-القطع-داخل-الأعمدة-والصفحات">التحكّم في القطع داخل الأعمدة والصفحات</h3>
+<p>تحكّم في مواضع قطع المحتوى في التخطيطات متعددة الأعمدة أو أنماط الطباعة.</p>
+<h4>القطع بعد (<code>break-after</code>)</h4>
+<p>تتحكّم في قطع الأعمدة أو الصفحات <em>بعد</em> العنصر.</p>
+<p>الأصناف المتاحة: <code>break-after-auto</code>، <code>break-after-avoid</code>، <code>break-after-all</code>، <code>break-after-avoid-page</code>، <code>break-after-page</code>، <code>break-after-left</code>، <code>break-after-right</code>، <code>break-after-column</code>.</p>
+<p><em>القطع بعد (break-after) — المثال 4 — <a href="https://stevekinney.com/generated/playgrounds/669d60e630354757117cff943623573462276c48cef8348005734437d92d9a1b.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;columns-2&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Content before break...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;break-after-column&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Content after break...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h4>القطع قبل (<code>break-before</code>)</h4>
+<p>تتحكّم في قطع الأعمدة أو الصفحات <em>قبل</em> العنصر.</p>
+<p>الأصناف المتاحة: <code>break-before-auto</code>، <code>break-before-avoid</code>، <code>break-before-all</code>، <code>break-before-avoid-page</code>، <code>break-before-page</code>، <code>break-before-left</code>، <code>break-before-right</code>، <code>break-before-column</code>.</p>
+<p><em>القطع قبل (break-before) — المثال 5 — <a href="https://stevekinney.com/generated/playgrounds/db7e8a9a2272b851ffb2f0243066c99c334e41588182091adc704180fb20494f.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;columns-2&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Content before break...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;break-before-column&quot;</span>&gt;</span>Content after break...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h4>القطع داخل (<code>break-inside</code>)</h4>
+<p>تتحكّم في قطع الأعمدة أو الصفحات <em>داخل</em> العنصر.</p>
+<p>الأصناف المتاحة: <code>break-inside-auto</code>، <code>break-inside-avoid</code>، <code>break-inside-avoid-page</code>، <code>break-inside-avoid-column</code>.</p>
+<p><em>القطع داخل (break-inside) — المثال 6 — <a href="https://stevekinney.com/generated/playgrounds/15150c0bd072df4f599a172681e8f5bde3b46f7a99efc97a1165f13607a6593e.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;columns-2&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;break-inside-avoid&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This block of text should ideally not be broken across columns or pages.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="الوصل-بالخط-hyphens">الوصل بالخط (<code>hyphens</code>)</h3>
+<p>تتحكّم الخاصية <code>hyphens</code> في ما إذا كان ينبغي وصل الكلمات بالشرطة عند التفاف النص.</p>
+<ul>
+<li><strong><code>hyphens-none</code></strong>: يمنع الوصل بالخط، حتى مع اقتراحات قطع السطر (<code>­</code>)</li>
+<li><strong><code>hyphens-manual</code></strong>: لا يصل إلا عند نقاط القطع المحدّدة (<code>­</code>). وهو الافتراضي في المتصفّح</li>
+<li><strong><code>hyphens-auto</code></strong>: يسمح للمتصفّح باختيار مواضع الوصل بالخط تلقائيًا بحسب اللغة. وتُفضَّل الاقتراحات اليدوية</li>
+</ul>
+<p><em>الوصل بالخط (hyphens) — المثال 7 — <a href="https://stevekinney.com/generated/playgrounds/3c00da1c0dbd0fae4ef1b76cdefc0c670b8e50afce7e288ae646e0aac39a7955.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hyphens-auto&quot;</span>&gt;</span>This word-processing example demonstrates automatic hyphenation.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</code></pre>
+<h3 id="الالتفاف-العام-للنص-text-wrap">الالتفاف العام للنص (<code>text-wrap</code>)</h3>
+<p>توفّر الخاصية <code>text-wrap</code> تحكّمًا حديثًا في التفاف النص.</p>
+<ul>
+<li><strong><code>text-wrap</code></strong>: يتيح التفاف النص بشكل طبيعي عند النقاط المنطقية</li>
+<li><strong><code>text-nowrap</code></strong>: يمنع التفاف النص</li>
+<li><strong><code>text-balance</code></strong>: يوزّع النص بالتساوي عبر الأسطر. وكثيرًا ما تحدّ المتصفحات من ذلك إلى ~6 أسطر لأداء، ما يجعله مثاليًا للعناوين</li>
+<li><strong><code>text-pretty</code></strong>: يحاول منع الكلمات اليتيمة (كلمة واحدة في السطر الأخير)</li>
+</ul>
+<p><em>الالتفاف العام للنص (text-wrap) — المثال 8 — <a href="https://stevekinney.com/generated/playgrounds/9441d042565f963a9e83c4a6986b5e3894bc858ff0ab7cecfb48d221fbe1f6ef.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-balance&quot;</span>&gt;</span>A title that looks good across multiple lines.<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-pretty&quot;</span>&gt;</span>
+  A longer paragraph that avoids having a single word orphaned on the last line.
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</code></pre>
+<h2 id="إدارة-اقتطاع-النص">إدارة اقتطاع النص</h2>
+<p>قيّد النص في مساحات محدّدة وأَشِر إلى ما إذا كان المحتوى مقتطعًا.</p>
+<h3 id="الاقتطاع-في-سطر-واحد-text-overflow">الاقتطاع في سطر واحد (<code>text-overflow</code>)</h3>
+<p>امنع التفاف النص وأَشِر إلى الفيض.</p>
+<ul>
+<li><strong><code>truncate</code></strong>: صنف مساعد مركّب يضبط <code>overflow: hidden</code> و<code>text-overflow: ellipsis</code> و<code>white-space: nowrap</code>. يمنع الالتفاف ويقتطع بعلامة حذف (…) الاقتطاع في سطر واحد (text-overflow) — المثال 9<a href="https://stevekinney.com/generated/playgrounds/767919740663dbe3f3edbca75d825b2a4eb016d083f100d4779d3783c6b88e38.html">افتح المثال</a> <code><span class="line"><span style="color:#7FDBCA">&lt;</span><span style="color:#CAECE6">p</span><span style="color:#C5E478;font-style:italic"> class</span><span style="color:#7FDBCA">=</span><span style="color:#D9F5DD">&quot;</span><span style="color:#ECC48D">w-32 truncate</span><span style="color:#D9F5DD">&quot;</span><span style="color:#7FDBCA">&gt;</span><span style="color:#D6DEEB">هذا النص طويل جدًّا وسيُقتطع.</span><span style="color:#7FDBCA">&lt;/</span><span style="color:#CAECE6">p</span><span style="color:#7FDBCA">&gt;</span></span></code></li>
+<li><strong><code>text-ellipsis</code></strong>: يضبط <code>text-overflow: ellipsis</code>. واستخدمه مع <code>overflow: hidden</code> و<code>white-space: nowrap</code> لإضافة علامة حذف (…) إلى النص الفائض</li>
+<li><strong><code>text-clip</code></strong>: يضبط <code>text-overflow: clip</code>. ويقتطع النص عند حدّ منطقة المحتوى من دون مؤشّر. وهو الافتراضي في المتصفّح</li>
+</ul>
+<h3 id="التقييد-متعدد-الأسطر-line-clamp">التقييد متعدّد الأسطر (<code>line-clamp</code>)</h3>
+<p>اقتطع النص متعدّد الأسطر بعد عدد محدّد من الأسطر.</p>
+<ul>
+<li><strong><code>line-clamp-&lt;number&gt;</code></strong>: يحدّ النص عند أسطر محدّدة (<code>line-clamp-2</code>، <code>line-clamp-3</code>). ويضبط <code>overflow: hidden</code> و<code>display: -webkit-box</code> و<code>-webkit-box-orient: vertical</code> و<code>-webkit-line-clamp: &lt;number&gt;</code> التقييد متعدّد الأسطر (line-clamp) — المثال 10<a href="https://stevekinney.com/generated/playgrounds/77f4aa7c0638da3e1518d77f04480fc5b4ac3abfe4e59f669615a595df93fd02.html">افتح المثال</a> <code><span class="line"><span style="color:#7FDBCA">&lt;</span><span style="color:#CAECE6">div</span><span style="color:#C5E478;font-style:italic"> class</span><span style="color:#7FDBCA">=</span><span style="color:#D9F5DD">&quot;</span><span style="color:#ECC48D">w-48</span><span style="color:#D9F5DD">&quot;</span><span style="color:#7FDBCA">&gt;</span></span>
+<span class="line"><span style="color:#7FDBCA"> &lt;</span><span style="color:#CAECE6">p</span><span style="color:#C5E478;font-style:italic"> class</span><span style="color:#7FDBCA">=</span><span style="color:#D9F5DD">&quot;</span><span style="color:#ECC48D">line-clamp-3</span><span style="color:#D9F5DD">&quot;</span><span style="color:#7FDBCA">&gt;</span></span>
+<span class="line"><span style="color:#D6DEEB"> هذه كتلة نص أطول ستُقيَّد بثلاثة أسطر كحدّ أقصى قبل أن</span></span>
+<span class="line"><span style="color:#D6DEEB"> تُقتطع بعلامة حذف.</span></span>
+<span class="line"><span style="color:#7FDBCA"> </span><span style="color:#CAECE6">p</span><span style="color:#7FDBCA">&gt;</span></span>
+<span class="line"><span style="color:#7FDBCA">&lt;/</span><span style="color:#CAECE6">div</span><span style="color:#7FDBCA">&gt;</span></span></code></li>
+<li><strong><code>line-clamp-none</code></strong>: يزيل التقييد المطبَّق سابقًا</li>
+<li><strong>قيم مخصّصة</strong>: استخدم <code>line-clamp-[&lt;value&gt;]</code> لأعداد أسطر مخصّصة</li>
+</ul>
+<p>طَبِّقه استجابةً:</p>
+<p><em>التقييد متعدّد الأسطر (line-clamp) — المثال 11 — <a href="https://stevekinney.com/generated/playgrounds/dc2e8ca349cb24d97c90cdaddc6ffcaec6f159d9eebb173140f44271868d7d77.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;line-clamp-2 md:line-clamp-4&quot;</span>&gt;</span>
+  This text will show 2 lines on small screens and 4 on medium screens and up.
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;line-clamp-[5] lg:line-clamp-[8]&quot;</span>&gt;</span>This text uses arbitrary line counts.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+</code></pre>
+<p>وتوفّر أصناف Tailwind المساعِدة للالتفاف والاقتطاع تحكّمًا شاملًا في تدفّق النص مباشرةً داخل HTML، فيصبح من السهل إدارة التخطيطات المعقّدة والتعامل مع حالات الفيض على نحو متّسق.</p>
+`,o={book:s,chapter:a,chapterTitle:e,slug:n,title:l,headings:t,html:p};export{s as book,a as chapter,e as chapterTitle,o as default,t as headings,p as html,n as slug,l as title};

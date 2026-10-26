@@ -1,0 +1,148 @@
+const e="kinney",n="self-testing-ai-agents",t="وكلاء ذكاء اصطناعي يختبرون أنفسهم",s="lab-write-the-ci-workflow-from-scratch",o="مختبر: اكتب سير عمل CI من الصفر",i=[{depth:2,id:"المهمة",text:"المهمة"},{depth:2,id:"ما-يمكنك-التحقق-منه-محليا",text:"ما يمكنك التحقق منه محليًا"},{depth:2,id:"ما-يبقى-يدويا-أو-خارجيا",text:"ما يبقى يدويًا أو خارجيًا"},{depth:2,id:"الشكل",text:"الشكل"},{depth:2,id:"تنقل-في-سير-العمل",text:"تنقّل في سير العمل"},{depth:3,id:"المهمة-الثابتة",text:"المهمة الثابتة"},{depth:3,id:"مهمة-الوحدة",text:"مهمة الوحدة"},{depth:3,id:"مهمة-من-الطرف-إلى-الطرف",text:"مهمة من الطرف إلى الطرف"},{depth:3,id:"أمان-الانحدار-البصري",text:"أمان الانحدار البصري"},{depth:3,id:"سير-العمل-الليلي-خارج-النطاق",text:"سير العمل الليلي خارج النطاق"},{depth:3,id:"حماية-الفروع",text:"حماية الفروع"},{depth:2,id:"معايير-القبول",text:"معايير القبول"},{depth:2,id:"استكشاف-الأخطاء-وإصلاحها",text:"استكشاف الأخطاء وإصلاحها"},{depth:2,id:"فحص-حلقة-الوكيل",text:"فحص حلقة الوكيل"},{depth:3,id:"قبول-حلقة-الوكيل",text:"قبول حلقة الوكيل"},{depth:2,id:"أهداف-إضافية",text:"أهداف إضافية"},{depth:2,id:"الشيء-الوحيد-الذي-يجب-تذكره",text:"الشيء الوحيد الذي يجب تذكره"},{depth:2,id:"قراءة-إضافية",text:"قراءة إضافية"}],c=`<p>لا يشحن مشروع Shelf الأولي ملفات سير العمل. مهمتك في هذا المختبر هي كتابتها من الصفر، باستخدام سطح الأوامر الحالي مصدرًا للحقيقة. وبحلول النهاية ينبغي أن تكون قادرًا على إعادة بناء سير عمل مكافئ في مشروعك الخاص دون الاعتماد على سقالات مخفية في المشروع الأولي.</p>
+<blockquote>
+<p><strong>في المشروع الأولي الحالي</strong></p>
+<p>لا يشحن المستودع الأدنى ملف <code>.github/workflows/main.yml</code>. هذا المختبر تمرين تأليف حقيقي: الملف الوحيد المطلوب هنا هو <code>main.yml</code>. سير العمل الليلي خارج نطاق هذا المختبر—<a href="https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow">مختبرات الملحق</a> تضيف <code>nightly.yml</code> عندما تصبح الأوامر التي يعتمد عليها موجودة فعلًا.</p>
+</blockquote>
+<blockquote>
+<p><strong>متطلب سابق</strong></p>
+<p>يفترض هذا المختبر أنك أكملت <strong>مختبر: ابنِ ملف أدلة فشل لـ Shelf</strong> و<strong>مختبر: وصّل الطبقة الثابتة بـ Shelf</strong> إذا كنت تريد شكل CI الأكمل مع <code>knip</code> وgitleaks ورفع ملفات الأدلة. وإذا كنت ما زلت على مشروع Shelf الأولي، فابدأ بـ <code>lint</code> و<code>typecheck</code> و<code>test:unit</code> و<code>test</code>، ثم وسّع سير العمل مع وصول تلك المختبرات اللاحقة.</p>
+</blockquote>
+<h2 id="المهمة">المهمة</h2>
+<p>أنشئ <code>.github/workflows/main.yml</code> في مستودع Shelf، وتنقّل في كل مهمة مع إبقاء هذا الدرس مفتوحًا بجانبك. اسأل عند كل خطوة: <em>أي حلقة بُنيت في وقت سابق اليوم تحرسها هذه الخطوة؟</em> عندما تستطيع الإجابة على ذلك لكل خطوة، تكون قد أنجزت المختبر.</p>
+<h2 id="ما-يمكنك-التحقق-منه-محليا">ما يمكنك التحقق منه محليًا</h2>
+<p>يمكنك القيام بالجولة الأولى كاملة محليًا. اكتب <code>.github/workflows/main.yml</code>، ثم شغّل الأوامر التي تقابلها كل خطوة مسماة. في مشروع Shelf الأولي يكون ذلك على الأقل <code>npm run lint</code> و<code>npm run typecheck</code> و<code>npm run test:unit</code> و<code>npm run test</code>. وإذا كنت قد أكملت مختبرات الطبقة الثابتة وملف الأدلة بالفعل، فأدرج <code>npm run knip</code> وgitleaks و<code>npm run dossier</code> أيضًا. يمكنك كذلك تأكيد افتراضات البيئة في مهمة Playwright بالتحقق من أن سير العمل يكتب ملف <code>.env</code> صغيرًا، ويوجّه <code>DATABASE_URL</code> إلى ملف SQLite محلي في CI مثل <code>file:./ci.db</code>، ويعتمد على خادم الويب نفسه في <code>playwright.config.ts</code> الذي تستخدمه بالفعل على جهازك.</p>
+<h2 id="ما-يبقى-يدويا-أو-خارجيا">ما يبقى يدويًا أو خارجيًا</h2>
+<p>لا يبدأ الجزء المستضاف إلا عندما تدفع إلى مستودع GitHub موصول. ومشاهدة فرع معطل يفشل في Actions، وتنزيل قطعة أثرية لملف الأدلة، وتأكيد حماية الفروع، كلها فحوص GitHub حقيقية. إذا لم تكن لهذه النسخة المستنسخة مصدر بعيد، فتوقف عند تكافؤ الأوامر المحلية مع ملفات سير عمل صالحة، واعتبر الحلقة المستضافة معلّقة.</p>
+<h2 id="الشكل">الشكل</h2>
+<p>افتح <code>.github/workflows/main.yml</code>. في الأعلى توجد الأشياء الثلاثة التي يحتاج إليها سير العمل ليكون آمنًا وقابلًا للتوقع:</p>
+<pre><code class="language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">Main</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+  <span class="hljs-attr">pull_request:</span>
+
+<span class="hljs-attr">permissions:</span>
+  <span class="hljs-attr">contents:</span> <span class="hljs-string">read</span>
+</code></pre>
+<p><code>on:</code> يسرد الأحداث. ودفع التغييرات وطلب السحب يغطيان كل مسار كود إلى <code>main</code>. و<code>permissions: contents: read</code> هو افتراضي أقل امتياز—يمكن لسير العمل قراءة المستودع لكنه لا يستطيع الكتابة فيه. إذا احتجت إلى الكتابة (لنشر تعليق على طلب سحب مثلًا)، فأنت تشترك صراحةً على مستوى المهمة. الرفض الافتراضي أرخص من السماح الافتراضي.</p>
+<p>ثم المهام الثلاث: <code>static</code> و<code>unit</code> و<code>end-to-end</code>. إنها تتشارك شكل الإعداد نفسه—سحب الكود، وإعداد Node، والتخزين المؤقت، والتثبيت—لكن كل واحدة تشغّل طبقة مختلفة من الحلقة. وكل من <code>unit</code> و<code>end-to-end</code> يستخدم <code>needs: static</code>، لذا إذا فشل lint أو typecheck أو knip أو gitleaks، فلن تبدأ المهام الأثقل أبدًا. البوابات الرخيصة تعمل أولًا.</p>
+<p>تتنقل الأقسام أدناه في كل مهمة. افتح الملف أثناء القراءة.</p>
+<h2 id="تنقل-في-سير-العمل">تنقّل في سير العمل</h2>
+<h3 id="المهمة-الثابتة">المهمة الثابتة</h3>
+<p>تشغّل مهمة <code>static</code> فحوص lint وtypecheck وknip وgitleaks في مهمة واحدة بخطوات متتابعة، لا في أربع مهام بتبعيات. فتكلفة الإعداد الزائدة لمهام منفصلة أكبر من فائدة تقسيم أربعة فحوص قصيرة على أربعة مشغلات، والبوابات سريعة بما يكفي بحيث لا يكلف تسلسلها شيئًا ذا معنى.</p>
+<p>لاحظ خطوات gitleaks في <code>main.yml</code>:</p>
+<pre><code class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">gitleaks</span>
+  <span class="hljs-attr">run:</span> <span class="hljs-string">|
+    curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \\
+      | tar -xz -C /tmp gitleaks
+    sudo install /tmp/gitleaks /usr/local/bin/gitleaks
+    gitleaks version
+</span><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Secret</span> <span class="hljs-string">scan</span>
+  <span class="hljs-attr">run:</span> <span class="hljs-string">gitleaks</span> <span class="hljs-string">dir</span> <span class="hljs-string">.</span> <span class="hljs-string">--redact</span> <span class="hljs-string">--config</span> <span class="hljs-string">.gitleaks.toml</span>
+</code></pre>
+<p>هذا استدعاء CLI مباشر، لا غلاف <code>gitleaks/gitleaks-action@v2</code>. والسبب تشغيلي: الأكشن يقوم بفحص جزئي على <code>&lt;prev&gt;^..&lt;current&gt;</code> يفشل على الفروع ذات الدفع الأول برسالة «لا يوجد إيداع سابق». أما <code>gitleaks dir .</code> المباشر فيفحص شجرة العمل بأكملها ولا يمكن أن يخلط بينه وبين معنى «السابق». إذا بنيت CI الخاص بك، ففضّل CLI المباشر للسبب نفسه.</p>
+<p>كل خطوة مسماة تقابل أمرًا محليًا حقيقيًا. شغّل هذه على شجرة عمل نظيفة:</p>
+<pre><code class="language-bash">npm run lint
+npm run typecheck
+npm run knip
+npm run <span class="hljs-built_in">test</span>:unit
+npm run <span class="hljs-built_in">test</span>
+gitleaks <span class="hljs-built_in">dir</span> . --redact --config .gitleaks.toml
+</code></pre>
+<p>ينبغي أن يخرج كل واحد منها بالرمز صفر. وإذا لم يفعل أي منها ذلك، فالحلقة الأساسية هي التي تفشل، لا CI.</p>
+<h3 id="مهمة-الوحدة">مهمة الوحدة</h3>
+<p>تشغّل مهمة <code>unit</code> اختبارات Vitest وتستخدم <code>needs: static</code>. وهي تعيد استخدام مفتاح التخزين المؤقت نفسه. وهي لا تحتاج إلى متصفحات، لذا يُتخطى تثبيت Playwright. قصيرة ورخيصة وقابلة للتوقع.</p>
+<h3 id="مهمة-من-الطرف-إلى-الطرف">مهمة من الطرف إلى الطرف</h3>
+<p><code>end-to-end</code> هي الأكبر، وهي تفعل شيئًا لا تفعله <code>static</code> و<code>unit</code>: تكتب ملف <code>.env</code> قبل تشغيل Playwright.</p>
+<pre><code class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Create</span> <span class="hljs-string">.env</span> <span class="hljs-string">for</span> <span class="hljs-string">preview</span> <span class="hljs-string">server</span>
+  <span class="hljs-attr">run:</span> <span class="hljs-string">|
+    cat &gt; .env &lt;&lt;&#x27;EOF&#x27;
+    DATABASE_URL=file:./ci.db
+    OPEN_LIBRARY_BASE_URL=https://openlibrary.org
+    EOF
+</span></code></pre>
+<p>ثمة أمران يستحقان الملاحظة.</p>
+<p>أولًا، القيم صريحة ومملة. النقطة ليست السرية؛ النقطة أن CI يملك مسار قاعدة بياناته الخاص بدلًا من مشاركة إعداد مطور افتراضي عن غير قصد.</p>
+<p>ثانيًا، مشروع Shelf الأولي الحالي لا يحتاج إلى <code>ORIGIN</code> أو <code>BETTER_AUTH_SECRET</code> أو مجلد <code>tmp/</code> موجود مسبقًا لمجرد إقلاع خادم المعاينة. إذا أدخلت أعمال المصادقة اللاحقة متغيرات بيئة إضافية وقت التشغيل، فأضف فقط المتغيرات التي يقرأها التطبيق فعلًا. لا تقلّد سقالات CI قديمة.</p>
+<p>بعد تهيئة <code>.env</code>، تشغّل المهمة <code>npm run test</code>. وعند الفشل تشغّل <code>npm run dossier</code>، وترفع <code>playwright-report/</code> كقطعة أثرية واحدة و<code>playwright-report/dossier.md</code> كقطعة أخرى، وكلتاهما بمدة احتفاظ 7 أيام. يحتوي <code>playwright-report/</code> بالفعل على التتبع ولقطات الشاشة والفيديو وتقرير HTML. أما ملف الأدلة فرُفع منفصلًا كي يستطيع وكيل أخذ الملخص دون سحب أرشيف التقرير كاملًا.</p>
+<p>يشغّل <code>playwright.config.ts</code> في Shelf خادم المعاينة بالفعل عبر <code>webServer</code>، لذا <strong>لا</strong> يحتاج سير العمل إلى خطوة إضافية لإقلاع الخادم. يستخدم Shelf <code>command: 'npm run build &amp;&amp; npm run preview -- --host 127.0.0.1 --port 4173'</code> و<code>url: 'http://127.0.0.1:4173'</code> ولا يضبط <code>reuseExistingServer</code>. إذا بنيت سير عمل CI لمشروع لا يملك كتلة <code>webServer</code> بالفعل، فأضف أولًا إلى إعداد Playwright كتلة <code>webServer</code> تشغّل سطح المعاينة نفسه.</p>
+<h3 id="أمان-الانحدار-البصري">أمان الانحدار البصري</h3>
+<p>تتضمن حزمة Playwright اختبارات لقطات الشاشة من <a href="https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop">الانحدار البصري كحلقة تغذية راجعة</a>. وهي تعمل كجزء من مهمة <code>end-to-end</code>. وتستقر فروق اللقطات في <code>playwright-report/test-results/&lt;spec&gt;/</code> وتُرفع كجزء من قطعة أثرية <code>playwright-report</code> عند الفشل. لا حاجة إلى خطوة رفع منفصلة.</p>
+<h3 id="سير-العمل-الليلي-خارج-النطاق">سير العمل الليلي خارج النطاق</h3>
+<p><strong>لا</strong> تبنِ <code>.github/workflows/nightly.yml</code> في هذا المختبر. تأليف عنصر نائب بلا مهام حقيقية يستدعي أسماء أوامر منقولة بالتقليد. مختبرات الملحق (<a href="https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage">مختبر: أضف تغطية عبر المتصفحات</a>، <a href="https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow">مختبر: أضف سير عمل تحقق ليلي</a>) هي المكان الذي تصبح فيه تلك الحلقة الأوسع أو الأبطأ حقيقية، وينزل سير العمل إلى جانب الأوامر التي يحرسها. في هذه المرحلة من الدورة، المهم أن <code>main.yml</code> نظيف وصادق ومقابل لأوامر مستودع حقيقية.</p>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p><strong>لا</strong> توصّل <code>playwright test --update-snapshots</code> بمهمة مجدولة، ولا حتى كعنصر نائب. فمهمة cron تحدّث اللقطات ستعيد كتابة كل خط أساس بصري بهدوء كلما عملت، وتدمّر بوابة الانحدار البصري لديك بهدوء. يجب أن يكون تحديث اللقطات دائمًا مطلقًا بشريًا (مهمة <code>workflow_dispatch</code>، أو <code>--update-snapshots</code> محليًا يتبعه طلب سحب تراجعه).</p>
+</blockquote>
+<h3 id="حماية-الفروع">حماية الفروع</h3>
+<p>في إعدادات مستودع GitHub، فعّل حماية الفروع على <code>main</code>:</p>
+<ul>
+<li>اشترط فحوص الحالة: <code>static</code> و<code>unit</code> و<code>end-to-end</code>.</li>
+<li>اشترط أن تكون الفروع محدثة قبل الدمج.</li>
+<li>امنع الدفع القسري.</li>
+</ul>
+<p>هذا يحوّل مهام CI إلى بوابات صارمة. سير العمل بحد ذاته مجرد سكربت؛ وحماية الفروع هي ما يجعله بوابة لا يمكنك الالتفاف حولها.</p>
+<h2 id="معايير-القبول">معايير القبول</h2>
+<ul>
+<li>فتحت <code>.github/workflows/main.yml</code> وقرأت كل خطوة في كل مهمة من المهام الثلاث.</li>
+<li>تستطيع الإشارة إلى الخطوة التي تحرس كل طبقة بُنيت في وقت سابق اليوم: lint، وtypecheck، وknip، وgitleaks، وVitest، وPlaywright، والانحدار البصري، ورفع ملف الأدلة.</li>
+<li>تفهم لماذا تستخدم خطوة gitleaks واجهة CLI المباشرة بدلًا من غلاف <code>gitleaks-action@v2</code> (الفروع ذات الدفع الأول).</li>
+<li>تفهم لماذا تكتب <code>end-to-end</code> ملف <code>.env</code> صغيرًا قبل تشغيل Playwright، ولماذا يمكن للمشروع الأولي الحالي استخدام <code>DATABASE_URL=file:./ci.db</code> دون إعداد مجلد إضافي.</li>
+<li>تفهم لماذا يستخدم كل من <code>unit</code> و<code>end-to-end</code> قيمة <code>needs: static</code>، وماذا يحدث لهما إذا وصل خطأ lint في طلب سحب.</li>
+<li>شغّلت الأوامر المحلية المقابلة (<code>npm run lint</code>، <code>npm run typecheck</code>، <code>npm run knip</code>، <code>npm run test:unit</code>، <code>npm run test</code>، <code>gitleaks dir . --redact --config .gitleaks.toml</code>) على شجرة عمل نظيفة وخرجت كلها بالرمز صفر.</li>
+<li>إذا كان لمستودعك مصدر بعيد في Git، فقد دفعت إيداعًا معطلًا عمدًا (خطأ lint، أو تأكيد Playwright فاشل) إلى فرع مؤقت وشاهدت المهمة المقابلة تفشل مع إرفاق ملف الأدلة.</li>
+<li>إذا كان لمستودعك مصدر بعيد في Git، فحماية الفروع مفعّلة على <code>main</code> وتشترط نجاح مهمتي <code>static</code> و<code>end-to-end</code> على الأقل.</li>
+</ul>
+<h2 id="استكشاف-الأخطاء-وإصلاحها">استكشاف الأخطاء وإصلاحها</h2>
+<ul>
+<li>إذا فشل Playwright في CI لأن Chromium مفقود، فتحقق من أن سير العمل يشغّل <code>npx playwright install --with-deps chromium</code> قبل <code>npm run test</code>.</li>
+<li>إذا كان YAML سير العمل صالحًا لكن خطوة مسماة غير موجودة محليًا، فأصلح سطح أوامر المستودع أولًا. لا تحل هذا الانحراف بسكربتات shell خاصة بسير العمل.</li>
+<li>إذا كنت تستخدم نسخة مستنسخة من Shelf بلا مصدر بعيد في Git، فتوقف عند تكافؤ الأوامر المحلية مع ملفات سير عمل صالحة. لا تدّعِ أن حلقة تنزيل القطع الأثرية المستضافة تعمل حتى يُوصل المستودع بـ GitHub.</li>
+<li>إذا قسّمت الفحوص الثابتة إلى مهام متعددة، فتأكد أن ذلك القرار متعمد ومشروح. يُبقي Shelf عليها مجتمعة لأنها قصيرة وتتشارك تكلفة الإعداد نفسها.</li>
+</ul>
+<h2 id="فحص-حلقة-الوكيل">فحص حلقة الوكيل</h2>
+<p>المغزى الكامل من هذا الدرس: عندما يفشل CI، هل يستطيع الوكيل التعافي دونك؟</p>
+<p>أنشئ فرع ميزة بخطأ متعمد لا يلتقطه إلا CI—شيء خاص بالبيئة. أحد الخيارات السهلة: اختبار يستخدم متغير بيئة محليًا فقط (<code>process.env.MY_MACHINE</code>) ويفشل عندما يشغّله CI على جهاز Linux جديد.</p>
+<p>ادفع الفرع. انتظر حتى يفشل CI.</p>
+<p>افتح Claude Code. قل:</p>
+<blockquote>
+<p>فشل أحدث تشغيل لـ CI على الفرع <code>&lt;branch-name&gt;</code>. نزّل قطعة أثرية ملف الأدلة، واقرأها، وشخّص الفشل، واقترح إصلاحًا، وادفع إيداعًا جديدًا.</p>
+</blockquote>
+<p>ينبغي أن يقوم الوكيل بما يلي:</p>
+<ol>
+<li>استخدام <code>gh run list</code> أو <code>gh run view</code> للعثور على التشغيل الفاشل.</li>
+<li>استخدام <code>gh run download</code> لسحب قطعة أثرية ملف الأدلة.</li>
+<li>قراءة ملف الأدلة.</li>
+<li>تحديد المشكلة الخاصة بالبيئة.</li>
+<li>إصلاحها.</li>
+<li>الدفع.</li>
+</ol>
+<p>ينبغي أن يتحول تشغيل CI الجديد إلى الأخضر. ولا ينبغي أن تحتاج إلى لصق رسالة خطأ واحدة.</p>
+<h3 id="قبول-حلقة-الوكيل">قبول حلقة الوكيل</h3>
+<ul>
+<li>إذا كان لمستودعك مصدر بعيد في Git، فقد أعطيت الوكيل اسم الفرع فقط وتعليمات قراءة ملف الأدلة.</li>
+<li>إذا كان لمستودعك مصدر بعيد في Git، فقد استرجع الوكيل ملف الأدلة من تشغيل GitHub Actions دون أن تنسخه أنت.</li>
+<li>إذا كان لمستودعك مصدر بعيد في Git، فقد حدد الوكيل السبب الجذري من ملف الأدلة وحده.</li>
+<li>إذا كان لمستودعك مصدر بعيد في Git، فقد دفع الوكيل إصلاحًا جعل CI أخضر في التشغيل التالي.</li>
+<li>إذا كان لمستودعك مصدر بعيد في Git، فلم تكن بحاجة إلى لصق أي رسائل خطأ في المحادثة.</li>
+</ul>
+<h2 id="أهداف-إضافية">أهداف إضافية</h2>
+<ul>
+<li>أضف استراتيجية مصفوفة إلى مهمة <code>end-to-end</code> كي يعمل Playwright على Chromium وFirefox وWebKit في كل تشغيل (أو احصر المصفوفة في طلبات السحب فقط لتوفير الدقائق).</li>
+<li>أضف تقسيم Playwright (sharding) إلى مهمة <code>end-to-end</code> لتوازي الحزمة عبر عدة مشغلات.</li>
+<li>أضف خطوة تعليق على طلب السحب تنشر ملخصًا لنتائج الاختبارات وروابط للقطع الأثرية، باستخدام <a href="https://github.com/marketplace/actions/add-pr-comment">أكشن تعليق طلبات السحب في GitHub Actions</a> أو ما يعادله.</li>
+<li>اربط MCP المخصص من <a href="https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper">كتابة غلاف MCP مخصص</a> باختبار دخان بعد النشر: بعد الدمج في main، شغّل <code>verify_shelf_page</code> مقابل بيئة الاختبار.</li>
+<li>شغّل Bugbot (إن لم يكن مدمجًا بالفعل) واجعل اكتماله فحص حالة مطلوبًا.</li>
+<li>اكتب نقطة دخول واحدة <code>workflow_dispatch</code> تتيح لك تشغيل الخط بأكمله يدويًا على أي فرع من واجهة GitHub.</li>
+</ul>
+<h2 id="الشيء-الوحيد-الذي-يجب-تذكره">الشيء الوحيد الذي يجب تذكره</h2>
+<p>CI هو المكان الذي تلتقي فيه حلقات يوم كامل من العمل للفحص الأخير قبل الدمج. ينبغي أن تقابل كل مهمة حلقة بنيتها خلال الورشة—<a href="https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment">الطبقة الثابتة</a>، <a href="https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy">اختبارات Playwright</a>، <a href="https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop">لقطات الشاشة</a>، <a href="https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build">ملف الأدلة</a>. وينبغي أن يكون كل فشل مقروءًا بما يكفي ليتمكن الوكيل من التعافي دونك. إذا كان CI يعمل ولا يستطيع الوكيل التعافي، فملف الأدلة ضعيف. وإذا كان الوكيل يستطيع التعافي لكن CI بطيء، فالتخزين المؤقت والتوازي لديك يحتاجان إلى عمل. اضبط الاثنين حتى تعمل الحلقة دونك.</p>
+<h2 id="قراءة-إضافية">قراءة إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/write-the-ci-workflow-from-scratch-solution">الحل</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort">CI كحلقة الملاذ الأخير</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation">التحقق بعد الدمج وبعد النشر</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops">حلقات التحقق الليلية</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/capstone-the-whole-loop-end-to-end">المشروع الختامي: الحلقة بأكملها، من الطرف إلى الطرف</a></li>
+</ul>
+`,l={book:e,chapter:n,chapterTitle:t,slug:s,title:o,headings:i,html:c};export{e as book,n as chapter,t as chapterTitle,l as default,i as headings,c as html,s as slug,o as title};

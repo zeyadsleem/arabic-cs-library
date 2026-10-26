@@ -1,0 +1,239 @@
+const s="kinney",c="aws",a="نشر تطبيقات الويب على AWS",n="acm-certificate-solution",t="الحل",o=[{depth:2,id:"لماذا-ينجح-هذا",text:"لماذا ينجح هذا"},{depth:2,id:"طلب-الشهادة",text:"طلب الشهادة"},{depth:2,id:"استرجاع-سجلات-التحقق",text:"استرجاع سجلات التحقّق"},{depth:2,id:"إضافة-سجلات-التحقق-إلى-dns",text:"إضافة سجلات التحقّق إلى DNS"},{depth:3,id:"الخيار-أ-route-53-cli",text:"الخيار أ: Route 53 (CLI)"},{depth:3,id:"الخيار-ب-route-53-اختصار-وحدة-التحكم",text:"الخيار ب: Route 53 (اختصار وحدة التحكّم)"},{depth:3,id:"الخيار-ج-مزود-dns-خارجي",text:"الخيار ج: مزوّد DNS خارجي"},{depth:3,id:"التحقق-من-وجود-السجل",text:"التحقّق من وجود السجل"},{depth:2,id:"انتظار-التحقق",text:"انتظار التحقّق"},{depth:2,id:"التحقق-من-الشهادة",text:"التحقّق من الشهادة"},{depth:2,id:"الملخص",text:"الملخّص"},{depth:2,id:"التنظيف",text:"التنظيف"}],p=`<p>هذا هو حلّ <a href="https://stevekinney.com/courses/aws/acm-certificate-exercise">تمرين شهادة ACM</a>. تتضمّن كل خطوة الأوامر الدقيقة والمخرجات المتوقّعة. وإن اختلفت مخرجاتك، فالملاحظات التي تلي كل أمر تشرح ما ينبغي فحصه.</p>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>إن أردت أن تُبقي نسخة AWS من سير عمل التحقّق مفتوحة أثناء عملك، فأبقِ <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html">دليل مستخدم AWS Certificate Manager</a> قريبًا منك. فهو أسرع طريقة للتأكّد من سلامة مسار وحدة التحكّم عندما تعيد ACM تحريك الأزرار مرة أخرى.</p>
+</blockquote>
+<h2 id="لماذا-ينجح-هذا">لماذا ينجح هذا</h2>
+<ul>
+<li>لا تُصدر ACM الشهادة إلا بعد أن يُثبت DNS أنك تتحكّم بالنطاق، ولهذا فإن سجل التحقّق هو البوّابة الحقيقية في سير العمل هذا.</li>
+<li>إبقاء الشهادة في <code>us-east-1</code> يجعلها متوافقة مع شرط CloudFront الإقليمي، بدلًا من إنشاء شهادة لا تستطيع ربطها لاحقًا.</li>
+<li>يبقى التجديد تلقائيًا ما دام سجل التحقّق موجودًا في DNS وما دامت الشهادة مرتبطة بخدمة AWS.</li>
+</ul>
+<h2 id="طلب-الشهادة">طلب الشهادة</h2>
+<pre><code class="language-bash">aws acm request-certificate \\
+  --domain-name example.com \\
+  --subject-alternative-names <span class="hljs-string">&quot;*.example.com&quot;</span> \\
+  --validation-method DNS \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<p><strong>المخرجات المتوقّعة:</strong></p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;CertificateArn&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;arn:aws:acm:us-east-1:123456789012:certificate/a1b2c3d4-e5f6-7890-abcd-ef1234567890&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>خزّن ARN في متغيّر حتى لا تضطر إلى نسخه ولصقه في كل أمر لاحق:</p>
+<pre><code class="language-bash">CERT_ARN=<span class="hljs-string">&quot;arn:aws:acm:us-east-1:123456789012:certificate/a1b2c3d4-e5f6-7890-abcd-ef1234567890&quot;</span>
+</code></pre>
+<p>أو التقطه في خطوة واحدة:</p>
+<pre><code class="language-bash">CERT_ARN=$(aws acm request-certificate \\
+  --domain-name example.com \\
+  --subject-alternative-names <span class="hljs-string">&quot;*.example.com&quot;</span> \\
+  --validation-method DNS \\
+  --region us-east-1 \\
+  --output text)
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$CERT_ARN</span>&quot;</span>
+</code></pre>
+<p><strong>إن حدث خطأ ما:</strong></p>
+<ul>
+<li><code>An error occurred (AccessDeniedException)</code>: مستخدم IAM لديك لا يملك أذونات <code>acm:RequestCertificate</code>. وإن كنت تستخدم المستخدم الإداري من <a href="https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account">إنشاء حساب AWS وتأمينه</a>، فلا ينبغي أن يحدث هذا. تحقّق من أن ملف تعريف CLI لديك مهيّأ بشكل صحيح.</li>
+<li><code>An error occurred (LimitExceededException)</code>: لقد بلغت حدّ شهادات ACM لحسابك (الافتراضي 2,500 لكل منطقة). وهذا غير مرجّح في حساب جديد، لكن إن حدث فاحذف الشهادات غير المستخدمة عبر <code>aws acm delete-certificate</code>.</li>
+</ul>
+<h2 id="استرجاع-سجلات-التحقق">استرجاع سجلات التحقّق</h2>
+<pre><code class="language-bash">aws acm describe-certificate \\
+  --certificate-arn <span class="hljs-string">&quot;<span class="hljs-variable">$CERT_ARN</span>&quot;</span> \\
+  --region us-east-1 \\
+  --output json \\
+  --query <span class="hljs-string">&quot;Certificate.DomainValidationOptions[*].{Domain:DomainName,RecordName:ResourceRecord.Name,RecordType:ResourceRecord.Type,RecordValue:ResourceRecord.Value,Status:ValidationStatus}&quot;</span>
+</code></pre>
+<p><strong>المخرجات المتوقّعة:</strong></p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Domain&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;example.com&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;RecordName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;_abc123.example.com.&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;RecordType&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;CNAME&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;RecordValue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;_def456.acm-validations.aws.&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;PENDING_VALIDATION&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Domain&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;*.example.com&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;RecordName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;_abc123.example.com.&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;RecordType&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;CNAME&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;RecordValue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;_def456.acm-validations.aws.&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;PENDING_VALIDATION&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">]</span>
+</code></pre>
+<p>لاحظ أن <code>example.com</code> و<code>*.example.com</code> كثيرًا ما يتشاركان سجل CNAME نفسه لأنهما يشتركان في النطاق الأب. ولا تحتاج إلى إضافته إلا مرة واحدة.</p>
+<p><strong>إن كانت حقول <code>ResourceRecord</code> مفقودة:</strong> قد يستغرق ظهور سجلات CNAME بضع ثوانٍ بعد طلب الشهادة. انتظر 10 ثوانٍ ثم شغّل الأمر مرة أخرى.</p>
+<h2 id="إضافة-سجلات-التحقق-إلى-dns">إضافة سجلات التحقّق إلى DNS</h2>
+<h3 id="الخيار-أ-route-53-cli">الخيار أ: Route 53 (CLI)</h3>
+<p>إن كان DNS نطاقك مستضافًا في Route 53، فابحث أولًا عن معرّف المنطقة المستضافة:</p>
+<pre><code class="language-bash">aws route53 list-hosted-zones \\
+  --output json \\
+  --query <span class="hljs-string">&quot;HostedZones[?Name==&#x27;example.com.&#x27;].{Id:Id,Name:Name}&quot;</span>
+</code></pre>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/hostedzone/Z1234567890ABC&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;example.com.&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">]</span>
+</code></pre>
+<p>ثم أنشئ سجل التحقّق. استبدل <code>Name</code> و<code>Value</code> بالقيم الفعلية من الخطوة 2:</p>
+<pre><code class="language-bash">aws route53 change-resource-record-sets \\
+  --hosted-zone-id Z1234567890ABC \\
+  --output json \\
+  --change-batch <span class="hljs-string">&#x27;{
+    &quot;Changes&quot;: [
+      {
+        &quot;Action&quot;: &quot;UPSERT&quot;,
+        &quot;ResourceRecordSet&quot;: {
+          &quot;Name&quot;: &quot;_abc123.example.com.&quot;,
+          &quot;Type&quot;: &quot;CNAME&quot;,
+          &quot;TTL&quot;: 300,
+          &quot;ResourceRecords&quot;: [
+            {
+              &quot;Value&quot;: &quot;_def456.acm-validations.aws.&quot;
+            }
+          ]
+        }
+      }
+    ]
+  }&#x27;</span>
+</code></pre>
+<p><strong>المخرجات المتوقّعة:</strong></p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;ChangeInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/change/C1234567890ABC&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;PENDING&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;SubmittedAt&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2026-03-18T12:00:00.000Z&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>تعني حالة <code>PENDING</code> أن Route 53 ينشر التغيير. ويستغرق هذا عادةً من 30 إلى 60 ثانية.</p>
+<h3 id="الخيار-ب-route-53-اختصار-وحدة-التحكم">الخيار ب: Route 53 (اختصار وحدة التحكّم)</h3>
+<p>افتح <a href="https://console.aws.amazon.com/acm/home?region=us-east-1">وحدة تحكّم ACM</a>. اعثر على شهادتك، ووسّعها، ثم انقر <strong>Create records in Route 53</strong>. ستُنشئ ACM سجلات CNAME نيابةً عنك. وهذا أسرع خيار إن كان نطاقك في Route 53.</p>
+<h3 id="الخيار-ج-مزود-dns-خارجي">الخيار ج: مزوّد DNS خارجي</h3>
+<p>سجّل الدخول إلى مزوّد DNS لديك وأنشئ سجل CNAME. تختلف الخطوات الدقيقة بحسب المزوّد، لكنك تحتاج إلى:</p>
+<ul>
+<li><strong>الاسم</strong>: <code>_abc123</code> (بعض المزوّدين يريدون الاسم الكامل <code>_abc123.example.com</code>، وآخرون يريدون البادئة فقط)</li>
+<li><strong>النوع</strong>: CNAME</li>
+<li><strong>القيمة</strong>: <code>_def456.acm-validations.aws</code> (بعض المزوّدين يطلبون النقطة في النهاية، وآخرون لا)</li>
+<li><strong>TTL</strong>: 300</li>
+</ul>
+<h3 id="التحقق-من-وجود-السجل">التحقّق من وجود السجل</h3>
+<p>بعد إضافة السجل، تأكّد من أنه قابل للاستعلام:</p>
+<pre><code class="language-bash">dig CNAME _abc123.example.com +short
+</code></pre>
+<p><strong>المخرجات المتوقّعة:</strong></p>
+<pre><code>_def456.acm-validations.aws.
+</code></pre>
+<p>إن لم ترَ أي مخرجات، فالسجل لم ينتشر بعد. انتظر دقيقة ثم حاول مجددًا. وإن لم يظهر بعد 5 دقائق، فافحص السجل مرة أخرى في واجهة مزوّد DNS—فالخطأ الأكثر شيوعًا هو إدخال اسم السجل بشكل غير صحيح.</p>
+<h2 id="انتظار-التحقق">انتظار التحقّق</h2>
+<p>استخدم أداة الانتظار في ACM لحجب التنفيذ حتى تصدر الشهادة:</p>
+<pre><code class="language-bash">aws acm <span class="hljs-built_in">wait</span> certificate-validated \\
+  --certificate-arn <span class="hljs-string">&quot;<span class="hljs-variable">$CERT_ARN</span>&quot;</span> \\
+  --region us-east-1
+</code></pre>
+<p>لا يُنتج هذا الأمر أي مخرجات عند النجاح. ويخرج بصمت عندما تتغيّر حالة الشهادة إلى <code>ISSUED</code>. وإن انتهت مهلة الانتظار (بعد نحو 40 دقيقة)، فالأرجح أن سجل DNS غير مهيّأ بشكل صحيح.</p>
+<p>يمكنك أيضًا الاستعلام يدويًا:</p>
+<pre><code class="language-bash">aws acm describe-certificate \\
+  --certificate-arn <span class="hljs-string">&quot;<span class="hljs-variable">$CERT_ARN</span>&quot;</span> \\
+  --region us-east-1 \\
+  --output json \\
+  --query <span class="hljs-string">&quot;Certificate.DomainValidationOptions[*].{Domain:DomainName,Status:ValidationStatus}&quot;</span>
+</code></pre>
+<p><strong>أثناء التحقّق:</strong></p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Domain&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;example.com&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;PENDING_VALIDATION&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Domain&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;*.example.com&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;PENDING_VALIDATION&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">]</span>
+</code></pre>
+<p><strong>بعد التحقّق:</strong></p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Domain&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;example.com&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;SUCCESS&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Domain&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;*.example.com&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;SUCCESS&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">]</span>
+</code></pre>
+<h2 id="التحقق-من-الشهادة">التحقّق من الشهادة</h2>
+<pre><code class="language-bash">aws acm describe-certificate \\
+  --certificate-arn <span class="hljs-string">&quot;<span class="hljs-variable">$CERT_ARN</span>&quot;</span> \\
+  --region us-east-1 \\
+  --output json \\
+  --query <span class="hljs-string">&quot;Certificate.{Status:Status,Domains:SubjectAlternativeNames,Renewal:RenewalEligibility,KeyAlgorithm:KeyAlgorithm,Issuer:Issuer}&quot;</span>
+</code></pre>
+<p><strong>المخرجات المتوقّعة:</strong></p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;Status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ISSUED&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;Domains&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;example.com&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;*.example.com&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;Renewal&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ELIGIBLE&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;KeyAlgorithm&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;RSA-2048&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;Issuer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Amazon&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>الأمور الأساسية التي يجب تأكيدها:</p>
+<ul>
+<li><strong>الحالة</strong> هي <code>ISSUED</code>، لا <code>PENDING_VALIDATION</code> ولا <code>FAILED</code>.</li>
+<li><strong>النطاقات</strong> تسرد كلاً من <code>example.com</code> و<code>*.example.com</code>.</li>
+<li><strong>التجديد</strong> هو <code>ELIGIBLE</code>، ما يعني أن ACM سيجدّد هذه الشهادة تلقائيًا.</li>
+<li><strong>الجهة المُصدرة</strong> هي <code>Amazon</code>، ما يؤكّد أن هذه شهادة تُديرها ACM.</li>
+</ul>
+<h2 id="الملخص">الملخّص</h2>
+<p>سير العمل الكامل، مختصرًا:</p>
+<pre><code class="language-bash"><span class="hljs-comment"># Request the certificate</span>
+CERT_ARN=$(aws acm request-certificate \\
+  --domain-name example.com \\
+  --subject-alternative-names <span class="hljs-string">&quot;*.example.com&quot;</span> \\
+  --validation-method DNS \\
+  --region us-east-1 \\
+  --output text)
+
+<span class="hljs-comment"># Get the validation CNAME records</span>
+aws acm describe-certificate \\
+  --certificate-arn <span class="hljs-string">&quot;<span class="hljs-variable">$CERT_ARN</span>&quot;</span> \\
+  --region us-east-1 \\
+  --output json \\
+  --query <span class="hljs-string">&quot;Certificate.DomainValidationOptions[*].ResourceRecord&quot;</span>
+
+<span class="hljs-comment"># Add the CNAME to Route 53 (or your DNS provider)</span>
+<span class="hljs-comment"># ... (see Step 3 above)</span>
+
+<span class="hljs-comment"># Wait for validation</span>
+aws acm <span class="hljs-built_in">wait</span> certificate-validated \\
+  --certificate-arn <span class="hljs-string">&quot;<span class="hljs-variable">$CERT_ARN</span>&quot;</span> \\
+  --region us-east-1
+
+<span class="hljs-comment"># Verify</span>
+aws acm describe-certificate \\
+  --certificate-arn <span class="hljs-string">&quot;<span class="hljs-variable">$CERT_ARN</span>&quot;</span> \\
+  --region us-east-1 \\
+  --output json \\
+  --query <span class="hljs-string">&quot;Certificate.{Status:Status,Domains:SubjectAlternativeNames}&quot;</span>
+</code></pre>
+<p>لديك الآن شهادة صادرة في <code>us-east-1</code>. بعد ذلك، ستربط هذه الشهادة بتوزيع CloudFront حتى تستطيع واجهتك الأمامية أن تستجيب على النطاق الحقيقي بدلًا من عنوان URL بصيغة <code>*.cloudfront.net</code>.</p>
+<h2 id="التنظيف">التنظيف</h2>
+<p>شهادات ACM مجانية ما دامت غير مستخدمة، لكن سجل CNAME الخاص بالتحقّق يبقى في Route 53. وعندما تنتهي من الشهادة:</p>
+<pre><code class="language-bash">aws acm delete-certificate \\
+  --certificate-arn arn:aws:acm:us-east-1:123456789012:certificate/abcd-1234 \\
+  --region us-east-1
+</code></pre>
+<p>ثم احذف سجل CNAME الخاص بالتحقّق من Route 53 باستخدام <code>change-resource-record-sets</code> مع <code>Action: DELETE</code>. اسم السجل وقيمته هما نفس ما أضفته أثناء التحقّق.</p>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p>إن كانت هذه الشهادة لا تزال مرتبطة بتوزيع CloudFront، فسترفض ACM حذفها. افصلها من التوزيع أولًا.</p>
+</blockquote>
+`,e={book:s,chapter:"aws",chapterTitle:a,slug:n,title:t,headings:o,html:p};export{s as book,c as chapter,a as chapterTitle,e as default,o as headings,p as html,n as slug,t as title};

@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.DuatWTQs.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B3ZVYtbm.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DQV7xcTG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/qzVYF9Q1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CSDzdTsb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/3Vym6ygk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.y9voeDib.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.COZJCS6b.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.Dk52SXhi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.CB0GPC81.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ChqCetV-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7IMAvjG.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DcSSJcby.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BAy3TC6R.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.GV1dWeny.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BPsVF77Q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Eq7WVNw2.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CD_zW7lm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CYEZGaBn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/4zzamL0K.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -171,7 +171,7 @@ Hypertext)
 للمهاجمين تعلّم معلومات عن النصّ الصريح إذا كان مضغوطًا قبل التشفير.</p>
 <p>وأكثر خوارزمية شيوعًا في ضغط HTTP وTLS معًا <code>rfc3749:tlscompression</code> هي
 DEFLATE. ولا تهمّ التفاصيل الدقيقة لـ DEFLATE كثيرًا، لكنّ المهمّ فيها أنّ
-متتاليات البايتات المتكرّرة يمكن تخزينها بكفاءة. فwhen متتالية بايتات تتكرّر <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>،
+متتاليات البايتات المتكرّرة يمكن تخزينها بكفاءة. فعندما تتكرّر متتالية بايتات <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>،
 لا تُسجَّل المتتالية نفسها، بل يُقدَّم مرجعٌ إلى المتتالية السابقة: فبدلًا من
 تكرار المتتالية، تقول «ارجع وانظر إلى الشيء الذي كتبته قبل N بايت».</p>
 <p>ولنفترض أنّ المهاجم يستطيع التحكّم في النصّ الصريح. فمثلًا، يحقن المهاجم إطار
@@ -190,6 +190,107 @@ iframe غير مرئي <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]<
 <p>وبدون رمز CSRF، قد يُرسل موقع طرف ثالث مجرّدًا طلبًا إلى الموقع المعرّض؛
 فسيقدّم متصفّح الويب الكعكة المخزَّنة، وسيظنّ الموقع المعرّض أنّ ذلك طلب
 مصادَق عليه.</p>
+<p>ويخمّن المهاجم قيمة الرمز، بدءًا بالبايت الأول، ثمّ ينتقل بايتًا واحدًا في كلّ
+مرّة <sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>. وحين يخمّن بايتًا تخمينًا صحيحًا، يصير النصّ المشفَّر أقصر قليلًا
+فحسب: فخوارزمية الضغط ستلاحظ أنّها رأت هذا النمط من قبل، فتستطيع ضغط النصّ
+الصريح قبل تشفيره. وبذلك يصغر النصّ الصريح، ومن ثمّ النصّ المشفَّر المضغوط.
+ويستطيعون فعل ذلك مباشرةً حين يستعمل الاتصال <code>شيفرة التيار</code> أو بناءً مشابهًا
+مثل <code>وضع CTR</code>، لأنّها تنتج نصوصًا مشفَّرة بطول النصوص الصريحة نفسها تمامًا.
+أمّا إذا كان الاتصال يستعمل وضعًا قائمًا على الكتل مثل <code>وضع CBC</code>، فقد يضيع
+الفرق في حشو الكتل. ويستطيع المهاجم حلّ ذلك بالتحكّم في البادئة ببساطة، بحيث
+يكون الفرق في حجم النصّ المشفَّر كتلةً كاملة.</p>
+<p>وحين يخمّنون بايتًا واحدًا تخمينًا صحيحًا، يمكنهم الانتقال إلى البايت التالي،
+حتى يستعيدوا الرمز بأكمله.</p>
+<p>وهذا الهجوم مثير للاهتمام بوجه خاصّ لأسباب عدّة. فهو ليس <em>صنفًا</em> جديدًا كلّ
+الجدّة من الهجمات فحسب، قابلًا للتطبيق على نطاق واسع في كثير من أنظمة التشفير،
+بل إنّ ضغط النصّ الصريح قبل التشفير كان يُوصى به صراحةً في الأدبيّات
+التشفيريّة القائمة. وهو لا يتطلّب أيّ أدوات متقدّمة بوجه خاصّ: فلا تحتاج إلّا
+إلى إقناع المستخدم بإرسال طلبات إلى موقع معرّض، ولا تحتاج إلّا إلى القدرة على
+قياس حجم الردود. وهو فعّال للغاية أيضًا: فقد أفاد الباحثون الذين نشروا BREACH
+بأنّهم استطاعوا استخراج أسرار، مثل رموز <code>CSRF</code>، في غضون دقيقة واحدة.</p>
+<p>وللدفاع ضدّ CRIME، عطّل ضغط TLS. وهذا ما يُفعل عمومًا في معظم الأنظمة
+افتراضيًّا. أمّا للدفاع ضدّ BREACH، فهناك عدد من الخيارات الممكنة:</p>
+<ul>
+<li>لا تسمح للمستخدم بحقن بيانات اعتباطيّة في الطلب.</li>
+<li>لا تضع أسرارًا في متون الردود.</li>
+<li>ولّد الأسرار من جديد، مثل رموز CSRF، بسخاء، مثلًا في كلّ طلب.</li>
+</ul>
+<p>ومن السيّئ أن تعطّل ضغط HTTP تعطيلًا غير مشروط ببساطة. فمع أنّه يوقف الهجوم
+بنجاح، فإنّ ضغط HTTP أداة حاسمة في جعل الويب أسرع.</p>
+<p>وتطبيقات الويب التي تتكوّن من واجهة أماميّة ساكنة (باستعمال HTML5 وJS وCSS
+مثلًا) ولا تعمل إلّا عبر واجهة برمجيّة، مثل JSON عبر REST، يسهل بوجه خاصّ
+تحصينها ضدّ هذا الهجوم. ما عليك إلّا تعطيل الضغط على القناة التي تحتوي فعلًا
+على أسرار. وهذا يبطئ الأشياء بالطبع، لكن يمكن على الأقلّ تقديم معظم البيانات
+عبر CDN.</p>
+<h4>HSTS</h4>
+<p>HSTS طريقة تتيح لخوادم الويب الإفصاح عن أنّ ما تقوله ينبغي ألّا يُنقل إلّا عبر
+نقلٍ آمن. وفي الممارسة، فإنّ النقل الآمن الوحيد الذي يُستعمل مع HTTP هو TLS.</p>
+<p>واستعمال HSTS بسيط جدًّا؛ فخادم الويب يضيف فحسب ترويسة إضافيّة
+<code>Strict-Transport-Security</code> إلى الردّ. وتحتوي قيمة الترويسة على عمر أقصى
+(<code>max-age</code>)، يحدّد المدى الذي يستطيع المتصفّح أن يثق فيه، في المستقبل، بأنّ هذا
+الموقع ممكَّن بـ HSTS. وهذه القيمة كبيرة عادةً، مثل سنة. وإنّ نجاح المتصفّحات
+في تذكّر أنّ مضيفًا معيّنًا ممكَّن بـ HSTS أمر بالغ الأهمية في فعّالية المخطّط،
+كما سنرى بعد قليل. ويمكن، على سبيل الاختيار، أن تتضمّن ترويسة HSTS التوجيه
+<code>includeSubDomains</code>، الذي يبيّن نطاق سياسة HSTS. <code>hsts</code></p>
+<p>وهناك أمور عدّة يفعلها متصفّح ويب مطابق للمعيار حين يتواصل مع موقع ممكَّن
+بـ HSTS:</p>
+<ul>
+<li>كلّما كان هناك أيّ محاولة لإقامة أيّ اتصال بهذا الموقع، فسيُقام دائمًا عبر
+HTTPS. والمتصفّح يفعل ذلك بنفسه تمامًا، <em>قبل</em> إرسال الطلب إلى الموقع.</li>
+<li>إذا وقعت مشكلة في إقامة اتصال TLS، فلن يكون الموقع متاحًا، بدلًا من عرض
+تحذير فحسب.</li>
+</ul>
+<p>وجوهر الأمر أنّ HSTS طريقة تتيح للمواقع الإفصاح عن أنّها لا تدعم إلّا وسائل
+النقل الآمنة. وهذا يساعد في حماية المستخدمين من جميع أنواع الهجمات، بما فيها
+التنصّت السلبي (الذي كان يأمل في رؤية بعض بيانات الاعتماد المرسلة بالخطأ في
+صورة نصّ صريح)، وهجمات رجل في الوسط النشطة مثل تجريد SSL.</p>
+<p>ويدافع HSTS أيضًا ضدّ أخطاء الخادم. فمثلًا، قد يجلب خادم ويب عن غير قصد بعض
+الشيفرة القابلة للتنفيذ، مثل شيء من JavaScript، عبر اتصال غير آمن. وعندئذٍ
+يصبح لدى مهاجم نشط يستطيع اعتراض تلك الشيفرة وتعديلها سيطرةٌ كاملة على الموقع
+(المفترض أنّه آمن).</p>
+<p>وكما هو الحال مع كثير من تحسينات TLS، فليس HSTS دواءً شاملًا: فهو مجرّد أداة
+واحدة في صندوق أدوات كبير جدًّا من الأشياء التي علينا أن نحاول بها جعل TLS
+أكثر أمنًا. ولا يساعد HSTS إلّا في ضمان أنّ TLS مستعملة فعلًا؛ ولا يفعل شيئًا
+على الإطلاق لمنع الهجمات على TLS نفسها.</p>
+<p>وقد يعاني HSTS من مشكلة الدجاجة والبيضة. فإذا لم يزر متصفّح موقعًا معيّنًا
+ممكَّنًا بـ HSTS من قبل قطّ، فمن الممكن ألّا يعرف المتصفّح بعد أنّ الموقع ممكَّن
+بـ HSTS. ولذلك قد يحاول المتصفّح مع ذلك اتصال HTTP عاديًّا، معرَّضًا لهجوم
+تجريد SSL. وقد حاولت بعض المتصفّحات تخفيف هذه المشكلة بأن تأتي محمَّلة مسبقًا
+بقائمة مواقع HSTS.</p>
+<h4>تثبيت الشهادات</h4>
+<p>وتثبيت الشهادات فكرة شبيهة جدًّا بـ HSTS، لكنّها تذهب أبعد قليلًا: فبدلًا من أن
+نتذكّر فحسب أنّ خادمًا معيّنًا يَعِد بدعم HTTPS، سنتذكّر معلومات عن شهاداته
+(وفي الممارسة، سنتذكّر تجزئة للمفتاح العامّ). وحين نتّصل بخادمٍ لدينا بعض
+المعلومات المخزَّنة عنه، فسنتحقّق من شهاداته، ما يجعل من الصعب جدًّا على محتالٍ
+أن يتظاهر بأنّه الموقع الذي نتّصل به باستعمال شهادة مختلفة.</p>
+<p>وقد نفّذت المتصفّحات تثبيت الشهادات في الأصل بأن جاءت محمَّلة بقائمة شهادات من
+مواقع كبيرة بارزة. فمثلًا، أدرجت Google شهاداتٍ في القائمة البيضاء لجميع
+خدماتها في متصفّحها Chrome.</p>
+<h4>الإعدادات الآمنة</h4>
+<p>لا نتحدّث في هذا القسم إلّا عن خيارات الإعداد مثل الشيفرات التي تُستعمل،
+وإصدارات TLS/SSL، وما إلى ذلك. ونحن <em>لا</em> نتحدّث تحديدًا عن إعدادات TLS بمعنى
+نماذج الثقة وإدارة المفاتيح وما إلى ذلك.</p>
+<p>وهناك مسائل عدّة تتعلّق بضبط TLS ضبطًا آمنًا:</p>
+<p>#. كثيرًا ما تكون الإعدادات الافتراضيّة غير آمنة، ولا يدرك الناس أنّها ينبغي أن
+تُغيَّر.
+#. والأمور التي تشكّل إعدادًا آمنًا لـ TLS يمكن أن تتغيّر بسرعة، لأنّ التحليل
+التشفيري والهجمات العمليّة في تحسّن مستمرّ.
+#. والعملاء القدامى الذين لا يزال يلزم دعمهم يعنيون أحيانًا أنّ عليك التمسّك
+بخيارات إعداد معطوبة.</p>
+<p>ومن الأمثلة العمليّة على اجتماع بعض هذه النقاط هجوم BEAST. فقد استغلّ ذلك الهجوم
+نقاط ضعف في مجموعات شيفرات CBC في TLSv1.0، وقد كانت أجزاءً من مواصفات مجموعات
+الشيفرات الافتراضيّة في كلّ مكان. وقد أوصى كثيرون بالدفاع ضدّه بالانتقال إلى
+RC4. وكان RC4 يُعدّ ضعيفًا تشفيريًّا من قبل، ثمّ أظهر التحليل التشفيري اللاحق
+أنّه أكثر عطبًا ممّا كان يُظنّ سابقًا. وكان الهجوم معروفًا منذ سنوات قبل
+استغلاله عمليًّا؛ وكان قد أُصلح بالفعل في TLSv1.1 سنة 2006، أي سنوات قبل نشر بحث
+BEAST. غير أنّ TLSv1.1 لم يلقَ تبنّيًا واسعًا.</p>
+<p>والمشورة الجيّدة تتغيّر بالضرورة بمرور الوقت، ويستحيل ذلك في وسطٍ دائم مثل
+كتاب. فعليك بدلًا من ذلك أن تنظر في مصادر طرف ثالث تُحدَّث باستمرار، مثل
+<a href="https://www.ssllabs.com/">Qualys SSL Labs</a>. فهي تقدّم اختبارات لكلٍّ من عملاء
+SSL وخوادمه، ومشورة موسّعة في كيفية تحسين الإعدادات.</p>
+<p>ومع ذلك، فهناك بالتأكيد بعض الأمور العامّة التي نريدها من إعداد TLS.</p>
+<p>TODO: اذكر الأمور التي نريدها عمومًا من إعدادات TLS</p>
+<p>TODO: http://tools.ietf.org/html/draft-agl-tls-chacha20poly1305-01</p>
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
@@ -203,6 +304,8 @@ iframe غير مرئي <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]<
 </li>
 <li id="fn5" class="footnote-item"><p>أزواج المفتاح والقيمة في URL بعد علامة الاستفهام، مثل <code>x=1&amp;y=2</code> في <code>http://example.test/path?x=1&amp;y=2</code>. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
 </li>
+<li id="fn6" class="footnote-item"><p>قد يتمكّنون من التقدّم بسرعة أكبر من بايت واحد في المرّة الواحدة، لكنّ هذه أبسط طريقة للتفكير في المسألة. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
 </ol>
 </section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/crypto-101/openpgp-and-gpg/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">OpenPGP وGPG</span></a><!--]--> <!--[0--><a href="../../../../book/crypto-101/appendices/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الملاحق</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
@@ -211,7 +314,7 @@ iframe غير مرئي <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]<
 			
 			<script>
 				{
-					__sveltekit_1gsek7t = {
+					__sveltekit_9rdgz6 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -219,8 +322,8 @@ iframe غير مرئي <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]<
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.DuatWTQs.js"),
-						import("../../../../_app/immutable/entry/app.y9voeDib.js")
+						import("../../../../_app/immutable/entry/start.DQV7xcTG.js"),
+						import("../../../../_app/immutable/entry/app.COZJCS6b.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

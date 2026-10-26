@@ -1,0 +1,77 @@
+const a="kinney",e="tailwind",s="Tailwind CSS",n="dark-mode",d="الوضع الداكن",t=[{depth:2,id:"الاستفادة-من-مبدل-dark",text:"الاستفادة من مُبدّل dark:"},{depth:2,id:"تنفيذ-تبديل-يدوي-للوضع-الداكن",text:"تنفيذ تبديل يدوي للوضع الداكن"},{depth:3,id:"دعم-تفضيل-النظام-إلى-جانب-التبديل-اليدوي",text:"دعم تفضيل النظام إلى جانب التبديل اليدوي"},{depth:2,id:"الوضع-الداكن-ولوحات-الألوان",text:"الوضع الداكن ولوحات الألوان"},{depth:2,id:"تكديس-المبدلات-مع-dark",text:"تكديس المُبدّلات مع dark:"},{depth:2,id:"مفاهيم-ذات-صلة",text:"مفاهيم ذات صلة"}],o=`<p>الوضع الداكن ميزة شائعة تقلّل إجهاد العين وتتيح للمستخدمين تخصيص تجربتهم في التصفّح. ويوفّر Tailwind CSS طريقة مرنة لتنفيذ الوضع الداكن عبر منهجه المعتمد على الأصناف المساعِدة ونظام المُبدّلات.</p>
+<h2 id="الاستفادة-من-مبدل-dark">الاستفادة من مُبدّل <code>dark:</code></h2>
+<p>مُبدّل <code>dark:</code> في Tailwind هو أساس تنفيذ الوضع الداكن. فهو يتيح لك تطبيق الأنماط بشكل شرطي عندما يكون الوضع الداكن نشطًا. وافتراضيًا، يستخدم <code>dark:</code> استعلام الوسائط <code>prefers-color-scheme: dark</code>، فتُطبَّق الأنماط تلقائيًا إذا كان نظام المستخدم أو متصفّحه يفضّل نظام ألوان داكنًا.</p>
+<p>ولاستخدامه، أضف <code>dark:</code> قبل أي صنف مساعد. فمثلًا، لتغيير خلفية عنصر إلى رمادي داكن ونصّه إلى أبيض في الوضع الداكن:</p>
+<p><em>الاستفادة من مُبدّل dark: — المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/e1b9b7a743a6a44a2ef89e822d9cfc7ae88469590dd503535e567813d34eb796.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-white text-gray-900 dark:bg-gray-800 dark:text-white&quot;</span>&gt;</span>
+  Content that adapts to light and dark mode.
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>هنا، <code>bg-white</code> و<code>text-gray-900</code> هما الأنماط الافتراضية (للوضع الفاتح)، بينما يتجاوز <code>dark:bg-gray-800</code> و<code>dark:text-white</code> هذين النمطين عندما تتطابق <code>prefers-color-scheme: dark</code>. وهذا يبقي أنماط الأوضاع المختلفة مجتمعةً مع عنصرها.</p>
+<p>وبخلاف CSS التقليدية حيث قد يكون لصنف واحد أنماط مختلفة داخل استعلام وسائط، فإن <code>dark:bg-gray-800</code> في Tailwind <em>لا</em> يعرّف إلا للحالة الداكنة. وهذا الفصل يبسّط التفكير في الأنماط.</p>
+<p>وتعمل مُبدّلات <code>dark:</code> مع أغلب الأصناف المساعِدة: الألوان، والتنضيب، والمسافات، والحدود، والتحويلات، والفلاتر.</p>
+<h2 id="تنفيذ-تبديل-يدوي-للوضع-الداكن">تنفيذ تبديل يدوي للوضع الداكن</h2>
+<p>توفّر تطبيقات كثيرة مبدّلًا يدويًا للوضع الداكن. ويدعم Tailwind ذلك بتتيحتك تجاوز السلوك الافتراضي لمُبدّل <code>dark:</code>.</p>
+<p>وبدلًا من <code>prefers-color-scheme</code>، يمكنك إعداد <code>dark:</code> لاستخدام محدِّد CSS، مثل صنف أو سمة بيانات على عنصر في المستوى الأعلى (غالبًا <code>&lt;html&gt;</code>).</p>
+<p>تجاوز مُبدّل <code>dark</code> في ملف الأنماط الرئيسي:</p>
+<pre><code class="language-css"><span class="hljs-keyword">@import</span> <span class="hljs-string">&#x27;tailwindcss&#x27;</span>;
+
+<span class="hljs-keyword">@theme</span> {
+  <span class="hljs-comment">/* ... other theme variables */</span>
+}
+
+<span class="hljs-comment">/* Override dark variant to use a class */</span>
+<span class="hljs-keyword">@custom-variant</span> dark {
+  <span class="hljs-selector-pseudo">:where</span>(<span class="hljs-selector-class">.dark</span>)&amp;;
+}
+</code></pre>
+<p>أو استخدم سمة بيانات:</p>
+<pre><code class="language-css"><span class="hljs-keyword">@import</span> <span class="hljs-string">&#x27;tailwindcss&#x27;</span>;
+
+<span class="hljs-keyword">@theme</span> {
+  <span class="hljs-comment">/* ... other theme variables */</span>
+}
+
+<span class="hljs-comment">/* Override dark variant to use a data attribute */</span>
+<span class="hljs-keyword">@custom-variant</span> dark {
+  <span class="hljs-selector-pseudo">:where</span>(<span class="hljs-selector-attr">[data-theme=<span class="hljs-string">&quot;dark&quot;</span>]</span>)&amp;;
+}
+</code></pre>
+<p>والآن تُطبَّق أنماط <code>dark:</code> عندما يكون <code>.dark</code> أو <code>data-theme=&quot;dark&quot;</code> على عنصر سلف (ancestor).</p>
+<p>ويتطلّب تنفيذ المبدّل JavaScript لإضافة الصنف أو السمة أو إزالتها على <code>&lt;html&gt;</code>. واحفظ تفضيل المستخدم (مثلًا في <code>localStorage</code>) ليبقى الوضع المختار ساريًا.</p>
+<h3 id="دعم-تفضيل-النظام-إلى-جانب-التبديل-اليدوي">دعم تفضيل النظام إلى جانب التبديل اليدوي</h3>
+<p>لتقديم تبديل بين الفاتح والداكن وتفضيل النظام:</p>
+<ol>
+<li>تحقّق من تفضيل محفوظ (&quot;light&quot; أو &quot;dark&quot; أو &quot;system&quot;).</li>
+<li>إن وُجد تفضيل، فطَبِّقه على <code>&lt;html&gt;</code> عند تحميل الصفحة.</li>
+<li>إن لم يوجد تفضيل أو كان &quot;system&quot;، فتحقّق من <code>window.matchMedia('(prefers-color-scheme: dark)').matches</code>.</li>
+<li>طَبِّق &quot;light&quot; أو &quot;dark&quot; بحسب سمة النظام.</li>
+<li>استمع إلى <code>window.matchMedia('(prefers-color-scheme: dark)')</code> لتغيّرات سمة النظام. فإن كان التفضيل هو &quot;system&quot;، فحدّث <code>&lt;html&gt;</code> تبعًا لذلك.</li>
+<li>حدّث منطق المبدّل لثلاث حالات، مع حفظ اختيار المستخدم.</li>
+</ol>
+<p>وهذا يمنح المستخدمين تحكّمًا كاملًا مع احترام إعدادات النظام افتراضيًا.</p>
+<h2 id="الوضع-الداكن-ولوحات-الألوان">الوضع الداكن ولوحات الألوان</h2>
+<p>تحتوي لوحة الألوان الافتراضية في Tailwind على درجات كثيرة. وللوضع الداكن، تُستخدم عادةً خلفيات أفتح ونصوص/لمسات أغمق في الوضع الفاتح، ويُعكس ذلك في الوضع الداكن. ويبدّل مُبدّل <code>dark:</code> الدرجات بسهولة:</p>
+<p><em>الوضع الداكن ولوحات الألوان — المثال 2 — <a href="https://stevekinney.com/generated/playgrounds/51f4438a9e5c54ecdfe8b9357fa6baa3321cc7ef1a5af9337612f33b1814d6b3.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100&quot;</span>&gt;</span>Content<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>يدعم Tailwind ألوانًا بمدى واسع، ويعتمد افتراضيًا على OKLCH، ما يحسّن استيفاء الألوان للتدرّجات. ويمكنك انتقال خصائص مثل تدرّجات الخلفية باستخدام <code>@property</code> للخصائص المخصّصة الداخلية.</p>
+<p>خصّص لوحة الألوان بالتوجيه <code>@theme</code>. وستعمل الألوان المخصّصة أيضًا مع <code>dark:</code>.</p>
+<h2 id="تكديس-المبدلات-مع-dark">تكديس المُبدّلات مع <code>dark:</code></h2>
+<p>يمكن تكديس مُبدّل <code>dark:</code> مع مُبدّلات أخرى لشروط أكثر تحديدًا، مثل تأثير تحويم في الوضع الداكن وحده، أو نمط وضع داكن عند نقطة توقّف بعينها.</p>
+<p><em>تكديس المُبدّلات مع dark: — المثال 3 — <a href="https://stevekinney.com/generated/playgrounds/2bd466c96266e1dd083f80c41cf25a3e1430302f9b4e32cdd0c6a0a542efa9b0.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-blue-500 text-white hover:bg-blue-600 dark:bg-purple-500 dark:text-white dark:hover:bg-purple-600 md:dark:bg-green-500 md:dark:hover:bg-green-600&quot;</span>
+&gt;</span>
+  Button
+<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+</code></pre>
+<p>هذا الزر أزرق افتراضيًا، وأزرق أغمق عند التحويم. وفي الوضع الداكن، يكون بنفسجيًا، وبنفسجيًا أغمق عند التحويم. وعند نقطة التوقّف <code>md</code> في الوضع الداكن، يكون أخضر، وأخضر أغمق عند التحويم. ويبيّن هذا مرونة تكديس المُبدّلات.</p>
+<h2 id="مفاهيم-ذات-صلة">مفاهيم ذات صلة</h2>
+<p>يمكن لأصناف مساعِدة أخرى أن تكمّل الوضع الداكن:</p>
+<ul>
+<li><strong><code>color-mix()</code></strong>: يستخدم Tailwind <code>color-mix()</code> لمعدِّلات العتامة، فيبسّط ضبط العتامة للألوان ومتغيّرات CSS و<code>currentColor</code>.</li>
+<li><strong>مُبدّل <code>forced-colors</code></strong>: يطبّق استعلام الوسائط هذا الأنماط عند تفعيل وضع الألوان الإجبارية، وهو أمر بالغ الأهمية لإتاحة الوصول. ويتضمّن Tailwind أصناف <code>forced-color-adjust</code> لإدارة الألوان الإجبارية للعناصر المحدّدة.</li>
+</ul>
+<p>وفهم مُبدّل <code>dark:</code> والتبديل اليدوي ودمج الوضع الداكن مع ميزات Tailwind الأخرى يتيح لك بناء تجارب وضع داكن سهلة الاستخدام.</p>
+`,c={book:a,chapter:e,chapterTitle:s,slug:n,title:d,headings:t,html:o};export{a as book,e as chapter,s as chapterTitle,c as default,t as headings,o as html,n as slug,d as title};

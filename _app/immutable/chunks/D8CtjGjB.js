@@ -1,0 +1,244 @@
+const s="tanstack-form",a="form",n="دورة TanStack Form الكاملة",l="creating-reusable-field-components",e="بناء مكوّنات حقول قابلة لإعادة الاستخدام",t=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"لماذا-لا-يكفي-formfield",text:"لماذا لا يكفي form.Field؟"},{depth:3,id:"مكون-textinput",text:"مكوّن TextInput"},{depth:3,id:"من-القيم-المثبتة-إلى-الخصائص",text:"من القيم المثبتة إلى الخصائص"},{depth:3,id:"تسجيل-المكونات-في-createformhook",text:"تسجيل المكوّنات في createFormHook"},{depth:3,id:"formappfield-بدل-formfield",text:"form.AppField بدل form.Field"},{depth:3,id:"تكرار-النمط-كلمة-المرور-والمربع-والقائمة",text:"تكرار النمط: كلمة المرور والمربّع والقائمة"},{depth:3,id:"تنظيف-بقايا-التجارب",text:"تنظيف بقايا التجارب"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],p=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>أنهينا الدرس السابق بخُطّاف <code>useAppForm</code> جاهز لكنّه فارغ: <code>createFormHook</code> بُني بالسياقين وسجلّي مكوّنات خاليين، فلم يتغيّر شيء في الاستمارة. في هذا الدرس نملأ السجلّ الأوّل، <code>fieldComponents</code>، ونجني الثمرة التي من أجلها أعدنا الهيكلة: مكوّن حقل واحد يُكتب مرّة ويُستعمل في كلّ حقل من نوعه.</p>
+<p>نبني ثلاثة مكوّنات في مجلّد جديد <code>src/components/form</code>: صندوق نصّ، ومربّع اختيار، وقائمة منسدلة. كلّ واحد يقرأ الحقل من السياق المحيط بدل أن يستقبله وسيطًا، ويأخذ تسميته ووصفه ومعرّفه خصائصَ عادية. ثم نسجّلها في <code>src/hooks/form.tsx</code>، ونستهلكها عبر <code>form.AppField</code> الذي يوفّر السياق.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="لماذا-لا-يكفي-formfield">لماذا لا يكفي <code>form.Field</code>؟</h3>
+<p>في الدرس السابق كان كائن الحقل يصل إلى الواجهة عبر دالة تصيير: <code>form.Field</code> ينادي الدالة ويمرّر لها <code>field</code>. هذا يعمل ما دام العرض مكتوبًا في المكان نفسه، لكنّه ينتهي عند أوّل مكوّن مستقلّ: المكوّن الجديد يستقبل خصائصه وحده، فلن يعرف أيّ قيمة يقرأ ولا إلى أين يكتب.</p>
+<p>لهذا وُجد سياق الحقل. <code>useAppForm</code> يلفّ كلّ حقل بالسياق، ومكوّن الحقل يقرأه بخُطّاف <code>useFieldContext</code> بلا وسائط، والخُطّاف المستورد يجب أن يكون نفسه المصدَّر من <code>src/hooks/form-context.tsx</code>، لأنّ نسخة السياق الثانية لا تعرف شيئًا عن الأولى، فيعود الحقل <code>undefined</code> بلا خطأ يشرح السبب.</p>
+<h3 id="مكون-textinput">مكوّن <code>TextInput</code></h3>
+<p>ننشئ أوّلًا مجلّد <code>src/components/form</code> بجانب مجلّد مكوّنات <code>shadcn/ui</code>، ونكتب فيه ملف <code>TextInput.tsx</code>. هذا نصّ الملف في فرع الدرس:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">Field</span>,
+  <span class="hljs-title class_">FieldDescription</span>,
+  <span class="hljs-title class_">FieldError</span>,
+  <span class="hljs-title class_">FieldLabel</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/ui/field&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Input</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../ui/input&quot;</span>;
+<span class="hljs-keyword">import</span> { useFieldContext } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/hooks/form-context&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">TextInput</span>(<span class="hljs-params">{
+  label,
+  description,
+  id,
+  <span class="hljs-keyword">type</span> = <span class="hljs-string">&quot;text&quot;</span>,
+}: {
+  label: <span class="hljs-built_in">string</span>;
+  id: <span class="hljs-built_in">string</span>;
+  description?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-keyword">type</span>?: <span class="hljs-built_in">string</span>;
+}</span>) {
+  <span class="hljs-keyword">const</span> field = useFieldContext&lt;<span class="hljs-built_in">string</span>&gt;();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Field</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">FieldLabel</span> <span class="hljs-attr">htmlFor</span>=<span class="hljs-string">{id}</span>&gt;</span>{label}<span class="hljs-tag">&lt;/<span class="hljs-name">FieldLabel</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Input</span>
+        <span class="hljs-attr">id</span>=<span class="hljs-string">{id}</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">{type}</span>
+        <span class="hljs-attr">placeholder</span>=<span class="hljs-string">{label}</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{field.state.value}</span>
+        <span class="hljs-attr">onBlur</span>=<span class="hljs-string">{field.handleBlur}</span>
+        <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> field.handleChange(e.target.value)}
+      /&gt;
+      {description &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">FieldDescription</span>&gt;</span>{description}<span class="hljs-tag">&lt;/<span class="hljs-name">FieldDescription</span>&gt;</span>}
+      {!field.state.meta.isValid &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">FieldError</span>&gt;</span>
+          {field.state.meta.errors.map((error) =&gt; error?.message).join(&quot;, &quot;)}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">FieldError</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Field</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>أهمّ سطر فيه هو <code>useFieldContext&lt;string&gt;()</code>. الوسيط النوعي ليس زينة: هو ما يجعل <code>field.state.value</code> نصًّا و<code>field.handleChange</code> لا يقبل إلّا نصًّا. لو كتبت <code>useFieldContext&lt;number&gt;()</code> لرفض المترجم تمرير <code>e.target.value</code>. أي أنّ المكوّن يعلن نوع القيمة التي يخدمها، وTanStack Form يتحقّق من ذلك عند التركيب.</p>
+<p>بقية الجسم هي الشيفرة نفسها التي كانت مكتوبة داخل الاستمارة، منقولةً لا معاد كتابتها: <code>value</code> من حالة الحقل، و<code>handleBlur</code> و<code>handleChange</code> من واجهة الحقل، ثم كتلة الأخطاء التي تُعرض فقط حين يكون <code>field.state.meta.isValid</code> غير صحيح، والأخطاء تُجمع بـ<code>join(&quot;, &quot;)</code> لعرض أكثر من رسالة في سطر واحد.</p>
+<h3 id="من-القيم-المثبتة-إلى-الخصائص">من القيم المثبتة إلى الخصائص</h3>
+<p>التسمية والوصف ونصّ العنصر النائب كانت مكتوبة داخل المكوّن، وهذا يجعله صالحًا لحقل واحد فقط. لذلك تصبح هذه القيم خصائص: <code>label</code> نصّ إلزامي، و<code>description</code> نصّ اختياري، و<code>id</code> نصّ إلزامي، و<code>type</code> نصّ له قيمة افتراضية <code>&quot;text&quot;</code>.</p>
+<p>ثلاثة قرارات هنا تستحقّ التوقّف. الأوّل أنّ <code>id</code> صار خاصية رغم أنّه ليس بيانات عرض: <code>shadcn/ui</code> تربط التسمية بالحقل عبر <code>htmlFor</code>، فلو تُرك المعرّف ثابتًا لتكرّر في كلّ الحقول وصارت التسميات كلّها تشير إلى حقل واحد. والثاني أنّ <code>description</code> اختياري، فيُصيَّر بشرط <code>description &amp;&amp;</code> وإلّا ظهر عنصر وصف فارغ يزحزح ما بعده. والثالث أنّ <code>type</code> له قيمة افتراضية، فتستعمل المكوّن نفسه للنصّ العادي وكلمة المرور. واختيار أنّ <code>placeholder</code> يأخذ قيمة <code>label</code> تبسيط مقصود.</p>
+<h3 id="تسجيل-المكونات-في-createformhook">تسجيل المكوّنات في <code>createFormHook</code></h3>
+<p>المكوّن موجود، لكنّ الخُطّاف لا يعرفه. التسجيل هو ما يجعله مرئيًّا داخل الاستمارة، ويحدث في <code>src/hooks/form.tsx</code> الذي كان سجلّاه فارغين:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFormHook } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+<span class="hljs-keyword">import</span> { fieldContext, formContext } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./form-context&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">TextInput</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/form/TextInput&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Select</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/form/Select.tsx&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Checkbox</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/form/Checkbox.tsx&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> { useAppForm, withForm, withFieldGroup } = <span class="hljs-title function_">createFormHook</span>({
+  <span class="hljs-attr">fieldContext</span>: fieldContext,
+  <span class="hljs-attr">formContext</span>: formContext,
+  <span class="hljs-attr">fieldComponents</span>: {
+    <span class="hljs-title class_">TextInput</span>: <span class="hljs-title class_">TextInput</span>,
+    <span class="hljs-title class_">Select</span>: <span class="hljs-title class_">Select</span>,
+    <span class="hljs-title class_">Checkbox</span>: <span class="hljs-title class_">Checkbox</span>,
+  },
+  <span class="hljs-attr">formComponents</span>: {},
+});
+</code></pre>
+<p>هذا الملف صورة الفرع بعد إتمام الدرس، وفيه الثلاثة مسجّلون دفعةً واحدة؛ في الفيديو يسجّل المؤلف صندوق النصّ أوّلًا ويتحقّق منه، ثم يضيف الآخرين. المفتاح في الكائن هو الاسم الذي ستستعمله داخل الاستمارة، والقيمة هي المكوّن: المفتاح <code>TextInput</code> يعطي <code>field.TextInput</code>، ولو كتبته صغيرًا لأصبح الاستعمال <code>field.textInput</code>.</p>
+<p>السجلّ الثاني <code>formComponents</code> بقي فارغًا لأنّ الدرس كلّه عن الحقول؛ مكوّنات الاستمارة ككتلة، كزرّ إرسال يقرأ <code>canSubmit</code>، لها درسها الخاصّ، وهي تحصل على سياق الاستمارة لا على سياق الحقل.</p>
+<h3 id="formappfield-بدل-formfield"><code>form.AppField</code> بدل <code>form.Field</code></h3>
+<p>بقي أن نستهلك المكوّن، وهنا التغيير الذي يجب ألّا تنساه: <code>form.AppField</code> لا <code>form.Field</code>. الأوّل يوفّر سياق الحقل الذي يقرأه <code>useFieldContext</code>، والثاني لا يوفّره لأنّه واجهة الطريق الطويل. هذا الحقل الأوّل في الاستمارة بعد التعديل:</p>
+<pre><code class="language-tsx">          &lt;form.<span class="hljs-property">AppField</span> name=<span class="hljs-string">&quot;firstName&quot;</span>&gt;
+            {<span class="hljs-function">(<span class="hljs-params">field</span>) =&gt;</span> {
+              <span class="hljs-keyword">return</span> (
+                <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">field.TextInput</span>
+                  <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;firstName&quot;</span>
+                  <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;First Name&quot;</span>
+                  <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Your First Name&quot;</span>
+                /&gt;</span></span>
+              );
+            }}
+          &lt;/form.<span class="hljs-property">AppField</span>&gt;
+</code></pre>
+<p>قارن هذا بما كان: أحد عشر سطرًا بدل نحو أربعين، وليس فيها <code>value</code> ولا <code>onChange</code> ولا <code>onBlur</code> ولا كتلة أخطاء. اسم الحقل ما زال <code>name=&quot;firstName&quot;</code>، فالتوصيف النوعي يعمل: اسم غير موجود في المخطّط خطأ يرفضه المترجم، والنوع المستنتج يحدّد <code>useFieldContext&lt;string&gt;()</code> في المكوّن. ودالة <code>children</code> تستقبل <code>field</code> لتسجّل به المكوّن، والمكوّن نفسه يعرف حقله من السياق.</p>
+<p>وإن تركت <code>description</code> خارج الاستعمال اختفت من الواجهة. ولو نسيت استبدال <code>form.Field</code> بـ<code>form.AppField</code> لظهر الخطأ في وقت التشغيل لا في الترجمة، لأنّ المكوّن سيبحث عن سياق الحقل فلا يجده.</p>
+<h3 id="تكرار-النمط-كلمة-المرور-والمربع-والقائمة">تكرار النمط: كلمة المرور والمربّع والقائمة</h3>
+<p>بعد أن يعمل حقل واحد يصبح الباقي تكرارًا ميكانيكيًّا. حقل كلمة المرور يستعمل <code>TextInput</code> نفسه مع تمرير النوع:</p>
+<pre><code class="language-tsx">          &lt;form.<span class="hljs-property">AppField</span> name=<span class="hljs-string">&quot;password&quot;</span>&gt;
+            {<span class="hljs-function">(<span class="hljs-params">field</span>) =&gt;</span> {
+              <span class="hljs-keyword">return</span> (
+                <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">field.TextInput</span>
+                  <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Password&quot;</span>
+                  <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;password&quot;</span>
+                  <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span>
+                  <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Your password (must be at least 8 characters long)&quot;</span>
+                /&gt;</span></span>
+              );
+            }}
+          &lt;/form.<span class="hljs-property">AppField</span>&gt;
+</code></pre>
+<p>هذا هو مكسب القيمة الافتراضية لـ<code>type</code>: الحقل يبدو مختلفًا في المتصفّح، والمكوّن واحد، وحقل تأكيد كلمة المرور يتبع النمط نفسه.</p>
+<p>أمّا مربّع الاختيار فيحتاج مكوّنًا آخر لأنّ واجهته مختلفة: القيمة <code>boolean</code> لا <code>string</code>، والحدث <code>onCheckedChange</code> لا <code>onChange</code>، والتسمية تجلس بجانب المربّع لا فوقه:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { useFieldContext } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/hooks/form-context&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Field</span>, <span class="hljs-title class_">FieldContent</span>, <span class="hljs-title class_">FieldError</span>, <span class="hljs-title class_">FieldLabel</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../ui/field&quot;</span>;
+
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Checkbox</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../ui/checkbox&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">CustomCheckbox</span>(<span class="hljs-params">{
+  label,
+  id,
+}: {
+  label: <span class="hljs-built_in">string</span>;
+  id: <span class="hljs-built_in">string</span>;
+}</span>) {
+  <span class="hljs-keyword">const</span> field = useFieldContext&lt;<span class="hljs-built_in">boolean</span>&gt;();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Field</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;flex items-center gap-2&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Checkbox</span>
+          <span class="hljs-attr">id</span>=<span class="hljs-string">{id}</span>
+          <span class="hljs-attr">checked</span>=<span class="hljs-string">{field.state.value}</span>
+          <span class="hljs-attr">onCheckedChange</span>=<span class="hljs-string">{(checked)</span> =&gt;</span> field.handleChange(checked === true)}
+          onBlur={field.handleBlur}
+        /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">FieldContent</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">FieldLabel</span> <span class="hljs-attr">htmlFor</span>=<span class="hljs-string">{id}</span>&gt;</span>{label}<span class="hljs-tag">&lt;/<span class="hljs-name">FieldLabel</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">FieldContent</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      {!field.state.meta.isValid &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">FieldError</span>&gt;</span>
+          {field.state.meta.errors.map((error) =&gt; error?.message).join(&quot;, &quot;)}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">FieldError</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Field</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>لاحظ <code>checked === true</code>: مكوّن <code>Checkbox</code> يعطي <code>boolean | &quot;indeterminate&quot;</code>، والحقل يقبل قيمة منطقية صريحة، فالتحويل يمنع تمرير الحالة الثالثة التي لا معنى لها في هذا المخطّط. ولاحظ الاسم <code>CustomCheckbox</code>، لأنّ الملف يستورد <code>Checkbox</code> من <code>../ui/checkbox</code>، فلو حمل المكوّن الاسم نفسه لتضارب الاستيرادان. والقائمة المنسدلة تحتاج مكوّنًا ثالثًا لسبب مشابه: قيمتها واحدة من ثلاث، والحدث <code>onValueChange</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { useFieldContext } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/hooks/form-context&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Field</span>, <span class="hljs-title class_">FieldDescription</span>, <span class="hljs-title class_">FieldError</span>, <span class="hljs-title class_">FieldLabel</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../ui/field&quot;</span>;
+<span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">Select</span>,
+  <span class="hljs-title class_">SelectContent</span>,
+  <span class="hljs-title class_">SelectItem</span>,
+  <span class="hljs-title class_">SelectTrigger</span>,
+  <span class="hljs-title class_">SelectValue</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/ui/select&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Dropdown</span>(<span class="hljs-params">{
+  label,
+  id,
+  description,
+}: {
+  label: <span class="hljs-built_in">string</span>;
+  id: <span class="hljs-built_in">string</span>;
+  description?: <span class="hljs-built_in">string</span>;
+}</span>) {
+  <span class="hljs-keyword">const</span> field = useFieldContext&lt;<span class="hljs-built_in">string</span>&gt;();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Field</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">FieldLabel</span> <span class="hljs-attr">htmlFor</span>=<span class="hljs-string">{id}</span>&gt;</span>{label}<span class="hljs-tag">&lt;/<span class="hljs-name">FieldLabel</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Select</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{field.state.value}</span>
+        <span class="hljs-attr">onValueChange</span>=<span class="hljs-string">{(value)</span> =&gt;</span> field.handleChange(value as any)}
+      &gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">SelectTrigger</span> <span class="hljs-attr">id</span>=<span class="hljs-string">{id}</span> <span class="hljs-attr">onBlur</span>=<span class="hljs-string">{field.handleBlur}</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">SelectValue</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">{label}</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">SelectTrigger</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">SelectContent</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">SelectItem</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;beginner&quot;</span>&gt;</span>Beginner<span class="hljs-tag">&lt;/<span class="hljs-name">SelectItem</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">SelectItem</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;intermediate&quot;</span>&gt;</span>Intermediate<span class="hljs-tag">&lt;/<span class="hljs-name">SelectItem</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">SelectItem</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;expert&quot;</span>&gt;</span>Expert<span class="hljs-tag">&lt;/<span class="hljs-name">SelectItem</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">SelectContent</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Select</span>&gt;</span>
+
+      {description &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">FieldDescription</span>&gt;</span>{description}<span class="hljs-tag">&lt;/<span class="hljs-name">FieldDescription</span>&gt;</span>}
+      {!field.state.meta.isValid &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">FieldError</span>&gt;</span>
+          {field.state.meta.errors.map((error) =&gt; error?.message).join(&quot;, &quot;)}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">FieldError</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Field</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>الخيارات الثلاثة مكتوبة في المكوّن لا في خصائصه، لأنّها تخصّ مستوى المهارة وحده؛ ولو أردت قائمة عامّة لنقلتها إلى خاصية. أمّا <code>value as any</code> فمساحة تنازل صريحة: مكوّن <code>Select</code> يعطي نصًّا عامًّا، والحقل يتوقّع واحدة من ثلاث قيم حرفية.</p>
+<p>ثم تُستهلك الثلاثة داخل الاستمارة. في مصفوفة المهارات يستعمل كلّ صفّ القائمة المسجّلة، والاسم في السجلّ <code>Select</code> فصار الاستعمال <code>subField.Select</code>:</p>
+<pre><code class="language-tsx">                          &lt;form.<span class="hljs-property">AppField</span>
+                            key={index}
+                            name={<span class="hljs-string">\`skills[<span class="hljs-subst">\${index}</span>].level\`</span>}
+                          &gt;
+                            {<span class="hljs-function">(<span class="hljs-params">subField</span>) =&gt;</span> {
+                              <span class="hljs-keyword">return</span> (
+                                <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">subField.Select</span>
+                                  <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Skill Level&quot;</span>
+                                  <span class="hljs-attr">id</span>=<span class="hljs-string">{</span>\`<span class="hljs-attr">skills-</span>\${<span class="hljs-attr">index</span>}<span class="hljs-attr">-level</span>\`}
+                                /&gt;</span></span>
+                              );
+                            }}
+                          &lt;/form.<span class="hljs-property">AppField</span>&gt;
+</code></pre>
+<p>هنا مكسبان معًا. الأوّل أنّ <code>id</code> يُبنى من الفهرس <code>skills-\${index}-level</code>، فكلّ صفّ له معرّف فريد وتسميته تشير إلى قائمته، وهذا مستحيل حين يكون المعرّف مثبّتًا في المكوّن. والثاني أنّ <code>field</code> في <code>form.AppField</code> الأب هو المصفوفة و<code>subField</code> في الابن حقل واحد منها.</p>
+<p>ومربّع الشروط أقصر استعمال في الملف:</p>
+<pre><code class="language-tsx">          &lt;form.<span class="hljs-property">AppField</span> name=<span class="hljs-string">&quot;acceptTerms&quot;</span>&gt;
+            {<span class="hljs-function">(<span class="hljs-params">field</span>) =&gt;</span> {
+              <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">field.Checkbox</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;acceptTerms&quot;</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Accept Terms&quot;</span> /&gt;</span></span>;
+            }}
+          &lt;/form.<span class="hljs-property">AppField</span>&gt;
+</code></pre>
+<p>سطر واحد مقابل الكتلة الطويلة السابقة، ومنه نرى أنّ <code>id</code> صار يُمرَّر دائمًا بعد إصلاح المكوّن؛ كان ناقصًا في النسخة الأولى فلم تكن التسمية مرتبطة بالمربّع.</p>
+<h3 id="تنظيف-بقايا-التجارب">تنظيف بقايا التجارب</h3>
+<p>لا يكفي اختصار الحقول؛ كان في الملف بقايا من دروس سابقة. يحذف المؤلف المحقّقات المكتوبة داخل الحقل نفسه (<code>validators</code> على مستوى الحقل) و<code>listeners</code>، لأنّ التحقّق صار على مستوى الاستمارة عبر <code>registerFormSchema</code>. ويحذف أيضًا <code>form.Subscribe</code> الذي كان يعرض الاسم الأخير بشرط وجود الاسم الأوّل، فقد كان مثالًا لعرض مشروط.</p>
+<p>الحذف ليس تجميلًا: <code>validators</code> داخل الحقل كانت ستُضاف إلى تحقّق المخطّط، فترى رسالتين لحقل واحد عند الخطأ، إحداهما من درس قديم. وإزالة <code>form.Subscribe</code> تُرجع الاسم الأخير إلى الظهور الدائم، وهو ما تراه في الصورة. أمّا <code>form.Subscribe</code> حول زرّي الإرسال فبقي لأنّه يقرأ <code>canSubmit</code>، وهو أمر يخصّ الاستمارة لا الحقل.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--creating-reusable-field-components--form.png" alt="استمارة التسجيل بعد استبدال كلّ حقل بمكوّن مسجَّل: حقول نصّية بعناوينها وأوصافها، وأربع بطاقات مهارات بقوائمها، ثم مربّع الشروط وزرّا الإرسال"></p>
+<p>على خلفية داكنة، وفي عمود ضيّق إلى يسار الشاشة، يظهر الحقل الأوّل بتسمية <code>First Name</code> وداخله القيمة <code>Zayd</code> وتحته <code>Your First Name</code>، ثم <code>Last Name</code> بعبارته الإرشادية <code>Last Name</code> ووصفه <code>Your Last Name</code>، ثم <code>Street</code> بوصفه <code>Some Description</code>، ثم <code>Password</code> ووصفه <code>Your password (must be at least 8 characters long)</code>، ثم <code>Confirm Password</code>. بعدها قسم <code>Skills</code> بوصفه <code>Your skills and expertise.</code>، وفيه أربع بطاقات كحلية داكنة: <code>HTML</code> و<code>CSS</code> و<code>JavaScript</code> و<code>New Skill 4</code>، وفي كلّ بطاقة تسمية <code>Skill Level</code> وقائمة تُظهر <code>Beginner</code> وزرّ <code>Remove</code> أحمر. وجود البطاقة الرابعة يعني أنّ زرّ <code>Add Skill</code> العريض تحتها قد ضُغط مرّة. في الأسفل مربّع <code>Accept Terms</code> غير محدَّد، ثم زرّا <code>Save</code> و<code>Save &amp; Go back</code>، وعلى الحافة اليمنى السفلية زرّ لوحة أدوات التطوير الدائري.</p>
+<p>ما لا تراه في الصورة هو التغيير الحقيقي: ملف الاستمارة نزل إلى نحو نصف حجمه، ولم يتغيّر سلوك: أخطاء التحقّق تظهر كما كانت، والمخطّط ما زال يحكم الإرسال، والزرّان معطّلان حتى تصبح الاستمارة صالحة.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>احذف <code>description</code> من استعمال حقل <code>Street</code>، وتحقّق من أنّ الوصف يختفي وحدَه دون أن يترك فراغًا.</li>
+<li>غيّر مفتاح التسجيل من <code>TextInput</code> إلى <code>textInput</code> في <code>src/hooks/form.tsx</code>، ثم استعمل <code>field.textInput</code>: الاسم الذي تكتبه في السجلّ هو الاسم الوحيد المتاح عند الاستعمال.</li>
+<li>بدّل <code>useFieldContext&lt;string&gt;()</code> في <code>TextInput</code> إلى <code>useFieldContext&lt;number&gt;()</code>، ثم تأمّل رفض المترجم لـ<code>e.target.value</code>: النوع يأتي من الحقل المسجَّل لا من المكوّن وحده.</li>
+<li>استبدل <code>form.AppField</code> بـ<code>form.Field</code> في حقل <code>acceptTerms</code> وحدها: مربّع الاختيار سيشتكي من غياب السياق، وهذا الفرق العملي بين الواجهتين.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=6626s">فيديو الدرس: Creating Reusable Field Components</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/useAppForm-3">شيفرة الدرس: فرع useAppForm-3</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/guides/form-composition">التوثيق الرسمي: تركيب النماذج في TanStack Form</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/overview">التوثيق الرسمي: نظرة عامة على TanStack Form</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Creating Reusable Field Components» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي. وما أضافه المترجم من توضيح لا يُنسب إلى المؤلف.</p>
+</blockquote>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:e,headings:t,html:p};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,p as html,l as slug,e as title};

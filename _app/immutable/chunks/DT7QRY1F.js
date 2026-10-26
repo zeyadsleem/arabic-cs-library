@@ -1,0 +1,137 @@
+const s="tanstack-router",n="router",a="دورة TanStack Router الكاملة",t="pending-state-component",e="مكوّن حالة الانتظار وضبط توقيته",p=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"المشكلة-صمت-يستمر-ثلاث-ثوان",text:"المشكلة: صمتٌ يستمر ثلاث ثوانٍ"},{depth:3,id:"إعلان-مكون-الانتظار-في-المسار",text:"إعلان مكوّن الانتظار في المسار"},{depth:3,id:"أين-يرسم-مكون-الانتظار",text:"أين يُرسم مكوّن الانتظار؟"},{depth:3,id:"متى-يظهر-الخيار-pendingms",text:"متى يظهر: الخيار pendingMs"},{depth:3,id:"كم-يبقى-الخيار-pendingminms",text:"كم يبقى: الخيار pendingMinMs"},{depth:3,id:"ضبط-التوقيت-للموجه-كله",text:"ضبط التوقيت للموجّه كلّه"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],o=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>قبل أن يعرض الموجّه مسارًا جديدًا، ينتظر انتهاء المُحمِّل (loader) الخاص به. فإن كان الجلب يستغرق ثوانٍ، بقي المستخدم أمام شاشة لا تتغيّر: إمّا صفحة خالية عند التحديث الكامل، وإمّا الصفحة السابقة مجمّدة عند التنقّل. لا رسالة ولا مؤشّر، فيظنّ أنّ التطبيق تعطّل.</p>
+<p>يبني هذا الدرس مكوّن انتظار (pending) للمسار <code>posts/$postId</code>، ثم يضبط عَتَبَتَي التوقيت اللتين تحكمانه: العتبة التي بعده يظهر المكوّن، والمدّة الدنيا التي يبقى فيها ظاهرًا. والفكرة التي يثبتها الدرس أنّ تجربة الانتظار ليست مسألة شكل فقط، بل مسألة توقيت: إظهار المؤشّر في اللحظة الخطأ قد يكون أسوأ من عدم إظهاره.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="المشكلة-صمت-يستمر-ثلاث-ثوان">المشكلة: صمتٌ يستمر ثلاث ثوانٍ</h3>
+<p>لنُبطئ الطلب عمدًا حتى نرى المشكلة بوضوح. نضيف تأخيرًا صناعيًا داخل دالة جلب تعليقات التدوينة:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getPostComments</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span></span>) {
+  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`https://dummyjson.com/posts/<span class="hljs-subst">\${id}</span>/comments\`</span>);
+  <span class="hljs-comment">// await new Promise((r) =&gt; setTimeout(r, 3000));</span>
+  <span class="hljs-keyword">if</span> (res.<span class="hljs-property">ok</span>) {
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>()) <span class="hljs-keyword">as</span> <span class="hljs-title class_">PostCommentsResponse</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Failed to fetch post comments&quot;</span>);
+  }
+}
+</code></pre>
+<p>هذا هو نصّ الملف في فرع الدرس بعد أن انتهى الشرح: السطر الذي يضيف التأخير موجود لكنه معلَّق، لأنّ المؤلف أضافه ليعاين المشكلة ثم عطّله ليعاين الحالة السريعة. حين يكون التأخير فعّالًا وتفتح <code>posts/1</code> مباشرةً، لا يُصيَّر شيء: الموجّه لم يُكمل تحميل المسار، فلا يوجد ما يعرضه داخل المنفذ. وحين تنتقل إلى التدوينة من قائمة التدوينات، تبقى القائمة كما هي ثلاث ثوانٍ كاملة، فتبدو النقرة كأنها لم تُسجَّل. المشكلتان لهما سبب واحد: لا شيء يخبر المستخدم بأنّ العمل جارٍ.</p>
+<h3 id="إعلان-مكون-الانتظار-في-المسار">إعلان مكوّن الانتظار في المسار</h3>
+<p>الحلّ الأول والأبسط هو خيار واحد في تعريف المسار. هذا ملف المسار كاملًا في فرع الدرس:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Post</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./-components/Post&quot;</span>;
+<span class="hljs-keyword">import</span> { getPost, getPostComments } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../data/posts&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/posts/$postId&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">pendingComponent</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+  <span class="hljs-attr">pendingMs</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">pendingMinMs</span>: <span class="hljs-number">500</span>,
+  <span class="hljs-attr">loader</span>: <span class="hljs-title function_">async</span> ({ params }) =&gt; {
+    <span class="hljs-keyword">const</span> [post, comments] = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([
+      <span class="hljs-title function_">getPost</span>(+params.<span class="hljs-property">postId</span>),
+      <span class="hljs-title function_">getPostComments</span>(+params.<span class="hljs-property">postId</span>),
+    ]);
+    <span class="hljs-keyword">return</span> {
+      post,
+      comments,
+    };
+  },
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">RouteComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Post</span> /&gt;</span></span>;
+}
+</code></pre>
+<p><code>pendingComponent</code> هو المكوّن الذي يحلّ محلّ <code>component</code> الخاص بالمسار أثناء انتظار المُحمِّل. لاحظ أنّه لا يغيّر منطق الجلب: <code>loader</code> بقي كما هو، وما أُضيف هو بديلٌ يُعرض في أثناء عمله. ولاحظ أيضًا أنّ الملف يستعمل <code>Promise.all</code> ليجلب التدوينة وتعليقاتها معًا، فمدة الانتظار هي مدة أبطأ الطلبين لا مجموعهما.</p>
+<p>الغرض العملي من <code>pendingComponent</code> ليس التجميل، بل الإفصاح: المستخدم يرى نصًّا يقول إنّ شيئًا يحدث، فيتوقّف عن تكرار النقر. ويمكن أن يكون هيكلًا عظميًا من نوع <code>skeleton</code> يشبه شكل المحتوى القادم، لكنّ المؤلف اكتفى بنصّ <code>Loading...</code> لأنّ الدرس عن التوقيت لا عن التصميم.</p>
+<h3 id="أين-يرسم-مكون-الانتظار">أين يُرسم مكوّن الانتظار؟</h3>
+<p>هذا المكوّن لا يُعرض بدل التطبيق كلّه، بل في موضع المسار نفسه داخل منفذ <code>Outlet</code> التابع لأقرب مسار أب. خذ تخطيط الجذر في فرع الدرس:</p>
+<pre><code class="language-tsx">      &lt;div className=<span class="hljs-string">&quot;p-2 flex gap-2 mb-4 bg-teal-600 border-2&quot;</span>&gt;
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/&quot;</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;[&amp;.active]:font-bold&quot;</span>&gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span>
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;[&amp;.active]:font-bold&quot;</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/about&quot;</span>&gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span>
+      &lt;/div&gt;
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Outlet</span> /&gt;</span></span>
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TanStackRouterDevtools</span> <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;top-right&quot;</span> /&gt;</span></span>
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p><code>&lt;Outlet /&gt;</code> هو الفتحة التي يضع الموجّه فيها محتوى المسار الابن. وحين يكون ذلك الابن قيد الانتظار، يحلّ <code>pendingComponent</code> محلّ محتواه داخل الفتحة نفسها. لذلك يبقى تخطيط الجذر — العنوان، ورسالة الترحيب، وزرّ الدخول، وشريط التنقّل — ظاهرًا وحيًّا، ولا يفقد المستخدم سياقه ولا مقدرته على المغادرة. هذا الفرق هو ما يميّز حالة الانتظار عن الخطأ: كلاهما يُعرض في المنفذ، لكنّ الانتظار مؤقّت ومقصود.</p>
+<h3 id="متى-يظهر-الخيار-pendingms">متى يظهر: الخيار <code>pendingMs</code></h3>
+<p>لو ظهر مكوّن الانتظار عند كل تنقّل، لارتجفت الواجهة أمام المستخدم في كل نقرة سريعة. لذلك لا يُظهره TanStack Router فورًا، بل ينتظر مدة عتبة قبل أن يحكم بأنّ التحميل بطيء فعلًا. القيمة الافتراضية ألف ميلي ثانية، أي ثانية واحدة.</p>
+<p>مع التأخير الصناعي البالغ ثلاث ثوانٍ، تكون النتيجة: ثانية كاملة لا يظهر فيها شيء، ثم يظهر <code>Loading...</code> نحو ثانيتين، ثم تُعرض التدوينة. أي أنّ السلوك الافتراضي لا يعالج إلا التأخيرات الطويلة، وهذا مقصود: التأخير القصير يمرّ دون أن يراه أحد.</p>
+<p>وللتحكّم في هذه العتبة نضع <code>pendingMs</code> في تعريف المسار. في فرع الدرس ضُبطت على <code>0</code>، فصار المكوّن يظهر في اللحظة الأولى التي يصبح فيها المسار قيد الانتظار، بلا أيّ مهلة. وبهذا صار الانتقال من قائمة التدوينات يعطي إشارة فورية بدل الجمود على الصفحة السابقة.</p>
+<h3 id="كم-يبقى-الخيار-pendingminms">كم يبقى: الخيار <code>pendingMinMs</code></h3>
+<p>العتبة وحدها لا تكفي. لنعكس الحالة: نُزيل التأخير الصناعي، فتصبح البيانات جاهزة في أجزاء من الثانية. هنا يظهر مكوّن الانتظار لحظةً واحدة ثم يختفي، وهي وميضٌ مزعج يلفت النظر إلى شيء لم يحدث. وكلّما كانت العتبة صفرًا زاد هذا الوميض لأنّ المكوّن يُرسم قبل أن تصل البيانات مباشرةً.</p>
+<p>لذلك يفرض الموجّه حدًّا أدنى لمدّة العرض: <code>pendingMinMs</code>، وقيمته الافتراضية خمسمئة ميلي ثانية. فإذا ظهر المكوّن، بقي ظاهرًا هذه المدّة على الأقل حتى لو وصلت البيانات قبلها. والشرط المهمّ أنّ هذا الحدّ لا يعمل إلا إذا ظهر المكوّن؛ فإذا لم تتجاوز العتبة، لم يُعرض شيء ولم تُضَف أيّ مدّة.</p>
+<p>وضع المؤلف في الفرع <code>pendingMinMs: 500</code> صريحةً، وهي القيمة الافتراضية نفسها، لكن كتابتها تُظهر للمستخدم كيف تُضبط. ولو رفعناها إلى ثلاثة آلاف، لبقي <code>Loading...</code> ظاهرًا ثلاث ثوانٍ كاملة رغم أنّ البيانات وصلت في أوّل مئة ميلي ثانية؛ وهذا ما يفعله المؤلف في الفيديو ليثبت أنّ الخيار يعمل، لا لأنّه إعداد مناسب للإنتاج.</p>
+<p>الخلاصة في جدول واحد:</p>
+<table>
+<thead>
+<tr>
+<th>الإعداد</th>
+<th>ما يراه المستخدم</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الافتراضي: عتبة ألف، حدّ أدنى خمسمئة</td>
+<td>لا شيء في الثانية الأولى، ثم مؤشّر يبقى ما دام التحميل جاريًا</td>
+</tr>
+<tr>
+<td><code>pendingMs: 0</code> مع تحميل بطيء</td>
+<td>مؤشّر فوري يستمر طوال التحميل</td>
+</tr>
+<tr>
+<td><code>pendingMs: 0</code> مع تحميل سريع</td>
+<td>مؤشّر يبقى خمسمئة ميلي ثانية ثم يزول، فلا وميض</td>
+</tr>
+<tr>
+<td><code>pendingMinMs: 3000</code></td>
+<td>مؤشّر يبقى ثلاث ثوانٍ ولو وصلت البيانات قبلها</td>
+</tr>
+<tr>
+<td>عتبة كبيرة جدًا</td>
+<td>لا مؤشّر أبدًا، والواجهة تبقى على حالها حتى يصل المسار الجديد</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ضبط-التوقيت-للموجه-كله">ضبط التوقيت للموجّه كلّه</h3>
+<p>لا يلزم تكرار الخيارين في كلّ مسار. تُمرَّر القيم الافتراضية عند إنشاء الموجّه نفسه:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> router = <span class="hljs-title function_">createRouter</span>({
+  routeTree,
+  <span class="hljs-attr">context</span>: {
+    <span class="hljs-attr">user</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">login</span>: <span class="hljs-function">() =&gt;</span> {},
+    <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> {},
+  },
+});
+</code></pre>
+<p>هنا موضع <code>defaultPendingMs</code> و<code>defaultPendingMinMs</code>: أيّ مسار لا يذكر قيمة خاصة به يرث هاتين القيمتين. والأولوية للمسار على الموجّه، فما تكتبه في تعريف المسار يتغلّب على الافتراضي العام. وهذا التوزيع مفيد عمليًا: اضبط في الموجّه عتبةً قصيرة تناسب تطبيقك، ثم خصّص المسارات البطيئة المعروفة — كتلك التي تجلب قوائم كبيرة — بعتبة أطول أو مكوّن انتظار مختلف. وتذكر التوثيق الرسمية أيضًا الخيار <code>defaultPendingComponent</code> للمكوّن نفسه، فيمكن تعريف مؤشّر عام واحد لكلّ المسارات.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--pending-state-component--pending.png" alt="صفحة التدوينة أثناء التحميل: تخطيط الجذر كاملًا مع الترويسة وشريط التنقّل، وفي موضع المحتوى تظهر رسالة Loading... وحدها"></p>
+<p>في الصورة نرى التطبيق كما يظهر في أثناء انتظار المسار. تخطيط الجذر حاضر بكلّ عناصره: <code>Root Route</code>، ورسالة <code>Welcome, Guest!</code>، وزرّ <code>Login</code>، وشريط التنقّل الذي يحمل <code>Home</code> و<code>About</code>. وفي الموضع الذي كانت ستُعرض فيه التدوينة وتعليقاتها نقرأ <code>Loading...</code> فقط. لاحظ أنّ الشريط لم يختفِ ولم يُعطَّل: بإمكان الزائر أن يغيّر رأيه ويغادر إلى صفحة أخرى قبل أن ينتهي التحميل. هذا هو أثر الدرس كاملًا: تحميل بطيء صار معلومًا ومقروءًا بدل أن يكون صمتًا، والتخطيط بقي قائمًا حوله.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>أعد تفعيل سطر التأخير في <code>getPostComments</code> ثم افتح <code>posts/1</code> مباشرةً. سجّل ما تراه في الثانية الأولى، ثم بعدها، وقارنه بعد وضع <code>pendingMs: 0</code>.</li>
+<li>أزل التأخير وأبقِ <code>pendingMs: 0</code> مع <code>pendingMinMs: 500</code>، ثم راقب الانتقال من القائمة إلى التدوينة. بعدها اجعل <code>pendingMinMs: 0</code> وكرّر لترى الوميض الذي يمنعه الخيار.</li>
+<li>ضع <code>pendingMinMs: 3000</code> وافتح تدوينة، ثم لاحظ أنّ المؤشّر يبقى ثلاث ثوانٍ رغم أنّ البيانات وصلت. اسأل نفسك: أيّ تجربة أسوأ، انتظار حقيقي أم انتظار مصطنع؟</li>
+<li>انقل الخيارين إلى <code>createRouter</code> باسمَي <code>defaultPendingMs</code> و<code>defaultPendingMinMs</code>، ثم خصّص مسارًا واحدًا بقيمة تخالف الافتراضي وتحقّق من أنّ الأولوية للمسار.</li>
+<li>اكتب مكوّن انتظار بشكل هيكل عظمي يحاكي شكل عنوان التدوينة وفقراتها بدل نصّ <code>Loading...</code>، وقارن الإحساس العام في الحالتين.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=8746s">فيديو الدرس: Pending State Component</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/loaders-4">شيفرة الدرس: فرع loaders-4</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/guide/data-loading">التوثيق الرسمي: تحميل البيانات وحالة الانتظار في TanStack Router</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/api/router/RouteOptionsType">مرجع الخيارات: <code>pendingMs</code> و<code>pendingMinMs</code> في نوع خيارات المسار</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Pending State Component» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,l={book:s,chapter:n,chapterTitle:a,slug:t,title:e,headings:p,html:o};export{s as book,n as chapter,a as chapterTitle,l as default,p as headings,o as html,t as slug,e as title};

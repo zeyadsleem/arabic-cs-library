@@ -1,0 +1,619 @@
+const s="kinney",a="react-typescript",n="React مع TypeScript",l="dev-tools-and-type-driven-dx",p="أدوات المطوّر والتجربة المدفوعة بالأنواع",t=[{depth:2,id:"مشكلة-أدوات-المطور-العامة",text:"مشكلة أدوات المطوّر العامة"},{depth:2,id:"أسماء-عرض-للمكونات-تعين-حقا",text:"أسماء عرض للمكوّنات تعين حقًا"},{depth:2,id:"جعل-الخصائص-مقروءة-في-أدوات-المطور",text:"جعل الخصائص مقروءة في أدوات المطوّر"},{depth:2,id:"تسجيل-الحالة-بأمان-الأنواع",text:"تسجيل الحالة بأمان الأنواع"},{depth:2,id:"لوحات-مخصصة-لأدوات-المطور",text:"لوحات مخصّصة لأدوات المطوّر"},{depth:2,id:"حدود-الأخطاء-مع-معلومات-الأنواع",text:"حدود الأخطاء مع معلومات الأنواع"},{depth:2,id:"توصيف-الأداء-بالأنواع",text:"توصيف الأداء بالأنواع"},{depth:2,id:"تصحيح-السياق-context-بالأنواع",text:"تصحيح السياق (Context) بالأنواع"},{depth:2,id:"مثال-من-الواقع-نظام-تصحيح-لمتجر-إلكتروني",text:"مثال من الواقع: نظام تصحيحٍ لمتجر إلكتروني"},{depth:2,id:"الخلاصة",text:"الخلاصة"}],c=`<p>بناء تطبيقات React ممتع. أما تصحيحها (debugging)؟ ليس كثيرًا. لكن ماذا لو استطاعت أنواع TypeScript لديك أن تجعل تجربة أدوات المطوّر (Developer Tools) ممتعة فعلًا؟ سنتكشف كيف نستثمر TypeScript لنصنع تجربة تطوير لا تُخطئ فيها الأنواع الأخطاء فحسب—بل تساعدك نشطًا على التصحيح، وفهم علاقات المكوّنات (components)، وتفسير تحوّلات الحالة المعقّدة في الوقت الحقيقي.</p>
+<p>عند نهاية هذه الصفحة، ستعرف كيف تستخدم TypeScript لترسم أدوات المطوّر قصةً عن حالة تطبيقك، وأنشئ أسماء مكوّنات ذات معنى تصمد أمام التصغير (minification)، وتبني أدوات تصحيح تفهم نماذج النطاق (domain models) كما تفهمها أنت.</p>
+<h2 id="مشكلة-أدوات-المطور-العامة">مشكلة أدوات المطوّر العامة</h2>
+<p>أدوات المطوّر في React عظيمة، لكنها أيضًا عامة. فهي تريك أشجار المكوّنات، والخصائص (props)، والحالة—لكنها لا تفهم منطق عملك. وحين تصحّح مسار الدفع في متجر إلكتروني معقّد، فإن رؤية <code>Component</code> بخصائص <code>{data: {...}, onClick: f}</code> لا تخبرك كثيرًا عمّا إذا كان ما تنظر إلى بطاقة منتج، أم نموذج دفع، أم مُنتقي شحن.</p>
+<p>هذا ما نراه عادةً في أدوات المطوّر:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ What Developer Tools shows us</span>
+&lt;<span class="hljs-title class_">Component</span>&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Component</span> <span class="hljs-attr">data</span>=<span class="hljs-string">{[...]}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Component</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{f}</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+&lt;/<span class="hljs-title class_">Component</span>&gt;
+</code></pre>
+<p>وهذا ما نتمنّى أن نراه:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ What we want to see</span>
+&lt;<span class="hljs-title class_">ProductListing</span>&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ProductGrid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ProductCard</span> <span class="hljs-attr">product</span>=<span class="hljs-string">{...}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">AddToCartButton</span> <span class="hljs-attr">onAddToCart</span>=<span class="hljs-string">{f}</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ProductGrid</span>&gt;</span></span>
+&lt;/<span class="hljs-title class_">ProductListing</span>&gt;
+</code></pre>
+<p>والخبر السارّ؟ يمنحنا TypeScript الأدوات لسدّ هذه الفجوة.</p>
+<h2 id="أسماء-عرض-للمكونات-تعين-حقا">أسماء عرض للمكوّنات تعين حقًا</h2>
+<p>أولًا: لنجعل مكوّناتنا قابلةً للتعريف في أدوات المطوّر. فخاصية <code>displayName</code> صديقتك، ويمكن أن نزدها فائدةً بواسطة TypeScript.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProductCardProps</span> {
+  <span class="hljs-attr">product</span>: <span class="hljs-title class_">Product</span>;
+  <span class="hljs-attr">onAddToCart</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">product</span>: <span class="hljs-title class_">Product</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">ProductCard</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;<span class="hljs-title class_">ProductCardProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">{ product, onAddToCart }</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;product-card&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>{product.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> onAddToCart(product)}&gt;Add to Cart<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};
+
+<span class="hljs-comment">// This is the magic—Developer Tools will show &quot;ProductCard&quot; instead of just &quot;Component&quot;</span>
+<span class="hljs-title class_">ProductCard</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">&#x27;ProductCard&#x27;</span>;
+</code></pre>
+<p>لكنّ ضبط <code>displayName</code> يدويًا على كل مكوّن يغدو مستهلكًا. لننشئ عونًا (helper) يستخدم TypeScript ليُتمّ الأمر آليًا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">function</span> createNamedComponent&lt;T&gt;(<span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">component</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;T&gt;): <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;T&gt; {
+  <span class="hljs-keyword">const</span> namedComponent = component;
+  namedComponent.<span class="hljs-property">displayName</span> = name;
+  <span class="hljs-keyword">return</span> namedComponent;
+}
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">ProductCard</span> = <span class="hljs-title function_">createNamedComponent</span>(<span class="hljs-string">&#x27;ProductCard&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">{ product, onAddToCart }</span>) =&gt;</span> {
+  <span class="hljs-comment">// Component implementation...</span>
+});
+</code></pre>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>هذا النمط ذو فائدة خاصة حين تصنع مكوّنات ديناميكيًا أو تستخدم المكوّنات عالية الرتبة (higher-order components) التي قد تحجب اسم المكوّن الأصلي.</p>
+</blockquote>
+<h2 id="جعل-الخصائص-مقروءة-في-أدوات-المطور">جعل الخصائص مقروءة في أدوات المطوّر</h2>
+<p>تستطيع أدوات المطوّر إظهار قيم الخصائص، لكنها غالبًا كائنات مبهمة بأسماء خصائص لا معنى لها. ويمكننا أن نستخدم TypeScript لصنع خصائص تُوثِّق نفسها.</p>
+<p>بدلًا من هذا:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Unclear props in Developer Tools</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> {
+  <span class="hljs-attr">type</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// What does &quot;primary&quot; mean?</span>
+  <span class="hljs-attr">size</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// What unit? Pixels? Rem?</span>
+  <span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span>; <span class="hljs-comment">// What is this data?</span>
+}
+</code></pre>
+<p>افعل هذا:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Self-documenting props</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ButtonVariant</span> = <span class="hljs-string">&#x27;primary&#x27;</span> | <span class="hljs-string">&#x27;secondary&#x27;</span> | <span class="hljs-string">&#x27;danger&#x27;</span> | <span class="hljs-string">&#x27;ghost&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ButtonSize</span> = <span class="hljs-string">&#x27;small&#x27;</span> | <span class="hljs-string">&#x27;medium&#x27;</span> | <span class="hljs-string">&#x27;large&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> {
+  <span class="hljs-attr">variant</span>: <span class="hljs-title class_">ButtonVariant</span>;
+  <span class="hljs-attr">size</span>: <span class="hljs-title class_">ButtonSize</span>;
+  <span class="hljs-string">&#x27;data-testid&#x27;</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-string">&#x27;aria-label&#x27;</span>?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Button</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;<span class="hljs-title class_">ButtonProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">{ variant, size, children, ...props }</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>\`<span class="hljs-attr">btn</span> <span class="hljs-attr">btn-</span>\${<span class="hljs-attr">variant</span>} <span class="hljs-attr">btn-</span>\${<span class="hljs-attr">size</span>}\`} {<span class="hljs-attr">...props</span>}&gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+};
+
+<span class="hljs-comment">// Developer Tools will show: variant=&quot;primary&quot; size=&quot;large&quot;</span>
+<span class="hljs-comment">// Instead of: type=&quot;primary&quot; size={16}</span>
+</code></pre>
+<p>وبالبنى البياناتية (data structures) المعقّدة، فكّر في تشكيل تمثيلات صديقة للتصحيح:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserProfileProps</span> {
+  <span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span>;
+}
+
+<span class="hljs-comment">// Add a debug representation to your types</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">profile</span>: <span class="hljs-title class_">UserProfile</span>;
+  <span class="hljs-comment">// Add this for Developer Tools visibility</span>
+  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">_debugName</span>?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">const</span> createDebugUser = (<span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span>): <span class="hljs-function"><span class="hljs-params">User</span> =&gt;</span> ({
+  ...user,
+  <span class="hljs-attr">_debugName</span>: <span class="hljs-string">\`<span class="hljs-subst">\${user.profile.firstName}</span> <span class="hljs-subst">\${user.profile.lastName}</span> (<span class="hljs-subst">\${user.email}</span>)\`</span>,
+});
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">UserProfile</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;<span class="hljs-title class_">UserProfileProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">{ user }</span>) =&gt;</span> {
+  <span class="hljs-comment">// Developer Tools will show the debug name alongside the user object</span>
+  <span class="hljs-keyword">const</span> debugUser = <span class="hljs-title function_">createDebugUser</span>(user);
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{/* Profile implementation */}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+};
+</code></pre>
+<h2 id="تسجيل-الحالة-بأمان-الأنواع">تسجيل الحالة بأمان الأنواع</h2>
+<p>حين تصحّح التغيّرات في الحالة، تبدو سجلات وحدة التحكم (console) غالبًا أكوامًا من كائناتٍ غامضة. لننشئ مُسجِّلات (loggers) آمنة الأنواع تفهم نماذج نطاقنا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { z } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;zod&#x27;</span>;
+
+<span class="hljs-comment">// Define your state schema</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">CartStateSchema</span> = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">items</span>: z.<span class="hljs-title function_">array</span>(
+    z.<span class="hljs-title function_">object</span>({
+      <span class="hljs-attr">productId</span>: z.<span class="hljs-title function_">string</span>(),
+      <span class="hljs-attr">quantity</span>: z.<span class="hljs-title function_">number</span>(),
+      <span class="hljs-attr">price</span>: z.<span class="hljs-title function_">number</span>(),
+    }),
+  ),
+  <span class="hljs-attr">total</span>: z.<span class="hljs-title function_">number</span>(),
+  <span class="hljs-attr">discounts</span>: z.<span class="hljs-title function_">array</span>(z.<span class="hljs-title function_">string</span>()),
+});
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">CartState</span> = z.<span class="hljs-property">infer</span>&lt;<span class="hljs-keyword">typeof</span> <span class="hljs-title class_">CartStateSchema</span>&gt;;
+
+<span class="hljs-comment">// Type-safe logger that validates and formats state</span>
+<span class="hljs-keyword">function</span> logStateChange&lt;T&gt;(
+  <span class="hljs-attr">componentName</span>: <span class="hljs-built_in">string</span>,
+  <span class="hljs-attr">action</span>: <span class="hljs-built_in">string</span>,
+  <span class="hljs-attr">oldState</span>: T,
+  <span class="hljs-attr">newState</span>: T,
+  <span class="hljs-attr">schema</span>?: z.<span class="hljs-property">ZodType</span>&lt;T&gt;,
+) {
+  <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> !== <span class="hljs-string">&#x27;development&#x27;</span>) <span class="hljs-keyword">return</span>;
+
+  <span class="hljs-comment">// Validate state if schema provided</span>
+  <span class="hljs-keyword">if</span> (schema) {
+    <span class="hljs-keyword">const</span> oldResult = schema.<span class="hljs-title function_">safeParse</span>(oldState);
+    <span class="hljs-keyword">const</span> newResult = schema.<span class="hljs-title function_">safeParse</span>(newState);
+
+    <span class="hljs-keyword">if</span> (!oldResult.<span class="hljs-property">success</span> || !newResult.<span class="hljs-property">success</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">\`🚨 Invalid state in <span class="hljs-subst">\${componentName}</span>:\`</span>, {
+        <span class="hljs-attr">oldStateErrors</span>: oldResult.<span class="hljs-property">success</span> ? <span class="hljs-literal">null</span> : oldResult.<span class="hljs-property">error</span>,
+        <span class="hljs-attr">newStateErrors</span>: newResult.<span class="hljs-property">success</span> ? <span class="hljs-literal">null</span> : newResult.<span class="hljs-property">error</span>,
+      });
+      <span class="hljs-keyword">return</span>;
+    }
+  }
+
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">group</span>(<span class="hljs-string">\`🔄 <span class="hljs-subst">\${componentName}</span>: <span class="hljs-subst">\${action}</span>\`</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Previous state:&#x27;</span>, oldState);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;New state:&#x27;</span>, newState);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+    <span class="hljs-string">&#x27;Diff:&#x27;</span>,
+    <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(
+      {
+        <span class="hljs-attr">added</span>: <span class="hljs-title function_">findDifferences</span>(oldState, newState),
+        <span class="hljs-attr">removed</span>: <span class="hljs-title function_">findDifferences</span>(newState, oldState),
+      },
+      <span class="hljs-literal">null</span>,
+      <span class="hljs-number">2</span>,
+    ),
+  );
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">groupEnd</span>();
+}
+
+<span class="hljs-comment">// Usage in your components</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">CartProvider</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span> = <span class="hljs-function">(<span class="hljs-params">{ children }</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [cartState, setCartState] = useState&lt;<span class="hljs-title class_">CartState</span>&gt;({
+    <span class="hljs-attr">items</span>: [],
+    <span class="hljs-attr">total</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">discounts</span>: [],
+  });
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">addItem</span> = (<span class="hljs-params"><span class="hljs-attr">item</span>: <span class="hljs-title class_">CartItem</span></span>) =&gt; {
+    <span class="hljs-title function_">setCartState</span>(<span class="hljs-function">(<span class="hljs-params">prevState</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> newState = {
+        ...prevState,
+        <span class="hljs-attr">items</span>: [...prevState.<span class="hljs-property">items</span>, item],
+        <span class="hljs-attr">total</span>: prevState.<span class="hljs-property">total</span> + item.<span class="hljs-property">price</span> * item.<span class="hljs-property">quantity</span>,
+      };
+
+      <span class="hljs-title function_">logStateChange</span>(<span class="hljs-string">&#x27;CartProvider&#x27;</span>, <span class="hljs-string">&#x27;ADD_ITEM&#x27;</span>, prevState, newState, <span class="hljs-title class_">CartStateSchema</span>);
+
+      <span class="hljs-keyword">return</span> newState;
+    });
+  };
+
+  <span class="hljs-comment">// Rest of implementation...</span>
+};
+</code></pre>
+<h2 id="لوحات-مخصصة-لأدوات-المطور">لوحات مخصّصة لأدوات المطوّر</h2>
+<p>في التطبيقات المعقّدة، قد لا تكفي أدوات المطوّر المدمجة في React. ويمكنك إنشاء لوحات مخصّصة لأدوات المطوّر تفهم نطاقك بعينه:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">DebugPanelProps</span> {
+  <span class="hljs-attr">data</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt;;
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">DebugPanel</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;<span class="hljs-title class_">DebugPanelProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">{ data, title }</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> !== <span class="hljs-string">&#x27;development&#x27;</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+      <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">position:</span> &#x27;<span class="hljs-attr">fixed</span>&#x27;,
+        <span class="hljs-attr">top:</span> &#x27;<span class="hljs-attr">10px</span>&#x27;,
+        <span class="hljs-attr">right:</span> &#x27;<span class="hljs-attr">10px</span>&#x27;,
+        <span class="hljs-attr">background:</span> &#x27;<span class="hljs-attr">rgba</span>(<span class="hljs-attr">0</span>,<span class="hljs-attr">0</span>,<span class="hljs-attr">0</span>,<span class="hljs-attr">0.9</span>)&#x27;,
+        <span class="hljs-attr">color:</span> &#x27;<span class="hljs-attr">white</span>&#x27;,
+        <span class="hljs-attr">padding:</span> &#x27;<span class="hljs-attr">16px</span>&#x27;,
+        <span class="hljs-attr">borderRadius:</span> &#x27;<span class="hljs-attr">8px</span>&#x27;,
+        <span class="hljs-attr">fontSize:</span> &#x27;<span class="hljs-attr">12px</span>&#x27;,
+        <span class="hljs-attr">zIndex:</span> <span class="hljs-attr">9999</span>,
+        <span class="hljs-attr">maxWidth:</span> &#x27;<span class="hljs-attr">400px</span>&#x27;,
+        <span class="hljs-attr">maxHeight:</span> &#x27;<span class="hljs-attr">300px</span>&#x27;,
+        <span class="hljs-attr">overflow:</span> &#x27;<span class="hljs-attr">auto</span>&#x27;,
+      }}
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>{title}<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>{JSON.stringify(data, null, 2)}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};
+
+<span class="hljs-comment">// Use it in your components</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ComplexComponent</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span> = <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> [state, setState] = <span class="hljs-title function_">useState</span>({
+    <span class="hljs-attr">loading</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">data</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">error</span>: <span class="hljs-literal">null</span>,
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">DebugPanel</span> <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Component State&quot;</span> <span class="hljs-attr">data</span>=<span class="hljs-string">{state}</span> /&gt;</span>
+      {/* Your component JSX */}
+    <span class="hljs-tag">&lt;/&gt;</span></span>
+  );
+};
+</code></pre>
+<h2 id="حدود-الأخطاء-مع-معلومات-الأنواع">حدود الأخطاء مع معلومات الأنواع</h2>
+<p>عند وقوع الأخطاء، قد يكون امتلاك سيّاقٍ عن الأنواع المعنيّة عديم الثمن. لننشئ حدّاً أخطاء (error boundary) يلتقاط معلومات النوع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ErrorInfo</span> {
+  <span class="hljs-attr">componentStack</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">errorBoundary</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">props</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt;;
+  <span class="hljs-attr">state</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt;;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TypedErrorBoundaryState</span> {
+  <span class="hljs-attr">hasError</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span> | <span class="hljs-literal">null</span>;
+  <span class="hljs-attr">errorInfo</span>: <span class="hljs-title class_">ErrorInfo</span> | <span class="hljs-literal">null</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TypedErrorBoundaryProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactNode</span>;
+  <span class="hljs-attr">componentName</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">onError</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>, <span class="hljs-attr">errorInfo</span>: <span class="hljs-title class_">ErrorInfo</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TypedErrorBoundary</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span>&lt;<span class="hljs-title class_">TypedErrorBoundaryProps</span>, <span class="hljs-title class_">TypedErrorBoundaryState</span>&gt; {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-title class_">TypedErrorBoundaryProps</span></span>) {
+    <span class="hljs-variable language_">super</span>(props);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = {
+      <span class="hljs-attr">hasError</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">error</span>: <span class="hljs-literal">null</span>,
+      <span class="hljs-attr">errorInfo</span>: <span class="hljs-literal">null</span>,
+    };
+  }
+
+  <span class="hljs-keyword">static</span> <span class="hljs-title function_">getDerivedStateFromError</span>(<span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>): <span class="hljs-title class_">Partial</span>&lt;<span class="hljs-title class_">TypedErrorBoundaryState</span>&gt; {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">hasError</span>: <span class="hljs-literal">true</span>,
+      error,
+    };
+  }
+
+  <span class="hljs-title function_">componentDidCatch</span>(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>, <span class="hljs-attr">errorInfo</span>: <span class="hljs-title class_">React</span>.<span class="hljs-title class_">ErrorInfo</span></span>) {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">enhancedErrorInfo</span>: <span class="hljs-title class_">ErrorInfo</span> = {
+      ...errorInfo,
+      <span class="hljs-attr">props</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>,
+      <span class="hljs-attr">state</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>,
+    };
+
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">errorInfo</span>: enhancedErrorInfo });
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">onError</span>) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">onError</span>(error, enhancedErrorInfo);
+    }
+
+    <span class="hljs-comment">// Log to console in development</span>
+    <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;development&#x27;</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">group</span>(<span class="hljs-string">\`🚨 Error in <span class="hljs-subst">\${<span class="hljs-variable language_">this</span>.props.componentName || <span class="hljs-string">&#x27;Unknown Component&#x27;</span>}</span>\`</span>);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Error:&#x27;</span>, error);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Component Stack:&#x27;</span>, errorInfo.<span class="hljs-property">componentStack</span>);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Props:&#x27;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;State:&#x27;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">groupEnd</span>();
+    }
+  }
+
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">hasError</span>) {
+      <span class="hljs-keyword">return</span> (
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">padding:</span> &#x27;<span class="hljs-attr">20px</span>&#x27;, <span class="hljs-attr">border:</span> &#x27;<span class="hljs-attr">2px</span> <span class="hljs-attr">solid</span> <span class="hljs-attr">red</span>&#x27;, <span class="hljs-attr">borderRadius:</span> &#x27;<span class="hljs-attr">8px</span>&#x27; }}&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Something went wrong in {this.props.componentName}<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">details</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">summary</span>&gt;</span>Error Details<span class="hljs-tag">&lt;/<span class="hljs-name">summary</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>{this.state.error?.message}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>{this.state.error?.stack}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">details</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+      );
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">children</span>;
+  }
+}
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">App</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span> = <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TypedErrorBoundary</span>
+      <span class="hljs-attr">componentName</span>=<span class="hljs-string">&quot;UserDashboard&quot;</span>
+      <span class="hljs-attr">onError</span>=<span class="hljs-string">{(error,</span> <span class="hljs-attr">errorInfo</span>) =&gt;</span> {
+        // Send to error reporting service
+        console.log(&#x27;Reporting error:&#x27;, error, errorInfo);
+      }}
+    &gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">UserDashboard</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">TypedErrorBoundary</span>&gt;</span></span>
+  );
+};
+</code></pre>
+<h2 id="توصيف-الأداء-بالأنواع">توصيف الأداء بالأنواع</h2>
+<p>واجهة Profiler في React قوية، ويمكن أن نزدها فائدة بإضافة معلومات النوع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProfilerData</span> {
+  <span class="hljs-attr">componentName</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">phase</span>: <span class="hljs-string">&#x27;mount&#x27;</span> | <span class="hljs-string">&#x27;update&#x27;</span>;
+  <span class="hljs-attr">actualDuration</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">baseDuration</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">startTime</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">commitTime</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">interactions</span>: <span class="hljs-title class_">Set</span>&lt;<span class="hljs-built_in">unknown</span>&gt;;
+}
+
+<span class="hljs-keyword">function</span> createTypedProfiler&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt;&gt;(
+  <span class="hljs-attr">componentName</span>: <span class="hljs-built_in">string</span>,
+  <span class="hljs-attr">onRender</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-title class_">ProfilerData</span> &amp; { props: T }</span>) =&gt;</span> <span class="hljs-built_in">void</span>,
+) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">TypedProfiler</span>(<span class="hljs-params">{ children, ...props }: { children: React.ReactNode } &amp; T</span>) {
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">React.Profiler</span>
+        <span class="hljs-attr">id</span>=<span class="hljs-string">{componentName}</span>
+        <span class="hljs-attr">onRender</span>=<span class="hljs-string">{(</span>
+          <span class="hljs-attr">id</span>,
+          <span class="hljs-attr">phase</span>,
+          <span class="hljs-attr">actualDuration</span>,
+          <span class="hljs-attr">baseDuration</span>,
+          <span class="hljs-attr">startTime</span>,
+          <span class="hljs-attr">commitTime</span>,
+          <span class="hljs-attr">interactions</span>,
+        ) =&gt;</span> {
+          const profilerData: ProfilerData = {
+            componentName: id,
+            phase,
+            actualDuration,
+            baseDuration,
+            startTime,
+            commitTime,
+            interactions,
+          };
+
+          if (process.env.NODE_ENV === &#x27;development&#x27;) {
+            console.log(\`⏱️ \${componentName} (\${phase}):\`, {
+              ...profilerData,
+              props,
+            });
+          }
+
+          if (onRender) {
+            onRender({ ...profilerData, props: props as T });
+          }
+        }}
+      &gt;
+        {children}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">React.Profiler</span>&gt;</span></span>
+    );
+  };
+}
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ProductListProfiler</span> = createTypedProfiler&lt;{ <span class="hljs-attr">products</span>: <span class="hljs-title class_">Product</span>[]; <span class="hljs-attr">filters</span>: <span class="hljs-title class_">FilterState</span> }&gt;(
+  <span class="hljs-string">&#x27;ProductList&#x27;</span>,
+  <span class="hljs-function">(<span class="hljs-params">{ actualDuration, props }</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (actualDuration &gt; <span class="hljs-number">16</span>) {
+      <span class="hljs-comment">// Slower than 60fps</span>
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(
+        <span class="hljs-string">\`ProductList is rendering slowly (<span class="hljs-subst">\${actualDuration}</span>ms) with <span class="hljs-subst">\${props.products.length}</span> products\`</span>,
+      );
+    }
+  },
+);
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ProductList</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;{ <span class="hljs-attr">products</span>: <span class="hljs-title class_">Product</span>[]; <span class="hljs-attr">filters</span>: <span class="hljs-title class_">FilterState</span> }&gt; = <span class="hljs-function">(<span class="hljs-params">{
+  products,
+  filters,
+}</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ProductListProfiler</span> <span class="hljs-attr">products</span>=<span class="hljs-string">{products}</span> <span class="hljs-attr">filters</span>=<span class="hljs-string">{filters}</span>&gt;</span>
+      {products.map((product) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">ProductCard</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{product.id}</span> <span class="hljs-attr">product</span>=<span class="hljs-string">{product}</span> /&gt;</span>
+      ))}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ProductListProfiler</span>&gt;</span></span>
+  );
+};
+</code></pre>
+<h2 id="تصحيح-السياق-context-بالأنواع">تصحيح السياق (Context) بالأنواع</h2>
+<p>السياق (Context) في React قد يصعب تصحيحه لأنّ القيم تُمرَّر عبر طبقاتٍ متعددة غالبًا. لننشئ نظامًا لتصحيح السياق يُبقي على أمان الأنواع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createContext, useContext, useDebugValue } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserContextValue</span> {
+  <span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span> | <span class="hljs-literal">null</span>;
+  <span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">password</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+  <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">isLoading</span>: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-comment">// Create a debug-aware context</span>
+<span class="hljs-keyword">function</span> createDebugContext&lt;T&gt;(
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>,
+  <span class="hljs-attr">defaultValue</span>: T,
+): [<span class="hljs-title class_">React</span>.<span class="hljs-property">Context</span>&lt;T&gt;, <span class="hljs-function">() =&gt;</span> T, <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;{ <span class="hljs-attr">value</span>: T; <span class="hljs-attr">children</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactNode</span> }&gt;] {
+  <span class="hljs-keyword">const</span> <span class="hljs-title class_">Context</span> = createContext&lt;T&gt;(defaultValue);
+  <span class="hljs-title class_">Context</span>.<span class="hljs-property">displayName</span> = name;
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">useContextHook</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">const</span> value = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">Context</span>);
+
+    <span class="hljs-comment">// Add debug information</span>
+    <span class="hljs-title function_">useDebugValue</span>(value, <span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp; value !== <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">\`<span class="hljs-subst">\${name}</span>: <span class="hljs-subst">\${<span class="hljs-built_in">Object</span>.keys(value).join(<span class="hljs-string">&#x27;, &#x27;</span>)}</span>\`</span>;
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-string">\`<span class="hljs-subst">\${name}</span>: <span class="hljs-subst">\${<span class="hljs-built_in">String</span>(value)}</span>\`</span>;
+    });
+
+    <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;development&#x27;</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`🔍 Using <span class="hljs-subst">\${name}</span> context:\`</span>, value);
+    }
+
+    <span class="hljs-keyword">return</span> value;
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title class_">Provider</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;{ <span class="hljs-attr">value</span>: T; <span class="hljs-attr">children</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactNode</span> }&gt; = <span class="hljs-function">(<span class="hljs-params">{ value, children }</span>) =&gt;</span> {
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Context.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{value}</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">Context.Provider</span>&gt;</span></span>;
+  };
+
+  <span class="hljs-title class_">Provider</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">\`<span class="hljs-subst">\${name}</span>Provider\`</span>;
+
+  <span class="hljs-keyword">return</span> [<span class="hljs-title class_">Context</span>, useContextHook, <span class="hljs-title class_">Provider</span>];
+}
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">const</span> [<span class="hljs-title class_">UserContext</span>, useUser, <span class="hljs-title class_">UserProvider</span>] = createDebugContext&lt;<span class="hljs-title class_">UserContextValue</span>&gt;(<span class="hljs-string">&#x27;User&#x27;</span>, {
+  <span class="hljs-attr">user</span>: <span class="hljs-literal">null</span>,
+  <span class="hljs-attr">login</span>: <span class="hljs-title function_">async</span> () =&gt; {},
+  <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> {},
+  <span class="hljs-attr">isLoading</span>: <span class="hljs-literal">false</span>,
+});
+
+<span class="hljs-comment">// Now when you use useUser(), you&#x27;ll get debug information in Developer Tools</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">UserProfile</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span> = <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> { user, logout } = <span class="hljs-title function_">useUser</span>(); <span class="hljs-comment">// This will log context usage in development</span>
+
+  <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Please log in<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Welcome, {user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{logout}</span>&gt;</span>Log out<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};
+</code></pre>
+<h2 id="مثال-من-الواقع-نظام-تصحيح-لمتجر-إلكتروني">مثال من الواقع: نظام تصحيحٍ لمتجر إلكتروني</h2>
+<p>لنجمعها كلها في مثال واقعي. هكذا قد تنشئ نظامًا شاملًا للتصحيح في تطبيق تجارة إلكترونية:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { z } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;zod&#x27;</span>;
+
+<span class="hljs-comment">// Define your domain schemas</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ProductSchema</span> = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">id</span>: z.<span class="hljs-title function_">string</span>(),
+  <span class="hljs-attr">name</span>: z.<span class="hljs-title function_">string</span>(),
+  <span class="hljs-attr">price</span>: z.<span class="hljs-title function_">number</span>(),
+  <span class="hljs-attr">inStock</span>: z.<span class="hljs-title function_">boolean</span>(),
+});
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">CartItemSchema</span> = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">productId</span>: z.<span class="hljs-title function_">string</span>(),
+  <span class="hljs-attr">quantity</span>: z.<span class="hljs-title function_">number</span>(),
+  <span class="hljs-attr">addedAt</span>: z.<span class="hljs-title function_">date</span>(),
+});
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">CartStateSchema</span> = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">items</span>: z.<span class="hljs-title function_">array</span>(<span class="hljs-title class_">CartItemSchema</span>),
+  <span class="hljs-attr">total</span>: z.<span class="hljs-title function_">number</span>(),
+  <span class="hljs-attr">appliedDiscounts</span>: z.<span class="hljs-title function_">array</span>(z.<span class="hljs-title function_">string</span>()),
+});
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Product</span> = z.<span class="hljs-property">infer</span>&lt;<span class="hljs-keyword">typeof</span> <span class="hljs-title class_">ProductSchema</span>&gt;;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">CartItem</span> = z.<span class="hljs-property">infer</span>&lt;<span class="hljs-keyword">typeof</span> <span class="hljs-title class_">CartItemSchema</span>&gt;;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">CartState</span> = z.<span class="hljs-property">infer</span>&lt;<span class="hljs-keyword">typeof</span> <span class="hljs-title class_">CartStateSchema</span>&gt;;
+
+<span class="hljs-comment">// Create a debug system that understands your domain</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ECommerceDebugger</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-attr">instance</span>: <span class="hljs-title class_">ECommerceDebugger</span>;
+
+  <span class="hljs-keyword">static</span> <span class="hljs-title function_">getInstance</span>(): <span class="hljs-title class_">ECommerceDebugger</span> {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">instance</span>) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">instance</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ECommerceDebugger</span>();
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">instance</span>;
+  }
+
+  <span class="hljs-title function_">logProductInteraction</span>(<span class="hljs-params"><span class="hljs-attr">action</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">product</span>: <span class="hljs-title class_">Product</span>, <span class="hljs-attr">metadata</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt;</span>) {
+    <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> !== <span class="hljs-string">&#x27;development&#x27;</span>) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">const</span> result = <span class="hljs-title class_">ProductSchema</span>.<span class="hljs-title function_">safeParse</span>(product);
+    <span class="hljs-keyword">if</span> (!result.<span class="hljs-property">success</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;🚨 Invalid product data:&#x27;</span>, result.<span class="hljs-property">error</span>);
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">group</span>(<span class="hljs-string">\`🛍️ Product <span class="hljs-subst">\${action}</span>: <span class="hljs-subst">\${product.name}</span>\`</span>);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Product:&#x27;</span>, product);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Metadata:&#x27;</span>, metadata);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">groupEnd</span>();
+  }
+
+  <span class="hljs-title function_">logCartChange</span>(<span class="hljs-params"><span class="hljs-attr">action</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">oldState</span>: <span class="hljs-title class_">CartState</span>, <span class="hljs-attr">newState</span>: <span class="hljs-title class_">CartState</span></span>) {
+    <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> !== <span class="hljs-string">&#x27;development&#x27;</span>) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">group</span>(<span class="hljs-string">\`🛒 Cart <span class="hljs-subst">\${action}</span>\`</span>);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Previous items:&#x27;</span>, oldState.<span class="hljs-property">items</span>.<span class="hljs-property">length</span>);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;New items:&#x27;</span>, newState.<span class="hljs-property">items</span>.<span class="hljs-property">length</span>);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Price change:&#x27;</span>, <span class="hljs-string">\`$<span class="hljs-subst">\${oldState.total}</span> → $<span class="hljs-subst">\${newState.total}</span>\`</span>);
+
+    <span class="hljs-keyword">if</span> (oldState.<span class="hljs-property">items</span>.<span class="hljs-property">length</span> !== newState.<span class="hljs-property">items</span>.<span class="hljs-property">length</span>) {
+      <span class="hljs-keyword">const</span> added = newState.<span class="hljs-property">items</span>.<span class="hljs-title function_">filter</span>(
+        <span class="hljs-function"><span class="hljs-params">newItem</span> =&gt;</span> !oldState.<span class="hljs-property">items</span>.<span class="hljs-title function_">some</span>(<span class="hljs-function"><span class="hljs-params">oldItem</span> =&gt;</span> oldItem.<span class="hljs-property">productId</span> === newItem.<span class="hljs-property">productId</span>)
+      );
+      <span class="hljs-keyword">const</span> removed = oldState.<span class="hljs-property">items</span>.<span class="hljs-title function_">filter</span>(
+        <span class="hljs-function"><span class="hljs-params">oldItem</span> =&gt;</span> !newState.<span class="hljs-property">items</span>.<span class="hljs-title function_">some</span>(<span class="hljs-function"><span class="hljs-params">newItem</span> =&gt;</span> newItem.<span class="hljs-property">productId</span> === oldItem.<span class="hljs-property">productId</span>)
+      );
+
+      <span class="hljs-keyword">if</span> (added.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Added items:&#x27;</span>, added);
+      <span class="hljs-keyword">if</span> (removed.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Removed items:&#x27;</span>, removed);
+    }
+
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">groupEnd</span>();
+  }
+}
+
+<span class="hljs-comment">// Use it in your components</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ProductCard</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;{ <span class="hljs-attr">product</span>: <span class="hljs-title class_">Product</span> }&gt; = <span class="hljs-function">(<span class="hljs-params">{ product }</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> <span class="hljs-keyword">debugger</span> = <span class="hljs-title class_">ECommerceDebugger</span>.<span class="hljs-title function_">getInstance</span>();
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleAddToCart</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">debugger</span>.<span class="hljs-title function_">logProductInteraction</span>(<span class="hljs-string">&#x27;ADD_TO_CART&#x27;</span>, product, {
+      <span class="hljs-attr">timestamp</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(),
+      <span class="hljs-attr">source</span>: <span class="hljs-string">&#x27;ProductCard&#x27;</span>,
+    });
+
+    <span class="hljs-comment">// Add to cart logic...</span>
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;product-card&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>{product.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>\${product.price}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{handleAddToCart}</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!product.inStock}</span>&gt;</span>
+        {product.inStock ? &#x27;Add to Cart&#x27; : &#x27;Out of Stock&#x27;}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};
+
+<span class="hljs-comment">// Set display name for Developer Tools</span>
+<span class="hljs-title class_">ProductCard</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">&#x27;ProductCard&#x27;</span>;
+</code></pre>
+<h2 id="الخلاصة">الخلاصة</h2>
+<p>لا يلزم أن يكوّن TypeScript وأدوات المطوّر في React عالَمَين منفصلَين. وباستخدامك الأنواع لتحسين تجربة التصحيح، تصنع بيئة تطوير فيها:</p>
+<ul>
+<li>تحمل المكوّنات أسماء ذات معنى تصمد أمام التصغير (minification)</li>
+<li>الخصائص والحالة تُوثِّق نفسها</li>
+<li>رسائل الخطأ تتضمّن معلومات النوع ذات الصلة</li>
+<li>تُرصد اختناقات الأداء وتُميَّز بالسياق تلقائيًا</li>
+<li>تُتحقَّق التغيّرات في الحالة وتُسجَّل في فروق واضحة</li>
+</ul>
+<p>المفتاح أن تفكّر في أنواعك ليس كمُعِينات وقت التصريف فقط، بل كشركاء تصحيح وقت التشغيل. وحين تغوص في جلسة تصحيح في الثانية فجرًا (كلّنا مرّا بذلك)، فإن امتلاك أدوات مطوّر تفهم نماذج نطاقك كما تفهمها أنت قد يكون الفرق بين إيجاد العيب سريعًا وقضاء ساعات في حكّ رأسك.</p>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p>تذكّر أن تُغلّف شيفرة التصحيح بفحص <code>process.env.NODE_ENV === 'development'</code> لتجنّب شحن عبء التصحيح إلى الإنتاج.</p>
+</blockquote>
+<p>ابدأ صغيرًا—أضف أسماء عرض إلى قليلٍ من المكوّنات، أنشئ مُسجِّل حالة بسيطًا، أو ابنِ حدود أخطاء مخصّصة. وسيُدهشك مقدار ما تتراكم به هذه التحسينات الصغيرة لتجربة تصحيح أفضل كثيرًا.</p>
+<p>وسيشكرك أنت في المستقبل (وإلى أعضاء فريقك) حين تُصبح تلك الأخطاء الغامضة في الإنتاج أسهل كثيرًا في التتبّع.</p>
+`,e={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:c};export{s as book,a as chapter,n as chapterTitle,e as default,t as headings,c as html,l as slug,p as title};

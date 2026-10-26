@@ -1,0 +1,131 @@
+const n="kinney",c="aws",e="نشر تطبيقات الويب على AWS",o="security-review-checklist",t="قائمة مراجعة الأمان",a=[{depth:2,id:"لماذا-يهم-هذا",text:"لماذا يهمّ هذا"},{depth:2,id:"يبنى-على",text:"يُبنى على"},{depth:2,id:"iam-من-يستطيع-فعل-ماذا",text:"IAM: من يستطيع فعل ماذا"},{depth:2,id:"s3-من-يستطيع-قراءة-ملفاتك",text:"S3: من يستطيع قراءة ملفاتك"},{depth:2,id:"cloudfront-ما-يصل-إلى-الحافة",text:"CloudFront: ما يصل إلى الحافة"},{depth:2,id:"lambda-ما-تستطيع-دوالك-الوصول-إليه",text:"Lambda: ما تستطيع دوالك الوصول إليه"},{depth:2,id:"api-gateway-من-يستطيع-استدعاء-واجهتك",text:"API Gateway: من يستطيع استدعاء واجهتك"},{depth:2,id:"dynamodb-من-يستطيع-قراءة-بياناتك",text:"DynamoDB: من يستطيع قراءة بياناتك"},{depth:2,id:"التدقيق-بأمر-واحد",text:"التدقيق بأمر واحد"},{depth:2,id:"الأمان-ليس-مهمة-تنجز-مرة-واحدة",text:"الأمان ليس مهمة تُنجز مرة واحدة"},{depth:2,id:"التحقق",text:"التحقق"},{depth:2,id:"أنماط-الفشل-الشائعة",text:"أنماط الفشل الشائعة"}],s=`<p>لقد بنيت تطبيقًا متكاملًا على AWS. فـ S3 تحتفظ بأصولك الثابتة، وCloudFront يقدّمها عالميًا، وLambda تشغّل منطق API لديك، وAPI Gateway يتولى توجيه HTTP، وDynamoDB يخزّن بياناتك، وSecrets Manager يحفظ بيانات اعتمادك آمنة. ولكل خدمة من تلك الخدمات إعداد أمان، وكلها تأتي افتراضيًا بإعدادات يحتمل أن ترغب في تغييرها.</p>
+<p>إذا أردت خط الأساس الأمني الرسمي من AWS إلى جانب هذه القائمة، فإن <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html">دليل أفضل ممارسات IAM</a> هو المرجع الذي يستحق الحفظ في المفضلة.</p>
+<p>هذه قائمة الفحص قبل الانطلاق. اعمل عليها قبل أن توجّه مستخدمين حقيقيين إلى نشرك. ولا بند فيها جديد—فقد أعددت كلًّا منها على امتداد الدورة—لكن رؤيتها مجتمعة في مكان واحد هي طريقة التقاط البند الذي نسيته.</p>
+<h2 id="لماذا-يهم-هذا">لماذا يهمّ هذا</h2>
+<p>فشل الأمان في AWS هو عادةً فشل تراكمي. سياسة IAM واحدة متساهلة، وسياسة حاوية واحدة تُركت عامة، وسر واحد ما زال في ملف الإعداد، ومسار واحد غير موثّق كنت تنوي تقييده لاحقًا. هذا الدرس هو حيث تراجع Scratch Lab كنظام بدلًا من كومة من قرارات فردية معقولة.</p>
+<h2 id="يبنى-على">يُبنى على</h2>
+<p>يبني هذا الدرس على كل قسم من أقسام الخدمات في الدورة. وهو عمدًا درس تجميعي: أسس IAM، والاستضافة الثابتة، وإدارة النطاقات والشهادات، وLambda وAPI Gateway، وDynamoDB، وتخزين الأسرار، تظهر كلها هنا دفعة واحدة.</p>
+<h2 id="iam-من-يستطيع-فعل-ماذا">IAM: من يستطيع فعل ماذا</h2>
+<p>IAM هو الأساس الذي يقف عليه كل شيء آخر. فإذا كانت سياسات IAM لديك واسعة جدًا، فإن كل تدبير أمني آخر يتقوّض. لا أستطيع المبالغة في هذه النقطة.</p>
+<ul>
+<li><strong>مستخدم الجذر لديه MFA ممكّنًا ولا يُستخدم للعمل اليومي.</strong> أعددت هذا في <a href="https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account">إنشاء حساب AWS وتأمينه</a>. اذهب إلى لوحة IAM الآن وتأكّد من أن MFA نشط على مستخدم الجذر. وإذا كنت تستخدم بيانات اعتماد الجذر لعمل CLI، فتوقف.</li>
+<li><strong>لا مستخدم IAM لديه <code>AdministratorAccess</code> إلا إذا كان يحتاجه فعلًا.</strong> قد يملك مستخدم <code>admin</code> من قسم أسس IAM أذونات واسعة لأغراض التعلم. وفي الإنتاج، حتى مستخدمو الإدارة ينبغي أن تكون لديهم سياسات محدّدة النطاق. راجع السياسات المرفقة بكل مستخدم ومجموعة IAM في حسابك.</li>
+<li><strong>أدوار تنفيذ Lambda تتبع الامتياز الأدنى.</strong> ينبغي أن يملك <code>my-frontend-app-lambda-role</code> فقط الأذونات التي تستخدمها دالتك فعلًا. فإذا كانت دالتك تقرأ من DynamoDB، فيحتاج الدور إلى <code>dynamodb:GetItem</code> و<code>dynamodb:Query</code> على جدولك المحدّد—لا <code>dynamodb:*</code> على <code>*</code>. أعد النظر في النهج من <a href="https://stevekinney.com/courses/aws/principle-of-least-privilege">مبدأ الامتياز الأدنى</a>.</li>
+<li><strong>بيانات اعتماد CI/CD محدّدة النطاق لإجراءات النشر فقط.</strong> يجب أن يملك مستخدم أو دور IAM الذي يستخدمه سير عمل GitHub Actions لديك (من <a href="https://stevekinney.com/courses/aws/cicd-with-github-actions">CI/CD عبر GitHub Actions</a>) الأذونات اللازمة بالضبط لمزامنة الملفات إلى S3، وإنشاء إبطالات CloudFront، وتحديث دوال Lambda. لا أكثر.</li>
+<li><strong>لا توجد مفاتيح وصول لا تستخدمها بنشاط.</strong> نفّذ هذا الأمر وراجع كل مفتاح:</li>
+</ul>
+<pre><code class="language-bash">aws iam list-access-keys \\
+  --user-name admin \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<p>إذا أنشأت مفاتيح وصول أثناء الدورة ولم تعد تحتاجها، فاحذفها. فالمفاتيح القديمة هي المصدر الأكثر شيوعًا لتسريب بيانات الاعتماد.</p>
+<ul>
+<li><strong>لا توجد سياسات مضمّنة على المستخدمين.</strong> يجب أن تُرفق السياسات بمجموعات أو أدوار، لا بالمستخدمين مباشرةً. فالسياسات المضمّنة أصعب في التدقيق وأسهل في النسيان.</li>
+</ul>
+<h2 id="s3-من-يستطيع-قراءة-ملفاتك">S3: من يستطيع قراءة ملفاتك</h2>
+<p>حاويات S3 من أكثر مصادر حوادث الأمان في AWS شيوعًا. فسياسات الحاويات المساء إعدادها عرضت كل شيء من بيانات العملاء إلى وثائق مصنّفة.</p>
+<ul>
+<li><strong>الوصول العام محجوب على مستوى الحساب (إلا إذا كان لديك سبب محدّد).</strong> لدى S3 إعداد على مستوى الحساب يُسمى «Block Public Access» يتجاوز سياسات الحاوية. وإذا كنت تقدّم الأصول عبر CloudFront باستخدام التحكم في الوصول إلى الأصل، فلا ينبغي أن تكون حاويتك عامة مباشرة أبدًا.</li>
+<li><strong>سياسة حاويتك تمنح الوصول إلى CloudFront فقط عبر OAC.</strong> أعددت هذا في <a href="https://stevekinney.com/courses/aws/origin-access-control-for-s3">التحكم في الوصول إلى الأصل في S3</a>. وينبغي أن تشير سياسة الحاوية إلى الخدمة الأساسية لتوزيع CloudFront—لا إلى <code>&quot;Principal&quot;: &quot;*&quot;</code>. تحقّق:</li>
+</ul>
+<pre><code class="language-bash">aws s3api get-bucket-policy \\
+  --bucket my-frontend-app-assets \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<ul>
+<li><strong>الإصدارات ممكّنة على الحاويات التي تحوي بيانات مهمة.</strong> أعددت هذا في <a href="https://stevekinney.com/courses/aws/s3-versioning-lifecycle-and-cost">الإصدارات وقواعد دورة الحياة والكلفة في S3</a>. فالإصدارات تحمي من الكتابات والحذوف العرضية.</li>
+<li><strong>لا حاوية لديها سياسة تمنح <code>s3:*</code> إلى <code>&quot;Principal&quot;: &quot;*&quot;</code>.</strong> هذا هو إعداد «الحاوية المفتوحة» الذي يتصدّر الأخبار. فإن رأيته، فأزله فورًا.</li>
+</ul>
+<h2 id="cloudfront-ما-يصل-إلى-الحافة">CloudFront: ما يصل إلى الحافة</h2>
+<p>يقف CloudFront بين مستخدميك وأصلك. وإعداده يحدّد ما يُقدَّم، وكيف يُقدَّم، وهل ترويسات الأمان موجودة.</p>
+<ul>
+<li><strong>HTTPS مفروض.</strong> ينبغي أن يعيد توزيعك توجيه HTTP إلى HTTPS أو أن يرفض HTTP كليًا. أعددت هذا عندما أرفقت شهادة ACM في <a href="https://stevekinney.com/courses/aws/attaching-an-ssl-certificate">إرفاق شهادة SSL</a>. تحقّق من أن سياسة بروتوكول المشاهد مضبوطة على «Redirect HTTP to HTTPS» أو «HTTPS Only».</li>
+<li><strong>التحكم في الوصول إلى الأصل مضبوط (لا OAI الأقدم).</strong> فـ OAC هو الآلية الموصى بها حاليًا. وإذا أعددت توزيعك في وقت مبكر من الدورة باستخدام هوية الوصول إلى الأصل، فانتقل إلى OAC كما هو موصوف في <a href="https://stevekinney.com/courses/aws/origin-access-control-for-s3">التحكم في الوصول إلى الأصل في S3</a>.</li>
+<li><strong>ترويسات الأمان مضبوطة.</strong> أعددت سياسات ترويسات الاستجابة في <a href="https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security">ترويسات CloudFront وCORS والأمان</a>. وكحد أدنى، ينبغي أن يرسل توزيعك: <code>Strict-Transport-Security</code> (HSTS) و<code>X-Content-Type-Options: nosniff</code> و<code>X-Frame-Options: DENY</code> (أو <code>SAMEORIGIN</code> إذا كنت تحتاج إلى iframes)
+<ul>
+<li><code>Strict-Transport-Security</code> (HSTS)</li>
+<li><code>X-Content-Type-Options: nosniff</code></li>
+<li><code>X-Frame-Options: DENY</code> (أو <code>SAMEORIGIN</code> إذا كنت تحتاج إلى iframes)</li>
+</ul>
+</li>
+<li><strong>كائن الجذر الافتراضي مضبوط على <code>index.html</code>.</strong> بدون هذا، تُرجع الطلبات إلى جذر نطاقك خطأً بدلًا من تطبيقك.</li>
+<li><strong>صفحات الأخطاء المخصّصة تتولى توجيه SPA.</strong> أعددت استجابات 403/404 لإرجاع <code>index.html</code> بحالة 200 في <a href="https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing">صفحات الأخطاء المخصّصة وتوجيه SPA</a>. تحقّق من أن هذا ما زال يعمل بالانتقال مباشرةً إلى مسار عميق في تطبيقك.</li>
+</ul>
+<h2 id="lambda-ما-تستطيع-دوالك-الوصول-إليه">Lambda: ما تستطيع دوالك الوصول إليه</h2>
+<p>كل دالة Lambda تعمل بدور تنفيذ. وسياسات ذلك الدور تحدّد نطاق الأثر إذا كان في دالتك خطأ أو تعرّضت للاستغلال.</p>
+<ul>
+<li><strong>لكل دالة دور تنفيذ خاص بها.</strong> لا تشارك أدوار التنفيذ بين دوال لها احتياجات أذونات مختلفة. فالدالة التي تقرأ من DynamoDB لا ينبغي أن تملك أيضًا إذن إرسال بريد عبر SES لمجرد أن دالة أخرى في الحساب نفسه تحتاج ذلك.</li>
+<li><strong>متغيّرات البيئة لا تحتوي أسرارًا.</strong> نقلت الأسرار إلى Secrets Manager أو Parameter Store في <a href="https://stevekinney.com/courses/aws/the-problem-with-hardcoded-secrets">مشكلة الأسرار المكتوبة في الشيفرة</a> و<a href="https://stevekinney.com/courses/aws/accessing-secrets-from-lambda">الوصول إلى الأسرار من Lambda</a>. تحقّق بفحص إعداد الدالة:</li>
+</ul>
+<pre><code class="language-bash">aws lambda get-function-configuration \\
+  --function-name my-frontend-app-api \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<p>إذا رأيت مفاتيح API أو كلمات مرور قواعد بيانات أو رموزًا في قسم <code>Environment.Variables</code>، فانقلها إلى Secrets Manager.</p>
+<ul>
+<li><strong>مهلة الدالة مضبوطة على قيمة معقولة.</strong> المهلة الافتراضية 3 ثوانٍ. وإذا كانت دالتك تستدعي واجهات API خارجية، فقد تحتاج إلى أكثر—لكن ضبطها على الحد الأقصى (15 دقيقة) يعني أن دالة شاردة تحرق الحوسبة 15 دقيقة قبل أن تقتلها Lambda.</li>
+<li><strong>ذاكرة الدالة بحجم مناسب.</strong> تحسب Lambda الكلفة بالـ GB-ثانية. فدالة بذاكرة 1024 MB تكلف ضعف كلفة دالة بـ 512 MB لكل مللي ثانية. لكن الذاكرة الأكثر تعني أيضًا CPU أكثر، لذا قد تعمل الدالة أسرع بالضعف مع مضاعفة الذاكرة—فتتعادل الكلفة.</li>
+</ul>
+<h2 id="api-gateway-من-يستطيع-استدعاء-واجهتك">API Gateway: من يستطيع استدعاء واجهتك</h2>
+<p>API Gateway هو الباب الأمامي لواجهتك الخلفية. وبلا مصادقة وإعداد CORS صحيح، يمكن لأي شخص استدعاء نقاط نهايتك.</p>
+<ul>
+<li><strong>المصادقة مضبوطة على المسارات التي تحتاجها.</strong> أعددت مُوثِّقات JWT أو مُوثِّقات Lambda في <a href="https://stevekinney.com/courses/aws/api-gateway-authentication">مصادقة API Gateway</a>. تحقّق من أن المسارات المحمية ترفض فعلًا الطلبات غير الموثّقة:</li>
+</ul>
+<pre><code class="language-bash">curl -s -o /dev/null -w <span class="hljs-string">&quot;%{http_code}&quot;</span> \\
+  https://your-api-id.execute-api.us-east-1.amazonaws.com/prod/protected-route
+</code></pre>
+<p>ينبغي أن تحصل على <code>401</code>، لا <code>200</code>.</p>
+<ul>
+<li><strong>CORS مضبوط للسماح بنطاقك فقط.</strong> في <a href="https://stevekinney.com/courses/aws/api-gateway-cors-configuration">إعداد CORS في API Gateway</a>، ضبطت <code>Access-Control-Allow-Origin</code>. تأكّد من أنه مضبوط على نطاقك المحدّد (<code>https://example.com</code>)، لا على <code>*</code>. فسياسة CORS بحرف بدل تتيح لأي موقع استدعاء واجهتك من متصفح المستخدم.</li>
+<li><strong>التقييد مضبوط.</strong> يدعم API Gateway تحديد المعدّل. وبدونه، يمكن لعميل واحد إغراق دوال Lambda لديك (وفاتورتك). التقييد الافتراضي 10,000 طلب في الثانية—وهو على الأرجح أكثر مما تريده لمشروع شخصي.</li>
+</ul>
+<h2 id="dynamodb-من-يستطيع-قراءة-بياناتك">DynamoDB: من يستطيع قراءة بياناتك</h2>
+<p>التحكم في الوصول إلى DynamoDB يتم كليًا عبر IAM. لا توجد أسماء مستخدمين أو كلمات مرور لقاعدة البيانات—وهو أمر رائع للبساطة، لكنه يعني أن سياسات IAM هي خط دفاعك الوحيد.</p>
+<ul>
+<li><strong>أدوار تنفيذ Lambda تحدّد ARN الجدول بدقة.</strong> ينبغي أن تشير سياسة IAM لديك إلى <code>arn:aws:dynamodb:us-east-1:123456789012:table/my-frontend-app-data</code>، لا <code>arn:aws:dynamodb:us-east-1:123456789012:table/*</code>. أعددت هذا في <a href="https://stevekinney.com/courses/aws/connecting-dynamodb-to-lambda">ربط DynamoDB بـ Lambda</a>.</li>
+<li><strong>يُسمح فقط بالإجراءات التي تستخدمها دالتك.</strong> إذا كانت دالتك تقرأ البيانات فقط، فامنح <code>dynamodb:GetItem</code> و<code>dynamodb:Query</code>. لا تمنح <code>dynamodb:DeleteItem</code> أو <code>dynamodb:DeleteTable</code> إلا إذا كانت الدالة تحتاج فعلًا إلى حذف أشياء.</li>
+<li><strong>DynamoDB Streams غير ممكّنة إلا إذا كنت تستخدمها.</strong> فالتدفقات تلتقط كل تغيير في جدولك ويمكنها تشغيل دوال Lambda. وإذا مكّنت التدفقات أثناء التجربة، فعطّلها إن لم تكن تحتاجها—فهي ناقل محتمل لتسريب البيانات.</li>
+</ul>
+<h2 id="التدقيق-بأمر-واحد">التدقيق بأمر واحد</h2>
+<p>تقدّم AWS خدمة تُسمى <strong>IAM Access Analyzer</strong> تستطيع فحص حسابك بحثًا عن الموارد المشتركة مع كيانات خارجية—حاويات S3 العامة، وأدوار IAM العابرة للحسابات، وما شابه من إعدادات خاطئة. وهي مجانية الاستخدام وتستغرق نحو 30 ثانية للإعداد:</p>
+<pre><code class="language-bash">aws accessanalyzer create-analyzer \\
+  --analyzer-name my-frontend-app-analyzer \\
+  --<span class="hljs-built_in">type</span> ACCOUNT \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<p>بعد تشغيلها، افحص النتائج:</p>
+<pre><code class="language-bash">aws accessanalyzer list-findings \\
+  --analyzer-arn arn:aws:access-analyzer:us-east-1:123456789012:analyzer/my-frontend-app-analyzer \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<p>إذا كانت قائمة النتائج فارغة، فلا شيء في حسابك متاح للعامة أو مشترك مع حسابات خارجية. وإذا لم تكن فارغة، فكل نتيجة تخبرك بالضبط أي مورد مكشوف ولماذا.</p>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>شغّل IAM Access Analyzer كلما غيّرت سياسة حاوية أو سياسة ثقة دور IAM أو أي سياسة قائمة على الموارد. فهو يلتقط إعدادات خاطئة يسهل تفويتها بقراءة JSON.</p>
+<p>ولدى Access Analyzer أيضًا نوع محلل <strong>للوصول غير المستخدم</strong> (<code>--type ACCOUNT_UNUSED_ACCESS</code>) يُظهر مستخدمي وأدوار IAM التي لم تُستخدم مؤخرًا، والأذونات الممنوحة لكن غير المستعملة. أنشئ واحدًا من هذا النوع إضافةً إلى محلل الوصول الخارجي أعلاه، وراجع النتائج شهريًا—فهي أسهل طريقة لتقليم انحراف الوصول بمرور الوقت.</p>
+</blockquote>
+<h2 id="الأمان-ليس-مهمة-تنجز-مرة-واحدة">الأمان ليس مهمة تُنجز مرة واحدة</h2>
+<p>هذه القائمة لقطة. فهي تغطي حالة بنيتك التحتية الآن. لكن البنية التحتية تتغيّر—تضيف دالة Lambda جديدة، أو تعدّل سياسة حاوية، أو تنشئ مستخدم IAM جديدًا لمقاول. وكل تغيير فرصة لإدخال إعداد خاطئ.</p>
+<p>الممارسة الأمنية الحقيقية هي جعل هذه المراجعة عادة. فامضِ عبر هذه القائمة بعد كل تغيير جوهري في البنية التحتية. والأفضل من ذلك، قنّنها: البنية التحتية كشيفرة (وهو ما ستراه في <a href="https://stevekinney.com/courses/aws/infrastructure-as-code-and-cdk">البنية التحتية كشيفرة وCDK</a>) تتيح لك تعريف إعداد الأمان في قوالب مُدارة بالإصدارات، فتمرّ التغييرات بمراجعة شيفرة قبل أن تصل إلى AWS.</p>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p>أخطر لحظة في أمان AWS ليست اليوم الأول—بل الشهر السادس، حين تكون قد نسيت أي السياسات أرفقتها بأي أدوار، ويبدو <code>&quot;Action&quot;: &quot;*&quot;</code> السريع أسهل من البحث عن الإذن الصحيح. قاوم الرغبة. فالقائمة موجودة لسبب.</p>
+</blockquote>
+<h2 id="التحقق">التحقق</h2>
+<ul>
+<li>يمكنك تشغيل قسم التدقيق بأمر واحد وشرح معنى كل نتيجة بدلًا من مجرد التمرير بحثًا عن كلمة <code>DENY</code>.</li>
+<li>يمكنك تتبّع طلب مستخدم حقيقي واحد عبر المكدّس وتحديد أي دور IAM وسياسة حاوية ومسار API وأذونات بيانات يعتمد عليه.</li>
+<li>يمكنك الإشارة إلى إعداد واحد على الأقل في بيئتك الحالية كنت سترفضه في مراجعة شيفرة اليوم.</li>
+</ul>
+<h2 id="أنماط-الفشل-الشائعة">أنماط الفشل الشائعة</h2>
+<ul>
+<li><strong>مراجعة الخدمات بمعزل عن بعضها:</strong> معظم حالات التعرّض الحقيقية تأتي من طريقة تفاعل خدمتين، لا من شاشة واحدة مكسورة بوضوح في لوحة التحكم.</li>
+<li><strong>التعامل مع الأذونات الواسعة المؤقتة كأنها غير ضارة:</strong> تتحوّل الأذونات المؤقتة إلى معمارية مع مرور وقت كافٍ على التقويم.</li>
+<li><strong>افتراض أن النشر الناجح يعني نشرًا آمنًا:</strong> الوظائف تُثبت فقط أن المسار السعيد يعمل. ولا تقول شيئًا عن من يستطيع الوصول إليه أيضًا.</li>
+</ul>
+`,r={book:n,chapter:"aws",chapterTitle:e,slug:o,title:t,headings:a,html:s};export{n as book,c as chapter,e as chapterTitle,r as default,a as headings,s as html,o as slug,t as title};

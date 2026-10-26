@@ -1,0 +1,100 @@
+const s="kinney",a="self-testing-ai-agents",n="وكلاء ذكاء اصطناعي يختبرون أنفسهم",e="wire-accessibility-checks-into-shelf-solution",l="الحل",t=[{depth:2,id:"ما-يجب-إضافته",text:"ما يجب إضافته"},{depth:3,id:"الاعتماد",text:"الاعتماد"},{depth:3,id:"المواصفة-testsaccessibilityspects",text:"المواصفة: tests/accessibility.spec.ts"},{depth:3,id:"قائمة-التحقق-docsaccessibility-smoke-checklistmd",text:"قائمة التحقّق: docs/accessibility-smoke-checklist.md"},{depth:3,id:"الصلة-بـ-claudemd",text:"الصلة بـ CLAUDE.md"},{depth:2,id:"ما-ما-زلت-بحاجة-إلى-تشغيله",text:"ما ما زلت بحاجة إلى تشغيله"},{depth:2,id:"أنماط-تستحق-الاحتفاظ-بها",text:"أنماط تستحق الاحتفاظ بها"},{depth:2,id:"قراءات-إضافية",text:"قراءات إضافية"}],c=`<p>يشحن هذا المختبر ملفين. أحدهما مواصفة Playwright تشغّل axe-core على مسارات Shelf الأعلى إشارة. والآخر قائمة تحقّق markdown من خمسة بنود للأمور التي لا يستطيع الماسح إثباتها. معًا، يحوّلان «نحن نهتم بإمكانية الوصول» إلى «انحدارات إمكانية الوصول تكسر البناء». وهذا هو المقصود كله.</p>
+<h2 id="ما-يجب-إضافته">ما يجب إضافته</h2>
+<h3 id="الاعتماد">الاعتماد</h3>
+<p>قد يكون <code>@axe-core/playwright</code> موجودًا بالفعل في <code>devDependencies</code>. إن لم يكن، فأضفه:</p>
+<pre><code class="language-bash">npm install -D @axe-core/playwright
+</code></pre>
+<p>اعتماد واحد. لا كلفة وقت تشغيل في الإنتاج. ولا كرنفال إضافات.</p>
+<h3 id="المواصفة-testsaccessibilityspects">المواصفة: <code>tests/accessibility.spec.ts</code></h3>
+<p>إليك نسخة أولى نظيفة تطابق شكل بادئة Shelf الحالية:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">AxeBuilder</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@axe-core/playwright&#x27;</span>;
+<span class="hljs-keyword">import</span> { expect, test, <span class="hljs-keyword">type</span> <span class="hljs-title class_">Page</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@playwright/test&#x27;</span>;
+
+<span class="hljs-keyword">const</span> expectNoViolations = <span class="hljs-title function_">async</span> (<span class="hljs-attr">page</span>: <span class="hljs-title class_">Page</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; =&gt; {
+  <span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AxeBuilder</span>({ page }).<span class="hljs-title function_">withTags</span>([<span class="hljs-string">&#x27;wcag2a&#x27;</span>, <span class="hljs-string">&#x27;wcag2aa&#x27;</span>]).<span class="hljs-title function_">analyze</span>();
+  <span class="hljs-title function_">expect</span>(results.<span class="hljs-property">violations</span>).<span class="hljs-title function_">toEqual</span>([]);
+};
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;home page has no automated accessibility violations&#x27;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/&#x27;</span>);
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;heading&#x27;</span>, { <span class="hljs-attr">level</span>: <span class="hljs-number">1</span> })).<span class="hljs-title function_">toBeVisible</span>();
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expectNoViolations</span>(page);
+});
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;login page has no automated accessibility violations&#x27;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/login&#x27;</span>);
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;heading&#x27;</span>, { <span class="hljs-attr">level</span>: <span class="hljs-number">1</span> })).<span class="hljs-title function_">toBeVisible</span>();
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expectNoViolations</span>(page);
+});
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;design-system page has no automated accessibility violations&#x27;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/design-system&#x27;</span>);
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;heading&#x27;</span>, { <span class="hljs-attr">level</span>: <span class="hljs-number">1</span> })).<span class="hljs-title function_">toBeVisible</span>();
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expectNoViolations</span>(page);
+});
+</code></pre>
+<p>ثلاثة أمور تهمّ هنا.</p>
+<p>أولًا: هذه مسارات عامة. وهذا متعمد. البادئة الحالية لديها بالفعل حلقة Playwright عامة، لذا تنزل هذه المواصفة مباشرة في <code>tests/</code> وتبدأ في دفع إيجارها فورًا. يمكنك إضافة المسارات المصادَقة لاحقًا عندما تكون مختبرات حالة التخزين ومساعد التهيئة في مكانها. لا تجعل أول تمريرة لإمكانية الوصول أصعب مما تحتاج.</p>
+<p>ثانيًا: كل اختبار ينتظر عنصرًا حقيقيًا قبل تشغيل axe. يعمل الفحص على DOM الحالي، لذا فإن إطلاقه فورًا بعد <code>goto()</code> هو الطريق إلى تدقيق حالة تحميل وتسميتها موقعًا. انتظار <code>h1</code> رخيص وصادق.</p>
+<p>ثالثًا: <code>.withTags(['wcag2a', 'wcag2aa'])</code> يحصر الفحص في القواعد التي تحتاجها معظم الفرق فعلًا كبوابة. جلب كل قاعدة في axe من البداية هو كيف تحوّل فحصًا نافعًا إلى محرك اقتراحات لا يثق به أحد.</p>
+<p>إن كنت قد بنيت مشروع المصادقة من مختبرات المصادقة السابقة، فوسّع الملف بفحص <code>/shelf</code>. عندئذٍ يكون النمط نفسه: أعد تهيئة الرف، وانتقل إلى <code>/shelf</code>، وانتظر العنوان مع مقالة واحدة مهيأة، ثم شغّل الفحص. المهم أن المسارات العامة تأتي أولًا لأن البادئة الحالية تستطيع تشغيلها فورًا.</p>
+<h3 id="قائمة-التحقق-docsaccessibility-smoke-checklistmd">قائمة التحقّق: <code>docs/accessibility-smoke-checklist.md</code></h3>
+<pre><code class="language-markdown"><span class="hljs-section"># Accessibility smoke checklist</span>
+
+Run this manually after any UI change that touches a dialog, form,
+or navigation flow. The automated axe scan in <span class="hljs-code">\`tests/accessibility.spec.ts\`</span>
+covers what a scanner can prove — this file covers what it cannot.
+
+<span class="hljs-bullet">-</span> Can every interactive control on the critical routes be reached with <span class="hljs-code">\`Tab\`</span>
+  and <span class="hljs-code">\`Shift+Tab\`</span> in a sensible order?
+<span class="hljs-bullet">-</span> When a dialog opens, does focus move into it, and does it return to the
+  triggering control when the dialog closes?
+<span class="hljs-bullet">-</span> Can a keyboard-only user submit the primary forms (login, search, rating)
+  without touching the mouse?
+<span class="hljs-bullet">-</span> Are validation errors announced in text as well as color, and associated
+  with their fields via <span class="hljs-code">\`aria-describedby\`</span>?
+<span class="hljs-bullet">-</span> Do status toasts (<span class="hljs-code">\`role=&quot;status&quot;\`</span> / <span class="hljs-code">\`aria-live=&quot;polite&quot;\`</span>) actually announce
+  in a screen reader when they appear?
+</code></pre>
+<p>خمسة فحوصات. كل واحد يسمّي تفاعلًا ملموسًا وشرط نجاح ملموسًا. لا يمكن إثبات أي منها بـ axe-core وحده، ولهذا توجد القائمة.</p>
+<p>لاحظ الصياغة في المقدمة: «فحص axe الآلي يغطي ما يستطيع الماسح إثباته — وهذا الملف يغطي ما لا يستطيع». تلك الجملة تؤدي عملًا حقيقيًا. إنها تمنع الناس من اعتبار القائمة زائدة عن المواصفة.</p>
+<h3 id="الصلة-بـ-claudemd">الصلة بـ CLAUDE.md</h3>
+<p>ينبغي أن يسمّي ملف التعليمات كلا الأثرين صراحة:</p>
+<pre><code class="language-markdown"><span class="hljs-section">## Accessibility</span>
+
+<span class="hljs-bullet">-</span> Run <span class="hljs-code">\`tests/accessibility.spec.ts\`</span> after any meaningful UI change. Treat
+  new axe violations as blocking.
+<span class="hljs-bullet">-</span> Complex UI flows (dialogs, menus, keyboard navigation) also get a
+  manual pass through <span class="hljs-code">\`docs/accessibility-smoke-checklist.md\`</span>.
+<span class="hljs-bullet">-</span> Suppressions must be scoped narrowly with a written reason in code.
+</code></pre>
+<p>بلا هذا، تبقى المواصفة مجرد ملف آخر قد يلاحظه الوكيل أو لا يلاحظه. لا تُغلق الحلقة إلا عندما تخبر التعليمات الوكيل أن الفحص موجود ومتى يشغّله.</p>
+<h2 id="ما-ما-زلت-بحاجة-إلى-تشغيله">ما ما زلت بحاجة إلى تشغيله</h2>
+<p>تأكد من الاعتماد:</p>
+<pre><code class="language-bash">grep <span class="hljs-string">&#x27;@axe-core/playwright&#x27;</span> package.json
+</code></pre>
+<p>تأكد من وجود الملفين:</p>
+<pre><code class="language-bash"><span class="hljs-built_in">ls</span> tests/accessibility.spec.ts
+<span class="hljs-built_in">ls</span> docs/accessibility-smoke-checklist.md
+</code></pre>
+<p>شغّل المواصفة مباشرة:</p>
+<pre><code class="language-bash">npx playwright <span class="hljs-built_in">test</span> tests/accessibility.spec.ts
+</code></pre>
+<p>أو شغّلها عبر المجموعة الرئيسية:</p>
+<pre><code class="language-bash">npm run <span class="hljs-built_in">test</span> -- tests/accessibility.spec.ts
+</code></pre>
+<p>إن أضفت لاحقًا فحص <code>/shelf</code> المصادَق، فتأكد من أنه ما زال يعمل عبر الحلقة الرئيسية نفسها بدلًا من أن يتحول إلى طقس منفرد لا يتذكره أحد.</p>
+<h2 id="أنماط-تستحق-الاحتفاظ-بها">أنماط تستحق الاحتفاظ بها</h2>
+<ul>
+<li>ابدأ بمسارات تستطيع البادئة الحالية تشغيلها فورًا. الصفحات العامة أولًا، والصفحات المصادَقة عندما توجد حلقة المصادقة.</li>
+<li>افحص بعد التصيير، لا بعد الانتقال. يجب أن يكون DOM الذي تدققه هو DOM الذي يراه المستخدم.</li>
+<li>احصر مجموعة القواعد. <code>wcag2a</code> و<code>wcag2aa</code> هما الافتراضي الصحيح لبوابة موثوقة.</li>
+<li>وثّق الفجوة. يلتقط Axe فئة من المشكلات، لا المشكلة كلها.</li>
+<li>سمّ الملفات في <code>CLAUDE.md</code>. اختبار لا يشغّله الوكيل أبدًا ليس بوابة.</li>
+</ul>
+<h2 id="قراءات-إضافية">قراءات إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-accessibility-checks-into-shelf">مختبر: توصيل فحوصات إمكانية الوصول إلى Shelf</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/accessibility-as-a-quality-gate">إمكانية الوصول كبوابة جودة</a></li>
+</ul>
+`,i={book:s,chapter:a,chapterTitle:n,slug:e,title:l,headings:t,html:c};export{s as book,a as chapter,n as chapterTitle,i as default,t as headings,c as html,e as slug,l as title};

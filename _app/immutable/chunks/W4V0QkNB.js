@@ -1,0 +1,156 @@
+const s="kinney",a="tailwind",n="Tailwind CSS",e="grid-alignment-and-justification",l="المحاذاة والتوزيع",t=[{depth:2,id:"تهيئة-حاوية-grid",text:"تهيئة حاوية Grid"},{depth:2,id:"محاذاة-العناصر-وتوزيعها-داخل-مناطقها",text:"محاذاة العناصر وتوزيعها داخل مناطقها"},{depth:3,id:"محاذاة-العناصر-على-المحور-العرضي",text:"محاذاة العناصر على المحور العرضي"},{depth:3,id:"توزيع-العناصر-على-المحور-السطري",text:"توزيع العناصر على المحور السطري"},{depth:3,id:"المحاذاة-والتوزيع-معا",text:"المحاذاة والتوزيع معًا"},{depth:3,id:"محاذاة-العناصر-وتوزيعها-منفردة",text:"محاذاة العناصر وتوزيعها منفردة"},{depth:2,id:"محاذاة-المحتوى-وتوزيعه-داخل-الحاوية",text:"محاذاة المحتوى وتوزيعه داخل الحاوية"},{depth:3,id:"محاذاة-المحتوى-على-المحور-العرضي",text:"محاذاة المحتوى على المحور العرضي"},{depth:3,id:"توزيع-المحتوى-على-المحور-الأساسي",text:"توزيع المحتوى على المحور الأساسي"},{depth:3,id:"المحاذاة-والتوزيع-معا-للمحتوى",text:"المحاذاة والتوزيع معًا للمحتوى"},{depth:2,id:"أمثلة-ونصائح-الاستخدام",text:"أمثلة ونصائح الاستخدام"},{depth:3,id:"التصميم-المتجاوب",text:"التصميم المتجاوب"},{depth:3,id:"القيم-التعسفية",text:"القيم التعسّفية"},{depth:3,id:"الإعداد-القائم-على-css-في-tailwind-4",text:"الإعداد القائم على CSS في Tailwind 4"}],c=`<p>التحكّم في محاذاة العناصر وتوزيعها داخل مناطق grid، وفي توزيع المحتوى داخل حاوية grid، أمر جوهري في CSS Grid. ويوفّر Tailwind CSS أصناف أدوات لإدارة هذه الخصائص مباشرةً في HTML.</p>
+<h2 id="تهيئة-حاوية-grid">تهيئة حاوية Grid</h2>
+<p>أولًا، عرّف عنصرًا كحاوية grid باستخدام أدوات العرض <code>grid</code> أو <code>inline-grid</code>.</p>
+<p><em>تهيئة حاوية Grid — المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/9baf9f08b2fa8e2f485e9becf143a4fa8de6342d7b85d38ccbec1c7ee4c64ebb.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid gap-4 rounded-lg bg-gray-100 p-4&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-blue-200 p-4&quot;</span>&gt;</span>Grid item 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-red-200 p-4&quot;</span>&gt;</span>Grid item 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;inline-grid gap-4 rounded-lg bg-gray-100 p-4&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-green-200 p-4&quot;</span>&gt;</span>Inline grid item 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-yellow-200 p-4&quot;</span>&gt;</span>Inline grid item 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>يصبح الأبناء المباشرون لحاوية grid عناصر grid. عرّف بنية grid عبر <code>grid-cols-&lt;number&gt;</code> (للأعمدة) و<code>grid-rows-&lt;number&gt;</code> (للصفوف)، والمسافات عبر <code>gap-&lt;number&gt;</code>. وأدوات المحاذاة والتوزيع يضع هذه العناصر والمسارات في مواضعها.</p>
+<h2 id="محاذاة-العناصر-وتوزيعها-داخل-مناطقها">محاذاة العناصر وتوزيعها داخل مناطقها</h2>
+<p>تُطبَّق هذه الأدوات على حاوية grid (فتؤثّر في جميع الأبناء المباشرين) أو على عناصر grid المفردة (فتتجاوز إعدادات الحاوية)، وتتحكّم في وضع العنصر داخل منطقة grid المخصّصة له.</p>
+<h3 id="محاذاة-العناصر-على-المحور-العرضي">محاذاة العناصر على المحور العرضي</h3>
+<p>تتحكّم خاصية <code>align-items</code> في محاذاة عناصر grid على طول المحور العرضي للحاوية (رأسيًا عادةً في <code>grid-flow-row</code>). تُطبَّق على حاوية grid.</p>
+<p>الأدوات:</p>
+<ul>
+<li><code>items-start</code>: تحاذي العناصر إلى بداية المحور العرضي.</li>
+<li><code>items-end</code>: تحاذي العناصر إلى نهاية المحور العرضي. (وتحاذي <code>items-end-safe</code> إلى البداية إذا لم تكفِ المساحة).</li>
+<li><code>items-center</code>: تحاذي العناصر إلى مركز المحور العرضي. (وتحاذي <code>items-center-safe</code> إلى البداية إذا لم تكفِ المساحة).</li>
+<li><code>items-stretch</code>: تمدّ العناصر لتملأ المحور العرضي.</li>
+<li><code>items-baseline</code>: تحاذي العناصر على خطوط أساسها. (و<code>items-baseline-last</code> لخط الأساس الأخير).</li>
+</ul>
+<p><em>محاذاة العناصر على المحور العرضي — المثال 2 — <a href="https://stevekinney.com/generated/playgrounds/0a97181c22e5c23591c7d3637e8c9bf4c3f5084a1879c24cf6e6651b35f7561a.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid h-32 grid-cols-3 items-center gap-4 rounded-lg bg-gray-100 p-4&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-blue-200 p-4&quot;</span>&gt;</span>Item 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-red-200 p-4&quot;</span>&gt;</span>Item 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-green-200 p-4&quot;</span>&gt;</span>Item 3<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="توزيع-العناصر-على-المحور-السطري">توزيع العناصر على المحور السطري</h3>
+<p>تتحكّم خاصية <code>justify-items</code> في محاذاة عناصر grid على طول محورها السطري (أفقيًا عادةً في <code>grid-flow-row</code>). تُطبَّق على حاوية grid.</p>
+<p>الأدوات:</p>
+<ul>
+<li><code>justify-items-start</code>: توزّع العناصر مقابل بداية محورها السطري.</li>
+<li><code>justify-items-end</code>: توزّع العناصر مقابل نهاية محورها السطري. (وتحاذي <code>justify-items-end-safe</code> إلى البداية إذا لم تكفِ المساحة).</li>
+<li><code>justify-items-center</code>: توزّع العناصر مقابل مركز محورها السطري. (وتحاذي <code>justify-items-center-safe</code> إلى البداية إذا لم تكفِ المساحة).</li>
+<li><code>justify-items-stretch</code>: تمدّ العناصر على طول محورها السطري.</li>
+<li><code>justify-items-normal</code>: الحشد الافتراضي للعناصر.</li>
+</ul>
+<p><em>توزيع العناصر على المحور السطري — المثال 3 — <a href="https://stevekinney.com/generated/playgrounds/e8eb1fd52abc6c7b3701349c2a1ae3ca2e0c7ad3a3b1e04fdc86ab4e3d1dfb3d.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid grid-cols-3 justify-items-center gap-4 rounded-lg bg-gray-100 p-4&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;w-16 rounded bg-blue-200 p-4&quot;</span>&gt;</span>Item 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;w-20 rounded bg-red-200 p-4&quot;</span>&gt;</span>Item 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;w-12 rounded bg-green-200 p-4&quot;</span>&gt;</span>Item 3<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="المحاذاة-والتوزيع-معا">المحاذاة والتوزيع معًا</h3>
+<p>خاصية <code>place-items</code> اختصار لـ <code>align-items</code> و<code>justify-items</code>. تُطبَّق على حاوية grid. القيمة الواحدة تُطبَّق على المحورين، والقيمتان تُطبَّقان على <code>align-items</code> (العرضي) ثم <code>justify-items</code> (السطري).</p>
+<p>الأدوات:</p>
+<ul>
+<li><code>place-items-start</code>: أي <code>align-items: start</code> و<code>justify-items: start</code>.</li>
+<li><code>place-items-end</code>: أي <code>align-items: end</code> و<code>justify-items: end</code>. (ويتوفّر <code>place-items-end-safe</code>).</li>
+<li><code>place-items-center</code>: أي <code>align-items: center</code> و<code>justify-items: center</code>. (ويتوفّر <code>place-items-center-safe</code>).</li>
+<li><code>place-items-baseline</code>: أي <code>align-items: baseline</code> و<code>justify-items: baseline</code>.</li>
+<li><code>place-items-stretch</code>: أي <code>align-items: stretch</code> و<code>justify-items: stretch</code>.</li>
+</ul>
+<p><em>المحاذاة والتوزيع معًا — المثال 4 — <a href="https://stevekinney.com/generated/playgrounds/c1b54a36a2785b4e7303640ee8b1e397e182ee1b6928abba90fdf4027c727e76.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid h-32 grid-cols-3 place-items-center gap-4 rounded-lg bg-gray-100 p-4&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-blue-200 p-3&quot;</span>&gt;</span>Item 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-red-200 p-3&quot;</span>&gt;</span>Item 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-green-200 p-3&quot;</span>&gt;</span>Item 3<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="محاذاة-العناصر-وتوزيعها-منفردة">محاذاة العناصر وتوزيعها منفردة</h3>
+<p>تجاوز إعدادات مستوى الحاوية للعناصر المفردة باستخدام <code>align-self</code> و<code>justify-self</code> و<code>place-self</code>. تُطبَّق مباشرةً على عنصر grid.</p>
+<ul>
+<li><code>align-self</code>: تتجاوز <code>align-items</code> بالنسبة إلى عنصر. الأدوات: <code>self-auto</code> و<code>self-start</code> و<code>self-end</code> و<code>self-center</code> و<code>self-stretch</code> و<code>self-baseline</code> و<code>self-baseline-last</code>.</li>
+<li><code>justify-self</code>: تتجاوز <code>justify-items</code> بالنسبة إلى عنصر. الأدوات: <code>justify-self-auto</code> و<code>justify-self-start</code> و<code>justify-self-center</code> و<code>justify-self-end</code> و<code>justify-self-stretch</code>. (ويتوفّر المتغيّرات الآمنة).</li>
+<li><code>place-self</code>: اختصار لـ <code>align-self</code> و<code>justify-self</code>. الأدوات: <code>place-self-auto</code> و<code>place-self-start</code> و<code>place-self-end</code> و<code>place-self-center</code> و<code>place-self-stretch</code>. (ويتوفّر المتغيّرات الآمنة).</li>
+</ul>
+<p><em>محاذاة العناصر وتوزيعها منفردة — المثال 5 — <a href="https://stevekinney.com/generated/playgrounds/be7360eb06b4a6e00c6387eda0817060c7f6c00d5b259a62217dcce6fdefcf5b.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid h-32 grid-cols-3 items-start justify-items-start gap-4 rounded-lg bg-gray-100 p-4&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-blue-200 p-4&quot;</span>&gt;</span>Item 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;self-center justify-self-end rounded bg-red-200 p-4&quot;</span>&gt;</span>Item 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-green-200 p-4&quot;</span>&gt;</span>Item 3<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h2 id="محاذاة-المحتوى-وتوزيعه-داخل-الحاوية">محاذاة المحتوى وتوزيعه داخل الحاوية</h2>
+<p>توزّع هذه الأدوات مسارات grid (الصفوف/الأعمدة) داخل حاوية grid، وتُستخدم عند وجود مساحة فائضة. تُطبَّق على حاوية grid.</p>
+<h3 id="محاذاة-المحتوى-على-المحور-العرضي">محاذاة المحتوى على المحور العرضي</h3>
+<p>تضع خاصية <code>align-content</code> الصفوف على المحور العرضي عندما يكون مجموع ارتفاع الصفوف أقل من ارتفاع الحاوية.</p>
+<p>الأدوات:</p>
+<ul>
+<li><code>content-start</code> و<code>content-end</code> و<code>content-center</code></li>
+<li><code>content-between</code>: مسافة متساوية بين الصفوف.</li>
+<li><code>content-around</code>: مسافة متساوية حول الصفوف.</li>
+<li><code>content-evenly</code>: مسافة متساوية حول كل صف، بما في ذلك الطرفين.</li>
+<li><code>content-stretch</code>: تملأ الصفوف المساحة المتاحة على المحور العرضي.</li>
+<li><code>content-baseline</code> و<code>content-normal</code></li>
+</ul>
+<p><em>محاذاة المحتوى على المحور العرضي — المثال 6 — <a href="https://stevekinney.com/generated/playgrounds/6caacc9b8c5c7aa2da88115e4649a5d74b44be57689c4403243cac34218eb21c.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid h-64 grid-rows-3 content-center gap-2 rounded-lg bg-gray-100 p-4&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-blue-200 p-4&quot;</span>&gt;</span>Row 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-red-200 p-4&quot;</span>&gt;</span>Row 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded bg-green-200 p-4&quot;</span>&gt;</span>Row 3<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="توزيع-المحتوى-على-المحور-الأساسي">توزيع المحتوى على المحور الأساسي</h3>
+<p>تضع خاصية <code>justify-content</code> الأعمدة (أو الشبكة) على المحور الأساسي عندما يكون مجموع عرض الأعمدة أقل من عرض الحاوية.</p>
+<p>الأدوات:</p>
+<ul>
+<li><code>justify-start</code> و<code>justify-end</code> (ويتوفّر <code>justify-end-safe</code>).</li>
+<li><code>justify-center</code> (ويتوفّر <code>justify-center-safe</code>).</li>
+<li><code>justify-between</code>: مسافة متساوية بين المسارات.</li>
+<li><code>justify-around</code>: مسافة متساوية حول المسارات.</li>
+<li><code>justify-evenly</code>: مسافة متساوية حول كل مسار، بما في ذلك الطرفين.</li>
+<li><code>justify-stretch</code>: تملأ المسارات المساحة المتاحة على المحور الأساسي.</li>
+<li><code>justify-normal</code> و<code>justify-baseline</code></li>
+</ul>
+<p><em>توزيع المحتوى على المحور الأساسي — المثال 7 — <a href="https://stevekinney.com/generated/playgrounds/cf0218c414186d05380d90507ef9092f1a36231ff9146a7dce7cd156b43d57de.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid w-64 grid-cols-3 justify-center gap-2 rounded-lg bg-gray-100 p-4&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-1 rounded bg-blue-200 p-4&quot;</span>&gt;</span>Item 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-1 rounded bg-red-200 p-4&quot;</span>&gt;</span>Item 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="المحاذاة-والتوزيع-معا-للمحتوى">المحاذاة والتوزيع معًا للمحتوى</h3>
+<p>خاصية <code>place-content</code> اختصار لـ <code>align-content</code> و<code>justify-content</code>. تُطبَّق على حاوية grid. قيمة واحدة للمحورين، وقيمتان لـ <code>align-content</code> (العرضي) ثم <code>justify-content</code> (الأساسي).</p>
+<p>الأدوات:</p>
+<ul>
+<li><code>place-content-start</code> و<code>place-content-end</code> (ويتوفّر <code>place-content-end-safe</code>).</li>
+<li><code>place-content-center</code> (ويتوفّر <code>place-content-center-safe</code>).</li>
+<li><code>place-content-baseline</code> و<code>place-content-stretch</code></li>
+<li><code>place-content-between</code> و<code>place-content-around</code> و<code>place-content-evenly</code></li>
+</ul>
+<p><em>المحاذاة والتوزيع معًا للمحتوى — المثال 8 — <a href="https://stevekinney.com/generated/playgrounds/e0523c9a604c1edca516e897ffa1414a2dfd12d6ee8def23172b7186bfded96f.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid h-64 w-64 grid-cols-3 place-content-center gap-2 rounded-lg bg-gray-100 p-4&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-1 rounded bg-blue-200 p-4&quot;</span>&gt;</span>Item 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-1 rounded bg-red-200 p-4&quot;</span>&gt;</span>Item 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h2 id="أمثلة-ونصائح-الاستخدام">أمثلة ونصائح الاستخدام</h2>
+<h3 id="التصميم-المتجاوب">التصميم المتجاوب</h3>
+<p>تدعم جميع أدوات محاذاة Grid متغيّرات متجاوبة (مثل <code>md:justify-items-start</code>) للتخطيطات المتكيّفة. وتُطبَّق الأدوات غير المسبوقة بالبادئة على جميع أحجام الشاشات، بينما تُطبَّق الأدوات المسبوقة بالبادئة عند نقطة التوقّف المحدَّدة وما فوقها.</p>
+<p><em>التصميم المتجاوب — المثال 9 — <a href="https://stevekinney.com/generated/playgrounds/b3c3b1d8ca13ec06e0814e49881d374872c3b28c2376b9b148ad54ecad9aac4e.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid grid-cols-1 justify-items-center gap-4 rounded-lg bg-gray-100 p-4 md:grid-cols-2 md:justify-items-start lg:grid-cols-3&quot;</span>
+&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;min-h-[80px] rounded bg-blue-200 p-4&quot;</span>&gt;</span>Grid item 1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;min-h-[80px] rounded bg-red-200 p-4&quot;</span>&gt;</span>Grid item 2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;min-h-[80px] rounded bg-green-200 p-4&quot;</span>&gt;</span>Grid item 3<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;min-h-[80px] rounded bg-yellow-200 p-4&quot;</span>&gt;</span>Grid item 4<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;min-h-[80px] rounded bg-purple-200 p-4&quot;</span>&gt;</span>Grid item 5<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;min-h-[80px] rounded bg-pink-200 p-4&quot;</span>&gt;</span>Grid item 6<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تُوسَّط العناصر افتراضيًا، ثم تُحاذى إلى البداية بـ <code>justify-items-start</code> على الشاشات المتوسطة فما فوق.</p>
+<h3 id="القيم-التعسفية">القيم التعسّفية</h3>
+<p>استخدم القيم التعسّفية <code>[]</code> لقيم CSS محدّدة غير موجودة في السمة الافتراضية، وإن كان استخدامها في المحاذاة أقل شيوعًا منها في الألوان أو المسافات.</p>
+<h3 id="الإعداد-القائم-على-css-في-tailwind-4">الإعداد القائم على CSS في Tailwind 4</h3>
+<p>يُبرز Tailwind 4 الإعداد القائم على CSS عبر <code>@theme</code> في ملف CSS لديك. فبينما تُستخدم أدوات المحاذاة في HTML، تبقى قيمها الأساسية (مثل المسافات في <code>gap-&lt;number&gt;</code>) معرَّفةً عبر متغيّرات CSS قابلة للتخصيص في <code>@theme</code>.</p>
+`,p={book:s,chapter:a,chapterTitle:n,slug:e,title:l,headings:t,html:c};export{s as book,a as chapter,n as chapterTitle,p as default,t as headings,c as html,e as slug,l as title};

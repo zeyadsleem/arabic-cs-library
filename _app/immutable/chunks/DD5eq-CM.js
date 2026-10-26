@@ -1,0 +1,1062 @@
+const s="kinney",a="react-typescript",n="React مع TypeScript",l="streaming-ssr-typescript",p="التصيير من جانب الخادم المتدفق مع TypeScript",t=[{depth:2,id:"فهم-التصيير-المتدفق-من-جانب-الخادم",text:"فهم التصيير المتدفق من جانب الخادم"},{depth:3,id:"النموذج-الذهني-للتدفق",text:"النموذج الذهني للتدفق"},{depth:2,id:"إعداد-التصيير-المتدفق-مع-typescript",text:"إعداد التصيير المتدفق مع TypeScript"},{depth:3,id:"إعداد-الخادم-باستخدام-تدفقات-nodejs",text:"إعداد الخادم باستخدام تدفقات Node.js"},{depth:3,id:"قالب-html-آمن-الأنواع",text:"قالب HTML آمن الأنواع"},{depth:3,id:"خادم-express-مع-التدفق",text:"خادم Express مع التدفق"},{depth:2,id:"أنماط-الترطيب-التدريجي",text:"أنماط الترطيب التدريجي"},{depth:3,id:"مكون-حد-الترطيب",text:"مكوّن حدّ الترطيب"},{depth:3,id:"أنواع-التحسين-التدريجي",text:"أنواع التحسين التدريجي"},{depth:2,id:"أنماط-تدفق-البيانات",text:"أنماط تدفق البيانات"},{depth:3,id:"جالب-البيانات-المتدفق",text:"جالب البيانات المتدفق"},{depth:3,id:"مكونات-الخادم-مع-التدفق",text:"مكوّنات الخادم مع التدفق"},{depth:2,id:"حدود-suspense-ومعالجة-الأخطاء",text:"حدود Suspense ومعالجة الأخطاء"},{depth:3,id:"حدود-أخطاء-آمنة-الأنواع",text:"حدود أخطاء آمنة الأنواع"},{depth:3,id:"أنماط-suspense-المتداخلة",text:"أنماط Suspense المتداخلة"},{depth:2,id:"تحسين-أداء-التدفق",text:"تحسين أداء التدفق"},{depth:3,id:"ذاكرة-التخزين-المؤقت-المتدفقة",text:"ذاكرة التخزين المؤقت المتدفقة"},{depth:3,id:"استراتيجيات-الجلب-المسبق",text:"استراتيجيات الجلب المسبق"},{depth:2,id:"المراقبة-وتصحيح-الأخطاء",text:"المراقبة وتصحيح الأخطاء"},{depth:3,id:"مقاييس-الأداء",text:"مقاييس الأداء"},{depth:2,id:"النشر-في-بيئة-الإنتاج",text:"النشر في بيئة الإنتاج"},{depth:3,id:"إعدادات-البناء",text:"إعدادات البناء"},{depth:3,id:"إعدادات-cdn-والحوسبة-الطرفية",text:"إعدادات CDN والحوسبة الطرفية"},{depth:2,id:"خاتمة",text:"خاتمة"}],e=`<p>إن التصيير من جانب الخادم المتدفق (Streaming SSR) في React 19 يشبه الانتقال من اتصال هاتفي بطيء إلى ألياف بصرية فائقة السرعة. فبدلًا من انتظار تصيير صفحتك بالكامل على الخادم قبل إرسال أي شيء، يمكنك أن تبدأ في تدفق HTML إلى المتصفح فورًا، وترسل الأجزاء تدريجيًا فور جاهزيتها. لكن هنا يصبح الأمر مثيرًا للاهتمام: فدمج هذا الأسلوب مع TypeScript يعني أنك تحتاج إلى التفكير في أنواع بيانات تعمل عبر الحد الفاصل بين الخادم والعميل، والتعامل مع حالات الترطيب الجزئي، وضمان سلامة الأنواع أثناء التحسين التدريجي.</p>
+<p>لنغص في تفاصيل كيفية عمل التصيير المتدفق مع TypeScript، بدءًا من الإعداد الأساسي وصولًا إلى الأنماط المتقدمة التي ستجعل تطبيقاتك تبدو فورية.</p>
+<h2 id="فهم-التصيير-المتدفق-من-جانب-الخادم">فهم التصيير المتدفق من جانب الخادم</h2>
+<p>يُصيّر التصيير التقليدي من جانب الخادم كل شيء على الخادم، ثم يرسل كتلة HTML واحدة كبيرة. أما التصيير المتدفق فيرسل HTML على شكل قطع فور جاهزيتها، ما يعني أن المستخدمين يرون المحتوى بسرعة أكبر، وأن زمن الوصول إلى البايت الأول (TTFB) يتحسن تحسنًا هائلًا.</p>
+<h3 id="النموذج-الذهني-للتدفق">النموذج الذهني للتدفق</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Traditional SSR: Everything waits for the slowest part</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">TraditionalPage</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [user, posts, recommendations] = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([
+    <span class="hljs-title function_">fetchUser</span>(), <span class="hljs-comment">// 100ms</span>
+    <span class="hljs-title function_">fetchPosts</span>(), <span class="hljs-comment">// 500ms</span>
+    <span class="hljs-title function_">fetchRecommendations</span>(), <span class="hljs-comment">// 2000ms</span>
+  ]);
+
+  <span class="hljs-comment">// User waits 2000ms before seeing anything</span>
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">UserProfile</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{user}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PostList</span> <span class="hljs-attr">posts</span>=<span class="hljs-string">{posts}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Recommendations</span> <span class="hljs-attr">items</span>=<span class="hljs-string">{recommendations}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Streaming SSR: Send what&#x27;s ready immediately</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">StreamingPage</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">UserProfileSkeleton</span> /&gt;</span>}&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">UserProfile</span> /&gt;</span> {/* Streams when ready (100ms) */}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">PostListSkeleton</span> /&gt;</span>}&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">PostList</span> /&gt;</span> {/* Streams when ready (500ms) */}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">RecommendationsSkeleton</span> /&gt;</span>}&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">Recommendations</span> /&gt;</span> {/* Streams when ready (2000ms) */}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="إعداد-التصيير-المتدفق-مع-typescript">إعداد التصيير المتدفق مع TypeScript</h2>
+<p>لنبنِ إعدادًا للتصيير المتدفق آمن الأنواع من الصفر.</p>
+<h3 id="إعداد-الخادم-باستخدام-تدفقات-nodejs">إعداد الخادم باستخدام تدفقات Node.js</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// server/streaming-renderer.ts</span>
+<span class="hljs-keyword">import</span> { renderToPipeableStream } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-dom/server&#x27;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Transform</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;stream&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">ReactElement</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">StreamingOptions</span> {
+  <span class="hljs-attr">bootstrapScripts</span>?: <span class="hljs-built_in">string</span>[];
+  <span class="hljs-attr">onShellReady</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onAllReady</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onError</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createStreamingRenderer</span>(<span class="hljs-params"><span class="hljs-attr">element</span>: <span class="hljs-title class_">ReactElement</span>, <span class="hljs-attr">options</span>: <span class="hljs-title class_">StreamingOptions</span> = {}</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">NodeJS</span>.<span class="hljs-property">ReadableStream</span>&gt;(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> { pipe, abort } = <span class="hljs-title function_">renderToPipeableStream</span>(element, {
+      <span class="hljs-attr">bootstrapScripts</span>: options.<span class="hljs-property">bootstrapScripts</span>,
+
+      <span class="hljs-title function_">onShellReady</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-comment">// Shell is ready, start streaming</span>
+        options.<span class="hljs-property">onShellReady</span>?.();
+        <span class="hljs-title function_">resolve</span>(pipe);
+      },
+
+      <span class="hljs-title function_">onShellError</span>(<span class="hljs-params">error</span>) {
+        <span class="hljs-comment">// Error before shell, can&#x27;t recover</span>
+        <span class="hljs-title function_">reject</span>(error);
+      },
+
+      <span class="hljs-title function_">onError</span>(<span class="hljs-params">error</span>) {
+        <span class="hljs-comment">// Error during streaming</span>
+        options.<span class="hljs-property">onError</span>?.(error);
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Streaming error:&#x27;</span>, error);
+      },
+
+      <span class="hljs-title function_">onAllReady</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-comment">// Everything is rendered</span>
+        options.<span class="hljs-property">onAllReady</span>?.();
+      },
+    });
+
+    <span class="hljs-comment">// Timeout to prevent hanging</span>
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">abort</span>();
+      <span class="hljs-title function_">reject</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Render timeout&#x27;</span>));
+    }, <span class="hljs-number">10000</span>);
+  });
+}
+</code></pre>
+<h3 id="قالب-html-آمن-الأنواع">قالب HTML آمن الأنواع</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// server/html-template.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">HtmlTemplateOptions</span> {
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">meta</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt;;
+  <span class="hljs-attr">links</span>?: <span class="hljs-title class_">Array</span>&lt;{ <span class="hljs-attr">rel</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">href</span>: <span class="hljs-built_in">string</span> }&gt;;
+  <span class="hljs-attr">scripts</span>?: <span class="hljs-title class_">Array</span>&lt;{ <span class="hljs-attr">src</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">async</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-attr">defer</span>?: <span class="hljs-built_in">boolean</span> }&gt;;
+  <span class="hljs-attr">bodyAttributes</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt;;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createHtmlTemplate</span>(<span class="hljs-params"><span class="hljs-attr">options</span>: <span class="hljs-title class_">HtmlTemplateOptions</span></span>): {
+  <span class="hljs-attr">head</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">tail</span>: <span class="hljs-built_in">string</span>;
+} {
+  <span class="hljs-keyword">const</span> metaTags = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(options.<span class="hljs-property">meta</span> || {})
+    .<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">[name, content]</span>) =&gt;</span> <span class="hljs-string">\`&lt;meta name=&quot;<span class="hljs-subst">\${name}</span>&quot; content=&quot;<span class="hljs-subst">\${content}</span>&quot;&gt;\`</span>)
+    .<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;\\n&#x27;</span>);
+
+  <span class="hljs-keyword">const</span> linkTags = (options.<span class="hljs-property">links</span> || [])
+    .<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">link</span>) =&gt;</span> <span class="hljs-string">\`&lt;link rel=&quot;<span class="hljs-subst">\${link.rel}</span>&quot; href=&quot;<span class="hljs-subst">\${link.href}</span>&quot;&gt;\`</span>)
+    .<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;\\n&#x27;</span>);
+
+  <span class="hljs-keyword">const</span> scriptTags = (options.<span class="hljs-property">scripts</span> || [])
+    .<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">script</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> attrs = [<span class="hljs-string">\`src=&quot;<span class="hljs-subst">\${script.src}</span>&quot;\`</span>, script.<span class="hljs-property">async</span> &amp;&amp; <span class="hljs-string">&#x27;async&#x27;</span>, script.<span class="hljs-property">defer</span> &amp;&amp; <span class="hljs-string">&#x27;defer&#x27;</span>]
+        .<span class="hljs-title function_">filter</span>(<span class="hljs-title class_">Boolean</span>)
+        .<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27; &#x27;</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-string">\`&lt;script <span class="hljs-subst">\${attrs}</span>&gt;&lt;/script&gt;\`</span>;
+    })
+    .<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;\\n&#x27;</span>);
+
+  <span class="hljs-keyword">const</span> bodyAttrs = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(options.<span class="hljs-property">bodyAttributes</span> || {})
+    .<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">[key, value]</span>) =&gt;</span> <span class="hljs-string">\`<span class="hljs-subst">\${key}</span>=&quot;<span class="hljs-subst">\${value}</span>&quot;\`</span>)
+    .<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27; &#x27;</span>);
+
+  <span class="hljs-keyword">const</span> head = <span class="hljs-string">\`&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;<span class="hljs-subst">\${options.title}</span>&lt;/title&gt;
+  <span class="hljs-subst">\${metaTags}</span>
+  <span class="hljs-subst">\${linkTags}</span>
+&lt;/head&gt;
+&lt;body <span class="hljs-subst">\${bodyAttrs}</span>&gt;
+  &lt;div id=&quot;root&quot;&gt;\`</span>;
+
+  <span class="hljs-keyword">const</span> tail = <span class="hljs-string">\`&lt;/div&gt;
+  <span class="hljs-subst">\${scriptTags}</span>
+&lt;/body&gt;
+\`</span>;
+
+  <span class="hljs-keyword">return</span> { head, tail };
+}
+</code></pre>
+<h3 id="خادم-express-مع-التدفق">خادم Express مع التدفق</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// server/app.ts</span>
+<span class="hljs-keyword">import</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;express&#x27;</span>;
+<span class="hljs-keyword">import</span> { createStreamingRenderer } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./streaming-renderer&#x27;</span>;
+<span class="hljs-keyword">import</span> { createHtmlTemplate } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./html-template&#x27;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">App</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../src/App&#x27;</span>;
+
+<span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">RequestContext</span> {
+  <span class="hljs-attr">user</span>?: <span class="hljs-title class_">User</span>;
+  <span class="hljs-attr">locale</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">theme</span>: <span class="hljs-string">&#x27;light&#x27;</span> | <span class="hljs-string">&#x27;dark&#x27;</span>;
+}
+
+<span class="hljs-comment">// Type-safe server context</span>
+app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/&#x27;</span>, <span class="hljs-title function_">async</span> (req, res) =&gt; {
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">context</span>: <span class="hljs-title class_">RequestContext</span> = {
+    <span class="hljs-attr">user</span>: req.<span class="hljs-property">session</span>?.<span class="hljs-property">user</span>,
+    <span class="hljs-attr">locale</span>: req.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;accept-language&#x27;</span>]?.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;,&#x27;</span>)[<span class="hljs-number">0</span>] || <span class="hljs-string">&#x27;en&#x27;</span>,
+    <span class="hljs-attr">theme</span>: req.<span class="hljs-property">cookies</span>.<span class="hljs-property">theme</span> || <span class="hljs-string">&#x27;light&#x27;</span>,
+  };
+
+  <span class="hljs-keyword">const</span> { head, tail } = <span class="hljs-title function_">createHtmlTemplate</span>({
+    <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;My Streaming App&#x27;</span>,
+    <span class="hljs-attr">meta</span>: {
+      <span class="hljs-attr">description</span>: <span class="hljs-string">&#x27;A streaming SSR React app&#x27;</span>,
+      <span class="hljs-attr">viewport</span>: <span class="hljs-string">&#x27;width=device-width, initial-scale=1&#x27;</span>,
+    },
+    <span class="hljs-attr">scripts</span>: [{ <span class="hljs-attr">src</span>: <span class="hljs-string">&#x27;/static/js/bundle.js&#x27;</span>, <span class="hljs-attr">defer</span>: <span class="hljs-literal">true</span> }],
+  });
+
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-comment">// Write the head immediately</span>
+    res.<span class="hljs-title function_">write</span>(head);
+
+    <span class="hljs-comment">// Create the React app with context</span>
+    <span class="hljs-keyword">const</span> appElement = <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">App</span> <span class="hljs-attr">context</span>=<span class="hljs-string">{context}</span> /&gt;</span></span>;
+
+    <span class="hljs-comment">// Start streaming</span>
+    <span class="hljs-keyword">const</span> stream = <span class="hljs-keyword">await</span> <span class="hljs-title function_">createStreamingRenderer</span>(appElement, {
+      <span class="hljs-attr">bootstrapScripts</span>: [<span class="hljs-string">&#x27;/static/js/bundle.js&#x27;</span>],
+
+      <span class="hljs-title function_">onShellReady</span>(<span class="hljs-params"></span>) {
+        res.<span class="hljs-title function_">status</span>(<span class="hljs-number">200</span>);
+        res.<span class="hljs-title function_">set</span>({
+          <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;text/html&#x27;</span>,
+          <span class="hljs-string">&#x27;Transfer-Encoding&#x27;</span>: <span class="hljs-string">&#x27;chunked&#x27;</span>,
+          <span class="hljs-string">&#x27;Cache-Control&#x27;</span>: <span class="hljs-string">&#x27;no-cache&#x27;</span>,
+        });
+      },
+
+      <span class="hljs-title function_">onError</span>(<span class="hljs-params">error</span>) {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Streaming error:&#x27;</span>, error);
+        <span class="hljs-comment">// Inject error into HTML comment</span>
+        res.<span class="hljs-title function_">write</span>(<span class="hljs-string">\`&lt;!-- Error: <span class="hljs-subst">\${error.message}</span> --&gt;\`</span>);
+      },
+    });
+
+    <span class="hljs-comment">// Pipe the stream to response</span>
+    stream.<span class="hljs-title function_">pipe</span>(res);
+
+    <span class="hljs-comment">// When streaming is done, write the tail</span>
+    stream.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;end&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+      res.<span class="hljs-title function_">write</span>(tail);
+      res.<span class="hljs-title function_">end</span>();
+    });
+  } <span class="hljs-keyword">catch</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Fatal error:&#x27;</span>, error);
+    res.<span class="hljs-title function_">status</span>(<span class="hljs-number">500</span>).<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Internal Server Error&#x27;</span>);
+  }
+});
+
+app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Server running on http://localhost:3000&#x27;</span>);
+});
+</code></pre>
+<h2 id="أنماط-الترطيب-التدريجي">أنماط الترطيب التدريجي</h2>
+<p>مع التصيير المتدفق، تترطّب أجزاء مختلفة من تطبيقك في أوقات مختلفة. ويساعدك TypeScript في إدارة هذا التعقيد.</p>
+<h3 id="مكون-حد-الترطيب">مكوّن حدّ الترطيب</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// components/HydrationBoundary.tsx</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Suspense</span>, lazy, <span class="hljs-title class_">ReactNode</span>, <span class="hljs-title class_">ComponentType</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">HydrationBoundaryProps</span>&lt;T&gt; {
+  <span class="hljs-attr">fallback</span>: <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">load</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;{ <span class="hljs-attr">default</span>: <span class="hljs-title class_">ComponentType</span>&lt;T&gt; }&gt;;
+  <span class="hljs-attr">props</span>: T;
+  <span class="hljs-attr">priority</span>?: <span class="hljs-string">&#x27;high&#x27;</span> | <span class="hljs-string">&#x27;medium&#x27;</span> | <span class="hljs-string">&#x27;low&#x27;</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title class_">HydrationBoundary</span>&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-built_in">object</span>&gt;({
+  fallback,
+  load,
+  props,
+  priority = <span class="hljs-string">&#x27;medium&#x27;</span>,
+}: <span class="hljs-title class_">HydrationBoundaryProps</span>&lt;T&gt;) {
+  <span class="hljs-comment">// Lazy load with priority hints</span>
+  <span class="hljs-keyword">const</span> <span class="hljs-title class_">Component</span> = <span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span> (priority === <span class="hljs-string">&#x27;high&#x27;</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">load</span>();
+    }
+
+    <span class="hljs-comment">// Defer lower priority components</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> timeout = priority === <span class="hljs-string">&#x27;medium&#x27;</span> ? <span class="hljs-number">0</span> : <span class="hljs-number">100</span>;
+      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">resolve</span>(<span class="hljs-title function_">load</span>()), timeout);
+    });
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{fallback}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Component</span> {<span class="hljs-attr">...props</span>} /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Usage with type safety</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserProfileProps</span> {
+  <span class="hljs-attr">userId</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Page</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    &lt;<span class="hljs-title class_">HydrationBoundary</span>&lt;<span class="hljs-title class_">UserProfileProps</span>&gt;
+      fallback={<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">UserProfileSkeleton</span> /&gt;</span></span>}
+      load={<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;./UserProfile&#x27;</span>)}
+      props={{ <span class="hljs-attr">userId</span>: <span class="hljs-string">&#x27;123&#x27;</span> }}
+      priority=<span class="hljs-string">&quot;high&quot;</span>
+    /&gt;
+  );
+}
+</code></pre>
+<h3 id="أنواع-التحسين-التدريجي">أنواع التحسين التدريجي</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// types/progressive.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProgressiveComponentProps</span>&lt;T = {}&gt; {
+  <span class="hljs-comment">// Server-side props (always available)</span>
+  <span class="hljs-attr">serverProps</span>: T;
+  <span class="hljs-comment">// Client-side props (available after hydration)</span>
+  <span class="hljs-attr">clientProps</span>?: <span class="hljs-title class_">Partial</span>&lt;T&gt;;
+  <span class="hljs-comment">// Hydration state</span>
+  <span class="hljs-attr">isHydrated</span>: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-comment">// Hook for progressive enhancement</span>
+<span class="hljs-keyword">import</span> { useEffect, useState } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> useProgressiveEnhancement&lt;T&gt;(<span class="hljs-attr">serverValue</span>: T, <span class="hljs-attr">enhancedValue</span>: <span class="hljs-function">() =&gt;</span> T): T {
+  <span class="hljs-keyword">const</span> [value, setValue] = <span class="hljs-title function_">useState</span>(serverValue);
+  <span class="hljs-keyword">const</span> [isHydrated, setIsHydrated] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-title function_">setIsHydrated</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-title function_">setValue</span>(<span class="hljs-title function_">enhancedValue</span>());
+  }, []);
+
+  <span class="hljs-keyword">return</span> value;
+}
+
+<span class="hljs-comment">// Progressive image component</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProgressiveImageProps</span> {
+  <span class="hljs-attr">src</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">placeholder</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">alt</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">width</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">height</span>?: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">ProgressiveImage</span>(<span class="hljs-params">{ src, placeholder, alt, width, height }: <span class="hljs-title class_">ProgressiveImageProps</span></span>) {
+  <span class="hljs-keyword">const</span> imageSrc = <span class="hljs-title function_">useProgressiveEnhancement</span>(placeholder, <span class="hljs-function">() =&gt;</span> src);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{imageSrc}</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">{alt}</span> <span class="hljs-attr">width</span>=<span class="hljs-string">{width}</span> <span class="hljs-attr">height</span>=<span class="hljs-string">{height}</span> <span class="hljs-attr">loading</span>=<span class="hljs-string">&quot;lazy&quot;</span> <span class="hljs-attr">decoding</span>=<span class="hljs-string">&quot;async&quot;</span> /&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="أنماط-تدفق-البيانات">أنماط تدفق البيانات</h2>
+<p>تتطلب إدارة جلب البيانات مع التصيير المتدفق دقة في كتابة الأنواع للتعامل مع الحالات الجزئية.</p>
+<h3 id="جالب-البيانات-المتدفق">جالب البيانات المتدفق</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// hooks/useStreamingData.ts</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">StreamingState</span>&lt;T&gt; =
+  | { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;pending&#x27;</span> }
+  | { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;streaming&#x27;</span>; <span class="hljs-attr">data</span>: <span class="hljs-title class_">Partial</span>&lt;T&gt; }
+  | { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;complete&#x27;</span>; <span class="hljs-attr">data</span>: T }
+  | { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;error&#x27;</span>; <span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span> };
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> useStreamingData&lt;T&gt;(<span class="hljs-attr">streamPromise</span>: <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">ReadableStream</span>&lt;T&gt;&gt;): <span class="hljs-title class_">StreamingState</span>&lt;T&gt; {
+  <span class="hljs-keyword">const</span> [state, setState] = useState&lt;<span class="hljs-title class_">StreamingState</span>&lt;T&gt;&gt;({ <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;pending&#x27;</span> });
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">reader</span>: <span class="hljs-title class_">ReadableStreamDefaultReader</span>&lt;T&gt;;
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">startStreaming</span>(<span class="hljs-params"></span>) {
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> stream = <span class="hljs-keyword">await</span> streamPromise;
+        reader = stream.<span class="hljs-title function_">getReader</span>();
+
+        <span class="hljs-keyword">let</span> <span class="hljs-attr">accumulated</span>: <span class="hljs-title class_">Partial</span>&lt;T&gt; = {};
+
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+          <span class="hljs-keyword">const</span> { done, value } = <span class="hljs-keyword">await</span> reader.<span class="hljs-title function_">read</span>();
+
+          <span class="hljs-keyword">if</span> (done) {
+            <span class="hljs-title function_">setState</span>({ <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;complete&#x27;</span>, <span class="hljs-attr">data</span>: accumulated <span class="hljs-keyword">as</span> T });
+            <span class="hljs-keyword">break</span>;
+          }
+
+          accumulated = { ...accumulated, ...value };
+          <span class="hljs-title function_">setState</span>({ <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;streaming&#x27;</span>, <span class="hljs-attr">data</span>: accumulated });
+        }
+      } <span class="hljs-keyword">catch</span> (error) {
+        <span class="hljs-title function_">setState</span>({ <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-attr">error</span>: error <span class="hljs-keyword">as</span> <span class="hljs-title class_">Error</span> });
+      }
+    }
+
+    <span class="hljs-title function_">startStreaming</span>();
+
+    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> {
+      reader?.<span class="hljs-title function_">cancel</span>();
+    };
+  }, [streamPromise]);
+
+  <span class="hljs-keyword">return</span> state;
+}
+
+<span class="hljs-comment">// Type-safe streaming response</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">StreamingResponse</span>&lt;T&gt; {
+  <span class="hljs-title function_">stream</span>(): <span class="hljs-title class_">ReadableStream</span>&lt;T&gt;;
+  <span class="hljs-title function_">json</span>(): <span class="hljs-title class_">Promise</span>&lt;T&gt;;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> fetchStreaming&lt;T&gt;(
+  <span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>,
+  <span class="hljs-attr">options</span>?: <span class="hljs-title class_">RequestInit</span>,
+): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">StreamingResponse</span>&lt;T&gt;&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(url, {
+    ...options,
+    <span class="hljs-attr">headers</span>: {
+      ...options?.<span class="hljs-property">headers</span>,
+      <span class="hljs-title class_">Accept</span>: <span class="hljs-string">&#x27;application/x-ndjson&#x27;</span>,
+    },
+  });
+
+  <span class="hljs-keyword">if</span> (!response.<span class="hljs-property">ok</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">\`HTTP error! status: <span class="hljs-subst">\${response.status}</span>\`</span>);
+  }
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-title function_">stream</span>(): <span class="hljs-title class_">ReadableStream</span>&lt;T&gt; {
+      <span class="hljs-keyword">const</span> reader = response.<span class="hljs-property">body</span>!.<span class="hljs-title function_">getReader</span>();
+      <span class="hljs-keyword">const</span> decoder = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextDecoder</span>();
+
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReadableStream</span>&lt;T&gt;({
+        <span class="hljs-keyword">async</span> <span class="hljs-title function_">start</span>(<span class="hljs-params">controller</span>) {
+          <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+            <span class="hljs-keyword">const</span> { done, value } = <span class="hljs-keyword">await</span> reader.<span class="hljs-title function_">read</span>();
+
+            <span class="hljs-keyword">if</span> (done) {
+              controller.<span class="hljs-title function_">close</span>();
+              <span class="hljs-keyword">break</span>;
+            }
+
+            <span class="hljs-keyword">const</span> text = decoder.<span class="hljs-title function_">decode</span>(value);
+            <span class="hljs-keyword">const</span> lines = text.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;\\n&#x27;</span>).<span class="hljs-title function_">filter</span>(<span class="hljs-title class_">Boolean</span>);
+
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> line <span class="hljs-keyword">of</span> lines) {
+              <span class="hljs-keyword">try</span> {
+                <span class="hljs-keyword">const</span> data = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(line) <span class="hljs-keyword">as</span> T;
+                controller.<span class="hljs-title function_">enqueue</span>(data);
+              } <span class="hljs-keyword">catch</span> (e) {
+                <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Failed to parse streaming data:&#x27;</span>, e);
+              }
+            }
+          }
+        },
+      });
+    },
+
+    <span class="hljs-keyword">async</span> <span class="hljs-title function_">json</span>(): <span class="hljs-title class_">Promise</span>&lt;T&gt; {
+      <span class="hljs-keyword">const</span> text = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">text</span>();
+      <span class="hljs-keyword">return</span> <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(text);
+    },
+  };
+}
+</code></pre>
+<h3 id="مكونات-الخادم-مع-التدفق">مكوّنات الخادم مع التدفق</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// app/components/StreamingDataList.tsx</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Suspense</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">DataItem</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">content</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">metadata</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt;;
+}
+
+<span class="hljs-comment">// Server Component that streams data</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">StreamingDataList</span>(<span class="hljs-params">{ query }: { query: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-comment">// This runs on the server and can stream data</span>
+  <span class="hljs-keyword">const</span> dataStream = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchStreamingData</span>(query);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;data-list&quot;</span>&gt;</span>
+      {await dataStream.map(async (chunk) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{chunk.id}</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">ItemSkeleton</span> /&gt;</span>}&gt;
+          <span class="hljs-tag">&lt;<span class="hljs-name">DataItem</span> <span class="hljs-attr">data</span>=<span class="hljs-string">{await</span> <span class="hljs-attr">chunk</span>} /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>
+      ))}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Individual item component</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">DataItem</span>(<span class="hljs-params">{ data }: { data: <span class="hljs-built_in">Promise</span>&lt;DataItem&gt; }</span>) {
+  <span class="hljs-keyword">const</span> item = <span class="hljs-keyword">await</span> data;
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">article</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;data-item&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>{item.title}<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{item.content}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      {item.metadata &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">dl</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;metadata&quot;</span>&gt;</span>
+          {Object.entries(item.metadata).map(([key, value]) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{key}</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">dt</span>&gt;</span>{key}<span class="hljs-tag">&lt;/<span class="hljs-name">dt</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">dd</span>&gt;</span>{String(value)}<span class="hljs-tag">&lt;/<span class="hljs-name">dd</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          ))}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dl</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Skeleton component for loading state</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ItemSkeleton</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;skeleton&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;skeleton-title&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;skeleton-content&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="حدود-suspense-ومعالجة-الأخطاء">حدود <code>Suspense</code> ومعالجة الأخطاء</h2>
+<p>يتطلب التصيير المتدفق وضعًا دقيقًا لحدود الأخطاء وكتابة أنواعها بعناية.</p>
+<h3 id="حدود-أخطاء-آمنة-الأنواع">حدود أخطاء آمنة الأنواع</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// components/StreamingErrorBoundary.tsx</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Component</span>, <span class="hljs-title class_">ReactNode</span>, <span class="hljs-title class_">ErrorInfo</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ErrorBoundaryState</span> {
+  <span class="hljs-attr">hasError</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">error</span>?: <span class="hljs-title class_">Error</span>;
+  <span class="hljs-attr">errorInfo</span>?: <span class="hljs-title class_">ErrorInfo</span>;
+  <span class="hljs-attr">isStreaming</span>: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ErrorBoundaryProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">fallback</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>, <span class="hljs-attr">retry</span>: () =&gt; <span class="hljs-built_in">void</span></span>) =&gt;</span> <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">onError</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>, <span class="hljs-attr">errorInfo</span>: <span class="hljs-title class_">ErrorInfo</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">streamingFallback</span>?: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StreamingErrorBoundary</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Component</span>&lt;<span class="hljs-title class_">ErrorBoundaryProps</span>, <span class="hljs-title class_">ErrorBoundaryState</span>&gt; {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-title class_">ErrorBoundaryProps</span></span>) {
+    <span class="hljs-variable language_">super</span>(props);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = {
+      <span class="hljs-attr">hasError</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">isStreaming</span>: <span class="hljs-keyword">typeof</span> <span class="hljs-variable language_">window</span> === <span class="hljs-string">&#x27;undefined&#x27;</span>,
+    };
+  }
+
+  <span class="hljs-keyword">static</span> <span class="hljs-title function_">getDerivedStateFromError</span>(<span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>): <span class="hljs-title class_">Partial</span>&lt;<span class="hljs-title class_">ErrorBoundaryState</span>&gt; {
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">hasError</span>: <span class="hljs-literal">true</span>, error };
+  }
+
+  <span class="hljs-title function_">componentDidCatch</span>(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>, <span class="hljs-attr">errorInfo</span>: <span class="hljs-title class_">ErrorInfo</span></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">onError</span>?.(error, errorInfo);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ errorInfo });
+
+    <span class="hljs-comment">// Log to error reporting service</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-variable language_">window</span> !== <span class="hljs-string">&#x27;undefined&#x27;</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Client error:&#x27;</span>, error, errorInfo);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Server error:&#x27;</span>, error);
+    }
+  }
+
+  <span class="hljs-title function_">componentDidMount</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">isStreaming</span>: <span class="hljs-literal">false</span> });
+  }
+
+  retry = <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">hasError</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">error</span>: <span class="hljs-literal">undefined</span>, <span class="hljs-attr">errorInfo</span>: <span class="hljs-literal">undefined</span> });
+  };
+
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">hasError</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">error</span>) {
+      <span class="hljs-comment">// During streaming, show streaming fallback</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">isStreaming</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">streamingFallback</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">streamingFallback</span>;
+      }
+
+      <span class="hljs-comment">// After hydration, show error UI</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">fallback</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">fallback</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">error</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">retry</span>);
+      }
+
+      <span class="hljs-comment">// Default error UI</span>
+      <span class="hljs-keyword">return</span> (
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;error-boundary&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Something went wrong<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">details</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">summary</span>&gt;</span>Error details<span class="hljs-tag">&lt;/<span class="hljs-name">summary</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>{this.state.error.stack}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">details</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{this.retry}</span>&gt;</span>Try again<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+      );
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-property">children</span>;
+  }
+}
+
+<span class="hljs-comment">// Hook for error handling in streaming context</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useStreamingError</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [error, setError] = useState&lt;<span class="hljs-title class_">Error</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">throwError</span> = (<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span></span>) =&gt; {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-variable language_">window</span> === <span class="hljs-string">&#x27;undefined&#x27;</span>) {
+      <span class="hljs-comment">// On server, throw immediately for streaming error boundary</span>
+      <span class="hljs-keyword">throw</span> error;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// On client, set state for graceful handling</span>
+      <span class="hljs-title function_">setError</span>(error);
+    }
+  };
+
+  <span class="hljs-keyword">return</span> { error, throwError };
+}
+</code></pre>
+<h3 id="أنماط-suspense-المتداخلة">أنماط <code>Suspense</code> المتداخلة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// components/NestedSuspense.tsx</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">SuspenseConfig</span> {
+  <span class="hljs-attr">fallback</span>: <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">errorFallback</span>?: <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">priority</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">timeout</span>?: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">NestedSuspenseProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">boundaries</span>: <span class="hljs-title class_">SuspenseConfig</span>[];
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">NestedSuspense</span>(<span class="hljs-params">{ children, boundaries }: <span class="hljs-title class_">NestedSuspenseProps</span></span>) {
+  <span class="hljs-keyword">return</span> boundaries.<span class="hljs-title function_">reduceRight</span>(
+    <span class="hljs-function">(<span class="hljs-params">content, boundary</span>) =&gt;</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">StreamingErrorBoundary</span>
+        <span class="hljs-attr">streamingFallback</span>=<span class="hljs-string">{boundary.errorFallback}</span>
+        <span class="hljs-attr">fallback</span>=<span class="hljs-string">{(error,</span> <span class="hljs-attr">retry</span>) =&gt;</span> (
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;error-fallback&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Failed to load this section<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{retry}</span>&gt;</span>Retry<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        )}
+      &gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{boundary.fallback}</span>&gt;</span>{content}<span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">StreamingErrorBoundary</span>&gt;</span></span>
+    ),
+    children,
+  );
+}
+
+<span class="hljs-comment">// Usage with typed configuration</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">StreamingPage</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">suspenseBoundaries</span>: <span class="hljs-title class_">SuspenseConfig</span>[] = [
+    {
+      <span class="hljs-attr">fallback</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">HeaderSkeleton</span> /&gt;</span></span>,
+      <span class="hljs-attr">priority</span>: <span class="hljs-number">1</span>,
+    },
+    {
+      <span class="hljs-attr">fallback</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ContentSkeleton</span> /&gt;</span></span>,
+      <span class="hljs-attr">errorFallback</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ContentError</span> /&gt;</span></span>,
+      <span class="hljs-attr">priority</span>: <span class="hljs-number">2</span>,
+    },
+    {
+      <span class="hljs-attr">fallback</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FooterSkeleton</span> /&gt;</span></span>,
+      <span class="hljs-attr">priority</span>: <span class="hljs-number">3</span>,
+      <span class="hljs-attr">timeout</span>: <span class="hljs-number">5000</span>,
+    },
+  ];
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">NestedSuspense</span> <span class="hljs-attr">boundaries</span>=<span class="hljs-string">{suspenseBoundaries}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Header</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">MainContent</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Footer</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">NestedSuspense</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="تحسين-أداء-التدفق">تحسين أداء التدفق</h2>
+<p>يمكن أن يساعد TypeScript في تحسين أداء التدفق عبر التخزين المؤقت والجلب المسبق الآمنين من حيث الأنواع.</p>
+<h3 id="ذاكرة-التخزين-المؤقت-المتدفقة">ذاكرة التخزين المؤقت المتدفقة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// utils/streaming-cache.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">CacheEntry</span>&lt;T&gt; {
+  <span class="hljs-attr">data</span>: T;
+  <span class="hljs-attr">timestamp</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">stream</span>?: <span class="hljs-title class_">ReadableStream</span>&lt;T&gt;;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">CacheOptions</span> {
+  <span class="hljs-attr">ttl</span>?: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Time to live in ms</span>
+  <span class="hljs-attr">maxSize</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">streamable</span>?: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StreamingCache</span>&lt;T&gt; {
+  <span class="hljs-keyword">private</span> cache = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">CacheEntry</span>&lt;T&gt;&gt;();
+
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> <span class="hljs-attr">options</span>: <span class="hljs-title class_">CacheOptions</span> = {}</span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">options</span>.<span class="hljs-property">ttl</span> = options.<span class="hljs-property">ttl</span> ?? <span class="hljs-number">5</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>; <span class="hljs-comment">// 5 minutes default</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">options</span>.<span class="hljs-property">maxSize</span> = options.<span class="hljs-property">maxSize</span> ?? <span class="hljs-number">100</span>;
+  }
+
+  <span class="hljs-title function_">set</span>(<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">data</span>: T, <span class="hljs-attr">stream</span>?: <span class="hljs-title class_">ReadableStream</span>&lt;T&gt;): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// Evict oldest if at capacity</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-property">size</span> &gt;= (<span class="hljs-variable language_">this</span>.<span class="hljs-property">options</span>.<span class="hljs-property">maxSize</span> ?? <span class="hljs-number">100</span>)) {
+      <span class="hljs-keyword">const</span> oldestKey = <span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-title function_">keys</span>().<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-title function_">delete</span>(oldestKey);
+    }
+
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-title function_">set</span>(key, {
+      data,
+      <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+      stream,
+    });
+  }
+
+  <span class="hljs-title function_">get</span>(<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>): T | <span class="hljs-literal">undefined</span> {
+    <span class="hljs-keyword">const</span> entry = <span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-title function_">get</span>(key);
+
+    <span class="hljs-keyword">if</span> (!entry) <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+
+    <span class="hljs-comment">// Check TTL</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - entry.<span class="hljs-property">timestamp</span> &gt; (<span class="hljs-variable language_">this</span>.<span class="hljs-property">options</span>.<span class="hljs-property">ttl</span> ?? <span class="hljs-number">0</span>)) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-title function_">delete</span>(key);
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+    }
+
+    <span class="hljs-keyword">return</span> entry.<span class="hljs-property">data</span>;
+  }
+
+  <span class="hljs-title function_">getStream</span>(<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">ReadableStream</span>&lt;T&gt; | <span class="hljs-literal">undefined</span> {
+    <span class="hljs-keyword">const</span> entry = <span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-title function_">get</span>(key);
+    <span class="hljs-keyword">return</span> entry?.<span class="hljs-property">stream</span>;
+  }
+
+  <span class="hljs-title function_">invalidate</span>(<span class="hljs-attr">pattern</span>?: <span class="hljs-built_in">string</span> | <span class="hljs-title class_">RegExp</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">if</span> (!pattern) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-title function_">clear</span>();
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">const</span> regex = <span class="hljs-keyword">typeof</span> pattern === <span class="hljs-string">&#x27;string&#x27;</span> ? <span class="hljs-keyword">new</span> <span class="hljs-title class_">RegExp</span>(pattern) : pattern;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">of</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-title function_">keys</span>()) {
+      <span class="hljs-keyword">if</span> (regex.<span class="hljs-title function_">test</span>(key)) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">cache</span>.<span class="hljs-title function_">delete</span>(key);
+      }
+    }
+  }
+}
+
+<span class="hljs-comment">// Hook for using cache in components</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> useStreamingCache&lt;T&gt;(
+  <span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>,
+  <span class="hljs-attr">fetcher</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;T&gt;,
+  <span class="hljs-attr">options</span>?: <span class="hljs-title class_">CacheOptions</span>,
+): { <span class="hljs-attr">data</span>: T | <span class="hljs-literal">undefined</span>; <span class="hljs-attr">isLoading</span>: <span class="hljs-built_in">boolean</span>; <span class="hljs-attr">error</span>?: <span class="hljs-title class_">Error</span> } {
+  <span class="hljs-keyword">const</span> cache = <span class="hljs-title function_">useMemo</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StreamingCache</span>&lt;T&gt;(options), []);
+  <span class="hljs-keyword">const</span> [state, setState] = useState&lt;{
+    <span class="hljs-attr">data</span>: T | <span class="hljs-literal">undefined</span>;
+    <span class="hljs-attr">isLoading</span>: <span class="hljs-built_in">boolean</span>;
+    <span class="hljs-attr">error</span>?: <span class="hljs-title class_">Error</span>;
+  }&gt;({
+    <span class="hljs-attr">data</span>: cache.<span class="hljs-title function_">get</span>(key),
+    <span class="hljs-attr">isLoading</span>: !cache.<span class="hljs-title function_">get</span>(key),
+  });
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span> (!state.<span class="hljs-property">data</span>) {
+      <span class="hljs-title function_">fetcher</span>()
+        .<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> {
+          cache.<span class="hljs-title function_">set</span>(key, data);
+          <span class="hljs-title function_">setState</span>({ data, <span class="hljs-attr">isLoading</span>: <span class="hljs-literal">false</span> });
+        })
+        .<span class="hljs-title function_">catch</span>(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
+          <span class="hljs-title function_">setState</span>({ <span class="hljs-attr">data</span>: <span class="hljs-literal">undefined</span>, <span class="hljs-attr">isLoading</span>: <span class="hljs-literal">false</span>, error });
+        });
+    }
+  }, [key]);
+
+  <span class="hljs-keyword">return</span> state;
+}
+</code></pre>
+<h3 id="استراتيجيات-الجلب-المسبق">استراتيجيات الجلب المسبق</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// utils/prefetch.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">PrefetchOptions</span> {
+  <span class="hljs-attr">priority</span>?: <span class="hljs-string">&#x27;high&#x27;</span> | <span class="hljs-string">&#x27;low&#x27;</span>;
+  <span class="hljs-attr">threshold</span>?: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Intersection observer threshold</span>
+  <span class="hljs-attr">rootMargin</span>?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> usePrefetch&lt;T&gt;(<span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">options</span>: <span class="hljs-title class_">PrefetchOptions</span> = {}): <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;T&gt; {
+  <span class="hljs-keyword">const</span> prefetchedRef = useRef&lt;<span class="hljs-title class_">Promise</span>&lt;T&gt;&gt;();
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span> (options.<span class="hljs-property">priority</span> === <span class="hljs-string">&#x27;high&#x27;</span>) {
+      <span class="hljs-comment">// Prefetch immediately for high priority</span>
+      prefetchedRef.<span class="hljs-property">current</span> = <span class="hljs-title function_">fetch</span>(url).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> r.<span class="hljs-title function_">json</span>());
+    }
+  }, [url, options.<span class="hljs-property">priority</span>]);
+
+  <span class="hljs-keyword">const</span> prefetch = <span class="hljs-title function_">useCallback</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span> (!prefetchedRef.<span class="hljs-property">current</span>) {
+      prefetchedRef.<span class="hljs-property">current</span> = <span class="hljs-title function_">fetch</span>(url).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> r.<span class="hljs-title function_">json</span>());
+    }
+    <span class="hljs-keyword">return</span> prefetchedRef.<span class="hljs-property">current</span>;
+  }, [url]);
+
+  <span class="hljs-keyword">return</span> prefetch;
+}
+
+<span class="hljs-comment">// Intersection observer for viewport-based prefetching</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useViewportPrefetch</span>(<span class="hljs-params">
+  <span class="hljs-attr">ref</span>: <span class="hljs-title class_">RefObject</span>&lt;<span class="hljs-title class_">HTMLElement</span>&gt;,
+  <span class="hljs-attr">prefetchFn</span>: () =&gt; <span class="hljs-built_in">void</span>,
+  <span class="hljs-attr">options</span>: <span class="hljs-title class_">PrefetchOptions</span> = {},
+</span>) {
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span> (!ref.<span class="hljs-property">current</span>) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">const</span> observer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">IntersectionObserver</span>(
+      <span class="hljs-function">(<span class="hljs-params">entries</span>) =&gt;</span> {
+        entries.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
+          <span class="hljs-keyword">if</span> (entry.<span class="hljs-property">isIntersecting</span>) {
+            <span class="hljs-title function_">prefetchFn</span>();
+            observer.<span class="hljs-title function_">disconnect</span>();
+          }
+        });
+      },
+      {
+        <span class="hljs-attr">threshold</span>: options.<span class="hljs-property">threshold</span> ?? <span class="hljs-number">0.1</span>,
+        <span class="hljs-attr">rootMargin</span>: options.<span class="hljs-property">rootMargin</span> ?? <span class="hljs-string">&#x27;50px&#x27;</span>,
+      },
+    );
+
+    observer.<span class="hljs-title function_">observe</span>(ref.<span class="hljs-property">current</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> observer.<span class="hljs-title function_">disconnect</span>();
+  }, [ref, prefetchFn, options]);
+}
+
+<span class="hljs-comment">// Component with prefetching</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">PrefetchableSection</span>(<span class="hljs-params">{ id }: { id: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> ref = useRef&lt;<span class="hljs-title class_">HTMLDivElement</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> prefetch = usePrefetch&lt;<span class="hljs-title class_">SectionData</span>&gt;(<span class="hljs-string">\`/api/sections/<span class="hljs-subst">\${id}</span>\`</span>);
+
+  <span class="hljs-title function_">useViewportPrefetch</span>(ref, prefetch, {
+    <span class="hljs-attr">threshold</span>: <span class="hljs-number">0.5</span>,
+    <span class="hljs-attr">rootMargin</span>: <span class="hljs-string">&#x27;100px&#x27;</span>,
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{ref}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">SectionSkeleton</span> /&gt;</span>}&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">SectionContent</span> <span class="hljs-attr">id</span>=<span class="hljs-string">{id}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="المراقبة-وتصحيح-الأخطاء">المراقبة وتصحيح الأخطاء</h2>
+<p>تتبّع أداء التدفق من خلال مراقبة مدعومة بـ TypeScript.</p>
+<h3 id="مقاييس-الأداء">مقاييس الأداء</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// utils/streaming-metrics.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">StreamingMetrics</span> {
+  <span class="hljs-attr">ttfb</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Time to first byte</span>
+  <span class="hljs-attr">fcp</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// First contentful paint</span>
+  <span class="hljs-attr">lcp</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Largest contentful paint</span>
+  <span class="hljs-attr">streamingDuration</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">chunksReceived</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">errors</span>: <span class="hljs-title class_">Array</span>&lt;{ <span class="hljs-attr">timestamp</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span> }&gt;;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StreamingMonitor</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">metrics</span>: <span class="hljs-title class_">StreamingMetrics</span> = {
+    <span class="hljs-attr">ttfb</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">fcp</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">lcp</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">streamingDuration</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">chunksReceived</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">errors</span>: [],
+  };
+
+  <span class="hljs-keyword">private</span> startTime = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>();
+
+  <span class="hljs-title function_">recordTTFB</span>(): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span>.<span class="hljs-property">ttfb</span> = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - <span class="hljs-variable language_">this</span>.<span class="hljs-property">startTime</span>;
+  }
+
+  <span class="hljs-title function_">recordChunk</span>(): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span>.<span class="hljs-property">chunksReceived</span>++;
+  }
+
+  <span class="hljs-title function_">recordError</span>(<span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span>.<span class="hljs-property">errors</span>.<span class="hljs-title function_">push</span>({
+      <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+      error,
+    });
+  }
+
+  <span class="hljs-title function_">recordStreamingComplete</span>(): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span>.<span class="hljs-property">streamingDuration</span> = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - <span class="hljs-variable language_">this</span>.<span class="hljs-property">startTime</span>;
+  }
+
+  <span class="hljs-title function_">getMetrics</span>(): <span class="hljs-title class_">StreamingMetrics</span> {
+    <span class="hljs-keyword">return</span> { ...<span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span> };
+  }
+
+  <span class="hljs-comment">// Send metrics to analytics</span>
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">reportMetrics</span>(<span class="hljs-attr">endpoint</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(endpoint, {
+        <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+        <span class="hljs-attr">headers</span>: { <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span> },
+        <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">metrics</span>),
+      });
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Failed to report metrics:&#x27;</span>, error);
+    }
+  }
+}
+
+<span class="hljs-comment">// React hook for monitoring</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useStreamingMonitor</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> monitor = <span class="hljs-title function_">useMemo</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StreamingMonitor</span>(), []);
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-comment">// Monitor performance events</span>
+    <span class="hljs-keyword">const</span> observer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceObserver</span>(<span class="hljs-function">(<span class="hljs-params">list</span>) =&gt;</span> {
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> list.<span class="hljs-title function_">getEntries</span>()) {
+        <span class="hljs-keyword">if</span> (entry.<span class="hljs-property">entryType</span> === <span class="hljs-string">&#x27;paint&#x27;</span>) {
+          <span class="hljs-keyword">if</span> (entry.<span class="hljs-property">name</span> === <span class="hljs-string">&#x27;first-contentful-paint&#x27;</span>) {
+            monitor.<span class="hljs-property">metrics</span>.<span class="hljs-property">fcp</span> = entry.<span class="hljs-property">startTime</span>;
+          }
+        }
+        <span class="hljs-keyword">if</span> (entry.<span class="hljs-property">entryType</span> === <span class="hljs-string">&#x27;largest-contentful-paint&#x27;</span>) {
+          monitor.<span class="hljs-property">metrics</span>.<span class="hljs-property">lcp</span> = entry.<span class="hljs-property">startTime</span>;
+        }
+      }
+    });
+
+    observer.<span class="hljs-title function_">observe</span>({ <span class="hljs-attr">entryTypes</span>: [<span class="hljs-string">&#x27;paint&#x27;</span>, <span class="hljs-string">&#x27;largest-contentful-paint&#x27;</span>] });
+
+    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> observer.<span class="hljs-title function_">disconnect</span>();
+  }, [monitor]);
+
+  <span class="hljs-keyword">return</span> monitor;
+}
+</code></pre>
+<h2 id="النشر-في-بيئة-الإنتاج">النشر في بيئة الإنتاج</h2>
+<p>انشر التصيير المتدفق مع إعدادات TypeScript المناسبة.</p>
+<h3 id="إعدادات-البناء">إعدادات البناء</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// build.config.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">BuildConfig</span> {
+  <span class="hljs-attr">mode</span>: <span class="hljs-string">&#x27;development&#x27;</span> | <span class="hljs-string">&#x27;production&#x27;</span>;
+  <span class="hljs-attr">streaming</span>: {
+    <span class="hljs-attr">enabled</span>: <span class="hljs-built_in">boolean</span>;
+    <span class="hljs-attr">timeout</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">maxChunkSize</span>: <span class="hljs-built_in">number</span>;
+  };
+  <span class="hljs-attr">typescript</span>: {
+    <span class="hljs-attr">strict</span>: <span class="hljs-built_in">boolean</span>;
+    <span class="hljs-attr">skipLibCheck</span>: <span class="hljs-built_in">boolean</span>;
+  };
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-attr">buildConfig</span>: <span class="hljs-title class_">BuildConfig</span> = {
+  <span class="hljs-attr">mode</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> <span class="hljs-keyword">as</span> <span class="hljs-string">&#x27;development&#x27;</span> | <span class="hljs-string">&#x27;production&#x27;</span>,
+  <span class="hljs-attr">streaming</span>: {
+    <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">timeout</span>: <span class="hljs-number">10000</span>,
+    <span class="hljs-attr">maxChunkSize</span>: <span class="hljs-number">16</span> * <span class="hljs-number">1024</span>, <span class="hljs-comment">// 16KB</span>
+  },
+  <span class="hljs-attr">typescript</span>: {
+    <span class="hljs-attr">strict</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">skipLibCheck</span>: <span class="hljs-literal">true</span>,
+  },
+};
+
+<span class="hljs-comment">// Webpack configuration for streaming</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> webpackConfig = {
+  <span class="hljs-attr">entry</span>: <span class="hljs-string">&#x27;./src/index.tsx&#x27;</span>,
+  <span class="hljs-attr">output</span>: {
+    <span class="hljs-attr">filename</span>: <span class="hljs-string">&#x27;[name].[contenthash].js&#x27;</span>,
+    <span class="hljs-attr">chunkFilename</span>: <span class="hljs-string">&#x27;[name].[contenthash].chunk.js&#x27;</span>,
+  },
+  <span class="hljs-attr">optimization</span>: {
+    <span class="hljs-attr">splitChunks</span>: {
+      <span class="hljs-attr">chunks</span>: <span class="hljs-string">&#x27;all&#x27;</span>,
+      <span class="hljs-attr">cacheGroups</span>: {
+        <span class="hljs-comment">// Critical components for initial render</span>
+        <span class="hljs-attr">critical</span>: {
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\\\/]src[\\\\/]components[\\\\/]critical[\\\\/]/</span>,
+          <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;critical&#x27;</span>,
+          <span class="hljs-attr">priority</span>: <span class="hljs-number">30</span>,
+        },
+        <span class="hljs-comment">// Async components for streaming</span>
+        <span class="hljs-attr">async</span>: {
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\\\/]src[\\\\/]components[\\\\/]async[\\\\/]/</span>,
+          <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;async&#x27;</span>,
+          <span class="hljs-attr">priority</span>: <span class="hljs-number">20</span>,
+          <span class="hljs-attr">reuseExistingChunk</span>: <span class="hljs-literal">true</span>,
+        },
+        <span class="hljs-comment">// Vendor bundle</span>
+        <span class="hljs-attr">vendor</span>: {
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\\\/]node_modules[\\\\/]/</span>,
+          <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;vendor&#x27;</span>,
+          <span class="hljs-attr">priority</span>: <span class="hljs-number">10</span>,
+        },
+      },
+    },
+  },
+};
+</code></pre>
+<h3 id="إعدادات-cdn-والحوسبة-الطرفية">إعدادات CDN والحوسبة الطرفية</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// edge/streaming-handler.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">EdgeConfig</span> {
+  <span class="hljs-attr">cacheControl</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">streamingEnabled</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">compressionLevel</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleStreamingRequest</span>(<span class="hljs-params">
+  <span class="hljs-attr">request</span>: <span class="hljs-title class_">Request</span>,
+  <span class="hljs-attr">config</span>: <span class="hljs-title class_">EdgeConfig</span>,
+</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">Response</span>&gt; {
+  <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(request.<span class="hljs-property">url</span>);
+
+  <span class="hljs-comment">// Check if streaming is supported</span>
+  <span class="hljs-keyword">const</span> acceptsStreaming = request.<span class="hljs-property">headers</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;accept&#x27;</span>)?.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&#x27;text/html&#x27;</span>);
+
+  <span class="hljs-keyword">if</span> (!acceptsStreaming || !config.<span class="hljs-property">streamingEnabled</span>) {
+    <span class="hljs-comment">// Fallback to traditional SSR</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">handleTraditionalSSR</span>(request);
+  }
+
+  <span class="hljs-comment">// Create streaming response</span>
+  <span class="hljs-keyword">const</span> { readable, writable } = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TransformStream</span>();
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(readable, {
+    <span class="hljs-attr">headers</span>: {
+      <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;text/html; charset=utf-8&#x27;</span>,
+      <span class="hljs-string">&#x27;Transfer-Encoding&#x27;</span>: <span class="hljs-string">&#x27;chunked&#x27;</span>,
+      <span class="hljs-string">&#x27;Cache-Control&#x27;</span>: config.<span class="hljs-property">cacheControl</span>,
+      <span class="hljs-string">&#x27;X-Streaming&#x27;</span>: <span class="hljs-string">&#x27;true&#x27;</span>,
+    },
+  });
+
+  <span class="hljs-comment">// Start streaming in background</span>
+  <span class="hljs-title function_">streamResponse</span>(request, writable).<span class="hljs-title function_">catch</span>(<span class="hljs-variable language_">console</span>.<span class="hljs-property">error</span>);
+
+  <span class="hljs-keyword">return</span> response;
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">streamResponse</span>(<span class="hljs-params"><span class="hljs-attr">request</span>: <span class="hljs-title class_">Request</span>, <span class="hljs-attr">writable</span>: <span class="hljs-title class_">WritableStream</span></span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+  <span class="hljs-keyword">const</span> writer = writable.<span class="hljs-title function_">getWriter</span>();
+  <span class="hljs-keyword">const</span> encoder = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextEncoder</span>();
+
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-comment">// Write initial HTML</span>
+    <span class="hljs-keyword">await</span> writer.<span class="hljs-title function_">write</span>(encoder.<span class="hljs-title function_">encode</span>(<span class="hljs-string">&#x27;&lt;!DOCTYPE html&gt;&lt;head&gt;&#x27;</span>));
+
+    <span class="hljs-comment">// Stream head content</span>
+    <span class="hljs-keyword">const</span> head = <span class="hljs-keyword">await</span> <span class="hljs-title function_">generateHead</span>(request);
+    <span class="hljs-keyword">await</span> writer.<span class="hljs-title function_">write</span>(encoder.<span class="hljs-title function_">encode</span>(head));
+
+    <span class="hljs-comment">// Start body</span>
+    <span class="hljs-keyword">await</span> writer.<span class="hljs-title function_">write</span>(encoder.<span class="hljs-title function_">encode</span>(<span class="hljs-string">&#x27;&lt;/head&gt;&lt;body&gt;&lt;div id=&quot;root&quot;&gt;&#x27;</span>));
+
+    <span class="hljs-comment">// Stream app content</span>
+    <span class="hljs-keyword">const</span> appStream = <span class="hljs-keyword">await</span> <span class="hljs-title function_">renderApp</span>(request);
+    <span class="hljs-keyword">const</span> reader = appStream.<span class="hljs-title function_">getReader</span>();
+
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+      <span class="hljs-keyword">const</span> { done, value } = <span class="hljs-keyword">await</span> reader.<span class="hljs-title function_">read</span>();
+      <span class="hljs-keyword">if</span> (done) <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">await</span> writer.<span class="hljs-title function_">write</span>(value);
+    }
+
+    <span class="hljs-comment">// Close HTML</span>
+    <span class="hljs-keyword">await</span> writer.<span class="hljs-title function_">write</span>(encoder.<span class="hljs-title function_">encode</span>(<span class="hljs-string">&#x27;&lt;/div&gt;&lt;/body&gt;&#x27;</span>));
+  } <span class="hljs-keyword">finally</span> {
+    <span class="hljs-keyword">await</span> writer.<span class="hljs-title function_">close</span>();
+  }
+}
+</code></pre>
+<h2 id="خاتمة">خاتمة</h2>
+<p>يغيّر التصيير المتدفق مع TypeScript طريقة تجربة مستخدميك لتطبيقات React. فبإرسال HTML فور جاهزيته، تحسّن الأداء المدرَك تحسنًا كبيرًا مع الحفاظ على سلامة الأنواع عبر الحزمة بأكملها. والأنماط التي استكشفناها — من الترطيب التدريجي إلى جالبات البيانات المتدفقة — تمنحك الأدوات اللازمة لبناء تطبيقات تبدو فورية.</p>
+<p>تذكّر: التصيير المتدفق لا يتعلق بالسرعة وحدها، بل بتجربة المستخدم. ابدأ بالمحتوى الحرج، ودفّق الباقي، واستخدم TypeScript لضمان بقاء كل شيء آمن الأنواع من الخادم إلى العميل. سيلاحظ مستخدموك الفرق، وسيقدّر فريق التطوير لديك سهولة الصيانة.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,e as html,l as slug,p as title};

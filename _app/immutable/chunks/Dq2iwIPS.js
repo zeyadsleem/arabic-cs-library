@@ -1,0 +1,581 @@
+const s="kinney",a="react-typescript",n="React مع TypeScript",l="typescript-unknown-vs-any",p="`unknown` مقابل `any`",t=[{depth:2,id:"المشكلة-مع-any",text:"المشكلة مع any"},{depth:2,id:"حان-دور-unknown-البديل-الآمن",text:"حان دور unknown: البديل الآمن"},{depth:2,id:"سيناريوهات-من-العالم-الحقيقي",text:"سيناريوهات من العالم الحقيقي"},{depth:3,id:"استجابات-api",text:"استجابات API"},{depth:3,id:"معالجات-الأحداث",text:"معالِجات الأحداث"},{depth:3,id:"تحليل-json",text:"تحليل JSON"},{depth:2,id:"حراس-الأنواع-لـ-unknown",text:"حرّاس الأنواع لـ unknown"},{depth:3,id:"حراس-أنواع-أساسية",text:"حرّاس أنواع أساسيّة"},{depth:3,id:"حراس-أنواع-مخصصة",text:"حرّاس أنواع مخصّصة"},{depth:2,id:"مكتبات-التحقق-وقت-التشغيل",text:"مكتبات التحقّق وقت التشغيل"},{depth:2,id:"معالجة-الأخطاء",text:"معالجة الأخطاء"},{depth:2,id:"العمل-مع-مكتبات-الطرف-الثالث",text:"العمل مع مكتبات الطرف الثالث"},{depth:2,id:"خصائص-مكونات-react",text:"خصائص مكوّنات React"},{depth:2,id:"التخزين-المحلي-وتخزين-الجلسة",text:"التخزين المحلي وتخزين الجلسة"},{depth:2,id:"استراتيجية-الترحيل-من-any-إلى-unknown",text:"استراتيجية الترحيل: من any إلى unknown"},{depth:2,id:"متى-يكون-any-مقبولا",text:"متى يكون any مقبولًا؟"},{depth:3,id:"شيفرة-الترحيل",text:"شيفرة الترحيل"},{depth:3,id:"شيفرة-الاختبار",text:"شيفرة الاختبار"},{depth:3,id:"التسجيل-في-الطرفية",text:"التسجيل في الطرفية"},{depth:2,id:"اعتبارات-الأداء",text:"اعتبارات الأداء"},{depth:2,id:"أفضل-الممارسات",text:"أفضل الممارسات"},{depth:3,id:"اجعل-unknown-هو-الافتراضي",text:"اجعل unknown هو الافتراضي"},{depth:3,id:"أنشئ-حراس-أنواع-قابلة-لإعادة-الاستخدام",text:"أنشئ حرّاس أنواع قابلة لإعادة الاستخدام"},{depth:3,id:"تحقق-عند-الحدود",text:"تحقّق عند الحدود"},{depth:3,id:"استخدم-دوال-التأكيد",text:"استخدم دوال التأكيد"},{depth:2,id:"الخلاصة",text:"الخلاصة"}],e=`<p>لنتحدّث عن طريقتي TypeScript لقول «لا أعرف نوع هذا» — وهما <code>any</code> و<code>unknown</code>. إحداهما مخرجٌ خطر يُفقد TypeScript غرضه، والأخرى طريقة آمنة للتعامل مع البيانات الديناميكية حقًا. ولنتعلّم متى وكيف نستخدم كلًّا منهما (<strong>تحذير مسبق</strong>: ستريد <code>unknown</code> في أغلب الأحوال).</p>
+<h2 id="المشكلة-مع-any">المشكلة مع <code>any</code></h2>
+<p>حين تستخدم <code>any</code>، فأنت تعطّل TypeScript عمليًا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">let</span> <span class="hljs-attr">value</span>: <span class="hljs-built_in">any</span> = <span class="hljs-number">42</span>;
+
+<span class="hljs-comment">// TypeScript allows ALL of these, even the ones that will crash</span>
+value.<span class="hljs-title function_">toLowerCase</span>(); <span class="hljs-comment">// Runtime error!</span>
+value.<span class="hljs-property">foo</span>.<span class="hljs-property">bar</span>.<span class="hljs-property">baz</span>; <span class="hljs-comment">// Runtime error!</span>
+<span class="hljs-title function_">value</span>(); <span class="hljs-comment">// Runtime error!</span>
+<span class="hljs-keyword">const</span> result = value + <span class="hljs-string">&#x27;hello&#x27;</span>; <span class="hljs-comment">// Works, but what&#x27;s the result?</span>
+</code></pre>
+<p>فهو كأنك تقول لـ TypeScript «ثق بي، أنا أعرف ما أفعله» — إلا أنك قد لا تعرف، وTypeScript لن يساعدك حين تخطئ.</p>
+<h2 id="حان-دور-unknown-البديل-الآمن">حان دور <code>unknown</code>: البديل الآمن</h2>
+<p>يشبه <code>unknown</code> أخًا مسؤولًا لـ <code>any</code>. فهو يستطيع حمل أي قيمة، لكن عليك أن تفحص ما هو قبل استخدامه:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">let</span> <span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span> = <span class="hljs-number">42</span>;
+
+<span class="hljs-comment">// TypeScript blocks all of these</span>
+value.<span class="hljs-title function_">toLowerCase</span>(); <span class="hljs-comment">// Error: Object is of type &#x27;unknown&#x27;</span>
+value.<span class="hljs-property">foo</span>.<span class="hljs-property">bar</span>.<span class="hljs-property">baz</span>; <span class="hljs-comment">// Error: Object is of type &#x27;unknown&#x27;</span>
+<span class="hljs-title function_">value</span>(); <span class="hljs-comment">// Error: Object is of type &#x27;unknown&#x27;</span>
+
+<span class="hljs-comment">// You must check first</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;string&#x27;</span>) {
+  <span class="hljs-comment">// Now TypeScript knows it&#x27;s safe</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value.<span class="hljs-title function_">toLowerCase</span>());
+}
+</code></pre>
+<h2 id="سيناريوهات-من-العالم-الحقيقي">سيناريوهات من العالم الحقيقي</h2>
+<h3 id="استجابات-api">استجابات API</h3>
+<p>عند التعامل مع واجهات API خارجية، غالبًا ما لا تعرف الشكل الدقيق للبيانات:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Bad: Using any</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchUserBad</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">any</span>&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/users/<span class="hljs-subst">\${id}</span>\`</span>);
+  <span class="hljs-keyword">return</span> response.<span class="hljs-title function_">json</span>();
+}
+
+<span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUserBad</span>(<span class="hljs-string">&#x27;123&#x27;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(user.<span class="hljs-property">namee</span>); <span class="hljs-comment">// Typo! But TypeScript won&#x27;t catch it</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(user.<span class="hljs-property">email</span>.<span class="hljs-title function_">toLowerCase</span>()); <span class="hljs-comment">// Might crash if email is null</span>
+
+<span class="hljs-comment">// ✅ Good: Using unknown with validation</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchUserGood</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">unknown</span>&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/users/<span class="hljs-subst">\${id}</span>\`</span>);
+  <span class="hljs-keyword">return</span> response.<span class="hljs-title function_">json</span>();
+}
+
+<span class="hljs-comment">// Type guard to validate the response</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isUser</span>(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span></span>): value is <span class="hljs-title class_">User</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp;
+    value !== <span class="hljs-literal">null</span> &amp;&amp;
+    <span class="hljs-string">&#x27;name&#x27;</span> <span class="hljs-keyword">in</span> value &amp;&amp;
+    <span class="hljs-string">&#x27;email&#x27;</span> <span class="hljs-keyword">in</span> value &amp;&amp;
+    <span class="hljs-title function_">typeof</span> (value <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">name</span> === <span class="hljs-string">&#x27;string&#x27;</span> &amp;&amp;
+    <span class="hljs-title function_">typeof</span> (value <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">email</span> === <span class="hljs-string">&#x27;string&#x27;</span>
+  );
+}
+
+<span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUserGood</span>(<span class="hljs-string">&#x27;123&#x27;</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-title function_">isUser</span>(data)) {
+  <span class="hljs-comment">// Safe to use as User</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data.<span class="hljs-property">name</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data.<span class="hljs-property">email</span>.<span class="hljs-title function_">toLowerCase</span>());
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Invalid user data received&#x27;</span>);
+}
+</code></pre>
+<h3 id="معالجات-الأحداث">معالِجات الأحداث</h3>
+<p>غالبًا ما تتعامل معالِجات أحداث React مع أنواع أحداث غير معروفة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Bad: Using any</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">handleEvent</span> = (<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-built_in">any</span></span>) =&gt; {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">target</span>.<span class="hljs-property">value</span>); <span class="hljs-comment">// Might not exist</span>
+  e.<span class="hljs-title function_">preventDefault</span>(); <span class="hljs-comment">// Might not be a function</span>
+};
+
+<span class="hljs-comment">// ✅ Good: Using unknown with checks</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">handleEvent</span> = (<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-built_in">unknown</span></span>) =&gt; {
+  <span class="hljs-comment">// Check if it&#x27;s an event</span>
+  <span class="hljs-keyword">if</span> (e <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Event</span>) {
+    e.<span class="hljs-title function_">preventDefault</span>();
+
+    <span class="hljs-comment">// Check if target has value</span>
+    <span class="hljs-keyword">const</span> target = e.<span class="hljs-property">target</span>;
+    <span class="hljs-keyword">if</span> (target <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">HTMLInputElement</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(target.<span class="hljs-property">value</span>);
+    }
+  }
+};
+
+<span class="hljs-comment">// Even better: Use proper types when possible</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">handleSubmit</span> = (<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-title class_">React</span>.<span class="hljs-title class_">FormEvent</span></span>) =&gt; {
+  e.<span class="hljs-title function_">preventDefault</span>();
+  <span class="hljs-comment">// TypeScript knows this is a form event</span>
+};
+</code></pre>
+<h3 id="تحليل-json">تحليل JSON</h3>
+<p>تُعيد <code>JSON.parse</code> القيمة <code>any</code> افتراضيًا، وهذا أمر خطر:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Dangerous default behavior</span>
+<span class="hljs-keyword">const</span> data = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-string">&#x27;{&quot;name&quot;: &quot;Alice&quot;}&#x27;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data.<span class="hljs-property">age</span>.<span class="hljs-property">years</span>); <span class="hljs-comment">// Runtime error, but TypeScript doesn&#x27;t warn</span>
+
+<span class="hljs-comment">// ✅ Safe wrapper</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">parseJSON</span>(<span class="hljs-params"><span class="hljs-attr">json</span>: <span class="hljs-built_in">string</span></span>): <span class="hljs-built_in">unknown</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(json);
+}
+
+<span class="hljs-keyword">const</span> data = <span class="hljs-title function_">parseJSON</span>(<span class="hljs-string">&#x27;{&quot;name&quot;: &quot;Alice&quot;}&#x27;</span>);
+<span class="hljs-comment">// Now you must validate before use</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> data === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp; data !== <span class="hljs-literal">null</span> &amp;&amp; <span class="hljs-string">&#x27;name&#x27;</span> <span class="hljs-keyword">in</span> data) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>((data <span class="hljs-keyword">as</span> { <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> }).<span class="hljs-property">name</span>);
+}
+</code></pre>
+<h2 id="حراس-الأنواع-لـ-unknown">حرّاس الأنواع لـ <code>unknown</code></h2>
+<p>إليك كيف تضيّق أنواع <code>unknown</code> بأمان:</p>
+<h3 id="حراس-أنواع-أساسية">حرّاس أنواع أساسيّة</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">processValue</span>(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span></span>) {
+  <span class="hljs-comment">// Check for primitives</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;string&#x27;</span>) {
+    <span class="hljs-keyword">return</span> value.<span class="hljs-title function_">toUpperCase</span>();
+  }
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;number&#x27;</span>) {
+    <span class="hljs-keyword">return</span> value.<span class="hljs-title function_">toFixed</span>(<span class="hljs-number">2</span>);
+  }
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;boolean&#x27;</span>) {
+    <span class="hljs-keyword">return</span> value ? <span class="hljs-string">&#x27;Yes&#x27;</span> : <span class="hljs-string">&#x27;No&#x27;</span>;
+  }
+
+  <span class="hljs-comment">// Check for null/undefined</span>
+  <span class="hljs-keyword">if</span> (value === <span class="hljs-literal">null</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;null&#x27;</span>;
+  }
+
+  <span class="hljs-keyword">if</span> (value === <span class="hljs-literal">undefined</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;undefined&#x27;</span>;
+  }
+
+  <span class="hljs-comment">// Check for arrays</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(value)) {
+    <span class="hljs-keyword">return</span> value.<span class="hljs-property">length</span>;
+  }
+
+  <span class="hljs-comment">// Check for objects</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;object&#x27;</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(value).<span class="hljs-property">length</span>;
+  }
+
+  <span class="hljs-comment">// Check for functions</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;function&#x27;</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;function&#x27;</span>;
+  }
+}
+</code></pre>
+<h3 id="حراس-أنواع-مخصصة">حرّاس أنواع مخصّصة</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Product</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">price</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isProduct</span>(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span></span>): value is <span class="hljs-title class_">Product</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp;
+    value !== <span class="hljs-literal">null</span> &amp;&amp;
+    <span class="hljs-string">&#x27;id&#x27;</span> <span class="hljs-keyword">in</span> value &amp;&amp;
+    <span class="hljs-string">&#x27;name&#x27;</span> <span class="hljs-keyword">in</span> value &amp;&amp;
+    <span class="hljs-string">&#x27;price&#x27;</span> <span class="hljs-keyword">in</span> value &amp;&amp;
+    <span class="hljs-title function_">typeof</span> (value <span class="hljs-keyword">as</span> <span class="hljs-title class_">Product</span>).<span class="hljs-property">id</span> === <span class="hljs-string">&#x27;string&#x27;</span> &amp;&amp;
+    <span class="hljs-title function_">typeof</span> (value <span class="hljs-keyword">as</span> <span class="hljs-title class_">Product</span>).<span class="hljs-property">name</span> === <span class="hljs-string">&#x27;string&#x27;</span> &amp;&amp;
+    <span class="hljs-title function_">typeof</span> (value <span class="hljs-keyword">as</span> <span class="hljs-title class_">Product</span>).<span class="hljs-property">price</span> === <span class="hljs-string">&#x27;number&#x27;</span>
+  );
+}
+
+<span class="hljs-comment">// Using the guard</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">displayProduct</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>) {
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isProduct</span>(data)) {
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>{data.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>\${data.price.toFixed(2)}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    );
+  }
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Invalid product data<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+</code></pre>
+<h2 id="مكتبات-التحقق-وقت-التشغيل">مكتبات التحقّق وقت التشغيل</h2>
+<p>للتحقّق المعقّد، استخدم مكتبات مثل Zod:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { z } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;zod&#x27;</span>;
+
+<span class="hljs-comment">// Define schema</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">UserSchema</span> = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">id</span>: z.<span class="hljs-title function_">string</span>(),
+  <span class="hljs-attr">name</span>: z.<span class="hljs-title function_">string</span>(),
+  <span class="hljs-attr">email</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">email</span>(),
+  <span class="hljs-attr">age</span>: z.<span class="hljs-title function_">number</span>().<span class="hljs-title function_">min</span>(<span class="hljs-number">0</span>).<span class="hljs-title function_">max</span>(<span class="hljs-number">150</span>),
+  <span class="hljs-attr">roles</span>: z.<span class="hljs-title function_">array</span>(z.<span class="hljs-title function_">string</span>())
+});
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">User</span> = z.<span class="hljs-property">infer</span>&lt;<span class="hljs-keyword">typeof</span> <span class="hljs-title class_">UserSchema</span>&gt;;
+
+<span class="hljs-comment">// Safe parsing</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">parseUser</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>): <span class="hljs-title class_">User</span> | <span class="hljs-literal">null</span> {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">UserSchema</span>.<span class="hljs-title function_">parse</span>(data);
+  } <span class="hljs-keyword">catch</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Invalid user data:&#x27;</span>, error);
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  }
+}
+
+<span class="hljs-comment">// In a React component</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">UserProfile</span> = (<span class="hljs-params">{ data }: { data: <span class="hljs-built_in">unknown</span> }</span>) =&gt; {
+  <span class="hljs-keyword">const</span> user = <span class="hljs-title function_">parseUser</span>(data);
+
+  <span class="hljs-keyword">if</span> (!user) {
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Invalid user data<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
+
+  <span class="hljs-comment">// TypeScript knows user is fully typed</span>
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>{user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{user.email}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Age: {user.age}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+        {user.roles.map(role =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{role}</span>&gt;</span>{role}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};
+</code></pre>
+<h2 id="معالجة-الأخطاء">معالجة الأخطاء</h2>
+<p>قد تكون الأخطاء في JavaScript أيّ شيء، فتعامل معها بأمان:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Bad: Assuming error shape</span>
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">someOperation</span>();
+} <span class="hljs-keyword">catch</span> (<span class="hljs-attr">error</span>: <span class="hljs-built_in">any</span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error.<span class="hljs-property">message</span>); <span class="hljs-comment">// Might not exist</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error.<span class="hljs-property">response</span>.<span class="hljs-property">data</span>); <span class="hljs-comment">// Might crash</span>
+}
+
+<span class="hljs-comment">// ✅ Good: Safe error handling</span>
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">someOperation</span>();
+} <span class="hljs-keyword">catch</span> (<span class="hljs-attr">error</span>: <span class="hljs-built_in">unknown</span>) {
+  <span class="hljs-keyword">if</span> (error <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Error</span>) {
+    <span class="hljs-comment">// Standard Error object</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error.<span class="hljs-property">message</span>);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error.<span class="hljs-property">stack</span>);
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> error === <span class="hljs-string">&#x27;string&#x27;</span>) {
+    <span class="hljs-comment">// String error</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error);
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> error === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp; error !== <span class="hljs-literal">null</span> &amp;&amp; <span class="hljs-string">&#x27;message&#x27;</span> <span class="hljs-keyword">in</span> error) {
+    <span class="hljs-comment">// Custom error object</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>((error <span class="hljs-keyword">as</span> { <span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span> }).<span class="hljs-property">message</span>);
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// Unknown error type</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;An unknown error occurred:&#x27;</span>, error);
+  }
+}
+
+<span class="hljs-comment">// Better: Create error type guards</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isAxiosError</span>(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-built_in">unknown</span></span>): error is <span class="hljs-title class_">AxiosError</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-keyword">typeof</span> error === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp;
+    error !== <span class="hljs-literal">null</span> &amp;&amp;
+    <span class="hljs-string">&#x27;isAxiosError&#x27;</span> <span class="hljs-keyword">in</span> error &amp;&amp;
+    (error <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">isAxiosError</span> === <span class="hljs-literal">true</span>
+  );
+}
+
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/data&#x27;</span>);
+} <span class="hljs-keyword">catch</span> (<span class="hljs-attr">error</span>: <span class="hljs-built_in">unknown</span>) {
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isAxiosError</span>(error)) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error.<span class="hljs-property">response</span>?.<span class="hljs-property">data</span>);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error.<span class="hljs-property">response</span>?.<span class="hljs-property">status</span>);
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (error <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Error</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error.<span class="hljs-property">message</span>);
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Unknown error:&#x27;</span>, error);
+  }
+}
+</code></pre>
+<h2 id="العمل-مع-مكتبات-الطرف-الثالث">العمل مع مكتبات الطرف الثالث</h2>
+<p>حين تكون أنواع المكتبات رديئة أو مفقودة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Some library without types</span>
+<span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&#x27;untyped-library&#x27;</span> {
+  <span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">doSomething</span>(<span class="hljs-params"><span class="hljs-attr">input</span>: <span class="hljs-built_in">any</span></span>): <span class="hljs-built_in">any</span>;
+}
+
+<span class="hljs-comment">// ❌ Bad: Propagating any</span>
+<span class="hljs-keyword">import</span> { doSomething } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;untyped-library&#x27;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">myFunction</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">any</span></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">doSomething</span>(data); <span class="hljs-comment">// Still any</span>
+}
+
+<span class="hljs-comment">// ✅ Good: Contain the any, expose unknown</span>
+<span class="hljs-keyword">import</span> { doSomething } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;untyped-library&#x27;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">myFunction</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>): <span class="hljs-built_in">unknown</span> {
+  <span class="hljs-comment">// Validate input</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> data !== <span class="hljs-string">&#x27;string&#x27;</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Expected string input&#x27;</span>);
+  }
+
+  <span class="hljs-comment">// Call the untyped function</span>
+  <span class="hljs-keyword">const</span> result = <span class="hljs-title function_">doSomething</span>(data);
+
+  <span class="hljs-comment">// Return as unknown for safe consumption</span>
+  <span class="hljs-keyword">return</span> result <span class="hljs-keyword">as</span> <span class="hljs-built_in">unknown</span>;
+}
+
+<span class="hljs-comment">// Even better: Add runtime validation</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">myFunctionSafe</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>): <span class="hljs-built_in">string</span> {
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> data !== <span class="hljs-string">&#x27;string&#x27;</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Expected string input&#x27;</span>);
+  }
+
+  <span class="hljs-keyword">const</span> result = <span class="hljs-title function_">doSomething</span>(data);
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> result !== <span class="hljs-string">&#x27;string&#x27;</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Unexpected result from library&#x27;</span>);
+  }
+
+  <span class="hljs-keyword">return</span> result;
+}
+</code></pre>
+<h2 id="خصائص-مكونات-react">خصائص مكوّنات React</h2>
+<p>التعامل الآمن مع الخصائص الديناميكية:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Bad: Any props</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">DynamicComponent</span> = (<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-built_in">any</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{props.message}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;  <span class="hljs-comment">// Might crash</span>
+};
+
+<span class="hljs-comment">// ✅ Good: Unknown with validation</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">DynamicComponent</span> = (<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-built_in">unknown</span></span>) =&gt; {
+  <span class="hljs-comment">// Validate props</span>
+  <span class="hljs-keyword">if</span> (
+    <span class="hljs-keyword">typeof</span> props === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp;
+    props !== <span class="hljs-literal">null</span> &amp;&amp;
+    <span class="hljs-string">&#x27;message&#x27;</span> <span class="hljs-keyword">in</span> props &amp;&amp;
+    <span class="hljs-title function_">typeof</span> (props <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">message</span> === <span class="hljs-string">&#x27;string&#x27;</span>
+  ) {
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{(props as { message: string }).message}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Invalid props<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+};
+
+<span class="hljs-comment">// Better: Type guard</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">MessageProps</span> {
+  <span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isMessageProps</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-built_in">unknown</span></span>): props is <span class="hljs-title class_">MessageProps</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-keyword">typeof</span> props === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp;
+    props !== <span class="hljs-literal">null</span> &amp;&amp;
+    <span class="hljs-string">&#x27;message&#x27;</span> <span class="hljs-keyword">in</span> props &amp;&amp;
+    <span class="hljs-title function_">typeof</span> (props <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">message</span> === <span class="hljs-string">&#x27;string&#x27;</span>
+  );
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">DynamicComponent</span> = (<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-built_in">unknown</span></span>) =&gt; {
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isMessageProps</span>(props)) {
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{props.message}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Invalid props<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+};
+</code></pre>
+<h2 id="التخزين-المحلي-وتخزين-الجلسة">التخزين المحلي وتخزين الجلسة</h2>
+<p>يُعيد تخزين المتصفّح نصوصًا تحتاج إلى تحليل:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Bad: Trusting localStorage</span>
+<span class="hljs-keyword">const</span> <span class="hljs-attr">data</span>: <span class="hljs-built_in">any</span> = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&#x27;user&#x27;</span>) || <span class="hljs-string">&#x27;{}&#x27;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data.<span class="hljs-property">name</span>); <span class="hljs-comment">// Might not exist</span>
+
+<span class="hljs-comment">// ✅ Good: Safe storage access</span>
+<span class="hljs-keyword">function</span> getFromStorage&lt;T&gt;(<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">validator</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span></span>) =&gt;</span> value is T): T | <span class="hljs-literal">null</span> {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">const</span> item = <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(key);
+    <span class="hljs-keyword">if</span> (!item) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">parsed</span>: <span class="hljs-built_in">unknown</span> = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(item);
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">validator</span>(parsed)) {
+      <span class="hljs-keyword">return</span> parsed;
+    }
+
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">\`Invalid data in localStorage for key: <span class="hljs-subst">\${key}</span>\`</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  } <span class="hljs-keyword">catch</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">\`Error parsing localStorage item: <span class="hljs-subst">\${key}</span>\`</span>, error);
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  }
+}
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">const</span> user = <span class="hljs-title function_">getFromStorage</span>(<span class="hljs-string">&#x27;user&#x27;</span>, isUser);
+<span class="hljs-keyword">if</span> (user) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(user.<span class="hljs-property">name</span>); <span class="hljs-comment">// Safe!</span>
+}
+</code></pre>
+<h2 id="استراتيجية-الترحيل-من-any-إلى-unknown">استراتيجية الترحيل: من <code>any</code> إلى <code>unknown</code></h2>
+<p>إن كان لديك شيفرة قائمة تستخدم <code>any</code>، فإليك كيف ترحّل:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Step 1: Change any to unknown</span>
+<span class="hljs-comment">// Before</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">processData</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">any</span></span>) {
+  <span class="hljs-keyword">return</span> data.<span class="hljs-property">value</span> * <span class="hljs-number">2</span>;
+}
+
+<span class="hljs-comment">// After - This will now show errors</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">processData</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>) {
+  <span class="hljs-keyword">return</span> data.<span class="hljs-property">value</span> * <span class="hljs-number">2</span>; <span class="hljs-comment">// Error: Object is of type &#x27;unknown&#x27;</span>
+}
+
+<span class="hljs-comment">// Step 2: Add type guards</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">processData</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>) {
+  <span class="hljs-keyword">if</span> (
+    <span class="hljs-keyword">typeof</span> data === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp;
+    data !== <span class="hljs-literal">null</span> &amp;&amp;
+    <span class="hljs-string">&#x27;value&#x27;</span> <span class="hljs-keyword">in</span> data &amp;&amp;
+    <span class="hljs-title function_">typeof</span> (data <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">value</span> === <span class="hljs-string">&#x27;number&#x27;</span>
+  ) {
+    <span class="hljs-keyword">return</span> (data <span class="hljs-keyword">as</span> { <span class="hljs-attr">value</span>: <span class="hljs-built_in">number</span> }).<span class="hljs-property">value</span> * <span class="hljs-number">2</span>;
+  }
+  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Invalid data shape&#x27;</span>);
+}
+
+<span class="hljs-comment">// Step 3: Create proper types</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">DataWithValue</span> {
+  <span class="hljs-attr">value</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isDataWithValue</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>): data is <span class="hljs-title class_">DataWithValue</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-keyword">typeof</span> data === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp;
+    data !== <span class="hljs-literal">null</span> &amp;&amp;
+    <span class="hljs-string">&#x27;value&#x27;</span> <span class="hljs-keyword">in</span> data &amp;&amp;
+    <span class="hljs-title function_">typeof</span> (data <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">value</span> === <span class="hljs-string">&#x27;number&#x27;</span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">processData</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>): <span class="hljs-built_in">number</span> {
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isDataWithValue</span>(data)) {
+    <span class="hljs-keyword">return</span> data.<span class="hljs-property">value</span> * <span class="hljs-number">2</span>;
+  }
+  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Invalid data shape&#x27;</span>);
+}
+</code></pre>
+<h2 id="متى-يكون-any-مقبولا">متى يكون <code>any</code> مقبولًا؟</h2>
+<p>هناك حالات نادرة قد يكون فيها <code>any</code> مقبولًا:</p>
+<h3 id="شيفرة-الترحيل">شيفرة الترحيل</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Temporarily during migration</span>
+<span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> Add proper types</span>
+<span class="hljs-keyword">const</span> <span class="hljs-attr">legacyData</span>: <span class="hljs-built_in">any</span> = <span class="hljs-title function_">getLegacyData</span>();
+</code></pre>
+<h3 id="شيفرة-الاختبار">شيفرة الاختبار</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// In tests where type safety is less critical</span>
+<span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;handles any input&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">testData</span>: <span class="hljs-built_in">any</span> = { <span class="hljs-attr">foo</span>: <span class="hljs-string">&#x27;bar&#x27;</span> };
+  <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">someFunction</span>(testData)).<span class="hljs-title function_">toBeDefined</span>();
+});
+</code></pre>
+<h3 id="التسجيل-في-الطرفية">التسجيل في الطرفية</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// For debugging only</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">debugLog</span>(<span class="hljs-params"><span class="hljs-attr">label</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">value</span>: <span class="hljs-built_in">any</span></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(label, value);
+}
+</code></pre>
+<p>لكن حتى في هذه الحالات، اسأل نفسك: هل سيعمل <code>unknown</code> بالمثل؟</p>
+<h2 id="اعتبارات-الأداء">اعتبارات الأداء</h2>
+<p>لفحص الأنواع لا أيّ أثر في أداء وقت التشغيل، لكنّ التحقّق له أثر:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Lightweight check</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isString</span>(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span></span>): value is <span class="hljs-built_in">string</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;string&#x27;</span>;
+}
+
+<span class="hljs-comment">// Heavier validation</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isComplexObject</span>(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span></span>): value is <span class="hljs-title class_">ComplexType</span> {
+  <span class="hljs-comment">// Many checks...</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">validateComplexStructure</span>(value);
+}
+
+<span class="hljs-comment">// Cache validation results for repeated checks</span>
+<span class="hljs-keyword">const</span> validationCache = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WeakMap</span>&lt;<span class="hljs-built_in">object</span>, <span class="hljs-built_in">boolean</span>&gt;();
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isCachedValid</span>(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span></span>): <span class="hljs-built_in">boolean</span> {
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">&#x27;object&#x27;</span> || value === <span class="hljs-literal">null</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+
+  <span class="hljs-keyword">if</span> (validationCache.<span class="hljs-title function_">has</span>(value)) {
+    <span class="hljs-keyword">return</span> validationCache.<span class="hljs-title function_">get</span>(value)!;
+  }
+
+  <span class="hljs-keyword">const</span> isValid = <span class="hljs-title function_">expensiveValidation</span>(value);
+  validationCache.<span class="hljs-title function_">set</span>(value, isValid);
+  <span class="hljs-keyword">return</span> isValid;
+}
+</code></pre>
+<h2 id="أفضل-الممارسات">أفضل الممارسات <span class="content-anchor" id="best-practices"></span></h2>
+<h3 id="اجعل-unknown-هو-الافتراضي">اجعل <code>unknown</code> هو الافتراضي</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Start with unknown</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">processInput</span>(<span class="hljs-params"><span class="hljs-attr">input</span>: <span class="hljs-built_in">unknown</span></span>) {
+  <span class="hljs-comment">// Validate and narrow</span>
+}
+
+<span class="hljs-comment">// ❌ Don&#x27;t default to any</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">processInput</span>(<span class="hljs-params"><span class="hljs-attr">input</span>: <span class="hljs-built_in">any</span></span>) {
+  <span class="hljs-comment">// No safety</span>
+}
+</code></pre>
+<h3 id="أنشئ-حراس-أنواع-قابلة-لإعادة-الاستخدام">أنشئ حرّاس أنواع قابلة لإعادة الاستخدام</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Define once, use everywhere</span>
+<span class="hljs-keyword">const</span> typeGuards = {
+  <span class="hljs-attr">isString</span>: (<span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span>): value is <span class="hljs-built_in">string</span> =&gt; <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;string&#x27;</span>,
+
+  <span class="hljs-attr">isNumber</span>: (<span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span>): value is <span class="hljs-built_in">number</span> =&gt; <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;number&#x27;</span> &amp;&amp; !<span class="hljs-built_in">isNaN</span>(value),
+
+  <span class="hljs-attr">isNonNullObject</span>: (<span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span>): value is <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt; =&gt;
+    <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp; value !== <span class="hljs-literal">null</span>,
+
+  <span class="hljs-attr">hasProperty</span>: &lt;K <span class="hljs-keyword">extends</span> <span class="hljs-built_in">string</span>&gt;(<span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span>, <span class="hljs-attr">key</span>: K): value is <span class="hljs-title class_">Record</span>&lt;K, <span class="hljs-built_in">unknown</span>&gt; =&gt;
+    typeGuards.<span class="hljs-title function_">isNonNullObject</span>(value) &amp;&amp; key <span class="hljs-keyword">in</span> value,
+};
+</code></pre>
+<h3 id="تحقق-عند-الحدود">تحقّق عند الحدود</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Validate data as it enters your application</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchData</span>(<span class="hljs-params"></span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">ValidatedData</span>&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;/api/data&#x27;</span>);
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span> = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+
+  <span class="hljs-comment">// Validate immediately</span>
+  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">isValidData</span>(data)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Invalid data from API&#x27;</span>);
+  }
+
+  <span class="hljs-keyword">return</span> data; <span class="hljs-comment">// Now properly typed</span>
+}
+</code></pre>
+<h3 id="استخدم-دوال-التأكيد">استخدم دوال التأكيد</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">assertString</span>(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">unknown</span></span>): asserts value is <span class="hljs-built_in">string</span> {
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">&#x27;string&#x27;</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeError</span>(<span class="hljs-string">\`Expected string, got <span class="hljs-subst">\${<span class="hljs-keyword">typeof</span> value}</span>\`</span>);
+  }
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">processName</span>(<span class="hljs-params"><span class="hljs-attr">name</span>: <span class="hljs-built_in">unknown</span></span>) {
+  <span class="hljs-title function_">assertString</span>(name);
+  <span class="hljs-comment">// name is now typed as string</span>
+  <span class="hljs-keyword">return</span> name.<span class="hljs-title function_">toUpperCase</span>();
+}
+</code></pre>
+<h2 id="الخلاصة">الخلاصة</h2>
+<p>الفرق بين <code>any</code> و<code>unknown</code> بسيط لكنه حاسم:</p>
+<ul>
+<li><strong><code>any</code></strong>: «لا يهمّني ما نوع هذا» (خطر)</li>
+<li><strong><code>unknown</code></strong>: «لا أعرف بعدُ ما نوع هذا» (آمن)</li>
+</ul>
+<p>استخدم <code>unknown</code> حين:</p>
+<ul>
+<li>تتعامل مع بيانات خارجية (واجهات API، ومدخلات المستخدم، والتخزين المحلي)</li>
+<li>تتعامل مع الأخطاء في كتل catch</li>
+<li>تعمل مع مكتبات بلا أنواع</li>
+<li>تحلّل JSON أو غيره من البيانات الديناميكية</li>
+</ul>
+<p>استخدم <code>any</code> فقط حين:</p>
+<ul>
+<li>ترحيل JavaScript إلى TypeScript (بشكل مؤقّت)</li>
+<li>في شيفرة الاختبار حيث لا تقلّ أهمية أمان الأنواع</li>
+<li>إذا كنت مضطرًا تمامًا ولديك سبب قويّ</li>
+</ul>
+<p>تذكّر: كل <code>any</code> في قاعدتك البرمجية خطأ محتمل في وقت التشغيل بانتظار الحدوث. وكل <code>unknown</code> نقطة تحقّق تفرض عليك التحقّق قبل الاستخدام. اختَر الأمان!</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,e as html,l as slug,p as title};

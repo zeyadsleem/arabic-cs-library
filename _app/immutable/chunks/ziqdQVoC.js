@@ -1,0 +1,158 @@
+const s="tanstack-form",a="form",n="دورة TanStack Form الكاملة",t="index",c="مقدمة إلى TanStack Form",l=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"ما-هي-tanstack-form",text:"ما هي TanStack Form؟"},{depth:3,id:"ماذا-توفره-ولماذا-لا-تكتبها-بنفسك",text:"ماذا توفّره، ولماذا لا تكتبها بنفسك؟"},{depth:3,id:"الصورة-الأولى-شكل-الاستمارة",text:"الصورة الأولى: شكل الاستمارة"},{depth:3,id:"الحزمة-التقنية-للمشروع",text:"الحزمة التقنية للمشروع"},{depth:3,id:"إعداد-vite-والمسار-المستعار",text:"إعداد Vite والمسار المستعار"},{depth:3,id:"الأنماط-ونمط-الظلام",text:"الأنماط ونمط الظلام"},{depth:3,id:"هيكل-الصفحة-ونقطة-الدخول",text:"هيكل الصفحة ونقطة الدخول"},{depth:3,id:"تهيئة-مكونات-shadcn",text:"تهيئة مكوّنات shadcn"},{depth:3,id:"المكون-الأول",text:"المكوّن الأول"},{depth:3,id:"خريطة-الدورة",text:"خريطة الدورة"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],p=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>هذا الدرس الأول في الدورة، وهو توجيه أكثر منه كتابة شيفرة: يوضّح ما تفعله TanStack Form، ويصف التطبيق الذي تبنيه الدورة، ويضع خريطة موضوعاتها. أمّا الشيفرة هنا فهي هيكل المشروع الذي تحمل عليه بقية الدروس: مشروع React جديد مع TypeScript وVite وTailwind، ومكوّنات <code>shadcn/ui</code> مهيّأة.</p>
+<p>والفكرة التي يثبتها الدرس أنّ TanStack Form لا تعطيك استمارة جاهزة، بل حالةً دقيقة لكل حقل وواجهاتٌ تحدّد متى تتحقّق وماذا تعرض؛ فيبدأ كل شيء من مكوّن واحد ينمو درسًا بعد درس حتى يصير استمارة تسجيل كاملة.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="ما-هي-tanstack-form">ما هي TanStack Form؟</h3>
+<p>هي مكتبة TanStack لإدارة الاستمارات، ويبدأ المؤلف بثلاث خصائص:</p>
+<ul>
+<li><strong>آمنة الأنواع تمامًا</strong>: نوع القيم الافتراضية هو مصدر الحقيقة، فاسم كل حقل يجب أن يكون مفتاحًا فيه. فإن غيّرت اسم حقل في النوع ولم تغيّره في مكان عرضه لم يُكتمل البناء، و<code>name</code> في الحقل مُكتمل تلقائيًّا في المحرّر بدل أن يكون نصًّا حرًّا يُخطئ فيه أحدهم بصمت.</li>
+<li><strong>مستقلّة عن مكتبة المكوّنات</strong>: لا ترسم عنصر الإدخال بنفسها، بل تعطيك القيمة ودوالّ الربط وحالة الخطأ، وتقرّر أنت ما تعرضه: <code>&lt;input&gt;</code> عاديًّا أو مكوّنًا من مكتبة جاهزة.</li>
+<li><strong>مستقلّة عن إطار العمل</strong>: تدعم React وVue وAngular وSvelte، ولكل إطار واجهته. تختار الدورة React لأنها الأكثر ألفةً، ومنطق الاستمارة نفسه ينتقل إلى غيرها.</li>
+</ul>
+<h3 id="ماذا-توفره-ولماذا-لا-تكتبها-بنفسك">ماذا توفّره، ولماذا لا تكتبها بنفسك؟</h3>
+<p>لكل حقل حالات تتبدّل مع كل ضغطة مفتاح: القيمة، وهل لُمِس، وهل تغيّر عن قيمته الأولى، وما الأخطاء المعلّقة. وفوقها قرار: متى تتحقّق؟ عند التغيير، أو عند مغادرة الحقل، أو عند الإرسال. وأصعبها التحقّق غير المتزامن، حين يسأل خادمًا: هل هذا البريد مستعمل؟ هناك تتسابق الطلبات، وقد تصل نتيجة سؤال قديم بعد نتيجة أحدث فتُفسد الحالة.</p>
+<p>إن كتبت هذا بيدك كتبته في كل استمارة. المكتبة تجمعه في مكان واحد وتترك لك القرارات وحدها: تختار التوقيت، وتكتب دالة التحقّق، وتعرض ما يصلك.</p>
+<h3 id="الصورة-الأولى-شكل-الاستمارة">الصورة الأولى: شكل الاستمارة</h3>
+<p>يعرض المؤلف مثالًا سريعًا قبل الغوص: استمارة تُنشأ بخُطّاف <code>useForm</code> مع القيم الافتراضية ودالة ردّ نداء للإرسال، ثم حقول تُصيَّر بمكوّن يُمرَّر إليه اسم الحقل، وداخله كائن <code>validators</code> يوزّع دوالّ التحقّق على التوقيتات: <code>onChange</code> و<code>onBlur</code> و<code>onSubmit</code>، ويمكن أن تكون إحداها غير متزامنة. وأبناء المكوّن دالة تستقبل كائن الحقل، ومنه القيمة ودوالّ مثل <code>handleChange</code> و<code>handleBlur</code> ومعلومات الخطأ.</p>
+<p>ثم يلاحظ المؤلف ما سيلاحظه كل قارئ: هذا قدر كبير من الشيفرة لاستمارة بسيطة. وهي ملاحظة مقصودة، لأن الدورة تنتهي إلى طريقة تجمع هذا التكرار في مكوّنات قابلة لإعادة الاستخدام. فلا تحكم على المكتبة من المثال الأول.</p>
+<h3 id="الحزمة-التقنية-للمشروع">الحزمة التقنية للمشروع</h3>
+<p>هذا هو المشروع الذي سترافقه، وإصداراته مثبّتة في <code>package.json</code>:</p>
+<pre><code class="language-json">  <span class="hljs-attr">&quot;dependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;@tailwindcss/vite&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.1.14&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;class-variance-authority&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^0.7.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;clsx&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.1.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;lucide-react&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^0.545.0&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;react&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^19.1.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;react-dom&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^19.1.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;tailwind-merge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.3.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;tailwindcss&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.1.14&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+</code></pre>
+<p>أي React بإصدار <code>19.1.1</code>، وTailwind بإصدار <code>4.1.14</code> عبر إضافة Vite الرسمية لا عبر إعداد <code>postcss</code> منفصل. وفي <code>devDependencies</code> يظهر TypeScript بإصدار <code>~5.9.3</code> وVite بإصدار <code>^7.1.7</code> مع <code>eslint</code>.</p>
+<p>ولاحظ ما ليس في القائمة: <code>@tanstack/react-form</code> غير مثبّتة بعد، والتثبيت موضوع الدرس التالي. ولاحظ أيضًا أن <code>clsx</code> و<code>tailwind-merge</code> موجودتان منذ البداية، لأن دالة <code>cn</code> التي ستستعملها في كل مكوّن لاحق تُبنى عليهما.</p>
+<h3 id="إعداد-vite-والمسار-المستعار">إعداد Vite والمسار المستعار</h3>
+<p>ملف الإعداد صغير، لكنه يحمل قرارين:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vite&#x27;</span>
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;path&quot;</span>
+<span class="hljs-keyword">import</span> tailwindcss <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tailwindcss/vite&quot;</span>
+<span class="hljs-keyword">import</span> react <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@vitejs/plugin-react&#x27;</span>
+
+<span class="hljs-comment">// https://vite.dev/config/</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">react</span>(), <span class="hljs-title function_">tailwindcss</span>()],
+  <span class="hljs-attr">resolve</span>: {
+    <span class="hljs-attr">alias</span>: {
+      <span class="hljs-string">&quot;@&quot;</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./src&quot;</span>),
+    },
+  },
+})
+</code></pre>
+<p>الأول الإضافتان: React، وTailwind التي تُدخل <code>@import &quot;tailwindcss&quot;</code> في حزمة البناء. والثاني المسار <code>@</code>: كل استيراد داخل <code>src</code> يبدأ بـ<code>@/</code> بدل سلسلة <code>../</code> المتكرّرة، فـ<code>@/lib/utils</code> تعني <code>src/lib/utils.ts</code> أيًّا كان عمق الملف الذي يستوردها. فينتقل المكوّن بين المجلّدات دون أن تنكسر استيراداته.</p>
+<p>ويكرّر <code>tsconfig.app.json</code> التعريف نفسه في <code>paths</code>، لأن Vite يحلّ المسار وقت البناء، أمّا مدقّق الأنواع والمحرّر فيحتاجان الإعداد نفسه ليقرآ الاستيراد بالطريقة ذاتها.</p>
+<h3 id="الأنماط-ونمط-الظلام">الأنماط ونمط الظلام</h3>
+<p>مدخل الأنماط هو <code>src/index.css</code>، وأوّله:</p>
+<pre><code class="language-css"><span class="hljs-keyword">@import</span> <span class="hljs-string">&quot;tailwindcss&quot;</span>;
+<span class="hljs-keyword">@import</span> <span class="hljs-string">&quot;tw-animate-css&quot;</span>;
+<span class="hljs-keyword">@plugin</span> <span class="hljs-string">&quot;@tailwindcss/forms&quot;</span>;
+
+<span class="hljs-keyword">@custom-variant</span> dark (&amp;:is(.dark *));
+</code></pre>
+<p>السطر الأول يجلب Tailwind، والثاني حركات جاهزة، والثالث إضافة النماذج التي تعطي <code>&lt;input&gt;</code> و<code>&lt;select&gt;</code> مظهرًا معقولًا دون كتابة أنماط لكل عنصر. أمّا الأخير فيعرّف كيف يُفعَّل نمط الظلام: لا بوسيط <code>prefers-color-scheme</code> بل بوجود صنف <code>dark</code> على أحد الأسلاف. ولهذا سترى <code>class=&quot;dark&quot;</code> على <code>&lt;body&gt;</code> بعد قليل، وستجد تعريف المتغيّرات مرّتين: مرة للجذر ومرّة لصنف <code>.dark</code>؛ وتلك الثنائية هي التي تجعل تبديل صنف واحد يقلب ألوان الواجهة كلها.</p>
+<h3 id="هيكل-الصفحة-ونقطة-الدخول">هيكل الصفحة ونقطة الدخول</h3>
+<p>الصفحة التي يقدّمها Vite:</p>
+<pre><code class="language-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;icon&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;image/svg+xml&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/vite.svg&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>tanstack-form-course<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;dark&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;root&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/src/main.tsx&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+
+</code></pre>
+<p>العنصر <code>root</code> هو حاوية تركيب React، و<code>dark</code> على <code>&lt;body&gt;</code> هو ما فعّلناه في الأنماط للتوّ، فلا تحتاج إلى مبدّل ثيم لترى واجهة داكنة. أمّا نقطة الدخول:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">StrictMode</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>
+<span class="hljs-keyword">import</span> { createRoot } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-dom/client&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;./index.css&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.tsx&#x27;</span>
+
+<span class="hljs-title function_">createRoot</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;root&#x27;</span>)!).<span class="hljs-title function_">render</span>(
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">StrictMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">StrictMode</span>&gt;</span></span>,
+)
+</code></pre>
+<p>تستورد الأنماط والمكوّن الجذر، ثم تركّبه. و<code>StrictMode</code> في التطوير ينفّذ بعض الدوال مرّتين ليكشف الآثار الجانبية غير النظيفة؛ فإذا رأيت لاحقًا دالة تحقّق تُنادى مرّتين فهذا مصدره، لا خطأ في مكتبة الاستمارات.</p>
+<h3 id="تهيئة-مكونات-shadcn">تهيئة مكوّنات shadcn</h3>
+<p>الدورة تستعمل <code>shadcn/ui</code> لأن جزءًا منها مخصّص لدمج مكتبة مكوّنات حقيقية، والتهيئة محفوظة في <code>components.json</code>:</p>
+<pre><code class="language-json">  <span class="hljs-attr">&quot;aliases&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;components&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;@/components&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;utils&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;@/lib/utils&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;ui&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;@/components/ui&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;lib&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;@/lib&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;hooks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;@/hooks&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+</code></pre>
+<p>تخبر هذه الخريطة أداة <code>shadcn</code> أين تضع الملفات التي تولّدها وكيف تكتب استيراداتها: أيّ مكوّن تضيفه لاحقًا يُنشأ في <code>src/components/ui</code> ويستورد المساعد من <code>@/lib/utils</code>. والمساعد نفسه ملف قصير:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { clsx, <span class="hljs-keyword">type</span> <span class="hljs-title class_">ClassValue</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;clsx&quot;</span>
+<span class="hljs-keyword">import</span> { twMerge } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;tailwind-merge&quot;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">cn</span>(<span class="hljs-params">...<span class="hljs-attr">inputs</span>: <span class="hljs-title class_">ClassValue</span>[]</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">twMerge</span>(<span class="hljs-title function_">clsx</span>(inputs))
+}
+</code></pre>
+<p>دالة <code>cn</code> تجمع أصنافًا شرطية وتزيل التعارض: إن مرّرت <code>p-2</code> ثم <code>p-4</code> بقيت الثانية. ستراها في خصائص كل مكوّن، وستستعملها لتغيير صنف الحقل عند الخطأ.</p>
+<h3 id="المكون-الأول">المكوّن الأول</h3>
+<p>كل ما في التطبيق الآن:</p>
+<pre><code class="language-tsx">
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;/&gt;</span></span>
+  )
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">App</span>
+</code></pre>
+<p>عنوان واحد بلا استمارة ولا حالة، وهذا هو المقصود: نقطة تعرفها تمامًا ثم تبني عليها. في الدرس القادم تُثبَّت <code>@tanstack/react-form</code> وأدوات التطوير ويُنشأ مكوّن الاستمارة في مجلّد منفصل، فيصبح <code>App</code> غلافًا حول استمارة التسجيل.</p>
+<h3 id="خريطة-الدورة">خريطة الدورة</h3>
+<p>كل درس يفترض الذي قبله:</p>
+<ol>
+<li><strong>التثبيت</strong>: <code>@tanstack/react-form</code> وأدوات التطوير في <code>main.tsx</code>، فتظهر أيقونة تصحيح تُظهر حالة الاستمارة كاملة.</li>
+<li><strong>النموذج الأول</strong>: استمارة تسجيل تُعرِّف نوعها أولًا: اسم أول واسم أخير وعمر وبريد وكلمة مرور وتأكيدها، وكائن عنوان متداخل، ومصفوفة مهارات، ومربّع موافقة على الشروط؛ أي كل أشكال البيانات في استمارة حقيقية.</li>
+<li><strong>المعلومات الوصفية للحقول</strong>: قراءة حالة الحقل الواحد وعرضها.</li>
+<li><strong>التفاعلية والمستمعات</strong>: كيف تُشعِر الاستمارة بأن قيمة تغيّرت، وكيف تتفاعل مع التغيير.</li>
+<li><strong>الكائنات والمصفوفات</strong>: إضافة عنصر مهارة وحذفه، والتعامل مع الحقول المتداخلة.</li>
+<li><strong>التحقّق</strong>: على مستوى الحقل، ثم على مستوى الاستمارة كاملة، ثم غير المتزامن، ثم الديناميكي، ثم الحقول المرتبطة.</li>
+<li><strong>Zod</strong>: مخطّط واحد بدل دوالّ متفرّقة، ثم <code>refine</code> والتحقّق غير المتزامن داخله.</li>
+<li><strong>ملاحظات حول الإرسال</strong>: ثم تحويل الاستمارة إلى واجهة مصمَّمة بمكوّنات <code>shadcn</code>.</li>
+<li><strong>إعادة الهيكلة</strong>: الانتقال إلى <code>useAppForm</code>، ثم مكوّنات حقول ونماذج قابلة لإعادة الاستخدام، فتحميلها الكسول، ثم تقسيم الاستمارة بـ<code>withForm</code> ومجموعات الحقول بـ<code>withFieldGroup</code>.</li>
+</ol>
+<p>هكذا تُبنى الاستمارة نفسها مرارًا، وفي كل مرة تُضاف طبقة: منطق، فتحقّق، فمخطّط، فشكل، فتركيب؛ حتى تراها في النهاية مكتوبةً في مكان واحد، ثم موزّعة على مكوّنات، ثم مجموعةً من الأجزاء.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p>بعد هذا الدرس صار لديك مشروع يعمل: صفحة داكنة فيها عنوان <code>Hello</code> وحده، خلفه <code>index.html</code> يضع صنف <code>dark</code> على <code>&lt;body&gt;</code>، ونقطة دخول في <code>src/main.tsx</code> تركّب <code>App</code>، وأنماط ونمط ظلام في <code>src/index.css</code>، ومسار <code>@</code> مستعارًا في <code>vite.config.ts</code>، وملف <code>components.json</code> يخبر <code>shadcn</code> أين يضع ما يولّده، ودالة <code>cn</code> جاهزة في <code>src/lib/utils.ts</code>. ولا استمارة بعد، ولا <code>@tanstack/react-form</code>، ولا حقل واحد.</p>
+<p>قيمة الدرس أن كل ما سيأتي يقف على هذا الهيكل: في درس المكوّنات القابلة لإعادة الاستخدام ستستعمل <code>cn</code> والمسار <code>@</code>، وفي درس <code>shadcn</code> ستجد الخريطة جاهزة، وأدوات التطوير ستُثبَّت في نقطة الدخول نفسها. فإن تعثّرت في استيراد لا يُحلّ أو صنف لا يظهر، فارجع إلى هذه الملفات أولًا.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>شغّل <code>npm run dev</code>، ثم احذف <code>class=&quot;dark&quot;</code> من <code>&lt;body&gt;</code>: ستنتقل الواجهة إلى المتغيّرات المعرّفة في <code>:root</code>. ثم بدّل الصنف بـ<code>class=&quot;light&quot;</code> ولن يتغيّر شيء، لأن النمط الداكن يُفعَّل بوجود <code>dark</code> وحده.</li>
+<li>انقل مكوّن <code>App</code> إلى <code>src/components/app.tsx</code> واستورده في <code>src/main.tsx</code> بالمسار <code>@/components/app</code>. إن نجح البناء فالمسار المستعار يعمل في Vite وفي مدقّق الأنواع معًا.</li>
+<li>أضف إلى <code>src/App.tsx</code> عنصر <code>&lt;input&gt;</code> وزرًّا، ومرّر لهما <code>className={cn(&quot;...&quot;)}</code>. هذا يثبت أن <code>cn</code> وإضافة النماذج جاهزتان قبل أن تلمس أي مكتبة استمارات.</li>
+<li>غيّر <code>&lt;title&gt;</code> في <code>index.html</code> إلى اسم تطبيقك، ثم أضف إلى <code>aliases</code> في <code>components.json</code> مدخلًا مثل <code>&quot;layouts&quot;: &quot;@/components/layouts&quot;</code> وتأكّد أنه لا يكسر شيئًا.</li>
+<li>أزل <code>StrictMode</code> مؤقّتًا ثم أعدها؛ حين تكتب أول دالة تحقّق ستلاحظ أن عدد النداءات يتغيّر، وهذا يفسّر سلوكيات تبدو غريبة في التطوير.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=0s">فيديو الدرس: المقدمة</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/main">شيفرة الدرس: فرع <code>main</code></a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/overview">التوثيق الرسمي: نظرة عامة على TanStack Form</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Introduction» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,o={book:s,chapter:a,chapterTitle:n,slug:t,title:c,headings:l,html:p};export{s as book,a as chapter,n as chapterTitle,o as default,l as headings,p as html,t as slug,c as title};

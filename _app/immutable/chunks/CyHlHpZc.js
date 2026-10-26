@@ -1,0 +1,707 @@
+const s="kinney",a="react-typescript",n="React مع TypeScript",l="typescript-react-patterns",p="أنماط React الخاصة بـ TypeScript",t=[{depth:2,id:"تحسينات-typescript-في-react-19",text:"تحسينات TypeScript في React 19"},{depth:3,id:"تبسيط-تحديد-أنواع-المكونات",text:"تبسيط تحديد أنواع المكوّنات"},{depth:3,id:"تحسين-استنتاج-نوع-ref",text:"تحسين استنتاج نوع Ref"},{depth:3,id:"رسائل-خطأ-أفضل",text:"رسائل خطأ أفضل"},{depth:2,id:"إعلانات-أنواع-المكونات-fc-مقابل-إعلانات-الدوال",text:"إعلانات أنواع المكوّنات: FC مقابل إعلانات الدوال"},{depth:3,id:"reactfc-المقاربة-التقليدية",text:"React.FC: المقاربة التقليدية"},{depth:3,id:"إعلانات-الدوال-المقاربة-الحديثة",text:"إعلانات الدوال: المقاربة الحديثة"},{depth:3,id:"أيهما-يجب-استخدامه",text:"أيهما يجب استخدامه؟"},{depth:2,id:"خاصية-children-إصابتها-بالشكل-الصحيح",text:"خاصية children: إصابتها بالشكل الصحيح"},{depth:3,id:"أنواع-children-المختلفة",text:"أنواع children المختلفة"},{depth:3,id:"تقييد-children",text:"تقييد children"},{depth:2,id:"تمرير-ref-مع-typescript",text:"تمرير Ref مع TypeScript"},{depth:3,id:"تمرير-ref-أساسي",text:"تمرير Ref أساسي"},{depth:3,id:"تمرير-ref-عام",text:"تمرير Ref عام"},{depth:3,id:"نمط-المقبض-imperative-handle",text:"نمط المقبض (Imperative Handle)"},{depth:2,id:"reactmemo-مع-typescript",text:"React.memo مع TypeScript"},{depth:3,id:"استخدام-memo-الأساسي",text:"استخدام Memo الأساسي"},{depth:3,id:"memo-مع-المكونات-العامة",text:"Memo مع المكوّنات العامة"},{depth:2,id:"أنماط-مكونات-الترتيب-الأعلى-hoc",text:"أنماط مكوّنات الترتيب الأعلى (HOC)"},{depth:3,id:"نمط-hoc-أساسي",text:"نمط HOC أساسي"},{depth:3,id:"hoc-مع-خصائص-محقونة",text:"HOC مع خصائص محقونة"},{depth:2,id:"أنماط-معالجات-الأحداث",text:"أنماط معالجات الأحداث"},{depth:3,id:"معالجات-الأحداث-المحددة-الأنواع",text:"معالجات الأحداث المحددة الأنواع"},{depth:3,id:"معالجات-الأحداث-العامة",text:"معالجات الأحداث العامة"},{depth:2,id:"أنماط-خصائص-المكونات",text:"أنماط خصائص المكوّنات"},{depth:3,id:"توسيع-خصائص-عناصر-html",text:"توسيع خصائص عناصر HTML"},{depth:3,id:"خصائص-union-مميزة",text:"خصائص Union مميّزة"},{depth:2,id:"أنماط-المكونات-المركبة",text:"أنماط المكوّنات المركّبة"},{depth:2,id:"أفضل-الممارسات",text:"أفضل الممارسات"},{depth:3,id:"dos",text:"Do’s ✅"},{depth:3,id:"donts",text:"Don’ts ❌"},{depth:2,id:"الخلاصة",text:"الخلاصة"}],e=`<p>TypeScript وReact خُلِقا لبعضهما، لكن هناك أنماطًا واصطلاحات محددة يمكن أن تصنع أو تكسر تجربة تطويرك. يغطّي هذا الدليل الأنماط الأساسية لـ TypeScript الخاصة بـ React التي يجب على كل مطوّر React إتقانها.</p>
+<h2 id="تحسينات-typescript-في-react-19">تحسينات TypeScript في React 19</h2>
+<p>يجلب React 19 أنماط TypeScript أنظف تقلّل من كمّ الشيفرة (boilerplate) وتُحسّن استنتاج الأنواع. تجعل هذه التحسينات تطوير React أكثر بديهية.</p>
+<h3 id="تبسيط-تحديد-أنواع-المكونات">تبسيط تحديد أنواع المكوّنات</h3>
+<p>يتبنّى React 19 أنماط مكوّنات أبسط، مبتعدًا عن التعليقات التوضيحية (annotations) البارزة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ React 19: Clean and simple</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UserCard</span>(<span class="hljs-params">{ user }: { user: User }</span>) {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+
+<span class="hljs-comment">// Still works, but often unnecessary</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">UserCard</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&lt;{ <span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span> }&gt; = <span class="hljs-function">(<span class="hljs-params">{ user }</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+};
+</code></pre>
+<h3 id="تحسين-استنتاج-نوع-ref">تحسين استنتاج نوع Ref</h3>
+<p>يعمل نظام ref في React 19 بشكل أكثر طبيعية مع TypeScript:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ React 19: Refs just work</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">TextInput</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> inputRef = useRef&lt;<span class="hljs-title class_">HTMLInputElement</span>&gt;(<span class="hljs-literal">null</span>);
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">focusInput</span> = (<span class="hljs-params"></span>) =&gt; {
+    inputRef.<span class="hljs-property">current</span>?.<span class="hljs-title function_">focus</span>(); <span class="hljs-comment">// TypeScript knows this might be null</span>
+  };
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{inputRef}</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> /&gt;</span></span>;
+}
+
+<span class="hljs-comment">// Cleaner forwardRef patterns</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">FancyInput</span> = forwardRef&lt;<span class="hljs-title class_">HTMLInputElement</span>, { <span class="hljs-attr">placeholder</span>: <span class="hljs-built_in">string</span> }&gt;(
+  <span class="hljs-function">(<span class="hljs-params">{ placeholder }, ref</span>) =&gt;</span> {
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{ref}</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">{placeholder}</span> /&gt;</span></span>;
+  }
+);
+<span class="hljs-title class_">FancyInput</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">&#x27;FancyInput&#x27;</span>; <span class="hljs-comment">// TypeScript helps remind you</span>
+</code></pre>
+<h3 id="رسائل-خطأ-أفضل">رسائل خطأ أفضل</h3>
+<p>يوفر React 19 مع TypeScript 5+ رسائل خطأ أكثر فائدة للأخطاء الشائعة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// If you forget to pass required props:</span>
+&lt;<span class="hljs-title class_">UserCard</span> /&gt; <span class="hljs-comment">// Error: Property &#x27;user&#x27; is missing in type &#x27;{}&#x27;</span>
+
+<span class="hljs-comment">// If you pass wrong prop types:</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">UserCard</span> <span class="hljs-attr">user</span>=<span class="hljs-string">&quot;string&quot;</span> /&gt;</span></span> <span class="hljs-comment">// Error: Type &#x27;string&#x27; is not assignable to type &#x27;User&#x27;</span>
+
+<span class="hljs-comment">// If you return wrong type from component:</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">BadComponent</span>(<span class="hljs-params"></span>): <span class="hljs-built_in">number</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-number">42</span>; <span class="hljs-comment">// Error: &#x27;number&#x27; is not assignable to &#x27;ReactNode&#x27;</span>
+}
+</code></pre>
+<h2 id="إعلانات-أنواع-المكونات-fc-مقابل-إعلانات-الدوال">إعلانات أنواع المكوّنات: FC مقابل إعلانات الدوال</h2>
+<p>أحد أول القرارات التي ستواجهك هو كيفية تحديد أنواع مكوّنات React. لنتعرّف على المفاضلات.</p>
+<h3 id="reactfc-المقاربة-التقليدية">React.FC: المقاربة التقليدية</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">FC</span>, <span class="hljs-title class_">ReactNode</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> {
+  <span class="hljs-attr">variant</span>?: <span class="hljs-string">&#x27;primary&#x27;</span> | <span class="hljs-string">&#x27;secondary&#x27;</span>;
+  <span class="hljs-attr">onClick</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-comment">// Using React.FC</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Button</span>: <span class="hljs-variable constant_">FC</span>&lt;<span class="hljs-title class_">ButtonProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">{ variant = <span class="hljs-string">&#x27;primary&#x27;</span>, onClick, children }</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>\`<span class="hljs-attr">btn-</span>\${<span class="hljs-attr">variant</span>}\`} <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>&gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+};
+
+<span class="hljs-comment">// What FC gives you:</span>
+<span class="hljs-comment">// ✅ children prop is automatically included</span>
+<span class="hljs-comment">// ✅ Return type is enforced as ReactElement | null</span>
+<span class="hljs-comment">// ✅ displayName, defaultProps, propTypes are typed</span>
+</code></pre>
+<h3 id="إعلانات-الدوال-المقاربة-الحديثة">إعلانات الدوال: المقاربة الحديثة</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> {
+  <span class="hljs-attr">variant</span>?: <span class="hljs-string">&#x27;primary&#x27;</span> | <span class="hljs-string">&#x27;secondary&#x27;</span>;
+  <span class="hljs-attr">onClick</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>; <span class="hljs-comment">// Explicitly define children</span>
+}
+
+<span class="hljs-comment">// Using function declaration</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Button</span>(<span class="hljs-params">{ variant = <span class="hljs-string">&#x27;primary&#x27;</span>, onClick, children }: <span class="hljs-title class_">ButtonProps</span></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>\`<span class="hljs-attr">btn-</span>\${<span class="hljs-attr">variant</span>}\`} <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>&gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Or arrow function without FC</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">Button</span> = (<span class="hljs-params">{ variant = <span class="hljs-string">&#x27;primary&#x27;</span>, onClick, children }: <span class="hljs-title class_">ButtonProps</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>\`<span class="hljs-attr">btn-</span>\${<span class="hljs-attr">variant</span>}\`} <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>&gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+};
+</code></pre>
+<h3 id="أيهما-يجب-استخدامه">أيهما يجب استخدامه؟</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Prefer function declarations or typed arrow functions</span>
+<span class="hljs-comment">// More explicit, better inference, no hidden behavior</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Card</span>(<span class="hljs-params">{ title, children }: <span class="hljs-title class_">CardProps</span></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;card&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>{title}<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// ❌ Avoid FC unless you specifically need its features</span>
+<span class="hljs-comment">// Adds overhead, implicit children, less flexible</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Card</span>: <span class="hljs-variable constant_">FC</span>&lt;<span class="hljs-title class_">CardProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">{ title, children }</span>) =&gt;</span> {
+  <span class="hljs-comment">// ...</span>
+};
+</code></pre>
+<h2 id="خاصية-children-إصابتها-بالشكل-الصحيح">خاصية children: إصابتها بالشكل الصحيح</h2>
+<p>فهم كيفية تحديد أنواع children أمر بالغ الأهمية لتكوين المكوّنات.</p>
+<h3 id="أنواع-children-المختلفة">أنواع children المختلفة</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ReactNode</span>, <span class="hljs-title class_">ReactElement</span>, <span class="hljs-variable constant_">JSX</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-comment">// ReactNode: Most flexible, accepts everything</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ContainerProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>; <span class="hljs-comment">// string | number | boolean | null | undefined | ReactElement | ReactFragment | ReactPortal</span>
+}
+
+<span class="hljs-comment">// ReactElement: Only JSX elements</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">WrapperProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactElement</span>; <span class="hljs-comment">// Must be a JSX element</span>
+}
+
+<span class="hljs-comment">// Specific element types</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ListProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactElement</span>&lt;<span class="hljs-title class_">HTMLLIElement</span>&gt; | <span class="hljs-title class_">ReactElement</span>&lt;<span class="hljs-title class_">HTMLLIElement</span>&gt;[];
+}
+
+<span class="hljs-comment">// Function as children (render prop)</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">RenderProps</span>&lt;T&gt; {
+  <span class="hljs-attr">children</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">data</span>: T</span>) =&gt;</span> <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-comment">// Optional children</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">CardProps</span> {
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">children</span>?: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-comment">// No children allowed</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">IconProps</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">children</span>?: <span class="hljs-built_in">never</span>; <span class="hljs-comment">// Explicitly disallow children</span>
+}
+</code></pre>
+<h3 id="تقييد-children">تقييد children</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Only allow specific components as children</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TabsProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactElement</span>&lt;<span class="hljs-title class_">TabProps</span>&gt; | <span class="hljs-title class_">ReactElement</span>&lt;<span class="hljs-title class_">TabProps</span>&gt;[];
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TabProps</span> {
+  <span class="hljs-attr">label</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Tabs</span>(<span class="hljs-params">{ children }: <span class="hljs-title class_">TabsProps</span></span>) {
+  <span class="hljs-comment">// TypeScript ensures only Tab components are passed</span>
+  <span class="hljs-keyword">const</span> tabs = <span class="hljs-title class_">React</span>.<span class="hljs-property">Children</span>.<span class="hljs-title function_">toArray</span>(children) <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReactElement</span>&lt;<span class="hljs-title class_">TabProps</span>&gt;[];
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;tabs&quot;</span>&gt;</span>
+      {tabs.map((tab, index) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{index}</span>&gt;</span>{tab}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      ))}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Usage</span>
+&lt;<span class="hljs-title class_">Tabs</span>&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Tab</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;First&quot;</span>&gt;</span>Content 1<span class="hljs-tag">&lt;/<span class="hljs-name">Tab</span>&gt;</span></span>
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Tab</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Second&quot;</span>&gt;</span>Content 2<span class="hljs-tag">&lt;/<span class="hljs-name">Tab</span>&gt;</span></span>
+  {<span class="hljs-comment">/* &lt;div&gt;Not allowed!&lt;/div&gt; */</span>} {<span class="hljs-comment">/* ❌ Type error */</span>}
+&lt;/<span class="hljs-title class_">Tabs</span>&gt;
+</code></pre>
+<h2 id="تمرير-ref-مع-typescript">تمرير Ref مع TypeScript</h2>
+<p>المرجعات (refs) معقدة في TypeScript. إليك كيفية التعامل معها بشكل صحيح.</p>
+<h3 id="تمرير-ref-أساسي">تمرير Ref أساسي</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { forwardRef, <span class="hljs-title class_">InputHTMLAttributes</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">InputProps</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">InputHTMLAttributes</span>&lt;<span class="hljs-title class_">HTMLInputElement</span>&gt; {
+  <span class="hljs-attr">label</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Input</span> = forwardRef&lt;<span class="hljs-title class_">HTMLInputElement</span>, <span class="hljs-title class_">InputProps</span>&gt;(
+  <span class="hljs-function">(<span class="hljs-params">{ label, ...props }, ref</span>) =&gt;</span> {
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>{label}<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{ref}</span> {<span class="hljs-attr">...props</span>} /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    );
+  }
+);
+
+<span class="hljs-comment">// Must add display name for debugging</span>
+<span class="hljs-title class_">Input</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">&#x27;Input&#x27;</span>;
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Form</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> inputRef = useRef&lt;<span class="hljs-title class_">HTMLInputElement</span>&gt;(<span class="hljs-literal">null</span>);
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Input</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{inputRef}</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Name&quot;</span> /&gt;</span></span>;
+}
+</code></pre>
+<h3 id="تمرير-ref-عام">تمرير Ref عام</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Generic component with ref forwarding</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ListProps</span>&lt;T&gt; {
+  <span class="hljs-attr">items</span>: T[];
+  <span class="hljs-attr">renderItem</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">item</span>: T</span>) =&gt;</span> <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-comment">// Create a typed forwardRef helper</span>
+<span class="hljs-keyword">function</span> typedForwardRef&lt;T, P = {}&gt;(
+  <span class="hljs-attr">render</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">props</span>: P, <span class="hljs-attr">ref</span>: <span class="hljs-title class_">React</span>.<span class="hljs-title class_">Ref</span>&lt;T&gt;</span>) =&gt;</span> <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactElement</span> | <span class="hljs-literal">null</span>
+) {
+  <span class="hljs-keyword">return</span> forwardRef&lt;T, P&gt;(render);
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">List</span> = typedForwardRef&lt;<span class="hljs-title class_">HTMLUListElement</span>, <span class="hljs-title class_">ListProps</span>&lt;<span class="hljs-built_in">any</span>&gt;&gt;(
+  <span class="hljs-function">(<span class="hljs-params">{ items, renderItem }, ref</span>) =&gt;</span> {
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{ref}</span>&gt;</span>
+        {items.map((item, index) =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{index}</span>&gt;</span>{renderItem(item)}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span>
+    );
+  }
+);
+</code></pre>
+<h3 id="نمط-المقبض-imperative-handle">نمط المقبض (Imperative Handle)</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { forwardRef, useImperativeHandle, useRef } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ModalHandle</span> {
+  <span class="hljs-attr">open</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">close</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ModalProps</span> {
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Modal</span> = forwardRef&lt;<span class="hljs-title class_">ModalHandle</span>, <span class="hljs-title class_">ModalProps</span>&gt;(
+  <span class="hljs-function">(<span class="hljs-params">{ title, children }, ref</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> [isOpen, setIsOpen] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+
+    <span class="hljs-title function_">useImperativeHandle</span>(ref, <span class="hljs-function">() =&gt;</span> ({
+      <span class="hljs-attr">open</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">setIsOpen</span>(<span class="hljs-literal">true</span>),
+      <span class="hljs-attr">close</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">setIsOpen</span>(<span class="hljs-literal">false</span>),
+    }), []);
+
+    <span class="hljs-keyword">if</span> (!isOpen) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;modal&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>{title}<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        {children}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    );
+  }
+);
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> modalRef = useRef&lt;<span class="hljs-title class_">ModalHandle</span>&gt;(<span class="hljs-literal">null</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> modalRef.current?.open()}&gt;
+        Open Modal
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Modal</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{modalRef}</span> <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Example&quot;</span>&gt;</span>
+        Modal content
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Modal</span>&gt;</span>
+    <span class="hljs-tag">&lt;/&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="reactmemo-مع-typescript">React.memo مع TypeScript</h2>
+<p>تحسين المكوّنات باستخدام memo يتطلب تحديد أنواع صحيح.</p>
+<h3 id="استخدام-memo-الأساسي">استخدام Memo الأساسي</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ExpensiveListProps</span> {
+  <span class="hljs-attr">items</span>: <span class="hljs-built_in">string</span>[];
+  <span class="hljs-attr">onItemClick</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">item</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ExpensiveList</span> = memo&lt;<span class="hljs-title class_">ExpensiveListProps</span>&gt;(<span class="hljs-function">(<span class="hljs-params">{ items, onItemClick }</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;ExpensiveList rendered&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+      {items.map(item =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{item}</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> onItemClick(item)}&gt;
+          {item}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      ))}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span>
+  );
+});
+
+<span class="hljs-comment">// With custom comparison</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ExpensiveList</span> = memo&lt;<span class="hljs-title class_">ExpensiveListProps</span>&gt;(
+  <span class="hljs-function">(<span class="hljs-params">{ items, onItemClick }</span>) =&gt;</span> {
+    <span class="hljs-comment">// Component implementation</span>
+  },
+  <span class="hljs-function">(<span class="hljs-params">prevProps, nextProps</span>) =&gt;</span> {
+    <span class="hljs-comment">// Return true if props are equal (skip re-render)</span>
+    <span class="hljs-keyword">return</span> (
+      prevProps.<span class="hljs-property">items</span>.<span class="hljs-property">length</span> === nextProps.<span class="hljs-property">items</span>.<span class="hljs-property">length</span> &amp;&amp;
+      prevProps.<span class="hljs-property">items</span>.<span class="hljs-title function_">every</span>(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> item === nextProps.<span class="hljs-property">items</span>[index])
+    );
+  }
+);
+</code></pre>
+<h3 id="memo-مع-المكونات-العامة">Memo مع المكوّنات العامة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Generic memoized component</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ListProps</span>&lt;T&gt; {
+  <span class="hljs-attr">items</span>: T[];
+  <span class="hljs-attr">renderItem</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">item</span>: T</span>) =&gt;</span> <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">keyExtractor</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">item</span>: T</span>) =&gt;</span> <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-comment">// Helper for generic memo</span>
+<span class="hljs-keyword">function</span> typedMemo&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ComponentType</span>&lt;<span class="hljs-built_in">any</span>&gt;&gt;(
+  <span class="hljs-title class_">Component</span>: T,
+  <span class="hljs-attr">propsAreEqual</span>?: <span class="hljs-function">(<span class="hljs-params">
+    <span class="hljs-attr">prevProps</span>: <span class="hljs-title class_">ComponentProps</span>&lt;T&gt;,
+    <span class="hljs-attr">nextProps</span>: <span class="hljs-title class_">ComponentProps</span>&lt;T&gt;
+  </span>) =&gt;</span> <span class="hljs-built_in">boolean</span>
+): T {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">memo</span>(<span class="hljs-title class_">Component</span>, propsAreEqual) <span class="hljs-keyword">as</span> T;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title class_">ListComponent</span>&lt;T&gt;({ items, renderItem, keyExtractor }: <span class="hljs-title class_">ListProps</span>&lt;T&gt;) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+      {items.map(item =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{keyExtractor(item)}</span>&gt;</span>{renderItem(item)}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      ))}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">MemoizedList</span> = <span class="hljs-title function_">typedMemo</span>(<span class="hljs-title class_">ListComponent</span>);
+</code></pre>
+<h2 id="أنماط-مكونات-الترتيب-الأعلى-hoc">أنماط مكوّنات الترتيب الأعلى (HOC)</h2>
+<p>مكوّنات HOC معقدة للتحديد لكنها تتبع أنماطًا قابلة للتنبؤ.</p>
+<h3 id="نمط-hoc-أساسي">نمط HOC أساسي</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// HOC that adds loading state</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">WithLoadingProps</span> {
+  <span class="hljs-attr">loading</span>: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-keyword">function</span> withLoading&lt;P <span class="hljs-keyword">extends</span> <span class="hljs-built_in">object</span>&gt;(
+  <span class="hljs-title class_">Component</span>: <span class="hljs-title class_">ComponentType</span>&lt;P&gt;
+): <span class="hljs-title class_">ComponentType</span>&lt;P &amp; <span class="hljs-title class_">WithLoadingProps</span>&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">{ loading, ...props }: P &amp; <span class="hljs-title class_">WithLoadingProps</span></span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (loading) {
+      <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> {<span class="hljs-attr">...props</span> <span class="hljs-attr">as</span> <span class="hljs-attr">P</span>} /&gt;</span></span>;
+  };
+}
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserProps</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">User</span>(<span class="hljs-params">{ name, age }: <span class="hljs-title class_">UserProps</span></span>) {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{name} is {age}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">UserWithLoading</span> = <span class="hljs-title function_">withLoading</span>(<span class="hljs-title class_">User</span>);
+
+<span class="hljs-comment">// Now requires loading prop</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">UserWithLoading</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;Alice&quot;</span> <span class="hljs-attr">age</span>=<span class="hljs-string">{30}</span> <span class="hljs-attr">loading</span>=<span class="hljs-string">{false}</span> /&gt;</span></span>
+</code></pre>
+<h3 id="hoc-مع-خصائص-محقونة">HOC مع خصائص محقونة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// HOC that injects props</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">WithAuthProps</span> {
+  <span class="hljs-attr">user</span>: { <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> } | <span class="hljs-literal">null</span>;
+}
+
+<span class="hljs-keyword">function</span> withAuth&lt;P <span class="hljs-keyword">extends</span> <span class="hljs-title class_">WithAuthProps</span>&gt;(
+  <span class="hljs-title class_">Component</span>: <span class="hljs-title class_">ComponentType</span>&lt;P&gt;
+): <span class="hljs-title class_">ComponentType</span>&lt;<span class="hljs-title class_">Omit</span>&lt;P, keyof <span class="hljs-title class_">WithAuthProps</span>&gt;&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-title class_">Omit</span>&lt;P, keyof <span class="hljs-title class_">WithAuthProps</span>&gt;</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> user = <span class="hljs-title function_">useAuth</span>(); <span class="hljs-comment">// Custom hook</span>
+
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> {<span class="hljs-attr">...props</span> <span class="hljs-attr">as</span> <span class="hljs-attr">P</span>} <span class="hljs-attr">user</span>=<span class="hljs-string">{user}</span> /&gt;</span></span>;
+  };
+}
+
+<span class="hljs-comment">// Component expects user prop</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Profile</span>(<span class="hljs-params">{ user }: <span class="hljs-title class_">WithAuthProps</span></span>) {
+  <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Please log in<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Welcome, {user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+
+<span class="hljs-comment">// Wrapped component doesn&#x27;t need user prop</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ProfileWithAuth</span> = <span class="hljs-title function_">withAuth</span>(<span class="hljs-title class_">Profile</span>);
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ProfileWithAuth</span> /&gt;</span></span> <span class="hljs-comment">// No user prop needed!</span>
+</code></pre>
+<h2 id="أنماط-معالجات-الأحداث">أنماط معالجات الأحداث</h2>
+<p>تتطلب أحداث React اهتمامًا خاصًا في TypeScript.</p>
+<h3 id="معالجات-الأحداث-المحددة-الأنواع">معالجات الأحداث المحددة الأنواع</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">MouseEvent</span>, <span class="hljs-title class_">ChangeEvent</span>, <span class="hljs-title class_">FormEvent</span>, <span class="hljs-title class_">KeyboardEvent</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">FormProps</span> {
+  <span class="hljs-attr">onSubmit</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-title class_">FormData</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Form</span>(<span class="hljs-params">{ onSubmit }: <span class="hljs-title class_">FormProps</span></span>) {
+  <span class="hljs-comment">// Inline event handlers with inferred types</span>
+  <span class="hljs-keyword">return</span> (
+    &lt;form onSubmit={(e) =&gt; {
+      // e is inferred as FormEvent&lt;HTMLFormElement&gt;
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      onSubmit(formData);
+    }}&gt;
+      &lt;input
+        onChange={(e) =&gt; {
+          // e is inferred as ChangeEvent&lt;HTMLInputElement&gt;
+          console.log(e.target.value);
+        }}
+      /&gt;
+
+      &lt;button
+        onClick={(e) =&gt; {
+          // e is inferred as MouseEvent&lt;HTMLButtonElement&gt;
+          e.stopPropagation();
+        }}
+      &gt;
+        Submit
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+
+// Extracted event handlers
+function SearchBar() {
+  const handleChange = (e: ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+    const value = e.target.value;
+    // Handle change
+  };
+
+  const handleKeyDown = (e: KeyboardEvent&lt;HTMLInputElement&gt;) =&gt; {
+    if (e.key === &#x27;Enter&#x27;) {
+      e.preventDefault();
+      // Handle enter
+    }
+  };
+
+  return (
+    &lt;input
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+    /&gt;
+  );
+}
+</code></pre>
+<h3 id="معالجات-الأحداث-العامة">معالجات الأحداث العامة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Generic click handler for any element</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ClickHandler</span>&lt;T = <span class="hljs-title class_">HTMLElement</span>&gt; = <span class="hljs-function">(<span class="hljs-params">
+  <span class="hljs-attr">event</span>: <span class="hljs-title class_">MouseEvent</span>&lt;T&gt;
+</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ClickableProps</span>&lt;T = <span class="hljs-title class_">HTMLElement</span>&gt; {
+  <span class="hljs-attr">onClick</span>?: <span class="hljs-title class_">ClickHandler</span>&lt;T&gt;;
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title class_">Clickable</span>&lt;T = <span class="hljs-title class_">HTMLElement</span>&gt;({
+  onClick,
+  children
+}: <span class="hljs-title class_">ClickableProps</span>&lt;T&gt;) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick</span> <span class="hljs-attr">as</span> <span class="hljs-attr">any</span>}&gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Usage with specific element types</span>
+&lt;<span class="hljs-title class_">Clickable</span>&lt;<span class="hljs-title class_">HTMLButtonElement</span>&gt;
+  onClick={<span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> {
+    <span class="hljs-comment">// e.currentTarget is HTMLButtonElement</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">currentTarget</span>.<span class="hljs-property">disabled</span>);
+  }}
+&gt;
+  <span class="hljs-title class_">Click</span> me
+&lt;/<span class="hljs-title class_">Clickable</span>&gt;
+</code></pre>
+<h2 id="أنماط-خصائص-المكونات">أنماط خصائص المكوّنات</h2>
+<h3 id="توسيع-خصائص-عناصر-html">توسيع خصائص عناصر HTML</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ButtonHTMLAttributes</span>, <span class="hljs-title class_">AnchorHTMLAttributes</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-comment">// Button that extends native button props</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ButtonHTMLAttributes</span>&lt;<span class="hljs-title class_">HTMLButtonElement</span>&gt; {
+  <span class="hljs-attr">variant</span>?: <span class="hljs-string">&#x27;primary&#x27;</span> | <span class="hljs-string">&#x27;secondary&#x27;</span>;
+  <span class="hljs-attr">size</span>?: <span class="hljs-string">&#x27;small&#x27;</span> | <span class="hljs-string">&#x27;medium&#x27;</span> | <span class="hljs-string">&#x27;large&#x27;</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Button</span>(<span class="hljs-params">{
+  variant = <span class="hljs-string">&#x27;primary&#x27;</span>,
+  size = <span class="hljs-string">&#x27;medium&#x27;</span>,
+  children,
+  ...rest
+}: <span class="hljs-title class_">ButtonProps</span></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>\`<span class="hljs-attr">btn</span> <span class="hljs-attr">btn-</span>\${<span class="hljs-attr">variant</span>} <span class="hljs-attr">btn-</span>\${<span class="hljs-attr">size</span>}\`}
+      {<span class="hljs-attr">...rest</span>}
+    &gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Polymorphic component (can be button or anchor)</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ButtonOrLinkProps</span> =
+  | (<span class="hljs-title class_">ButtonHTMLAttributes</span>&lt;<span class="hljs-title class_">HTMLButtonElement</span>&gt; &amp; { <span class="hljs-attr">as</span>?: <span class="hljs-string">&#x27;button&#x27;</span> })
+  | (<span class="hljs-title class_">AnchorHTMLAttributes</span>&lt;<span class="hljs-title class_">HTMLAnchorElement</span>&gt; &amp; { <span class="hljs-attr">as</span>: <span class="hljs-string">&#x27;a&#x27;</span>; <span class="hljs-attr">href</span>: <span class="hljs-built_in">string</span> });
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ButtonOrLink</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-title class_">ButtonOrLinkProps</span></span>) {
+  <span class="hljs-keyword">if</span> (props.<span class="hljs-property">as</span> === <span class="hljs-string">&#x27;a&#x27;</span>) {
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> {<span class="hljs-attr">...props</span>} /&gt;</span></span>;
+  }
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> {<span class="hljs-attr">...props</span>} /&gt;</span></span>;
+}
+</code></pre>
+<h3 id="خصائص-union-مميزة">خصائص Union مميّزة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Component with mutually exclusive props</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">AlertProps</span> =
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;success&#x27;</span>; <span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span> }
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;error&#x27;</span>; <span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">retry</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span> }
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;info&#x27;</span>; <span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">details</span>?: <span class="hljs-built_in">string</span> };
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Alert</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-title class_">AlertProps</span></span>) {
+  <span class="hljs-keyword">switch</span> (props.<span class="hljs-property">type</span>) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;success&#x27;</span>:
+      <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;alert-success&quot;</span>&gt;</span>{props.message}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;error&#x27;</span>:
+      <span class="hljs-keyword">return</span> (
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;alert-error&quot;</span>&gt;</span>
+          {props.message}
+          {props.retry &amp;&amp; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{props.retry}</span>&gt;</span>Retry<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+          )}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+      );
+
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;info&#x27;</span>:
+      <span class="hljs-keyword">return</span> (
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;alert-info&quot;</span>&gt;</span>
+          {props.message}
+          {props.details &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{props.details}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+      );
+  }
+}
+</code></pre>
+<h2 id="أنماط-المكونات-المركبة">أنماط المكوّنات المركّبة</h2>
+<pre><code class="language-typescript"><span class="hljs-comment">// Compound components with TypeScript</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TabsContextValue</span> {
+  <span class="hljs-attr">activeTab</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">setActiveTab</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">tab</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">TabsContext</span> = createContext&lt;<span class="hljs-title class_">TabsContextValue</span> | <span class="hljs-literal">undefined</span>&gt;(<span class="hljs-literal">undefined</span>);
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TabsProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">defaultTab</span>?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TabListProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactElement</span>&lt;<span class="hljs-title class_">TabProps</span>&gt; | <span class="hljs-title class_">ReactElement</span>&lt;<span class="hljs-title class_">TabProps</span>&gt;[];
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TabProps</span> {
+  <span class="hljs-attr">value</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TabPanelProps</span> {
+  <span class="hljs-attr">value</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-comment">// Main component</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Tabs</span>(<span class="hljs-params">{ children, defaultTab }: <span class="hljs-title class_">TabsProps</span></span>) {
+  <span class="hljs-keyword">const</span> [activeTab, setActiveTab] = <span class="hljs-title function_">useState</span>(defaultTab || <span class="hljs-string">&#x27;&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TabsContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">activeTab</span>, <span class="hljs-attr">setActiveTab</span> }}&gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">TabsContext.Provider</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Sub-components</span>
+<span class="hljs-title class_">Tabs</span>.<span class="hljs-property">List</span> = <span class="hljs-keyword">function</span> <span class="hljs-title function_">TabList</span>(<span class="hljs-params">{ children }: <span class="hljs-title class_">TabListProps</span></span>) {
+  <span class="hljs-keyword">const</span> context = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">TabsContext</span>);
+  <span class="hljs-keyword">if</span> (!context) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;TabList must be used within Tabs&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;tab-list&quot;</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+};
+
+<span class="hljs-title class_">Tabs</span>.<span class="hljs-property">Tab</span> = <span class="hljs-keyword">function</span> <span class="hljs-title function_">Tab</span>(<span class="hljs-params">{ value, children }: <span class="hljs-title class_">TabProps</span></span>) {
+  <span class="hljs-keyword">const</span> context = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">TabsContext</span>);
+  <span class="hljs-keyword">if</span> (!context) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Tab must be used within Tabs&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">className</span>=<span class="hljs-string">{context.activeTab</span> === <span class="hljs-string">value</span> ? &#x27;<span class="hljs-attr">active</span>&#x27; <span class="hljs-attr">:</span> &#x27;&#x27;}
+      <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> context.setActiveTab(value)}
+    &gt;
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+};
+
+<span class="hljs-title class_">Tabs</span>.<span class="hljs-property">Panel</span> = <span class="hljs-keyword">function</span> <span class="hljs-title function_">TabPanel</span>(<span class="hljs-params">{ value, children }: <span class="hljs-title class_">TabPanelProps</span></span>) {
+  <span class="hljs-keyword">const</span> context = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">TabsContext</span>);
+  <span class="hljs-keyword">if</span> (!context) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;TabPanel must be used within Tabs&#x27;</span>);
+
+  <span class="hljs-keyword">if</span> (context.<span class="hljs-property">activeTab</span> !== value) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;tab-panel&quot;</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+};
+
+<span class="hljs-comment">// Usage with full type safety</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Tabs</span> <span class="hljs-attr">defaultTab</span>=<span class="hljs-string">&quot;tab1&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Tabs.List</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Tabs.Tab</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;tab1&quot;</span>&gt;</span>First<span class="hljs-tag">&lt;/<span class="hljs-name">Tabs.Tab</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Tabs.Tab</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;tab2&quot;</span>&gt;</span>Second<span class="hljs-tag">&lt;/<span class="hljs-name">Tabs.Tab</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Tabs.List</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">Tabs.Panel</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;tab1&quot;</span>&gt;</span>First content<span class="hljs-tag">&lt;/<span class="hljs-name">Tabs.Panel</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">Tabs.Panel</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;tab2&quot;</span>&gt;</span>Second content<span class="hljs-tag">&lt;/<span class="hljs-name">Tabs.Panel</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Tabs</span>&gt;</span></span>
+</code></pre>
+<h2 id="أفضل-الممارسات">أفضل الممارسات <span class="content-anchor" id="best-practices"></span></h2>
+<h3 id="dos">Do’s ✅</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Explicitly type children when needed</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Props</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-comment">// ✅ Use function declarations for components</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Component</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-title class_">Props</span></span>) {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{props.children}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+
+<span class="hljs-comment">// ✅ Extend HTML element props when appropriate</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ButtonHTMLAttributes</span>&lt;<span class="hljs-title class_">HTMLButtonElement</span>&gt; {
+  <span class="hljs-attr">variant</span>?: <span class="hljs-string">&#x27;primary&#x27;</span> | <span class="hljs-string">&#x27;secondary&#x27;</span>;
+}
+
+<span class="hljs-comment">// ✅ Use discriminated unions for conditional props</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Props</span> =
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;text&#x27;</span>; <span class="hljs-attr">value</span>: <span class="hljs-built_in">string</span> }
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;number&#x27;</span>; <span class="hljs-attr">value</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">min</span>?: <span class="hljs-built_in">number</span>; <span class="hljs-attr">max</span>?: <span class="hljs-built_in">number</span> };
+
+<span class="hljs-comment">// ✅ Type event handlers explicitly when extracted</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">handleClick</span> = (<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-title class_">MouseEvent</span>&lt;<span class="hljs-title class_">HTMLButtonElement</span>&gt;</span>) =&gt; {
+  <span class="hljs-comment">// ...</span>
+};
+</code></pre>
+<h3 id="donts">Don’ts ❌</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Don&#x27;t use React.FC unnecessarily</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Component</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span> = <span class="hljs-function">() =&gt;</span> { };
+
+<span class="hljs-comment">// ❌ Don&#x27;t use any for event handlers</span>
+onClick={<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-built_in">any</span></span>) =&gt;</span> { }}
+
+<span class="hljs-comment">// ❌ Don&#x27;t forget display names on forwardRef</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Input</span> = <span class="hljs-title function_">forwardRef</span>(<span class="hljs-function">(<span class="hljs-params">props, ref</span>) =&gt;</span> { });
+<span class="hljs-comment">// Input.displayName = &#x27;Input&#x27;; // Don&#x27;t forget this!</span>
+
+<span class="hljs-comment">// ❌ Don&#x27;t overuse type assertions</span>
+<span class="hljs-keyword">const</span> element = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;id&#x27;</span>) <span class="hljs-keyword">as</span> <span class="hljs-title class_">HTMLInputElement</span>; <span class="hljs-comment">// Dangerous!</span>
+
+<span class="hljs-comment">// ❌ Don&#x27;t ignore TypeScript errors in components</span>
+<span class="hljs-comment">// @ts-ignore // Never do this in components!</span>
+</code></pre>
+<h2 id="الخلاصة">الخلاصة</h2>
+<p>تشكل أنماط TypeScript الخاصة بـ React هذه أساس تطوير React آمن الأنواع. أتقن هذه الأنماط وستكتب مكوّنات ليست آمنة الأنواع (type-safe) فحسب، بل أكثر قابلية للصيانة وأسهل في إعادة الهيكلة. تذكّر: الهدف ليس إضافة الأنواع إلى كل مكان، بل إضافة الأنواع الصحيحة في الأماكن الصحيحة لالتقاط الأخطاء مبكرًا وتحسين تجربة تطويرك.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,e as html,l as slug,p as title};

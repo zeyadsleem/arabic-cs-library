@@ -1,0 +1,31 @@
+const s="kinney",n="visual-studio-code",a="Visual Studio Code",e="vscode-regular-expressionist",p="بناء إضافة بعرض ويب",t=[],l=`<p>لدينا بعض الشيفرة القالبية الجاهزة في مجلد <code>regular-expressionist</code> في مستودع <code>vscode-examples</code>. ومهمّتنا هي تشغيل عرض ويب (web view) لتحميل واجهة مستخدم مخصّصة.</p>
+<p>سنجرّب ما يلي:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">openRegularExpressionist</span>(<span class="hljs-params">context</span>) {
+  <span class="hljs-keyword">const</span> panel = vscode.<span class="hljs-property">window</span>.<span class="hljs-title function_">createWebviewPanel</span>(
+    <span class="hljs-string">&#x27;regularExpressionist&#x27;</span>, <span class="hljs-comment">// Identifies the type of the webview</span>
+    <span class="hljs-string">&#x27;Regular Expressionist&#x27;</span>, <span class="hljs-comment">// Title of the panel</span>
+    vscode.<span class="hljs-property">ViewColumn</span>.<span class="hljs-property">One</span>, <span class="hljs-comment">// Editor column to show the new webview panel in</span>
+    {
+      <span class="hljs-attr">enableScripts</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// We want to enable JS in the webview</span>
+    },
+  );
+
+  <span class="hljs-comment">// Set the HTML content for the webview</span>
+  panel.<span class="hljs-property">webview</span>.<span class="hljs-property">html</span> = <span class="hljs-title function_">getWebviewContent</span>();
+
+  <span class="hljs-comment">// Listen for messages from the webview</span>
+  panel.<span class="hljs-property">webview</span>.<span class="hljs-title function_">onDidReceiveMessage</span>(
+    <span class="hljs-function">(<span class="hljs-params">message</span>) =&gt;</span> {
+      <span class="hljs-keyword">if</span> (message.<span class="hljs-property">command</span> === <span class="hljs-string">&#x27;evaluateRegex&#x27;</span>) {
+        <span class="hljs-keyword">const</span> { pattern, text, flags } = message;
+        <span class="hljs-keyword">const</span> response = <span class="hljs-title function_">evaluateRegularExpression</span>(pattern, text, flags);
+        <span class="hljs-comment">// Send the results back to the webview</span>
+        panel.<span class="hljs-property">webview</span>.<span class="hljs-title function_">postMessage</span>({ <span class="hljs-attr">command</span>: <span class="hljs-string">&#x27;updateResult&#x27;</span>, <span class="hljs-attr">data</span>: response });
+      }
+    },
+    <span class="hljs-literal">undefined</span>,
+    context.<span class="hljs-property">subscriptions</span>,
+  );
+}
+</code></pre>
+`,c={book:s,chapter:n,chapterTitle:a,slug:e,title:p,headings:t,html:l};export{s as book,n as chapter,a as chapterTitle,c as default,t as headings,l as html,e as slug,p as title};

@@ -1,0 +1,159 @@
+const s="tanstack-form",a="form",e="دورة TanStack Form الكاملة",n="objects-and-arrays",l="الكائنات والمصفوفات والقيم المنطقية",t=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"اسم-الحقل-مسار-لا-عنوان",text:"اسم الحقل مسار، لا عنوان"},{depth:3,id:"نوع-defaultvalues-هو-ما-يجعل-هذا-يعمل",text:"نوع defaultValues هو ما يجعل هذا يعمل"},{depth:3,id:"modequotarrayquot-يفتح-دوال-المصفوفة",text:"mode=&quot;array&quot; يفتح دوال المصفوفة"},{depth:3,id:"صف-المهارة-حقل-فرعي-وفهرس",text:"صفّ المهارة: حقل فرعي وفهرس"},{depth:3,id:"إضافة-صف-جديد",text:"إضافة صفّ جديد"},{depth:3,id:"القيمة-المنطقية-مربع-اختيار",text:"القيمة المنطقية: مربّع اختيار"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],c=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>كل ما بنيناه حتى الآن حقول مسطّحة: سلسلة نصّية واحدة يقابلها <code>input</code> واحد. لكن الاستمارة الحقيقية نادرًا ما تكون مسطّحة؛ فيها عنوان بريد كائن مستقلّ بذاته، وقائمة مهارات لا تعرف طولها قبل أن يملأها المستخدم، وموافقة على الشروط لا تحتمل إلا نعم أو لا. هذا الدرس يوسّع الاستمارة في الاتجاهات الثلاثة، ويكشف الفكرة الواحدة التي تربطها: <code>name</code> في <code>form.Field</code> ليس اسمًا حرًّا، بل مسار داخل القيم الافتراضية، ونوع هذا المسار هو ما يمنحك الإكمال التلقائي ويمنعك من كتابة حقل غير موجود.</p>
+<p>سنبني حقل <code>address.street</code> المتداخل، ومصفوفة <code>skills</code> من كائنات نضيف إليها ونحذف منها ونعدّل مستوى كل عنصر، وحقل <code>acceptTerms</code> المنطقي بمربّع اختيار. وفي كل مرة ستجد أنّ ما تضيفه من شيفرة قليل، وأنّ العمل الحقيقي يقوم به نوع القيم الافتراضية.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="اسم-الحقل-مسار-لا-عنوان">اسم الحقل مسار، لا عنوان</h3>
+<p><code>form.Field</code> لا يطلب منك تسجيل الحقول مسبقًا، بل يطلب الاسم وحده. فحين يقع الحقل داخل كائن، لا تحتاج إلى حقل أب يحمل الكائن ثم حقل ابن داخله؛ تكتب المسار كاملًا وتفصل مستوياته بالنقاط. في استمارتنا <code>address</code> كائن من أربع سلاسل نصّية، وللوصول إلى <code>street</code> منه نكتب <code>address.street</code>:</p>
+<pre><code class="language-tsx">        &lt;form.<span class="hljs-property">Field</span> name=<span class="hljs-string">&quot;address.street&quot;</span>&gt;
+          {<span class="hljs-function">(<span class="hljs-params">field</span>) =&gt;</span> (
+            <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;mb-4&quot;</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+                <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-black text-white border border-white p-2 w-full&quot;</span>
+                <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Street&quot;</span>
+                <span class="hljs-attr">value</span>=<span class="hljs-string">{field.state.value}</span>
+                <span class="hljs-attr">onBlur</span>=<span class="hljs-string">{field.handleBlur}</span>
+                <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> field.handleChange(e.target.value)}
+              /&gt;
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+          )}
+        &lt;/form.<span class="hljs-property">Field</span>&gt;
+</code></pre>
+<p>لاحظ ثلاث نقاط. الأولى أنّ المقتطف لا يختلف في شيء عن حقل <code>firstName</code>: دالة تصيير، و<code>value</code> مربوط بـ<code>field.state.value</code>، و<code>handleChange</code> يكتب ما يكتبه المستخدم. النقاط في الاسم هي الفرق الوحيد، وهي التي تجعل <code>handleChange</code> يعدّل <code>address.street</code> داخل الكائن بدل أن ينشئ مفتاحًا جديدًا في أعلى القيم. الثانية أنّ <code>name</code> هنا ليس نصًّا حرًّا: TypeScript يشتقّ المسارات الممكنة من نوع القيم الافتراضية، فيقترح عليك <code>address.city</code> و<code>address.zipCode</code> ويرفض <code>adress.street</code> أو <code>address.stret</code>. الثالثة أنّ الكتابة بالمسار لا تُنشئ بنية موازية؛ البنية موجودة أصلًا في <code>defaultValues</code>، والحقل يقرأ منها ويكتب فيها. لذلك حين تكتب في هذا الحقل سترى التغيير داخل كائن <code>address</code> في الكتلة التي تطبع القيم أسفل الاستمارة.</p>
+<h3 id="نوع-defaultvalues-هو-ما-يجعل-هذا-يعمل">نوع <code>defaultValues</code> هو ما يجعل هذا يعمل</h3>
+<p>المسارات لا تُشتقّ من فراغ، بل من نوع القيم الافتراضية. في هذا الفرع تُعلَن واجهة <code>RegisterForm</code> صراحةً، وفيها نوع المصفوفة كاملًا:</p>
+<pre><code class="language-tsx">  <span class="hljs-attr">skills</span>: <span class="hljs-title class_">Array</span>&lt;{
+    <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">level</span>: <span class="hljs-string">&quot;beginner&quot;</span> | <span class="hljs-string">&quot;intermediate&quot;</span> | <span class="hljs-string">&quot;expert&quot;</span>;
+  }&gt;;
+</code></pre>
+<p>ثم تُعلَّن القيم الافتراضية بهذا النوع: <code>const defaultValues: RegisterForm</code>. هذا السطر هو ما يجعل بقية الدرس ممكنًا. لو تركت TypeScript يستنتج النوع وحده، لوسّع <code>level</code> من اتحاد ثلاث قيم إلى <code>string</code> عام، لأنّ القيمة الأولى <code>&quot;beginner&quot;</code> تُستنتج كنصّ عادي. حينها يقبل <code>pushValue</code> أيّ نصّ في المستوى، ويختفي التحقّق الذي يمنعك من كتابة مستوى غير موجود. النوع الصريح يحفظ أيضًا <code>age: number | undefined</code>، ويحفظ شكل عنصر المصفوفة، فيعرف الحقل الفرعي أنّ قيمته واحدة من ثلاث قيم لا أكثر.</p>
+<p>أما القيم نفسها فتبدأ بثلاث مهارات جاهزة:</p>
+<pre><code class="language-tsx">  <span class="hljs-attr">skills</span>: [
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;HTML&quot;</span>,
+      <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(),
+      <span class="hljs-attr">level</span>: <span class="hljs-string">&quot;beginner&quot;</span>,
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;CSS&quot;</span>,
+      <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(),
+      <span class="hljs-attr">level</span>: <span class="hljs-string">&quot;beginner&quot;</span>,
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;JavaScript&quot;</span>,
+      <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(),
+      <span class="hljs-attr">level</span>: <span class="hljs-string">&quot;beginner&quot;</span>,
+    },
+  ],
+</code></pre>
+<p>المعرّف هنا لا تحتاجه الاستمارة في شيء؛ فهي تتعامل مع المصفوفة بترتيبها لا بمعرّفاتها. لكنه ضروري لـReact حين نرسم الصفوف، لأنّه يعطي كل صفّ هوية ثابتة تبقى معه حتى لو تغيّر موضعه في المصفوفة. و<code>crypto.randomUUID()</code> يولّد معرّفًا فريدًا في المتصفّح دون أي مكتبة إضافية.</p>
+<h3 id="modequotarrayquot-يفتح-دوال-المصفوفة"><code>mode=&quot;array&quot;</code> يفتح دوال المصفوفة</h3>
+<p>حقل عادي يحمل قيمة ويغيّرها، وهذا لا يكفي لمصفوفة تريد إضافة صفوف وحذفها. لهذا يعلن الحقل عن طبيعته بالخيار <code>mode</code>:</p>
+<pre><code class="language-tsx">        &lt;form.<span class="hljs-property">Field</span> name=<span class="hljs-string">&quot;skills&quot;</span> mode=<span class="hljs-string">&quot;array&quot;</span>&gt;
+          {<span class="hljs-function">(<span class="hljs-params">field</span>) =&gt;</span> {
+            <span class="hljs-keyword">return</span> (
+              &lt;div&gt;
+                <span class="hljs-title class_">Skills</span>
+                &lt;div&gt;
+                  {field.<span class="hljs-property">state</span>.<span class="hljs-property">value</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">skill, index</span>) =&gt;</span> (
+</code></pre>
+<p>هذا الخيار ليس تزيينًا: بدونه يبقى <code>field</code> حقلًا عاديًا لا يملك <code>pushValue</code> ولا <code>removeValue</code>، فإذا حاولت استدعاء أحدهما رفض TypeScript الشيفرة قبل أن تعمل. أما معه فيصبح <code>field.state.value</code> مصفوفة كاملة، ويمنحك كائن الحقل دوالًّا جاهزة للتعامل مع عناصرها، ونحن نستعمل منها اثنتين في هذا الدرس. ولاحظ أنّ القيمة تُقرأ من <code>field.state.value</code> مباشرة، ثم تُمرَّر على <code>map</code>؛ فكل ضغطة على زرّ الإضافة أو الحذف تغيّر المصفوفة، فيُعاد تصيير هذا الموضع وحده.</p>
+<h3 id="صف-المهارة-حقل-فرعي-وفهرس">صفّ المهارة: حقل فرعي وفهرس</h3>
+<p>كل عنصر في المصفوفة كائن له <code>name</code> و<code>id</code> و<code>level</code>. نريد عرض الاسم، ووضع قائمة منسدلة تغيّر المستوى، وزرّ يحذف الصفّ. الاسم يُعرض كنصّ، أما المستوى فيحتاج حقلًا خاصًّا به داخل الصفّ:</p>
+<pre><code class="language-tsx">                    &lt;div
+                      key={skill.<span class="hljs-property">id</span>}
+                      className=<span class="hljs-string">&quot;flex items-center mb-2 gap-2&quot;</span>
+                    &gt;
+                      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{skill.name}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+                      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form.Field</span> <span class="hljs-attr">name</span>=<span class="hljs-string">{</span>\`<span class="hljs-attr">skills</span>[\${<span class="hljs-attr">index</span>}]<span class="hljs-attr">.level</span>\`}&gt;</span>
+                        {(subField) =&gt; (
+                          <span class="hljs-tag">&lt;<span class="hljs-name">select</span>
+                            <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-black text-white border border-white p-2 w-full&quot;</span>
+                            <span class="hljs-attr">value</span>=<span class="hljs-string">{subField.state.value}</span>
+                            <span class="hljs-attr">onBlur</span>=<span class="hljs-string">{subField.handleBlur}</span>
+                            <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> {
+                              subField.handleChange(e.target.value as any);
+                            }}
+                          &gt;
+                            <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;beginner&quot;</span>&gt;</span>Beginner<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;intermediate&quot;</span>&gt;</span>Intermediate<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;expert&quot;</span>&gt;</span>Expert<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span>
+                          <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+                        )}
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">form.Field</span>&gt;</span></span>
+                      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+                        <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-red-700 text-white p-1 ms-2&quot;</span>
+                        <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> field.removeValue(index)}
+                      &gt;
+                        X
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+                    &lt;/div&gt;
+                  ))}
+</code></pre>
+<p>تأمّل الاسم: <code>\`skills[\${index}].level\`</code>. القوسان المعقوفان هنا ليسا جزءًا من الصيغة، بل هما موضع إدخال قيمة في قالب نصّي؛ فالصفّ الأول يصير اسمه <code>skills[0].level</code>، والثاني <code>skills[1].level</code>. والقوسان المربّعان يعبّران عن فهرس مصفوفة، أما النقطة فتعبر عن خاصية كائن؛ ولهذا يختلف الشكل عن <code>address.street</code> الذي لا فهرس فيه. لو ثبّتنا الصفر لكانت كل القوائم المنسدلة تكتب في المهارة الأولى وحدها، ولهذا نأخذ <code>index</code> من <code>map</code> نفسها. وسمّينا كائن الحقل هنا <code>subField</code> تمييزًا له عن الحقل الأب، لكنه حقل كامل: له <code>state.value</code> و<code>handleChange</code> و<code>handleBlur</code> تمامًا كأي حقل آخر.</p>
+<p>أما <code>key={skill.id}</code> فهي التي تربط الصفّ بهويته. لو استعملنا <code>index</code> مفتاحًا لكان الحذف من وسط القائمة كارثة صامتة: React يعيد استخدام العناصر بحسب موضعها، فيبقى مربّع الاختيار في مكانه بينما ينتقل الاسم إلى صفّ آخر. المعرّف الثابت يمنع هذا كله.</p>
+<p>وزرّ الحذف لا يحتاج أكثر من سطر: <code>field.removeValue(index)</code>. الفهرس الذي حصلنا عليه من <code>map</code> هو نفسه الذي يطلبه <code>removeValue</code>، فتُحذف المهارة المعروضة في ذلك الصفّ بالذات، وتُعاد القائمة بلا هذا العنصر.</p>
+<p>وفي <code>handleChange</code> تجد <code>e.target.value as any</code>. السبب أنّ عنصر <code>select</code> في HTML يعطي نصًّا عاديًّا، بينما نوع الحقل هو اتحاد ثلاث قيم محدّدة، فيرفض TypeScript النصّ العام. الصبّ هنا يسكت الفحص؛ والبديل الأنظف أن تتحقّق من القيمة قبل تمريرها، لكنّ الدرس يكتفي بالصبّ لأنّ الخيارات مكتوبة بيدك في الوسوم نفسها.</p>
+<h3 id="إضافة-صف-جديد">إضافة صفّ جديد</h3>
+<p>بقي الطرف الآخر من المصفوفة: زرّ يضيف عنصرًا. الدالة المسؤولة هي <code>pushValue</code>، وتأخذ القيمة الجديدة كاملة:</p>
+<pre><code class="language-tsx">                &lt;button
+                  className=<span class="hljs-string">&quot;bg-yellow-700 text-black p-2&quot;</span>
+                  onClick={<span class="hljs-function">() =&gt;</span> {
+                    field.<span class="hljs-title function_">pushValue</span>({
+                      <span class="hljs-attr">name</span>: <span class="hljs-string">\`New Skill <span class="hljs-subst">\${field.state.value.length + <span class="hljs-number">1</span>}</span>\`</span>,
+                      <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(),
+                      <span class="hljs-attr">level</span>: <span class="hljs-string">&quot;beginner&quot;</span>,
+                    });
+                  }}
+                &gt;
+                  <span class="hljs-title class_">Add</span> <span class="hljs-title class_">Skill</span>
+                &lt;/button&gt;
+</code></pre>
+<p>القيمة هنا كائن كامل لا نصّ؛ وهذا طبيعي لأنّ عناصر مصفوفتنا كائنات، ولو مرّرت نصًّا لرفضه النوع. والاسم مبنيّ على طول المصفوفة الحالي زائد واحد، فلا يتكرّر العنوان ما دمت تضيف صفوفًا متتالية. والمستوى يبدأ <code>beginner</code>، ثم يغيّره المستخدم من القائمة المنسدلة؛ وفي تطبيق حقيقي قد تأتي هذه القيمة من الخادم، أما هنا فبيانات وهمية تكفي لإثبات السلوك.</p>
+<h3 id="القيمة-المنطقية-مربع-اختيار">القيمة المنطقية: مربّع اختيار</h3>
+<p>بقي نوع ثالث من القيم: <code>acceptTerms</code> وهي قيمة منطقية. الحقل يُعرَّف كأي حقل آخر، لكن عنصر الإدخال يختلف:</p>
+<pre><code class="language-tsx">        &lt;form.<span class="hljs-property">Field</span> name=<span class="hljs-string">&quot;acceptTerms&quot;</span>&gt;
+          {<span class="hljs-function">(<span class="hljs-params">field</span>) =&gt;</span> {
+            <span class="hljs-keyword">return</span> (
+              <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;mb-4 mt-4&quot;</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;flex items-center gap-2&quot;</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+                    <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-black text-white border border-white p-2&quot;</span>
+                    <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>
+                    <span class="hljs-attr">checked</span>=<span class="hljs-string">{field.state.value}</span>
+                    <span class="hljs-attr">onBlur</span>=<span class="hljs-string">{field.handleBlur}</span>
+                    <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> field.handleChange(e.target.checked)}
+                  /&gt;
+                  Accept Terms
+                <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+            );
+          }}
+        &lt;/form.<span class="hljs-property">Field</span>&gt;
+</code></pre>
+<p>الفرق كلّه في سطرين. الأول أنّ مربّع الاختيار لا يقرأ <code>value</code> بل <code>checked</code>؛ فالقيمة المنطقية <code>false</code> لا تُعرض في <code>value</code> بأي شكل مفيد، بينما <code>checked</code> هي التي تضع العلامة أو تزيلها، وهي التي تجعل المربّع يعكس حالة الاستمارة بعد أيّ تغيير خارجي. والثاني أنّ <code>handleChange</code> يتلقّى <code>e.target.checked</code> لا <code>e.target.value</code>؛ لأنّ <code>value</code> في مربّع الاختيار سلسلة ثابتة هي <code>&quot;on&quot;</code> ما لم تغيّرها، فلو مرّرتها لدخلت سلسلة نصّية إلى حقل نوعه منطقي، ولفسدت القيمة في الكتلة السفلية. أما <code>checked</code> فهي <code>true</code> أو <code>false</code> بالفعل. بهذين السطرين يصبح الحقل متزامنًا مع بقية الاستمارة، وترى <code>acceptTerms</code> تنقلب من <code>false</code> إلى <code>true</code> والعكس في الطباعة أسفل الصفحة.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--objects-and-arrays--skills.png" alt="استمارة التسجيل بعد إضافة الحقول المتداخلة والمصفوفة ومربّع الاختيار: حقل الاسم الأول، وحقل ، وقائمة مهارات فيها خمسة صفوف لكل منها قائمة مستوى وزرّ حذف، ثم زرّ ، ثم  محدّدًا وزرّ ، وأسفلها كتلة القيم بصيغة "></p>
+<p>في الصورة نرى الاستمارة كما صارت بعد الدرس. في الأعلى حقل <code>First Name</code> فارغ، وتحته حقل <code>Street</code>، ولاحظ أنّ حقل الاسم الأخير غائب لأنّه لا يظهر إلا بعد كتابة الاسم الأول، وهو سلوك الدرس السابق. ثم قسم <code>Skills</code> وفيه خمسة صفوف: <code>HTML</code> و<code>CSS</code> و<code>JavaScript</code> من القيم الافتراضية، و<code>New Skill 4</code> و<code>New Skill 5</code> أُضيفا بالزرّ. كل صفّ يحمل قائمة منسدلة على <code>Beginner</code> وزرّ حذف أحمر، وفي أسفل القائمة زرّ <code>Add Skill</code>، ثم <code>Accept Terms</code> محدّدًا، ثم زرّ <code>Submit</code>.</p>
+<p>وتحتلّ الكتلة السفلية نصف الصفحة تقريبًا، وهي أهمّ ما في اللقطة: كائن <code>values</code> كاملًا كما تعرفه الاستمارة. فيه <code>address</code> كائنًا متداخلًا بمفاتيحه الأربعة، و<code>skills</code> مصفوفة من خمسة كائنات، لكل كائن <code>name</code> و<code>id</code> فريد و<code>level</code>، و<code>acceptTerms</code> بقيمة <code>true</code>. هذه الكتلة هي الدليل على أنّ ما كتبناه في الحقول المتداخلة والمصفوفة وصل إلى مكانه الصحيح، لا إلى أعلى الكائن.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>غيّر <code>skills</code> في القيم الافتراضية إلى مصفوفة فارغة <code>[]</code>، ثم أضف مهارة بالزرّ. راقب الكتلة السفلية: المصفوفة تبدأ فارغة وتنمو عنصرًا واحدًا في كل ضغطة.</li>
+<li>أضف حقلًا لـ<code>address.city</code> تحت حقل <code>street</code> بالطريقة نفسها، وتأكّد أنّ القيمة تظهر داخل كائن <code>address</code> في الكتلة السفلية لا خارجه.</li>
+<li>أضف مستوى رابعًا إلى واجهة <code>RegisterForm</code> وإلى وسوم <code>option</code> معًا، ثم احذفه من الواجهة وحدها ولاحظ الخطأ الذي يظهر عند <code>handleChange</code>. هذا هو النوع نفسه الذي حمى الحقل سابقًا.</li>
+<li>استبدل <code>key={skill.id}</code> بالفهرس <code>key={index}</code>، ثم احذف الصفّ الأول وراقب أيّ صفّ يتغيّر في الشاشة. ستفسّر لك النتيجة لماذا نحتاج معرّفًا ثابتًا.</li>
+<li>احذف <code>mode=&quot;array&quot;</code> من حقل <code>skills</code> وحاول استدعاء <code>pushValue</code>. سيمنعك TypeScript قبل أن يعمل التطبيق؛ أعد الخيار وتأكّد من عودة الزرّ إلى العمل.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=1842s">فيديو الدرس: Objects &amp; Arrays</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/objects-arrays-booleans">شيفرة الدرس: فرع objects-arrays-booleans</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/guides/arrays">التوثيق الرسمي: المصفوفات في TanStack Form</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/overview">التوثيق الرسمي: نظرة عامة على TanStack Form</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Objects &amp; Arrays» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,p={book:s,chapter:a,chapterTitle:e,slug:n,title:l,headings:t,html:c};export{s as book,a as chapter,e as chapterTitle,p as default,t as headings,c as html,n as slug,l as title};

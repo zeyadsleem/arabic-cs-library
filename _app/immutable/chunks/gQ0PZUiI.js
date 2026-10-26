@@ -1,0 +1,14 @@
+const e="kinney",a="python-ai",o="أساسيات الذكاء الاصطناعي بلغة Python",i="index",n="أساسيات الذكاء الاصطناعي بلغة Python",r=[],t=`<p>توفّر هذه الدفاتر (notebooks) نظرةً شاملة على تقنيات معالجة اللغة الطبيعية وتوليد الصور معًا، بالاعتماد أساسًا على مكتبة Hugging Face. يبدأ قسم معالجة اللغة الطبيعية (NLP) بأساسيات استخدام خطوط أنابيب المحوّلات (Transformer Pipelines) في مهام مثل تحليل المشاعر وتوليد النصوص والتلخيص. ثم يغوص في خطوة المعالجة المسبقة الحاسمة، أي الترميز (tokenization)، التي تحوّل النص إلى صيغة رقمية تفهمها النماذج. وبناءً على ذلك، تشرح الدفاتر آلية الانتباه (attention mechanism) التي تتيح للنماذج موازنة أهمية الكلمات المختلفة في الجملة، ومعماريات المفكِّكات (decoder) التي تستخدم الانتباه السببي (causal attention) لتوليد النصوص. وأخيرًا تتوّج مفاهيم معالجة اللغة الطبيعية بدليل عملي لضبط نموذج مُدرَّب مسبقًا على مجموعة بيانات مخصّصة لإنشاء مولّد اقتباسات متخصّص.</p>
+<p>يستكشف الجزء الخاص بتوليد الصور في هذه الدفاتر قدرات Stable Diffusion. سنبدأ بتقديم توليد الصور من النصوص، حيث ينشئ النموذج صورًا من أوصاف نصية. ثم تنتقل الدفاتر إلى تحويلات الصور إلى صور (image-to-image transformations)، وهي تقنية تستخدم صورة موجودة كنقطة بداية أو مصدر إلهام لتوليد مشاهد بصرية جديدة. ويُختتم القسم باستكشاف DreamBooth، وهي تقنية تخصيص لضبط نموذج لتوليد الصور من النصوص ببضع صور مرجعية فقط. وهذا يتيح توليد موضوع معيّن في سياقات وأنماط متنوّعة.</p>
+<h1>الدفاتر</h1>
+<ul>
+<li><a href="https://colab.research.google.com/drive/1OnAQGIBrbkbJYC3h-Vf3mUwru9K3usSt?usp=sharing">أساسيات خطوط الأنابيب</a></li>
+<li><a href="https://colab.research.google.com/drive/15cChgqEWrWTtWApWRBSQBqFpmWDe2ZR7?usp=sharing">الترميز</a></li>
+<li><a href="https://colab.research.google.com/drive/1m9LFBM2Ncl_k-wMHUYJ-7ltxyhLpM7Br?usp=sharing">آلية الانتباه</a></li>
+<li><a href="https://colab.research.google.com/drive/1ZUmRw8pTJaGum1gzJZ4H49X9aWkd9zfW?usp=sharing">المفكِّكات</a></li>
+<li><a href="https://colab.research.google.com/drive/1obIENeCQ1NqIe2CK7hgB-s4X0G29T-BV?usp=sharing">الضبط الدقيق</a></li>
+<li><a href="https://colab.research.google.com/drive/15s90EDiGZCFqhkc54bV6lAenLqmevTD3?usp=sharing">توليد الصور</a></li>
+<li><a href="https://colab.research.google.com/drive/1iI-RKtZOkL4DbaJKCIHIqkati3D1Yv_7?usp=sharing">تحويلات الصور إلى صور</a></li>
+<li><a href="https://colab.research.google.com/drive/1Swhhh_rQxRHgD1LGqJgvRigQ8eI5NvsA?usp=sharing">Dreambooth</a></li>
+</ul>
+`,s={book:e,chapter:a,chapterTitle:o,slug:i,title:n,headings:r,html:t};export{e as book,a as chapter,o as chapterTitle,s as default,r as headings,t as html,i as slug,n as title};

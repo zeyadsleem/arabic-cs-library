@@ -1,0 +1,33 @@
+const e="kinney",t="figma",a="Figma للمطوّرين",p="typography",s="التصميم الطباعي (Typography)",n=[{depth:2,id:"عرض-أنماط-النص-وتحريرها",text:"عرض أنماط النص وتحريرها"},{depth:2,id:"توليد-نظام-الطباعة-الخاص-بك",text:"توليد نظام الطباعة الخاص بك"},{depth:3,id:"typescales",text:"Typescales"},{depth:3,id:"typescale",text:"Typescale"},{depth:2,id:"إنشاء-الأنماط-بالجملة",text:"إنشاء الأنماط بالجملة"}],c=`<blockquote>
+<p><strong>خصائص النص لا تدعم المتغيّرات حاليًا</strong></p>
+<p>لا تزال <a href="https://stevekinney.com/courses/figma/variables">المتغيّرات</a> في المرحلة التجريبية في Figma. وفي وقت كتابة هذا، لا يوجد دعم لتنسيق النص باستخدام المتغيّرات. ومع ذلك، فهو <em>على</em> خريطة الطريق وستدعم المتغيّرات <em>المتغيّرات في نهاية المطاف</em>. لكن في الوقت الحالي، علينا استخدام <a href="https://stevekinney.com/courses/figma/styles">الأنماط</a>.</p>
+</blockquote>
+<p>يمكننا حفظ أي تنسيق نطبّقه على نص طبقة ما في صورة <a href="https://stevekinney.com/courses/figma/styles">نمط</a>. وهذا يتيح لك تحديث النمط ثم ترث أي طبقات تستخدم ذلك النمط التغييرات فورًا.</p>
+<p><img src="/arabic-cs-library/images/kinney/f18abe9f77321450.webp" alt="إضافة نمط نص"></p>
+<blockquote>
+<p><strong>استخدام الشرطة المائلة في عنوان النمط يساعد في تنظيمه</strong></p>
+<p>كما في كثير من الأمور المختلفة في Figma، تضيف الشرطة المائلة في عنوان النمط طبقة تنظيمية.</p>
+<p>استخدام الشرطة المائلة في عنوان النمط يضيف طبقة تنظيمية</p>
+</blockquote>
+<p><img src="/arabic-cs-library/images/kinney/a13dc204cfb11a0c.webp" alt="استخدام الشرطة المائلة في عنوان نمط يضيف مستوى من التنظيم"></p>
+<h2 id="عرض-أنماط-النص-وتحريرها">عرض أنماط النص وتحريرها</h2>
+<p>يمكنك عرض أنماط النص وتحريرها وتنظيمها بالنقر على مساحة العمل (مثلًا وليس على أي من طبقاتك) ثم النظر في <strong>الشريط الجانبي الأيمن</strong>.</p>
+<p><img src="/arabic-cs-library/images/kinney/dcf2d1efd07eb399.webp" alt="عرض الأنماط المحلية"></p>
+<p>تنفع هذه الطريقة إن كان لديك نظام طباعة قائم تريد نقله إلى Figma. والبديل الآخر هو توليد نظام الطباعة الخاص بك.</p>
+<h2 id="توليد-نظام-الطباعة-الخاص-بك">توليد نظام الطباعة الخاص بك</h2>
+<h3 id="typescales">Typescales</h3>
+<p>هناك عدد من الإضافات لتوليد نظام طباعة. وإحدى طرق البدء استخدام إضافة <a href="https://www.figma.com/community/plugin/739825414752646970">Typescales</a>.</p>
+<p><img src="/arabic-cs-library/images/kinney/48ff5012ef469b0f.webp" alt="إضافة Typescales"></p>
+<p>ستُنشئ طبقة يمكنك تنسيقها أكثر بالخط الذي تريده ثم إنشاء أنماط لها.</p>
+<h3 id="typescale">Typescale</h3>
+<p>هناك أسلوب آخر هو استخدام إضافة <a href="https://www.figma.com/community/plugin/967802396210455992">Typescale</a>. والفرق هنا أننا نبدأ بنمط أساسي ثم ندعها تُجري بعض الحسابات لمعرفة بقية نظام الطباعة.</p>
+<p><img src="/arabic-cs-library/images/kinney/3149c1be0a387ceb.webp" alt="إضافة Figma Typescale"></p>
+<p>تحتاج النتيجة النهائية إلى قليل من التنقيح، لكن يمكنك جعلها تبدو جميلة بسرعة باستخدام <a href="https://stevekinney.com/courses/figma/auto-layout">Auto Layout</a>.</p>
+<p><img src="/arabic-cs-library/images/kinney/a69c1912ce9091e6.webp" alt="أنماط Typescales المولّدة من إضافة Typescale"></p>
+<h2 id="إنشاء-الأنماط-بالجملة">إنشاء الأنماط بالجملة</h2>
+<p>مع وجود نوع من نظام الطباعة، يمكنك استخدام إضافة <a href="https://www.figma.com/community/plugin/820660579767995949">Styler</a> لإنشاء الأنماط بالجملة. وستستخدم إضافة Styler أسماء طبقاتك لتسمية الأنماط، كما أن إعادة تسمية الطبقات أسهل بكثير من إعادة تسمية الأنماط (مثلًا باستخدام <strong>Command/Control+R</strong>). والخبر السار أنه إن أخفقت، يمكنك إعادة تسمية الأنماط وتشغيل الإضافة مرة أخرى. فإضافة Styler ذكية بما يكفي لتدرك أنك تُعيد تسمية بعض الأنماط فحسب.</p>
+<blockquote>
+<p><strong>تمرين</strong></p>
+<p>تفضّل بإنشاء مجموعة من الخطوط العريضة بناءً على نظام الطباعة الحالي لديك — أو ولّد نظامًا جديدًا إن أردت. استخدم <strong>Styler</strong> لإنشاء أنماطك بالجملة.</p>
+</blockquote>
+`,i={book:e,chapter:t,chapterTitle:a,slug:p,title:s,headings:n,html:c};export{e as book,t as chapter,a as chapterTitle,i as default,n as headings,c as html,p as slug,s as title};

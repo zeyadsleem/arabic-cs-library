@@ -1,0 +1,431 @@
+const s="kinney",a="react-performance",n="أداء React",l="component-granularity-splitting",t="دقّة تقسيم المكوّنات",p=[{depth:2,id:"لماذا-تهم-دقة-تقسيم-المكونات",text:"لماذا تهمّ دقّة تقسيم المكوّنات"},{depth:2,id:"مشكلة-المكون-المتجانس-الضخم",text:"مشكلة المكوّن المتجانس الضخم"},{depth:2,id:"التقسيم-الاستراتيجي-للمكونات",text:"التقسيم الاستراتيجي للمكوّنات"},{depth:2,id:"فن-اختيار-نقاط-التقسيم",text:"فنّ اختيار نقاط التقسيم"},{depth:3,id:"قسم-عندما-تكون-الحالة-مستقلة",text:"قسّم عندما تكون الحالة مستقلة"},{depth:3,id:"قسم-عندما-تصبح-المكونات-معقدة",text:"قسّم عندما تصبح المكوّنات معقّدة"},{depth:3,id:"قسم-عندما-تحتاج-إلى-وتائر-تحديث-مختلفة",text:"قسّم عندما تحتاج إلى وتائر تحديث مختلفة"},{depth:2,id:"المزالق-الشائعة-في-التقسيم",text:"المزالق الشائعة في التقسيم"},{depth:3,id:"الإفراط-في-التقسيم-مشكلة-قصاصات-المكونات",text:"الإفراط في التقسيم: مشكلة قصاصات المكوّنات"},{depth:3,id:"تمرير-الخصائص-عبر-الطبقات-بسبب-الإفراط-في-التقسيم",text:"تمرير الخصائص عبر الطبقات بسبب الإفراط في التقسيم"},{depth:2,id:"اختبار-المكونات-المقسمة",text:"اختبار المكوّنات المقسمة"},{depth:2,id:"مراقبة-الأداء",text:"مراقبة الأداء"},{depth:2,id:"متى-لا-تقسم",text:"متى لا تقسّم"},{depth:2,id:"استراتيجية-تقسيم-واقعية",text:"استراتيجية تقسيم واقعية"}],e=`<p>تقسيم المكوّنات سيف ذو حدّين في تحسين أداء React. إن قسّمت قليلًا حصلت على مكوّنات متجانسة ضخمة تُعيد تصيير كل شيء عند تغيّر خاصية واحدة. وإن قسّمت كثيرًا انتهيت إلى «قصاصات مكوّنات» متناثرة — عشرات القطع الصغيرة المبعثرة في أنحاء مستودعك تجعل تصحيح الأخطاء أشبه بالتنقيب الأثري. والسرّ هو العثور على النقطة المثالية حيث تتولّى كل قطعة مسؤولية واحدة بحدود واضحة، فيصبح تطبيقك سريعًا وقابلًا للصيانة معًا.</p>
+<h2 id="لماذا-تهم-دقة-تقسيم-المكونات">لماذا تهمّ دقّة تقسيم المكوّنات</h2>
+<p>في كل مرة يُعاد تصيير مكوّن في React، قد يُطلق ذلك سلسلة من عمليات إعادة تصيير الأبناء. وعندما يكون لديك مكوّن كبير يدير عدة قطع من الحالة، فقد يؤدي تغيير أي قطعة واحدة إلى إعادة تصيير شجرة المكوّنات بأكملها بلا داعٍ. ويصبح هذا مؤلمًا بشكل خاص عندما تكون لديك:</p>
+<ul>
+<li>نماذج معقّدة فيها حقول إدخال متعددة</li>
+<li>قوائم بعناصر تفاعلية</li>
+<li>تخطيطات على نمط لوحات المعلومات فيها ودجات متعددة</li>
+<li>عربات تسوّق فيها كميات العناصر والمجاميع</li>
+</ul>
+<p>الهدف ليس إنشاء أكبر عدد ممكن من المكوّنات — بل إنشاء مكوّنات تتغيّر معًا فتبقى معًا.</p>
+<h2 id="مشكلة-المكون-المتجانس-الضخم">مشكلة المكوّن المتجانس الضخم</h2>
+<p>لنبدأ بمثال كلاسيكي: بطاقة منتج تعرض أكثر مما ينبغي وتفعل أكثر مما ينبغي.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Monolithic component - everything re-renders when anything changes</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ProductCard</span>(<span class="hljs-params">{ product }: { product: Product }</span>) {
+  <span class="hljs-keyword">const</span> [quantity, setQuantity] = <span class="hljs-title function_">useState</span>(<span class="hljs-number">1</span>);
+  <span class="hljs-keyword">const</span> [isWishlisted, setIsWishlisted] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">const</span> [showDetails, setShowDetails] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">const</span> [reviews, setReviews] = useState&lt;<span class="hljs-title class_">Review</span>[]&gt;([]);
+  <span class="hljs-keyword">const</span> [isLoadingReviews, setIsLoadingReviews] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+
+  <span class="hljs-comment">// This effect runs on every render</span>
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span> (showDetails &amp;&amp; reviews.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) {
+      <span class="hljs-title function_">setIsLoadingReviews</span>(<span class="hljs-literal">true</span>);
+      <span class="hljs-title function_">fetchReviews</span>(product.<span class="hljs-property">id</span>).<span class="hljs-title function_">then</span>(setReviews);
+    }
+  }, [showDetails, reviews.<span class="hljs-property">length</span>, product.<span class="hljs-property">id</span>]);
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleQuantityChange</span> = (<span class="hljs-params"><span class="hljs-attr">newQuantity</span>: <span class="hljs-built_in">number</span></span>) =&gt; {
+    <span class="hljs-title function_">setQuantity</span>(newQuantity);
+    <span class="hljs-comment">// Changing quantity re-renders the entire card, including reviews</span>
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">toggleWishlist</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-title function_">setIsWishlisted</span>(!isWishlisted);
+    <span class="hljs-comment">// Wishlist toggle re-renders everything</span>
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;product-card&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{product.image}</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">{product.name}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>{product.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;price&quot;</span>&gt;</span>\${product.price}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+      {/* Quantity selector */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> handleQuantityChange(quantity - 1)}&gt;-<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{quantity}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> handleQuantityChange(quantity + 1)}&gt;+<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      {/* Wishlist button */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{toggleWishlist}</span>&gt;</span>{isWishlisted ? &#x27;❤️&#x27; : &#x27;🤍&#x27;}<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+
+      {/* Details toggle */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setShowDetails(!showDetails)}&gt;
+        {showDetails ? &#x27;Hide&#x27; : &#x27;Show&#x27;} Details
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+
+      {/* Expensive reviews section */}
+      {showDetails &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+          {isLoadingReviews ? (
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading reviews...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          ) : (
+            reviews.map((review) =&gt; (
+              <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{review.id}</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;review&quot;</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>{review.author}<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{review.content}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{&#x27;⭐&#x27;.repeat(review.rating)}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            ))
+          )}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>يحمّل هذا المكوّن مسؤوليات أكثر من اللازم. عندما تتغيّر الكمية، تُعاد البطاقة بأكملها للتصيير — بما في ذلك قسم المراجعات الذي قد يضمّ عشرات من مكوّنات المراجعة. وعندما تبدّل حالة قائمة الرغبات، يُعاد تصيير محدد الكمية بلا داعٍ.</p>
+<h2 id="التقسيم-الاستراتيجي-للمكونات">التقسيم الاستراتيجي للمكوّنات</h2>
+<p>المفتاح هو تقسيم المكوّنات على حدود الحالة. ينبغي عمومًا أن تعيش كل قطعة حالة مستقلة في مكوّنها الخاص (أو على الأقل أن تُعزل عن الحالة غير المرتبطة بها).</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Split into focused components</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ProductCard</span>(<span class="hljs-params">{ product }: { product: Product }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;product-card&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ProductImage</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{product.image}</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">{product.name}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ProductInfo</span> <span class="hljs-attr">name</span>=<span class="hljs-string">{product.name}</span> <span class="hljs-attr">price</span>=<span class="hljs-string">{product.price}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ProductActions</span> <span class="hljs-attr">productId</span>=<span class="hljs-string">{product.id}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ProductActions</span>(<span class="hljs-params">{ productId }: { productId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;product-actions&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">QuantitySelector</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">WishlistButton</span> <span class="hljs-attr">productId</span>=<span class="hljs-string">{productId}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ProductDetails</span> <span class="hljs-attr">productId</span>=<span class="hljs-string">{productId}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">QuantitySelector</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [quantity, setQuantity] = <span class="hljs-title function_">useState</span>(<span class="hljs-number">1</span>);
+
+  <span class="hljs-comment">// Only this component re-renders when quantity changes</span>
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;quantity-selector&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setQuantity((q) =&gt; q - 1)}&gt;-<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{quantity}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setQuantity((q) =&gt; q + 1)}&gt;+<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">WishlistButton</span>(<span class="hljs-params">{ productId }: { productId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> [isWishlisted, setIsWishlisted] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+
+  <span class="hljs-comment">// Only this component re-renders when wishlist status changes</span>
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setIsWishlisted(!isWishlisted)}&gt;{isWishlisted ? &#x27;❤️&#x27; : &#x27;🤍&#x27;}<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ProductDetails</span>(<span class="hljs-params">{ productId }: { productId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> [showDetails, setShowDetails] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setShowDetails(!showDetails)}&gt;
+        {showDetails ? &#x27;Hide&#x27; : &#x27;Show&#x27;} Details
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      {showDetails &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">ReviewsList</span> <span class="hljs-attr">productId</span>=<span class="hljs-string">{productId}</span> /&gt;</span>}
+    <span class="hljs-tag">&lt;/&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ReviewsList</span>(<span class="hljs-params">{ productId }: { productId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> [reviews, setReviews] = useState&lt;<span class="hljs-title class_">Review</span>[]&gt;([]);
+  <span class="hljs-keyword">const</span> [isLoading, setIsLoading] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">true</span>);
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-title function_">fetchReviews</span>(productId).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">reviews</span>) =&gt;</span> {
+      <span class="hljs-title function_">setReviews</span>(reviews);
+      <span class="hljs-title function_">setIsLoading</span>(<span class="hljs-literal">false</span>);
+    });
+  }, [productId]);
+
+  <span class="hljs-keyword">if</span> (isLoading) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading reviews...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;reviews-list&quot;</span>&gt;</span>
+      {reviews.map((review) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">ReviewItem</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{review.id}</span> <span class="hljs-attr">review</span>=<span class="hljs-string">{review}</span> /&gt;</span>
+      ))}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Individual review items are memoized to prevent unnecessary re-renders</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ReviewItem</span> = <span class="hljs-title function_">memo</span>(<span class="hljs-function">(<span class="hljs-params">{ review }: { review: Review }</span>) =&gt;</span> (
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;review&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>{review.author}<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{review.content}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{&#x27;⭐&#x27;.repeat(review.rating)}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+));
+</code></pre>
+<p>الآن عندما تغيّر الكمية، لن يُعاد تصيير إلا <code>QuantitySelector</code>. وعندما تبدّل حالة قائمة الرغبات، لن يُعاد تصيير إلا <code>WishlistButton</code>. أما قائمة المراجعات المكلفة فلا تُصيّر إلا عند الحاجة، ولا يُعاد تصييرها أبدًا بسبب تغييرات حالة غير مرتبطة بها.</p>
+<h2 id="فن-اختيار-نقاط-التقسيم">فنّ اختيار نقاط التقسيم</h2>
+<p>ليست كل قطعة من JSX تحتاج إلى مكوّن خاص بها. إليك كيف تحدّد نقاط التقسيم الجيدة:</p>
+<h3 id="قسم-عندما-تكون-الحالة-مستقلة">قسّم عندما تكون الحالة مستقلة</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Good split - each piece of state is independent</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UserProfile</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ProfilePicture</span> /&gt;</span> {/* Has its own upload state */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">ContactInfo</span> /&gt;</span> {/* Has its own editing state */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">PreferencesList</span> /&gt;</span> {/* Has its own selection state */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// ❌ Don&#x27;t split purely for organization without performance benefit</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UserProfile</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [name, setName] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;&#x27;</span>);
+  <span class="hljs-keyword">const</span> [email, setEmail] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      {/* These don&#x27;t need to be separate components */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">NameField</span> <span class="hljs-attr">name</span>=<span class="hljs-string">{name}</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{setName}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">EmailField</span> <span class="hljs-attr">email</span>=<span class="hljs-string">{email}</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{setEmail}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h3 id="قسم-عندما-تصبح-المكونات-معقدة">قسّم عندما تصبح المكوّنات معقّدة</h3>
+<p>استخدم «اختبار التمرير» — إن لم تستطع رؤية المكوّن بأكمله على شاشتك دفعة واحدة، فهو على الأرجح يفعل أكثر من اللازم.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Break down complex forms</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">CheckoutForm</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ShippingAddress</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PaymentMethod</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">OrderSummary</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PromoCodeInput</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Each section manages its own validation and state</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ShippingAddress</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [address, setAddress] = <span class="hljs-title function_">useState</span>(initialAddress);
+  <span class="hljs-keyword">const</span> [errors, setErrors] = <span class="hljs-title function_">useState</span>({});
+
+  <span class="hljs-comment">// Complex validation logic contained here</span>
+  <span class="hljs-keyword">const</span> validateAddress = <span class="hljs-title function_">useCallback</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-comment">// ... validation logic</span>
+  }, [address]);
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">fieldset</span>&gt;</span>{/* Address form fields */}<span class="hljs-tag">&lt;/<span class="hljs-name">fieldset</span>&gt;</span></span>;
+}
+</code></pre>
+<h3 id="قسم-عندما-تحتاج-إلى-وتائر-تحديث-مختلفة">قسّم عندما تحتاج إلى وتائر تحديث مختلفة</h3>
+<p>بعض أجزاء واجهتك تتحدّث كثيرًا بينما يبقى بعضها ساكنًا. افصل بينها لتجنّب العمل غير الضروري.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Separate frequently updating components</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">TradingDashboard</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;dashboard&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">StaticHeader</span> /&gt;</span> {/* Never changes */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">LivePriceTracker</span> /&gt;</span> {/* Updates every second */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">UserPortfolio</span> /&gt;</span> {/* Updates when user trades */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">StaticFooter</span> /&gt;</span> {/* Never changes */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">StaticHeader</span> = <span class="hljs-title function_">memo</span>(<span class="hljs-function">() =&gt;</span> (
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Trading Dashboard<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>{/* Navigation links */}<span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span></span>
+));
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">LivePriceTracker</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> prices = <span class="hljs-title function_">useWebSocket</span>(<span class="hljs-string">&#x27;/api/prices&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;price-grid&quot;</span>&gt;</span>
+      {prices.map((price) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">PriceCard</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{price.symbol}</span> <span class="hljs-attr">price</span>=<span class="hljs-string">{price}</span> /&gt;</span>
+      ))}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="المزالق-الشائعة-في-التقسيم">المزالق الشائعة في التقسيم</h2>
+<h3 id="الإفراط-في-التقسيم-مشكلة-قصاصات-المكونات">الإفراط في التقسيم: مشكلة قصاصات المكوّنات</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Over-split - creates unnecessary complexity</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">BlogPost</span>(<span class="hljs-params">{ post }: { post: Post }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">article</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PostTitle</span> <span class="hljs-attr">title</span>=<span class="hljs-string">{post.title}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PostDate</span> <span class="hljs-attr">date</span>=<span class="hljs-string">{post.date}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PostAuthor</span> <span class="hljs-attr">author</span>=<span class="hljs-string">{post.author}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PostContent</span> <span class="hljs-attr">content</span>=<span class="hljs-string">{post.content}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PostTags</span> <span class="hljs-attr">tags</span>=<span class="hljs-string">{post.tags}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// ✅ Better - only split where it provides value</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">BlogPost</span>(<span class="hljs-params">{ post }: { post: Post }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">article</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>{post.title}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;meta&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">time</span>&gt;</span>{post.date}<span class="hljs-tag">&lt;/<span class="hljs-name">time</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>by {post.author}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PostContent</span> <span class="hljs-attr">content</span>=<span class="hljs-string">{post.content}</span> /&gt;</span> {/* Split because it&#x27;s complex */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">TagList</span> <span class="hljs-attr">tags</span>=<span class="hljs-string">{post.tags}</span> /&gt;</span> {/* Split because it&#x27;s interactive */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h3 id="تمرير-الخصائص-عبر-الطبقات-بسبب-الإفراط-في-التقسيم">تمرير الخصائص عبر الطبقات بسبب الإفراط في التقسيم</h3>
+<p>عندما تقسّم المكوّنات بشراسة مفرطة، قد تُنشئ مشكلات في تمرير الخصائص عبر طبقات متعددة (prop drilling). فكّر في استخدام السياق أو مكتبات إدارة الحالة للحالة المشتركة على أعماق بعيدة.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Creates prop drilling</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [user, setUser] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [theme, setTheme] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;light&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Layout</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{user}</span> <span class="hljs-attr">theme</span>=<span class="hljs-string">{theme}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Sidebar</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{user}</span> <span class="hljs-attr">theme</span>=<span class="hljs-string">{theme}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Navigation</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{user}</span> <span class="hljs-attr">theme</span>=<span class="hljs-string">{theme}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Sidebar</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Main</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{user}</span> <span class="hljs-attr">theme</span>=<span class="hljs-string">{theme}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Content</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{user}</span> <span class="hljs-attr">theme</span>=<span class="hljs-string">{theme}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Main</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Layout</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// ✅ Use context for widely shared state</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">AppContext</span> = <span class="hljs-title function_">createContext</span>();
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [user, setUser] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [theme, setTheme] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;light&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AppContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">user</span>, <span class="hljs-attr">theme</span>, <span class="hljs-attr">setUser</span>, <span class="hljs-attr">setTheme</span> }}&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Layout</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Sidebar</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">Navigation</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Sidebar</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Main</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">Content</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Main</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Layout</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AppContext.Provider</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="اختبار-المكونات-المقسمة">اختبار المكوّنات المقسمة</h2>
+<p>من أكبر فوائد التقسيم الصحيح للمكوّنات تحسّن قابلية الاختبار. فالمكوّنات الأصغر والأكثر تركيزًا أسهل اختبارًا بمعزل عن غيرها.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Easy to test in isolation</span>
+<span class="hljs-keyword">import</span> { render, fireEvent, screen } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@testing-library/react&#x27;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">QuantitySelector</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./QuantitySelector&#x27;</span>;
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;increments quantity when plus button is clicked&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">QuantitySelector</span> /&gt;</span></span>);
+
+  <span class="hljs-keyword">const</span> incrementButton = screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;+&#x27;</span>);
+  <span class="hljs-keyword">const</span> quantity = screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;1&#x27;</span>);
+
+  fireEvent.<span class="hljs-title function_">click</span>(incrementButton);
+
+  <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;2&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+});
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;decrements quantity when minus button is clicked&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">QuantitySelector</span> /&gt;</span></span>);
+
+  <span class="hljs-keyword">const</span> incrementButton = screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;+&#x27;</span>);
+  <span class="hljs-keyword">const</span> decrementButton = screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;-&#x27;</span>);
+
+  fireEvent.<span class="hljs-title function_">click</span>(incrementButton); <span class="hljs-comment">// Go to 2</span>
+  fireEvent.<span class="hljs-title function_">click</span>(decrementButton); <span class="hljs-comment">// Back to 1</span>
+
+  <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;1&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+});
+</code></pre>
+<p>قارن هذا باختبار مكوّن متجانس ضخم حيث تحتاج إلى تهيئة سياق المنتج بأكمله لمجرد اختبار منطق الكمية.</p>
+<h2 id="مراقبة-الأداء">مراقبة الأداء</h2>
+<p>استخدم مُنمّق React DevTools (Profiler) لقياس أثر تقسيمات مكوّناتك. وابحث عن:</p>
+<ul>
+<li><strong>زمن تصيير أقل</strong> للمكوّنات الفردية</li>
+<li><strong>إعادات تصيير غير ضرورية أقل</strong> عند تغيّر الحالة</li>
+<li><strong>مراحل إيداع أصغر</strong> في المنمّق</li>
+</ul>
+<pre><code class="language-typescript"><span class="hljs-comment">// Add display names for easier profiling</span>
+<span class="hljs-title class_">QuantitySelector</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">&#x27;QuantitySelector&#x27;</span>;
+<span class="hljs-title class_">WishlistButton</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">&#x27;WishlistButton&#x27;</span>;
+<span class="hljs-title class_">ReviewsList</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">&#x27;ReviewsList&#x27;</span>;
+</code></pre>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>قِس الأداء قبل التقسيم وبعده لتتأكد من أنك تحسّن الأداء فعلًا، لا أنك تنقل التعقيد من مكان إلى آخر فحسب.</p>
+</blockquote>
+<h2 id="متى-لا-تقسم">متى لا تقسّم</h2>
+<p>أحيانًا يكون إبقاء المكوّنات معًا هو الخيار الصحيح:</p>
+<ul>
+<li><strong>منطق مترابط بإحكام</strong> يتغيّر دائمًا معًا</li>
+<li><strong>محتوى بسيط وساكن</strong> لا يُعاد تصييره أبدًا</li>
+<li><strong>مكوّنات أصغر من 50 سطرًا</strong> ذات مسؤولية واحدة</li>
+<li><strong>عندما يُنشئ التقسيم تمريرًا معقّدًا للخصائص</strong></li>
+</ul>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Keep simple, coupled logic together</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">LoginForm</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [email, setEmail] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;&#x27;</span>);
+  <span class="hljs-keyword">const</span> [password, setPassword] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;&#x27;</span>);
+  <span class="hljs-keyword">const</span> [errors, setErrors] = <span class="hljs-title function_">useState</span>({});
+
+  <span class="hljs-comment">// Email and password validation are tightly coupled</span>
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleSubmit</span> = (<span class="hljs-params">e</span>) =&gt; {
+    e.<span class="hljs-title function_">preventDefault</span>();
+    <span class="hljs-keyword">const</span> newErrors = <span class="hljs-title function_">validateLoginForm</span>({ email, password });
+    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(newErrors).<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) {
+      <span class="hljs-title function_">setErrors</span>(newErrors);
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-comment">// Submit login</span>
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">onSubmit</span>=<span class="hljs-string">{handleSubmit}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;email&quot;</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{email}</span>
+        <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setEmail(e.target.value)}
+        error={errors.email}
+      /&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{password}</span>
+        <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setPassword(e.target.value)}
+        error={errors.password}
+      /&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>Login<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="استراتيجية-تقسيم-واقعية">استراتيجية تقسيم واقعية</h2>
+<p>إليك نهجًا عمليًا لتقسيم مكوّنات قائمة:</p>
+<ol>
+<li><strong>حدّد حدود الحالة</strong> - جمّع الحالة المترابطة معًا</li>
+<li><strong>اعثر على العمليات المكلفة</strong> - اعزل الحسابات الثقيلة أو نداءات API</li>
+<li><strong>ابحث عن ميزات مستقلة</strong> - أشياء يمكن أن تعمل بمعزل عن غيرها</li>
+<li><strong>راعِ أنماط تفاعل المستخدم</strong> - ما الذي يُنقر أو يتغيّر معًا؟</li>
+<li><strong>قِس الأداء وراقبه</strong> - تحقّق من أن التقسيمات تحسّن الأداء فعلًا</li>
+</ol>
+<p>الهدف هو مكوّنات <strong>مركّزة وقابلة للاختبار وعالية الأداء</strong> — لا أكبر عدد ممكن من المكوّنات. وينبغي أن يكون لكل تقسيم مبرّر واضح: الأداء، أو قابلية الصيانة، أو قابلية إعادة الاستخدام.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:t,headings:p,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,p as headings,e as html,l as slug,t as title};

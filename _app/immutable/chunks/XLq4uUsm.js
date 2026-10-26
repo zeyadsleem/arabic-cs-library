@@ -1,0 +1,27 @@
+const s="kinney",a="storybook",n="بناء أنظمة التصميم في Storybook",o="figma-in-storybook",t="Figma في Storybook",p=[],e=`<p>في كثير من الأحيان يكون جميلًا أن نرى ما ننفّذه في المكان نفسه الذي نراجع فيه تنفيذنا. فإن كنت تستخدم Figma، فيمكنك التكامل مع قصصك لتجعل حياتك أسهل قليلًا.</p>
+<blockquote>
+<p><strong>يستطيع Storybook التكامل مع أكثر من Figma</strong></p>
+<p>نحن نستخدم Figma، لكن <a href="https://storybook.js.org/addons/@storybook/addon-designs/">ملحق Designs</a> يعمل مع أكثر من Figma. ويمكنك قراءة التوثيق الكامل <a href="https://storybookjs.github.io/addon-designs/?path=/docs/docs-quick-start--docs">هنا</a>.</p>
+</blockquote>
+<p>أولًا، سنحتاج إلى تثبيت ملحق آخر في Storybook.</p>
+<pre><code class="language-bash">npx storybook@latest add @storybook/addon-designs
+</code></pre>
+<p>سيؤدي تشغيل هذا السكربت إلى تثبيت الاعتماد وإضافته إلى <code>.storybook/main.ts</code>.</p>
+<p>انتقل إلى Figma وانقر على زر <strong>Share</strong> نحو اليمين في شريط الأدوات، ثم اختر <strong>Copy Link</strong>.</p>
+<p><img src="/arabic-cs-library/images/kinney/16ccfecb98aee0b5.webp" alt="مشاركة ملف Figma"></p>
+<p>بعد ذلك، في قصتك، سنضيف معاملًا ينشئ الرابط بين القصة والتصميمات.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-attr">meta</span>: <span class="hljs-title class_">Meta</span>&lt;<span class="hljs-keyword">typeof</span> <span class="hljs-title class_">Button</span>&gt; = {
+  <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;Button&#x27;</span>,
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">Button</span>,
+  <span class="hljs-attr">parameters</span>: {
+    <span class="hljs-attr">design</span>: {
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;figma&#x27;</span>,
+      <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;https://www.figma.com/file/w7qcf0DQZEQhudgeOoLbZ8/Components?type=design&amp;node-id=24%3A177&amp;mode=design&amp;t=i9nPQJAFW2alh32c-1&#x27;</span>,
+    },
+  },
+  <span class="hljs-comment">// …additional properties…</span>
+};
+</code></pre>
+<p>والآن، عند تشغيل Storybook، ستستطيع أن ترى الاثنين جنبًا إلى جنب.</p>
+<p><img src="/arabic-cs-library/images/kinney/1b0127d0f23d7498.webp" alt="تصميم Figma إلى جانب Storybook"></p>
+`,l={book:s,chapter:a,chapterTitle:n,slug:o,title:t,headings:p,html:e};export{s as book,a as chapter,n as chapterTitle,l as default,p as headings,e as html,o as slug,t as title};

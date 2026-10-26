@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.DQV7xcTG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/qzVYF9Q1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/3Vym6ygk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.COZJCS6b.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.CB0GPC81.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7IMAvjG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Eq7WVNw2.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CD_zW7lm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CYEZGaBn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/4zzamL0K.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="إضافة ACPX لبيئة التشغيل — OpenClaw: مساعدك الذكي الشخصي"/><!----><title>إضافة ACPX لبيئة التشغيل | دورات ستيف كيني التطبيقية</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/kinney">دورات ستيف كيني التطبيقية</a> <span class="reader-bar__chapter">› OpenClaw: مساعدك الذكي الشخصي</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 7 من 16">7 / 16</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/kinney/openclaw/subagents-and-orchestration">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/kinney/openclaw/connecting-securely-with-tailscale">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>التطوير بأدوات الذكاء الاصطناعي</h3> <ul><!--[--><li><a href="../../../../book/kinney/ai-development/index">التطوير بأدوات الذكاء الاصطناعي</a></li><li><a href="../../../../book/kinney/ai-development/plan-implement-verify">نمط الطلب: خطّط → نفّذ → تحقّق</a></li><li><a href="../../../../book/kinney/ai-development/installing-cursor">التثبيت والإعداد</a></li><li><a href="../../../../book/kinney/ai-development/interacting-with-cursor">التفاعل مع Cursor</a></li><li><a href="../../../../book/kinney/ai-development/cursor-context">السياق هو الملك</a></li><li><a href="../../../../book/kinney/ai-development/cursor-model-selection">استراتيجية اختيار النموذج</a></li><li><a href="../../../../book/kinney/ai-development/cursor-rules">قواعد Cursor</a></li><li><a href="../../../../book/kinney/ai-development/cursor-skills">مهارات Cursor</a></li><li><a href="../../../../book/kinney/ai-development/cursor-subagents">وكلاء Cursor الفرعيون</a></li><li><a href="../../../../book/kinney/ai-development/cursor-hooks">خطّافات Cursor</a></li><li><a href="../../../../book/kinney/ai-development/cursor-cli">واجهة سطر أوامر Cursor</a></li><li><a href="../../../../book/kinney/ai-development/cursor-notepads">ترحيل الدفتر (Notepads)</a></li><li><a href="../../../../book/kinney/ai-development/cursor-background-agents">وكلاء السحابة</a></li><li><a href="../../../../book/kinney/ai-development/cursor-automations">أتمتات Cursor</a></li><li><a href="../../../../book/kinney/ai-development/cursor-bugbot-and-security-review">Bugbot والمراجعة الأمنية</a></li><li><a href="../../../../book/kinney/ai-development/cursor-checkpoints">نقاط استعادة Cursor</a></li><li><a href="../../../../book/kinney/ai-development/mcp">بروتوكول سياق النموذج (Model Context Protocol)</a></li><li><a href="../../../../book/kinney/ai-development/mcp-for-claude-code-and-cursor">MCP في Claude Code وCursor</a></li><li><a href="../../../../book/kinney/ai-development/installing-claude-code">التثبيت والتهيئة</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-session-management">إدارة الجلسات</a></li><li><a href="../../../../book/kinney/ai-development/claude-dot-md">ملف CLAUDE.md</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-model-selection">اختيار النموذج</a></li><li><a href="../../../../book/kinney/ai-development/referencing-files-in-claude-code">الإشارة إلى الملفات</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-compaction">الضغط (Compaction)</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-thinking">تشجيع التفكير</a></li><li><a href="../../../../book/kinney/ai-development/test-driven-development-with-claude">التطوير الموجَّه بالاختبارات</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-plan-mode">وضع الخطة</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-sub-agents">الوكلاء الفرعيون</a></li><li><a href="../../../../book/kinney/ai-development/subagent-anti-patterns">أنماط مضادّة للوكلاء الفرعيين</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-and-bash-scripts">Claude Code وسكربتات Bash</a></li><li><a href="../../../../book/kinney/ai-development/cost-management">إدارة الكلفة</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-permissions">نظام صلاحيات Claude Code</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-commands">أوامر Claude Code ومهاراته</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-hooks">خطّافات Claude Code</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-hook-examples">كتاب وصفات الخطّافات</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-hook-control-flow">مسار تحكّم الخطّافات</a></li><li><a href="../../../../book/kinney/ai-development/claude-code-mcp">استخدام خوادم MCP</a></li><li><a href="../../../../book/kinney/ai-development/git-worktrees">أشجار عمل Git</a></li><li><a href="../../../../book/kinney/ai-development/integrating-with-github-actions">التكامل مع GitHub Actions</a></li><li><a href="../../../../book/kinney/ai-development/notebooklm">NotebookLM: مساحة بحث وتدوين ملاحظات</a></li><li><a href="../../../../book/kinney/ai-development/gemini-and-gems">Gemini والجواهر (Gems)</a></li><li><a href="../../../../book/kinney/ai-development/openai-codex">OpenAI Codex: وكيل البرمجة</a></li><li><a href="../../../../book/kinney/ai-development/cursor-environment-configuration">تهيئة بيئة Cursor</a></li><li><a href="../../../../book/kinney/ai-development/cursor-ghost-mode">وضع الخصوصية في Cursor</a></li><!--]--></ul><h3>تهيئة بيئة التطوير بالذكاء الاصطناعي</h3> <ul><!--[--><li><a href="../../../../book/kinney/ai-development-setup/index">تهيئة بيئة التطوير بالذكاء الاصطناعي</a></li><li><a href="../../../../book/kinney/ai-development-setup/why-systems">نحو التفكير المنظومي</a></li><li><a href="../../../../book/kinney/ai-development-setup/planning-and-task-contracts">التخطيط وعقود المهام</a></li><li><a href="../../../../book/kinney/ai-development-setup/verification-and-evidence">التحقّق والأدلة</a></li><li><a href="../../../../book/kinney/ai-development-setup/recovering-a-failing-session">استعادة جلسة فاشلة</a></li><li><a href="../../../../book/kinney/ai-development-setup/user-and-project-instructions">تعليمات المستخدم والمشروع</a></li><li><a href="../../../../book/kinney/ai-development-setup/the-enforcement-ladder">سلّم الإنفاذ</a></li><li><a href="../../../../book/kinney/ai-development-setup/caching-and-cost">التخزين المؤقت للطلبات والكلفة (Prompt Caching and Cost)</a></li><li><a href="../../../../book/kinney/ai-development-setup/managing-a-long-session">إدارة جلسة طويلة</a></li><li><a href="../../../../book/kinney/ai-development-setup/skills">المهارات</a></li><li><a href="../../../../book/kinney/ai-development-setup/skill-configuration">تهيئة المهارات</a></li><li><a href="../../../../book/kinney/ai-development-setup/exemplar-skills">مهارات نموذجية (Exemplar Skills)</a></li><li><a href="../../../../book/kinney/ai-development-setup/subagents">الوكلاء الفرعيون</a></li><li><a href="../../../../book/kinney/ai-development-setup/subagent-configuration">تهيئة الوكلاء الفرعيين</a></li><li><a href="../../../../book/kinney/ai-development-setup/exemplar-subagents">وكلاء فرعيون نموذجيون (Exemplar Subagents)</a></li><li><a href="../../../../book/kinney/ai-development-setup/hooks">الخطّافات (Hooks)</a></li><li><a href="../../../../book/kinney/ai-development-setup/writing-good-hooks">كتابة خُطّافات جيدة</a></li><li><a href="../../../../book/kinney/ai-development-setup/hooks-in-practice">الخطّافات عمليًا</a></li><li><a href="../../../../book/kinney/ai-development-setup/dynamic-workflows">سيَرات العمل الديناميكية (Dynamic Workflows)</a></li><li><a href="../../../../book/kinney/ai-development-setup/running-workflows">تشغيل سير العمل</a></li><li><a href="../../../../book/kinney/ai-development-setup/goals-and-loops">الأهداف والحلقات (Goals and Loops)</a></li><li><a href="../../../../book/kinney/ai-development-setup/goals-and-loops-in-practice">الأهداف والحلقات عمليًا (Goals and Loops in Practice)</a></li><li><a href="../../../../book/kinney/ai-development-setup/routines-and-schedules">المهام الدورية والجداول الزمنية</a></li><li><a href="../../../../book/kinney/ai-development-setup/where-state-lives">أين تعيش الحالة</a></li><li><a href="../../../../book/kinney/ai-development-setup/agentic-coding-patterns">أنماط البرمجة الوكيلية (Agentic Coding Patterns)</a></li><li><a href="../../../../book/kinney/ai-development-setup/patterns-for-proving-it-works">إثبات أنه ينجح</a></li><li><a href="../../../../book/kinney/ai-development-setup/patterns-for-deciding-what-to-build">تقرير ما تبنيه</a></li><li><a href="../../../../book/kinney/ai-development-setup/patterns-for-keeping-context-useful">إبقاء السياق مفيدًا</a></li><li><a href="../../../../book/kinney/ai-development-setup/patterns-for-running-unattended-work">تشغيل العمل بلا إشراف</a></li><li><a href="../../../../book/kinney/ai-development-setup/claude-code-and-codex-together">Claude Code و Codex معًا (Claude Code and Codex, Together)</a></li><li><a href="../../../../book/kinney/ai-development-setup/the-ralph-loop">حلقة Ralph</a></li><li><a href="../../../../book/kinney/ai-development-setup/sentinels">العلامات الحارسة (Sentinels)</a></li><li><a href="../../../../book/kinney/ai-development-setup/committee-review">مراجعة اللجنة (Committee Review)</a></li><li><a href="../../../../book/kinney/ai-development-setup/worktrees">أشجار العمل (Worktrees)</a></li><li><a href="../../../../book/kinney/ai-development-setup/agent-teams">فرق الوكلاء (Agent Teams)</a></li><li><a href="../../../../book/kinney/ai-development-setup/agent-communication">تواصل الوكلاء (Agent Communication)</a></li><li><a href="../../../../book/kinney/ai-development-setup/claude-code-mods">تعديلات Claude Code (Claude Code Mods)</a></li><li><a href="../../../../book/kinney/ai-development-setup/jev">Jev: نموذج القرارات السريع</a></li><!--]--></ul><h3>نشر تطبيقات الويب على AWS</h3> <ul><!--[--><li><a href="../../../../book/kinney/aws/index">نشر تطبيقات الويب على AWS</a></li><li><a href="../../../../book/kinney/aws/creating-and-securing-an-aws-account">إنشاء حساب AWS وتأمينه</a></li><li><a href="../../../../book/kinney/aws/iam-mental-model">نموذج IAM الذهني</a></li><li><a href="../../../../book/kinney/aws/writing-your-first-iam-policy">كتابة أول سياسة IAM لك</a></li><li><a href="../../../../book/kinney/aws/principle-of-least-privilege">مبدأ الامتياز الأقل</a></li><li><a href="../../../../book/kinney/aws/setting-up-the-aws-cli">إعداد AWS CLI</a></li><li><a href="../../../../book/kinney/aws/iam-policy-exercise">تمرين: سياسة IAM لبوت النشر</a></li><li><a href="../../../../book/kinney/aws/iam-policy-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/what-is-s3">ما هو S3؟</a></li><li><a href="../../../../book/kinney/aws/creating-and-configuring-a-bucket">إنشاء حاوية S3 وإعدادها</a></li><li><a href="../../../../book/kinney/aws/uploading-and-organizing-files">رفع الملفات وتنظيمها</a></li><li><a href="../../../../book/kinney/aws/bucket-policies-and-public-access">سياسات الحاويات والوصول العام</a></li><li><a href="../../../../book/kinney/aws/static-website-hosting-on-s3">استضافة موقع ثابت على S3</a></li><li><a href="../../../../book/kinney/aws/s3-versioning-lifecycle-and-cost">الإصدارات وقواعد دورة الحياة والكلفة</a></li><li><a href="../../../../book/kinney/aws/s3-sdk-examples">أمثلة على SDK الخاص بـ S3</a></li><li><a href="../../../../book/kinney/aws/s3-static-site-exercise">تمرين: نشر موقع ثابت على S3</a></li><li><a href="../../../../book/kinney/aws/s3-static-site-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/what-is-a-cdn">ما تفعله شبكة توصيل المحتوى ولماذا تحتاج إليها</a></li><li><a href="../../../../book/kinney/aws/creating-a-cloudfront-distribution">إنشاء توزيع CloudFront</a></li><li><a href="../../../../book/kinney/aws/origin-access-control-for-s3">التحكّم في الوصول إلى الأصل في S3</a></li><li><a href="../../../../book/kinney/aws/cache-behaviors-and-invalidations">سلوكات التخزين المؤقت وعمليات الإبطال</a></li><li><a href="../../../../book/kinney/aws/custom-error-pages-and-spa-routing">صفحات الأخطاء المخصّصة وتوجيه SPA</a></li><li><a href="../../../../book/kinney/aws/cloudfront-headers-cors-and-security">الترويسات وCORS وسياسات الأمان</a></li><li><a href="../../../../book/kinney/aws/cloudfront-distribution-exercise">تمرين: إعداد توزيع CloudFront</a></li><li><a href="../../../../book/kinney/aws/cloudfront-distribution-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/deploying-scratch-lab">نشر Scratch Lab إلى CloudFront</a></li><li><a href="../../../../book/kinney/aws/edge-compute-comparison">الحوسبة على الحافة: Lambda@Edge مقابل CloudFront Functions</a></li><li><a href="../../../../book/kinney/aws/writing-a-cloudfront-function">كتابة دالة CloudFront</a></li><li><a href="../../../../book/kinney/aws/writing-a-lambda-at-edge-function">كتابة دالة Lambda@Edge</a></li><li><a href="../../../../book/kinney/aws/spa-status-codes-with-lambda-edge">رموز حالة تطبيقات SPA باستخدام Lambda@Edge</a></li><li><a href="../../../../book/kinney/aws/edge-function-use-cases">حالات الاستخدام الشائعة</a></li><li><a href="../../../../book/kinney/aws/ab-testing-at-the-edge">اختبار A/B على الحافة</a></li><li><a href="../../../../book/kinney/aws/edge-function-debugging-and-limitations">تصحيح دوال الحافة وقيودها</a></li><li><a href="../../../../book/kinney/aws/cloudfront-function-exercise">تمرين: إضافة دالة CloudFront</a></li><li><a href="../../../../book/kinney/aws/cloudfront-function-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/cicd-with-github-actions">CI/CD باستخدام GitHub Actions</a></li><li><a href="../../../../book/kinney/aws/what-is-lambda">ما هي Lambda ولماذا يهتمّ مهندسو الواجهة الأمامية</a></li><li><a href="../../../../book/kinney/aws/writing-a-lambda-handler">كتابة معالج Lambda في TypeScript</a></li><li><a href="../../../../book/kinney/aws/lambda-execution-roles-and-permissions">أدوار التنفيذ والأذونات</a></li><li><a href="../../../../book/kinney/aws/deploying-and-testing-a-lambda-function">نشر دالة Lambda واختبارها</a></li><li><a href="../../../../book/kinney/aws/lambda-environment-variables">متغيرات البيئة والإعدادات</a></li><li><a href="../../../../book/kinney/aws/lambda-cold-starts-and-performance">البدء البارد والأداء</a></li><li><a href="../../../../book/kinney/aws/lambda-function-exercise">تمرين: بناء دالة Lambda ونشرها</a></li><li><a href="../../../../book/kinney/aws/lambda-function-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/rest-apis-vs-http-apis">REST APIs مقابل HTTP APIs</a></li><li><a href="../../../../book/kinney/aws/creating-an-http-api">إنشاء HTTP API</a></li><li><a href="../../../../book/kinney/aws/connecting-api-gateway-to-lambda">ربط API Gateway بـ Lambda</a></li><li><a href="../../../../book/kinney/aws/request-and-response-mapping">ربط الطلبات والاستجابات</a></li><li><a href="../../../../book/kinney/aws/api-gateway-cors-configuration">تهيئة CORS</a></li><li><a href="../../../../book/kinney/aws/api-gateway-stages-and-custom-domains">المراحل والنشر والنطاقات المخصّصة</a></li><li><a href="../../../../book/kinney/aws/api-gateway-authentication">المصادقة باستخدام API Gateway</a></li><li><a href="../../../../book/kinney/aws/api-gateway-lambda-exercise">تمرين: بناء API باستخدام API Gateway وLambda</a></li><li><a href="../../../../book/kinney/aws/api-gateway-lambda-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/what-is-dynamodb">ما هي DynamoDB ومتى تستخدمها</a></li><li><a href="../../../../book/kinney/aws/dynamodb-tables-and-keys">الجداول ومفاتيح التقسيم ومفاتيح الفرز</a></li><li><a href="../../../../book/kinney/aws/dynamodb-reading-and-writing-data">قراءة البيانات وكتابتها باستخدام SDK</a></li><li><a href="../../../../book/kinney/aws/dynamodb-querying-and-scanning">الاستعلام والمسح الضوئي في DynamoDB</a></li><li><a href="../../../../book/kinney/aws/connecting-dynamodb-to-lambda">ربط DynamoDB بـ Lambda</a></li><li><a href="../../../../book/kinney/aws/dynamodb-lambda-exercise">تمرين: بناء واجهة API للبيانات باستخدام DynamoDB</a></li><li><a href="../../../../book/kinney/aws/dynamodb-lambda-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/the-problem-with-hardcoded-secrets">مشكلة الأسرار المضمّنة في الشيفرة</a></li><li><a href="../../../../book/kinney/aws/parameter-store-hierarchical-configuration">Parameter Store: التهيئة الهرمية</a></li><li><a href="../../../../book/kinney/aws/secrets-manager-rotation-and-encryption">Secrets Manager: التدوير والتشفير</a></li><li><a href="../../../../book/kinney/aws/accessing-secrets-from-lambda">الوصول إلى الأسرار من Lambda</a></li><li><a href="../../../../book/kinney/aws/parameter-store-vs-secrets-manager">Parameter Store مقابل Secrets Manager</a></li><li><a href="../../../../book/kinney/aws/secrets-in-lambda-exercise">تمرين: تخزين سرّ واسترجاعه في Lambda</a></li><li><a href="../../../../book/kinney/aws/secrets-in-lambda-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/end-to-end-scratch-lab-api-exercise">المشروع الختامي: واجهة برمجية متكاملة من الطرف إلى الطرف لتطبيق Scratch Lab</a></li><li><a href="../../../../book/kinney/aws/end-to-end-scratch-lab-api-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/what-is-cloudwatch">ما الذي تفعله CloudWatch ولماذا تحتاج إليها</a></li><li><a href="../../../../book/kinney/aws/cloudwatch-log-groups-and-structured-logging">مجموعات السجلات وتدفقاتها والتسجيل المهيكل</a></li><li><a href="../../../../book/kinney/aws/cloudwatch-metrics-and-dashboards">المقاييس ولوحات المعلومات</a></li><li><a href="../../../../book/kinney/aws/cloudwatch-alarms-and-sns">الإنذارات والإشعارات باستخدام SNS</a></li><li><a href="../../../../book/kinney/aws/tracing-requests-across-services">تتبّع الطلبات عبر الخدمات</a></li><li><a href="../../../../book/kinney/aws/cloudwatch-alarms-exercise">تمرين: إعداد إنذارات لدوال Lambda</a></li><li><a href="../../../../book/kinney/aws/cloudwatch-alarms-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/security-review-checklist">قائمة مراجعة الأمان</a></li><li><a href="../../../../book/kinney/aws/cost-monitoring-and-budget-alarms">مراقبة التكاليف وإنذارات الميزانية</a></li><li><a href="../../../../book/kinney/aws/infrastructure-as-code-and-cdk">البنية التحتية كشيفرة: متى تلجأ إلى CDK</a></li><li><a href="../../../../book/kinney/aws/cleanup-and-teardown">التنظيف وإزالة كل شيء</a></li><li><a href="../../../../book/kinney/aws/whats-next-services-youll-eventually-need">ما التالي: خدمات ستحتاجها في النهاية</a></li><li><a href="../../../../book/kinney/aws/dns-for-frontend-engineers">DNS لمهندسي الواجهات الأمامية</a></li><li><a href="../../../../book/kinney/aws/registering-and-transferring-domains">تسجيل النطاقات ونقلها</a></li><li><a href="../../../../book/kinney/aws/hosted-zones-and-record-types">المناطق المستضافة وأنواع السجلات</a></li><li><a href="../../../../book/kinney/aws/why-https-matters">لماذا تُهمّ HTTPS</a></li><li><a href="../../../../book/kinney/aws/requesting-a-certificate-in-acm">طلب شهادة في ACM</a></li><li><a href="../../../../book/kinney/aws/dns-validation-vs-email-validation">التحقق عبر DNS مقابل التحقق عبر البريد الإلكتروني</a></li><li><a href="../../../../book/kinney/aws/wildcard-certificates-and-multiple-domains">الشهادات الشاملة والنطاقات المتعددة</a></li><li><a href="../../../../book/kinney/aws/certificate-renewal-and-us-east-1">تجديد الشهادات وشرط us-east-1</a></li><li><a href="../../../../book/kinney/aws/attaching-an-ssl-certificate">إرفاق شهادة SSL</a></li><li><a href="../../../../book/kinney/aws/alias-records-vs-cname-records">سجلات Alias مقابل سجلات CNAME</a></li><li><a href="../../../../book/kinney/aws/pointing-a-domain-to-cloudfront">توجيه نطاق إلى CloudFront</a></li><li><a href="../../../../book/kinney/aws/acm-certificate-exercise">تمرين: طلب شهادة والتحقّق منها</a></li><li><a href="../../../../book/kinney/aws/acm-certificate-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/route-53-dns-exercise">تمرين: تهيئة DNS لموقعك</a></li><li><a href="../../../../book/kinney/aws/route-53-dns-solution">الحل</a></li><li><a href="../../../../book/kinney/aws/automating-deploys-with-aws-cli">أتمتة عمليات النشر باستخدام AWS CLI</a></li><li><a href="../../../../book/kinney/aws/full-static-pipeline">خط أنابيب الموقع الثابت الكامل</a></li><li><a href="../../../../book/kinney/aws/static-site-deployment-exercise">تمرين: نشر موقع ثابت من طرف إلى طرف</a></li><li><a href="../../../../book/kinney/aws/static-site-deployment-solution">الحل: نشر موقع ثابت من البداية إلى النهاية</a></li><!--]--></ul><h3>واجهات المؤسسات</h3> <ul><!--[--><li><a href="../../../../book/kinney/enterprise-ui/index">واجهات المؤسسات (Enterprise UI)</a></li><li><a href="../../../../book/kinney/enterprise-ui/monoliths-microfrontends-and-monorepos">الأنظمة الأحادية والواجهات المصغّرة والمستودعات الأحادية والمقايضات الحقيقية</a></li><li><a href="../../../../book/kinney/enterprise-ui/module-federation">اتحاد الوحدات (Module Federation)</a></li><li><a href="../../../../book/kinney/enterprise-ui/runtime-composition-exercise">تمرين 1: التركيب وقت التشغيل</a></li><li><a href="../../../../book/kinney/enterprise-ui/nanostores">Nanostores: إدارة حالة محايدة تجاه الأطر</a></li><li><a href="../../../../book/kinney/enterprise-ui/broadcast-channel">BroadcastChannel للتواصل عبر الحدود</a></li><li><a href="../../../../book/kinney/enterprise-ui/comlink">Comlink: واجهة RPC لعمال الويب</a></li><li><a href="../../../../book/kinney/enterprise-ui/error-boundaries-and-federation">حدود الأخطاء واتحاد الوحدات</a></li><li><a href="../../../../book/kinney/enterprise-ui/standalone-remotes">الوحدات البعيدة المستقلة</a></li><li><a href="../../../../book/kinney/enterprise-ui/build-time-microfrontends">الواجهات الأمامية الدقيقة وقت البناء</a></li><li><a href="../../../../book/kinney/enterprise-ui/build-time-composition-exercise">التمرين 2: التركيب وقت البناء</a></li><li><a href="../../../../book/kinney/enterprise-ui/rspack-webpack-and-vite">Rspack وwebpack وVite: مقارنة أدوات التجميع</a></li><li><a href="../../../../book/kinney/enterprise-ui/rsbuild-configuration">إعداد Rsbuild</a></li><li><a href="../../../../book/kinney/enterprise-ui/island-architecture">معمارية الجزر (Island Architecture)</a></li><li><a href="../../../../book/kinney/enterprise-ui/server-components-and-streaming">مكوّنات الخادم والتصيير المتدفّق من الخادم</a></li><li><a href="../../../../book/kinney/enterprise-ui/server-rendering-across-frameworks">التصيير على الخادم عبر أطر العمل</a></li><li><a href="../../../../book/kinney/enterprise-ui/streaming-and-suspense-exercise">تمرين 3: البث وSuspense</a></li><li><a href="../../../../book/kinney/enterprise-ui/turborepo">Turborepo: مشغّل المهام المدرك للمخططات والتخزين المؤقت</a></li><li><a href="../../../../book/kinney/enterprise-ui/turborepo-versus-nx">Turborepo مقابل Nx وBazel وLerna وأمثالها</a></li><li><a href="../../../../book/kinney/enterprise-ui/monorepo-setup-exercise">التمرين 4: إعداد المستودع الأحادي</a></li><li><a href="../../../../book/kinney/enterprise-ui/backends-for-frontends">خوادم الواجهات (Backends for Frontends)</a></li><li><a href="../../../../book/kinney/enterprise-ui/workspace-package-managers">npm مقابل pnpm مقابل Bun: مديرو حزم مساحات العمل</a></li><li><a href="../../../../book/kinney/enterprise-ui/dependency-management">إدارة الاعتماد في المستودعات الأحادية</a></li><li><a href="../../../../book/kinney/enterprise-ui/scaling-typescript">توسيع نطاق TypeScript</a></li><li><a href="../../../../book/kinney/enterprise-ui/typescript-references-exercise">التمرين 5: مراجع TypeScript</a></li><li><a href="../../../../book/kinney/enterprise-ui/writing-eslint-rules">كتابة قواعد ESLint الخاصة بنا</a></li><li><a href="../../../../book/kinney/enterprise-ui/architectural-linting-exercise">تمرين 6: التدقيق المعماري (Architectural Linting)</a></li><li><a href="../../../../book/kinney/enterprise-ui/design-system-governance">حوكمة نظام التصميم</a></li><li><a href="../../../../book/kinney/enterprise-ui/versioning-and-release-management">إدارة الإصدارات والنشر</a></li><li><a href="../../../../book/kinney/enterprise-ui/maintaining-a-design-system">صيانة نظام التصميم على نطاق واسع</a></li><li><a href="../../../../book/kinney/enterprise-ui/design-systems-across-microfrontends">أنظمة التصميم عبر الواجهات الأمامية الدقيقة</a></li><li><a href="../../../../book/kinney/enterprise-ui/performance-at-scale">الأداء على نطاق واسع</a></li><li><a href="../../../../book/kinney/enterprise-ui/performance-budgets">موازنات الأداء</a></li><li><a href="../../../../book/kinney/enterprise-ui/github-actions">GitHub Actions: أتمتة المستودعات وخطوط CI/CD</a></li><li><a href="../../../../book/kinney/enterprise-ui/deployment-and-release-patterns">أنماط النشر والإطلاق</a></li><li><a href="../../../../book/kinney/enterprise-ui/husky-and-lint-staged">Husky و lint-staged: خُطّافات Git والملفات المُجهَّزة</a></li><li><a href="../../../../book/kinney/enterprise-ui/cicd-pipeline-exercise">التمرين 7: خط أنابيب CI/CD</a></li><li><a href="../../../../book/kinney/enterprise-ui/testing-at-scale">استراتيجية الاختبار للتطبيقات الكبيرة</a></li><li><a href="../../../../book/kinney/enterprise-ui/mock-service-worker">Mock Service Worker: طبقة سلوك الشبكة</a></li><li><a href="../../../../book/kinney/enterprise-ui/testing-strategies-exercise">التمرين 8: استراتيجيات الاختبار</a></li><li><a href="../../../../book/kinney/enterprise-ui/api-contract-testing">اختبار عقود الـ API (API Contract Testing)</a></li><li><a href="../../../../book/kinney/enterprise-ui/authentication-and-authorization">المصادقة والتخويل وتعدّد المستأجرين (Authentication, Authorization, and Multi-Tenancy)</a></li><li><a href="../../../../book/kinney/enterprise-ui/frontend-security">أمن الواجهة الأمامية وسلامة سلسلة التوريد</a></li><li><a href="../../../../book/kinney/enterprise-ui/ai-integration-patterns">أنماط تكامل الذكاء الاصطناعي والنماذج اللغوية (AI and LLM Integration Patterns)</a></li><li><a href="../../../../book/kinney/enterprise-ui/organizational-patterns-and-team-topology">الأنماط التنظيمية وبنية الفرق</a></li><li><a href="../../../../book/kinney/enterprise-ui/observability">الرصدية</a></li><li><a href="../../../../book/kinney/enterprise-ui/strangler-fig-introduction">نمط الشجرة الخانقة (Strangler Fig)</a></li><li><a href="../../../../book/kinney/enterprise-ui/framework-migration-patterns">أنماط ترحيل أطر العمل</a></li><li><a href="../../../../book/kinney/enterprise-ui/codemods-at-scale">Codemods على نطاق واسع</a></li><li><a href="../../../../book/kinney/enterprise-ui/strangler-fig-and-codemods-exercise">التمرين 9: شجرة الخنّاق التينيّ وأدوات التحويل البرمجي (Codemods)</a></li><li><a href="../../../../book/kinney/enterprise-ui/design-system-governance-exercise">التمرين السابع: حوكمة نظام التصميم</a></li><!--]--></ul><h3>Figma للمطوّرين</h3> <ul><!--[--><li><a href="../../../../book/kinney/figma/index">Figma للمطوّرين</a></li><li><a href="../../../../book/kinney/figma/getting-started">البدء</a></li><li><a href="../../../../book/kinney/figma/aligning-objects">محاذاة الكائنات</a></li><li><a href="../../../../book/kinney/figma/layers">العمل مع الطبقات</a></li><li><a href="../../../../book/kinney/figma/selecting-and-inspecting">التحديد والفحص</a></li><li><a href="../../../../book/kinney/figma/constraints">القيود</a></li><li><a href="../../../../book/kinney/figma/layout-grids">شبكات التخطيط</a></li><li><a href="../../../../book/kinney/figma/auto-layout">التخطيط التلقائي (Auto Layout)</a></li><li><a href="../../../../book/kinney/figma/styles">الأنماط</a></li><li><a href="../../../../book/kinney/figma/typography">التصميم الطباعي (Typography)</a></li><li><a href="../../../../book/kinney/figma/variables">المتغيّرات</a></li><li><a href="../../../../book/kinney/figma/generating-a-color-palette">توليد لوحة ألوان</a></li><li><a href="../../../../book/kinney/figma/semantic-colors">الألوان الدلالية</a></li><li><a href="../../../../book/kinney/figma/components">المكوّنات</a></li><li><a href="../../../../book/kinney/figma/component-properties">خصائص المكوّن</a></li><li><a href="../../../../book/kinney/figma/variants">الأنماط البديلة (Variants)</a></li><li><a href="../../../../book/kinney/figma/generating-an-icon-library">توليد مكتبة أيقونات</a></li><li><a href="../../../../book/kinney/figma/creating-a-callout-component">إنشاء مكوّن صندوق توضيحي (Callout)</a></li><li><a href="../../../../book/kinney/figma/interactive-components">المكوّنات التفاعلية</a></li><li><a href="../../../../book/kinney/figma/prototyping">النمذجة الأولية (Prototyping)</a></li><li><a href="../../../../book/kinney/figma/dev-mode">وضع المطوّر (Dev Mode)</a></li><li><a href="../../../../book/kinney/figma/publishing-figma-libraries">نشر المكتبات</a></li><li><a href="../../../../book/kinney/figma/variables-variants-responsive-text">الأنماط البديلة وأوضاع المتغيّرات للنص المتجاوب</a></li><li><a href="../../../../book/kinney/figma/placeholder-components">مكوّنات حجز المكان</a></li><li><a href="../../../../book/kinney/figma/cropped-grid-components">مكوّنات الشبكة المقصوصة</a></li><li><a href="../../../../book/kinney/figma/adding-a-dark-theme-to-the-button">إضافة الوضع الداكن</a></li><li><a href="../../../../book/kinney/figma/building-a-checkbox-component">بناء مكوّن مربّع اختيار</a></li><li><a href="../../../../book/kinney/figma/creating-a-button-component">إنشاء مكوّن زرّ</a></li><li><a href="../../../../book/kinney/figma/libraries">العمل مع المكتبات في Figma</a></li><li><a href="../../../../book/kinney/figma/number-variable-tokens">استخدام المتغيّرات للرموز</a></li><li><a href="../../../../book/kinney/figma/styles-vs-variables">الأنماط مقابل المتغيّرات</a></li><!--]--></ul><h3>TypeScript للويب الكامل</h3> <ul><!--[--><li><a href="../../../../book/kinney/full-stack-typescript/index">TypeScript للويب الكامل</a></li><li><a href="../../../../book/kinney/full-stack-typescript/typescript-configuration-best-practices">أفضل ممارسات تكوين TypeScript</a></li><li><a href="../../../../book/kinney/full-stack-typescript/type-stripping">نزع الأنواع</a></li><li><a href="../../../../book/kinney/full-stack-typescript/type-safety-vs-runtime-validation">أمان الأنواع مقابل التحقّق في وقت التشغيل</a></li><li><a href="../../../../book/kinney/full-stack-typescript/type-guards-vs-schema-validation">حرّاس الأنواع والتحقّق عبر المخططات</a></li><li><a href="../../../../book/kinney/full-stack-typescript/introduction-to-zod">مقدّمة إلى Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/advanced-types-with-zod">أنواع متقدمة مع Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/refining-types-with-zod">تحسين الأنواع مع Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/type-branding-with-zod">وسم الأنواع مع Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/transforms-and-coercion-with-zod">التحويلات والإكراه مع Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/validating-zod-schema-exercises">التحقّق من مخطط Zod (تمرين)</a></li><li><a href="../../../../book/kinney/full-stack-typescript/working-backwards-from-types-with-zod">العمل عكسيًا من الأنواع مع Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/advanced-schema-design-with-zod">تصميم مخططات متقدّمة مع Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/testing-zod-schema">اختبار مخطط Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/zod-best-practices">أفضل الممارسات مع Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/structuring-zod-schemas-efficiently">تنظيم مخططات Zod بكفاءة</a></li><li><a href="../../../../book/kinney/full-stack-typescript/adding-types-to-express">إضافة الأنواع إلى طلبات Express</a></li><li><a href="../../../../book/kinney/full-stack-typescript/adding-types-to-express-responses">إضافة الأنواع إلى استجابات Express</a></li><li><a href="../../../../book/kinney/full-stack-typescript/typing-express-with-zod-walkthrough">إضافة الأنواع إلى Express مع Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/express-zod-params">إضافة مخططات Zod إلى معاملات المسار</a></li><li><a href="../../../../book/kinney/full-stack-typescript/validating-query-and-path-parameters">التحقق من معاملات الاستعلام والمسار</a></li><li><a href="../../../../book/kinney/full-stack-typescript/validating-schema-with-middleware">التحقق من المخطط باستخدام وسيط</a></li><li><a href="../../../../book/kinney/full-stack-typescript/using-zod-with-express">استخدام Zod مع Express</a></li><li><a href="../../../../book/kinney/full-stack-typescript/adding-client-side-validation">إضافة التحقق من جهة العميل</a></li><li><a href="../../../../book/kinney/full-stack-typescript/testing-with-zod-and-express">الاختبار مع Zod وExpress</a></li><li><a href="../../../../book/kinney/full-stack-typescript/validating-the-data-layer">التحقق من طبقة البيانات</a></li><li><a href="../../../../book/kinney/full-stack-typescript/open-api-swagger-express">عقود OpenAPI/Swagger</a></li><li><a href="../../../../book/kinney/full-stack-typescript/generating-open-api-from-express">توليد OpenAPI من Express</a></li><li><a href="../../../../book/kinney/full-stack-typescript/zod-to-open-api">من Zod إلى OpenAPI</a></li><li><a href="../../../../book/kinney/full-stack-typescript/generating-types-from-open-api">توليد الأنواع من مواصفة OpenAPI</a></li><li><a href="../../../../book/kinney/full-stack-typescript/generating-zod-openapi">توليد مخططات Zod من OpenAPI</a></li><li><a href="../../../../book/kinney/full-stack-typescript/validating-your-api-openapi">التحقق من واجهتك (API) باستخدام OpenAPI</a></li><li><a href="../../../../book/kinney/full-stack-typescript/what-is-trpc">ما هو tRPC؟</a></li><li><a href="../../../../book/kinney/full-stack-typescript/trpc-on-the-server">استخدام tRPC على الخادم</a></li><li><a href="../../../../book/kinney/full-stack-typescript/trpc-on-the-client">استخدام tRPC على العميل</a></li><li><a href="../../../../book/kinney/full-stack-typescript/subscriptions-with-trpc">الاشتراكات (Subscriptions) في tRPC</a></li><li><a href="../../../../book/kinney/full-stack-typescript/middleware-auth-logging-for-trpc">الوسيط والمصادقة والتسجيل في tRPC</a></li><li><a href="../../../../book/kinney/full-stack-typescript/custom-data-transformers-with-trpc">مُحوّلات البيانات المخصّصة (Custom Data Transformers) في tRPC</a></li><li><a href="../../../../book/kinney/full-stack-typescript/testing-and-debugging-trpc">الاختبار وتصحيح الأخطاء في tRPC</a></li><li><a href="../../../../book/kinney/full-stack-typescript/typesafe-database-with-prisma">قاعدة بيانات آمنة الأنواع مع Prisma</a></li><li><a href="../../../../book/kinney/full-stack-typescript/zod-schemas-from-prisma">توليد مخططات Zod من Prisma</a></li><li><a href="../../../../book/kinney/full-stack-typescript/prisma-trpc">توليد tRPC من Prisma</a></li><li><a href="../../../../book/kinney/full-stack-typescript/express-zod-api">بناء واجهة برمجية مع Express Zod API</a></li><li><a href="../../../../book/kinney/full-stack-typescript/input-validation-with-zod">التحقق من المدخلات باستخدام Zod</a></li><li><a href="../../../../book/kinney/full-stack-typescript/class-validator-class-transformer-express">التحقق بالأصناف وتحويل الكائنات</a></li><li><a href="../../../../book/kinney/full-stack-typescript/typed-error-middleware-with-express">وسيط أخطاء محدّد الأنواع مع Express</a></li><li><a href="../../../../book/kinney/full-stack-typescript/branded-types-express">الأنواع الموسومة مع Express</a></li><li><a href="../../../../book/kinney/full-stack-typescript/global-error-types-express">أنواع الأخطاء العامة مع Express</a></li><li><a href="../../../../book/kinney/full-stack-typescript/type-safe-route-registration-with-express">تسجيل المسارات الآمنة الأنواع</a></li><li><a href="../../../../book/kinney/full-stack-typescript/type-safe-asynchronous-route-handlers-with-express">معالجات المسارات غير المتزامنة الآمنة الأنواع</a></li><li><a href="../../../../book/kinney/full-stack-typescript/typing-headers-and-cookies-in-express">تحديد أنواع الترويسات وملفات تعريف الارتباط</a></li><li><a href="../../../../book/kinney/full-stack-typescript/type-safe-routes-in-express">المسارات الآمنة الأنواع في Express</a></li><li><a href="../../../../book/kinney/full-stack-typescript/type-safe-middleware-with-express">وسيط آمن الأنواع مع Express</a></li><li><a href="../../../../book/kinney/full-stack-typescript/validating-zod-schemas-solution">التحقق من مخططات Zod (الحلول)</a></li><!--]--></ul><h3 class="active-chapter">OpenClaw: مساعدك الذكي الشخصي</h3> <ul><!--[--><li><a href="../../../../book/kinney/openclaw/index">OpenClaw: مساعدك الذكي الشخصي</a></li><li><a href="../../../../book/kinney/openclaw/installation">تثبيت OpenClaw</a></li><li><a href="../../../../book/kinney/openclaw/openclaw-setup">تهيئة OpenClaw</a></li><li><a href="../../../../book/kinney/openclaw/configuring-your-openclaw">تهيئة OpenClaw لديك</a></li><li><a href="../../../../book/kinney/openclaw/security-and-approvals">الأمن والموافقات</a></li><li><a href="../../../../book/kinney/openclaw/adding-telegram-as-a-channel">إضافة Telegram بوصفها قناة</a></li><li><a href="../../../../book/kinney/openclaw/choosing-a-dm-policy">اختيار سياسة الرسائل المباشرة</a></li><li><a href="../../../../book/kinney/openclaw/automation-ideas">أفكار أتمتة يمكنك تجربتها</a></li><li><a href="../../../../book/kinney/openclaw/gmail-and-google-calendar-integration">تكامل Gmail وGoogle Calendar</a></li><li><a href="../../../../book/kinney/openclaw/demonstrating-openclaw-memory">عرض توضيحي لذاكرة OpenClaw</a></li><li><a href="../../../../book/kinney/openclaw/browser-setup-and-use">إعداد المتصفح واستخدامه</a></li><li><a href="../../../../book/kinney/openclaw/openclaw-browser-prompts">طلبات متصفح OpenClaw</a></li><li><a href="../../../../book/kinney/openclaw/skills-and-clawhub">المهارات وClawHub</a></li><li><a href="../../../../book/kinney/openclaw/subagents-and-orchestration">الوكلاء الفرعيون والتنسيق</a></li><li><a href="../../../../book/kinney/openclaw/acpx-runtime-plugin" class="active">إضافة ACPX لبيئة التشغيل</a></li><li><a href="../../../../book/kinney/openclaw/connecting-securely-with-tailscale">الاتصال بـ OpenClaw بأمان عبر Tailscale</a></li><li><a href="../../../../book/kinney/openclaw/running-openclaw-on-railway-with-tailscale">تشغيل OpenClaw على Railway مع Tailscale</a></li><li><a href="../../../../book/kinney/openclaw/connecting-a-remote-node">الاتصال بـ OpenClaw البعيد بوصفه عقدة مقترنة</a></li><li><a href="../../../../book/kinney/openclaw/syncing-cookies-to-a-remote-gateway">مزامنة كوكيز متصفحك مع Gateway بعيد</a></li><li><a href="../../../../book/kinney/openclaw/lobster-workflows">سير عمل Lobster</a></li><li><a href="../../../../book/kinney/openclaw/llm-task">مهمة LLM</a></li><li><a href="../../../../book/kinney/openclaw/swarms">الأسراب (Swarms)</a></li><li><a href="../../../../book/kinney/openclaw/choosing-an-orchestration-tool">اختيار أداة التنسيق</a></li><!--]--></ul><h3>أساسيات الذكاء الاصطناعي بلغة Python</h3> <ul><!--[--><li><a href="../../../../book/kinney/python-ai/index">أساسيات الذكاء الاصطناعي بلغة Python</a></li><li><a href="../../../../book/kinney/python-ai/installing-hugging-face">تثبيت Hugging Face</a></li><li><a href="../../../../book/kinney/python-ai/what-is-hugging-face">ما هو Hugging Face؟</a></li><li><a href="../../../../book/kinney/python-ai/hugging-face-pipeline-tasks">خطوط أنابيب Hugging Face</a></li><li><a href="../../../../book/kinney/python-ai/pipeline-basics">أساسيات خطوط الأنابيب (Hugging Face)</a></li><li><a href="../../../../book/kinney/python-ai/tokenization">الترميز — من النص إلى الموتّرات</a></li><li><a href="../../../../book/kinney/python-ai/attention-mechanism">آلية الانتباه</a></li><li><a href="../../../../book/kinney/python-ai/decoders">المفكّكات وتوليد النص</a></li><li><a href="../../../../book/kinney/python-ai/attention-and-pipeline-checklist">قوائم تحقّق سريعة — خطوط المعالجة والانتباه والتوليد</a></li><li><a href="../../../../book/kinney/python-ai/fine-tuning">الضبط الدقيق لنماذج المحوّلات (Transformer)</a></li><li><a href="../../../../book/kinney/python-ai/image-generation">توليد الصور من النص (Stable Diffusion)</a></li><li><a href="../../../../book/kinney/python-ai/image-to-image">التحويلات من صورة إلى صورة (Image-to-Image)</a></li><li><a href="../../../../book/kinney/python-ai/dreambooth">DreamBooth — تخصيص نماذج النص إلى صورة</a></li><!--]--></ul><h3>أداء React</h3> <ul><!--[--><li><a href="../../../../book/kinney/react-performance/index">أداء React</a></li><li><a href="../../../../book/kinney/react-performance/virtual-dom-fiber-architecture">الدوم الافتراضي ومعمارية Fiber</a></li><li><a href="../../../../book/kinney/react-performance/understanding-reconciliation-react-19">فهم المطابقة (Reconciliation) في React 19</a></li><li><a href="../../../../book/kinney/react-performance/measuring-performance-with-real-tools">قياس الأداء</a></li><li><a href="../../../../book/kinney/react-performance/debugging-performance-issues">تصحيح مشكلات أداء React</a></li><li><a href="../../../../book/kinney/react-performance/core-web-vitals-for-react">مؤشرات الويب الأساسية (Core Web Vitals) لـ React</a></li><li><a href="../../../../book/kinney/react-performance/colocation-of-state">إبقاء الحالة قريبة من موضع استخدامها (Colocation of State)</a></li><li><a href="../../../../book/kinney/react-performance/lifting-state-intelligently">رفع الحالة بذكاء (Lifting State Intelligently)</a></li><li><a href="../../../../book/kinney/react-performance/derived-vs-stored-state">الحالة المشتقّة مقابل الحالة المخزّنة (Derived vs Stored State)</a></li><li><a href="../../../../book/kinney/react-performance/react-memo-react-19-and-compiler-era">React.memo في عصر React 19 والمُصرّف</a></li><li><a href="../../../../book/kinney/react-performance/usememo-usecallback-in-react-19">استخدام useMemo وuseCallback</a></li><li><a href="../../../../book/kinney/react-performance/avoiding-over-memoization">تجنّب الإفراط في حفظ النتائج</a></li><li><a href="../../../../book/kinney/react-performance/identity-stability-props">استقرار هوية الخصائص</a></li><li><a href="../../../../book/kinney/react-performance/key-stability-in-lists">استقرار المفاتيح في القوائم</a></li><li><a href="../../../../book/kinney/react-performance/avoiding-unnecessary-dependencies">تجنّب الاعتمادات غير الضرورية</a></li><li><a href="../../../../book/kinney/react-performance/custom-equality-checks-areequal">فحوصات التساوي المخصّصة عبر areEqual</a></li><li><a href="../../../../book/kinney/react-performance/context-api-performance-pitfalls">مزالق أداء Context API</a></li><li><a href="../../../../book/kinney/react-performance/separating-actions-from-state-two-contexts">فصل الإجراءات عن الحالة: سياقان</a></li><li><a href="../../../../book/kinney/react-performance/component-granularity-splitting">دقّة تقسيم المكوّنات</a></li><li><a href="../../../../book/kinney/react-performance/react-19-compiler-guide">مصرّف React 19 (React Compiler)</a></li><li><a href="../../../../book/kinney/react-performance/concurrent-react-scheduling">جدولة React المتزامنة (Concurrent Scheduling)</a></li><li><a href="../../../../book/kinney/react-performance/usetransition-and-starttransition">دليل useTransition وstartTransition</a></li><li><a href="../../../../book/kinney/react-performance/usedeferredvalue-patterns">أنماط useDeferredValue</a></li><li><a href="../../../../book/kinney/react-performance/useactionstate-performance">أداء useActionState</a></li><li><a href="../../../../book/kinney/react-performance/the-use-hook">خُطّاف use</a></li><li><a href="../../../../book/kinney/react-performance/suspense-for-data-fetching">Suspense لجلب البيانات</a></li><li><a href="../../../../book/kinney/react-performance/code-splitting-and-lazy-loading">تقسيم الشيفرة والتحميل الكسول</a></li><li><a href="../../../../book/kinney/react-performance/bundle-analysis-deep-dive">تحليل الحزم بعمق</a></li><li><a href="../../../../book/kinney/react-performance/tree-shaking-optimization">تحسين اهتزاز الشجرة</a></li><li><a href="../../../../book/kinney/react-performance/performance-budgets-and-automation">ميزانيات الأداء والأتمتة</a></li><li><a href="../../../../book/kinney/react-performance/production-performance-monitoring">مراقبة الأداء في الإنتاج</a></li><li><a href="../../../../book/kinney/react-performance/animation-performance">أداء الرسوم المتحركة في React</a></li><li><a href="../../../../book/kinney/react-performance/animation-performance-advanced">تقنيات متقدّمة في أداء الرسوم المتحركة</a></li><li><a href="../../../../book/kinney/react-performance/apollo-client-optimization">تحسين أداء Apollo Client</a></li><li><a href="../../../../book/kinney/react-performance/cdn-caching-immutable-assets">التخزين المؤقت في CDN والأصول غير القابلة للتغيير</a></li><li><a href="../../../../book/kinney/react-performance/flushsync-in-react-dom">flushSync في react-dom</a></li><li><a href="../../../../book/kinney/react-performance/gpu-acceleration-patterns">أنماط تسريع GPU</a></li><li><a href="../../../../book/kinney/react-performance/graphql-react-performance">GraphQL وأداء React</a></li><li><a href="../../../../book/kinney/react-performance/image-and-asset-optimization">تحسين الصور والأصول لـ React</a></li><li><a href="../../../../book/kinney/react-performance/image-optimization-advanced">تقنيات تحسين الصور المتقدمة</a></li><li><a href="../../../../book/kinney/react-performance/inp-optimization-long-tasks">تحسين INP والمهام الطويلة</a></li><li><a href="../../../../book/kinney/react-performance/inp-production-monitoring">مراقبة INP في الإنتاج</a></li><li><a href="../../../../book/kinney/react-performance/memory-leak-detection">كشف تسرّبات الذاكرة في تطبيقات React</a></li><li><a href="../../../../book/kinney/react-performance/memory-management-deep-dive">إدارة الذاكرة بعمق</a></li><li><a href="../../../../book/kinney/react-performance/micro-frontend-performance">أداء الواجهات الأمامية المصغّرة (Micro-Frontend)</a></li><li><a href="../../../../book/kinney/react-performance/offscreen-canvas-webgl">OffscreenCanvas وWebGL في React</a></li><li><a href="../../../../book/kinney/react-performance/optimizing-server-side-rendering">تحسين التصيير على الخادم (SSR)</a></li><li><a href="../../../../book/kinney/react-performance/performance-budgets-and-monitoring">ميزانيات الأداء والمراقبة</a></li><li><a href="../../../../book/kinney/react-performance/performance-testing-implementation">دليل تنفيذ اختبارات الأداء</a></li><li><a href="../../../../book/kinney/react-performance/performance-testing-strategy">استراتيجية اختبار الأداء</a></li><li><a href="../../../../book/kinney/react-performance/priority-hints-resource-loading">تلميحات الأولوية وتحميل الموارد</a></li><li><a href="../../../../book/kinney/react-performance/react-cache-api">واجهة cache()</a></li><li><a href="../../../../book/kinney/react-performance/react-compiler-migration-guide">دليل الانتقال إلى مصرّف React</a></li><li><a href="../../../../book/kinney/react-performance/react-server-components-rsc">مكوّنات الخادم في React (React Server Components)</a></li><li><a href="../../../../book/kinney/react-performance/real-time-data-performance">أداء البيانات الزمنية الحقيقية في React</a></li><li><a href="../../../../book/kinney/react-performance/real-time-scale-strategies">استراتيجيات الزمن الحقيقي على نطاق واسع</a></li><li><a href="../../../../book/kinney/react-performance/resource-preloading-apis">واجهات التحميل المسبق للموارد</a></li><li><a href="../../../../book/kinney/react-performance/selective-hydration-react-19">الترطيب الانتقائي في تطبيقات React الحديثة</a></li><li><a href="../../../../book/kinney/react-performance/service-worker-strategies">استراتيجيات Service Worker في تطبيقات React</a></li><li><a href="../../../../book/kinney/react-performance/speculation-rules-bfcache">قواعد التخمين وتحسين ذاكرة bfcache</a></li><li><a href="../../../../book/kinney/react-performance/streaming-ssr-optimization">تحسين التدفق في التصيير على الخادم (SSR)</a></li><li><a href="../../../../book/kinney/react-performance/swc-speedy-web-compiler">مُجمِّع الويب السريع (SWC) لتطبيقات React</a></li><li><a href="../../../../book/kinney/react-performance/uselayouteffect-performance">خصائص الأداء في useLayoutEffect</a></li><li><a href="../../../../book/kinney/react-performance/view-transitions-api">واجهة انتقالات العرض (View Transitions API) في React</a></li><li><a href="../../../../book/kinney/react-performance/web-workers-with-react">عمّال الويب (Web Workers) مع React</a></li><li><a href="../../../../book/kinney/react-performance/webassembly-integration">دمج WebAssembly في React</a></li><li><a href="../../../../book/kinney/react-performance/windowing-and-virtualization">التصيير النوافذي والافتراضي في القوائم الطويلة</a></li><!--]--></ul><h3>React مع TypeScript</h3> <ul><!--[--><li><a href="../../../../book/kinney/react-typescript/index">React مع TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/setting-up-react-and-typescript">تهيئة React و TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/tsconfig-deep-dive-react">غوص أعمق في tsconfig.json</a></li><li><a href="../../../../book/kinney/react-typescript/strictness-options-for-react">خيارات الصرامة في React</a></li><li><a href="../../../../book/kinney/react-typescript/module-resolution-and-paths">حلّ الوحدات ومساراتها</a></li><li><a href="../../../../book/kinney/react-typescript/setting-up-linting-and-formatting">ضبط الفحص الساكن والتنسيق</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-react-eslint-rules">قواعد ESLint</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-type-narrowing-control-flow">تضييق الأنواع وتحليل تدفّق التحكم</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-type-inference-mastery">استنتاج الأنواع</a></li><li><a href="../../../../book/kinney/react-typescript/advanced-type-tricks-for-react">حِيَل الأنواع المتقدّمة في React</a></li><li><a href="../../../../book/kinney/react-typescript/utility-types-in-practice">أنواع الأدوات في التطبيق العملي</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-template-literal-types">أنواع القوالب النصّية</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-unknown-vs-any">`unknown` مقابل `any`</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-structural-typing">الأنواع البنيوية (Structural Typing)</a></li><li><a href="../../../../book/kinney/react-typescript/jsx-types-reactnode-reactelement">أنواع JSX: ReactNode وReactElement</a></li><li><a href="../../../../book/kinney/react-typescript/polymorphic-components-and-as-prop">المكوّنات متعددة الأشكال وخاصية as</a></li><li><a href="../../../../book/kinney/react-typescript/component-props-complete-guide">خصائص مكوّنات React</a></li><li><a href="../../../../book/kinney/react-typescript/prop-combinations-and-unions">تركيبات الخصائص والأنواع الاتحادية</a></li><li><a href="../../../../book/kinney/react-typescript/render-props-and-hoc-alternatives">خصائص التصيير وبدائل المكوّنات ذات الرتبة العليا</a></li><li><a href="../../../../book/kinney/react-typescript/usestate-typescript-basics">useState مع TypeScript: الأساسيات</a></li><li><a href="../../../../book/kinney/react-typescript/react-state-management-with-typescript">إدارة حالة React مع TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-discriminated-unions">الأنواع الاتحادية المُميَّزة</a></li><li><a href="../../../../book/kinney/react-typescript/loading-states-error-handling">حالات التحميل ومعالجة الأخطاء</a></li><li><a href="../../../../book/kinney/react-typescript/fetching-data-usestate">جلب البيانات باستخدام `useState` و`useEffect`</a></li><li><a href="../../../../book/kinney/react-typescript/creating-todos-post-typescript">إرسال البيانات</a></li><li><a href="../../../../book/kinney/react-typescript/updating-todos-optimistic">التحديثات المتفائلة</a></li><li><a href="../../../../book/kinney/react-typescript/deleting-todos-state-cleanup">طلبات DELETE وتنظيف الحالة</a></li><li><a href="../../../../book/kinney/react-typescript/context-and-selectors-typing">أنواع Context والمحدِّدات</a></li><li><a href="../../../../book/kinney/react-typescript/safer-createcontext-helpers">مساعدات createContext أكثر أمانًا</a></li><li><a href="../../../../book/kinney/react-typescript/passing-dispatch-and-context">تمرير dispatch واستخدام Context</a></li><li><a href="../../../../book/kinney/react-typescript/compound-components-and-slots-typing">أنواع المكوّنات المركّبة والخانات</a></li><li><a href="../../../../book/kinney/react-typescript/useref-and-imperative-handles">`useRef` والمقابض الإجرائية</a></li><li><a href="../../../../book/kinney/react-typescript/forwardref-memo-and-displayname">`forwardRef` و`memo` و`displayName`</a></li><li><a href="../../../../book/kinney/react-typescript/mirror-dom-props">محاكاة خصائص DOM</a></li><li><a href="../../../../book/kinney/react-typescript/typing-dom-and-react-events">نمطجة أحداث DOM وأحداث React</a></li><li><a href="../../../../book/kinney/react-typescript/forms-events-and-number-inputs">النماذج والأحداث وحقول الأرقام</a></li><li><a href="../../../../book/kinney/react-typescript/higher-order-components-typing">أنواع المكوّنات ذات الرتبة العليا</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-react-hooks">خُطّافات React مع TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/react-performance-with-typescript">أداء React مع TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/the-use-hook-and-suspense-typing">الخُطّاف use وحدود Suspense: تحديد الأنواع</a></li><li><a href="../../../../book/kinney/react-typescript/error-boundaries-and-suspense-boundaries">حدود الأخطاء وحدود Suspense</a></li><li><a href="../../../../book/kinney/react-typescript/data-fetching-and-runtime-validation">جلب البيانات والتحقّق وقت التشغيل</a></li><li><a href="../../../../book/kinney/react-typescript/react-query-trpc">React Query مع tRPC</a></li><li><a href="../../../../book/kinney/react-typescript/react-server-components-types">أنواع مكوّنات خادم React</a></li><li><a href="../../../../book/kinney/react-typescript/rsc-server-actions">مكوّنات الخادم وإجراءات الخادم</a></li><li><a href="../../../../book/kinney/react-typescript/edge-ssr-and-runtime-types">التصيير على الحافة وأنواع بيئات التشغيل</a></li><li><a href="../../../../book/kinney/react-typescript/edge-ssr-hydration">الحوافّ، وSSR، وأنواع حمولات الترطيب</a></li><li><a href="../../../../book/kinney/react-typescript/accessibility-and-aria-typing">الوصولية وتحديد أنواع ARIA</a></li><li><a href="../../../../book/kinney/react-typescript/security-and-escaping-types">الأمن وأنواع التهريب</a></li><li><a href="../../../../book/kinney/react-typescript/testing-react-typescript">اختبار React مع TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-react-testing">اختبار React مع TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/type-level-testing-in-practice">اختبار الأنواع (Type-Level Testing) في الممارسة</a></li><li><a href="../../../../book/kinney/react-typescript/advanced-error-handling-patterns">أنماط متقدّمة للتعامل مع الأخطاء</a></li><li><a href="../../../../book/kinney/react-typescript/assets-and-module-declarations">الأصول وإقرارات الوحدات</a></li><li><a href="../../../../book/kinney/react-typescript/build-pipeline-tsc-swc">خط بناء حديث: tsc و SWC</a></li><li><a href="../../../../book/kinney/react-typescript/building-development-scripts">سكربتات البناء والتطوير</a></li><li><a href="../../../../book/kinney/react-typescript/code-splitting-lazy-types">تقسيم الشيفرة والأنواع الكسولة</a></li><li><a href="../../../../book/kinney/react-typescript/componenttype-hocs-render-props">ComponentType والمكوّنات ذات الرتبة العليا وخصائص التصيير</a></li><li><a href="../../../../book/kinney/react-typescript/concurrent-features-typing-patterns">أنماط تحديد الأنواع للخصائص التزامنية</a></li><li><a href="../../../../book/kinney/react-typescript/debugging-typescript-errors-guide">دليل تصحيح أخطاء TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/dev-tools-and-type-driven-dx">أدوات المطوّر والتجربة المدفوعة بالأنواع</a></li><li><a href="../../../../book/kinney/react-typescript/flushsync-and-imperative-dom">`flushSync` والـ DOM الأمْرِيّ مع الأنواع</a></li><li><a href="../../../../book/kinney/react-typescript/forms-actions-and-useactionstate">النماذج المحدَّدة الأنواع، والإجرائات (Actions)، وuseActionState</a></li><li><a href="../../../../book/kinney/react-typescript/full-crud-todo-app">تطبيق مهام كامل بعمليات CRUD — تجميع كل شيء</a></li><li><a href="../../../../book/kinney/react-typescript/function-overloads-in-react">الأحمال الزائدة للدوال واجهات برمجية مرنة</a></li><li><a href="../../../../book/kinney/react-typescript/migrating-from-proptypes">الانتقال من PropTypes إلى TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/migrating-javascript-to-typescript">ترحيل تطبيق React من JavaScript إلى TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/module-federation-typescript">اتحاد الوحدات بواسطة TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/monorepos-and-shared-ui-types">المستودعات الموحّدة وأنواع واجهة المستخدم المشتركة</a></li><li><a href="../../../../book/kinney/react-typescript/react-typescript-mental-models">النماذج الذهنية لـ React مع TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/reading-todos-get-typescript">قراءة المهام (todos) بواسطة TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/realtime-typing-websockets-and-sse">التحويل في الزمن الحقيقي عبر WebSocket وSSE</a></li><li><a href="../../../../book/kinney/react-typescript/resource-preloading-apis-types">التحميل المسبق للمصادر بأنواع API</a></li><li><a href="../../../../book/kinney/react-typescript/result-types-and-error-handling">أنواع النتيجة ومعالجة الأخطاء في React</a></li><li><a href="../../../../book/kinney/react-typescript/routing-and-parameters-typing">التوجيه والمعاملات المُنوَّعة النوع</a></li><li><a href="../../../../book/kinney/react-typescript/streaming-ssr-typescript">التصيير من جانب الخادم المتدفق مع TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/styling-csstype-and-css-modules">التنسيق (Styling) باستخدام Csstype ووحدات CSS (CSS Modules)</a></li><li><a href="../../../../book/kinney/react-typescript/tailwind-cva-typed-variants">متغيّرات Tailwind المكتوبة (Typed) باستخدام CVA</a></li><li><a href="../../../../book/kinney/react-typescript/typesafe-environment-variables">متغيّرات بيئة آمنة الأنواع</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-conditional-mapped-types">الأنواع الشرطية (Conditional) والمنسوخة (Mapped)</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-generics-deep-dive">غوص عميق في الأنواع العامة (Generics) في TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-modules-declarations">الوحدات وملفات التعريف في React</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-react-patterns">أنماط React الخاصة بـ TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-type-level-programming">البرمجة على مستوى الأنواع (Type-Level Programming)</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-type-system-fundamentals">أساسيات نظام أنواع TypeScript</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-utility-types-complete">دليل أنواع الأدوات (Utility Types)</a></li><li><a href="../../../../book/kinney/react-typescript/typescript-without-trying">استخدام TypeScript دون أن تبذل جهدًا</a></li><li><a href="../../../../book/kinney/react-typescript/use-layout-effect-and-effect-typing">استخدام useLayoutEffect وتحديد أنواع التأثيرات</a></li><li><a href="../../../../book/kinney/react-typescript/useoptimistic-typed-optimism">useOptimistic والتحديثات المتفائلة ذات الأنواع</a></li><li><a href="../../../../book/kinney/react-typescript/vite-react-typescript-optimization">تحسين Vite مع React وTypeScript</a></li><!--]--></ul><h3>وكلاء ذكاء اصطناعي يختبرون أنفسهم</h3> <ul><!--[--><li><a href="../../../../book/kinney/self-testing-ai-agents/index">وكلاء الذكاء الاصطناعي الذين يختبرون أنفسهم</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/the-hypothesis">الفرضية</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/instructions-that-wire-the-agent-in">كتابة تعليمات جيدة</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-rewrite-the-bad-claude-md">مختبر (اختياري)</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/rewrite-the-bad-claude-md-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/skills-rules-and-hooks">المهارات والقواعد والخطّافات</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/git-hooks-with-lefthook">خطّافات Git مع Lefthook</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/locators-and-the-accessibility-hierarchy">محدِّدات المواقع والتسلسل الهرمي لإمكانية الوصول</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-locator-challenges">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/locator-challenges-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/the-waiting-story">حكاية الانتظار</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/playwright-ui-mode">وضع واجهة المستخدم في Playwright</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/playwright-codegen">مولّد الشيفرة في Playwright (Codegen)</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/configuring-playwright">تهيئة Playwright</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/playwright-projects">مشاريع Playwright</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/playwright-web-server-without-surprises">تهيئة خادم الويب</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/storage-state-authentication">المصادقة بحالة التخزين</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/fixtures-worker-scoped-test-scoped">التجهيزات: على مستوى العامل، وعلى مستوى الاختبار، والفخّ بينهما</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/where-fixtures-actually-help">أين تساعد التجهيزات فعلًا</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/testing-third-party-authentication">اختبار المصادقة عبر طرف ثالث</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/api-request-context-beyond-storage-state">APIRequestContext: ما هو أبعد من حالة التخزين</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/recording-hars-for-network-isolation">تسجيل ملفات HAR لعزل الشبكة</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/approaches-to-har-recording">مقاربات تسجيل HAR</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/route-based-network-interception">اعتراض الشبكة القائم على المسارات</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/mocking-browser-apis">محاكاة واجهات المتصفح البرمجية</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/deterministic-state-and-test-isolation">الحالة الحتمية وعزل الاختبارات</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-refactor-shelf-fixtures">مختبر: إعادة هيكلة تجهيزات Shelf</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/refactor-shelf-fixtures-solution">الحل: إعادة هيكلة تجهيزات Shelf</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/api-and-ui-hybrid-tests">اختبارات API والواجهة المدمجة</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test">مختبر: تحصين اختبار تقييم الكتاب المتذبذب</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/harden-the-flaky-rate-book-test-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/test-step-tags-annotations">test.step والوسوم والتعليقات التوضيحية</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-tag-and-step-annotate-the-shelf-suite">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/tag-and-step-annotate-the-shelf-suite-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/playwright-test-agents">وكلاء الاختبار في Playwright</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-generate-and-heal-with-playwright-agents">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/generate-and-heal-with-playwright-agents-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/visual-regression-as-a-feedback-loop">الانحدار البصري كحلقة تغذية راجعة</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-wire-visual-regression-into-the-dev-loop">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/wire-visual-regression-into-the-dev-loop-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/accessibility-as-a-quality-gate">إمكانية الوصول كبوابة جودة</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-wire-accessibility-checks-into-shelf">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/wire-accessibility-checks-into-shelf-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/performance-budgets-as-a-feedback-loop">ميزانيات الأداء كحلقة تغذية راجعة</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-add-performance-budgets-to-shelf">مختبر: إضافة ميزانيات الأداء إلى Shelf</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/add-performance-budgets-to-shelf-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build">ملفّات الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-build-a-failure-dossier-for-shelf">مختبر: بناء ملفّ فشل لـShelf</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/build-a-failure-dossier-for-shelf-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/flaky-test-triage">فرز الاختبارات المتذبذبة: حين تخدعك إعادة المحاولات</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/playwright-trace-viewer">عارض تتبّع Playwright</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/reading-a-trace">قراءة تتبّع</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-triage-three-traces">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/triage-three-traces-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/runtime-tools-compared">أدوات وقت التشغيل: مقارنة</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/runtime-probes-in-the-development-loop">مسابر وقت التشغيل داخل حلقة التطوير</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/writing-a-custom-mcp-wrapper">كتابة غلاف MCP مخصّص</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-wrap-a-custom-verification-mcp">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/wrap-a-custom-verification-mcp-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/structured-cli-output-as-pipeline-glue">مخرجات سطر الأوامر المُهيكلة كغراء للخطوط الأنابيب</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/the-second-opinion">الرأي الثاني</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/tuning-bugbot-for-your-codebase">ضبط Bugbot على شيفرة مشروعك</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-bugbot-on-a-planted-bug">مخبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/bugbot-on-a-planted-bug-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/the-static-layer-as-underlayment">الطبقة الساكنة كطبقة أساس</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lint-and-types-as-guardrails">Lint والأنواع كقضبان حماية</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/dead-code-detection">كشف الشيفرة الميتة</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/secret-scanning-with-gitleaks">فحص الأسرار باستخدام Gitleaks</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/making-it-hard-to-cheat-the-guardrails">جعل التلاعب بالقضبان صعبًا</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-wire-the-static-layer-into-shelf">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/wire-the-static-layer-into-shelf-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/ci-as-the-loop-of-last-resort">CI كحلقة الملاذ الأخير</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-write-the-ci-workflow-from-scratch">مختبر: اكتب سير عمل CI من الصفر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/write-the-ci-workflow-from-scratch-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/post-merge-and-post-deploy-validation">التحقّق بعد الدمج وبعد النشر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-add-post-deploy-smoke-checks-to-shelf">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/add-post-deploy-smoke-checks-to-shelf-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/capstone-the-whole-loop-end-to-end">الحلقة كاملة، من طرف إلى طرف</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/the-testing-pyramid-as-a-feedback-hierarchy">هرم الاختبارات</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/review-portability-beyond-bugbot">قابلية نقل المراجعة إلى ما هو أبعد من Bugbot</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-port-the-review-loop-beyond-bugbot">تمرين تطبيقي</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/port-the-review-loop-beyond-bugbot-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop">التحقّق عبر المتصفّحات دون إحراق حلقة التطوير</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-add-cross-browser-coverage">مختبر: إضافة تغطية عبر المتصفحات</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/add-cross-browser-coverage-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/nightly-verification-loops">حلقات التحقق الليلية</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-add-a-nightly-verification-workflow">مختبر</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/add-a-nightly-verification-workflow-solution">الحل</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/advanced-playwright-apis">واجهات Playwright المتقدمة</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/porting-the-shelf-loop-to-another-stack">نقل حلقة Shelf إلى تقنية أخرى</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/lab-translate-the-shelf-loop-to-your-stack">تمرين تطبيقي</a></li><li><a href="../../../../book/kinney/self-testing-ai-agents/translate-the-shelf-loop-to-your-stack-solution">الحل: نقل حلقة Shelf إلى مكدّسك التقني</a></li><!--]--></ul><h3>بناء أنظمة التصميم في Storybook</h3> <ul><!--[--><li><a href="../../../../book/kinney/storybook/index">بناء أنظمة التصميم في Storybook</a></li><li><a href="../../../../book/kinney/storybook/setting-up">إعداد Storybook</a></li><li><a href="../../../../book/kinney/storybook/sandboxes">بيئات Storybook المعزولة (Sandboxes)</a></li><li><a href="../../../../book/kinney/storybook/writing-stories">كيف تكتب قصة (Story)</a></li><li><a href="../../../../book/kinney/storybook/adding-variants">إضافة متغيّرات إلى قصة</a></li><li><a href="../../../../book/kinney/storybook/controls">إضافة أدوات تحكم إلى قصة</a></li><li><a href="../../../../book/kinney/storybook/adding-button-sizes-exercise">إضافة أحجام الأزرار</a></li><li><a href="../../../../book/kinney/storybook/default-args">تعيين الوسائط الافتراضية</a></li><li><a href="../../../../book/kinney/storybook/setting-up-tailwind">استيراد الأنماط واستخدام Tailwind واستخدام السمات</a></li><li><a href="../../../../book/kinney/storybook/customizing-tailwind-colors">تخصيص ألوان Tailwind</a></li><li><a href="../../../../book/kinney/storybook/importing-fontsource-fonts">استيراد الخطوط من Fontsource</a></li><li><a href="../../../../book/kinney/storybook/mdx">استخدام Storybook مع MDX</a></li><li><a href="../../../../book/kinney/storybook/arg-types">تحسين argTypes بالبيانات الوصفية</a></li><li><a href="../../../../book/kinney/storybook/color-palette">لوحة الألوان</a></li><li><a href="../../../../book/kinney/storybook/icon-gallery">معرض الأيقونات</a></li><li><a href="../../../../book/kinney/storybook/typeset">عرض الخطوط باستخدام Typeset</a></li><li><a href="../../../../book/kinney/storybook/naming-and-hierarchy">تنظيم القصص والتوثيق</a></li><li><a href="../../../../book/kinney/storybook/class-variance-authority">إنشاء المتغيّرات باستخدام Class Variance Authority</a></li><li><a href="../../../../book/kinney/storybook/adding-a-size-variant">إضافة متغيّر الحجم باستخدام CVA</a></li><li><a href="../../../../book/kinney/storybook/adding-dark-mode-to-our-components">دعم الوضع الداكن</a></li><li><a href="../../../../book/kinney/storybook/forcing-dark-mode">فرض الوضع الداكن</a></li><li><a href="../../../../book/kinney/storybook/dark-mode-alternative">أسلوب بديل للوضع الداكن</a></li><li><a href="../../../../book/kinney/storybook/callout-component-exercise">تنفيذ مكوّن Callout</a></li><li><a href="../../../../book/kinney/storybook/play-functions">دوال التشغيل (Play Functions)</a></li><li><a href="../../../../book/kinney/storybook/testing-components-with-storybook">اختبار المكوّنات</a></li><li><a href="../../../../book/kinney/storybook/test-runner">إعداد مشغّل اختبارات</a></li><li><a href="../../../../book/kinney/storybook/visual-tests">الاختبارات البصرية</a></li><li><a href="../../../../book/kinney/storybook/accessibility-testing">اختبار إمكانية الوصول (Accessibility Testing)</a></li><li><a href="../../../../book/kinney/storybook/decorators">استخدام المزيّنات (Decorators) للسياق</a></li><li><a href="../../../../book/kinney/storybook/loaders">استخدام المحمّلات (Loaders) لجلب البيانات</a></li><li><a href="../../../../book/kinney/storybook/mock-service-worker">التكامل مع Mock Service Worker</a></li><li><a href="../../../../book/kinney/storybook/storybook-in-figma">Storybook داخل Figma</a></li><li><a href="../../../../book/kinney/storybook/figma-in-storybook">Figma في Storybook</a></li><li><a href="../../../../book/kinney/storybook/add-an-addon">إضافة ملحق إلى Storybook</a></li><li><a href="../../../../book/kinney/storybook/adding-button-sizes-solution">الحل: إضافة متغيّرات أحجام الأزرار وأدوات التحكم</a></li><li><a href="../../../../book/kinney/storybook/callout-component-solution">تنفيذ مكوّن Callout</a></li><li><a href="../../../../book/kinney/storybook/color-palette-solution">إنشاء لوحة ألوان من سمة Tailwind لديك</a></li><li><a href="../../../../book/kinney/storybook/creating-an-icon-component">إنشاء مكوّن أيقونة</a></li><li><a href="../../../../book/kinney/storybook/parameters">المعاملات (Parameters)</a></li><li><a href="../../../../book/kinney/storybook/text-area-disabled-play-function-solution">الحل: التحقق من منطقة نص معطّلة</a></li><!--]--></ul><h3>Tailwind CSS</h3> <ul><!--[--><li><a href="../../../../book/kinney/tailwind/index">Tailwind CSS: التنسيق بأدوات مساعدة</a></li><li><a href="../../../../book/kinney/tailwind/utility-first">CSS القائم على الأدوات المساعدة (Utility-First)</a></li><li><a href="../../../../book/kinney/tailwind/build-process-and-tooling">عملية البناء وتكامل الأدوات</a></li><li><a href="../../../../book/kinney/tailwind/how-tailwind-detects-classes">كيف يكتشف Tailwind الأصناف</a></li><li><a href="../../../../book/kinney/tailwind/tailwind-best-practices">أفضل الممارسات</a></li><li><a href="../../../../book/kinney/tailwind/tailwind-anti-patterns">الأنماط المضادة</a></li><li><a href="../../../../book/kinney/tailwind/tailwind-oxide">ما هو Oxide؟</a></li><li><a href="../../../../book/kinney/tailwind/tailwind-4">الفروق في Tailwind 4</a></li><li><a href="../../../../book/kinney/tailwind/building-a-button">بناء زر</a></li><li><a href="../../../../book/kinney/tailwind/spacing-and-dividing-utilities">أدوات التباعد والفصل</a></li><li><a href="../../../../book/kinney/tailwind/border-outline-ring">الحدود والأُطُر الخارجية والحلقات</a></li><li><a href="../../../../book/kinney/tailwind/building-a-card">بناء مكوّن بطاقة</a></li><li><a href="../../../../book/kinney/tailwind/building-a-form-input">بناء حقل نموذج</a></li><li><a href="../../../../book/kinney/tailwind/focus-states">حالات التركيز</a></li><li><a href="../../../../book/kinney/tailwind/form-improvements">مزيد من تحسينات النماذج</a></li><li><a href="../../../../book/kinney/tailwind/styling-form-state">المزيد من تحسينات تنسيق حالة النماذج</a></li><li><a href="../../../../book/kinney/tailwind/has-utility">أدوات has-*</a></li><li><a href="../../../../book/kinney/tailwind/has-challenges">تحديات has-*</a></li><li><a href="../../../../book/kinney/tailwind/building-an-interactive-checklist">بناء قائمة تحقّق تفاعلية</a></li><li><a href="../../../../book/kinney/tailwind/not-utility">المتغيّر not-*</a></li><li><a href="../../../../book/kinney/tailwind/building-a-card-list">بناء قائمة بطاقات</a></li><li><a href="../../../../book/kinney/tailwind/group-and-peer-modifiers">معدِّلات group وpeer</a></li><li><a href="../../../../book/kinney/tailwind/before-and-after-pseudo-selectors">المحدِّدات الزائفة before وafter</a></li><li><a href="../../../../book/kinney/tailwind/building-details-disclosure">بناء بطاقة كشف بالعنصر details</a></li><li><a href="../../../../book/kinney/tailwind/building-a-compound-input">بناء حقل إدخال مركّب</a></li><li><a href="../../../../book/kinney/tailwind/data-attribute-variants">صيغ خصائص البيانات</a></li><li><a href="../../../../book/kinney/tailwind/user-preference-variants">صيغ تفضيلات المستخدم</a></li><li><a href="../../../../book/kinney/tailwind/building-an-image-card-hover-overlay">بناء بطاقة صورة مع طبقة تغطية</a></li><li><a href="../../../../book/kinney/tailwind/current-color">لون currentColor</a></li><li><a href="../../../../book/kinney/tailwind/oklch-colors">لوحة ألوان OKLCH</a></li><li><a href="../../../../book/kinney/tailwind/colors-and-css-variables">تكامل متغيّرات CSS</a></li><li><a href="../../../../book/kinney/tailwind/tailwind-color-schemes">أنظمة الألوان</a></li><li><a href="../../../../book/kinney/tailwind/gradients">التدرّجات اللونية</a></li><li><a href="../../../../book/kinney/tailwind/flexbox-direction-and-wrapping">الاتجاه والالتفاف</a></li><li><a href="../../../../book/kinney/tailwind/flexbox-alignment">المحاذاة</a></li><li><a href="../../../../book/kinney/tailwind/flexbox-growing-and-shrinking">النمو والانكماش</a></li><li><a href="../../../../book/kinney/tailwind/flexbox-initial-size">الحجم الأولي</a></li><li><a href="../../../../book/kinney/tailwind/flexbox-aligning-individual-items">محاذاة العناصر المفردة</a></li><li><a href="../../../../book/kinney/tailwind/flexbox-multi-directional-layouts">التخطيطات متعددة الاتجاهات</a></li><li><a href="../../../../book/kinney/tailwind/flexbox-order-manipulation">التلاعب بالترتيب</a></li><li><a href="../../../../book/kinney/tailwind/css-grid-the-basics">CSS Grid: الأساسيات</a></li><li><a href="../../../../book/kinney/tailwind/defining-grid-columns-and-rows">تعريف أعمدة Grid وصفوفه</a></li><li><a href="../../../../book/kinney/tailwind/placing-grid-items-spanning-and-positioning">وضع عناصر Grid (التمدّد والموضع)</a></li><li><a href="../../../../book/kinney/tailwind/grid-auto-placement-and-implicit-tracks">الوضع التلقائي والمسارات الضمنية</a></li><li><a href="../../../../book/kinney/tailwind/grid-alignment-and-justification">المحاذاة والتوزيع</a></li><li><a href="../../../../book/kinney/tailwind/grid-subgrids">الشبكات الفرعية</a></li><li><a href="../../../../book/kinney/tailwind/building-an-invoice-table">إنشاء جدول فاتورة</a></li><li><a href="../../../../book/kinney/tailwind/grid-dynamic-columns">الأعمدة الديناميكية</a></li><li><a href="../../../../book/kinney/tailwind/grid-arbitrary-column-counts">أعداد الأعمدة التعسّفية</a></li><li><a href="../../../../book/kinney/tailwind/complex-grid-templates">قوالب Grid المعقّدة</a></li><li><a href="../../../../book/kinney/tailwind/building-a-dashboard">بناء لوحة معلومات</a></li><li><a href="../../../../book/kinney/tailwind/grid-auto-fit-and-auto-fill-patterns">أنماط auto-fit وauto-fill</a></li><li><a href="../../../../book/kinney/tailwind/grid-multi-column-layouts-columns-utility">التخطيطات متعددة الأعمدة</a></li><li><a href="../../../../book/kinney/tailwind/building-a-blog-layout">بناء تخطيط مدوّنة</a></li><li><a href="../../../../book/kinney/tailwind/breakpoint-utilities">أدوات نقاط التوقف</a></li><li><a href="../../../../book/kinney/tailwind/container-queries">استعلامات الحاويات</a></li><li><a href="../../../../book/kinney/tailwind/navigation-menu-container-queries">بناء قائمة تنقّل</a></li><li><a href="../../../../book/kinney/tailwind/building-a-statistics-card">بناء بطاقة إحصاءات</a></li><li><a href="../../../../book/kinney/tailwind/aria-integration">تكامل ARIA</a></li><li><a href="../../../../book/kinney/tailwind/screen-reader-support">دعم قارئات الشاشة</a></li><li><a href="../../../../book/kinney/tailwind/inert-utility">أداة inert</a></li><li><a href="../../../../book/kinney/tailwind/tailwind-transition">الانتقالات</a></li><li><a href="../../../../book/kinney/tailwind/tailwind-transform">التحويلات</a></li><li><a href="../../../../book/kinney/tailwind/built-in-animations">الحركات المدمجة</a></li><li><a href="../../../../book/kinney/tailwind/starting-style">بداية الأنماط (@starting-style)</a></li><li><a href="../../../../book/kinney/tailwind/pulse-and-loading-indicator-patterns">أنماط النبض ومؤشّرات التحميل</a></li><li><a href="../../../../book/kinney/tailwind/theme-customization">تخصيص السمة (Theme)</a></li><li><a href="../../../../book/kinney/tailwind/dark-mode">الوضع الداكن</a></li><li><a href="../../../../book/kinney/tailwind/tailwind-plugins">ملحقات Tailwind</a></li><li><a href="../../../../book/kinney/tailwind/text-styles-and-font-families">أنماط النص وعائلات الخطوط</a></li><li><a href="../../../../book/kinney/tailwind/line-spacing-and-letter-spacing">تباعد الأسطر وتباعد الأحرف</a></li><li><a href="../../../../book/kinney/tailwind/caret-and-accent-color">لون المؤشّر ولون التمييز</a></li><li><a href="../../../../book/kinney/tailwind/truncation-and-wrapping">الاقتطاع والالتفاف</a></li><li><a href="../../../../book/kinney/tailwind/building-a-popover">بناء نافذة منبثقة (Popover)</a></li><li><a href="../../../../book/kinney/tailwind/building-a-modal">بناء نافذة منبثقة</a></li><li><a href="../../../../book/kinney/tailwind/clsx-and-tailwind-merge">دمج أسماء الأصناف وإزالة التكرار منها</a></li><li><a href="../../../../book/kinney/tailwind/state-variants">تنويعات الحالة</a></li><li><a href="../../../../book/kinney/tailwind/at-property">قاعدة @property</a></li><li><a href="../../../../book/kinney/tailwind/color-mix">دالة color-mix()</a></li><li><a href="../../../../book/kinney/tailwind/button-exemplars">نماذج الأزرار</a></li><li><a href="../../../../book/kinney/tailwind/button-solutions">الأزرار الثانوية والخطرة</a></li><li><a href="../../../../book/kinney/tailwind/cva-tailwind">أداة Class Variance Authority</a></li><li><a href="../../../../book/kinney/tailwind/has-solutions">حلول تحديات أدوات has-*</a></li><li><a href="../../../../book/kinney/tailwind/in-utility">أداة in-*</a></li><!--]--></ul><h3>مدخل إلى الاختبارات</h3> <ul><!--[--><li><a href="../../../../book/kinney/testing/index">مقدمة إلى الاختبارات</a></li><li><a href="../../../../book/kinney/testing/the-basics">كتابة اختباراتك الأولى</a></li><li><a href="../../../../book/kinney/testing/how-tests-work">كيف تعمل الاختبارات</a></li><li><a href="../../../../book/kinney/testing/basic-math">تنفيذ الاختبارات الأساسية</a></li><li><a href="../../../../book/kinney/testing/unhappy-path">المسار غير السعيد</a></li><li><a href="../../../../book/kinney/testing/error-handling-and-edge-case-testing">اختبار الحالات الحدّية</a></li><li><a href="../../../../book/kinney/testing/beyond-strict-equality">مساواة المراجع</a></li><li><a href="../../../../book/kinney/testing/asymmetric-matchers">المطابقات غير المتماثلة (asymmetric matchers)</a></li><li><a href="../../../../book/kinney/testing/asymmetric-matchers-exercise">تمرين</a></li><li><a href="../../../../book/kinney/testing/asymmetric-matchers-solution">الحل</a></li><li><a href="../../../../book/kinney/testing/setting-up-and-tearing-down-with-hooks">خطّافات قبل وبعد</a></li><li><a href="../../../../book/kinney/testing/vitests-hooks-exercise">تمرين</a></li><li><a href="../../../../book/kinney/testing/vitest-hooks-solution">الحل</a></li><li><a href="../../../../book/kinney/testing/testing-asynchronous-code">اختبار الشيفرة غير المتزامنة</a></li><li><a href="../../../../book/kinney/testing/testing-the-dom">التهيئة</a></li><li><a href="../../../../book/kinney/testing/testing-the-dom-example">مثال أساسي</a></li><li><a href="../../../../book/kinney/testing/testing-local-storage">اختبار التخزين المحلي</a></li><li><a href="../../../../book/kinney/testing/testing-library">استخدام Testing Library</a></li><li><a href="../../../../book/kinney/testing/testing-library-matchers">مُطابِقات Testing Library</a></li><li><a href="../../../../book/kinney/testing/test-doubles">البدائل الاختبارية</a></li><li><a href="../../../../book/kinney/testing/stubs">البدائل (Stubs)</a></li><li><a href="../../../../book/kinney/testing/spies">الجواسيس (Spies)</a></li><li><a href="../../../../book/kinney/testing/mocks">البدائل المُحاكاة (Mocks)</a></li><li><a href="../../../../book/kinney/testing/clearing-restoring-and-resetting-mocks">مسح البدائل المُحاكاة واستعادتها وإعادة ضبطها</a></li><li><a href="../../../../book/kinney/testing/testing-function-arguments">التجسس على وسائط الدوال (Spying on Function Arguments)</a></li><li><a href="../../../../book/kinney/testing/mock-spy-secret-input-example">محاكاة الطرق المدمجة والتجسس عليها (Mocking and Spying on Built-in Methods)</a></li><li><a href="../../../../book/kinney/testing/mocking-environment-variables">محاكاة متغيرات البيئة (Mocking Environment Variables)</a></li><li><a href="../../../../book/kinney/testing/mocking-dependencies">محاكاة الاعتماديات (Mocking Dependencies)</a></li><li><a href="../../../../book/kinney/testing/mocking-fetch-and-network-requests">محاكاة fetch وطلبات الشبكة (Mocking Fetch and Network Requests)</a></li><li><a href="../../../../book/kinney/testing/mocking-time">اختبار الوقت (Testing Time)</a></li><li><a href="../../../../book/kinney/testing/exercise-add-timestamp">إضافة طابع زمني (Add Timestamp)</a></li><li><a href="../../../../book/kinney/testing/testing-with-mock-service-worker">عامل الخدمة المُحاكى (Mock Service Worker)</a></li><li><a href="../../../../book/kinney/testing/alternatives-to-using-test-doubles">بدائل استخدام بدائل الاختبار (test doubles)</a></li><li><a href="../../../../book/kinney/testing/dependency-injection">حقن الاعتماديات (Dependency Injection)</a></li><li><a href="../../../../book/kinney/testing/snapshot-testing">اختبار اللقطات (Snapshot Testing)</a></li><li><a href="../../../../book/kinney/testing/snapshot-test-alternatives">بدائل اختبار اللقطات (Snapshot Test Alternatives)</a></li><li><a href="../../../../book/kinney/testing/snapshot-test-maintenance">صيانة اختبار اللقطات (Snapshot Test Maintenance)</a></li><li><a href="../../../../book/kinney/testing/in-source-testing">الاختبار داخل المصدر (In-Source Testing)</a></li><li><a href="../../../../book/kinney/testing/cross-browser-testing-with-playwright">الاختبارات عبر المتصفحات مع Playwright (Cross-Browser Tests with Playwright)</a></li><li><a href="../../../../book/kinney/testing/code-coverage">تغطية الشيفرة (Code Coverage)</a></li><li><a href="../../../../book/kinney/testing/continuous-integration">إعداد التكامل المستمر (Setting Up Continuous Integration)</a></li><li><a href="../../../../book/kinney/testing/accident-counter-solution">عدّاد الحوادث: الحل</a></li><li><a href="../../../../book/kinney/testing/accident-counter-with-user-event">تثبيت userEvent</a></li><li><a href="../../../../book/kinney/testing/advanced-test-configuration">إعداد اختبارات متقدم باستخدام Vitest</a></li><li><a href="../../../../book/kinney/testing/assert-versus-expect">الفرق الجوهري بين assert و expect</a></li><li><a href="../../../../book/kinney/testing/asymmetric-matching-example">التعامل مع بنى بيانات كبيرة في الاختبار</a></li><li><a href="../../../../book/kinney/testing/authentication-example">اختبار المصادقة باستخدام Vitest</a></li><li><a href="../../../../book/kinney/testing/auto-mocking">المحاكاة التلقائية في Vitest</a></li><li><a href="../../../../book/kinney/testing/basic-math-exercise-walkthrough">جولة عملية: تمرين الرياضيات الأساسية</a></li><li><a href="../../../../book/kinney/testing/custom-matchers">مطابِقات مخصّصة في Vitest</a></li><li><a href="../../../../book/kinney/testing/debugging-vitest-tests">تنقيح أخطاء اختبارات Vitest</a></li><li><a href="../../../../book/kinney/testing/differences-between-jest-and-vitest">الفروق بين Jest وVitest</a></li><li><a href="../../../../book/kinney/testing/filtering-tests">ترشيح الاختبارات</a></li><li><a href="../../../../book/kinney/testing/fire-event-events">قائمة الأحداث التي يمكنك إطلاقها</a></li><li><a href="../../../../book/kinney/testing/guess-the-number-example">بناء لعبة «خمّن الرقم» باستخدام Vitest</a></li><li><a href="../../../../book/kinney/testing/guessing-game-solution">حل لعبة التخمين</a></li><li><a href="../../../../book/kinney/testing/mocking-best-practices">قائمة غير مكتملة بأفضل الممارسات للمحاكاة</a></li><li><a href="../../../../book/kinney/testing/mocking-dom-methods">محاكاة توابع DOM</a></li><li><a href="../../../../book/kinney/testing/mocking-the-file-system">محاكاة قراءة الملفات وكتابتها</a></li><li><a href="../../../../book/kinney/testing/organizing-and-annotating-tests">تنظيم الاختبارات والتعليق عليها</a></li><li><a href="../../../../book/kinney/testing/overriding-object-properties">تجاوز خصائص الكائنات</a></li><li><a href="../../../../book/kinney/testing/parallelizing-tests">تشغيل الاختبارات بالتوازي باستخدام سياق الاختبار</a></li><li><a href="../../../../book/kinney/testing/parameterizing-tests">توليد الاختبارات باستخدام test.each وdescribe.each</a></li><li><a href="../../../../book/kinney/testing/running-tests">تشغيل الاختبارات باستخدام Vitest</a></li><li><a href="../../../../book/kinney/testing/running-tests-for-related-files">تشغيل اختبارات الملفات ذات الصلة فقط</a></li><li><a href="../../../../book/kinney/testing/strategies-for-testing-conditional-logic">استراتيجيات اختبار المنطق الشرطي</a></li><li><a href="../../../../book/kinney/testing/structure-of-a-unit-test">نمط الترتيب والتنفيذ والتحقق (AAA)</a></li><li><a href="../../../../book/kinney/testing/task-list-example">بناء قائمة مهام باستخدام Vitest</a></li><li><a href="../../../../book/kinney/testing/test-context">فهم سياق الاختبار</a></li><li><a href="../../../../book/kinney/testing/test-driven-development">فهم التطوير المدفوع بالاختبارات</a></li><li><a href="../../../../book/kinney/testing/test-runners-and-assertion-libraries">أي إطار اختبار ينبغي أن أستخدم؟</a></li><li><a href="../../../../book/kinney/testing/testing-a-reducer-solution">الحل: اختبار مخفّض (reducer) في Zod</a></li><li><a href="../../../../book/kinney/testing/testing-asynchronous-errors">اختبار الأخطاء غير المتزامنة</a></li><li><a href="../../../../book/kinney/testing/testing-for-errors-exercise">اختبار القسمة على صفر في JavaScript</a></li><li><a href="../../../../book/kinney/testing/testing-library-solution">إعادة هيكلة اختبار الزر</a></li><li><a href="../../../../book/kinney/testing/testing-promises">اختبار الوعود (Promises)</a></li><li><a href="../../../../book/kinney/testing/tic-tac-toe-example">بناء لعبة Tic Tac Toe باستخدام Vitest</a></li><li><a href="../../../../book/kinney/testing/types-of-tests">اختبارات الوحدات والتكامل ومن طرف إلى طرف</a></li><li><a href="../../../../book/kinney/testing/user-event">FireEvent مقابل UserEvent في الاختبار</a></li><li><a href="../../../../book/kinney/testing/vitest-reporters">المُبلِّغون في Vitest</a></li><li><a href="../../../../book/kinney/testing/you-dont-need-perfect-code-coverage">لماذا لا تحتاج إلى تغطية شيفرة كاملة 100%</a></li><!--]--></ul><h3>Visual Studio Code</h3> <ul><!--[--><li><a href="../../../../book/kinney/visual-studio-code/index">Visual Studio Code: محرّر الشيفرة</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-editor-layout">تنسيق المحرّر (Editor Layout)</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-command-palette">لوحة الأوامر (The Command Palette)</a></li><li><a href="../../../../book/kinney/visual-studio-code/keybindings">اختصارات لوحة المفاتيح (Keybindings)</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-integrated-terminal">الطرفية المدمجة</a></li><li><a href="../../../../book/kinney/visual-studio-code/navigating-vscode">التنقل في Visual Studio Code</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-source-control">التحكم في المصدر</a></li><li><a href="../../../../book/kinney/visual-studio-code/search-and-replace-vscode">البحث والاستبدال</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-multiple-cursors">المؤشرات المتعددة</a></li><li><a href="../../../../book/kinney/visual-studio-code/multiple-cursors-with-find-and-replace">المؤشرات المتعددة مع البحث والاستبدال</a></li><li><a href="../../../../book/kinney/visual-studio-code/refactoring-in-vscode">إعادة الهيكلة في Visual Studio Code</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-emmet">اختصارات Emmet</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-emmet-exercises">تمارين</a></li><li><a href="../../../../book/kinney/visual-studio-code/favorite-vs-code-extensions">جولة في الإضافات</a></li><li><a href="../../../../book/kinney/visual-studio-code/editing-settings-through-the-vs-code-ui">تحرير الإعدادات (بصريًا)</a></li><li><a href="../../../../book/kinney/visual-studio-code/editing-settings-through-json">تحرير الإعدادات عبر JSON</a></li><li><a href="../../../../book/kinney/visual-studio-code/favorite-vs-code-settings">إعدادات Steve المفضّلة وإعدادات شائعة أخرى</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-settings-for-managing-files">إعدادات إدارة الملفات</a></li><li><a href="../../../../book/kinney/visual-studio-code/settings-profiles-vscode">ملفات تعريف الإعدادات</a></li><li><a href="../../../../book/kinney/visual-studio-code/settings-via-env-vars-vscode">التحكّم في الإعدادات بمتغيّرات البيئة</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-snippets">استخدام المقتطفات</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-snippet-exercises">تمارين</a></li><li><a href="../../../../book/kinney/visual-studio-code/placeholders-and-variables-in-vscode-snippets">العناصر النائبة والمتغيّرات</a></li><li><a href="../../../../book/kinney/visual-studio-code/snippets-regex">المقتطفات والتعبيرات النمطية</a></li><li><a href="../../../../book/kinney/visual-studio-code/advanced-snippet-techniques-vscode">تقنيات متقدّمة في المقتطفات</a></li><li><a href="../../../../book/kinney/visual-studio-code/keybindings-for-snippets-vscode">إسناد اختصارات لوحة المفاتيح للمقتطفات</a></li><li><a href="../../../../book/kinney/visual-studio-code/snippets-libraries-and-extensions">مكتبات المقتطفات وإضافاتها</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-tasks">مهام Visual Studio Code</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-task-examples">المهام: أمثلة</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-tasks-tips-and-tricks">المهام: نصائح وحيل</a></li><li><a href="../../../../book/kinney/visual-studio-code/compound-tasks-vscode">المهام المركّبة</a></li><li><a href="../../../../book/kinney/visual-studio-code/built-in-problem-matchers">مطابِقات المشكلات المدمجة</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-debugging-basics">أساسيات التصحيح</a></li><li><a href="../../../../book/kinney/visual-studio-code/launch-config">ملف launch.json</a></li><li><a href="../../../../book/kinney/visual-studio-code/debugging-web-applications">تنقيح تطبيقات الويب</a></li><li><a href="../../../../book/kinney/visual-studio-code/debugging-running-node-processes">تنقيح عمليات Node قيد التشغيل</a></li><li><a href="../../../../book/kinney/visual-studio-code/advanced-debugging-techniques">تقنيات تنقيح متقدّمة</a></li><li><a href="../../../../book/kinney/visual-studio-code/multi-root-workspaces">مساحات العمل متعدّدة الجذور</a></li><li><a href="../../../../book/kinney/visual-studio-code/creating-a-multi-root-workspace">إنشاء مساحات عمل متعدّدة الجذور</a></li><li><a href="../../../../book/kinney/visual-studio-code/more-on-multi-root-namespaces">المزيد عن النطاقات متعدّدة الجذور</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-dev-containers">حاويات التطوير (Dev Containers)</a></li><li><a href="../../../../book/kinney/visual-studio-code/setting-up-dev-containers">تهيئة حاويات التطوير</a></li><li><a href="../../../../book/kinney/visual-studio-code/exploring-devcontainer-json">استكشاف devcontainer.json</a></li><li><a href="../../../../book/kinney/visual-studio-code/working-with-dev-containers">العمل مع حاويات التطوير</a></li><li><a href="../../../../book/kinney/visual-studio-code/dev-containers-and-dockerfiles">حاويات التطوير وملفات Dockerfile</a></li><li><a href="../../../../book/kinney/visual-studio-code/personalizing-dev-containers">تخصيص بيئة حاويتك</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-extension-scaffold">تهيئة هيكل إضافة</a></li><li><a href="../../../../book/kinney/visual-studio-code/building-a-simple-vscode-extension">بناء إضافة بسيطة</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-regular-expressionist">بناء إضافة بعرض ويب</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-keyboard-shortcuts">بعض اختصارات لوحة المفاتيح</a></li><li><a href="../../../../book/kinney/visual-studio-code/prebuilt-dev-containers-in-vscode">حاويات التطوير الجاهزة في Visual Studio Code</a></li><li><a href="../../../../book/kinney/visual-studio-code/settings-precedence-vscode">أسبقية الإعدادات في Visual Studio Code</a></li><li><a href="../../../../book/kinney/visual-studio-code/using-dev-containers-in-vscode">إعداد حاوية تطوير (Dev Container)</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-emmet-solutions">Emmet في Visual Studio Code: الحلول</a></li><li><a href="../../../../book/kinney/visual-studio-code/vscode-snippets-solutions">حلول تمارين مقاطع الشيفرة في Visual Studio Code</a></li><!--]--></ul><h3>أمن الويب</h3> <ul><!--[--><li><a href="../../../../book/kinney/web-security/index">أمن الويب</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>إضافة ACPX لبيئة التشغيل</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><p>يستطيع OpenClaw أن يفعل الكثير بمفرده، لكن أفضل من ينفّذ مهمة ما قد يكون وكيلًا آخر تمامًا: Claude Code يعيد هيكلة مستودع، أو Codex يعمل على إصلاح خطأ، أو Gemini CLI يقرأ قاعدة شيفرة. لا تريد أن تعيد بناء هذه الأدوات بنفسك، بل تريد أن <strong>يُسلّم OpenClaw المهمة إليها</strong> ويتتبّع النتيجة.</p>
+<p>هذا ما تفعله إضافة <code>@openclaw/acpx</code>. إنها الخلفية (backend) الرسمية التي تتيح لـ OpenClaw تشغيل وكيل برمجة خارجي (يُسمّى <strong>harness</strong>) وإدارته كجلسة.</p>
+<h2 id="ما-هو-acp">ما هو ACP</h2>
+<p>‏<strong>ACP</strong> هو بروتوكول عميل الوكيل (Agent Client Protocol)، وهو طريقة قياسية ليتحدّث برنامج مع وكيل. وفي OpenClaw يشير هذا الاسم إلى اتجاهين متعاكسين، والاسم المشترك بينهما يسبّب الالتباس:</p>
+<table>
+<thead>
+<tr>
+<th>الاتجاه</th>
+<th>ما يعنيه</th>
+<th>الأمر</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenClaw → harness</strong></td>
+<td>يشغّل OpenClaw وكيل برمجة خارجيًا ويشرف عليه</td>
+<td><code>/acp spawn</code></td>
+</tr>
+<tr>
+<td><strong>المحرّر → OpenClaw</strong></td>
+<td>يستخدم محرّر يدعم ACP برنامج OpenClaw كوكيل له</td>
+<td><code>openclaw acp</code></td>
+</tr>
+</tbody>
+</table>
+<p>يتناول هذا الدرس الاتجاه الأول، أي <strong>الصادر</strong>. وإضافة ACPX هي القطعة التي تجعله يعمل. وفي حالة Claude Code تبدو المنظومة كاملة هكذا:</p>
+<pre><code>OpenClaw ACP session control  →  ACPX plugin  →  Claude ACP adapter  →  Claude Code
+</code></pre>
+<p>يشرف OpenClaw على العمل ويكشف أدوات التحكّم. أما التنفيذ الفعلي فيقوم به الـ harness، مستخدمًا أدواته الخاصة وأذوناته الخاصة وتسجيل دخوله الخاص.</p>
+<h3 id="لا-يعد-acp-وكيلا-فرعيا">لا يُعدّ ACP وكيلًا فرعيًا</h3>
+<p>يمتلك OpenClaw أيضًا <strong>وكلاء فرعيين</strong> أصليين يعملون داخل بيئة تشغيل OpenClaw نفسها. وهي تبدو مشابهة، لأن كليهما يستخدم أداة التشغيل نفسها، لكنهما شيئان مختلفان:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>جلسة ACP</th>
+<th>وكيل فرعي أصلي</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>تعمل على</td>
+<td>harness خارجي، عبر خلفية</td>
+<td>بيئة تشغيل OpenClaw نفسها</td>
+</tr>
+<tr>
+<td>مفتاح الجلسة</td>
+<td><code>agent:&lt;agentId&gt;:acp:&lt;uuid&gt;</code></td>
+<td><code>agent:&lt;agentId&gt;:subagent:&lt;uuid&gt;</code></td>
+</tr>
+<tr>
+<td>تُتحكَّم بـ</td>
+<td><code>/acp ...</code></td>
+<td><code>/subagents ...</code></td>
+</tr>
+<tr>
+<td>تُشغَّل بـ</td>
+<td><code>sessions_spawn</code> مع <code>runtime: &quot;acp&quot;</code></td>
+<td><code>sessions_spawn</code> (الافتراضي)</td>
+</tr>
+</tbody>
+</table>
+<p>استخدم ACP عندما يكون المنفّذ الذي تريده harness خارجيًا تحديدًا. واستخدم وكيلًا فرعيًا عندما تريد مجرد تفويض محدود داخل OpenClaw. ويتناول <a href="https://stevekinney.com/courses/openclaw/subagents-and-orchestration">الوكلاء الفرعيون والتنسيق</a> هذه الحالات.</p>
+<p>وهناك أمر آخر ينبغي ألا تخلط فيه: اختيار طراز <code>openai/gpt-*</code> يشغّل وكيلك على بيئة تشغيل Codex الأصلية في OpenClaw، لا على Codex عبر ACP، وتسمية طراز باسم harness ما لا تجعل شيئًا ما يعمل عبر ACP. وبالنسبة إلى Codex على وجه الخصوص، فإن إضافة Codex الأصلية في OpenClaw هي الافتراضي، أما Codex عبر ACP فهو البديل الصريح، ويُختار عبر <code>runtime: &quot;acp&quot;</code> و<code>agentId: &quot;codex&quot;</code>.</p>
+<h2 id="الخطوة-1-ثبت-الإضافة-وفعلها">الخطوة 1: ثبّت الإضافة وفعّلها</h2>
+<pre><code class="language-bash">openclaw plugins install @openclaw/acpx
+openclaw config <span class="hljs-built_in">set</span> plugins.entries.acpx.enabled <span class="hljs-literal">true</span>
+</code></pre>
+<p>إذا كنت قد قيّدت الإضافات عبر <code>plugins.allow</code>، فيجب أن يكون <code>acpx</code> على القائمة. وإذا منعته عبر <code>plugins.deny</code>، أو أردت العودة إلى الإضافة المضمّنة بدلًا من بناء محلي، فشغّل الأمرين أعلاه مرة أخرى.</p>
+<h2 id="الخطوة-2-تحقق-من-سلامة-الخلفية">الخطوة 2: تحقّق من سلامة الخلفية</h2>
+<p>من أي دردشة مع وكيلك، شغّل:</p>
+<pre><code>/acp doctor
+</code></pre>
+<p>يخبرك بما إذا كانت الخلفية مفعّلة وسليمة. ويخبرك أيضًا إذا كان <code>acpx</code> غائبًا عن <code>plugins.allow</code>، أو إذا فشل محوّل (adapter) في التنزيل أو التشغيل.</p>
+<p>وهذا شكل تثبيت سليم على بوابة جديدة، قبل تشغيل أي جلسة (المعرّفات مختصرة):</p>
+<pre><code>configuredBackend: acpx
+activeRuntimeSessions: 0
+runtimeIdleTtlMs: 0
+evictedIdleRuntimes: 0
+activeTurns: 0
+queueDepth: 0
+turnLatencyMs: avg=0, max=0
+turnCounts: completed=0, failed=0
+errorCodes: (none)
+registeredBackend: acpx
+runtimeDoctor: ok (embedded ACP runtime ready)
+runtimeDoctorDetail: agent=codex
+runtimeDoctorDetail: command=/usr/local/bin/node /data/.openclaw/acpx/codex-acp-wrapper.mjs --openclaw-acpx-lease-id probe-&lt;lease-id&gt; --openclaw-gateway-instance-id &lt;gateway-instance-id&gt;
+runtimeDoctorDetail: cwd=/data/.openclaw/workspace
+runtimeDoctorDetail: protocolVersion=1
+healthy: yes
+capabilities: session/set_config_option, session/set_mode, session/status
+</code></pre>
+<p>وفي واجهة التحكّم (Control UI)، يظهر التقرير نفسه كردٍّ من وكيلك:</p>
+<p><img src="/arabic-cs-library/images/kinney/3cc7484b0e0974f2.webp" alt="دردشة في واجهة التحكّم يردّ فيها الوكيل على أمر acp doctor بتقرير خلفية ACPX، وينتهي بالعبارة healthy: yes"></p>
+<p>والأسطر التي تستحقّ القراءة:</p>
+<ul>
+<li><strong><code>healthy: yes</code></strong> و**<code>runtimeDoctor: ok</code>** تعنيان أن OpenClaw شغّل محوّلًا وأكمل مصافحة البروتوكول. وهذا هو السطر الذي تبحث عنه.</li>
+<li><strong><code>registeredBackend: acpx</code></strong> يؤكّد أن الإضافة هي الخلفية النشطة.</li>
+<li><strong><code>agent=codex</code></strong> هو الـ harness الذي استخدمه فحص السلامة. وهو وكيل التحقّق (probe agent)، وافتراضيًا يكون أول عنصر في <code>acp.allowedAgents</code>، أو <code>codex</code> إذا لم تضبط أي عنصر. والنتيجة السليمة تخبرك عن ذلك المحوّل وحده. وللفحص من harness آخر، اضبط <code>probeAgent</code> (انظر الخطوة 4).</li>
+<li><strong><code>command=…/codex-acp-wrapper.mjs</code></strong> هو سكربت تشغيل صغير أنشأته ACPX داخل مجلد حالة البوابة. وعلى قالب <a href="https://railway.com/?referralCode=kinney">Railway</a> يكون هذا المجلد <code>/data/.openclaw</code>، وهو موجود على وحدة التخزين (volume).</li>
+<li><strong>العدّادات</strong> (<code>activeRuntimeSessions</code> و<code>turnCounts</code> و<code>errorCodes</code> وما شابهها) كلها صفر لأن شيئًا لم يُشغَّل بعد. وهي الطريقة التي سترى بها النشاط لاحقًا.</li>
+</ul>
+<p>لا يُثبت الفحص النظيف أن الـ harness مسجّل الدخول. إنه يُثبت أن المحوّل يبدأ ويتحدّث بروتوكول ACP. أما تسجيل الدخول الغائب أو المنتهي فيظهر عند تشغيل دورة حقيقية (turn)، وهذا بالضبط ما تهدف إليه التمارين أدناه.</p>
+<h2 id="الخطوة-3-اختر-harness">الخطوة 3: اختر harness</h2>
+<p>لكل harness معرّف تمرّره عند تشغيل جلسة. وهذه أكثرها احتمالًا للاستخدام:</p>
+<table>
+<thead>
+<tr>
+<th>المعرّف</th>
+<th>harness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claude</code></td>
+<td>Claude Code</td>
+</tr>
+<tr>
+<td><code>codex</code></td>
+<td>Codex CLI</td>
+</tr>
+<tr>
+<td><code>gemini</code></td>
+<td>Gemini CLI</td>
+</tr>
+<tr>
+<td><code>copilot</code></td>
+<td>GitHub Copilot CLI</td>
+</tr>
+<tr>
+<td><code>cursor</code></td>
+<td>Cursor CLI</td>
+</tr>
+<tr>
+<td><code>opencode</code></td>
+<td>OpenCode</td>
+</tr>
+<tr>
+<td><code>openclaw</code></td>
+<td>جسر ACP الخاص بـ OpenClaw</td>
+</tr>
+</tbody>
+</table>
+<p>وهناك الكثير غيرها (Droid وKimi وKiro وQwen Code وغيرها). والقائمة الكاملة موجودة في وثائق الإضافة.</p>
+<p>وبضعة أمور ينبغي معرفتها عن هذه الـ harnesses:</p>
+<ul>
+<li><strong>تنزّل ACPX المحوّلات نيابةً عنك.</strong> فمحوّلات ACP الخاصة بـ Claude وCodex تُجلب عبر <code>npx</code> عند أول استخدام، فلا تثبّتها يدويًا. وإذا فشل التنزيل، أخبرك <code>/acp doctor</code> بذلك.</li>
+<li><strong>يجب أن يعمل الـ harness نفسه على مضيف البوابة.</strong> فـ ACP ليس سوى البروتوكول؛ فهو لا يثبّت Claude Code ولا يسجّل دخولك. ويجب أن تكون واجهة سطر الأوامر (CLI) موجودة ومُوثَّقة على الجهاز (وتحت حساب نظام التشغيل) الذي يشغّل البوابة.</li>
+<li><strong>معرّفات الطرازات غير قابلة للنقل.</strong> فالطراز الموجود في Claude Code ليس بالضرورة صالحًا في Codex، لذا تحقّق من الطراز مقابل الـ harness الذي اخترته.</li>
+</ul>
+<h2 id="الخطوة-4-اضبط-acp">الخطوة 4: اضبط ACP</h2>
+<p>هناك طبقتان من الإعدادات. الأولى هي كتلة <code>acp</code> الأساسية، وهي التي تفعّل الميزة وتحدّد أي harnesses مسموح بها:</p>
+<pre><code class="language-json5"><span class="hljs-punctuation">{</span>
+  acp<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    enabled<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+    backend<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;acpx&#x27;</span><span class="hljs-punctuation">,</span>
+    defaultAgent<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;codex&#x27;</span><span class="hljs-punctuation">,</span>
+    allowedAgents<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&#x27;claude&#x27;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&#x27;codex&#x27;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&#x27;gemini&#x27;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&#x27;opencode&#x27;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>يستحق <code>allowedAgents</code> أن تضبطه. إنه قائمة السماح بالـ harnesses التي يجوز لـ OpenClaw تشغيلها، بحيث لا تكشف إلا ما ثبّتّه فعلًا وتريد استخدامه.</p>
+<p>أما الطبقة الثانية فتقع تحت <code>plugins.entries.acpx.config</code>. وهذه هي المفاتيح المهمة:</p>
+<table>
+<thead>
+<tr>
+<th>المفتاح</th>
+<th>الافتراضي</th>
+<th>ما يفعله</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>permissionMode</code></td>
+<td><code>approve-reads</code></td>
+<td>ما يجوز للـ harness فعله دون سؤال. انظر أدناه.</td>
+</tr>
+<tr>
+<td><code>nonInteractivePermissions</code></td>
+<td><code>fail</code></td>
+<td>ما يحدث عندما يظهر طلب موافقة لكن لا يمكن لأحد الإجابة عنه.</td>
+</tr>
+<tr>
+<td><code>timeoutSeconds</code></td>
+<td><code>120</code></td>
+<td>الحد الأقصى لعمليات البدء والتحكّم.</td>
+</tr>
+<tr>
+<td><code>probeAgent</code></td>
+<td>أول وكيل مسموح، أو <code>codex</code></td>
+<td>الـ harness الذي يستخدمه فحص السلامة.</td>
+</tr>
+<tr>
+<td><code>agents.&lt;id&gt;.command</code> / <code>.args</code></td>
+<td>مدمج</td>
+<td>تجاوز طريقة تشغيل الـ harness.</td>
+</tr>
+<tr>
+<td><code>pluginToolsMcpBridge</code></td>
+<td>معطّل</td>
+<td>كشف أدوات الإضافات المثبّتة لجلسات ACP.</td>
+</tr>
+<tr>
+<td><code>openClawToolsMcpBridge</code></td>
+<td>معطّل</td>
+<td>كشف بعض أدوات OpenClaw المدمجة (بدءًا بـ <code>cron</code>) لجلسات ACP.</td>
+</tr>
+</tbody>
+</table>
+<p>اضبطها عبر <code>openclaw config set</code>:</p>
+<pre><code class="language-bash">openclaw config <span class="hljs-built_in">set</span> plugins.entries.acpx.config.timeoutSeconds 180
+openclaw config <span class="hljs-built_in">set</span> plugins.entries.acpx.config.probeAgent claude
+</code></pre>
+<h3 id="الأذونات-هي-الجزء-الذي-يستحق-التفكير">الأذونات هي الجزء الذي يستحقّ التفكير</h3>
+<p>يأخذ <code>permissionMode</code> واحدة من ثلاث قيم:</p>
+<table>
+<thead>
+<tr>
+<th>القيمة</th>
+<th>السلوك</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>approve-reads</code></td>
+<td>القراءة تلقائية. أما الكتابة وأوامر الصدفة فتحتاج إلى طلب موافقة. (الافتراضي)</td>
+</tr>
+<tr>
+<td><code>approve-all</code></td>
+<td>كل شيء تلقائي: كل عمليات كتابة الملفات وكل أوامر الصدفة.</td>
+</tr>
+<tr>
+<td><code>deny-all</code></td>
+<td>يُرفض كل طلب إذن.</td>
+</tr>
+</tbody>
+</table>
+<p>وهنا المفاجأة: جلسة ACP <strong>غير تفاعلية دائمًا</strong>، لأنه لا توجد طرفية (terminal) يسألك فيها الـ harness. لذا مع الإعدادات الافتراضية، حين يريد الـ harness كتابة ملف أو تشغيل أمر لأول مرة، لن يوجد من يوافق عليه، فيُجهَض التشغيل بـ <code>PermissionPromptUnavailableError</code>.</p>
+<p>ولديك بضع طرق للتعامل مع ذلك:</p>
+<ul>
+<li><strong>العمل للقراءة فقط</strong> (مراجعة شيفرة، أو شرح وحدة، أو بحث) يعمل جيدًا مع الإعدادات الافتراضية.</li>
+<li><strong>الفشل اللطيف</strong> عبر ضبط <code>nonInteractivePermissions</code> على <code>deny</code>. فتُرفض الأفعال المحظورة ويستمر الـ harness بدلًا من أن يُجهَض.</li>
+<li><strong>الكتابة والأوامر</strong> تحتاج إلى <code>approve-all</code>. إنه إعداد «كسر الزجاج» للطوارئ، ويصنّفه <code>openclaw security audit</code> كخيار خطير، لذا تصرّف بحذر ووعي.</li>
+</ul>
+<pre><code class="language-bash">openclaw config <span class="hljs-built_in">set</span> plugins.entries.acpx.config.permissionMode approve-all
+</code></pre>
+<p>وإذا استخدمته فعلًا، فحدّ من نطاق الضرر. وجّه الجلسات إلى نسخة مؤقتة قابلة للحذف أو شجرة عمل (worktree) عبر <code>cwd</code>، واجعل <code>acp.allowedAgents</code> قصيرة، ثم أعدها إلى <code>approve-reads</code> عند الانتهاء.</p>
+<blockquote>
+<p><strong>هذه الأذونات منفصلة عن موافقات OpenClaw</strong></p>
+<p>أذونات ACPX ليست هي نفسها <a href="https://stevekinney.com/courses/openclaw/security-and-approvals#layer-3-exec-approvals">موافقات التنفيذ</a> الخاصة بـ OpenClaw، وليست إحداهما بديلًا عن الأخرى. فللـ harness نموذج أذونات خاص به، وتنعكس عليه أذونات ACPX. تحقّق مما منحته فعلًا في كل طبقة.</p>
+</blockquote>
+<h3 id="جسور-الأدوات-توسع-سطح-الهجوم">جسور الأدوات توسّع سطح الهجوم</h3>
+<p>افتراضيًا، لا تكون أدوات OpenClaw متاحة داخل الـ harness. ويغيّر <code>pluginToolsMcpBridge</code> ذلك عبر كشف كل أداة إضافة نشطة كخادم MCP. وهذا يضع تلك الأدوات في متناول وكيل خارجي، بحدّ الثقة نفسه الذي ينطبق على تشغيل الإضافات داخل OpenClaw نفسه. راجع ما هو مثبّت قبل تفعيله، ولا تجسر إلا ما يحتاجه سير العمل.</p>
+<h2 id="الخطوة-5-ابدأ-جلسة">الخطوة 5: ابدأ جلسة</h2>
+<p>من الدردشة، شغّل جلسة بمعرّف الـ harness:</p>
+<pre><code>/acp spawn claude
+</code></pre>
+<p>ثم أضف أعلامًا (flags) للتحكّم في سلوكها:</p>
+<table>
+<thead>
+<tr>
+<th>العلم</th>
+<th>ما يفعله</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--mode oneshot|persistent</code></td>
+<td>مهمة لمرة واحدة، أو جلسة تستمر</td>
+</tr>
+<tr>
+<td><code>--cwd &lt;absolute-path&gt;</code></td>
+<td>مجلد العمل الذي يعمل فيه الـ harness</td>
+</tr>
+<tr>
+<td><code>--label &lt;name&gt;</code></td>
+<td>اسم يمكّنك من التمييز بين الجلسات</td>
+</tr>
+<tr>
+<td><code>--bind here|off</code></td>
+<td>تثبيت المحادثة الحالية بالجلسة</td>
+</tr>
+<tr>
+<td><code>--thread auto|here|off</code></td>
+<td>إنشاء خيط أو موضوع للجلسة أو استخدامه</td>
+</tr>
+</tbody>
+</table>
+<p>لا يمكن استخدام <code>--bind</code> و<code>--thread</code> في الأمر نفسه. على سبيل المثال:</p>
+<pre><code>/acp spawn codex --mode oneshot --thread off
+/acp spawn codex --mode persistent --thread auto
+/acp spawn codex --bind here
+</code></pre>
+<h3 id="لمرة-واحدة-مقابل-المستمرة">لمرة واحدة مقابل المستمرة</h3>
+<ul>
+<li><strong>الجلسة لمرة واحدة</strong> تنفّذ مهمة محدودة. ويملك الوكيل الأب النتيجة ويقرّر كيف يخبرك بها.</li>
+<li><strong>الجلسة المستمرة</strong> تُبقي الجلسة حيّة بحيث تذهب الرسائل اللاحقة إلى الـ harness نفسه مع بقاء حالته سليمة. وهذا ما تريده لجلسة برمجة متواصلة.</li>
+</ul>
+<h3 id="التشغيل-من-الوكيل">التشغيل من الوكيل</h3>
+<p>يستطيع وكيلك بدء هذه الجلسات بنفسه عبر أداة <code>sessions_spawn</code>:</p>
+<pre><code class="language-javascript"><span class="hljs-title function_">sessions_spawn</span>({
+  <span class="hljs-attr">runtime</span>: <span class="hljs-string">&#x27;acp&#x27;</span>,
+  <span class="hljs-attr">agentId</span>: <span class="hljs-string">&#x27;claude&#x27;</span>,
+  <span class="hljs-attr">task</span>: <span class="hljs-string">&#x27;Review the open TODOs in src/ and summarize which are still relevant.&#x27;</span>,
+  <span class="hljs-attr">cwd</span>: <span class="hljs-string">&#x27;/workspace/my-project&#x27;</span>,
+  <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;todo-review&#x27;</span>,
+});
+</code></pre>
+<p>وهي تقبل هذه المعاملات: <code>task</code> و<code>runtime</code> و<code>agentId</code> و<code>thread</code> و<code>mode</code> و<code>cwd</code> و<code>label</code> و<code>resumeSessionId</code> و<code>streamTo</code> و<code>model</code> و<code>thinking</code>. وفي هذا الشكل، تكون <code>mode</code> إما <code>&quot;run&quot;</code> (الافتراضي، لمرة واحدة) أو <code>&quot;session&quot;</code> (مستمرة، وتتطلّب <code>thread: true</code>). واذكر <code>runtime: &quot;acp&quot;</code> صراحة دائمًا؛ فبدونها تحصل على وكيل فرعي أصلي.</p>
+<p>ولاستئناف جلسة harness سابقة بدلًا من البدء من جديد، مرّر معرّفها كـ <code>resumeSessionId</code>. ويعيد OpenClaw تشغيل تاريخ تلك الجلسة، لكن فقط للمعرّفات التي تخصّ الطالب وتطابق الخلفية والـ harness. ولا يُعدّ الاستئناف مثل إعادة تشغيل سياق OpenClaw كله داخل الـ harness.</p>
+<h3 id="ربط-محادثة">ربط محادثة</h3>
+<p>مع <code>--bind here</code> تُثبَّت الدردشة بجلسة ACP. وكل ما ترسله يذهب إلى الـ harness، ويُعيد <code>/new</code> و<code>/reset</code> ضبطها في مكانها، ويزيل <code>/acp close</code> الربط. وتبقى عمليات الربط صالحة بعد إعادة تشغيل البوابة.</p>
+<p>لا يعمل هذا إلا على القنوات التي تدعم ربط المحادثة الحالية. وفي غيرها يخبرك OpenClaw بأن ذلك غير مدعوم. أما الربط بـ <em>خيط</em> (<code>--thread</code>) فنطاقه أضيق: في وقت كتابة هذا الدرس يعني خيوط وقنوات Discord، وموضوعات Telegram (موضوعات المنتدى في المجموعات، وموضوعات الرسائل الخاصة). وإذا أردت أن تكون محادثة Telegram أو Discord دائمًا لـ harness معيّن، فيمكنك أيضًا جعل ذلك دائمًا في الإعدادات:</p>
+<pre><code class="language-json5"><span class="hljs-punctuation">{</span>
+  agents<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    ownership<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;explicit&#x27;</span><span class="hljs-punctuation">,</span>
+    entries<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      claude<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        runtime<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+          type<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;acp&#x27;</span><span class="hljs-punctuation">,</span>
+          acp<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> agent<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;claude&#x27;</span><span class="hljs-punctuation">,</span> backend<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;acpx&#x27;</span><span class="hljs-punctuation">,</span> mode<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;persistent&#x27;</span><span class="hljs-punctuation">,</span> cwd<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;/workspace/repo&#x27;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  bindings<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      type<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;acp&#x27;</span><span class="hljs-punctuation">,</span>
+      agentId<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;claude&#x27;</span><span class="hljs-punctuation">,</span>
+      match<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        channel<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;telegram&#x27;</span><span class="hljs-punctuation">,</span>
+        accountId<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;default&#x27;</span><span class="hljs-punctuation">,</span>
+        peer<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> kind<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;group&#x27;</span><span class="hljs-punctuation">,</span> id<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;-1001234567890:topic:42&#x27;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      acp<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> label<span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;claude-repo&#x27;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>تُحلّ الإعدادات بهذا الترتيب: قيم <code>acp.*</code> الخاصة بالربط، ثم <code>runtime.acp.*</code> الخاصة بالوكيل، ثم الإعدادات الافتراضية العامة لـ <code>acp</code>.</p>
+<h3 id="التحكم-في-الجلسات-الجارية">التحكّم في الجلسات الجارية</h3>
+<p>يحتوي الأمر <code>/acp</code> على أوامر فرعية أكثر من <code>spawn</code>:</p>
+<pre><code>/acp spawn | cancel | steer | close | sessions | status | set-mode | set | cwd
+     | permissions | timeout | model | reset-options | doctor | install | help
+</code></pre>
+<p>استخدم <code>cancel</code> لإيقاف تشغيل، و<code>steer</code> لوضع تعليمة متابعة في قائمة الانتظار تُنفَّذ بعد انتهاء الدورة الحالية، و<code>sessions</code> و<code>status</code> لرؤية ما يجري تشغيله، و<code>close</code> لإنهاء جلسة. وتتطلّب أدوات التحكّم في وقت التشغيل هوية المالك، لذا عليك أن تكون مالك الأمر (انظر <a href="https://stevekinney.com/courses/openclaw/choosing-a-dm-policy">اختيار سياسة الرسائل الخاصة</a>). شغّل <code>/acp help</code> لمعرفة الصيغة الدقيقة لكل أمر، لأنها قد تختلف باختلاف الإصدار.</p>
+<p>عند انتهاء تشغيل لمرة واحدة، تُبلَّغ النتيجة إلى الوكيل الأب، الذي يعيد عادةً صياغتها بأسلوبه. فإتمام العمل وتسليم الرسالة حدثان منفصلان، لذا لا يضمن انتهاء الـ harness ظهورَ رسالة في دردشتك.</p>
+<h2 id="جربها-بنفسك">جرّبها بنفسك</h2>
+<p>لا تكفي القراءة عن ACP وحدها. تمتدّ هذه التمارين من اختبار سريع غير ضار إلى harness يكتب شيفرة، بحيث ترى بنفسك كل سلوك وصفناه أعلاه. ونفّذها بالترتيب، لأن كل تمرين يبني على الإعداد الذي قبله.</p>
+<h3 id="قبل-أن-تبدأ">قبل أن تبدأ</h3>
+<p>أنشئ مجلدًا مؤقتًا فارغًا ليعمل فيه الـ harness. وكل عملية كتابة أدناه تحدث هنا، ولا مكان آخر:</p>
+<pre><code class="language-bash"><span class="hljs-built_in">mkdir</span> -p ~/acp-playground
+</code></pre>
+<p>وعلى قالب Railway، أنشئه على وحدة التخزين باسم مستخدم البوابة بدلًا من ذلك:</p>
+<pre><code class="language-bash">railway ssh --service openclaw -- as-node <span class="hljs-built_in">mkdir</span> -p /data/scratch/acp-playground
+</code></pre>
+<p>وأينما وضعته، سجّل <strong>المسار المطلق</strong>. وتسمّيه الأمثلة أدناه <code>&lt;scratch&gt;</code>.</p>
+<p>ثم شغّل <code>/acp doctor</code> وتأكّد أنه يقول <code>healthy: yes</code>. واحتفظ بالمخرجات في متناول يدك، لأنك ستقارنها في النهاية. وستحتاج أيضًا إلى أن تكون مالك الأمر، لأن أدوات التحكّم في وقت تشغيل <code>/acp</code> مقصورة على المالك.</p>
+<p>ستطلب من وكيلك بدء جلسات بكلمات واضحة. واذكر دائمًا «ACP» وسمِّ الـ harness. وإلا فقد يلجأ الوكيل إلى وكيل فرعي أصلي بدلًا من ذلك، وحينها لن تكون تختبر ما تظن أنك تختبره.</p>
+<h3 id="التمرين-1-اختبار-سريع-للقراءة-فقط">التمرين 1: اختبار سريع للقراءة فقط</h3>
+<p>يُثبت هذا أن السلسلة كاملة تعمل، من وكيلك إلى الإضافة إلى الـ harness، دون السماح بتغيير أي شيء. وفي الوضع الافتراضي <code>approve-reads</code> تكون القراءة تلقائية، فلا حاجة إلى أي إعداد.</p>
+<p>أرسل إلى وكيلك:</p>
+<blockquote>
+<p>استخدم <code>sessions_spawn</code> مع <code>runtime: &quot;acp&quot;</code> و<code>agentId: &quot;codex&quot;</code> لسرد الملفات في مساحة عملك وتلخيص ما فيها. للقراءة فقط، بلا تغييرات.</p>
+</blockquote>
+<p>وما الذي تبحث عنه:</p>
+<ul>
+<li>رد يلخّص مساحة العمل، جاء من الـ harness ونقله وكيلك.</li>
+<li>إذا فشل بخطأ توثيق (authentication)، فالـ harness غير مسجّل الدخول على مضيف البوابة. أصلح تسجيل الدخول قبل المتابعة.</li>
+<li>شغّل <code>/acp doctor</code> مرة أخرى. ينبغي أن تكون العدّادات قد تحرّكت، وأن يُظهر <code>turnCounts</code> دورة مكتملة.</li>
+</ul>
+<p>وهذا شكل فشل التوثيق عندما يكون الـ harness غير مسجّل الدخول على مضيف البوابة. كان <code>/acp doctor</code> سليمًا، ومع ذلك فشل التشغيل:</p>
+<p><img src="/arabic-cs-library/images/kinney/1b3dfe3cd651b50d.webp" alt="محادثة في واجهة Control UI يبلّغ فيها الوكيل بأن sessions_spawn لمنصّة codex فشل بسبب «Authentication required»، دون تغيير أي ملفات"></p>
+<p>دردشة في واجهة التحكّم يبلّغ فيها الوكيل بأن sessions_spawn الخاص بـ harness اسمه codex فشل بخطأ Authentication required، دون تغيير أي ملف</p>
+<h3 id="التمرين-2-السؤال-نفسه-harness-اثنان">التمرين 2: السؤال نفسه، harness اثنان</h3>
+<p>تعطي الـ harnesses المختلفة إجابات مختلفة، بأسلوب مختلف وسرعة مختلفة. اطرح السؤال نفسه للقراءة فقط على اثنين منها وقارن.</p>
+<blockquote>
+<p>شغّل جلستَي ACP، إحداهما بـ <code>agentId: &quot;codex&quot;</code> والأخرى بـ <code>agentId: &quot;claude&quot;</code>، مع ضبط <code>cwd</code> على مساحة عملك في كلتيهما. اسأل كلًّا منهما: «ما أهم ثلاثة ملفات هنا، ولماذا؟» للقراءة فقط. ثم اعرض لي الإجابتين جنبًا إلى جنب ولاحظ أي اختلافات.</p>
+</blockquote>
+<p>وما الذي تبحث عنه:</p>
+<ul>
+<li>ما إذا كان الـ harnesses كلاهما يبدأ فعلًا. وإذا بدأ واحد فقط، فإما أن الآخر غائب عن <code>acp.allowedAgents</code>، أو غير مثبّت، أو غير مسجّل الدخول.</li>
+<li>كيف تختلف الإجابات. فهذا هو جوهر ACP: أنت تختار منفّذًا له قوة معيّنة.</li>
+<li>خطأ «الطراز غير موجود» إذا طلبت من harness طرازَ harness آخر. فمعرّفات الطرازات غير قابلة للنقل.</li>
+</ul>
+<h3 id="التمرين-3-شاهد-فشل-الكتابة">التمرين 3: شاهد فشل الكتابة</h3>
+<p>الآن شاهد سلوك الأذونات بنفسك، بدلًا من تصديقه بلا دليل. مع بقاء الإعدادات الافتراضية، اطلب شيئًا يتطلّب الكتابة:</p>
+<blockquote>
+<p>شغّل جلسة ACP بـ <code>agentId: &quot;codex&quot;</code> و<code>cwd: &quot;&lt;scratch&gt;&quot;</code>. واطلب منها إنشاء ملف باسم <code>hello.txt</code> يحتوي «hello from ACP».</p>
+</blockquote>
+<p>مع <code>approve-reads</code> و<code>nonInteractivePermissions: fail</code>، يحتاج الـ harness إلى موافقة ليكتب، ولا يمكن لأحد منحها، فيُجهَض التشغيل.</p>
+<p>وما الذي تبحث عنه:</p>
+<ul>
+<li><code>PermissionPromptUnavailableError</code>.</li>
+<li>عدم وجود <code>hello.txt</code> في المجلد المؤقت.</li>
+</ul>
+<p>الآن جرّب الخيار الألطف. إنه لا يمنح أي وصول جديد، بل يغيّر فقط طريقة سلوك الرفض:</p>
+<pre><code class="language-bash">openclaw config <span class="hljs-built_in">set</span> plugins.entries.acpx.config.nonInteractivePermissions deny
+</code></pre>
+<p>أعد الطلب. ينبغي أن تبقى الكتابة مرفوضة، لكن هذه المرة يستمر الـ harness ويخبرك بأنه لم يستطع، بدلًا من إجهاض التشغيل كله.</p>
+<h3 id="التمرين-4-دعه-يكتب-بأمان">التمرين 4: دعه يكتب، بأمان</h3>
+<p>للحصول على عمل حقيقي من harness، عليك منحه حقّ الكتابة، فافعل ذلك بوعي وبأضيق نطاق ممكن. هذا إعداد «كسر الزجاج» للطوارئ، فلا تفعّله إلا مع توجيه <code>cwd</code> إلى المجلد المؤقت:</p>
+<pre><code class="language-bash">openclaw config <span class="hljs-built_in">set</span> plugins.entries.acpx.config.permissionMode approve-all
+</code></pre>
+<p>ثم أرسل إلى وكيلك:</p>
+<blockquote>
+<p>شغّل جلسة ACP بـ <code>agentId: &quot;claude&quot;</code> و<code>cwd: &quot;&lt;scratch&gt;&quot;</code>. واطلب منها كتابة سكربت صغير باسم <code>fizzbuzz.js</code> يطبع FizzBuzz من 1 إلى 20، وتشغيله، والإبلاغ عن المخرجات.</p>
+</blockquote>
+<p>وما الذي تبحث عنه:</p>
+<ul>
+<li>وجود <code>fizzbuzz.js</code> في المجلد المؤقت. افتحه وتفقّده بنفسك.</li>
+<li>تشغيل الـ harness للسكربت وإبلاغه بمخرجات حقيقية، وهو أمر صدفة بلا طلب موافقة. وهذا معنى <code>approve-all</code>.</li>
+<li>ألّا يتغيّر أي شيء خارج <code>&lt;scratch&gt;</code>.</li>
+</ul>
+<p><strong>والآن أعِد الإعداد.</strong> لا تترك هذا مفعّلًا:</p>
+<pre><code class="language-bash">openclaw config <span class="hljs-built_in">set</span> plugins.entries.acpx.config.permissionMode approve-reads
+</code></pre>
+<p>شغّل <code>openclaw security audit</code> وتأكّد أنه لم يعد يصنّف <code>approve-all</code> كخطر.</p>
+<h3 id="التمرين-5-جلسة-مستمرة-يمكنك-محادثتها">التمرين 5: جلسة مستمرة يمكنك محادثتها</h3>
+<p>التشغيل لمرة واحدة مناسب لمهمة واحدة. أما الجلسة المستمرة فتتيح لك إجراء محادثة مع الـ harness، وهو أقرب إلى استخدام Claude Code مباشرة. ابدأ واحدة:</p>
+<pre><code>/acp spawn claude --mode persistent --thread auto --cwd &lt;scratch&gt;
+</code></pre>
+<p>على Discord أو Telegram، ينشئ <code>--thread auto</code> خيطًا أو موضوعًا للجلسة. وعلى قناة لا تدعم الخيوط، يمكنك تجربة <code>--bind here</code> بدلًا من ذلك لتثبيت المحادثة الحالية بها. وإذا كانت القناة لا تدعم الربط، أخبرك OpenClaw بذلك. وفي هذه الحالة استخدم جلسة لمرة واحدة واطلب من وكيلك متابعتها.</p>
+<p>وتحادث معها:</p>
+<ol>
+<li>اطلب منها وصف <code>fizzbuzz.js</code>.</li>
+<li>تابع بشيء يعتمد على الإجابة الأولى، مثل «الآن غيّره ليعدّ حتى 30». فهذا يُثبت أنها حافظت على حالتها.</li>
+<li>تفقّد ما يعمل عبر <code>/acp sessions</code> و<code>/acp status</code>.</li>
+<li>أنهها بـ <code>/acp close</code>.</li>
+</ol>
+<p>وما الذي تبحث عنه:</p>
+<ul>
+<li>أن تعمل المتابعة دون أن تعيد السياق.</li>
+<li>أن إغلاق الجلسة يزيل الربط، وأن كل ما تكتبه بعد ذلك يذهب إلى وكيلك العادي من جديد.</li>
+</ul>
+<p>ستحتاج <code>permissionMode approve-all</code> مرة أخرى ليمرّ التعديل. فعّله لهذا التمرين، ثم أطفئه بعد الانتهاء.</p>
+<h3 id="التمرين-6-التوجيه-والإلغاء">التمرين 6: التوجيه والإلغاء</h3>
+<p>المهام الحقيقية تسوء في منتصف الطريق. تدرّب على الطريقتين لتصحيح مسار harness. ابدأ مهمة تستغرق بعض الوقت:</p>
+<blockquote>
+<p>شغّل جلسة ACP بـ <code>agentId: &quot;codex&quot;</code> و<code>cwd: &quot;&lt;scratch&gt;&quot;</code>. واطلب منها كتابة ملف README لهذا المجلد يتضمّن قسمًا لكل ملف، بأكبر قدر من التفصيل تستطيعه.</p>
+</blockquote>
+<p>وبينما تعمل:</p>
+<ol>
+<li>استخدم <code>/acp steer</code> لوضع متابعة في قائمة الانتظار، مثل أن تطلب منها تقصير كل قسم إلى جملتين. شغّل <code>/acp help</code> إذا احتجت الصيغة الدقيقة.</li>
+<li>لاحظ ما يحدث: لا يقاطع التوجيه الدورة الحالية، بل ينتظر انتهاءها ثم يُنفَّذ كتعليمة تالية في الجلسة نفسها.</li>
+<li>ابدأ مهمة طويلة أخرى. لكن هذه المرة، أعد توجيهها بشكل صحيح: أوقفها بـ <code>/acp cancel</code>، وتأكّد من إيقافها بـ <code>/acp status</code>، ثم أرسل التعليمة الجديدة.</li>
+</ol>
+<p>وما الذي تبحث عنه:</p>
+<ul>
+<li>أن <code>/acp steer</code> متابعة في قائمة الانتظار، لا تصحيح أثناء الدورة. ولتغيير المسار بينما يعمل الـ harness، ألغِ أولًا.</li>
+<li>أن التشغيل الملغى يستقرّ فعلًا. فالإلغاء نصفان: مستوى التحكّم والعملية الخارجية، لذا تأكّد من النتيجة بدلًا من افتراضها.</li>
+</ul>
+<h3 id="التمرين-7-أثبت-أنه-ليس-وكيلا-فرعيا">التمرين 7: أثبت أنه ليس وكيلًا فرعيًا</h3>
+<p>يسهل تجاوز جدول المقارنة السابق بلمحة سريعة. وهذا التمرين يجعله ملموسًا. اطلب من وكيلك المهمة البسيطة نفسها مرتين:</p>
+<blockquote>
+<p>أولًا، شغّل جلسة ACP بـ <code>agentId: &quot;claude&quot;</code> لتشرح ما يفعله <code>fizzbuzz.js</code>. ثم شغّل وكيلًا فرعيًا أصليًا، بلا <code>runtime: &quot;acp&quot;</code>، ليفعل الشيء نفسه.</p>
+</blockquote>
+<p>ثم افحص كلًّا منهما:</p>
+<pre><code>/acp sessions
+/subagents list
+</code></pre>
+<p>وما الذي تبحث عنه:</p>
+<ul>
+<li>يبدو مفتاح جلسة ACP هكذا: <code>agent:&lt;agentId&gt;:acp:&lt;uuid&gt;</code>.</li>
+<li>ويبدو مفتاح الوكيل الفرعي هكذا: <code>agent:&lt;agentId&gt;:subagent:&lt;uuid&gt;</code>.</li>
+<li>أن كلًّا منهما يظهر تحت أمره الخاص. وبهذه الطريقة تعرف أي بيئة تشغيل تملك عملًا ما.</li>
+</ul>
+<h3 id="التمرين-8-عطله-عن-قصد">التمرين 8: عطّله عن قصد</h3>
+<p>معرفة كيف يفشل نصف معرفة كيفية استخدامه. جرّب كلًّا مما يلي، واقرأ الخطأ، ثم أصلحه:</p>
+<ol>
+<li><strong>غير مسموح.</strong> اضبط <code>acp.allowedAgents</code> على <code>[&quot;codex&quot;]</code> فقط، ثم اطلب <code>claude</code>. ينبغي أن يُرفض التشغيل.</li>
+<li><strong>مجلد خاطئ.</strong> شغّل مع <code>cwd</code> غير موجود.</li>
+<li><strong>بيئة تشغيل خاطئة.</strong> اطلب harness دون ذكر <code>runtime: &quot;acp&quot;</code> وانظر ما تحصل عليه.</li>
+</ol>
+<p>وعند الانتهاء، أعِد <code>allowedAgents</code> إلى الـ harnesses التي تريدها فعلًا، وتحقّق من أن المجلد المؤقت هو المكان الوحيد الذي كُتب فيه أي شيء.</p>
+<h3 id="عند-الانتهاء">عند الانتهاء</h3>
+<p>راجع هذه القائمة:</p>
+<ul>
+<li>أن <code>permissionMode</code> عاد إلى <code>approve-reads</code>.</li>
+<li>أن <code>nonInteractivePermissions</code> مضبوط بالطريقة التي تريدها على المدى الطويل (<code>fail</code> هو الافتراضي).</li>
+<li>عدم بقاء أي جلسات تعمل: تفقّد <code>/acp sessions</code>.</li>
+<li>أن <code>/acp doctor</code> لا يزال يبلّغ <code>healthy: yes</code>، وأن عدّاداته تعكس كل ما فعلته للتو.</li>
+<li>أن <code>openclaw security audit</code> نظيف.</li>
+</ul>
+<h2 id="حدود-ينبغي-أن-تعرفها">حدود ينبغي أن تعرفها</h2>
+<ul>
+<li><strong>جلسات ACP تعمل على المضيف، لا داخل بيئة OpenClaw المعزولة.</strong> فسياسة العزل في OpenClaw لا تُغلّف الـ harness. ويُحكَم الـ harness بأذونات واجهة سطر الأوامر الخاصة به وبـ <code>cwd</code> الخاص به، بينما يفرض OpenClaw بوابات الميزات وقائمة السماح وملكية الجلسة والتسليم.</li>
+<li><strong>الجلسات المعزولة لا تستطيع تشغيل ACP مطلقًا.</strong> فإذا كانت الجلسة الطالبة معزولة، يُحظر كل من <code>/acp spawn</code> و<code>sessions_spawn({ runtime: &quot;acp&quot; })</code>، ولا يكون <code>sandbox: &quot;require&quot;</code> مدعومًا. وإذا احتجت عملًا مفروضًا بالعزل، فاستخدم وكيلًا فرعيًا أصليًا.</li>
+<li><strong>تسجيلات الدخول هي وصول.</strong> فبمجرد أن يسجّل harness الدخول على مضيف البوابة، يستطيع وكيل استخدام ذلك الحساب. ويمكن لـ Claude Code أو Codex المسجّل الدخول تعديل الشيفرة ودفعها، ما يجعل حقن التوجيهات (prompt injection) أكثر خطورة.</li>
+<li><strong>البدايات غير المؤكّدة تحتاج إلى فحص.</strong> فإذا انتهت مدة التشغيل أو أُعيد تشغيل البوابة، فلا تكتفِ بإعادة المحاولة. فقد يكون الـ harness قد بدأ وغيّر ملفات. تفقّد <code>/acp sessions</code> ومجلد العمل أولًا.</li>
+</ul>
+<h2 id="acp-وعقد-mac">ACP وعُقد Mac <span class="content-anchor" id="acp-and-mac-nodes"></span></h2>
+<p>إذا كنت قد <a href="https://stevekinney.com/courses/openclaw/connecting-a-remote-node">قرنت جهاز Mac كعقدة</a>، فالسؤال الطبيعي هو هل يستطيع OpenClaw الآن تشغيل Claude Code عليه. <strong>ليس عبر ACP.</strong> فـ ACP والعُقد آليتان منفصلتان، ولا شيء في وثائق OpenClaw يربط بينهما.</p>
+<h3 id="ما-يعمل-وأين">ما يعمل وأين</h3>
+<table>
+<thead>
+<tr>
+<th>القطعة</th>
+<th>أين تعمل</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>harness ACP</strong> (Claude Code وغيره)</td>
+<td>بيئة تشغيل مضيف البوابة، خارج بيئة OpenClaw المعزولة</td>
+</tr>
+<tr>
+<td><strong>عقدة Mac مقترنة</strong></td>
+<td>الأوامر والقدرات التي وافقت عليها فقط، وتستدعيها البوابة</td>
+</tr>
+<tr>
+<td><strong>Codex الأصلي مع التوضيع (placement)</strong></td>
+<td>يبقى «دماغ» Codex على البوابة، وتعمل أوامره ووصوله إلى الملفات على العقدة</td>
+</tr>
+</tbody>
+</table>
+<p>لذا مع بوابة بعيدة، يشغّل <code>/acp spawn claude</code> برنامج Claude Code على خادم البوابة، على ملفات موجودة هناك. ومستودعات جهاز Mac ليست في المتناول، ولا تصف وثائق ACP ولا استضافة الجلسات ولا تنفيذ العُقد تشغيل harness ACP على عقدة.</p>
+<p>يسرد طلب الموافقة على العقدة أمرين قد يبدوان متعلّقين، مثل «Sessions: Claude, Codex». ولم أجد وثائق تشرح ما تفعله هذه، فلا تقرأها كدعم لـ ACP على Mac.</p>
+<h3 id="ما-يعمل-فعلا-codex-الأصلي-على-عقدة">ما يعمل فعلًا: Codex الأصلي على عقدة</h3>
+<p>هناك طريقة موثّقة لتشغيل وكيل برمجة على جهاز مقترن، لكنها مخصّصة لـ <strong>Codex، عبر بيئة تشغيله الأصلية</strong>، لا عبر ACP. وبمصطلحات OpenClaw يُسمّى هذا <strong>التوضيع (placement)</strong>: تحتفظ البوابة بخادم تطبيق Codex واتصال الطراز والسجل، بينما تحدث أوامر صدفة Codex ووصوله إلى الملفات وطلبات HTTP على جهاز Mac. وتشغّل العقدة <code>codex exec-server</code> في مساحة عمل جلسة، ثم تُوفَّق التغييرات التي يجريها في شجرة عمل (worktree) تملكها البوابة.</p>
+<p>وبضعة أمور يجب معرفتها قبل أن تجرّبه:</p>
+<ul>
+<li><strong>يُتحكَّم به عبر <code>/codex</code>،</strong> لا <code>/acp</code>.</li>
+<li><strong>يحدث العمل في مساحة عمل مُدارة،</strong> تنشئها البوابة وتزامنها. وهي ليست مجلدًا تشير إليه على جهاز Mac. فالجلسة الجديدة تبدأ من مساحة عمل فارغة، أو من مستودع GitHub، أو من نسخة مسحوبة (checkout) على البوابة، ولا تتصفّح نظام ملفات الجهاز لاختيارها.</li>
+<li><strong>لا تحتاج إلى تسجيل الدخول إلى Codex على جهاز Mac.</strong> فبيانات اعتماد المزوّد تبقى على البوابة، وتحصل العقدة على مجلد رئيسي خاص جديد وبيئة منقّاة.</li>
+<li><strong>الطلبات التي تحمل بيانات اعتماد تُرفض على العقدة.</strong> فكل ما يحتاج رمز حامل (bearer token) أو ملفات تعريف ارتباط (cookies) يجب أن يعمل على البوابة.</li>
+</ul>
+<p>يتكوّن الإعداد من ثلاثة أجزاء. أولًا، فعّل إضافة Codex على <strong>كلٍّ</strong> من البوابة وجهاز Mac (وأضف <code>codex</code> إلى <code>plugins.allow</code> على أي منهما يستخدم قائمة سماح). ثانيًا، اسمح بأمر العقدة على البوابة، لأنه عالي الخطورة وغير مسموح به افتراضيًا:</p>
+<pre><code class="language-json5"><span class="hljs-punctuation">{</span>
+  gateway<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    nodes<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      commands<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        allow<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&#x27;codex.exec-server.stdio.v1&#x27;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  plugins<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    entries<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      codex<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        enabled<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>ثالثًا، فعّل استضافة الجلسات على جهاز Mac. إنه إعداد محلي على العقدة:</p>
+<pre><code class="language-json5"><span class="hljs-punctuation">{</span>
+  nodeHost<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    workerRuns<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> enabled<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>افتراضيًا، توفّر العقدة فتحة منفّذ واحدة لكل نواة معالج. ويغيّر <code>nodeHost.workerRuns.capacity</code> ذلك، ويشغّل <code>nodeHost.workerRuns.isolation: &quot;container&quot;</code> كل جلسة مستضافة في حاوية خاصة بها (مع <code>nodeHost.workerRuns.containerImage</code> لاختيار الصورة). ويمكن لمضيف عقدة بلا واجهة (headless) الاشتراك عبر <code>openclaw node run --session-host</code>.</p>
+<p>ثم أعد تشغيل التطبيق أو مضيف العقدة. ولأن مجموعة أوامر العقدة تغيّرت، فأعد ربطها ووافق على الطلب الجديد من البوابة:</p>
+<pre><code class="language-bash">openclaw nodes pending
+openclaw nodes approve &lt;requestId&gt;
+</code></pre>
+<p>اختر الجهاز المقترن من منتقي <strong>Place</strong> عند بدء جلسة جديدة في واجهة التحكّم. ومن سطر الأوامر، يمكنك إرسال جلسة قائمة في شجرة عمل مُدارة إلى جهاز:</p>
+<pre><code class="language-bash">openclaw gateway call sessions.dispatch \
+  --params <span class="hljs-string">&#x27;{&quot;key&quot;:&quot;agent:main:device-work&quot;,&quot;deviceId&quot;:&quot;&lt;paired-device-id&gt;&quot;}&#x27;</span>
+</code></pre>
+<p><strong>عمليات التشغيل تحتاج إلى موافقتك.</strong> فبدء exec-server يُظهر طلب موافقة حرجًا. و<strong>السماح مرة واحدة</strong> يغطّي تشغيلًا واحدًا. أما <strong>السماح دائمًا</strong> فيغطّي عمليات التشغيل اللاحقة فقط ما دام التوضيع كما هو تمامًا، وهو محفوظ في ذاكرة البوابة ويُمحى عند إعادة تشغيلها. والسماح بالأمر في الإعدادات لا يتخطّى الطلب. والاستثناء الوحيد هو جلسة ضبطتها صراحةً على <strong>الوصول الكامل (Full access)</strong>، وذلك فقط عندما تسمح سياسة التنفيذ الخاصة بجهاز Mac نفسها بالتشغيل دون موافقة.</p>
+<p>إذا انقطع الاتصال أو ألغيت الدورة، تنتهي المحاولة وتُقتل عملياتها البعيدة. ويعيد الاتصال بدء محاولة جديدة، ولا يستأنف القديمة أبدًا.</p>
+<blockquote>
+<p><strong>الموافقة ليست عزلاً</strong></p>
+<p>بمجرد أن توافق على تشغيل، تستطيع العملية الوصول إلى كل ما يستطيع حسابك على Mac الوصول إليه. ومجلد العمل يحدّد فقط من أين تبدأ. لا تقرن إلا الأجهزة التي تثق بها، وإذا أردت عزلاً حقيقيًا، فشغّل العقدة تحت حساب macOS منفصل بأقلّ صلاحيات ممكنة.</p>
+</blockquote>
+<p>هذه الميزة جديدة نسبيًا، ولا تذكر الوثائق أنظمة التشغيل المدعومة. راجع <a href="https://docs.openclaw.ai/plugins/codex-harness/placement">صفحة توضيع Codex</a> بالنسبة إلى الإصدار المثبّت لديك قبل أن تعتمد عليها.</p>
+<h3 id="وماذا-عن-claude-code-على-جهاز-mac">وماذا عن Claude Code على جهاز Mac؟</h3>
+<p>لا يوجد توضيع موثّق لـ Claude Code. ولديك ثلاثة خيارات واقعية:</p>
+<table>
+<thead>
+<tr>
+<th>تريد…</th>
+<th>افعل هذا</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>أن يعمل Claude Code على مستودعات موجودة على جهاز Mac</td>
+<td>شغّل البوابة على جهاز Mac، بحيث <em>يكون</em> مضيف البوابة هو Mac ويعمل ACP هناك</td>
+</tr>
+<tr>
+<td>أن يعمل Claude Code على نسخة، مع بوابة بعيدة</td>
+<td>استمر في استخدام ACP على مضيف البوابة، مع نسخة مسحوبة مؤقتة هناك، ثم أعِد النتائج عبر Git</td>
+</tr>
+<tr>
+<td>أوامر لمرة واحدة على جهاز Mac</td>
+<td>شغّل واجهة سطر الأوامر كأمر عادي عبر <code>/exec host=node</code>، مع إدراج الملف التنفيذي في قائمة السماح أولًا بـ <code>openclaw approvals allowlist add --node &lt;id&gt; &quot;&lt;path&gt;&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<p>هذا الخيار الأخير أمر صدفة، لا جلسة ACP. وستفقد تتبّع الجلسة و<code>steer</code> و<code>cancel</code> وعمليات الربط وبقية أدوات التحكّم في ACP، ولا تقدّم الوثائق أي إرشاد لتشغيل واجهة سطر أوامر للبرمجة بهذه الطريقة. ولم أجرّبه، فاعتبره تجربة، واجعل قائمة السماح بأضيق نطاق ممكن.</p>
+<h3 id="الاختيار">الاختيار</h3>
+<table>
+<thead>
+<tr>
+<th>تريد…</th>
+<th>استخدم…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>أي harness ACP (Claude Code وGemini CLI وغيرهما)</td>
+<td>ACP، الذي يعمل على مضيف البوابة</td>
+</tr>
+<tr>
+<td>أن يقوم Codex بعمل على جهاز Mac، مع بوابة بعيدة</td>
+<td>توضيع Codex الأصلي على العقدة</td>
+</tr>
+<tr>
+<td>Claude Code على مستودعات جهاز Mac نفسه</td>
+<td>بوابة تعمل على ذلك الجهاز</td>
+</tr>
+<tr>
+<td>جلسات OpenClaw البرمجية نفسها على جهاز Mac</td>
+<td>استضافة الجلسات على الجهاز المقترن</td>
+</tr>
+</tbody>
+</table>
+<h2 id="استخدامه-على-railway">استخدامه على Railway</h2>
+<p>إذا كنت قد تابعت <a href="https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale">درس Railway</a>، فإن القالب يتضمّن أصلًا <code>claude</code> و<code>codex</code>، ومجلد <code>HOME</code> موجود على وحدة التخزين، لذا تبقى تسجيلات الدخول بعد عمليات إعادة النشر. ويلتقط Claude Code المتغيّر <code>ANTHROPIC_API_KEY</code> من متغيّرات الخدمة عند ضبطه، وهكذا تعمل مهارة <code>coding-agent</code> في القالب. ولاستخدام اشتراك بدلًا من ذلك، سجّل الدخول من صدفة <code>railway ssh</code> باسم مستخدم البوابة:</p>
+<pre><code class="language-bash">railway ssh --service openclaw
+as-node claude auth login
+</code></pre>
+<p>شغّل أوامر الإضافة بالطريقة نفسها التي تشغّل بها أوامر OpenClaw الأخرى هناك:</p>
+<pre><code class="language-bash">railway ssh --service openclaw -- openclaw plugins install @openclaw/acpx
+railway ssh --service openclaw -- openclaw config <span class="hljs-built_in">set</span> plugins.entries.acpx.enabled <span class="hljs-literal">true</span>
+</code></pre>
+<p>تجعل حاوية القالب الخالية من العزل قسم الأذونات أكثر أهمية. فـ harness يعمل بـ <code>approve-all</code> هناك يستطيع الوصول إلى وحدة التخزين، التي تحمل الرموز والسجل. أبقِه موجّهًا إلى مجلد مؤقت.</p>
+<h2 id="استكشاف-الأخطاء-وإصلاحها">استكشاف الأخطاء وإصلاحها</h2>
+<table>
+<thead>
+<tr>
+<th>العَرَض</th>
+<th>ما يجب تفقّده</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>يقول <code>/acp doctor</code> إن الخلفية محظورة</td>
+<td>أن <code>plugins.allow</code> مضبوطة لكنها لا تتضمّن <code>acpx</code></td>
+</tr>
+<tr>
+<td>يُرفض التشغيل من أجل ذلك الـ harness</td>
+<td>أن المعرّف ليس في <code>acp.allowedAgents</code></td>
+</tr>
+<tr>
+<td>لا يبدأ الـ harness أبدًا</td>
+<td>أن واجهة سطر الأوامر الخاصة به غير مثبّتة على مضيف البوابة، أو غير مسجّل الدخول تحت حساب نظام تشغيل البوابة</td>
+</tr>
+<tr>
+<td><code>PermissionPromptUnavailableError</code></td>
+<td>أن الـ harness احتاج إلى الكتابة أو التشغيل. انظر قسم الأذونات</td>
+</tr>
+<tr>
+<td>«الطراز غير موجود»</td>
+<td>أن معرّف الطراز هذا غير موجود لهذا الـ harness. فالمعرّفات غير قابلة للنقل</td>
+</tr>
+<tr>
+<td>يُرفض <code>cwd</code></td>
+<td>أنه غير موجود أو غير قابل للوصول. استخدم مسارًا مطلقًا، أو احذفه</td>
+</tr>
+<tr>
+<td>يُحظر التشغيل من جلسة معزولة</td>
+<td>أنه لا يمكن بدء ACP من طالب معزول. استخدم وكيلًا فرعيًا</td>
+</tr>
+<tr>
+<td>جلسة Codex لا تتصرّف مثل Codex الأصلي</td>
+<td>أنك على Codex عبر ACP، لا على إضافة Codex الأصلية. فهما بيئتا تشغيل مختلفتان</td>
+</tr>
+</tbody>
+</table>
+<h2 id="اختيار-المسار-الصحيح">اختيار المسار الصحيح</h2>
+<table>
+<thead>
+<tr>
+<th>تحتاج…</th>
+<th>استخدم…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>تفويضًا محدودًا أصيلًا في OpenClaw</td>
+<td>وكيلًا فرعيًا أصليًا</td>
+</tr>
+<tr>
+<td>وكيل برمجة خارجيًا يديره OpenClaw</td>
+<td>ACP مع إضافة ACPX</td>
+</tr>
+<tr>
+<td>ربط وتحكّم أصيلين في دردشة Codex</td>
+<td>إضافة Codex الأصلية</td>
+</tr>
+<tr>
+<td>أن يتحدّث محرّرك مع جلسة بوابة</td>
+<td><code>openclaw acp</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>الأوامر والأعلام تتغيّر</strong></p>
+<p>يتبع هذا الدرس وثائق OpenClaw للإصدار <code>2026.9.x</code>. وقائمة الـ harnesses المدعومة والصيغة الدقيقة للأوامر الفرعية لـ <code>/acp</code> تتغيّر كثيرًا، لذا شغّل <code>/acp help</code> وراجع <a href="https://docs.openclaw.ai/tools/acp-agents">وثائق وكلاء ACP</a> قبل الاعتماد على علم معيّن.</p>
+</blockquote>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/kinney/openclaw/subagents-and-orchestration"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الوكلاء الفرعيون والتنسيق</span></a><!--]--> <!--[0--><a href="../../../../book/kinney/openclaw/connecting-securely-with-tailscale"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الاتصال بـ OpenClaw بأمان عبر Tailscale</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_9rdgz6 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.DQV7xcTG.js"),
+						import("../../../../_app/immutable/entry/app.COZJCS6b.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

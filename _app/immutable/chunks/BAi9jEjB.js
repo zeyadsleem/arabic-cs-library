@@ -1,0 +1,48 @@
+const d="kinney",o="tailwind",e="Tailwind CSS",c="defining-grid-columns-and-rows",i="تعريف أعمدة Grid وصفوفه",t=[{depth:2,id:"تعريف-أعمدة-grid",text:"تعريف أعمدة Grid"},{depth:3,id:"تحديد-عدد-ثابت-من-الأعمدة",text:"تحديد عدد ثابت من الأعمدة"},{depth:3,id:"إزالة-أعمدة-grid",text:"إزالة أعمدة Grid"},{depth:3,id:"تطبيق-subgrid",text:"تطبيق Subgrid"},{depth:3,id:"استخدام-قيم-أعمدة-مخصصة",text:"استخدام قيم أعمدة مخصّصة"},{depth:3,id:"أعمدة-grid-المتجاوبة",text:"أعمدة Grid المتجاوبة"},{depth:2,id:"تعريف-صفوف-grid",text:"تعريف صفوف Grid"},{depth:3,id:"تحديد-عدد-ثابت-من-الصفوف",text:"تحديد عدد ثابت من الصفوف"},{depth:3,id:"إزالة-صفوف-grid",text:"إزالة صفوف Grid"},{depth:3,id:"تطبيق-subgrid",text:"تطبيق Subgrid"},{depth:3,id:"استخدام-قيم-صفوف-مخصصة",text:"استخدام قيم صفوف مخصّصة"},{depth:3,id:"صفوف-grid-المتجاوبة",text:"صفوف Grid المتجاوبة"},{depth:2,id:"المسارات-الضمنية",text:"المسارات الضمنية"},{depth:3,id:"التحكم-في-الأعمدة-الضمنية",text:"التحكّم في الأعمدة الضمنية"},{depth:3,id:"التحكم-في-الصفوف-الضمنية",text:"التحكّم في الصفوف الضمنية"},{depth:2,id:"الوضع-التلقائي-في-grid",text:"الوضع التلقائي في Grid"},{depth:2,id:"تخصيص-قوالب-grid",text:"تخصيص قوالب Grid"}],r=`<p>تعريف بنية grid، بما فيها الأعمدة والصفوف، أمر أساسي في التخطيطات المعقّدة. ويوفّر Tailwind CSS أدوات تفعل ذلك مباشرةً في ترميزك.</p>
+<h2 id="تعريف-أعمدة-grid">تعريف أعمدة Grid</h2>
+<p>يوفّر Tailwind أدوات لتحديد أعمدة grid، ما يسمح بعدد ثابت من الأعمدة المتساوية الحجم أو ببِن أكثر تعقيدًا.</p>
+<h3 id="تحديد-عدد-ثابت-من-الأعمدة">تحديد عدد ثابت من الأعمدة</h3>
+<p>تُنشئ أداة <code>grid-cols-&lt;number&gt;</code> (مثل <code>grid-cols-2</code> و<code>grid-cols-4</code>) شبكة بعدد الأعمدة المحدّد. وتتشارك هذه الأعمدة المساحة المتاحة بالتساوي باستخدام <code>minmax(0, 1fr)</code>.</p>
+<h3 id="إزالة-أعمدة-grid">إزالة أعمدة Grid</h3>
+<p>لإزالة أعمدة grid، مثلًا عند نقطة توقّف للحصول على تخطيط مكدّس، استخدم <code>grid-cols-none</code>. وهذه تضبط <code>grid-template-columns</code> على <code>none</code>.</p>
+<h3 id="تطبيق-subgrid">تطبيق Subgrid</h3>
+<p>تتيح أداة <code>grid-cols-subgrid</code> لعنصر grid أن يتبنّى مسارات أعمدة شبكة أبيه. وهذا مفيد لمحاذاة عناصر grid المتداخلة مع البنية الأم.</p>
+<h3 id="استخدام-قيم-أعمدة-مخصصة">استخدام قيم أعمدة مخصّصة</h3>
+<p>لتعريفات أعمدة متقدّمة لا تغطيها الأدوات الافتراضية، استخدم القيم التعسّفية مع <code>grid-cols-[&lt;value&gt;]</code>. وهذه تضبط <code>grid-template-columns</code> على أي قيمة CSS صالحة (مثل <code>grid-cols-[200px_1fr_200px]</code>). ويمكنك أيضًا استخدام متغيّرات CSS: <code>grid-cols-(&lt;custom-property&gt;)</code>، وهي تضبط الخاصية على <code>var(&lt;custom-property&gt;)</code>. وهذا مفيد لمسارات الأعمدة المخصّصة المعرَّفة في سمتك.</p>
+<h3 id="أعمدة-grid-المتجاوبة">أعمدة Grid المتجاوبة</h3>
+<p>يمكن تطبيق أدوات أعمدة grid بشكل مشروط عند نقاط توقّف مختلفة (مثل <code>md:grid-cols-3</code>) أو باستخدام متغيّرات استعلامات الحاوية (مثل <code>@md:grid-cols-3</code>) لتغيير عدد الأعمدة بحسب حجم نافذة العرض أو الحاوية.</p>
+<h2 id="تعريف-صفوف-grid">تعريف صفوف Grid</h2>
+<p>وكما في الأعمدة، يوفّر Tailwind أدوات لتحديد صفوف grid.</p>
+<h3 id="تحديد-عدد-ثابت-من-الصفوف">تحديد عدد ثابت من الصفوف</h3>
+<p>استخدم <code>grid-rows-&lt;number&gt;</code> (مثل <code>grid-rows-2</code>) لإنشاء شبكة بعدد محدّد من الصفوف. وتتشارك هذه الصفوف المساحة المتاحة بالتساوي باستخدام <code>minmax(0, 1fr)</code>.</p>
+<h3 id="إزالة-صفوف-grid">إزالة صفوف Grid</h3>
+<p>تُزيل أداة <code>grid-rows-none</code> صفوف grid بضبط <code>grid-template-rows</code> على <code>none</code>.</p>
+<h3 id="تطبيق-subgrid">تطبيق Subgrid</h3>
+<p>تتيح <code>grid-rows-subgrid</code> لعنصر grid أن يتبنّى مسارات صفوف شبكة أبيه، على نحو مشابه لـ <code>grid-cols-subgrid</code>.</p>
+<h3 id="استخدام-قيم-صفوف-مخصصة">استخدام قيم صفوف مخصّصة</h3>
+<p>استخدم <code>grid-rows-[&lt;value&gt;]</code> لتعريفات صفوف محدّدة. ويمكن الإشارة إلى متغيّرات CSS عبر <code>grid-rows-(&lt;custom-property&gt;)</code>.</p>
+<h3 id="صفوف-grid-المتجاوبة">صفوف Grid المتجاوبة</h3>
+<p>أدوات صفوف grid متجاوبة، ويمكن دمجها مع متغيّرات نقاط التوقّف (مثل <code>md:grid-rows-2</code>) ومتغيّرات استعلامات الحاوية (مثل <code>@md:grid-rows-2</code>).</p>
+<h2 id="المسارات-الضمنية">المسارات الضمنية</h2>
+<p>يمكن لـ CSS Grid أن ينشئ أعمدة أو صفوفًا تلقائيًا للعناصر التي لم تُوضَع صراحةً. ويوفّر Tailwind أدوات للتحكّم في مقاس هذه المسارات المنشأة ضمنيًا.</p>
+<h3 id="التحكم-في-الأعمدة-الضمنية">التحكّم في الأعمدة الضمنية</h3>
+<p>استخدم أدوات <code>grid-auto-columns</code> (<code>auto-cols-auto</code> و<code>auto-cols-min</code> و<code>auto-cols-max</code> و<code>auto-cols-fr</code>) للتحكّم في مقاس الأعمدة المنشأة ضمنيًا. فمثلًا، تضبط <code>auto-cols-min</code> مقاس العمود الضمني على <code>min-content</code>. وتُدعم أيضًا القيم التعسّفية <code>auto-cols-[&lt;value&gt;]</code> ومتغيّرات CSS <code>auto-cols-(&lt;custom-property&gt;)</code>.</p>
+<h3 id="التحكم-في-الصفوف-الضمنية">التحكّم في الصفوف الضمنية</h3>
+<p>وبالمثل، تتحكّم أدوات <code>grid-auto-rows</code> (<code>auto-rows-auto</code> و<code>auto-rows-min</code> و<code>auto-rows-max</code> و<code>auto-rows-fr</code>) في مقاس الصفوف المنشأة ضمنيًا. وتضبط <code>auto-rows-max</code> مقاس الصف الضمني على <code>max-content</code>. وتُدعم القيم المخصّصة عبر <code>auto-rows-[&lt;value&gt;]</code> و<code>auto-rows-(&lt;custom-property&gt;)</code>.</p>
+<h2 id="الوضع-التلقائي-في-grid">الوضع التلقائي في Grid</h2>
+<p>تتحكّم خاصية <code>grid-auto-flow</code> في كيفية وضع العناصر تلقائيًا. ويوفّر Tailwind أدوات لذلك.</p>
+<p>استخدم <code>grid-flow-row</code> (افتراضي) لملء الصفوف، مع إضافة صفوف جديدة عند الحاجة. واستخدم <code>grid-flow-col</code> لملء الأعمدة، مع إضافة أعمدة جديدة عند الحاجة. وتحاول <code>grid-flow-dense</code> ملء الفجوات المبكرة في الشبكة، وقد تُخلّ بالترتيب البصري لكنها تُحسّن استغلال المساحة. تُدمج مع الكلمات المفتاحية الاتجاهية باستخدام <code>grid-flow-row-dense</code> أو <code>grid-flow-col-dense</code>.</p>
+<h2 id="تخصيص-قوالب-grid">تخصيص قوالب Grid</h2>
+<p>في Tailwind، خصّص قوالب grid باستخدام متغيّرات CSS وتوجيه <code>@theme</code> في ملف CSS الرئيسي. عرّف متغيّرات <code>--grid-template-columns-*</code> و<code>--grid-template-rows-*</code> داخل كتلة <code>@theme</code>.</p>
+<p>مثال:</p>
+<pre><code class="language-css"><span class="hljs-keyword">@import</span> <span class="hljs-string">&#x27;tailwindcss&#x27;</span>;
+
+<span class="hljs-keyword">@theme</span> {
+  <span class="hljs-attr">--grid-template-columns-layout</span>: <span class="hljs-number">200px</span> <span class="hljs-number">1</span>fr <span class="hljs-number">200px</span>;
+  <span class="hljs-attr">--grid-template-rows-header</span>: auto;
+}
+</code></pre>
+<p>وتتحوّل هذه إلى أصناف أدوات مثل <code>grid-cols-layout</code> و<code>grid-rows-header</code>. وإضافة متغيّرات جديدة تشبه <code>extend</code> في الإصدارات السابقة. ولتجاوز القيم الافتراضية، امسح مساحة الأسماء (مثل <code>--grid-template-columns-*: initial</code>) قبل تعريف قيمك المخصّصة. وللبدء دون قيم افتراضية، استورد <code>tailwindcss/preflight</code> و<code>tailwindcss/utilities</code> مباشرةً.</p>
+<p>قيم السمة، ومنها قوالب grid، متاحة كمتغيّرات CSS أصلية، يمكن استخدامها في القيم التعسّفية عبر <code>var()</code> أو في CSS مخصّص. وعند تعريف متغيّرات سمة تشير إلى متغيّرات أخرى، استخدم خيار <code>inline</code> مع <code>@theme</code>.</p>
+<p>يقدّم هذا النهج القائم على CSS طريقة أصلية لتعيين رموز التصميم واستخدامها.</p>
+`,n={book:d,chapter:o,chapterTitle:e,slug:c,title:i,headings:t,html:r};export{d as book,o as chapter,e as chapterTitle,n as default,t as headings,r as html,c as slug,i as title};

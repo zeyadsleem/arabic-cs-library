@@ -1,0 +1,632 @@
+const s="kinney",a="tailwind",n="Tailwind CSS",t="navigation-menu-container-queries",l="بناء قائمة تنقّل",p=[{depth:2,id:"فهم-الحاوية-مقابل-استعلامات-الوسائط",text:"فهم الحاوية مقابل استعلامات الوسائط"},{depth:2,id:"تهيئة-سياق-استعلام-الحاوية",text:"تهيئة سياق استعلام الحاوية"},{depth:2,id:"إضافة-تباعد-الروابط-المستجيب-للحاوية",text:"إضافة تباعد الروابط المستجيب للحاوية"},{depth:2,id:"إنشاء-تخطيط-تنقل-مضغوط",text:"إنشاء تخطيط تنقّل مضغوط"},{depth:2,id:"إضافة-قائمة-برغر-للحاويات-الضيقة",text:"إضافة قائمة برغر للحاويات الضيّقة"},{depth:2,id:"إضافة-تنفيذ-قائمة-منسدلة",text:"إضافة تنفيذ قائمة منسدلة"},{depth:2,id:"إضافة-حالات-التركيز-وتحسين-الوصولية",text:"إضافة حالات التركيز وتحسين الوصولية"},{depth:2,id:"إضافة-اللمسات-النهائية-وحالات-النشط",text:"إضافة اللمسات النهائية وحالات النشط"},{depth:2,id:"لماذا-استعلامات-الحاوية-ثورية",text:"لماذا استعلامات الحاوية ثورية"},{depth:2,id:"التحديات",text:"التحديات"}],e=`<p>لنبدأ ببنية HTML الأساسية الخاصة بقائمة تنقّل بسيطة.</p>
+<p><em>المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/50b623a2525b1668398de857194d42e94caf9d912b7bf6c317f4ac94f9b4f32f.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>Brand<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>About<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>Services<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>Portfolio<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>Contact<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>لدينا تنقّل أساسي فيه شعار العلامة التجارية وخمسة روابط تنقّل، لكنها مكدّسة رأسيًا وبلا أي تنسيق. لنحوّلها إلى تنقّل ذكي يتكيّف مع حجم حاويته لا مع حجم الشاشة — ما يجعله قابلًا لإعادة الاستخدام حقًا في الترويسات أو الأشرطة الجانبية أو أي سياق تخطيط.</p>
+<h2 id="فهم-الحاوية-مقابل-استعلامات-الوسائط">فهم الحاوية مقابل استعلامات الوسائط</h2>
+<p>قبل أن نبدأ البناء، من الضروري أن نفهم لماذا تُعدّ استعلامات الحاوية ثورية في تصميم التنقّل. فالتنقّل المستجيب التقليدي يستخدم استعلامات وسائط تستجيب لحجم إطار العرض:</p>
+<p><strong>استعلامات الوسائط تفكّر عالميًا</strong>: «عندما يبلغ عرض نافذة المتصفح 768px، انتقل إلى قائمة الجوال» <strong>استعلامات الحاوية تفكّر محليًا</strong>: «عندما يبلغ عرض حاوية هذا التنقّل 384px، انتقل إلى قائمة الجوال»</p>
+<p>وهذا يعني أن تنقّلنا سيعمل بشكل مثالي سواء كان:</p>
+<ul>
+<li>بعرض كامل في ترويسة صفحة</li>
+<li>مقيَّدًا في شريط جانبي للوحة معلومات</li>
+<li>مضمّنًا في أداة ضيّقة</li>
+<li>جزءًا من تخطيط متعدّد الأعمدة</li>
+</ul>
+<p>لنبنِ هذا خطوة بخطوة باستخدام استعلامات الحاوية لخلق تنقّل معياريّ حقًا.</p>
+<h2 id="تهيئة-سياق-استعلام-الحاوية">تهيئة سياق استعلام الحاوية</h2>
+<p>أولًا، لنثبّت حاويتنا بوصفها سياق استعلام، ونضيف تنسيقًا أساسيًا للتنقّل، انطلاقًا من التقنيات التي تعلّمناها في <a href="https://stevekinney.com/courses/tailwind/building-a-statistics-card">درس بطاقة الإحصاءات</a>.</p>
+<p><em>تهيئة سياق استعلام الحاوية — المثال 2 — <a href="https://stevekinney.com/generated/playgrounds/c7b5a6def23094a2f55da3176f8c65916ebb2e7691aea534f81e6c53f5570d37.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container border-b border-slate-200 bg-white&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-between px-4 py-3&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-xl font-bold text-slate-900&quot;</span>&gt;</span>Brand<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex gap-6&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 hover:text-slate-900&quot;</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 hover:text-slate-900&quot;</span>&gt;</span>About<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 hover:text-slate-900&quot;</span>&gt;</span>Services<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 hover:text-slate-900&quot;</span>&gt;</span>Portfolio<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 hover:text-slate-900&quot;</span>&gt;</span>Contact<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>الإعداد الأساسي:</p>
+<ul>
+<li><code>@container</code>: يثبّت هذا العنصر بوصفه سياق استعلام حاوية — فيمكن لعناصره الآن أن تستجيب لعرض هذه الحاوية</li>
+<li><code>flex items-center justify-between</code>: ينشئ تخطيطًا أفقيًا بعلامة تجارية على اليسار وروابط على اليمين</li>
+<li><code>px-4 py-3</code>: حشو أفقي 16px ورأسي 12px لتباعد مريح</li>
+<li><code>text-xl font-bold</code>: طباعة بارزة للعلامة التجارية (20px، بوزن 700)</li>
+<li><code>gap-6</code>: تباعد قدره 24px بين روابط التنقّل من أجل قابلية القراءة</li>
+<li><code>hover:text-slate-900</code>: نص أغمق عند التحويم لتوفير تغذية راجعة تفاعلية</li>
+</ul>
+<p>ينشئ هذا تنقّلًا أفقيًا نظيفًا يعمل جيدًا في الحاويات العريضة، لكنه سيفيض في المساحات الضيّقة.</p>
+<h2 id="إضافة-تباعد-الروابط-المستجيب-للحاوية">إضافة تباعد الروابط المستجيب للحاوية</h2>
+<p>الآن لنجعل التنقّل يتكيّف مع تباعده بحسب عرض الحاوية. ففي الحاويات متوسطة العرض سنستخدم تباعدًا أضيق لاستيعاب محتوى أكثر.</p>
+<p><em>إضافة تباعد الروابط المستجيب للحاوية — المثال 3 — <a href="https://stevekinney.com/generated/playgrounds/0f0506cbd67bf5b1355d85cd8809eff1b61c0f0d81baa17c7a762d9929e5faf3.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container border-b border-slate-200 bg-white&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-between px-4 py-3&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-xl font-bold text-slate-900&quot;</span>&gt;</span>Brand<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex gap-3 @lg:gap-6&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Home
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        About
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Services
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Portfolio
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Contact
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>التباعد المستجيب للحاوية:</p>
+<ul>
+<li><code>gap-3 @lg:gap-6</code>: فاصل 12px افتراضيًا، يتّسع إلى 24px عندما يبلغ عرض الحاوية 512px على الأقل</li>
+<li><code>transition-colors</code>: انتقالات ألوان ناعمة لتأثيرات تحويم مصقولة</li>
+</ul>
+<p>تعني البادئة <code>@lg:</code> «عندما تكون هذه الحاوية (لا إطار العرض) كبيرة». وهذا يضمن التباعد الأمثل أينما وُضع التنقّل في تخطيطك.</p>
+<h2 id="إنشاء-تخطيط-تنقل-مضغوط">إنشاء تخطيط تنقّل مضغوط</h2>
+<p>في الحاويات متوسطة العرض، لننشئ تخطيطًا أكثر إحكامًا حيث قد تُختصر بعض الروابط أو يُعاد ترتيبها.</p>
+<p><em>إنشاء تخطيط تنقّل مضغوط — المثال 4 — <a href="https://stevekinney.com/generated/playgrounds/b44697b8d2d537dece48b72e1c0c6dd416d00a9b95d605b9a123167f2a2bc14b.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container border-b border-slate-200 bg-white&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-between px-4 py-3&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-lg font-bold text-slate-900 @lg:text-xl&quot;</span>&gt;</span>Brand<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden gap-2 @sm:flex @md:gap-3 @lg:gap-6&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Home
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        About
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Services
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+        <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 @md:block&quot;</span>
+      &gt;</span>
+        Portfolio
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Contact
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تحسينات التخطيط المضغوط:</p>
+<ul>
+<li><code>text-lg @lg:text-xl</code>: يتكبّر نص العلامة التجارية من 18px إلى 20px بحسب المساحة المتاحة في الحاوية</li>
+<li><code>hidden @sm:flex</code>: روابط التنقّل مخفية افتراضيًا، وتظهر عندما يبلغ عرض الحاوية 384px على الأقل</li>
+<li><code>gap-2 @md:gap-3 @lg:gap-6</code>: تباعد تصاعدي يتكيّف مع عرض الحاوية (8px → 12px → 24px)</li>
+<li><code>hidden @md:block</code> على Portfolio: يختفي هذا الرابط في أكثر التخطيطات تقييدًا أفقيًا</li>
+</ul>
+<p>وهذا ينشئ كشفًا تصاعديًا ذكيًا تختفي فيه عناصر التنقّل الأقل أهمية مع ضيق المساحة.</p>
+<h2 id="إضافة-قائمة-برغر-للحاويات-الضيقة">إضافة قائمة برغر للحاويات الضيّقة</h2>
+<p>الآن لنضف قائمة برغر تظهر عندما تكون الحاوية ضيّقة أكثر من اللازم للتنقّل الأفقي.</p>
+<p><em>إضافة قائمة برغر للحاويات الضيّقة — المثال 5 — <a href="https://stevekinney.com/generated/playgrounds/fee8866ceed266c0cb0d642c3441683c535a0e74b9d90fd8fef52b420d2c2ff5.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container border-b border-slate-200 bg-white&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-between px-4 py-3&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-lg font-bold text-slate-900 @lg:text-xl&quot;</span>&gt;</span>Brand<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Horizontal Navigation (medium+ containers) --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden gap-2 @sm:flex @md:gap-3 @lg:gap-6&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Home
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        About
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Services
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+        <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 @md:block&quot;</span>
+      &gt;</span>
+        Portfolio
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>&gt;</span>
+        Contact
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Mobile Menu Button (narrow containers) --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@sm:hidden&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex h-8 w-8 items-center justify-center rounded-md transition-colors hover:bg-slate-100&quot;</span>
+        <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;mobile-menu-1&quot;</span>
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-5 w-5 text-slate-600&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span> <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 24 24&quot;</span> <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;currentColor&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">path</span>
+            <span class="hljs-attr">stroke-linecap</span>=<span class="hljs-string">&quot;round&quot;</span>
+            <span class="hljs-attr">stroke-linejoin</span>=<span class="hljs-string">&quot;round&quot;</span>
+            <span class="hljs-attr">stroke-width</span>=<span class="hljs-string">&quot;2&quot;</span>
+            <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M4 6h16M4 12h16M4 18h16&quot;</span>
+          /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>إضافة قائمة برغر:</p>
+<ul>
+<li><code>@sm:hidden</code>: لا يظهر زر قائمة الجوال إلا عندما يقلّ عرض الحاوية عن 384px</li>
+<li><code>w-8 h-8</code>: زر مربّع بحجم 32px يوفّر مساحة لمس مناسبة</li>
+<li><code>rounded-md hover:bg-slate-100</code>: تغذية راجعة خفيفة عند التحويم عبر خلفية فاتحة</li>
+<li>أيقونة برغر SVG بحجم <code>w-5 h-5</code>: حجم أيقونة 20px لتوازن بصري جيد</li>
+<li><code>text-slate-600</code>: لون أيقونة خافت يتّغمق إلى <code>currentColor</code> عند التحويم</li>
+</ul>
+<p>الآن لدينا تنقّل ذكي يُظهر قائمة البرغر فقط عندما تكون الحاوية مقيَّدة فعلًا — لا بناءً على حجم الشاشة، بل على المساحة المتاحة فعليًا.</p>
+<h2 id="إضافة-تنفيذ-قائمة-منسدلة">إضافة تنفيذ قائمة منسدلة</h2>
+<p>لنُكمل وظيفة البرغر بقائمة منسدلة تظهر عند تفعيل الزر.</p>
+<p><em>إضافة تنفيذ قائمة منسدلة — المثال 6 — <a href="https://stevekinney.com/generated/playgrounds/663fbef78df758ab2dc743ab12e8af263aede09b112aaf230bbb3450c6a8e65e.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container border-b border-slate-200 bg-white&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-between px-4 py-3&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-lg font-bold text-slate-900 @lg:text-xl&quot;</span>&gt;</span>Brand<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-comment">&lt;!-- Horizontal Navigation (medium+ containers) --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden gap-2 @sm:flex @md:gap-3 @lg:gap-6&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>
+        &gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>
+        &gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>
+        &gt;</span>
+          Services
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 @md:block&quot;</span>
+        &gt;</span>
+          Portfolio
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-medium text-slate-700 transition-colors hover:text-slate-900&quot;</span>
+        &gt;</span>
+          Contact
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-comment">&lt;!-- Mobile Menu Button (narrow containers) --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@sm:hidden&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;mobile-menu-2&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;peer sr-only&quot;</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>
+          <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;mobile-menu-2&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-slate-100&quot;</span>
+        &gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">svg</span>
+            <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-5 w-5 text-slate-600 peer-checked:hidden&quot;</span>
+            <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>
+            <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 24 24&quot;</span>
+            <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;currentColor&quot;</span>
+          &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">path</span>
+              <span class="hljs-attr">stroke-linecap</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-linejoin</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-width</span>=<span class="hljs-string">&quot;2&quot;</span>
+              <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M4 6h16M4 12h16M4 18h16&quot;</span>
+            /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">svg</span>
+            <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden h-5 w-5 text-slate-600 peer-checked:block&quot;</span>
+            <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>
+            <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 24 24&quot;</span>
+            <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;currentColor&quot;</span>
+          &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">path</span>
+              <span class="hljs-attr">stroke-linecap</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-linejoin</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-width</span>=<span class="hljs-string">&quot;2&quot;</span>
+              <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M6 18L18 6M6 6l12 12&quot;</span>
+            /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Mobile Dropdown Menu --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden border-t border-slate-200 bg-slate-50 peer-checked:block @sm:hidden&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;space-y-1 px-4 py-2&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900&quot;</span>
+        &gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900&quot;</span>
+        &gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900&quot;</span>
+        &gt;</span>
+          Services
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900&quot;</span>
+        &gt;</span>
+          Portfolio
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900&quot;</span>
+        &gt;</span>
+          Contact
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تنفيذ القائمة المنسدلة:</p>
+<ul>
+<li><code>peer sr-only</code>: مربع اختيار مخفي يدير حالة القائمة باستخدام نظام peer</li>
+<li><code>peer-checked:hidden</code> و<code>hidden peer-checked:block</code>: تبديل الأيقونة بين البرغر وX</li>
+<li><code>hidden peer-checked:block @sm:hidden</code>: تظهر القائمة المنسدلة عندما يكون مربع الاختيار محدَّدًا <strong>و</strong> تكون الحاوية ضيّقة</li>
+<li><code>border-t border-slate-200 bg-slate-50</code>: فصل بصري مع خلفية خفيفة</li>
+<li><code>block px-3 py-2</code>: روابط رأسية مكدّسة مع مساحات لمس مريحة</li>
+<li><code>space-y-1</code>: تباعد قدره 4px بين عناصر القائمة</li>
+</ul>
+<p>الجمال هنا أن كل عناصر القائمة تظهر في القائمة المنسدلة — حتى «Portfolio» التي كانت مخفية في التخطيط الأفقي المضغوط!</p>
+<h2 id="إضافة-حالات-التركيز-وتحسين-الوصولية">إضافة حالات التركيز وتحسين الوصولية</h2>
+<p>لنُحسّن الوصولية بحالات تركيز سليمة وخصائص ARIA.</p>
+<p><em>إضافة حالات التركيز وتحسين الوصولية — المثال 7 — <a href="https://stevekinney.com/generated/playgrounds/af637381985d062059b40072ada89794581e935cb9ba6a66f6fa32954c952cbf.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container border-b border-slate-200 bg-white&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;navigation&quot;</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Main navigation&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-between px-4 py-3&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-sm text-lg font-bold text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 @lg:text-xl&quot;</span>
+        &gt;</span>
+          Brand
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-comment">&lt;!-- Horizontal Navigation (medium+ containers) --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden gap-2 @sm:flex @md:gap-3 @lg:gap-6&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-sm text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-sm text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-sm text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Services
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden rounded-sm text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 @md:block&quot;</span>
+        &gt;</span>
+          Portfolio
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-sm text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Contact
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-comment">&lt;!-- Mobile Menu Button (narrow containers) --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@sm:hidden&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;mobile-menu-3&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;peer sr-only&quot;</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>
+          <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;mobile-menu-3&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors focus-within:bg-slate-100 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-600 hover:bg-slate-100&quot;</span>
+          <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Toggle navigation menu&quot;</span>
+        &gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">svg</span>
+            <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-5 w-5 text-slate-600 peer-checked:hidden&quot;</span>
+            <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>
+            <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 24 24&quot;</span>
+            <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;currentColor&quot;</span>
+            <span class="hljs-attr">aria-hidden</span>=<span class="hljs-string">&quot;true&quot;</span>
+          &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">path</span>
+              <span class="hljs-attr">stroke-linecap</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-linejoin</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-width</span>=<span class="hljs-string">&quot;2&quot;</span>
+              <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M4 6h16M4 12h16M4 18h16&quot;</span>
+            /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">svg</span>
+            <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden h-5 w-5 text-slate-600 peer-checked:block&quot;</span>
+            <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>
+            <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 24 24&quot;</span>
+            <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;currentColor&quot;</span>
+            <span class="hljs-attr">aria-hidden</span>=<span class="hljs-string">&quot;true&quot;</span>
+          &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">path</span>
+              <span class="hljs-attr">stroke-linecap</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-linejoin</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-width</span>=<span class="hljs-string">&quot;2&quot;</span>
+              <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M6 18L18 6M6 6l12 12&quot;</span>
+            /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Mobile Dropdown Menu --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden border-t border-slate-200 bg-slate-50 peer-checked:block @sm:hidden&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;space-y-1 px-4 py-2&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Services
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Portfolio
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Contact
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تحسينات الوصولية:</p>
+<ul>
+<li><code>role=&quot;navigation&quot; aria-label=&quot;Main navigation&quot;</code>: يوضّح بجلاء معلم التنقّل لقارئات الشاشة</li>
+<li><code>focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600</code>: حلقات تركيز زرقاء للتنقّل بلوحة المفاتيح</li>
+<li><code>aria-label=&quot;Toggle navigation menu&quot;</code>: تسمية وصفية لزر قائمة الجوال</li>
+<li><code>aria-hidden=&quot;true&quot;</code> على أيقونات SVG: يمنع قارئات الشاشة من إعلان الأيقونات الزخرفية</li>
+<li>حالات <code>focus-within:</code>: تغذية راجعة بصرية عند تحوّل التركيز إلى زر قائمة الجوال</li>
+</ul>
+<p>تضمن الصنف الزائف <code>focus-visible</code> أن حلقات التركيز لا تظهر إلا عند التنقّل بلوحة المفاتيح، ما يوفّر تجربة ممتازة لمستخدمي الفأرة ولوحة المفاتيح على حدّ سواء.</p>
+<h2 id="إضافة-اللمسات-النهائية-وحالات-النشط">إضافة اللمسات النهائية وحالات النشط</h2>
+<p>أخيرًا، لنضف بعض اللمسات النهائية بحالات تنقّل نشطة وانتقالات ناعمة في كل مكان.</p>
+<p><em>إضافة اللمسات النهائية وحالات النشط — المثال 8 — <a href="https://stevekinney.com/generated/playgrounds/093abbe54d25a41107baee2490f3ee1fa6397e55bf2be28a0c094501c514a9eb.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container border-b border-slate-200 bg-white shadow-sm&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;navigation&quot;</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Main navigation&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-between px-4 py-3 @lg:px-6&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-sm text-lg font-bold text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 @lg:text-xl&quot;</span>
+        &gt;</span>
+          Brand
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-comment">&lt;!-- Horizontal Navigation (medium+ containers) --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden gap-2 @sm:flex @md:gap-3 @lg:gap-6&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-md px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-md px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Services
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden rounded-md px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 @md:block&quot;</span>
+        &gt;</span>
+          Portfolio
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-md px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Contact
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-comment">&lt;!-- Mobile Menu Button (narrow containers) --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@sm:hidden&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;mobile-menu-3&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;peer sr-only&quot;</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>
+          <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;mobile-menu-3&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors focus-within:bg-slate-100 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-600 hover:bg-slate-100&quot;</span>
+          <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Toggle navigation menu&quot;</span>
+        &gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">svg</span>
+            <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-5 w-5 text-slate-600 transition-all peer-checked:hidden&quot;</span>
+            <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>
+            <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 24 24&quot;</span>
+            <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;currentColor&quot;</span>
+            <span class="hljs-attr">aria-hidden</span>=<span class="hljs-string">&quot;true&quot;</span>
+          &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">path</span>
+              <span class="hljs-attr">stroke-linecap</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-linejoin</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-width</span>=<span class="hljs-string">&quot;2&quot;</span>
+              <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M4 6h16M4 12h16M4 18h16&quot;</span>
+            /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">svg</span>
+            <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden h-5 w-5 text-slate-600 transition-all peer-checked:block&quot;</span>
+            <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>
+            <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 24 24&quot;</span>
+            <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;currentColor&quot;</span>
+            <span class="hljs-attr">aria-hidden</span>=<span class="hljs-string">&quot;true&quot;</span>
+          &gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">path</span>
+              <span class="hljs-attr">stroke-linecap</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-linejoin</span>=<span class="hljs-string">&quot;round&quot;</span>
+              <span class="hljs-attr">stroke-width</span>=<span class="hljs-string">&quot;2&quot;</span>
+              <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M6 18L18 6M6 6l12 12&quot;</span>
+            /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Mobile Dropdown Menu --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden border-t border-slate-200 bg-slate-50/80 backdrop-blur-sm peer-checked:block @sm:hidden&quot;</span>
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;space-y-1 px-4 py-3&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md bg-blue-50 px-3 py-2.5 text-sm font-medium text-blue-700 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Home
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          About
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Services
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Portfolio
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span>
+          <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600&quot;</span>
+        &gt;</span>
+          Contact
+        <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تحسينات اللمسات النهائية:</p>
+<ul>
+<li><code>shadow-sm</code>: ظل خفيف يضيف عمقًا إلى شريط التنقّل</li>
+<li><code>@lg:px-6</code>: حشو أفقي أكبر في الحاويات الأكبر لنسب أفضل</li>
+<li><code>bg-blue-50 text-blue-700</code>: تنسيق حالة النشط للصفحة الحالية (Home)</li>
+<li><code>px-3 py-1.5 rounded-md</code>: تنسيق يشبه الأزرار لجميع روابط التنقّل</li>
+<li><code>hover:bg-slate-50</code>: خلفية تحويم موحّدة عبر الروابط الأفقية</li>
+<li><code>bg-slate-50/80 backdrop-blur-sm</code>: قائمة منسدلة شبه شفافة مع تمويه الخلفية لإحساس عصري</li>
+<li><code>py-2.5</code>: مساحات لمس أطول قليلًا في قائمة الجوال (10px مقابل 8px)</li>
+<li><code>transition-all</code> على الأيقونات: انتقالات ناعمة عند تغيّر الأيقونات</li>
+</ul>
+<h2 id="لماذا-استعلامات-الحاوية-ثورية">لماذا استعلامات الحاوية ثورية</h2>
+<p>يُظهر هذا التنقّل التحوّل الجوهري من التصميم المستجيب لإطار العرض إلى التصميم المستجيب للحاوية:</p>
+<p><strong>نهج استعلام الوسائط التقليدي:</strong></p>
+<pre><code class="language-css"><span class="hljs-comment">/* Always responds to screen size */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">max-width</span>: <span class="hljs-number">768px</span>) {
+  <span class="hljs-selector-class">.nav-links</span> {
+    <span class="hljs-attribute">display</span>: none;
+  }
+  <span class="hljs-selector-class">.hamburger</span> {
+    <span class="hljs-attribute">display</span>: block;
+  }
+}
+</code></pre>
+<p><strong>نهج استعلام الحاوية لدينا:</strong></p>
+<pre><code class="language-css"><span class="hljs-comment">/* Responds to container size */</span>
+<span class="hljs-keyword">@container</span> (<span class="hljs-attribute">max-width</span>: <span class="hljs-number">384px</span>) {
+  <span class="hljs-selector-class">.nav-links</span> {
+    <span class="hljs-attribute">display</span>: none;
+  }
+  <span class="hljs-selector-class">.hamburger</span> {
+    <span class="hljs-attribute">display</span>: block;
+  }
+}
+</code></pre>
+<p><strong>الفوائد في العالم الحقيقي:</strong></p>
+<p><strong>التكامل مع الشريط الجانبي</strong>: ضع هذا التنقّل في شريط جانبي للوحة معلومات بعرض 300px — يتحوّل تلقائيًا إلى قائمة برغر حتى على سطح المكتب، لأن الحاوية ضيّقة.</p>
+<p><strong>سياقات الأدوات</strong>: ضمّنه في أداة ضيّقة أو بطاقة — يتكيّف التنقّل مع المساحة المتاحة لا مع حجم الشاشة.</p>
+<p><strong>التخطيطات المرنة</strong>: استخدمه في مناطق CSS Grid أو حاويات Flexbox بأي حجم — ذكاء التنقّل محصور ذاتيًّا.</p>
+<p><strong>إعادة استخدام المكوّنات</strong>: يعمل مكوّن التنقّل نفسه بشكل مثالي في الترويسات والأشرطة الجانبية والنوافذ المنبثقة أو أي سياق تخطيط دون تعديل.</p>
+<p><strong>لا حاجة إلى JavaScript</strong>: كل السلوك المستجيب هو CSS خالص، ما يجعله خفيفًا وموثوقًا.</p>
+<p>تجعل استعلامات الحاوية المكوّنات معيارية حقًا — فهي تجلب ذكاءها الاستجابي معها بدلًا من الاعتماد على نقاط توقف عامة قد لا تطابق سياقها الفعلي.</p>
+<h2 id="التحديات">التحديات</h2>
+<p>جرّب بناء هذه الصيغ:</p>
+<ol>
+<li><strong>تنقّل مسار التنقّل (Breadcrumbs)</strong>: أنشئ مكوّن breadcrumbs ينهار تدريجيًا (يُظهر «Home &gt; … &gt; Current») عندما تضيق الحاوية، باستخدام تقنيات استعلام الحاوية المشابهة.</li>
+<li><strong>تنقّل بتبويبات</strong>: ابنِ واجهة تبويبات تنتقل من التبويبات الأفقية إلى مُحدِّد منسدل عندما لا يتّسع عرض الحاوية لكل التبويبات، بما يُظهر استعلامات الحاوية مع أنماط واجهة مختلفة.</li>
+</ol>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:l,headings:p,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,p as headings,e as html,t as slug,l as title};

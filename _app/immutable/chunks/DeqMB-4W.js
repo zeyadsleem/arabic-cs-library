@@ -1,0 +1,69 @@
+const s="tanstack-router",a="router",n="دورة TanStack Router الكاملة",t="handling-search-params-errors",e="معالجة أخطاء معاملات البحث",o=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"تخصيص-شاشة-الخطأ-عبر-errorcomponent",text:"تخصيص شاشة الخطأ عبر errorComponent"},{depth:2,id:"تقديم-بديل-افتراضي-عند-الخطأ",text:"تقديم بديل افتراضي عند الخطأ"},{depth:2,id:"استيراد-دالة-fallback-وضبط-المخطط",text:"استيراد دالة fallback وضبط المخطط"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],c=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في الدرس السابق بدأنا التحقّق من معاملات البحث (search params) لمسار المنتجات <code>/products</code> باستخدام مخطط (schema) من مكتبة <code>Zod</code> عبر المحوّل <code>zodValidator</code>. ولكن ماذا يحدث لو كتب المستخدِم في شريط العنوان قيمةً غير متوقعة أو غير صالحة، أو شارك أحدهم رابطًا يحتوي على معطيات خاطئة؟ في الحالة الافتراضية سيفشل التحقّق وتُعرض شاشة خطأ توقف تجربة المستخدِم.</p>
+<p>في هذا الدرس سنتعلّم طريقتين للتعامل مع أخطاء معاملات البحث:</p>
+<ol>
+<li>تخصيص شاشة الخطأ للمسار باستخدام الخيار <code>errorComponent</code>.</li>
+<li>تقديم بديل افتراضي (<code>fallback</code>) عند حدوث خطأ دون تعطيل الصفحة، والمقارنة بين أسلوب <code>.catch()</code> في <code>Zod</code> ودالة <code>fallback</code> المخصصة من حزمة <code>@tanstack/zod-adapter</code> التي تحافظ على الأمان النوعي (<code>type safety</code>) داخل التطبيق.</li>
+</ol>
+<h2 id="تخصيص-شاشة-الخطأ-عبر-errorcomponent">تخصيص شاشة الخطأ عبر <code>errorComponent</code></h2>
+<p>عندما نتنقّل داخل التطبيق عبر مكوّن <code>Link</code>، تضمن لنا الأنواع عدم تمرير قيم خاطئة. لكن شريط العنوان في المتصفح مفتوحٌ للمستخدِم، فلو كتب مثلًا <code>?sort_by=anything</code> حيث القيمة ليست <code>price</code> ولا <code>newest</code> ولا <code>oldest</code>، فسيرمي التحقّق خطأً وتظهر صفحة الخطأ العامة للموجّه.</p>
+<p>لتخصيص ما يظهر للمستخدِم في هذا المسار تحديدًا، نمرّر المكوّن <code>errorComponent</code> داخل تعريف المسار في <code>src/routes/products.index.tsx</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/products/&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">validateSearch</span>: <span class="hljs-title function_">zodValidator</span>(productSearchParamsSchema),
+  <span class="hljs-attr">errorComponent</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Error.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>,
+});
+</code></pre>
+<p>بهذا الشكل، عندما يواجه المسار خطأً في التحقّق من المعاملات، سيُصيّر الفقرة النصية البسيطة <code>&lt;p&gt;Error.&lt;/p&gt;</code> بدلًا من إظهار صفحة الخطأ الافتراضية الكاملة. وسنتوسّع في معالجة الأخطاء بمزيد من التفصيل في درس لاحق من الدورة.</p>
+<h2 id="تقديم-بديل-افتراضي-عند-الخطأ">تقديم بديل افتراضي عند الخطأ</h2>
+<p>في كثير من الحالات، بدلًا من إيقاف المستخدِم أمام صفحة خطأ لمجرّد كتابة معامل خاطئ في العنوان، تكون التجربة الأفضل هي التراجع التلقائي إلى قيمة صالحة افتراضية.</p>
+<p>في مكتبة <code>Zod</code>، تتيح الدالة <code>.catch()</code> التقاط أخطاء التحقّق وإرجاع قيمة بديلة مثل <code>&quot;newest&quot;</code>. غير أن هذه الطريقة تؤدي إلى مشكلة مع <code>TypeScript</code>؛ إذ يتحول نوع الحقل إلى نوع غير معروف (<code>unknown</code>)، وتفقد الروابط حمايتها النوعية عند كتابة الشيفرة.</p>
+<p>ولحل ذلك، توفّر حزمة <code>@tanstack/zod-adapter</code> دالة مساعدة باسم <code>fallback</code>. نغلّف بها نوع الحقل ونمرّر لها القيمة البديلة، فنحصل على الاسترجاع الهادئ عند وقت التشغيل مع الحفاظ الكامل على تدقيق الأنواع.</p>
+<h2 id="استيراد-دالة-fallback-وضبط-المخطط">استيراد دالة <code>fallback</code> وضبط المخطط</h2>
+<p>في ملف <code>src/routes/products.index.tsx</code>، نستورد <code>fallback</code> من <code>@tanstack/zod-adapter</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+<span class="hljs-keyword">import</span> { fallback, zodValidator } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/zod-adapter&quot;</span>;
+<span class="hljs-keyword">import</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>;
+</code></pre>
+<p>ثم نحدّث المخطط لنغلّف به تعداد الترتيب <code>sort_by</code>، مع إضافة <code>.default(&quot;newest&quot;)</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> productSearchParamsSchema = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">sort_by</span>: <span class="hljs-title function_">fallback</span>(z.<span class="hljs-title function_">enum</span>([<span class="hljs-string">&quot;newest&quot;</span>, <span class="hljs-string">&quot;oldest&quot;</span>, <span class="hljs-string">&quot;price&quot;</span>]), <span class="hljs-string">&quot;newest&quot;</span>).<span class="hljs-title function_">default</span>(
+    <span class="hljs-string">&quot;newest&quot;</span>
+  ),
+  <span class="hljs-attr">product_type</span>: z.<span class="hljs-title function_">enum</span>([<span class="hljs-string">&quot;shoes&quot;</span>, <span class="hljs-string">&quot;t-shirts&quot;</span>]).<span class="hljs-title function_">default</span>(<span class="hljs-string">&quot;shoes&quot;</span>),
+  <span class="hljs-attr">pagination</span>: z
+    .<span class="hljs-title function_">object</span>({
+      <span class="hljs-attr">page</span>: z.<span class="hljs-title function_">number</span>().<span class="hljs-title function_">default</span>(<span class="hljs-number">1</span>),
+      <span class="hljs-attr">pageSize</span>: z.<span class="hljs-title function_">number</span>().<span class="hljs-title function_">default</span>(<span class="hljs-number">10</span>),
+    })
+    .<span class="hljs-title function_">default</span>({}),
+  <span class="hljs-attr">colors</span>: z.<span class="hljs-title function_">array</span>(z.<span class="hljs-title function_">enum</span>([<span class="hljs-string">&quot;red&quot;</span>, <span class="hljs-string">&quot;blue&quot;</span>, <span class="hljs-string">&quot;green&quot;</span>])).<span class="hljs-title function_">optional</span>(),
+  <span class="hljs-attr">sale</span>: z.<span class="hljs-title function_">boolean</span>().<span class="hljs-title function_">default</span>(<span class="hljs-literal">true</span>),
+});
+</code></pre>
+<p>تجمع هذه الصياغة بين أمرين:</p>
+<ul>
+<li>دالة <code>fallback</code>: إذا كَتب المستخدِم قيمة غير مقبولة في العنوان (مثل كلمة غير موجودة في التعداد)، تتراجع القيمة تلقائيًا إلى <code>&quot;newest&quot;</code> بدل إظهار خطأ.</li>
+<li>دالة <code>.default(&quot;newest&quot;)</code>: إذا غاب المعامل كليًّا عن العنوان، تُعطى له القيمة الافتراضية <code>&quot;newest&quot;</code>.</li>
+</ul>
+<h2 id="النتيجة">النتيجة</h2>
+<p>عند إدخال قيمة غير صالحة في شريط العنوان لمسار المنتجات مع تفعيل <code>errorComponent</code>، يعرض المسار مكوّن الخطأ المحدد بوضوح:</p>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--handling-search-params-errors--products-error.png" alt="شاشة الخطأ في مسار المنتجات عند إدخال معاملات غير صالحة"></p>
+<p>وعند تطبيق دالة <code>fallback</code>، يتجنب المستخدِم شاشة الخطأ وتعود الصفحة إلى العرض الطبيعي بالقيمة البديلة، مع بقاء تدقيق الأنواع سليمًا أثناء التطوير.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>اكتب في شريط العنوان <code>/products?sort_by=test</code> وتأكد من أن القيمة المقروءة تعود إلى <code>&quot;newest&quot;</code>.</li>
+<li>احذف معامل <code>sort_by</code> تمامًا من الرابط وتأكد من أن القيمة الافتراضية <code>&quot;newest&quot;</code> تُطبّق تلقائيًا.</li>
+<li>جرّب تطبيق دالة <code>fallback</code> على حقول أخرى في المخطط باتباع النمط نفسه.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=5390s">فيديو الدرس: معالجة أخطاء معاملات البحث</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/search-3">فرع الدرس على GitHub (<code>search-3</code>)</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/search-params">توثيق معاملات البحث (Search Params) في TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعاد صياغته عن درس «معالجة أخطاء معاملات البحث» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع <code>search-3</code> للمستودع الأصلي، وما زاده المترجم من شرحٍ أو توضيحٍ لا يُنسب إلى المؤلف، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,l={book:s,chapter:a,chapterTitle:n,slug:t,title:e,headings:o,html:c};export{s as book,a as chapter,n as chapterTitle,l as default,o as headings,c as html,t as slug,e as title};

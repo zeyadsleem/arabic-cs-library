@@ -1,0 +1,509 @@
+const s="kinney",a="react-typescript",n="React مع TypeScript",l="typescript-template-literal-types",p="أنواع القوالب النصّية",t=[{depth:2,id:"الأساسيات",text:"الأساسيات"},{depth:2,id:"توليفات-أنواع-الاتحاد",text:"توليفات أنواع الاتحاد"},{depth:2,id:"أمان-الأنواع-في-css-in-js",text:"أمان الأنواع في CSS-in-JS"},{depth:2,id:"أنواع-معالجات-الأحداث",text:"أنواع معالِجات الأحداث"},{depth:2,id:"أنواع-مسارات-api",text:"أنواع مسارات API"},{depth:2,id:"أدوات-معالجة-النصوص",text:"أدوات معالجة النصوص"},{depth:2,id:"أنماط-خصائص-مكونات-react",text:"أنماط خصائص مكوّنات React"},{depth:2,id:"اصطلاح-تسمية-bem",text:"اصطلاح تسمية BEM"},{depth:2,id:"أمان-أنواع-tailwind-css",text:"أمان أنواع Tailwind CSS"},{depth:2,id:"أنواع-سلاسل-الاستعلام",text:"أنواع سلاسل الاستعلام"},{depth:2,id:"أنواع-متغيرات-البيئة",text:"أنواع متغيّرات البيئة"},{depth:2,id:"أنواع-استعلامات-قاعدة-البيانات",text:"أنواع استعلامات قاعدة البيانات"},{depth:2,id:"القوالب-النصية-العودية",text:"القوالب النصّية العودية"},{depth:2,id:"مثال-من-العالم-الحقيقي-رسائل-التحقق-من-النماذج",text:"مثال من العالم الحقيقي: رسائل التحقّق من النماذج"},{depth:2,id:"مكون-أيقونة-مع-استيراد-ديناميكي",text:"مكوّن أيقونة مع استيراد ديناميكي"},{depth:2,id:"مطابقة-الأنماط-مع-القوالب-النصية",text:"مطابقة الأنماط مع القوالب النصّية"},{depth:2,id:"أنواع-آلات-الحالة",text:"أنواع آلات الحالة"},{depth:2,id:"أفضل-الممارسات",text:"أفضل الممارسات"},{depth:3,id:"استخدمها-للاتساق",text:"استخدمها للاتّساق"},{depth:3,id:"تجنب-التعقيد-المفرط",text:"تجنّب التعقيد المفرط"},{depth:3,id:"ادمجها-مع-ميزات-أخرى",text:"ادمجها مع ميزات أخرى"},{depth:3,id:"وثق-النية",text:"وثّق النية"},{depth:2,id:"الخلاصة",text:"الخلاصة"}],c=`<p>أتذكر القوالب النصّية (template literals) في JavaScript؟ أخذ TypeScript هذا المفهوم وجعله قوةً خارقة في معالجة النصوص على مستوى الأنواع. تتيح لك أنواع القوالب النصّية إنشاء أنواع حرفية نصّية جديدة عبر دمج الأنواع القائمة وتحويلها. وهي مفيدة إلى حدّ بعيد لـ CSS-in-JS ومسارات API وأسماء الأحداث، وفي كل مكان تحتاج فيه إلى أنماط نصّية آمنة من حيث الأنواع.</p>
+<h2 id="الأساسيات">الأساسيات</h2>
+<p>تستخدم أنواع القوالب النصّية الصيغة نفسها التي تستخدمها القوالب النصّية في JavaScript، لكن على مستوى الأنواع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">World</span> = <span class="hljs-string">&#x27;world&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Greeting</span> = <span class="hljs-string">\`hello <span class="hljs-subst">\${World}</span>\`</span>;
+<span class="hljs-comment">// Type: &quot;hello world&quot;</span>
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">FirstName</span> = <span class="hljs-string">&#x27;Alice&#x27;</span> | <span class="hljs-string">&#x27;Bob&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">LastName</span> = <span class="hljs-string">&#x27;Smith&#x27;</span> | <span class="hljs-string">&#x27;Jones&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">FullName</span> = <span class="hljs-string">\`<span class="hljs-subst">\${FirstName}</span> <span class="hljs-subst">\${LastName}</span>\`</span>;
+<span class="hljs-comment">// Type: &quot;Alice Smith&quot; | &quot;Alice Jones&quot; | &quot;Bob Smith&quot; | &quot;Bob Jones&quot;</span>
+</code></pre>
+<h2 id="توليفات-أنواع-الاتحاد">توليفات أنواع الاتحاد</h2>
+<p>تتألّق أنواع القوالب النصّية حقًا عند دمجها مع أنواع الاتحاد:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Color</span> = <span class="hljs-string">&quot;red&quot;</span> | <span class="hljs-string">&quot;green&quot;</span> | <span class="hljs-string">&quot;blue&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Size</span> = <span class="hljs-string">&quot;small&quot;</span> | <span class="hljs-string">&quot;medium&quot;</span> | <span class="hljs-string">&quot;large&quot;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ClassName</span> = <span class="hljs-string">\`<span class="hljs-subst">\${Size}</span>-<span class="hljs-subst">\${Color}</span>\`</span>;
+<span class="hljs-comment">// Type: &quot;small-red&quot; | &quot;small-green&quot; | &quot;small-blue&quot; |</span>
+<span class="hljs-comment">//       &quot;medium-red&quot; | &quot;medium-green&quot; | &quot;medium-blue&quot; |</span>
+<span class="hljs-comment">//       &quot;large-red&quot; | &quot;large-green&quot; | &quot;large-blue&quot;</span>
+
+<span class="hljs-comment">// In a React component</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> {
+  <span class="hljs-attr">variant</span>: <span class="hljs-title class_">ClassName</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">Button</span> = (<span class="hljs-params">{ variant }: <span class="hljs-title class_">ButtonProps</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{variant}</span>&gt;</span>Click me<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>;
+};
+
+<span class="hljs-comment">// TypeScript enforces valid combinations</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;small-red&quot;</span> /&gt;</span></span>     <span class="hljs-comment">// ✅ Valid</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;huge-purple&quot;</span> /&gt;</span></span>   <span class="hljs-comment">// ❌ Error</span>
+</code></pre>
+<h2 id="أمان-الأنواع-في-css-in-js">أمان الأنواع في CSS-in-JS</h2>
+<p>أنواع القوالب النصّية مثالية لخصائص CSS:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">CSSUnit</span> = <span class="hljs-string">&#x27;px&#x27;</span> | <span class="hljs-string">&#x27;em&#x27;</span> | <span class="hljs-string">&#x27;rem&#x27;</span> | <span class="hljs-string">&#x27;%&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">CSSValue</span> = <span class="hljs-string">\`<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span><span class="hljs-subst">\${CSSUnit}</span>\`</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Styles</span> {
+  <span class="hljs-attr">width</span>?: <span class="hljs-title class_">CSSValue</span>;
+  <span class="hljs-attr">height</span>?: <span class="hljs-title class_">CSSValue</span>;
+  <span class="hljs-attr">margin</span>?: <span class="hljs-title class_">CSSValue</span>;
+  <span class="hljs-attr">padding</span>?: <span class="hljs-title class_">CSSValue</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">styles</span>: <span class="hljs-title class_">Styles</span> = {
+  <span class="hljs-attr">width</span>: <span class="hljs-string">&#x27;100px&#x27;</span>, <span class="hljs-comment">// ✅ Valid</span>
+  <span class="hljs-attr">height</span>: <span class="hljs-string">&#x27;2em&#x27;</span>, <span class="hljs-comment">// ✅ Valid</span>
+  <span class="hljs-attr">margin</span>: <span class="hljs-string">&#x27;1.5rem&#x27;</span>, <span class="hljs-comment">// ✅ Valid</span>
+  <span class="hljs-attr">padding</span>: <span class="hljs-string">&#x27;10&#x27;</span>, <span class="hljs-comment">// ❌ Error: missing unit</span>
+};
+
+<span class="hljs-comment">// More complex CSS patterns</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">FlexDirection</span> = <span class="hljs-string">&#x27;row&#x27;</span> | <span class="hljs-string">&#x27;column&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">FlexWrap</span> = <span class="hljs-string">&#x27;wrap&#x27;</span> | <span class="hljs-string">&#x27;nowrap&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">FlexFlow</span> = <span class="hljs-string">\`<span class="hljs-subst">\${FlexDirection}</span> <span class="hljs-subst">\${FlexWrap}</span>\`</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">FlexStyles</span> {
+  <span class="hljs-attr">flexFlow</span>?: <span class="hljs-title class_">FlexFlow</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">flexContainer</span>: <span class="hljs-title class_">FlexStyles</span> = {
+  <span class="hljs-attr">flexFlow</span>: <span class="hljs-string">&#x27;row wrap&#x27;</span>, <span class="hljs-comment">// ✅ Valid</span>
+  <span class="hljs-comment">// flexFlow: &quot;diagonal wrap&quot; // ❌ Error</span>
+};
+</code></pre>
+<h2 id="أنواع-معالجات-الأحداث">أنواع معالِجات الأحداث</h2>
+<p>أنشئ أسماء معالِجات أحداث آمنة من حيث الأنواع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">DOMEvents</span> = <span class="hljs-string">&quot;click&quot;</span> | <span class="hljs-string">&quot;focus&quot;</span> | <span class="hljs-string">&quot;blur&quot;</span> | <span class="hljs-string">&quot;change&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">EventHandlerName</span> = <span class="hljs-string">\`on<span class="hljs-subst">\${Capitalize&lt;DOMEvents&gt;}</span>\`</span>;
+<span class="hljs-comment">// Type: &quot;onClick&quot; | &quot;onFocus&quot; | &quot;onBlur&quot; | &quot;onChange&quot;</span>
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">EventHandlers</span> = {
+  [K <span class="hljs-keyword">in</span> <span class="hljs-title class_">EventHandlerName</span>]?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+};
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">handlers</span>: <span class="hljs-title class_">EventHandlers</span> = {
+  <span class="hljs-attr">onClick</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;clicked&quot;</span>),
+  <span class="hljs-attr">onFocus</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;focused&quot;</span>),
+  <span class="hljs-comment">// onHover: () =&gt; {} // ❌ Error: not a valid handler</span>
+};
+
+<span class="hljs-comment">// React component with dynamic event handlers</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ElementEvent</span> = <span class="hljs-string">&quot;click&quot;</span> | <span class="hljs-string">&quot;mouseenter&quot;</span> | <span class="hljs-string">&quot;mouseleave&quot;</span> | <span class="hljs-string">&quot;focus&quot;</span> | <span class="hljs-string">&quot;blur&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ElementHandlers</span> = {
+  [K <span class="hljs-keyword">in</span> <span class="hljs-string">\`on<span class="hljs-subst">\${Capitalize&lt;ElementEvent&gt;}</span>\`</span>]?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-title class_">Event</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+};
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">InteractiveElement</span> = (<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-title class_">ElementHandlers</span> &amp; { children: React.ReactNode }</span>) =&gt; {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> {<span class="hljs-attr">...props</span>}&gt;</span>{props.children}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+};
+</code></pre>
+<h2 id="أنواع-مسارات-api">أنواع مسارات API</h2>
+<p>مسارات API آمنة من حيث الأنواع مع معاملات:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Entity</span> = <span class="hljs-string">&#x27;users&#x27;</span> | <span class="hljs-string">&#x27;posts&#x27;</span> | <span class="hljs-string">&#x27;comments&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Operation</span> = <span class="hljs-string">&#x27;get&#x27;</span> | <span class="hljs-string">&#x27;create&#x27;</span> | <span class="hljs-string">&#x27;update&#x27;</span> | <span class="hljs-string">&#x27;delete&#x27;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">APIEndpoint</span> = <span class="hljs-string">\`/api/<span class="hljs-subst">\${Entity}</span>\`</span> | <span class="hljs-string">\`/api/<span class="hljs-subst">\${Entity}</span>/<span class="hljs-subst">\${Operation}</span>\`</span>;
+<span class="hljs-comment">// Type: &quot;/api/users&quot; | &quot;/api/posts&quot; | &quot;/api/comments&quot; |</span>
+<span class="hljs-comment">//       &quot;/api/users/get&quot; | &quot;/api/users/create&quot; | etc.</span>
+
+<span class="hljs-comment">// With ID parameters</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">APIRoute</span> = <span class="hljs-string">\`/api/<span class="hljs-subst">\${Entity}</span>\`</span> | <span class="hljs-string">\`/api/<span class="hljs-subst">\${Entity}</span>/<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>\`</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchData</span>(<span class="hljs-params"><span class="hljs-attr">endpoint</span>: <span class="hljs-title class_">APIEndpoint</span></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">fetch</span>(endpoint);
+}
+
+<span class="hljs-title function_">fetchData</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>); <span class="hljs-comment">// ✅ Valid</span>
+<span class="hljs-title function_">fetchData</span>(<span class="hljs-string">&#x27;/api/posts/create&#x27;</span>); <span class="hljs-comment">// ✅ Valid</span>
+<span class="hljs-title function_">fetchData</span>(<span class="hljs-string">&#x27;/api/invalid&#x27;</span>); <span class="hljs-comment">// ❌ Error</span>
+
+<span class="hljs-comment">// More complex routing</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">RESTMethod</span> = <span class="hljs-string">&#x27;GET&#x27;</span> | <span class="hljs-string">&#x27;POST&#x27;</span> | <span class="hljs-string">&#x27;PUT&#x27;</span> | <span class="hljs-string">&#x27;DELETE&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">RouteWithMethod</span> = <span class="hljs-string">\`<span class="hljs-subst">\${RESTMethod}</span> /api/<span class="hljs-subst">\${Entity}</span>\`</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">routes</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-title class_">RouteWithMethod</span>, <span class="hljs-title class_">Function</span>&gt; = {
+  <span class="hljs-string">&#x27;GET /api/users&#x27;</span>: getUsersHandler,
+  <span class="hljs-string">&#x27;POST /api/users&#x27;</span>: createUserHandler,
+  <span class="hljs-string">&#x27;DELETE /api/posts&#x27;</span>: deletePostHandler,
+  <span class="hljs-comment">// &quot;PATCH /api/users&quot;: updateUserHandler // ❌ Error: PATCH not in RESTMethod</span>
+};
+</code></pre>
+<h2 id="أدوات-معالجة-النصوص">أدوات معالجة النصوص</h2>
+<p>يوفّر TypeScript أدوات مدمجة لمعالجة النصوص:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Greeting</span> = <span class="hljs-string">&#x27;hello world&#x27;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">UpperGreeting</span> = <span class="hljs-title class_">Uppercase</span>&lt;<span class="hljs-title class_">Greeting</span>&gt;;
+<span class="hljs-comment">// Type: &quot;HELLO WORLD&quot;</span>
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">LowerGreeting</span> = <span class="hljs-title class_">Lowercase</span>&lt;<span class="hljs-title class_">UpperGreeting</span>&gt;;
+<span class="hljs-comment">// Type: &quot;hello world&quot;</span>
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">CapitalGreeting</span> = <span class="hljs-title class_">Capitalize</span>&lt;<span class="hljs-title class_">Greeting</span>&gt;;
+<span class="hljs-comment">// Type: &quot;Hello world&quot;</span>
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">UncapitalGreeting</span> = <span class="hljs-title class_">Uncapitalize</span>&lt;<span class="hljs-string">&#x27;Hello World&#x27;</span>&gt;;
+<span class="hljs-comment">// Type: &quot;hello World&quot;</span>
+
+<span class="hljs-comment">// Practical example</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">HTTPMethod</span> = <span class="hljs-string">&#x27;get&#x27;</span> | <span class="hljs-string">&#x27;post&#x27;</span> | <span class="hljs-string">&#x27;put&#x27;</span> | <span class="hljs-string">&#x27;delete&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">MethodHandler</span> = <span class="hljs-string">\`handle<span class="hljs-subst">\${Capitalize&lt;HTTPMethod&gt;}</span>Request\`</span>;
+<span class="hljs-comment">// Type: &quot;handleGetRequest&quot; | &quot;handlePostRequest&quot; | &quot;handlePutRequest&quot; | &quot;handleDeleteRequest&quot;</span>
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">RequestHandlers</span> {
+  <span class="hljs-attr">handleGetRequest</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">handlePostRequest</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">body</span>: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">handlePutRequest</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">body</span>: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">handleDeleteRequest</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+</code></pre>
+<h2 id="أنماط-خصائص-مكونات-react">أنماط خصائص مكوّنات React</h2>
+<p>أنشئ أنماطًا متّسقة لتسمية الخصائص:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Variant props pattern</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Size</span> = <span class="hljs-string">&quot;sm&quot;</span> | <span class="hljs-string">&quot;md&quot;</span> | <span class="hljs-string">&quot;lg&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Color</span> = <span class="hljs-string">&quot;primary&quot;</span> | <span class="hljs-string">&quot;secondary&quot;</span> | <span class="hljs-string">&quot;danger&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Variant</span> = <span class="hljs-string">\`<span class="hljs-subst">\${Size}</span>-<span class="hljs-subst">\${Color}</span>\`</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> {
+  <span class="hljs-attr">variant</span>: <span class="hljs-title class_">Variant</span>;
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactNode</span>;
+}
+
+<span class="hljs-comment">// State props pattern</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Status</span> = <span class="hljs-string">&quot;idle&quot;</span> | <span class="hljs-string">&quot;loading&quot;</span> | <span class="hljs-string">&quot;success&quot;</span> | <span class="hljs-string">&quot;error&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">StatusProp</span> = <span class="hljs-string">\`is<span class="hljs-subst">\${Capitalize&lt;Status&gt;}</span>\`</span>;
+<span class="hljs-comment">// Type: &quot;isIdle&quot; | &quot;isLoading&quot; | &quot;isSuccess&quot; | &quot;isError&quot;</span>
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">StatusFlags</span> = {
+  [K <span class="hljs-keyword">in</span> <span class="hljs-title class_">StatusProp</span>]?: <span class="hljs-built_in">boolean</span>;
+};
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">Component</span> = (<span class="hljs-params"><span class="hljs-attr">props</span>: <span class="hljs-title class_">StatusFlags</span></span>) =&gt; {
+  <span class="hljs-keyword">if</span> (props.<span class="hljs-property">isLoading</span>) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Spinner</span> /&gt;</span></span>;
+  <span class="hljs-keyword">if</span> (props.<span class="hljs-property">isError</span>) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ErrorMessage</span> /&gt;</span></span>;
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Content</span> /&gt;</span></span>;
+};
+
+<span class="hljs-comment">// Data attribute pattern</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">DataAttribute</span> = <span class="hljs-string">\`data-<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>\`</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ElementProps</span> {
+  [<span class="hljs-attr">key</span>: <span class="hljs-title class_">DataAttribute</span>]: <span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span> | <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">className</span>?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">element</span>: <span class="hljs-title class_">ElementProps</span> = {
+  <span class="hljs-string">&quot;data-testid&quot;</span>: <span class="hljs-string">&quot;my-element&quot;</span>,
+  <span class="hljs-string">&quot;data-index&quot;</span>: <span class="hljs-number">5</span>,
+  <span class="hljs-attr">className</span>: <span class="hljs-string">&quot;container&quot;</span>
+};
+</code></pre>
+<h2 id="اصطلاح-تسمية-bem">اصطلاح تسمية BEM</h2>
+<p>نفّذ BEM (Block Element Modifier) مع أمان الأنواع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Block</span> = <span class="hljs-string">&#x27;button&#x27;</span> | <span class="hljs-string">&#x27;card&#x27;</span> | <span class="hljs-string">&#x27;modal&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Element</span> = <span class="hljs-string">&#x27;header&#x27;</span> | <span class="hljs-string">&#x27;body&#x27;</span> | <span class="hljs-string">&#x27;footer&#x27;</span> | <span class="hljs-string">&#x27;icon&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Modifier</span> = <span class="hljs-string">&#x27;primary&#x27;</span> | <span class="hljs-string">&#x27;secondary&#x27;</span> | <span class="hljs-string">&#x27;disabled&#x27;</span> | <span class="hljs-string">&#x27;large&#x27;</span> | <span class="hljs-string">&#x27;small&#x27;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">BEMClassName</span> =
+  <span class="hljs-title class_">Block</span> | <span class="hljs-string">\`<span class="hljs-subst">\${Block}</span>__<span class="hljs-subst">\${Element}</span>\`</span> | <span class="hljs-string">\`<span class="hljs-subst">\${Block}</span>--<span class="hljs-subst">\${Modifier}</span>\`</span> | <span class="hljs-string">\`<span class="hljs-subst">\${Block}</span>__<span class="hljs-subst">\${Element}</span>--<span class="hljs-subst">\${Modifier}</span>\`</span>;
+
+<span class="hljs-comment">// Examples:</span>
+<span class="hljs-comment">// &quot;button&quot;</span>
+<span class="hljs-comment">// &quot;button__icon&quot;</span>
+<span class="hljs-comment">// &quot;button--primary&quot;</span>
+<span class="hljs-comment">// &quot;button__icon--large&quot;</span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">classNames</span>: <span class="hljs-title class_">BEMClassName</span>[] = [
+  <span class="hljs-string">&#x27;button&#x27;</span>,
+  <span class="hljs-string">&#x27;button__icon&#x27;</span>,
+  <span class="hljs-string">&#x27;button--primary&#x27;</span>,
+  <span class="hljs-string">&#x27;button__icon--large&#x27;</span>,
+  <span class="hljs-comment">// &quot;button__invalid&quot;, // ❌ Error: invalid element</span>
+];
+
+<span class="hljs-comment">// BEM class name builder</span>
+<span class="hljs-keyword">function</span> bem&lt;B <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Block</span>&gt;(<span class="hljs-attr">block</span>: B, <span class="hljs-attr">element</span>?: <span class="hljs-title class_">Element</span>, <span class="hljs-attr">modifier</span>?: <span class="hljs-title class_">Modifier</span>): <span class="hljs-title class_">BEMClassName</span> {
+  <span class="hljs-keyword">if</span> (element &amp;&amp; modifier) {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">\`<span class="hljs-subst">\${block}</span>__<span class="hljs-subst">\${element}</span>--<span class="hljs-subst">\${modifier}</span>\`</span>;
+  }
+  <span class="hljs-keyword">if</span> (element) {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">\`<span class="hljs-subst">\${block}</span>__<span class="hljs-subst">\${element}</span>\`</span>;
+  }
+  <span class="hljs-keyword">if</span> (modifier) {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">\`<span class="hljs-subst">\${block}</span>--<span class="hljs-subst">\${modifier}</span>\`</span>;
+  }
+  <span class="hljs-keyword">return</span> block;
+}
+
+<span class="hljs-keyword">const</span> className = <span class="hljs-title function_">bem</span>(<span class="hljs-string">&#x27;button&#x27;</span>, <span class="hljs-string">&#x27;icon&#x27;</span>, <span class="hljs-string">&#x27;large&#x27;</span>); <span class="hljs-comment">// &quot;button__icon--large&quot;</span>
+</code></pre>
+<h2 id="أمان-أنواع-tailwind-css">أمان أنواع Tailwind CSS</h2>
+<p>أنشئ أسماء أصناف Tailwind آمنة من حيث الأنواع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">TailwindSpacing</span> = <span class="hljs-string">&quot;0&quot;</span> | <span class="hljs-string">&quot;1&quot;</span> | <span class="hljs-string">&quot;2&quot;</span> | <span class="hljs-string">&quot;4&quot;</span> | <span class="hljs-string">&quot;8&quot;</span> | <span class="hljs-string">&quot;16&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">TailwindColor</span> = <span class="hljs-string">&quot;red&quot;</span> | <span class="hljs-string">&quot;blue&quot;</span> | <span class="hljs-string">&quot;green&quot;</span> | <span class="hljs-string">&quot;gray&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">TailwindShade</span> = <span class="hljs-string">&quot;100&quot;</span> | <span class="hljs-string">&quot;500&quot;</span> | <span class="hljs-string">&quot;900&quot;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">SpacingClass</span> = <span class="hljs-string">\`<span class="hljs-subst">\${<span class="hljs-string">&quot;p&quot;</span> | <span class="hljs-string">&quot;m&quot;</span>}</span><span class="hljs-subst">\${<span class="hljs-string">&quot;&quot;</span> | <span class="hljs-string">&quot;x&quot;</span> | <span class="hljs-string">&quot;y&quot;</span> | <span class="hljs-string">&quot;t&quot;</span> | <span class="hljs-string">&quot;b&quot;</span> | <span class="hljs-string">&quot;l&quot;</span> | <span class="hljs-string">&quot;r&quot;</span>}</span>-<span class="hljs-subst">\${TailwindSpacing}</span>\`</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ColorClass</span> = <span class="hljs-string">\`<span class="hljs-subst">\${<span class="hljs-string">&quot;text&quot;</span> | <span class="hljs-string">&quot;bg&quot;</span>}</span>-<span class="hljs-subst">\${TailwindColor}</span>-<span class="hljs-subst">\${TailwindShade}</span>\`</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">TailwindClass</span> = <span class="hljs-title class_">SpacingClass</span> | <span class="hljs-title class_">ColorClass</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TailwindProps</span> {
+  <span class="hljs-attr">className</span>?: <span class="hljs-title class_">TailwindClass</span> | <span class="hljs-string">\`<span class="hljs-subst">\${TailwindClass}</span> <span class="hljs-subst">\${TailwindClass}</span>\`</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">Component</span> = (<span class="hljs-params">{ className }: <span class="hljs-title class_">TailwindProps</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{className}</span>&gt;</span>Content<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+};
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;px-4&quot;</span> /&gt;</span></span>              <span class="hljs-comment">// ✅ Valid</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-blue-500&quot;</span> /&gt;</span></span>       <span class="hljs-comment">// ✅ Valid</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;px-4 text-red-500&quot;</span> /&gt;</span></span> <span class="hljs-comment">// ✅ Valid</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;invalid-class&quot;</span> /&gt;</span></span>     <span class="hljs-comment">// ❌ Error</span>
+</code></pre>
+<h2 id="أنواع-سلاسل-الاستعلام">أنواع سلاسل الاستعلام</h2>
+<p>معاملات استعلام URL آمنة من حيث الأنواع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">QueryParam</span> = <span class="hljs-string">&#x27;page&#x27;</span> | <span class="hljs-string">&#x27;limit&#x27;</span> | <span class="hljs-string">&#x27;sort&#x27;</span> | <span class="hljs-string">&#x27;filter&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">QueryString</span> = <span class="hljs-string">\`?<span class="hljs-subst">\${QueryParam}</span>=<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>\`</span> | <span class="hljs-string">\`?<span class="hljs-subst">\${QueryParam}</span>=<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>&amp;<span class="hljs-subst">\${QueryString}</span>\`</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">buildURL</span>(<span class="hljs-params"><span class="hljs-attr">base</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">query</span>: <span class="hljs-title class_">QueryString</span></span>): <span class="hljs-built_in">string</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-string">\`<span class="hljs-subst">\${base}</span><span class="hljs-subst">\${query}</span>\`</span>;
+}
+
+<span class="hljs-title function_">buildURL</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>, <span class="hljs-string">&#x27;?page=1&#x27;</span>); <span class="hljs-comment">// ✅ Valid</span>
+<span class="hljs-title function_">buildURL</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>, <span class="hljs-string">&#x27;?page=1&amp;limit=10&#x27;</span>); <span class="hljs-comment">// ✅ Valid</span>
+<span class="hljs-title function_">buildURL</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>, <span class="hljs-string">&#x27;?invalid=value&#x27;</span>); <span class="hljs-comment">// ❌ Error</span>
+
+<span class="hljs-comment">// More sophisticated query builder</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">QueryValue</span> = <span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span> | <span class="hljs-built_in">boolean</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">QueryPair</span>&lt;K <span class="hljs-keyword">extends</span> <span class="hljs-title class_">QueryParam</span>&gt; = <span class="hljs-string">\`<span class="hljs-subst">\${K}</span>=<span class="hljs-subst">\${QueryValue}</span>\`</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">BuildQuery</span>&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">QueryParam</span>[]&gt; = T <span class="hljs-keyword">extends</span> []
+  ? <span class="hljs-string">&#x27;&#x27;</span>
+  : T <span class="hljs-keyword">extends</span> [infer <span class="hljs-title class_">First</span>, ...infer <span class="hljs-title class_">Rest</span>]
+    ? <span class="hljs-title class_">First</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">QueryParam</span>
+      ? <span class="hljs-title class_">Rest</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">QueryParam</span>[]
+        ? <span class="hljs-string">\`<span class="hljs-subst">\${QueryPair&lt;First&gt;}</span><span class="hljs-subst">\${Rest <span class="hljs-keyword">extends</span> [] ? <span class="hljs-string">&#x27;&#x27;</span> : <span class="hljs-string">\`&amp;<span class="hljs-subst">\${BuildQuery&lt;Rest&gt;}</span>\`</span>}</span>\`</span>
+        : <span class="hljs-built_in">never</span>
+      : <span class="hljs-built_in">never</span>
+    : <span class="hljs-built_in">never</span>;
+</code></pre>
+<h2 id="أنواع-متغيرات-البيئة">أنواع متغيّرات البيئة</h2>
+<p>متغيّرات بيئة آمنة من حيث الأنواع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">EnvPrefix</span> = <span class="hljs-string">&#x27;REACT_APP_&#x27;</span> | <span class="hljs-string">&#x27;NEXT_PUBLIC_&#x27;</span> | <span class="hljs-string">&#x27;VITE_&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">EnvKey</span> = <span class="hljs-string">&#x27;API_URL&#x27;</span> | <span class="hljs-string">&#x27;API_KEY&#x27;</span> | <span class="hljs-string">&#x27;ENVIRONMENT&#x27;</span> | <span class="hljs-string">&#x27;VERSION&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">EnvVar</span> = <span class="hljs-string">\`<span class="hljs-subst">\${EnvPrefix}</span><span class="hljs-subst">\${EnvKey}</span>\`</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProcessEnv</span> {
+  [<span class="hljs-attr">key</span>: <span class="hljs-title class_">EnvVar</span>]: <span class="hljs-built_in">string</span> | <span class="hljs-literal">undefined</span>;
+}
+
+<span class="hljs-keyword">declare</span> <span class="hljs-variable language_">global</span> {
+  <span class="hljs-keyword">namespace</span> <span class="hljs-title class_">NodeJS</span> {
+    <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProcessEnv</span> {
+      <span class="hljs-attr">REACT_APP_API_URL</span>: <span class="hljs-built_in">string</span>;
+      <span class="hljs-attr">REACT_APP_API_KEY</span>: <span class="hljs-built_in">string</span>;
+      <span class="hljs-attr">REACT_APP_ENVIRONMENT</span>: <span class="hljs-string">&#x27;development&#x27;</span> | <span class="hljs-string">&#x27;production&#x27;</span> | <span class="hljs-string">&#x27;test&#x27;</span>;
+      <span class="hljs-attr">REACT_APP_VERSION</span>: <span class="hljs-built_in">string</span>;
+    }
+  }
+}
+
+<span class="hljs-comment">// Now process.env is type-safe</span>
+<span class="hljs-keyword">const</span> apiUrl = process.<span class="hljs-property">env</span>.<span class="hljs-property">REACT_APP_API_URL</span>; <span class="hljs-comment">// string</span>
+<span class="hljs-keyword">const</span> env = process.<span class="hljs-property">env</span>.<span class="hljs-property">REACT_APP_ENVIRONMENT</span>; <span class="hljs-comment">// &quot;development&quot; | &quot;production&quot; | &quot;test&quot;</span>
+</code></pre>
+<h2 id="أنواع-استعلامات-قاعدة-البيانات">أنواع استعلامات قاعدة البيانات</h2>
+<p>عمليات قاعدة بيانات آمنة من حيث الأنواع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Table</span> = <span class="hljs-string">&#x27;users&#x27;</span> | <span class="hljs-string">&#x27;posts&#x27;</span> | <span class="hljs-string">&#x27;comments&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Operation</span> = <span class="hljs-string">&#x27;SELECT&#x27;</span> | <span class="hljs-string">&#x27;INSERT&#x27;</span> | <span class="hljs-string">&#x27;UPDATE&#x27;</span> | <span class="hljs-string">&#x27;DELETE&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">SQLQuery</span> = <span class="hljs-string">\`<span class="hljs-subst">\${Operation}</span> <span class="hljs-subst">\${<span class="hljs-string">&#x27;*&#x27;</span> | <span class="hljs-built_in">string</span>}</span> FROM <span class="hljs-subst">\${Table}</span>\`</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Query</span> =
+  | <span class="hljs-string">\`SELECT * FROM <span class="hljs-subst">\${Table}</span>\`</span>
+  | <span class="hljs-string">\`SELECT <span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span> FROM <span class="hljs-subst">\${Table}</span> WHERE <span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>\`</span>
+  | <span class="hljs-string">\`INSERT INTO <span class="hljs-subst">\${Table}</span> (<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>) VALUES (<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>)\`</span>
+  | <span class="hljs-string">\`UPDATE <span class="hljs-subst">\${Table}</span> SET <span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span> WHERE <span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>\`</span>
+  | <span class="hljs-string">\`DELETE FROM <span class="hljs-subst">\${Table}</span> WHERE <span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>\`</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">executeQuery</span>(<span class="hljs-params"><span class="hljs-attr">query</span>: <span class="hljs-title class_">Query</span></span>) {
+  <span class="hljs-comment">// Execute query</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`Executing: <span class="hljs-subst">\${query}</span>\`</span>);
+}
+
+<span class="hljs-title function_">executeQuery</span>(<span class="hljs-string">&#x27;SELECT * FROM users&#x27;</span>); <span class="hljs-comment">// ✅</span>
+<span class="hljs-title function_">executeQuery</span>(<span class="hljs-string">&#x27;SELECT id, name FROM users WHERE id = 1&#x27;</span>); <span class="hljs-comment">// ✅</span>
+<span class="hljs-title function_">executeQuery</span>(<span class="hljs-string">&#x27;DELETE FROM posts WHERE id = 5&#x27;</span>); <span class="hljs-comment">// ✅</span>
+<span class="hljs-comment">// executeQuery(&quot;DROP TABLE users&quot;);                          // ❌ Error</span>
+</code></pre>
+<h2 id="القوالب-النصية-العودية">القوالب النصّية العودية</h2>
+<p>أنشئ أنماطًا نصّية عودية:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Digit</span> = <span class="hljs-string">&#x27;0&#x27;</span> | <span class="hljs-string">&#x27;1&#x27;</span> | <span class="hljs-string">&#x27;2&#x27;</span> | <span class="hljs-string">&#x27;3&#x27;</span> | <span class="hljs-string">&#x27;4&#x27;</span> | <span class="hljs-string">&#x27;5&#x27;</span> | <span class="hljs-string">&#x27;6&#x27;</span> | <span class="hljs-string">&#x27;7&#x27;</span> | <span class="hljs-string">&#x27;8&#x27;</span> | <span class="hljs-string">&#x27;9&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">TwoDigits</span> = <span class="hljs-string">\`<span class="hljs-subst">\${Digit}</span><span class="hljs-subst">\${Digit}</span>\`</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Year</span> = <span class="hljs-string">\`20<span class="hljs-subst">\${TwoDigits}</span>\`</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Month</span> = <span class="hljs-string">&#x27;01&#x27;</span> | <span class="hljs-string">&#x27;02&#x27;</span> | <span class="hljs-string">&#x27;03&#x27;</span> | <span class="hljs-string">&#x27;04&#x27;</span> | <span class="hljs-string">&#x27;05&#x27;</span> | <span class="hljs-string">&#x27;06&#x27;</span> | <span class="hljs-string">&#x27;07&#x27;</span> | <span class="hljs-string">&#x27;08&#x27;</span> | <span class="hljs-string">&#x27;09&#x27;</span> | <span class="hljs-string">&#x27;10&#x27;</span> | <span class="hljs-string">&#x27;11&#x27;</span> | <span class="hljs-string">&#x27;12&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Day</span> = <span class="hljs-title class_">TwoDigits</span>; <span class="hljs-comment">// Simplified</span>
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">DateString</span> = <span class="hljs-string">\`<span class="hljs-subst">\${Year}</span>-<span class="hljs-subst">\${Month}</span>-<span class="hljs-subst">\${Day}</span>\`</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">validDate</span>: <span class="hljs-title class_">DateString</span> = <span class="hljs-string">&#x27;2024-03-15&#x27;</span>; <span class="hljs-comment">// ✅</span>
+<span class="hljs-comment">// const invalidDate: DateString = &quot;24-3-15&quot;;  // ❌ Error</span>
+
+<span class="hljs-comment">// Path segments</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PathSegment</span> = <span class="hljs-built_in">string</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Path</span> = <span class="hljs-string">\`/<span class="hljs-subst">\${PathSegment}</span>\`</span> | <span class="hljs-string">\`/<span class="hljs-subst">\${PathSegment}</span>/<span class="hljs-subst">\${Path}</span>\`</span>;
+
+<span class="hljs-comment">// Note: TypeScript has recursion depth limits, so this won&#x27;t work infinitely</span>
+</code></pre>
+<h2 id="مثال-من-العالم-الحقيقي-رسائل-التحقق-من-النماذج">مثال من العالم الحقيقي: رسائل التحقّق من النماذج</h2>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">FieldName</span> = <span class="hljs-string">&quot;email&quot;</span> | <span class="hljs-string">&quot;password&quot;</span> | <span class="hljs-string">&quot;username&quot;</span> | <span class="hljs-string">&quot;age&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ValidationRule</span> = <span class="hljs-string">&quot;required&quot;</span> | <span class="hljs-string">&quot;minLength&quot;</span> | <span class="hljs-string">&quot;maxLength&quot;</span> | <span class="hljs-string">&quot;pattern&quot;</span> | <span class="hljs-string">&quot;min&quot;</span> | <span class="hljs-string">&quot;max&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ValidationMessage</span> = <span class="hljs-string">\`<span class="hljs-subst">\${FieldName}</span>_<span class="hljs-subst">\${ValidationRule}</span>\`</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">validationMessages</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-title class_">ValidationMessage</span>, <span class="hljs-built_in">string</span>&gt; = {
+  <span class="hljs-attr">email_required</span>: <span class="hljs-string">&quot;Email is required&quot;</span>,
+  <span class="hljs-attr">email_pattern</span>: <span class="hljs-string">&quot;Please enter a valid email&quot;</span>,
+  <span class="hljs-attr">password_required</span>: <span class="hljs-string">&quot;Password is required&quot;</span>,
+  <span class="hljs-attr">password_minLength</span>: <span class="hljs-string">&quot;Password must be at least 8 characters&quot;</span>,
+  <span class="hljs-attr">username_required</span>: <span class="hljs-string">&quot;Username is required&quot;</span>,
+  <span class="hljs-attr">username_maxLength</span>: <span class="hljs-string">&quot;Username must be less than 20 characters&quot;</span>,
+  <span class="hljs-attr">age_required</span>: <span class="hljs-string">&quot;Age is required&quot;</span>,
+  <span class="hljs-attr">age_min</span>: <span class="hljs-string">&quot;You must be at least 18&quot;</span>,
+  <span class="hljs-attr">age_max</span>: <span class="hljs-string">&quot;Please enter a valid age&quot;</span>
+};
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ValidationError</span> {
+  <span class="hljs-attr">field</span>: <span class="hljs-title class_">FieldName</span>;
+  <span class="hljs-attr">rule</span>: <span class="hljs-title class_">ValidationRule</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">getErrorMessage</span>(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-title class_">ValidationError</span></span>): <span class="hljs-built_in">string</span> {
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">key</span>: <span class="hljs-title class_">ValidationMessage</span> = <span class="hljs-string">\`<span class="hljs-subst">\${error.field}</span>_<span class="hljs-subst">\${error.rule}</span>\`</span>;
+  <span class="hljs-keyword">return</span> validationMessages[key] || <span class="hljs-string">&quot;Validation error&quot;</span>;
+}
+
+<span class="hljs-comment">// Usage in a React component</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">FormField</span> = (<span class="hljs-params">{ field, rule }: <span class="hljs-title class_">ValidationError</span></span>) =&gt; {
+  <span class="hljs-keyword">const</span> message = <span class="hljs-title function_">getErrorMessage</span>({ field, rule });
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;error&quot;</span>&gt;</span>{message}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>;
+};
+</code></pre>
+<h2 id="مكون-أيقونة-مع-استيراد-ديناميكي">مكوّن أيقونة مع استيراد ديناميكي</h2>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">IconName</span> = <span class="hljs-string">&quot;home&quot;</span> | <span class="hljs-string">&quot;user&quot;</span> | <span class="hljs-string">&quot;settings&quot;</span> | <span class="hljs-string">&quot;search&quot;</span> | <span class="hljs-string">&quot;heart&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">IconSize</span> = <span class="hljs-string">&quot;sm&quot;</span> | <span class="hljs-string">&quot;md&quot;</span> | <span class="hljs-string">&quot;lg&quot;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">IconVariant</span> = <span class="hljs-string">&quot;outline&quot;</span> | <span class="hljs-string">&quot;solid&quot;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">IconComponent</span> = <span class="hljs-string">\`<span class="hljs-subst">\${Capitalize&lt;IconName&gt;}</span>Icon\`</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">IconClass</span> = <span class="hljs-string">\`icon-<span class="hljs-subst">\${IconSize}</span>\`</span> | <span class="hljs-string">\`icon-<span class="hljs-subst">\${IconVariant}</span>\`</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">IconProps</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-title class_">IconName</span>;
+  <span class="hljs-attr">size</span>?: <span class="hljs-title class_">IconSize</span>;
+  <span class="hljs-attr">variant</span>?: <span class="hljs-title class_">IconVariant</span>;
+  <span class="hljs-attr">className</span>?: <span class="hljs-title class_">IconClass</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">Icon</span> = (<span class="hljs-params">{ name, size = <span class="hljs-string">&quot;md&quot;</span>, variant = <span class="hljs-string">&quot;outline&quot;</span> }: <span class="hljs-title class_">IconProps</span></span>) =&gt; {
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">className</span>: <span class="hljs-title class_">IconClass</span> = <span class="hljs-string">\`icon-<span class="hljs-subst">\${size}</span>\`</span>;
+
+  <span class="hljs-comment">// Dynamic icon selection</span>
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">iconComponents</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-title class_">IconComponent</span>, <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span>&gt; = {
+    <span class="hljs-title class_">HomeIcon</span>: <span class="hljs-title class_">HomeIconComponent</span>,
+    <span class="hljs-title class_">UserIcon</span>: <span class="hljs-title class_">UserIconComponent</span>,
+    <span class="hljs-title class_">SettingsIcon</span>: <span class="hljs-title class_">SettingsIconComponent</span>,
+    <span class="hljs-title class_">SearchIcon</span>: <span class="hljs-title class_">SearchIconComponent</span>,
+    <span class="hljs-title class_">HeartIcon</span>: <span class="hljs-title class_">HeartIconComponent</span>
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title class_">IconComponent</span> = iconComponents[<span class="hljs-string">\`<span class="hljs-subst">\${name.charAt(<span class="hljs-number">0</span>).toUpperCase()}</span><span class="hljs-subst">\${name.slice(<span class="hljs-number">1</span>)}</span>Icon\`</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">IconComponent</span>];
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">IconComponent</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{className}</span> /&gt;</span></span>;
+};
+</code></pre>
+<h2 id="مطابقة-الأنماط-مع-القوالب-النصية">مطابقة الأنماط مع القوالب النصّية</h2>
+<pre><code class="language-typescript"><span class="hljs-comment">// Email validation at type level</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Email</span> = <span class="hljs-string">\`<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>@<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>.<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>\`</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">sendEmail</span>(<span class="hljs-params"><span class="hljs-attr">to</span>: <span class="hljs-title class_">Email</span></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`Sending email to <span class="hljs-subst">\${to}</span>\`</span>);
+}
+
+<span class="hljs-title function_">sendEmail</span>(<span class="hljs-string">&#x27;user@example.com&#x27;</span>); <span class="hljs-comment">// Works at runtime</span>
+<span class="hljs-comment">// Note: TypeScript can&#x27;t actually validate email format at compile time</span>
+<span class="hljs-comment">// This is more for documentation/intent</span>
+
+<span class="hljs-comment">// URL pattern</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Protocol</span> = <span class="hljs-string">&#x27;http&#x27;</span> | <span class="hljs-string">&#x27;https&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Domain</span> = <span class="hljs-built_in">string</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">URLPattern</span> = <span class="hljs-string">\`<span class="hljs-subst">\${Protocol}</span>://<span class="hljs-subst">\${Domain}</span>\`</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchFromURL</span>(<span class="hljs-params"><span class="hljs-attr">url</span>: <span class="hljs-title class_">URLPattern</span></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">fetch</span>(url);
+}
+
+<span class="hljs-title function_">fetchFromURL</span>(<span class="hljs-string">&#x27;https://api.example.com&#x27;</span>); <span class="hljs-comment">// ✅</span>
+<span class="hljs-title function_">fetchFromURL</span>(<span class="hljs-string">&#x27;ftp://files.example.com&#x27;</span>); <span class="hljs-comment">// Would fail at runtime</span>
+</code></pre>
+<h2 id="أنواع-آلات-الحالة">أنواع آلات الحالة</h2>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">State</span> = <span class="hljs-string">&#x27;idle&#x27;</span> | <span class="hljs-string">&#x27;loading&#x27;</span> | <span class="hljs-string">&#x27;success&#x27;</span> | <span class="hljs-string">&#x27;error&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Action</span> = <span class="hljs-string">&#x27;fetch&#x27;</span> | <span class="hljs-string">&#x27;resolve&#x27;</span> | <span class="hljs-string">&#x27;reject&#x27;</span> | <span class="hljs-string">&#x27;reset&#x27;</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Transition</span> = <span class="hljs-string">\`<span class="hljs-subst">\${State}</span>_<span class="hljs-subst">\${Action}</span>\`</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ValidTransitions</span> =
+  <span class="hljs-string">&#x27;idle_fetch&#x27;</span> | <span class="hljs-string">&#x27;loading_resolve&#x27;</span> | <span class="hljs-string">&#x27;loading_reject&#x27;</span> | <span class="hljs-string">&#x27;success_reset&#x27;</span> | <span class="hljs-string">&#x27;error_reset&#x27;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">transitions</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-title class_">ValidTransitions</span>, <span class="hljs-title class_">State</span>&gt; = {
+  <span class="hljs-attr">idle_fetch</span>: <span class="hljs-string">&#x27;loading&#x27;</span>,
+  <span class="hljs-attr">loading_resolve</span>: <span class="hljs-string">&#x27;success&#x27;</span>,
+  <span class="hljs-attr">loading_reject</span>: <span class="hljs-string">&#x27;error&#x27;</span>,
+  <span class="hljs-attr">success_reset</span>: <span class="hljs-string">&#x27;idle&#x27;</span>,
+  <span class="hljs-attr">error_reset</span>: <span class="hljs-string">&#x27;idle&#x27;</span>,
+};
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">transition</span>(<span class="hljs-params"><span class="hljs-attr">currentState</span>: <span class="hljs-title class_">State</span>, <span class="hljs-attr">action</span>: <span class="hljs-title class_">Action</span></span>): <span class="hljs-title class_">State</span> {
+  <span class="hljs-keyword">const</span> key = <span class="hljs-string">\`<span class="hljs-subst">\${currentState}</span>_<span class="hljs-subst">\${action}</span>\`</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">ValidTransitions</span>;
+  <span class="hljs-keyword">return</span> transitions[key] || currentState;
+}
+</code></pre>
+<h2 id="أفضل-الممارسات">أفضل الممارسات <span class="content-anchor" id="best-practices"></span></h2>
+<h3 id="استخدمها-للاتساق">استخدمها للاتّساق</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Good: Enforce naming patterns</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ComponentName</span> = <span class="hljs-string">\`<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>Component\`</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">HookName</span> = <span class="hljs-string">\`use<span class="hljs-subst">\${Capitalize&lt;<span class="hljs-built_in">string</span>&gt;}</span>\`</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">HandlerName</span> = <span class="hljs-string">\`handle<span class="hljs-subst">\${Capitalize&lt;<span class="hljs-built_in">string</span>&gt;}</span>\`</span>;
+</code></pre>
+<h3 id="تجنب-التعقيد-المفرط">تجنّب التعقيد المفرط</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Too complex</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ComplexPattern</span> = <span class="hljs-string">\`<span class="hljs-subst">\${Uppercase&lt;<span class="hljs-built_in">string</span>&gt;}</span>_<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>_<span class="hljs-subst">\${Lowercase&lt;<span class="hljs-built_in">string</span>&gt;}</span>-<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>\`</span>;
+
+<span class="hljs-comment">// ✅ Simple and clear</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">SimplePattern</span> = <span class="hljs-string">\`<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>-<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>\`</span>;
+</code></pre>
+<h3 id="ادمجها-مع-ميزات-أخرى">ادمجها مع ميزات أخرى</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Template literals + mapped types</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Getters</span>&lt;T&gt; = {
+  [K <span class="hljs-keyword">in</span> keyof T <span class="hljs-keyword">as</span> <span class="hljs-string">\`get<span class="hljs-subst">\${Capitalize&lt;<span class="hljs-built_in">string</span> &amp; K&gt;}</span>\`</span>]: <span class="hljs-function">() =&gt;</span> T[K];
+};
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">UserGetters</span> = <span class="hljs-title class_">Getters</span>&lt;<span class="hljs-title class_">User</span>&gt;;
+<span class="hljs-comment">// Type: {</span>
+<span class="hljs-comment">//   getName: () =&gt; string;</span>
+<span class="hljs-comment">//   getAge: () =&gt; number;</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<h3 id="وثق-النية">وثّق النية</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// Make the pattern clear</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ISO8601Date</span> = <span class="hljs-string">\`<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>-<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>-<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>T<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>:<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>:<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>Z\`</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-variable constant_">UUID</span> = <span class="hljs-string">\`<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>-<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>-<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>-<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>-<span class="hljs-subst">\${<span class="hljs-built_in">string</span>}</span>\`</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">SemVer</span> = <span class="hljs-string">\`<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>.<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>.<span class="hljs-subst">\${<span class="hljs-built_in">number</span>}</span>\`</span>;
+</code></pre>
+<h2 id="الخلاصة">الخلاصة</h2>
+<p>تنقل أنواع القوالب النصّية قوة قوالب النصوص في JavaScript إلى نظام أنواع TypeScript. وهي تتيح:</p>
+<ol>
+<li><strong>أنماط نصّية آمنة من حيث الأنواع</strong> — تفرض تسميةً وتنسيقًا متّسقين</li>
+<li><strong>أمان CSS-in-JS</strong> — تفحص أسماء الأصناف والأنماط</li>
+<li><strong>أنواع مسارات API</strong> — تضمن نقاط نهاية صالحة</li>
+<li><strong>أنماط معالِجات الأحداث</strong> — تسمية أحداث متّسقة</li>
+<li><strong>التحقّق من الإعدادات</strong> — متغيّرات بيئة آمنة من حيث الأنواع</li>
+</ol>
+<p>أتقن أنواع القوالب النصّية، وستكتب تطبيقات React بمستوى غير مسبوق من أمان أنواع النصوص!</p>
+`,e={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:c};export{s as book,a as chapter,n as chapterTitle,e as default,t as headings,c as html,l as slug,p as title};

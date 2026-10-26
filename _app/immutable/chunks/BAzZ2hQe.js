@@ -1,0 +1,101 @@
+const s="tanstack-router",e="router",t="دورة TanStack Router الكاملة",o="context",a="السياق (Context)",n=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"فكرة-السياق-وقيمها-العملية",text:"فكرة السياق وقيمُها العملية"},{depth:2,id:"مثال-الدرس-مستخدم-يمرر-في-سياق-الجذر",text:"مثال الدرس: مستخدِم يُمرَّر في سياق الجذر"},{depth:3,id:"واجهة-السياق-في-مسار-الجذر-مع-createrootroutewithcontext",text:"واجهة السياق في مسار الجذر مع createRootRouteWithContext"},{depth:3,id:"قيمة-السياق-الابتدائية-في-maintsx",text:"قيمة السياق الابتدائية في main.tsx"},{depth:3,id:"قراءة-السياق-في-المكون-عبر-useroutecontext",text:"قراءة السياق في المكوّن عبر useRouteContext"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],c=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>يفتح هذا الدرس موضوعًا جديدًا بعد أن فرغنا في الدرس السابق من طرق التنقّل البرمجيّ: هو السياق (context). ينبّه المؤلف فورًا إلى أنّ الفكرة قريبة من سياق <code>React</code> الذي قد تكون مألوفًا به، لكنّهما شيئان مختلفان في الحقيقة، ومن الممكن تمامًا استخدامهما معًا في المشروع ذاته. وفكرة السياق في <code>TanStack Router</code> أنّ أيَّ عقدة من شجرة المسارات يمكن أن تحمل سياقًا معرَّفًا؛ فإذا عرّفته عند مسار الجذر (root route) أثناء تهيئة الموجّه صار متاحًا لكل المسارات: يقرؤه مكوّن أيّ مسار، وسيصل إليه ما وراءه من مُحمِّلات البيانات (loader) حين نصل إلى قسمِها القادم.</p>
+<p>يبني الدرس مثالًا صغيرًا عمداً، ويعترف المؤلف أنّه ليس واقعيًا: مستخدِم يُمرَّر في سياق الجذر، فيكون وجودُه معناه أنّنا مسجّلون للدخول، وغيابُه معناه العكس. والخطوات مترتّبة: نعرّف في مسار الجذر نوعَ المستخدِم وواجهةَ السياق، ثم نستبدل <code>createRootRoute</code> بالبديلة <code>createRootRouteWithContext</code> مرّرنا لها نوعَ السياق كي يكسبنا <code>TypeScript</code> أمانَ الأنواع (<code>type safety</code>) مرّتين: عند ضبط السياق وعند قراءته. بعدها يتوقّف المشروعُ في <code>main.tsx</code> لأنّ الموجّه صار يطالب بقيمة ابتدائية للسياق، فنمرّرها عبر خيار <code>context</code> في <code>createRouter</code>. ونختم بقراءة السياق في مكوّن الجذر بخُطّاف (hook) اسمه <code>Route.useRouteContext()</code>، فتتبادل الترويسةُ أعلى التطبيق رسالةَ الترحيب باسم المستخدِم ورسالةَ استقبال الزائِر.</p>
+<p>ويلفت النظر أنّ كلَّ ما في هذا الدرس يدور بين ملفين اثنين: <code>src/routes/__root.tsx</code> و<code>src/main.tsx</code>؛ فما سواهما من المشروع باقٍ على حاله من الدروس السابقة.</p>
+<h2 id="فكرة-السياق-وقيمها-العملية">فكرة السياق وقيمُها العملية</h2>
+<p>قبل أول سطرٍ من الشيفرة يرسم المؤلف الصورة العامّة. التعريف بسيط: السياق بياناتٌ أو دالّة أو حالة تربطها بعقدة من شجرة المسارات. غير أنّ قوّته تظهر في موضعه: حين تعرّفه عند الجذر وتُمرّره أثناء تهيئة الموجّه صار متاحًا لكل المسارات دفعةً واحدة، فتصل إليه في مكوّن أيّ مسارٍ كان، ويصله في دالّة التحميل حين يأتي قسمُها المخصّص. إذن هذه وسيلةٌ لمشاركة البيانات عبر مسارات متعدّدة بلا وعكة استيرادٍ وتصديرٍ في كل موضع.</p>
+<p>ومن أبرز استخداماته التي عدّدها المؤلف:</p>
+<ul>
+<li>مشاركة البيانات عبر مسارات متعدّدة من دون أن تُستورد وتُصدَّر في كل موضع.</li>
+<li>تمرير دوالّ جلب البيانات (<code>data fetching</code>)، أو تهيئة عميل (<code>client</code>) في الجذر ثم تمريره في كل مكان، فيُستهلَك من المسارات دون أن تعيد في كل ملف أداءَ استيراده وتصديره.</li>
+<li>معلومات المصادقة (<code>authentication</code>): لو أنّ لديك في الجذر موفّر مصادقة يقدِّم معلومات المستخدِم وحالةَ تسجيل دخوله، صارت متاحة في كل مكان، وعندها تستطيع أن تحمي بها بعض المسارات.</li>
+<li>مسار التنقّل المختصَر (<code>breadcrumbs</code>)، ومسائل <code>SEO</code>، ووسوم العنوان (<code>title</code>)، والوسوم الوصفية (<code>meta</code>)، والأوصاف؛ من ذلك الجنس الذي تحتاجُه في أكثر من موضع لا في واحد.</li>
+</ul>
+<p>وفي مقابل سياق الجذر هناك خيارُ التخصيص: يمكن تعريف سياقٍ في مسارٍ بعينه، فلا يطال عندئذٍ إلا هذا المسار وأبناءه. وحين تكون لديك بيانات لا يستهلكها في الشجرة إلا مقطعٌ واحد، كان هذا موضعَها الطبيعي. هذه هي الفكرة العامّة، وقد علّق المؤلف أنّ ما ينفَّذ في هذا الدرس أمثلةٌ بسيطة، وربما وفَّر لفيديو آخر أمثلةً أكثر واقعية لاستخدام السياق.</p>
+<h2 id="مثال-الدرس-مستخدم-يمرر-في-سياق-الجذر">مثال الدرس: مستخدِم يُمرَّر في سياق الجذر</h2>
+<p>نتظاهر بأنّ للمشروع نظام مصادقة، ويقول المؤلف صراحةً إنّ ما سيفعله ليس واقعيًا كثيرًا؛ فالمقصود فحصُ ميكانيكية السياق لا بناءُ جلسة حقيقية: مستخدِم نحتاج تمريره إلى كل المسارات، ووجودُه حجّةُ تسجيل الدخول وغيابُه حجّةُ الخروج. افتَح الملفين المذكورَين، وابدأ من مسار الجذر.</p>
+<h3 id="واجهة-السياق-في-مسار-الجذر-مع-createrootroutewithcontext">واجهة السياق في مسار الجذر مع <code>createRootRouteWithContext</code></h3>
+<p>وفي مسار الجذر ثلاثة تعريفات متوالية: أولًا نوعٌ بسيط لمستخدِمنا له مُعرّف (<code>id</code>) واسم، ثُمّ واجهةٌ للسياق، ثُمّ أهمّ تعديلٍ في هذا الملف: بدل استدعاء <code>createRootRoute</code> المعتادة نستدعي <code>createRootRouteWithContext</code> المستوردَة من <code>@tanstack/react-router</code>، فيلتحُق مكانَ الاسم القديم في جملة الاستيراد:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">Link</span>,
+  <span class="hljs-title class_">Outlet</span>,
+  createRootRouteWithContext,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">TanStackRouterDevtools</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router-devtools&quot;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">RootRouteContext</span> {
+  <span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span> | <span class="hljs-literal">null</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = createRootRouteWithContext&lt;<span class="hljs-title class_">RootRouteContext</span>&gt;()({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RootComponent</span>,
+});
+</code></pre>
+<p>والتعريف السابق أعقد من شكله، وهذه نقاطه:</p>
+<ul>
+<li><code>User</code> هو نوع المستخدِم: مُعرّفٌ واسم، هذا كلُّ ماهيّته.</li>
+<li><code>RootRouteContext</code> واجهة السياق الخاص بجذر التطبيق، ومحتواها حقلٌ وحيد اسمه <code>user</code>، وقيمةُه إمّا من نوع <code>User</code> وإمّا <code>null</code> إذا كنّا خارج تسجيل الدخول؛ فالغيابُ حالةُ نظامٍ لا فشل.</li>
+<li>تُمرَّر الواجهة إلى الدالّة كمعامل نمطي (generic) داخل الأقواس الزاويّة، وبهذا يصير النوعُ جزءًا من هوية المسار الجذر نفسه، ويطال أمانُ الأنواع موضعَ الضبط وموضعَ القراءة: فما خالف الواجهةَ لن يمرّ.</li>
+<li>وملاحظة أسلوب الاستدعاء لا يُحسنُ إغفالها: ليست <code>createRootRouteWithContext</code> دالّةً تناديها مباشرةً كما عهدتَ مع <code>createRootRoute</code>؛ بل تناديها أولًا بذكر النوع، فتعود بدالّة أُخرى تناديها ثُمّ تمرّر إليها خيارات المسار. ومن هنا الأقواسُ المزدوجة <code>()()</code> في سطر التعريف.</li>
+</ul>
+<h3 id="قيمة-السياق-الابتدائية-في-maintsx">قيمة السياق الابتدائية في <code>main.tsx</code></h3>
+<p>انتقل الآن إلى <code>main.tsx</code> فتجد المشروع قد وقف على خطأ في الأنواع: لقد أعلنا في مسار الجذر أنّ سياقَ الجذر من نوع معلوم، ومع ذلك لا نمرّر أيّ سياقٍ عند إنشاء الموجّه. فالحل خيارُ <code>context</code> في <code>createRouter</code>، ومنه نمدّ الموجّهَ بالقيمة الابتدائية للسياق:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> router = <span class="hljs-title function_">createRouter</span>({
+  routeTree,
+  <span class="hljs-attr">context</span>: {
+    <span class="hljs-attr">user</span>: { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;34&quot;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Test&quot;</span> },
+  },
+});
+</code></pre>
+<p>وشكلُ القيمة مواكِبٌ تمامًا للواجهة: كائنٌ فيه <code>user</code>، وقيمةُه إمّا <code>null</code> وإمّا مستخدِم. وقد مرّ المؤلف بالحالتين في الفيديو: جعل أولًا قيمة <code>user</code> تسوي <code>null</code> فظهرت رسالةُ الترحيب بالزائِر، ثم أدخل مستخدِمًا في القيمة الابتدائية — وهو ما في الشيفرة أعلاه بالضبط: مُعرّف <code>34</code> واسم <code>Test</code> — فتنقّل الترحيبُ إلى الاسم.</p>
+<h3 id="قراءة-السياق-في-المكون-عبر-useroutecontext">قراءة السياق في المكوّن عبر <code>useRouteContext</code></h3>
+<p>بقيت قراءته من المكوّن. الوسيلة خُطّافٌ (hook) متعلّق بثابت المسار: تذكّر أنّ مسارَ الجذر هو الثابت <code>Route</code> الذي صرّحنا به أعلى الملف، وبه تُطلب القراءة فتنالَ قيمة <code>user</code> في متناول المكوّن. والنداء على النسق نفسه الذي رأيتَه مع <code>Route.useParams()</code> و<code>Route.useSearch()</code> في الدروس السابقة:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">RootComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { user } = <span class="hljs-title class_">Route</span>.<span class="hljs-title function_">useRouteContext</span>();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-blue-950 p-2&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-2xl font-bold&quot;</span>&gt;</span>Root Route<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      {user ? (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;mb-4&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-xl font-bold&quot;</span>&gt;</span>Welcome, {user.name}!<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      ) : (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;mb-4&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-xl font-bold&quot;</span>&gt;</span>Welcome, Guest!<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+</span></code></pre>
+<p>وتفصيلُ المكوّن يليق بالفحص القصير:</p>
+<ul>
+<li>سطرُ القراءة أولًا: <code>const { user } = Route.useRouteContext();</code> يستخرج حقلَ <code>user</code> من سياق المسار ويضعه في متغيّرٍ في متناول المكوّن.</li>
+<li>العرضُ شرطيٌّ على وجود <code>user</code>: إن وُجد أرسى الشرطُ ترحيبًا بالاسم <code>user.name</code> القادم من السياق، وإن لم يوجد أبدل السطرُ الرسالةَ إلى ترحيب الزائِر.</li>
+<li>ونتيجة الحفظ مرّت على الشاشة مرْتين: حين كانت القيمة الابتدائية <code>null</code> ظهر ترحيبُ الزائِر، وبعد إدخال المستخدِم في <code>main.tsx</code> اتَّصلت الرسالةُ بالاسم.</li>
+</ul>
+<h2 id="النتيجة">النتيجة</h2>
+<p>بهذا الدرس صار للتطبيق سياقُ جذرٍ موثَّق النوع: واجهةُ <code>RootRouteContext</code> تصف حقله، و<code>createRootRouteWithContext</code> يربطه بمسار الجذر، و<code>createRouter</code> يبدأ قيمتَه الابتدائية في <code>main.tsx</code>، و<code>Route.useRouteContext()</code> يقرؤه من المكوّنات. وأثرُ ذلك في الواجهة رسالةُ الترحيب أعلى كل صفحة: وجودُ المستخدِم في السياق يجعلها «<code>Welcome, Test!</code>»، وغيابُه يجعلها «<code>Welcome, Guest!</code>» — وقيمةُ <code>context</code> الابتدائية في <code>main.tsx</code> هي من يحسمُ بينهما.</p>
+<p>واللقطة التالية ملتقطة من فرع الدرس، وهي تعرض الواجهة على مسار <code>/posts</code>: في قمّتها ترويسة الجذر بعنوانها ثم سطرُ الترحيب باسم المستخدِم الممرَّر في السياق، وتحتها شريطُ روابط الصفحة الرئيسة و<code>About</code> على نمطه المعتاد، وأسفلها محتوى مسار المنشورات:</p>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--context--posts.png" alt="ترويسة الجذر أعلى مسار المنشورات تعرض سطر الترحيب باسم المستخدِم الممرَّر في سياق الجذر"></p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>اجعل قيمة <code>user</code> في خيار <code>context</code> داخل <code>main.tsx</code> تسوي <code>null</code> وأعد تشغيل التطبيق: تختفي رسالةُ الترحيب بالاسم ويعودُ الاستقبال على الزائِر، وهي الحالة الأولى التي مرّ بها المؤلف في الفيديو.</li>
+<li>احذف خيار <code>context</code> بالكامل من <code>createRouter</code> ولاحظ رسالةَ الخطأ في <code>TypeScript</code>: فقد صار الموجّه يطالب بقيمة ابتدائية لأنّ نوعَ سياقِ الجذر أُعلن في <code>__root.tsx</code> — وهذا من مقتضى أمان الأنواع الذي أرساه <code>createRootRouteWithContext</code>.</li>
+<li>اقرأ السياق من مسار ابنٍ لا من مكوّن الجذر: مثلًا في <code>src/routes/posts.index.tsx</code> أضف السطر <code>const { user } = Route.useRouteContext();</code> داخل <code>RouteComponent</code> واعرض في المكوّن إشارةً إلى ناتجِه، فتتأكّد عمليًّا من وصول السياق إلى العمق.</li>
+<li>غيّر قيمة <code>name</code> في السياق الابتدائي داخل <code>main.tsx</code> إلى اسمٍ آخر فشاهده في الترويسة، فقد صار الطريق من <code>createRouter</code> إلى ترويسة <code>Root Route</code> متصلًا من أوله.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=6731s">فيديو الدرس: السياق (Context)</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/context-1">شيفرة الدرس: فرع <code>context-1</code> في مستودع الدورة</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/router-context">توثيق إدارة السياق في TanStack Router</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/data-loading">توثيق تحميل البيانات (Loader) في TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعاد صياغته عن درس «السياق (Context)» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع <code>context-1</code> للمستودع الأصلي، وما زاده المترجم من شرحٍ أو توضيحٍ لا يُنسب إلى المؤلف، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,l={book:s,chapter:e,chapterTitle:t,slug:o,title:a,headings:n,html:c};export{s as book,e as chapter,t as chapterTitle,l as default,n as headings,c as html,o as slug,a as title};

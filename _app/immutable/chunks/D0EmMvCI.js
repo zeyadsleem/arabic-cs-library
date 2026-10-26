@@ -1,0 +1,171 @@
+const e="kinney",o="ai-development-setup",d="تهيئة بيئة التطوير بالذكاء الاصطناعي",c="subagent-configuration",n="تهيئة الوكلاء الفرعيين",t=[{depth:2,id:"أين-تعيش-التعريفات",text:"أين تعيش التعريفات"},{depth:2,id:"الحقول",text:"الحقول"},{depth:2,id:"مزالق",text:"مزالق"},{depth:2,id:"أي-نموذج-يعمل-عليه-الوكيل-الفرعي",text:"أي نموذج يعمل عليه الوكيل الفرعي"},{depth:2,id:"اختيار-نموذج-لكل-مرحلة",text:"اختيار نموذج لكل مرحلة"},{depth:2,id:"claude-code-مقابل-codex",text:"Claude Code مقابل Codex"}],l=`<p>تعريف الوكيل الفرعي يبدو كبضعة أسطر من YAML. ومعظم طرق إخفاقه صامتة: حقل مكتوب خطأً يُتجاهل، ووكيل «للقراءة فقط» يستطيع كتابة ملفات، وإعداد إذن يتجاوزه الأصل. ولا شيء من ذلك يُنتج خطأً.</p>
+<p>هذا مرجع ملف التعريف. وإن لم تكن قد فعلت بعد، فيشرح <a href="https://stevekinney.com/courses/ai-development-setup/subagents">الوكلاء الفرعيون</a> ما الغرض منه.</p>
+<h2 id="أين-تعيش-التعريفات">أين تعيش التعريفات</h2>
+<p>التعريف ملف Markdown بترويسة YAML (كتلة من إعدادات مفتاح-قيمة بين سطري <code>---</code>) يتبعها تعليمات الوكيل. ويمكن أن يعيش في:</p>
+<ul>
+<li><code>.claude/agents/</code> للمشروع.</li>
+<li><code>~/.claude/agents/</code> لك، عبر المشاريع.</li>
+<li>الخيار <code>--agents</code> على مستوى الجلسة في سطر الأوامر، ويأخذ JSON.</li>
+<li>إضافة (plugin)، وهي حزمة من المهارات والخطافات والوكلاء تثبّتها معًا.</li>
+</ul>
+<p>لا يُشترط إلا <code>name</code> و<code>description</code>. و<a href="https://code.claude.com/docs/en/sub-agents">وثائق الوكيل الفرعي</a> هي المرجع لبقيتها.</p>
+<h2 id="الحقول">الحقول</h2>
+<ul>
+<li>
+<p><code>name</code>: يجب أن يكون فريدًا. ولا يمكن أن يحتوي <code>:</code> أو يبدأ بـ <code>-</code>. ويجب أن تعلنه ملفات وكلاء المشروع والمستخدم؛ وبدونه يعامل Claude Code الملف كوثائق مجاورة ويتخطّى التسجيل. ولا تعود إلا وكلاء الإضافات إلى اسم الملف.</p>
+</li>
+<li>
+<p><code>description</code>: يخبر Claude متى يفوّض إلى هذا الوكيل. ويعتمد التفويض التلقائي عليه، فعامِله كقاعدة توجيه.</p>
+</li>
+<li>
+<p><code>tools</code>: قائمة سماح، كسلسلة مفصولة بفواصل أو قائمة YAML. وإدراج <code>Agent</code> (الأداة التي تبدأ الوكلاء الفرعيين) يتيح للوكيل التفويض. و<code>Agent(researcher, analyst)</code> يحصره في هؤلاء الوكلاء، لكن فقط حين يشغّل الوكيل الجلسة كاملة بـ <code>--agent</code>. وفي تعريف وكيل فرعي عادي، تُتجاهل القائمة بين القوسين.</p>
+</li>
+<li>
+<p><code>disallowedTools</code>: يزيل أدوات من المجموعة الموروثة. ويعمل نمط اسم مثل <code>mcp__*</code> (كل أداة يوفّرها خادم MCP). والنمط ذو محدِّد، مثل <code>Bash(git push *)</code>، يزيل الأداة <em>كلها</em>، لا ذلك الأمر وحده. ولمنع على مستوى الأوامر، استخدم قاعدة رفض في إعداداتك بدلًا من ذلك.</p>
+</li>
+<li>
+<p><code>permissionMode</code>: مقدار ما يستطيع الوكيل فعله دون سؤال. فـ <code>default</code> يسأل قبل التعديلات والأوامر. و<code>acceptEdits</code> يوافق تلقائيًا على تعديلات الملفات. و<code>plan</code> تخطيط للقراءة فقط. و<code>auto</code> يتيح لمصنّف (فحص نموذج في الخلفية) الموافقة على الإجراءات التي يحكم بأنها آمنة. و<code>bypassPermissions</code> يتخطّى المطالبات كليًا. و<code>dontAsk</code> يرفض تلقائيًا أي نداء كان سيطالب بغيره. وإذا لم يُضبط، استخدم الوكيل وضع الجلسة. وتنبيه: إن كان الأصل في <code>auto</code> أو <code>acceptEdits</code> أو <code>bypassPermissions</code>، فيعمل الوكيل الفرعي في ذلك الوضع ويتجاهل إعداده الخاص، فلا يكون مراجع <code>plan</code> للقراءة فقط تحت <code>auto</code>. انظر <a href="https://code.claude.com/docs/en/permissions">وثائق الأذونات</a> لمعرفة ما يفعله كل وضع.</p>
+</li>
+<li>
+<p><code>model</code>: <code>sonnet</code> أو <code>opus</code> أو <code>haiku</code> أو <code>fable</code>، أو معرّف نموذج كامل، أو <code>inherit</code> لاستخدام نموذج الأصل.</p>
+</li>
+<li>
+<p><code>effort</code>: مقدار ما يفكّر فيه النموذج: <code>low</code> أو <code>medium</code> أو <code>high</code> أو <code>xhigh</code> أو <code>max</code>.</p>
+</li>
+<li>
+<p><code>maxTurns</code>: يوقف الوكيل بعد N من الأدوار الوكيلية (طلب نموذج واحد إضافة إلى نداءات الأدوات التي يجريها). ويُوسم المخرَج الذي يبلغ الحدّ بأنه جزئي.</p>
+</li>
+<li>
+<p><code>background</code>: <code>true</code> يفرض على الوكيل العمل في الخلفية. وبدونه يقرّر Claude. وبوضع التفرّع (fork) مفعّلًا (وهو الافتراضي التفاعلي)، يعمل الوكلاء الفرعيون عادةً في الخلفية. وبوضع التفرّع معطّلًا، بما فيه بلا واجهة (<code>claude -p</code>) وافتراضيات SDK، يضعهم Claude في الخلفية عادةً لكنه يختار المقدّمة حين يحتاج النتيجة قبل المتابعة. فاضبطه حين يجب أن يبقى عامل في الخلفية؛ انظر <a href="https://code.claude.com/docs/en/sub-agents#run-subagents-in-foreground-or-background">قواعد الجدولة</a>.</p>
+</li>
+<li>
+<p><code>isolation</code>: <code>worktree</code> يشغّل الوكيل في شجرة عمل git خاصة به (نسخة إضافية من المستودع نفسه، في مجلدها الخاص). وهي تتفرّع افتراضيًا من فرعك الافتراضي، لا من <code>HEAD</code> الحالي. وللتفرّع من إيداعك الحالي، اضبط <code>worktree.baseRef</code> على <code>&quot;head&quot;</code> في إعدادات Claude Code، أو سمِّ الإيداع الدقيق في المهمة واجعل العامل يُخرجه أولًا. (<a href="https://stevekinney.com/courses/ai-development-setup/worktrees#things-that-will-bite-you">أمور ستؤذيك</a> يتناول هذا المأزق.)</p>
+</li>
+<li>
+<p><code>initialPrompt</code>: يرسل الرسالة الأولى تلقائيًا حين يعمل الوكيل كجلسة رئيسية بـ <code>--agent</code>.</p>
+</li>
+<li>
+<p><code>skills</code>: <a href="https://stevekinney.com/courses/ai-development-setup/skills">المهارات</a> التي تُحمَّل مسبقًا عند البدء. وهو لا يقيّد أي مهارات أخرى يستطيع الوكيل الوصول إليها.</p>
+</li>
+<li>
+<p><code>mcpServers</code>: أسماء خوادم MCP أو تعريفات مضمّنة محصورة في هذا الوكيل. (وخادم MCP برنامج يضيف أدوات إلى الأداة عبر <a href="https://modelcontextprotocol.io/">بروتوكول سياق النموذج</a>.)</p>
+</li>
+<li>
+<p><code>hooks</code>: <a href="https://stevekinney.com/courses/ai-development-setup/hooks">خُطّافات</a> دورة الحياة المحصورة في هذا الوكيل.</p>
+</li>
+<li>
+<p><code>memory</code>: يمنح الوكيل مجلد ذاكرة دائمًا. اضبطه على <code>user</code> أو <code>project</code> أو <code>local</code>:</p>
+<ul>
+<li><code>user</code> يخزّنه تحت <code>~/.claude/agent-memory/&lt;agent-name&gt;/</code>.</li>
+<li><code>project</code> يخزّنه تحت <code>.claude/agent-memory/&lt;agent-name&gt;/</code>، ويمكن إيداعه في المستودع.</li>
+<li><code>local</code> يخزّنه تحت <code>.claude/agent-memory-local/&lt;agent-name&gt;/</code>، ويبقى خارج التحكّم بالإصدارات.</li>
+</ul>
+</li>
+<li>
+<p><code>omitClaudeMd</code>: في v2.1.271 وما بعده، يتخطّى تعليمات <code>CLAUDE.md</code> للمستخدم والمشروع والمحلية لوكيل فرعي مولَّد. وتظلّ السياسة المُدارة تُحمَّل للتعريفات العادية؛ ويمكن للتعريفات المُدارة أن تتخطّاها أيضًا. وهو متجاهَل حين يعمل التعريف كجلسة رئيسية عبر <code>--agent</code> أو إعداد <code>agent</code>، وهو ليس تبديل سياق بلا سياسة؛ انظر <a href="https://code.claude.com/docs/en/sub-agents#frontmatter-reference">مرجع الترويسة</a>.</p>
+</li>
+<li>
+<p><code>color</code>: لون العرض في الطرفية، مثل <code>red</code> أو <code>blue</code> أو <code>green</code> أو <code>yellow</code> أو <code>purple</code> أو <code>orange</code> أو <code>pink</code> أو <code>cyan</code>.</p>
+</li>
+<li>
+<p><code>experimental.cacheTtl</code>: <code>5m</code> أو <code>1h</code>، وهو عمر <a href="https://stevekinney.com/courses/ai-development-setup/caching-and-cost">ذاكرة الموجّهات المؤقتة</a> لهذا الوكيل وحده. ويؤدي إعداد <code>subagentPromptCacheTtl</code> الوظيفة نفسها على مستوى الجلسة لكل ما خارج محادثتك الرئيسية، ووفقًا لـ<a href="https://code.claude.com/docs/en/prompt-caching">وثائق تخزين الموجّهات مؤقتًا</a> في Claude Code، فهو يفوز حين يُضبط الاثنان.</p>
+</li>
+</ul>
+<h2 id="مزالق">مزالق</h2>
+<ul>
+<li><strong>حذف <code>tools</code> يورّث كل شيء</strong>: يحصل الوكيل الفرعي على كل ما لدى الأصل. ولصنع عامل ورقة لا يستطيع التفويض أكثر، اسرد <code>tools</code> صراحةً واترك <code>Agent</code> خارجها.</li>
+<li><strong>Bash هي النقطة الضعيفة</strong>: الصدفة تستطيع كتابة ملفات، فوكيل «للقراءة فقط» مع <code>Bash</code> ليس كذلك. فادعمه بقاعدة رفض في الإعدادات، أو خُطّاف <code>PreToolUse</code> (سكربت يعمل قبل نداء أداة)، أو صندوق الرمل (عزل على مستوى نظام التشغيل يحدّ من الملفات والشبكة التي تستطيع أوامر الوكيل الصدفية الوصول إليها، مهما قرّر النموذج).</li>
+<li><strong>اختيار النموذج يأخذ أول تطابق</strong>: النموذج الممرَّر عند التوليد، ثم <code>model</code> في التعريف، ثم متغيّر البيئة <code>CLAUDE_CODE_SUBAGENT_MODEL</code>، ثم نموذج الأصل. والتفرّعات (وكلاء فرعيون يبدأون بنسخة من محادثتك) تعمل دائمًا على نموذج الأصل. ويعرض <code>/tasks</code> النموذج الذي عمل عليه كل وكيل فرعي فعلًا.</li>
+<li><strong>الحقول المجهولة تفشل في صمت</strong>: اكتب <code>max_turns</code> بدل <code>maxTurns</code>، فيُتجاهل دون حتى تحذير.</li>
+<li><strong>وكلاء الإضافات تُسقِط حقولًا</strong>: تُسقَط <code>hooks</code> و<code>mcpServers</code> و<code>permissionMode</code> و<code>initialPrompt</code> كلها من الوكلاء الذين تأتي داخل إضافة.</li>
+<li><strong>الخلفية افتراضيًا</strong>: بوضع التفرّع مفعّلًا (وهو الافتراضي التفاعلي)، يعمل الوكلاء الفرعيون في الخلفية، وبعض الأدوات غير متاحة هناك. وحيث يكون وضع التفرّع معطّلًا، فالتنفيذ في المقدّمة متاح؛ ويفرضه <code>CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1</code>. وفي جلسة تفاعلية، يظهر طلب إذن الوكيل الفرعي في الجلسة الرئيسية، موسومًا بالوكيل الفرعي، وينتظر العامل إجابتك. وقد لا يكون ثمة من يجيب في تشغيل بلا إشراف، فحدّد كيف يبلّغ عن إجراء محجوب بدل منح وصول أوسع للتهرّب من المطالبة.</li>
+<li><strong>الحدود</strong>: 20 وكيلًا فرعيًا يعمل في وقت واحد وثلاث طبقات من التضمين افتراضيًا (وكيل فرعي يبدأ وكلاء فرعيين، يبدؤون المزيد). وأربعة أبناء لكل وكيل عبر ثلاث طبقات هي 4 + 16 + 64 = 84 عاملًا. (أرجوك لا.)</li>
+</ul>
+<h2 id="أي-نموذج-يعمل-عليه-الوكيل-الفرعي">أي نموذج يعمل عليه الوكيل الفرعي</h2>
+<p>سطر <code>model:</code> في تعريف لا يضمن ذلك النموذج. ومن Claude Code 2.1.251 فصاعدًا، ولوكيل مخصّص، يفوز أول مصدر مضبوط: النموذج الممرَّر عند التوليد، ثم <code>model:</code> في التعريف (<code>inherit</code> تعني النموذج الرئيسي)، ثم متغيّر البيئة <code>CLAUDE_CODE_SUBAGENT_MODEL</code> (<code>inherit</code> مثل عدم الضبط)، ثم نموذج المحادثة الرئيسية.</p>
+<p>وقبل 2.1.251، كان متغيّر البيئة في القمة ويتجاوز كل شيء. الملفات نفسها، والإجابة معاكسة، ولا تحذير في أي من الحالتين:</p>
+<table>
+<thead>
+<tr>
+<th><code>CLAUDE_CODE_SUBAGENT_MODEL=haiku</code>، مع…</th>
+<th>قبل 2.1.251</th>
+<th>2.1.251 وما بعده</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>تعريف فيه <code>model: opus</code></td>
+<td>Haiku</td>
+<td>Opus</td>
+</tr>
+<tr>
+<td>نموذج ممرَّر عند التوليد</td>
+<td>Haiku</td>
+<td>النموذج الممرَّر عند التوليد</td>
+</tr>
+<tr>
+<td>لا شيء آخر</td>
+<td>Haiku</td>
+<td>Haiku</td>
+</tr>
+<tr>
+<td>المتغيّر غير مضبوط، ولا شيء آخر</td>
+<td>النموذج الرئيسي</td>
+<td>النموذج الرئيسي</td>
+</tr>
+</tbody>
+</table>
+<p>ولاستعادة السلوك القديم، أضاف 2.1.257 المفتاح <code>CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1</code>. وهو يطبّق نموذج المتغيّر، أو النموذج الرئيسي إن لم يُضبط المتغيّر، على كل وكيل فرعي ويتجاهل التعريفات والنماذج الممرَّرة عند التوليد. ويُستثنى التفرّعات والمهارات التي تعمل بـ <code>model: inherit</code>. وفي 2.1.251 حتى 2.1.256 لا يوجد العَلَم، فلا يفعل شيئًا في صمت.</p>
+<p>الوكلاء المدمجون يتبعون قواعدهم الخاصة. فيرث Explore النموذج الرئيسي، بحدّ أقصى Opus على اشتراك، أو حساب Console، أو بوابة LLM (وقبل 2.1.198 كان يعمل دائمًا على Haiku). ويعمل Plan على النموذج الرئيسي. ومتغيّر البيئة وحده لا يحرّك أيًّا منهما؛ ومع <code>FORCE</code> مفعّلًا، يحرّكهما. ووكيل مشروع أو مستخدم باسم مطابق لمدمج يستبدله ويتبع ترتيب الوكيل المخصّص أعلاه.</p>
+<p>لا تثق بالترتيب؛ بل تحقّق منه. ومن 2.1.243، يعرض <code>/tasks</code> النموذج الذي عمل عليه كل وكيل فرعي فعلًا. آخر تحقّق: 2026-10-04 مقابل Claude Code 2.1.289.</p>
+<h2 id="اختيار-نموذج-لكل-مرحلة">اختيار نموذج لكل مرحلة</h2>
+<p>اختر النموذج بحسب كلفة الخطأ في تلك المرحلة:</p>
+<table>
+<thead>
+<tr>
+<th>المرحلة</th>
+<th>أمثلة</th>
+<th>كلفة الخطأ</th>
+<th><code>model</code> في Claude Code</th>
+<th>المكافئ في Codex</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ميكانيكية</td>
+<td>سرد الملفات، واستخلاص الحقول، والبحث عن نمط معروف بـ grep</td>
+<td>منخفضة: يمكن فحصها يدويًا في ثوانٍ</td>
+<td><code>haiku</code></td>
+<td>Luna</td>
+</tr>
+<tr>
+<td>استكشاف</td>
+<td>«ابحث عن العيوب في هذه الوحدة»</td>
+<td>عالية وغير مرئية: الإخفاق لا يصل إلى التحقّق أبدًا</td>
+<td><code>sonnet</code></td>
+<td>Sol</td>
+</tr>
+<tr>
+<td>حكم</td>
+<td>دحض نتيجة، وتقييم مقاربات متنافسة</td>
+<td>عالية: لا شيء يفحص الفاحص</td>
+<td><code>opus</code></td>
+<td>Sol</td>
+</tr>
+<tr>
+<td>تركيب</td>
+<td>دمج النتائج، وكتابة التقرير النهائي</td>
+<td>الأعلى: فهي النسخة التي يتصرّف أحدهم بناءً عليها</td>
+<td><code>opus</code></td>
+<td>Sol</td>
+</tr>
+</tbody>
+</table>
+<p>وللعمل الضيّق لكن الحذر، ارفع حقل <code>effort</code> قبل الانتقال إلى نموذج أكبر. وقارن الكلفة لكل نتيجة مقبولة، لا لكل تشغيل. ولدى <a href="https://stevekinney.com/courses/ai-development-setup/caching-and-cost">تخزين الموجّهات مؤقتًا والتكلفة</a> الأسعار الكامنة وراء هذه الأسماء.</p>
+<h2 id="claude-code-مقابل-codex">Claude Code مقابل Codex</h2>
+<p>أكبر فرق هو من يقرّر التفويض.</p>
+<p>يفوّض Claude Code بحكمه الخاص: فيقرأ <code>description</code> لكل وكيل لتوجيه العمل، ويمكنك فرض اختيار بـ @-mention أو <code>--agent</code>. وأنت تضبط حكم النموذج.</p>
+<p>ويفوّض <a href="https://developers.openai.com/codex/subagents">Codex</a> حين تطلب مباشرة أو حين تطلبه تعليمات <code>AGENTS.md</code> أو مهارة منطبقة. ويمكنك تسمية الوكلاء في الموجّه، لكن تفقّد تلك التعليمات القائمة أيضًا: فقد تُطلق عملًا متوازيًا دون طلب جديد في كل دور. ويشغّل Codex الوكلاء ويجمع نتائجهم، وكل عامل يضيف استخدام رموز (tokens) وتزامنًا.</p>
+<p>ويتناول <a href="https://stevekinney.com/courses/ai-development-setup/subagents#delegating-well">التفويض الجيد</a> كيف تكتب المهمة التي تُسلَّم إليها هذه التعريفات.</p>
+<p>اضبط <code>tools</code>، واضبط <code>model</code>، وتفقّد <code>/tasks</code>. ولا تثق بالافتراضيات.</p>
+`,a={book:e,chapter:o,chapterTitle:d,slug:c,title:n,headings:t,html:l};export{e as book,o as chapter,d as chapterTitle,a as default,t as headings,l as html,c as slug,n as title};

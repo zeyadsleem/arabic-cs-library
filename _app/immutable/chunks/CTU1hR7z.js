@@ -1,0 +1,3 @@
+const t="kinney",e="testing",s="مدخل إلى الاختبارات",n="exercise-add-timestamp",o="إضافة طابع زمني (Add Timestamp)",c=[],d=`<p><strong>مهمتك</strong>: نريد دالة تأخذ كائنًا وتضيف إليه حقل <code>timestamp</code> بالتاريخ الحالي.</p>
+<p>المشكلة، بالطبع، أن التاريخ الحالي سيكون دائمًا مختلفًا، لأنه — كما يقولون — الوقت يستمر في الدق، الدق، الدق نحو المستقبل. لذا لا يهمنا القيمة الدقيقة. نريد فقط التأكد من إضافة حقل <code>timestamp</code> وأن قيمة ذلك الحقل من نوع كائن <code>Date</code> ما.</p>
+`,i={book:t,chapter:e,chapterTitle:s,slug:n,title:o,headings:c,html:d};export{t as book,e as chapter,s as chapterTitle,i as default,c as headings,d as html,n as slug,o as title};

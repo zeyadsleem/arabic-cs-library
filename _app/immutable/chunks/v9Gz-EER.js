@@ -1,0 +1,203 @@
+const s="kinney",o="aws",a="نشر تطبيقات الويب على AWS",n="cleanup-and-teardown",e="التنظيف وإزالة كل شيء",t=[{depth:2,id:"مبدأ-الهدم",text:"مبدأ الهدم"},{depth:2,id:"ما-يستمر-في-إصدار-الفواتير",text:"ما يستمر في إصدار الفواتير"},{depth:2,id:"ترتيب-العمليات",text:"ترتيب العمليات"},{depth:2,id:"1-cloudfront",text:"1. CloudFront"},{depth:2,id:"2-route-53",text:"2. Route 53"},{depth:2,id:"3-شهادات-acm",text:"3. شهادات ACM"},{depth:2,id:"4-api-gateway",text:"4. API Gateway"},{depth:2,id:"5-lambda",text:"5. Lambda"},{depth:2,id:"6-أدوار-وسياسات-iam",text:"6. أدوار وسياسات IAM"},{depth:2,id:"7-dynamodb",text:"7. DynamoDB"},{depth:2,id:"8-parameter-store-وsecrets-manager",text:"8. Parameter Store وSecrets Manager"},{depth:2,id:"9-cloudwatch",text:"9. CloudWatch"},{depth:2,id:"10-s3",text:"10. S3"},{depth:2,id:"11-الميزانيات-وتنبيهات-التكلفة",text:"11. الميزانيات وتنبيهات التكلفة"},{depth:2,id:"12-مستخدمو-iam",text:"12. مستخدمو IAM"},{depth:2,id:"التحقق-من-عدم-بقاء-شيء",text:"التحقق من عدم بقاء شيء"}],l=`<p>افتُتحت الدورة بعبارة «مال حقيقي وبنية تحتية حقيقية». وهنا نغلق تلك الحلقة. معظم ما بنيته يكلّف سنتات شهريًا وهو خامل—لكن «السنتات» عبر دستة خدمات، على مدى سنة نسيتها، تتراكم إلى مال حقيقي. والأسوأ أن بعض الخدمات (شهادات ACM، والنطاقات المستضافة في Route 53، وتوزيعات CloudFront) تستمر في إصدار الفواتير حتى حين لا يستخدمها أحد. يهدم هذا الدرس كل شيء بالترتيب الذي تسمح به AWS فعلًا.</p>
+<p>إن أردت النسخة المعتمدة من AWS لأي من أوامر الحذف، فـ<a href="https://docs.aws.amazon.com/cli/latest/reference/">مرجع أوامر AWS CLI</a> هو المكان الذي تبحث فيه. وسأضع روابط للأوامر المحددة في موضعها حين تكون الأعلام دقيقة وصعبة.</p>
+<h2 id="مبدأ-الهدم">مبدأ الهدم</h2>
+<p>لموارد AWS تبعيات. لا يمكنك حذف دور بينما لا تزال دالة Lambda تستخدمه؛ ولا يمكنك حذف دلو S3 يحتوي على كائنات؛ ولا يمكنك حذف توزيع CloudFront لا يزال في حالة <code>Enabled</code>. والقاعدة دائمًا تقريبًا: <strong>احذف الأشياء التي تعتمد على المورد قبل حذف المورد نفسه.</strong></p>
+<p>الترتيب أدناه هو الترتيب الذي يعمل فعلًا. أما القفز هنا وهناك فسينتج أخطاء <code>ResourceInUseException</code> و<code>DependencyViolation</code> حتى تستسلم وتعود إليه.</p>
+<h2 id="ما-يستمر-في-إصدار-الفواتير">ما يستمر في إصدار الفواتير</h2>
+<p>قبل أن تبدأ، قائمة قصيرة بالخدمات التي تستمر في تقاضي المال منك سواء استخدمها أحد أم لا:</p>
+<ul>
+<li><strong>توزيعات CloudFront.</strong> حتى وهي معطّلة لا تكلّف كثيرًا—لكن المحذوفة تكلّف صفرًا.</li>
+<li><strong>النطاقات المستضافة في Route 53.</strong> 0.50 دولار شهريًا <em>لكل نطاق</em>. النطاقات المستضافة المنسية هي مفاجأة «12 دولارًا سنويًا» الكلاسيكية.</li>
+<li><strong>شهادات ACM.</strong> مجانية، لكنها تُحتسب على حصتك. احذف الشهادات غير المستخدمة.</li>
+<li><strong>جداول DynamoDB في وضع الطلب.</strong> لا تتقاضى شيئًا عند صفر طلبات، لكن تكلفة تخزين العناصر الموجودة تظل تتراكم.</li>
+<li><strong>مجموعات سجلات CloudWatch.</strong> الاحتفاظ غير المحدد هو الوضع الافتراضي. احذفها أو اضبط مدة الاحتفاظ عند الهدم.</li>
+<li><strong>عناوين IP المرنة (Elastic IPs)</strong> (غير مستخدمة في هذه الدورة، لكن: احذفها دائمًا).</li>
+<li><strong>دلاء S3 مع تمكين الإصدارات.</strong> كل نسخة من كل كائن لا تزال تكلّفك. أفرغ <em>كل</em> الإصدارات قبل الحذف.</li>
+</ul>
+<h2 id="ترتيب-العمليات">ترتيب العمليات</h2>
+<p>التسلسل الآمن لبصمة هذه الدورة، من الأعلى إلى الأسفل:</p>
+<ol>
+<li>توزيعات CloudFront (عطّل، انتظر، احذف) ووحدات OAC.</li>
+<li>سجلات Route 53 (ما عدا NS وSOA) والنطاقات المستضافة.</li>
+<li>شهادات ACM.</li>
+<li>واجهات API Gateway البرمجية وأسماء النطاقات المخصصة.</li>
+<li>دوال Lambda وإصداراتها وطبقاتها المرتبطة.</li>
+<li>أدوار تنفيذ IAM وسياساتها (افصل أولًا، ثم احذف).</li>
+<li>جداول DynamoDB.</li>
+<li>مُعاملات Parameter Store وأسرار Secrets Manager.</li>
+<li>مجموعات سجلات CloudWatch والإنذارات وموضوعات SNS.</li>
+<li>دلاء S3 (أفرغ كل الإصدارات، ثم احذف).</li>
+<li>الميزانيات وتنبيهات التكلفة.</li>
+<li>مستخدمو IAM الذين لم تعد تحتاجهم (مثل deploy-bot) ومفاتيح وصولهم.</li>
+</ol>
+<p>أبقِ المستخدم الجذري (root)، ومستخدم <code>admin</code> الخاص بك، والحساب نفسه. فهؤلاء يبقون للمشروع القادم.</p>
+<h2 id="1-cloudfront">1. CloudFront</h2>
+<p>يجب أن تكون توزيعات CloudFront <strong>معطّلة</strong>، ومنشورة بالكامل في تلك الحالة المعطّلة، وبعد <em>ذلك</em> تُحذف. يستغرق التعطيل من 15 إلى 30 دقيقة. أما الحذف فيكون سريعًا بمجرد أن تصبح الحالة <code>Deployed</code>.</p>
+<pre><code class="language-bash">DIST_ID=E1A2B3C4D5E6F7
+
+<span class="hljs-comment"># Fetch current config + ETag</span>
+aws cloudfront get-distribution-config --<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;<span class="hljs-variable">$DIST_ID</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;DistributionConfig&#x27;</span> --output json &gt; dist-config.json
+ETAG=$(aws cloudfront get-distribution-config --<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;<span class="hljs-variable">$DIST_ID</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;ETag&#x27;</span> --output text)
+
+<span class="hljs-comment"># Flip Enabled to false in dist-config.json (use jq or your editor)</span>
+jq <span class="hljs-string">&#x27;.Enabled = false&#x27;</span> dist-config.json &gt; dist-config.tmp &amp;&amp; <span class="hljs-built_in">mv</span> dist-config.tmp dist-config.json
+
+aws cloudfront update-distribution \\
+  --<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;<span class="hljs-variable">$DIST_ID</span>&quot;</span> \\
+  --distribution-config file://dist-config.json \\
+  --if-match <span class="hljs-string">&quot;<span class="hljs-variable">$ETAG</span>&quot;</span>
+
+aws cloudfront <span class="hljs-built_in">wait</span> distribution-deployed --<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;<span class="hljs-variable">$DIST_ID</span>&quot;</span>
+
+NEW_ETAG=$(aws cloudfront get-distribution-config --<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;<span class="hljs-variable">$DIST_ID</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;ETag&#x27;</span> --output text)
+aws cloudfront delete-distribution --<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;<span class="hljs-variable">$DIST_ID</span>&quot;</span> --if-match <span class="hljs-string">&quot;<span class="hljs-variable">$NEW_ETAG</span>&quot;</span>
+</code></pre>
+<p>ثم احذف وحدة OAC:</p>
+<pre><code class="language-bash">OAC_ID=E1OAC2EXAMPLE
+OAC_ETAG=$(aws cloudfront get-origin-access-control --<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;<span class="hljs-variable">$OAC_ID</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;ETag&#x27;</span> --output text)
+aws cloudfront delete-origin-access-control --<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;<span class="hljs-variable">$OAC_ID</span>&quot;</span> --if-match <span class="hljs-string">&quot;<span class="hljs-variable">$OAC_ETAG</span>&quot;</span>
+</code></pre>
+<h2 id="2-route-53">2. Route 53</h2>
+<p>لا يمكنك حذف نطاق مستضاف يحتوي على أي سجلات غير السجلين الافتراضيين <code>NS</code> و<code>SOA</code>. اسرد ما هو موجود، واحذف كل سجل، ثم احذف النطاق.</p>
+<pre><code class="language-bash">ZONE_ID=Z1ABCDEF123456
+
+<span class="hljs-comment"># Dump non-default records to inspect</span>
+aws route53 list-resource-record-sets --hosted-zone-id <span class="hljs-string">&quot;<span class="hljs-variable">$ZONE_ID</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;ResourceRecordSets[?Type!=\`NS\` &amp;&amp; Type!=\`SOA\`]&#x27;</span>
+
+<span class="hljs-comment"># For each non-default record, submit a change batch with Action=DELETE.</span>
+<span class="hljs-comment"># Script this if you have more than a few. Then:</span>
+
+aws route53 delete-hosted-zone --<span class="hljs-built_in">id</span> <span class="hljs-string">&quot;<span class="hljs-variable">$ZONE_ID</span>&quot;</span>
+</code></pre>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>إن سجّلت النطاق عبر Route 53، فلا <strong>تحذف النطاق المستضاف</strong> إلا إذا كنت ستنقل النطاق أو تتخلى عنه أيضًا. فالنطاقات المسجّلة تتوقع وجود نطاقها المستضاف.</p>
+</blockquote>
+<h2 id="3-شهادات-acm">3. شهادات ACM</h2>
+<p>لا يمكن حذف الشهادات وهي مرتبطة بتوزيع CloudFront أو بنطاق مخصص في API Gateway. أنجز CloudFront وAPI Gateway أولًا؛ ثم:</p>
+<pre><code class="language-bash">aws acm delete-certificate \\
+  --certificate-arn arn:aws:acm:us-east-1:123456789012:certificate/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \\
+  --region us-east-1
+</code></pre>
+<h2 id="4-api-gateway">4. API Gateway</h2>
+<pre><code class="language-bash">aws apigatewayv2 delete-api --api-id abc123def4 --region us-east-1
+
+<span class="hljs-comment"># Custom domain, if you attached one:</span>
+aws apigatewayv2 delete-api-mapping \\
+  --api-mapping-id m1a2p3 \\
+  --domain-name api.example.com \\
+  --region us-east-1
+aws apigatewayv2 delete-domain-name \\
+  --domain-name api.example.com \\
+  --region us-east-1
+</code></pre>
+<h2 id="5-lambda">5. Lambda</h2>
+<p>احذف كل دالة. الإصدارات المرتبطة بالدالة تذهب معها. أما دوال Lambda@Edge في CloudFront فتُنسخ إلى مواقع الحافة—وتنظّفها AWS بشكل غير متزامن بعد حذف الدالة؛ فلا تتفاجأ إن ظلّت وحدة التحكم تعرض نسخًا متماثلة لمدة تصل إلى بضع ساعات.</p>
+<pre><code class="language-bash">aws lambda delete-function --function-name scratch-lab-api --region us-east-1
+aws lambda delete-function --function-name my-frontend-app-api --region us-east-1
+</code></pre>
+<h2 id="6-أدوار-وسياسات-iam">6. أدوار وسياسات IAM</h2>
+<p>لا يمكنك حذف دور ما دامت هناك سياسات مرتبطة به. افصلها أولًا.</p>
+<pre><code class="language-bash">ROLE=scratch-lab-api-role
+
+<span class="hljs-comment"># List and detach managed policies</span>
+<span class="hljs-keyword">for</span> ARN <span class="hljs-keyword">in</span> $(aws iam list-attached-role-policies --role-name <span class="hljs-string">&quot;<span class="hljs-variable">$ROLE</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;AttachedPolicies[].PolicyArn&#x27;</span> --output text); <span class="hljs-keyword">do</span>
+  aws iam detach-role-policy --role-name <span class="hljs-string">&quot;<span class="hljs-variable">$ROLE</span>&quot;</span> --policy-arn <span class="hljs-string">&quot;<span class="hljs-variable">$ARN</span>&quot;</span>
+<span class="hljs-keyword">done</span>
+
+<span class="hljs-comment"># Delete inline policies</span>
+<span class="hljs-keyword">for</span> NAME <span class="hljs-keyword">in</span> $(aws iam list-role-policies --role-name <span class="hljs-string">&quot;<span class="hljs-variable">$ROLE</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;PolicyNames[]&#x27;</span> --output text); <span class="hljs-keyword">do</span>
+  aws iam delete-role-policy --role-name <span class="hljs-string">&quot;<span class="hljs-variable">$ROLE</span>&quot;</span> --policy-name <span class="hljs-string">&quot;<span class="hljs-variable">$NAME</span>&quot;</span>
+<span class="hljs-keyword">done</span>
+
+aws iam delete-role --role-name <span class="hljs-string">&quot;<span class="hljs-variable">$ROLE</span>&quot;</span>
+</code></pre>
+<p>كرّر ذلك مع كل دور تنفيذ أنشأته الدورة. واحذف السياسات التي يديرها العميل (<code>DeployBotPolicy</code> وغيرها) بعد ألا يشير إليها أي دور أو مستخدم.</p>
+<h2 id="7-dynamodb">7. DynamoDB</h2>
+<pre><code class="language-bash">aws dynamodb delete-table \\
+  --table-name scratch-lab-notes \\
+  --region us-east-1
+</code></pre>
+<p>إن كنت قد فعّلت الاستعادة إلى نقطة زمنية، فقد تبقى النسخ الاحتياطية النهائية خلال نافذة الاحتفاظ.</p>
+<h2 id="8-parameter-store-وsecrets-manager">8. Parameter Store وSecrets Manager</h2>
+<pre><code class="language-bash">aws ssm delete-parameter \\
+  --name /scratch-lab/production/search-api-key \\
+  --region us-east-1
+
+<span class="hljs-comment"># Secrets Manager requires --force-delete-without-recovery to actually delete</span>
+<span class="hljs-comment"># immediately; otherwise the secret sits in a 7-30 day recovery window.</span>
+aws secretsmanager delete-secret \\
+  --secret-id /scratch-lab/production/database-credentials \\
+  --force-delete-without-recovery \\
+  --region us-east-1
+</code></pre>
+<h2 id="9-cloudwatch">9. CloudWatch</h2>
+<pre><code class="language-bash">aws logs delete-log-group \\
+  --log-group-name /aws/lambda/scratch-lab-api \\
+  --region us-east-1
+
+aws cloudwatch delete-alarms \\
+  --alarm-names scratch-lab-5xx-rate \\
+  --region us-east-1
+
+aws sns delete-topic \\
+  --topic-arn arn:aws:sns:us-east-1:123456789012:scratch-lab-alerts \\
+  --region us-east-1
+</code></pre>
+<h2 id="10-s3">10. S3</h2>
+<p>تحتاج الدلاء التي فُعّل فيها الإصدار إلى إزالة كل نسخة <em>و</em>كل علامة حذف قبل أن يمكن حذف الدلو.</p>
+<pre><code class="language-bash">BUCKET=my-frontend-app-assets
+
+<span class="hljs-comment"># Delete all current objects</span>
+aws s3 <span class="hljs-built_in">rm</span> <span class="hljs-string">&quot;s3://<span class="hljs-variable">$BUCKET</span>&quot;</span> --recursive
+
+<span class="hljs-comment"># Delete all non-current versions and delete markers</span>
+aws s3api list-object-versions --bucket <span class="hljs-string">&quot;<span class="hljs-variable">$BUCKET</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;{Objects: [Versions[].{Key:Key,VersionId:VersionId}, DeleteMarkers[].{Key:Key,VersionId:VersionId}][]}&#x27;</span> \\
+  --output json &gt; versions.json
+
+<span class="hljs-comment"># If versions.json has non-empty Objects, run:</span>
+aws s3api delete-objects --bucket <span class="hljs-string">&quot;<span class="hljs-variable">$BUCKET</span>&quot;</span> --delete file://versions.json
+
+aws s3api delete-bucket --bucket <span class="hljs-string">&quot;<span class="hljs-variable">$BUCKET</span>&quot;</span> --region us-east-1
+</code></pre>
+<h2 id="11-الميزانيات-وتنبيهات-التكلفة">11. الميزانيات وتنبيهات التكلفة</h2>
+<pre><code class="language-bash">aws budgets delete-budget \\
+  --account-id 123456789012 \\
+  --budget-name my-frontend-app-monthly
+</code></pre>
+<h2 id="12-مستخدمو-iam">12. مستخدمو IAM</h2>
+<p>إن كنت قد أنشأت <code>deploy-bot</code> أو أي مستخدم خدمة آخر خصيصًا للدورة، فاحذفه بعد أن يزول عمل CloudFront/S3 الخاص به. ويجب حذف مفاتيح الوصول أولًا.</p>
+<pre><code class="language-bash">USER=deploy-bot
+
+<span class="hljs-keyword">for</span> KEY <span class="hljs-keyword">in</span> $(aws iam list-access-keys --user-name <span class="hljs-string">&quot;<span class="hljs-variable">$USER</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;AccessKeyMetadata[].AccessKeyId&#x27;</span> --output text); <span class="hljs-keyword">do</span>
+  aws iam delete-access-key --user-name <span class="hljs-string">&quot;<span class="hljs-variable">$USER</span>&quot;</span> --access-key-id <span class="hljs-string">&quot;<span class="hljs-variable">$KEY</span>&quot;</span>
+<span class="hljs-keyword">done</span>
+
+<span class="hljs-keyword">for</span> ARN <span class="hljs-keyword">in</span> $(aws iam list-attached-user-policies --user-name <span class="hljs-string">&quot;<span class="hljs-variable">$USER</span>&quot;</span> \\
+  --query <span class="hljs-string">&#x27;AttachedPolicies[].PolicyArn&#x27;</span> --output text); <span class="hljs-keyword">do</span>
+  aws iam detach-user-policy --user-name <span class="hljs-string">&quot;<span class="hljs-variable">$USER</span>&quot;</span> --policy-arn <span class="hljs-string">&quot;<span class="hljs-variable">$ARN</span>&quot;</span>
+<span class="hljs-keyword">done</span>
+
+aws iam delete-user --user-name <span class="hljs-string">&quot;<span class="hljs-variable">$USER</span>&quot;</span>
+</code></pre>
+<h2 id="التحقق-من-عدم-بقاء-شيء">التحقق من عدم بقاء شيء</h2>
+<p>بعض الفحوص السريعة:</p>
+<pre><code class="language-bash">aws cloudfront list-distributions --query <span class="hljs-string">&#x27;DistributionList.Items[].Id&#x27;</span> --output text
+aws lambda list-functions --region us-east-1 --query <span class="hljs-string">&#x27;Functions[].FunctionName&#x27;</span> --output text
+aws dynamodb list-tables --region us-east-1 --query <span class="hljs-string">&#x27;TableNames[]&#x27;</span> --output text
+aws s3 <span class="hljs-built_in">ls</span>
+aws route53 list-hosted-zones --query <span class="hljs-string">&#x27;HostedZones[].Name&#x27;</span> --output text
+</code></pre>
+<p>إن كانت كل قائمة فارغة (أو لا تحتوي إلا على أشياء أبقيتها عن قصد)، فأنت نظيف.</p>
+<p>أخيرًا، تحقّق من <a href="https://console.aws.amazon.com/billing/home">وحدة تحكم الفوترة</a> بعد بضعة أيام. فالرسوم المستمرة بعد الهدم تعني أن شيئًا ما لا يزال حيًا. وأكثر الأسباب شيوعًا هي نسخ S3 التي لم تُفرّغها، أو نطاق مستضاف في Route 53 نسيته، أو نسخة Lambda@Edge لم ينتهِ حذفها.</p>
+<p>الأضواء مطفأة. عمل جيد.</p>
+`,p={book:s,chapter:"aws",chapterTitle:a,slug:n,title:e,headings:t,html:l};export{s as book,o as chapter,a as chapterTitle,p as default,t as headings,l as html,n as slug,e as title};

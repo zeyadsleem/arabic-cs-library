@@ -1,0 +1,88 @@
+const s="kinney",a="react-typescript",n="React مع TypeScript",l="result-types-and-error-handling",p="أنواع النتيجة ومعالجة الأخطاء في React",t=[{depth:2,id:"أساسيات-neverthrow",text:"أساسيات neverthrow"},{depth:2,id:"أريحية-الاستخدام-في-المكونات",text:"أريحية الاستخدام في المكوّنات"},{depth:2,id:"اتحادات-أخطاء-الإجراءات",text:"اتحادات أخطاء الإجراءات"},{depth:2,id:"تحويل-الاستثناءات-إلى-نتائج",text:"تحويل الاستثناءات إلى نتائج"},{depth:2,id:"التحويل-والتسلسل-بالـ-map",text:"التحويل والتسلسل بالـ map"}],e=`<p>يصعب الاستثناءات تمثيلها بالأنواع، والاختبار أصدَر منها. تجعل أنواع النتيجة/إما-أو (Result/Either) الإخفاقات صريحةً وتُبسّط المكوّنات (components).</p>
+<h2 id="أساسيات-neverthrow">أساسيات neverthrow</h2>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { ok, err, <span class="hljs-title class_">Result</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;neverthrow&#x27;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">User</span> = { <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> };
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">UserError</span> = <span class="hljs-string">&#x27;NotFound&#x27;</span> | <span class="hljs-string">&#x27;Network&#x27;</span>;
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getUser</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">Result</span>&lt;<span class="hljs-title class_">User</span>, <span class="hljs-title class_">UserError</span>&gt;&gt; {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/users/<span class="hljs-subst">\${id}</span>\`</span>);
+    <span class="hljs-keyword">if</span> (!res.<span class="hljs-property">ok</span>) <span class="hljs-keyword">return</span> <span class="hljs-title function_">err</span>(<span class="hljs-string">&#x27;NotFound&#x27;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">ok</span>(<span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>());
+  } <span class="hljs-keyword">catch</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">err</span>(<span class="hljs-string">&#x27;Network&#x27;</span>);
+  }
+}
+</code></pre>
+<h2 id="أريحية-الاستخدام-في-المكونات">أريحية الاستخدام في المكوّنات</h2>
+<pre><code class="language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">UserCard</span>(<span class="hljs-params">{ result }: { result: Result&lt;User, UserError&gt; }</span>) {
+  <span class="hljs-keyword">return</span> result.<span class="hljs-title function_">match</span>({
+    <span class="hljs-attr">ok</span>: <span class="hljs-function">(<span class="hljs-params">user</span>) =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+    <span class="hljs-attr">err</span>: <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ErrorView</span> <span class="hljs-attr">code</span>=<span class="hljs-string">{e}</span> /&gt;</span></span>,
+  });
+}
+</code></pre>
+<h2 id="اتحادات-أخطاء-الإجراءات">اتحادات أخطاء الإجراءات</h2>
+<p>استعمِل أنواعًا اتحادية قابلة للتمييز (discriminated unions) لنمذجة نتائج إجراء الخادم (server action) فيتبسّط فروع واجهة المستخدم ويضمن الشمولية (exhaustiveness).</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">CreateUserResult</span> =
+  | { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;success&#x27;</span>; <span class="hljs-attr">userId</span>: <span class="hljs-built_in">string</span> }
+  | { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;validation-error&#x27;</span>; <span class="hljs-attr">issues</span>: <span class="hljs-built_in">string</span>[] }
+  | { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;network-error&#x27;</span> };
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createUserAction</span>(<span class="hljs-params"><span class="hljs-attr">fd</span>: <span class="hljs-title class_">FormData</span></span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">CreateUserResult</span>&gt; {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>, { <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>, <span class="hljs-attr">body</span>: fd });
+    <span class="hljs-keyword">if</span> (res.<span class="hljs-property">status</span> === <span class="hljs-number">400</span>) {
+      <span class="hljs-keyword">const</span> issues = (<span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>()).<span class="hljs-property">issues</span> <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>[];
+      <span class="hljs-keyword">return</span> { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;validation-error&#x27;</span>, issues };
+    }
+    <span class="hljs-keyword">if</span> (!res.<span class="hljs-property">ok</span>) <span class="hljs-keyword">return</span> { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;network-error&#x27;</span> };
+    <span class="hljs-keyword">const</span> { id } = <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>();
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;success&#x27;</span>, <span class="hljs-attr">userId</span>: id };
+  } <span class="hljs-keyword">catch</span> {
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;network-error&#x27;</span> };
+  }
+}
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">CreateUserForm</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">action</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">formData</span>: <span class="hljs-title class_">FormData</span></span>) =&gt; <span class="hljs-title function_">createUserAction</span>(formData);
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">onSubmit</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-title class_">React</span>.<span class="hljs-title class_">FormEvent</span>&lt;<span class="hljs-title class_">HTMLFormElement</span>&gt;</span>) =&gt; {
+    e.<span class="hljs-title function_">preventDefault</span>();
+    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> <span class="hljs-title function_">action</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">FormData</span>(e.<span class="hljs-property">currentTarget</span>));
+    <span class="hljs-keyword">switch</span> (result.<span class="hljs-property">status</span>) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;success&#x27;</span>:
+        <span class="hljs-comment">// navigate</span>
+        <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;validation-error&#x27;</span>:
+        <span class="hljs-comment">// show issues</span>
+        <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;network-error&#x27;</span>:
+        <span class="hljs-comment">// retry UI</span>
+        <span class="hljs-keyword">break</span>;
+      <span class="hljs-attr">default</span>:
+        <span class="hljs-keyword">const</span> <span class="hljs-attr">never</span>: <span class="hljs-built_in">never</span> = result; <span class="hljs-comment">// exhaustiveness</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">never</span>;
+    }
+  };
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">onSubmit</span>=<span class="hljs-string">{onSubmit}</span>&gt;</span>{/* fields */}<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>;
+}
+</code></pre>
+<h2 id="تحويل-الاستثناءات-إلى-نتائج">تحويل الاستثناءات إلى نتائج</h2>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Result</span>, err, ok } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;neverthrow&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> wrap&lt;T&gt;(<span class="hljs-attr">fn</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;T&gt;): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">Result</span>&lt;T, <span class="hljs-title class_">Error</span>&gt;&gt; {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">ok</span>(<span class="hljs-keyword">await</span> <span class="hljs-title function_">fn</span>());
+  } <span class="hljs-keyword">catch</span> (e) {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">err</span>(e <span class="hljs-keyword">as</span> <span class="hljs-title class_">Error</span>);
+  }
+}
+</code></pre>
+<h2 id="التحويل-والتسلسل-بالـ-map">التحويل والتسلسل بالـ map</h2>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getUser</span>(<span class="hljs-string">&#x27;123&#x27;</span>)
+  .<span class="hljs-title function_">andThen</span>(<span class="hljs-function">(<span class="hljs-params">u</span>) =&gt;</span> (u ? <span class="hljs-title function_">ok</span>(u) : err&lt;<span class="hljs-string">&#x27;NotFound&#x27;</span>&gt;(<span class="hljs-string">&#x27;NotFound&#x27;</span>)))
+  .<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">u</span>) =&gt;</span> u.<span class="hljs-property">name</span>)
+  .<span class="hljs-title function_">mapErr</span>(<span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> (e === <span class="hljs-string">&#x27;NotFound&#x27;</span> ? <span class="hljs-string">&#x27;UserMissing&#x27;</span> : <span class="hljs-string">&#x27;Unknown&#x27;</span>)); <span class="hljs-comment">// re-map domain errors</span>
+</code></pre>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,e as html,l as slug,p as title};

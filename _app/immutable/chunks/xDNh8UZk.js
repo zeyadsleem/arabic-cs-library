@@ -1,0 +1,49 @@
+const e="kinney",d="tailwind",c="Tailwind CSS",n="line-spacing-and-letter-spacing",t="تباعد الأسطر وتباعد الأحرف",i=[{depth:2,id:"تباعد-الأسطر-leading",text:"تباعد الأسطر (Leading)"},{depth:3,id:"ضبط-ارتفاع-السطر-مع-حجم-الخط",text:"ضبط ارتفاع السطر مع حجم الخط"},{depth:3,id:"ضبط-ارتفاع-السطر-بشكل-مستقل",text:"ضبط ارتفاع السطر بشكل مستقل"},{depth:3,id:"ارتفاع-سطر-استجابة",text:"ارتفاع سطر استجابة"},{depth:3,id:"تخصيص-مقياس-ارتفاع-السطر",text:"تخصيص مقياس ارتفاع السطر"},{depth:2,id:"تباعد-الأحرف-tracking",text:"تباعد الأحرف (Tracking)"},{depth:3,id:"ضبط-تباعد-الأحرف-بالأصناف-المساعدة",text:"ضبط تباعد الأحرف بالأصناف المساعِدة"},{depth:3,id:"استخدام-تباعد-أحرف-سالب",text:"استخدام تباعد أحرف سالب"},{depth:3,id:"تباعد-أحرف-استجابة",text:"تباعد أحرف استجابة"},{depth:3,id:"تخصيص-مقياس-تباعد-الأحرف",text:"تخصيص مقياس تباعد الأحرف"},{depth:2,id:"استخدام-القيم-المخصصة",text:"استخدام القيم المخصّصة"},{depth:2,id:"تطبيق-التصميم-المتجاوب",text:"تطبيق التصميم المتجاوب"},{depth:2,id:"تخصيص-متغيرات-السمة",text:"تخصيص متغيّرات السمة"}],o=`<p>يتولّى Tailwind إدارة تباعد الأسطر (leading) وتباعد الأحرف (tracking) عبر أصناف مساعِدة داخل HTML لديك.</p>
+<p>وتباعد الأسطر (<code>line-height</code> في CSS) هو المسافة الرأسية بين سطور النص، ويديره الأصناف <code>leading-*</code>. أمّا تباعد الأحرف (<code>letter-spacing</code> في CSS) فهو المسافة الأفقية بين المحارف، ويديره الأصناف <code>tracking-*</code>.</p>
+<h2 id="تباعد-الأسطر-leading">تباعد الأسطر (Leading)</h2>
+<p>يؤثّر تباعد الأسطر في سهولة القراءة. وتضبط أصناف Tailwind <code>line-height</code> بقيم سمة مُعرَّفة مسبقًا.</p>
+<h3 id="ضبط-ارتفاع-السطر-مع-حجم-الخط">ضبط ارتفاع السطر مع حجم الخط</h3>
+<p>يجمع Tailwind بين <code>font-size</code> و<code>line-height</code> للاتّساق باستخدام <code>text-&lt;size&gt;/&lt;number&gt;</code> (مثل <code>text-sm/6</code>). و<code>&lt;size&gt;</code> هو حجم خط مُعرَّف مسبقًا (sm، base، lg)، و<code>&lt;number&gt;</code> هو <code>line-height</code> من مقياس المسافات. أمّا <code>text-&lt;size&gt;</code> وحدها فتطبّق <code>line-height</code> افتراضيًا.</p>
+<h3 id="ضبط-ارتفاع-السطر-بشكل-مستقل">ضبط ارتفاع السطر بشكل مستقل</h3>
+<p>تحكّم في <code>line-height</code> عبر الأصناف <code>leading-*</code> (مثل <code>leading-6</code>، <code>leading-7</code>). ويضبط <code>leading-none</code> قيمة <code>line-height</code> على <code>1</code>.</p>
+<h3 id="ارتفاع-سطر-استجابة">ارتفاع سطر استجابة</h3>
+<p>طَبِّق أصناف ارتفاع السطر بشكل شرطي مع مُبدّلات الاستجابة (مثل <code>md:leading-relaxed</code>) أو مُبدّلات استعلامات الحاوية (مثل <code>@md:leading-relaxed</code>).</p>
+<h3 id="تخصيص-مقياس-ارتفاع-السطر">تخصيص مقياس ارتفاع السطر</h3>
+<p>وسّع مقياس ارتفاع السطر الافتراضي أو تجاوزه في ملف CSS الرئيسي باستخدام التوجيه <code>@theme</code> مع متغيّرات <code>--leading-*</code>.</p>
+<pre><code class="language-css"><span class="hljs-keyword">@import</span> <span class="hljs-string">&#x27;tailwindcss&#x27;</span>;
+
+<span class="hljs-keyword">@theme</span> {
+  <span class="hljs-attr">--leading-extra-tight</span>: <span class="hljs-number">1.1</span>;
+  <span class="hljs-attr">--leading-loose</span>: <span class="hljs-number">2</span>;
+}
+</code></pre>
+<p>ينشئ هذا أصناف <code>leading-extra-tight</code> و<code>leading-loose</code>. وامسح القيم الافتراضية بـ<code>--leading-*: initial;</code> قبل تعريف قيم مخصّصة.</p>
+<h2 id="تباعد-الأحرف-tracking">تباعد الأحرف (Tracking)</h2>
+<p>يُتحكَّم في تباعد الأحرف (<code>letter-spacing</code>) عبر الأصناف <code>tracking-*</code>.</p>
+<h3 id="ضبط-تباعد-الأحرف-بالأصناف-المساعدة">ضبط تباعد الأحرف بالأصناف المساعِدة</h3>
+<p>تشمل أصناف <code>tracking-*</code> المُعرَّفة مسبقًا <code>tracking-tighter</code> و<code>tracking-tight</code> و<code>tracking-normal</code> و<code>tracking-wide</code> و<code>tracking-wider</code> و<code>tracking-widest</code>. ويقلّل <code>tracking-tight</code> المسافة؛ ويزيد <code>tracking-wide</code> منها. أمّا <code>tracking-normal</code> فيعيد الضبط إلى القيمة الافتراضية للمتصفح.</p>
+<h3 id="استخدام-تباعد-أحرف-سالب">استخدام تباعد أحرف سالب</h3>
+<p>حقق تباعد أحرف سالب عبر قيم مخصّصة في السمة. فإن تضمّن مقياسك المخصّص قيمًا سالبة، فبادِئ الصنف بشرطة (مثل <code>-tracking-tightest</code>) للمقاييس المخصّصة القائمة على الأرقام.</p>
+<h3 id="تباعد-أحرف-استجابة">تباعد أحرف استجابة</h3>
+<p>اجعل تباعد الأحرف متجاوبًا عبر مُبدّلات نقطة التوقّف أو استعلامات الحاوية (مثل <code>tracking-tight md:tracking-normal</code>).</p>
+<h3 id="تخصيص-مقياس-تباعد-الأحرف">تخصيص مقياس تباعد الأحرف</h3>
+<p>خصّص مقياس <code>tracking-*</code> باستخدام التوجيه <code>@theme</code> مع متغيّرات <code>--tracking-*</code>.</p>
+<pre><code class="language-css"><span class="hljs-keyword">@import</span> <span class="hljs-string">&#x27;tailwindcss&#x27;</span>;
+
+<span class="hljs-keyword">@theme</span> {
+  <span class="hljs-attr">--tracking-tightest</span>: -<span class="hljs-number">0.075em</span>;
+  <span class="hljs-attr">--tracking-extra-wide</span>: <span class="hljs-number">0.2em</span>;
+}
+</code></pre>
+<p>ينشئ هذا أصناف <code>tracking-tightest</code> و<code>tracking-extra-wide</code>. وامسح القيم الافتراضية بـ<code>--tracking-*: initial;</code>.</p>
+<h2 id="استخدام-القيم-المخصصة">استخدام القيم المخصّصة</h2>
+<p>استخدم القيم التعسّفية لارتفاع السطر وتباعد الأحرف مع صيغة الأقواس المربّعة.</p>
+<p>لارتفاع السطر: <code>leading-[&lt;value&gt;]</code> (مثل <code>leading-[1.7]</code>) أو <code>text-&lt;size&gt;/[&lt;value&gt;]</code>.</p>
+<p>لتباعد الأحرف: <code>tracking-[&lt;value&gt;]</code> (مثل <code>tracking-[0.1em]</code>).</p>
+<p>ويمكن استخدام متغيّرات CSS: <code>leading-[var(--custom-line-height)]</code>.</p>
+<h2 id="تطبيق-التصميم-المتجاوب">تطبيق التصميم المتجاوب</h2>
+<p>يمكن تطبيق جميع الأصناف، بما فيها تباعد الأسطر وتباعد الأحرف، بشكل شرطي عند نقاط التوقّف (مثل <code>sm:</code>، <code>md:</code>) أو بحسب استعلامات الحاوية (مثل <code>@sm:</code>، <code>@md:</code>).</p>
+<h2 id="تخصيص-متغيرات-السمة">تخصيص متغيّرات السمة</h2>
+<p>يستخدم Tailwind 4 إعدادًا يبدأ من CSS مع التوجيه <code>@theme</code>. عرّف المقاييس المخصّصة في ملف CSS الرئيسي.</p>
+<p>وتصبح متغيّرات السمة (مثل <code>--leading-loose</code>، <code>--tracking-tightest</code>) متغيّرات CSS عادية، قابلة للاستخدام في CSS المخصّص أو الأنماط المضمَّنة. وهذا يبسّط التكامل مع الأدوات الأخرى.</p>
+`,a={book:e,chapter:d,chapterTitle:c,slug:n,title:t,headings:i,html:o};export{e as book,d as chapter,c as chapterTitle,a as default,i as headings,o as html,n as slug,t as title};

@@ -1,0 +1,41 @@
+const n="kinney",e="ai-development",t="التطوير بأدوات الذكاء الاصطناعي",i="plan-implement-verify",l="نمط الطلب: خطّط → نفّذ → تحقّق",a=[{depth:2,id:"النمط",text:"النمط"},{depth:2,id:"لماذا-ينجح",text:"لماذا ينجح"},{depth:2,id:"متى-تتجاوز-النمط-الكامل",text:"متى تتجاوز النمط الكامل"}],o=`<p>لا يزال أبسط سير عمل موثوق للوكيل هو:</p>
+<ol>
+<li>خطّط.</li>
+<li>نفّذ.</li>
+<li>تحقّق.</li>
+</ol>
+<p>والمقصود ليس الشكليات، بل جعل الوكيل يُظهر فهمه قبل أن يغيّر الملفات، وجعل النجاح قابلًا للفحص آليًا بعد ذلك.</p>
+<h2 id="النمط">النمط</h2>
+<pre><code>Goal:
+Add validation for expired invite tokens.
+
+Plan:
+First inspect the token validation path and the closest tests. Summarize the
+smallest implementation path before editing.
+
+Implement:
+Write the failing regression test first. Then make the smallest production
+change that passes it.
+
+Verify:
+Run bun test:unit -- src/lib/server/invitations.test.ts and bun run lint.
+
+Stop:
+If a command fails for an unrelated reason, stop and report the command, output,
+and likely cause instead of changing unrelated files.
+</code></pre>
+<p>وهذا يعمل في وضع الوكيل في <a href="https://cursor.com/">Cursor</a> ووكلاء Cursor السحابيين و<a href="https://code.claude.com/docs/en/overview">Claude Code</a> ومعظم سير عمل وكلاء سطر الأوامر.</p>
+<h2 id="لماذا-ينجح">لماذا ينجح</h2>
+<p>يَكتشف التخطيط سوء الفهم بينما تكون الكلفة منخفضة. ويُبقي التنفيذ الوكيل داخل المهمة. ويحوّل التحقق عبارة «يبدو جيدًا» إلى فحص ثنائي.</p>
+<p>وشرط التوقف لا يقل أهمية عن شرط النجاح. فبدونه، كثيرًا ما يلتفّ الوكلاء حول الإخفاقات بتعديل شيفرة مجاورة، أو إضعاف الاختبارات، أو ادّعاء نجاح جزئي.</p>
+<h2 id="متى-تتجاوز-النمط-الكامل">متى تتجاوز النمط الكامل</h2>
+<p>في التعديل المضمّن الصغير جدًا، تكون الخطة الكاملة مبالغة. استخدم النمط عندما تكون المهمة:</p>
+<ul>
+<li>تمسّ أكثر من ملف واحد.</li>
+<li>تحمل خطرًا أمنيًا أو متعلّقًا بالبيانات أو مواجهًا للمستخدم.</li>
+<li>تتطلّب اختبارات أو مخرجات مولَّدة.</li>
+<li>يمكن حلّها بأكثر من طريقة معقولة.</li>
+<li>ستُشغَّل في سياق سحابي أو في سطر الأوامر أو سياق مؤتمت.</li>
+</ul>
+<p>وإذا لم تستطع تسمية أمر التحقق، فالأرجح أنك لا تملك مهمة مكتملة بعد.</p>
+`,s={book:n,chapter:e,chapterTitle:t,slug:i,title:l,headings:a,html:o};export{n as book,e as chapter,t as chapterTitle,s as default,a as headings,o as html,i as slug,l as title};

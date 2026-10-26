@@ -1,0 +1,368 @@
+const s="kinney",a="tailwind",n="Tailwind CSS",t="building-a-compound-input",l="بناء حقل إدخال مركّب",p=[{depth:2,id:"إنشاء-حاوية-حقل-الإدخال-المركب",text:"إنشاء حاوية حقل الإدخال المركّب"},{depth:2,id:"تقديم-focus-within-لتركيز-الحاوية",text:"تقديم focus-within لتركيز الحاوية"},{depth:2,id:"إضافة-عناصر-البادئة-واللاحقة",text:"إضافة عناصر البادئة واللاحقة"},{depth:2,id:"إضافة-أزرار-إجراء-داخلية",text:"إضافة أزرار إجراء داخلية"},{depth:2,id:"استخدام-has-لحالات-أزرار-ديناميكية",text:"استخدام has() لحالات أزرار ديناميكية"},{depth:2,id:"إضافة-صيغ-إدخال-متعددة-الحالات",text:"إضافة صيغ إدخال متعددة الحالات"},{depth:2,id:"فهم-focus-within-مقابل-حالات-التركيز-الفردية",text:"فهم focus-within مقابل حالات التركيز الفردية"},{depth:2,id:"إضافة-الصقل-وإمكانية-الوصول",text:"إضافة الصقل وإمكانية الوصول"},{depth:2,id:"لماذا-تنجح-هذه-المقاربة",text:"لماذا تنجح هذه المقاربة"},{depth:2,id:"تحديات",text:"تحديات"}],e=`<p>لنبدأ ببنية HTML الأساسية لحقل إدخال بحث بسيط.</p>
+<p><em>المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/bdd6c44fd19e8adf535b0486b04497e17d4dce755a962f32fefd2c93a3ed9d87.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;search&quot;</span>&gt;</span>Search products<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;search&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter search terms...&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>إنه حقل إدخال أساسي، لكن الواجهات الحديثة تحتاج غالبًا إلى أنماط إدخال أكثر تطورًا — نص بادئة مثل «https://»، أو مؤشرات لاحقة مثل رموز العملات، أو أزرار داخلية لإجراءات مثل البحث أو المسح. لنحوّله إلى حقل إدخال مركّب مرن يستطيع التعامل مع كل هذه الحالات.</p>
+<h2 id="إنشاء-حاوية-حقل-الإدخال-المركب">إنشاء حاوية حقل الإدخال المركّب</h2>
+<p>أولًا، لنرسِ حاوية تضم حقل الإدخال وعناصر إضافية، مع تطبيق تنسيق احترافي إلى حد ما.</p>
+<p><em>إنشاء حاوية حقل الإدخال المركّب — المثال 2 — <a href="https://stevekinney.com/generated/playgrounds/190834171d947eaf786c761b487527af1eac25ef88f2023f053e3183639871c2.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;search&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block text-sm font-medium text-slate-900&quot;</span>&gt;</span>Search products<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex rounded-md bg-white outline-1 -outline-offset-1 outline-slate-300&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+        <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;search&quot;</span>
+        <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block w-full border-0 bg-transparent px-3 py-1.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none&quot;</span>
+        <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter search terms...&quot;</span>
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>مقاربة الحاوية:</p>
+<ul>
+<li><code>flex</code>: ينشئ حاوية أفقية لحقل الإدخال والعناصر الإضافية</li>
+<li><code>rounded-md outline-1 -outline-offset-1 outline-slate-300</code>: ينقل تنسيق الحد إلى الحاوية بدلًا من حقل الإدخال</li>
+<li><code>bg-white</code>: خلفية بيضاء صريحة لحقل الإدخال المركّب كله</li>
+<li><code>border-0 bg-transparent</code>: يزيل التنسيق الافتراضي لحقل الإدخال لأن الحاوية تتولّى المظهر</li>
+<li><code>focus:outline-none</code>: يزيل حلقة التركيز الافتراضية لحقل الإدخال — سنتولّى التركيز على الحاوية</li>
+</ul>
+<p>تتعامل هذه المقاربة مع حقل الإدخال المركّب كله كوحدة بصرية واحدة، وهذا أساسي لمظهر احترافي عند إضافة عناصر البادئة واللاحقة.</p>
+<h2 id="تقديم-focus-within-لتركيز-الحاوية">تقديم focus-within لتركيز الحاوية</h2>
+<p>لنضف الآن حالات تركيز سليمة باستخدام الصنف الزائف <code>focus-within</code>، الذي يطبّق الأنماط عندما يتلقى أي عنصر ابن التركيز.</p>
+<p><em>تقديم focus-within لتركيز الحاوية — المثال 3 — <a href="https://stevekinney.com/generated/playgrounds/fbf3e6def59650dbefd94c3ce3174abdd7a40fbf8f61a42ac3ada6d58b895d8d.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;search&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block text-sm font-medium text-slate-900&quot;</span>&gt;</span>Search products<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex rounded-md bg-white outline-1 -outline-offset-1 outline-slate-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600&quot;</span>
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+        <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;search&quot;</span>
+        <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block w-full border-0 bg-transparent px-3 py-1.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none&quot;</span>
+        <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter search terms...&quot;</span>
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>سحر focus-within:</p>
+<ul>
+<li><code>focus-within:outline-2</code>: مخطط أعرض بمقدار 2px عندما يتلقى أي عنصر ابن (مثل حقل الإدخال) التركيز</li>
+<li><code>focus-within:-outline-offset-2</code>: إزاحة سالبة تنشئ تأثير حلقة داخلية</li>
+<li><code>focus-within:outline-indigo-600</code>: لون العلامة لحالة التركيز</li>
+</ul>
+<p>الصنف الزائف <code>focus-within</code> مثالي لحقول الإدخال المركّبة لأنه ينشئ تجربة تركيز موحّدة — سواء نقر المستخدم على حقل الإدخال أو زر أو أي عنصر تفاعلي آخر داخل الحاوية، يُظهر حقل الإدخال المركّب كله حالة تركيز متسقة.</p>
+<h2 id="إضافة-عناصر-البادئة-واللاحقة">إضافة عناصر البادئة واللاحقة</h2>
+<p>لنضف عنصري بادئة ولاحقة لعرض أنماط شائعة مثل بادئات عناوين URL ولاحقات الوحدات.</p>
+<p><em>إضافة عناصر البادئة واللاحقة — المثال 4 — <a href="https://stevekinney.com/generated/playgrounds/7f0f254df175c22a93965a0a8f139a0d2e2eb83c186e8c10cf4e0a6002406d17.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;website&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block text-sm font-medium text-slate-900&quot;</span>&gt;</span>Website URL<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex rounded-md bg-white outline-1 -outline-offset-1 outline-slate-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600&quot;</span>
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center rounded-l-md border-r border-slate-300 bg-slate-50 px-3 text-sm text-slate-500&quot;</span>
+      &gt;</span>
+        https://
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+        <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;website&quot;</span>
+        <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;website&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block w-full border-0 bg-transparent px-3 py-1.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none&quot;</span>
+        <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;example.com&quot;</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center rounded-r-md border-l border-slate-300 bg-slate-50 px-3 text-sm text-slate-500&quot;</span>
+      &gt;</span>
+        .com
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تنسيق البادئة واللاحقة:</p>
+<ul>
+<li><code>flex items-center</code>: يوسّط محتوى البادئة/اللاحقة رأسيًا مع حقل الإدخال</li>
+<li><code>bg-slate-50</code>: خلفية رمادية فاتحة تميّز العناصر الثابتة عن حقل الإدخال القابل للتحرير</li>
+<li><code>border-r border-slate-300</code> و<code>border-l border-slate-300</code>: حدود خفيفة تفصل الأقسام</li>
+<li><code>rounded-l-md</code> و<code>rounded-r-md</code>: يحافظان على زوايا الحاوية المستديرة</li>
+<li><code>px-3</code>: حشوة متسقة مع حقل الإدخال</li>
+<li><code>text-sm text-slate-500</code>: نص أصغر وأهدأ يشير إلى أن هذه عناصر مساعدة</li>
+</ul>
+<p>ينشئ هذا فصلًا بصريًا واضحًا مع الحفاظ على المظهر الموحّد لمكوّن إدخال واحد.</p>
+<h2 id="إضافة-أزرار-إجراء-داخلية">إضافة أزرار إجراء داخلية</h2>
+<p>لننشئ الآن حقل إدخال بحث بزر بحث داخلي، لنعرض كيفية التعامل مع عناصر تفاعلية داخل حقل الإدخال المركّب.</p>
+<p><em>إضافة أزرار إجراء داخلية — المثال 5 — <a href="https://stevekinney.com/generated/playgrounds/30a279a1d55b9c85ee42d7dffd084df1ab4348ea3a6176fbfa6a9bbdccdd5288.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;search&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block text-sm font-medium text-slate-900&quot;</span>&gt;</span>Search products<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex rounded-md bg-white outline-1 -outline-offset-1 outline-slate-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600&quot;</span>
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center pl-3 text-slate-400&quot;</span>&gt;</span>🔍<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+        <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;search&quot;</span>
+        <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block w-full border-0 bg-transparent px-3 py-1.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none&quot;</span>
+        <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Search for products...&quot;</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center rounded-r-md bg-indigo-600 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-white focus:outline-none&quot;</span>
+      &gt;</span>
+        Search
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تنفيذ الزر الداخلي:</p>
+<ul>
+<li>رمز البحث التعبيري مع <code>pl-3 text-slate-400</code>: يوفّر سياقًا بصريًا بلون هادئ</li>
+<li>الزر مع <code>rounded-r-md</code>: يحافظ على نصف قطر زاوية الحاوية</li>
+<li><code>focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-white</code>: حلقة تركيز منفصلة للزر تعمل مع حالة focus-within في الحاوية</li>
+</ul>
+<p>حلقة تركيز الزر مصممة لتعمل بتناغم مع مخطط focus-within للحاوية، ما ينشئ تسلسلًا بصريًا واضحًا عند تركيز عناصر مختلفة.</p>
+<h2 id="استخدام-has-لحالات-أزرار-ديناميكية">استخدام has() لحالات أزرار ديناميكية</h2>
+<p>لنعزّز حقل الإدخال بزر مسح يظهر فقط عند وجود محتوى، باستخدام محدِّد <code>has()</code> لإظهار العناصر شرطيًا.</p>
+<p><em>استخدام has() لحالات أزرار ديناميكية — المثال 6 — <a href="https://stevekinney.com/generated/playgrounds/5c27e1c998f2ec3c2ef98ff2ed49f47030eb60e549038c37cd90e1ed82036fdd.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;search&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block text-sm font-medium text-slate-900&quot;</span>&gt;</span>Search products<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;group flex rounded-md bg-white outline-1 -outline-offset-1 outline-slate-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600&quot;</span>
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center pl-3 text-slate-400&quot;</span>&gt;</span>🔍<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+        <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;search&quot;</span>
+        <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;peer block w-full border-0 bg-transparent px-3 py-1.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none&quot;</span>
+        <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Search for products...&quot;</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden items-center px-2 text-slate-400 peer-placeholder-shown:hidden peer-[:not(:placeholder-shown)]:flex hover:text-slate-600&quot;</span>
+        <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Clear search&quot;</span>
+      &gt;</span>
+        ✕
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center rounded-r-md bg-indigo-600 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-white focus:outline-none&quot;</span>
+      &gt;</span>
+        Search
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>ظهور الزر الديناميكي:</p>
+<ul>
+<li><code>peer</code>: يضع علامة على حقل الإدخال كعنصر peer لتنسيق الأشقاء</li>
+<li><code>peer-placeholder-shown:hidden</code>: يخفي زر المسح عندما يظهر نص العنصر النائب (حقل الإدخال فارغ)</li>
+<li><code>peer-[:not(:placeholder-shown)]:flex</code>: يُظهر زر المسح عندما يحتوي حقل الإدخال على محتوى (لا يظهر العنصر النائب)</li>
+<li><code>group</code>: يتيح تأثيرات تمرير منسّقة على مستوى الحاوية</li>
+</ul>
+<p>ينشئ هذا تجربة مستخدم ذكية لا يظهر فيها زر المسح إلا عند الحاجة، ما يقلل الفوضى البصرية عندما يكون حقل الإدخال فارغًا.</p>
+<h2 id="إضافة-صيغ-إدخال-متعددة-الحالات">إضافة صيغ إدخال متعددة الحالات</h2>
+<p>لننشئ مثالًا أكثر تطورًا يعرض حالات إدخال مختلفة ويستخدم عدة محدِّدات متقدمة.</p>
+<p><em>إضافة صيغ إدخال متعددة الحالات — المثال 7 — <a href="https://stevekinney.com/generated/playgrounds/8afe5828413313a73172df7435b75aa3d54d673162d73d7b141ca62c48ca683f.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;space-y-6&quot;</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- Search with Clear --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;search-clear&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block text-sm font-medium text-slate-900&quot;</span>
+      &gt;</span>Search with auto-clear&lt;/label
+    &gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;group flex rounded-md bg-white outline-1 -outline-offset-1 outline-slate-300 transition-colors focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600 hover:bg-slate-50&quot;</span>
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center pl-3 text-slate-400 group-focus-within:text-indigo-600&quot;</span>&gt;</span>
+          🔍
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+          <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;search-clear&quot;</span>
+          <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search-clear&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;peer block w-full border-0 bg-transparent px-3 py-1.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none&quot;</span>
+          <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Type to search...&quot;</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden items-center px-2 text-slate-400 transition-colors peer-[:not(:placeholder-shown)]:flex hover:text-slate-600&quot;</span>
+          <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Clear search&quot;</span>
+        &gt;</span>
+          ✕
+        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!-- Password with Toggle --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;password-toggle&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block text-sm font-medium text-slate-900&quot;</span>
+      &gt;</span>Password with visibility toggle&lt;/label
+    &gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex rounded-md bg-white outline-1 -outline-offset-1 outline-slate-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600&quot;</span>
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span>
+          <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password-toggle&quot;</span>
+          <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;password-toggle&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block w-full border-0 bg-transparent px-3 py-1.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none&quot;</span>
+          <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter your password&quot;</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center px-3 text-slate-400 hover:text-slate-600 focus:text-indigo-600 focus:outline-none&quot;</span>
+          <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Toggle password visibility&quot;</span>
+        &gt;</span>
+          👁️
+        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!-- URL Input with Protocol --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;url-protocol&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block text-sm font-medium text-slate-900&quot;</span>&gt;</span>Website URL<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex rounded-md bg-white outline-1 -outline-offset-1 outline-slate-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600&quot;</span>
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center rounded-l-md border-r border-slate-300 bg-slate-50 px-3 text-sm text-slate-500&quot;</span>
+        &gt;</span>
+          https://
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+          <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;url-protocol&quot;</span>
+          <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;url-protocol&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block w-full border-0 bg-transparent px-3 py-1.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none&quot;</span>
+          <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;example.com&quot;</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center rounded-r-md border-l border-slate-300 bg-slate-50 px-3 text-sm text-slate-500 hover:bg-slate-100 hover:text-slate-700 focus:bg-indigo-50 focus:text-indigo-700 focus:outline-none&quot;</span>
+          <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Validate URL&quot;</span>
+        &gt;</span>
+          ✓
+        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>أنماط تفاعل متقدمة:</p>
+<ul>
+<li><code>group-focus-within:text-indigo-600</code>: يغيّر لون الأيقونة عندما يُركَّز على أي جزء من حقل الإدخال المركّب</li>
+<li><code>transition-colors</code>: حركات لون سلسة عبر تغيّرات الحالة</li>
+<li><code>hover:bg-slate-50</code>: حالة تمرير خفيفة على الحاوية كلها</li>
+<li><code>focus:text-indigo-600</code>: لون تركيز منفصل للأزرار الداخلية</li>
+<li><code>peer-[:not(:placeholder-shown)]:flex</code>: محدِّد CSS حديث لإظهار العناصر عندما يحتوي حقل الإدخال على محتوى</li>
+</ul>
+<p>تنشئ هذه الأنماط تجارب إدخال متطورة تشبه التطبيقات، مع تغذية بصرية واضحة لكل حالات التفاعل.</p>
+<h2 id="فهم-focus-within-مقابل-حالات-التركيز-الفردية">فهم focus-within مقابل حالات التركيز الفردية</h2>
+<p>الصنف الزائف <code>focus-within</code> أساسي لحقول الإدخال المركّبة لأنه يحل مشكلة أساسية في تجربة المستخدم. لنفهم لماذا:</p>
+<p><strong>دون focus-within</strong> (المقاربة التقليدية):</p>
+<ul>
+<li>حقل الإدخال الفعلي وحده يُظهر تنسيق التركيز</li>
+<li>النقر على الأزرار أو العناصر الأخرى بالداخل لا يُظهر أن حقل الإدخال «نشط»</li>
+<li>ينشئ تغذية بصرية مفككة ومربكة</li>
+</ul>
+<p><strong>مع focus-within</strong> (مقاربتنا):</p>
+<ul>
+<li>يُظهر حقل الإدخال المركّب كله التركيز عندما يتلقى أي عنصر ابن التركيز</li>
+<li>يوفّر تغذية بصرية موحّدة بصرف النظر عن العنصر المُركَّز عليه</li>
+<li>ينشئ وهم عنصر تحكّم إدخال واحد متماسك</li>
+</ul>
+<p>هذا مهم بشكل خاص لإمكانية الوصول — يحصل مستخدمو قارئات الشاشة ومستخدمو التنقل بلوحة المفاتيح على تغذية متسقة بصرف النظر عن الجزء الذي يتفاعلون معه من حقل الإدخال المركّب.</p>
+<h2 id="إضافة-الصقل-وإمكانية-الوصول">إضافة الصقل وإمكانية الوصول</h2>
+<p>لنعزّز حقول الإدخال بخصائص ARIA سليمة وتنسيق مُحسَّن لمكوّن جاهز للإنتاج.</p>
+<p><em>إضافة الصقل وإمكانية الوصول — المثال 8 — <a href="https://stevekinney.com/generated/playgrounds/ff3b981a3b4d86c89945c05217851db283744966d3ac9ad7f9967c54e45759c1.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;space-y-6&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;search-enhanced&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block text-sm font-medium text-slate-900&quot;</span>
+      &gt;</span>Search products&lt;/label
+    &gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2&quot;</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;search&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;group flex rounded-md bg-white shadow-sm outline-1 -outline-offset-1 outline-slate-300 transition-all duration-200 focus-within:shadow-md focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600 hover:shadow-md&quot;</span>
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center pl-3 text-slate-400 transition-colors group-focus-within:text-indigo-500&quot;</span>
+        &gt;</span>
+          🔍
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+          <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;search-enhanced&quot;</span>
+          <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search-enhanced&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;peer block w-full border-0 bg-transparent px-3 py-1.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none sm:text-sm&quot;</span>
+          <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Search for products, brands, or categories...&quot;</span>
+          <span class="hljs-attr">aria-describedby</span>=<span class="hljs-string">&quot;search-help&quot;</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden items-center px-2 text-slate-400 transition-colors peer-[:not(:placeholder-shown)]:flex hover:text-slate-600 focus:text-indigo-600 focus:outline-none&quot;</span>
+          <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Clear search input&quot;</span>
+          <span class="hljs-attr">tabindex</span>=<span class="hljs-string">&quot;-1&quot;</span>
+        &gt;</span>
+          ✕
+        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center rounded-r-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-white focus:outline-none&quot;</span>
+          <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Search products&quot;</span>
+        &gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden sm:block&quot;</span>&gt;</span>Search<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;sm:hidden&quot;</span>&gt;</span>🔍<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search-help&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2 text-sm text-slate-500&quot;</span>&gt;</span>
+        Try searching for &quot;wireless headphones&quot; or &quot;laptop stand&quot;
+      <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تحسينات إمكانية الوصول والصقل:</p>
+<ul>
+<li><code>role=&quot;search&quot;</code>: يحدّد منطقة البحث للتقنيات المساعدة</li>
+<li><code>aria-describedby=&quot;search-help&quot;</code>: يربط حقل الإدخال بنص وصفي مفيد</li>
+<li>خصائص <code>aria-label</code> على الأزرار: توفّر أوصافًا واضحة لقارئات الشاشة</li>
+<li><code>tabindex=&quot;-1&quot;</code> على زر المسح: يستبعده من ترتيب Tab عند إخفائه (تحسين لتجربة المستخدم)</li>
+<li><code>shadow-sm focus-within:shadow-md</code>: تغيّرات ارتفاع خفيفة عند التركيز</li>
+<li><code>sm:text-sm</code>: طباعة متجاوبة تمنع التكبير على الهاتف المحمول</li>
+<li><code>transition-all duration-200</code>: حركات سلسة لكل تغيّرات الحالة</li>
+</ul>
+<p>تنشئ هذه التحسينات مكوّنًا ليس مصقولًا بصريًا فحسب، بل متاحًا بالكامل أيضًا لمستخدمي التقنيات المساعدة.</p>
+<h2 id="لماذا-تنجح-هذه-المقاربة">لماذا تنجح هذه المقاربة</h2>
+<p>يستفيد نمط حقل الإدخال المركّب الذي بنيناه من عدة أدوات Tailwind قوية تعمل بتناغم:</p>
+<p><strong>focus-within ينشئ سلوك تركيز موحّدًا</strong>: تستجيب حاوية الإدخال كلها عندما يتلقى أي عنصر ابن التركيز، ما ينشئ تجربة مستخدم متماسكة تبدو كعنصر تحكّم واحد.</p>
+<p><strong>محدِّدات peer تمكّن تفاعلات ذكية</strong>: لا يظهر زر المسح إلا عند وجود محتوى لمسحه، ما يقلل الفوضى البصرية ويوفّر إجراءات سياقية.</p>
+<p><strong>أدوات group تنسّق تأثيرات التمرير</strong>: يمكن لعدة عناصر الاستجابة لتفاعلات على مستوى الحاوية، ما ينشئ تغذية بصرية متطورة.</p>
+<p><strong>إمكانية الوصول مدمجة</strong>: يضمن استخدام عناصر HTML دلالية (حقول إدخال وأزرار حقيقية) مع خصائص ARIA سليمة أن يعمل المكوّن مع التقنيات المساعدة.</p>
+<p><strong>بنية مرنة</strong>: يعمل النمط نفسه مع حقول البحث وحقول كلمات المرور وحقول URL أو أي نمط إدخال مركّب يحتاجه تطبيقك.</p>
+<h2 id="تحديات">تحديات</h2>
+<p>جرّب بناء هذه التنويعات:</p>
+<ol>
+<li><strong>إدخال مركّب متعدد الحقول</strong>: أنشئ حقل إدخال مركّبًا لإدخال رقم هاتف بحقول منفصلة لرمز الدولة ورمز المنطقة والرقم، باستخدام <code>focus-within</code> لتنسيق المجموعة كلها كوحدة واحدة.</li>
+<li><strong>حقل إدخال بقائمة منسدلة ذكية</strong>: ابنِ حقل إدخال بزر قائمة منسدلة داخلي يُظهر/يخفي الاقتراحات، بدمج الأنماط من هذا الدرس مع التقنيات من <a href="https://stevekinney.com/courses/tailwind/building-details-disclosure">درس كشف التفاصيل</a> لإنشاء مكوّن اختيار قابل للبحث.</li>
+</ol>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:l,headings:p,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,p as headings,e as html,t as slug,l as title};

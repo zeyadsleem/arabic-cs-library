@@ -1,0 +1,117 @@
+const s="kinney",a="tailwind",n="Tailwind CSS",l="pulse-and-loading-indicator-patterns",t="أنماط النبض ومؤشّرات التحميل",p=[{depth:2,id:"استخدام-animate-pulse-لهياكل-التحميل-skeleton",text:"استخدام animate-pulse لهياكل التحميل (skeleton)"},{depth:3,id:"تخصيص-حركة-النبض",text:"تخصيص حركة النبض"},{depth:2,id:"إنشاء-الدوائر-الدوارة-spinners-باستخدام-animate-spin",text:"إنشاء الدوائر الدوّارة (spinners) باستخدام animate-spin"},{depth:2,id:"حركات-تحميل-مخصصة",text:"حركات تحميل مخصّصة"},{depth:2,id:"مؤشرات-التحميل-المعتمدة-على-svg",text:"مؤشّرات التحميل المعتمدة على SVG"},{depth:2,id:"اعتبارات-إمكانية-الوصول",text:"اعتبارات إمكانية الوصول"},{depth:2,id:"أفضل-الممارسات",text:"أفضل الممارسات"}],e=`<p>تقديم تغذية راجعة فورية أثناء جلب البيانات أو تحميل المحتوى أمر بالغ الأهمية. ويوفّر Tailwind CSS أصنافًا مساعِدة لإنشاء مؤشّرات التحميل، من حركات النبض البسيطة إلى الأنماط المعقّدة.</p>
+<h2 id="استخدام-animate-pulse-لهياكل-التحميل-skeleton">استخدام <code>animate-pulse</code> لهياكل التحميل (skeleton)</h2>
+<p>ينشئ الصنف المساعد <code>animate-pulse</code> في Tailwind هياكل تحميل—وهي معاينات نائبة تُقلّل الإحساس بزمن التحميل. ويطبّق الصنف حركة نابضة عبر تلاشي العتامة وإظهارها.</p>
+<p>طَبِّقه على أي عنصر ليُشير إلى التحميل. واستخدم أشكالًا نائبة تحاكي بنية المحتوى النهائي.</p>
+<p><em>استخدام animate-pulse لهياكل التحميل — المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/4572875f03aaf7b51f3864ef540413ec477fe35c21691d6f0cebad008135d9b1.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mx-auto w-full max-w-sm rounded-md border border-blue-300 p-4 shadow&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex animate-pulse space-x-4&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex-1 space-y-6 py-1&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-2 rounded bg-slate-200 dark:bg-slate-700&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;space-y-3&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid grid-cols-3 gap-4&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-2 h-2 rounded bg-slate-200 dark:bg-slate-700&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-1 h-2 rounded bg-slate-200 dark:bg-slate-700&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-2 rounded bg-slate-200 dark:bg-slate-700&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تنشئ العناصر ذات <code>bg-slate-200</code> (أو <code>dark:bg-slate-700</code>) أشكال بطاقات المحتوى. ويجعل صنف <code>animate-pulse</code> على العنصر الأب جميع العناصر النائبة الفرعية تنبض معًا.</p>
+<h3 id="تخصيص-حركة-النبض">تخصيص حركة النبض</h3>
+<p>يوفّر <code>animate-pulse</code> حركة افتراضية. وخصّص السرعة أو العتامة عبر تعريف إطارات مفاتيح (keyframes) مخصّصة في <code>tailwind.config.js</code>، وإن كان الافتراضي كافيًا في الغالب.</p>
+<h2 id="إنشاء-الدوائر-الدوارة-spinners-باستخدام-animate-spin">إنشاء الدوائر الدوّارة (spinners) باستخدام <code>animate-spin</code></h2>
+<p>لمؤشّرات التحميل التقليدية، استخدم <code>animate-spin</code>. وهذه تطبّق حركة دوران دائري، تُستخدم عادةً للأيقونات أو الأشكال الهندسية.</p>
+<p><em>إنشاء الدوائر الدوّارة باستخدام animate-spin — المثال 2 — <a href="https://stevekinney.com/generated/playgrounds/63344d4a79568129d9661c75d72c157b63747df2ac970a8b04f010c07e96bb28.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-center space-x-2&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+    <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent&quot;</span>
+  &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-600 dark:text-slate-300&quot;</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>هذا عنصر <code>div</code> مُنسَّق كدائرة ذات حدّ علوي شفاف. ويجعل <code>animate-spin</code> يدور، فيُنتج دوّارة دوّارة كلاسيكية. واضبط لون الحدّ والحجم والسرعة عبر إعدادات Tailwind.</p>
+<h2 id="حركات-تحميل-مخصصة">حركات تحميل مخصّصة</h2>
+<p>للحركات المعقّدة، عرّف إطارات مفاتيح (keyframes) مخصّصة في <code>tailwind.config.js</code>.</p>
+<p>مثال حركة تحميل بـ«نقاط»:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// tailwind.config.js</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">theme</span>: {
+    <span class="hljs-attr">extend</span>: {
+      <span class="hljs-attr">animation</span>: {
+        <span class="hljs-string">&#x27;bounce-dots&#x27;</span>: <span class="hljs-string">&#x27;bounce-dots 1.4s infinite ease-in-out both&#x27;</span>,
+      },
+      <span class="hljs-attr">keyframes</span>: {
+        <span class="hljs-string">&#x27;bounce-dots&#x27;</span>: {
+          <span class="hljs-string">&#x27;0%, 80%, 100%&#x27;</span>: { <span class="hljs-attr">transform</span>: <span class="hljs-string">&#x27;scale(0)&#x27;</span>, <span class="hljs-attr">opacity</span>: <span class="hljs-string">&#x27;0&#x27;</span> },
+          <span class="hljs-string">&#x27;40%&#x27;</span>: { <span class="hljs-attr">transform</span>: <span class="hljs-string">&#x27;scale(1.0)&#x27;</span>, <span class="hljs-attr">opacity</span>: <span class="hljs-string">&#x27;1&#x27;</span> },
+        },
+      },
+    },
+  },
+  <span class="hljs-attr">plugins</span>: [],
+};
+</code></pre>
+<p>استخدم <code>animate-bounce-dots</code> في HTML:</p>
+<p><em>حركات تحميل مخصّصة — المثال 3 — <a href="https://stevekinney.com/generated/playgrounds/4c62382ad7b7e4bcc62104b6d18dbe908ef6292cfb2b4ecdf098ab7e06ad07c9.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-center space-x-2&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;sr-only&quot;</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;animate-bounce-dots h-3 w-3 rounded-full bg-blue-600 [animation-delay:-0.3s]&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;animate-bounce-dots h-3 w-3 rounded-full bg-blue-600 [animation-delay:-0.15s]&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;animate-bounce-dots h-3 w-3 rounded-full bg-blue-600&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تقفز ثلاث نقاط بالتتابع. و<code>animation-delay</code> (باستخدام قيم تعسّفية) يؤخّر الحركة بالتدرّج لإعطاء تأثير ديناميكي.</p>
+<h2 id="مؤشرات-التحميل-المعتمدة-على-svg">مؤشّرات التحميل المعتمدة على SVG</h2>
+<p>توفّر SVG حركات تحميل مخصّصة أو معقّدة. وأدرجها مباشرةً داخل HTML واستخدم أصناف Tailwind المساعِدة للتنسيق والتحكّم بالحركة.</p>
+<p>دوّارة دوّارة باستخدام <code>animate-spin</code>:</p>
+<p><em>مؤشّرات التحميل المعتمدة على SVG — المثال 4 — <a href="https://stevekinney.com/generated/playgrounds/06b160a4fe5ec6da357c8c15695371ca4b1194545b5770cd0eae6520ace4a851.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span>
+  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-5 w-5 animate-spin text-blue-500&quot;</span>
+  <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.w3.org/2000/svg&quot;</span>
+  <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>
+  <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 24 24&quot;</span>
+&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">circle</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;opacity-25&quot;</span> <span class="hljs-attr">cx</span>=<span class="hljs-string">&quot;12&quot;</span> <span class="hljs-attr">cy</span>=<span class="hljs-string">&quot;12&quot;</span> <span class="hljs-attr">r</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;currentColor&quot;</span> <span class="hljs-attr">stroke-width</span>=<span class="hljs-string">&quot;4&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">circle</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">path</span>
+    <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;opacity-75&quot;</span>
+    <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;currentColor&quot;</span>
+    <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z&quot;</span>
+  &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
+</code></pre>
+<p>جزآن: مسار دائري باهت، وقوس دوّار معتم. ويتولّى <code>animate-spin</code> الدوران؛ بينما يتحكّم <code>h-5 w-5 text-blue-500</code> في الحجم واللون.</p>
+<h2 id="اعتبارات-إمكانية-الوصول">اعتبارات إمكانية الوصول</h2>
+<p>راعِ إمكانية الوصول عند تنفيذ مؤشّرات التحميل:</p>
+<ol>
+<li><strong>مناطق <code>aria-live</code></strong>: استخدم <code>aria-live=&quot;polite&quot;</code> أو <code>aria-live=&quot;assertive&quot;</code> لتحديثات المحتوى الديناميكي.</li>
+<li><strong><code>aria-busy</code></strong>: طَبِّق <code>aria-busy=&quot;true&quot;</code> على مناطق التحميل. واضبطه على <code>false</code> عند الانتهاء.</li>
+<li><strong>نص قارئ الشاشة</strong>: أدرج نصًا بـ<code>sr-only</code> للمؤشّرات البصرية فقط (<code>&lt;span class=&quot;sr-only&quot;&gt;Loading content...&lt;/span&gt;</code>).</li>
+<li><strong>تقليل الحركة</strong>: استخدم مُبدّلات <code>motion-safe</code> و<code>motion-reduce</code> لاحترام تفضيلات المستخدم.</li>
+</ol>
+<p><em>اعتبارات إمكانية الوصول — المثال 5 — <a href="https://stevekinney.com/generated/playgrounds/959c80270e061b167847be8d3ec18b15317299923eb9eb26cb115690e5606a63.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;status&quot;</span> <span class="hljs-attr">aria-live</span>=<span class="hljs-string">&quot;polite&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center justify-center space-x-2&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+    <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent motion-safe:animate-spin motion-reduce:hidden&quot;</span>
+  &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;sr-only&quot;</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-600 motion-reduce:hidden dark:text-slate-300&quot;</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hidden text-slate-600 motion-reduce:block dark:text-slate-300&quot;</span>&gt;</span>
+    Please wait, content is loading.
+  <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تُخفى الدوّارة عند تقليل الحركة، ويُعرض النص البديل.</p>
+<h2 id="أفضل-الممارسات">أفضل الممارسات <span class="content-anchor" id="best-practices"></span></h2>
+<ul>
+<li><strong>كن مُفصِحًا</strong>: أبلغ بوضوح بأنّ النظام يعمل.</li>
+<li><strong>طابِق الأداء المُدرَك</strong>: تجنّب المؤشّرات للعمليات سريعة جدًّا (أقل من ثانية واحدة).</li>
+<li><strong>الثبات</strong>: استخدم أنماط تحميل متّسقة في تطبيقك كلّه.</li>
+<li><strong>تجنّب &quot;الاهتزاز&quot; (jank)</strong>: تأكّد من انسيابية الحركات. وحركات CSS أداؤها جيّد.</li>
+<li><strong>مؤشّرات سياقية</strong>: اعرض التحميل داخل المكوّنات المحدّثة بعينها.</li>
+<li><strong>وفّر مؤشّر التقدّم</strong>: استخدم أشرطة التقدّم في العمليات الطويلة كلما أمكن.</li>
+</ul>
+<p>وتُنشئ أصناف Tailwind المساعِدة للحركة، مع مراعاة إمكانية الوصول، أنماط تحميل فعّالة وسهلة الاستخدام.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:t,headings:p,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,p as headings,e as html,l as slug,t as title};

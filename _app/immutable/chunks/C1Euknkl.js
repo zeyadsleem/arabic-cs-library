@@ -1,0 +1,124 @@
+const s="kinney",n="self-testing-ai-agents",e="وكلاء ذكاء اصطناعي يختبرون أنفسهم",t="tuning-bugbot-for-your-codebase",a="ضبط Bugbot على شيفرة مشروعك",l=[{depth:2,id:"تشغيله",text:"تشغيله"},{depth:2,id:"ملف-التهيئة-على-مستوى-المستودع",text:"ملفّ التهيئة على مستوى المستودع"},{depth:2,id:"ما-يشتريه-لك-قسم-النبرة",text:"ما يشتريه لك قسم النبرة"},{depth:2,id:"تحديد-النطاق-لا-تراجع-كل-شيء",text:"تحديد النطاق: لا تراجع كل شيء"},{depth:2,id:"ما-تفعله-بالنتيجة",text:"ما تفعله بالنتيجة"},{depth:2,id:"سلم-التصعيد-من-الدرس-السابق",text:"سلّم التصعيد (من الدرس السابق)"},{depth:2,id:"ما-ليس-bugbot-له",text:"ما ليس Bugbot له"},{depth:2,id:"قواعد-الوكيل",text:"قواعد الوكيل"},{depth:2,id:"الشيء-الوحيد-الذي-يجب-تذكره",text:"الشيء الوحيد الذي يجب تذكّره"},{depth:2,id:"قراءة-إضافية",text:"قراءة إضافية"}],o=`<p>روبوت المراجعة الذي يعلّق على كل طلب دمج بنتائج منخفضة الجودة هو روبوت مراجعة يُكتَم. ونمط الفشل الثاني الأكثر شيوعًا (بعد «لا يجد شيئًا نافعًا») هو «يجد شيئًا في كل طلب دمج بصرف النظر عن وجود شيء يُوجَد». والفشلان يقتلان الحلقة، لأن الإشارة تكفّ عن كونها جديرة بالقراءة.</p>
+<p>Bugbot — روبوت المراجعة في <a href="https://docs.cursor.com/en/bugbot">Cursor</a> — يتيح لك تفادي الفشلين بإعدادات محدّدة قليلة. وهذا الدرس هو النسخة القصيرة من ما كنت سأسلمه لزميل في يومه الأول معه.</p>
+<h2 id="تشغيله">تشغيله</h2>
+<p>يعمل Bugbot كتكامل مع GitHub. ثبّته من لوحة تحكّم Cursor، واربط مستودعك، فيبدأ مراجعة طلبات الدمج تلقائيًا عند فتحها وعند الدفع إليها. ووضع المراجعة الافتراضي هو «علّق على الفرق حيث يبدو شيء خطأً» — لا ملخّص، ولا تقييم، ولا منع، بل تعليقات مضمّنة فحسب.</p>
+<p>هذا هو الوضع الذي أريده. فمراجعة على شكل ملخّص طقس. أما التعليق المضمّن فبند عمل.</p>
+<h2 id="ملف-التهيئة-على-مستوى-المستودع">ملفّ التهيئة على مستوى المستودع</h2>
+<p>ألقِ <code>.cursor/BUGBOT.md</code> في جذر المستودع. هذا هو ملفّ تعليمات Bugbot — الفكرة نفسها التي في تعليمات وكيلك الأساسي، لكن للمراجع. ويخبر الملفّ الروبوت بما يهتم به المشروع وبما يتركه.</p>
+<blockquote>
+<p><strong>ملاحظة</strong></p>
+<p>حتى 9 أبريل 2026، تستخدم وثائق Cursor المسار <code>.cursor/BUGBOT.md</code>. وقد تعرض لقطات شاشة ومستودعات أقدم <code>.cursor/bugbot.md</code>. اتبع وثائق Cursor الحالية للحساب الذي تستخدمه فعلًا، لكن أبقِ اسم الملف متّسقًا في كل مكان في المستودع وفي ملاحظات دروسك.</p>
+</blockquote>
+<p>يُودِع Shelf ملفّ <code>.cursor/BUGBOT.md</code> المضبوط في المستودع حتى قبل توصيل مراجعة Bugbot المستضافة. فالملفّ شأن تأليف؛ وتوجيه Bugbot إلى طلب دمج حقيقي في GitHub شأن نشر تعالجه منفصلًا.</p>
+<pre><code class="language-markdown"><span class="hljs-section"># Bugbot review rules for Shelf</span>
+
+<span class="hljs-section">## Context</span>
+
+Shelf is a reading-tracker built on [<span class="hljs-string">SvelteKit</span>](<span class="hljs-link">https://kit.svelte.dev/</span>) + TypeScript + [<span class="hljs-string">Drizzle</span>](<span class="hljs-link">https://orm.drizzle.team/</span>) + SQLite.
+Tests run on [<span class="hljs-string">Vitest</span>](<span class="hljs-link">https://vitest.dev/</span>) (unit) and [<span class="hljs-string">Playwright</span>](<span class="hljs-link">https://playwright.dev/</span>) (end-to-end). [<span class="hljs-string">Better Auth</span>](<span class="hljs-link">https://www.better-auth.com/</span>) handles
+authentication; authorization helpers live in <span class="hljs-code">\`src/lib/server/authorization.ts\`</span>.
+
+<span class="hljs-section">## What to flag</span>
+
+<span class="hljs-bullet">-</span> API handlers under <span class="hljs-code">\`src/routes/api/\`</span> that read user identity from the
+  request body instead of the viewer. User identity comes from <span class="hljs-code">\`locals.user\`</span>,
+  never the request body.
+<span class="hljs-bullet">-</span> Admin-only route handlers that use plain <span class="hljs-code">\`locals.user\`</span> checks or call
+  something other than <span class="hljs-code">\`requireAdministrator(locals.user)\`</span> from
+  <span class="hljs-code">\`$lib/server/authorization\`</span>. Any handler under <span class="hljs-code">\`src/routes/api/admin/**\`</span> is
+  admin-only.
+<span class="hljs-bullet">-</span> Drizzle queries that don&#x27;t scope by the current user when operating on
+  user-owned resources (shelf entries, ratings).
+<span class="hljs-bullet">-</span> Error handling that catches an error and returns 200. If we catch, we log
+  and return an appropriate non-2xx status.
+<span class="hljs-bullet">-</span> Components that render user-generated content without escaping or
+  sanitization.
+<span class="hljs-bullet">-</span> Playwright tests that use <span class="hljs-code">\`page.waitForTimeout\`</span>, <span class="hljs-code">\`page.locator\`</span> with raw
+  CSS, or UI login. These patterns are banned by the agent rules.
+<span class="hljs-bullet">-</span> Changes to the dossier loop that remove <span class="hljs-code">\`playwright-report/report.json\`</span>,
+  retained traces, or the <span class="hljs-code">\`npm run dossier\`</span> script.
+
+<span class="hljs-section">## What to leave alone</span>
+
+<span class="hljs-bullet">-</span> Generated Playwright artifacts under <span class="hljs-code">\`playwright-report/\`</span>.
+<span class="hljs-bullet">-</span> Storage-state files under <span class="hljs-code">\`playwright/.authentication/\`</span>.
+<span class="hljs-bullet">-</span> Snapshot PNGs in <span class="hljs-code">\`tests/*-snapshots/\`</span>.
+<span class="hljs-bullet">-</span> HAR fixtures under <span class="hljs-code">\`tests/fixtures/*.har\`</span>.
+<span class="hljs-bullet">-</span> Generated <span class="hljs-code">\`build/\`</span> outputs.
+<span class="hljs-bullet">-</span> Lockfiles.
+
+<span class="hljs-section">## Tone</span>
+
+Be direct. Name the line. Suggest a specific fix. Do not write
+&quot;consider,&quot; do not write &quot;you may want to,&quot; do not summarize the PR.
+If nothing is worth flagging, say nothing.
+</code></pre>
+<p>هذا الملفّ سيحمل معظم الثقل. وقسم «ما يجب تركه» هو الذي يمنع الروبوت من التعليق على بيانات البذر وملفّات التجهيزات التي <em>يُفترض</em> أن تكون هشّة. وقسم «النبرة» هو حيث تقتل المجاملات المنعكسة التي تجعل تعليقات روبوتات المراجعة تبدو كضجيج.</p>
+<p>وفي Shelf، تبقى الحماية المحلية لمختبر الخلل المزروع مملّة عن قصد: <code>npm run typecheck</code> و<code>npm run lint</code> و<code>npm run test</code> كلها تبقى خضراء حتى مع وجود خلل الصلاحيات. ولهذا يهمّ الفرق المزروع. فحلقة المراجعة تلتقط فئة الخلل التي فوّتتها الاختبارات، سواء كُتب التحقّق السيئ كفرع يدوي <code>locals.user.isAdmin</code> أو كبديل «قريب بما يكفي» عن <code>requireAdministrator(locals.user)</code>.</p>
+<h2 id="ما-يشتريه-لك-قسم-النبرة">ما يشتريه لك قسم النبرة</h2>
+<p>أنا جادّ بشأن قواعد النبرة. فتعليق مراجعة يبدأ بـ«فكّر في إعادة هيكلة هذا إلى…» احتمال أن يُنتج إصلاحًا أقلّ بنحو 50% من التعليق نفسه مصاغًا كـ«هذا يثق بجسم الطلب؛ استخدم <code>locals.session.userId</code> بدلًا من ذلك». فالنسخة المباشرة لها فعل واضح. والنسخة المتحفّظة لها محادثة.</p>
+<p>روبوت مراجعتك يكتب مطالبات لوكيل متابعة (أو لمطوّر بشري). وكلما زادت المطالبة إخباريةً، زاد احتمال أن تكون الخطوة التالية فعلًا لا نقاشًا. «فكّر في» نقاش. «استخدم X بدلًا من ذلك» فعل.</p>
+<p>اطلب من Bugbot — عبر ملفّ تهيئته — أن يكتب كمهندس أول مستعجل. ثم راقب معدّل إصلاح المتابعة يرتفع.</p>
+<h2 id="تحديد-النطاق-لا-تراجع-كل-شيء">تحديد النطاق: لا تراجع كل شيء</h2>
+<p>يمكن توجيه Bugbot إلى مسارات محدّدة أو إخباره بتجاهل غيرها. استخدم هذا بشراسة.</p>
+<p>أشياء أستبعدها دائمًا من المراجعة:</p>
+<ul>
+<li>التوثيق (<code>docs/</code>، <code>*.md</code>). فالتوثيق له سير عمل مراجعة خاص؛ وروبوت مراجعة شيفرة يعلّق على النحو ليس مفيدًا.</li>
+<li>الملفّات المولّدة تلقائيًا (الأنواع، وعملاء OpenAPI، وناتج توليد شيفرة GraphQL). فليس لدى الروبوت ما يقوله نافعًا عن شيفرة مولّدة.</li>
+<li>الترحيلات (<code>drizzle/migrations/</code> أو ما يشبهها). فالترحيلات تُراجَع مرة واحدة ولا تُراجَع بعدها؛ وتعليق Bugbot عليها بأثر رجعي مجرّد ضجيج.</li>
+<li>التجهيزات وبيانات البذر. فبيانات سيئة عن قصد تسكن هنا، وكل تعليق إيجابية كاذبة.</li>
+<li>ملفّات الأقفال (<code>bun.lockb</code>، <code>package-lock.json</code>). بديهي.</li>
+</ul>
+<p>أشياء أضمّنها دائمًا:</p>
+<ul>
+<li>معالجات المسارات (<code>src/routes/**/+server.ts</code> و<code>+page.server.ts</code>). فهنا تسكن الأمان والصحّة.</li>
+<li>مساعدات قاعدة البيانات (<code>src/lib/server/*.ts</code>). فأخطاء الاستعلامات تسكن هنا.</li>
+<li>المكوّنات المشتركة (<code>src/lib/components/*.svelte</code>). فأخطاء مستوى التصيير تسكن هنا.</li>
+<li>مساعدات الاختبار (<code>tests/helpers/*.ts</code>). فهذه تضخّم الأخطاء عبر المجموعة؛ والأخطاء هنا مكلفة جدًا.</li>
+</ul>
+<p>افتراضي الروبوت «راجع كل شيء». فتجاوزه.</p>
+<h2 id="ما-تفعله-بالنتيجة">ما تفعله بالنتيجة</h2>
+<p>حين يترك Bugbot تعليقًا، يكون سير العمل مباشرًا:</p>
+<ol>
+<li><strong>اقرأ النتيجة.</strong> فليست كل نتيجة صحيحة. وكثير منها نقّ أو سوء فهم.</li>
+<li><strong>إن كانت صحيحة</strong>، سلّمها إلى الوكيل. «أشار Bugbot إلى هذا المعالج لأنه يثق بجسم الطلب. أصلحه.» فيقرأ الوكيل التعليق، ويجري التغيير، ويدفع. ويعيد Bugbot المراجعة عند الدفع.</li>
+<li><strong>إن كانت خاطئة</strong>، قل ذلك في طلب الدمج وعلّم الخيط محلولًا. وتعامل مع أي «تعلّم» من جانب الروبوت كتحسين مطلوب، لا كضمان. والإصلاح المتين هو تحديث <code>.cursor/BUGBOT.md</code> كي تقلّ احتمالية تكرار الإيجابية الكاذبة.</li>
+<li><strong>إن لم تكن صحيحة بوضوح ولا خاطئة بوضوح</strong>، فمل إلى إصلاحها. فنتائج روبوتات المراجعة تميل إلى كونها أعراضًا، وحتى حين يكون التشخيص بعيدًا، فإن معالجة العَرَض تُحسّن الشيفرة عادةً. (وهذا صحيح في المراجعين البشر أيضًا، بالمناسبة.)</li>
+</ol>
+<h2 id="سلم-التصعيد-من-الدرس-السابق">سلّم التصعيد (من الدرس السابق)</h2>
+<p>تذكّر قاعدة الثلاث من الدرس الماضي. حين يشير Bugbot إلى النوع نفسه من الأشياء مرارًا:</p>
+<ul>
+<li>مرة أو مرتين: أصلح طلب الدمج. وامضِ.</li>
+<li>ثلاث مرات: أضف قاعدة إلى تعليمات الوكيل كي يلتقطها وكيل الكتابة في المنبع.</li>
+<li>ما زال يحدث بعد القاعدة: أضف قاعدة lint أو تحقّق اختبار يجعل النمط السيئ فشلًا صارمًا.</li>
+</ul>
+<p>روبوت المراجعة ليس نهاية الحلقة — إنه المراقب الذي يخبرك بما تؤتمته تاليًا. فكل نتيجة متّسقة من Bugbot معلومة عن أين يكون منعك في المنبع ضعيفًا.</p>
+<h2 id="ما-ليس-bugbot-له">ما ليس Bugbot له</h2>
+<p>فحص صدق سريع.</p>
+<ul>
+<li>Bugbot ليس بديلًا عن اختباراتك. فإن كنت تعتمد عليه لالتقاط أخطاء المنطق، فستُخاب نحو 60% من الوقت.</li>
+<li>Bugbot ليس تدقيق أداء. فهو لا يشغّل شيفرتك. ولا يستطيع إخبارك أن حلقة ساخنة بطيئة.</li>
+<li>Bugbot ليس مفروضًا لدليل الأسلوب. استخدم ESLint وPrettier لذلك. فهما أرخص وأسرع وحتميان. ولا ينبغي أن يعلّق الروبوت على التنسيق.</li>
+<li>Bugbot ليس مراجعًا بشريًا. إنه جولة ثانية رخيصة سريعة. والمراجع البشري الحقيقي — زميلك — ما زال سيرى أشياء لا يراها Bugbot، وما زال ينبغي أن تجري مراجعات شيفرة حقيقية حين يهمّ الأمر.</li>
+</ul>
+<p>تعامل مع الروبوت كالطبقة بين «انتهيت من كتابة الشيفرة» و«سيأتي بشري لينظر إلى هذا». فهو يلتقط الثمار الدانية كي تركّز المراجعة البشرية على الأشياء المثيرة للاهتمام.</p>
+<h2 id="قواعد-الوكيل">قواعد الوكيل</h2>
+<pre><code class="language-markdown"><span class="hljs-section">## Review bot findings</span>
+
+<span class="hljs-bullet">-</span> When Cursor Bugbot leaves a comment, read the finding and either (a)
+  fix it and push a new commit, or (b) reply on the thread explaining
+  why the finding is wrong, and mark the thread resolved.
+<span class="hljs-bullet">-</span> If Bugbot flags the same issue three times across three different
+  PRs, add a rule to this file that prevents the pattern upstream.
+<span class="hljs-bullet">-</span> Do not argue with Bugbot in comments. If the finding is wrong,
+  resolve the thread and update <span class="hljs-code">\`.cursor/BUGBOT.md\`</span> to prevent
+  the false positive.
+</code></pre>
+<h2 id="الشيء-الوحيد-الذي-يجب-تذكره">الشيء الوحيد الذي يجب تذكّره</h2>
+<p>روبوت المراجعة المضبوط متعاون. وروبوت المراجعة غير المضبوط ضجيج. والضبط يقيم في ملفّ واحد بقسمين — «ما يجب الإشارة إليه» و«ما يجب تركه» — إضافةً إلى توجيه نبرة. ثلاثون دقيقة من الضبط توفّر عليك أسابيع من الإشعارات المكتومة.</p>
+<h2 id="قراءة-إضافية">قراءة إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/the-second-opinion">الرأي الثاني</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/lab-bugbot-on-a-planted-bug">مختبر: Bugbot على خلل مزروع</a></li>
+</ul>
+`,i={book:s,chapter:n,chapterTitle:e,slug:t,title:a,headings:l,html:o};export{s as book,n as chapter,e as chapterTitle,i as default,l as headings,o as html,t as slug,a as title};

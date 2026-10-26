@@ -1,0 +1,136 @@
+const s="kinney",n="self-testing-ai-agents",a="وكلاء ذكاء اصطناعي يختبرون أنفسهم",t="testing-third-party-authentication",e="اختبار المصادقة عبر طرف ثالث",l=[{depth:2,id:"الحد-الذي-تملكه-فعلا",text:"الحدّ الذي تملكه فعلًا"},{depth:2,id:"النمط-المعتاد-هيئ-جلسة-تطبيقك",text:"النمط المعتاد: هيّئ جلسة تطبيقك"},{depth:2,id:"عندما-تعيش-الحالة-النهائية-في-تخزين-المتصفح",text:"عندما تعيش الحالة النهائية في تخزين المتصفح"},{depth:2,id:"أبق-اختبار-دخان-حقيقيا-صغيرا-واحدا",text:"أبقِ اختبار دخان حقيقيًا صغيرًا واحدًا"},{depth:2,id:"ضع-تدفق-المزود-الحقيقي-في-مسار-خاص-به",text:"ضع تدفّق المزوّد الحقيقي في مسار خاص به"},{depth:2,id:"نمط-الفشل-الذي-يجب-تجنبه",text:"نمط الفشل الذي يجب تجنّبه"},{depth:2,id:"قواعد-الوكيل",text:"قواعد الوكيل"},{depth:2,id:"الشيء-الوحيد-الذي-يجب-تذكره",text:"الشيء الوحيد الذي يجب تذكّره"},{depth:2,id:"قراءات-إضافية",text:"قراءات إضافية"}],p=`<p>أصعب خلل مصادقة يمكن أن تشرحه لفريق هو هذا: <em>«لا، لن نجعل كل طلب سحب ينتظر شاشة تسجيل الدخول في Google.»</em> فإن كان تطبيقك يسجّل الدخول عبر Google OAuth أو Okta أو Auth0 أو Microsoft أو أحد تدفّقات SAML المؤسسية التي بالكاد تفهمها، فمن المُغري أن تعامل واجهة المزوّد بوصفها جزءًا من مجموعة اختبارات الانحدار لديك.</p>
+<p>وهذا هو الحدّ الخاطئ.</p>
+<p>أنت لا تملك DOM الخاص بـGoogle. ولا تتحكّم بحدود معدّل طلباته، ولا بكشفه للبوتات، ولا بشاشة تحدٍّ إضافية تظهر عنده أحيانًا، ولا بالشخص في قسم تقنية المعلومات الذي بدّل رقم هاتف استرداد حساب الاختبار. فإن جعلت تلك الواجهة جزءًا من كل تشغيل شامل، فأنت تستأجر مجموعة اختباراتك من تقويم حوادث شخص آخر.</p>
+<h2 id="الحد-الذي-تملكه-فعلا">الحدّ الذي تملكه فعلًا</h2>
+<p>في المصادقة عبر طرف ثالث، ثمّة ثلاثة أسئلة منفصلة حقًّا:</p>
+<ul>
+<li>هل يستطيع المستخدم <em>أن يبدأ</em> تدفّق تسجيل الدخول من تطبيقك؟</li>
+<li>هل يستطيع تطبيقك إنشاء الجلسة الصحيحة بعد استدعاء عودة (callback) ناجح؟</li>
+<li>هل يتصرّف تطبيقك بشكل صحيح بعد أن يسجّل المستخدم الدخول؟</li>
+</ul>
+<p>هذه الأسئلة لا تستحق جميعها النوع نفسه من الاختبار.</p>
+<p>الأول فحص تكامل ضيّق. والثاني شأن من شؤون مصادقة التطبيق. والثالث هو ما تدور حوله معظم مجموعة اختباراتك الشاملة في الحقيقة. فإن جمعتها كلها في اختبار واحد عملاق من نوع «سجّل الدخول إلى Google فعليًا»، دفعت أعلى كلفة ممكنة مقابل أقلّ إشارة نافعة.</p>
+<h2 id="النمط-المعتاد-هيئ-جلسة-تطبيقك">النمط المعتاد: هيّئ جلسة تطبيقك</h2>
+<p>إذا كان OAuth يُنتج في النهاية كوكي جلسة عادية في تطبيق<em>ك</em>، فأنظف نمط هو:</p>
+<ol>
+<li>أضف مساعدًا أو نقطة نهاية خاصّة بالاختبار في التطبيق تُنشئ تلك الجلسة نفسها لمستخدم اختبار معروف في بيئة الاختبار أو بيئة التهيئة.</li>
+<li>استدعِ ذلك المساعد من مشروع الإعداد في Playwright.</li>
+<li>احفظ حالة التخزين الناتجة ودع بقية المجموعة تعيد استخدامها.</li>
+</ol>
+<p>المقتطف أدناه توضيحي. فـShelf لا يستخدم مصادقة عبر طرف ثالث، لذا فـ<code>/test-authentication/session</code> بديل عن أي مسار تهيئة تملكه شيفرتك وتكشفه.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { test <span class="hljs-keyword">as</span> setup, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@playwright/test&#x27;</span>;
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:path&#x27;</span>;
+
+<span class="hljs-keyword">const</span> authenticationFile = path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;playwright/.authentication/user.json&#x27;</span>);
+
+<span class="hljs-title function_">setup</span>(<span class="hljs-string">&#x27;authenticate test user for OAuth-backed app&#x27;</span>, <span class="hljs-title function_">async</span> ({ request }) =&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> request.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;/test-authentication/session&#x27;</span>, {
+    <span class="hljs-attr">data</span>: {
+      <span class="hljs-attr">email</span>: <span class="hljs-string">&#x27;alice@example.com&#x27;</span>,
+      <span class="hljs-attr">provider</span>: <span class="hljs-string">&#x27;google&#x27;</span>,
+    },
+  });
+
+  <span class="hljs-title function_">expect</span>(response.<span class="hljs-title function_">ok</span>()).<span class="hljs-title function_">toBeTruthy</span>();
+
+  <span class="hljs-keyword">await</span> request.<span class="hljs-title function_">storageState</span>({ <span class="hljs-attr">path</span>: authenticationFile });
+});
+</code></pre>
+<p>هذا ليس غشًّا. إنه اختيار الفاصل الصحيح.</p>
+<p>فحركة عودة OAuth الحقيقية لديك تستقبل الهوية من Google وتحوّلها إلى جلسة تطبيق. والمساعد ينبغي أن يفعل ذلك الجزء <em>الذي تملكه</em> أنت مباشرةً. وما تتخطّاه هو واجهة المزوّد، لا نموذج التخويل الخاص بك.</p>
+<p>تستخدم الوثائق الرسمية <code>playwright/.auth/</code> مجلدًا تقليديًا لحالة التخزين. أما Shelf فيستخدم <code>playwright/.authentication/</code> في مواد الورشة. وكلاهما يعمل. اختر واحدًا، وأبعده عن git، ولا تدع الاصطلاحين ينزلقان إلى المستودع نفسه.</p>
+<p>وثمّة قاعدتان تهمّان هنا:</p>
+<ul>
+<li>يجب ألّا يوجد المساعد إلا في بيئتي الاختبار أو التهيئة، وألّا يوجد في الإنتاج أبدًا.</li>
+<li>يجب أن يُصدر المساعد النوع نفسه من الجلسات الذي تُصدره حركة العودة الحقيقية. لا تُنشئ مفتاحًا مزيفًا من نوع <code>&quot;loggedIn&quot;: true</code> يتخطّى الأدوار أو المطالبات (claims) أو فحوص الأذونات.</li>
+</ul>
+<p>وإن بدت القاعدة الثانية متشدّدة، فهذا حسن. فالطريق المختصر المزيف في المصادقة الذي يتخطّى شكل الجلسة الحقيقي هو كيف تحصل على مجموعة اختبارات خضراء لا تشبه الإنتاج.</p>
+<h2 id="عندما-تعيش-الحالة-النهائية-في-تخزين-المتصفح">عندما تعيش الحالة النهائية في تخزين المتصفح</h2>
+<p>بعض المكدّسات لا تنتهي بكوكي خادم عادي. بل تُنزل الرموز (tokens) النهائية في <code>localStorage</code> أو <code>IndexedDB</code> عبر SDK يعمل في المتصفح. وفي هذه الحالة تظلّ تستخدم الفكرة العامة نفسها، لكن التهيئة يجب أن تنتهي داخل سياق متصفح حتى يستطيع Playwright التقاط حالة المتصفح الحقيقية.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { test <span class="hljs-keyword">as</span> setup, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@playwright/test&#x27;</span>;
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:path&#x27;</span>;
+
+<span class="hljs-keyword">const</span> authenticationFile = path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;playwright/.authentication/user.json&#x27;</span>);
+
+<span class="hljs-title function_">setup</span>(<span class="hljs-string">&#x27;authenticate browser-backed OAuth session&#x27;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/test-authentication/google?email=alice@example.com&#x27;</span>);
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page).<span class="hljs-title function_">toHaveURL</span>(<span class="hljs-string">&#x27;/shelf&#x27;</span>);
+
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">context</span>().<span class="hljs-title function_">storageState</span>({
+    <span class="hljs-attr">path</span>: authenticationFile,
+    <span class="hljs-attr">indexedDB</span>: <span class="hljs-literal">true</span>,
+  });
+});
+</code></pre>
+<p>و<code>indexedDB: true</code> هو الجزء الذي يفوته الناس. فإن كان SDK المزوّد يخزّن الرموز هناك، فلقطة الكوكيز وحدها ناقصة، وستُعيد اختباراتك التوجيه إلى تسجيل الدخول «بشكل غامض».</p>
+<p>هذا لا يزال نمط حالة التخزين نفسه من الدرس السابق. والفرق الوحيد أن مسار الإعداد لديك يبني حالة مصادقة مدعومة بالمتصفح بدلًا من جلسة خادم عادية.</p>
+<h2 id="أبق-اختبار-دخان-حقيقيا-صغيرا-واحدا">أبقِ اختبار دخان حقيقيًا صغيرًا واحدًا</h2>
+<p>ما زلت تريد اختبارًا واحدًا يُثبت أن التكامل يبدأ على نحو صحيح. فالنقر على <code>Continue with Google</code> ينبغي أن يوجّه إلى مسار بدء OAuth لديك أو إلى نطاق المزوّد. وهذا شيء صحيح أن تختبره.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { test, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@playwright/test&#x27;</span>;
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;google sign-in starts the OAuth redirect&#x27;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+  <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&#x27;/login&#x27;</span>);
+
+  <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([
+    page.<span class="hljs-title function_">waitForURL</span>(<span class="hljs-regexp">/\\/auth\\/google|accounts\\.google\\.com/</span>),
+    page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Continue with Google&#x27;</span> }).<span class="hljs-title function_">click</span>(),
+  ]);
+
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page).<span class="hljs-title function_">toHaveURL</span>(<span class="hljs-regexp">/\\/auth\\/google|accounts\\.google\\.com/</span>);
+});
+</code></pre>
+<p>هذا يكفي لإثبات أن زر تسجيل الدخول لديك ومساره وتوصيلات التوجيه فيه حيّة. ولا يكفي لإثبات كل حالة حدّية في تدفّق تسجيل الدخول في Google، ولا حاجة به إلى ذلك. فهذا اختبار دخان، لا مجموعة اختبارات انحدار كاملة مُستعارة من الخارج.</p>
+<p>وإن كان تطبيقك يفتح نافذة منبثقة بدلًا من توجيه الصفحة الحالية، فالقاعدة نفسها تنطبق: تحقّق من أن النافذة المنبثقة أو التنقّل <em>يبدأ</em>. ولا تحوّل واجهة المزوّد الكاملة إلى الشيء الذي ينتظره كل مطوّر.</p>
+<h2 id="ضع-تدفق-المزود-الحقيقي-في-مسار-خاص-به">ضع تدفّق المزوّد الحقيقي في مسار خاص به</h2>
+<p>أحيانًا تحتاج فعلًا إلى اختبار شامل واحد كامل لتدفّق المزوّد. ربما يطلبه فريق الامتثال لديك. وربما تنكسر تهيئة SAML الخاصّة بعميل ما في كثير من الأحيان بما يكفي لتريد مراقبًا حقيقيًا واحدًا.</p>
+<p>لا بأس. اعزله فقط.</p>
+<ul>
+<li>شغّله على حسابات اختبار مخصّصة بأصغر أذونات ممكنة.</li>
+<li>أبعده عن بوابة طلبات السحب الرئيسية إن كان المزوّد قد يحدّد معدّل الطلبات أو يطرح تحديًا أو يتباطأ عشوائيًا.</li>
+<li>شغّله وفق جدول زمني أو كفحص بيئة يُستدعى يدويًا، لا كالشيء الذي يقرّر ما إذا كان كل فرع ميزة غير ذي صلة يستطيع الدمج.</li>
+<li>إن كان المزوّد يوفّر بيئة اختبار معزولة أو مستأجر اختبار، فاستخدمه.</li>
+</ul>
+<p>والتمييز الأساسي هو هذا: تدفّق المزوّد الحقيقي قد يكون اختبار دخان نافعًا، لكنه خيار افتراضي بائس لحلقة عمل المطوّر اليومية.</p>
+<h2 id="نمط-الفشل-الذي-يجب-تجنبه">نمط الفشل الذي يجب تجنّبه</h2>
+<p>حين يصطدم فريق بـGoogle OAuth في Playwright لأول مرة، تكون الغريزة المعتادة واحدة من هذه:</p>
+<ul>
+<li>أتمتة واجهة المزوّد كاملة في كل اختبار.</li>
+<li>إضافة <code>page.waitForTimeout(5000)</code> حتى يستقرّ التوجيه في النهاية.</li>
+<li>حفظ ملف تعريف مُوثّق واحد طويل العمر والأمل ألّا تنتهي صلاحيته أبدًا.</li>
+</ul>
+<p>والثلاثة كلها غير مستقرة.</p>
+<p>أما النسخة المستقرة فمملّة:</p>
+<ul>
+<li>اختبار دخان صغير واحد للتوجيه</li>
+<li>مسار تهيئة واحد تملكه أنت لاختبارات المصادقة العادية</li>
+<li>ملف حالة تخزين واحد لكل دور</li>
+<li>مسار دخان معزول واحد للمزوّد الحقيقي، إن كنت تحتاجه فعلًا</li>
+</ul>
+<p>وإن احتجت يومًا إلى تبديل سياق متصفح واحد من حالة مصادقة إلى أخرى داخل تدفّق دخان ضيّق، فإن إصدارات Playwright الأحدث تضيف <code>browserContext.setStorageState()</code>. وهذه حالة حدّية متقدّمة، لا المسار الافتراضي. فالافتراضي لا يزال «سياق جديد، وحالة معروفة، وبلا بطولات».</p>
+<p>هذا البنيان هو ما يمنع «المصادقة خارجية» من أن تنقلب إلى «المجموعة كلها خارجية».</p>
+<h2 id="قواعد-الوكيل">قواعد الوكيل</h2>
+<pre><code class="language-markdown"><span class="hljs-section">## Third-party authentication</span>
+
+<span class="hljs-bullet">-</span> For Google OAuth, Okta, Auth0, Microsoft, SAML, or any other
+  third-party provider, do not drive the provider UI in every test.
+<span class="hljs-bullet">-</span> Keep one narrow smoke test for &quot;the sign-in flow starts.&quot;
+<span class="hljs-bullet">-</span> For the normal authenticated suite, bootstrap the application&#x27;s own
+  session in test or staging and save Playwright storage state from
+  there.
+<span class="hljs-bullet">-</span> If the auth state lives in browser storage, capture it with
+  <span class="hljs-code">\`browserContext.storageState({ indexedDB: true })\`</span>.
+<span class="hljs-bullet">-</span> If you deliberately switch auth state mid-flow, prefer
+  <span class="hljs-code">\`browserContext.setStorageState()\`</span> over hand-mutating cookies and
+  localStorage.
+<span class="hljs-bullet">-</span> Any full real-provider flow belongs in a dedicated smoke lane, not the
+  normal pull-request gate.
+</code></pre>
+<h2 id="الشيء-الوحيد-الذي-يجب-تذكره">الشيء الوحيد الذي يجب تذكّره</h2>
+<p>لا تُجرِ اختبار انحدار على صفحة تسجيل الدخول في Google. أجرِ اختبار انحدار على <em>علاقة تطبيقك بالمصادقة</em>. ابدأ التوجيه مرة واحدة، وأثبت أنك تستطيع إنشاء الجلسة الصحيحة، واحفظها في حالة التخزين، وأنفق بقية ميزانية اختبارك على السلوك الذي تملكه فعلًا.</p>
+<h2 id="قراءات-إضافية">قراءات إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication">المصادقة بحالة التخزين</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects">مشاريع Playwright</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state">APIRequestContext: ما هو أبعد من حالة التخزين</a></li>
+</ul>
+`,i={book:s,chapter:n,chapterTitle:a,slug:t,title:e,headings:l,html:p};export{s as book,n as chapter,a as chapterTitle,i as default,l as headings,p as html,t as slug,e as title};

@@ -1,0 +1,110 @@
+const s="tanstack-form",a="form",n="دورة TanStack Form الكاملة",e="validating-with-zod-refine-and-async",o="التحقّق من الصحة باستخدام Zod: refine والتحقّق غير المتزامن",c=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"قاعدة-تربط-حقلين",text:"قاعدة تربط حقلين"},{depth:3,id:"refine-بعد-الكائن",text:"refine بعد الكائن"},{depth:3,id:"كيف-تصل-الرسالة-إلى-الشاشة",text:"كيف تصل الرسالة إلى الشاشة"},{depth:3,id:"قاعدة-غير-متزامنة-داخل-المخطط",text:"قاعدة غير متزامنة داخل المخطّط"},{depth:3,id:"التوقيت-مخطط-بدل-دالة",text:"التوقيت: مخطّط بدل دالّة"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],t=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في الدرس السابق نقلنا قواعد التحقّق من الصحة (validation) إلى مخطّط (schema) واحد كتبناه بـZod ومرّرناه إلى خيار <code>validators</code> في <code>useForm</code>. ذلك المخطّط وصف كلّ حقل على حِدة: طول الاسم، وحدود العمر، وشكل البريد، وعدد أحرف كلمة المرور. لكنّ ثمّة قاعدة لا تصف حقلًا واحدًا، بل تصف العلاقة بين حقلين: كلمة المرور وتأكيدها. ولا يستطيع مخطّط الحقل أن يحملها، لأنّه لا يرى إلّا قيمته هو.</p>
+<p>يبدأ الدرس بهذه القاعدة ويحلّها بدالة <code>refine</code> تُضاف بعد الكائن كاملًا، فتحصل على قيم الاستمارة كلّها وتحكم. ثم ينتقل إلى قاعدة لا يعرف جوابها إلّا الخادم، فيكتبها داخل المخطّط نفسه بدالة <code>refine</code> غير متزامنة ويضعها في الفتحة <code>onChangeAsync</code>. وينتهي بالتوقيت: كيف نُبقي المخطّط كما هو ونغيّر متى يعمل، من كلّ ضغطة مفتاح إلى الإرسال ثمّ إلى مغادرة الحقل، عبر <code>onDynamic</code> و<code>revalidateLogic</code>.</p>
+<p>الفكرة التي يجمعها الدرس أنّ المخطّط ليس حبيس الحقول: <code>refine</code> تفتحه على العلاقات بينها وعلى الشبكة، و<code>onDynamic</code> يفتحه على حالة الاستمارة.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="قاعدة-تربط-حقلين">قاعدة تربط حقلين</h3>
+<p>في ملف <code>src/lib/RegisterForm.tsx</code> نجد قاعدتين متجاورتين في المخطّط، إحداهما صارمة والأخرى صامتة:</p>
+<pre><code class="language-tsx">    <span class="hljs-attr">password</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">min</span>(<span class="hljs-number">6</span>, <span class="hljs-string">&quot;Password should be at least 6 characters.&quot;</span>),
+    <span class="hljs-attr">confirmPassword</span>: z.<span class="hljs-title function_">string</span>(),
+</code></pre>
+<p>كلمة المرور لها قاعدة واضحة: ستّة أحرف على الأقل. أمّا التأكيد فمجرّد سلسلة نصّية بلا أيّ شرط. جرّب في المتصفّح: اكتب <code>1234567</code> في الحقلين فتمرّ الاستمارة، ثمّ اكتب <code>7654321</code> في التأكيد فلا يظهر خطأ. السلوك ليس خللًا في المكتبة، بل نتيجة طبيعية لغياب القاعدة: لا شيء يقارن القيمتين.</p>
+<p>والقاعدة لا تُكتب على الحقل. متحقّقات الحقل تستقبل قيمة ذلك الحقل وحده، فحقل التأكيد لا يرى كلمة المرور أصلًا. ولو كتبناها على مستوى الاستمارة بدالّة عادية لأمكن، لكنّها كانت ستخرج من المخطّط وتصير قطعةً منفصلة عن بقية القواعد. الدرس يريدها في المكان نفسه: المخطّط.</p>
+<h3 id="refine-بعد-الكائن"><code>refine</code> بعد الكائن</h3>
+<pre><code class="language-tsx">  .<span class="hljs-title function_">refine</span>(<span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> data.<span class="hljs-property">password</span> === data.<span class="hljs-property">confirmPassword</span>, {
+    <span class="hljs-attr">error</span>: <span class="hljs-string">&quot;Passwords do not match&quot;</span>,
+    <span class="hljs-attr">path</span>: [<span class="hljs-string">&quot;confirmPassword&quot;</span>],
+  });
+</code></pre>
+<p>الموضع هو نصف الدرس: <code>refine</code> تُستدعى على الكائن كلّه، بعد <code>.object({...})</code> لا داخله. لذلك يصل إلى دالّتها وسيط واحد هو <code>data</code>، أي الاستمارة كاملة، ومنه تُقارن <code>data.password</code> بـ<code>data.confirmPassword</code>. وإذا أعادت الدالّة <code>false</code> صار المخطّط غير صالح.</p>
+<p>والوسيط الثاني هو ما يجعل الرسالة تصل إلى المكان الصحيح: كائن فيه <code>error</code> نصّ الرسالة، و<code>path</code> مسار الحقل الذي يحملها. لاحظ أنّ المفتاح هنا <code>error</code>، وفي المخطّط نفسه قاعدة <code>acceptTerms</code> تكتب <code>message</code>؛ كلاهما مقبول في Zod، لكنّ الفرع يختار <code>error</code> حين تكون الرسالة للكائن كاملًا.</p>
+<p><code>path</code> هو الحلقة التي يسهل نسيانها. احذفه وستبقى الرسالة معلّقة على جذر المخطّط، أي على الاستمارة لا على حقل، ولن يعرضها حقل التأكيد لأنّه يقرأ أخطاءه هو. وفي المقابل يجب أن يطابق نصّ المسار اسم الحقل في المخطّط والاستمارة معًا؛ خطأ حرفي واحد فيه يجعل الرسالة غير مرئية بلا أيّ تحذير.</p>
+<p>ولاحظ أيضًا أنّ <code>refine</code> لا تعمل إلّا إذا نجح الكائن في التحقّق من حقوله أوّلًا: ما دامت قاعدة داخلية فاشلة، لا يُسأل عن التطابق أصلًا. هذا ترتيب مقصود في Zod، وفائدته أنّ المستخدم لا يُزعج برسالة «كلمتا المرور مختلفتان» قبل أن تكون كلمته صالحة.</p>
+<h3 id="كيف-تصل-الرسالة-إلى-الشاشة">كيف تصل الرسالة إلى الشاشة</h3>
+<pre><code class="language-tsx">        &lt;form.<span class="hljs-property">Field</span> name=<span class="hljs-string">&quot;confirmPassword&quot;</span>&gt;
+          {<span class="hljs-function">(<span class="hljs-params">field</span>) =&gt;</span> (
+            <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;mb-4&quot;</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+                <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-black text-white border border-white p-2 w-full&quot;</span>
+                <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span>
+                <span class="hljs-attr">value</span>=<span class="hljs-string">{field.state.value}</span>
+                <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Confirm Password&quot;</span>
+                <span class="hljs-attr">onBlur</span>=<span class="hljs-string">{field.handleBlur}</span>
+                <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> field.handleChange(e.target.value)}
+              /&gt;
+              {!field.state.meta.isValid &amp;&amp; (
+                <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-red-500 mt-2&quot;</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;alert&quot;</span>&gt;</span>
+                  {field.state.meta.errors
+                    .map((error) =&gt; error?.message)
+                    .join(&quot;, &quot;)}
+                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+              )}
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+          )}
+        &lt;/form.<span class="hljs-property">Field</span>&gt;
+</code></pre>
+<p>هذه كتلة حقل التأكيد كما هي في الفرع. الجزء المهمّ فيها هو شرط العرض: الرسالة لا تظهر إلّا حين يصير <code>field.state.meta.isValid</code> غير صحيح، ثمّ يأتي النصّ من <code>field.state.meta.errors</code>. وبما أنّ التحقّق صار بـZod فكلّ عنصر في هذه المصفوفة كائن لا سلسلة نصّية، ولذلك تمرّ <code>map</code> على العناصر وتأخذ <code>error.message</code>، ثمّ <code>join</code> لضمّ الرسائل في سطر واحد. بدون هذا التعديل كنت سترى <code>[object Object]</code> مكان الرسالة. و<code>role=&quot;alert&quot;</code> يجعل قارئ الشاشة يعلن الخطأ حين يظهر.</p>
+<h3 id="قاعدة-غير-متزامنة-داخل-المخطط">قاعدة غير متزامنة داخل المخطّط</h3>
+<p>في درس التحقّق غير المتزامن كتبنا دالّة تُعيد وعدًا. أمّا هنا فالفرع يكتب القاعدة نفسها كمخطّط، ويضعها في الفتحة <code>onChangeAsync</code>:</p>
+<pre><code class="language-tsx">        &lt;form.<span class="hljs-property">Field</span>
+          name=<span class="hljs-string">&quot;firstName&quot;</span>
+          validators={{
+            <span class="hljs-attr">onChangeAsyncDebounceMs</span>: <span class="hljs-number">500</span>,
+            <span class="hljs-attr">onChangeAsync</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">refine</span>(
+              <span class="hljs-title function_">async</span> (value) =&gt; {
+                <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> <span class="hljs-built_in">setTimeout</span>(r, <span class="hljs-number">1000</span>));
+                <span class="hljs-keyword">return</span> value !== <span class="hljs-string">&quot;John&quot;</span>;
+              },
+              {
+                <span class="hljs-attr">error</span>: <span class="hljs-string">&quot;First name cannot be John (async check).&quot;</span>,
+              }
+            ),
+          }}
+</code></pre>
+<p>القراءة من الداخل إلى الخارج: <code>z.string()</code> تتأكّد أوّلًا من أنّ القيمة سلسلة نصّية، ثمّ <code>refine</code> تحمل الشرط الحقيقي. ودالّة <code>refine</code> هنا غير متزامنة، فلم تعد تُعيد <code>true</code> أو <code>false</code> بل وعدًا يحملهما. هذا يجعل المخطّط كلّه غير متزامن، ولهذا وجب وضعه في <code>onChangeAsync</code>؛ فلو وضعته في <code>onChange</code> لكان على TanStack Form أن ينتظر وعدًا في موضع لا ينتظر فيه.</p>
+<p>والسطران داخل الدالّة محاكاة لا شرط: الانتظار ألف مللي ثانية يقف مكان زمن الشبكة الذي ستقضيه في سؤال خادمك. والشرط نفسه تعسّفي عن قصد: الاسم <code>John</code> مرفوض. جرّب كتابة اسم آخر فلن يظهر شيء، واكتب <code>John</code> فيظهر الخطأ بعد نحو ثانية. ولاحظ <code>onChangeAsyncDebounceMs</code> فوقهما: نصف ثانية من التهدئة قبل أن يبدأ التحقّق، فمن يكتب بسرعة لا يشغّل سلسلة طلبات على قيم لن تعنيه.</p>
+<p>وهذا المخطّط على مستوى الحقل لا يلغي مخطّط الاستمارة: قواعد الطول والحدّ الأقصى ما زالت تأتي من <code>formSchema</code>، وما هنا يضيف قاعدة واحدة. وهذا هو التوزيع الطبيعي: القاعدة العامّة في مكان واحد، والقاعدة التي تخصّ حقلًا وتحتاج الشبكة قريبةً من الحقل.</p>
+<h3 id="التوقيت-مخطط-بدل-دالة">التوقيت: مخطّط بدل دالّة</h3>
+<p>بقي ما يزعج المستخدم. ما دام المخطّط معلّقًا على <code>onChange</code> فهو يعمل مع كلّ حرف، فتُحكم على حقول لم يلمسها أحد. حلّ ذلك في درس التحقّق الديناميكي كان <code>onDynamic</code> مع <code>revalidateLogic</code>، وهو الحلّ نفسه هنا، لكن مع مخطّط. أوّلًا الاستيراد:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> {
+  formOptions,
+  revalidateLogic,
+  useForm,
+  useStore,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>;
+</code></pre>
+<p>ثمّ ينتقل المخطّط من <code>onChange</code> إلى <code>onDynamic</code> مع بقاء سياسة التوقيت كما هي:</p>
+<pre><code class="language-tsx">    <span class="hljs-attr">validators</span>: {
+      <span class="hljs-attr">onDynamic</span>: formSchema,
+    },
+    <span class="hljs-attr">validationLogic</span>: <span class="hljs-title function_">revalidateLogic</span>({
+      <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;submit&quot;</span>,
+      <span class="hljs-attr">modeAfterSubmission</span>: <span class="hljs-string">&quot;blur&quot;</span>,
+    }),
+</code></pre>
+<p><code>onDynamic</code> فتحة تقبل دالّة أو مخطّطًا، ولا تفرّق بينهما في شيء. وشرط عملها أن تُمرَّر <code>revalidateLogic</code> إلى <code>validationLogic</code>؛ بدونها لا تُستدعى أبدًا، ولا خطأ يشرح السبب. أمّا الوسيطان فيحدّدان السياسة: <code>mode</code> يحكم ما قبل الإرسال الأوّل وقيمته هنا <code>submit</code>، أي لا تحقّق أثناء الكتابة ولا عند مغادرة الحقل؛ و<code>modeAfterSubmission</code> يحكم ما بعده وقيمته <code>blur</code>، أي إنّ الرسالة تظهر أو تختفي حين ينتقل التركيز إلى حقل آخر. جرّب التسلسل: اكتب كلمة مرور وتأكيدًا مختلفين في البداية فلا ترى شيئًا، اضغط الإرسال فتظهر الرسالة، ثمّ صحّح الحقل وغادره فتختفي.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--validating-with-zod-refine-and-async--refine-error.png" alt="استمارة التسجيل في فرع الدرس: حقول الاسم الأول والشارع وكلمتَي المرور، وقائمة المهارات الثلاث، ومربّع قبول الشروط، وزرّ الإرسال، وأسفلها كتلة القيم بصيغة JSON"></p>
+<p>في الصورة ترى الاستمارة كما هي في هذا الفرع: حقل الاسم الأول فارغًا، ثمّ الشارع فارغًا، ثمّ حقل كلمة المرور وفيه سبعة أحرف مخفيّة، ثمّ حقل التأكيد وفيه سبعة أحرف مخفيّة أيضًا، ثمّ قائمة المهارات الثلاث (<code>HTML</code> و<code>CSS</code> و<code>JavaScript</code>) بمستوى <code>beginner</code>، وزرّ إضافة مهارة، ومربّع قبول الشروط غير المحدّد، وزرّ الإرسال بلون أصفر. وأسفل الصفحة كتلة القيم، وفيها <code>&quot;password&quot;: &quot;1234567&quot;</code> و<code>&quot;confirmPassword&quot;: &quot;7654321&quot;</code>.</p>
+<p>القيمتان مختلفتان، ومع ذلك لا ترى في اللقطة رسالة حمراء تحت حقل التأكيد، ولا تحت أيّ حقل آخر، مع أنّ الشارع والاسم الأول فارغان وقواعدهما في المخطّط ترفض الفراغ. السبب هو التوقيت لا القاعدة: السياسة المضبوطة في نهاية الدرس تبدأ بـ<code>submit</code>، فلا يعمل التحقّق قبل الإرسال الأوّل. اللقطة إذًا تصوّر مرحلة الصمت المقصود، وهي التي تحمي المستخدم من رسائل سابقة لأوانه؛ وما إن يُضغط الإرسال حتّى تظهر رسالة <code>Passwords do not match</code> تحت حقل التأكيد.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>احذف <code>path</code> من الوسيط الثاني في <code>refine</code>، ثمّ اكتب كلمتَي مرور مختلفتين وأرسل: لن يظهر شيء تحت حقل التأكيد، لأنّ الرسالة لم تعد منسوبة إليه.</li>
+<li>اكتب كلمتَي مرور متطابقتين، لكن اترك الشارع فارغًا، ولاحظ أنّ رسالة التطابق لا تظهر ولا تختفي؛ <code>refine</code> لا تُسأل قبل نجاح حقول الكائن.</li>
+<li>غيّر <code>onChangeAsyncDebounceMs</code> إلى <code>0</code> واكتب <code>John</code> بسرعة، ثمّ أعدها إلى <code>500</code>: تعود المشكلة التي حلّتها التهدئة في الدرس السابق.</li>
+<li>بدّل <code>error</code> في <code>refine</code> الخاصّة بكلمة المرور إلى <code>message</code> وأعد التجربة، لترى هل تصل الرسالة إلى الشاشة بالطريقة نفسها.</li>
+<li>اجعل شرط الاسم غير المتزامن <code>value.length &gt; 3</code> بدل مقارنته بـ<code>John</code>، ثمّ اكتب اسمًا قصيرًا وراقب ظهور الخطأ، وتأكّد أنّ مخطّط الاستمارة ما زال يعمل في الوقت نفسه.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=5082s">فيديو الدرس: Validating with ZOD (Refine and Async)</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/zod-2">شيفرة الدرس: فرع zod-2</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/guides/validation">التوثيق الرسمي: التحقّق من صحة الاستمارات والحقول في TanStack Form</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/guides/dynamic-validation">التوثيق الرسمي: التحقّق الديناميكي واستعمال المخطّطات مع <code>onDynamic</code></a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Validating with ZOD (Refine and Async)» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي، وما أضافه المعدّ من توضيح لا يُنسب إلى المؤلف.</p>
+</blockquote>
+`,d={book:s,chapter:a,chapterTitle:n,slug:e,title:o,headings:c,html:t};export{s as book,a as chapter,n as chapterTitle,d as default,c as headings,t as html,e as slug,o as title};

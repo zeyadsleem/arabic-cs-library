@@ -1,0 +1,259 @@
+const s="kinney",a="tailwind",n="Tailwind CSS",l="building-an-invoice-table",t="إنشاء جدول فاتورة",p=[{depth:2,id:"تهيئة-سياق-استعلامات-الحاوية",text:"تهيئة سياق استعلامات الحاوية"},{depth:2,id:"تقديم-css-subgrid",text:"تقديم CSS Subgrid"},{depth:2,id:"إضافة-طباعة-متجاوبة-مع-الحاوية",text:"إضافة طباعة متجاوبة مع الحاوية"},{depth:2,id:"إضافة-خلفيات-متناوبة-للصفوف",text:"إضافة خلفيات متناوبة للصفوف"},{depth:2,id:"إضافة-اللمسات-الأخيرة-وقسم-الإجماليات",text:"إضافة اللمسات الأخيرة وقسم الإجماليات"},{depth:2,id:"لماذا-هذا-النهج-ثوري",text:"لماذا هذا النهج ثوري"},{depth:2,id:"التطبيقات-في-العالم-الحقيقي",text:"التطبيقات في العالم الحقيقي"},{depth:2,id:"التحديات",text:"التحدّيات"}],c=`<p>لنبدأ ببنية HTML الأساسية وجدول فاتورة يحتوي على بنود.</p>
+<p><em>المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/e9be7cf8e8dce3a743460da828e1b665955d2ace4db2bcb480f9ce569aae3d3a.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Description<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Qty<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Rate<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Amount<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Website Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Logo Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Content Writing<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$150.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$750.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>هذه بنية جدول فاتورة أساسية، لكن الأعمدة غير محاذاة ولا توجد تسلسل بصري واضح. لنحوّلها إلى جدول فاتورة احترافي تتشارك فيه الترويسة والصفوف مسارات أعمدة محاذاة تمامًا، ويتكيّف فيه المكوّن بالكامل بذكاء مع حجم حاويته.</p>
+<h2 id="تهيئة-سياق-استعلامات-الحاوية">تهيئة سياق استعلامات الحاوية</h2>
+<p>أولًا، لنؤسّس حاويتنا كسياق استعلامات، وننشئ أساس CSS Grid، انطلاقًا مما تعلّمناه في <a href="https://stevekinney.com/courses/tailwind/building-a-statistics-card">دليل بطاقة الإحصاءات</a>.</p>
+<p><em>تهيئة سياق استعلامات الحاوية — المثال 2 — <a href="https://stevekinney.com/generated/playgrounds/5248709ba7e0b4fe92778f03caf0d3415bdb4006b651c6d185061316759b42c9.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid grid-cols-[1fr_auto_auto_auto] gap-x-4&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;contents&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Description<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Qty<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Rate<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Amount<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;contents&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Website Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;contents&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Logo Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;contents&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Content Writing<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$150.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>$750.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>التهيئة الأساسية:</p>
+<ul>
+<li><code>@container</code>: تجعل هذا العنصر سياقًا لاستعلامات الحاوية — فيستطيع عناصره الاستجابة لحجم هذه الحاوية</li>
+<li><code>grid grid-cols-[1fr_auto_auto_auto]</code>: تنشئ شبكة من أربعة أعمدة، يأخذ فيها عمود الوصف المساحة المتاحة بينما يتكيّف بقية الأعمدة مع محتواها</li>
+<li><code>gap-x-4</code>: تضيف مسافة أفقية قدرها 16px بين الأعمدة لتسهيل القراءة</li>
+<li><code>contents</code>: تجعل div الصفوف «شفافة» أمام الشبكة، فيصبح أبناؤها عناصر grid مباشرة</li>
+</ul>
+<p>أداة <code>contents</code> هي المفتاح هنا — فهي تزيل عناصر الغلاف من التخطيط المرئي مع إبقائها في HTML لأجل البنية الدلالية.</p>
+<h2 id="تقديم-css-subgrid">تقديم CSS Subgrid</h2>
+<p>الآن يأتي السحر — لنستخدم CSS Subgrid لضمان محاذاة مثالية بين الترويسة وصفوف البيانات، مع إضافة تسلسل بصري صحيح.</p>
+<p><em>تقديم CSS Subgrid — المثال 3 — <a href="https://stevekinney.com/generated/playgrounds/c603cc2af10f38cce7b9d6939e3af83c209b76ada0d7e6a7ea6961ee3037a2c9.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid grid-cols-[1fr_auto_auto_auto] gap-x-4&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid border-b border-slate-200 pb-2&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900&quot;</span>&gt;</span>Description<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900&quot;</span>&gt;</span>Qty<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900&quot;</span>&gt;</span>Rate<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right text-sm font-semibold text-slate-900&quot;</span>&gt;</span>Amount<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>Website Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900&quot;</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>Logo Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900&quot;</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>Content Writing<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>$150.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900&quot;</span>&gt;</span>$750.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تطبيق Subgrid:</p>
+<ul>
+<li><code>col-span-4</code>: يمتدّ كل صف عبر الأعمدة الأربعة لشبكة الأم</li>
+<li><code>grid grid-cols-subgrid</code>: تنشئ شبكة فرعية ترث مسارات الأعمدة نفسها تمامًا من الأم — وهذا يضمن المحاذاة المثالية</li>
+<li>تنسيق الترويسة بـ <code>font-semibold</code> مع حدّ سفلي يفصلها</li>
+<li><code>text-right</code> على أعمدة المبالغ من أجل تنسيق مالي صحيح</li>
+<li><code>py-3</code>: حشو رأسي قدره 12px ينتج ارتفاع صف مريح</li>
+</ul>
+<p>يضمن CSS Subgrid أن الأعمدة ستظل محاذاة تمامًا بين الترويسة والصفوف مهما تغيّر المحتوى.</p>
+<h2 id="إضافة-طباعة-متجاوبة-مع-الحاوية">إضافة طباعة متجاوبة مع الحاوية</h2>
+<p>لنجعل الجدول يتكيّف طباعته ومسافاته بحسب حجم الحاوية، لنحصل على تجربة أكثر أناقة في المساحات الأكبر.</p>
+<p><em>إضافة طباعة متجاوبة مع الحاوية — المثال 4 — <a href="https://stevekinney.com/generated/playgrounds/e125090066f0790be3839a0c3961952236fed784d40df0aab0b93c722f5866d5.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid grid-cols-[1fr_auto_auto_auto] gap-x-4 @lg:gap-x-6&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid border-b border-slate-200 pb-2 @lg:pb-3&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Description<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Qty<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Rate<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Amount<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3 @lg:py-4&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>Website Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3 @lg:py-4&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>Logo Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3 @lg:py-4&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>Content Writing<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$150.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$750.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تحسينات متجاوبة مع الحاوية:</p>
+<ul>
+<li><code>@lg:gap-x-6</code>: تزيد فجوات الأعمدة إلى 24px عندما تكون الحاوية كبيرة (512px فأكثر)</li>
+<li><code>@lg:text-base</code> على الترويسات: حجم خط أكبر قدره 16px للترويسات في التخطيطات الواسعة</li>
+<li><code>@lg:text-lg</code> على البيانات: خط أكبر قدره 18px لقراءة أفضل في الحاويات العريضة</li>
+<li><code>@lg:py-4</code>: حشو رأسي أوسع قدره 16px عندما تسمح المساحة بذلك</li>
+</ul>
+<p>يصبح الجدول تلقائيًا أكثر راحة وأسهل قراءة عند وضعه في حاويات أكبر، مع بقائه مضغوطًا في المساحات المحدودة.</p>
+<h2 id="إضافة-خلفيات-متناوبة-للصفوف">إضافة خلفيات متناوبة للصفوف</h2>
+<p>لنضف خلفيات متناوبة واحترافية للصفوف باستخدام المُحدِّد <code>even:</code> لتحسين قابلية المسح عبر الجداول العريضة.</p>
+<p><em>إضافة خلفيات متناوبة للصفوف — المثال 5 — <a href="https://stevekinney.com/generated/playgrounds/9a4eb42a65e64e763a062c77fcc96354a687fd2e18173b4dde3b37609868e6e0.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid grid-cols-[1fr_auto_auto_auto] gap-x-4 @lg:gap-x-6&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid border-b border-slate-200 pb-2 @lg:pb-3&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Description<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Qty<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Rate<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Amount<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3 even:bg-slate-50 @lg:py-4&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>Website Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3 even:bg-slate-50 @lg:py-4&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>Logo Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3 even:bg-slate-50 @lg:py-4&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>Content Writing<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$150.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$750.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تحسين تنسيق الصفوف:</p>
+<ul>
+<li><code>even:bg-slate-50</code>: تضيف خلفية رمادية خفيفة لكل صف برقم زوجي (الثاني والرابع وما إلى ذلك)</li>
+</ul>
+<p>ينشئ هذا النمط الكلاسيكي المعروف بـ«الشرائط المتناوبة» الذي يساعد المستخدمين على تتبّع الصفوف في الجداول العريضة. وتعمل الخلفيات المتناوبة تلقائيًا مهما أضفت أو حذفت صفوفًا.</p>
+<h2 id="إضافة-اللمسات-الأخيرة-وقسم-الإجماليات">إضافة اللمسات الأخيرة وقسم الإجماليات</h2>
+<p>أخيرًا، لنضف قسم الإجماليات ولمسات احترافية لإكمال جدول الفاتورة.</p>
+<p><em>إضافة اللمسات الأخيرة وقسم الإجماليات — المثال 6 — <a href="https://stevekinney.com/generated/playgrounds/35aada05bb7ff32d3137768b9c278960e85678be3e937ea56ae9ec3a9ff9dcce.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;@container&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-lg border border-slate-200 bg-white p-4 @lg:p-6&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid grid-cols-[1fr_auto_auto_auto] gap-x-4 @lg:gap-x-6&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid border-b border-slate-200 pb-2 @lg:pb-3&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Description<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Qty<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Rate<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Amount<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3 even:bg-slate-50 @lg:py-4&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>Website Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$2,500.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3 even:bg-slate-50 @lg:py-4&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>Logo Design<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$800.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid py-3 even:bg-slate-50 @lg:py-4&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>Content Writing<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$150.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right font-medium text-slate-900 @lg:text-lg&quot;</span>&gt;</span>$750.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-span-4 grid grid-cols-subgrid border-t border-slate-200 pt-3 @lg:pt-4&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-sm font-semibold text-slate-900 @lg:text-base&quot;</span>&gt;</span>Total:<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-right text-lg font-bold text-slate-900 @lg:text-xl&quot;</span>&gt;</span>$4,050.00<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>الإضافات النهائية:</p>
+<ul>
+<li><code>rounded-lg border border-slate-200 bg-white</code>: تلتفّ الجدول كاملًا داخل حاوية بطاقة احترافية</li>
+<li><code>p-4 @lg:p-6</code>: حشو الحاوية ينمو مع المساحة المتاحة</li>
+<li>صف الإجماليات بـ <code>border-t border-slate-200</code>: فصل واضح عن بنود الفاتورة</li>
+<li><code>text-lg font-bold @lg:text-xl</code>: إجمالي بارز يتكيّف مع حجم الحاوية</li>
+<li>الخلايا الفارغة في صف الإجماليات تحافظ على محاذاة الأعمدة المثالية عبر subgrid</li>
+</ul>
+<h2 id="لماذا-هذا-النهج-ثوري">لماذا هذا النهج ثوري</h2>
+<p>يُظهر جدول الفاتورة هذا ذروة تقنيات تخطيط CSS الحديثة وهي تعمل بانسجام:</p>
+<p><strong>سحر CSS Subgrid</strong>: تتشارك الترويسة وكل صف مسارات الأعمدة نفسها تمامًا. فإذا غيّرت محتوى أي خلية، تتكيّف بقية الصفوف تلقائيًا للحفاظ على محاذاة مثالية. ولا حاجة إلى أي حسابات يدوية لعرض الأعمدة.</p>
+<p><strong>ذكاء استعلامات الحاوية</strong>: يتكيّف الجدول مع حاويته لا مع نافذة العرض. فسواء كان في شريط جانبي ضيّق أو في منطقة المحتوى الرئيسية أو في لوحة تحكم بعرض كامل، سيبدو متناسبًا ومقروءًا دائمًا.</p>
+<p><strong>أساس دلالي</strong>: على الرغم من تعقيد التخطيط، يبقى HTML نظيفًا ومتاحًا. فقارئات الشاشة تفهم بنية الجدول تمامًا.</p>
+<p><strong>فوائد الصيانة</strong>: إضافة صفوف أو أعمدة جديدة لا تتطلّب أي إعادة حساب للتخطيط — فالشبكة الفرعية تحافظ على المحاذاة تلقائيًا، واستعلامات الحاوية تتولّى السلوك المتجاوب.</p>
+<p><strong>الأداء</strong>: كل ذلك مدفوع بـ CSS بلا أي JavaScript، فيكون خفيفًا وسريعًا مع سلوك متكيّف متقدّم.</p>
+<h2 id="التطبيقات-في-العالم-الحقيقي">التطبيقات في العالم الحقيقي</h2>
+<p>يحلّ هذا النمط مشكلات شائعة في:</p>
+<ul>
+<li><strong>التطبيقات المالية</strong>: جداول الفواتير وتقارير المصروفات وجداول التسعير</li>
+<li><strong>لوحات بيانات التحليلات</strong>: جداول تحليلية تحتاج إلى ملاءمة مقاسات الأدوات المختلفة</li>
+<li><strong>واجهات الإدارة</strong>: جداول المستخدمين وكتالوجات المنتجات وإدارة الطلبات</li>
+<li><strong>إدارة المحتوى</strong>: قوائم المنشورات ومكتبات الوسائط وأي بيانات جدولية</li>
+</ul>
+<p>ينشئ الجمع بين الشبكة الفرعية واستعلامات الحاوية مكوّنات نمطية حقيقية تعمل في أي مكان من تطبيقك دون تعديل.</p>
+<h2 id="التحديات">التحدّيات</h2>
+<p>جرّب بناء هذه الأنماط:</p>
+<ol>
+<li><strong>بنود فاتورة قابلة للتوسيع</strong>: أضف أوصافًا تفصيلية لبنود الفاتورة تظهر وتختفي باستخدام التقنيات من <a href="https://stevekinney.com/courses/tailwind/building-details-disclosure">دليل تفاصيل القوائم القابلة للطي</a>، مع الحفاظ على محاذاة الشبكة الفرعية</li>
+<li><strong>جدول متعدد الأقسام</strong>: أنشئ أقسامًا لـ«خدمات التصميم» و«خدمات التطوير» بعناوين فرعية تمتدّ عبر كل الأعمدة، لتُظهر كيف تتعامل الشبكة الفرعية مع بنى الجداول المعقّدة</li>
+</ol>
+`,g={book:s,chapter:a,chapterTitle:n,slug:l,title:t,headings:p,html:c};export{s as book,a as chapter,n as chapterTitle,g as default,p as headings,c as html,l as slug,t as title};

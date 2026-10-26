@@ -1,0 +1,99 @@
+const s="kinney",n="testing",a="مدخل إلى الاختبارات",t="advanced-test-configuration",e="إعداد اختبارات متقدم باستخدام Vitest",p=[{depth:2,id:"تخصيص-vitestconfigts",text:"تخصيص vitest.config.ts"},{depth:3,id:"إعداد-أسماء-مستعارة-للمسارات",text:"إعداد أسماء مستعارة للمسارات"},{depth:3,id:"التعامل-مع-esm-وcommonjs-معا",text:"التعامل مع ESM وCommonJS معًا"},{depth:3,id:"عزل-بيئات-الاختبار",text:"عزل بيئات الاختبار"},{depth:2,id:"مهل-الاختبار-وإعادة-التشغيل",text:"مهل الاختبار وإعادة التشغيل"},{depth:3,id:"المهل-العامة",text:"المهل العامة"},{depth:3,id:"إعادة-تشغيل-الاختبار-تأمين-ضد-الاختبارات-المتقلبة",text:"إعادة تشغيل الاختبار: تأمين ضد الاختبارات المتقلبة"},{depth:2,id:"ضبط-دقيق-لوضع-المراقبة",text:"ضبط دقيق لوضع المراقبة"},{depth:3,id:"تشغيل-الاختبارات-المتغيرة-فقط",text:"تشغيل الاختبارات المتغيرة فقط"},{depth:2,id:"الخاتمة",text:"الخاتمة"}],l=`<h2 id="تخصيص-vitestconfigts">تخصيص <code>vitest.config.ts</code></h2>
+<p>Vitest رائع جدًا خارج الصندوق، لكنك تحتاج أحيانًا إلى تخصيص الأشياء لتلائم مشروعك. وهذا يقودنا إلى ملف <code>vitest.config.ts</code>.</p>
+<blockquote>
+<p><strong>هذا محتوى متعلق بـ Vite في معظمه</strong></p>
+<p>معظم ما نغطيه هنا يتعلق بـ Vite — وبالتالي بـ Vitest. لدى أصدقائنا في <a href="https://frontendmasters.com/?utm_source=kinney&amp;utm_medium=social&amp;code=kinney">Frontend Masters</a> <a href="https://frontendmasters.com/courses/vite/?utm_source=kinney&amp;utm_medium=social&amp;code=kinney">دورة كاملة عن Vite</a> يدرّسها مدرّب <em>بالغ الأناقة</em>.</p>
+</blockquote>
+<p>إليك إعدادًا أساسيًا للتذكير:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// vitest.config.ts</span>
+<span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vitest/config&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">test</span>: {
+    <span class="hljs-attr">globals</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;jsdom&#x27;</span>,
+    <span class="hljs-attr">coverage</span>: {
+      <span class="hljs-attr">reporter</span>: [<span class="hljs-string">&#x27;text&#x27;</span>, <span class="hljs-string">&#x27;json&#x27;</span>, <span class="hljs-string">&#x27;html&#x27;</span>],
+    },
+  },
+});
+</code></pre>
+<p>يمنحك هذا إعدادًا معقولًا — متغيرات عامة متاحة عبر كل الاختبارات، باستخدام <code>jsdom</code> — لكن قوة Vitest الحقيقية تظهر عندما تبدأ في ثني هذا الإعداد.</p>
+<h3 id="إعداد-أسماء-مستعارة-للمسارات">إعداد أسماء مستعارة للمسارات</h3>
+<p>لننجز شيئًا بسيطًا لكنه قوي: <strong>الأسماء المستعارة للمسارات</strong>. إن كنت غارقًا في مشروع كبير، فمن المحتمل أن استيراداتك بدأت تبدو فوضى متشابكة من المسارات النسبية.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">MyComponent</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../../../../../component/MyComponent&#x27;</span>;
+</code></pre>
+<p><em>يا للهول</em>، أليس كذلك؟ حان وقت الاستفادة من قابلية ضبط Vitest. يمكنك إعداد أسماء مستعارة للمسارات لترتيب الأمور.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// vitest.config.ts</span>
+<span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vitest/config&#x27;</span>;
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;path&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">resolve</span>: {
+    <span class="hljs-attr">alias</span>: {
+      <span class="hljs-string">&#x27;@components&#x27;</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&#x27;src/components&#x27;</span>),
+      <span class="hljs-string">&#x27;@utils&#x27;</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&#x27;src/utils&#x27;</span>),
+    },
+  },
+});
+</code></pre>
+<p>الآن في اختباراتك، الأمر أنظف بكثير:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">MyComponent</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@components/MyComponent&#x27;</span>; <span class="hljs-comment">// Phew.</span>
+</code></pre>
+<p>أنيق ومقروء. وإضافةً إلى ذلك، صرنا أقرب بخطوة إلى قاعدة شيفرة قابلة للصيانة.</p>
+<h3 id="التعامل-مع-esm-وcommonjs-معا">التعامل مع ESM وCommonJS معًا</h3>
+<p>آه، فوضى وحدات JavaScript الحديثة. من المحتمل أنك تصادف كليهما في مشروعك، وقد يصبح الأمر سيئًا عندما تحاول اختبارهما. تحتاج أحيانًا إلى معالجة CommonJS وESM <em>بشكل مختلف</em>. لا مشكلة — Vitest يغطيك.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">test</span>: {
+    <span class="hljs-attr">deps</span>: {
+      <span class="hljs-attr">fallbackCJS</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Handle CommonJS dependencies that break ESM resolution</span>
+    },
+  },
+});
+</code></pre>
+<p>قد يوفر عليك هذه الإضافة الصغيرة صداعًا عند اختبار حزم تعمل بـ <code>require()</code> بينما تعيش شيفرتك في أرض <code>import</code> المجيدة.</p>
+<h3 id="عزل-بيئات-الاختبار">عزل بيئات الاختبار</h3>
+<p>إليك سيناريو سريع. لنفترض أنك تختبر تطبيق Node. أنت تستخدم <strong>قراءات ملفات</strong> فعلية، وهي <em>بطيئة</em>. لكنك تعرف المحاكاة، أليس كذلك؟ لكن انتظر! قبل أن تدخل في المحاكاة (وهي قصة أخرى)، يتيح لك Vitest تشغيل كل ملف اختبار في <strong>عزل</strong> تام — أشبه بإعادة ضبط صغيرة بين كل تشغيل.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// vitest.config.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">test</span>: {
+    <span class="hljs-attr">isolate</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Ensure each test file runs in its own VM context</span>
+  },
+});
+</code></pre>
+<p>يحوّل هذا كل ملف اختبار إلى فقاعة خاصة به. يعني ذلك أنك إن كنت تغيّر <code>global variables</code>، أو تعبث بالخوادم، أو تعدّل حالات API، فسيستعيد Vitest الهدوء وينظّف الحي تلقائيًا بعد كل ملف.</p>
+<h2 id="مهل-الاختبار-وإعادة-التشغيل">مهل الاختبار وإعادة التشغيل</h2>
+<p>إذن، ماذا يحدث عندما يستمر أحد اختباراتك، مثلًا… إلى الأبد. ربما يعتمد على زمن استجابة الشبكة أو يستغرق ثانية لإطلاق الموارد. لا تريد أن تتعطل مجموعة اختباراتك لأن اختبارًا واحدًا يشعر بالكسل، أليس كذلك؟ يتيح لك Vitest ضبط <strong>مهل عامة</strong>، ويمكنك أيضًا ضبطها على أساس <em>اختبار باختبار</em>. استعد لتوفير دقائق ثمينة من حياتك:</p>
+<h3 id="المهل-العامة">المهل العامة</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">test</span>: {
+    <span class="hljs-attr">testTimeout</span>: <span class="hljs-number">5000</span>, <span class="hljs-comment">// 5 seconds, if it takes longer, something is wrong.</span>
+  },
+});
+</code></pre>
+<p>هذا صحيح، 5000 مللي ثانية. وقت أكثر من كافٍ لمعظم الاختبارات. إن استغرق أي شيء وقتًا أطول، سيصرخ Vitest في وجهك، وربما حان الوقت للتحقيق في <strong>السبب</strong>.</p>
+<h3 id="إعادة-تشغيل-الاختبار-تأمين-ضد-الاختبارات-المتقلبة">إعادة تشغيل الاختبار: تأمين ضد الاختبارات المتقلبة</h3>
+<p>ذلك الاختبار العارض الذي يقرر فجأة أنه يريد بعض الاهتمام بالفشل عشوائيًا؟ (نعم، <em>كلنا</em> لدينا ذلك الاختبار <em>الواحد</em>.) لنخبر Vitest أن يعيد تشغيله تلقائيًا بضع مرات قبل اعتباره فاشلًا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">test</span>: {
+    <span class="hljs-attr">retry</span>: <span class="hljs-number">2</span>, <span class="hljs-comment">// Will rerun a failing test 2 times before marking it as failed</span>
+  },
+});
+</code></pre>
+<p>بوم — لا مزيد من ضرب الرأس بسبب «فشل في CI لكنه نجح محليًا». لكن مهما كان، إن كان يفشل أكثر من مرتين، فحان وقت <strong>أنت</strong> لتشغيل قبعة المحقق.</p>
+<h2 id="ضبط-دقيق-لوضع-المراقبة">ضبط دقيق لوضع المراقبة</h2>
+<p>إليك ما يحدث عادةً بعد أن تبدأ دمج <strong>وضع المراقبة</strong> في حياتك: تجري تغييرًا صغيرًا في الشيفرة، يكتشفه Vitest، يشغّل مئات الاختبارات، وفجأة تشتعل وحدة المعالجة المركزية. نعم، تشغيل كل شيء قد يكون مبالغة. لحسن الحظ، يمكننا تحسين الاختبارات التي تُشغَّل في كل دورة مراقبة لسرعة أفضل.</p>
+<h3 id="تشغيل-الاختبارات-المتغيرة-فقط">تشغيل الاختبارات المتغيرة فقط</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">test</span>: {
+    <span class="hljs-attr">watch</span>: {
+      <span class="hljs-attr">include</span>: [<span class="hljs-string">&#x27;src/**&#x27;</span>],
+      <span class="hljs-attr">exclude</span>: [<span class="hljs-string">&#x27;node_modules/**&#x27;</span>, <span class="hljs-string">&#x27;*.spec.js&#x27;</span>], <span class="hljs-comment">// avoid triggering for these</span>
+    },
+  },
+});
+</code></pre>
+<p>بهذه الطريقة، تصبح أكثر انتخابية بكثير أثناء تشغيل اختباراتك — ما يتيح لك التركيز على التغييرات المهمة فقط.</p>
+<h2 id="الخاتمة">الخاتمة <span class="content-anchor" id="conclusion"></span></h2>
+<p>الهدف هنا ليس كتابة اختبارات نظيفة تمامًا فحسب — <strong>بل البقاء عاقلًا</strong> أثناء ذلك. خذ هذه النصائح كصندوق أدواتك المتقدم لاستخدام Vitest في المرة القادمة التي يضرب فيها التعقيد.</p>
+`,o={book:s,chapter:n,chapterTitle:a,slug:t,title:e,headings:p,html:l};export{s as book,n as chapter,a as chapterTitle,o as default,p as headings,l as html,t as slug,e as title};

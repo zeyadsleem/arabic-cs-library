@@ -1,0 +1,118 @@
+const s="tanstack-router",n="router",a="دورة TanStack Router الكاملة",t="not-found-errors",o="أخطاء عدم الوجود (Not Found Errors)",p=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"مكون-عدم-الوجود-الافتراضي",text:"مكوّن عدم الوجود الافتراضي"},{depth:2,id:"تخصيص-مكون-عدم-الوجود-في-المسار-الجذر",text:"تخصيص مكوّن عدم الوجود في المسار الجذر"},{depth:2,id:"تخصيصه-في-مسار-أب",text:"تخصيصه في مسار أب"},{depth:2,id:"تحديد-نطاق-البحث-notfoundmode",text:"تحديد نطاق البحث: notFoundMode"},{depth:2,id:"إطلاق-خطأ-عدم-الوجود-من-المحمل",text:"إطلاق خطأ عدم الوجود من المُحمِّل"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],l=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>حين يطلب المستخدم عنوانًا لا يقابله مسار في تطبيقك، لا يصحّ أن يرى شاشةً فارغة أو رسالة خطأ تقنية. يسمّي TanStack Router هذه الحالة «خطأ عدم الوجود»، ويولّدها تلقائيًا حين لا يجد مسارًا يطابق العنوان المطلوب. لكنّ التوليد التلقائي وحده لا يكفي: قد تريد رسالةً بالعربية، أو رابطًا يعيد الزائر إلى الصفحة الرئيسية، أو تخطيطًا يحتفظ بالتنقّل حول الصفحة المفقودة.</p>
+<p>في هذا الدرس نتعلّم كيف نتحكّم في هذه الحالة من أعلى إلى أسفل: مكوّن افتراضي على مستوى الموجّه كلّه، ثم مكوّن خاصّ بمسار أب، ثم كيف نحوّل خطأ <code>404</code> القادم من الشبكة إلى خطأ عدم وجود بدل أن يظهر كخطأ عام. ونفهم أيضًا الخيار الذي يحدّد أيّ مسار يتولّى العرض.</p>
+<h2 id="مكون-عدم-الوجود-الافتراضي">مكوّن عدم الوجود الافتراضي</h2>
+<p>حين لا يطابق العنوان أيّ مسار، يرمي الموجّه خطأ عدم وجود من تلقاء نفسه. فإن لم تكن قد أعددت أيّ مكوّن للعرض، لجأ إلى مكوّن بسيط جدًا لا يعرض إلا نصًّا قصيرًا. هذا السلوك مقصود: الرسالة الافتراضية واضحة لكنها ليست مصمَّمة، ولا تعطي الزائر مخرجًا.</p>
+<p>لذلك تبدأ المعالجة دائمًا من الأعلى: مكوّن واحد يعرض رسالةً مفهومة، ويُستعمل في كلّ الحالات التي لا يجد فيها الموجّه مكوّنًا أقرب.</p>
+<h2 id="تخصيص-مكون-عدم-الوجود-في-المسار-الجذر">تخصيص مكوّن عدم الوجود في المسار الجذر</h2>
+<p>في ملف المسار الجذر نضيف الخيار <code>notFoundComponent</code> إلى تعريف المسار. المقتطف التالي من فرع الدرس:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = createRootRouteWithContext&lt;<span class="hljs-title class_">RootRouteContext</span>&gt;()({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RootComponent</span>,
+  <span class="hljs-attr">notFoundComponent</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Root Not Found.<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+});
+</code></pre>
+<p>بعد هذا التعديل، أيّ عنوان لا يطابق شيئًا سيعرض <code>Root Not Found.</code> بدل الرسالة الافتراضية. ولاحظ أنّ المكوّن يُعرَّف بجانب <code>component</code> في الكائن نفسه، فلا حاجة إلى مسار منفصل ولا إلى مكوّن خارجي: الموجّه يبحث عن أقرب تعريف لمكوّن عدم الوجود ويستعمله.</p>
+<h2 id="تخصيصه-في-مسار-أب">تخصيصه في مسار أب</h2>
+<p>المسار الجذر ليس المستوى الوحيد. تذكّر بنية تطبيقنا: لدينا <code>settings</code> وهو أب لصفحتَي <code>payment</code> و<code>profile</code>، وله منفذ تصيير <code>Outlet</code> يعرض الصفحة الابن داخله. فإذا كتب الزائر عنوانًا مثل <code>settings/nonexistent</code>، فالأب موجود والابن مفقود. في هذه الحالة يحتفظ الموجّه بتخطيط <code>settings</code> ويعرض مكوّن عدم الوجود في موضع المنفذ.</p>
+<p>لنجعل الرسالة تخصّ هذا القسم، نضيف الخيار في ملف <code>_settingsLayout.settings.tsx</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/_settingsLayout/settings&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">notFoundComponent</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Settings Not Found<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+});
+</code></pre>
+<p>فإذا كان العنوان يبدأ بـ<code>settings/</code> ثم يتبع بشيء غير معروف، بقيت قائمة الإعدادات ورسالة <code>Settings Not Found</code> داخل التخطيط نفسه، بدل أن تختفي الصفحة كلّها. أما إذا فتح الزائر عنوانًا لا صلة له بـ<code>settings</code> من قريب ولا من بعيد، فلا يجد الموجّه أبًا أنسب من الجذر، فيعود إلى مكوّن الجذر.</p>
+<h2 id="تحديد-نطاق-البحث-notfoundmode">تحديد نطاق البحث: <code>notFoundMode</code></h2>
+<p>يبقى سؤال: ما معنى «أقرب مسار»؟ الجواب يحدّده الخيار <code>notFoundMode</code> الذي يُمرَّر إلى <code>createRouter</code> عند إنشاء الموجّه:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> router = <span class="hljs-title function_">createRouter</span>({
+  routeTree,
+  <span class="hljs-attr">notFoundMode</span>: <span class="hljs-string">&quot;fuzzy&quot;</span>,
+  <span class="hljs-attr">defaultNotFoundComponent</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Default Not Found<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+  <span class="hljs-attr">context</span>: {
+    <span class="hljs-attr">user</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">login</span>: <span class="hljs-function">() =&gt;</span> {},
+    <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> {},
+  },
+});
+</code></pre>
+<p>القيمة الافتراضية <code>fuzzy</code> تجعل الموجّه يبحث عن أقرب مسار يملك مكوّن عدم وجود، فيحافظ بذلك على أكبر قدر ممكن من التخطيط الذي يتوقّعه الزائر. أما القيمة <code>root</code> فتلغي هذا البحث وتُحيل كلّ الحالات إلى مكوّن المسار الجذر، وهو ما يفيد إذا أردت رسالة موحّدة لا تختلف باختلاف القسم.</p>
+<p>ولاحظ الخيار الثاني في المقتطف نفسه: <code>defaultNotFoundComponent</code> يعمل احتياطًا حين لا يملك المسار الأقرب مكوّنًا خاصًّا به، فيرث هذا المكوّن بدل أن تسقط الصفحة إلى الرسالة الأولية. الفرق بينه وبين مكوّن الجذر أنّ مكوّن الجذر مرتبط بمسار الجذر وحده، أما هذا فيُستعمل مع أيّ مسار يحتاج إليه.</p>
+<h2 id="إطلاق-خطأ-عدم-الوجود-من-المحمل">إطلاق خطأ عدم الوجود من المُحمِّل</h2>
+<p>النوع الثاني من هذه الأخطاء لا يخصّ العنوان، بل يخصّ المورد نفسه: التدوينة <code>posts/1</code> عنوانها صحيح، لكن لا توجد تدوينة بهذا المعرّف. هنا لا يستطيع الموجّه أن يستنتج شيئًا، فأنت من يعلن الخطأ من داخل <code>loader</code> بعد أن تصل الاستجابة من الشبكة.</p>
+<p>نستورد الدالة أولًا:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { notFound } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+</code></pre>
+<p>ثم نغيّر دالة الجلب بحيث ترمي خطأ عدم الوجود بدل الخطأ العام حين تكون حالة الاستجابة <code>404</code>:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getPost</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span></span>) {
+  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`https://dummyjson.com/posts/<span class="hljs-subst">\${id}</span>\`</span>);
+  <span class="hljs-keyword">if</span> (res.<span class="hljs-property">ok</span>) {
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>()) <span class="hljs-keyword">as</span> <span class="hljs-title class_">Post</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">if</span> (res.<span class="hljs-property">status</span> === <span class="hljs-number">404</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-title function_">notFound</span>();
+    }
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Failed to fetch post&quot;</span>);
+  }
+}
+</code></pre>
+<p>الفرق جوهري في تجربة القارئ: قبل هذا التعديل كان كلّ فشل يُعامل كخطأ عام فتُعرض رسالة الخطأ وزرّ إعادة المحاولة، أمّا الآن فحالة <code>404</code> وحدها تُحوَّل إلى خطأ عدم وجود، فيتولّاه الموجّه ويعرض المكوّن المعدّ له، بينما تبقى الأخطاء الأخرى على مسارها.</p>
+<p>وإذا أردت أن يعرف هذا المسار رسالته الخاصة، أضف <code>notFoundComponent</code> إلى تعريفه. هذا مقتطف من تعريف المسار كاملًا في فرع الدرس:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/posts/$postId&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">onError</span>: <span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Error loading post:&quot;</span>, error);
+  },
+  <span class="hljs-attr">onCatch</span>: <span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;onCatch&quot;</span>, error);
+  },
+  <span class="hljs-attr">notFoundComponent</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Post Not Found<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+  <span class="hljs-attr">errorComponent</span>: <span class="hljs-function">(<span class="hljs-params">{ error, reset }</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> router = <span class="hljs-title function_">useRouter</span>();
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        {error.message} <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> {
+            router.invalidate();
+          }}
+        &gt;
+          Retry
+        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    );
+  },
+  <span class="hljs-attr">pendingComponent</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+  <span class="hljs-attr">pendingMs</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">pendingMinMs</span>: <span class="hljs-number">500</span>,
+  <span class="hljs-attr">loader</span>: <span class="hljs-title function_">async</span> ({ params }) =&gt; {
+    <span class="hljs-keyword">const</span> commentsPromise = <span class="hljs-title function_">getPostComments</span>(+params.<span class="hljs-property">postId</span>);
+    <span class="hljs-keyword">const</span> post = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getPost</span>(+params.<span class="hljs-property">postId</span>);
+
+    <span class="hljs-keyword">return</span> {
+      post,
+      commentsPromise,
+    };
+  },
+});
+</code></pre>
+<p>الترتيب في هذا الكائن يوضّح الفكرة: <code>notFoundComponent</code> و<code>errorComponent</code> و<code>pendingComponent</code> ثلاثة عروض لحالات مختلفة للمسار نفسه — مورد مفقود، وخطأ حقيقي، وانتظار. وكلّ واحد منها يُستعمل في موضعه، فلا تختلط الرسائل.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--not-found-errors--post-not-found.png" alt="صفحة التدوينة بعد تحويل خطأ الشبكة إلى خطأ عدم وجود: يظهر تخطيط الجذر كاملًا، وفي وسطه رسالة عدم وجود التدوينة"></p>
+<p>في الصورة نرى تخطيط الجذر كما هو: الترويسة، ورسالة الترحيب بالزائر، وزرّ الدخول، وشريط التنقّل. وفي الموضع الذي كانت تعرض فيه التدوينة ظهرت رسالة <code>Post Not Found</code> وحدها. هذا هو المقصود من خطأ عدم الوجود: لا تختفي الواجهة، ولا يخرج الزائر من التطبيق، بل يبقى السياق حوله وتصل إليه رسالة دقيقة.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>افتح عنوانًا غير موجود أصلًا مثل <code>settings/unknown</code>، ثم بدّل <code>notFoundMode</code> بين <code>fuzzy</code> و<code>root</code> وراقب أيّ مكوّن يُعرض في كلّ حالة.</li>
+<li>أضف <code>notFoundComponent</code> إلى مسار <code>posts</code> الأب، ثم افتح <code>posts/9999</code> وقارن النتيجة بمكوّن المسار الابن.</li>
+<li>أضف <code>defaultNotFoundComponent</code> يعرض رابطًا إلى الصفحة الرئيسية، ثم احذف مكوّن الجذر مؤقّتًا وتحقق من ظهوره.</li>
+<li>اجعل <code>getPost</code> يرمي <code>notFound()</code> لكلّ حالة فشل، لا لحالة <code>404</code> وحدها، ثم افتح تدوينة موجودة وأوقف الشبكة لتلاحظ الفرق.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=9695s">فيديو الدرس: Not Found Errors</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/error-handling-2">شيفرة الدرس: فرع error-handling-2</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/not-found-errors">التوثيق الرسمي: أخطاء عدم الوجود في TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Not Found Errors» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,e={book:s,chapter:n,chapterTitle:a,slug:t,title:o,headings:p,html:l};export{s as book,n as chapter,a as chapterTitle,e as default,p as headings,l as html,t as slug,o as title};

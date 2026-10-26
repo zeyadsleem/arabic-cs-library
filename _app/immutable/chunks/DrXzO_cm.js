@@ -1,0 +1,157 @@
+const s="kinney",a="self-testing-ai-agents",n="وكلاء ذكاء اصطناعي يختبرون أنفسهم",t="locator-challenges-solution",e="الحل",l=[{depth:2,id:"تسخين-أساسيات-الدور",text:"تسخين: أساسيات الدور"},{depth:3,id:"التحدي-1-زر-add-to-shelf",text:"التحدّي 1: زر «Add to shelf»"},{depth:3,id:"التحدي-2-زر-cancel",text:"التحدّي 2: زر «Cancel»"},{depth:3,id:"التحدي-3-زر-out-of-stock-المعطل",text:"التحدّي 3: زر «Out of stock» المعطّل"},{depth:3,id:"التحدي-4-حقل-البحث-عبر-التسمية",text:"التحدّي 4: حقل البحث عبر التسمية"},{depth:2,id:"متوسط-رفع-الالتباس-والتسلسل",text:"متوسط: رفع الالتباس والتسلسل"},{depth:3,id:"التحدي-5-أول-زر-delete",text:"التحدّي 5: أول زر «Delete»"},{depth:3,id:"التحدي-6-remove-في-عنصر-القائمة-الثالث",text:"التحدّي 6: «Remove» في عنصر القائمة الثالث"},{depth:3,id:"التحدي-7-rate-this-book-داخل-مقالة-piranesi",text:"التحدّي 7: «Rate this book» داخل مقالة Piranesi"},{depth:3,id:"التحدي-8-نص-التلميح-في-حقل-المؤلف",text:"التحدّي 8: نص التلميح في حقل المؤلف"},{depth:2,id:"النص-والمحتوى",text:"النص والمحتوى"},{depth:3,id:"التحدي-9-فقرة-تذكر-42-days",text:"التحدّي 9: فقرة تذكر «42 days»"},{depth:3,id:"التحدي-10-3-of-12-books-finished",text:"التحدّي 10: «3 of 12 books finished»"},{depth:3,id:"التحدي-11-فقرة-shelf-الصحيحة",text:"التحدّي 11: فقرة «shelf» الصحيحة"},{depth:2,id:"الجداول-والقوائم",text:"الجداول والقوائم"},{depth:3,id:"التحدي-12-عد-صفوف-البيانات-في-جدول-التقييمات",text:"التحدّي 12: عدّ صفوف البيانات في جدول التقييمات"},{depth:3,id:"التحدي-13-قائمة-القراءة-فيها-4-عناصر",text:"التحدّي 13: قائمة القراءة فيها 4 عناصر"},{depth:2,id:"المحتوى-الديناميكي",text:"المحتوى الديناميكي"},{depth:3,id:"التحدي-14-إظهار-التفاصيل",text:"التحدّي 14: إظهار التفاصيل"},{depth:3,id:"التحدي-15-تحميل-المزيد",text:"التحدّي 15: تحميل المزيد"},{depth:3,id:"التحدي-16-من-التحميل-إلى-تحميل-المحتوى",text:"التحدّي 16: من التحميل إلى تحميل المحتوى"},{depth:2,id:"النوافذ-الحوارية",text:"النوافذ الحوارية"},{depth:3,id:"التحدي-17-افتح-النافذة-الحوارية",text:"التحدّي 17: افتح النافذة الحوارية"},{depth:3,id:"التحدي-18-اختر-4-نجوم-واحفظ",text:"التحدّي 18: اختر 4 نجوم واحفظ"},{depth:3,id:"التحدي-19-ألغ-النافذة-الحوارية",text:"التحدّي 19: ألغِ النافذة الحوارية"},{depth:2,id:"aria-والأدوار",text:"ARIA والأدوار"},{depth:3,id:"التحدي-20-التنبيه",text:"التحدّي 20: التنبيه"},{depth:3,id:"التحدي-21-قيمة-شريط-التقدم",text:"التحدّي 21: قيمة شريط التقدّم"},{depth:3,id:"التحدي-22-تبديل-اللوحة-بـ-aria-expanded",text:"التحدّي 22: تبديل اللوحة بـ aria-expanded"},{depth:2,id:"الأنماط-المضادة-والبدائل",text:"الأنماط المضادة والبدائل"},{depth:3,id:"التحدي-23-الزر-المزيف",text:"التحدّي 23: الزر المزيّف"},{depth:3,id:"التحدي-24-زر-أيقونة-فقط",text:"التحدّي 24: زر أيقونة فقط"},{depth:2,id:"أنماط-تأخذها-معك",text:"أنماط تأخذها معك"},{depth:2,id:"قراءات-إضافية",text:"قراءات إضافية"}],p=`<p>هذه هي حلولي المفضّلة. وقد تختلف حلولك — فإن كان المحدِّد (locator) مستقرًا وقابلًا للوصول ومقروءًا، فهو صحيح. والملاحظات بعد كل حل تشرح <em>لماذا</em> هذا النهج بعينه، لا <em>ماذا</em> فقط.</p>
+<p>كل مقتطف يفترض أن الاختبار استدعى بالفعل <code>await page.goto('/playground')</code>.</p>
+<h2 id="تسخين-أساسيات-الدور">تسخين: أساسيات الدور</h2>
+<h3 id="التحدي-1-زر-add-to-shelf">التحدّي 1: زر «Add to shelf»</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Add to shelf&#x27;</span> })).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>أبسط حالة. <code>getByRole</code> مع مطابقة <code>name</code>. وهذا هو المحدِّد الذي ينبغي أن تمدّ يدك إليه أولًا، في كل مرة.</p>
+<h3 id="التحدي-2-زر-cancel">التحدّي 2: زر «Cancel»</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Cancel&#x27;</span> })).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>النمط نفسه. فمحتوى نص الزر <em>هو</em> اسمه المتاح للوصول.</p>
+<h3 id="التحدي-3-زر-out-of-stock-المعطل">التحدّي 3: زر «Out of stock» المعطّل</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> outOfStock = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Out of stock&#x27;</span> });
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(outOfStock).<span class="hljs-title function_">toBeDisabled</span>();
+</code></pre>
+<p><code>toBeDisabled()</code> تحقّق يعيد المحاولة تلقائيًا. فلا تحتاج إلى فحص <code>getAttribute('disabled')</code> — فـ Playwright يفهم الدلالة.</p>
+<h3 id="التحدي-4-حقل-البحث-عبر-التسمية">التحدّي 4: حقل البحث عبر التسمية</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByLabel</span>(<span class="hljs-string">&#x27;Search&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>يطابق <code>getByLabel</code> عنصر <code>&lt;label&gt;</code> المرتبط بحقل الإدخال. وهذه هي الطبقة الثانية من الهرم، وبالنسبة لحقول النماذج ذات التسميات الظاهرة تكون غالبًا الخيار الأكثر طبيعية.</p>
+<h2 id="متوسط-رفع-الالتباس-والتسلسل">متوسط: رفع الالتباس والتسلسل</h2>
+<h3 id="التحدي-5-أول-زر-delete">التحدّي 5: أول زر «Delete»</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Delete&#x27;</span> }).<span class="hljs-title function_">first</span>()).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>عنصران يطابقان <code>getByRole('button', { name: 'Delete' })</code>. واستدعاء <code>.first()</code> يضيّق النطاق إلى الأول بترتيب DOM. و<code>.nth(0)</code> يفعل الشيء نفسه. وفي اختبار حقيقي كنت ستضيّق النطاق بالأب على الأرجح — لكن هذا التمرين هدفه معرفة أن <code>.first()</code> موجود.</p>
+<h3 id="التحدي-6-remove-في-عنصر-القائمة-الثالث">التحدّي 6: «Remove» في عنصر القائمة الثالث</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> readingList = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;list&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Reading list&#x27;</span> });
+<span class="hljs-keyword">const</span> thirdItem = readingList.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;listitem&#x27;</span>).<span class="hljs-title function_">nth</span>(<span class="hljs-number">2</span>);
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(thirdItem.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Remove&#x27;</span> })).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>سلسلة من ثلاثة مستويات: القائمة ← العنصر الثالث ← الزر. وكل خطوة تضيّق النطاق. وهذا بديل المحدِّد المركّب في CSS مثل <code>.reading-list li:nth-child(3) button.remove</code> — ويُقرأ بالترتيب نفسه الذي يفكّر به الإنسان.</p>
+<h3 id="التحدي-7-rate-this-book-داخل-مقالة-piranesi">التحدّي 7: «Rate this book» داخل مقالة Piranesi</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> article = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;article&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/Piranesi/</span> });
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(article.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Rate this book&#x27;</span> })).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>يحمل عنصر <code>&lt;article&gt;</code> السمة <code>aria-label=&quot;Piranesi by Susanna Clarke&quot;</code>. ومطابقة تعبير نمطي على <code>/Piranesi/</code> كافية لتعريفه بشكل فريد. ثم تضيّق النطاق داخله للعثور على الزر.</p>
+<h3 id="التحدي-8-نص-التلميح-في-حقل-المؤلف">التحدّي 8: نص التلميح في حقل المؤلف</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByLabel</span>(<span class="hljs-string">&#x27;Author&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Last name, first name&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>التلميح عنصر منفصل — ليس جزءًا من تسمية حقل الإدخال. ويمكنك تحديد حقل الإدخال بالتسمية والتلميح بالنص، كلًّا على حدة.</p>
+<h2 id="النص-والمحتوى">النص والمحتوى</h2>
+<h3 id="التحدي-9-فقرة-تذكر-42-days">التحدّي 9: فقرة تذكر «42 days»</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;This book has been on your shelf for 42 days.&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>مطابقة نصية دقيقة. وعندما يكون النص فريدًا في الصفحة، فـ <code>getByText</code> بالسلسلة الكاملة هو أنظف خيار.</p>
+<h3 id="التحدي-10-3-of-12-books-finished">التحدّي 10: «3 of 12 books finished»</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;3 of 12 books finished&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>النهج نفسه. نص فريد، ومطابقة كاملة.</p>
+<h3 id="التحدي-11-فقرة-shelf-الصحيحة">التحدّي 11: فقرة «shelf» الصحيحة</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;You have 4 books on your shelf right now.&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>الفقرة الأخرى التي تحتوي «shelf» تقول «Add a book to your shelf to get started.» واستخدام الجملة الكاملة يتجنّب الالتباس تمامًا. وتعبير نمطي مثل <code>/4 books on your shelf/</code> يعمل أيضًا — والهدف أن تكون محدّدًا بما يكفي بحيث يطابق عنصر واحد فقط.</p>
+<h2 id="الجداول-والقوائم">الجداول والقوائم</h2>
+<h3 id="التحدي-12-عد-صفوف-البيانات-في-جدول-التقييمات">التحدّي 12: عدّ صفوف البيانات في جدول التقييمات</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> table = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;table&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Book ratings&#x27;</span> });
+<span class="hljs-keyword">const</span> dataRows = table.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;row&#x27;</span>).<span class="hljs-title function_">filter</span>({ <span class="hljs-attr">hasNot</span>: page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;columnheader&#x27;</span>) });
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(dataRows).<span class="hljs-title function_">toHaveCount</span>(<span class="hljs-number">3</span>);
+</code></pre>
+<p><code>getByRole('row')</code> تُعيد <em>كل</em> الصفوف، بما فيها الترويسة. واستبعاد الصفوف التي تحتوي خلايا <code>columnheader</code> يمنحك صفوف البيانات. والبديل هو <code>table.locator('tbody tr')</code>، لكنه ينزل إلى CSS — استخدمه إن بدا نهج الترشيح ثقيلًا.</p>
+<h3 id="التحدي-13-قائمة-القراءة-فيها-4-عناصر">التحدّي 13: قائمة القراءة فيها 4 عناصر</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> list = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;list&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Reading list&#x27;</span> });
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(list.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;listitem&#x27;</span>)).<span class="hljs-title function_">toHaveCount</span>(<span class="hljs-number">4</span>);
+</code></pre>
+<p><code>toHaveCount</code> يعيد المحاولة تلقائيًا. فلو كانت القائمة تُملأ ديناميكيًا، لانتظر هذا التحقّق ظهور 4 عناصر (حتى المهلة المُعدّة).</p>
+<h2 id="المحتوى-الديناميكي">المحتوى الديناميكي</h2>
+<h3 id="التحدي-14-إظهار-التفاصيل">التحدّي 14: إظهار التفاصيل</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Show details&#x27;</span> }).<span class="hljs-title function_">click</span>();
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-regexp">/Station Eleven is a post-apocalyptic novel/</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>انقر الزر، وتحقق من ظهور النص. لا <code>waitForTimeout</code> — فـ <code>toBeVisible()</code> يعيد المحاولة تلقائيًا.</p>
+<h3 id="التحدي-15-تحميل-المزيد">التحدّي 15: تحميل المزيد</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Load more&#x27;</span> }).<span class="hljs-title function_">click</span>();
+<span class="hljs-keyword">const</span> newList = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;list&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Newly loaded books&#x27;</span> });
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(newList.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;listitem&#x27;</span>)).<span class="hljs-title function_">toHaveCount</span>(<span class="hljs-number">2</span>);
+</code></pre>
+<p>يطلق الزر تأخيرًا قدره 500ms قبل ظهور العناصر. و<code>toHaveCount(2)</code> ينتظره. لا نوم، ولا مهلة.</p>
+<h3 id="التحدي-16-من-التحميل-إلى-تحميل-المحتوى">التحدّي 16: من التحميل إلى تحميل المحتوى</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Loading...&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Content loaded&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Loading...&#x27;</span>)).<span class="hljs-title function_">toBeHidden</span>();
+</code></pre>
+<p>تبدأ الصفحة و«Loading...» ظاهر، ثم تتبدّل إلى «Content loaded» بعد ثانية واحدة. والتحقّقات التي تعيد المحاولة تتعامل مع التوقيت. ملاحظة: إن حُمّلت الصفحة بسرعة كافية، فقد يكون «Loading...» قد اختفى بحلول تنفيذ تحقّقك. وفي هذه الحالة، احذف التحقّق الأول واكتفِ بالتحقّق من الحالة النهائية.</p>
+<h2 id="النوافذ-الحوارية">النوافذ الحوارية</h2>
+<h3 id="التحدي-17-افتح-النافذة-الحوارية">التحدّي 17: افتح النافذة الحوارية</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Rate this book&#x27;</span> }).<span class="hljs-title function_">last</span>().<span class="hljs-title function_">click</span>();
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;dialog&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>يُصيّر مكوّن <code>RateBookDialog</code> عنصر <code>&lt;div role=&quot;dialog&quot;&gt;</code>. و<code>getByRole('dialog')</code> يعثر عليه.</p>
+<blockquote>
+<p><strong>لماذا <code>.last()</code>؟</strong></p>
+<p>يُوفّر الملعب <strong>زرَّي</strong> «Rate this book» عن قصد: واحدًا داخل مقالة Piranesi في قسم «Intermediate: disambiguation and chaining»، وآخر داخل قسم «Dialogs» الذي يفتح نافذة فعلية. وبدون <code>.last()</code> (أو نطاق مكافئ)، يرفض الوضع الصارم في Playwright النقر لأن المحدِّد يطابق الاثنين. والحل الأنظف في قاعدة شيفرة حقيقية هو تضييق النطاق داخل منطقة مسمّاة — مثلًا <code>page.getByRole('region', { name: 'Dialogs' }).getByRole('button', { name: 'Rate this book' })</code> — لكن أقسام الملعب ليس لها أسماء متاحة للوصول، لذا <code>.last()</code> هو الحد الأدنى المقبول لرفع الالتباس في هذا التمرين. وإن أردت تحدّيًا إضافيًا، فلفّ قسم Dialogs في منطقة مسمّاة بشكل صحيح وأعد كتابة المحدِّد كسلسلة أب.</p>
+</blockquote>
+<h3 id="التحدي-18-اختر-4-نجوم-واحفظ">التحدّي 18: اختر 4 نجوم واحفظ</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Rate this book&#x27;</span> }).<span class="hljs-title function_">last</span>().<span class="hljs-title function_">click</span>();
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByLabel</span>(<span class="hljs-string">&#x27;4 stars&#x27;</span>).<span class="hljs-title function_">check</span>();
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Save rating&#x27;</span> }).<span class="hljs-title function_">click</span>();
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;dialog&#x27;</span>)).<span class="hljs-title function_">toBeHidden</span>();
+</code></pre>
+<p>كل نجمة حقل إدخال راديو بـ <code>aria-label</code> مثل «4 stars». و<code>.check()</code> يحدّدها. ثم انقر «Save rating» وتأكّد من إغلاق النافذة.</p>
+<h3 id="التحدي-19-ألغ-النافذة-الحوارية">التحدّي 19: ألغِ النافذة الحوارية</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Rate this book&#x27;</span> }).<span class="hljs-title function_">last</span>().<span class="hljs-title function_">click</span>();
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;dialog&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;dialog&#x27;</span>).<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Cancel&#x27;</span> }).<span class="hljs-title function_">click</span>();
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;dialog&#x27;</span>)).<span class="hljs-title function_">toBeHidden</span>();
+</code></pre>
+<p>في النافذة الحوارية زر «Cancel» — وكذلك في قسم «Buttons» في الملعب. وتضييق النقرة الثانية إلى <code>page.getByRole('dialog').getByRole('button', { name: 'Cancel' })</code> يمنع الاختبار من مطابقة الاثنين.</p>
+<h2 id="aria-والأدوار">ARIA والأدوار</h2>
+<h3 id="التحدي-20-التنبيه">التحدّي 20: التنبيه</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;alert&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;alert&#x27;</span>)).<span class="hljs-title function_">toHaveText</span>(<span class="hljs-string">&#x27;Unsaved changes will be lost&#x27;</span>);
+</code></pre>
+<p><code>role=&quot;alert&quot;</code> دور منطقة حيّة. و<code>getByRole('alert')</code> يعثر عليه مباشرةً.</p>
+<h3 id="التحدي-21-قيمة-شريط-التقدم">التحدّي 21: قيمة شريط التقدّم</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> progressBar = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;progressbar&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Reading progress&#x27;</span> });
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(progressBar).<span class="hljs-title function_">toHaveAttribute</span>(<span class="hljs-string">&#x27;aria-valuenow&#x27;</span>, <span class="hljs-string">&#x27;65&#x27;</span>);
+</code></pre>
+<p><code>toHaveAttribute</code> يفحص سمة ARIA مباشرةً. وخيار <code>name</code> يطابق <code>aria-label</code>.</p>
+<h3 id="التحدي-22-تبديل-اللوحة-بـ-aria-expanded">التحدّي 22: تبديل اللوحة بـ <code>aria-expanded</code></h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> toggle = page.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Toggle panel&#x27;</span> });
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(toggle).<span class="hljs-title function_">toHaveAttribute</span>(<span class="hljs-string">&#x27;aria-expanded&#x27;</span>, <span class="hljs-string">&#x27;false&#x27;</span>);
+
+<span class="hljs-keyword">await</span> toggle.<span class="hljs-title function_">click</span>();
+
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(toggle).<span class="hljs-title function_">toHaveAttribute</span>(<span class="hljs-string">&#x27;aria-expanded&#x27;</span>, <span class="hljs-string">&#x27;true&#x27;</span>);
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">locator</span>(<span class="hljs-string">&#x27;#expandable-panel&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>قبل النقر: <code>aria-expanded</code> قيمته <code>&quot;false&quot;</code>. وبعده: <code>&quot;true&quot;</code> واللوحة مرئية. ولاحظ أن اللوحة تُحدَّد بـ <code>#expandable-panel</code> — وهذه إحدى الحالات التي يكون فيها <code>id</code> أطبع محدِّد لأن <code>aria-controls</code> يشير إليه مباشرةً.</p>
+<h2 id="الأنماط-المضادة-والبدائل">الأنماط المضادة والبدائل</h2>
+<h3 id="التحدي-23-الزر-المزيف">التحدّي 23: الزر المزيّف</h3>
+<pre><code class="language-typescript"><span class="hljs-comment">// This won&#x27;t work — the div has no role:</span>
+<span class="hljs-comment">// await page.getByRole(&#x27;button&#x27;, { name: /Click me/ }).click();</span>
+
+<span class="hljs-comment">// Use the test ID fallback:</span>
+<span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">&#x27;fake-button&#x27;</span>).<span class="hljs-title function_">click</span>();
+</code></pre>
+<p>عنصر <code>&lt;div&gt;</code> منسّق كزر لكنه بلا <code>role=&quot;button&quot;</code>، وبلا <code>tabindex</code>، وبلا معالجة للوحة المفاتيح. ولا يستطيع <code>getByRole</code> العثور عليه. وهذا دليل ملموس على أن الترميز غير القابل للوصول ليس مجرد مسألة معايير — بل مسألة اختبار.</p>
+<h3 id="التحدي-24-زر-أيقونة-فقط">التحدّي 24: زر أيقونة فقط</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">&#x27;icon-only-button&#x27;</span>)).<span class="hljs-title function_">toBeVisible</span>();
+</code></pre>
+<p>الزر موجود كعنصر <code>&lt;button&gt;</code> حقيقي، لكنه بلا محتوى نصي وبلا <code>aria-label</code>. و<code>getByRole('button')</code> سيعثر عليه، لكنك لا تستطيع رفع التباسه عن بقية الأزرار بالاسم. لذا <code>getByTestId</code> هو المسار الموثوق الوحيد حتى يضيف أحدهم <code>aria-label</code>.</p>
+<h2 id="أنماط-تأخذها-معك">أنماط تأخذها معك</h2>
+<ul>
+<li><strong>الدور أولًا، دائمًا.</strong> إن استطعت كتابة <code>getByRole</code>، فاكتبها. فهي أكثر المحدِّدات استقرارًا وتعمل في الوقت نفسه كفحص لإمكانية الوصول.</li>
+<li><strong>تسلسل لرفع الالتباس.</strong> عندما تطابق عناصر متعددة، ضيّق النطاق بالأب بدلًا من مدّ اليد إلى <code>.nth()</code>. فالنسخة المقيّدة بالأب تنجو من إعادة ترتيب DOM.</li>
+<li><strong>النص محدِّد، لا مجرد تحقّق.</strong> <code>getByText</code> في الطبقة الرابعة، لكنه للنص المرئي الفريد مقبول تمامًا — وغالبًا أوضح من بناء سلسلة أدوار.</li>
+<li><strong>معرّفات الاختبار تستحقّ مكانها.</strong> ليست عارًا. بل هي الجواب الصحيح للعناصر التي يستحيل تسميتها فعلًا. والعار أن تترك العنصر بلا تسمية حين يكون الإصلاح ممكنًا.</li>
+<li><strong>التحقّق <em>هو</em> الانتظار.</strong> كل استدعاء <code>expect(locator).*</code> يعيد المحاولة تلقائيًا. ولن تحتاج أبدًا إلى <code>waitForTimeout</code> للتعامل مع التوقيت.</li>
+</ul>
+<h2 id="قراءات-إضافية">قراءات إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/lab-locator-challenges">تمرين: تحدّيات المحدِّدات</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy">المحدِّدات وهرم إمكانية الوصول</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode">وضع واجهة Playwright</a></li>
+</ul>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:e,headings:l,html:p};export{s as book,a as chapter,n as chapterTitle,c as default,l as headings,p as html,t as slug,e as title};

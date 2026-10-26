@@ -1,0 +1,134 @@
+const s="tanstack-form",a="form",e="دورة TanStack Form الكاملة",n="first-form",t="أوّل استمارة: مثيل النموذج وتوصيل الحقول",l=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"نوع-الاستمارة-أولا",text:"نوع الاستمارة أوّلًا"},{depth:3,id:"القيم-الافتراضية-وخيارات-مشتركة",text:"القيم الافتراضية وخيارات مشتركة"},{depth:3,id:"إنشاء-مثيل-الاستمارة",text:"إنشاء مثيل الاستمارة"},{depth:3,id:"توصيل-حقل-واحد-بـformfield",text:"توصيل حقل واحد بـform.Field"},{depth:3,id:"عقد-خاصية-التصيير-لماذا-دالة",text:"عقد خاصية التصيير: لماذا دالة؟"},{depth:3,id:"حالة-الحقل-وحالة-الاستمارة",text:"حالة الحقل وحالة الاستمارة"},{depth:3,id:"الإرسال-ماذا-يحدث-عند-الضغط",text:"الإرسال: ماذا يحدث عند الضغط"},{depth:3,id:"تصيير-الاستمارة-في-التطبيق",text:"تصيير الاستمارة في التطبيق"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],o=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>نبني في هذا الدرس أوّل استمارة حقيقية في التطبيق: استمارة تسجيل فيها اسم أول واسم أخير وعمر وبريد إلكتروني وكلمة سرّ وتأكيدها، ثم عنوان متداخل، ومصفوفة مهارات، وخيار منطقي للموافقة على الشروط. التنوّع مقصود: النوع الذي نكتبه في الأعلى يغطّي كلّ أشكال البيانات التي قد تدخل استمارة، فلا نعيد تصميمه في الدروس القادمة.</p>
+<p>الفكرة التي يثبتها الدرس أنّك لا تكتب حالة الحقول بيدك. لا <code>useState</code> لكلّ حقل، ولا دالة تنسخ قيمة الحدث إلى كائن كبير. <code>useForm</code> ينشئ كائن استمارة يحتفظ بالقيم ويوزّعها على الحقول، و<code>form.Field</code> يوصّل حقلًا واحدًا به ويمنحك واجهة صغيرة للقراءة والكتابة. الحدّ الأدنى الذي يجعل هذه الدورة تعمل هو: القيم الافتراضية، والتوصيل، والقراءة، والكتابة، ثم الإرسال.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="نوع-الاستمارة-أولا">نوع الاستمارة أوّلًا</h3>
+<p>قبل أن نكتب مكوّنًا واحدًا، نعرّف شكل البيانات. الواجهة <code>RegisterForm</code> في <code>src/lib/RegisterForm.tsx</code> تحمل الحقول المسطّحة، ثم كائن <code>address</code> متداخلًا بحقوله الأربعة، ثم <code>skills</code> وهي مصفوفة كائنات لكلّ منها <code>name</code> و<code>id</code> و<code>level</code> من ثلاثة مستويات، وأخيرًا <code>acceptTerms</code> من نوع منطقي:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">RegisterForm</span> {
+  <span class="hljs-attr">firstName</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">lastName</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span> | <span class="hljs-literal">undefined</span>;
+  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">password</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">confirmPassword</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">address</span>: {
+    <span class="hljs-attr">street</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">city</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">state</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">zipCode</span>: <span class="hljs-built_in">string</span>;
+  };
+  <span class="hljs-attr">skills</span>: <span class="hljs-title class_">Array</span>&lt;{
+    <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">level</span>: <span class="hljs-string">&quot;beginner&quot;</span> | <span class="hljs-string">&quot;intermediate&quot;</span> | <span class="hljs-string">&quot;expert&quot;</span>;
+  }&gt;;
+  <span class="hljs-attr">acceptTerms</span>: <span class="hljs-built_in">boolean</span>;
+}
+</code></pre>
+<p>لاحظ <code>age: number | undefined</code>: العمر رقم، لكن الحقل الفارغ في استمارة جديدة ليس رقمًا، فإمّا أن نضع <code>undefined</code> صريحًا وإمّا أن نكذب على النوع ونضع <code>0</code> فيظهر العمر صفرًا لكلّ مستخدم جديد. ولاحظ أنّ الحقول المتداخلة والمصفوفة مكتوبة كاملة مع أنّنا سنعرض حقلًا واحدًا اليوم؛ هذا النوع هو العقد الذي يقرأه <code>useForm</code> ويستنتج منه شكل القيم، ويعرف به <code>name</code> في كلّ <code>form.Field</code> ما هي المفاتيح المسموحة. كتابته كاملة الآن تعني أنّ إضافة حقل لاحقًا تحتاج <code>form.Field</code> جديدًا فقط، لا تعديلًا في إعداد الاستمارة.</p>
+<h3 id="القيم-الافتراضية-وخيارات-مشتركة">القيم الافتراضية وخيارات مشتركة</h3>
+<p>لكلّ استمارة حالة ابتدائية، ولا بدّ أن تكون مطابقة للنوع حقلًا بحقل. هنا كائن <code>defaultValues</code> معلَّم بالواجهة نفسها، وكلّ قيمة فيه فارغة أو مصفوفة فارغة أو <code>false</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> <span class="hljs-attr">defaultValues</span>: <span class="hljs-title class_">RegisterForm</span> = {
+  <span class="hljs-attr">firstName</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">lastName</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-literal">undefined</span>,
+  <span class="hljs-attr">email</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">password</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">confirmPassword</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">address</span>: { <span class="hljs-attr">street</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-attr">city</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-attr">state</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-attr">zipCode</span>: <span class="hljs-string">&quot;&quot;</span> },
+  <span class="hljs-attr">skills</span>: [],
+  <span class="hljs-attr">acceptTerms</span>: <span class="hljs-literal">false</span>,
+};
+
+<span class="hljs-keyword">const</span> formOpts = <span class="hljs-title function_">formOptions</span>({
+  defaultValues,
+});
+</code></pre>
+<p>لماذا لا نمرّر <code>defaultValues</code> مباشرة إلى <code>useForm</code>؟ يمكن ذلك، لكن المؤلف يلفّها في <code>formOptions</code> لسبب عملي: الكائن صار قابلًا للتصدير والاستعمال في أكثر من استمارة — استمارة التسجيل تبدأ فارغة، واستمارة التعديل تبدأ بقيم محمّلة، وكلتاهما تشتركان في القيم الافتراضية وفي أيّ خيار عام نضيفه لاحقًا. وهو يذكر أنّ بيانات استمارة التعديل قد تُجلب من واجهة برمجية ثم تُمرّر في <code>defaultValues</code> قبل تصييرها؛ هذا خارج شيفرة درسنا، لكنه سبب وجود النمط.</p>
+<h3 id="إنشاء-مثيل-الاستمارة">إنشاء مثيل الاستمارة</h3>
+<p>الآن ننشئ المثيل. نستورد <code>useForm</code> و<code>formOptions</code> من <code>@tanstack/react-form</code>، وننشر <code>formOpts</code> داخل الخُطّاف ثم نضيف إليه ما يخصّ هذه الاستمارة وحدها:</p>
+<pre><code class="language-tsx">  <span class="hljs-keyword">const</span> form = <span class="hljs-title function_">useForm</span>({
+    ...formOpts,
+    <span class="hljs-attr">onSubmit</span>: <span class="hljs-function">(<span class="hljs-params">{ value }</span>) =&gt;</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value);
+    },
+  });
+</code></pre>
+<p>النشر <code>...formOpts</code> يضع <code>defaultValues</code> في مكانها، ثم يأتي <code>onSubmit</code> بعده. هذا الترتيب هو ما يجعل <code>formOptions</code> مفيدة: الخيارات المشتركة أوّلًا، والخاصة بعدها، فلو تعارض خياران فالأخير يفوز. والقيمة التي تُرجع من <code>useForm</code> ليست كائن بيانات، بل واجهة استمارة: فيها <code>Field</code> للتوصيل و<code>handleSubmit</code> للإرسال وحالة عامة ودوالّ سنستعمل بعضها في دروس التحقّق.</p>
+<h3 id="توصيل-حقل-واحد-بـformfield">توصيل حقل واحد بـ<code>form.Field</code></h3>
+<p>الاستمارة الآن موجودة لكنها لا تعرض شيئًا. نرسم عنصر <code>&lt;form&gt;</code> عاديًا، ونضع داخله مكوّن <code>form.Field</code>، ونمرّر له خاصية <code>name</code> بقيمة <code>firstName</code>. لأنّ القيم الافتراضية معلَّمة بالنوع، يعرف <code>TypeScript</code> المفاتيح الممكنة ويرفض أيّ اسم آخر، وهذه أوّل فائدة عملية من كتابة الواجهة في الأعلى:</p>
+<pre><code class="language-tsx">        &lt;form.<span class="hljs-property">Field</span> name=<span class="hljs-string">&quot;firstName&quot;</span>&gt;
+          {<span class="hljs-function">(<span class="hljs-params">field</span>) =&gt;</span> {
+            <span class="hljs-keyword">return</span> (
+              <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;mb-4&quot;</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+                  <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+                  <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;First Name&quot;</span>
+                  <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-black text-white border border-white p-2 w-full&quot;</span>
+                  <span class="hljs-attr">value</span>=<span class="hljs-string">{field.state.value}</span>
+                  <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                /&gt;
+              <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+            );
+          }}
+        &lt;/form.<span class="hljs-property">Field</span>&gt;
+</code></pre>
+<p>للحقل ثلاثة روابط، كلّ واحد يحلّ مشكلة مختلفة. <code>value={field.state.value}</code> يجعل الحقل خاضعًا للاستمارة: ما في الحالة يظهر في الصندوق، فإن تغيّرت من مكان آخر تغيّر الصندوق. <code>onChange</code> يستدعي <code>field.handleChange</code> بالقيمة الجديدة، فيصل التغيير إلى المثيل بدل أن يبقى حبيس المتصفّح؛ ولاحظ أنه يمرّر القيمة لا الحدث، فالواجهة تتعامل مع قيمة الحقل لا مع تفاصيل <code>DOM</code>. و<code>onBlur={field.handleBlur}</code> يبلّغ الاستمارة بأنّ المستخدم غادر الحقل: قد يبدو زائدًا الآن، لكن التحقّق من الصحة سيعتمد عليه، فالاستمارة لا تعرف أنّ المؤشّر غادر إلّا إذا أخبرتها، وعندها تعرض الخطأ في وقته بدل أن تصرخ في وجه المستخدم وهو يكتب أوّل حرف.</p>
+<h3 id="عقد-خاصية-التصيير-لماذا-دالة">عقد خاصية التصيير: لماذا دالة؟</h3>
+<p><code>form.Field</code> لا يأخذ عناصر <code>JSX</code> كأبناء عاديين، بل يأخذ دالة تُعيدها. هذه الدالة تُسمّى خاصية تصيير (<code>render prop</code>)، وهي الوسيلة التي جعلت الاستمارة تعمل بلا سياق (<code>context</code>) ولا خُطّاف داخل كلّ حقل.</p>
+<p>الفكرة أنّ القيمة لا تعيش في مكوّنك. لو مرّرنا <code>&lt;form.Field name=&quot;firstName&quot;&gt;{&lt;input … /&gt;}&lt;/form.Field&gt;</code> لعُومِل التعبير مرّة واحدة عند تصيير الأب، ولبقي كائن الحقل الملتقط فيه على حاله الأولى. أمّا حين تمرّر دالة فلا يستدعيها الأب، بل <code>form.Field</code> يستدعيها في كلّ مرّة يتغيّر فيها ذلك الحقل وحده، ويمرّر لها كائنًا طازجًا. النتيجة أنّ ما تكتبه داخل الدالة يقرأ القيمة الحالية دائمًا، وأنّ إعادة التصيير تبقى محصورة في الحقل الذي تغيّر: عشرون حقلًا، يكتب المستخدم في واحد، فلا يعيد <code>React</code> تصيير تسعة عشر حقلًا ساكنًا.</p>
+<p>ولأنّ الأبناء دالة، فأنت حرّ في شكل ما تُعيده: <code>div</code> و<code>input</code> كما هنا، أو مكوّن من <code>shadcn/ui</code> لاحقًا. المكتبة لا تفرض شيئًا على الواجهة، وهذا معنى أنّها بلا واجهة جاهزة.</p>
+<h3 id="حالة-الحقل-وحالة-الاستمارة">حالة الحقل وحالة الاستمارة</h3>
+<p>الكائن <code>field</code> الذي تستقبله في الدالة هو واجهة الحقل: <code>field.name</code> الاسم الذي مرّرته، و<code>field.state</code> حالة هذا الحقل وحده، و<code>field.handleChange</code> مع <code>field.handleBlur</code> دالتان لتحديثها. داخل <code>state</code> تجد <code>value</code> أي القيمة الحالية، و<code>meta</code> أي تاريخ الحقل: هل لُمس، وهل تغيّر عن قيمته الافتراضية، وهل به أخطاء، وهل التحقّق جارٍ. وهذا ما رآه المؤلف حين طبع <code>field</code> في <code>console</code>: واجهة حقل، لا كائن بيانات خام.</p>
+<p>أمّا <code>form</code> فحالته أوسع: <code>form.state.values</code> هي الاستمارة كاملة، ومعها أعلام مثل <code>canSubmit</code> و<code>isSubmitting</code> وأخطاء على مستوى الاستمارة ومصفوفة حالة كلّ الحقول. والفرق ليس شكليًا: حالة الحقل تخصّ صندوقًا واحدًا فتُستهلك داخل خاصية التصيير التي رسمته، وحالة الاستمارة تخصّ قرارات تعبر الحقول، كتعطيل زرّ الإرسال حتى تصحّ كلّها. في هذا الدرس لم يحتج المؤلف إلّا <code>field.state.value</code>, وهو الحدّ الأدنى الذي يجعل الكتابة تنعكس في مكان واحد.</p>
+<h3 id="الإرسال-ماذا-يحدث-عند-الضغط">الإرسال: ماذا يحدث عند الضغط</h3>
+<p>نربط الاستمارة الآن بمثيلها. عنصر <code>&lt;form&gt;</code> يستقبل <code>onSubmit</code>, وفيه نمنع السلوك الافتراضي ثم نسلّم الأمر إلى <code>form.handleSubmit</code>:</p>
+<pre><code class="language-tsx">      &lt;form
+        onSubmit={<span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> {
+          e.<span class="hljs-title function_">preventDefault</span>();
+          form.<span class="hljs-title function_">handleSubmit</span>();
+        }}
+      &gt;
+</code></pre>
+<p><code>e.preventDefault()</code> ليس تفصيلًا شكليًا: سلوك المتصفّح الافتراضي هو طلب صفحة جديدة، أي إعادة تحميل تُفقد حالة التطبيق قبل أن يصل شيء إلى <code>onSubmit</code>. منع السلوك ثم استدعاء <code>handleSubmit</code> نقلٌ للملكية إلى المكتبة: هي التي تجمع القيم، وتمرّرها على قواعد التحقّق إن وُجدت، وتضع الاستمارة في حالة إرسال، ثم تنادي <code>onSubmit</code> الذي مرّرناه إلى <code>useForm</code>.</p>
+<p>وفي درسنا <code>onSubmit</code> لا يفعل شيئًا غير الطبع، لأنّ الهدف رؤية البيانات لا إرسالها إلى خادم. حين ضغط المؤلف زرّ <code>Submit</code> وهو لم يكتب شيئًا ظهرت في <code>console</code> القيم الافتراضية نفسها، لأنّ الحقول لم تُلمس. ثم كتب اسمًا وأعاد الإرسال فظهرت قيمة <code>firstName</code> التي كتبها. هذا هو الاختبار الحقيقي أنّ التوصيل نجح: البيانات التي في الصندوق هي التي وصلت إلى <code>value</code> في دالة الإرسال، والتحقّق مرحلة داخلية تمرّ بلا عمل حين لا يوجد ما يُفحص.</p>
+<p>ولكي يقع الإرسال أصلًا، يجب أن يكون الزرّ من نوع <code>submit</code>; زرّ عادي لا يُطلق حدث الإرسال، فلا تُستدعى <code>handleSubmit</code> ولا ترى شيئًا في <code>console</code>.</p>
+<h3 id="تصيير-الاستمارة-في-التطبيق">تصيير الاستمارة في التطبيق</h3>
+<p>يبقى أن يظهر المكوّن. <code>src/App.tsx</code> لم يبقَ فيه شيء من صفحة الترحيب؛ صار يستورد <code>RegisterForm</code> ويعرضه وحده:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> <span class="hljs-title class_">RegisterForm</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./lib/RegisterForm&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">RegisterForm</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">App</span>;
+</code></pre>
+<p>لوحة أدوات التطوير مركّبة في <code>src/main.tsx</code> من الدرس السابق، فزرّها العائم في طرف النافذة، وفتحه يعرض الاستمارة وقيمها ومعلومات <code>meta</code> عن الحقول. والمؤلف ينبّه إلى أنّ اللوحة كانت مضطربة أثناء التسجيل، فلا تبنِ حكمك على ظهورها؛ الطبع في <code>console</code> هو المرجع الموثوق.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--first-form--form.png" alt="صفحة التطبيق بعد الدرس: خلفية سوداء، وصندوق إدخال بإطار أبيض يحمل عبارة إرشادية داخلية، وتحته زرّ الإرسال، وفي أسفل اليمين زرّ أدوات التطوير العائم"></p>
+<p>هذا كلّ ما تغيّر في الواجهة: استمارة تسجيل كاملة النوع، ومعروض منها حقل واحد. نرى خلفية الصفحة السوداء، وفي أعلى اليسار صندوق إدخال بإطار أبيض رقيق ونصّه الإرشادي الداخلي، وتحته زرّ الإرسال مباشرة. الأصناف التي مرّرها المؤلف إلى الحقل أعطته هذا المظهر: خلفية سوداء ونصّ أبيض وإطار أبيض وعرض كامل، والغلاف حوله أضاف هامشًا سفليًا يفصله عن الزرّ. وفي أسفل اليمين زرّ لوحة أدوات التطوير، وهو الأثر الوحيد لدرس التثبيت. الفرق الحقيقي غير مرئي: الصندوق متّصل الآن بمثيل استمارة، فالكتابة فيه تغيّر حالتها، وضغط الزرّ يطبع في <code>console</code> قيم الاستمارة كلّها، ومنها الحقول التي لم نعرضها بعد.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>انسخ كتلة <code>form.Field</code> لحقل ثانٍ، وغيّر <code>name</code> إلى <code>lastName</code> وغيّر العبارة الإرشادية. لاحظ أنّ <code>TypeScript</code> يقترح الأسماء من الواجهة، وأنّ <code>field.state.value</code> يأتي بالتفصيل نفسه بلا تغيير في الشيفرة.</li>
+<li>احذف <code>onChange</code> من الحقل واكتب فيه ثم أرسل: القيمة في <code>console</code> ستبقى فارغة، لأنّ الكتابة لم تعد تصل إلى المثيل. أعد السطر ولاحظ الفرق.</li>
+<li>احذف <code>value={field.state.value}</code> وأبقِ <code>onChange</code>، ثم اكتب وأرسل. الإرسال سيعمل، لكن الحقل صار غير خاضع للاستمارة، فلا تستطيع تصفيره من الشيفرة. هذا هو الفرق بين استمارة متحكَّم بها وأخرى لا.</li>
+<li>غيّر <code>name</code> إلى <code>age</code> وحاول تمرير <code>e.target.value</code> كما هو: سيرفض المترجم ذلك لأنّ <code>age</code> رقم لا نصّ. حوّل القيمة قبل تمريرها وتأمّل كيف يحميك النوع من خطأ كان سيصل إلى الخادم.</li>
+<li>عبّئ <code>defaultValues</code> بقيم جاهزة كأنّك تبني استمارة تعديل، ثم أرسل بلا كتابة: ستجد في <code>console</code> القيم التي وضعتها، وهذا أصل فكرة مشاركة <code>formOpts</code>.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=313s">فيديو الدرس: First Form</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/first-form">شيفرة الدرس: فرع first-form</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/guides/basic-concepts">التوثيق الرسمي: المفاهيم الأساسية في TanStack Form</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/overview">التوثيق الرسمي: نظرة عامة على TanStack Form</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «First Form» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي. وما أضافه المترجم من توضيح لا يُنسب إلى المؤلف.</p>
+</blockquote>
+`,c={book:s,chapter:a,chapterTitle:e,slug:n,title:t,headings:l,html:o};export{s as book,a as chapter,e as chapterTitle,c as default,l as headings,o as html,n as slug,t as title};

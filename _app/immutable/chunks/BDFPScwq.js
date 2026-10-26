@@ -1,0 +1,117 @@
+const s="tanstack-router",a="router",e="دورة TanStack Router الكاملة",n="adding-pagination",o="إضافة ترقيم الصفحات",p=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"طبقة-البيانات-جاهزة-للترقيم",text:"طبقة البيانات جاهزة للترقيم"},{depth:2,id:"معامل-البحث-page-بمخطط-zod",text:"معامل البحث «page» بمخطط Zod"},{depth:2,id:"لماذا-لا-يرى-الـloader-معاملات-البحث-مباشرة",text:"لماذا لا يرى الـloader معاملات البحث مباشرة؟"},{depth:2,id:"إعلان-الاعتماديات-loaderdeps",text:"إعلان الاعتماديات: loaderDeps"},{depth:2,id:"رابط-الصفحة-التالية",text:"رابط «الصفحة التالية»"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],t=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في الدرس السابق صار مسار <code>/posts</code> يحمّل أول عشرة منشورات من داخل المُحمِّل (loader). وفي هذا الدرس نجعل العنوانَ هو مَن يحدّد أيَّ صفحةٍ تُعرض: <code>/posts?page=2</code> تعرض المنشورات من 11 إلى 20، وهكذا. هذا هو الترقيم (pagination)، وما يحكمه هو معاملُ البحث (search params) <code>page</code>.</p>
+<p>يمرّ الدرس بخطواتٍ ثلاث. أولًا نتحقّق أنّ دالّة <code>getPosts</code> تدعم الترقيم أصلًا في طبقة البيانات، فلا نكتب أيَّ شيفرة جديدة هناك. ثانيًا نسجّل <code>page</code> معاملَ بحثٍ للمسار مع التحقّق من الصحة (validation) بمخطط (schema) <code>Zod</code>، بالطريقة نفسها التي رأيناها في درس التحقّق من معاملات البحث. ثالثًا نجيب عن سؤالٍ كنّا نراه منذ درس دوالّ التحميل: لماذا لا يرى الـloader معاملات البحث مباشرة؟ الجواب فيه علاقةٌ بحفظ بيانات الـloader في الذاكرة المؤقتة (cache)، والحل هو آلية <code>loaderDeps</code>. ثم نختم برابط (link) واحد أسفل القائمة ينتقل إلى الصفحة التالية بتغيير معاملات البحث لا المسار.</p>
+<h2 id="طبقة-البيانات-جاهزة-للترقيم">طبقة البيانات جاهزة للترقيم</h2>
+<p>دالّةُ <code>getPosts</code> التي كتبناها في الدرس السابق تبقى كما هي؛ لا تعديلَ عليها في هذا الدرس:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getPosts</span>(<span class="hljs-params">page = <span class="hljs-number">1</span></span>) {
+  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(
+    <span class="hljs-string">\`https://dummyjson.com/posts?limit=10&amp;skip=<span class="hljs-subst">\${(page - <span class="hljs-number">1</span>) * <span class="hljs-number">10</span>}</span>\`</span>
+  );
+  <span class="hljs-keyword">if</span> (res.<span class="hljs-property">ok</span>) {
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>()) <span class="hljs-keyword">as</span> <span class="hljs-title class_">PostsResponse</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Failed to fetch posts&quot;</span>);
+  }
+}
+</code></pre>
+<p>تستقبل الدالةُ رقم الصفحة بقيمةٍ افتراضية هي <code>1</code>، وترسل طلبًا إلى وجهة البيانات التجريبية بمعاملين مدمجَين في العنوان: <code>limit=10</code> يثبّت حجم الصفحة بعشرة منشورات، و<code>skip</code> يحدّد من أين يبدأ العدّ، وهو <code>(page - 1) * 10</code>. فالصفحة الأولى لا تتخطَّى شيئًا، والثانية تتخطَّى عشرة، والثالثة عشرين، وهكذا.</p>
+<p>وأثناء التصوير لاحظ المؤلفُ خطأً وقع فيه هنا: كان قد كتب التعبيرَ بالشكل <code>page * 10</code>، فجعل الصفحةَ الأولى تتخطَّى أول عشرة منشورات وتعرض ما بعدها. ثم صحّحها أمام الكاميرا إلى الصيغة التي فوق، ورجع إلى المتصفّح ليجد الصفحة الأولى تعرض أول عشرة فعلًا. فالقاعدةُ الصحيحة التي استقرّت في الشيفرة: الصفحة الأولى تعطي تخطيًا صفرًا، ولذلك يُطرح من <code>page</code> واحدٌ قبل الضرب.</p>
+<p>وإذا فشل الطلب، عاد السلوك كما شرحنا في درس دوالّ التحميل: ترمي الدالةُ خطأً، وإلا أعادت نتيجة الطلب من النوع <code>PostsResponse</code>.</p>
+<h2 id="معامل-البحث-page-بمخطط-zod">معامل البحث «page» بمخطط Zod</h2>
+<p>الخطوة التالية إخبار المسار بأنّ عنوانه قد يضمّ معاملًا باسم <code>page</code>. في ملف <code>src/routes/posts.index.tsx</code> نضيف استيراد <code>z</code> من <code>zod</code> والمحوّل <code>zodValidator</code> من <code>@tanstack/zod-adapter</code>، ثم نعرّف المخطط أعلى الملف:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute, <span class="hljs-title class_">Link</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+<span class="hljs-keyword">import</span> { getPosts } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../data/posts&quot;</span>;
+<span class="hljs-keyword">import</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>;
+<span class="hljs-keyword">import</span> { zodValidator } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/zod-adapter&quot;</span>;
+
+<span class="hljs-keyword">const</span> postsSearchParamsSchema = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">page</span>: z.<span class="hljs-title function_">number</span>().<span class="hljs-title function_">optional</span>(),
+});
+</code></pre>
+<p>المخطط يصف معاملات البحث التي يفهمها هذا المسار: كائنٌ فيه <code>page</code> فقط، وهو رقمٌ اختياريّ بفضل <code>.optional()</code>. ولا قيمة افتراضية في المخطط عمدًا: يجوز أن يغيب <code>page</code> عن العنوان كليًّا، وعندها نعامله من الناحية العملية بوصفه الصفحة الأولى — القيمة الافتراضية في <code>getPosts</code> تتولّى ذلك هناك.</p>
+<p>أما ربطُ المخطط بالمسار فمِمّا رأيناه في درس التحقّق من معاملات البحث بـ<code>Zod</code>: نمرّر المخطط إلى الخيار <code>validateSearch</code> ملفوفًا في <code>zodValidator</code>، فيصير <code>page</code> معاملَ بحثٍ معروفًا للمسار، تُقرأ قيمتُه من العنوان وتُتحقَّق قبل أن تصل إلى ما بعده، وتتعاون الأنواعُ معك في كلٍّ موضعٍ تستخدمه.</p>
+<h2 id="لماذا-لا-يرى-الـloader-معاملات-البحث-مباشرة">لماذا لا يرى الـloader معاملات البحث مباشرة؟</h2>
+<p>وهنا الجزء الذي وعدنا به المؤلف منذ درس دوالّ التحميل: تُمرَّر للدالة السياقُ (context) ومعاملات <code>params</code>، أما <code>search</code> فلا. وما لم يكن مهمًّا حين كانت البيانات لا تعتمد على شيئٍ من العنوان، صار مهمًّا اليوم: ما سيعيده الـloader هنا يتغيّر بتغيُّر <code>page</code>. فسأل المؤلف: لماذا حُجب معاملات البحث عن الدالة؟ وجوابه في الفيديو مبنيٌّ على الذاكرة المؤقتة.</p>
+<p>بياناتُ الـloader تُحفظ في الذاكرة المؤقتة كي تُعاد عند الحاجة بدل إعادة الطلب من جديد، والمؤلف يشير إلى أنّ للتفصيل درسًا لاحقًا كاملًا. والمهم هنا أنّ مفتاحَ الذاكرة يجب أن يميّز صفحةً عن صفحة: قائمة <code>/posts</code> لصفحةٍ ما تختلف عن قائمة الصفحة التي تليها، فلو تكوّن المفتاح من اسم المسار وحده لاختلطت النتائج المخزنة، وتُعِدت لطالب صفحةٍ معيّنة نتائجُ صفحةٍ أخرى. لذلك لا بد أن تدخل الصفحةُ في المفتاح مع اسم المسار.</p>
+<p>ولو قرأ الـloader معاملات البحث مباشرة، لما عرف الموجّه أيَّ جزءٍ منها دخل في تشكيل البيانات، وقد يؤدي ذلك إلى أخطاءٍ في الذاكرة المؤقتة. فالبديل هو إعلانٌ صريح: تعلن الدالةُ بنفسها أجزاءَ معاملات البحث التي تعتمد عليها بالضبط، فيكون خبرُ الموجّه عنها قطعيًّا لا تخمينًا. وتلك هي الغاية من <code>loaderDeps</code> في الفقرة التالية.</p>
+<h2 id="إعلان-الاعتماديات-loaderdeps">إعلان الاعتماديات: <code>loaderDeps</code></h2>
+<p>الحل إذًا في خيارٍ جديد يضاف إلى تعريف المسار اسمه <code>loaderDeps</code>. هذا هو التعريف كاملًا عند فرع <code>loaders-2</code>، وقد تغيّر فيه خياران في هذا الدرس: <code>validateSearch</code> و<code>loaderDeps</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/posts/&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">validateSearch</span>: <span class="hljs-title function_">zodValidator</span>(postsSearchParamsSchema),
+  <span class="hljs-attr">beforeLoad</span>: <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">getPosts</span>: getPosts,
+    };
+  },
+  <span class="hljs-attr">loaderDeps</span>: <span class="hljs-function">(<span class="hljs-params">{ search }</span>) =&gt;</span> ({ <span class="hljs-attr">page</span>: search.<span class="hljs-property">page</span> }),
+  <span class="hljs-attr">loader</span>: <span class="hljs-title function_">async</span> ({ context, deps }) =&gt; {
+    <span class="hljs-keyword">const</span> { getPosts } = context;
+    <span class="hljs-keyword">const</span> posts = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getPosts</span>(deps.<span class="hljs-property">page</span>);
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">posts</span>: posts.<span class="hljs-property">posts</span>,
+    };
+  },
+});
+</code></pre>
+<ul>
+<li><code>validateSearch</code> كما شرحناه قبل قليل: مدخلُ معاملات البحث عبر مخطط <code>Zod</code> ومحوّل <code>zodValidator</code>.</li>
+<li><code>beforeLoad</code> من الدرس السابق: ينشر الدالةَ <code>getPosts</code> في السياق <code>context</code> فيتيسر للـloader استدعاؤها.</li>
+<li><code>loaderDeps</code> هو الخيار الجديد: دالّةٌ تستقبل معاملات البحث في <code>search</code>، وتعيد كائنًا يعدّد ما نعتمد عليه — هنا <code>{ page: search.page }</code>. والسرّ ليس في شكل الكائن بل في قراءة <code>search.page</code> ذاتها: هذا الوصولُ هو الإعلان الذي يجعل الصفحة جزءًا من تعريف البيانات المحمَّلة، فينتبه الموجّه إليها عند كل تغيّر.</li>
+<li>أما الـloader فيستقبل هذا الإعلان في <code>deps</code>، فنمرّر <code>deps.page</code> إلى <code>getPosts</code>. وبقية الدالة كما في الدرس السابق: تُستخرج قائمة المنشورات من جواب الطلب وتُعاد في كائنٍ بمفتاح <code>posts</code>، ويقرأها المكوّن بـ<code>Route.useLoaderData()</code> من دون أي تغيير.</li>
+</ul>
+<p>بهذا يعرف الموجّه بدقة ما تعتمد عليه من معاملات البحث: تفرز صفحةٌ من أخرى في المفتاح، فتصير لكلّ صفحةٍ نتائجُها المخزنة الخاصة، ولا تعود قائمةُ صفحةٍ حين تُطلب صفحةٌ أخرى.</p>
+<h2 id="رابط-الصفحة-التالية">رابط «الصفحة التالية»</h2>
+<p>بقي الزرّ الذي ينتقل به المستخدِم إلى الصفحة التالية. القائمة نفسُها تُعرض كما في الدرس السابق عبر <code>Route.useLoaderData()</code>، وزيادةُها الوحيدة هنا جعلُ المؤلف معرّف المنشور يظهر قبل عنوانه في حلقة العرض، فتفترق الصفحاتُ بوضوحٍ من أرقامها. هذا هو المكوّن كما صار عند فرع الدرس:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">RouteComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { posts } = <span class="hljs-title class_">Route</span>.<span class="hljs-title function_">useLoaderData</span>();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      Hello &quot;/posts/&quot;! <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+      {posts.map((post) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{post.id}</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">Link</span>
+            <span class="hljs-attr">to</span>=<span class="hljs-string">{</span>\`/<span class="hljs-attr">posts</span>/$<span class="hljs-attr">postId</span>\`}
+            <span class="hljs-attr">params</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">postId:</span> <span class="hljs-attr">String</span>(<span class="hljs-attr">post.id</span>) }}
+            <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;underline font-bold text-lg&quot;</span>
+          &gt;</span>
+            {post.id}- {post.title}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      ))}
+      <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+</span></code></pre>
+<p>هذا هو الرابط الذي يأتي أسفل القائمة:</p>
+<pre><code class="language-tsx">      &lt;<span class="hljs-title class_">Link</span>
+        <span class="hljs-keyword">from</span>={<span class="hljs-title class_">Route</span>.<span class="hljs-property">fullPath</span>}
+        to=<span class="hljs-string">&quot;.&quot;</span>
+        search={<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> ({ <span class="hljs-attr">page</span>: (prev.<span class="hljs-property">page</span> || <span class="hljs-number">1</span>) + <span class="hljs-number">1</span> })}
+      &gt;
+        <span class="hljs-title class_">Go</span> to <span class="hljs-title class_">Next</span> <span class="hljs-title class_">Page</span>
+      &lt;/<span class="hljs-title class_">Link</span>&gt;
+</code></pre>
+<p>الرابط لا ينقل إلى مسار آخر: <code>from={Route.fullPath}</code> يثبّت نقطة الانطلاق على المسار الحالي، و<code>to=&quot;.&quot;</code> يعني البقاء عليه. فما يتغيّر إذًا هو معاملات البحث وحدها. وتُمرَّر <code>search</code> هنا دالّةً لا كائنًا: تستقبل القيم الحالية في <code>prev</code> وتعيد بدلها <code>page</code> زيادةً بواحد — أي <code>(prev.page || 1) + 1</code>. ودور <code>|| 1</code> معالجةُ غياب الصفحة: إذا كان العنوان بلا <code>page</code> عُدّ الانطلاقُ من <code>1</code>، فلتحصل الزيادةُ على <code>2</code>. وهذا النمط نفسُه رأيناه مع مسار <code>/products</code> في درس معاملات البحث، فما زادَ هنا إلا توظيفُه للترقيم.</p>
+<p>ويشير المؤلف إلى أنّه يمكن، بالطريقة نفسها، إضافةُ زرّ للصفحة السابقة، وإخفاءُ الأزرار عند الأطراف: فالصفحة الأولى لا تحتاج زرَّ صفحةٍ سابقة، والأخيرة لا تحتاج زرَّ صفحةٍ تالية. ولم يكتب هذه الزيادة في الشيفرة، وتركها للتمرين.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p>بعد هذا الدرس صار مسار المنشورات يستجيب لعنوانه مباشرة: قيمة <code>page</code> تُقرأ وتُتحقَّق منه عبر المخطط، ثم تصل إلى <code>getPosts</code> عبر الاعتمادياتِ المعلنة، فتحمّل كلُّ زيارةٍ منشوراتِ صفحتها التي في العنوان، وتصير ذاكرةُ كل صفحةٍ مستقلة عن غيرها. وزرُّ <code>Go to Next Page</code> أسفل القائمة يزيد الصفحة بواحد فينتقل المستخدِم داخل التطبيق، دون تحميل الصفحة من جديد.</p>
+<p>واللقطة التالية ملتقطة من فرع الدرس، وهي تُظهر الصفحة الثانية بالضبط: عناصر القائمة تبدأ من المنشور 11 وتنتهي عند 20، و<code>Go to Next Page</code> في الأسفل ينتقل بالقارئ إلى الصفحة الثالثة:</p>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--adding-pagination--posts-page-2.png" alt="قائمة منشورات المسار /posts وهي تعرض الصفحة الثانية (العناصر من 11 إلى 20) مع رابط Go to Next Page أسفل القائمة"></p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>اكتب <code>/posts?page=3</code> في شريط العنوان مباشرة وراقب القائمة: تبدأُ من المنشور 21، لأنّ الصفحة الثالثة تتخطَّى أول عشرين منشورًا.</li>
+<li>أضف رابطًا للصفحة السابقة بالنمط نفسه مع الطرح بدل الزيادة، بحيث لا ينزل النقرُ دون الصفحة الأولى.</li>
+<li>طبّق ما أشار إليه المؤلف: لا يظهر زرّ الصفحة السابقة في الصفحة الأولى، ولا زرُّ الصفحة التالية في الأخيرة. ستحتاج هنا إلى قراءة <code>page</code> الحالية في مكوّن المسار، وخُطّاف (hook) قراءة معاملات البحث رأيناه في درس مسار <code>/products</code>.</li>
+<li>انقر <code>Go to Next Page</code> مرّتين متتاليتين وتعقّب العنوان: تصعد <code>page</code> من 1 إلى 2 إلى 3 مع بقاءك داخل التطبيق، إذ ما يجري هنا تحديثٌ لمعاملات البحث لا إعادة تحميل الصفحة.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=8161s">فيديو الدرس: إضافة ترقيم الصفحات</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/loaders-2">شيفرة الدرس: فرع <code>loaders-2</code> في مستودع الدورة</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/search-params">توثيق معاملات البحث (Search Params) في TanStack Router</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/data-loading">توثيق تحميل البيانات (Loader) في TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعاد صياغته عن درس «إضافة ترقيم الصفحات» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع <code>loaders-2</code> للمستودع الأصلي، وما زاده المترجم من شرحٍ أو توضيحٍ لا يُنسب إلى المؤلف، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,c={book:s,chapter:a,chapterTitle:e,slug:n,title:o,headings:p,html:t};export{s as book,a as chapter,e as chapterTitle,c as default,p as headings,t as html,n as slug,o as title};

@@ -1,0 +1,244 @@
+const s="kinney",p="aws",n="نشر تطبيقات الويب على AWS",a="cache-behaviors-and-invalidations",t="سلوكات التخزين المؤقت وعمليات الإبطال",o=[{depth:2,id:"كيف-تقرر-cloudfront-ما-تخزنه-مؤقتا",text:"كيف تقرّر CloudFront ما تخزّنه مؤقتًا"},{depth:2,id:"سياسات-التخزين-المؤقت-ومدد-ttl",text:"سياسات التخزين المؤقت ومدد TTL"},{depth:3,id:"كيف-تتفاعل-مدد-ttl-مع-ترويسات-الأصل",text:"كيف تتفاعل مدد TTL مع ترويسات الأصل"},{depth:2,id:"مفاتيح-التخزين-المؤقت",text:"مفاتيح التخزين المؤقت"},{depth:2,id:"سلوكات-تخزين-مؤقت-مخصصة",text:"سلوكات تخزين مؤقت مخصّصة"},{depth:2,id:"عمليات-إبطال-ذاكرة-التخزين-المؤقت",text:"عمليات إبطال ذاكرة التخزين المؤقت"},{depth:3,id:"الإبطال-اطلب-من-cloudfront-إسقاط-النسخ-المخزنة",text:"الإبطال: اطلب من CloudFront إسقاط النسخ المخزّنة"},{depth:3,id:"باستخدام-sdk",text:"باستخدام SDK"},{depth:3,id:"تكاليف-الإبطال",text:"تكاليف الإبطال"},{depth:3,id:"كسر-التخزين-المؤقت-غير-عنوان-url",text:"كسر التخزين المؤقت: غيّر عنوان URL"},{depth:3,id:"الاستراتيجية-الموصى-بها",text:"الاستراتيجية الموصى بها"},{depth:2,id:"سكربت-للنشر",text:"سكربت للنشر"}],l=`<p>القيمة الكاملة التي يقدّمها CloudFront هي التخزين المؤقت: تقديم المحتوى من مواقع حافة قريبة من المستخدمين بدلًا من القيام برحلات ذهاب وعودة إلى أصلك. لكن التخزين المؤقت يخلق مشكلة سبق أن تعاملت معها على الأرجح — المحتوى القديم. فأنت تنشر إصلاحًا، لكن المستخدمين ما زالوا يرون النسخة القديمة لأن الشبكة لم تلتقط التغيير بعد.</p>
+<p>إذا أردت النسخة الدقيقة من AWS للمقابض التي تديرها هنا، فأبقِ <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistValuesCacheBehavior.html">مرجع إعدادات سلوك التخزين المؤقت</a> و<a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html">دليل الإبطال في CloudFront</a> و<a href="https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html">مرجع أمر <code>aws cloudfront create-invalidation</code></a> مفتوحة.</p>
+<p>على Vercel، تتولى المنصة كسر التخزين المؤقت عنك. أما على AWS فأنت تديره. وهذا يعني فهم سلوكات التخزين المؤقت ومدد TTL واستراتيجيات الإبطال.</p>
+<pre><code>flowchart LR
+    Request[&quot;Viewer request&quot;] --&gt; Match[&quot;Match path to cache behavior&quot;]
+    Match --&gt; Key[&quot;Build cache key&lt;br/&gt;path + selected headers, query strings, or cookies&quot;]
+    Key --&gt; Hit{&quot;Cached object still valid?&quot;}
+    Hit -- &quot;Yes&quot; --&gt; Return[&quot;Return cached response&quot;]
+    Hit -- &quot;No&quot; --&gt; Origin[&quot;Fetch from origin&quot;]
+    Origin --&gt; TTL[&quot;Store using TTL and Cache-Control rules&quot;]
+    TTL --&gt; Return
+    Deploy[&quot;New deployment&quot;] --&gt; Bust{&quot;Change URL or invalidate?&quot;}
+    Bust -- &quot;Cache busting&quot; --&gt; NewUrl[&quot;New hashed filename&quot;]
+    Bust -- &quot;Invalidation&quot; --&gt; Purge[&quot;Drop cached copies early&quot;]
+    NewUrl --&gt; Hit
+    Purge --&gt; Hit
+</code></pre>
+<h2 id="كيف-تقرر-cloudfront-ما-تخزنه-مؤقتا">كيف تقرّر CloudFront ما تخزّنه مؤقتًا</h2>
+<p>يُقيَّم كل طلب إلى توزيع CloudFront لديك وفق مجموعة قواعد تُسمّى <strong>سلوكات التخزين المؤقت</strong>. ويحدّد كل سلوك:</p>
+<ul>
+<li><strong>نمط المسار</strong>: عناوين URL التي ينطبق عليها هذا السلوك (مثل <code>*.html</code> أو <code>/api/*</code> أو <code>*</code> لكل شيء).</li>
+<li><strong>سياسة التخزين المؤقت</strong>: مدة تخزين المحتوى مؤقتًا والعوامل التي تجعل الاستجابة المخزّنة فريدة.</li>
+<li><strong>الأصل</strong>: الأصل الذي تُجلب منه المحتوى عند عدم وجوده في ذاكرة التخزين المؤقت.</li>
+<li><strong>سياسة بروتوكول المشاهد</strong>: هل يُسمح بـ HTTP أو HTTPS أو إعادة توجيه HTTP إلى HTTPS.</li>
+</ul>
+<p>ولكل توزيع <strong>سلوك تخزين مؤقت افتراضي</strong> (<code>*</code>) ينطبق على كل الطلبات التي لا يطابقها سلوك أكثر تحديدًا. ولموقع ثابت، غالبًا يكون السلوك الافتراضي كل ما تحتاجه.</p>
+<p>وفي لوحة التحكم، يسرد تبويب <strong>Behaviors</strong> كل سلوكات التخزين المؤقت لتوزيعك مع أنماط مساراتها وأصولها والسياسات المرفقة بها.</p>
+<p><img src="/arabic-cs-library/images/kinney/70d2449b3b9efcb8.webp" alt="تبويب Behaviors في توزيع CloudFront وهو يعرض سلوك التخزين المؤقت الافتراضي بنمط المسار Default والأصل وسياسة Managed-CachingOptimized."></p>
+<h2 id="سياسات-التخزين-المؤقت-ومدد-ttl">سياسات التخزين المؤقت ومدد TTL</h2>
+<p>تتحكم <strong>سياسة التخزين المؤقت</strong> في ثلاث قيم TTL تحدّد مدة تخزين CloudFront لكائن ما:</p>
+<table>
+<thead>
+<tr>
+<th>الإعداد</th>
+<th>الافتراضي في CachingOptimized</th>
+<th>ما يفعله</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>الحد الأدنى لـ TTL</strong></td>
+<td>ثانية واحدة</td>
+<td>الأرضية. تخزّن CloudFront المحتوى مؤقتًا لهذه المدة على الأقل، حتى لو أرسل الأصل <code>Cache-Control: no-cache</code>.</td>
+</tr>
+<tr>
+<td><strong>TTL الافتراضي</strong></td>
+<td>86,400 ثانية (24 ساعة)</td>
+<td>يُستخدم عندما لا يرسل الأصل ترويسات <code>Cache-Control</code> أو <code>Expires</code>.</td>
+</tr>
+<tr>
+<td><strong>الحد الأقصى لـ TTL</strong></td>
+<td>31,536,000 ثانية (365 يومًا)</td>
+<td>السقف. حتى لو أرسل الأصل <code>Cache-Control: max-age=999999999</code>، يحدّ CloudFront التخزين المؤقت عند هذه القيمة.</td>
+</tr>
+</tbody>
+</table>
+<p>والسياسة المُدارة <strong>CachingOptimized</strong> (المعرّف: <code>658327ea-f89d-4fab-a63d-7e88639e58f6</code>) التي أرفقتها في <a href="https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution">إنشاء توزيع CloudFront</a> تستخدم هذه الافتراضيات. ولمعظم المواقع الثابتة، هذه القيم معقولة — فيُخزَّن محتواك مؤقتًا لمدة 24 ساعة إلا إذا حدّد أصلك غير ذلك.</p>
+<h3 id="كيف-تتفاعل-مدد-ttl-مع-ترويسات-الأصل">كيف تتفاعل مدد TTL مع ترويسات الأصل</h3>
+<p>لا تخزّن CloudFront كل شيء مؤقتًا بشكل أعمى لمدة TTL الافتراضية، بل تحترم ترويسات <code>Cache-Control</code> من أصلك (S3) ضمن حدود الحدّين الأدنى والأقصى لـ TTL:</p>
+<ul>
+<li>يرسل الأصل <code>Cache-Control: max-age=3600</code> (ساعة واحدة): تخزّن CloudFront مؤقتًا لمدة ساعة (بين الحد الأدنى والأقصى، فتُحترم القيمة).</li>
+<li>يرسل الأصل <code>Cache-Control: max-age=0</code>: تخزّن CloudFront مؤقتًا لثانية واحدة (فيتغلّب الحد الأدنى لـ TTL على قيمة الأصل).</li>
+<li>لا يرسل الأصل ترويسة <code>Cache-Control</code>: تخزّن CloudFront مؤقتًا لمدة 24 ساعة (وهو TTL الافتراضي).</li>
+<li>يرسل الأصل <code>Cache-Control: max-age=63072000</code> (سنتان): تخزّن CloudFront مؤقتًا لمدة 365 يومًا (فيحدّها الحد الأقصى لـ TTL).</li>
+</ul>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>يمكنك ضبط ترويسات <code>Cache-Control</code> على كائنات S3 عند رفعها. وهذا يمنحك تحكمًا لكل ملف على حدة في التخزين المؤقت: خزّن <code>index.html</code> مؤقتًا لمدة 60 ثانية (ليحصل المستخدمون على التحديثات سريعًا)، لكن خزّن الأصول المُجزَّأة مثل <code>main.a1b2c3.js</code> مؤقتًا لمدة سنة (فهي غير قابلة للتغيير — يتغيّر اسم الملف عندما يتغيّر المحتوى).</p>
+</blockquote>
+<pre><code class="language-bash"><span class="hljs-comment"># Short cache for HTML files</span>
+aws s3 <span class="hljs-built_in">cp</span> ./build/index.html s3://my-frontend-app-assets/index.html \\
+  --cache-control <span class="hljs-string">&quot;public, max-age=60&quot;</span> \\
+  --content-type <span class="hljs-string">&quot;text/html&quot;</span> \\
+  --region us-east-1
+
+<span class="hljs-comment"># Long cache for hashed assets</span>
+aws s3 <span class="hljs-built_in">sync</span> ./build/assets s3://my-frontend-app-assets/assets \\
+  --cache-control <span class="hljs-string">&quot;public, max-age=31536000, immutable&quot;</span> \\
+  --region us-east-1
+</code></pre>
+<h2 id="مفاتيح-التخزين-المؤقت">مفاتيح التخزين المؤقت</h2>
+<p>تستخدم CloudFront <strong>مفتاح تخزين مؤقت</strong> لتحديد ما إذا كانت استجابة مخزّنة تستطيع خدمة طلب معين. وافتراضيًا يتكون مفتاح التخزين المؤقت من مسار URL وترويسة <code>Host</code>. فالطلبان إلى المسار نفسه ينتجان مفتاح التخزين المؤقت نفسه ويحصلان على الاستجابة المخزّنة نفسها.</p>
+<p>ويمكنك توسيع مفتاح التخزين المؤقت ليشمل:</p>
+<ul>
+<li><strong>سلاسل الاستعلام</strong>: <code>?v=2</code> و<code>?v=3</code> تُخزَّنان مؤقتًا بشكل منفصل.</li>
+<li><strong>ترويسات الطلب</strong>: استجابات مختلفة لـ <code>Accept-Encoding: gzip</code> مقابل <code>Accept-Encoding: br</code>.</li>
+<li><strong>ملفات تعريف الارتباط</strong>: استجابات مختلفة للمستخدمين المُصادَق عليهم مقابل المجهولين.</li>
+</ul>
+<p>ولموقع ثابت، مفتاح التخزين المؤقت الافتراضي (مسار URL فقط) هو الصحيح تمامًا. فأنت لا تريد أن تفتّت سلاسل الاستعلام أو الترويسات أو ملفات تعريف الارتباط ذاكرتك المؤقتة. وكل طلب لـ <code>/index.html</code> يجب أن يحصل على الاستجابة المخزّنة نفسها بصرف النظر عن معاملات الاستعلام أو ملفات تعريف الارتباط.</p>
+<h2 id="سلوكات-تخزين-مؤقت-مخصصة">سلوكات تخزين مؤقت مخصّصة</h2>
+<p>تحتاج أحيانًا إلى قواعد تخزين مؤقت مختلفة لمسارات مختلفة. وأمثلة شائعة:</p>
+<ul>
+<li><strong>ملفات HTML</strong>: خزّنها مؤقتًا لفترة قصيرة (60 ثانية) ليحصل المستخدمون على التحديثات سريعًا.</li>
+<li><strong>ملفات JS وCSS المُجزَّأة</strong>: خزّنها مؤقتًا بقوة (سنة واحدة) لأن اسم الملف يتغيّر عندما يتغيّر المحتوى.</li>
+<li><strong>وكيل API</strong>: لا تخزّن مؤقتًا على الإطلاق (إن كنت توجّه طلبات API عبر CloudFront).</li>
+</ul>
+<p>تضيف السلوكات المخصّصة بتحديث إعدادات التوزيع. فلكل سلوك نمط مسار وسياسة تخزين مؤقت خاصة به:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;CacheBehaviors&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Quantity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Items&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;PathPattern&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/assets/*&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;TargetOriginId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;S3-my-frontend-app-assets&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;ViewerProtocolPolicy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;redirect-to-https&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;CachePolicyId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;658327ea-f89d-4fab-a63d-7e88639e58f6&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;Compress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;AllowedMethods&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;Quantity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;Items&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;GET&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;HEAD&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;CachedMethods&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;Quantity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;Items&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;GET&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;HEAD&quot;</span><span class="hljs-punctuation">]</span>
+          <span class="hljs-punctuation">}</span>
+        <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>تقيّم CloudFront السلوكات بالترتيب، من الأكثر تحديدًا إلى الأقل. فأول سلوك يطابق نمط مساره الطلب هو الفائز، ويُقيَّم السلوك الافتراضي (<code>*</code>) دائمًا أخيرًا.</p>
+<p>ولمعظم عمليات نشر الواجهة الأمامية، لا تحتاج إلى سلوكات تخزين مؤقت مخصّصة. فمزيج سياسة التخزين المؤقت CachingOptimized مع ترويسات <code>Cache-Control</code> لكل ملف على كائنات S3 يمنحك تحكمًا كافيًا. وتصبح السلوكات المخصّصة مفيدة عندما تبدأ في توجيه مسارات مختلفة إلى أصول مختلفة (مثلًا يذهب <code>/api/*</code> إلى API Gateway بينما يذهب <code>/*</code> إلى S3).</p>
+<h2 id="عمليات-إبطال-ذاكرة-التخزين-المؤقت">عمليات إبطال ذاكرة التخزين المؤقت</h2>
+<p>عندما تنشر محتوى جديدًا إلى S3، قد تظل النسخ القديمة مخزّنة مؤقتًا في مواقع حافة CloudFront. ولديك خياران لإيصال المحتوى الجديد إلى المستخدمين: <strong>إبطال ذاكرة التخزين المؤقت</strong> و<strong>كسر التخزين المؤقت</strong>.</p>
+<h3 id="الإبطال-اطلب-من-cloudfront-إسقاط-النسخ-المخزنة">الإبطال: اطلب من CloudFront إسقاط النسخ المخزّنة</h3>
+<p>يعلّم الإبطال الكائنات المخزّنة مؤقتًا بأنها قديمة. وعند الطلب التالي لذلك الكائن في كل موقع حافة (بعد أن يستقبل الموقع الإبطال)، تجلب CloudFront أحدث نسخة من الأصل. ولا تُزال النسخ المخزّنة القائمة فعليًا — بل تُوسم فقط بأنها لم تعد صالحة.</p>
+<pre><code class="language-bash">aws cloudfront create-invalidation \\
+  --distribution-id E1A2B3C4D5E6F7 \\
+  --paths <span class="hljs-string">&quot;/index.html&quot;</span> <span class="hljs-string">&quot;/about/index.html&quot;</span> \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<p>ويمكنك أيضًا إبطال كل شيء:</p>
+<pre><code class="language-bash">aws cloudfront create-invalidation \\
+  --distribution-id E1A2B3C4D5E6F7 \\
+  --paths <span class="hljs-string">&quot;/*&quot;</span> \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<p>وتتضمن الاستجابة معرّف إبطال يمكنك استخدامه لفحص الحالة:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;Invalidation&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;I1EXAMPLE&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;InProgress&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;CreateTime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2026-03-18T12:00:00Z&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;InvalidationBatch&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;Paths&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;Quantity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;Items&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;/*&quot;</span><span class="hljs-punctuation">]</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;CallerReference&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;cli-1710763200&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>تستغرق عمليات الإبطال عادةً من 5 إلى 15 دقيقة لتنتشر بالكامل في كل مواقع الحافة، فلا تتفاجأ إن أعاد طلب فوري بعد الإبطال محتوى قديمًا. وفي تلك النافذة <em>يحصل مستخدمون مختلفون على نسخ مختلفة من موقعك</em> — فقد يحصل المستخدم في سيدني على الحزمة الجديدة بينما لا يزال المستخدم في فرانكفورت يحصل على القديمة. وبالنسبة للأصول المُجزَّأة هذا مقبول (فالاسمان يتعايشان). أما بالنسبة لـ <code>index.html</code>، فهذا يعني أن متصفح أحدهم قد يحمّل HTML الجديد الذي يشير إلى <code>main.abc.js</code> قديم سبق حذفه بـ <code>--delete</code> من S3. ونمط TTL القصير مع تجزئة الأصول أدناه يجعل هذه الفجوة غير مرئية، وتجاهله يجعلها مرئية بوضوح.</p>
+<p>وفي لوحة التحكم، يتيح لك تبويب <strong>Invalidations</strong> إنشاء عمليات إبطال بإدخال مسارات الكائنات. وتُبطل العلامة <code>/*</code> كل شيء في عملية واحدة.</p>
+<p><img src="/arabic-cs-library/images/kinney/af65f08e32f29ce3.webp" alt="نموذج Create Invalidation في CloudFront مع إدخال /* في حقل مسارات الكائنات."></p>
+<p>نموذج Create Invalidation في CloudFront مع إدخال /* في حقل مسارات الكائنات.</p>
+<p>وبمجرد أن تنتهي CloudFront من نشر الإبطال إلى كل مواقع الحافة، تتغيّر الحالة إلى <strong>Completed</strong>.</p>
+<p><img src="/arabic-cs-library/images/kinney/4c9240d0f3732203.webp" alt="تبويب Invalidations في CloudFront وهو يعرض الإبطال بحالة Completed."></p>
+<h3 id="باستخدام-sdk">باستخدام SDK</h3>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">CloudFrontClient</span>,
+  <span class="hljs-title class_">CreateInvalidationCommand</span>,
+  <span class="hljs-title class_">GetInvalidationCommand</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@aws-sdk/client-cloudfront&#x27;</span>;
+
+<span class="hljs-keyword">const</span> cloudfront = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CloudFrontClient</span>({ <span class="hljs-attr">region</span>: <span class="hljs-string">&#x27;us-east-1&#x27;</span> });
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> cloudfront.<span class="hljs-title function_">send</span>(
+  <span class="hljs-keyword">new</span> <span class="hljs-title class_">CreateInvalidationCommand</span>({
+    <span class="hljs-title class_">DistributionId</span>: <span class="hljs-string">&#x27;E1A2B3C4D5E6F7&#x27;</span>,
+    <span class="hljs-title class_">InvalidationBatch</span>: {
+      <span class="hljs-title class_">CallerReference</span>: <span class="hljs-string">\`deploy-<span class="hljs-subst">\${<span class="hljs-built_in">Date</span>.now()}</span>\`</span>,
+      <span class="hljs-title class_">Paths</span>: { <span class="hljs-title class_">Quantity</span>: <span class="hljs-number">1</span>, <span class="hljs-title class_">Items</span>: [<span class="hljs-string">&#x27;/*&#x27;</span>] },
+    },
+  }),
+);
+
+<span class="hljs-comment">// Optional: poll for completion before declaring the deploy done.</span>
+<span class="hljs-keyword">const</span> invalidationId = result.<span class="hljs-property">Invalidation</span>!.<span class="hljs-property">Id</span>!;
+<span class="hljs-keyword">const</span> status = <span class="hljs-keyword">await</span> cloudfront.<span class="hljs-title function_">send</span>(
+  <span class="hljs-keyword">new</span> <span class="hljs-title class_">GetInvalidationCommand</span>({ <span class="hljs-title class_">DistributionId</span>: <span class="hljs-string">&#x27;E1A2B3C4D5E6F7&#x27;</span>, <span class="hljs-title class_">Id</span>: invalidationId }),
+);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(status.<span class="hljs-property">Invalidation</span>?.<span class="hljs-property">Status</span>); <span class="hljs-comment">// &#x27;InProgress&#x27; → &#x27;Completed&#x27;</span>
+</code></pre>
+<p>يعمل <code>CallerReference</code> كمفتاح إلغاء تكرار — فإن أرسلت القيمة نفسها مرتين، أعادت CloudFront الإبطال القائم بدلًا من إنشاء نسخة مكررة. وهذا مفيد إن كان سكربت النشر لديك يعيد المحاولة.</p>
+<h3 id="تكاليف-الإبطال">تكاليف الإبطال</h3>
+<p>أول 1000 مسار إبطال شهريًا مجانًا. وبعد ذلك يكلّف كل مسار 0.005 دولار. وتُحتسب العلامة <code>/*</code> كمسار واحد، كما يُحتسب كل مسار ملف على حدة كمسار واحد.</p>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p>إبطال <code>/*</code> بعد كل عملية نشر نمط شائع، لكنه أداة فظّة. فهو يمسح كل شيء من ذاكرة التخزين المؤقت — بما في ذلك الملفات التي لم تتغيّر. وإن كان لديك موقع عالي الحركة، فإن إبطالًا كاملًا يسبب دفعة من حالات فقدان ذاكرة التخزين المؤقت في كل مواقع الحافة. ولمعظم مشاريع الواجهة الأمامية هذا مقبول، أما المواقع التي تتعامل مع ملايين الطلبات في الدقيقة فينبغي أن تفكّر في إبطالات موجّهة.</p>
+</blockquote>
+<h3 id="كسر-التخزين-المؤقت-غير-عنوان-url">كسر التخزين المؤقت: غيّر عنوان URL</h3>
+<p>البديل عن الإبطال هو <strong>كسر التخزين المؤقت</strong> — أي تغيير اسم الملف حتى تعامله CloudFront ككائن جديد. فإذا كانت أداة البناء لديك تولّد أسماء ملفات مُجزَّأة (مثلًا يصبح <code>main.a1b2c3.js</code> هو <code>main.d4e5f6.js</code> بعد تغيير)، فإن للملف الجديد مفتاح تخزين مؤقت مختلف. فتجليه CloudFront من S3 طازجًا، وتنتهي صلاحية النسخة القديمة طبيعيًا من ذاكرة التخزين المؤقت بانتهاء مدة TTL.</p>
+<p>تولّد أدوات بناء الواجهة الأمامية الحديثة (Vite وwebpack وNext.js) أسماء ملفات مُجزَّأة افتراضيًا لحزم JavaScript وCSS. ولهذا يمكن تخزين تلك الملفات مؤقتًا لمدة سنة — فالتجزئة تتغيّر عندما يتغيّر المحتوى. والملف الوحيد الذي لا يحصل على تجزئة هو <code>index.html</code>، لأن عنوان URL الخاص به يجب أن يبقى ثابتًا.</p>
+<h3 id="الاستراتيجية-الموصى-بها">الاستراتيجية الموصى بها</h3>
+<p>لمعظم عمليات نشر الواجهة الأمامية، أفضل نهج هو:</p>
+<ol>
+<li><strong>أسماء ملفات مُجزَّأة</strong> لملفات JS وCSS وأصول الصور. خزّنها مؤقتًا بقوة باستخدام <code>Cache-Control: max-age=31536000, immutable</code>.</li>
+<li><strong>TTL قصير أو بلا تخزين مؤقت</strong> لـ <code>index.html</code>. فإما أن تضبط <code>Cache-Control: max-age=60</code> على كائن S3، وإما أن تعتمد على الإبطالات.</li>
+<li><strong>أبطل <code>/*</code></strong> بعد كل عملية نشر. وهذا يضمن تحديث <code>index.html</code> فورًا، وجلب الأصول المُجزَّأة طازجة عند الحاجة (وإن كانت ستكون عناوين URL جديدة على أي حال).</li>
+</ol>
+<p>هذه هي الاستراتيجية نفسها التي تستخدمها Vercel وNetlify خلف الكواليس. وقد استخدمت هذا النمط في كل عملية نشر إنتاجية أعددتها على AWS، وهو يعمل ببساطة. فالأصول غير القابلة للتغيير تحصل على مدخلات تخزين مؤقت طويلة الأمد، ونقطة دخول HTML تُحدَّث في كل عملية نشر.</p>
+<h2 id="سكربت-للنشر">سكربت للنشر</h2>
+<p>إليك سكربت نشر بسيطًا يربط كل شيء معًا:</p>
+<pre><code class="language-bash"><span class="hljs-built_in">set</span> -euo pipefail
+
+<span class="hljs-comment"># Guard: refuse to sync if the assets directory is missing or empty.</span>
+<span class="hljs-comment"># \`s3 sync --delete\` will happily mirror an empty local directory to S3,</span>
+<span class="hljs-comment"># wiping every hashed asset from the bucket and leaving the site in a</span>
+<span class="hljs-comment"># half-broken state the next time the HTML tries to load them.</span>
+<span class="hljs-keyword">if</span> [ ! -d ./build/assets ] || [ -z <span class="hljs-string">&quot;<span class="hljs-subst">$(ls -A ./build/assets 2&gt;/dev/null)</span>&quot;</span> ]; <span class="hljs-keyword">then</span>
+  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;error: ./build/assets is missing or empty. Did the build succeed?&quot;</span> &gt;&amp;2
+  <span class="hljs-built_in">exit</span> 1
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-comment"># Sync hashed assets with long cache</span>
+aws s3 <span class="hljs-built_in">sync</span> ./build/assets s3://my-frontend-app-assets/assets \\
+  --cache-control <span class="hljs-string">&quot;public, max-age=31536000, immutable&quot;</span> \\
+  --region us-east-1 \\
+  --delete \\
+  --output json
+
+<span class="hljs-comment"># Sync HTML files with short cache</span>
+aws s3 <span class="hljs-built_in">cp</span> ./build/index.html s3://my-frontend-app-assets/index.html \\
+  --cache-control <span class="hljs-string">&quot;public, max-age=60&quot;</span> \\
+  --content-type <span class="hljs-string">&quot;text/html&quot;</span> \\
+  --region us-east-1
+
+<span class="hljs-comment"># Invalidate CloudFront cache</span>
+aws cloudfront create-invalidation \\
+  --distribution-id E1A2B3C4D5E6F7 \\
+  --paths <span class="hljs-string">&quot;/*&quot;</span> \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p>راية <code>--delete</code> ضرورية وخطيرة بالقدر نفسه. فهي تزيل من S3 الملفات التي لم تعد موجودة في مجلد البناء المحلي — وهذا جيد، لأنه ينظّف الأصول المُجزَّأة القديمة. لكن إن لم يكن <code>./build/assets</code> موجودًا (بناء فاشل)، أو كان فارغًا (ناتج بناء سيّئ)، عامل <code>s3 sync --delete</code> كل أصل قائم في الحاوية على أنه «لم يعد محليًا» وحذفه. ولهذا يتوقّف السكربت قبل المزامنة إن كان المجلد المحلي مفقودًا أو فارغًا. لا تُزل هذا الحارس.</p>
+</blockquote>
+<p>التخزين المؤقت أصبح مضبوطًا. لكن ثمة مشكلة أخرى: إن انتقل مستخدم إلى <code>/dashboard/settings</code> في تطبيق صفحتك الواحدة، طلبت CloudFront من S3 ملفًا في ذلك المسار. ولا يوجد في S3 ملف اسمه <code>/dashboard/settings</code>، فتُرجع خطأ 403 أو 404. وفي الدرس التالي، ستُعدّ استجابات أخطاء مخصّصة للتعامل مع توجيه SPA — إذ تخبر CloudFront أن يقدّم <code>index.html</code> كلما صادف أحد هذه الأخطاء.</p>
+`,e={book:s,chapter:"aws",chapterTitle:n,slug:a,title:t,headings:o,html:l};export{s as book,p as chapter,n as chapterTitle,e as default,o as headings,l as html,a as slug,t as title};

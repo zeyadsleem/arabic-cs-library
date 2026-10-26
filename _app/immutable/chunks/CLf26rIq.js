@@ -1,0 +1,300 @@
+const s="kinney",a="react-typescript",n="React مع TypeScript",l="polymorphic-components-and-as-prop",p="المكوّنات متعددة الأشكال وخاصية as",t=[{depth:2,id:"المشكلة-مع-الأساليب-التقليدية",text:"المشكلة مع الأساليب التقليدية"},{depth:2,id:"بناء-مكون-متعدد-الأشكال-بشكل-صحيح",text:"بناء مكوّن متعدد الأشكال بشكل صحيح"},{depth:2,id:"استخدام-زرك-متعدد-الأشكال",text:"استخدام زرّك متعدد الأشكال"},{depth:2,id:"أنماط-متقدمة-متعددة-الأشكال",text:"أنماط متقدمة متعددة الأشكال"},{depth:3,id:"التعامل-مع-تمرير-الـ-ref",text:"التعامل مع تمرير الـ ref"},{depth:3,id:"إنشاء-نوع-متعدد-الأشكال-قابل-لإعادة-الاستخدام",text:"إنشاء نوع متعدد الأشكال قابل لإعادة الاستخدام"},{depth:2,id:"نمط-aschild",text:"نمط «asChild»"},{depth:2,id:"حالات-الاستخدام-في-العالم-الحقيقي",text:"حالات الاستخدام في العالم الحقيقي™"},{depth:3,id:"مكونات-نظام-التصميم",text:"مكوّنات نظام التصميم"},{depth:3,id:"التكامل-مع-الموجه",text:"التكامل مع الموجّه"},{depth:2,id:"اعتبارات-الأداء",text:"اعتبارات الأداء"},{depth:2,id:"الأخطاء-الشائعة-وكيف-تتجنبها",text:"الأخطاء الشائعة وكيف تتجنّبها"},{depth:3,id:"لغز-displayname",text:"لغز displayName"},{depth:3,id:"تعارضات-الخصائص",text:"تعارضات الخصائص"},{depth:3,id:"أداء-typescript",text:"أداء TypeScript"},{depth:2,id:"الخطوات-التالية",text:"الخطوات التالية"}],e=`<p>هل تمنيت يومًا أن تبني مكوّن <code>Button</code> يمكن أن يُصيَّر كعنصر <code>button</code> أو كوسم <code>a</code> أو حتى كمكوّن React مخصّص — ومع ذلك تحصل على إكمال تلقائي (intellisense) صحيح من TypeScript للعنصر الذي يُصيَّر فعلًا؟ أهلًا بك في المكوّنات متعددة الأشكال (polymorphic components)، حيث نبدل قدرًا من تعقيد الأنواع بقدر كبير من قابلية إعادة الاستخدام. وفي نهاية هذا الدرس ستفهم كيف تبني مكوّنات تتكيّف مخرجاتها من HTML وأنواعها في TypeScript بحسب خاصية <code>as</code>، كل ذلك دون أن تلجأ إلى <code>any</code> أو تخدع مدقّق الأنواع.</p>
+<p>التحدّي بسيط: تريد مكوّنًا واحدًا يتولّى منطق التنسيق والسلوك، لكنك تحتاجه ليُصيّر عناصر HTML مختلفة حسب السياق. زرٌّ يكون أحيانًا <code>&lt;button&gt;</code> وأحيانًا <code>&lt;a href=&quot;...&quot;&gt;</code> وأحيانًا مكوّن <code>Link</code> المخصّص من مكتبة الموجّه لديك.</p>
+<h2 id="المشكلة-مع-الأساليب-التقليدية">المشكلة مع الأساليب التقليدية</h2>
+<p>لنبدأ بما لا يعمل. قد تغريك وتجربة شيء كالتالي:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Don&#x27;t do this</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">BadButtonProps</span> {
+  <span class="hljs-attr">as</span>?: <span class="hljs-built_in">string</span> | <span class="hljs-title class_">React</span>.<span class="hljs-property">ComponentType</span>&lt;<span class="hljs-built_in">any</span>&gt;; <span class="hljs-comment">// Ugh, \`any\`</span>
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactNode</span>;
+  <span class="hljs-attr">onClick</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">href</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// What if we&#x27;re rendering a button?</span>
+  <span class="hljs-attr">to</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// What if we&#x27;re not using React Router?</span>
+  [<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">any</span>; <span class="hljs-comment">// More \`any\` sadness</span>
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">BadButton</span> = (<span class="hljs-params">{ <span class="hljs-keyword">as</span>: Component = <span class="hljs-string">&#x27;button&#x27;</span>, children, ...props }: <span class="hljs-title class_">BadButtonProps</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> {<span class="hljs-attr">...props</span>}&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">Component</span>&gt;</span></span>;
+};
+</code></pre>
+<p>هذا يعمل أثناء التشغيل، لكن TypeScript لا يدري ما يحدث. تفقد كل مزايا التحقق من الأنواع — لا إكمال تلقائي للخصائص الصحيحة، ولا تحذيرات من تركيبات الخصائص غير الصالحة، ولا شبكة أمان حين تعيد الهيكلة.</p>
+<h2 id="بناء-مكون-متعدد-الأشكال-بشكل-صحيح">بناء مكوّن متعدد الأشكال بشكل صحيح</h2>
+<p>إليك كيف نحلّ هذا بشكل صحيح. سنبني مكوّن <code>Button</code> يستطيع التصيير كأي عنصر HTML أو مكوّن React مع الحفاظ على أمان الأنواع كاملًا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ComponentPropsWithoutRef</span>, <span class="hljs-title class_">ElementType</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-comment">// First, let&#x27;s define our base props that every Button should have</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">BaseButtonProps</span> {
+  <span class="hljs-attr">variant</span>?: <span class="hljs-string">&#x27;primary&#x27;</span> | <span class="hljs-string">&#x27;secondary&#x27;</span> | <span class="hljs-string">&#x27;danger&#x27;</span>;
+  <span class="hljs-attr">size</span>?: <span class="hljs-string">&#x27;sm&#x27;</span> | <span class="hljs-string">&#x27;md&#x27;</span> | <span class="hljs-string">&#x27;lg&#x27;</span>;
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactNode</span>;
+}
+
+<span class="hljs-comment">// Now for the magic: a polymorphic prop type that merges our base props</span>
+<span class="hljs-comment">// with the props of whatever element we&#x27;re rendering as</span>
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PolymorphicButtonProps</span>&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span>&gt; = <span class="hljs-title class_">BaseButtonProps</span> &amp; {
+  <span class="hljs-attr">as</span>?: T;
+} &amp; <span class="hljs-title class_">ComponentPropsWithoutRef</span>&lt;T&gt;;
+
+<span class="hljs-comment">// The component itself, using a generic to preserve the element type</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Button</span> = &lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span> = <span class="hljs-string">&#x27;button&#x27;</span>&gt;<span class="hljs-function">(<span class="hljs-params">{
+  <span class="hljs-keyword">as</span>,
+  variant = <span class="hljs-string">&#x27;primary&#x27;</span>,
+  size = <span class="hljs-string">&#x27;md&#x27;</span>,
+  children,
+  ...props
+}: <span class="hljs-title class_">PolymorphicButtonProps</span>&lt;T&gt;</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> <span class="hljs-title class_">Component</span> = <span class="hljs-keyword">as</span> || <span class="hljs-string">&#x27;button&#x27;</span>;
+
+  <span class="hljs-comment">// Your styling logic goes here</span>
+  <span class="hljs-keyword">const</span> baseClasses = <span class="hljs-string">&#x27;px-4 py-2 rounded font-medium focus:outline-none focus:ring-2&#x27;</span>;
+  <span class="hljs-keyword">const</span> variantClasses = {
+    <span class="hljs-attr">primary</span>: <span class="hljs-string">&#x27;bg-blue-500 hover:bg-blue-600 text-white&#x27;</span>,
+    <span class="hljs-attr">secondary</span>: <span class="hljs-string">&#x27;bg-gray-200 hover:bg-gray-300 text-gray-900&#x27;</span>,
+    <span class="hljs-attr">danger</span>: <span class="hljs-string">&#x27;bg-red-500 hover:bg-red-600 text-white&#x27;</span>,
+  };
+  <span class="hljs-keyword">const</span> sizeClasses = {
+    <span class="hljs-attr">sm</span>: <span class="hljs-string">&#x27;text-sm px-2 py-1&#x27;</span>,
+    <span class="hljs-attr">md</span>: <span class="hljs-string">&#x27;text-base px-4 py-2&#x27;</span>,
+    <span class="hljs-attr">lg</span>: <span class="hljs-string">&#x27;text-lg px-6 py-3&#x27;</span>,
+  };
+
+  <span class="hljs-keyword">const</span> className = [baseClasses, variantClasses[variant], sizeClasses[size]].<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27; &#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{className}</span> {<span class="hljs-attr">...props</span>}&gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Component</span>&gt;</span></span>
+  );
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">Button</span>;
+</code></pre>
+<p>لنحلّل ما يحدث هنا:</p>
+<ol>
+<li><strong><code>BaseButtonProps</code></strong>: هذه هي الخصائص التي ينبغي أن يملكها كل زر، بغضّ النظر عن العنصر الذي يُصيَّر</li>
+<li><strong><code>PolymorphicButtonProps&lt;T&gt;</code></strong>: هنا يحدث السحر — ندمج خصائصنا الأساسية مع خصائص العنصر الذي يمثّله النوع <code>T</code></li>
+<li><strong><code>ComponentPropsWithoutRef&lt;T&gt;</code></strong>: هذا يعطينا كل الخصائص القياسية للعنصر <code>T</code> (مثل <code>href</code> للروابط و<code>onClick</code> للأزرار)</li>
+<li><strong>القيد العام <code>&lt;T extends ElementType&gt;</code></strong>: يضمن ألا يكون <code>T</code> إلا شيئًا يستطيع React تصييره فعلًا</li>
+</ol>
+<h2 id="استخدام-زرك-متعدد-الأشكال">استخدام زرّك متعدد الأشكال</h2>
+<p>الآن يمكنك استخدام مكوّن الزر متعدد الأشكال بطرق لا حصر لها، وسيلزمك TypeScript أن تلتزم الصواب:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Renders a &lt;button&gt; with onClick</span>
+&lt;<span class="hljs-title class_">Button</span> onClick={<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;clicked&#x27;</span>)}&gt;
+  <span class="hljs-title class_">Default</span> <span class="hljs-title class_">Button</span>
+&lt;/<span class="hljs-title class_">Button</span>&gt;
+
+<span class="hljs-comment">// ✅ Renders an &lt;a&gt; with href - TypeScript knows href is valid here</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">as</span>=<span class="hljs-string">&quot;a&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://example.com&quot;</span> <span class="hljs-attr">target</span>=<span class="hljs-string">&quot;_blank&quot;</span>&gt;</span>
+  Link Button
+<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+
+<span class="hljs-comment">// ✅ Renders a Next.js Link component</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Link</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;next/link&#x27;</span>;
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">as</span>=<span class="hljs-string">{Link}</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/dashboard&quot;</span>&gt;</span>
+  Next.js Link
+<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+
+<span class="hljs-comment">// ✅ All your custom props work too</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;danger&quot;</span> <span class="hljs-attr">size</span>=<span class="hljs-string">&quot;lg&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{handleDelete}</span>&gt;</span>
+  Delete Account
+<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+
+<span class="hljs-comment">// ❌ TypeScript will complain - buttons don&#x27;t have href</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/somewhere&quot;</span>&gt;</span>Won&#x27;t compile<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+
+<span class="hljs-comment">// ❌ TypeScript will also complain - anchors need href</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">as</span>=<span class="hljs-string">&quot;a&quot;</span>&gt;</span>Missing href<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+</code></pre>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>لاحظ كيف يوفّر TypeScript تلقائيًا اقتراحات الإكمال التلقائي المناسبة بحسب خاصية <code>as</code>. حين تستخدم <code>as=&quot;a&quot;</code> تحصل على <code>href</code> و<code>target</code> و<code>download</code> وغيرها. وحين تستخدم الزر الافتراضي تحصل على <code>onClick</code> و<code>disabled</code> و<code>type</code> وغيرها.</p>
+</blockquote>
+<h2 id="أنماط-متقدمة-متعددة-الأشكال">أنماط متقدمة متعددة الأشكال</h2>
+<h3 id="التعامل-مع-تمرير-الـ-ref">التعامل مع تمرير الـ ref</h3>
+<p>إن كنت بحاجة إلى تمرير الـ ref (وهو غالبًا ما ستحتاج إليه)، فإليك كيف تضيفه دون أن تكسر تعدّد الأشكال:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ComponentPropsWithoutRef</span>, <span class="hljs-title class_">ElementType</span>, forwardRef } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PolymorphicRef</span>&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span>&gt; = <span class="hljs-title class_">React</span>.<span class="hljs-property">ComponentPropsWithRef</span>&lt;T&gt;[<span class="hljs-string">&#x27;ref&#x27;</span>];
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PolymorphicButtonProps</span>&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span>&gt; = <span class="hljs-title class_">BaseButtonProps</span> &amp; {
+  <span class="hljs-attr">as</span>?: T;
+} &amp; <span class="hljs-title class_">ComponentPropsWithoutRef</span>&lt;T&gt;;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ButtonComponent</span> = &lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span> = <span class="hljs-string">&#x27;button&#x27;</span>&gt;<span class="hljs-function">(<span class="hljs-params">
+  <span class="hljs-attr">props</span>: <span class="hljs-title class_">PolymorphicButtonProps</span>&lt;T&gt; &amp; { ref?: PolymorphicRef&lt;T&gt; },
+</span>) =&gt;</span> <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactElement</span> | <span class="hljs-literal">null</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Button</span>: <span class="hljs-title class_">ButtonComponent</span> = <span class="hljs-title function_">forwardRef</span>(
+  &lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span> = <span class="hljs-string">&#x27;button&#x27;</span>&gt;<span class="hljs-function">(<span class="hljs-params">
+    { <span class="hljs-keyword">as</span>, variant = <span class="hljs-string">&#x27;primary&#x27;</span>, size = <span class="hljs-string">&#x27;md&#x27;</span>, children, ...props }: <span class="hljs-title class_">PolymorphicButtonProps</span>&lt;T&gt;,
+    <span class="hljs-attr">ref</span>?: <span class="hljs-title class_">PolymorphicRef</span>&lt;T&gt;,
+  </span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> <span class="hljs-title class_">Component</span> = <span class="hljs-keyword">as</span> || <span class="hljs-string">&#x27;button&#x27;</span>;
+
+    <span class="hljs-comment">// ... same styling logic as before</span>
+
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{ref}</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{className}</span> {<span class="hljs-attr">...props</span>}&gt;</span>
+        {children}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Component</span>&gt;</span></span>
+    );
+  },
+);
+
+<span class="hljs-title class_">Button</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">&#x27;Button&#x27;</span>;
+</code></pre>
+<blockquote>
+<p><strong>ملاحظة</strong></p>
+<p>يصبح ضبط أنواع الـ ref معقّدًا بعض الشيء، لكنه يستحق ذلك مقابل تجربة تعدّد الأشكال الكاملة. إذ ستصبح مراجعك (refs) مضبوطة بشكل صحيح بحسب العنصر الذي تُصيّره فعلًا.</p>
+</blockquote>
+<h3 id="إنشاء-نوع-متعدد-الأشكال-قابل-لإعادة-الاستخدام">إنشاء نوع متعدد الأشكال قابل لإعادة الاستخدام</h3>
+<p>إن كنت تبني عدة مكوّنات متعددة الأشكال (وهو ما ينبغي أن تفعله)، فاستخرج النمط في نوع قابل لإعادة الاستخدام:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">PolymorphicComponentProps</span>&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span>, <span class="hljs-title class_">Props</span> = {}&gt; = <span class="hljs-title class_">Props</span> &amp; {
+  <span class="hljs-attr">as</span>?: T;
+} &amp; <span class="hljs-title class_">ComponentPropsWithoutRef</span>&lt;T&gt;;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PolymorphicRef</span>&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span>&gt; = <span class="hljs-title class_">React</span>.<span class="hljs-property">ComponentPropsWithRef</span>&lt;T&gt;[<span class="hljs-string">&#x27;ref&#x27;</span>];
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PolymorphicComponent</span>&lt;<span class="hljs-title class_">DefaultElement</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span>, <span class="hljs-title class_">Props</span> = {}&gt; = &lt;
+  T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ElementType</span> = <span class="hljs-title class_">DefaultElement</span>,
+&gt;<span class="hljs-function">(<span class="hljs-params">
+  <span class="hljs-attr">props</span>: <span class="hljs-title class_">PolymorphicComponentProps</span>&lt;T, <span class="hljs-title class_">Props</span>&gt; &amp; { ref?: PolymorphicRef&lt;T&gt; },
+</span>) =&gt;</span> <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactElement</span> | <span class="hljs-literal">null</span>;
+</code></pre>
+<p>الآن يمكنك بناء مكوّنات متعددة الأشكال بمقدار أقل من الكود المتكرّر:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">CardProps</span> {
+  <span class="hljs-attr">padding</span>?: <span class="hljs-string">&#x27;sm&#x27;</span> | <span class="hljs-string">&#x27;md&#x27;</span> | <span class="hljs-string">&#x27;lg&#x27;</span>;
+  <span class="hljs-attr">shadow</span>?: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Card</span>: <span class="hljs-title class_">PolymorphicComponent</span>&lt;<span class="hljs-string">&#x27;div&#x27;</span>, <span class="hljs-title class_">CardProps</span>&gt; = <span class="hljs-title function_">forwardRef</span>(
+  <span class="hljs-function">(<span class="hljs-params">{ <span class="hljs-keyword">as</span>, padding = <span class="hljs-string">&#x27;md&#x27;</span>, shadow = <span class="hljs-literal">true</span>, children, ...props }, ref</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> <span class="hljs-title class_">Component</span> = <span class="hljs-keyword">as</span> || <span class="hljs-string">&#x27;div&#x27;</span>;
+
+    <span class="hljs-comment">// Your card styling logic here</span>
+
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{ref}</span> {<span class="hljs-attr">...props</span>}&gt;</span>
+        {children}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Component</span>&gt;</span></span>
+    );
+  },
+);
+</code></pre>
+<h2 id="نمط-aschild">نمط «asChild»</h2>
+<p>تعرض بعض أنظمة التصميم خاصية <code>asChild</code> لتصيير أي عنصر فرعي تمرّره مع الحفاظ على تنسيق وسلوك المكوّن. وهذا يبقي دلالات DOM تحت سيطرتك (استخدم <code>Link</code> أو <code>button</code> أو أي عنصر) دون التضحية بكتابة الأنواع.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { forwardRef, cloneElement, isValidElement } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">AsChildProps</span> = {
+  <span class="hljs-attr">asChild</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactElement</span>;
+};
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">BaseButtonProps</span> = {
+  <span class="hljs-attr">variant</span>?: <span class="hljs-string">&#x27;primary&#x27;</span> | <span class="hljs-string">&#x27;secondary&#x27;</span>;
+  <span class="hljs-attr">disabled</span>?: <span class="hljs-built_in">boolean</span>;
+} &amp; <span class="hljs-title class_">AsChildProps</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">cx</span> = (<span class="hljs-params">...<span class="hljs-attr">xs</span>: <span class="hljs-title class_">Array</span>&lt;<span class="hljs-built_in">string</span> | <span class="hljs-literal">false</span> | <span class="hljs-literal">undefined</span>&gt;</span>) =&gt; xs.<span class="hljs-title function_">filter</span>(<span class="hljs-title class_">Boolean</span>).<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27; &#x27;</span>);
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Button</span> = forwardRef&lt;<span class="hljs-title class_">HTMLElement</span>, <span class="hljs-title class_">BaseButtonProps</span>&gt;(
+  <span class="hljs-function">(<span class="hljs-params">{ asChild, children, variant = <span class="hljs-string">&#x27;primary&#x27;</span>, disabled, ...rest }, ref</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> className = <span class="hljs-title function_">cx</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, <span class="hljs-string">\`btn-<span class="hljs-subst">\${variant}</span>\`</span>, disabled &amp;&amp; <span class="hljs-string">&#x27;btn-disabled&#x27;</span>);
+
+    <span class="hljs-keyword">if</span> (asChild) {
+      <span class="hljs-comment">// Render the passed child, merging props and ref</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isValidElement</span>(children)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_">cloneElement</span>(children <span class="hljs-keyword">as</span> <span class="hljs-title class_">React</span>.<span class="hljs-property">ReactElement</span>, {
+          <span class="hljs-attr">className</span>: <span class="hljs-title function_">cx</span>((children.<span class="hljs-property">props</span> <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>).<span class="hljs-property">className</span>, className),
+          ref,
+          ...rest,
+        });
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{className}</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">{disabled}</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{ref</span> <span class="hljs-attr">as</span> <span class="hljs-attr">any</span>} {<span class="hljs-attr">...rest</span>}&gt;</span>
+        {children}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+    );
+  },
+);
+</code></pre>
+<ul>
+<li>استخدم <code>asChild</code> حين تحتاج إلى التحكم في العنصر المُصيَّر (مثل <code>Link</code> في Next.js أو روابط Reach Router) مع الرغبة في الإبقاء على تنسيق وسلوك الزر.</li>
+<li>يصبح نوع الـ ref أكثر مرونة قليلًا (يمكن استخدام الأنواع العامة مع حرّاس العناصر)؛ وفي معظم الحالات، يعمل التمرير بوصفه <code>HTMLElement</code> جيدًا مع عناصر DOM.</li>
+</ul>
+<h2 id="حالات-الاستخدام-في-العالم-الحقيقي">حالات الاستخدام في العالم الحقيقي™</h2>
+<h3 id="مكونات-نظام-التصميم">مكوّنات نظام التصميم</h3>
+<p>تتألق المكوّنات متعددة الأشكال في أنظمة التصميم حيث تحتاج إلى تنسيق متّسق عبر العناصر الدلالية المختلفة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Your design system&#x27;s Text component</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TextProps</span> {
+  <span class="hljs-attr">variant</span>?: <span class="hljs-string">&#x27;body&#x27;</span> | <span class="hljs-string">&#x27;caption&#x27;</span> | <span class="hljs-string">&#x27;heading&#x27;</span>;
+  <span class="hljs-attr">weight</span>?: <span class="hljs-string">&#x27;normal&#x27;</span> | <span class="hljs-string">&#x27;medium&#x27;</span> | <span class="hljs-string">&#x27;bold&#x27;</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Text</span>: <span class="hljs-title class_">PolymorphicComponent</span>&lt;<span class="hljs-string">&#x27;span&#x27;</span>, <span class="hljs-title class_">TextProps</span>&gt; = <span class="hljs-comment">/* ... */</span>;
+
+<span class="hljs-comment">// Usage across your app</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span> <span class="hljs-attr">as</span>=<span class="hljs-string">&quot;h1&quot;</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;heading&quot;</span> <span class="hljs-attr">weight</span>=<span class="hljs-string">&quot;bold&quot;</span>&gt;</span>Page Title<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span> <span class="hljs-attr">as</span>=<span class="hljs-string">&quot;p&quot;</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;body&quot;</span>&gt;</span>Regular paragraph text<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span> <span class="hljs-attr">as</span>=<span class="hljs-string">&quot;label&quot;</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;caption&quot;</span> <span class="hljs-attr">weight</span>=<span class="hljs-string">&quot;medium&quot;</span>&gt;</span>Form label<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span>
+</code></pre>
+<h3 id="التكامل-مع-الموجه">التكامل مع الموجّه</h3>
+<p>مثالية للتكامل مع مكتبات الموجّه المختلفة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Works with React Router</span>
+&lt;<span class="hljs-title class_">Button</span> <span class="hljs-keyword">as</span>={<span class="hljs-title class_">NavLink</span>} to=<span class="hljs-string">&quot;/profile&quot;</span> variant=<span class="hljs-string">&quot;secondary&quot;</span>&gt;
+  <span class="hljs-title class_">Profile</span>
+&lt;/<span class="hljs-title class_">Button</span>&gt;
+
+<span class="hljs-comment">// Works with Next.js</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">as</span>=<span class="hljs-string">{Link}</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/profile&quot;</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;secondary&quot;</span>&gt;</span>
+  Profile
+<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+
+<span class="hljs-comment">// Works with Gatsby</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">as</span>=<span class="hljs-string">{GatsbyLink}</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/profile&quot;</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;secondary&quot;</span>&gt;</span>
+  Profile
+<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+</code></pre>
+<h2 id="اعتبارات-الأداء">اعتبارات الأداء</h2>
+<p>المكوّنات متعددة الأشكال هي في جوهرها تجريدات بلا تكلفة وقت التشغيل — إذ تختفي الأنواع العامة بعد الترجمة (compilation)، وأنت لا تسلّم سوى خصائص إلى عناصر React اعتيادية. واعتبار الأداء الرئيسي هو نفسه لأي مكوّن React: تجنّب إعادة إنشاء المكوّن في كل تصيير إن كنت تمرّره مضمّنًا.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Good - component reference is stable</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">LinkComponent</span> = <span class="hljs-title class_">Link</span>;
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">as</span>=<span class="hljs-string">{LinkComponent}</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/dashboard&quot;</span>&gt;</span>Dashboard<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+
+<span class="hljs-comment">// ❌ Potentially problematic - creates new component reference each render</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">as</span>=<span class="hljs-string">{React.forwardRef((props,</span> <span class="hljs-attr">ref</span>) =&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{ref}</span> {<span class="hljs-attr">...props</span>} /&gt;</span>)}&gt;
+  Dashboard
+<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+</code></pre>
+<h2 id="الأخطاء-الشائعة-وكيف-تتجنبها">الأخطاء الشائعة وكيف تتجنّبها</h2>
+<h3 id="لغز-displayname">لغز <code>displayName</code></h3>
+<p>اضبط <code>displayName</code> دائمًا على مكوّناتك متعددة الأشكال، ولا سيما عند استخدام <code>forwardRef</code>. وستشكلك أدوات مطوّري React على ذلك:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">Button</span>: <span class="hljs-title class_">PolymorphicComponent</span>&lt;<span class="hljs-string">&#x27;button&#x27;</span>, <span class="hljs-title class_">ButtonProps</span>&gt; = <span class="hljs-title function_">forwardRef</span>(<span class="hljs-comment">/* ... */</span>);
+<span class="hljs-title class_">Button</span>.<span class="hljs-property">displayName</span> = <span class="hljs-string">&#x27;Button&#x27;</span>; <span class="hljs-comment">// ✅ Good</span>
+</code></pre>
+<h3 id="تعارضات-الخصائص">تعارضات الخصائص</h3>
+<p>أحيانًا قد تتعارض خصائصك الأساسية مع سمات HTML. تعامل مع هذا الأمر صراحةً:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">BaseProps</span> {
+  <span class="hljs-attr">size</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Conflicts with HTML img size attribute</span>
+}
+
+<span class="hljs-comment">// If rendering as img, prefer HTML size over your custom size</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">Component</span> = (<span class="hljs-params">{ size, ...props }: <span class="hljs-title class_">PolymorphicComponentProps</span>&lt;T, <span class="hljs-title class_">BaseProps</span>&gt;</span>) =&gt; {
+  <span class="hljs-keyword">const</span> { <span class="hljs-attr">size</span>: _, ...cleanProps } = props; <span class="hljs-comment">// Remove conflicting props</span>
+  <span class="hljs-comment">// Handle the conflict appropriately</span>
+};
+</code></pre>
+<h3 id="أداء-typescript">أداء TypeScript</h3>
+<p>أنواع متعددة الأشكال شديدة التعقيد قد تُبطئ مُجمِّع TypeScript. فإن لاحظت تباطؤًا، فكّر في تبسيط أنواعك أو تقسيم المكوّنات المعقّدة إلى مكوّنات أصغر محدّدة الغرض.</p>
+<h2 id="الخطوات-التالية">الخطوات التالية</h2>
+<p>الآن بين يديك الأدوات لبناء مكوّنات قابلة لإعادة الاستخدام حقًا دون التضحية بأمان الأنواع مقابل المرونة. ابدأ بمكوّن زرّ أو نصّ بسيط، واطمئن إلى الأنماط، ثم وسّع إلى حالات استخدام أكثر تعقيدًا.</p>
+<p>فكّر في بناء نسخ متعددة الأشكال من المكوّنات الشائعة مثل:</p>
+<ul>
+<li><code>Box</code> (<code>div</code> افتراضيًا، لكنه قد يكون أي حاوية)</li>
+<li><code>Heading</code> (<code>h2</code> افتراضيًا، لكنه قد يكون من <code>h1</code> إلى <code>h6</code>)</li>
+<li><code>List</code> (<code>ul</code> افتراضيًا، لكنه قد يكون <code>ol</code> أو <code>div</code>)</li>
+</ul>
+<p>لقد أصبح نمط خاصية <code>as</code> شائعًا أكثر فأكثر في مكتبات React الحديثة (Chakra UI وMantine وStitches) لأنه يحلّ مشكلات حقيقية دون المساس بتجربة المطوّر. وما إن تبدأ باستخدام المكوّنات متعددة الأشكال حتى تتساءل كيف كنت تبني واجهات قابلة لإعادة الاستخدام من دونها.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,e as html,l as slug,p as title};

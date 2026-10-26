@@ -1,0 +1,221 @@
+const s="tanstack-form",a="form",n="دورة TanStack Form الكاملة",t="validating-with-zod",l="التحقّق من الصحة بمخطّط Zod (Validating with ZOD)",e=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"نبدأ-من-استمارة-بلا-تحقق",text:"نبدأ من استمارة بلا تحقّق"},{depth:3,id:"مخطط-واحد-للاستمارة-كلها",text:"مخطّط واحد للاستمارة كلها"},{depth:3,id:"النوع-يشتق-من-المخطط",text:"النوع يُشتقّ من المخطّط"},{depth:3,id:"تمرير-المخطط-إلى-useform",text:"تمرير المخطّط إلى useForm"},{depth:3,id:"الخطأ-صار-كائنا-تعديل-العرض",text:"الخطأ صار كائنًا: تعديل العرض"},{depth:3,id:"موضعان-يحتاجان-انتباها",text:"موضعان يحتاجان انتباهًا"},{depth:3,id:"أخطاء-الاستمارة-نفسها",text:"أخطاء الاستمارة نفسها"},{depth:3,id:"الخطأ-قبل-أن-يلمس-المستخدم-الحقل",text:"الخطأ قبل أن يلمس المستخدم الحقل"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],p=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>حتى الآن كان كل حقل يحمل محقّقه الخاص: دالة تستقبل القيمة وتُعيد نصًّا أو <code>undefined</code>. هذا يعمل، لكنه يتضخّم بسرعة؛ فكل قاعدة تحتاج سطورًا، وحين تتشابه قاعدتان بين حقلين تنسخ المنطق وتغيّر الرسالة فقط، حتى يصبح معظم الملف تحقّقًا لا واجهة.</p>
+<p>في هذا الدرس نستبدل تلك الدوال بمخطّط (schema) واحد يصف شكل الاستمارة وقواعدها، ونمرّره إلى <code>validators</code> حيث كانت توضع الدالة. الفكرة أنّ هذا الموضع لا يطلب دالة بذاتها: تدعم <code>TanStack Form</code> كل مكتبة تتبع مواصفة <code>Standard Schema</code> — مثل <code>Zod</code> و<code>Valibot</code> و<code>ArkType</code> — فيعمل المخطّط في مستوى الحقل والاستمارة بلا طبقة وسيطة. لكن المخطّط يُعيد كائنات لا نصوصًا، فتتعطّل طريقة العرض التي بنيناها حتى نُعدّلها في كل موضع؛ وهذا هو النصف الثاني من الدرس.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="نبدأ-من-استمارة-بلا-تحقق">نبدأ من استمارة بلا تحقّق</h3>
+<p>يبدأ المؤلف بتنظيف ما بناه سابقًا: يحذف <code>validators</code> من <code>confirmPassword</code> ثم من <code>firstName</code>، فلا يبقى فحص في الحقول. ويُبقي <code>validationLogic</code> مع <code>revalidateLogic</code> كما هو، لأنّه سياسة توقيت لا قاعدة تحقّق، وسيعود إليه لاحقًا. البدء من استمارة بلا فحص يجعل كل رسالة تظهر بعدها منسوبة إلى المخطّط وحده، لا إلى بقايا درس سابق.</p>
+<p>ثم يثبّت الحزمة بالأمر <code>npm install zod</code>، فيُضاف سطر واحد إلى آخر قائمة الاعتماد:</p>
+<pre><code class="language-json">    <span class="hljs-attr">&quot;tailwind-merge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.3.1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;tailwindcss&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.1.14&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;zod&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.1.12&quot;</span>
+</code></pre>
+<p>ولاحظ الإصدار <code>^4.1.12</code>: دعم <code>Standard Schema</code> في <code>Zod</code> لم يكن موجودًا في الإصدارات القديمة، فمخطّط من إصدار سابق قد لا يُقبل في <code>validators</code> بهذا الشكل. ثم يأتي الاستيراد:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> {
+  formOptions,
+  revalidateLogic,
+  useForm,
+  useStore,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>;
+</code></pre>
+<p>السطر الأخير هو الجديد: <code>import * as z from &quot;zod&quot;</code>، وهو العُرف الشائع الذي يضع كل باني في المخطّط تحت حرف واحد: <code>z.string</code> و<code>z.object</code> و<code>z.array</code>.</p>
+<h3 id="مخطط-واحد-للاستمارة-كلها">مخطّط واحد للاستمارة كلها</h3>
+<p>بدلًا من دالة لكل حقل، يُعرَّف كائن واحد يصف الاستمارة كلها، ويوضع أعلى الملف لأنّه وصف ثابت لا يعتمد على حالة التصيير:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> formSchema = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">firstName</span>: z
+    .<span class="hljs-title function_">string</span>()
+    .<span class="hljs-title function_">min</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;First name should be at least 2 characters.&quot;</span>)
+    .<span class="hljs-title function_">max</span>(<span class="hljs-number">50</span>),
+  <span class="hljs-attr">lastName</span>: z
+    .<span class="hljs-title function_">string</span>()
+    .<span class="hljs-title function_">min</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;Last name should be at least 2 characters.&quot;</span>)
+    .<span class="hljs-title function_">max</span>(<span class="hljs-number">50</span>),
+  <span class="hljs-attr">age</span>: z
+    .<span class="hljs-title function_">number</span>()
+    .<span class="hljs-title function_">min</span>(<span class="hljs-number">18</span>, <span class="hljs-string">&quot;You must be at least 18 years old.&quot;</span>)
+    .<span class="hljs-title function_">max</span>(<span class="hljs-number">120</span>, <span class="hljs-string">&quot;Age must be less than 120.&quot;</span>)
+    .<span class="hljs-title function_">optional</span>(),
+  <span class="hljs-attr">acceptTerms</span>: z.<span class="hljs-title function_">boolean</span>().<span class="hljs-title function_">refine</span>(<span class="hljs-function">(<span class="hljs-params">val</span>) =&gt;</span> val === <span class="hljs-literal">true</span>, {
+    <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;You must accept the terms and conditions.&quot;</span>,
+  }),
+  <span class="hljs-attr">email</span>: z.<span class="hljs-title function_">email</span>(<span class="hljs-string">&quot;Invalid email address.&quot;</span>).<span class="hljs-title function_">optional</span>(),
+  <span class="hljs-attr">password</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">min</span>(<span class="hljs-number">6</span>, <span class="hljs-string">&quot;Password should be at least 6 characters.&quot;</span>),
+  <span class="hljs-attr">confirmPassword</span>: z.<span class="hljs-title function_">string</span>(),
+  <span class="hljs-attr">address</span>: z.<span class="hljs-title function_">object</span>({
+    <span class="hljs-attr">street</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">min</span>(<span class="hljs-number">5</span>, <span class="hljs-string">&quot;Street should be at least 5 characters.&quot;</span>),
+    <span class="hljs-attr">city</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">min</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;City should be at least 2 characters.&quot;</span>).<span class="hljs-title function_">optional</span>(),
+    <span class="hljs-attr">state</span>: z
+      .<span class="hljs-title function_">string</span>()
+      .<span class="hljs-title function_">min</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;State should be at least 2 characters.&quot;</span>)
+      .<span class="hljs-title function_">optional</span>(),
+    <span class="hljs-attr">zipCode</span>: z
+      .<span class="hljs-title function_">string</span>()
+      .<span class="hljs-title function_">min</span>(<span class="hljs-number">5</span>, <span class="hljs-string">&quot;Zip Code should be at least 5 characters.&quot;</span>)
+      .<span class="hljs-title function_">optional</span>(),
+  }),
+  <span class="hljs-attr">skills</span>: z.<span class="hljs-title function_">array</span>(
+    z.<span class="hljs-title function_">object</span>({
+      <span class="hljs-attr">name</span>: z.<span class="hljs-title function_">string</span>(),
+      <span class="hljs-attr">id</span>: z.<span class="hljs-title function_">string</span>(),
+      <span class="hljs-attr">level</span>: z.<span class="hljs-title function_">enum</span>([<span class="hljs-string">&quot;beginner&quot;</span>, <span class="hljs-string">&quot;intermediate&quot;</span>, <span class="hljs-string">&quot;expert&quot;</span>]),
+    })
+  ),
+});
+</code></pre>
+<p>اقرأه بترتيبه، فكل سطر فيه قاعدة:</p>
+<ul>
+<li><code>firstName</code> و<code>lastName</code>: نصّ بين حرفين وخمسين حرفًا، مع رسالة لحدّها الأدنى. والحدّ الأقصى بلا رسالة فيعرض <code>Zod</code> رسالته الافتراضية، وهو نادر الوصول في هذه الاستمارة.</li>
+<li><code>age</code>: رقم بين ثمانية عشر ومئة وعشرين، ثم <code>.optional()</code>، لأنّ الحقل قد يصل فارغًا، والفارغ ليس رقمًا صالحًا.</li>
+<li><code>acceptTerms</code>: قيمة منطقية، ثم قاعدة لا تملكها دوال <code>Zod</code> الجاهزة، وهي أن تكون <code>true</code>؛ نعود إليها بعد قليل.</li>
+<li><code>email</code>: فحص صيغة البريد بـ<code>z.email(...)</code>، و<code>.optional()</code> لأنّ الحقل اختياري.</li>
+<li><code>password</code>: ستّة أحرف على الأقل. و<code>confirmPassword</code> بلا قاعدة سوى أنّه نصّ، ووجوده في المخطّط ضروري ليصف الشكل كاملًا، وهو شرط اشتقاق النوع بعد قليل.</li>
+<li><code>address</code>: كائن داخل كائن، فالشارع بخمسة أحرف والبقية اختيارية، وتصبح مسارات حقوله <code>address.street</code> و<code>address.city</code> كما تكتبها في <code>form.Field</code>.</li>
+<li><code>skills</code>: مصفوفة من كائنات فيها <code>name</code> و<code>id</code> و<code>level</code>، و<code>level</code> تعداد يحصر القيمة في الثلاث التي يعرضها <code>select</code>، فيمنع أيّ قيمة رابعة تصل من الشبكة أو من خطأ برمجي.</li>
+</ul>
+<p>الفرق الجوهري أنّ الرسالة تسكن بجانب القاعدة التي تنتجها، لا بجانب الحقل الذي يعرضها؛ فتغيير نصّ خطأ صار تعديلًا واحدًا في المخطّط.</p>
+<h3 id="النوع-يشتق-من-المخطط">النوع يُشتقّ من المخطّط</h3>
+<p>قبل الدرس كان هناك <code>interface</code> باسم <code>RegisterForm</code> يصف القيم، ونوعٌ آخر مكتوب بجانب <code>defaultValues</code>. بعد وجود المخطّط صار الوصفان تكرارًا، فيمكن استخراج النوع منه مباشرة:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">const</span> <span class="hljs-attr">defaultValues</span>: z.<span class="hljs-property">infer</span>&lt;<span class="hljs-keyword">typeof</span> formSchema&gt; = {
+  <span class="hljs-attr">firstName</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">lastName</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-literal">undefined</span>,
+  <span class="hljs-attr">email</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">password</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">confirmPassword</span>: <span class="hljs-string">&quot;&quot;</span>,
+  <span class="hljs-attr">address</span>: { <span class="hljs-attr">street</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-attr">city</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-attr">state</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-attr">zipCode</span>: <span class="hljs-string">&quot;&quot;</span> },
+  <span class="hljs-attr">skills</span>: [
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;HTML&quot;</span>,
+      <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(),
+      <span class="hljs-attr">level</span>: <span class="hljs-string">&quot;beginner&quot;</span>,
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;CSS&quot;</span>,
+      <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(),
+      <span class="hljs-attr">level</span>: <span class="hljs-string">&quot;beginner&quot;</span>,
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;JavaScript&quot;</span>,
+      <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(),
+      <span class="hljs-attr">level</span>: <span class="hljs-string">&quot;beginner&quot;</span>,
+    },
+  ],
+  <span class="hljs-attr">acceptTerms</span>: <span class="hljs-literal">false</span>,
+};
+
+<span class="hljs-keyword">const</span> formOpts = <span class="hljs-title function_">formOptions</span>({
+  defaultValues,
+});
+</code></pre>
+<p><code>z.infer&lt;typeof formSchema&gt;</code> يُقرأ من الداخل: <code>typeof formSchema</code> يأخذ نوع قيمة المخطّط، ثم <code>z.infer</code> يحوّله إلى نوع البيانات التي يقبلها. النتيجة نوع يتبع القواعد تلقائيًا؛ إن أضفت حقلًا ظهر فيه، وإن غيّرت نوعه تغيّر معك، ولا وصف ثانٍ يتخلّف عن الأول.</p>
+<p>لكن القيم نفسها يجب أن تطابق المخطّط. لهذا يأتي <code>age</code> بـ<code>undefined</code> لا بصفر: الصفر رقم يخضع لقاعدة الحدّ الأدنى فيُرفض، بينما تعفيه <code>.optional()</code>. وتأتي المهارات الثلاث بمعرّفات من <code>crypto.randomUUID()</code>، لأنّ <code>id</code> نصّ مطلوب في المخطّط.</p>
+<h3 id="تمرير-المخطط-إلى-useform">تمرير المخطّط إلى <code>useForm</code></h3>
+<pre><code class="language-tsx">  <span class="hljs-keyword">const</span> form = <span class="hljs-title function_">useForm</span>({
+    ...formOpts,
+    <span class="hljs-attr">onSubmit</span>: <span class="hljs-function">(<span class="hljs-params">{ value }</span>) =&gt;</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value);
+    },
+    <span class="hljs-attr">validators</span>: {
+      <span class="hljs-attr">onChange</span>: formSchema,
+    },
+    <span class="hljs-attr">validationLogic</span>: <span class="hljs-title function_">revalidateLogic</span>({
+      <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;submit&quot;</span>,
+      <span class="hljs-attr">modeAfterSubmission</span>: <span class="hljs-string">&quot;blur&quot;</span>,
+    }),
+    <span class="hljs-attr">listeners</span>: {
+      <span class="hljs-attr">onChange</span>: <span class="hljs-function">(<span class="hljs-params">{ formApi, fieldApi }</span>) =&gt;</span> {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(formApi, fieldApi);
+      },
+    },
+  });
+</code></pre>
+<p>الموضع هو نفسه الذي كانت توضع فيه الدالة: <code>validators.onChange</code>. لا حقل جديد ولا مُحوّل خاص، لأنّ <code>TanStack Form</code> يتعرّف على المخطّط عبر مواصفة <code>Standard Schema</code>؛ ولهذا يعمل السطر نفسه لو كان المخطّط مكتوبًا بـ<code>Valibot</code> أو <code>ArkType</code>.</p>
+<p>و<code>validationLogic</code> مع <code>revalidateLogic</code> بقي كما بناه المؤلف سابقًا: المخطّط يقول ما هي القواعد، و<code>validationLogic</code> يقول متى تُشغَّل، فلا تتكرّر سياسة التوقيت مع كل قاعدة تُضاف.</p>
+<p>وأمّا لماذا تُفحَص كل الحقول عند تغيير حقل واحد، فالسبب في المخطّط نفسه: <code>formSchema</code> يتحقّق من الكائن كاملًا ولا يعرف أيّ حقل تغيّر، فيُعيد كل مسار مخالف مع كل تغيير. و<code>TanStack Form</code> يتولّى التوزيع: كل خطأ يصل إلى <code>meta.errors</code> في الحقل الذي يطابق مساره، بلا كود منّا.</p>
+<h3 id="الخطأ-صار-كائنا-تعديل-العرض">الخطأ صار كائنًا: تعديل العرض</h3>
+<p>هنا يظهر الثمن. مع الدالة كانت <code>meta.errors</code> مصفوفة نصوص و<code>join(&quot;, &quot;)</code> تكفي لعرضها. أمّا المخطّط فيُعيد كائنات تحمل <code>message</code>، و<code>join</code> على كائنات تطبع <code>[object Object]</code> لا الرسالة. لذلك يتوقّف العرض حتى نُعدّله، كما في حقل الاسم الأول:</p>
+<pre><code class="language-tsx">                &lt;input
+                  <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+                  placeholder=<span class="hljs-string">&quot;First Name&quot;</span>
+                  className=<span class="hljs-string">&quot;bg-black text-white border border-white p-2 w-full&quot;</span>
+                  value={field.<span class="hljs-property">state</span>.<span class="hljs-property">value</span>}
+                  onChange={<span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> field.<span class="hljs-title function_">handleChange</span>(e.<span class="hljs-property">target</span>.<span class="hljs-property">value</span>)}
+                  onBlur={field.<span class="hljs-property">handleBlur</span>}
+                /&gt;
+                {!field.<span class="hljs-property">state</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">isValid</span> &amp;&amp; (
+                  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-red-500 mt-2&quot;</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;alert&quot;</span>&gt;</span>
+                    {field.state.meta.errors
+                      .map((error) =&gt; error?.message)
+                      .join(&quot;, &quot;)}
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+                )}
+</code></pre>
+<p><code>map</code> تستخرج الرسالة من كل كائن، و<code>?.</code> تحمي من عنصر بلا قيمة، ثم <code>join</code> تجمعها في نصّ واحد. والجمع ضروري لأنّ الحقل قد يحمل أكثر من خطأ في اللحظة نفسها: قيمة قصيرة وقاعدة أخرى تخالفها تنتجان خطأين يقرأهما المستخدم معًا.</p>
+<p>هذا الشكل ليس عيبًا بل ميزة، فالكائن يحمل ما يكفي لواجهة أدقّ لاحقًا؛ لكنّه يفرض تعديل كل موضع عرض، ولهذا يمرّ المؤلف على الحقول واحدًا واحدًا وينسخ الكتلة نفسها: الاسم الأول، والشارع، وكلمة المرور، وتأكيدها، وصفّ المهارات، ومربّع الشروط.</p>
+<h3 id="موضعان-يحتاجان-انتباها">موضعان يحتاجان انتباهًا</h3>
+<p>أوّلهما صفّ المهارات: الكتلة منسوخة داخل <code>form.Field</code> فرعي للصفّ، لكنّها تقرأ <code>field</code> لا <code>subField</code>، أي حالة حقل المصفوفة لا حالة الصفّ. لا يظهر أثر ذلك هنا لأنّ المستويات الثلاثة <code>beginner</code> وهي مسموحة، لكنّه موضع يُخدَع به من يجرّب قيمة رابعة.</p>
+<p>والثاني مربّع الشروط، إذ لا <code>input</code> له يعرض الخطأ تحته كبقية الحقول، فوضع المؤلف الخطأ بعد <code>label</code> لا داخله:</p>
+<pre><code class="language-tsx">        &lt;form.<span class="hljs-property">Field</span> name=<span class="hljs-string">&quot;acceptTerms&quot;</span>&gt;
+          {<span class="hljs-function">(<span class="hljs-params">field</span>) =&gt;</span> {
+            <span class="hljs-keyword">return</span> (
+              <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;mb-4 mt-4&quot;</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;flex items-center gap-2&quot;</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+                    <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-black text-white border border-white p-2&quot;</span>
+                    <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>
+                    <span class="hljs-attr">checked</span>=<span class="hljs-string">{field.state.value}</span>
+                    <span class="hljs-attr">onBlur</span>=<span class="hljs-string">{field.handleBlur}</span>
+                    <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> field.handleChange(e.target.checked)}
+                  /&gt;
+                  Accept Terms
+                <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                {!field.state.meta.isValid &amp;&amp; (
+                  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-red-500 mt-2&quot;</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;alert&quot;</span>&gt;</span>
+                    {field.state.meta.errors
+                      .map((error) =&gt; error?.message)
+                      .join(&quot;, &quot;)}
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+                )}
+              <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+            );
+          }}
+        &lt;/form.<span class="hljs-property">Field</span>&gt;
+</code></pre>
+<p>والرسالة ليست مكتوبة هنا، بل تأتي من <code>z.boolean().refine((val) =&gt; val === true, { message: &quot;You must accept the terms and conditions.&quot; })</code>. و<code>refine</code> باب ما لا تكفيه <code>min</code> و<code>max</code> و<code>z.email</code>: تستقبل القيمة وتُعيد شرطًا، فإن كان كاذبًا صار الحقل غير صالح. وقد جرّب المؤلف القاعدة نفسها على نصّ في الاسم الأول ثم حذفها، لأنّها كانت مثالًا لا طلبًا في التطبيق.</p>
+<h3 id="أخطاء-الاستمارة-نفسها">أخطاء الاستمارة نفسها</h3>
+<p>بقي موضع قديم فوق الاستمارة يعرض أخطاء الاستمارة ككل، ولم يسلم من تغيّر الشكل. الفرع يُظهر ذلك بأمانة: السطر معلّق ومعه الاشتراك في الخطأ:</p>
+<pre><code class="language-tsx">  <span class="hljs-keyword">const</span> values = <span class="hljs-title function_">useStore</span>(form.<span class="hljs-property">store</span>, <span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> state.<span class="hljs-property">values</span>);
+  <span class="hljs-keyword">const</span> errors = <span class="hljs-title function_">useStore</span>(form.<span class="hljs-property">store</span>, <span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> state.<span class="hljs-property">errors</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-start max-w-[400px] p-4&quot;</span>&gt;</span>
+      {/* {JSON.stringify(errors)} */}
+</span></code></pre>
+<p><code>useStore</code> يشترك في قطعة محدّدة من الحالة، فلا يُعاد تصيير المكوّن إلا حين تتغيّر؛ وهنا القطعة هي <code>state.errors</code>. وكانت سابقًا نصوصًا تُطبع بـ<code>join</code>، أمّا الآن فما تحمله ليس نصوصًا، فطبع المؤلف <code>JSON.stringify(errors)</code> ليفحص شكله، ثم علّق السطر: المخطّط يوزّع الأخطاء على حقولها أصلًا، فطباعة الكائن أعلى الاستمارة تكرار لما يظهر تحتها. ويُبقي <code>useStore</code> لأنّ العرض سيُنقل إلى مكوّن منفصل في درس لاحق؛ فالموضع مؤقّت صريح لا سهو.</p>
+<h3 id="الخطأ-قبل-أن-يلمس-المستخدم-الحقل">الخطأ قبل أن يلمس المستخدم الحقل</h3>
+<p>لأنّ المخطّط يُشغَّل على الاستمارة كلها، يظهر خطأ حقل لم يلمسه المستخدم: الشارع في لقطة الدرس فارغ وتحته رسالة حمراء، مع أنّ الكتابة كانت في الاسم الأول. سلوك صحيح من جهة الصحة، مزعج من جهة التجربة.</p>
+<p>جرّب المؤلف حلًّا بسيطًا: يضيف إلى شرط <code>!field.state.meta.isValid</code> قراءة <code>field.state.meta.isDirty</code>، فلا يُعرض الخطأ إلا بعد تغيير الحقل، وذكر <code>isTouched</code> بديلًا. ثم حذف التعديل لأنّ تنظيف العرض ونقله إلى مكوّن منفصل سيأتي في درس لاحق، ولا معنى لتثبيت شرط في ستّة مواضع ثم إزالته. أبقِ الفرق: <code>isValid</code> تسأل «هل القيمة سليمة؟»، و<code>isDirty</code> تسأل «هل أتيحت للمستخدم فرصة تصحيحها؟».</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--validating-with-zod--zod-errors.png" alt="لقطة استمارة التسجيل بعد ربطها بمخطّط : الاسم الأول فيه الحرف A وتحته  بالأحمر، والشارع فارغ وتحته ، وكلمة المرور فارغة وتحتها ، والاسم الأخير وتأكيد كلمة المرور بلا رسالة، وثلاث مهارات مستواها  وإلى جانب كلّ منها زرّ حذف أحمر، ثم ، ومربّع الشروط غير محدّد وتحته ، وزرّ الإرسال باهت، وأسفل الاستمارة كتلة القيم بصيغة "></p>
+<p>لم يبق محقّق مكتوب بيد: القواعد كلها في <code>formSchema</code>، والرسائل الحمراء في الصورة نصوص المخطّط، ولهذا تظهر بالإنجليزية كما كتبها المؤلف في الفرع. وظهور أربع منها معًا سببه أنّ حرفًا واحدًا في الاسم الأول يُشغّل المخطّط على القيم كلها.</p>
+<p>الاسم الأخير يظهر بلا رسالة مع أنّ الفرع النهائي يعرض خطأه أيضًا، فاللقطة سُجّلت أثناء المرور على الحقول. أمّا تأكيد كلمة المرور فلا قاعدة له سوى أنّه نصّ. والمهارات الثلاث <code>beginner</code> ولا خطأ عليها لأنّ التعداد يقبلها. وزرّ الإرسال باهت لأنّ <code>canSubmit</code> كاذبة ما دام في الاستمارة حقل غير صالح، وتحت الاستمارة كتلة القيم: <code>firstName</code> بالحرف <code>A</code>، وثلاثة معرّفات مهارات، و<code>acceptTerms</code> كاذبة.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>اكتب حرفًا واحدًا في الاسم الأول ثم حرفًا ثانيًا: ستختفي الرسالة عند الثاني وحده، لأنّ <code>min(2)</code> تُقاس بعدد المحارف، ثم امسح الاسم لترى الخطأ يعود مع كل تغيير.</li>
+<li>أزل التعليق عن <code>{JSON.stringify(errors)}</code> وأرسل استمارة فارغة، ثم قارن ما يظهر بالشكل القديم: كائنات فيها <code>message</code> و<code>path</code> بدل نصوص مجرّدة.</li>
+<li>أضف <code>form.Field</code> باسم <code>email</code> يعرض خطأه بالكتلة الجديدة، واكتب <code>abc</code> فيه، لتظهر رسالة <code>Invalid email address.</code> من المخطّط دون قاعدة في الحقل.</li>
+<li>غيّر رسالة <code>min</code> في <code>firstName</code> إلى نصّ عربي ثم اكتب حرفًا واحدًا: تظهر الرسالة العربية، وقد تغيّر موضع واحد هو المخطّط، وهذا معنى مصدر واحد للقواعد.</li>
+<li>أضف شرط <code>field.state.meta.isDirty</code> إلى عرض خطأ الشارع كما جرّبه المؤلف، واكتب في الاسم الأول فقط: سيختفي خطأ الشارع حتى تعدّل الشارع نفسه.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=4367s">فيديو الدرس: Validating with ZOD</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/zod-1">شيفرة الدرس: فرع zod-1</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/guides/validation">التوثيق الرسمي: التحقّق من الصحة بمكتبات المخطّطات</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/overview">التوثيق الرسمي: نظرة عامة على TanStack Form</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Validating with ZOD» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي، وما أضافه المعدّ من توضيح لا يُنسب إلى المؤلف.</p>
+</blockquote>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:l,headings:e,html:p};export{s as book,a as chapter,n as chapterTitle,c as default,e as headings,p as html,t as slug,l as title};

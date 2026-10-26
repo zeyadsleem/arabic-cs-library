@@ -1,0 +1,112 @@
+const s="tanstack-form",o="form",e="دورة TanStack Form الكاملة",a="refactoring-our-form-and-using-useappform",n="إعادة هيكلة الاستمارة وبناء خُطّاف `useAppForm`",c=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"تنظيف-أولا-ما-لا-يخص-المكون",text:"تنظيف أولًا: ما لا يخصّ المكوّن"},{depth:3,id:"نقل-المكون-إلى-مجلده",text:"نقل المكوّن إلى مجلّده"},{depth:3,id:"سياق-الحقل-كيف-يصل-الحقل-إلى-مكون-منفصل",text:"سياق الحقل: كيف يصل الحقل إلى مكوّن منفصل"},{depth:3,id:"توليد-الخطاف-من-createformhook",text:"توليد الخُطّاف من createFormHook"},{depth:3,id:"استبدال-useform-في-الاستمارة",text:"استبدال useForm في الاستمارة"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],t=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>استمارة التسجيل التي بنيناها في الدرس السابق تعمل: تحقّق على مستوى الحقل وعلى مستوى الاستمارة، وعنوان متداخل، ومصفوفة مهارات، وخيار للموافقة على الشروط، وزرّا إرسال. لكنّ ثمنها ظاهر في حجم الملف: نحو أربعمئة سطر، ومعظمها ليس منطقًا يخصّ هذه الاستمارة، بل شيفرة قالبية متكرّرة. كلّ حقل يكتب تسميته، وصندوق إدخاله، ووصفه، ويعيد تعيين <code>value</code> و<code>onBlur</code> و<code>onChange</code>، ثم يكرّر كتلة عرض الأخطاء نفسها. أضف حقلًا واحدًا فتكسب أربعين سطرًا لا جديد فيها، واضرب ذلك في عدد الاستمارات في تطبيق حقيقي.</p>
+<p>فكرة الدرس أنّ هذا التكرار ليس قدرًا. بدل أن تنادي <code>useForm</code> في كلّ استمارة وتعيد بناء واجهة كلّ حقل، تعرّف مكوّنات حقولك مرّة واحدة، وتسجّلها في خُطّاف استمارة مخصّص يملكها، فتصبح الاستمارة نفسها قصيرة لأنّ الخُطّاف يعرف مسبقًا كيف يعرض الحقل وكيف يمرّر له <code>onChange</code> و<code>onBlur</code> ويعرض أخطاءه. نبني في هذا الدرس الأساس وحده: ننظّم الملفات، وننشئ سياق الحقل وسياق الاستمارة، ونولّد <code>useAppForm</code> من <code>createFormHook</code> بسجلّين فارغين. النتيجة المرئية صفر، وهذه هي النقطة: نفصل الخطوة الأولى عن ثمرتها حتى ترى بالضبط ماذا يضيف كلّ جزء.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="تنظيف-أولا-ما-لا-يخص-المكون">تنظيف أولًا: ما لا يخصّ المكوّن</h3>
+<p>قبل البناء يزيل المؤلف الطبع في <code>console</code> للكائن <code>values</code>، ثم يُخرج من المكوّن ثلاثة أشياء ليست من شأنه: مخطّط <code>Zod</code>، والقيم الافتراضية، وخيارات الاستمارة. ينشئ لها مجلّدًا باسم <code>src/lib/register-form</code> ويضع فيه ملفًا مشتركًا اسمه <code>shared.ts</code>، لأنّ أكثر من ملف في هذا المجلّد سيحتاج هذه التعريفات نفسها لاحقًا.</p>
+<p>يفتتح الملف باستيرادين: الأوّل يوفّر <code>formOptions</code> من حزمة الاستمارة، والثاني يجلب <code>Zod</code> لتوصيف المخطّط:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { formOptions } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>;
+</code></pre>
+<p>ثم ينتقل المخطّط كما هو تقريبًا، مع تغيير الاسم إلى <code>registerFormSchema</code> ليقول ما يتحقّق منه. هذا مقطع من أوّل حقل فيه:</p>
+<pre><code class="language-ts">    <span class="hljs-attr">firstName</span>: z
+      .<span class="hljs-title function_">string</span>()
+      .<span class="hljs-title function_">min</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;First name should be at least 2 characters.&quot;</span>)
+      .<span class="hljs-title function_">max</span>(<span class="hljs-number">50</span>),
+</code></pre>
+<p>المخطّط لم يتغيّر سلوكه؛ تغيّر مكانه فقط. وهذه هي الفائدة الأولى: ملف الاستمارة لم يبقَ المضيف الوحيد لقواعد التحقّق، فيمكن استيرادها في الاختبارات أو في أداة أخرى بلا جلب المكوّن كلّه. وينطبق الشيء نفسه على القيم الافتراضية، التي صارت تصديرًا مستقلًّا في الملف نفسه.</p>
+<p>أمّا الخيارات فتجمّع في كائن واحد يُصدَّر باسم أوضح من الاسم القديم:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> registerFormOpts = <span class="hljs-title function_">formOptions</span>({
+  defaultValues,
+});
+</code></pre>
+<p>لماذا نلفّ القيم الافتراضية في <code>formOptions</code> بدل تمريرها مباشرة؟ لأنّ الكائن الناتج يحمل نوع الاستمارة معه، فيستطيع أيّ ملف آخر أن ينشره في <code>useAppForm</code> ويحصل على الاستنتاج النوعي نفسه لأسماء الحقول، بلا إعادة تعريف ولا تمرير وسائط نوعية يدويًا. وبذلك يصبح <code>shared.ts</code> عقد الاستمارة: المخطّط والقيم والخيارات في مكان واحد، والمكوّن يستورد منها.</p>
+<h3 id="نقل-المكون-إلى-مجلده">نقل المكوّن إلى مجلّده</h3>
+<p>بعد أن جفّ الملف المشترك، ينقل المؤلف مكوّن الاستمارة نفسه من <code>src/lib/RegisterForm.tsx</code> إلى <code>src/lib/register-form/RegisterForm.tsx</code>، ثم يستورد الثلاثة من <code>./shared</code> بدل تعريفها في الأعلى، ويحذف الاستيرادات التي لم تبقَ مستعملة. النقل يكلّف سطرًا واحدًا في نقطة تركيب التطبيق:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> <span class="hljs-title class_">RegisterForm</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./lib/register-form/RegisterForm&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">RegisterForm</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">App</span>;
+</code></pre>
+<p>لو نسيت تحديث هذا المسار لما تغيّر شيء في الاستمارة، بل كان التطبيق سيفشل في التحميل لأنّ الملف القديم لم يبقَ في مكانه. بعد التحديث تُحدِّث الصفحة وتُرسل الاستمارة كالسابق: التحقّق يعمل، والإرسال يطبع القيم. هذا تنظيم لا أكثر؛ الملف ما زال يحمل مئات الأسطر، وهذا ما نعالجه الآن.</p>
+<h3 id="سياق-الحقل-كيف-يصل-الحقل-إلى-مكون-منفصل">سياق الحقل: كيف يصل الحقل إلى مكوّن منفصل</h3>
+<p>حتى هذه اللحظة كان كائن الحقل يصل إلى الواجهة كوسيط دالة: <code>form.Field</code> ينادي دالة التصيير ويمرّر لها <code>field</code>، فتقرأ داخل المكوّن ما تشاء. هذا الأسلوب لا يصلح لمكوّن مستقلّ في ملف آخر، لأنّ المكوّن يستقبل خصائصه وحدها، ولن يجد في متناول يده كائن الحقل ليقرأ <code>field.state.value</code> أو يمرّر <code>field.handleChange</code>.</p>
+<p>الحلّ سياق (context) يحيط بكلّ حقل، فيقرأ منه المكوّن ما يحتاجه بلا وسائط. توفّر المكتبة دالة تُنشئ هذا السياق مرّة واحدة، وملف <code>src/hooks/form-context.tsx</code> كلّه ثلاثة أسطر:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFormHookContexts } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> { fieldContext, formContext, useFieldContext, useFormContext } =
+  <span class="hljs-title function_">createFormHookContexts</span>();
+</code></pre>
+<p>الدالة تُعيد أربعة أشياء، وكلّها تُصدَّر لسبب: <code>fieldContext</code> و<code>formContext</code> كائنا السياق اللذان سيُمرَّران لاحقًا إلى مولّد الخُطّاف، و<code>useFieldContext</code> و<code>useFormContext</code> خُطّافان يقرأ بهما المكوّن السياق المحيط. الأوّل لسياق الحقل، وهو ما سيستعمله مكوّن الإدخال ليعرف أيّ حقل يخدم؛ والثاني لسياق الاستمارة، وهو ما سيستعمله مكوّن مثل زرّ الإرسال ليصل إلى الاستمارة كلّها. لاحظ أنّ هذا الملف لا يعرّف مكوّنًا ولا يصدّر قيمة افتراضية؛ وظيفته الوحيدة أنّ نسخة السياق واحدة في التطبيق كلّه.</p>
+<h3 id="توليد-الخطاف-من-createformhook">توليد الخُطّاف من <code>createFormHook</code></h3>
+<p>الآن نصنع الخُطّاف. ملف <code>src/hooks/form.tsx</code> قصير أيضًا، لكنّه قلب الفكرة:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFormHook } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+<span class="hljs-keyword">import</span> { fieldContext, formContext } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./form-context&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> { useAppForm, withForm, withFieldGroup } = <span class="hljs-title function_">createFormHook</span>({
+  <span class="hljs-attr">fieldContext</span>: fieldContext,
+  <span class="hljs-attr">formContext</span>: formContext,
+  <span class="hljs-attr">fieldComponents</span>: {},
+  <span class="hljs-attr">formComponents</span>: {},
+});
+</code></pre>
+<p>الدالة تأخذ السياقين اللذين أنشأناهما للتوّ، ثم سجلّين: <code>fieldComponents</code> لما يُعرض داخل حقل واحد، و<code>formComponents</code> لما يخصّ الاستمارة ككتلة، كزرّ إرسال يقرأ حالة <code>canSubmit</code>. هذا التقسيم ليس تنظيميًا فقط: مكوّن الحقل يحتاج سياق الحقل، ومكوّن الاستمارة يحتاج سياق الاستمارة، فلو خلطت بينهما لبحث المكوّن عن سياق لا يحيط به. وفي هذا الدرس يترك المؤلف السجلّين فارغين عن قصد.</p>
+<p>والدالة تُعيد ثلاثة أشياء لا واحدًا: <code>useAppForm</code> وهو الخُطّاف الذي سنستعمله بدل <code>useForm</code>، و<code>withForm</code> و<code>withFieldGroup</code> وهما دالتان لتقسيم الاستمارات الكبيرة وإعادة استعمال مجموعات حقول، وسنعود إليهما في درسين لاحقين. وجودهما الآن مجّاني، لأنّهما يخرجان من المولّد نفسه؛ أمّا استعمالهما فيأتي بعد أن تصير عندنا مكوّنات مسجّلة.</p>
+<p>وهنا يجب أن تكون دقيقًا في فهم اللحظة: بسجلّين فارغين لا يضيف <code>useAppForm</code> شيئًا على <code>useForm</code>، فهو يمرّر الخيارات نفسها إلى المثيل نفسه. قيمته أنّه صار نقطة واحدة تُضاف إليها المكوّنات لاحقًا، فتُعرَّف واجهة الحقل مرّة وتُسجَّل هنا، ثم تستهلكها كلّ استمارة في التطبيق بلا تكرار. ولهذا يسمّيه التوثيق نسخة غير مخصّصة من <code>useForm</code>: متطابقة اليوم، ومختلفة بعد أوّل مكوّن تسجّله.</p>
+<h3 id="استبدال-useform-في-الاستمارة">استبدال <code>useForm</code> في الاستمارة</h3>
+<p>يبقى أن نستعمل الخُطّاف الجديد. في رأس <code>RegisterForm</code> يستورد المؤلف <code>useAppForm</code> من مجلّد <code>hooks</code>، وينشر <code>registerFormOpts</code> في الخيارات، ويُبقي التحقّق كما هو:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { revalidateLogic, useForm } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>;
+<span class="hljs-keyword">import</span> { registerFormOpts, registerFormSchema } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./shared&quot;</span>;
+<span class="hljs-keyword">import</span> { useAppForm } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/hooks/form&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">RegisterForm</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> form = <span class="hljs-title function_">useAppForm</span>({
+    ...registerFormOpts,
+    <span class="hljs-attr">onSubmit</span>: <span class="hljs-function">(<span class="hljs-params">{ value, meta }</span>) =&gt;</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(registerFormSchema.<span class="hljs-title function_">parse</span>(value));
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(meta);
+    },
+    <span class="hljs-attr">validators</span>: {
+      <span class="hljs-attr">onDynamic</span>: registerFormSchema,
+    },
+    <span class="hljs-attr">validationLogic</span>: <span class="hljs-title function_">revalidateLogic</span>({
+      <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;submit&quot;</span>,
+      <span class="hljs-attr">modeAfterSubmission</span>: <span class="hljs-string">&quot;blur&quot;</span>,
+    }),
+  });
+</code></pre>
+<p>ثلاثة أسطر تغيّرت: الاستيراد من <code>@/hooks/form</code>، والانتقال من <code>useForm</code> إلى <code>useAppForm</code>، واستبدال <code>defaultValues</code> المكتوبة في المكان بالنشر <code>...registerFormOpts</code>. أمّا <code>validators</code> و<code>validationLogic</code> و<code>onSubmit</code> فبقيت كما هي، وهذا مقصود: الخُطّاف الجديد يقبل خيارات <code>useForm</code> كلّها، فلا تهاجر إلى واجهة أخرى. والنوع ما زال يصل إلى أسماء الحقول، لأنّ <code>registerFormOpts</code> مبنيّ على مخطّط <code>Zod</code> نفسه، فتمرير اسم حقل غير موجود إلى <code>form.Field</code> يبقى خطأ يرفضه المترجم.</p>
+<p>لاحظ سطر الاستيراد الأوّل: ما زال يجلب <code>useForm</code> مع أنّ الملف لم يعد يستعمله؛ فضلٌ من إعادة الهيكلة لم يُزل بعد، وتركه لا يغيّر السلوك لأنّ المترجم لا يشكو من استيراد غير مستعمل بهذا الإعداد. أمّا التشغيل فلا يتغيّر فيه شيء: تُحدِّث الصفحة، وتكتب في الحقول، وترسل، فتصل القيم إلى <code>onSubmit</code> كما وصلت قبل دقائق. هذا هو الاختبار الذي يثبت أنّ إعادة الهيكلة لم تكسر شيئًا، وأنّ الخُطّاف الجديد، بسجلّيه الفارغين، مجرّد غلاف حول المثيل القديم.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--refactoring-our-form-and-using-useappform--form.png" alt="استمارة التسجيل بعد إعادة التنظيم: حقول الاسم الأول والعنوان وكلمة المرور وتأكيدها، ثم المهارات الثلاث، ثم مربّع الشروط، ثم زرّا الحفظ"></p>
+<p>الواجهة في الصورة هي نفسها التي تركتها الدرس السابق، ولا أثر فيها للخُطّاف الجديد. على خلفية داكنة يظهر حقل <code>First Name</code> وفي داخله العبارة الإرشادية <code>John Doe</code> وتحته <code>Your First Name.</code>، ثم حقل <code>Street</code> بعبارته <code>Street</code> ووصفه <code>Your street address.</code>، ثم <code>Password</code> ووصفه الذي يذكر شرط ثمانية أحرف، ثم <code>Confirm Password</code>. بعدها قسم <code>Skills</code> بوصفه <code>Your skills and expertise.</code>، وفيه ثلاثة صفوف: <code>HTML</code> و<code>CSS</code> و<code>JavaScript</code>، ولكلّ صفّ قائمة اختيار على القيمة <code>Beginner</code> وزرّ <code>Remove</code> أحمر، ثم زرّ <code>Add Skill</code> عريض. في الأسفل مربّع <code>Accept Terms</code> غير محدَّد، ثم زرّا <code>Save</code> و<code>Save &amp; Go back</code>. وعلى الحافة اليمنى للنافذة يظهر زرّ لوحة أدوات التطوير الدائري.</p>
+<p>غياب حقل الاسم الأخير ليس خطأً: هو داخل <code>form.Subscribe</code> لا يُعرض إلّا بعد أن تُكتب قيمة في الاسم الأول. وغياب حقلي العمر والبريد مقصود أيضًا في هذا الفرع. أمّا ما تغيّر فعلًا فليس في الشاشة: الاستمارة الآن تنادي خُطّافًا يملك سياق الحقل وسياق الاستمارة، وسجلّاه فارغان ينتظران مكوّنات الدرس القادم.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>احذف <code>useForm</code> من سطر الاستيراد في <code>RegisterForm.tsx</code> ثم أرسل الاستمارة. إن عملت كما كانت، فقد أثبتت أنّ الاستبدال كامل وأنّ الاستيراد المتبقّي أثرٌ فقط.</li>
+<li>أعد تسمية <code>registerFormOpts</code> إلى <code>registerFormOptions</code> في <code>shared.ts</code> وفي موضع استعماله، ولاحظ أنّ أسماء الحقول ما زالت تُقترح في <code>form.Field</code>، لأنّ النوع يأتي من القيم الافتراضية لا من اسم التصدير.</li>
+<li>أضف حقلًا جديدًا إلى المخطّط وإلى <code>defaultValues</code> مثل <code>nickname</code>، ثم اكتب <code>form.Field name=&quot;nick&quot;</code> وتأمّل رفض المترجم. هكذا ترى أنّ الملف المشترك صار مرجع أسماء الحقول.</li>
+<li>اكتب في ملف مؤقّت استمارة صغيرة تنادي <code>useAppForm</code> بالقيم الافتراضية نفسها وترسلها بلا واجهة، ثم افتح <code>src/hooks/form.tsx</code> وسجّل مكوّنًا واحدًا في <code>fieldComponents</code> وأعد التجربة: ستجد أنّ الخُطّاف تغيّر، لا الاستمارة.</li>
+<li>انقل <code>form-context.tsx</code> إلى مجلّد آخر وحدّث مساره في <code>form.tsx</code> وحدها، وتأكّد أنّ كلّ شيء ما زال يعمل؛ المهمّ أن يبقى السياق نفسه هو المُمرَّر إلى المولّد.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=6105s">فيديو الدرس: Refactoring Our Form &amp; Using useAppForm</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/useAppForm-1">شيفرة الدرس: فرع useAppForm-1</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/guides/form-composition">التوثيق الرسمي: تركيب النماذج في TanStack Form</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/overview">التوثيق الرسمي: نظرة عامة على TanStack Form</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Refactoring Our Form &amp; Using useAppForm» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي. وما أضافه المترجم من توضيح لا يُنسب إلى المؤلف.</p>
+</blockquote>
+`,r={book:s,chapter:o,chapterTitle:e,slug:a,title:n,headings:c,html:t};export{s as book,o as chapter,e as chapterTitle,r as default,c as headings,t as html,a as slug,n as title};

@@ -1,0 +1,74 @@
+const s="tanstack-router",e="router",t="دورة TanStack Router الكاملة",n="installation",c="التثبيت (Installation)",a=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"لماذا-نبدأ-من-مشروع-جديد",text:"لماذا نبدأ من مشروعٍ جديد؟"},{depth:2,id:"الحزم-التي-سنثبتها",text:"الحزمُ التي سنثبّتها"},{depth:2,id:"ربط-الموجه-بإعدادات-vite",text:"ربطُ الموجّه بإعدادات Vite"},{depth:2,id:"تفعيل-tailwind-في-ملف-الأنماط",text:"تفعيلُ Tailwind في ملفّ الأنماط"},{depth:2,id:"نقطة-الدخول",text:"نقطةُ الدخول"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],o=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في هذا الدرس نُنشئ تطبيقًا جديدًا من الصفر وندخل عليه <code>TanStack Router</code>: مشروعُ <code>Vite</code> مبنيٌّ على <code>React</code> و<code>TypeScript</code>، ثم إضافةُ موجّه <code>TanStack Router</code> وأدوات المطوّر وإضافتِه الخاصة بـ<code>Vite</code>، وأخيرًا ربطُ كل ذلك بإعدادات البناء حتى يعمل المشروعُ كما في الصورة.</p>
+<p>الخطواتُ هنا مرتّبةٌ على شكل «حلقة صغيرة»: إنشاءُ المشروع، ثم تثبيتُ الحزم، ثم تعديلُ ملفّ الإعدادات، ثم تشغيلُ التطبيق للتأكّد من أنّ شيئًا لم ينكسر. وأيّ خطأ في الترتيب يظهر مباشرةً في المتصفّح، فالدرس ينتهي بمشروعٍ يعمل.</p>
+<h2 id="لماذا-نبدأ-من-مشروع-جديد">لماذا نبدأ من مشروعٍ جديد؟</h2>
+<p>أداةُ <code>Vite</code> توفّر أمرًا ينشئ مشروعًا كاملًا بسؤالين: اسمُ المشروع، وإطارُ العمل الذي تريده، وهل تريد <code>TypeScript</code> أم لا. والأمرُ الذي سننفّذه هو <code>npm create vite@latest</code>.</p>
+<p>والمؤلّفُ يعرض عليك في هذه الخطوة قوالبَ جاهزة، أحدُها يتضمّن <code>TanStack Router</code> أصلًا، لكنه يتجاوزها عن قصد. والسببُ عمليٌّ لا تشغيلي: هو يريد أن يريك التثبيتَ من الصفر، لأنّ قارئَ الدرس قد يكون لديه مشروعٌ قائمٌ يريد إضافةَ الموجّه إليه، فتطبيقُ الخطواتِ على مشروعٍ جديدٍ لا يجيب عن سؤاله.</p>
+<p>أمّا اختيارُ أداة البناء فمقرَّرٌ أيضًا: تدعم المكتبةُ عدةَ أدواتِ تجميع، منها <code>Vite</code> الذي سنستخدمه، كما تدعم <code>Webpack</code> و<code>ES Build</code>. و<code>Vite</code> خيارٌ مناسبٌ هنا لأنّ إضافةَ الموجّه تُسجَّل في ملفّ إعداداته ببساطة.</p>
+<h2 id="الحزم-التي-سنثبتها">الحزمُ التي سنثبّتها</h2>
+<ul>
+<li><code>@tanstack/react-router</code> — مكتبةُ الموجّه نفسها، وتُثبَّت مع التطبيق.</li>
+<li><code>@tanstack/react-router-devtools</code> — أدواتُ المطوّر الخاصة بالموجّه، وتُثبَّت معها.</li>
+<li><code>@tanstack/router-plugin</code> — إضافةُ <code>Vite</code> التي تولّد شجرةَ المسارات وأنواعَها، وتُثبَّت ضمن اعتماديات التطوير.</li>
+<li><code>tailwindcss</code> مع <code>@tailwindcss/vite</code> — للتنسيق السريع في أمثلة الدورة.</li>
+</ul>
+<p>ولأنّ <code>Vite</code> يتكفّل بالبناء، فإنّ تثبيتَ هذه الحزم يتمّ بسطرٍ واحدٍ لكل مجموعة: <code>npm install</code> للاعتماديات العادية، و<code>npm install -D</code> لاعتماديات التطوير.</p>
+<h2 id="ربط-الموجه-بإعدادات-vite">ربطُ الموجّه بإعدادات <code>Vite</code></h2>
+<p>لا يكفي تثبيتُ الحزم؛ على <code>Vite</code> أن يعرف أنّ المشروع يستخدم موجّهًا مولِّدًا. كلُّ ما يلزم هو سطرُ استيرادٍ لإضافة <code>TanStack Router</code>، وإضافتُها إلى مصفوفة <code>plugins</code> قبل إضافة <code>React</code>، مع تمرير <code>target</code> الذي يحدّد إطارَ العمل المستهدَف (ويمكن أن يكون <code>solid</code> أيضًا):</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vite&quot;</span>;
+<span class="hljs-keyword">import</span> react <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@vitejs/plugin-react&quot;</span>;
+<span class="hljs-keyword">import</span> tailwindcss <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tailwindcss/vite&quot;</span>;
+<span class="hljs-keyword">import</span> { tanstackRouter } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/router-plugin/vite&quot;</span>;
+
+<span class="hljs-comment">// https://vite.dev/config/</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-title function_">tanstackRouter</span>({
+      <span class="hljs-attr">target</span>: <span class="hljs-string">&quot;react&quot;</span>,
+    }),
+    <span class="hljs-title function_">react</span>(),
+    <span class="hljs-title function_">tailwindcss</span>(),
+  ],
+});
+</code></pre>
+<p>والترتيبُ الذي اختاره المؤلّف مقصود: إضافةُ الموجّه تسبق إضافةَ <code>React</code> في مصفوفة <code>plugins</code>. (توضيحٌ من عندي: إضافةُ <code>React</code> هي ما يترجم ملفات <code>tsx</code> إلى كودٍ يعمل في المتصفّح، أمّا إضافةُ الموجّه فمهمّتها أن تقرأ ملفات المسارات وتولّد شجرةَ المسارات وأنواعَها من تحتها.) أمّا إضافةُ <code>Tailwind</code> فتأتي في الآخر، فمهمّتها تنسيقُ الصفحة لا أكثر.</p>
+<h2 id="تفعيل-tailwind-في-ملف-الأنماط">تفعيلُ Tailwind في ملفّ الأنماط</h2>
+<p>بعد تسجيل الإضافة، تبقى خطوةٌ صغيرة: تعريفُ Tailwind في ملفّ الأنماط العامّ <code>src/index.css</code>، وتُكتب سطرًا واحدًا في أعلى الملف:</p>
+<p><code>@import &quot;tailwindcss&quot;;</code></p>
+<p>ويُنقَح المؤلّفُ في أثناء ذلك أنماطَ المشروع الافتراضية: يحذفُ ما يخصّ <code>body</code> و<code>h1</code> لأنّ صفحاتِ التطبيق ستُنسَّق من الآن على طريقة <code>Tailwind</code>، ويُبقي أنماطَ عنصر الجذر <code>root</code> وأنماطَ الأزرار وأنماطَ الوضع الفاتح والداكن.</p>
+<h2 id="نقطة-الدخول">نقطةُ الدخول</h2>
+<p>أمّا ملفُّ الدخول <code>src/main.tsx</code> فلم يتغيّر في هذا الدرس، ومع ذلك من المهمّ أن نعرف شكله، لأنّه هو الموضعُ الذي سيُركَّب فيه الموجّه في الدرس التالي: تُستورد الأنماطُ من <code>index.css</code> (وهو الملف الذي أضفنا إليه <code>Tailwind</code>)، ويُركَّب <code>&lt;App /&gt;</code> داخل <code>StrictMode</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">StrictMode</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>
+<span class="hljs-keyword">import</span> { createRoot } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-dom/client&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;./index.css&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.tsx&#x27;</span>
+
+<span class="hljs-title function_">createRoot</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;root&#x27;</span>)!).<span class="hljs-title function_">render</span>(
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">StrictMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">StrictMode</span>&gt;</span></span>,
+)
+</code></pre>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--installation--home.png" alt="صفحةُ البداية الافتراضية لمشروع  تعمل في المتصفّح بعد تثبيت موجّه  وإضافة "></p>
+<p>هذه صفحةُ البداية الافتراضية لمشروع <code>Vite</code>: شعارا <code>Vite</code> و<code>React</code> في الأعلى، وعنوانُ «<code>Vite + React</code>»، وزرٌّ يعدّ الضغطات ونصّه <code>count is 0</code>، وتحتَه تذكيرٌ بملفّ <code>src/App.tsx</code>، وسطرٌ يطلب الضغطَ على الشعارين. ما المهمُّ فيها أنّ المشروعَ <strong>يعمل</strong>: لم يتعطّل شيءٌ بعد إضافةِ الموجّه، وأُزيلت الأنماطُ الافتراضية التي كانت تتعارض مع تنسيق <code>Tailwind</code>.</p>
+<p>ولم تُضَف بعدُ صفحةٌ ولا مسار: هذه نقطةُ انطلاقٍ فقط. الخطوةُ التالية في الدورة هي أن نُركّب الموجّه في <code>src/main.tsx</code> وننشئ أولَ مسار.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>نفّذ <code>npm create vite@latest</code>، واختر اسمًا للمشروع، ثم <code>React</code> ثم <code>TypeScript</code>، ثم ادخل إلى المجلّد ونفّذ <code>npm install</code>.</li>
+<li>ثبّت المكتبات: <code>npm install @tanstack/react-router @tanstack/react-router-devtools</code>، ثم <code>npm install -D @tanstack/router-plugin</code>، ثم <code>npm install tailwindcss @tailwindcss/vite</code>.</li>
+<li>عدّل <code>vite.config.ts</code> كما في المثال أعلاه: استيرادُ إضافةِ الموجّه، وتسجيلُها في <code>plugins</code> قبل إضافة <code>React</code>، مع <code>target: &quot;react&quot;</code>.</li>
+<li>أضِف السطرَ <code>@import &quot;tailwindcss&quot;;</code> في أعلى <code>src/index.css</code>، واحذف أنماطَ <code>body</code> و<code>h1</code> الافتراضية.</li>
+<li>نفّذ <code>npm run dev</code>، وافتح العنوانَ الذي يظهر في الطرفية، وتأكّد من أن الصفحة تُشبه الصورة أعلاه وأنّ عدّادَ الضغطات يتحرّك.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=165s">فيديو الدرس: التثبيت</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/app-init">شيفرة الدرس: فرع app-init</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/overview">التوثيق الرسمي لـ TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «التثبيت» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,d={book:s,chapter:e,chapterTitle:t,slug:n,title:c,headings:a,html:o};export{s as book,e as chapter,t as chapterTitle,d as default,a as headings,o as html,n as slug,c as title};

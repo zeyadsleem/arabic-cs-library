@@ -1,0 +1,452 @@
+const s="kinney",a="react-performance",n="أداء React",l="separating-actions-from-state-two-contexts",t="فصل الإجراءات عن الحالة: سياقان",p=[{depth:2,id:"مشكلة-السياق-الواحد",text:"مشكلة السياق الواحد"},{depth:2,id:"حل-السياقين",text:"حل السياقين"},{depth:2,id:"خطافات-مخصصة-لواجهة-نظيفة",text:"خُطّافات مخصّصة لواجهة نظيفة"},{depth:2,id:"استخدام-السياقين-المفصولين",text:"استخدام السياقين المفصولين"},{depth:2,id:"نمط-متقدم-بديل-usereducer",text:"نمط متقدّم: بديل useReducer"},{depth:2,id:"مثال-واقعي-مصادقة-المستخدم",text:"مثال واقعي: مصادقة المستخدم"},{depth:2,id:"فوائد-الاختبار",text:"فوائد الاختبار"},{depth:2,id:"متى-تستخدم-هذا-النمط",text:"متى تستخدم هذا النمط"},{depth:2,id:"مقايضات-يجب-مراعاتها",text:"مقايضات يجب مراعاتها"}],c=`<p>سياق React (Context) أداة قوية لمشاركة الحالة بين المكوّنات، لكنه يحمل معه فخًّا في الأداء يقع فيه معظمنا في مرحلة ما: كلما تغيّرت قيمة السياق، أُعيد تصيير كل مستهلك له. ويصبح هذا مؤلمًا بشكل خاص عندما تمرّر الحالة ودوال تحديثها معًا عبر السياق نفسه — لأن إنشاء دوال التحديث تلك داخل المكوّن مباشرةً يعني أن قيمة السياق تتغيّر مع كل تصيير، حتى إذا لم تتغيّر الحالة الفعلية.</p>
+<p>والحل؟ افصل سياقاتك. ضع حالتك في سياق والإجراءات في سياق آخر. بهذه الطريقة، لن يُعاد تصيير المكوّنات التي تحتاج إلى قراءة الحالة فقط عند إعادة إنشاء دوال الإجراءات، ولن يُعاد تصيير المكوّنات التي تحتاج إلى إرسال الإجراءات فقط عندما تتغيّر الحالة. لنستكشف كيف ننفّذ هذا النمط بفعالية.</p>
+<h2 id="مشكلة-السياق-الواحد">مشكلة السياق الواحد</h2>
+<p>إليك ما يفعله معظمنا أولًا — ولماذا يضرّ ذلك بالأداء:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ The performance trap</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">TodoContext</span> = createContext&lt;{
+  <span class="hljs-attr">todos</span>: <span class="hljs-title class_">Todo</span>[];
+  <span class="hljs-attr">addTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">text</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">toggleTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">deleteTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+} | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">TodoProvider</span>(<span class="hljs-params">{ children }: { children: React.ReactNode }</span>) {
+  <span class="hljs-keyword">const</span> [todos, setTodos] = useState&lt;<span class="hljs-title class_">Todo</span>[]&gt;([]);
+
+  <span class="hljs-comment">// These functions are recreated on every render</span>
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">addTodo</span> = (<span class="hljs-params"><span class="hljs-attr">text</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+    <span class="hljs-title function_">setTodos</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> [...prev, { <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(), text, <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span> }]);
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">toggleTodo</span> = (<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+    <span class="hljs-title function_">setTodos</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span>
+      prev.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">todo</span>) =&gt;</span> (todo.<span class="hljs-property">id</span> === id ? { ...todo, <span class="hljs-attr">completed</span>: !todo.<span class="hljs-property">completed</span> } : todo)),
+    );
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">deleteTodo</span> = (<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+    <span class="hljs-title function_">setTodos</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> prev.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">todo</span>) =&gt;</span> todo.<span class="hljs-property">id</span> !== id));
+  };
+
+  <span class="hljs-comment">// This value object is recreated on every render</span>
+  <span class="hljs-keyword">const</span> value = { todos, addTodo, toggleTodo, deleteTodo };
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TodoContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{value}</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">TodoContext.Provider</span>&gt;</span></span>;
+}
+</code></pre>
+<p>في كل مرة يُصيّر <code>TodoProvider</code> — ويحدث ذلك كلما تغيّرت <code>todos</code> — تُنشأ مراجع دوال جديدة لـ <code>addTodo</code> و<code>toggleTodo</code> و<code>deleteTodo</code>. ولأن كائن <code>value</code> بأكمله يُعاد إنشاؤه أيضًا، سيُعاد تصيير كل مكوّن يستهلك هذا السياق، حتى إن كان يهتم فقط بقراءة المهام الحالية ولا يحتاج إلى دوال الإجراءات.</p>
+<h2 id="حل-السياقين">حل السياقين</h2>
+<p>لنقسّم هذا إلى سياقين منفصلين: واحد للحالة وآخر للإجراءات:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Split contexts for better performance</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">TodoStateContext</span> = createContext&lt;<span class="hljs-title class_">Todo</span>[]&gt;([]);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">TodoActionsContext</span> = createContext&lt;{
+  <span class="hljs-attr">addTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">text</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">toggleTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">deleteTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+} | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">TodoProvider</span>(<span class="hljs-params">{ children }: { children: React.ReactNode }</span>) {
+  <span class="hljs-keyword">const</span> [todos, setTodos] = useState&lt;<span class="hljs-title class_">Todo</span>[]&gt;([]);
+
+  <span class="hljs-comment">// Memoize actions so they have stable references</span>
+  <span class="hljs-keyword">const</span> actions = <span class="hljs-title function_">useMemo</span>(
+    <span class="hljs-function">() =&gt;</span> ({
+      <span class="hljs-attr">addTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">text</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+        <span class="hljs-title function_">setTodos</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> [
+          ...prev,
+          {
+            <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(),
+            text,
+            <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span>,
+          },
+        ]);
+      },
+
+      <span class="hljs-attr">toggleTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+        <span class="hljs-title function_">setTodos</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span>
+          prev.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">todo</span>) =&gt;</span> (todo.<span class="hljs-property">id</span> === id ? { ...todo, <span class="hljs-attr">completed</span>: !todo.<span class="hljs-property">completed</span> } : todo)),
+        );
+      },
+
+      <span class="hljs-attr">deleteTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+        <span class="hljs-title function_">setTodos</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> prev.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">todo</span>) =&gt;</span> todo.<span class="hljs-property">id</span> !== id));
+      },
+    }),
+    [],
+  ); <span class="hljs-comment">// Empty dependency array since we only use setTodos</span>
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TodoStateContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{todos}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">TodoActionsContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{actions}</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">TodoActionsContext.Provider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">TodoStateContext.Provider</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>الآن عندما تتغيّر مصفوفة todos، لن يُعاد تصيير إلا المكوّنات المشتركة في <code>TodoStateContext</code>. أما المكوّنات التي تحتاج إلى إرسال الإجراءات فقط فتبقى دون مساس.</p>
+<h2 id="خطافات-مخصصة-لواجهة-نظيفة">خُطّافات مخصّصة لواجهة نظيفة</h2>
+<p>غلّف استهلاك السياق في خُطّافات مخصّصة لتوفير واجهة برمجية أنظف ومعالجة أخطاء أفضل:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">useTodos</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> todos = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">TodoStateContext</span>);
+  <span class="hljs-keyword">if</span> (todos === <span class="hljs-literal">undefined</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;useTodos must be used within a TodoProvider&#x27;</span>);
+  }
+  <span class="hljs-keyword">return</span> todos;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">useTodoActions</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> actions = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">TodoActionsContext</span>);
+  <span class="hljs-keyword">if</span> (!actions) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;useTodoActions must be used within a TodoProvider&#x27;</span>);
+  }
+  <span class="hljs-keyword">return</span> actions;
+}
+
+<span class="hljs-comment">// Convenience hook for components that need both</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">useTodosWithActions</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">todos</span>: <span class="hljs-title function_">useTodos</span>(),
+    <span class="hljs-attr">actions</span>: <span class="hljs-title function_">useTodoActions</span>(),
+  };
+}
+</code></pre>
+<h2 id="استخدام-السياقين-المفصولين">استخدام السياقين المفصولين</h2>
+<p>الآن يمكن لمكوّناتك أن تكون أكثر انتقائية فيما تشترك فيه:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Only re-renders when todos array changes</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">TodoList</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> todos = <span class="hljs-title function_">useTodos</span>(); <span class="hljs-comment">// Only subscribes to state</span>
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+      {todos.map((todo) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">TodoItem</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{todo.id}</span> <span class="hljs-attr">todo</span>=<span class="hljs-string">{todo}</span> /&gt;</span>
+      ))}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// ✅ Only re-renders when its own todo prop changes</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">TodoItem</span>(<span class="hljs-params">{ todo }: { todo: Todo }</span>) {
+  <span class="hljs-keyword">const</span> { toggleTodo, deleteTodo } = <span class="hljs-title function_">useTodoActions</span>(); <span class="hljs-comment">// Only subscribes to actions</span>
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">checked</span>=<span class="hljs-string">{todo.completed}</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{()</span> =&gt;</span> toggleTodo(todo.id)} /&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">textDecoration:</span> <span class="hljs-attr">todo.completed</span> ? &#x27;<span class="hljs-attr">line-through</span>&#x27; <span class="hljs-attr">:</span> &#x27;<span class="hljs-attr">none</span>&#x27; }}&gt;</span>{todo.text}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> deleteTodo(todo.id)}&gt;Delete<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// ✅ Never re-renders after mount (stable action references)</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">AddTodoForm</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { addTodo } = <span class="hljs-title function_">useTodoActions</span>();
+  <span class="hljs-keyword">const</span> [text, setText] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;&#x27;</span>);
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleSubmit</span> = (<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-title class_">React</span>.<span class="hljs-title class_">FormEvent</span></span>) =&gt; {
+    e.<span class="hljs-title function_">preventDefault</span>();
+    <span class="hljs-keyword">if</span> (text.<span class="hljs-title function_">trim</span>()) {
+      <span class="hljs-title function_">addTodo</span>(text.<span class="hljs-title function_">trim</span>());
+      <span class="hljs-title function_">setText</span>(<span class="hljs-string">&#x27;&#x27;</span>);
+    }
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">onSubmit</span>=<span class="hljs-string">{handleSubmit}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{text}</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setText(e.target.value)} placeholder=&quot;Add a todo...&quot; /&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>Add<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>لاحظ كيف لا يُعاد تصيير <code>TodoItem</code> و<code>AddTodoForm</code> أبدًا عندما تتغيّر مصفوفة المهام — فهما يهتمّان بالإجراءات فقط. في المقابل، يُعاد تصيير <code>TodoList</code> عندما تتغيّر المهام لكنه لا يتأثّر بإعادة إنشاء دوال الإجراءات.</p>
+<h2 id="نمط-متقدم-بديل-usereducer">نمط متقدّم: بديل <code>useReducer</code></h2>
+<p>لإدارة حالة أكثر تعقيدًا، يمكنك دمج هذا النمط مع <code>useReducer</code> للحصول على تحديثات أكثر قابلية للتوقّع:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">TodoAction</span> =
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;ADD_TODO&#x27;</span>; <span class="hljs-attr">text</span>: <span class="hljs-built_in">string</span> }
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;TOGGLE_TODO&#x27;</span>; <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span> }
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;DELETE_TODO&#x27;</span>; <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span> };
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">todoReducer</span>(<span class="hljs-params"><span class="hljs-attr">state</span>: <span class="hljs-title class_">Todo</span>[], <span class="hljs-attr">action</span>: <span class="hljs-title class_">TodoAction</span></span>): <span class="hljs-title class_">Todo</span>[] {
+  <span class="hljs-keyword">switch</span> (action.<span class="hljs-property">type</span>) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;ADD_TODO&#x27;</span>:
+      <span class="hljs-keyword">return</span> [
+        ...state,
+        {
+          <span class="hljs-attr">id</span>: crypto.<span class="hljs-title function_">randomUUID</span>(),
+          <span class="hljs-attr">text</span>: action.<span class="hljs-property">text</span>,
+          <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span>,
+        },
+      ];
+
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;TOGGLE_TODO&#x27;</span>:
+      <span class="hljs-keyword">return</span> state.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">todo</span>) =&gt;</span>
+        todo.<span class="hljs-property">id</span> === action.<span class="hljs-property">id</span> ? { ...todo, <span class="hljs-attr">completed</span>: !todo.<span class="hljs-property">completed</span> } : todo,
+      );
+
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;DELETE_TODO&#x27;</span>:
+      <span class="hljs-keyword">return</span> state.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">todo</span>) =&gt;</span> todo.<span class="hljs-property">id</span> !== action.<span class="hljs-property">id</span>);
+
+    <span class="hljs-attr">default</span>:
+      <span class="hljs-keyword">return</span> state;
+  }
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">TodoProvider</span>(<span class="hljs-params">{ children }: { children: React.ReactNode }</span>) {
+  <span class="hljs-keyword">const</span> [todos, dispatch] = <span class="hljs-title function_">useReducer</span>(todoReducer, []);
+
+  <span class="hljs-comment">// Actions stay completely stable across renders</span>
+  <span class="hljs-keyword">const</span> actions = <span class="hljs-title function_">useMemo</span>(
+    <span class="hljs-function">() =&gt;</span> ({
+      <span class="hljs-attr">addTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">text</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-title function_">dispatch</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;ADD_TODO&#x27;</span>, text }),
+      <span class="hljs-attr">toggleTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-title function_">dispatch</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;TOGGLE_TODO&#x27;</span>, id }),
+      <span class="hljs-attr">deleteTodo</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-title function_">dispatch</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;DELETE_TODO&#x27;</span>, id }),
+    }),
+    [],
+  );
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TodoStateContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{todos}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">TodoActionsContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{actions}</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">TodoActionsContext.Provider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">TodoStateContext.Provider</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>مع <code>useReducer</code>، يبقى مرجع دالة <code>dispatch</code> مستقرًّا دائمًا، لذا لا يحتاج كائن الإجراءات المحفوظ إلى التغيّر أبدًا — ما يجعل هذا النهج أصدق مع الأداء.</p>
+<h2 id="مثال-واقعي-مصادقة-المستخدم">مثال واقعي: مصادقة المستخدم</h2>
+<p>إليك كيف يبدو هذا النمط في مثال أكثر تعقيدًا وواقعية:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">role</span>: <span class="hljs-string">&#x27;user&#x27;</span> | <span class="hljs-string">&#x27;admin&#x27;</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">AuthState</span> {
+  <span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span> | <span class="hljs-literal">null</span>;
+  <span class="hljs-attr">loading</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">error</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>;
+}
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">AuthAction</span> =
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;LOGIN_START&#x27;</span> }
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;LOGIN_SUCCESS&#x27;</span>; <span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span> }
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;LOGIN_ERROR&#x27;</span>; <span class="hljs-attr">error</span>: <span class="hljs-built_in">string</span> }
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;LOGOUT&#x27;</span> }
+  | { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;CLEAR_ERROR&#x27;</span> };
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">AuthStateContext</span> = createContext&lt;<span class="hljs-title class_">AuthState</span> | <span class="hljs-literal">undefined</span>&gt;(<span class="hljs-literal">undefined</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">AuthActionsContext</span> = createContext&lt;{
+  <span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">password</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+  <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">clearError</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+} | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">authReducer</span>(<span class="hljs-params"><span class="hljs-attr">state</span>: <span class="hljs-title class_">AuthState</span>, <span class="hljs-attr">action</span>: <span class="hljs-title class_">AuthAction</span></span>): <span class="hljs-title class_">AuthState</span> {
+  <span class="hljs-keyword">switch</span> (action.<span class="hljs-property">type</span>) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;LOGIN_START&#x27;</span>:
+      <span class="hljs-keyword">return</span> { ...state, <span class="hljs-attr">loading</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">error</span>: <span class="hljs-literal">null</span> };
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;LOGIN_SUCCESS&#x27;</span>:
+      <span class="hljs-keyword">return</span> { <span class="hljs-attr">user</span>: action.<span class="hljs-property">user</span>, <span class="hljs-attr">loading</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">error</span>: <span class="hljs-literal">null</span> };
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;LOGIN_ERROR&#x27;</span>:
+      <span class="hljs-keyword">return</span> { ...state, <span class="hljs-attr">loading</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">error</span>: action.<span class="hljs-property">error</span> };
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;LOGOUT&#x27;</span>:
+      <span class="hljs-keyword">return</span> { <span class="hljs-attr">user</span>: <span class="hljs-literal">null</span>, <span class="hljs-attr">loading</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">error</span>: <span class="hljs-literal">null</span> };
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;CLEAR_ERROR&#x27;</span>:
+      <span class="hljs-keyword">return</span> { ...state, <span class="hljs-attr">error</span>: <span class="hljs-literal">null</span> };
+    <span class="hljs-attr">default</span>:
+      <span class="hljs-keyword">return</span> state;
+  }
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">AuthProvider</span>(<span class="hljs-params">{ children }: { children: React.ReactNode }</span>) {
+  <span class="hljs-keyword">const</span> [state, dispatch] = <span class="hljs-title function_">useReducer</span>(authReducer, {
+    <span class="hljs-attr">user</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">loading</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">error</span>: <span class="hljs-literal">null</span>,
+  });
+
+  <span class="hljs-keyword">const</span> actions = <span class="hljs-title function_">useMemo</span>(
+    <span class="hljs-function">() =&gt;</span> ({
+      <span class="hljs-attr">login</span>: <span class="hljs-title function_">async</span> (<span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">password</span>: <span class="hljs-built_in">string</span>) =&gt; {
+        <span class="hljs-title function_">dispatch</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;LOGIN_START&#x27;</span> });
+        <span class="hljs-keyword">try</span> {
+          <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">authenticateUser</span>(email, password);
+          <span class="hljs-title function_">dispatch</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;LOGIN_SUCCESS&#x27;</span>, user });
+        } <span class="hljs-keyword">catch</span> (error) {
+          <span class="hljs-title function_">dispatch</span>({
+            <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;LOGIN_ERROR&#x27;</span>,
+            <span class="hljs-attr">error</span>: error <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Error</span> ? error.<span class="hljs-property">message</span> : <span class="hljs-string">&#x27;Login failed&#x27;</span>,
+          });
+        }
+      },
+
+      <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> {
+        <span class="hljs-title function_">dispatch</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;LOGOUT&#x27;</span> });
+      },
+
+      <span class="hljs-attr">clearError</span>: <span class="hljs-function">() =&gt;</span> {
+        <span class="hljs-title function_">dispatch</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;CLEAR_ERROR&#x27;</span> });
+      },
+    }),
+    [],
+  );
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AuthStateContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{state}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">AuthActionsContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{actions}</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">AuthActionsContext.Provider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AuthStateContext.Provider</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// Custom hooks</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">useAuthState</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> context = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">AuthStateContext</span>);
+  <span class="hljs-keyword">if</span> (context === <span class="hljs-literal">undefined</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;useAuthState must be used within an AuthProvider&#x27;</span>);
+  }
+  <span class="hljs-keyword">return</span> context;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">useAuthActions</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> context = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">AuthActionsContext</span>);
+  <span class="hljs-keyword">if</span> (!context) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;useAuthActions must be used within an AuthProvider&#x27;</span>);
+  }
+  <span class="hljs-keyword">return</span> context;
+}
+</code></pre>
+<p>الآن يمكن للمكوّنات أن تكون جراحية في تحديد ما تشترك فيه:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Only re-renders when auth state changes</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UserProfile</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { user, loading } = <span class="hljs-title function_">useAuthState</span>();
+
+  <span class="hljs-keyword">if</span> (loading) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Please log in<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Welcome, {user.name}!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{user.email}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-comment">// ✅ Never re-renders after mount</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">LoginForm</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { login } = <span class="hljs-title function_">useAuthActions</span>();
+  <span class="hljs-keyword">const</span> [email, setEmail] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;&#x27;</span>);
+  <span class="hljs-keyword">const</span> [password, setPassword] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;&#x27;</span>);
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleSubmit</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-title class_">React</span>.<span class="hljs-title class_">FormEvent</span></span>) =&gt; {
+    e.<span class="hljs-title function_">preventDefault</span>();
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">login</span>(email, password);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">onSubmit</span>=<span class="hljs-string">{handleSubmit}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;email&quot;</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{email}</span>
+        <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setEmail(e.target.value)}
+        placeholder=&quot;Email&quot;
+      /&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{password}</span>
+        <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setPassword(e.target.value)}
+        placeholder=&quot;Password&quot;
+      /&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>Log In<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="فوائد-الاختبار">فوائد الاختبار</h2>
+<p>من الفوائد التي لا تُقدَّر حقّ قدرها في هذا النمط أنه يسهّل الاختبار كثيرًا. يمكنك اختبار منطق الحالة ومنطق الإجراءات كلًّا على حدة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Test state transformations in isolation</span>
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;todoReducer&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;adds a todo&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">initialState</span>: <span class="hljs-title class_">Todo</span>[] = [];
+    <span class="hljs-keyword">const</span> action = { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;ADD_TODO&#x27;</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;Learn React&#x27;</span> } <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;
+    <span class="hljs-keyword">const</span> newState = <span class="hljs-title function_">todoReducer</span>(initialState, action);
+
+    <span class="hljs-title function_">expect</span>(newState).<span class="hljs-title function_">toHaveLength</span>(<span class="hljs-number">1</span>);
+    <span class="hljs-title function_">expect</span>(newState[<span class="hljs-number">0</span>].<span class="hljs-property">text</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">&#x27;Learn React&#x27;</span>);
+    <span class="hljs-title function_">expect</span>(newState[<span class="hljs-number">0</span>].<span class="hljs-property">completed</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-literal">false</span>);
+  });
+
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;toggles a todo&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">initialState</span>: <span class="hljs-title class_">Todo</span>[] = [{ <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;Learn React&#x27;</span>, <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span> }];
+    <span class="hljs-keyword">const</span> action = { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;TOGGLE_TODO&#x27;</span>, <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;1&#x27;</span> } <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;
+    <span class="hljs-keyword">const</span> newState = <span class="hljs-title function_">todoReducer</span>(initialState, action);
+
+    <span class="hljs-title function_">expect</span>(newState[<span class="hljs-number">0</span>].<span class="hljs-property">completed</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-literal">true</span>);
+  });
+});
+
+<span class="hljs-comment">// Test components with mock contexts</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">MockTodoProvider</span> = (<span class="hljs-params">{
+  children,
+  todos = [],
+}: {
+  children: React.ReactNode;
+  todos?: Todo[];
+}</span>) =&gt; {
+  <span class="hljs-keyword">const</span> mockActions = {
+    <span class="hljs-attr">addTodo</span>: vi.<span class="hljs-title function_">fn</span>(),
+    <span class="hljs-attr">toggleTodo</span>: vi.<span class="hljs-title function_">fn</span>(),
+    <span class="hljs-attr">deleteTodo</span>: vi.<span class="hljs-title function_">fn</span>(),
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TodoStateContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{todos}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">TodoActionsContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{mockActions}</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">TodoActionsContext.Provider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">TodoStateContext.Provider</span>&gt;</span></span>
+  );
+};
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;TodoList renders todos&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> todos = [
+    { <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;Learn React&#x27;</span>, <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span> },
+    { <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;Build an app&#x27;</span>, <span class="hljs-attr">completed</span>: <span class="hljs-literal">true</span> },
+  ];
+
+  <span class="hljs-title function_">render</span>(
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MockTodoProvider</span> <span class="hljs-attr">todos</span>=<span class="hljs-string">{todos}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">TodoList</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">MockTodoProvider</span>&gt;</span></span>,
+  );
+
+  <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Learn React&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+  <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Build an app&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+});
+</code></pre>
+<h2 id="متى-تستخدم-هذا-النمط">متى تستخدم هذا النمط</h2>
+<p>يتألّق نمط السياقين هذا عندما:</p>
+<ul>
+<li><strong>لديك مستهلكون كثر</strong>: تحتاج مكوّنات متعددة إلى الحالة أو الإجراءات (وليس بالضرورة إلى كليهما)</li>
+<li><strong>تحديثات حالة متكررة</strong>: تتغيّر حالتك كثيرًا وتريد تقليل عمليات إعادة التصيير إلى أدنى حد</li>
+<li><strong>منطق إجراءات معقّد</strong>: تتضمّن إجراءاتك عمليات غير متزامنة أو تحويلات حالة معقّدة</li>
+<li><strong>الأداء حرج</strong>: تُحسّن من أجل أقل عدد ممكن من عمليات إعادة التصيير في شجرة مكوّنات كبيرة</li>
+</ul>
+<p>وقد يكون مبالغة في الحالات التالية:</p>
+<ul>
+<li><strong>حالة بسيطة ونادرة التغيّر</strong>: مفتاح تبديل يتغيّر بين حين وآخر لا يحتاج إلى هذا التعقيد</li>
+<li><strong>أشجار مكوّنات صغيرة</strong>: إذا كانت لديك مكوّنات قليلة فقط، فلا تستحق فائدة الأداء الشيفرة الإضافية</li>
+<li><strong>الحالة والإجراءات تُستخدمان معًا دائمًا</strong>: إذا كان كل مكوّن يحتاج إلى قدرتي القراءة والكتابة معًا</li>
+</ul>
+<h2 id="مقايضات-يجب-مراعاتها">مقايضات يجب مراعاتها</h2>
+<p><strong>المزايا:</strong></p>
+<ul>
+<li>عمليات إعادة تصيير جراحية: لا تتحدّث المكوّنات إلا عندما تتغيّر اعتماداتها المحدّدة</li>
+<li>مراجع إجراءات مستقرة: لا تسبّب دوال الإجراءات عمليات إعادة تصيير غير ضرورية</li>
+<li>قابلية اختبار أفضل: يمكن اختبار منطق الحالة والإجراءات كلًّا على حدة</li>
+<li>فصل واضح للمسؤوليات: مسارا القراءة والكتابة منفصلان صراحةً</li>
+</ul>
+<p><strong>العيوب:</strong></p>
+<ul>
+<li>شيفرة نموذجية أكثر: تحتاج إلى سياقات ومزوّدات وخُطّافات منفصلة</li>
+<li>نموذج ذهني أعقد قليلًا: يحتاج المطوّرون إلى فهم هذا الفصل</li>
+<li>احتمال مبالغة في الهندسة: قد يكون مبالغة في سيناريوهات الحالة البسيطة</li>
+</ul>
+`,e={book:s,chapter:a,chapterTitle:n,slug:l,title:t,headings:p,html:c};export{s as book,a as chapter,n as chapterTitle,e as default,p as headings,c as html,l as slug,t as title};

@@ -1,0 +1,82 @@
+const s="tanstack-form",n="form",a="دورة TanStack Form الكاملة",t="lazy-loading-form-components",o="التحميل الكسول لمكوّنات النموذج",e=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"من-الاستيراد-المباشر-إلى-الاستيراد-الكسول",text:"من الاستيراد المباشر إلى الاستيراد الكسول"},{depth:2,id:"ما-يعنيه-الاستيراد-الكسول-وقت-التشغيل",text:"ما يعنيه الاستيراد الكسول وقت التشغيل"},{depth:2,id:"إحاطة-النموذج-بحد-suspense",text:"إحاطة النموذج بحدّ Suspense"},{depth:2,id:"ما-يتغير-وما-لا-يتغير",text:"ما يتغيّر وما لا يتغيّر"},{depth:2,id:"الثمن-وميض-قصير-في-أول-زيارة",text:"الثمن: وميض قصير في أوّل زيارة"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],l=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في الدروس السابقة بنينا سجلًّا مركزيًّا لمكوّنات الحقول في ملف <code>src/hooks/form.tsx</code>، فصار كل نموذج في التطبيق يستعمل <code>field.TextInput</code> و<code>field.Select</code> و<code>field.Checkbox</code> بدلًا من كتابة عناصر <code>HTML</code> في كل مكان. هذا السجل هو ما يمنحنا الاتساق: مكوّن واحد يُعدَّل فيظهر التعديل في كل نموذج.</p>
+<p>لكنّ للاتساق ثمنًا لا يظهر في الشيفرة: <code>import</code> في أعلى الملف يعني أنّ الملفّ المستورد يدخل حزمة جافاسكربت التي تُحمَّل مع الصفحة، سواء استعمل النموذج المعروض ذلك المكوّن أم لم يستعمله. فإذا كان لديك نموذجان، أحدهما بسيط لا يحتوي إلّا حقل نص واحد، والآخر طويل فيه قوائم واختيارات متعدّدة، فإنّ الزائر الذي يفتح النموذج البسيط يحمّل شيفرة النموذج الطويل معه دون أن ينتفع بها. ومع نموّ عدد مكوّنات الحقول يتضخّم هذا الحمل الصامت.</p>
+<p>سنتعلّم في هذا الدرس كيف نحوّل هذه الاستيرادات إلى استيراد كسول، وكيف نُحيط النموذج بحدّ <code>Suspense</code> يظهر فيه بديل أثناء التحميل، ثم ننظر في الحدّ الفاصل بين ما يجب أن يبقى فوريًّا وما يجوز تأجيله.</p>
+<h2 id="من-الاستيراد-المباشر-إلى-الاستيراد-الكسول">من الاستيراد المباشر إلى الاستيراد الكسول</h2>
+<p>الملف الذي يتغيّر هو <code>src/hooks/form.tsx</code> وحده تقريبًا. لنقرأ النسخة الجديدة كاملة:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFormHook } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+<span class="hljs-keyword">import</span> { fieldContext, formContext } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./form-context&quot;</span>;
+<span class="hljs-keyword">import</span> { lazy } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">TextInput</span> = <span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;@/components/form/TextInput.tsx&quot;</span>));
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Select</span> = <span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;@/components/form/Select.tsx&quot;</span>));
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Checkbox</span> = <span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;@/components/form/Checkbox.tsx&quot;</span>));
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">SubmitButton</span> = <span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;@/components/form/SubmitButton.tsx&quot;</span>));
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> { useAppForm, withForm, withFieldGroup } = <span class="hljs-title function_">createFormHook</span>({
+  <span class="hljs-attr">fieldContext</span>: fieldContext,
+  <span class="hljs-attr">formContext</span>: formContext,
+  <span class="hljs-attr">fieldComponents</span>: {
+    <span class="hljs-title class_">TextInput</span>: <span class="hljs-title class_">TextInput</span>,
+    <span class="hljs-title class_">Select</span>: <span class="hljs-title class_">Select</span>,
+    <span class="hljs-title class_">Checkbox</span>: <span class="hljs-title class_">Checkbox</span>,
+  },
+  <span class="hljs-attr">formComponents</span>: {
+    <span class="hljs-title class_">SubmitButton</span>: <span class="hljs-title class_">SubmitButton</span>,
+  },
+});
+</code></pre>
+<p>تأمّل الفرق: لم نُضف أي مفهوم جديد إلى TanStack Form، بل غيّرنا طريقة جلب المكوّنات من نظام الوحدات. السطر <code>const TextInput = lazy(() =&gt; import(...))</code> لا يستورد الملفّ الآن؛ يستورد دالةً تُرجع وعدًا بالملفّ، ولا يُنفَّذ ذلك الوعد إلّا في اللحظة التي يُطلب فيها رسم <code>TextInput</code> فعلًا. أمّا <code>createFormHook</code> فلا يعنيه الأمر: ما زلنا نُمرّر له كائنات لها المفاتيح نفسها <code>TextInput</code> و<code>Select</code> و<code>Checkbox</code> و<code>SubmitButton</code>، فالسجل يبقى كما هو، والنماذج تستدعي <code>field.TextInput</code> كما كانت.</p>
+<p>هذه نقطة تستحق التوقّف: التحويل لم يمسّ أي ملف نموذج. <code>RegisterForm.tsx</code> لم يُعدَّل، ولا <code>TextInput.tsx</code> نفسه. التغيير كله في مكان واحد، لأنّ السجل كان نقطة العبور الوحيدة بين المكوّنات والنماذج. هذا هو العائد العملي لبناء سجل مركزي في الدرس السابق.</p>
+<h2 id="ما-يعنيه-الاستيراد-الكسول-وقت-التشغيل">ما يعنيه الاستيراد الكسول وقت التشغيل</h2>
+<p>عند الاستيراد المباشر يصل المكوّن مع الحزمة الأولى، فيكون جاهزًا لحظة التصيير. أمّا مع الاستيراد الكسول فالملفّ لم يصل بعد، والمكوّن ليس دالّة جاهزة للتنفيذ بل كائن خاص يعرفه <code>React</code> ويعرف أنّ بياناته ستأتي. عندما يصل التصيير إلى ذلك المكوّن، يرمي <code>React</code> وعدًا إلى أعلى شجرة المكوّنات، ويبحث عن أقرب حدّ <code>Suspense</code> ليعلّق الرسم عنده ويعرض البديل الذي يحدّده، ثم يعيد المحاولة بعد أن يصل الملفّ.</p>
+<p>من هنا تأتي القاعدة العملية: المكوّن الكسول لا يعمل بمعزل عن حدّ <code>Suspense</code>. لو استعملناه ولم نضع حدًّا في أي مكان أعلى منه في الشجرة، فسيرمي <code>React</code> خطأً وقت التشغيل بدل أن يعرض بديلًا. ولهذا انتقل التغيير الثاني إلى <code>src/App.tsx</code>، وهو المكان الذي يُعرض فيه النموذج.</p>
+<h2 id="إحاطة-النموذج-بحد-suspense">إحاطة النموذج بحدّ <code>Suspense</code></h2>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Suspense</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">RegisterForm</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./lib/register-form/RegisterForm&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">p</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>}&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">RegisterForm</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>
+    <span class="hljs-tag">&lt;/&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">App</span>;
+</code></pre>
+<p>لاحظ مستوى الحدّ: وُضع حول <code>RegisterForm</code> كلّه، لا حول حقل واحد داخله. وهذا اختيار مقصود. البديل <code>Loading...</code> سيظهر مكان النموذج بأكمله في أول زيارة، لأنّ أوّل رسم للنموذج يطلب أوّل حقل كسول فيصل الطلب إلى الحدّ. ولو وضعنا الحدّ داخل النموذج حول كل حقل، لحصلنا على شكل أسوأ: النموذج يظهر فارغًا ثم تمتلئ حقوله واحدًا بعد الآخر، فيقفز التخطيط أمام المستخدم.</p>
+<p>البديل نفسه مسألة تصميم لا مسألة تقنية: <code>&lt;p&gt;Loading...&lt;/p&gt;</code> هنا أبسط ما يمكن، وفي تطبيق حقيقي تريد هيكلًا عظميًّا <code>skeleton</code> يشبه شكل النموذج النهائي، لأنّ الهدف من البديل ليس إعلام المستخدم بأنّ شيئًا يحدث فقط، بل تقليل القفزة البصرية عند وصول المحتوى. ويجدر أن يكون ارتفاع البديل قريبًا من ارتفاع النموذج لا سطرًا واحدًا.</p>
+<h2 id="ما-يتغير-وما-لا-يتغير">ما يتغيّر وما لا يتغيّر</h2>
+<p>من المهم أن نفصل بين ما تغيّر فعلًا وما بقي على حاله حتى لا يتوهّم القارئ أنّ الدرس يعيد بناء النموذج:</p>
+<ul>
+<li>تغيّر ملفّ واحد للسجل، فصارت مكوّنات الحقول تُجلب كسولًا.</li>
+<li>تغيّر ملفّ الجذر، فأُحيط النموذج بحدّ تعليق مع بديل.</li>
+<li>لم يتغيّر شكل النموذج ولا سلوكه ولا أنواعه؛ السجل نفسه بالمفاتيح نفسها، والدليل النوعي <code>type</code> الذي يربط <code>name</code> بالحقل ما زال يعمل كما كان.</li>
+<li>لم تتغيّر أدوات التحقق ولا <code>formOptions</code> ولا منطق الإرسال؛ كلّها في ملفّات أخرى لم يمسّها الدرس.</li>
+</ul>
+<h2 id="الثمن-وميض-قصير-في-أول-زيارة">الثمن: وميض قصير في أوّل زيارة</h2>
+<p>قبل أن تستعجل وتعمّم هذا النمط على كل شيء، انظر إلى ما يحدث عند التحديث. في أوّل زيارة، وبينما تُطلب ملفّات المكوّنات، يظهر البديل لوقت قصير جدًّا ثم يظهر النموذج. هذا الوميض هو تكلفة الاستيراد الكسول، وهو مقبول هنا لأنّ مردوده إسقاط مكوّنات لا يحتاجها النموذج الحالي من الحزمة الأولى. لكنّه ليس مجانيًّا دائمًا: تقسيم مفرط يعني طلبات صغيرة كثيرة، وطلبات كثيرة تعني انتظارًا متسلسلًا بدلًا من انتظار واحد، فيصير النموذج أبطأ إجمالًا بعد أن كان أسرع.</p>
+<p>القاعدة التي تخرج بها من الدرس: أجّل ما لا تحتاجه كل الصفحات، وأبقِ قريبًا ما تحتاجه أوّلًا. وفي نموذج بحجم نموذج التسجيل هذا، يكفي حدّ واحد عند المدخل وأربعة استيرادات كسولة في السجل. أمّا التقسيم الأعمق — تحميل مجموعة حقول معًا عند فتح قسم اختياري، أو تأجيل نموذج كامل حتى يضغط المستخدم زرًّا — فمكانه درس آخر، ويحتاج قياسًا لا تخمينًا.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--lazy-loading-form-components--form.png" alt="نموذج التسجيل بعد التحويل إلى التحميل الكسول: حقول نصية مع أوصاف، وثلاث بطاقات مهارات تحوي قائمة مستواها «Beginner» وزر إزالة أحمر، ثم زر إضافة مهارة وزرّي الحفظ"></p>
+<p>اللقطة تُظهر النموذج بعد أن اكتمل تحميل مكوّناته: حقل الاسم الأول، ثم اسم العائلة، ثم الشارع، ثم كلمة المرور وتأكيدها، ولكلّ حقل عنوان ووصف صغير تحته. ثم قسم المهارات ببطاقاتها الثلاث: <code>HTML</code> و<code>CSS</code> و<code>JavaScript</code>، وفي كلّ بطاقة عنوان المهارة وقائمة اختيار المستوى على <code>Beginner</code> وزر إزالة أحمر، ثم زر عريض لإضافة مهارة. وأسفل النموذج خانة الموافقة على الشروط وزرّا الحفظ. المهمّ في اللقطة أنّ الشكل لم يتغيّر عمّا كان قبل الدرس: التحويل إلى التحميل الكسول لا يُرى في النتيجة إلّا في سرعة الوصول وفي البديل العابر.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>افتح أدوات مطوّري المتصفح على تبويب الشبكة، ثم أعد تحميل الصفحة وابحث عن ملفّات مكوّنات الحقول. لاحظ متى تُطلب: هل مع الحزمة الأولى أم بعد رسم النموذج؟</li>
+<li>استبدل <code>Loading...</code> بهيكل عظمي بسيط يحاكي ارتفاع النموذج، وقارن القفزة البصرية قبل التغيير وبعده.</li>
+<li>انقل حدّ <code>Suspense</code> إلى داخل <code>RegisterForm</code> حول حقل واحد فقط، ثم ارفع مستوى الشبكة إلى بطيء وراقب الفرق في ترتيب ظهور الأجزاء.</li>
+<li>أضف مكوّن حقل جديدًا إلى السجل بالطريقة نفسها، وتحقّق من أنّ <code>field.</code> ما زال يعرضه في المحرّر دون أي تعديل في النموذج.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li>شرح الدرس في دورة TanStack Form: <a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=7482s">Lazy Loading Form Components</a></li>
+<li>شيفرة الفرع الكامل: <a href="https://github.com/alialaa/tanstack-form-course/tree/lazy-loading">مستودع الدورة — الفرع <code>lazy-loading</code></a></li>
+<li>التوثيق الرسمي لسجلّات المكوّنات ودلالة <code>createFormHook</code>: <a href="https://tanstack.com/form/latest/docs/framework/react/guides/form-composition">تركيب النماذج والمكوّنات</a></li>
+</ul>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Lazy Loading Form Components» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,p={book:s,chapter:n,chapterTitle:a,slug:t,title:o,headings:e,html:l};export{s as book,n as chapter,a as chapterTitle,p as default,e as headings,l as html,t as slug,o as title};

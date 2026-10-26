@@ -1,0 +1,123 @@
+const s="kinney",p="aws",n="نشر تطبيقات الويب على AWS",o="custom-error-pages-and-spa-routing",t="صفحات الأخطاء المخصّصة وتوجيه SPA",a=[{depth:2,id:"المشكلة",text:"المشكلة"},{depth:2,id:"الإصلاح-استجابات-الأخطاء-المخصصة",text:"الإصلاح: استجابات الأخطاء المخصّصة"},{depth:2,id:"إعداد-استجابات-الأخطاء-المخصصة",text:"إعداد استجابات الأخطاء المخصّصة"},{depth:2,id:"تفكيك-الإعدادات",text:"تفكيك الإعدادات"},{depth:3,id:"errorcode",text:"ErrorCode"},{depth:3,id:"responsepagepath",text:"ResponsePagePath"},{depth:3,id:"responsecode",text:"ResponseCode"},{depth:3,id:"errorcachingminttl",text:"ErrorCachingMinTTL"},{depth:2,id:"اختبار-توجيه-spa",text:"اختبار توجيه SPA"},{depth:2,id:"جدل-200-مقابل-404",text:"جدل 200 مقابل 404"},{depth:2,id:"المواقع-متعددة-الصفحات-مقابل-تطبيقات-spa",text:"المواقع متعددة الصفحات مقابل تطبيقات SPA"}],e=`<p>إذا سبق أن نشرت تطبيقًا أحادي الصفحة إلى Vercel أو Netlify، فأنت تعرف الروتين: تضيف قاعدة <code>rewrites</code> أو ملف <code>_redirects</code> بحيث يقدّم كل مسار الملف <code>index.html</code>، ويتولى موجّهك على جانب العميل (React Router أو Vue Router أو أيًّا كان) معالجة عنوان URL. ومن دون تلك القاعدة، يُرجع تحديث الصفحة على <code>/dashboard/settings</code> خطأ 404 لأنه لا يوجد ملف في ذلك المسار — فالخادم لا يعرف أن JavaScript لديك يتولى التوجيه.</p>
+<p>إذا أردت نسخة AWS من الميزة الأساسية أثناء القراءة، فإن <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/creating-custom-error-pages.html">دليل صفحات الأخطاء المخصّصة في CloudFront</a> هو المرجع الرسمي.</p>
+<p>على AWS، توجد المشكلة نفسها، والإصلاح هو <strong>استجابات الأخطاء المخصّصة</strong> في CloudFront.</p>
+<h2 id="المشكلة">المشكلة</h2>
+<pre><code>flowchart LR
+    Browser[&quot;Browser requests /dashboard/settings&quot;] --&gt; CloudFront[&quot;CloudFront&quot;]
+    CloudFront --&gt; S3[&quot;S3 origin&quot;]
+    S3 --&gt; Missing[&quot;Missing object returns 403 or 404&quot;]
+    Missing --&gt; Rewrite[&quot;Custom error response serves /index.html&quot;]
+    Rewrite --&gt; Router[&quot;SPA router renders /dashboard/settings&quot;]
+</code></pre>
+<p>إليك ما يحدث عندما ينتقل مستخدم إلى <code>/dashboard/settings</code> على توزيع CloudFront لديك:</p>
+<ol>
+<li>يتلقى CloudFront طلب <code>/dashboard/settings</code>.</li>
+<li>يفحص CloudFront ذاكرة الحافة المؤقتة — لا كائن مخزّن مؤقتًا لذلك المسار.</li>
+<li>يمرّر CloudFront الطلب إلى S3.</li>
+<li>تبحث S3 عن كائن بمفتاح <code>dashboard/settings</code>. ولا يوجد كائن كهذا.</li>
+<li>تُرجع S3 خطأ <strong>403 Forbidden</strong> (لأنه مع التحكم في الوصول إلى الأصل، تُرجع S3 403 بدلًا من 404 للكائنات المفقودة — مساعد، أليس كذلك؟).</li>
+<li>يمرّر CloudFront الخطأ 403 عائدًا إلى المتصفح.</li>
+<li>يرى المستخدم صفحة خطأ XML بدلًا من تطبيقك.</li>
+</ol>
+<p>هذا يعمل جيدًا للتحميل الأولي للصفحة على <code>/</code> (لأن <code>index.html</code> موجود)، ويعمل جيدًا للأصول ذات البصمة مثل <code>/assets/main.a1b2c3.js</code> (لأن تلك الملفات موجودة في S3). لكن أي مسار موجود فقط في موجّهك على جانب العميل — <code>/dashboard</code> و<code>/settings</code> و<code>/users/123</code> — ينكسر عند الزيارة المباشرة أو تحديث الصفحة.</p>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>لماذا 403 لا 404؟ عندما تستخدم التحكم في الوصول إلى الأصل (المضبوط في <a href="https://stevekinney.com/courses/aws/origin-access-control-for-s3">التحكم في الوصول إلى الأصل في S3</a>)، تُرجع S3 خطأ 403 Forbidden للكائنات المفقودة بدلًا من 404 Not Found. وهذا إجراء أمني — فـ S3 لا تريد كشف ما إذا كان الكائن موجودًا أم لا للمستدعين غير المصرّح لهم. وCloudFront مصرّح له بالقراءة من الحاوية، لكن الكائن غير موجود فعلًا، لذا تُرجع S3 403. وتحتاج إلى معالجة كل من 403 و404 لتغطية كل الحالات.</p>
+</blockquote>
+<h2 id="الإصلاح-استجابات-الأخطاء-المخصصة">الإصلاح: استجابات الأخطاء المخصّصة</h2>
+<p>يتيح لك CloudFront اعتراض رموز أخطاء HTTP محدّدة وإرجاع استجابة مختلفة. ولتوجيه SPA، تخبر CloudFront: «عندما تحصل على 403 أو 404 من الأصل، فأرجع <code>/index.html</code> برمز حالة 200 بدلًا من ذلك.»</p>
+<p>وهذا مكافئ AWS لما يلي:</p>
+<ul>
+<li><strong>Netlify</strong>: <code>/* /index.html 200</code> في <code>_redirects</code></li>
+<li><strong>Vercel</strong>: <code>{ &quot;rewrites&quot;: [{ &quot;source&quot;: &quot;/(.*)&quot;, &quot;destination&quot;: &quot;/index.html&quot; }] }</code> في <code>vercel.json</code></li>
+<li><strong>nginx</strong>: <code>try_files $uri /index.html;</code></li>
+</ul>
+<h2 id="إعداد-استجابات-الأخطاء-المخصصة">إعداد استجابات الأخطاء المخصّصة</h2>
+<p>تضيف استجابات الأخطاء المخصّصة بتحديث إعدادات توزيعك. اجلب الإعدادات الحالية، وأضف كتلة <code>CustomErrorResponses</code>، ثم أرسل التحديث.</p>
+<p>اجلب الإعدادات:</p>
+<pre><code class="language-bash">aws cloudfront get-distribution-config \\
+  --<span class="hljs-built_in">id</span> E1A2B3C4D5E6F7 \\
+  --region us-east-1 \\
+  --output json &gt; distribution-config-current.json
+</code></pre>
+<p>أضف كتلة <code>CustomErrorResponses</code> هذه إلى <code>DistributionConfig</code>:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;CustomErrorResponses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Quantity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Items&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;ErrorCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">403</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;ResponsePagePath&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/index.html&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;ResponseCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;200&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;ErrorCachingMinTTL&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;ErrorCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">404</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;ResponsePagePath&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/index.html&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;ResponseCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;200&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;ErrorCachingMinTTL&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>أرسل التحديث:</p>
+<pre><code class="language-bash">aws cloudfront update-distribution \\
+  --<span class="hljs-built_in">id</span> E1A2B3C4D5E6F7 \\
+  --if-match E2QWRUHEXAMPLE \\
+  --distribution-config file://distribution-config-updated.json \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<p>استبدل <code>E2QWRUHEXAMPLE</code> بقيمة <code>ETag</code> من استجابة <code>get-distribution-config</code>.</p>
+<p>في لوحة التحكم، يعرض تبويب <strong>Error pages</strong> على توزيعك كل استجابة خطأ مخصّصة. ويطابق نموذج القاعدة الواحدة رمز خطأ HTTP بصفحة استجابة مخصّصة ورمز حالة.</p>
+<p><img src="/arabic-cs-library/images/kinney/cf9b2d8a10d23c06.webp" alt="نموذج CloudFront Create Custom Error Response وهو يعرض رمز خطأ HTTP 403، ومسار صفحة الاستجابة /index.html، ورمز استجابة HTTP 200."></p>
+<p>بمجرد إعداد القاعدتين، يعرض تبويب <strong>Error pages</strong> التعيين الكامل.</p>
+<p><img src="/arabic-cs-library/images/kinney/7827c787942bc8f5.webp" alt="تبويب CloudFront Error pages وهو يعرض استجابتَي خطأ مخصّصتين: 403 و404 كلتاهما معيّنتان إلى /index.html برمز استجابة HTTP 200."></p>
+<h2 id="تفكيك-الإعدادات">تفكيك الإعدادات</h2>
+<h3 id="errorcode">ErrorCode</h3>
+<p>رمز حالة HTTP من الأصل الذي يطلق هذه الاستجابة المخصّصة. وتحتاج إلى إدخالين لكل من <code>403</code> و<code>404</code>:</p>
+<ul>
+<li><strong>403</strong>: تُرجع S3 هذا للكائنات المفقودة عند استخدام OAC. وتُرجع 403 أيضًا إن كانت سياسة الحاوية لا تسمح بالطلب.</li>
+<li><strong>404</strong>: يمكن أن تُرجع S3 هذا في بعض الإعدادات (خاصةً عند تمكين استضافة موقع S3 على الحاوية). وتضمينه يضمن التغطية بغض النظر عن إعداد S3 لديك.</li>
+</ul>
+<h3 id="responsepagepath">ResponsePagePath</h3>
+<p>مسار الملف الذي ينبغي أن يقدّمه CloudFront بدلًا من الخطأ. ويجب أن يبدأ بـ <code>/</code> وأن يشير إلى ملف موجود في حاوية S3 لديك. ولتطبيق SPA، هذا هو <code>/index.html</code>.</p>
+<h3 id="responsecode">ResponseCode</h3>
+<p>رمز حالة HTTP الذي يُرجعه CloudFront إلى المتصفح مع صفحة الاستجابة المخصّصة. وهذا هو الحقل الحاسم. ولديك خياران:</p>
+<ul>
+<li><strong><code>&quot;200&quot;</code></strong>: يتلقى المتصفح <code>index.html</code> بحالة 200 OK. ويعالج موجّهك على جانب العميل عنوان URL ويعرض الصفحة المناسبة. وترى محركات البحث صفحة صالحة.</li>
+<li><strong><code>&quot;404&quot;</code></strong>: يتلقى المتصفح <code>index.html</code> بحالة 404. ولا يزال موجّهك على جانب العميل يعمل للمستخدم، لكن محركات البحث تفسّر الصفحة على أنها «غير موجودة» وقد تُزيلها من الفهرس.</li>
+</ul>
+<p>لتطبيق SPA، استخدم <code>&quot;200&quot;</code>. فكل مسار صفحة صالحة — والتوجيه يحدث فقط في JavaScript بدلًا من الخادم.</p>
+<h3 id="errorcachingminttl">ErrorCachingMinTTL</h3>
+<p>المدة (بالثواني) التي يخزّن فيها CloudFront استجابة الخطأ مؤقتًا في مواقع الحافة. والافتراضي 300 ثانية (5 دقائق) إذا أغفلت هذا الحقل. وضبطه على <code>10</code> يعني أن CloudFront سيعيد فحص الأصل بعد 10 ثوانٍ.</p>
+<p>لماذا يهم هذا؟ لنفترض أنك نشرت محتوى جديدًا، وأن مسارًا كان يُرجع 403 سابقًا أصبح الآن يعيّن إلى ملف حقيقي. مع مدة الصلاحية الافتراضية البالغة 5 دقائق، سيرى المستخدمون استجابة الخطأ المخصّصة (المقدّمة كـ <code>index.html</code>) حتى 5 دقائق بدلًا من الملف الفعلي. والقيمة الأقل تعني استعادة أسرع.</p>
+<p>ضبط <code>ErrorCachingMinTTL</code> على <code>0</code> مسموح — لكن CloudFront لن يخزّن استجابة الخطأ مؤقتًا، فكل إخفاق يطلق طلبًا إلى الأصل. وهذا مقبول لتطبيق SPA منخفض الحركة، ومكلف على نطاق واسع. والقيمة <code>10</code> توازن معقول لمعظم المشاريع: قصيرة بما يكفي كي لا تستمر الأخطاء طويلًا، وطويلة بما يكفي كي لا يرهق CloudFront أصلك عند كل إخفاق في الذاكرة المؤقتة.</p>
+<h2 id="اختبار-توجيه-spa">اختبار توجيه SPA</h2>
+<p>بعد أن يكمل التوزيع النشر (تحقّق باستخدام <code>aws cloudfront wait distribution-deployed --id E1A2B3C4D5E6F7</code>)، اختبر مسار SPA:</p>
+<pre><code class="language-bash">curl -I https://d1234abcdef.cloudfront.net/dashboard/settings
+</code></pre>
+<p>ينبغي أن ترى:</p>
+<pre><code>HTTP/2 200
+content-type: text/html
+x-cache: Miss from cloudfront
+</code></pre>
+<p>تؤكد حالة <code>200</code> أن استجابة الخطأ المخصّصة تعمل. وتخبرك ترويسة <code>x-cache: Miss from cloudfront</code> أن هذا لم يكن مخزّنًا مؤقتًا بعد. والطلب التالي إلى المسار نفسه سيعرض <code>Hit from cloudfront</code>.</p>
+<p>جرّبه في متصفح: انتقل إلى <code>https://d1234abcdef.cloudfront.net/dashboard/settings</code> مباشرة. فإن كان موجّه SPA لديك مهيّأ بشكل صحيح، فينبغي أن ترى التطبيق يعرض صفحة إعدادات لوحة المعلومات.</p>
+<h2 id="جدل-200-مقابل-404">جدل 200 مقابل 404</h2>
+<p>استخدام <code>&quot;ResponseCode&quot;: &quot;200&quot;</code> لكل مسارات جانب العميل يعني أن CloudFront يُرجع 200 OK حتى للصفحات المفقودة فعلًا. فإذا انتقل أحدهم إلى <code>/asdfghjkl</code>، فسيحصل على <code>index.html</code> برمز حالة 200. وينبغي أن يعرض موجّهك على جانب العميل صفحة «غير موجودة» للمسارات المجهولة، لكن رمز حالة HTTP يبقى 200.</p>
+<p>وهذا هو السلوك نفسه في قواعد إعادة الكتابة في Vercel و<code>_redirects</code> في Netlify. وهو مقايضة: تفقد دلالات 404 على مستوى HTTP مقابل توجيه عامل على جانب العميل. ولمعظم التطبيقات أحادية الصفحة، هذه هي المقايضة الصحيحة. فموجّه واجهتك الأمامية يعرف أي المسارات صالحة وأيها ليست — أما CDN فلا يعرف.</p>
+<p>إذا كنت تحتاج إلى رموز حالة 404 صحيحة لأغراض تحسين محركات البحث (مثل موقع تسويقي فيه أقسام SPA)، فستعالج ذلك باستخدام CloudFront Function أو Lambda@Edge يفحص عنوان URL ويُرجع 404 للمسارات غير الصالحة فعلًا. وهذا مشمول في قسم الحوسبة على الحافة.</p>
+<h2 id="المواقع-متعددة-الصفحات-مقابل-تطبيقات-spa">المواقع متعددة الصفحات مقابل تطبيقات SPA</h2>
+<p>إذا كنت تنشر موقعًا ثابتًا تقليديًا متعدد الصفحات (لا SPA)، فالأرجح أنك لا تريد هذا الإعداد. فينبغي أن يكون 404 للصفحة المفقودة 404 فعليًا، لا إعادة توجيه إلى <code>index.html</code>. وفي تلك الحالة، ستضبط استجابة خطأ مخصّصة تُرجع صفحة خطأ مخصّصة:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;ErrorCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">404</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;ResponsePagePath&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/error.html&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;ResponseCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;404&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;ErrorCachingMinTTL&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>يُرجع هذا صفحة الخطأ المخصّصة لديك برمز حالة 404 — وهو السلوك القياسي لموقع ثابت.</p>
+<p>مسارات SPA لديك تعمل. لكن موقعك لا يزال يُقدَّم على نطاق <code>*.cloudfront.net</code>، ولا توجد شهادة SSL مخصّصة. في الدرس التالي، ستربط شهادة ACM التي طلبتها بالفعل بتوزيع CloudFront، لتمكين HTTPS على نطاقك المخصّص.</p>
+`,c={book:s,chapter:"aws",chapterTitle:n,slug:o,title:t,headings:a,html:e};export{s as book,p as chapter,n as chapterTitle,c as default,a as headings,e as html,o as slug,t as title};

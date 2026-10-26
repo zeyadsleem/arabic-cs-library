@@ -1,0 +1,119 @@
+const s="tanstack-form",a="form",n="دورة TanStack Form الكاملة",t="notes-on-form-submission",o="ملاحظات على إرسال النموذج: المدخل والمخرَج والبيانات الوصفية",e=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"التحقق-الذي-لا-يبدأ-إلا-عند-الإرسال",text:"التحقق الذي لا يبدأ إلا عند الإرسال"},{depth:2,id:"ما-يصل-إلى-onsubmit-هو-المدخل",text:"ما يصل إلى onSubmit هو المدخل"},{depth:2,id:"بيانات-وصفية-تقول-أي-زر-ضغط",text:"بيانات وصفية تقول أي زر ضُغط"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],c=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>بنينا في الدروس السابقة استمارة تسجيل كاملة: حقولًا، ومصفوفة مهارات، وتحققًا من الصحة على مستوى الحقل وعلى مستوى النموذج. وكان الخيار <code>onSubmit</code> حاضرًا في <code>useForm</code> منذ البداية، لكنه لم يكن يفعل شيئًا يُذكر سوى الطباعة في <code>console</code>. في هذا الدرس نتوقّف عنده ونسأل سؤالًا واحدًا: ما الذي يصل إلى دالة الإرسال بالضبط؟</p>
+<p>الجواب ليس بديهيًا. القيمة التي تصل ليست بالضرورة الشكل الذي يريده الخادم، لأن Zod قد يُخرج شكلًا مختلفًا عمّا أدخلته فيه. وقد لا يقع الإرسال أصلًا لأن المخطط يطلب حقولًا لم نرسمها بعد، فتبقى الاستمارة عاجزة بلا رسالة ظاهرة. وقد يحمل الإرسال معلومة إضافية تقول أي زر ضغط المستخدم. هذه الملاحظات الثلاث هي مادة الدرس، وهي التي تفصل استمارة «تعمل على الشاشة» عن استمارة جاهزة للربط بخادم.</p>
+<h2 id="التحقق-الذي-لا-يبدأ-إلا-عند-الإرسال">التحقق الذي لا يبدأ إلا عند الإرسال</h2>
+<p>في الفيديو يملأ المؤلف الاستمارة ويضغط الإرسال فلا يحدث شيء: لا طباعة، ولا رسالة خطأ. السبب المباشر أن المخطط يفرض قواعد على حقول لم تُرسم بعد: <code>email</code> و<code>city</code> و<code>state</code>. فالتحقق يفشل، لكن أحدًا لا يرى الفشل.</p>
+<p>ولفهم لماذا لا نرى الفشل، نقرأ إعدادات التحقق في <code>useForm</code>:</p>
+<pre><code class="language-tsx">    <span class="hljs-attr">validators</span>: {
+      <span class="hljs-attr">onDynamic</span>: formSchema,
+    },
+    <span class="hljs-attr">validationLogic</span>: <span class="hljs-title function_">revalidateLogic</span>({
+      <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;submit&quot;</span>,
+      <span class="hljs-attr">modeAfterSubmission</span>: <span class="hljs-string">&quot;blur&quot;</span>,
+    }),
+</code></pre>
+<p>هذان السطران يحدّدان توقيت التحقق لا قواعده. القيمة <code>mode: &quot;submit&quot;</code> تعني أن أول تحقق لا يقع قبل الإرسال، ثم ينتقل النموذج بعد أول إرسال إلى <code>modeAfterSubmission: &quot;blur&quot;</code> فيتحقق عند مغادرة كل حقل. هذا التوقيت مقصود: لا تريد أن تصرخ الاستمارة في وجه المستخدم قبل أن يكتب حرفًا واحدًا. لكن ثمنه أن الأخطاء تبقى محبوسة في حالة النموذج ما دام لا يوجد حقل يعرضها. والحقول التي تشكو منها (<code>email</code> و<code>city</code> و<code>state</code>) غير موجودة في الواجهة أصلًا، فلا مكان لرسالتها.</p>
+<p>لذلك عُدِّل المخطط ليصير متوافقًا مع ما نرسمه فعلًا:</p>
+<pre><code class="language-tsx">    <span class="hljs-attr">email</span>: z.<span class="hljs-title function_">email</span>(<span class="hljs-string">&quot;Invalid email address.&quot;</span>).<span class="hljs-title function_">optional</span>(),
+    <span class="hljs-attr">password</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">min</span>(<span class="hljs-number">6</span>, <span class="hljs-string">&quot;Password should be at least 6 characters.&quot;</span>),
+    <span class="hljs-attr">confirmPassword</span>: z.<span class="hljs-title function_">string</span>(),
+    <span class="hljs-attr">address</span>: z.<span class="hljs-title function_">object</span>({
+      <span class="hljs-attr">street</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">min</span>(<span class="hljs-number">5</span>, <span class="hljs-string">&quot;Street should be at least 5 characters.&quot;</span>),
+      <span class="hljs-attr">city</span>: z
+        .<span class="hljs-title function_">string</span>()
+        .<span class="hljs-title function_">min</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;City should be at least 2 characters.&quot;</span>)
+        .<span class="hljs-title function_">optional</span>(),
+      <span class="hljs-attr">state</span>: z
+        .<span class="hljs-title function_">string</span>()
+        .<span class="hljs-title function_">min</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;State should be at least 2 characters.&quot;</span>)
+        .<span class="hljs-title function_">optional</span>(),
+      <span class="hljs-attr">zipCode</span>: z
+        .<span class="hljs-title function_">string</span>()
+        .<span class="hljs-title function_">min</span>(<span class="hljs-number">5</span>, <span class="hljs-string">&quot;Zip Code should be at least 5 characters.&quot;</span>)
+        .<span class="hljs-title function_">optional</span>(),
+    }),
+</code></pre>
+<p>صار <code>email</code> اختياريًا، وكذلك <code>city</code> و<code>state</code> و<code>zipCode</code>، وبقي <code>street</code> وحده إلزاميًا داخل <code>address</code> لأن له حقلًا فعليًا في الاستمارة. القاعدة العملية التي يتركها هذا الموقف: مخطط التحقق عقد بين الحالة والواجهة. كل حقل إلزامي في المخطط يجب أن يقابله حقل يرسمه المستخدم، وإلا تحوّل الإرسال إلى باب مغلق بلا مقبض. وإن كنت تعرف أن بعض الحقول ستُضاف لاحقًا، فاجعلها اختيارية الآن بدل أن تعطّل النموذج كلّه.</p>
+<h2 id="ما-يصل-إلى-onsubmit-هو-المدخل">ما يصل إلى <code>onSubmit</code> هو المدخل</h2>
+<p>بعد أن صار النموذج قابلًا للإرسال، ننظر في دالة الإرسال نفسها:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">RegisterForm</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> form = <span class="hljs-title function_">useForm</span>({
+    ...formOpts,
+    <span class="hljs-attr">onSubmit</span>: <span class="hljs-function">(<span class="hljs-params">{ value, meta }</span>) =&gt;</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(formSchema.<span class="hljs-title function_">parse</span>(value));
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(meta);
+    },
+    <span class="hljs-attr">validators</span>: {
+      <span class="hljs-attr">onDynamic</span>: formSchema,
+    },
+    <span class="hljs-attr">validationLogic</span>: <span class="hljs-title function_">revalidateLogic</span>({
+      <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;submit&quot;</span>,
+      <span class="hljs-attr">modeAfterSubmission</span>: <span class="hljs-string">&quot;blur&quot;</span>,
+    }),
+  });
+</code></pre>
+<p><code>onSubmit</code> تُنادى بعد نجاح التحقق، وتستقبل كائنًا فيه <code>value</code> أي القيم الحالية، و<code>meta</code> أي البيانات الوصفية التي سنعود إليها. والسطران الأولان يطبعان القيم مرتين: مرة كما تحفظها حالة النموذج، ومرة بعد تمريرها على <code>formSchema.parse</code>.</p>
+<p>الفرق بين الطباعتين هو بيت القصيد. في Zod لا يتطابق دائمًا نوع المدخل (<code>input</code>) مع نوع المخرَج (<code>output</code>): فـ<code>z.coerce</code> يحوّل نصًّا إلى رقم، و<code>.transform</code> يبني كائنًا جديدًا من الكائن الذي جرى التحقق منه. وTanStack Form يتحقق بالمخطط لكنه يحتفظ بالقيم كما كتبها المستخدم، أي بالمدخل. لذلك قد تجد في <code>value</code> مصفوفة كائنات كاملة بينما يريد خادمك مصفوفة معرّفات فقط.</p>
+<p>جرّب المؤلف هذا عمليًا: أضاف إلى المخطط تحويلًا يستبدل <code>skills</code> بمصفوفة معرّفات عبر <code>data.skills.map((skill) =&gt; skill.id)</code>، ثم أرسل الاستمارة. الطباعة الأولى بقيت تعرض الكائنات كما هي، لأنها المدخل. والطباعة الثانية، التي تمرّ على <code>formSchema.parse</code>، هي التي أعطت مصفوفة المعرّفات.</p>
+<p>الحصيلة قاعدة واحدة: إن احتجت مخرَج المخطط فاطلبه صراحةً داخل <code>onSubmit</code>؛ لا تنتظره من <code>value</code>. وثمن هذا الطلب أن <code>parse</code> يرمي استثناءً إذا فشل التحقق، لكن <code>onSubmit</code> لا تُنادى إلا بعد نجاح التحقق، فليس المتوقّع أن يرمي هنا. ثم أزال المؤلف التحويل بعد التجربة لأنه كان يسبب أخطاء في بقية الاستمارة، وبقيت القاعدة نفسها قائمة.</p>
+<h2 id="بيانات-وصفية-تقول-أي-زر-ضغط">بيانات وصفية تقول أي زر ضُغط</h2>
+<p>الوسيط الذي تقبله <code>handleSubmit</code> ليس حدث المتصفّح وحده، بل يمكن أن يكون كائنًا حرًّا تمرّره أنت:</p>
+<pre><code class="language-tsx">      &lt;form
+        onSubmit={<span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> {
+          e.<span class="hljs-title function_">preventDefault</span>();
+          form.<span class="hljs-title function_">handleSubmit</span>({ <span class="hljs-attr">key</span>: <span class="hljs-string">&quot;value&quot;</span> });
+        }}
+      &gt;
+</code></pre>
+<p><code>e.preventDefault()</code> يمنع السلوك الافتراضي للمتصفّح، وهو إعادة تحميل الصفحة عند إرسال نموذج HTML. بدون هذا السطر يخرج التطبيق من حالته الحالية ويعود فارغًا قبل أن ترى نتيجة الطباعة. أما الوسيط <code>{ key: &quot;value&quot; }</code> فيصل إلى دالة الإرسال داخل <code>meta</code>، وهو ما يطبعه السطر <code>console.log(meta)</code> في المقتطف السابق.</p>
+<p>لماذا نحتاج هذه الحيلة؟ لأن الاستمارة قد تُرسل بأكثر من نيّة. زرّ «حفظ» وزرّ «حفظ ثم رجوع» يرسلان البيانات نفسها ويختلفان في ما يجب أن يحدث بعدها: البقاء في الصفحة أو الانتقال إلى أخرى. بدون بيانات وصفية تعرف أن الإرسال وقع، لكنك لا تعرف أي زر اختار المستخدم، فتُضطر إلى تخمين النيّة من الحالة أو إلى تكرار منطق الإرسال في زرّين.</p>
+<p>الحل أن ينقل النداء من النموذج إلى الأزرار، فيحمل كل زر نيّته معه:</p>
+<pre><code class="language-tsx">        &lt;form.<span class="hljs-property">Subscribe</span> selector={<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> state.<span class="hljs-property">canSubmit</span>}&gt;
+          {<span class="hljs-function">(<span class="hljs-params">canSubmit</span>) =&gt;</span> (
+            <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+                <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!canSubmit}</span>
+                <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-yellow-500 text-black p-2 mt-4 disabled:opacity-40 disabled:cursor-not-allowed&quot;</span>
+                <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>
+                <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> form.handleSubmit({ submitAction: &quot;save&quot; })}
+              &gt;
+                Save
+              <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+                <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!canSubmit}</span>
+                <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-yellow-500 text-black p-2 mt-4 disabled:opacity-40 disabled:cursor-not-allowed&quot;</span>
+                <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>
+                <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> form.handleSubmit({ submitAction: &quot;goback&quot; })}
+              &gt;
+                Save &amp; Go back
+              <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+          )}
+        &lt;/form.<span class="hljs-property">Subscribe</span>&gt;
+</code></pre>
+<p><code>form.Subscribe</code> يقرأ <code>canSubmit</code> من حالة النموذج ويعيد التصيير عند تغيّره، فيُعطَّل الزرّان ما دامت الاستمارة غير صالحة. وهذا يفسّر أيضًا لون الزرّين الباهت في الصورة أدناه: <code>disabled</code> مضاف، و<code>disabled:opacity-40</code> يخفض الشفافية. أما <code>onClick</code> فيحمل نيّة الزر: <code>submitAction: &quot;save&quot;</code> أو <code>submitAction: &quot;goback&quot;</code>.</p>
+<p>لاحظ أن النداءين موجودين معًا في هذا الفرع: واحد داخل <code>onSubmit</code> الخاص بعنصر <code>form</code> بقيمة ثابتة، وآخر داخل <code>onClick</code> بقيمة الزر. المؤلف في الفيديو ينوي حذف الأول والاحتفاظ بالثاني، وهذا ما يستحق أن تختبره بنفسك بطباعة <code>meta</code> عند كل إرسال لترى ما يصل من كل مسار.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--notes-on-form-submission--submit-errors.png" alt="استمارة التسجيل بعد الدرس: أربعة حقول نصية فارغة تعرض عناوينها، وقائمة المهارات الثلاث بمربّعات اختيار المستوى، وخانة الشروط غير محدَّدة، وزرّا الحفظ باهتان، وأسفلها لوحة تعرض قيم النموذج بصيغة JSON"></p>
+<p>في الصورة نرى الاستمارة كما هي قبل أي إرسال ناجح. الحقول الأربعة الظاهرة فارغة وتحمل عناوينها فقط: <code>First Name</code> و<code>Street</code> و<code>Password</code> و<code>Confirm Password</code>، ولا يظهر حقل <code>lastName</code> لأن ظهوره مشروط بأن يكون <code>firstName</code> غير فارغ. تحت قسم <code>Skills</code> ثلاثة صفوف ثابتة هي <code>HTML</code> و<code>CSS</code> و<code>JavaScript</code>، لكل صف قائمة اختيار على <code>Beginner</code> وزر أحمر لحذفه، ثم زر <code>Add Skill</code>. خانة <code>Accept Terms</code> غير محدَّدة، ولهذا يبدو زرّا <code>Save</code> و<code>Save &amp; Go back</code> باهتين لأن <code>canSubmit</code> ما زال <code>false</code>. لا تظهر أي رسالة خطأ تحت الحقول، وهذا متوقّع: التحقق لا يبدأ إلا عند الإرسال. وأسفل الاستمارة تعرض لوحة <code>values</code> القيم الحالية كما هي في الحالة: نصوص فارغة، وكائن <code>address</code> فيه <code>street</code> وحدها، ومصفوفة المهارات الثلاث بمعرّفاتها ومستوياتها، و<code>acceptTerms</code> بقيمة <code>false</code>. بمجرد ملء الحقول الإلزامية وتحديد الشروط يتحوّل الزرّان إلى الحالة الفعّالة، ويصبح الضغط عليهما طريقًا إلى <code>onSubmit</code> وما تطبعه.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>املأ الحقول الإلزامية وحدّد <code>Accept Terms</code>، ثم اضغط <code>Save</code> وراقب <code>console</code>: ستجد القيم كاملة، ثم مخرَج <code>formSchema.parse</code>، ثم <code>meta</code> وفيه <code>submitAction</code>.</li>
+<li>أزل <code>console.log(value)</code> وابقِ على <code>formSchema.parse(value)</code> وحدها، ثم قارن ما يظهر عند إضافة <code>.transform</code> إلى المخطط يحوّل <code>skills</code> إلى معرّفات.</li>
+<li>اطبع <code>meta</code> من النداءين معًا، من <code>onSubmit</code> النموذج ومن <code>onClick</code> الزر، ثم احذف النداء الأول وتحقق من الفرق.</li>
+<li>أضف زرًّا ثالثًا بنيّة <code>submitAction: &quot;draft&quot;</code>، ثم عالج القيم الثلاث داخل <code>onSubmit</code> بشرط واحد يوزّع السلوك.</li>
+<li>أعد <code>email</code> إلزاميًا في المخطط دون إضافة حقل له، وأرسل الاستمارة لتتأكد أن الفشل سيعود صامتًا كما في بداية الدرس.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=5347s">فيديو الدرس: Notes on Form Submission</a></li>
+<li><a href="https://github.com/alialaa/tanstack-form-course/tree/submission">شيفرة الدرس: فرع submission</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/guides/submission-handling">التوثيق الرسمي: معالجة الإرسال في TanStack Form</a></li>
+<li><a href="https://tanstack.com/form/latest/docs/framework/react/overview">التوثيق الرسمي: نظرة عامة على TanStack Form</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Notes on Form Submission» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,l={book:s,chapter:a,chapterTitle:n,slug:t,title:o,headings:e,html:c};export{s as book,a as chapter,n as chapterTitle,l as default,e as headings,c as html,t as slug,o as title};

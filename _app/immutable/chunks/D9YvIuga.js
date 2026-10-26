@@ -1,0 +1,10 @@
+const t="kinney",e="testing",s="مدخل إلى الاختبارات",i="test-runners-and-assertion-libraries",a="أي إطار اختبار ينبغي أن أستخدم؟",o=[{depth:2,id:"إضافة-vitest-إلى-visual-studio-code",text:"إضافة Vitest إلى Visual Studio Code"}],n=`<p><em>يمكنك</em> تقسيم مكتبات الاختبار إلى صنفين:</p>
+<ul>
+<li><strong>مكتبة تحقّق (assertion library)</strong>: مكتبة تضمن أن شيفرتك تفعل ما تتوقعه (أو ترمي خطأ إن لم تفعل). من الأمثلة عليها <a href="https://www.chaijs.com/">Chai</a>، و<a href="https://shouldjs.github.io/">Should.js</a>، و<a href="https://nodejs.org/api/assert.html">وحدة <code>assert</code> المدمجة في Node</a>.</li>
+<li><strong>مشغّل اختبارات (test runner)</strong>: عملية تمرّ على كل اختباراتك وتولّد تقارير. <a href="https://mochajs.org/">Mocha</a> مثال على ذلك. المشغّل الأساسي جدًا قد يبحث عن كل الملفات التي تنتهي بـ <code>*.test.js</code> وينفّذها باستخدام Node.</li>
+</ul>
+<p>بعض أطر الاختبار الحديثة (وهي: <a href="https://jasmine.github.io/">Jasmine</a> و<a href="https://jestjs.io/">Jest</a> و<a href="https://vitest.dev/">Vitest</a>) تدمج مشغّل اختبارات مع مكتبة تحقّق. لذا فالأرجح أن هذا التمييز ليس مهمًا كثيرًا هذه الأيام، لكني أرى أنه يستحق التنبيه. إن وُجدت مكتبة تحقّق تعجبك <em>أكثر</em> من أي شيء يأتي مدمجًا مع Jest، <em>يمكنك</em> استبدالها بمكتبة تحقّق أخرى وسيعمل كل شيء كما هو متوقع.</p>
+<p>لن أضيّع وقتك وأجبرك على أكل خضرواتك وبناء واحدة من الصفر لمجرد إثبات وجهة نظر.</p>
+<h2 id="إضافة-vitest-إلى-visual-studio-code">إضافة Vitest إلى Visual Studio Code</h2>
+<p>إن كنت تستخدم Vitest وVisual Studio Code، فهناك <a href="https://marketplace.visualstudio.com/items?itemName=ZixuanChen.vitest-explorer">إضافة مفيدة لـ Visual Studio Code</a> تجعل تشغيل اختباراتك من داخل محرّرك أمرًا سهلًا. وهناك أيضًا <a href="https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest">إضافة Visual Studio Code لـ Jest</a>.</p>
+`,r={book:t,chapter:e,chapterTitle:s,slug:i,title:a,headings:o,html:n};export{t as book,e as chapter,s as chapterTitle,r as default,o as headings,n as html,i as slug,a as title};

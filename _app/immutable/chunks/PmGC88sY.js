@@ -1,0 +1,330 @@
+const s="kinney",a="react-performance",n="أداء React",l="react-cache-api",p="واجهة cache()",t=[{depth:2,id:"ما-المشكلات-التي-تحلها-cache",text:"ما المشكلات التي تحلّها cache()؟"},{depth:2,id:"الاستخدام-الأساسي",text:"الاستخدام الأساسي"},{depth:2,id:"نطاق-الذاكرة-المؤقتة-ودورة-حياتها",text:"نطاق الذاكرة المؤقتة ودورة حياتها"},{depth:3,id:"النطاق-على-الخادم",text:"النطاق على الخادم"},{depth:3,id:"السلوك-على-جهة-العميل",text:"السلوك على جهة العميل"},{depth:2,id:"أنماط-متقدمة",text:"أنماط متقدّمة"},{depth:3,id:"التخزين-المؤقت-مع-وسائط-معقدة",text:"التخزين المؤقت مع وسائط معقّدة"},{depth:3,id:"الدمج-مع-ميزات-react-الأخرى",text:"الدمج مع ميزات React الأخرى"},{depth:3,id:"أنماط-إبطال-الذاكرة-المؤقتة",text:"أنماط إبطال الذاكرة المؤقتة"},{depth:2,id:"حالات-استخدام-من-العالم-الحقيقي",text:"حالات استخدام من العالم الحقيقي™"},{depth:3,id:"تحسين-استعلامات-قاعدة-البيانات",text:"تحسين استعلامات قاعدة البيانات"},{depth:3,id:"إزالة-تكرار-استجابات-api",text:"إزالة تكرار استجابات API"},{depth:3,id:"الحسابات-المكلفة",text:"الحسابات المكلفة"},{depth:2,id:"اعتبارات-الأداء",text:"اعتبارات الأداء"},{depth:3,id:"استهلاك-الذاكرة",text:"استهلاك الذاكرة"},{depth:3,id:"نقاء-الدوال",text:"نقاء الدوال"},{depth:3,id:"تعقيد-الوسائط",text:"تعقيد الوسائط"},{depth:2,id:"متى-لا-تستخدم-cache",text:"متى لا تستخدم cache()"},{depth:2,id:"الخطوات-التالية",text:"الخطوات التالية"}],c=`<p>تأخذ دالة <code>cache()</code> في React الدوال النقية فتحوّلها إلى دوال محفوظة النتائج ومعزولة التكرار ومستقرة في شجرة React كلها. اعتبرها نسخة معزّزة من <code>useMemo()</code> تعمل على مستوى الدالة لا على مستوى المكوّن، والأهم أنها تشارك النتائج بين المكوّنات حين تستدعي الدالة نفسها بالوسائط نفسها.</p>
+<p>ومع أن <code>cache()</code> مصمّمة أساسًا لمكوّنات الخادم في React (React Server Components) والتصيير على الخادم، فإن فهم طريقة عملها يمنحك أدوات قوية لتحسين العمليات المكلفة في تطبيقك كله. فتستطيع أن تلغي نداءات API المكررة، واستعلامات قاعدة البيانات، والحسابات الثقيلة التي كانت ستُنفَّذ مرات عدة على البيانات نفسها.</p>
+<h2 id="ما-المشكلات-التي-تحلها-cache">ما المشكلات التي تحلّها cache()؟</h2>
+<p>قبل الغوص في طريقة عمل <code>cache()</code>، لنفهم المشكلات التي تعالجها. تخيّل هذا السيناريو: لديك مكوّن لمنشور مدوّنة يحتاج معلومات المستخدم، وعدة مكوّنات ابنة تحتاج هي أيضًا بيانات المستخدم نفسها.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Without cache() - multiple redundant calls</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">UserProfile</span>(<span class="hljs-params">{ userId }: { userId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUser</span>(userId); <span class="hljs-comment">// First API call</span>
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">UserAvatar</span> <span class="hljs-attr">userId</span>=<span class="hljs-string">{userId}</span> /&gt;</span> {/* Second API call inside */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">UserPosts</span> <span class="hljs-attr">userId</span>=<span class="hljs-string">{userId}</span> /&gt;</span>  {/* Third API call inside */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>{user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">UserAvatar</span>(<span class="hljs-params">{ userId }: { userId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUser</span>(userId); <span class="hljs-comment">// Duplicate call!</span>
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{user.avatar}</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">{user.name}</span> /&gt;</span></span>;
+}
+</code></pre>
+<p>من دون <code>cache()</code>، يستدعي كل مكوّن <code>fetchUser()</code> بنفسه، حتى وإن كانت جميعها تطلب المستخدم نفسه. وهذا يخلق طلبات شبكة غير ضرورية، وضربات متكررة على قاعدة البيانات، وعقبات في الأداء.</p>
+<h2 id="الاستخدام-الأساسي">الاستخدام الأساسي <span class="content-anchor" id="basic-usage"></span></h2>
+<p>استخدام دالة <code>cache()</code> بسيط: تغلّف أي دالة نقية، ويتولّى React إزالة التكرار تلقائيًا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { cache } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-comment">// ✅ Cached version - only one call per unique userId per request</span>
+<span class="hljs-keyword">const</span> fetchUser = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">userId</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`Fetching user <span class="hljs-subst">\${userId}</span>\`</span>); <span class="hljs-comment">// This logs only once per userId</span>
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/users/<span class="hljs-subst">\${userId}</span>\`</span>);
+  <span class="hljs-keyword">return</span> response.<span class="hljs-title function_">json</span>();
+});
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">UserProfile</span>(<span class="hljs-params">{ userId }: { userId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUser</span>(userId); <span class="hljs-comment">// First call</span>
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">UserAvatar</span> <span class="hljs-attr">userId</span>=<span class="hljs-string">{userId}</span> /&gt;</span> {/* Uses cached result */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">UserPosts</span> <span class="hljs-attr">userId</span>=<span class="hljs-string">{userId}</span> /&gt;</span>  {/* Uses cached result */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>{user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">UserAvatar</span>(<span class="hljs-params">{ userId }: { userId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUser</span>(userId); <span class="hljs-comment">// Returns cached result instantly</span>
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{user.avatar}</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">{user.name}</span> /&gt;</span></span>;
+}
+</code></pre>
+<p>مع <code>cache()</code>، يتتبّع React نداءات الدوال وفق وسائطها ويعيد النتيجة نفسها للمدخلات المطابقة. ولا يظهر سجل «Fetching user» إلا مرة واحدة لكل <code>userId</code> فريد، مهما كان عدد المكوّنات التي تستدعي الدالة.</p>
+<h2 id="نطاق-الذاكرة-المؤقتة-ودورة-حياتها">نطاق الذاكرة المؤقتة ودورة حياتها</h2>
+<p>فهم متى وأين تعمل <code>cache()</code> أمر جوهري لاستخدامها بفعالية. فللذاكرة المؤقتة حدود محدّدة:</p>
+<h3 id="النطاق-على-الخادم">النطاق على الخادم</h3>
+<p>في مكوّنات الخادم في React والتصيير على الخادم (SSR)، تدوم الذاكرة المؤقتة طوال طلب واحد فقط:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> getPostWithComments = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">postId</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-comment">// This expensive join query runs only once per postId per request</span>
+  <span class="hljs-keyword">return</span> db.<span class="hljs-title function_">query</span>(<span class="hljs-string">\`
+    SELECT posts.*, comments.*
+    FROM posts
+    LEFT JOIN comments ON posts.id = comments.post_id
+    WHERE posts.id = ?
+  \`</span>, [postId]);
+});
+
+<span class="hljs-comment">// Multiple components can use this without duplicate database hits</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">BlogPost</span>(<span class="hljs-params">{ postId }: { postId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getPostWithComments</span>(postId);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">article</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PostContent</span> <span class="hljs-attr">postId</span>=<span class="hljs-string">{postId}</span> /&gt;</span> {/* Uses cache */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">CommentSection</span> <span class="hljs-attr">postId</span>=<span class="hljs-string">{postId}</span> /&gt;</span> {/* Uses cache */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h3 id="السلوك-على-جهة-العميل">السلوك على جهة العميل</h3>
+<p>على جهة العميل، يعتمد سلوك <code>cache()</code> على إصدار React وإعداداتك. وفي React 19 وما بعده، تحافظ الدوال المخزّنة على ذاكرتها المؤقتة ما دام مرجع الدالة مستقرًا:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> expensiveCalculation = <span class="hljs-title function_">cache</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">number</span>[]</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Computing expensive result&#x27;</span>);
+  <span class="hljs-keyword">return</span> data.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">acc, val</span>) =&gt;</span> acc + <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(val), <span class="hljs-number">0</span>);
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">DataVisualization</span>(<span class="hljs-params">{ dataset }: { dataset: <span class="hljs-built_in">number</span>[] }</span>) {
+  <span class="hljs-comment">// This computation runs only once until dataset changes</span>
+  <span class="hljs-keyword">const</span> result = <span class="hljs-title function_">expensiveCalculation</span>(dataset);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Chart</span> <span class="hljs-attr">data</span>=<span class="hljs-string">{result}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Summary</span> <span class="hljs-attr">data</span>=<span class="hljs-string">{result}</span> /&gt;</span> {/* Uses cached result */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<blockquote>
+<p><strong>ملاحظة</strong></p>
+<p>لا يزال التخزين المؤقت على جهة العميل بواسطة <code>cache()</code> في تطوّر مستمر. وفي تطبيقات الإنتاج، اعتبره أداة تحسين على الخادم بالأساس.</p>
+</blockquote>
+<h2 id="أنماط-متقدمة">أنماط متقدّمة</h2>
+<h3 id="التخزين-المؤقت-مع-وسائط-معقدة">التخزين المؤقت مع وسائط معقّدة</h3>
+<p>تستخدم دالة <code>cache()</code> مقارنة سطحية للوسائط، لذا تهمّ مراجع الكائنات:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> queryProducts = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">filters</span>: <span class="hljs-title class_">ProductFilters</span>) =&gt; {
+  <span class="hljs-keyword">return</span> db.<span class="hljs-property">products</span>.<span class="hljs-title function_">findMany</span>({
+    <span class="hljs-attr">where</span>: filters,
+    <span class="hljs-attr">include</span>: { <span class="hljs-attr">category</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">reviews</span>: <span class="hljs-literal">true</span> },
+  });
+});
+
+<span class="hljs-comment">// ❌ Creates new object each render - cache miss</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ProductList</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> products = <span class="hljs-title function_">queryProducts</span>({ <span class="hljs-attr">category</span>: <span class="hljs-string">&#x27;electronics&#x27;</span>, <span class="hljs-attr">inStock</span>: <span class="hljs-literal">true</span> });
+  <span class="hljs-comment">// ...</span>
+}
+
+<span class="hljs-comment">// ✅ Stable object reference - cache hit</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">ELECTRONICS_FILTER</span> = { <span class="hljs-attr">category</span>: <span class="hljs-string">&#x27;electronics&#x27;</span>, <span class="hljs-attr">inStock</span>: <span class="hljs-literal">true</span> };
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ProductList</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> products = <span class="hljs-title function_">queryProducts</span>(<span class="hljs-variable constant_">ELECTRONICS_FILTER</span>);
+  <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<p>أما المرشّحات المتغيّرة، ففكّر في استراتيجية تخزين مؤقت منفصلة أو في تطبيع كائن المرشّحات:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">normalizeFilters</span> = (<span class="hljs-params"><span class="hljs-attr">filters</span>: <span class="hljs-title class_">ProductFilters</span></span>) =&gt; {
+  <span class="hljs-comment">// Sort keys to ensure consistent object structure</span>
+  <span class="hljs-keyword">const</span> sortedEntries = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(filters).<span class="hljs-title function_">sort</span>(<span class="hljs-function">(<span class="hljs-params">[a], [b]</span>) =&gt;</span> a.<span class="hljs-title function_">localeCompare</span>(b));
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">fromEntries</span>(sortedEntries);
+};
+
+<span class="hljs-keyword">const</span> queryProducts = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">filters</span>: <span class="hljs-title class_">ProductFilters</span>) =&gt; {
+  <span class="hljs-keyword">const</span> normalizedFilters = <span class="hljs-title function_">normalizeFilters</span>(filters);
+  <span class="hljs-keyword">return</span> db.<span class="hljs-property">products</span>.<span class="hljs-title function_">findMany</span>({ <span class="hljs-attr">where</span>: normalizedFilters });
+});
+</code></pre>
+<h3 id="الدمج-مع-ميزات-react-الأخرى">الدمج مع ميزات React الأخرى</h3>
+<p>تعمل الذاكرة المؤقتة بانسجام تام مع Suspense وحدود الأخطاء (error boundaries):</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> fetchUserProfile = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">userId</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/users/<span class="hljs-subst">\${userId}</span>\`</span>);
+  <span class="hljs-keyword">if</span> (!response.<span class="hljs-property">ok</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">\`Failed to fetch user <span class="hljs-subst">\${userId}</span>\`</span>);
+  }
+  <span class="hljs-keyword">return</span> response.<span class="hljs-title function_">json</span>();
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UserDashboard</span>(<span class="hljs-params">{ userId }: { userId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ErrorBoundary</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">div</span>&gt;</span>Failed to load user<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>}&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">div</span>&gt;</span>Loading user...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>}&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">UserProfile</span> <span class="hljs-attr">userId</span>=<span class="hljs-string">{userId}</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">UserSettings</span> <span class="hljs-attr">userId</span>=<span class="hljs-string">{userId}</span> /&gt;</span> {/* Shares cached data */}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ErrorBoundary</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">UserProfile</span>(<span class="hljs-params">{ userId }: { userId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUserProfile</span>(userId);
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">UserSettings</span>(<span class="hljs-params">{ userId }: { userId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUserProfile</span>(userId); <span class="hljs-comment">// Same cache entry</span>
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{user.email}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+</code></pre>
+<h3 id="أنماط-إبطال-الذاكرة-المؤقتة">أنماط إبطال الذاكرة المؤقتة</h3>
+<p>بما أن <code>cache()</code> لا توفّر إبطالًا مدمجًا، فستحتاج إلى استراتيجيات للتعامل مع البيانات القديمة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Strategy 1: Time-based cache busting</span>
+<span class="hljs-keyword">const</span> fetchWithTimestamp = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">timestamp</span>: <span class="hljs-built_in">number</span>) =&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/data/<span class="hljs-subst">\${key}</span>\`</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> r.<span class="hljs-title function_">json</span>());
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">DataComponent</span>(<span class="hljs-params">{ key }: { key: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-comment">// Refresh every 5 minutes</span>
+  <span class="hljs-keyword">const</span> timestamp = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() / (<span class="hljs-number">5</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>));
+  <span class="hljs-keyword">const</span> data = <span class="hljs-title function_">fetchWithTimestamp</span>(key, timestamp);
+  <span class="hljs-comment">// ...</span>
+}
+
+<span class="hljs-comment">// Strategy 2: Version-based invalidation</span>
+<span class="hljs-keyword">let</span> cacheVersion = <span class="hljs-number">0</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">invalidateCache</span> = (<span class="hljs-params"></span>) =&gt; {
+  cacheVersion++;
+};
+
+<span class="hljs-keyword">const</span> fetchWithVersion = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">version</span>: <span class="hljs-built_in">number</span>) =&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/data/<span class="hljs-subst">\${key}</span>\`</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> r.<span class="hljs-title function_">json</span>());
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">DataComponent</span>(<span class="hljs-params">{ key }: { key: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> data = <span class="hljs-title function_">fetchWithVersion</span>(key, cacheVersion);
+  <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<h2 id="حالات-استخدام-من-العالم-الحقيقي">حالات استخدام من العالم الحقيقي™</h2>
+<h3 id="تحسين-استعلامات-قاعدة-البيانات">تحسين استعلامات قاعدة البيانات</h3>
+<p>مثالية لإلغاء مشكلات الاستعلامات N+1 في مكوّنات الخادم:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> getUserById = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-keyword">return</span> prisma.<span class="hljs-property">user</span>.<span class="hljs-title function_">findUnique</span>({
+    <span class="hljs-attr">where</span>: { id },
+    <span class="hljs-attr">include</span>: { <span class="hljs-attr">profile</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">settings</span>: <span class="hljs-literal">true</span> }
+  });
+});
+
+<span class="hljs-keyword">const</span> getPostsByUserId = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">userId</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-keyword">return</span> prisma.<span class="hljs-property">post</span>.<span class="hljs-title function_">findMany</span>({
+    <span class="hljs-attr">where</span>: { <span class="hljs-attr">authorId</span>: userId },
+    <span class="hljs-attr">include</span>: { <span class="hljs-attr">comments</span>: <span class="hljs-literal">true</span> }
+  });
+});
+
+<span class="hljs-comment">// Multiple components can use these without duplicate database hits</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">UserPage</span>(<span class="hljs-params">{ userId }: { userId: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getUserById</span>(userId);
+  <span class="hljs-keyword">const</span> posts = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getPostsByUserId</span>(userId);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">UserHeader</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{user}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">UserStats</span> <span class="hljs-attr">userId</span>=<span class="hljs-string">{userId}</span> /&gt;</span> {/* Reuses getUserById cache */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">PostList</span> <span class="hljs-attr">posts</span>=<span class="hljs-string">{posts}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h3 id="إزالة-تكرار-استجابات-api">إزالة تكرار استجابات API</h3>
+<p>ألغِ نداءات API الخارجية المكررة في شجرة مكوّناتك:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> fetchWeatherData = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">city</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(
+    <span class="hljs-string">\`https://api.weather.com/current?city=<span class="hljs-subst">\${<span class="hljs-built_in">encodeURIComponent</span>(city)}</span>\`</span>
+  );
+  <span class="hljs-keyword">return</span> response.<span class="hljs-title function_">json</span>();
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">WeatherDashboard</span>(<span class="hljs-params">{ city }: { city: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">CurrentWeather</span> <span class="hljs-attr">city</span>=<span class="hljs-string">{city}</span> /&gt;</span>     {/* First API call */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">WeatherForecast</span> <span class="hljs-attr">city</span>=<span class="hljs-string">{city}</span> /&gt;</span>    {/* Uses cache */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">WeatherAlerts</span> <span class="hljs-attr">city</span>=<span class="hljs-string">{city}</span> /&gt;</span>      {/* Uses cache */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h3 id="الحسابات-المكلفة">الحسابات المكلفة</h3>
+<p>خزّن الحسابات الثقيلة التي تعتمد على مدخلات مستقرة:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> calculateComplexMetrics = <span class="hljs-title function_">cache</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">rawData</span>: <span class="hljs-title class_">DataPoint</span>[]</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Running expensive calculation...&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">mean</span>: rawData.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">sum, point</span>) =&gt;</span> sum + point.<span class="hljs-property">value</span>, <span class="hljs-number">0</span>) / rawData.<span class="hljs-property">length</span>,
+    <span class="hljs-attr">standardDeviation</span>: <span class="hljs-title function_">calculateStdDev</span>(rawData),
+    <span class="hljs-attr">percentiles</span>: <span class="hljs-title function_">calculatePercentiles</span>(rawData),
+    <span class="hljs-attr">trendAnalysis</span>: <span class="hljs-title function_">performTrendAnalysis</span>(rawData)
+  };
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">AnalyticsDashboard</span>(<span class="hljs-params">{ data }: { data: DataPoint[] }</span>) {
+  <span class="hljs-keyword">const</span> metrics = <span class="hljs-title function_">calculateComplexMetrics</span>(data);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">MetricsSummary</span> <span class="hljs-attr">metrics</span>=<span class="hljs-string">{metrics}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">TrendChart</span> <span class="hljs-attr">metrics</span>=<span class="hljs-string">{metrics}</span> /&gt;</span>      {/* Reuses calculation */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">PercentileChart</span> <span class="hljs-attr">metrics</span>=<span class="hljs-string">{metrics}</span> /&gt;</span>  {/* Reuses calculation */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<h2 id="اعتبارات-الأداء">اعتبارات الأداء</h2>
+<p>مع أن <code>cache()</code> قوية، استخدمها بتأنٍّ:</p>
+<h3 id="استهلاك-الذاكرة">استهلاك الذاكرة</h3>
+<p>تبقى النتائج المخزّنة في الذاكرة إلى أن ينتهي نطاق التخزين المؤقت. وفي طلبات الخادم يعني ذلك إلى أن يكتمل الطلب. فاحترس من بنى البيانات الضخمة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Potentially memory-heavy</span>
+<span class="hljs-keyword">const</span> loadEntireDataset = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-keyword">return</span> db.<span class="hljs-property">hugeTable</span>.<span class="hljs-title function_">findMany</span>(); <span class="hljs-comment">// Could be gigabytes</span>
+});
+
+<span class="hljs-comment">// ✅ More targeted caching</span>
+<span class="hljs-keyword">const</span> loadUserSubset = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">userId</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-keyword">return</span> db.<span class="hljs-property">users</span>.<span class="hljs-title function_">findUnique</span>({
+    <span class="hljs-attr">where</span>: { <span class="hljs-attr">id</span>: userId },
+    <span class="hljs-attr">include</span>: { <span class="hljs-attr">recentActivity</span>: { <span class="hljs-attr">take</span>: <span class="hljs-number">10</span> } },
+  });
+});
+</code></pre>
+<h3 id="نقاء-الدوال">نقاء الدوال</h3>
+<p>لا تخزّن إلا الدوال النقية، أي الدوال التي تعيد المخرج نفسه للمدخل نفسه ولا آثار جانبية لها:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ❌ Not pure - has side effects</span>
+<span class="hljs-keyword">const</span> logAndFetch = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`Fetching user <span class="hljs-subst">\${id}</span>\`</span>); <span class="hljs-comment">// Side effect</span>
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">incrementCounter</span>(); <span class="hljs-comment">// Side effect</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">fetchUser</span>(id);
+});
+
+<span class="hljs-comment">// ✅ Pure function - perfect for caching</span>
+<span class="hljs-keyword">const</span> fetchUser = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-keyword">return</span> db.<span class="hljs-property">user</span>.<span class="hljs-title function_">findUnique</span>({ <span class="hljs-attr">where</span>: { id } });
+});
+</code></pre>
+<h3 id="تعقيد-الوسائط">تعقيد الوسائط</h3>
+<p>الوسائط البسيطة هي الأفضل. أما الكائنات المعقّدة فتتطلّب عناية ودقّة:</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// ✅ Simple, stable arguments</span>
+<span class="hljs-keyword">const</span> fetchUser = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>) =&gt; {
+  <span class="hljs-comment">/* ... */</span>
+});
+<span class="hljs-keyword">const</span> calculateSum = <span class="hljs-title function_">cache</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">numbers</span>: <span class="hljs-built_in">number</span>[]</span>) =&gt;</span> {
+  <span class="hljs-comment">/* ... */</span>
+});
+
+<span class="hljs-comment">// ⚠️ Complex arguments - ensure stability</span>
+<span class="hljs-keyword">const</span> complexQuery = <span class="hljs-title function_">cache</span>(<span class="hljs-title function_">async</span> (<span class="hljs-attr">filters</span>: <span class="hljs-title class_">ComplexFilters</span>) =&gt; {
+  <span class="hljs-comment">// Make sure filters object is stable across calls</span>
+});
+</code></pre>
+<h2 id="متى-لا-تستخدم-cache">متى لا تستخدم cache()</h2>
+<p>ليست الذاكرة المؤقتة الخيار الصحيح دائمًا:</p>
+<ol>
+<li><strong>بيانات تتغيّر باستمرار</strong>: إذا تغيّرت المدخلات في كل نداء، فلا فائدة من التخزين المؤقت</li>
+<li><strong>الدوال ذات الآثار الجانبية</strong>: الدوال التي تعدّل حالة خارجية يجب ألا تُخزَّن</li>
+<li><strong>البيئات المحدودة الذاكرة</strong>: قد تسبب النتائج المخزّنة الكبيرة مشكلات في الذاكرة</li>
+<li><strong>React 18 وما دونه على جهة العميل</strong>: دعم محدود وسلوك غير متوقّع</li>
+</ol>
+<h2 id="الخطوات-التالية">الخطوات التالية</h2>
+<p>الآن بعد أن فهمت <code>cache()</code>، تستطيع أن تلغي العمل المكرر في تطبيقات React لديك. وفكّر في كيف تتكامل مع ميزات React 19 الأخرى مثل مكوّنات الخادم وخُطّاف <code>use()</code> لبناء تطبيقات كفؤة وعالية الأداء.</p>
+`,e={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:c};export{s as book,a as chapter,n as chapterTitle,e as default,t as headings,c as html,l as slug,p as title};

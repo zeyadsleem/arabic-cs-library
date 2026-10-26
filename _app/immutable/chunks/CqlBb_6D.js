@@ -1,0 +1,105 @@
+const s="kinney",a="tailwind",n="Tailwind CSS",t="gradients",l="التدرّجات اللونية",e=[{depth:2,id:"التدرجات-الخطية",text:"التدرّجات الخطية"},{depth:2,id:"التدرجات-الشعاعية",text:"التدرّجات الشعاعية"},{depth:2,id:"التدرجات-المخروطية",text:"التدرّجات المخروطية"},{depth:2,id:"مواضع-التدرج",text:"مواضع التدرّج"},{depth:3,id:"تدرجات-بلونين",text:"تدرّجات بلونين"},{depth:3,id:"ثلاثة-ألوان-باستخدام-via",text:"ثلاثة ألوان باستخدام via"},{depth:3,id:"مواضع-مخصصة",text:"مواضع مخصصة"},{depth:2,id:"استيفاء-oklch",text:"استيفاء OKLCH"},{depth:2,id:"تدرجات-متحركة",text:"تدرّجات متحركة"},{depth:2,id:"أمثلة-معقدة",text:"أمثلة معقدة"},{depth:3,id:"تأثير-تدرج-شبكي",text:"تأثير تدرّج شبكي"},{depth:3,id:"تدرجات-النص",text:"تدرّجات النص"},{depth:3,id:"حدود-متدرجة",text:"حدود متدرّجة"},{depth:2,id:"مع-العتامة",text:"مع العتامة"},{depth:2,id:"أفضل-الممارسات",text:"أفضل الممارسات"}],p=`<p>يعزّز Tailwind 4 التدرّجات باستيفاء OKLCH لانتقالات أكثر سلاسة والقدرة على تحريك مواضع التدرّج.</p>
+<h2 id="التدرجات-الخطية">التدرّجات الخطية</h2>
+<p>تدرّجات قائمة على الاتجاه:</p>
+<p><em>التدرّجات الخطية — المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/6f985105b3c4960d9cab82d8f5542ac5f5fccf7745793834398ccc7d08c50941.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Cardinal directions --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r from-purple-500 to-pink-500&quot;</span>&gt;</span>Left to right<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-br from-sky-400 to-blue-600&quot;</span>&gt;</span>Top-left to bottom-right<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Custom angles --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-45 from-green-400 to-blue-500&quot;</span>&gt;</span>45-degree angle<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>الاتجاهات: <code>to-t</code> و<code>to-tr</code> و<code>to-r</code> و<code>to-br</code> و<code>to-b</code> و<code>to-bl</code> و<code>to-l</code> و<code>to-tl</code></p>
+<h2 id="التدرجات-الشعاعية">التدرّجات الشعاعية</h2>
+<p>تدرّجات دائرية/إهليلجية من المركز:</p>
+<p><em>التدرّجات الشعاعية — المثال 2 — <a href="https://stevekinney.com/generated/playgrounds/81e7f49c52de16865c7cb3c5502408145f73bd796d88870b2388f4491d1192a0.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Basic radial --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-radial from-yellow-400 to-orange-500&quot;</span>&gt;</span>Center to edge<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Custom shape/position --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-radial-[circle_at_top_left] from-pink-300 to-purple-400&quot;</span>&gt;</span>Circle from top-left<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h2 id="التدرجات-المخروطية">التدرّجات المخروطية</h2>
+<p>مسح لوني حول المركز:</p>
+<p><em>التدرّجات المخروطية — المثال 3 — <a href="https://stevekinney.com/generated/playgrounds/d2b15c70cb4ba5895b85fea8a4fbd3256c84d9fd9960d1994a90c9fcce3210c8.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Basic conic --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-conic from-red-500 via-yellow-500 to-green-500&quot;</span>&gt;</span>Color wheel<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Starting angle --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-conic-90 from-blue-500 to-purple-500&quot;</span>&gt;</span>Start at 90 degrees<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h2 id="مواضع-التدرج">مواضع التدرّج</h2>
+<h3 id="تدرجات-بلونين">تدرّجات بلونين</h3>
+<p><em>تدرّجات بلونين — المثال 4 — <a href="https://stevekinney.com/generated/playgrounds/73c4d97f71ab12381c2db6cdcece05f54ce3ada3f6af3f603b7711b581c2a83f.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r from-indigo-500 to-purple-500&quot;</span>&gt;</span>Simple gradient<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="ثلاثة-ألوان-باستخدام-via">ثلاثة ألوان باستخدام via</h3>
+<p><em>ثلاثة ألوان باستخدام via — المثال 5 — <a href="https://stevekinney.com/generated/playgrounds/1077beba09ec412e8ecab72e5cf50ce9dfacf81a4a2d768a91bb12409058d1b1.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r from-red-500 via-yellow-500 to-green-500&quot;</span>&gt;</span>Rainbow effect<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="مواضع-مخصصة">مواضع مخصصة</h3>
+<p><em>مواضع مخصصة — المثال 6 — <a href="https://stevekinney.com/generated/playgrounds/6ce2d58fe3d342f8f8324f86c2a1eff12eeebb216ddb7b2d36ccb54ee6c9b24f.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r from-blue-500 from-10% via-purple-500 via-30% to-pink-500 to-90%&quot;</span>&gt;</span>
+  Controlled color stops
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h2 id="استيفاء-oklch">استيفاء OKLCH</h2>
+<p>يستخدم الإصدار v4 OKLCH افتراضيًا لتدرّجات حيوية وسلسة:</p>
+<p><em>استيفاء OKLCH — المثال 7 — <a href="https://stevekinney.com/generated/playgrounds/b9112496e09ecaaf31c685113acfebf6185ed58d1abb9695a2d43242a3f647cd.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Smooth interpolation between complementary colors --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r from-purple-500 to-yellow-500&quot;</span>&gt;</span>No muddy middle colors<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>قارن مع الاستيفاء الصريح:</p>
+<p><em>استيفاء OKLCH — المثال 8 — <a href="https://stevekinney.com/generated/playgrounds/8ec8c48468532f04524822f0f1deaaf15e9aa3bd772de25bbaba14e2233283c1.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Force OKLCH --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r/oklch from-red-500 to-blue-500&quot;</span>&gt;</span>Vibrant purple middle<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Force sRGB (older behavior) --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r/srgb from-red-500 to-blue-500&quot;</span>&gt;</span>Duller purple middle<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h2 id="تدرجات-متحركة">تدرّجات متحركة</h2>
+<p>جديد في Tailwind 4 — حرّك مواضع التدرّج:</p>
+<p><em>تدرّجات متحركة — المثال 9 — <a href="https://stevekinney.com/generated/playgrounds/47a0cf390e5ef16ae1214919333cc7f3524b16d7f44e37d7b3ce8d6cfe96f1aa.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r from-blue-500 to-purple-500 transition-all duration-300 hover:from-purple-500 hover:to-pink-500&quot;</span>
+&gt;</span>
+  Hover to animate
+<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+</code></pre>
+<p>يعمل هذا لأن Tailwind 4 يستخدم <code>@property</code> لتسجيل متغيّرات التدرّج كقابلة للتحريك.</p>
+<h2 id="أمثلة-معقدة">أمثلة معقدة</h2>
+<h3 id="تأثير-تدرج-شبكي">تأثير تدرّج شبكي</h3>
+<p><em>تأثير تدرّج شبكي — المثال 10 — <a href="https://stevekinney.com/generated/playgrounds/78939883f40b72c6449fe29b9c45774e4db0b04831ccb8743d65a53f4e43ae51.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;relative bg-radial from-purple-500/30 via-transparent to-transparent&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+    <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;absolute inset-0 bg-radial-[at_bottom_right] from-pink-500/30 via-transparent to-transparent&quot;</span>
+  &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h3 id="تدرجات-النص">تدرّجات النص</h3>
+<p><em>تدرّجات النص — المثال 11 — <a href="https://stevekinney.com/generated/playgrounds/1af4fc830a1195012b89e1df055fb6c8fc4cfdaa325600cb19c3925aa089e885.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent&quot;</span>&gt;</span>
+  Gradient Text
+<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+</code></pre>
+<h3 id="حدود-متدرجة">حدود متدرّجة</h3>
+<p><em>حدود متدرّجة — المثال 12 — <a href="https://stevekinney.com/generated/playgrounds/7d431f9209dc1f5340df0d41a6fda0b96577fc1e381b1a290acc72ce5091d031.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-lg bg-linear-to-r from-pink-500 to-violet-500 p-1&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rounded-lg bg-white p-4&quot;</span>&gt;</span>Gradient border effect<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h2 id="مع-العتامة">مع العتامة</h2>
+<p>ادمجها مع معدِّلات العتامة:</p>
+<p><em>مع العتامة — المثال 13 — <a href="https://stevekinney.com/generated/playgrounds/e56ed2b13c9d9dac43acac1f9b95abc0d531bbf8785734cfa2eb9885e1246111.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-linear-to-r from-red-500/50 to-blue-500/50&quot;</span>&gt;</span>Semi-transparent gradient<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<h2 id="أفضل-الممارسات">أفضل الممارسات <span class="content-anchor" id="best-practices"></span></h2>
+<ol>
+<li><strong>استخدم استيفاء OKLCH</strong> للحصول على تدرّجات حيوية</li>
+<li><strong>حدّ من مواضع التدرّج</strong> - عادةً تعمل لونان أو ثلاثة أفضل</li>
+<li><strong>اختبر على شاشات مختلفة</strong> - تعرض شاشات P3 ألوانًا أكثر حيوية</li>
+<li><strong>راعِ الأداء</strong> - تستخدم التدرّجات المتحركة وحدة معالجة الرسوميات</li>
+<li><strong>وفّر بدائل احتياطية</strong> للمتصفحات الأقدم عند الحاجة</li>
+</ol>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:l,headings:e,html:p};export{s as book,a as chapter,n as chapterTitle,c as default,e as headings,p as html,t as slug,l as title};

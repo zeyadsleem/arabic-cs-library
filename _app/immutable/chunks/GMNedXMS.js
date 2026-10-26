@@ -1,0 +1,186 @@
+const s="tanstack-router",a="router",n="دورة TanStack Router الكاملة",t="loader-functions-posts-page",e="دوالّ التحميل: صفحة المنشورات",o=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"لماذا-دالة-تحميل-لا-useeffect",text:"لماذا دالّة تحميل لا useEffect؟"},{depth:2,id:"ما-تستقبله-دالة-التحميل-وما-لا-تستقبله",text:"ما تستقبله دالّة التحميل وما لا تستقبله"},{depth:2,id:"قبل-التحميل-beforeload",text:"قبل التحميل: beforeLoad"},{depth:2,id:"طبقة-البيانات-srcdatapoststs",text:"طبقة البيانات: src/data/posts.ts"},{depth:3,id:"الأنواع",text:"الأنواع"},{depth:3,id:"دوال-الجلب",text:"دوالّ الجلب"},{depth:2,id:"ربط-المسار-بالبيانات",text:"ربط المسار بالبيانات"},{depth:2,id:"عرض-المنشورات-في-المكون",text:"عرض المنشورات في المكوّن"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],l=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في الدرس السابق مرّرنا إلى الموجّه سياقًا (context) مشتركًا يحمل <code>user</code> و<code>login</code> و<code>logout</code>، ولم نستعمل هذا السياق بعد في جلب أيّ بيانات. في هذا الدرس نبدأ الجلب: نضيف إلى مسار <code>/posts</code> دالّةَ تحميل (loader) تجلب قائمة المنشورات قبل أن يُصيَّر المكوّن، ثم نعرض ما جلبته في الصفحة.</p>
+<p>ويمرّ الدرس بأربع خطوات: نتعرّف على دالّة التحميل وما تستقبله وما لا تستقبله، ثم على <code>beforeLoad</code> ودورها في إعادة التوجيه وفي بناء سياق خاصّ بالمسار، ثم نكتب طبقة بيانات صغيرة فوق واجهة <code>dummyjson</code> الوهمية، وأخيرًا نربطها بمسار <code>/posts</code> ونقرأ ناتجها في المكوّن بالخُطّاف <code>Route.useLoaderData()</code>.</p>
+<h2 id="لماذا-دالة-تحميل-لا-useeffect">لماذا دالّة تحميل لا <code>useEffect</code>؟</h2>
+<p>في React جرت العادة أن تجلب البيانات داخل المكوّن بأثرٍ (<code>useEffect</code>) يعمل بعد التصيير. وTanStack Router يعطيك موضعًا أفضل: الخيار <code>loader</code> في تعريف المسار، وهو دالّة تُستدعى قبل التصيير وتعيد ما يحتاجه المسار من بيانات.</p>
+<p>وقد ذكر المؤلف ثلاث فوائد لهذا الموضع:</p>
+<ol>
+<li>البيانات تُطلب في أقرب وقت ممكن، فتكون جاهزة عند أول تصيير بدل أن تنتظر أثرًا يعمل بعد الرسم.</li>
+<li>يمكن تحميلها مسبقًا (preloading) قبل أن تزور المسار أصلًا؛ وللموضوع درس لاحق.</li>
+<li>تُخزَّن افتراضيًا في الذاكرة المؤقتة (cache)، ويمكنك التحكّم في سلوك هذه الذاكرة، ولذلك درس لاحق أيضًا.</li>
+</ol>
+<h2 id="ما-تستقبله-دالة-التحميل-وما-لا-تستقبله">ما تستقبله دالّة التحميل وما لا تستقبله</h2>
+<p>تستقبل دالّة التحميل كائنًا واحدًا فيه ثلاث معلومات:</p>
+<ul>
+<li><code>context</code>: سياق الموجّه، وفيه ما مرّرته من مسار الجذر وما تضيفه المسارات الأعلى.</li>
+<li><code>params</code>: معاملات المسار (params) المقروءة من العنوان، مثل <code>postId</code> في <code>/posts/$postId</code>.</li>
+<li>معلومات عن المسار نفسه، من نوعه ومساره.</li>
+</ul>
+<p>أما معاملات البحث (search params) فلا تصل إلى الدالّة. لو فكّكت الكائن وكتبت <code>search</code> لما وجدت له أثرًا. وسبب ذلك مؤجَّل إلى درس الترقيم، حيث نرى أنّه متعلّق بمفتاح الذاكرة المؤقتة وبالخيار <code>loaderDeps</code>.</p>
+<h2 id="قبل-التحميل-beforeload">قبل التحميل: <code>beforeLoad</code></h2>
+<p>إلى جانب <code>loader</code> يقبل تعريف المسار دالّةً أخرى اسمها <code>beforeLoad</code>، تعمل قبله. وللمؤلف فيها استعمالان:</p>
+<ul>
+<li><strong>إعادة التوجيه قبل كلّ شيء.</strong> قد تحتاج، قبل تصيير المسار وقبل تحميل أيّ بيانات، إلى نقل المستخدم إلى مسار آخر؛ مثلًا زائرٌ لم يسجّل الدخول تريده أن يذهب إلى صفحة الدخول بدل أن يرى صفحة محميّة. و<code>beforeLoad</code> هو الموضع الطبيعي لهذا الفحص.</li>
+<li><strong>بناء سياق خاصّ بالمسار.</strong> ما تعيده الدالّة من كائن يصير سياقًا لهذا المسار ولأبنائه، لا للتطبيق كلّه. وهذا امتدادٌ لما شرحناه في درس السياق: سياق الجذر متاح في كلّ مكان، وسياق المسار متاح له ولأبنائه فقط.</li>
+</ul>
+<p>وسنرى الاستعمال الثاني عمليًّا بعد قليل، حين نضع دالّة <code>getPosts</code> في سياق مسار <code>/posts</code>.</p>
+<h2 id="طبقة-البيانات-srcdatapoststs">طبقة البيانات: <code>src/data/posts.ts</code></h2>
+<p>قبل الربط نحتاج بيانات. يستعمل المؤلف واجهة <code>dummyjson</code> الوهمية التي تعيد منشورات وتعليقات جاهزة، ويكتب لها ملفًّا واحدًا في <code>src/data/posts.ts</code> فيه الأنواع (types) والدوالّ.</p>
+<h3 id="الأنواع">الأنواع</h3>
+<pre><code class="language-ts"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Post</span> = {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">body</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">userId</span>: <span class="hljs-built_in">number</span>;
+};
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PostComment</span> = {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">body</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">postId</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">userId</span>: <span class="hljs-built_in">number</span>;
+};
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PostsResponse</span> = {
+  <span class="hljs-attr">posts</span>: <span class="hljs-title class_">Post</span>[];
+  <span class="hljs-attr">total</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">skip</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">limit</span>: <span class="hljs-built_in">number</span>;
+};
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PostCommentsResponse</span> = {
+  <span class="hljs-attr">comments</span>: <span class="hljs-title class_">PostComment</span>[];
+  <span class="hljs-attr">total</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">skip</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">limit</span>: <span class="hljs-built_in">number</span>;
+};
+</code></pre>
+<p>الفكرة بسيطة: <code>Post</code> هو شكل المنشور كما تعيده الواجهة، وفيه <code>id</code> و<code>title</code> و<code>body</code> و<code>userId</code>؛ و<code>PostComment</code> شكل التعليق، وفيه <code>postId</code> الذي يربطه بمنشوره. والنوعان <code>PostsResponse</code> و<code>PostCommentsResponse</code> يغلّفان القائمة بمعلومات الترقيم: <code>total</code> و<code>skip</code> و<code>limit</code>. وقد اقتصر المؤلف على هذه الحقول وترك بقية ما تعيده الواجهة، لأنّها وحدها ما سيستعمله التطبيق.</p>
+<h3 id="دوال-الجلب">دوالّ الجلب</h3>
+<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getPosts</span>(<span class="hljs-params">page = <span class="hljs-number">1</span></span>) {
+  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(
+    <span class="hljs-string">\`https://dummyjson.com/posts?limit=10&amp;skip=<span class="hljs-subst">\${page * <span class="hljs-number">10</span>}</span>\`</span>
+  );
+  <span class="hljs-keyword">if</span> (res.<span class="hljs-property">ok</span>) {
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>()) <span class="hljs-keyword">as</span> <span class="hljs-title class_">PostsResponse</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Failed to fetch posts&quot;</span>);
+  }
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getPost</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span></span>) {
+  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`https://dummyjson.com/posts/<span class="hljs-subst">\${id}</span>\`</span>);
+  <span class="hljs-keyword">if</span> (res.<span class="hljs-property">ok</span>) {
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>()) <span class="hljs-keyword">as</span> <span class="hljs-title class_">Post</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Failed to fetch post&quot;</span>);
+  }
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getPostComments</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span></span>) {
+  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`https://dummyjson.com/posts/<span class="hljs-subst">\${id}</span>/comments\`</span>);
+  <span class="hljs-keyword">if</span> (res.<span class="hljs-property">ok</span>) {
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>()) <span class="hljs-keyword">as</span> <span class="hljs-title class_">PostCommentsResponse</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Failed to fetch post comments&quot;</span>);
+  }
+}
+</code></pre>
+<p>ثلاث دوالّ، كلّها تعمل بالطريقة نفسها: ترسل طلبًا بـ<code>fetch</code>، فإن كانت الاستجابة سليمة (<code>res.ok</code>) أعادت الناتج بعد تحويله من <code>JSON</code>، وإلّا رمت خطأً.</p>
+<ul>
+<li><code>getPosts(page = 1)</code> تجلب صفحة من المنشورات: تثبّت الحجم بـ<code>limit=10</code> وتحسب نقطة البداية بـ<code>skip</code>. وفي هذا الفرع حُسب التخطّي بـ<code>page * 10</code>، فالصفحة الأولى تتخطّى أوّل عشرة منشورات؛ وسيُصحَّح ذلك في درس الترقيم إلى <code>(page - 1) * 10</code>.</li>
+<li><code>getPost(id)</code> تجلب منشورًا واحدًا بمعرّفه.</li>
+<li><code>getPostComments(id)</code> تجلب تعليقات منشور واحد.</li>
+</ul>
+<h2 id="ربط-المسار-بالبيانات">ربط المسار بالبيانات</h2>
+<p>الآن ننتقل إلى <code>src/routes/posts.index.tsx</code>، وهو مسار <code>/posts</code>. نستورد <code>getPosts</code>، ونضعها في سياق المسار عبر <code>beforeLoad</code>، ثم نستدعيها في <code>loader</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute, <span class="hljs-title class_">Link</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+<span class="hljs-keyword">import</span> { getPosts } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../data/posts&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/posts/&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">beforeLoad</span>: <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">getPosts</span>: getPosts,
+    };
+  },
+  <span class="hljs-attr">loader</span>: <span class="hljs-title function_">async</span> ({ context }) =&gt; {
+    <span class="hljs-keyword">const</span> { getPosts } = context;
+    <span class="hljs-keyword">const</span> posts = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getPosts</span>();
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">posts</span>: posts.<span class="hljs-property">posts</span>,
+    };
+  },
+});
+</code></pre>
+<p>ونقرأ التعريف بندًا بندًا:</p>
+<ul>
+<li><code>beforeLoad</code> تعيد كائنًا فيه <code>getPosts</code>، فتصير الدالّة متاحة في <code>context</code> لهذا المسار ولأيّ مسار ابنٍ تحته. وليس لهذا التمرير كبير فائدة في مثالنا الصغير، لكنه النمط الذي تتبعه حين تشترك مسارات عدّة في دوالّ واحدة: تُعرَّف مرّةً وتُمرَّر عبر السياق.</li>
+<li><code>loader</code> دالّة غير متزامنة (async) تفكّك <code>context</code> وتأخذ منه <code>getPosts</code>، ثم تنتظر نتيجتها. لاحظ أنّ الدالّة لا تستقبل أيّ وسيط هنا: لا <code>params</code> ولا <code>search</code>، لأنّ الصفحة تعرض الصفحة الأولى وحدها في هذا الدرس.</li>
+<li>الدالّة <code>getPosts</code> تعيد كائنًا فيه <code>posts</code> ومعلومات الترقيم، لكنّ الـloader لا يعيده كلّه: يعيد <code>{ posts: posts.posts }</code>، أي المصفوفة وحدها. وهذا اختيار مقصود: المكوّن لا يحتاج <code>total</code> ولا <code>skip</code> ولا <code>limit</code>، فلا داعي لحملها في بيانات التحميل.</li>
+</ul>
+<p>وأثناء الكتابة ظهر خطأ في TypeScript سببه فاصلة ناقصة في الكائن المُعاد، وبعد إضافتها قبِل الملفّ.</p>
+<h2 id="عرض-المنشورات-في-المكون">عرض المنشورات في المكوّن</h2>
+<p>بقي أن نقرأ البيانات في المكوّن. يعطيك المسار خُطّافًا مخصّصًا هو <code>Route.useLoaderData()</code> يعيد ما أعاده الـloader بأنواعه: <code>posts</code> هنا <code>Post[]</code>، فتحصل على الإكمال التلقائي وتحقّق الأنواع من دون تعريفٍ يدوي.</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">RouteComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { posts } = <span class="hljs-title class_">Route</span>.<span class="hljs-title function_">useLoaderData</span>();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      Hello &quot;/posts/&quot;! <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+      {posts.map((post) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{post.id}</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">Link</span>
+            <span class="hljs-attr">to</span>=<span class="hljs-string">{</span>\`/<span class="hljs-attr">posts</span>/$<span class="hljs-attr">postId</span>\`}
+            <span class="hljs-attr">params</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">postId:</span> <span class="hljs-attr">String</span>(<span class="hljs-attr">post.id</span>) }}
+            <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;underline font-bold text-lg&quot;</span>
+          &gt;</span>
+            {post.title}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      ))}
+      <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Link</span>
+        <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/posts/$postId&quot;</span>
+        <span class="hljs-attr">params</span>=<span class="hljs-string">{{</span>
+          <span class="hljs-attr">postId:</span> &quot;<span class="hljs-attr">434</span>&quot;,
+        }}
+      &gt;</span>
+        Go to Post
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Link</span>
+        <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/posts/$postId&quot;</span>
+        <span class="hljs-attr">params</span>=<span class="hljs-string">{(prev)</span> =&gt;</span> ({ ...prev, postId: &quot;34435&quot; })}
+      &gt;
+        Go to Post
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>وفي المكوّن أربعة أمور تستحقّ الوقوف:</p>
+<ul>
+<li><code>Route.useLoaderData()</code> يعيد الكائن <code>{ posts }</code>، ومنه نفكّك <code>posts</code>.</li>
+<li><code>posts.map</code> تبني عنصرًا لكلّ منشور، والمفتاح <code>key={post.id}</code> يثبّت هويّة العنصر في React.</li>
+<li>كلّ عنوان ملفوف بـ<code>Link</code> يشير إلى <code>/posts/$postId</code>، ويُمرَّر المعرّف في <code>params</code> بعد تحويله إلى نصّ بـ<code>String(post.id)</code>، لأنّ معاملات المسار نصوص دائمًا.</li>
+<li><code>className</code> يضيف التسطير والخطّ العريض، وهو مجرّد تنسيق من <code>Tailwind</code>.</li>
+</ul>
+<p>ويبقى في أسفل الملفّ رابطا <code>Go to Post</code> من درس التنقّل السابق، لم يُحذفا. والنقر على أيّ منشور ينقل إلى المسار <code>/posts/$postId</code> بمعرّف المنشور، حيث يعرض المسار المعرّف وحده؛ أمّا تحميل المنشور المفرد فمؤجَّل إلى درس لاحق، وهو ما ختم به المؤلف الفيديو. وقد ظهر بعد الحفظ خطأٌ في المتصفّح لم يلبث أن زال بتحديث الصفحة، ثم ظهرت القائمة كاملة.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p>صار مسار <code>/posts</code> يجلب بياناته قبل التصيير: يمرّ <code>beforeLoad</code> فيضع <code>getPosts</code> في السياق، ثم يستدعيها الـloader ويعيد المصفوفة، فيجد المكوّن القائمة جاهزة عند أول رسم. ولم يبقَ في المكوّن أثرٌ (<code>useEffect</code>) ولا حالة انتظار تصنعها بنفسك؛ كلّ ذلك انتقل إلى طبقة المسار.</p>
+<p>واللقطة التالية من فرع الدرس، وفيها القائمة كاملة تحت عنوان الصفحة: عشرة عناوين، كلٌّ منها رابط إلى صفحة منشوره، وأسفلها رابطان إضافيان من درس سابق:</p>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--loader-functions-posts-page--posts.png" alt="صفحة المنشورات في التطبيق: عنوان الصفحة ثم عشرة عناوين منشورات مسطّرة، وأسفلها رابطان إضافيان إلى صفحة المنشور"></p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>أضف <code>console.log(posts)</code> داخل الـloader قبل <code>return</code> وراقب في الطرفية شكل الكائن الكامل الذي تعيده <code>getPosts</code>، ثم قارنه بما يعيده الـloader.</li>
+<li>اعرض حقلًا آخر من المنشور في القائمة، مثل <code>body</code> أو <code>userId</code>، ولاحظ أنّ TypeScript يعرف نوعه ويعرضه في الإكمال التلقائي.</li>
+<li>احذف <code>beforeLoad</code> واستورد <code>getPosts</code> مباشرةً في أعلى الملفّ ثم استدعها داخل الـloader. ستعمل الصفحة نفسها؛ والفرق أنّ الدالّة لم تعد في سياق المسار، فلا يراها أيّ مسار ابن.</li>
+<li>غيّر <code>page</code> الافتراضية في <code>getPosts</code> إلى <code>2</code> وأعد التحميل: ستنتقل القائمة إلى العشرة التالية، وهذا أوّل تلامسٍ مع الترقيم الذي يأتي في الدرس القادم.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=7730s">فيديو الدرس: دوالّ التحميل — صفحة المنشورات</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/loaders-1">شيفرة الدرس: فرع <code>loaders-1</code> في مستودع الدورة</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/data-loading">توثيق تحميل البيانات (Loader) في TanStack Router</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/router-context">توثيق سياق المسار (Context) في TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعاد صياغته عن درس «دوالّ التحميل: صفحة المنشورات» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع <code>loaders-1</code> للمستودع الأصلي، وما زاده المترجم من شرحٍ أو توضيحٍ لا يُنسب إلى المؤلف، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,p={book:s,chapter:a,chapterTitle:n,slug:t,title:e,headings:o,html:l};export{s as book,a as chapter,n as chapterTitle,p as default,o as headings,l as html,t as slug,e as title};

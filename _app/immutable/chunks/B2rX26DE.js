@@ -1,0 +1,65 @@
+const s="kinney",a="full-stack-typescript",n="TypeScript للويب الكامل",p="type-guards-vs-schema-validation",l="حرّاس الأنواع والتحقّق عبر المخططات",t=[],e=`<p>حرّاس الأنواع (type guards) طريقة لاستخدام منطق وقت التشغيل لتطمئن TypeScript بأن كائنًا معيّنًا هو فعلًا النوع الذي تظن أنه ينبغي أن يكونه. وإليك مثالًا سريعًا.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Circle</span> {
+  <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;circle&#x27;</span>;
+  <span class="hljs-attr">radius</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Square</span> {
+  <span class="hljs-attr">kind</span>: <span class="hljs-string">&#x27;square&#x27;</span>;
+  <span class="hljs-attr">side</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">Shape</span> = <span class="hljs-title class_">Circle</span> | <span class="hljs-title class_">Square</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isCircle</span>(<span class="hljs-params"><span class="hljs-attr">shape</span>: <span class="hljs-title class_">Shape</span></span>): shape is <span class="hljs-title class_">Circle</span> {
+  <span class="hljs-keyword">return</span> shape.<span class="hljs-property">kind</span> === <span class="hljs-string">&#x27;circle&#x27;</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">calculateArea</span>(<span class="hljs-params"><span class="hljs-attr">shape</span>: <span class="hljs-title class_">Shape</span></span>) {
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isCircle</span>(shape)) {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> * shape.<span class="hljs-property">radius</span> ** <span class="hljs-number">2</span>;
+  }
+  <span class="hljs-keyword">return</span> shape.<span class="hljs-property">side</span> ** <span class="hljs-number">2</span>;
+}
+</code></pre>
+<p>قد تكون نسخة سابقة مني ظنّت أنها <em>ذكية حقًا</em> حين صنعت حارس أنواع كهذا.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Define a type guard for User objects</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isUser</span>(<span class="hljs-params"><span class="hljs-attr">obj</span>: <span class="hljs-built_in">any</span></span>): obj is <span class="hljs-title class_">User</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">&#x27;object&#x27;</span> &amp;&amp;
+    obj !== <span class="hljs-literal">null</span> &amp;&amp;
+    <span class="hljs-keyword">typeof</span> obj.<span class="hljs-property">id</span> === <span class="hljs-string">&#x27;string&#x27;</span> &amp;&amp;
+    <span class="hljs-keyword">typeof</span> obj.<span class="hljs-property">username</span> === <span class="hljs-string">&#x27;string&#x27;</span> &amp;&amp;
+    <span class="hljs-keyword">typeof</span> obj.<span class="hljs-property">email</span> === <span class="hljs-string">&#x27;string&#x27;</span>
+  );
+}
+</code></pre>
+<p>وبدلًا من ذلك، يمكنك أن تفعل شيئًا كهذا.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// Runtime type checking can impact performance</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">validateUser</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>): <span class="hljs-title class_">User</span> {
+  <span class="hljs-keyword">if</span> (
+    <span class="hljs-keyword">typeof</span> data !== <span class="hljs-string">&#x27;object&#x27;</span> ||
+    data === <span class="hljs-literal">null</span> ||
+    !(<span class="hljs-string">&#x27;username&#x27;</span> <span class="hljs-keyword">in</span> data) ||
+    !(<span class="hljs-string">&#x27;email&#x27;</span> <span class="hljs-keyword">in</span> data) ||
+    <span class="hljs-keyword">typeof</span> data.<span class="hljs-property">username</span> !== <span class="hljs-string">&#x27;string&#x27;</span> ||
+    <span class="hljs-keyword">typeof</span> data.<span class="hljs-property">email</span> !== <span class="hljs-string">&#x27;string&#x27;</span>
+  ) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValidationError</span>(<span class="hljs-string">&#x27;Invalid user data&#x27;</span>);
+  }
+
+  <span class="hljs-keyword">return</span> data <span class="hljs-keyword">as</span> <span class="hljs-title class_">User</span>;
+}
+</code></pre>
+<p>مكتبات التحقّق بالمخططات مُحسّنة للأداء، ما يجعلها أفضل من التحقّق المكتوب يدويًا. لننظر إلى الفكرة نفسها، لكن باستخدام Zod.</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// More efficient with schema validation libraries</span>
+<span class="hljs-keyword">const</span> userSchema = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">username</span>: z.<span class="hljs-title function_">string</span>(),
+  <span class="hljs-attr">email</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">email</span>(),
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">validateUser</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>): <span class="hljs-title class_">User</span> {
+  <span class="hljs-keyword">return</span> userSchema.<span class="hljs-title function_">parse</span>(data);
+}
+</code></pre>
+`,c={book:s,chapter:a,chapterTitle:n,slug:p,title:l,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,e as html,p as slug,l as title};

@@ -1,0 +1,122 @@
+const s="tanstack-router",a="router",n="دورة TanStack Router الكاملة",t="catchboundary",l="حدّ أخطاء يقتصر على جزءٍ من الصفحة مع CatchBoundary",e=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"استدراج-خطأ-التعليقات",text:"استدراجُ خطأ التعليقات"},{depth:2,id:"قبل-الحل-الصفحة-كلها-تختفي",text:"قبل الحلّ: الصفحة كلّها تختفي"},{depth:2,id:"حد-يقتصر-على-التعليقات",text:"حدٌّ يقتصر على التعليقات"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],p=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في درس التحميل في الخلفية صارت تعليقاتُ المنشور تُحمَّل في وعدٍ لا ينتظره المُحمِّل (loader)، فيُتصيَّر مسارُ المنشور فور جهوزيته وحده، ويبقى صندوقُ التعليقات في حالة الانتظار (<code>pending</code>) حتى تكتمل التعليقات فيعرضها مكوّن <code>Await</code>. وفي درس معالجة الأخطاء بنينا النسق الذي يجري عند الفشل: كلُّ خطأٍ يحدث عند تحميل المسار أو أثناء تصييره يلتقطه حدُّ الأخطاء (<code>error boundary</code>) الذي يلفّ كلَّ مسار تلقائيًّا، فتحلّ مكوّنُ الخطأ محلّ المحتوى مع زرّ إعادة المحاولة.</p>
+<p>ويبقى سؤالٌ لم نطرحه: ماذا لو فشل جزءٌ واحد من الصفحة لا الصفحة كلّها؟ التعليقات معلومةٌ ثانوية أجّلناها عمدًا، ومع ذلك يرمي مكوّنُ <code>Await</code> الخطأَ في أثناء التصيير عندما يُرفض وعدُه، فيقبض أقربُ حدٍّ للأخطاء من فوقه على الخطأ — وهو حدُّ المسار بأكمله كما شاهدنا في درس معالجة الأخطاء — فتحلّ مكوّنُ الخطأ محلّ صفحة المنشور كلّها، ويختفي العنوانُ والمتنُ معًا، مع أنّ المنشور ذاته سليم. وهذا ما يعنيه المؤلف في الفيديو حين يقول إنّ الصفحة كلّها تتحطّم من أجل خطأٍ في جزءٍ ثانوي.</p>
+<p>وهنا يسير الدرس بثلاث خطوات. أولًا نجعل جلبَ التعليقات يفشل فعلًا: دالّةُ الجلب تنتظر ثلاث ثوانٍ ثم ترمي خطأً سواء نجح الطلب أم فشل. ثانيًا نراقب العاقبة: تُتصيَّر الصفحة سليمةً أول الأمر، ثم بعد الثلاث ثوانٍ يصعد خطأُ الوعد المرفوض فيحلّ مكوّنُ الخطأ محلّ المسار كلّه. ثالثًا نعالج ذلك بتضييق الحدّ: نغلّف <code>Await</code> الذي يعرض التعليقات في مكوّن <code>CatchBoundary</code> نستورده من حزمة <code>@tanstack/react-router</code> ذاتها، فيكتسب صندوقُ التعليقات حدَّ خطأٍ خاصًّا به، ونفصّل خصائصه الثلاث: <code>errorComponent</code> لما يُعرض عند الاصطياد، و<code>getResetKey</code> الإلزامية التي تعيد ضبط الحدّ عند تغيّر مفتاحه، و<code>onCatch</code> الاختيارية لتسجيل الخطأ عند اصطياده.</p>
+<h2 id="استدراج-خطأ-التعليقات">استدراجُ خطأ التعليقات</h2>
+<p>ليس في وجهة <code>DummyJSON</code> ما يجعل طلبَ التعليقات يفشل من تلقاء نفسه، فيصنعه المؤلفُ بيدِه كي تكون التجربة مؤكَّدة: هذه دالّةُ <code>getPostComments</code> في <code>src/data/posts.ts</code> كما هي عند فرع الدرس:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getPostComments</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span></span>) {
+  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`https://dummyjson.com/posts/<span class="hljs-subst">\${id}</span>/comments\`</span>);
+  <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> <span class="hljs-built_in">setTimeout</span>(r, <span class="hljs-number">3000</span>));
+  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Failed to fetch post comments&quot;</span>);
+  <span class="hljs-keyword">if</span> (res.<span class="hljs-property">ok</span>) {
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>()) <span class="hljs-keyword">as</span> <span class="hljs-title class_">PostCommentsResponse</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Failed to fetch post comments&quot;</span>);
+  }
+}
+</code></pre>
+<p>سطرا الانتظار والرمي هما زيادةُ هذا الدرس: انتظارٌ ثلاثُ ثوانٍ كي تبقى حالةُ الانتظار ظاهرةً أمامك مدةً تكفي للملاحظة، ثم يُرمى الخطأ من غير النظر إلى حال الجواب. وبما أنّ سطرَ الرمي يسبق فرع التفريع، فلم يبقَ لما بعده من التفريع أثرٌ عمليٌّ في هذا التمرين.</p>
+<p>أما مُحمِّلُ المسار في <code>src/routes/posts.$postId.tsx</code> فبقي كما في درس التحميل في الخلفية، وفهمه هو مفتاح ما يخصّنا:</p>
+<pre><code class="language-tsx">  <span class="hljs-attr">loader</span>: <span class="hljs-title function_">async</span> ({ params }) =&gt; {
+    <span class="hljs-keyword">const</span> commentsPromise = <span class="hljs-title function_">getPostComments</span>(+params.<span class="hljs-property">postId</span>);
+    <span class="hljs-keyword">const</span> post = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getPost</span>(+params.<span class="hljs-property">postId</span>);
+
+    <span class="hljs-keyword">return</span> {
+      post,
+      commentsPromise,
+    };
+  },
+</code></pre>
+<p>لا <code>await</code> أمام استدعاء <code>getPostComments</code>: يبدأ جلبُ التعليقات سيرَه، وينتظر المُحمِّلُ المنشورَ وحده، ثم يُردَّ الوعدُ وهو ما زال مشغولًا ضمن بيانات المُحمِّل. يأخذ مكوّنُ <code>Post</code> هذا الوعدَ من <code>useLoaderData</code> بمفتاح <code>commentsPromise</code> ويقدّمه إلى <code>Await</code>، على النمط نفسه الذي شرحناه في درس التحميل في الخلفية.</p>
+<p>ومعنى هذا أنّ ظهور الصفحة لا يتعلّق بمصير التعليقات: ينتهي المُحمِّلُ بانتظار المنشور فقط، ويظل وعدُ التعليقات يُكمل في الخلفية، فإذا رُفض — وهو رفضٌ ستمضي ثلاثُ ثوانٍ قبل أن يقع — فلم يكن الخطأُ في مرحلة التحميل ولم يقف به المُحمِّل، بل يُرمى من أثناء التصيير حين يلتقِيه <code>Await</code>؛ إذ يرمي <code>Await</code> خطأ الوعد المرفوض ليقبِضَ عليه أقربُ حدٍّ للأخطاء، كما يقول التوثيق الرسمي للتحميل المؤجَّل. وأقربُ حدٍّ موجودٌ حالًا هو حدُّ المسار، وسنتابع في القسم التالي ماذا يفعل ذلك بهذا الخطأ.</p>
+<h2 id="قبل-الحل-الصفحة-كلها-تختفي">قبل الحلّ: الصفحة كلّها تختفي</h2>
+<p>حدّث الصفحة ولاحظ: يظهر عنوانُ المنشور ومتنُه فورًا، ويظل صندوقُ التعليقات يعرض <code>Loading...</code> ثلاثَ ثوانٍ كاملة، ثم يقع الرميُ المقصود: خطأ «<code>Failed to fetch post comments</code>». وهنا بيت المطلوب: لا شيء في الصفحة يلتقط هذا الخطأ، فيصل إلى حدّ المسار — وهو الحدُّ الذي يلفّه الموجّه تلقائيًّا وشرحناه في درس معالجة الأخطاء — فيُستبدَل به كلُّ محتوى المسار دفعةً واحدة.</p>
+<p>ومكوّنُ الخطأ الذي يعرضه حدُّ المسار هو الذي بنياه في درس معالجة الأخطاء في <code>src/routes/posts.$postId.tsx</code>:</p>
+<pre><code class="language-tsx">  <span class="hljs-attr">errorComponent</span>: <span class="hljs-function">(<span class="hljs-params">{ error, reset }</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> router = <span class="hljs-title function_">useRouter</span>();
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        {error.message} <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> {
+            router.invalidate();
+          }}
+        &gt;
+          Retry
+        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    );
+  },
+</code></pre>
+<p>فيظهر نصّ الخطأ عبر <code>error.message</code> — رسالةُ الرمي التي صنعتَها قبل قليل — ويعيد زرُّ <code>Retry</code> المحاولةَ عبر <code>router.invalidate()</code> التي تشغِّل المُحمِّلَ من جديد. ولم يبقَ في الشاشة أثرٌ للمنشور ولا للتعليقات؛ فالحدّ الذي قبض على الخطأ هو حدُّ المسار بكلّه، وكلُّ ما تحته دخل في العقوبة نفسها: المنشورُ السليمُ وخطأُ تعليقاتِه في مصراعٍ واحد. هذا هو المعنى الذي يقصده المؤلف من «الصفحة كلُّها تتحطّم».</p>
+<h2 id="حد-يقتصر-على-التعليقات">حدٌّ يقتصر على التعليقات</h2>
+<p>المطلوب أن يقف الاصطياد عند مكانه. وقد وفرت حزمةُ الموجِّه مكوّنًا بهذا الغرض تحديدًا: <code>CatchBoundary</code> من <code>@tanstack/react-router</code> — نفسُ الحزمة التي جاء منها <code>Await</code> — وهو حدُّ أخطاء نضعه بأنفسنا في أيّ موضعٍ نختاره من شجرة المكوّنات، فما يُرمى من داخله يقف عنده ولا يتجاوزه. والتعديلُ في هذا الدرس طال مكوِّن <code>Post</code> في <code>src/routes/-components/Post.tsx</code>، وهذا تعريفه عند فرع الدرس:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Await</span>, <span class="hljs-title class_">CatchBoundary</span>, getRouteApi } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Post</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { useParams, useLoaderData } = <span class="hljs-title function_">getRouteApi</span>(<span class="hljs-string">&quot;/posts/$postId&quot;</span>);
+  <span class="hljs-keyword">const</span> { postId } = <span class="hljs-title function_">useParams</span>();
+  <span class="hljs-keyword">const</span> { post, commentsPromise } = <span class="hljs-title function_">useLoaderData</span>();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-3xl font-bold mb-6&quot;</span>&gt;</span>{post.title}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{post.body}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;border-2 p-4 mt-4&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-xl font-bold mb-2&quot;</span>&gt;</span>Comments<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">CatchBoundary</span>
+          <span class="hljs-attr">errorComponent</span>=<span class="hljs-string">{()</span> =&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Failed to Load Comments<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>}
+          getResetKey={() =&gt; &quot;comments&quot;}
+        &gt;
+          <span class="hljs-tag">&lt;<span class="hljs-name">Await</span> <span class="hljs-attr">promise</span>=<span class="hljs-string">{commentsPromise}</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">div</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>}&gt;
+            {(comments) =&gt; (
+              <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+                {comments.comments.map((comment) =&gt; (
+                  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>
+                    <span class="hljs-attr">key</span>=<span class="hljs-string">{comment.id}</span>
+                    <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;bg-purple-800 border-1 p-2 mb-2&quot;</span>
+                  &gt;</span>
+                    {comment.body}
+                    <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;text-sm text-gray-200&quot;</span>&gt;</span>
+                      - {comment.user.username}
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                ))}
+              <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+            )}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">Await</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">CatchBoundary</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>فلنقف عند موضع الغلاف: أحاطَ <code>CatchBoundary</code> بكلِّ ما يعرض التعليقات من عنوان القسم «Comments» حتى قائمتها، وبقي العنوانُ ومتنُ المنشور خارجَ الحدِّ على حالهما. فإذا رمى أبناءُه خطأً فقد قبضه هذا الحدُّ الأقرب قبل أن يبلغ حدَّ المسار، وعُرض مكوّنُ الاستبدال الذي نحنُ من زوّدَه به في الموضع نفسه، فلم يُهدم إلا المعطوبُ وحده.</p>
+<ul>
+<li><code>errorComponent</code> يحدد ما يُعرض عند الاصطياد بدلًا من الأبناء، واختر المؤلف نصًّا ثابتًا واحدًا: «<code>Failed to Load Comments</code>»، وهو نصٌّ كافٍ لحظة الفشل، فالتفصيلُ عن السبب يُترك لمن يسجّل الأخطاء إن أراد.</li>
+<li><code>getResetKey</code> هي الملزِمة الوحيدة: دالّة يعيد بها الحدُّ مفتاحًا، فإذا تغيّرت قيمةُه أعاد الحدُّ تصييرَ أبنائه من جديد. ويضع المؤلفُ مفتاحًا ثابتًا <code>() =&gt; &quot;comments&quot;</code> فلا مفتاح يتغيّر في هذه الشيفرة، ويقترح عليك أن تنفّذ بنفسك وسيلةً لتحديث هذا المفتاح كي تُعيد ضبط الحدّ، ثم يبقيه كما هو.</li>
+<li><code>onCatch</code> يذكره المؤلف اختياريًّا: دالّةٌ تستلم الخطأ بعد اصطياده كي تطبعه أو ترسله إلى ما يسجِّل الأعطال، على نمط <code>onCatch</code> في حدّ المسار الذي رأيناه في درس معالجة الأخطاء. ولم يُدرجه المؤلف في الشيفرة النهائية هنا؛ فما ورد في الشيفرة هو <code>errorComponent</code> و<code>getResetKey</code> فقط.</li>
+</ul>
+<h2 id="النتيجة">النتيجة</h2>
+<p>بعد الدرس يبقى خطأُ المنشور نفسه في السبيل نفسها: يقبضه حدُّ المسار فيحلّ مكوّنُ الخطأ وزرُّ <code>Retry</code> محلّ الصفحة كلّها كما شرحنا في درس معالجة الأخطاء. وأما خطأُ جلب التعليقات فيقبضه الحدُّ المحليُّ الذي وضعناه في <code>Post.tsx</code>: تبقى صفحةُ المنشور سليمةً بعنوانها ومتنها، ويتولى صندوقُ التعليقات وحده إظهارَ نصّ «<code>Failed to Load Comments</code>» في موضعه.</p>
+<p>واللقطة التالية ملتقطة من فرع الدرس، وهي توثّق لحظةً مهمة في التجربة: صفحةُ المنشور معروضة كاملةً، وصندوقُ تعليقاتها يعرض <code>Loading...</code> أثناء انتظار التعليقات في تلك الثواني الثلاث، وبعد انقضاءها يتحوّل هذا الصندوق وحده إلى نصّ الخطأ <code>Failed to Load Comments</code>، ويبقى ما حوله من الصفحة عاملًا:</p>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--catchboundary--post-error.png" alt="لقطة من تطبيق الدورة: صفحة المنشور ظاهرة بعنوانها ومتنها وصندوق التعليقات قيد الانتظار قبل ورود خطأ التعليقات"></p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>أعد <code>getPostComments</code> إلى سلوكها الطبيعي بحذف سطرَي الانتظار والرمي، ثم حدّث الصفحة: تظهر التعليقات حين يكتمل الجلب، ولم يبقَ لصندوق الخطأ دور.</li>
+<li>عكس التجربة: أعد سطرَي الرمي والانتظار وأزل غلاف <code>CatchBoundary</code> مؤقتًا في <code>Post.tsx</code>، ثم حدّث وانتظر الثلاث ثوانِ: يصعد الخطأ إلى حدّ المسار فيُستبدَل به الصفحة كلّها كما في منتصف الدرس. هكذا ترى الفرْق بين الحدَّيْن في تجربة واحدة.</li>
+<li>نفّذ اقتراح المؤلف نفسه: أضف سبيلًا لتحديث مفتاح <code>getResetKey</code> كيف انتهت إليك — من زر مثلاً — وراقب أثر تغيّر المفتاح على الحدِّ وما حوله.</li>
+<li>انتقل من قائمة <code>/posts</code> إلى منشور آخر وانتظر: يُتصيَّر المنشور الجديد فورًا، وبعد الثلاث ثوانٍ يعرض صندوقُ تعليقاته الخطأ ذاته. فالنمط نفسه يتكرر مع كل منشور.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=10146s">فيديو الدرس: حدّ أخطاء يقتصر على جزءٍ من الصفحة مع <code>CatchBoundary</code></a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/error-handling-3">شيفرة الدرس: فرع <code>error-handling-3</code> في مستودع الدورة</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/deferred-data-loading">توثيق التحميل المؤجَّل في TanStack Router وقسم عرض البيانات مع <code>Await</code> فيه</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/data-loading">توثيق معالجة الأخطاء في دليل تحميل البيانات داخل التوثيق الرسمي لـTanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعاد صياغته عن درس «CatchBoundary» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع <code>error-handling-3</code> للمستودع الأصلي، وما زاده المترجم من شرحٍ أو توضيحٍ لا يُنسب إلى المؤلف، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,o={book:s,chapter:a,chapterTitle:n,slug:t,title:l,headings:e,html:p};export{s as book,a as chapter,n as chapterTitle,o as default,e as headings,p as html,t as slug,l as title};

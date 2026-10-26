@@ -1,0 +1,90 @@
+const s="kinney",a="tailwind",n="Tailwind CSS",t="building-an-interactive-checklist",l="بناء قائمة تحقّق تفاعلية",p=[{depth:2,id:"إضافة-البنية-والتخطيط",text:"إضافة البنية والتخطيط"},{depth:2,id:"تقديم-محدد-has",text:"تقديم محدّد :has()"},{depth:2,id:"إضافة-انتقالات-سلسة",text:"إضافة انتقالات سلسة"},{depth:2,id:"تنسيق-معزز-وصقل",text:"تنسيق معزّز وصقل"},{depth:2,id:"لماذا-محدد-has-قوي",text:"لماذا محدّد :has() قوي"},{depth:2,id:"تحديات",text:"تحديات"}],e=`<p>لنبدأ ببنية HTML الأساسية لعنصر قائمة تحقّق بسيط.</p>
+<p><em>المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/9629ba9390300e7ba99cc08ad4ed9efdc0aaeff3084c929575062c9d9e494078.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;task-1&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;task-1&quot;</span>&gt;</span>Complete the project documentation<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>إنه مربع اختيار وتسمية أساسيان، لكن لا توجد تغذية بصرية عندما تكتمل المهمة. لنحوّله إلى عنصر قائمة تحقّق ذكي يشطب النص تلقائيًا عند تحديد مربع الاختيار.</p>
+<h2 id="إضافة-البنية-والتخطيط">إضافة البنية والتخطيط</h2>
+<p>أولًا، لنؤسس تخطيطًا وتباعدًا مناسبين باستخدام flexbox لمحاذاة مربع الاختيار والنص.</p>
+<p><em>إضافة البنية والتخطيط — المثال 2 — <a href="https://stevekinney.com/generated/playgrounds/202e6c85f38973e7566e0f47848e6ccd21d1d062e43d5ed6373fc747e4b7c3d1.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center gap-3 p-3&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;task-1&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-4 w-4 rounded border-slate-300&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;task-1&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>Complete the project documentation<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تحسينات التخطيط:</p>
+<ul>
+<li><code>flex items-center gap-3</code>: يحاذي مربع الاختيار والتسمية أفقيًا بمسافة 12px</li>
+<li><code>p-3</code>: يضيف حشوًا بسماكة 12px حول العنصر كله لأهداف لمس مريحة</li>
+<li><code>h-4 w-4</code>: يضبط مربع الاختيار على مربع بحجم 16px لتناسب الأبعاد</li>
+<li><code>rounded border-slate-300</code>: يلطّف زوايا مربع الاختيار ويضيف حدًا خفيفًا</li>
+<li><code>text-slate-900</code>: لون نص عالي التباين للقراءة</li>
+</ul>
+<p>ينشئ هذا أساسًا نظيفًا وسهل الوصول مع تباعد ومحاذاة مناسبين.</p>
+<h2 id="تقديم-محدد-has">تقديم محدّد :has()</h2>
+<p>الآن يأتي السحر — لنستخدم محدّد <code>:has()</code> في Tailwind لشطب النص تلقائيًا عند تحديد مربع الاختيار.</p>
+<p><em>تقديم محدّد :has() — المثال 3 — <a href="https://stevekinney.com/generated/playgrounds/a7bb3247e0673b75fed4173cd4369530874674b9da0547cea0c4cee11081dac9.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center gap-3 p-3 has-[input:checked]:text-slate-500 has-[input:checked]:line-through&quot;</span>
+&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;task-1&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-4 w-4 rounded border-slate-300&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;task-1&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>Complete the project documentation<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>سحر محدّد <code>:has()</code>:</p>
+<ul>
+<li><code>has-[input:checked]:text-slate-500</code>: يغيّر لون النص إلى رمادي باهت عندما تحتوي الحاوية على حقل إدخال محدَّد تابع</li>
+<li><code>has-[input:checked]:line-through</code>: يضيف زخرفة الشطب عندما تحتوي الحاوية على حقل إدخال محدَّد تابع</li>
+</ul>
+<p>أدوات <code>has-[input:checked]:*</code> هي طريقة Tailwind لاستخدام الفئة الزائفة <code>:has()</code> في CSS. هذا يعني «طبّق هذه الأنماط على الحاوية عندما تحتوي على عنصر إدخال محدَّد». دون حاجة إلى JavaScript!</p>
+<h2 id="إضافة-انتقالات-سلسة">إضافة انتقالات سلسة</h2>
+<p>لنضف انتقالات تجعل حالة الإكمال تبدو مصقولة ومُرضية.</p>
+<p><em>إضافة انتقالات سلسة — المثال 4 — <a href="https://stevekinney.com/generated/playgrounds/1a7a65e2ba728d0dcc83ac659f4cf4ded69996f5731687b0b105d56c18cc56f6.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center gap-3 p-3 transition-all duration-300 has-[input:checked]:text-slate-500 has-[input:checked]:line-through&quot;</span>
+&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;task-1&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-4 w-4 rounded border-slate-300&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;task-1&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900&quot;</span>&gt;</span>Complete the project documentation<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تحسينات الحركة:</p>
+<ul>
+<li><code>transition-all duration-300</code>: يحرّك تغييرات اللون وزخرفة النص معًا بسلاسة خلال 300ms</li>
+<li>يجعل الانتقال تحديد المهمة وإلغاء تحديدها أكثر استجابة ومتعة</li>
+</ul>
+<p>مدة 300ms توفّر توازنًا جيدًا — سريعة بما يكفي لتبدو فورية، وبطيئة بما يكفي لرؤية التغيير البصري يحدث.</p>
+<h2 id="تنسيق-معزز-وصقل">تنسيق معزّز وصقل</h2>
+<p>أخيرًا، لنضف بعض التحسينات ليبدو عنصر قائمة التحقّق أكثر تميّزًا وتفاعلية.</p>
+<p><em>تنسيق معزّز وصقل — المثال 5 — <a href="https://stevekinney.com/generated/playgrounds/e4a2a2e0da4e73677765ca57d723f3d61366a1a721a5de38b5678656bcaa7e05.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;flex items-center gap-3 rounded-md p-3 transition-all duration-300 hover:bg-slate-50 has-[input:checked]:text-slate-500 has-[input:checked]:line-through&quot;</span>
+&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;task-1&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-4 w-4 rounded border-slate-300 text-blue-600&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;task-1&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;cursor-pointer text-slate-900&quot;</span>
+    &gt;</span>Complete the project documentation&lt;/label
+  &gt;
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>تحسينات الصقل:</p>
+<ul>
+<li><code>rounded-md</code>: الزوايا الناعمة تجعل العنصر يبدو أكثر حداثة</li>
+<li><code>hover:bg-slate-50</code>: تغيير خفيف في الخلفية عند التحويم يوفّر تغذية تفاعلية</li>
+<li><code>text-blue-600</code> على مربع الاختيار: لون العلامة عند التحديد (الدعم يعتمد على المتصفح)</li>
+<li><code>cursor-pointer</code> على التسمية: يوضّح أن النص قابل للنقر</li>
+<li>يحرّك <code>transition-all</code> الآن أيضًا تغيير لون الخلفية</li>
+</ul>
+<p>تحوّل هذه اللمسات الصغيرة عنصر تحكم نموذج أساسي إلى عنصر واجهة مصقول يبدو متكاملًا واحترافيًا.</p>
+<h2 id="لماذا-محدد-has-قوي">لماذا محدّد :has() قوي</h2>
+<p>يمثّل محدّد <code>:has()</code> تحولًا جوهريًا في CSS — فهو يسمح للعناصر الأب بتنسيق نفسها بناءً على حالة أبنائها. ينشئ هذا سلوكًا أكثر بداهة للمكوّنات، حيث يستجيب عنصر قائمة التحقّق كله لحالة مربع الاختيار، لا مربع الاختيار وحده.</p>
+<p><strong>النهج التقليدي</strong>: كنت تحتاج إلى JavaScript لإضافة الأصناف وإزالتها عند تغيّر مربع الاختيار.</p>
+<p><strong>مع :has()</strong>: يحدث التنسيق تلقائيًا عبر CSS خالص، ما يجعل المكوّن أكثر كفاءة وأسهل صيانة.</p>
+<p><strong>إمكانية الوصول</strong>: بما أننا نستخدم مربع اختيار وتسمية حقيقيين، فإن قارئات الشاشة والتنقل بلوحة المفاتيح يعملان بشكل ممتاز — والتحسينات البصرية لا تمس الأساس الدلالي.</p>
+<h2 id="تحديات">تحديات</h2>
+<p>جرّب بناء هذه الاختلافات:</p>
+<ol>
+<li><strong>قائمة متعددة العناصر</strong>: أنشئ قائمة رأسية من 3-4 عناصر قائمة تحقّق باستخدام الأنماط أعلاه، مع تباعد مناسب بين العناصر</li>
+<li><strong>مؤشرات الأولوية</strong>: أضف نقاطًا ملوّنة أو شارات قبل النص تبهت أيضًا عند اكتمال العنصر باستخدام <code>has-[input:checked]:opacity-30</code></li>
+</ol>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:l,headings:p,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,p as headings,e as html,t as slug,l as title};

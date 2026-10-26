@@ -1,0 +1,114 @@
+const s="kinney",n="self-testing-ai-agents",a="وكلاء ذكاء اصطناعي يختبرون أنفسهم",e="add-performance-budgets-to-shelf-solution",t="الحل",p=[{depth:2,id:"ما-الذي-تضيفه",text:"ما الذي تضيفه"},{depth:3,id:"performance-budgetsjson",text:"performance-budgets.json"},{depth:3,id:"scriptscheck-performance-budgetsmjs",text:"scripts/check-performance-budgets.mjs"},{depth:3,id:"testsperformancespects",text:"tests/performance.spec.ts"},{depth:2,id:"ما-يبقى-عليك-تشغيله",text:"ما يبقى عليك تشغيله"},{depth:3,id:"حلقة-ميزانية-البناء",text:"حلقة ميزانية البناء"},{depth:3,id:"ميزانية-وقت-التشغيل",text:"ميزانية وقت التشغيل"},{depth:3,id:"الحلقة-الكاملة",text:"الحلقة الكاملة"},{depth:3,id:"تجربة-الفشل-المتعمد",text:"تجربة الفشل المتعمَّد"},{depth:2,id:"أنماط-تأخذها-معك",text:"أنماط تأخذها معك"},{depth:2,id:"قراءات-إضافية",text:"قراءات إضافية"}],l=`<p>ميزانيات الأداء من تلك الأشياء التي تبدو بيروقراطية إلى أن تنقذك أول مرة. تُشحن إعادة هيكلة، فيتضاعف حجم الحزمة، ولا يلاحظ أحد ذلك أسبوعين، ثم يصبح الأمر «هذا هو حجم التطبيق فحسب». والهدف من هذا المختبر أن يجعل ذلك السيناريو مستحيلًا بتحويل الحجم والسرعة إلى أرقام يستطيع سكربت فرضها.</p>
+<p>بادئ Shelf لا يتضمّن هذه الحلقة. أضف القطع أدناه أثناء المختبر، ثم شغّل الحلقة لتثبت أنها تعمل. ابدأ بتثبيت اعتماد بناء الإحصاءات:</p>
+<pre><code class="language-bash">npm install -D rollup-plugin-visualizer
+</code></pre>
+<h2 id="ما-الذي-تضيفه">ما الذي تضيفه</h2>
+<h3 id="performance-budgetsjson"><code>performance-budgets.json</code></h3>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;maxTotalGzipKilobytes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">110</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;maxLargestChunkGzipKilobytes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">55</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;runtime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;shelfRouteDomContentLoadedMilliseconds&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">800</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>هذا هو المصدر الوحيد للحقيقة لكل عتبة. فسكربت البناء واختبار Playwright كلاهما يقرأ من هذا الملف. وذلك مقصود — إن أردت تشديد ميزانية أو تخفيفها، فتغيّر رقمًا واحدًا في مكان واحد. وعتبات البناء بالكيلوبايت بعد ضغط gzip لأن ذلك هو ما ينتقل فعلًا على الشبكة. وأما عتبة وقت التشغيل فهي سقف <code>domContentLoaded</code> بالمللي ثانية لمسار <code>/shelf</code>.</p>
+<h3 id="scriptscheck-performance-budgetsmjs"><code>scripts/check-performance-budgets.mjs</code></h3>
+<p>هذا هو نصف حلقة الميزانيات الخاص بوقت البناء. يقرأ <code>build/stats.json</code> (الذي يُخرجه <code>vite build</code> حين تضبط <code>BUNDLE_STATS=1</code>) و<code>performance-budgets.json</code>، ثم يسير في بنية الإحصاءات ليحسب أحجام حزمة العميل.</p>
+<p>والجزء المثير هو كيف ينتقل من ملف الإحصاءات إلى أرقام gzip الفعلية. فملف JSON الخاص بإحصاءات Vite ينظّم البيانات في ثلاث خرائط مترابطة:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">computeClientBundleSizes</span> = (<span class="hljs-params">stats</span>) =&gt; {
+  <span class="hljs-keyword">const</span> parts = stats.<span class="hljs-property">nodeParts</span> ?? {};
+  <span class="hljs-keyword">const</span> metas = stats.<span class="hljs-property">nodeMetas</span> ?? {};
+  <span class="hljs-keyword">const</span> bundleGzipByFile = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> meta <span class="hljs-keyword">of</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">values</span>(metas)) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [bundleFile, uid] <span class="hljs-keyword">of</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(meta.<span class="hljs-property">moduleParts</span> ?? {})) {
+      <span class="hljs-keyword">const</span> part = parts[uid];
+      <span class="hljs-keyword">if</span> (!part) <span class="hljs-keyword">continue</span>;
+      <span class="hljs-keyword">const</span> previous = bundleGzipByFile.<span class="hljs-title function_">get</span>(bundleFile) ?? <span class="hljs-number">0</span>;
+      bundleGzipByFile.<span class="hljs-title function_">set</span>(bundleFile, previous + (part.<span class="hljs-property">gzipLength</span> ?? <span class="hljs-number">0</span>));
+    }
+  }
+
+  <span class="hljs-keyword">const</span> clientEntries = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(bundleGzipByFile.<span class="hljs-title function_">entries</span>()).<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">[bundleFile]</span>) =&gt;</span>
+    bundleFile.<span class="hljs-title function_">startsWith</span>(<span class="hljs-variable constant_">CLIENT_BUNDLE_PREFIX</span>),
+  );
+  <span class="hljs-keyword">const</span> totalClientGzipBytes = clientEntries.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">sum, [, bytes]</span>) =&gt;</span> sum + bytes, <span class="hljs-number">0</span>);
+  <span class="hljs-keyword">const</span> largestClientChunkBytes = clientEntries.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">max, [, bytes]</span>) =&gt;</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(max, bytes), <span class="hljs-number">0</span>);
+
+  <span class="hljs-keyword">return</span> { totalClientGzipBytes, largestClientChunkBytes, clientEntries };
+};
+</code></pre>
+<p><code>nodeMetas</code> يربط كل وحدة مصدرية بـ<code>moduleParts</code> الخاصة بها — قاموس من اسم ملف الحزمة الناتج إلى معرّف فريد. وذلك المعرّف يُفهرَس في <code>nodeParts</code>، حيث يقيم <code>gzipLength</code> الفعلي. ويجمع السكربت بايتات gzip لكل ملف حزمة، ثم يرشّح إلى قطع جهة العميل فقط (أي شيء تحت <code>_app/immutable</code>). وحزم الخادم لا تهمّ للأداء الذي يراه المستخدم، فنتجاوزها.</p>
+<p>وبعد حساب المجاميع، يقارن السكربت النتائج بملف الميزانيات ويخرج برمز غير صفري إن تجاوز شيء العتبة:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> failures = [];
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> totalBudget === <span class="hljs-string">&#x27;number&#x27;</span> &amp;&amp; totalGzipKilobytes &gt; totalBudget) {
+  failures.<span class="hljs-title function_">push</span>(
+    <span class="hljs-string">\`Total client bundle size <span class="hljs-subst">\${formatKilobytes(totalClientGzipBytes)}</span> kB gzip exceeds budget of <span class="hljs-subst">\${totalBudget}</span> kB\`</span>,
+  );
+}
+</code></pre>
+<p>رمز الخروج 1 يعني أن ميزانية تجاوزت. ورمز الخروج 2 يعني أن السكربت نفسه أخطأ (ملف مفقود، أو JSON سيئ). وهذا التمييز يهمّ حين توصّله بـCI — فالفشل بسبب ميزانية قرار سياسي، لا انهيار.</p>
+<h3 id="testsperformancespects"><code>tests/performance.spec.ts</code></h3>
+<p>هذا هو النصف الخاص بوقت التشغيل. يحمّل هذا الاختبار الميزانيات من ملف JSON نفسه، وينتقل إلى <code>/shelf</code>، ثم يقرأ توقيت المتصفّح الفعلي:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> navigationTiming = <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">evaluate</span>(<span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> [entry] = performance.<span class="hljs-title function_">getEntriesByType</span>(<span class="hljs-string">&#x27;navigation&#x27;</span>) <span class="hljs-keyword">as</span> <span class="hljs-title class_">PerformanceNavigationTiming</span>[];
+  <span class="hljs-keyword">if</span> (!entry) <span class="hljs-keyword">return</span> { <span class="hljs-attr">domContentLoaded</span>: <span class="hljs-number">0</span> };
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">domContentLoaded</span>: entry.<span class="hljs-property">domContentLoadedEventEnd</span> - entry.<span class="hljs-property">startTime</span>,
+  };
+});
+
+<span class="hljs-title function_">expect</span>(navigationTiming.<span class="hljs-property">domContentLoaded</span>).<span class="hljs-title function_">toBeLessThan</span>(budgetMilliseconds);
+</code></pre>
+<p><code>page.evaluate</code> يعمل داخل نسخة Chromium الفعلية، فأنت تقرأ بيانات <code>PerformanceNavigationTiming</code> حقيقية — لا بديلًا مُحاكى ولا وسيطًا. والفرق <code>domContentLoadedEventEnd - startTime</code> يمنحك الزمن من بداية الانتقال إلى اللحظة التي يكون فيها HTML قد حُلّل تحليلًا كاملًا ونُفِّذت فيه كل السكربتات المتزامنة. وهو لا ينتظر الصور ولا الوحدات المحمّلة بكسل، وهذا بالضبط ما تريده لبوابة من نوع «هل هذه الصفحة تفاعلية؟».</p>
+<p>وقيمة الميزانية تأتي من <code>performance-budgets.json</code> نفسه، فلا يوجد رقم سحري مخبّأ في ملف الاختبار. وإن كانت نسخة Shelf الحالية لديك قد أضافت مشروع Playwright الموثَّق من درس حالة التخزين، فشغّل هذه المواصفة هناك. وإن لم تكن، فوجّه النسخة الأولى من الفحص إلى مسار عام ثم شدّدها حين توجد حلقة المصادقة.</p>
+<h2 id="ما-يبقى-عليك-تشغيله">ما يبقى عليك تشغيله</h2>
+<h3 id="حلقة-ميزانية-البناء">حلقة ميزانية البناء</h3>
+<pre><code class="language-bash">npm run performance:build
+</code></pre>
+<p>يشغّل هذا الأمر <code>npm run build:stats</code> (الذي يضبط <code>BUNDLE_STATS=1</code> ويشغّل <code>vite build</code> ليُخرج <code>build/stats.json</code>) ثم سكربت فحص الميزانيات. ويجب أن ترى مخرجات مثل:</p>
+<pre><code>Performance budget check OK: total 78.3 kB / 110 kB, largest chunk 42.1 kB / 55 kB
+</code></pre>
+<p>الأرقام الدقيقة ستتغيّر مع بناءك، لكن يجب أن تبقى تحت العتبات.</p>
+<h3 id="ميزانية-وقت-التشغيل">ميزانية وقت التشغيل</h3>
+<pre><code class="language-bash">npm run performance:runtime
+</code></pre>
+<p>يشغّل هذا الأمر مواصفة أداء Playwright على خادم المعاينة. وإن كنت قد بنيت المشروع الموثَّق في مختبر المصادقة السابق، فيجب أن يستهدف هذا الأمر ذلك المشروع. وإن لم تفعل، فالنسخة الأولى من فحص وقت التشغيل تستطيع أن تتوجّه إلى مسار عام بدلًا منه. وفي الحالتين، يقرأ الاختبار <code>domContentLoaded</code> من المتصفّح ويقارنه بالعتبة في <code>performance-budgets.json</code>.</p>
+<h3 id="الحلقة-الكاملة">الحلقة الكاملة</h3>
+<pre><code class="language-bash">npm run performance:check
+</code></pre>
+<p>يسلسل هذا الأمر النصفين: ميزانيات البناء أولًا، ثم وقت التشغيل. وإن فشل أي منهما، خرج الأمر برمز غير صفري. وهذا هو الأمر الذي توصّله بـCI.</p>
+<h3 id="تجربة-الفشل-المتعمد">تجربة الفشل المتعمَّد</h3>
+<p>هذا هو الجزء الذي يثبت أن الميزانيات ليست للزينة فحسب. افتح <code>performance-budgets.json</code> وأنزل عتبة واحدة تحت ما ينتجه بناءك فعلًا:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;maxTotalGzipKilobytes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;maxLargestChunkGzipKilobytes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">55</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>والآن شغّل:</p>
+<pre><code class="language-bash">npm run performance:build
+</code></pre>
+<p>ويجب أن ترى:</p>
+<pre><code>Performance budget check FAILED:
+  - Total client bundle size 78.3 kB gzip exceeds budget of 5 kB
+</code></pre>
+<p>رمز الخروج 1. السكربت أمسكه. وأعد التغيير حين تنتهي — فالهدف كان رؤية نمط الفشل، لا العيش مع ميزانية مستحيلة.</p>
+<h2 id="أنماط-تأخذها-معك">أنماط تأخذها معك</h2>
+<ul>
+<li><strong>ملف واحد، وحقيقة واحدة.</strong> سكربت البناء واختبار Playwright كلاهما يقرأ من <code>performance-budgets.json</code>. فحين تشدّد ميزانية، تعدّل رقمًا واحدًا. وحين يقرأ وكيل الميزانية، يجد ملفًا واحدًا.</li>
+<li><strong>وقت البناء ووقت التشغيل سؤالان مختلفان.</strong> حجم الحزمة خاصية من خصائص وقت البناء. وسرعة تحميل الصفحة خاصية من خصائص وقت التشغيل. وقياسهما معًا يمنحك تغطية لأشيع طريقتين يتراجع بهما الأداء.</li>
+<li><strong>رموز الخروج واجهة برمجية.</strong> يميّز السكربت بين «تجاوز الميزانية» (الرمز 1) و«انهيار السكربت» (الرمز 2). وخطوط CI والوكلاء يستطيعون التصرّف بناءً على هذا التمييز.</li>
+<li><strong>توقيت متصفّح حقيقي، لا تقديرات.</strong> يستخدم اختبار Playwright واجهة <code>PerformanceNavigationTiming</code> من نسخة Chromium فعلية. والمعايير الاصطناعية أفضل من لا معايير، لكن واجهات المتصفّح الحقيقية أفضل من المعايير الاصطناعية.</li>
+<li><strong>الأوامر المسمّاة تتركّب.</strong> <code>performance:build</code> و<code>performance:runtime</code> و<code>performance:check</code> كلها قابلة للتشغيل منفصلة. فالوكيل يستطيع استدعاء ما يحتاجه دون تشغيل الحلقة كاملة كل مرة.</li>
+</ul>
+<h2 id="قراءات-إضافية">قراءات إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/lab-add-performance-budgets-to-shelf">مختبر: إضافة ميزانيات الأداء إلى Shelf</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop">ميزانيات الأداء كحلقة تغذية راجعة</a></li>
+</ul>
+`,c={book:s,chapter:n,chapterTitle:a,slug:e,title:t,headings:p,html:l};export{s as book,n as chapter,a as chapterTitle,c as default,p as headings,l as html,e as slug,t as title};

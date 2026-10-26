@@ -1,0 +1,19 @@
+const n="kinney",e="tailwind",t="Tailwind CSS",s="inert-utility",a="أداة inert",c=[{depth:2,id:"فهم-صيغة-inert",text:"فهم صيغة inert"},{depth:3,id:"كيفية-استخدام-صيغة-inert",text:"كيفية استخدام صيغة inert"}],o=`<p>التواصل الواضح حول حالة العنصر وتفاعليته أمر حيوي لتجربة المستخدم، ولا سيما لمستخدمي لوحة المفاتيح والتقنيات المساعدة. يساعد Tailwind CSS في ذلك عبر توفير صيغ لتنسيق العناصر بحسب حالتها، ومنها <code>inert</code>.</p>
+<h2 id="فهم-صيغة-inert">فهم صيغة <code>inert</code></h2>
+<p>تطبّق صيغة <code>inert</code> في Tailwind الأنماط عندما يحمل العنصر خاصية HTML <code>inert</code>. وتضع هذه الخاصية العنصر وفروعه في حالة «غير تفاعلية»، ربما لأن المحتوى خارج الشاشة أو معطّل أو غير ذي صلة.</p>
+<p>تجعل خاصية <code>inert</code> أجزاءً من DOM غير تفاعلية ومخفية عن التقنيات المساعدة، ما يحسّن الوصولية بتركيز المستخدمين على أجزاء الصفحة ذات الصلة. أمّا صيغة <code>inert</code> في Tailwind فتمثّل هذه الحالة غير التفاعلية بصريًا.</p>
+<h3 id="كيفية-استخدام-صيغة-inert">كيفية استخدام صيغة <code>inert</code></h3>
+<p>سبّق أصناف الأدوات المساعدة بصيغة <code>inert:</code> لتطبيق الأنماط بصورة شرطية عندما يحمل العنصر خاصية <code>inert</code>.</p>
+<p>على سبيل المثال، أشر بصريًا إلى قسم غير تفاعلي بتقليل الشفافية أو بتغيير شكل مؤشّر الماوس.</p>
+<p><em>كيفية استخدام صيغة inert — المثال 1 — <a href="https://stevekinney.com/generated/playgrounds/0ed5c3fc7f68918c2dd7eecfca134d368a78fc2897ae31523515950d0840ea7e.html">افتح المثال</a></em></p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">inert</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;opacity-100 inert:opacity-50&quot;</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- Content that might become inert --&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">inert</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;cursor-pointer inert:cursor-not-allowed&quot;</span>&gt;</span>This button might be inert<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+</code></pre>
+<p>يملك العنصر <code>div</code> عادةً شفافية كاملة (<code>opacity-100</code>). ومع خاصية <code>inert</code> تقلّل <code>inert:opacity-50</code> الشفافية إلى 50%. أما الزر فيملك عادةً مؤشّر مؤشر؛ وعندما يكون <code>inert</code> تطبّق <code>inert:cursor-not-allowed</code> مؤشّر «غير مسموح».</p>
+<p>يوفّر ذلك إشارات بصرية للمحتوى غير التفاعلي، وهي أمر حاسم لأغراض الوصولية، إذ يساعد المستخدمين ذوي البصر على فهم أجزاء الصفحة القابلة للتفاعل.</p>
+<p>يمكن لصيغة <code>inert</code> أن تُدمج مع صيغ أخرى، مثل نقاط التوقف المستجيب (responsive breakpoints)؛ فمثلًا <code>md:inert:opacity-75</code> يطبّق الأنماط على الشاشات المتوسطة وما فوقها عندما يكون العنصر <code>inert</code>.</p>
+<p>الاستفادة من صيغة <code>inert</code> توائم العرض البصري مع الحالة الفعلية للمحتوى غير التفاعلي، ما يزيد وضوح واجهة المستخدم وتحسّن الوصولية.</p>
+`,i={book:n,chapter:e,chapterTitle:t,slug:s,title:a,headings:c,html:o};export{n as book,e as chapter,t as chapterTitle,i as default,c as headings,o as html,s as slug,a as title};

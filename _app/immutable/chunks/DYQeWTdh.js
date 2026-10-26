@@ -1,0 +1,126 @@
+const s="tanstack-form",a="form",n="دورة TanStack Form الكاملة",t="creating-reusable-form-components",o="بناء مكوّنات نموذج قابلة لإعادة الاستعمال",l=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"سجلان-لا-سجل-واحد",text:"سجلّان لا سجلّ واحد"},{depth:2,id:"استخراج-زري-الإرسال",text:"استخراج زرّي الإرسال"},{depth:2,id:"لماذا-نحتاج-ltformappformgt",text:"لماذا نحتاج &lt;form.AppForm&gt;؟"},{depth:2,id:"ما-يتغير-في-النموذج",text:"ما يتغيّر في النموذج"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],e=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>في الدرس السابق نقلنا مكوّنات الحقول إلى سجلّ مركزي، فصار استدعاء <code>field.TextInput</code> كافيًا لتحصل على حقل كامل بعنوانه ووصفه ورسالة خطئه. بقي في النموذج جزء لم نمسّه: زرّا الإرسال. فكل نموذج يحتاج إلى زر يحفظ، وزرّ يحفظ ثم يعود، وكلاهما يحتاج إلى قراءة <code>canSubmit</code> وتعطيل نفسه عند الحاجة. ومع كل نموذج جديد تعيد كتابة الكتلة نفسها.</p>
+<p>تلك الكتلة ليست حقلًا، فلا يصحّ وضعها في سجلّ الحقول. لهذا يقدّم <code>createFormHook</code> سجلًّا ثانيًا اسمه <code>formComponents</code>، موضوعه المكوّنات التي تنتمي إلى النموذج كلّه لا إلى حقل واحد. سنستخرج في هذا الدرس زرّي الإرسال إلى مكوّن مستقل، ونسجّله في ذلك السجل، ثم نتعلّم لماذا لا يعمل هذا المكوّن إلّا داخل غلاف <code>&lt;form.AppForm&gt;</code> ولا يحتاج إلى أي خاصية ليعرف النموذج الذي يخدمه.</p>
+<h2 id="سجلان-لا-سجل-واحد">سجلّان لا سجلّ واحد</h2>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFormHook } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+<span class="hljs-keyword">import</span> { fieldContext, formContext } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./form-context&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">TextInput</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/form/TextInput&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Select</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/form/Select.tsx&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Checkbox</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/form/Checkbox.tsx&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">SubmitButton</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/form/SubmitButton&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> { useAppForm, withForm, withFieldGroup } = <span class="hljs-title function_">createFormHook</span>({
+  <span class="hljs-attr">fieldContext</span>: fieldContext,
+  <span class="hljs-attr">formContext</span>: formContext,
+  <span class="hljs-attr">fieldComponents</span>: {
+    <span class="hljs-title class_">TextInput</span>: <span class="hljs-title class_">TextInput</span>,
+    <span class="hljs-title class_">Select</span>: <span class="hljs-title class_">Select</span>,
+    <span class="hljs-title class_">Checkbox</span>: <span class="hljs-title class_">Checkbox</span>,
+  },
+  <span class="hljs-attr">formComponents</span>: {
+    <span class="hljs-title class_">SubmitButton</span>: <span class="hljs-title class_">SubmitButton</span>,
+  },
+});
+</code></pre>
+<p>قارن هذا الملف بنسخته في الدرس الماضي: المفاتيح الثلاثة في <code>fieldComponents</code> لم تتغيّر، وأُضيف كائن <code>formComponents</code> بمفتاح واحد. هذا التمييز هو جوهر الدرس. مكوّن الحقل يُستعمل داخل <code>form.AppField</code> ويقرأ الحقل الذي يحيط به، وهذا ما يجعله يعرف اسمه وقيمته وأخطاءه دون أن تُمرّر له. أمّا مكوّن النموذج فيُستعمل في أي مكان داخل النموذج، ويقرأ النموذج نفسه من سياقه. الاثنان يشتركان في أنّ الأسماء المختصرة <code>form.SubmitButton</code> و<code>field.TextInput</code> تُشتقّ من مفاتيح السجل، فاختيار الاسم هنا قرار واجهة برمجية لا تفصيلًا شكليًّا.</p>
+<h2 id="استخراج-زري-الإرسال">استخراج زرّي الإرسال</h2>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { useFormContext } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/hooks/form-context&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Button</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../ui/button&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">SubmitButton</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> form = <span class="hljs-title function_">useFormContext</span>();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form.Subscribe</span> <span class="hljs-attr">selector</span>=<span class="hljs-string">{(state)</span> =&gt;</span> state.canSubmit}&gt;
+      {(canSubmit) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">Button</span>
+            <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!canSubmit}</span>
+            <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>
+            <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> form.handleSubmit({ submitAction: &quot;save&quot; })}
+          &gt;
+            Save
+          <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">Button</span>
+            <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!canSubmit}</span>
+            <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>
+            <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> form.handleSubmit({ submitAction: &quot;goback&quot; })}
+          &gt;
+            Save &amp; Go back
+          <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form.Subscribe</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p>الجزء الأول من الملف منسوخ حرفيًّا من النموذج: <code>&lt;form.Subscribe&gt;</code> على <code>canSubmit</code>، ثم الزرّان مع <code>disabled</code> والبيانات الوصفية التي تميّز كل زر عن الآخر. لم نُضف منطقًا جديدًا؛ المهمّ أنّ هذه الكتلة صارت في مكان واحد يُصلَح فيه الخطأ مرة واحدة.</p>
+<p>والجزء الثاني هو الجديد فعلًا: <code>useFormContext()</code>. حين انتقلت الكتلة إلى ملف مستقل فقدت المتغيّر <code>form</code> الذي كان في نطاق النموذج، وكان الحلّ البديهي تمرير النموذج خاصيةً: <code>&lt;SubmitButton form={form} /&gt;</code>. لكنّ ذلك يعيدنا إلى ما تخلّصنا منه: كل استعمال يحتاج تمريرًا، وكل مكوّن وسيط يحتاج أن يعرف عن النموذج. بدلًا من ذلك يقرأ المكوّن النموذج من <code>formContext</code> الذي أنشأناه في الدرس الماضي عبر <code>createFormHookContexts</code>، فتصبح الكتلة قابلة للنسخ إلى أي نموذج بلا وسيط.</p>
+<h2 id="لماذا-نحتاج-ltformappformgt">لماذا نحتاج <code>&lt;form.AppForm&gt;</code>؟</h2>
+<p>إن وضعت <code>&lt;form.SubmitButton /&gt;</code> داخل النموذج مباشرة فلن يجد السياق الذي يقرأ منه، لأنّ <code>formContext</code> لا يُوفَّر تلقائيًّا. الغلاف <code>&lt;form.AppForm&gt;</code> هو الذي يوفّره، تمامًا كما يوفّر <code>&lt;form.AppField&gt;</code> سياق الحقل لمكوّن الحقل:</p>
+<pre><code class="language-tsx">      &lt;form.<span class="hljs-property">AppForm</span>&gt;
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span>
+          <span class="hljs-attr">onSubmit</span>=<span class="hljs-string">{(e)</span> =&gt;</span> {
+            e.preventDefault();
+            form.handleSubmit({ key: &quot;value&quot; });
+          }}
+        &gt;
+</span></code></pre>
+<p>ولاحظ أنّ الغلاف يحيط بعنصر <code>&lt;form&gt;</code> لا بداخله. هذا موضع منطقي: من يملك النموذج هو المكوّن الذي أنشأه بـ<code>useAppForm</code>، والغلاف يوزّع مرجعه على ما تحته. لذلك يتغيّر إغلاق الشجرة أيضًا:</p>
+<pre><code class="language-tsx">          &lt;form.<span class="hljs-property">SubmitButton</span> /&gt;
+        &lt;/form&gt;
+      &lt;/form.<span class="hljs-property">AppForm</span>&gt;
+</code></pre>
+<p>هذان السطران يستبدلان الكتلة التي كانت تحتلّ نحو خمسة وعشرين سطرًا في نهاية الملف. لاحظ أيضًا أنّ اسم المكوّن في السجل <code>SubmitButton</code> فاستُعمل <code>form.SubmitButton</code>؛ لو أسميته <code>submitButton</code> لصار الاستدعاء بحرف صغير، والاختيار بين الحالين مسألة اصطلاح داخل فريقك لا مسألة تقنية.</p>
+<h2 id="ما-يتغير-في-النموذج">ما يتغيّر في النموذج</h2>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Button</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/ui/button&quot;</span>;
+<span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">FieldDescription</span>,
+  <span class="hljs-title class_">FieldGroup</span>,
+  <span class="hljs-title class_">FieldLegend</span>,
+  <span class="hljs-title class_">FieldSet</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/ui/field&quot;</span>;
+<span class="hljs-keyword">import</span> { revalidateLogic } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-form&quot;</span>;
+<span class="hljs-keyword">import</span> { registerFormOpts, registerFormSchema } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./shared&quot;</span>;
+<span class="hljs-keyword">import</span> { useAppForm } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/hooks/form&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">RegisterForm</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> form = <span class="hljs-title function_">useAppForm</span>({
+    ...registerFormOpts,
+    <span class="hljs-attr">onSubmit</span>: <span class="hljs-function">(<span class="hljs-params">{ value, meta }</span>) =&gt;</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(registerFormSchema.<span class="hljs-title function_">parse</span>(value));
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(meta);
+    },
+    <span class="hljs-attr">validators</span>: {
+      <span class="hljs-attr">onDynamic</span>: registerFormSchema,
+    },
+    <span class="hljs-attr">validationLogic</span>: <span class="hljs-title function_">revalidateLogic</span>({
+      <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;submit&quot;</span>,
+      <span class="hljs-attr">modeAfterSubmission</span>: <span class="hljs-string">&quot;blur&quot;</span>,
+    }),
+  });
+</code></pre>
+<p>بقيت استيرادات النموذج كما هي تقريبًا، لأنّ <code>Button</code> ما زال مستعملًا في صفوف المهارات (زر الإزالة وزر الإضافة)، وهو مثال مفيد على أنّ الاستخراج لا يعني حذف كل ما يتعلق بالأزرار: نُقل ما يتكرّر، وبقي ما يخصّ هذا النموذج وحده.</p>
+<p>تفصيل يستحقّ الانتباه: النموذج يمرّر بيانات وصفية مختلفة في الموضعين. مُعالج <code>&lt;form onSubmit&gt;</code> يمرّر <code>{ key: &quot;value&quot; }</code>، بينما يمرّر كل زر <code>{ submitAction: ... }</code>، والزرّان من النوع <code>submit</code>، فيقع الإرسال مرتين عند الضغط على أحدهما: مرة من <code>onClick</code> ومرة من حدث النموذج. الشيفرة كما كتبها صاحب الدورة، وأثرها العملي أن يصل إلى <code>onSubmit</code> آخرُ نداء؛ ولهذا جعلنا تنظيف هذا التداخل تمرينًا لا تعديلًا صامتًا.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-form/form--creating-reusable-form-components--form.png" alt="نموذج التسجيل بعد استخراج زرّي الإرسال إلى مكوّن مسجَّل: حقول نصية بأوصافها، وثلاث بطاقات مهارات فيها قائمة مستوى «Beginner» وزر إزالة، ثم زر إضافة مهارة، ثم زرّا الحفظ أسفل الصفحة"></p>
+<p>اللقطة هي النموذج بعد النقل، ولا تكشف أي تغيير بصري: حقول الاسم الأول واسم العائلة والشارع وكلمة المرور وتأكيدها، ثم قسم المهارات ببطاقاته الثلاث (<code>HTML</code> و<code>CSS</code> و<code>JavaScript</code>) وفي كلّ منها قائمة المستوى على <code>Beginner</code> وزر إزالة أحمر، ثم زر إضافة مهارة، ثم خانة الموافقة وزرّا <code>Save</code> و<code>Save &amp; Go back</code>.</p>
+<p>وهذا هو المطلوب: إعادة التنظيم يجب أن تكون غير مرئية للمستخدم. الدليل على نجاحها ليس في الشكل بل في الملف: خمسة وعشرون سطرًا صارت سطرًا واحدًا، والزرّان يعملان كما كانا، وكل نموذج لاحق يحصل عليهما مجانًا.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>أضف خاصية <code>label</code> إلى <code>SubmitButton</code> لتغيير نصّ الزرّ الأول من خارج النموذج، ثم اقرأ النصّ داخل المكوّن بدلًا من كتابته ثابتًا.</li>
+<li>أضف زرًّا ثالثًا للبيانات الوصفية الجديدة نفسها، مثل الحفظ كمسوّدة، دون تكرار منطق <code>canSubmit</code>.</li>
+<li>انقل <code>&lt;form.AppForm&gt;</code> إلى داخل <code>&lt;form&gt;</code> ثم إلى خارج <code>&lt;div&gt;</code> الحاوي، وسجّل رسالة الخطأ التي تظهر في كل حالة.</li>
+<li>أزل <code>type=&quot;submit&quot;</code> من الزرّين وأبقِ <code>onClick</code>، ثم تحقّق هل ما زال الإرسال يحدث مرتين أم مرة واحدة، واشرح الفرق.</li>
+<li>اكتب مكوّن نموذج آخر، مثل رسالة خطأ عامة تقرأ <code>state.errors</code>، وسجّله في <code>formComponents</code> واستعمله بجوار زرّ الإرسال.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li>شرح الدرس في دورة TanStack Form: <a href="https://www.youtube.com/watch?v=H2T21r5wu3g&amp;t=7262s">Creating Reusable Form Components</a></li>
+<li>شيفرة الفرع الكامل: <a href="https://github.com/alialaa/tanstack-form-course/tree/useAppForm-4">مستودع الدورة — الفرع <code>useAppForm-4</code></a></li>
+<li>التوثيق الرسمي لسجلّات المكوّنات وسياقاتها: <a href="https://tanstack.com/form/latest/docs/framework/react/guides/form-composition">تركيب النماذج والمكوّنات</a></li>
+</ul>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Creating Reusable Form Components» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,p={book:s,chapter:a,chapterTitle:n,slug:t,title:o,headings:l,html:e};export{s as book,a as chapter,n as chapterTitle,p as default,l as headings,e as html,t as slug,o as title};

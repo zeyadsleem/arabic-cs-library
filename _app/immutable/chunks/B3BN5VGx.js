@@ -1,0 +1,132 @@
+const s="tanstack-router",a="router",n="دورة TanStack Router الكاملة",e="protecting-routes",t="حماية المسارات (Protecting Routes)",o=[{depth:2,id:"ماذا-سنتعلم",text:"ماذا سنتعلّم؟"},{depth:2,id:"الشرح",text:"الشرح"},{depth:3,id:"سياق-الموجه-هو-مصدر-الحقيقة",text:"سياق الموجّه هو مصدر الحقيقة"},{depth:3,id:"التحقق-في-beforeload",text:"التحقّق في beforeLoad"},{depth:3,id:"الحفاظ-على-الوجهة",text:"الحفاظ على الوجهة"},{depth:3,id:"مسار-login-يستقبل-الوجهة-ويحمي-نفسه",text:"مسار login يستقبل الوجهة ويحمي نفسه"},{depth:3,id:"تسجيل-الخروج-يعيد-تشغيل-الحماية",text:"تسجيل الخروج يعيد تشغيل الحماية"},{depth:3,id:"حماية-مجموعة-مسارات-بتخطيط-واحد",text:"حماية مجموعة مسارات بتخطيط واحد"},{depth:2,id:"النتيجة",text:"النتيجة"},{depth:2,id:"جرب-بنفسك",text:"جرّب بنفسك"},{depth:2,id:"المراجع",text:"المراجع"}],c=`<h2 id="ماذا-سنتعلم">ماذا سنتعلّم؟</h2>
+<p>نضيف في هذا الدرس إلى تطبيقنا أبسط صورة من نظام الحماية: صفحة <code>/about</code> لا يجوز أن يراها زائر غير مسجَّل، وصفحة <code>/login</code> لا يجوز أن يراها مَن سجَّل دخوله بالفعل. لا نملك بعد نظام مصادقة حقيقيًا، لكنّ الموجّه يحمل في سياقه كائن المستخدم ودالتَي الدخول والخروج، وهذا يكفي لبناء الحماية كاملةً والتحقّق منها.</p>
+<p>الفكرة التي يثبتها الدرس أنّ الحماية مسألة توقيت لا مسألة واجهة. لا نخفي الروابط، ولا نُخفي مكوّنات الصفحة بعد تصييرها، بل نتحقّق قبل أن يُحمَّل أيّ شيء أصلًا. فإن فشل التحقّق رمينا استثناءً من نوع تحويل (<code>redirect</code>)، فيتوقّف تحميل البيانات وتصيير المسار، ولا يرى الزائر شيئًا من الصفحة المحميّة. ثم نُكمل الحلقة: نحفظ الوجهة التي كان يقصدها في معامل بحث، ونعيده إليها بعد نجاح الدخول، ونغلق الثغرة المقابلة بحيث لا يصل المسجَّل إلى صفحة الدخول.</p>
+<h2 id="الشرح">الشرح</h2>
+<h3 id="سياق-الموجه-هو-مصدر-الحقيقة">سياق الموجّه هو مصدر الحقيقة</h3>
+<p>كلّ حماية تحتاج سؤالًا يُجاب عنه بنعم أو لا: هل هذا الزائر مسجَّل؟ والجواب لا يأتي من داخل المسار، بل من الحالة التي تعيش فوق الموجّه كلّه. لذلك يبدأ الدرس من تعريف نوع السياق في المسار الجذر:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">RootRouteContext</span> {
+  <span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span> | <span class="hljs-literal">null</span>;
+  <span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = createRootRouteWithContext&lt;<span class="hljs-title class_">RootRouteContext</span>&gt;()({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RootComponent</span>,
+  <span class="hljs-attr">notFoundComponent</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Root Not Found.<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+});
+</code></pre>
+<p><code>createRootRouteWithContext</code> يجعل النوع <code>RootRouteContext</code> معروفًا لكلّ مسار في الشجرة، فلا تحتاج إلى تمرير النوع يدويًا عند كلّ تحقّق. وبغير هذا الإعلان يصبح <code>context</code> في <code>beforeLoad</code> مجهول النوع، وتفقد المطابقة بين ما يمرّره الموجّه وما يتوقّعه المسار.</p>
+<p>أمّا القيمة نفسها فتُمرَّر عند تصيير الموجّه، وهي في <code>main.tsx</code> حالة React عادية:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [user, setUser] = useState&lt;<span class="hljs-title class_">User</span> | <span class="hljs-literal">null</span>&gt;({ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Test&quot;</span> });
+  <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">login</span>(<span class="hljs-params"><span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span></span>) {
+    <span class="hljs-title function_">flushSync</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">setUser</span>(user);
+    });
+    router.<span class="hljs-title function_">invalidate</span>();
+  }
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">logout</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-title function_">flushSync</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">setUser</span>(<span class="hljs-literal">null</span>);
+    });
+    router.<span class="hljs-title function_">invalidate</span>();
+  }
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">RouterProvider</span> <span class="hljs-attr">router</span>=<span class="hljs-string">{router}</span> <span class="hljs-attr">context</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">user</span>, <span class="hljs-attr">login</span>, <span class="hljs-attr">logout</span> }} /&gt;</span></span>;
+}
+</code></pre>
+<p>هذا المقتطف هو قلب الدرس. لاحظ الحالة الابتدائية: المستخدم يبدأ بقيمة كائن وهمي، لأنّ المؤلف يريد أن ينطلق من كون الزائر مسجَّلًا ليجرّب الحماية في الاتجاهين. ولاحظ <code>flushSync</code> حول تحديث الحالة: هي تجبر React على تطبيق التغيير قبل السطر التالي، فيرى الموجّه المستخدم الجديد فورًا حين نستدعي <code>router.invalidate()</code> بعده. و<code>invalidate</code> تجبر كلّ مسار نشط على إعادة التحميل، أي على إعادة تشغيل <code>beforeLoad</code> والـ<code>loader</code>، ومن هنا تأتي أهمّية الربط بين الخروج والحماية كما سنرى.</p>
+<h3 id="التحقق-في-beforeload">التحقّق في <code>beforeLoad</code></h3>
+<p>لكلّ مسار دالتان: <code>loader</code> لجلب البيانات، و<code>beforeLoad</code> تُنادى قبل <code>loader</code> وقبل التصيير، وتستقبل الخصائص نفسها التي يستقبلها <code>loader</code>، ومنها <code>context</code> و<code>location</code>. هذا الترتيب هو سبب اختيارها: حين تعمل، لا يكون قد جُلب شيء ولا رُسم شيء، فتوقّفها يعني توقّف المسار كلّه.</p>
+<p>نضيف التحقّق إلى <code>/about</code>:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute, redirect } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/about&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">beforeLoad</span>: <span class="hljs-function">(<span class="hljs-params">{ context, location }</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (!context.<span class="hljs-property">user</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-title function_">redirect</span>({
+        <span class="hljs-attr">to</span>: <span class="hljs-string">&quot;/login&quot;</span>,
+        <span class="hljs-attr">search</span>: {
+          <span class="hljs-attr">redirect</span>: location.<span class="hljs-property">href</span>,
+        },
+      });
+    }
+  },
+});
+</code></pre>
+<p><code>redirect</code> ليست دالة تُعيد قيمة، بل كائن استثناء يُرمى بـ<code>throw</code>. والفرق عملي: لو أعدناه بـ<code>return</code> لما توقّف شيء، ولو رمينا خطأً عاديًا لانتهى الزائر إلى حدّ الأخطاء (<code>errorComponent</code>). الرمي بـ<code>redirect</code> يخبر الموجّه أنّ هذا خروج مقصود من المسار، فيُنفّذ التحويل ولا يُصيَّر المكوّن ولا يعمل <code>loader</code>.</p>
+<h3 id="الحفاظ-على-الوجهة">الحفاظ على الوجهة</h3>
+<p>لاحظ الخيار <code>search</code> داخل التحويل. بغير هذا السطر يعود الزائر بعد الدخول إلى صفحة رئيسية عامّة، فيخسر ما كان يقصده. الطريقة التي يستعملها المؤلف هي تمرير العنوان الحالي كاملًا من <code>location</code>، وهو الكائن الذي يعطيك الموجّه إيّاه في <code>beforeLoad</code>:</p>
+<pre><code class="language-tsx">        <span class="hljs-attr">search</span>: {
+          <span class="hljs-attr">redirect</span>: location.<span class="hljs-property">href</span>,
+        },
+</code></pre>
+<p>فيصل الزائر إلى <code>/login?redirect=%2Fabout</code>، أي إلى صفحة الدخول ومعه عنوان ما أراد. والمهمّ أنّ <code>redirect</code> تقبل الخيارات نفسها التي تقبلها <code>navigate</code>، فإن أردت مثلًا ألّا يبقى عنوان الصفحة المحميّة في سجلّ التنقّل أضفت <code>replace: true</code>. والتوثيق الرسمي ينبّه إلى استخدام <code>location</code> وليس الحالة الداخلية للموجّه، لأنّ تلك قد تتأخّر عن العنوان الفعلي.</p>
+<h3 id="مسار-login-يستقبل-الوجهة-ويحمي-نفسه">مسار <code>login</code> يستقبل الوجهة ويحمي نفسه</h3>
+<p>الآن ننشئ مسار <code>/login</code>. هو مسار عادي في ملف <code>src/routes/login.tsx</code>، لكنّه يحتاج ثلاثة أشياء: تعريف شكل معاملات البحث، وزرّ يعيد المستخدم إلى وجهته، وحماية معاكسة تمنع المسجَّل من رؤيته.</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { createFileRoute, redirect } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/react-router&quot;</span>;
+<span class="hljs-keyword">import</span> { zodValidator } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/zod-adapter&quot;</span>;
+<span class="hljs-keyword">import</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>;
+
+<span class="hljs-keyword">const</span> loginSearchParamsSchema = z.<span class="hljs-title function_">object</span>({
+  <span class="hljs-attr">redirect</span>: z.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">optional</span>(),
+});
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Route</span> = <span class="hljs-title function_">createFileRoute</span>(<span class="hljs-string">&quot;/login&quot;</span>)({
+  <span class="hljs-attr">component</span>: <span class="hljs-title class_">RouteComponent</span>,
+  <span class="hljs-attr">validateSearch</span>: <span class="hljs-title function_">zodValidator</span>(loginSearchParamsSchema),
+  <span class="hljs-attr">beforeLoad</span>: <span class="hljs-function">(<span class="hljs-params">{ context, search }</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (context.<span class="hljs-property">user</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-title function_">redirect</span>({ <span class="hljs-attr">to</span>: search.<span class="hljs-property">redirect</span> || <span class="hljs-string">&quot;/&quot;</span> });
+    }
+  },
+});
+</code></pre>
+<p>المخطط يجعل <code>redirect</code> معاملًا اختياريًا معروف النوع، و<code>validateSearch</code> يتحقّق منه أثناء مطابقة المسار. الترتيب هنا مقصود: المطابقة والتحقّق من معاملات البحث يسبقان <code>beforeLoad</code>، لذلك يجد التحقّق قيمة <code>search.redirect</code> جاهزة ومُتحقَّقًا منها، ولا يحتاج إلى قراءة العنوان يدويًا. ثم يأتي التحقّق المعاكس: إن كان المستخدم موجودًا فالزائر مسجَّل، فلا معنى لصفحة الدخول، فنرمي تحويلًا إلى وجهته المحفوظة أو إلى الصفحة الرئيسية <code>/</code>. بغير هذا الحظر يبقى <code>/login</code> متاحًا للمسجَّل، وهي حالة غير متّسقة تعرض عليه زرّ دخول وهو داخل أصلًا.</p>
+<p>أمّا المكوّن فيقرأ الثلاثة من خُطّافات المسار نفسه:</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">RouteComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { login } = <span class="hljs-title class_">Route</span>.<span class="hljs-title function_">useRouteContext</span>();
+  <span class="hljs-keyword">const</span> { redirect } = <span class="hljs-title class_">Route</span>.<span class="hljs-title function_">useSearch</span>();
+  <span class="hljs-keyword">const</span> navigate = <span class="hljs-title class_">Route</span>.<span class="hljs-title function_">useNavigate</span>();
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      Hello &quot;/login&quot;!
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+        <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> {
+          login({ id: &quot;dwdw&quot;, name: &quot;Test&quot; });
+          navigate({ to: redirect || &quot;/&quot; });
+        }}
+      &gt;
+        Login
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<p><code>Route.useRouteContext()</code> يصل إلى دالة <code>login</code> التي مرّرناها في <code>main.tsx</code>، و<code>Route.useSearch()</code> يعطي المعامل المتحقَّق منه، و<code>Route.useNavigate()</code> يعطي دالة تنقّل مربوطة بهذا المسار. في الضغطة الواحدة يحدث أمران بالترتيب: تحديث المستخدم في السياق عبر <code>login</code>، ثم التنقّل إلى الوجهة. ولا حاجة إلى كتابة شرط &quot;إن لم توجد وجهة&quot; مرّتين، فالتعبير <code>redirect || &quot;/&quot;</code> يغطّي الحالة التي يفتح فيها الزائر <code>/login</code> مباشرة بلا معامل.</p>
+<h3 id="تسجيل-الخروج-يعيد-تشغيل-الحماية">تسجيل الخروج يعيد تشغيل الحماية</h3>
+<p>الجزء الذي يبدو سحريًا وليس سحريًا: أنت في <code>/about</code> مسجَّلًا، فتضغط زرّ الخروج في التخطيط الجذر. تستدعي <code>logout</code> الدالة <code>router.invalidate()</code> بعد تصفير المستخدم، فتُعاد المسارات النشطة، ومنها <code>/about</code>، فيعمل <code>beforeLoad</code> من جديد ويجد <code>context.user</code> فارغًا فيرمي التحويل. أي أنّ الحماية لا تحتاج إلى مراقب خاصّ لحظة الخروج، لأنّ إبطال الموجّه يمرّ بها مرة أخرى.</p>
+<h3 id="حماية-مجموعة-مسارات-بتخطيط-واحد">حماية مجموعة مسارات بتخطيط واحد</h3>
+<p>المبدأ نفسه يتوسّع من مسار واحد إلى مجموعة. بدلًا من تكرار <code>beforeLoad</code> في كلّ صفحة محميّة، تُنشئ مسار تخطيط أبًا (مسار بلا مقطع في العنوان)، وتضع التحقّق فيه مرة واحدة، وتُصيّر داخله <code>Outlet</code>. ولأنّ <code>beforeLoad</code> للأب يُنادى قبل <code>beforeLoad</code> لكلّ ابن من أبنائه، فإنّ الرمي فيه يمنع تحميل الأبناء جميعًا. هذا هو الأسلوب الذي يشرحه المؤلف في نهاية الدرس، وهو الأسلوب نفسه الذي تعرضه صفحة التوثيق الرسمية للمسارات المحميّة. أمّا فرع هذا الدرس فيطبّق الحماية على <code>/about</code> وحدها، ويُترك التخطيط المحمي كخطوة تالية.</p>
+<h2 id="النتيجة">النتيجة</h2>
+<p><img src="/arabic-cs-library/images/tanstack-router/router--protecting-routes--login.png" alt="الصفحة الرئيسية بعد تسجيل الدخول: الترويسة تعرض  وزرّ ، وشريط التنقّل فيه  و و، وأسفل منه لوحة الصفحة الرئيسية"></p>
+<p>في الصورة ترى أثر الدرس في التخطيط الجذر: موضع رسالة الترحيب لم يعد يقول <code>Welcome, Guest!</code> ولا يعرض زرّ <code>Login</code>، بل صار يقول <code>Welcome, Test!</code> ويعرض زرّ <code>Logout</code>، وشريط التنقّل يعرض <code>Home</code> و<code>About</code> و<code>Random Word</code>. هذه هي الحالة التي بُنيت من أجلها الحماية: ما دام المستخدم موجودًا في السياق، مرّ <code>beforeLoad</code> في <code>/about</code> بلا اعتراض وظهرت الصفحة، ولو ضغطت زرّ الخروج لعاد الموجّه إلى <code>/login</code> حاملًا معامل الوجهة.</p>
+<h2 id="جرب-بنفسك">جرّب بنفسك</h2>
+<ol>
+<li>أعد الحالة الابتدائية في <code>main.tsx</code> إلى <code>null</code>، ثم افتح <code>/about</code> مباشرة وراقب العنوان بعد التحويل: ستجد معامل <code>redirect</code> يحمل مسار الصفحة التي مُنعت.</li>
+<li>أضف <code>replace: true</code> إلى التحويل في <code>/about</code>، ثم عد إلى الوجهة بعد الدخول واضغط زرّ الرجوع في المتصفح وقارن السلوك.</li>
+<li>احذف <code>validateSearch</code> من مسار <code>/login</code> مؤقّتًا، ثم افتح <code>/login?redirect=/about</code> ولاحظ أنّ نوع <code>search.redirect</code> لم يعد معروفًا وأنّ الإكمال التلقائي في المحرّر يخسر المعلومة.</li>
+<li>احذف <code>beforeLoad</code> من <code>/login</code>، ثم سجّل الدخول وافتح <code>/login</code> مباشرة لتقع في الحالة غير المتّسقة التي يمنعها الدرس.</li>
+<li>أنشئ مسار تخطيط بلا مقطع في العنوان، وانقل شرط التحقّق إليه، ثم ضع مسارين ابنين تحت التخطيط وتأكّد أنّ حجب الأب يحجب الاثنين معًا.</li>
+</ol>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&amp;t=12190s">فيديو الدرس: Protecting Routes</a></li>
+<li><a href="https://github.com/alialaa/tanstack-router-course/tree/auth-1">شيفرة الدرس: فرع auth-1</a></li>
+<li><a href="https://tanstack.com/router/latest/docs/framework/react/guide/authenticated-routes">التوثيق الرسمي: المسارات المحميّة في TanStack Router</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Protecting Routes» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.</p>
+</blockquote>
+`,l={book:s,chapter:a,chapterTitle:n,slug:e,title:t,headings:o,html:c};export{s as book,a as chapter,n as chapterTitle,l as default,o as headings,c as html,e as slug,t as title};

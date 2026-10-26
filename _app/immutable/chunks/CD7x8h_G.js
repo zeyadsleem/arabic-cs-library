@@ -1,0 +1,173 @@
+const e="kinney",t="ai-development-setup",o="تهيئة بيئة التطوير بالذكاء الاصطناعي",n="committee-review",d="مراجعة اللجنة (Committee Review)",c=[{depth:2,id:"تأليف-اللجنة",text:"تأليف اللجنة"},{depth:2,id:"لـ-codex-مقعد-دائم",text:"لـ Codex مقعد دائم"},{depth:2,id:"الفرز-والفاصل",text:"الفرز والفاصل"},{depth:2,id:"إبقاء-الحلقة-حية",text:"إبقاء الحلقة حيّة"},{depth:2,id:"فتح-طلب-السحب",text:"فتح طلب السحب"},{depth:2,id:"توجيهها",text:"توجيهها"},{depth:2,id:"أين-الحراس",text:"أين الحرّاس"},{depth:2,id:"ما-يصبح-أصعب",text:"ما يصبح أصعب"}],s=`<p>اسأل وكيلًا عمّا إذا كانت الشيفرة التي كتبها للتو جاهزة لطلب سحب (pull request) وسيقول نعم. فهو يملك السياق نفسه، والافتراضات نفسها، والنقاط العمياء نفسها التي أنتجت الشيفرة في المقام الأول.</p>
+<p>مهارة <code>/committee-review</code> عندي هي وسيلتي للحصول على رأي ثانٍ ليس مرآة. إنها تضع لجنة من المراجعين بين «الشيفرة جاهزة» و <a href="https://cli.github.com/manual/gh_pr_create"><code>gh pr create</code></a>: حفنة من <a href="https://stevekinney.com/courses/ai-development-setup/subagents">الوكلاء الفرعيين</a>، يقرأ كل منهم الفرق (diff) من زاوية مختلفة، إضافة إلى نموذج ثانٍ من عائلة مختلفة. فيصلح الوكيل ما وجدوه، فينظرون مرة أخرى، ولا يُفتح طلب السحب إلا بعد أن يوافق الجميع أو تنفد الجولة الخامسة.</p>
+<p>وهي أيضًا أكثر ما أملك كثافةً بالحرّاس. فملف يبوّب طلب السحب، وسلسلة تنهي الحلقة، وملفان آخران يحملان الحالة من جولة إلى التي تليها. فهذا الدرس هو <a href="https://stevekinney.com/courses/ai-development-setup/sentinels">الحرّاس</a> مطبَّقًا، ويُقرأ أفضل إن كنت قد أنجزت ذلك الدرس أولًا.</p>
+<blockquote>
+<p><strong>المهارة طلب، لا برنامج</strong></p>
+<p>يتبع Claude الخطوات لأنه مأمور بذلك. وتستند المهارة إلى زوج من <a href="https://stevekinney.com/courses/ai-development-setup/hooks">الخُطّافات</a> في الإلزام الحقيقي الوحيد، والقسم الأخير عن مقدار ما لا تستطيع رؤيته.</p>
+</blockquote>
+<h2 id="تأليف-اللجنة">تأليف اللجنة</h2>
+<p>قبل أن يعمل أي مراجع، تجمع المهارة ثلاثة أشياء: الفرق مقابل الفرع الأساسي (باستخدام <a href="https://git-scm.com/docs/git-merge-base"><code>git merge-base</code></a>، فلا ترى سوى تغييرات فرعك)، وملخّص ملفات <code>--stat</code>، وسجل الإيداعات. وتثبّت الأوامر <code>main</code> مع ملاحظة أن تستبدل الفرع الأساسي الحقيقي، وهو ما تجده المهارة بـ <code>gh pr view --json baseRefName</code> إن كان هناك طلب سحب قائم، أو بسؤالك. وفي الجولة الأولى، تدخل هذه المنتجات الثلاثة في طلب كل مراجع. أما المحادثة فلا، وهذا هو <a href="https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers">نصح السياق الجديد</a> مأخوذًا بحرفيته.</p>
+<p>ثم تنظر في من هو متاح. فتسرد تعريفات الوكلاء في <code>~/.claude/agents/</code> و <code>.claude/agents/</code> وتقرأ <code>name</code> و <code>description</code> لكل منها. وحين يغطّي وكيل مشروع ووكيل مستخدم الأرضية نفسها، يفوز وكيل المشروع. فوكلاء <code>testing-expert</code> في مشروع يعرفون اصطلاحات الاختبار في ذلك المشروع، أما الوكيل العام فلا.</p>
+<p>ثم تختار قائمة بحسب ما لمسته الشيفرة:</p>
+<table>
+<thead>
+<tr>
+<th>يلمس الفرق</th>
+<th>المراجع</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TypeScript أو JavaScript</td>
+<td><code>typescript-expert</code></td>
+</tr>
+<tr>
+<td>الاختبارات، أو شيفرة جديدة بلا اختبارات</td>
+<td><code>testing-expert</code></td>
+</tr>
+<tr>
+<td>المكوّنات أو واجهة المستخدم</td>
+<td><code>frontend-architect</code>, <code>ux-designer</code></td>
+</tr>
+<tr>
+<td>تجريدات جديدة أو عمليات إعادة هيكلة كبيرة</td>
+<td><code>simplicity-engineer</code></td>
+</tr>
+<tr>
+<td>تهيئة البناء، أو CI، أو أدوات التطوير</td>
+<td><code>dx-engineer</code></td>
+</tr>
+<tr>
+<td>شيفرة أداة CLI</td>
+<td><code>cli-developer</code>، إن كان لديك</td>
+</tr>
+<tr>
+<td>شيفرة خادم MCP</td>
+<td><code>mcp-specialist</code>، إن كان لديك</td>
+</tr>
+<tr>
+<td>Markdown، أو الوثائق، أو محتوى الدورة</td>
+<td><code>prose-editor</code></td>
+</tr>
+<tr>
+<td>أي شيء غير تافه</td>
+<td><a href="https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#junior-engineer"><code>junior-engineer</code></a></td>
+</tr>
+</tbody>
+</table>
+<p>القواعد حول الجدول أهم من الجدول. فاللجنة وكيلان فرعيان على الأقل إضافة إلى <a href="https://developers.openai.com/codex">Codex</a>، وإن بدا وكيل فرعي واحد فقط ذا صلة، ينضمّ <code>simplicity-engineer</code> كالثاني. فاللجنة المتضخّمة تنتج ضجيجًا، لكن المهارة تميل إلى تضمين مراجع حين تتردّد. وهي تسجّل القائمة وتواصل دون أن تطلب منك تأكيدها. وتطلب دائمًا <a href="https://github.com/features/copilot">GitHub Copilot</a> (<code>@copilot</code>) كمراجع بمجرد أن يوجد طلب السحب.</p>
+<p>ويُوزَّع كل مراجع في الدورة نفسها، فتعمل اللجنة بالتوازي. ويحصل كل منهم على دور، والفرق، والتعليمات نفسها: لكل مشكلة، أعطِ موضعًا، ووصفًا، وإصلاحًا محدّدًا، وخطورة <code>must-fix</code> (تعيق طلب السحب) أو <code>suggestion</code>. وإن كانت التغييرات جيدة، فقل <code>APPROVED</code> وبيّن ما فحصته.</p>
+<h2 id="لـ-codex-مقعد-دائم">لـ Codex مقعد دائم</h2>
+<p>Codex هو المراجع الوحيد الذي لا يُختار أبدًا. فهو يجلس في كل لجنة. والسبب هو السبب نفسه من <a href="https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers">مراجعو الوكلاء</a>: فالعائلة الثانية من النماذج لها نقاط عمياء مختلفة عن اللجنة القائمة على Claude، فأخطاؤها لا تتوافق مع أخطائهم. ويطلب منه الطلب أن يكون الرأي الثاني العدائي، وأيضًا ألا يصنع اعتراضات ليبدو مفيدًا.</p>
+<p>تصل المهارة إلى Codex عبر خادم <a href="https://modelcontextprotocol.io/">MCP</a> بدلًا من استدعاء <code>codex exec</code>. (<a href="https://stevekinney.com/courses/ai-development-setup/claude-code-and-codex-together#calling-codex-from-claude-code">Claude Code و Codex معًا</a> يغطّي مسار الصدفة ومزالقه.) ويطلب النداء ملف <code>heavy</code> (gpt-5.4 بأعلى جهد استدلالي له)، وصندوق رمل للقراءة فقط، وسياسة موافقة <code>never</code>، مع ضبط دليل العمل على جذر المستودع. وحين يحوي الفرق خوارزميات، أو مسارات ساخنة، أو تعمية، أو تعاودًا، يُضاف إلى الطلب ملحق يطلب من Codex أن ينظر بجدّ في التعقيد والمدخلات المنحلّة.</p>
+<p>وللحدود الصارمة في الطلب أهمية أكبر مما تبدو. فـ Codex يعيد نصًّا فقط: لا مهارات، ولا أدوات، ولا وكلاء، ولا خُطّافات، ولا أوامر صدفة، ولا خططًا، ولا تحريرات ملفات، ولا فروعًا، ولا طلبات سحب. فبلا ذلك السياج، يستطيع نموذج يرى تعليمات مستودعك أن يبدأ بالعمل كمنفّذ سير العمل بدلًا من المراجع، وحينئذٍ لا تصبح لديك مراجعة.</p>
+<p>تبدأ الجولة الأولى خيط Codex، وتحفظ المهارة <code>threadId</code> الخاص به. وتردّ الجولات اللاحقة على ذلك الخيط بقائمة بما تغيّر إضافة إلى الفرق المحدَّث، فيحتفظ Codex باستدلاله السابق بدلًا من البدء باردًا. أما الوكلاء الفرعيون فالعكس. فكل جولة تبدأ وكلاء جددًا، فيُلصق لكل منهم تغذيته الراجعة السابقة الخاصة.</p>
+<p>و Codex أيضًا هو المراجع الوحيد الذي لديها خطة فشل له. فإن أخفق النداء، أو انقطع، أو تعطّل ثم انهار إلى رفض عام، تعيد المهارة المحاولة مرة واحدة على الأكثر، وتسجّله تحت <code>## Codex Unavailable</code>، وتضع تحذيرًا في متن طلب السحب، وتمضي. وإن فشل نداء الجولة الأولى، تتخطّى الجولات اللاحقة Codex بدلًا من بدء خيط في منتصف الحلقة. ولا يعيق Codex طلب السحب أبدًا.</p>
+<h2 id="الفرز-والفاصل">الفرز والفاصل</h2>
+<p>حين تعود التقارير، تُفرز إلى أربع كومات: عناصر يجب إصلاحها، واقتراحات، وتعارضات، وموافقات. ويمرّ Codex بالفرز نفسه الذي يمرّ به غيره. فهو مراجع واحد، لا حقّ نقض ولا خاتم مطاطي.</p>
+<p>ويصبح كل عنصر يجب إصلاحه مهمة، ويعمل الوكيل عليها مع أي اقتراح لا يتعارض مع عنصر إلزامي. ويشغّل ما يوجد من فحوص التنسيق والأنواع والاختبارات، ثم يُدخل باسم <code>Address review committee feedback (round 1)</code>.</p>
+<p>سيختلف المراجعون، لذا الفاصل مدمج: اختر الخيار الأبسط، وحين يكون <code>simplicity-engineer</code> أحد الطرفين، يفوز. ولا تطلب منك المهارة أبدًا التحكيم. فالترادف يذهب إلى المراجع الذي وظيفته كلها قطع الآليات.</p>
+<h2 id="إبقاء-الحلقة-حية">إبقاء الحلقة حيّة</h2>
+<p>نادرًا ما تُنهي جولة واحدة المهمة. بعد الجولة الأولى، تكتب المهارة ملفين في <code>tmp/</code> (مع إضافة <code>tmp/</code> إلى <code>.gitignore</code> إن لم تكن فيه) ثم تتوقّف.</p>
+<ul>
+<li><code>tmp/committee-state.md</code>: الذاكرة. القائمة، ومعرّف خيط Codex، وتغذية كل جولة الراجعة لكل مراجع، وقرارات التعارض، ومراجعو ما بعد الإنشاء، وقسم <code>## Codex Unavailable</code> إن أخفق Codex. وتبدأ كل جولة لاحقة بقراءته.</li>
+<li><code>tmp/committee-review-loop.local.md</code>: ملف التحكّم. المقدّمة (frontmatter)، ثم الطلب الذي يُعاد تغذيته كل جولة.</li>
+</ul>
+<p>والمقدّمة هي تهيئة الحلقة، رغم أن الخُطّاف لا يقرأ إلا <code>iteration</code> و <code>max_iterations</code> و <code>completion_promise</code>:</p>
+<pre><code>---
+active: true
+iteration: 1
+max_iterations: 5
+completion_promise: &quot;Committee consensus reached and PR opened&quot;
+started_at: 2026-10-06T14:02:11Z
+---
+
+You are running a review round for the committee-review skill. Read
+\`tmp/committee-state.md\` for the committee roster, previous feedback, and user decisions.
+</code></pre>
+<p>التوقّف هو المُشغِّل. فالمهارة تشحن خُطّاف <code>Stop</code>، وهو <code>scripts/stop-hook.sh</code>، مقصود به العمل كلما حاول الوكيل إنهاء دورته. وهو، بالترتيب التقريبي:</p>
+<ul>
+<li><strong>لا يجد ملف تحكّم</strong>: يسمح بالتوقّف. فلا حلقة تعمل.</li>
+<li><strong>يجد <code>session_id</code> مختلفًا</strong>: يسمح بالتوقّف ويترك الملف كما هو. والملف الذي تكتبه المهارة لا يسجّل واحدًا، فهذا الفرع لا يُطلَق أبدًا.</li>
+<li><strong>لا يستطيع فهم الحالة</strong>: عدّادات ليست أرقامًا، أو نصّ محادثة لا يستطيع قراءته، أو لا طلب في الملف. يحذف الملف ويسمح بالتوقّف.</li>
+<li><strong>يرى <code>iteration</code> عند <code>max_iterations</code></strong>: يحذف الملف ويسمح بالتوقّف.</li>
+<li><strong>يجد الوعد</strong>: أول زوج <code>&lt;promise&gt;</code> في رسالة الوكيل الأخيرة يحمل نصّ <code>completion_promise</code> بالضبط. يحذف الملف ويسمح بالتوقّف.</li>
+<li><strong>أي شيء آخر</strong>: يزيد <code>iteration</code> ويمنع التوقّف، مسلّمًا الطلب المخزّن رجوعًا كسبب.</li>
+</ul>
+<p>ذلك الفرع الأخير هو الحيلة كلها. فالتوقّف الممنوع مع طلب مُرفق يجعل الوكيل يواصل في الجلسة نفسها. هذا هو طعم خُطّاف التوقّف من <a href="https://stevekinney.com/courses/ai-development-setup/the-ralph-loop">حلقة Ralph</a>، لا النوع ذا العملية الجديدة. فتستمر المحادثة، ولهذا وُجد ملف الحالة: فالمراجعون جدد في كل جولة ويحتاجون إلى تغذيتهم السابقة تُسلَّم رجوعًا.</p>
+<p>وكل جولة إعادة مراجعة تولّد الفرق من جديد، ثم ترسل إلى كل وكيل فرعي تغذيته الراجعة السابقة الخاصة، والتغييرات التي جرت منذ ذلك الحين، وأي قرارات تعارض. ومهمتهم أن يقرّوا بما أُصلح، ويعيدوا طرح ما لم يُصلح، ويبحثوا عن مشكلات جديدة. ويحصل Codex على الأسئلة نفسها على خيطه القائم. ثم يقرّر الوكيل ما يحدث بعد ذلك:</p>
+<ul>
+<li><strong>موافقة الجميع</strong>: افتح طلب السحب واطبع الوعد.</li>
+<li><strong>تبقى عناصر يجب إصلاحها</strong>: أصلحها، وأدخل باسم <code>Address review committee feedback (round N)</code>، وحدّث ملف الحالة، وتوقّف <em>دون</em> الوعد. وحين لا يرى الخُطّاف وعدًا، يعيد تغذية الطلب رجوعًا.</li>
+<li><strong>السقف</strong>: حين يساوي <code>iteration</code> قيمة <code>max_iterations</code> وتبقى عناصر يجب إصلاحها، يكتب الوكيل ملخّصًا لما لم يُحلّ في ملف الحالة ويفتح طلب السحب على أي حال. ولا يسأل أبدًا.</li>
+</ul>
+<p>خمس جولات تعني الجولة الأولى، التي تعمل ضمنًا، زائد أربع يغذّيها الخُطّاف رجوعًا.</p>
+<h2 id="فتح-طلب-السحب">فتح طلب السحب</h2>
+<p>يُفتح طلب السحب بترتيب ثابت. يكتب الوكيل علامة الموافقة، ويدفع الفرع، ويصوغ المتن: ملخّصًا، والقائمة، وعدد الجولات، وخطة اختبار، وتحذيرًا إن كان Codex معطّلًا. ثم يشغّل <code>gh pr create</code>. بعد ذلك يحفظ رقم طلب السحب في <code>tmp/last-pr.txt</code> لأي خطوة خط أنابيب تالية، ويطلب <code>@copilot</code> بـ <code>gh pr edit --add-reviewer</code>، وينتهي بسلسلة الوعد كمخرجات نهائية له.</p>
+<p>العلامة هي الحارس الذي يحوّل هذا من اقتراح إلى بوّابة:</p>
+<pre><code class="language-bash">MARKER=<span class="hljs-string">&quot;/tmp/committee-review-<span class="hljs-subst">$(echo <span class="hljs-string">&quot;<span class="hljs-subst">$(git rev-parse --show-toplevel)</span>:<span class="hljs-subst">$(git rev-parse --abbrev-ref HEAD)</span>&quot;</span> | shasum -a 256 | cut -c1-16)</span>&quot;</span>
+<span class="hljs-built_in">touch</span> <span class="hljs-string">&quot;<span class="hljs-variable">$MARKER</span>&quot;</span>
+</code></pre>
+<p>تعتمد المهارة على خُطّاف <code>PreToolUse</code> (وهو الذي يعمل قبل نداء أداة ويستطيع منعه) يبحث عن هذا الملف كلما رأى <code>gh pr create</code>. لا علامة، لا طلب سحب. والاسم تجزئة لجذر المستودع والفرع، فلا تتشارك <a href="https://stevekinney.com/courses/ai-development-setup/worktrees">worktrees</a>، أو فرعان، موافقةً أبدًا. والملف يعيش في <code>/tmp</code>، خارج المستودع، فلا يمكن إيداعه ويظهر موافَقًا عليه مسبقًا في نسخة أحدهم.</p>
+<p>وعلى العلامة و <code>gh pr create</code> أن يكونا نداءَي Bash منفصلين. فالخُطّاف يفحص نظام الملفات <em>قبل</em> تشغيل الأمر، فنداء مركّب مثل <code>touch &quot;$MARKER&quot; &amp;&amp; gh pr create</code> يُمنع في المرة الأولى: فالعلامة غير موجودة بعد في لحظة الفحص. إنها مزلق صغير يُظهر ما البوّابة. إنها تفحص العالم في لحظة واحدة.</p>
+<h2 id="توجيهها">توجيهها</h2>
+<p>الحلقة تخدمك، فيمكنك مقاطعتها في أي نقطة:</p>
+<ul>
+<li><code>Skip [agent]</code>: أزِل مراجعًا وحدّث ملف الحالة.</li>
+<li><code>Add [agent]</code>: أضِف واحدًا.</li>
+<li><code>I disagree with [agent]</code>: ارفض تغذية ذلك المراجع المتبقية لهذا الطلب.</li>
+<li><code>Just open it</code> (أو <code>override</code>): تجاوز المراجعة، واكتب العلامة، وافتح طلب السحب.</li>
+</ul>
+<p>وتتوقّف المهارة وتخبرك حين لا يوجد ما يُراجَع، أو حين لا تجد وكلاء في أي من الموضعين، أو حين لا يكون <code>gh</code> مثبَّتًا أو موثَّقًا. وتتوقّف أيضًا إن ألغيت.</p>
+<h2 id="أين-الحراس">أين الحرّاس</h2>
+<p>أربعة منتجات تقوم بالعمل:</p>
+<table>
+<thead>
+<tr>
+<th>المنتَج</th>
+<th>النوع</th>
+<th>يكتبه</th>
+<th>يقرؤه</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/tmp/committee-review-&lt;hash&gt;</code></td>
+<td>حارس ملف، بوّابة</td>
+<td>الوكيل</td>
+<td>خُطّاف <code>PreToolUse</code>، قبل <code>gh pr create</code></td>
+</tr>
+<tr>
+<td><code>&lt;promise&gt;…&lt;/promise&gt;</code></td>
+<td>حارس إتمام</td>
+<td>الوكيل</td>
+<td>خُطّاف <code>Stop</code></td>
+</tr>
+<tr>
+<td><code>max_iterations: 5</code></td>
+<td>سقف</td>
+<td>المهارة، في ملف التحكّم</td>
+<td>خُطّاف <code>Stop</code> وطلب الحلقة</td>
+</tr>
+<tr>
+<td><code>tmp/committee-state.md</code>, <code>tmp/last-pr.txt</code></td>
+<td>ملفات تسليم</td>
+<td>الوكيل</td>
+<td>الجولة التالية، خطوة خط الأنابيب التالية</td>
+</tr>
+</tbody>
+</table>
+<p>هذا هو الخروج الطبقي من <a href="https://stevekinney.com/courses/ai-development-setup/sentinels#best-practices">أفضل الممارسات</a>: سقف دائم مفعّل، إضافة إلى حارس يمكنه إنهاء الحلقة مبكرًا. والبوّابة تفشل مغلقة، لأن غياب العلامة يعيق طلب السحب. أما ملفات التسليم فليست إلا ذاكرة، ولا شيء يبوّب عليها.</p>
+<h2 id="ما-يصبح-أصعب">ما يصبح أصعب <span class="content-anchor" id="what-gets-harder"></span></h2>
+<p>لهذا التصميم حدود حادّة، وأفضّل أن تسمع عنها منّي:</p>
+<ul>
+<li><strong>الوكيل يكتب موافقته بنفسه</strong>: العلامة <code>touch</code>. وفي <a href="https://stevekinney.com/courses/ai-development-setup/sentinels#how-strong-is-your-marker">ترتيب الحرّاس</a>، هذا أضعف نوع، نوع لا يكلّف الوكيل شيئًا. ولا يشترط أن توافق عليه حالة ثانية (يسمّيها الحرّاس <a href="https://stevekinney.com/courses/ai-development-setup/sentinels#advanced-techniques">الشرط المزدوج</a>). وأقرب شيء إلى فحص هو قراءة الوكيل نفسه لردود المراجعين، والوكيل هو من يكتب العلامة. و <a href="https://stevekinney.com/courses/ai-development-setup/sentinels#keeping-the-agent-away-from-the-marker">إبعاد الوكيل عن العلامة</a> هو الإصلاح، وهذا الحارس لا يستطيع استخدامه، لأن الوكيل هو الكاتب بحكم التصميم.</li>
+<li><strong>أربع نتائج، ملف واحد</strong>: توافق حقيقي، وموافقة مفروضة في الجولة الخامسة، وتجاوز <code>Just open it</code>، وانقطاع Codex، كلها تنتهي في <code>touch</code> نفسه. هذا هو <a href="https://stevekinney.com/courses/ai-development-setup/sentinels#anti-patterns">مصيدة النتائج الأربع</a> شبه حرفية، ووقعت فيها مباشرةً. فالأثر الورقي أرقّ من العلامة. وعند السقف، تدخل العناصر غير المحلولة في ملف الحالة المتجاهَل من git فقط، بينما يظلّ متن طلب السحب يقول «All must-fix items addressed». وتجاوز <code>Just open it</code> لا يترك أي سجل، ولا يبلغ متن طلب السحب إلا انقطاع Codex. واسم علامة لكل نتيجة (<code>approved</code>, <code>forced-at-cap</code>, <code>overridden</code>, <code>reviewer-down</code>) سيتيح للخُطّاف السماح بالأربع ومعرفة أيّها حدث.</li>
+<li><strong>الاسم يتبع الفرع، لا المحتوى</strong>: ادفع إيداعًا آخر بعد الموافقة، ويفتح الحارس القديم البوّابة رغم ذلك. ولا يحذفه شيء في المهارة أبدًا. و <a href="https://stevekinney.com/courses/ai-development-setup/sentinels#keying-writing-and-reading-markers">الاعتماد على تجزئة شجرة Git</a> سيجعل موافقة قديمة غائبة ببساطة.</li>
+<li><strong>الوعد ليس إلا سلسلة</strong>: يقارن الخُطّاف أول زوج <code>&lt;promise&gt;</code> في آخر كتلة نصية يجدها في نصّ المحادثة، فتُحتسب رسالة أخيرة تقتبس الوسم كاملًا كوعد، سواء قصد الوكيل ذلك أو لم يقصد. وقراءة <code>last_assistant_message</code> أأمن، لأن <a href="https://stevekinney.com/courses/ai-development-setup/sentinels#how-completion-sentinels-work">نصّ المحادثة قد يتأخّر</a>. والسقف هو الشبكة الحقيقية. إنه دائم مفعّل ولا يهمّه ما طبعه النموذج.</li>
+<li><strong>ملف التحكّم غير محدَّد النطاق لجلسة</strong>: يستطيع الخُطّاف مقارنة <code>session_id</code>، لكن المقدّمة التي تكتبها المهارة لا تتضمّن واحدًا، فلا يُطلَق ذلك الفحص أبدًا. فأي جلسة تتوقّف في تلك النسخة ما دام الملف موجودًا تُسلَّم طلب المراجعة، وكل من تلك الوقفات يزيد <code>iteration</code> أيضًا، فيحرق جولات الحلقة الحقيقية.</li>
+<li><strong>لا أحد يسلّم المراجعين العقد</strong>: في الجولة الأولى يحصلون على الفرق، وقائمة الملفات، وسجل الإيداعات. وتضيف الجولات اللاحقة تغذيتهم الراجعة السابقة وقائمة تغييرات. ولا شيء يمنحهم المتطلبات أو مخرجات الاختبار. والوكلاء الفرعيون يملكون أدوات ملفات ويمكنهم البحث، لكن لا شيء يوجّههم إلى المهمة. وهذا يكفي لالتقاط الشيفرة المهملة ولا يكفي لالتقاط شيفرة تحلّ مشكلة الخطأ. سلّمهم الاثنين. <a href="https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers">مراجعو الوكلاء</a> يغطّي السبب.</li>
+<li><strong>إنها بطيئة وليست رخيصة</strong>: كل جولة لجنة كاملة إضافة إلى نداء Codex بأعلى جهد استدلالي له. وحتى موافقة جماعية في الجولة الأولى لا تتخطّى الحلقة، لأن طلب السحب لا يُفتح إلا من طلب الحلقة. والحدّ الأدنى جولتان، وطلب سحب يبلغ خمسًا سيجعلك تشعر بالسقف.</li>
+</ul>
+<p>أنا راضٍ عن كل ذلك لسبب واحد: الباب الذي يحرسه هذا هو طلب سحب. وطلب السحب اقتراح، ويقرؤه إنسان بعد، ويُطلب Copilot كمراجع آخر. وعلامة بدرجة <code>touch</code> قفل معقول لباب رخيص الفتح والإغلاق. وجّه التصميم نفسه إلى عملية دمج أو نشر، ويزول كونه معقولًا. هناك يحتاج الحارس إلى كاتب لا يصل إليه الوكيل، وإلى موافقة تستطيع التمييز بين نتائجها الأربع.</p>
+`,i={book:e,chapter:t,chapterTitle:o,slug:n,title:d,headings:c,html:s};export{e as book,t as chapter,o as chapterTitle,i as default,c as headings,s as html,n as slug,d as title};

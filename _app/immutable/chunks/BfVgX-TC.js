@@ -1,0 +1,185 @@
+const s="kinney",l="aws",n="نشر تطبيقات الويب على AWS",a="bucket-policies-and-public-access",t="سياسات الحاويات والوصول العام",c=[{depth:2,id:"سياسات-iam-مقابل-سياسات-الحاويات",text:"سياسات IAM مقابل سياسات الحاويات"},{depth:2,id:"تعطيل-حظر-الوصول-العام",text:"تعطيل حظر الوصول العام"},{depth:2,id:"كتابة-سياسة-حاوية-للقراءة-العامة",text:"كتابة سياسة حاوية للقراءة العامة"},{depth:2,id:"تطبيق-سياسة-الحاوية",text:"تطبيق سياسة الحاوية"},{depth:2,id:"باستخدام-sdk",text:"باستخدام SDK"},{depth:2,id:"ما-تفعله-هذه-السياسة-وما-لا-تفعله",text:"ما تفعله هذه السياسة (وما لا تفعله)"},{depth:2,id:"اختبار-الوصول-العام",text:"اختبار الوصول العام"},{depth:2,id:"سياسة-أكثر-تقييدا",text:"سياسة أكثر تقييدًا"},{depth:2,id:"الجمع-بين-سياسات-iam-وسياسات-الحاويات",text:"الجمع بين سياسات IAM وسياسات الحاويات"}],p=`<p>ملفاتك موجودة في الحاوية، لكن لا أحد يستطيع الوصول إليها. وهذا مقصود—فالوضع الافتراضي في S3 هو «ارفض كل شيء ما لم يُسمح به صراحة». ولتقديم موقع ثابت، عليك أن تخبر S3 بأن الجمهور مسموح له بقراءة ملفاتك. تفعل ذلك عبر <strong>سياسة حاوية</strong>.</p>
+<p>إن أردت نسخة AWS من الحواجز قريبة منك، فإن <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html">دليل مستخدم Amazon S3</a> و<a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html">توثيق حظر الوصول العام</a> هما المرجعان الرسميان.</p>
+<p>إذا كنت قد أكملت <a href="https://stevekinney.com/courses/aws/writing-your-first-iam-policy">كتابة أول سياسة IAM لك</a> في قسم أساسيات IAM، فستبدو بنية سياسة الحاوية مألوفة لديك. فشكل JSON شبه مطابق. والفرق يكمن في مكان وجود السياسة ومن تنطبق عليه.</p>
+<p><img src="/arabic-cs-library/images/kinney/9001c5485feca325.svg" alt="مخطط يقارن بين سياسات IAM وسياسات الحاوية وS3 Block Public Access، ويوضح كيفية تقييم طلب قراءة عام."></p>
+<h2 id="سياسات-iam-مقابل-سياسات-الحاويات">سياسات IAM مقابل سياسات الحاويات</h2>
+<p>في قسم أساسيات IAM، أرفقت سياسات IAM بمستخدمين أو مجموعات أو أدوار. تلك السياسات تسافر مع الهوية: «هذا المستخدم مسموح له بفعل هذه الأشياء». أما سياسة الحاوية فهي العكس—تُرفق بالمورد وتقول: «هؤلاء الأشخاص مسموح لهم بفعل أشياء بي».</p>
+<p>كلتاهما مستندات JSON تحتوي على <code>Version</code> و<code>Statement</code> و<code>Effect</code> و<code>Action</code> و<code>Resource</code>. والفرق الجوهري هو حقل <strong>Principal</strong>:</p>
+<ul>
+<li><strong>سياسات IAM</strong> لها principal ضمني—أيًّا كان من أُرفقت به السياسة.</li>
+<li><strong>سياسات الحاويات</strong> لها حقل <strong>Principal</strong> صريح يحدد من تنطبق عليه السياسة. وللوصول العام، يكون الـ principal هو <code>&quot;*&quot;</code>، أي الجميع.</li>
+</ul>
+<p>أفكر في الأمر هكذا: سياسة IAM هي <strong>شارة</strong> ترتديها، وسياسة الحاوية هي <strong>لافتة على الباب</strong>.</p>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>عندما تنطبق سياسة IAM وسياسة حاوية على الطلب نفسه، تقيّمهما AWS معًا. وأي <code>Deny</code> صريح في أي منهما يفوز. وإذا لم يوجد <code>Deny</code> صريح، فإن <code>Allow</code> في أي منهما يمنح الوصول. يُسمى هذا <strong>منطق تقييم السياسات</strong>، وفهمه يوفر ساعات من تصحيح أخطاء «Access Denied».</p>
+</blockquote>
+<h2 id="تعطيل-حظر-الوصول-العام">تعطيل حظر الوصول العام</h2>
+<p>قبل أن تتمكن من إرفاق سياسة حاوية عامة، عليك تعطيل إعدادات حظر الوصول العام التي تُمكّنها AWS افتراضيًا. في حاوية جديدة، تُظهر علامة تبويب <strong>Permissions</strong> الإعدادات الأربعة كلها مفعّلة.</p>
+<p>علامة تبويب Permissions في حاوية S3 تعرض إعداد حظر الوصول العام موسومًا بـ On مع تفعيل القيود الأربعة كلها. وتحديدًا، عليك إيقاف <code>BlockPublicPolicy</code> (حتى تستطيع وضع سياسة عامة على الحاوية) و<code>RestrictPublicBuckets</code> (حتى تصبح السياسة العامة سارية فعلًا).</p>
+<p>ومن أجل البساطة، ولأننا نستضيف موقعًا ثابتًا عامًا، سنعطّل إعدادات حظر الوصول العام الأربعة كلها:</p>
+<pre><code class="language-bash">aws s3api put-public-access-block \\
+  --bucket my-frontend-app-assets \\
+  --public-access-block-configuration \\
+    <span class="hljs-string">&quot;BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false&quot;</span> \\
+  --region us-east-1
+</code></pre>
+<p>تحقق من التغيير:</p>
+<pre><code class="language-bash">aws s3api get-public-access-block \\
+  --bucket my-frontend-app-assets \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;PublicAccessBlockConfiguration&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;BlockPublicAcls&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;IgnorePublicAcls&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;BlockPublicPolicy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;RestrictPublicBuckets&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>في وحدة التحكم، يبدو تعطيل الإعدادات الأربعة في نموذج <strong>Edit Block Public Access</strong> هكذا—كل مربعات الاختيار فارغة.</p>
+<p><img src="/arabic-cs-library/images/kinney/395c2d1df85d2aab.webp" alt="نموذج Edit Block Public Access في S3 مع إلغاء تحديد مربعات الاختيار الأربعة، جاهزًا للحفظ."></p>
+<p>بعد الحفظ، تؤكد علامة تبويب <strong>Permissions</strong> أن حظر الوصول العام أصبح الآن <strong>Off</strong> مع لافتة نجاح.</p>
+<p><img src="/arabic-cs-library/images/kinney/3a0a4e4c6063ed2c.webp" alt="علامة تبويب Permissions في حاوية S3 تعرض حظر الوصول العام موسومًا بـ Off مع لافتة نجاح تؤكد حفظ التغيير."></p>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p>تعطيل حظر الوصول العام مناسب لحاوية تقدّم ملفات موقع ثابت عام. لكنه غير مناسب للحاويات التي تحتوي بيانات مستخدمين أو سجلات أو نسخًا احتياطية أو أي شيء حساس. وفي قسم CloudFront، ستنتقل إلى نهج مختلف هو Origin Access Control، يحافظ على خصوصية الحاوية ويسمح لـ CloudFront وحدها بالقراءة منها.</p>
+</blockquote>
+<blockquote>
+<p><strong>حظر الوصول العام على مستوى الحساب</strong></p>
+<p>يوجد حظر الوصول العام على <em>مستويين</em>: الحاوية والحساب. فإذا كان حظر الوصول العام <strong>على مستوى الحساب</strong> مفعّلًا (وهو الافتراضي في الحسابات المنشأة في السنوات الأخيرة)، فإنه يتجاوز إعدادات مستوى الحاوية—سترفض حاويتك السياسة العامة بخطأ <code>AccessDenied</code> أو <code>InvalidBucketAclWithBlockPublicAccess</code> مهما ضبطت على الحاوية نفسها. تحقق من الإعدادات على مستوى الحساب عبر <strong>S3 Console → Block Public Access settings for this account</strong>، أو عبر <code>aws s3control get-public-access-block --account-id 123456789012</code>. عطّلها إن لم يكن التغيير على مستوى الحاوية ساريًا، أو—وهذا أفضل—تجاوز مسار الحاوية العامة في هذا الدرس بالكامل وانتقل مباشرة إلى CloudFront + OAC بعد أن تقرأ المفاهيم هنا.</p>
+</blockquote>
+<h2 id="كتابة-سياسة-حاوية-للقراءة-العامة">كتابة سياسة حاوية للقراءة العامة</h2>
+<blockquote>
+<p><strong>نصيحة</strong></p>
+<p>جميع سياسات الحاويات في هذا الدرس متاحة كملفات JSON مستقلة في <a href="https://github.com/stevekinney/scratch-lab/tree/main/policies/bucket-policies">مستودع Scratch Lab</a>.</p>
+</blockquote>
+<p>الآن يمكنك إرفاق سياسة حاوية. إليك سياسة كاملة تسمح لأي شخص بقراءة أي كائن في الحاوية:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;Version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2012-10-17&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;Statement&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;Sid&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;PublicReadGetObject&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;Effect&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Allow&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;Principal&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;*&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;Action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;s3:GetObject&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;Resource&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>لنفصّل هذا:</p>
+<ul>
+<li><strong><code>Version</code></strong>: دائمًا <code>&quot;2012-10-17&quot;</code>—هذه نسخة لغة السياسة، لا تاريخًا تحدّثه.</li>
+<li><strong><code>Sid</code></strong>: معرّف مقروء بشريًا لهذا البيان. اختياري لكنه مفيد عند تصحيح الأخطاء.</li>
+<li><strong><code>Effect</code></strong>: <code>&quot;Allow&quot;</code>—امنح الوصول بدلًا من منعه.</li>
+<li><strong><code>Principal</code></strong>: <code>&quot;*&quot;</code>—الجميع، بما في ذلك المستخدمون غير الموثّقين. هذا ما يجعلها عامة.</li>
+<li><strong><code>Action</code></strong>: <code>&quot;s3:GetObject&quot;</code>—السماح بقراءة الكائنات فقط. لا سرد، ولا حذف، ولا رفع. قراءة فقط.</li>
+<li><strong><code>Resource</code></strong>: <code>&quot;arn:aws:s3:::my-frontend-app-assets/*&quot;</code>—تنطبق على جميع الكائنات داخل الحاوية. و<code>/*</code> حرجة: فبدونها تنطبق السياسة على الحاوية نفسها، لا على الكائنات داخلها.</li>
+</ul>
+<blockquote>
+<p><strong>تحذير</strong></p>
+<p>لاحظ أن <code>Resource</code> تنتهي بـ <code>/*</code>. فالـ ARN <code>arn:aws:s3:::my-frontend-app-assets</code> (بدون <code>/*</code>) يشير إلى الحاوية. والـ ARN <code>arn:aws:s3:::my-frontend-app-assets/*</code> يشير إلى الكائنات داخل الحاوية. وإجراء <code>s3:GetObject</code> يعمل على الكائنات، لذا تحتاج إلى <code>/*</code>. والخلط بينهما من أكثر أخطاء سياسات الحاويات شيوعًا.</p>
+</blockquote>
+<h2 id="تطبيق-سياسة-الحاوية">تطبيق سياسة الحاوية</h2>
+<p>احفظ JSON السياسة في ملف وطبّقها عبر CLI:</p>
+<pre><code class="language-bash">aws s3api put-bucket-policy \\
+  --bucket my-frontend-app-assets \\
+  --policy file://bucket-policy.json \\
+  --region us-east-1
+</code></pre>
+<p>في وحدة التحكم، تحدث العملية نفسها عبر محرر <strong>Bucket Policy</strong> في علامة تبويب <strong>Permissions</strong>. وتلصق JSON مباشرة في المحرر.</p>
+<p><img src="/arabic-cs-library/images/kinney/8387ada94181a23f.webp" alt="محرّر Bucket Policy في S3 يعرض سياسة JSON للقراءة العامة مع Principal مضبوطًا على * وAction مضبوطًا على s3:GetObject."></p>
+<p>محرر سياسة حاوية S3 يعرض سياسة JSON للقراءة العامة مع تعيين Principal إلى * وAction إلى s3:GetObject.</p>
+<p>يمكنك التحقق من تطبيق السياسة:</p>
+<pre><code class="language-bash">aws s3api get-bucket-policy \\
+  --bucket my-frontend-app-assets \\
+  --region us-east-1 \\
+  --output json
+</code></pre>
+<p>تُغلّف الاستجابة السياسة في حقل <code>Policy</code> كسلسلة JSON. وليس هذا أجمل ناتج، لكنه يؤكد أن السياسة في مكانها.</p>
+<p><img src="/arabic-cs-library/images/kinney/dcd34f9efa156ce1.webp" alt="علامة تبويب Permissions في حاوية S3 تعرض سياسة الحاوية المطبقة التي تمنح وصول قراءة عامًا إلى جميع الكائنات."></p>
+<h2 id="باستخدام-sdk">باستخدام SDK</h2>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { S3Client, <span class="hljs-title class_">PutBucketPolicyCommand</span>, <span class="hljs-title class_">GetBucketPolicyCommand</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@aws-sdk/client-s3&#x27;</span>;
+
+<span class="hljs-keyword">const</span> s3 = <span class="hljs-keyword">new</span> <span class="hljs-title function_">S3Client</span>({ <span class="hljs-attr">region</span>: <span class="hljs-string">&#x27;us-east-1&#x27;</span> });
+
+<span class="hljs-keyword">const</span> policy = {
+  <span class="hljs-title class_">Version</span>: <span class="hljs-string">&#x27;2012-10-17&#x27;</span>,
+  <span class="hljs-title class_">Statement</span>: [
+    {
+      <span class="hljs-title class_">Sid</span>: <span class="hljs-string">&#x27;PublicReadGetObject&#x27;</span>,
+      <span class="hljs-title class_">Effect</span>: <span class="hljs-string">&#x27;Allow&#x27;</span>,
+      <span class="hljs-title class_">Principal</span>: <span class="hljs-string">&#x27;*&#x27;</span>,
+      <span class="hljs-title class_">Action</span>: <span class="hljs-string">&#x27;s3:GetObject&#x27;</span>,
+      <span class="hljs-title class_">Resource</span>: <span class="hljs-string">&#x27;arn:aws:s3:::my-frontend-app-assets/*&#x27;</span>,
+    },
+  ],
+};
+
+<span class="hljs-keyword">await</span> s3.<span class="hljs-title function_">send</span>(
+  <span class="hljs-keyword">new</span> <span class="hljs-title class_">PutBucketPolicyCommand</span>({
+    <span class="hljs-title class_">Bucket</span>: <span class="hljs-string">&#x27;my-frontend-app-assets&#x27;</span>,
+    <span class="hljs-title class_">Policy</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(policy),
+    <span class="hljs-comment">// Policy is a _string_, not an object. JSON.stringify is required.</span>
+  }),
+);
+
+<span class="hljs-keyword">const</span> current = <span class="hljs-keyword">await</span> s3.<span class="hljs-title function_">send</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">GetBucketPolicyCommand</span>({ <span class="hljs-title class_">Bucket</span>: <span class="hljs-string">&#x27;my-frontend-app-assets&#x27;</span> }));
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(current.<span class="hljs-property">Policy</span>!));
+</code></pre>
+<h2 id="ما-تفعله-هذه-السياسة-وما-لا-تفعله">ما تفعله هذه السياسة (وما لا تفعله)</h2>
+<p>تمنح هذه السياسة إذنًا واحدًا محددًا: يمكن لأي شخص قراءة (تنزيل) الكائنات من الحاوية. وهذا بالضبط ما تحتاجه لموقع ثابت—فالمتصفحات تحتاج إلى تنزيل HTML وCSS وJavaScript الخاصة بك.</p>
+<p>إليك ما <strong>لا</strong> تسمح به هذه السياسة:</p>
+<ul>
+<li><strong>سرد محتويات الحاوية</strong> (<code>s3:ListBucket</code>). فلا يستطيع الزائر تصفح حاويتك ورؤية كل ملفاتك. عليه أن يعرف المفتاح الدقيق.</li>
+<li><strong>رفع الملفات</strong> (<code>s3:PutObject</code>). فأنت وحدك (أو أي مستخدم IAM أو دور لديه أذونات رفع) يمكنك إضافة ملفات إلى الحاوية.</li>
+<li><strong>حذف الملفات</strong> (<code>s3:DeleteObject</code>). كما سبق—لا يحذف إلا المستخدمون المصرّح لهم.</li>
+<li><strong>تعديل سياسة الحاوية</strong> (<code>s3:PutBucketPolicy</code>). فلا يغيّر السياسة نفسها إلا مستخدم IAM أو الدور الخاص بك.</li>
+</ul>
+<p>هذا هو <strong>مبدأ أقل الامتيازات</strong> في التطبيق: امنح الحد الأدنى من الأذونات اللازمة للمهمة. فالجمهور يحتاج إلى قراءة ملفاتك، ولا يحتاج إلى فعل أي شيء آخر.</p>
+<h2 id="اختبار-الوصول-العام">اختبار الوصول العام</h2>
+<p>بعد تطبيق السياسة، يمكنك اختبار إمكانية الوصول إلى الكائنات علنًا باستخدام رابط مباشر. وصيغة URL لكائنات S3 هي:</p>
+<pre><code>https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
+</code></pre>
+<p>جرّبها بـ <code>curl</code>:</p>
+<pre><code class="language-bash">curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
+</code></pre>
+<p>ينبغي أن تحصل على استجابة <code>200 OK</code> مع ترويسات تُظهر نوع المحتوى والحجم. وإذا حصلت على <code>403 Forbidden</code>، فتحقق مرة أخرى من تعطيل حظر الوصول العام ومن تطبيق سياسة الحاوية بشكل صحيح.</p>
+<h2 id="سياسة-أكثر-تقييدا">سياسة أكثر تقييدًا</h2>
+<p>السياسة أعلاه هي الحد الأدنى لموقع ثابت عام. لكن قد ترغب في أن تكون أكثر تحديدًا. إليك سياسة تقصر القراءة العامة على أنواع ملفات معينة فقط:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;Version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2012-10-17&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;Statement&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;Sid&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;PublicReadStaticAssets&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;Effect&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Allow&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;Principal&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;*&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;Action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;s3:GetObject&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;Resource&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*.html&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*.css&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*.js&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*.png&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*.jpg&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*.ico&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*.woff2&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*.webp&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;arn:aws:s3:::my-frontend-app-assets/*.svg&quot;</span>
+      <span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>هذا أكثر عملًا في الصيانة لكنه يحدّ من التعرض. وعمليًا، يُعدّ حرف البدل <code>/*</code> كافيًا لحاوية موقع ثابت لا تحتوي إلا مخرجات البناء. وإذا بدأت تضع ملفات غير عامة في الحاوية نفسها (لا تفعل هذا)، تصبح السياسة التقييدية ضرورية.</p>
+<h2 id="الجمع-بين-سياسات-iam-وسياسات-الحاويات">الجمع بين سياسات IAM وسياسات الحاويات</h2>
+<p>مستخدم IAM الخاص بك من قسم أساسيات IAM يستطيع بالفعل الوصول إلى هذه الحاوية عبر سياسات IAM. وسياسة الحاوية تضيف وصولًا عامًا فوق ذلك. والآليتان تعملان معًا:</p>
+<ul>
+<li>مستخدم IAM الخاص بك يمكنه الرفع والحذف والسرد (بموجب سياسة IAM المرفقة بمستخدمك أو مجموعتك).</li>
+<li>والجمهور يمكنه قراءة الكائنات (بموجب سياسة الحاوية).</li>
+</ul>
+<p>إذا احتجت يومًا إلى تصحيح مشكلات الوصول، فتذكّر أن AWS تقيّم السياستين معًا. وأي <code>Deny</code> صريح في أي منهما يتجاوز أي <code>Allow</code>. وأكثر خطأ شائع هو وجود سياسة حاوية تسمح بالوصول مع نسيان تعطيل حظر الوصول العام—فإعدادات حظر الوصول العام تعمل كطبقة إنكار إضافية تتجاوز سياسات الحاويات.</p>
+<p>لديك الآن ملفات في الحاوية وسياسة تسمح للجمهور بقراءتها. لكن الانتقال إلى رابط كائن S3 ليس مثل امتلاك موقع ويب. بعد ذلك، ستُفعّل <strong>استضافة موقع S3 الثابت</strong>، التي تمنحك نقطة نهاية موقع فعلية تدعم مستندات الفهرس (بحيث يقدّم <code>https://your-url/</code> الملف <code>index.html</code>) وصفحات خطأ مخصصة.</p>
+`,o={book:s,chapter:"aws",chapterTitle:n,slug:a,title:t,headings:c,html:p};export{s as book,l as chapter,n as chapterTitle,o as default,c as headings,p as html,a as slug,t as title};
