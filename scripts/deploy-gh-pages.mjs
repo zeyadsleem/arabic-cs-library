@@ -10,6 +10,22 @@ const buildDir = path.join(root, 'build');
 const run = (command, args, options = {}) =>
   execFileSync(command, args, { encoding: 'utf8', ...options });
 
+// CI publishes gh-pages on every push to main, so a manual deploy can race with
+// it. On a rejected push the generated tree is rebuilt on top of the newer
+// remote tip and pushed again; gh-pages only ever holds build output.
+const pushBranch = (cwd, owner, repo) => {
+  const push = () => run('git', ['push', 'origin', 'gh-pages'], { cwd, stdio: 'inherit' });
+  try {
+    push();
+  } catch {
+    console.warn('رُفض الدفع إلى gh-pages — أعيد المزامنة مع الفرع البعيد ثم أُعيد المحاولة.');
+    run('git', ['fetch', '--depth', '1', 'origin', 'gh-pages'], { cwd, stdio: 'pipe' });
+    run('git', ['reset', '--soft', 'FETCH_HEAD'], { cwd, stdio: 'pipe' });
+    run('git', ['commit', '-m', `deploy: ${new Date().toISOString()}`], { cwd, stdio: 'inherit' });
+    push();
+  }
+};
+
 const remote = run('git', ['remote', 'get-url', 'origin'], { cwd: root }).trim();
 const match = remote.match(/github\.com[:/]([^/]+)\/([^/]+?)(?:\.git)?\/?$/);
 if (!match) {
@@ -100,7 +116,7 @@ try {
       cwd: tmp,
       stdio: 'inherit',
     });
-    run('git', ['push', 'origin', 'gh-pages'], { cwd: tmp, stdio: 'inherit' });
+    pushBranch(tmp, owner, repo);
     console.log(`تم النشر: https://${owner}.github.io/${repo}/`);
   }
 } finally {
