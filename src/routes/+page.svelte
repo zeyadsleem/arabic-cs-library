@@ -23,8 +23,12 @@
     library.path.stages.map((stage, index) => [stage.id, index])
   );
 
+  const readable = (book) =>
+    book.status === 'translated' || book.status === 'in-progress';
   const translated = books.filter((book) => book.status === 'translated');
-  const queued = books.filter((book) => book.status !== 'translated');
+  const inProgress = books.filter((book) => book.status === 'in-progress');
+  const openForReading = books.filter(readable);
+  const queued = books.filter((book) => !readable(book));
   const totalPages = translated.reduce(
     (sum, book) => sum + (book.pages || 0),
     0
@@ -40,7 +44,7 @@
   });
 
   const visible = $derived.by(() => {
-    const list = filter === 'all' ? books : books.filter((book) => filter === 'done' ? book.status === 'translated' : book.status !== 'translated');
+    const list = filter === 'all' ? books : books.filter((book) => filter === 'done' ? readable(book) : !readable(book));
     return [...list].sort((a, b) => {
       if (sort === 'pages') return (b.pages || 0) - (a.pages || 0);
       if (sort === 'title') return a.title.localeCompare(b.title, 'ar');
@@ -55,6 +59,7 @@
     book.statusText ||
     ({
       translated: 'مترجم',
+      'in-progress': 'قيد الإنجاز',
       planned: 'قيد الترجمة',
       blocked: 'غير قابل للترجمة',
       reference: 'مرجع للقراءة',
@@ -63,6 +68,7 @@
   const statusClass = (book) =>
     ({
       translated: 'badge--done',
+      'in-progress': 'badge--progress',
       planned: 'badge--planned',
       blocked: 'badge--blocked',
       reference: 'badge--reference',
@@ -84,6 +90,11 @@
       <span class="stat"
         ><b>{translated.length}</b><span>كتاباً مكتملاً</span></span
       >
+      {#if inProgress.length}
+        <span class="stat"
+          ><b>{inProgress.length}</b><span>كتاباً قيد الإنجاز</span></span
+        >
+      {/if}
       <span class="stat"
         ><b>{totalPages.toLocaleString('en-US')}</b
         ><span>صفحة مترجمة</span></span
@@ -119,7 +130,7 @@
       class="chip"
       class:chip--on={filter === 'done'}
       onclick={() => (filter = 'done')}
-      >مترجم ({translated.length})</button
+      >متاح للقراءة ({openForReading.length})</button
     >
     <button
       class="chip"
@@ -158,7 +169,7 @@
               {#if book.pages}<span>{book.pages} صفحة</span>{/if}
               <span class="badge {statusClass(book)}">{statusLabel(book)}</span>
               <span class="book-card__cta">
-                {book.status === 'translated' ? 'اقرأ ←' : 'التفاصيل ←'}
+                {readable(book) ? 'اقرأ ←' : 'التفاصيل ←'}
               </span>
             </span>
           </a>

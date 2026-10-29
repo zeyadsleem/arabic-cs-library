@@ -412,6 +412,12 @@
   background: var(--paper-deep);
 }
 
+.badge--progress {
+  color: var(--brass);
+  border-color: color-mix(in srgb, var(--brass) 45%, transparent);
+  background: var(--brass-wash);
+}
+
 .badge--blocked {
   color: var(--rubric);
   border-color: color-mix(in srgb, var(--rubric) 42%, transparent);

@@ -18,6 +18,8 @@
   --rubric-wash: #f4e2dd;
   --jade: #14524a;
   --jade-wash: #dde9e4;
+  --brass: #8a6a1f;
+  --brass-wash: #f3e9cf;
 
   --code-bg: #191c22;
   --code-text: #eae3d5;
@@ -44,6 +46,8 @@ html[data-theme='dark'] {
   --rubric-wash: #2a1c1b;
   --jade: #6cb2a3;
   --jade-wash: #17231f;
+  --brass: #d9b872;
+  --brass-wash: #2a2418;
 
   --code-bg: #0d0f13;
   --code-text: #ece5d6;

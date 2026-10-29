@@ -29,6 +29,7 @@
     book.statusText ||
     ({
       translated: 'مترجم',
+      'in-progress': 'قيد الإنجاز',
       blocked: 'غير قابل للترجمة',
       reference: 'مرجع للقراءة',
       planned: 'قيد الترجمة',
@@ -37,6 +38,7 @@
   const statusClass = (book) =>
     ({
       translated: 'badge--done',
+      'in-progress': 'badge--progress',
       blocked: 'badge--blocked',
       reference: 'badge--reference',
       planned: 'badge--planned',
@@ -103,7 +105,9 @@
               </div>
               <div class="stage-book__action">
                 <a class="button button--quiet" href={bookPath(book.id)}>
-                  {book.status === 'translated' ? 'اقرأ' : 'التفاصيل'}
+                  {book.status === 'translated' || book.status === 'in-progress'
+                    ? 'اقرأ'
+                    : 'التفاصيل'}
                 </a>
               </div>
             </li>

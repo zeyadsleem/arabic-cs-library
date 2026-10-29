@@ -58,6 +58,7 @@
   const statusLabel = (value) =>
     ({
       translated: 'مترجم بالكامل',
+      'in-progress': 'قيد الإنجاز',
       planned: 'قيد الترجمة',
       blocked: 'غير قابل للترجمة',
       reference: 'مرجع للقراءة',
@@ -133,7 +134,7 @@
       {/if}
 
       <div class="book-actions">
-        {#if firstSection && book.status === 'translated'}
+        {#if firstSection && (book.status === 'translated' || book.status === 'in-progress')}
           {#if lastRead?.path}
             <a class="button" href={lastRead.path}>
               تابع من حيث توقّفت — {lastRead.title}

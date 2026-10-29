@@ -285,7 +285,7 @@ const run = () => {
 
   const contentBooks = library.books.filter(
     (book) =>
-      book.status === 'translated' &&
+      (book.status === 'translated' || book.status === 'in-progress') &&
       fs.existsSync(path.join(contentDir, `${book.id}-structure.json`))
   );
 
@@ -298,6 +298,7 @@ const run = () => {
     const chapters = [];
     let missing = 0;
     let count = 0;
+    let skipped = 0;
 
     for (const chapter of structure.chapters) {
       const chapterEntry = {
@@ -324,6 +325,13 @@ const run = () => {
         const { data, content: rawContent } = matter(raw);
         const content = convertCallouts(normalizeSourceMarkup(rawContent));
         if (data.lang && data.lang !== 'ar') {
+          // A book still in progress publishes only the pages already
+          // translated; the remaining source pages stay out of the build so
+          // the site never mixes languages inside one book.
+          if (book.status === 'in-progress') {
+            skipped += 1;
+            continue;
+          }
           untranslated.push(`${book.id}/${chapter.key}--${slug} (lang: ${data.lang})`);
         }
         currentSection = `${book.id}/${chapter.key}--${slug}`;
@@ -336,12 +344,13 @@ const run = () => {
         count += 1;
       }
 
-      chapters.push(chapterEntry);
+      if (chapterEntry.sections.length) chapters.push(chapterEntry);
     }
 
     chaptersByBook.set(book.id, chapters);
     console.log(
-      `Generated ${count} sections for ${book.id} (missing ${missing})`
+      `Generated ${count} sections for ${book.id} (missing ${missing}` +
+        `${skipped ? `, untranslated ${skipped}` : ''})`
     );
   }
 

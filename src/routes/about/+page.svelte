@@ -3,7 +3,10 @@
   import { withBasePath } from '$lib/html.js';
 
   const translated = books.filter((book) => book.status === 'translated');
-  const queued = books.filter((book) => book.status !== 'translated');
+  const inProgress = books.filter((book) => book.status === 'in-progress');
+  const queued = books.filter(
+    (book) => book.status !== 'translated' && book.status !== 'in-progress'
+  );
   const pages = translated.reduce((sum, book) => sum + (book.pages || 0), 0);
 </script>
 
@@ -74,6 +77,22 @@
       </li>
     {/each}
   </ul>
+
+  {#if inProgress.length}
+    <h2>قيد الإنجاز ({inProgress.length})</h2>
+    <ul class="book-row-list">
+      {#each inProgress as book}
+        <li>
+          <a class="book-list-row" href={withBasePath(`/book/${book.id}`)}>
+            <span class="book-list-row__title">{book.title}</span>
+            <span class="book-list-row__author">{book.author}</span>
+            <span class="book-list-row__meta">{book.pages ?? '—'}</span>
+            <span class="badge badge--progress">قيد الإنجاز</span>
+          </a>
+        </li>
+      {/each}
+    </ul>
+  {/if}
 
   <h2>في الطابور ({queued.length})</h2>
   <ul class="book-row-list">

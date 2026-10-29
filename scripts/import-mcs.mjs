@@ -115,9 +115,9 @@ const chapters = [
   { key: 'ch17-events-probability', title: 'Events and Probability Spaces', start: 781, end: 804 },
   { key: 'ch18-conditional-probability', title: 'Conditional Probability', start: 813, end: 836 },
   { key: 'ch19-random-variables', title: 'Random Variables', start: 865, end: 896 },
-  { key: 'ch20-deviation', title: 'Deviation from the Mean', start: 897, end: 936 },
-  { key: 'ch21-random-walks', title: 'Random Walks', start: 937, end: 964 },
-  { key: 'ch22-bayesian', title: 'Bayesian Inference', start: 965, end: 996 },
+  { key: 'ch20-deviation', title: 'Deviation from the Mean', start: 923, end: 952 },
+  { key: 'ch21-random-walks', title: 'Random Walks', start: 973, end: 992 },
+  { key: 'ch22-recurrences', title: 'Recurrences', start: 1003, end: 1030 },
 ];
 
 /** Build structure.json */
@@ -154,11 +154,21 @@ async function main() {
     fs.writeFileSync(file, frontmatter + md);
   }
 
-  // Write structure.json
-  fs.writeFileSync(
-    path.join(contentDir, `${id}-structure.json`),
-    JSON.stringify(structure, null, 2)
-  );
+  // Write structure.json without discarding the per-section layout the
+  // translation hand-maintains; a re-extraction only seeds chapters.
+  const structureFile = path.join(contentDir, `${id}-structure.json`);
+  const existing = fs.existsSync(structureFile)
+    ? JSON.parse(fs.readFileSync(structureFile, 'utf8'))
+    : null;
+  const merged = existing
+    ? {
+        chapters: structure.chapters.map(
+          (chapter) =>
+            existing.chapters.find((entry) => entry.key === chapter.key) ?? chapter
+        ),
+      }
+    : structure;
+  fs.writeFileSync(structureFile, JSON.stringify(merged, null, 2));
   console.log('structure.json written.');
 }
 

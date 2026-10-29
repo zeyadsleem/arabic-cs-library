@@ -58,232 +58,1172 @@
     },
     {
       "key": "ch02-well-ordering",
-      "title": "The Well Ordering Principle",
+      "title": "مبدأ الترتيب الجيّد",
       "sections": [
         {
           "slug": "index",
-          "title": "The Well Ordering Principle",
+          "title": "مبدأ الترتيب الجيّد",
+          "order": 0
+        },
+        {
+          "slug": "sec-well-ordering-proofs",
+          "title": "براهين مبدأ الترتيب الجيّد",
           "order": 1
-        }
-      ]
-    },
-    {
-      "key": "ch03-logical-formulas",
-      "title": "Logical Formulas",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Logical Formulas",
+          "slug": "sec-template-for-wop-proofs",
+          "title": "قالب براهين مبدأ الترتيب الجيّد",
           "order": 2
-        }
-      ]
-    },
-    {
-      "key": "ch04-math-data-types",
-      "title": "Mathematical Data Types",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Mathematical Data Types",
+          "slug": "sec-factoring-into-primes",
+          "title": "التحليل إلى عوامل أوّلية",
           "order": 3
-        }
-      ]
-    },
-    {
-      "key": "ch05-induction",
-      "title": "Induction",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Induction",
+          "slug": "sec-well-ordered-sets",
+          "title": "المجموعات المرتّبة جيّدًا",
           "order": 4
         }
       ]
     },
     {
-      "key": "ch06-state-machines",
-      "title": "State Machines",
+      "key": "ch03-logical-formulas",
+      "title": "الصيغ المنطقية",
       "sections": [
         {
           "slug": "index",
-          "title": "State Machines",
+          "title": "الصيغ المنطقية",
+          "order": 0
+        },
+        {
+          "slug": "sec-propositions-from-propositions",
+          "title": "مقولات من مقولات",
+          "order": 1
+        },
+        {
+          "slug": "sec-propositional-logic-in-programs",
+          "title": "منطق المقولات في برامج الحاسوب",
+          "order": 2
+        },
+        {
+          "slug": "sec-equivalence-and-validity",
+          "title": "التكافؤ والصلاحية",
+          "order": 3
+        },
+        {
+          "slug": "sec-algebra-of-propositions",
+          "title": "جبر المقولات",
+          "order": 4
+        },
+        {
+          "slug": "sec-sat-problem",
+          "title": "مسألة SAT",
           "order": 5
-        }
-      ]
-    },
-    {
-      "key": "ch07-recursive-data-types",
-      "title": "Recursive Data Types",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Recursive Data Types",
+          "slug": "sec-predicate-formulas",
+          "title": "الصيغ المحمولية",
           "order": 6
         }
       ]
     },
     {
-      "key": "ch08-infinite-sets",
-      "title": "Infinite Sets",
+      "key": "ch04-math-data-types",
+      "title": "أنواع البيانات الرياضية",
       "sections": [
         {
           "slug": "index",
-          "title": "Infinite Sets",
+          "title": "أنواع البيانات الرياضية",
+          "order": 0
+        },
+        {
+          "slug": "sec-sets",
+          "title": "المجموعات",
+          "order": 1
+        },
+        {
+          "slug": "sec-sequences",
+          "title": "المتتاليات",
+          "order": 2
+        },
+        {
+          "slug": "sec-functions",
+          "title": "الدوال",
+          "order": 3
+        },
+        {
+          "slug": "sec-binary-relations",
+          "title": "العلاقات الثنائية",
+          "order": 4
+        },
+        {
+          "slug": "sec-finite-cardinality",
+          "title": "العددية المنتهية",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "ch05-induction",
+      "title": "الاستقراء",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الاستقراء",
+          "order": 0
+        },
+        {
+          "slug": "sec-ordinary-induction",
+          "title": "الاستقراء العادي",
+          "order": 1
+        },
+        {
+          "slug": "sec-a-familiar-example",
+          "title": "مثال مألوف",
+          "order": 2
+        },
+        {
+          "slug": "sec-a-template-for-induction-proofs",
+          "title": "قالب براهين الاستقراء",
+          "order": 3
+        },
+        {
+          "slug": "sec-a-clean-writeup",
+          "title": "كتابة نظيفة للبرهان",
+          "order": 4
+        },
+        {
+          "slug": "sec-a-more-challenging-example",
+          "title": "مثال أعقد",
+          "order": 5
+        },
+        {
+          "slug": "sec-a-faulty-induction-proof",
+          "title": "برهان استقرائي خاطئ",
+          "order": 6
+        },
+        {
+          "slug": "sec-strong-induction",
+          "title": "الاستقراء القوي",
           "order": 7
-        }
-      ]
-    },
-    {
-      "key": "ch09-number-theory",
-      "title": "Number Theory",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Number Theory",
+          "slug": "sec-fibonacci-numbers",
+          "title": "أعداد فيبوناتشي",
           "order": 8
-        }
-      ]
-    },
-    {
-      "key": "ch10-directed-graphs",
-      "title": "Directed Graphs & Partial Orders",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Directed Graphs & Partial Orders",
+          "slug": "sec-products-of-primes",
+          "title": "حواصل ضرب الأعداد الأوّلية",
           "order": 9
-        }
-      ]
-    },
-    {
-      "key": "ch11-communication-networks",
-      "title": "Communication Networks",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Communication Networks",
+          "slug": "sec-making-change",
+          "title": "صرف النقود",
           "order": 10
-        }
-      ]
-    },
-    {
-      "key": "ch12-simple-graphs",
-      "title": "Simple Graphs",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Simple Graphs",
+          "slug": "sec-the-stacking-game",
+          "title": "لعبة الأكوام",
           "order": 11
-        }
-      ]
-    },
-    {
-      "key": "ch13-planar-graphs",
-      "title": "Planar Graphs",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Planar Graphs",
+          "slug": "sec-strong-vs-induction-vs-well-ordering",
+          "title": "الاستقراء القويّ مقابل الاستقراء مقابل الترتيب الجيّد",
           "order": 12
         }
       ]
     },
     {
-      "key": "ch14-sums-asymptotics",
-      "title": "Sums and Asymptotics",
+      "key": "ch06-state-machines",
+      "title": "آلات الحالة",
       "sections": [
         {
           "slug": "index",
-          "title": "Sums and Asymptotics",
+          "title": "آلات الحالة",
+          "order": 0
+        },
+        {
+          "slug": "sec-states-and-transitions",
+          "title": "الحالات والانتقالات",
+          "order": 1
+        },
+        {
+          "slug": "sec-the-invariant-principle",
+          "title": "مبدأ الثبات",
+          "order": 2
+        },
+        {
+          "slug": "sec-statement-of-the-invariant-principle",
+          "title": "صياغة مبدأ الثبات",
+          "order": 3
+        },
+        {
+          "slug": "sec-the-die-hard-example",
+          "title": "مثال Die Hard",
+          "order": 4
+        },
+        {
+          "slug": "sec-partial-correctness-and-termination",
+          "title": "الصحة الجزئية والانتهاء",
+          "order": 5
+        },
+        {
+          "slug": "sec-derived-variables",
+          "title": "المتغيّرات المشتقّة",
+          "order": 6
+        },
+        {
+          "slug": "sec-termination-with-well-ordered-sets",
+          "title": "الانتهاء بالمجموعات المرتّبة جيّدًا (اختياري)",
+          "order": 7
+        },
+        {
+          "slug": "sec-a-southeast-jumping-robot",
+          "title": "روبوت يقفز جنوبًا وشرقًا (اختياري)",
+          "order": 8
+        },
+        {
+          "slug": "sec-the-stable-marriage-problem",
+          "title": "مسألة الزواج المستقرّ",
+          "order": 9
+        },
+        {
+          "slug": "sec-there-is-a-marriage-day",
+          "title": "يوم الزواج",
+          "order": 10
+        },
+        {
+          "slug": "sec-they-all-live-happily-ever-after",
+          "title": "وعاشوا جميعًا في سعادة دائمة…",
+          "order": 11
+        },
+        {
+          "slug": "sec-especially-the-men",
+          "title": "… والرجال على وجه الخصوص",
+          "order": 12
+        },
+        {
+          "slug": "sec-applications",
+          "title": "تطبيقات طقس التزاوج",
           "order": 13
         }
       ]
     },
     {
-      "key": "ch15-cardinality-rules",
-      "title": "Cardinality Rules",
+      "key": "ch07-recursive-data-types",
+      "title": "أنواع البيانات العودية",
       "sections": [
         {
           "slug": "index",
-          "title": "Cardinality Rules",
+          "title": "أنواع البيانات العودية",
+          "order": 0
+        },
+        {
+          "slug": "sec-recursive-definitions-and-structural-induction",
+          "title": "التعريفات العودية والاستقراء البنيوي",
+          "order": 1
+        },
+        {
+          "slug": "sec-structural-induction",
+          "title": "الاستقراء البنيوي",
+          "order": 2
+        },
+        {
+          "slug": "sec-strings-of-matched-brackets",
+          "title": "سلاسل الأقواس المتوافقة",
+          "order": 3
+        },
+        {
+          "slug": "sec-recursive-functions-on-nonnegative-integers",
+          "title": "الدوال العودية على الأعداد الصحيحة غير السالبة",
+          "order": 4
+        },
+        {
+          "slug": "sec-some-standard-recursive-functions",
+          "title": "بعض الدوال العودية القياسية",
+          "order": 5
+        },
+        {
+          "slug": "sec-ill-formed-function-definitions",
+          "title": "تعريفات دوال غير سليمة الصياغة",
+          "order": 6
+        },
+        {
+          "slug": "sec-arithmetic-expressions",
+          "title": "التعبيرات الحسابية",
+          "order": 7
+        },
+        {
+          "slug": "sec-evaluation-and-substitution",
+          "title": "التقييم والتعويض في التعبيرات الحسابية",
+          "order": 8
+        },
+        {
+          "slug": "sec-games-as-a-recursive-data-type",
+          "title": "الألعاب كنوع بيانات عودي",
+          "order": 9
+        },
+        {
+          "slug": "sec-game-strategies",
+          "title": "استراتيجيات اللعب",
+          "order": 10
+        },
+        {
+          "slug": "sec-fundamental-theorem-for-win-lose-games",
+          "title": "المبرهنة الأساسية لألعاب الفوز والخسارة",
+          "order": 11
+        },
+        {
+          "slug": "sec-search-trees",
+          "title": "أشجار البحث",
+          "order": 12
+        },
+        {
+          "slug": "sec-binary-branching",
+          "title": "التفريع الثنائي",
+          "order": 13
+        },
+        {
+          "slug": "sec-binary-trees",
+          "title": "الأشجار الثنائية",
           "order": 14
-        }
-      ]
-    },
-    {
-      "key": "ch16-generating-functions",
-      "title": "Generating Functions",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Generating Functions",
+          "slug": "sec-properties-of-recursive-trees",
+          "title": "خصائص الأشجار العودية",
           "order": 15
-        }
-      ]
-    },
-    {
-      "key": "ch17-events-probability",
-      "title": "Events and Probability Spaces",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Events and Probability Spaces",
+          "slug": "sec-depth-versus-size",
+          "title": "العمق مقابل الحجم",
           "order": 16
-        }
-      ]
-    },
-    {
-      "key": "ch18-conditional-probability",
-      "title": "Conditional Probability",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Conditional Probability",
+          "slug": "sec-avl-trees",
+          "title": "أشجار AVL",
           "order": 17
-        }
-      ]
-    },
-    {
-      "key": "ch19-random-variables",
-      "title": "Random Variables",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Random Variables",
+          "slug": "sec-number-labels",
+          "title": "العلامات العددية",
           "order": 18
-        }
-      ]
-    },
-    {
-      "key": "ch20-deviation",
-      "title": "Deviation from the Mean",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Deviation from the Mean",
+          "slug": "sec-insertions-into-avl-trees",
+          "title": "الإدراج في أشجار AVL",
           "order": 19
-        }
-      ]
-    },
-    {
-      "key": "ch21-random-walks",
-      "title": "Random Walks",
-      "sections": [
+        },
         {
-          "slug": "index",
-          "title": "Random Walks",
+          "slug": "sec-induction-in-computer-science",
+          "title": "الاستقراء في علوم الحاسوب",
           "order": 20
         }
       ]
     },
     {
-      "key": "ch22-bayesian",
-      "title": "Bayesian Inference",
+      "key": "ch08-infinite-sets",
+      "title": "المجموعات غير المنتهية",
       "sections": [
         {
           "slug": "index",
-          "title": "Bayesian Inference",
+          "title": "المجموعات غير المنتهية",
+          "order": 0
+        },
+        {
+          "slug": "sec-infinite-cardinality",
+          "title": "العددية غير المنتهية",
+          "order": 1
+        },
+        {
+          "slug": "sec-infinity-is-different",
+          "title": "اللانهاية مختلفة",
+          "order": 2
+        },
+        {
+          "slug": "sec-countable-sets",
+          "title": "المجموعات القابلة للعدّ",
+          "order": 3
+        },
+        {
+          "slug": "sec-power-sets-strictly-bigger",
+          "title": "مجموعات القوى أكبر تمامًا",
+          "order": 4
+        },
+        {
+          "slug": "sec-more-countable-and-uncountable-sets",
+          "title": "المزيد من المجموعات القابلة للعدّ وغير القابلة للعدّ",
+          "order": 5
+        },
+        {
+          "slug": "sec-diagonal-argument",
+          "title": "الحجّة القُطرية",
+          "order": 6
+        },
+        {
+          "slug": "sec-the-halting-problem",
+          "title": "مسألة التوقّف",
+          "order": 7
+        },
+        {
+          "slug": "sec-logic-of-sets",
+          "title": "منطق المجموعات",
+          "order": 8
+        },
+        {
+          "slug": "sec-zfc-axioms",
+          "title": "مسلّمات ZFC للمجموعات",
+          "order": 9
+        },
+        {
+          "slug": "sec-avoiding-russells-paradox",
+          "title": "تجنّب مفارقة راسل",
+          "order": 10
+        },
+        {
+          "slug": "sec-does-all-this-really-work",
+          "title": "هل يعمل كل هذا حقًّا؟",
+          "order": 11
+        },
+        {
+          "slug": "sec-large-infinities-in-computer-science",
+          "title": "اللانهايات الكبرى في علوم الحاسوب",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "ch09-number-theory",
+      "title": "نظرية الأعداد",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "نظرية الأعداد",
+          "order": 0
+        },
+        {
+          "slug": "sec-divisibility",
+          "title": "القسمة",
+          "order": 1
+        },
+        {
+          "slug": "sec-die-hard",
+          "title": "Die Hard",
+          "order": 2
+        },
+        {
+          "slug": "sec-euclids-algorithm",
+          "title": "خوارزمية إقليدس",
+          "order": 3
+        },
+        {
+          "slug": "sec-the-pulverizer",
+          "title": "المُسحِق",
+          "order": 4
+        },
+        {
+          "slug": "sec-one-solution-for-all-water-jug-problems",
+          "title": "حلّ واحد لكل مسائل جرار الماء",
+          "order": 5
+        },
+        {
+          "slug": "sec-properties-of-the-gcd",
+          "title": "خواص القاسم المشترك الأكبر",
+          "order": 6
+        },
+        {
+          "slug": "sec-prime-mysteries",
+          "title": "ألغاز الأعداد الأوّلية",
+          "order": 7
+        },
+        {
+          "slug": "sec-fundamental-theorem-of-arithmetic",
+          "title": "المبرهنة الأساسية في الحساب",
+          "order": 8
+        },
+        {
+          "slug": "sec-proving-unique-factorization",
+          "title": "برهان وحدة التحليل",
+          "order": 9
+        },
+        {
+          "slug": "sec-alan-turing",
+          "title": "آلان تورنغ",
+          "order": 10
+        },
+        {
+          "slug": "sec-turings-code-version-1",
+          "title": "شفرة تورنغ (الإصدار ١٫٠)",
+          "order": 11
+        },
+        {
+          "slug": "sec-breaking-turings-code-version-1",
+          "title": "كسر شفرة تورنغ (الإصدار ١٫٠)",
+          "order": 12
+        },
+        {
+          "slug": "sec-modular-arithmetic",
+          "title": "الحساب النمطي",
+          "order": 13
+        },
+        {
+          "slug": "sec-remainder-arithmetic",
+          "title": "حساب البواقي",
+          "order": 14
+        },
+        {
+          "slug": "sec-the-ring-zn",
+          "title": "حلقة الأعداد الصحيحة النمطية",
+          "order": 15
+        },
+        {
+          "slug": "sec-turings-code-version-2",
+          "title": "شفرة تورنغ (الإصدار ٢٫٠)",
+          "order": 16
+        },
+        {
+          "slug": "sec-multiplicative-inverses-and-cancelling",
+          "title": "النظائر الضربية والاختصار",
+          "order": 17
+        },
+        {
+          "slug": "sec-decrypting-version-2",
+          "title": "فكّ التشفير (الإصدار ٢٫٠)",
+          "order": 18
+        },
+        {
+          "slug": "sec-breaking-turings-code-version-2",
+          "title": "كسر شفرة تورنغ (الإصدار ٢٫٠)",
+          "order": 19
+        },
+        {
+          "slug": "sec-turing-postscript",
+          "title": "خاتمة عن تورنغ",
+          "order": 20
+        },
+        {
+          "slug": "sec-eulers-theorem",
+          "title": "مبرهنة أويلر",
           "order": 21
+        },
+        {
+          "slug": "sec-computing-eulers-function",
+          "title": "حساب دالة أويلر",
+          "order": 22
+        },
+        {
+          "slug": "sec-rsa-public-key-encryption",
+          "title": "التشفير بالمفتاح العام RSA",
+          "order": 23
+        },
+        {
+          "slug": "sec-what-has-sat-got-to-do-with-it",
+          "title": "ما علاقة SAT بهذا؟",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "key": "ch10-directed-graphs",
+      "title": "المخططات الموجّهة والعلاقات الجزئية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المخططات الموجّهة والعلاقات الجزئية",
+          "order": 0
+        },
+        {
+          "slug": "sec-vertex-degrees",
+          "title": "درجات الرؤوس",
+          "order": 1
+        },
+        {
+          "slug": "sec-walks-and-paths",
+          "title": "المشي والمسارات",
+          "order": 2
+        },
+        {
+          "slug": "sec-adjacency-matrices",
+          "title": "مصفوفات التجاور",
+          "order": 3
+        },
+        {
+          "slug": "sec-walk-relations",
+          "title": "علاقات المشي",
+          "order": 4
+        },
+        {
+          "slug": "sec-dags-and-scheduling",
+          "title": "المخططات الموجّهة اللادورية والجدولة",
+          "order": 5
+        },
+        {
+          "slug": "sec-partial-orders",
+          "title": "الترتيبات الجزئية",
+          "order": 6
+        },
+        {
+          "slug": "sec-representing-partial-orders",
+          "title": "تمثيل الترتيبات الجزئية بالاحتواء المجموعي",
+          "order": 7
+        },
+        {
+          "slug": "sec-linear-orders",
+          "title": "الترتيبات الخطية",
+          "order": 8
+        },
+        {
+          "slug": "sec-product-orders",
+          "title": "ترتيبات الجداء",
+          "order": 9
+        },
+        {
+          "slug": "sec-equivalence-relations",
+          "title": "علاقات التكافؤ",
+          "order": 10
+        },
+        {
+          "slug": "sec-summary-of-relational-properties",
+          "title": "خلاصة خواص العلاقات",
+          "order": 11
+        },
+        {
+          "slug": "sec-references",
+          "title": "المراجع",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "ch11-communication-networks",
+      "title": "شبكات الاتصال",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "شبكات الاتصال",
+          "order": 0
+        },
+        {
+          "slug": "sec-routing",
+          "title": "التوجيه",
+          "order": 1
+        },
+        {
+          "slug": "sec-routing-measures",
+          "title": "مقاييس التوجيه",
+          "order": 2
+        },
+        {
+          "slug": "sec-network-designs",
+          "title": "تصاميم الشبكات",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "ch12-simple-graphs",
+      "title": "الرسوم البسيطة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الرسوم البسيطة",
+          "order": 0
+        },
+        {
+          "slug": "sec-vertex-adjacency-and-degrees",
+          "title": "تجاور الرؤوس ودرجاتها",
+          "order": 1
+        },
+        {
+          "slug": "sec-sexual-demographics-in-america",
+          "title": "الديموغرافيا الجنسية في أمريكا",
+          "order": 2
+        },
+        {
+          "slug": "sec-some-common-graphs",
+          "title": "بعض الرسوم الشائعة",
+          "order": 3
+        },
+        {
+          "slug": "sec-isomorphism",
+          "title": "التماثل الشكلي",
+          "order": 4
+        },
+        {
+          "slug": "sec-bipartite-graphs-and-matchings",
+          "title": "الرسوم ثنائية التجزئة والمطابقات",
+          "order": 5
+        },
+        {
+          "slug": "sec-coloring",
+          "title": "التلوين",
+          "order": 6
+        },
+        {
+          "slug": "sec-walks-in-simple-graphs",
+          "title": "المشي في الرسوم البسيطة",
+          "order": 7
+        },
+        {
+          "slug": "sec-connectivity",
+          "title": "الاتصال",
+          "order": 8
+        },
+        {
+          "slug": "sec-special-walks-and-tours",
+          "title": "المسارات والجولات الخاصة",
+          "order": 9
+        },
+        {
+          "slug": "sec-k-connected-graphs",
+          "title": "الرسوم ذات الاتصال k",
+          "order": 10
+        },
+        {
+          "slug": "sec-forests-and-trees",
+          "title": "الغابات والأشجار",
+          "order": 11
+        },
+        {
+          "slug": "sec-references",
+          "title": "المراجع",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "ch13-planar-graphs",
+      "title": "الرسوم المستوية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الرسوم المستوية",
+          "order": 0
+        },
+        {
+          "slug": "sec-drawing-graphs-in-the-plane",
+          "title": "رسم الرسوم في المستوى",
+          "order": 1
+        },
+        {
+          "slug": "sec-definitions-of-planar-graphs",
+          "title": "تعريفات الرسوم المستوية",
+          "order": 2
+        },
+        {
+          "slug": "sec-eulers-formula",
+          "title": "صيغة أويلر",
+          "order": 3
+        },
+        {
+          "slug": "sec-bounding-the-number-of-edges",
+          "title": "حدّ عدد الحواف",
+          "order": 4
+        },
+        {
+          "slug": "sec-returning-to-k5-and-k33",
+          "title": "العودة إلى K5 وK3,3",
+          "order": 5
+        },
+        {
+          "slug": "sec-coloring-planar-graphs",
+          "title": "تلوين الرسوم المستوية",
+          "order": 6
+        },
+        {
+          "slug": "sec-classifying-polyhedra",
+          "title": "تصنيف المجسّمات",
+          "order": 7
+        },
+        {
+          "slug": "sec-another-characterization",
+          "title": "توصيف آخر للرسوم المستوية",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "ch14-sums-asymptotics",
+      "title": "المجاميع والتقاربات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المجاميع والتقاربات",
+          "order": 0
+        },
+        {
+          "slug": "sec-the-value-of-an-annuity",
+          "title": "قيمة القسط السنوي",
+          "order": 1
+        },
+        {
+          "slug": "sec-sums-of-powers",
+          "title": "مجاميع القوى",
+          "order": 2
+        },
+        {
+          "slug": "sec-approximating-sums",
+          "title": "تقريب المجاميع",
+          "order": 3
+        },
+        {
+          "slug": "sec-hanging-out-over-the-edge",
+          "title": "التدلّي فوق الحافة",
+          "order": 4
+        },
+        {
+          "slug": "sec-products",
+          "title": "الجداءات",
+          "order": 5
+        },
+        {
+          "slug": "sec-double-sums",
+          "title": "المجاميع المزدوجة",
+          "order": 6
+        },
+        {
+          "slug": "sec-asymptotic-notation",
+          "title": "الترميز التقاربي",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "ch15-cardinality-rules",
+      "title": "قواعد العدّ",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "قواعد العدّ",
+          "order": 0
+        },
+        {
+          "slug": "sec-counting-one-thing-by-counting-another",
+          "title": "عدّ شيء بعدّ شيء آخر",
+          "order": 1
+        },
+        {
+          "slug": "sec-counting-sequences",
+          "title": "عدّ المتتاليات",
+          "order": 2
+        },
+        {
+          "slug": "sec-the-generalized-product-rule",
+          "title": "قاعدة الجداء المعمَّمة",
+          "order": 3
+        },
+        {
+          "slug": "sec-the-division-rule",
+          "title": "قاعدة القسمة",
+          "order": 4
+        },
+        {
+          "slug": "sec-counting-subsets",
+          "title": "عدّ المجموعات الجزئية",
+          "order": 5
+        },
+        {
+          "slug": "sec-sequences-with-repetitions",
+          "title": "المتتاليات مع التكرار",
+          "order": 6
+        },
+        {
+          "slug": "sec-counting-practice-poker-hands",
+          "title": "تدريب على العدّ: أيدي البوكر",
+          "order": 7
+        },
+        {
+          "slug": "sec-the-pigeonhole-principle",
+          "title": "مبدأ برج الحمام",
+          "order": 8
+        },
+        {
+          "slug": "sec-inclusion-exclusion",
+          "title": "مبدأ الشمول والاستبعاد",
+          "order": 9
+        },
+        {
+          "slug": "sec-combinatorial-proofs",
+          "title": "البراهين التوافقية",
+          "order": 10
+        },
+        {
+          "slug": "sec-references",
+          "title": "المراجع",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "ch16-generating-functions",
+      "title": "الدوال المولِّدة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الدوال المولِّدة",
+          "order": 0
+        },
+        {
+          "slug": "sec-infinite-series",
+          "title": "المتسلسلات اللانهائية",
+          "order": 1
+        },
+        {
+          "slug": "sec-counting-with-generating-functions",
+          "title": "العدّ بالدوال المولِّدة",
+          "order": 2
+        },
+        {
+          "slug": "sec-partial-fractions",
+          "title": "الكسور الجزئية",
+          "order": 3
+        },
+        {
+          "slug": "sec-solving-linear-recurrences",
+          "title": "حلّ التعاودات الخطية",
+          "order": 4
+        },
+        {
+          "slug": "sec-formal-power-series",
+          "title": "متسلسلات القوى الصورية",
+          "order": 5
+        },
+        {
+          "slug": "sec-references",
+          "title": "المراجع",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "ch17-events-probability",
+      "title": "الحوادث وفضاءات الاحتمال",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الحوادث وفضاءات الاحتمال",
+          "order": 0
+        },
+        {
+          "slug": "sec-lets-make-a-deal",
+          "title": "لنعقد صفقة",
+          "order": 1
+        },
+        {
+          "slug": "sec-the-four-step-method",
+          "title": "طريقة الخطوات الأربع",
+          "order": 2
+        },
+        {
+          "slug": "sec-strange-dice",
+          "title": "أحجار النرد الغريبة",
+          "order": 3
+        },
+        {
+          "slug": "sec-the-birthday-principle",
+          "title": "مبدأ أعياد الميلاد",
+          "order": 4
+        },
+        {
+          "slug": "sec-set-theory-and-probability",
+          "title": "نظرية المجموعات والاحتمال",
+          "order": 5
+        },
+        {
+          "slug": "sec-references",
+          "title": "المراجع",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "ch18-conditional-probability",
+      "title": "الاحتمال الشرطي",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الاحتمال الشرطي",
+          "order": 0
+        },
+        {
+          "slug": "sec-monty-hall-confusion",
+          "title": "حيرة مونتي هول",
+          "order": 1
+        },
+        {
+          "slug": "sec-definition-and-notation",
+          "title": "التعريف والترميز",
+          "order": 2
+        },
+        {
+          "slug": "sec-the-four-step-method",
+          "title": "طريقة الخطوات الأربع للاحتمال الشرطي",
+          "order": 3
+        },
+        {
+          "slug": "sec-why-tree-diagrams-work",
+          "title": "لماذا تعمل مخططات الشجرة",
+          "order": 4
+        },
+        {
+          "slug": "sec-the-law-of-total-probability",
+          "title": "قانون الاحتمال الكلي",
+          "order": 5
+        },
+        {
+          "slug": "sec-simpsons-paradox",
+          "title": "مفارقة سيمبسون",
+          "order": 6
+        },
+        {
+          "slug": "sec-independence",
+          "title": "الاستقلال",
+          "order": 7
+        },
+        {
+          "slug": "sec-mutual-independence",
+          "title": "الاستقلال المتبادل",
+          "order": 8
+        },
+        {
+          "slug": "sec-probability-versus-confidence",
+          "title": "الاحتمال مقابل الثقة",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "ch19-random-variables",
+      "title": "المتغيّرات العشوائية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المتغيّرات العشوائية",
+          "order": 0
+        },
+        {
+          "slug": "sec-random-variable-examples",
+          "title": "أمثلة على المتغيّرات العشوائية",
+          "order": 1
+        },
+        {
+          "slug": "sec-independence",
+          "title": "الاستقلال",
+          "order": 2
+        },
+        {
+          "slug": "sec-distribution-functions",
+          "title": "دوال التوزيع",
+          "order": 3
+        },
+        {
+          "slug": "sec-great-expectations",
+          "title": "التوقّعات الكبيرة",
+          "order": 4
+        },
+        {
+          "slug": "sec-linearity-of-expectation",
+          "title": "خطّية التوقّع",
+          "order": 5
+        },
+        {
+          "slug": "sec-really-great-expectations",
+          "title": "توقّعات كبيرة حقًّا",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "ch20-deviation",
+      "title": "الانحراف عن المتوسط",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الانحراف عن المتوسط",
+          "order": 0
+        },
+        {
+          "slug": "sec-markovs-theorem",
+          "title": "مبرهنة ماركوف",
+          "order": 1
+        },
+        {
+          "slug": "sec-chebyshevs-theorem",
+          "title": "مبرهنة تشيبيشيف",
+          "order": 2
+        },
+        {
+          "slug": "sec-properties-of-variance",
+          "title": "خواص التباين",
+          "order": 3
+        },
+        {
+          "slug": "sec-estimation-by-random-sampling",
+          "title": "التقدير بالمعاينة العشوائية",
+          "order": 4
+        },
+        {
+          "slug": "sec-sums-of-random-variables",
+          "title": "مجاميع المتغيّرات العشوائية",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "ch21-random-walks",
+      "title": "المشي العشوائي",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المشي العشوائي",
+          "order": 0
+        },
+        {
+          "slug": "sec-gamblers-ruin",
+          "title": "خراب الميسر",
+          "order": 1
+        },
+        {
+          "slug": "sec-random-walks-on-graphs",
+          "title": "المشي العشوائي على الرسوم",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "ch22-recurrences",
+      "title": "التعاودات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التعاودات",
+          "order": 0
+        },
+        {
+          "slug": "sec-the-towers-of-hanoi",
+          "title": "أبراج هانوي",
+          "order": 1
+        },
+        {
+          "slug": "sec-merge-sort",
+          "title": "الترتيب بالدمج",
+          "order": 2
+        },
+        {
+          "slug": "sec-linear-recurrences",
+          "title": "التعاودات الخطية",
+          "order": 3
+        },
+        {
+          "slug": "sec-divide-and-conquer-recurrences",
+          "title": "تعاودات التقسيم والتغلّب",
+          "order": 4
+        },
+        {
+          "slug": "sec-a-feel-for-recurrences",
+          "title": "إحساس بالتعاودات",
+          "order": 5
         }
       ]
     }
