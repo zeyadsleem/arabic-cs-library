@@ -1,0 +1,22 @@
+const a="mathematics-for-cs",s="ch12-simple-graphs",e="الرسوم البسيطة",i="index",c="الرسوم البسيطة",r=[{depth:2,id:"محتوى-الفصل",text:"محتوى الفصل"}],h=`<h1>الرسوم البسيطة</h1>
+<p>تصوّر الرسوم البسيطة العلاقات المتناظرة، أي العلاقات المتبادلة. ومن أمثلة هذه العلاقات المتبادلة أن يكون شخصان متزوّجين، أو يتحدّثا اللغة نفسها، أو لا يتحدّثا اللغة نفسها، أو تقع أحداثهما في فترات زمنية متداخلة، أو يكونا موصولين بسلك ناقل. وتظهر هذه الرسوم في شتّى التطبيقات، منها الجدولة وإرضاء القيود ورسوميات الحاسوب والاتصالات، لكننا سنبدأ بتطبيق مصمَّم ليستلف انتباهك: سنُجري تحقيقًا مهنيًّا في السلوك الجنسي. وبالتحديد، سننظر في بعض البيانات عن أيّ الجنسين لديه في المتوسط شركاء من الجنس الآخر أكثر: الرجال أم النساء.</p>
+<p>كانت الديموغرافيا الجنسية موضوعًا لكثير من الدراسات. ففي واحدة من أكبر هذه الدراسات، أجرى باحثون من جامعة شيكاغو مقابلات مع عيّنة عشوائية من ٢٥٠٠ شخص على مدى سنوات عدة، محاولين الإجابة عن هذا السؤال. وقد وجدت دراستهم، التي نُشرت عام ١٩٩٤ تحت عنوان <em>The Social Organization of Sexuality</em>، أن للرجال في المتوسط شركاء من الجنس الآخر أكثر بنسبة ٧٤٪ مما للنساء.</p>
+<p>وقد وجدت دراسات أخرى أن الفجوة أكبر من ذلك. وعلى وجه الخصوص، ادّعت ABC News أن للرجل المتوسط ٢٠ شريكًا في حياته، وللمرأة المتوسطة ٦، أي فجوة نسبتها ٢٣٣٪. وكانت دراسة ABC News، التي بُثّت في برنامج Primetime Live عام ٢٠٠٤، تدّعي أنها من أكثر الدراسات علمية على الإطلاق، بهامش خطأ لا يتجاوز ٢.٥٪. وقد سُمّيت «American Sex Survey: A peek between the sheets»، وهو عنوان يثير بعض الأسئلة عن جدّية تقريرهم.</p>
+<p>ثم مرة أخرى في أغسطس ٢٠٠٧، نقلت صحيفة <em>New York Times</em> دراسة أجراها المركز الوطني لإحصاءات الصحة التابع للحكومة الأمريكية، أظهرت أن للرجال سبعة شركاء وللنساء أربعة. فأي هذه الأرقام تراها أدقّ: أرقام جامعة شيكاغو، أم ABC News، أم المركز الوطني؟</p>
+<p>لا تُجب — فهذا سؤال مخادع مصمَّم ليوقعك في الفخ. فباستعمال قليل من نظرية المخططات سنشرح لماذا لا يمكن أن تكون أي من هذه النتائج قريبة من الحقيقة بأي حال.</p>
+<h2 id="محتوى-الفصل">محتوى الفصل</h2>
+<ul>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-vertex-adjacency-and-degrees">تجاور الرؤوس ودرجاتها</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-sexual-demographics-in-america">الديموغرافيا الجنسية في أمريكا</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-some-common-graphs">بعض الرسوم الشائعة</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-isomorphism">التماثل الشكلي</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-bipartite-graphs-and-matchings">الرسوم ثنائية التجزئة والمطابقات</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-coloring">التلوين</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-walks-in-simple-graphs">المشي في الرسوم البسيطة</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-connectivity">الاتصال</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-special-walks-and-tours">المسارات والجولات الخاصة</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-k-connected-graphs">الرسوم ذات الاتصال k</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-forests-and-trees">الغابات والأشجار</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch12-simple-graphs/sec-references">المراجع</a></li>
+</ul>
+`,l={book:a,chapter:s,chapterTitle:e,slug:i,title:c,headings:r,html:h};export{a as book,s as chapter,e as chapterTitle,l as default,r as headings,h as html,i as slug,c as title};

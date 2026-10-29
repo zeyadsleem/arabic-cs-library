@@ -1,0 +1,36 @@
+const a="mathematics-for-cs",r="ch09-number-theory",s="نظرية الأعداد",e="index",t="نظرية الأعداد",i=[{depth:2,id:"محتوى-الفصل",text:"محتوى الفصل"}],c=`<h1>نظرية الأعداد</h1>
+<p>نظرية الأعداد هي دراسة الأعداد الصحيحة. وقد لا يكون واضحًا لماذا يريد أحد أن يدرس الأعداد الصحيحة. فأوّلًا، ما الذي يمكن معرفته فيها؟ هناك ٠، وهناك ١، و٢، و٣، وهكذا، ثم، بالطبع، <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span>، و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">2</span></span></span></span>، و… فأيّ هذه الأعداد هو الذي لا تفهمه؟ وأيّ قيمة عملية تُرجى منها؟</p>
+<p>كان الرياضي هاردي (G. H. Hardy) يبتهج بعدم جدواها العملية، وقد كتب:</p>
+<blockquote>
+<p>قد يكون لعلماء الأعداد عذر في أن يبتهجوا بأن هناك علمًا واحدًا على الأقل، هو علمهم هم، من شأن بُعده الشديد عن أنشطة البشر العادية أن يبقيه وديعًا نظيفًا.</p>
+</blockquote>
+<p>كان هاردي قَلِقًا بوجه خاص من أن يُستعمل علم الأعداد في الحرب؛ فقد كان من دعاة السلم. ويمكنك أن تصفّق لمشاعره، لكنه أخطأ التقدير: فعلم الأعداد هو ما يقوم عليه التشفير الحديث، وهو ما يجعل التواصل الآمن عبر الإنترنت ممكنًا. والتواصل الآمن حاسم بالطبع في الحرب — وليتطوّح هاردي في قبره. وهو أيضًا محور التجارة الإلكترونية: فكلّما اشتريت كتابًا من Amazon، أو استعملت شهادة رقمية للوصول إلى صفحة ويب، أو استخدمت حساب PayPal، فأنت تعتمد على خوارزميات من نظرية الأعداد.</p>
+<p>ويوفّر علم الأعداد أيضًا بيئة ممتازة لتمرين تقنيات البرهان التي طوّرناها في الفصول السابقة وتطبيقها. وسنستخرج خواص القاسم المشترك الأكبر ونستعملها لبرهنة أن الأعداد الصحيحة تتحلّل إلى عوامل أوّلية تحلّلًا وحيدًا. ثم نُدخل الحساب النمطي ونستخرج من خواصه ما يكفي لشرح نظام RSA للتشفير بالمفتاح العام. وفي الطريق نمرّ بقصة آلان تورنغ ومحاولته المبكّرة — والفاشلة — في بناء شفرة على علم الأعداد، ثم نعود إلى SAT لنرى لماذا يهدّد وجود اختبار كفء لها أمنَ التشفير كلَّه. ولأننا سنركّز على خواص الأعداد الصحيحة، فسنعتمد في هذا الفصل العُرف الافتراضي القائل إن المتغيّرات تجري على مجموعة الأعداد الصحيحة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">Z</mi></mrow><annotation encoding="application/x-tex">\\Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6889em;"></span><span class="mord mathbb">Z</span></span></span></span>.</p>
+<h2 id="محتوى-الفصل">محتوى الفصل</h2>
+<ul>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-divisibility">القسمة</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-die-hard">Die Hard</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-euclids-algorithm">خوارزمية إقليدس</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-the-pulverizer">المُسحِق</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-one-solution-for-all-water-jug-problems">حلّ واحد لكل مسائل جرار الماء</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-properties-of-the-gcd">خواص القاسم المشترك الأكبر</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-prime-mysteries">ألغاز الأعداد الأوّلية</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-fundamental-theorem-of-arithmetic">المبرهنة الأساسية في الحساب</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-proving-unique-factorization">برهان وحدة التحليل</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-alan-turing">آلان تورنغ</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-turings-code-version-1">شفرة تورنغ (الإصدار ١٫٠)</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-breaking-turings-code-version-1">كسر شفرة تورنغ (الإصدار ١٫٠)</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-modular-arithmetic">الحساب النمطي</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-remainder-arithmetic">حساب البواقي</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-the-ring-zn">حلقة الأعداد الصحيحة النمطية</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-turings-code-version-2">شفرة تورنغ (الإصدار ٢٫٠)</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-multiplicative-inverses-and-cancelling">النظائر الضربية والاختصار</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-decrypting-version-2">فكّ التشفير (الإصدار ٢٫٠)</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-breaking-turings-code-version-2">كسر شفرة تورنغ (الإصدار ٢٫٠)</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-turing-postscript">خاتمة عن تورنغ</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-eulers-theorem">مبرهنة أويلر</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-computing-eulers-function">حساب دالة أويلر</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-rsa-public-key-encryption">التشفير بالمفتاح العام RSA</a></li>
+<li><a href="/arabic-cs-library/book/mathematics-for-cs/ch09-number-theory/sec-what-has-sat-got-to-do-with-it">ما علاقة SAT بهذا؟</a></li>
+</ul>
+`,n={book:a,chapter:r,chapterTitle:s,slug:e,title:t,headings:i,html:c};export{a as book,r as chapter,s as chapterTitle,n as default,i as headings,c as html,e as slug,t as title};
