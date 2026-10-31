@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -87,7 +87,7 @@
 <p>يغيّر إدخال آلية التأطير الثنائية الجديدة طريقة تبادل البيانات (الشكل 12-2) بين العميل والخادم. ولوصف هذه العملية، لنُلمّ أولًا بمصطلحات HTTP/2: التدفق (Stream) هو تدفق ثنائي الاتجاه للبايتات ضمن اتصال قائم، وقد يحمل رسالة واحدة أو أكثر. الرسالة (Message) هي تسلسل كامل من الإطارات يقابل رسالة طلب أو استجابة منطقية. الإطار (Frame) هو أصغر وحدة اتصال في HTTP/2، ويحتوي كل منها على ترويسة إطار تُعرّف على الأقل التدفق الذي ينتمي إليه الإطار.</p>
 <p><img src="/arabic-cs-library/images/hpbn/http2-8e6931bb40fc26c511ad15645e7b6113.svg.svg" alt=""> الشكل 12-2. تدفقات HTTP/2 ورسائلها وإطاراتها باختصار، يقسّم HTTP/2 اتصالات بروتوكول HTTP إلى تبادل لإطارات مرمَّزة ثنائيًا، تُرسَم بعدها إلى رسائل تنتمي إلى تدفق بعينه، وتُضاعَف جميعها ضمن اتصال TCP واحد. وهذه هي القاعدة التي تتيح جميع الميزات وتحسينات الأداء التي يوفرها بروتوكول HTTP/2.</p>
 <h2 id="مضاعفة-الطلبات-والاستجابات">مضاعفة الطلبات والاستجابات <span class="content-anchor" id="request-and-response-multiplexing"></span></h2>
-<p>مع HTTP/1.x، إذا أراد العميل إجراء طلبات متوازية متعددة لتحسين الأداء، فيتعين حينئذٍ استخدام اتصالات TCP متعددة؛ انظر <a href="/arabic-cs-library/book/hpbn/http1x/#using-multiple-tcp-connections">استخدام اتصالات TCP متعددة</a>. وهذا السلوك نتيجة مباشرة لنموذج التسليم في HTTP/1.x، الذي يضمن إمكانية تسليم استجابة واحدة فقط في كل مرة (طابور الاستجابات) لكل اتصال. والأسوأ أن هذا يؤدي أيضًا إلى حجب رأس الطابور (head-of-line blocking) وإلى استخدام غير كفء للاتصال TCP الأساسي. تزيل طبقة التأطير الثنائية الجديدة في HTTP/2 هذه القيود، وتتيح مضاعفة الطلبات والاستجابات كاملةً، إذ تتيح للعميل والخادم تفكيك رسالة HTTP إلى إطارات مستقلة (<a href="#http2-multiplexing">الشكل 12-3</a>)، ثم تشابكها، ثم إعادة تجميعها في الطرف الآخر. <img src="/arabic-cs-library/images/hpbn/http2-47ba5b32e42cf5a06c3741d29ef9b94a.svg.svg" alt="" id="http2-multiplexing"> الشكل 12-3. مضاعفة الطلبات والاستجابات في HTTP/2 ضمن اتصال مشترك تلتقط اللقطة في الشكل 12-3 عدة تدفقات قيد التنفيذ داخل الاتصال نفسه: فالعميل يرسل إطار <code>DATA</code> (التدفق 5) إلى الخادم، بينما يرسل الخادم تسلسلًا من الإطارات المتشابكة إلى العميل من أجل التدفقات 1 و3. ونتيجة لذلك، هناك ثلاثة تدفقات متوازية قيد التنفيذ! وتُعدّ القدرة على تفكيك رسالة HTTP إلى إطارات مستقلة ثم تشابكها ثم إعادة تجميعها في الطرف الآخر أهم تحسين منفرد في HTTP/2. وفي الواقع، تُطلق هذه القدرة موجةً من الفوائد الأداءية في كامل منظومة تقنيات الويب، مما يتيح لنا:</p>
+<p>مع HTTP/1.x، إذا أراد العميل إجراء طلبات متوازية متعددة لتحسين الأداء، فيتعين حينئذٍ استخدام اتصالات TCP متعددة؛ انظر <a href="/arabic-cs-library/book/hpbn/http1x/index#%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D8%AA%D8%B5%D8%A7%D9%84%D8%A7%D8%AA-tcp-%D8%A7%D9%84%D9%85%D8%AA%D8%B9%D8%AF%D8%AF%D8%A9">استخدام اتصالات TCP متعددة</a>. وهذا السلوك نتيجة مباشرة لنموذج التسليم في HTTP/1.x، الذي يضمن إمكانية تسليم استجابة واحدة فقط في كل مرة (طابور الاستجابات) لكل اتصال. والأسوأ أن هذا يؤدي أيضًا إلى حجب رأس الطابور (head-of-line blocking) وإلى استخدام غير كفء للاتصال TCP الأساسي. تزيل طبقة التأطير الثنائية الجديدة في HTTP/2 هذه القيود، وتتيح مضاعفة الطلبات والاستجابات كاملةً، إذ تتيح للعميل والخادم تفكيك رسالة HTTP إلى إطارات مستقلة (<a href="#http2-multiplexing">الشكل 12-3</a>)، ثم تشابكها، ثم إعادة تجميعها في الطرف الآخر. <img src="/arabic-cs-library/images/hpbn/http2-47ba5b32e42cf5a06c3741d29ef9b94a.svg.svg" alt="" id="http2-multiplexing"> الشكل 12-3. مضاعفة الطلبات والاستجابات في HTTP/2 ضمن اتصال مشترك تلتقط اللقطة في الشكل 12-3 عدة تدفقات قيد التنفيذ داخل الاتصال نفسه: فالعميل يرسل إطار <code>DATA</code> (التدفق 5) إلى الخادم، بينما يرسل الخادم تسلسلًا من الإطارات المتشابكة إلى العميل من أجل التدفقات 1 و3. ونتيجة لذلك، هناك ثلاثة تدفقات متوازية قيد التنفيذ! وتُعدّ القدرة على تفكيك رسالة HTTP إلى إطارات مستقلة ثم تشابكها ثم إعادة تجميعها في الطرف الآخر أهم تحسين منفرد في HTTP/2. وفي الواقع، تُطلق هذه القدرة موجةً من الفوائد الأداءية في كامل منظومة تقنيات الويب، مما يتيح لنا:</p>
 <p>طبقة التأطير الثنائية الجديدة في HTTP/2 تحلّ مشكلة حجب رأس الطابور الموجودة في HTTP/1.x، وتُلغي الحاجة إلى اتصالات متعددة لتمكين المعالجة والتسليم المتوازيين للطلبات والاستجابات. ونتيجة لذلك، يجعل هذا تطبيقاتنا أسرع، وأبسط، وأقل كلفة في النشر.</p>
 <h2 id="أولوية-التدفقات">أولوية التدفقات</h2>
 <p>متى أمكن تفكيك رسالة HTTP إلى  frames، وسمحنا بتشابك إطارات صادرة عن تدفقات متعددة، صار الترتيب الذي تُشابك به الإطارات وتُسلَّم به — من قِبل العميل والخادم على حدٍّ سواء — اعتبارًا حاسمًا للأداء. ولتيسير ذلك، يسمح معيار HTTP/2 لكل تدفق بأن يرتبط بوزن واعتماد:</p>
@@ -180,7 +180,7 @@ Upgrade: h2c
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -188,8 +188,8 @@ Upgrade: h2c
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

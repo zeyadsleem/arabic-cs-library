@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -52,13 +52,13 @@
 <h2 id="التسمية">التسمية <span class="content-anchor" id="naming"></span></h2>
 <h3 id="أسماء-الدوال-والطرائق">أسماء الدوال والطرائق</h3>
 <h4>تجنّب التكرار</h4>
-<p>عند اختيار اسم لدالة أو طريقة، ضع في اعتبارك السياق الذي سيُقرأ فيه الاسم. خذ بعين الاعتبار التوصيات التالية لتجنّب <a href="/arabic-cs-library/book/go-style/decisions-2/index#repetition">التكرار</a> المفرط في موضع الاستدعاء:</p>
+<p>عند اختيار اسم لدالة أو طريقة، ضع في اعتبارك السياق الذي سيُقرأ فيه الاسم. خذ بعين الاعتبار التوصيات التالية لتجنّب <a href="/arabic-cs-library/book/go-style/decisions-2/index">التكرار</a> المفرط في موضع الاستدعاء:</p>
 <ul>
 <li>يمكن عمومًا حذف ما يلي من أسماء الدوال والطرائق: أنواع المُدخَلات والمُخرَجات (عند عدم وجود تعارض)</li>
 <li>نوع مستقبِل الطريقة</li>
 <li>ما إذا كان المُدخَل أو المُخرَج مؤشّرًا</li>
 </ul>
-<p>بالنسبة إلى الدوال، لا <a href="/arabic-cs-library/book/go-style/decisions-2/index#repetitive-with-package">تُكرّر اسم الحزمة</a>.</p>
+<p>بالنسبة إلى الدوال، لا <a href="/arabic-cs-library/book/go-style/decisions-2/index">تُكرّر اسم الحزمة</a>.</p>
 <pre><code>// Bad:
 package yamlconfig
 func ParseYAMLConfig(input string) (*Config, error)
@@ -99,7 +99,7 @@ func (c *Config) WriteBinaryTo(w io.Writer) (int64, error)
 <pre><code>// Good:
 func (c *Config) JobName(key string) (value string, ok bool)
 </code></pre>
-<p>ويترتّب على ذلك أن أسماء الدوال والطرائق ينبغي أن <a href="/arabic-cs-library/book/go-style/decisions-2/index#getters">تتجنّب البادئة <code>Get</code></a>.</p>
+<p>ويترتّب على ذلك أن أسماء الدوال والطرائق ينبغي أن <a href="/arabic-cs-library/book/go-style/decisions-2/index">تتجنّب البادئة <code>Get</code></a>.</p>
 <pre><code>// Bad:
 func (c *Config) GetJobName(key string) (value string, ok bool)
 </code></pre>
@@ -330,7 +330,7 @@ func (s *Server) innerHandler(ctx context.Context, req *pb.MyRequest) *pb.MyResp
 }
 </code></pre>
 <p>في الحالة التي سمّيناها الدوس، ولأنه لا يوجد متغيّر جديد، يجب أن يطابق النوع المُسنَد نوع المتغيّر الأصلي. أما مع التظليل، فيُدخَل كيان جديد تمامًا، لذا يمكن أن يكون له نوع مختلف. وقد يكون التظليل المتعمّد ممارسة مفيدة، لكن يمكنك دائمًا استخدام اسم جديد إذا كان ذلك يحسّن <a href="/arabic-cs-library/book/go-style/guide/index#clarity">الوضوح</a>.</p>
-<p>ليس من الجيد استخدام متغيّرات تحمل الأسماء نفسها لحزم قياسية خارج نطاقات صغيرة جدًا، لأن ذلك يجعل الدوال والقيم الحرة من تلك الحزمة غير قابلة للوصول. وعلى العكس، عند اختيار اسم لحزمتك، تجنّب الأسماء التي يُرجَّح أن تتطلّب <a href="/arabic-cs-library/book/go-style/decisions-2/index#import-renaming">إعادة تسمية الاستيراد</a> أو أن تسبّب تظليلًا لأسماء متغيّرات جيدة على جانب العميل.</p>
+<p>ليس من الجيد استخدام متغيّرات تحمل الأسماء نفسها لحزم قياسية خارج نطاقات صغيرة جدًا، لأن ذلك يجعل الدوال والقيم الحرة من تلك الحزمة غير قابلة للوصول. وعلى العكس، عند اختيار اسم لحزمتك، تجنّب الأسماء التي يُرجَّح أن تتطلّب <a href="/arabic-cs-library/book/go-style/decisions-2/index">إعادة تسمية الاستيراد</a> أو أن تسبّب تظليلًا لأسماء متغيّرات جيدة على جانب العميل.</p>
 <pre><code>// Bad:
 func LongFunction() {
     url := &quot;https://example.com/&quot;
@@ -339,7 +339,7 @@ func LongFunction() {
 </code></pre>
 <h3 id="حزم-الأدوات-المساعدة">حزم الأدوات المساعدة</h3>
 <p>تمتلك حزم Go اسمًا محدَّدًا في تصريح <code>package</code>، منفصلًا عن مسار الاستيراد. واسم الحزمة أهمّ للقابلية للقراءة من المسار.</p>
-<p>ينبغي أن تكون أسماء حزم Go <a href="/arabic-cs-library/book/go-style/decisions-2/index#package-names">مرتبطة بما توفّره الحزمة</a>. وتسمية حزمة بـ <code>util</code> أو <code>helper</code> أو <code>common</code> أو ما شابه هي عادةً خيار سيئ (وإن كان يمكن استخدامها كـ<em>جزء</em> من الاسم). فالأسماء غير المفيدة تجعل الشيفرة أصعب قراءةً، وإذا استُخدمت على نطاق واسع جدًا فقد تسبّب <a href="/arabic-cs-library/book/go-style/decisions-2/index#import-renaming">تعارضات استيراد</a> لا داعي لها.</p>
+<p>ينبغي أن تكون أسماء حزم Go <a href="/arabic-cs-library/book/go-style/decisions-2/index">مرتبطة بما توفّره الحزمة</a>. وتسمية حزمة بـ <code>util</code> أو <code>helper</code> أو <code>common</code> أو ما شابه هي عادةً خيار سيئ (وإن كان يمكن استخدامها كـ<em>جزء</em> من الاسم). فالأسماء غير المفيدة تجعل الشيفرة أصعب قراءةً، وإذا استُخدمت على نطاق واسع جدًا فقد تسبّب <a href="/arabic-cs-library/book/go-style/decisions-2/index">تعارضات استيراد</a> لا داعي لها.</p>
 <p>بدلًا من ذلك، تأمّل كيف سيبدو موضع الاستدعاء.</p>
 <pre><code>// Good:
 db := spannertest.NewDatabaseFromFile(...)
@@ -358,7 +358,7 @@ b := helper.Marshal(curve, x, y)
 <p>يرى المستخدمون <a href="https://pkg.go.dev/">godoc</a> للحزمة في صفحة واحدة، وتُجمَّع أي طرائق تصدّرها الأنواع التي توفّرها الحزمة حسب نوعها. كما تُجمّع godoc الدوال البانية (constructors) مع الأنواع التي تُعيدها. وإذا كان من المرجّح أن تحتاج <em>شيفرة العميل</em> إلى قيمتين مختلفتي النوع لتفاعل إحداهما مع الأخرى، فقد يكون من المناسب للمستخدم وجودهما في الحزمة نفسها.</p>
 <p>يمكن للشيفرة داخل حزمة الوصول إلى المعرّفات غير المصدَّرة في الحزمة. وإذا كان لديك بضعة أنواع مرتبطة يكون <em>تنفيذها</em> مقترنًا اقترانًا وثيقًا، فإن وضعها في الحزمة نفسها يتيح لك تحقيق هذا الاقتران دون تلويث الواجهة البرمجية العامة بهذه التفاصيل. وهناك اختبار جيد لهذا الاقتران: تخيّل مستخدمًا افتراضيًا لحزمتين تغطّيان موضوعات وثيقة الصلة: إذا كان على المستخدم استيراد كلتا الحزمتين لاستخدام أيٍّ منهما استخدامًا ذا معنى، فجمعُهما معًا هو الصواب عادةً. وتوضّح المكتبة القياسية عمومًا هذا النوع من تحديد النطاق والطبقات توضيحًا جيدًا.</p>
 <p>ومع كل ما قيل، فإن وضع مشروعك بأكمله في حزمة واحدة قد يجعل تلك الحزمة كبيرة جدًا. وعندما يكون شيء ما متمايزًا مفهوميًا، فإن منحه حزمة صغيرة خاصة به قد يسهّل استخدامه. ويعمل الاسم القصير للحزمة كما يعرفه العملاء مع اسم النوع المصدَّر معًا على تكوين معرّف ذي معنى: مثل <code>bytes.Buffer</code> و<code>ring.New</code>. وتحتوي <a href="https://go.dev/blog/package-names">تدوينة أسماء الحزم</a> على مزيد من الأمثلة.</p>
-<p>أسلوب Go مرن بشأن حجم الملف، لأن القائمين على الصيانة يمكنهم نقل الشيفرة داخل الحزمة من ملف إلى آخر دون التأثير على المستدعين. لكن كإرشاد عام: ليس من الجيد عادةً أن يحتوي ملف واحد على آلاف عديدة من الأسطر، أو أن تكون هناك ملفات صغيرة كثيرة. ولا يوجد اصطلاح «نوع واحد، ملف واحد» كما في بعض اللغات الأخرى. وكقاعدة عامة، ينبغي أن تكون الملفات مركّزة بما يكفي ليعرف القائم على الصيانة أي ملف يحتوي على شيء ما، وأن تكون صغيرة بما يكفي ليسهل العثور عليه هناك. وغالبًا ما تقسّم المكتبة القياسية الحزم الكبيرة إلى عدة ملفات مصدرية، وتجمّع الشيفرة المرتبطة حسب الملف. ويُعدّ مصدر <a href="https://go.dev/src/bytes/">الحزمة <code>bytes</code></a> مثالًا جيدًا. وقد تختار الحزم ذات التوثيق الطويل تخصيص ملف واحد باسم <code>doc.go</code> يحتوي على <a href="/arabic-cs-library/book/go-style/decisions-2/index#package-comments">توثيق الحزمة</a> وتصريح حزمة، ولا شيء غير ذلك، لكن هذا ليس مطلوبًا.</p>
+<p>أسلوب Go مرن بشأن حجم الملف، لأن القائمين على الصيانة يمكنهم نقل الشيفرة داخل الحزمة من ملف إلى آخر دون التأثير على المستدعين. لكن كإرشاد عام: ليس من الجيد عادةً أن يحتوي ملف واحد على آلاف عديدة من الأسطر، أو أن تكون هناك ملفات صغيرة كثيرة. ولا يوجد اصطلاح «نوع واحد، ملف واحد» كما في بعض اللغات الأخرى. وكقاعدة عامة، ينبغي أن تكون الملفات مركّزة بما يكفي ليعرف القائم على الصيانة أي ملف يحتوي على شيء ما، وأن تكون صغيرة بما يكفي ليسهل العثور عليه هناك. وغالبًا ما تقسّم المكتبة القياسية الحزم الكبيرة إلى عدة ملفات مصدرية، وتجمّع الشيفرة المرتبطة حسب الملف. ويُعدّ مصدر <a href="https://go.dev/src/bytes/">الحزمة <code>bytes</code></a> مثالًا جيدًا. وقد تختار الحزم ذات التوثيق الطويل تخصيص ملف واحد باسم <code>doc.go</code> يحتوي على <a href="/arabic-cs-library/book/go-style/decisions-2/index">توثيق الحزمة</a> وتصريح حزمة، ولا شيء غير ذلك، لكن هذا ليس مطلوبًا.</p>
 <p>داخل قاعدة شيفرة Google وفي المشاريع التي تستخدم Bazel، يختلف تنظيم المجلدات لشيفرة Go عمّا هو عليه في مشاريع Go مفتوحة المصدر: إذ يمكن أن يكون لديك عدة أهداف <code>go_library</code> في مجلد واحد. ومن الأسباب الجيدة لمنح كل حزمة مجلدًا خاصًا بها أن تتوقّع فتح مشروعك كمصدر مفتوح في المستقبل.</p>
 <p>وفيما يلي بضعة أمثلة مرجعية غير قياسية للمساعدة في إظهار هذه الأفكار عمليًا:</p>
 <ul>
@@ -402,7 +402,7 @@ b := helper.Marshal(curve, x, y)
 </code></pre>
 <p><strong>ملاحظة:</strong> شجّعت الإرشادات السابقة على أسماء قصيرة جدًا مثل «xpb» أو حتى «pb» فقط. وينبغي أن تفضّل الشيفرة الجديدة أسماء أكثر وصفًا. أما الشيفرة الموجودة التي تستخدم أسماء قصيرة فلا ينبغي استخدامها كمثال، لكنها لا تحتاج إلى تغيير.</p>
 <h3 id="ترتيب-الاستيراد">ترتيب الاستيراد</h3>
-<p>راجع <a href="/arabic-cs-library/book/go-style/decisions-2/index#import-grouping">قرارات أسلوب Go: تجميع الاستيراد</a>.</p>
+<p>راجع <a href="/arabic-cs-library/book/go-style/decisions-2/index">قرارات أسلوب Go: تجميع الاستيراد</a>.</p>
 <h2 id="معالجة-الأخطاء">معالجة الأخطاء</h2>
 <p>في Go، <a href="https://go.dev/blog/errors-are-values">الأخطاء قيم</a>؛ تُنشئها الشيفرة وتستهلكها الشيفرة. ويمكن أن تكون الأخطاء:</p>
 <ul>
@@ -666,7 +666,7 @@ log.V(2).Infof(&quot;Handling %v&quot;, sql.Explain())
 <p>وبالمثل، قاوم إغراء استعادة حالات الذعر لتجنّب الانهيارات، لأن فعل ذلك قد يؤدّي إلى نشر حالة فاسدة. فكلما بعدتَ عن موضع الذعر، قلّت معرفتك بحالة البرنامج، التي قد تكون ممسكة بأقفال أو موارد أخرى. وقد يطوّر البرنامج بعدها أنماط فشل غير متوقعة أخرى تجعل تشخيص المشكلة أصعب. وبدلًا من محاولة معالجة حالات الذعر غير المتوقعة في الشيفرة، استخدم أدوات المراقبة لإظهار الإخفاقات غير المتوقعة وإصلاح العلل المرتبطة بها بأولوية عالية.</p>
 <p><strong>ملاحظة:</strong> يخالف <a href="https://pkg.go.dev/net/http#Server">خادم <code>net/http</code></a> القياسي هذه النصيحة ويستعيد حالات الذعر من معالِجات الطلبات. ويُجمع المهندسون ذوو الخبرة في Go على أن ذلك كان خطأً تاريخيًا. وإذا أخذت عيّنة من سجلّات الخوادم في تطبيقات مكتوبة بلغات أخرى، فمن الشائع أن تجد تتبّعات مكدّس كبيرة تُركت دون معالجة. تجنّب هذا المطبّ في خوادمك.</p>
 <h3 id="متى-نستخدم-الذعر">متى نستخدم الذعر</h3>
-<p>تُصدر المكتبة القياسية حالات ذعر عند إساءة استخدام الواجهة البرمجية. فمثلًا، يُصدر <a href="https://pkg.go.dev/reflect"><code>reflect</code></a> حالة ذعر في كثير من الحالات التي يُوصَل فيها إلى قيمة بطريقة تدلّ على أنها أُسيء تفسيرها. وهذا مشابه لحالات الذعر الناتجة عن أخطاء جوهرية في اللغة مثل الوصول إلى عنصر في شريحة خارج الحدود. وينبغي أن تكتشف مراجعة الشيفرة والاختبارات مثل هذه العلل، التي لا يُتوقّع ظهورها في شيفرة الإنتاج. وتعمل حالات الذعر هذه كفحوص ثوابت لا تعتمد على مكتبة، لأن المكتبة القياسية لا تملك وصولًا إلى <a href="/arabic-cs-library/book/go-style/decisions-2/index#logging">حزمة <code>log</code> متعددة المستويات</a> التي تستخدمها قاعدة شيفرة Google.</p>
+<p>تُصدر المكتبة القياسية حالات ذعر عند إساءة استخدام الواجهة البرمجية. فمثلًا، يُصدر <a href="https://pkg.go.dev/reflect"><code>reflect</code></a> حالة ذعر في كثير من الحالات التي يُوصَل فيها إلى قيمة بطريقة تدلّ على أنها أُسيء تفسيرها. وهذا مشابه لحالات الذعر الناتجة عن أخطاء جوهرية في اللغة مثل الوصول إلى عنصر في شريحة خارج الحدود. وينبغي أن تكتشف مراجعة الشيفرة والاختبارات مثل هذه العلل، التي لا يُتوقّع ظهورها في شيفرة الإنتاج. وتعمل حالات الذعر هذه كفحوص ثوابت لا تعتمد على مكتبة، لأن المكتبة القياسية لا تملك وصولًا إلى <a href="/arabic-cs-library/book/go-style/decisions-2/index">حزمة <code>log</code> متعددة المستويات</a> التي تستخدمها قاعدة شيفرة Google.</p>
 <p>وثمّة حالة أخرى قد تكون فيها حالات الذعر مفيدة، وإن كانت غير شائعة، وهي استخدامها كتفصيل تنفيذ داخلي لحزمة لديها دائمًا استعادة (recover) مطابقة في سلسلة الاستدعاء. ويمكن أن تستفيد المحلّلات (parsers) ومجموعات الدوال الداخلية المشابهة شديدة التداخل والمترابطة ترابطًا وثيقًا من هذا التصميم، حيث تضيف مدّ إرجاعات الأخطاء تعقيدًا بلا قيمة.</p>
 <p>والسمة الأساسية لهذا التصميم هي أن <strong>حالات الذعر هذه لا يُسمح لها أبدًا بالخروج عبر حدود الحزمة</strong> ولا تشكّل جزءًا من واجهة الحزمة البرمجية. ويتحقق ذلك عادةً بدالة مؤجَّلة على المستوى الأعلى تستخدم <code>recover</code> لتحويل حالة ذعر منتشرة إلى خطأ مُعاد عند حدود الواجهة البرمجية العامة. وهو يتطلّب من الشيفرة التي تُصدر الذعر وتستعيده أن تميّز بين حالات الذعر التي ترفعها الشيفرة نفسها وتلك التي لا ترفعها:</p>
 <pre><code>// Good:
@@ -712,7 +712,7 @@ func answer(i int) string {
     }
 }
 </code></pre>
-<p><a href="https://pkg.go.dev/github.com/golang/glog#pkg-overview">لا تستدعِ دوال <code>log</code> قبل تحليل الأعلام.</a> وإذا كان لا بد من إنهاء البرنامج في دالة تهيئة حزمة (وهي <code>init</code> أو <a href="/arabic-cs-library/book/go-style/decisions-2/index#must-functions">دالة «must»</a>)، فيُقبَل استخدام الذعر بدلًا من استدعاء التسجيل القاتل.</p>
+<p><a href="https://pkg.go.dev/github.com/golang/glog#pkg-overview">لا تستدعِ دوال <code>log</code> قبل تحليل الأعلام.</a> وإذا كان لا بد من إنهاء البرنامج في دالة تهيئة حزمة (وهي <code>init</code> أو <a href="/arabic-cs-library/book/go-style/decisions-2/index">دالة «must»</a>)، فيُقبَل استخدام الذعر بدلًا من استدعاء التسجيل القاتل.</p>
 <p>انظر أيضًا:</p>
 <ul>
 <li><a href="https://go.dev/ref/spec#Handling_panics">Handling panics</a> و<a href="https://go.dev/ref/spec#Run_time_panics">Run-time Panics</a> في مواصفة اللغة</li>
@@ -721,8 +721,8 @@ func answer(i int) string {
 </ul>
 <h2 id="التوثيق">التوثيق <span class="content-anchor" id="documentation"></span></h2>
 <h3 id="الاصطلاحات">الاصطلاحات <span class="content-anchor" id="documentation-conventions"></span></h3>
-<p>يوسّع هذا القسم قسم <a href="/arabic-cs-library/book/go-style/decisions-2/index#commentary">التعليقات</a> في وثيقة القرارات.</p>
-<p>شيفرة Go الموثّقة بأسلوب مألوف أسهل قراءةً وأقل عرضة لسوء الاستخدام من شيفرة موثّقة توثيقًا خاطئًا أو غير موثّقة على الإطلاق. وتظهر <a href="/arabic-cs-library/book/go-style/decisions-2/index#examples">الأمثلة</a> القابلة للتشغيل في Godoc وCode Search، وهي طريقة ممتازة لشرح كيفية استخدام شيفرتك.</p>
+<p>يوسّع هذا القسم قسم <a href="/arabic-cs-library/book/go-style/decisions-2/index">التعليقات</a> في وثيقة القرارات.</p>
+<p>شيفرة Go الموثّقة بأسلوب مألوف أسهل قراءةً وأقل عرضة لسوء الاستخدام من شيفرة موثّقة توثيقًا خاطئًا أو غير موثّقة على الإطلاق. وتظهر <a href="/arabic-cs-library/book/go-style/decisions-2/index">الأمثلة</a> القابلة للتشغيل في Godoc وCode Search، وهي طريقة ممتازة لشرح كيفية استخدام شيفرتك.</p>
 <h4>المعاملات والإعدادات</h4>
 <p>لا يلزم تعداد كل معامل في التوثيق. وينطبق ذلك على:</p>
 <ul>
@@ -908,7 +908,7 @@ func Chdir(dir string) error {
 </code></pre>
 <p>إن توثيق ما إذا كانت القيم المُعادة مستقبِلات مؤشّرات يتيح للمستدعين مقارنة الأخطاء مقارنةً صحيحة باستخدام <a href="https://pkg.go.dev/errors#Is"><code>errors.Is</code></a> و<a href="https://pkg.go.dev/errors#As"><code>errors.As</code></a> و<a href="https://pkg.go.dev/github.com/google/go-cmp/cmp"><code>package cmp</code></a>. وذلك لأن قيمة غير مؤشّرية لا تكون مكافئة لقيمة مؤشّرية.</p>
 <p><strong>ملاحظة:</strong> في مثال <code>Chdir</code>، كُتب نوع الإرجاع <code>error</code> بدلًا من <code>*PathError</code> بسبب <a href="https://go.dev/doc/faq#nil_error">طريقة عمل قيم الواجهة nil</a>.</p>
-<p>وثّق اصطلاحات الأخطاء العامة في <a href="/arabic-cs-library/book/go-style/decisions-2/index#package-comments">توثيق الحزمة</a> عندما ينطبق السلوك على معظم الأخطاء الموجودة في الحزمة:</p>
+<p>وثّق اصطلاحات الأخطاء العامة في <a href="/arabic-cs-library/book/go-style/decisions-2/index">توثيق الحزمة</a> عندما ينطبق السلوك على معظم الأخطاء الموجودة في الحزمة:</p>
 <pre><code>// Good:
 // Package os provides a platform-independent interface to operating system
 // functionality.
@@ -935,7 +935,7 @@ package os
 //
 // See some/shortlink for config file format details.
 </code></pre>
-<p>يمكن أن تحتوي ملفات الاختبار على <a href="/arabic-cs-library/book/go-style/decisions-2/index#examples">أمثلة قابلة للتشغيل</a> تظهر مرتبطة بالتوثيق المقابل في godoc:</p>
+<p>يمكن أن تحتوي ملفات الاختبار على <a href="/arabic-cs-library/book/go-style/decisions-2/index">أمثلة قابلة للتشغيل</a> تظهر مرتبطة بالتوثيق المقابل في godoc:</p>
 <pre><code>// Good:
 func ExampleConfig_WriteTo() {
   cfg := &amp;Config{
@@ -1129,7 +1129,7 @@ func sum(values chan int) (out int) {
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1137,8 +1137,8 @@ func sum(values chan int) (out int) {
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

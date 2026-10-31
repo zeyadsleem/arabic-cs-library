@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -113,7 +113,7 @@ data: Last message, id &quot;43&quot;
 <p>بروتوكول تدفق الأحداث سهل الفهم والتنفيذ:</p>
 <p>في الطرف المستقبل، تحلّل واجهة EventSource التدفق الوارد بالبحث عن فواصل الأسطر (newline separators)، وتستخرج الحمولة (payload) من حقول data، وتتحقق من وجود ID وtype اختياريين، وأخيرًا تطلق حدث DOM (DOM event) لإخطار التطبيق. إذا كان هناك type، فسيُطلَق حدث DOM مخصص، وخلاف ذلك يُستدعى callback العام &quot;onmessage&quot;؛ راجع <a href="#eventsource-api">واجهة EventSource API</a> في كلا الحالتين.</p>
 <h4>ترميز UTF-8 ونقل البيانات الثنائية مع SSE (UTF-8 Encoding and Binary Transfers with SSE)</h4>
-<p>لا تُجري EventSource أي معالجة إضافية على الحمولة (payload) الفعلية: تُستخرج الرسالة من حقل data واحد أو أكثر، وتُدمج معًا، وتُمرَّر مباشرة إلى التطبيق. وبناءً على ذلك، يمكن للخادم دفع أي تنسيق نصي (مثل سلسلة بسيطة، أو حمولة JSON، وما إلى ذلك)، ويجب على التطبيق فك ترميزها بنفسه. مع ذلك، لاحظ أن جميع بيانات event source مشفّرة بـ UTF-8: SSE ليست آلية لنقل الحمولات (payloads) الثنائية! إذا لزم الأمر، يمكن ترميز كائن ثنائي تعسّفي بـ base64 ليكون متوافقًا مع SSE، لكن هذا يتكبّد overhead عالٍ (33%) على مستوى البايتات؛ راجع <a href="/arabic-cs-library/book/hpbn/http1x/#resource-inlining">Resource Inlining</a>. هل تقلق من التكلفة العالية لـ UTF-8 على السلك (wire)؟ اتصال SSE هو استجابة HTTP متدفقة، مما يعني أنه يمكن ضغطه (أي gzip)، تمامًا كما أي استجابة HTTP أخرى أثناء النقل! بينما SSE ليست مخصّصة لتسليم البيانات الثنائية، إلا أنها مع ذلك نقل فعّال: تأكّد من أن خادمك يُطبّق ضغط gzip على تدفق SSE. عدم دعم بثّ البيانات (streaming) الثنائية ليس إغفالًا. صُمِّمت SSE خصيصًا كنقل بسيط وفعّال من الخادم إلى العميل للبيانات النصية. إذا كنت بحاجة إلى نقل الحمولات (payloads) الثنائية، فإن WebSocket هي الأداة المناسبة. أخيرًا، بالإضافة إلى التحليل التلقائي للأحداث، تقدّم SSE دعمًا مدمجًا لإعادة إنشاء الاتصالات المُسقطة، وكذلك استرداد الرسائل التي قد يكون العميل فاتته أثناء قطع الاتصال. بشكل افتراضي، إذا أُسقط الاتصال، فسيعيد المتصفح إنشاء الاتصال تلقائيًا. توصي مواصفة SSE بتأخير 2–3 ثوانٍ، وهو الافتراضي الشائع لمعظم المتصفحات، لكن الخادم يمكنه أيضًا تعيين فاصل زمني مخصص في أي نقطة بإرسال أمر <code>retry</code> إلى العميل. وبالمثل، يمكن للخادم أيضًا ربط سلسلة ID تعسّفية بكل رسالة. يتذكّر المتصفح تلقائيًا آخر ID تمت رؤيته وسيُضيف تلقائيًا ترويسة HTTP &quot;Last-Event-ID&quot; بالقيمة المُذكَّرة عند إصدار طلب إعادة الاتصال. إليك مثال:</p>
+<p>لا تُجري EventSource أي معالجة إضافية على الحمولة (payload) الفعلية: تُستخرج الرسالة من حقل data واحد أو أكثر، وتُدمج معًا، وتُمرَّر مباشرة إلى التطبيق. وبناءً على ذلك، يمكن للخادم دفع أي تنسيق نصي (مثل سلسلة بسيطة، أو حمولة JSON، وما إلى ذلك)، ويجب على التطبيق فك ترميزها بنفسه. مع ذلك، لاحظ أن جميع بيانات event source مشفّرة بـ UTF-8: SSE ليست آلية لنقل الحمولات (payloads) الثنائية! إذا لزم الأمر، يمكن ترميز كائن ثنائي تعسّفي بـ base64 ليكون متوافقًا مع SSE، لكن هذا يتكبّد overhead عالٍ (33%) على مستوى البايتات؛ راجع <a href="/arabic-cs-library/book/hpbn/http1x/index#%D8%AA%D8%B6%D9%85%D9%8A%D9%86-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-resource-inlining">Resource Inlining</a>. هل تقلق من التكلفة العالية لـ UTF-8 على السلك (wire)؟ اتصال SSE هو استجابة HTTP متدفقة، مما يعني أنه يمكن ضغطه (أي gzip)، تمامًا كما أي استجابة HTTP أخرى أثناء النقل! بينما SSE ليست مخصّصة لتسليم البيانات الثنائية، إلا أنها مع ذلك نقل فعّال: تأكّد من أن خادمك يُطبّق ضغط gzip على تدفق SSE. عدم دعم بثّ البيانات (streaming) الثنائية ليس إغفالًا. صُمِّمت SSE خصيصًا كنقل بسيط وفعّال من الخادم إلى العميل للبيانات النصية. إذا كنت بحاجة إلى نقل الحمولات (payloads) الثنائية، فإن WebSocket هي الأداة المناسبة. أخيرًا، بالإضافة إلى التحليل التلقائي للأحداث، تقدّم SSE دعمًا مدمجًا لإعادة إنشاء الاتصالات المُسقطة، وكذلك استرداد الرسائل التي قد يكون العميل فاتته أثناء قطع الاتصال. بشكل افتراضي، إذا أُسقط الاتصال، فسيعيد المتصفح إنشاء الاتصال تلقائيًا. توصي مواصفة SSE بتأخير 2–3 ثوانٍ، وهو الافتراضي الشائع لمعظم المتصفحات، لكن الخادم يمكنه أيضًا تعيين فاصل زمني مخصص في أي نقطة بإرسال أمر <code>retry</code> إلى العميل. وبالمثل، يمكن للخادم أيضًا ربط سلسلة ID تعسّفية بكل رسالة. يتذكّر المتصفح تلقائيًا آخر ID تمت رؤيته وسيُضيف تلقائيًا ترويسة HTTP &quot;Last-Event-ID&quot; بالقيمة المُذكَّرة عند إصدار طلب إعادة الاتصال. إليك مثال:</p>
 <pre><code>(existing SSE connection)
 retry: 4500 
 
@@ -150,7 +150,7 @@ data: dolor sit amet
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -158,8 +158,8 @@ data: dolor sit amet
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

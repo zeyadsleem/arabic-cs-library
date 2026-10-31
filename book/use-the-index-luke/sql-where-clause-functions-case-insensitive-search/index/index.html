@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -115,7 +115,7 @@ Predicate Information
  3 - START ( UPPER(Q1.LAST_NAME) = 'WINAND')
       STOP ( UPPER(Q1.LAST_NAME) = 'WINAND')
 </code></pre>
-<p>غُيّر الاستعلام إلى <code>WHERE UPPER(last_name) = 'WINAND'</code> (بدون <code>UPPER</code> في الطرف الأيمن) للحصول على النتيجة المتوقعة. وعند استخدام <code>UPPER('winand')</code>، يخطئ المُحسِّن خطأً جسيماً في التقدير ويتوقع اختيار 4% من صفوف الجدول. وهذا يجعل المُحسِّن يتجاهل الفهرس وينفّذ <code>TBSCAN</code>. انظر <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index#sb-full-table-scan"><em>مسح كامل للجدول</em></a> لترى لماذا قد يكون ذلك منطقياً.</p>
+<p>غُيّر الاستعلام إلى <code>WHERE UPPER(last_name) = 'WINAND'</code> (بدون <code>UPPER</code> في الطرف الأيمن) للحصول على النتيجة المتوقعة. وعند استخدام <code>UPPER('winand')</code>، يخطئ المُحسِّن خطأً جسيماً في التقدير ويتوقع اختيار 4% من صفوف الجدول. وهذا يجعل المُحسِّن يتجاهل الفهرس وينفّذ <code>TBSCAN</code>. انظر <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index"><em>مسح كامل للجدول</em></a> لترى لماذا قد يكون ذلك منطقياً.</p>
 <p>Oracle</p>
 <pre><code>--------------------------------------------------------------
 |Id |Operation                   | Name        | Rows | Cost |
@@ -141,7 +141,7 @@ Bitmap Heap Scan on employees
 </code></pre>
 <p>إنه <code>INDEX RANGE SCAN</code> عادي كما ورد في <a href="/arabic-cs-library/book/use-the-index-luke/sql-anatomy/index">الفصل الأول</a>. فقاعدة البيانات تجتاز شجرة B (B-tree) وتتبّع سلسلة عقد الأوراق. ولا توجد عمليات أو كلمات مفتاحية مخصصة للفهارس القائمة على الدوال.</p>
 <h4>تحذير</h4>
-<p>تستخدم أدوات ORM أحياناً <code>UPPER</code> و<code>LOWER</code> دون علم المطوّر. فمثلاً، يحقن Hibernate <a href="/arabic-cs-library/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index#myth-dynamic-sql-sample">دالة <code>LOWER</code> ضمنية</a> للبحث غير الحساس لحالة الأحرف.</p>
+<p>تستخدم أدوات ORM أحياناً <code>UPPER</code> و<code>LOWER</code> دون علم المطوّر. فمثلاً، يحقن Hibernate <a href="/arabic-cs-library/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index">دالة <code>LOWER</code> ضمنية</a> للبحث غير الحساس لحالة الأحرف.</p>
 <p>لا تزال خطة التنفيذ ليست نفسها كما كانت في القسم السابق بدون <code>UPPER</code>؛ فتقدير عدد الصفوف مرتفع جداً. ومن الغريب بشكل خاص أن يتوقع المُحسِّن جلب صفوف من الجدول أكثر مما يقدّمه <code>INDEX RANGE SCAN</code> في المقام الأول. فكيف يجلب 100 صف من الجدول إذا كان مسح الفهرس السابق أعاد 40 صفاً فقط؟ الجواب أنه لا يستطيع. والتقديرات المتناقضة كهذه غالباً ما تدل على مشكلات في الإحصاءات. وفي هذه الحالة بالتحديد يرجع ذلك إلى أن قاعدة بيانات Oracle لا تحدّث إحصاءات الجدول عند إنشاء فهرس جديد (انظر أيضاً <a href="#sb-collecting-statistics">«<em>إحصاءات Oracle للفهارس القائمة على الدوال</em>»</a>).</p>
 <h2 id="إحصاءات-oracle-للفهارس-القائمة-على-الدوال">إحصاءات Oracle للفهارس القائمة على الدوال <span class="content-anchor" id="sb-collecting-statistics"></span></h2>
 <p>تحفظ قاعدة بيانات Oracle المعلومات عن عدد قيم العمود المتمايزة ضمن إحصاءات الجدول. وتُعاد استخدام هذه الأرقام إذا كان العمود جزءاً من فهارس متعددة.</p>
@@ -195,7 +195,7 @@ Predicate Information (identified by operation id):
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -203,8 +203,8 @@ Predicate Information (identified by operation id):
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

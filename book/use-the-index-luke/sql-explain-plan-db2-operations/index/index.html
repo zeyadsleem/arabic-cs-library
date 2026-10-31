@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -52,11 +52,11 @@
 <p>تنفّذ <code>IXSCAN</code> اجتياز شجرة B <em>و</em> تتبع سلسلة العقد الورقية للعثور على جميع المدخلات المطابقة. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-anatomy/index">الفصل 1، «<em>تشريح فهرس SQL</em>»</a>.</p>
 <p>وما يسمى مُسندات ترشيح الفهرس (مُسندات «<code>SARG</code>») كثيراً ما يسبّب مشكلات أداء لعملية <code>IXSCAN</code>. ويشرح <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-oracle-filter-predicates/index">القسم التالي</a> كيفية تحديدها. وهي شبيهة بعائلة عمليات <code>INDEX ... SCAN</code> في Oracle.</p>
 <p>ويشير غياب مُسندَي <code>START</code> و<code>STOP</code> إلى مسح فهرس كامل.</p>
-<p>ويشير <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained">عرض <code>last_explained</code></a> إلى المسح المعاكس بين قوسين (مثل <code>IXSCAN (REVERSE)</code>).</p>
+<p>ويشير <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index">عرض <code>last_explained</code></a> إلى المسح المعاكس بين قوسين (مثل <code>IXSCAN (REVERSE)</code>).</p>
 <p><a href="https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021323.htm">FETCH</a></p>
 <p>تسترجع صفاً من الجدول باستخدام <code>RID</code> المسترجع من بحث الفهرس السابق. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-anatomy/index">الفصل 1، «<em>تشريح فهرس SQL</em>»</a>. وهي شبيهة بـ<code>TABLE ACCESS BY INDEX ROWID</code> في Oracle.</p>
 <p><a href="https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021339.htm">TBSCAN</a></p>
-<p>وتُعرف أيضاً بالمسح الكامل للجدول. تقرأ الجدول بأكمله — جميع الصفوف والأعمدة — كما هو مخزّن على القرص. ومع أن عمليات القراءة متعددة الكتل تحسّن سرعة المسح الكامل تحسناً كبيراً، فهو لا يزال من أغلى العمليات. فإلى جانب معدلات الإدخال/الإخراج العالية، يجب أن يفحص المسح الكامل جميع صفوف الجدول، لذا قد يستهلك أيضاً قدراً كبيراً من وقت المعالج. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index#sb-full-table-scan">«<em>المسح الكامل للجدول</em>»</a>.</p>
+<p>وتُعرف أيضاً بالمسح الكامل للجدول. تقرأ الجدول بأكمله — جميع الصفوف والأعمدة — كما هو مخزّن على القرص. ومع أن عمليات القراءة متعددة الكتل تحسّن سرعة المسح الكامل تحسناً كبيراً، فهو لا يزال من أغلى العمليات. فإلى جانب معدلات الإدخال/الإخراج العالية، يجب أن يفحص المسح الكامل جميع صفوف الجدول، لذا قد يستهلك أيضاً قدراً كبيراً من وقت المعالج. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index">«<em>المسح الكامل للجدول</em>»</a>.</p>
 <p><a href="https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021335.htm">RIDSCN</a></p>
 <p>تُستخدم هذه العملية في <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-searching-for-ranges-index-merge-performance/index">دمج الفهارس</a>، وربما أكثر من ذلك في الجلب المسبق لصفحات البيانات بعد فرزها.</p>
 <h2 id="عمليات-الربط">عمليات الربط</h2>
@@ -72,14 +72,14 @@
 <h2 id="الترتيب-والتجميع">الترتيب والتجميع</h2>
 <p><a href="https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021338.htm">SORT</a></p>
 <p>ترتّب النتيجة وفق جملة <code>order by</code>. وتحتاج هذه العملية إلى كميات كبيرة من الذاكرة لتجسيد النتيجة الوسيطة (غير متدفقة). وتُستخدم أيضاً لإنشاء الترتيب المطلوب لعمليات <a href="#apa-db2-ops-msjoin"><code>MSJOIN</code></a> أو <a href="#apa-db2-ops-grpby"><code>GRPBY</code></a>. إضافةً إلى ذلك، قد تحذف <code>SORT</code> الصفوف المكرّرة لعملية <code>distinct</code>. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-sorting-grouping-indexed-order-by/index">«<em>فهرسة Order By</em>»</a>.</p>
-<p>ويشير <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained">عرض <code>last_explained</code></a> إلى ما إذا كان هناك إزالة للتكرار بين قوسين (مثل <code>SORT (UNIQUE)</code>). وتُوسم عمليات فرز Top-N بـ<code>TOP-N</code> (مثلاً بسبب <code>fetch first ... rows only</code>).</p>
+<p>ويشير <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index">عرض <code>last_explained</code></a> إلى ما إذا كان هناك إزالة للتكرار بين قوسين (مثل <code>SORT (UNIQUE)</code>). وتُوسم عمليات فرز Top-N بـ<code>TOP-N</code> (مثلاً بسبب <code>fetch first ... rows only</code>).</p>
 <p><a href="https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021338.htm">UNIQUE</a></p>
 <p>تزيل تكرار الصفوف في مجموعة مرتَّبة مسبقاً. وتُستخدم من أجل <code>distinct</code> عندما يمكن إنشاء الترتيب المطلوب دون عملية <code>SORT</code> (مثلاً لأن <code>IXSCAN</code> يعيدها بالترتيب المطلوب). وعند لزوم عملية <code>SORT</code>، تتولى عملية <code>SORT</code> نفسها إزالة التكرار.</p>
 <p><a href="https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021326.htm">GRPBY</a></p>
 <p>تجمّع مجموعة وفق جملة <code>group by</code>. وقد تُنفَّذ هذه العملية بخوارزمية فرز/تجميع أو بنهج قائم على التجزئة (منذ الإصدار 10.1). انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-sorting-grouping-indexed-group-by/index">«<em>فهرسة Group By</em>»</a>.</p>
-<p>ويشير <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained">عرض <code>last_explained</code></a> إلى نمط التجميع بين قوسين (مثل <code>GRPBY (HASH COMPLETE)</code>).</p>
+<p>ويشير <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index">عرض <code>last_explained</code></a> إلى نمط التجميع بين قوسين (مثل <code>GRPBY (HASH COMPLETE)</code>).</p>
 <h2 id="استعلامات-top-n">استعلامات Top-N</h2>
-<p>ليس في Db2 (LUW) عمليات خطة تنفيذ تتصل مباشرةً بجمل Top-N مثل <code>fetch first ... rows only</code>. غير أنه إذا نُفِّذت عملية <code>SORT</code>، يشير <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained">عرض <code>last_explained</code></a> إلى تحسين Top-N بين قوسين (مثل <code>SORT (TOP-N)</code>).</p>
+<p>ليس في Db2 (LUW) عمليات خطة تنفيذ تتصل مباشرةً بجمل Top-N مثل <code>fetch first ... rows only</code>. غير أنه إذا نُفِّذت عملية <code>SORT</code>، يشير <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index">عرض <code>last_explained</code></a> إلى تحسين Top-N بين قوسين (مثل <code>SORT (TOP-N)</code>).</p>
 <p>وإذا لم تكن هناك حاجة إلى عملية <code>SORT</code>، فلا توجد علامة ظاهرة لسلوك Top-N في خطة التنفيذ. لكن الانخفاض المفاجئ في قيمة التكلفة أو في تقديرات عدد الصفوف مع غياب المُسندات قد يلمّح إلى وجود جملة Top-N عاملة.</p>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الحصول على خطة تنفيذ</span></a><!--]--> <!--[0--><a href="../../../../book/use-the-index-luke/sql-explain-plan-db2-filter-predicates/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">التمييز بين مُسندات الوصول والترشيح</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
@@ -87,7 +87,7 @@
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -95,8 +95,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

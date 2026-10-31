@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -63,7 +63,7 @@
 <p>لأوضح أثر الاستطلاع الدوري (periodic polling) على عمر البطارية، لنقم ببعض الحسابات البسيطة. الأرقام ليست دقيقة، لكنها ضمن نطاق هاتف محمول نموذجي بشبكات 3G/4G:</p>
 <p>~3% من سعة البطارية المتاحة في الساعة لتطبيق واحد! كل ما يلزم هو تطبيقان بفواصل استطلاع غير متداخلة لاستنزاف بطاريتك قبل الظهر. غير أن، إنصافاً، قد يكون لتطبيق يعتمد على الدفع مع تحديثات متكرّرة وغير مخزَّنة مؤقتاً (unbuffered) استهلاك طاقة أعلى. فتحسين عمر البطارية وتواتر التحديثات متعارضان بطبيعهما. فكّر في متطلبات تطبيقك تحديداً لتحديد الاستراتيجية المثلى: تجميع التحديثات، وفواصل التحديث التكيّفية (adaptive update intervals)، والسحب مقابل الدفع (pull vs. push)، وغيرها. ثم قِس الأثر بواسطة ARO أو أداة مماثلة، وعدِّل تبعاً لذلك.</p>
 <h3 id="إلغاء-رسائل-الإبقاء-على-قيد-الحياة-غير-الضرورية-من-التطبيقات-eliminate-unnecessary-application-keepalives">إلغاء رسائل الإبقاء على قيد الحياة غير الضرورية من التطبيقات (Eliminate Unnecessary Application Keepalives)</h3>
-<p>حالة الاتصال ودورة حياة (lifecycle) أي اتصال TCP أو UDP مستقلة عن حالة الراديو في الجهاز: إذ يمكن أن يكون الراديو في حالة منخفضة الطاقة (low-power state) بينما تحافظ شبكة المشغّل على الاتصالات. وعند وصول حزمة جديدة من الشبكة الخارجية، تُشعر شبكة المشغّل الراديوية الجهاز، وترفع حالة راديوه إلى حالة متصلة (connected state)، وتستأنف نقل البيانات. لا يحتاج التطبيق إلى إبقاء الراديو «نشطاً» لضمان عدم إسقاط الاتصالات. ويمكن لرسائل الإبقاء على قيد الحياة غير الضرورية من التطبيق أن يكون لها أثر سلبي هائل على أداء عمر البطارية، وكثيراً ما تُستخدَم بسبب سوء فهم بسيط لكيفية عمل راديو المحمول. راجع «الطبقة الفيزيائية مقابل اتصال طبقة التطبيق» (Physical Layer vs. Application Layer Connectivity) و<a href="/arabic-cs-library/book/hpbn/mobile-networks/#packet-flow-in-a-mobile-network">«تدفق الحزم في شبكة محمول» (Packet Flow in a Mobile Network)</a>. ومعظم مشغّلي المحمول يحدّدون مهلة اتصال NAT تتراوح بين 5–30 دقيقة. لذا قد تحتاج إلى رسالة دورية (كل 5 دقائق) لإبقاء الاتصال على قيد الحياة حتى لا يُسقط اتصال خامل. وإذا وجدت نفسك بحاجة إلى رسائل أكثر تكراراً، فافحص أولاً إعداد خادمك والوسيط (proxy) وموازن الحمل (load balancer)!</p>
+<p>حالة الاتصال ودورة حياة (lifecycle) أي اتصال TCP أو UDP مستقلة عن حالة الراديو في الجهاز: إذ يمكن أن يكون الراديو في حالة منخفضة الطاقة (low-power state) بينما تحافظ شبكة المشغّل على الاتصالات. وعند وصول حزمة جديدة من الشبكة الخارجية، تُشعر شبكة المشغّل الراديوية الجهاز، وترفع حالة راديوه إلى حالة متصلة (connected state)، وتستأنف نقل البيانات. لا يحتاج التطبيق إلى إبقاء الراديو «نشطاً» لضمان عدم إسقاط الاتصالات. ويمكن لرسائل الإبقاء على قيد الحياة غير الضرورية من التطبيق أن يكون لها أثر سلبي هائل على أداء عمر البطارية، وكثيراً ما تُستخدَم بسبب سوء فهم بسيط لكيفية عمل راديو المحمول. راجع «الطبقة الفيزيائية مقابل اتصال طبقة التطبيق» (Physical Layer vs. Application Layer Connectivity) و<a href="/arabic-cs-library/book/hpbn/mobile-networks/index#%D8%AA%D8%AF%D9%81%D9%82-%D8%A7%D9%84%D8%AD%D8%B2%D9%85-%D9%81%D9%8A-%D8%B4%D8%A8%D9%83%D8%A9-%D9%85%D8%AD%D9%85%D9%88%D9%84%D8%A9">«تدفق الحزم في شبكة محمول» (Packet Flow in a Mobile Network)</a>. ومعظم مشغّلي المحمول يحدّدون مهلة اتصال NAT تتراوح بين 5–30 دقيقة. لذا قد تحتاج إلى رسالة دورية (كل 5 دقائق) لإبقاء الاتصال على قيد الحياة حتى لا يُسقط اتصال خامل. وإذا وجدت نفسك بحاجة إلى رسائل أكثر تكراراً، فافحص أولاً إعداد خادمك والوسيط (proxy) وموازن الحمل (load balancer)!</p>
 <h2 id="توقع-حمل-تأخير-الشبكة-anticipate-network-latency-overhead">توقّع حِمل تأخير الشبكة (Anticipate Network Latency Overhead)</h2>
 <p>قد يفرض طلب HTTP واحد للحصول على مورد مطلوب أيّما كان من مئات إلى آلاف المللي ثانية من حِمل تأخير الشبكة (network latency overhead) على شبكة محمول. ويرجع ذلك جزئياً إلى أزمنة الذهاب والإياب المرتفعة، لكننا لا ننسى أيضاً حِمل (الشكل 8-2) الذي يفرضه DNS وTCP وTLS وتكاليف مستوى التحكم (control plane)! <img src="/arabic-cs-library/images/hpbn/optimizing-for-mobile-networks-82966133085de5c9aed3229838166dc5.svg.svg" alt=""> الشكل 8-2. مكوّنات طلب HTTP «بسيط» في أفضل الحالات، يكون الراديو في حالة طاقة مرتفعة أصلاً، ويكون اسم النطاق قد حُلّ مسبقاً (pre-resolved)، ويكون اتصال TCP قائم متاحاً: قد يكون بإمكان العميل إعادة استخدام اتصال قائم وتجنّب حِمل إنشاء اتصال جديد. لكن، إذا كان الاتصال مشغولاً أو غير موجود، فعلينا أن نتحمّل عدداً من رحلات الذهاب والإياب الإضافية قبل أن يتيسّر إرسال أي بيانات تطبيق. ولتوضيح أثر هذه رحلات الذهاب والإياب الإضافية على الشبكة، فلنفترض زمن ذهاب وإياب متفائلاً قدره 100 مللي ثانية لشبكات 4G و200 مللي ثانية لشبكات 3.5G+:</p>
 <p>الجدول 8-1. حِمل تأخير طلب HTTP واحد إن زمن تأخير مستوى التحكم في RRC وحده يمكن أن يضيف أيّما كان من مئات إلى آلاف المللي ثانية من الحِمل لإعادة إنشاء سياق الراديو على شبكة 3G! ومجرد أن يصبح الراديو نشطاً، قد نضطر إلى حلّ اسم المضيف (hostname) إلى عنوان IP ثم إجراء مصافحة TCP (TCP handshake) — أي رحلتين ذهاب وإياب على الشبكة. ثم، إذا لزم نفق آمن (secure tunnel)، فقد نحتاج إلى رحلتين إضافيتين على الشبكة (انظر «استئناف جلسة TLS» (TLS Session Resumption)). وأخيراً، يمكن إرسال طلب HTTP، وهو ما يضيف رحلة ذهاب وإياب أخرى على الأقل. ولم نحسب زمن استجابة الخادم أو حجم الاستجابة، وقد يتطلب ذلك عدة رحلات ذهاب وإياب، ومع ذلك فقد تحمّلنا بالفعل ما يصل إلى ست رحلات. اضرب ذلك في زمن الذهاب والإياب، وستنظر إلى ثوانٍ كاملة من حِمل التأخير لشبكات 3G، ونحو نصف ثانية لشبكات 4G.</p>
@@ -92,7 +92,7 @@
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -100,8 +100,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

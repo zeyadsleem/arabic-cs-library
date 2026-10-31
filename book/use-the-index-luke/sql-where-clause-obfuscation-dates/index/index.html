@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -73,8 +73,8 @@
  <span class="hljs-keyword">WHERE</span> sale_date <span class="hljs-keyword">BETWEEN</span> quarter_begin(?) 
                      <span class="hljs-keyword">AND</span> quarter_end(?)
 </code></pre>
-<p>وإذا كنت قد أدّيت واجباتك، فستتعرف على النمط من <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-functions-user-defined-functions/index#think-age-index">تمرين جميع الموظفين الذين أعمارهم 42 سنة</a>.</p>
-<p>ويكفي فهرس مباشر على <code>SALE_DATE</code> لتحسين هذا الاستعلام؛ إذ تحسب الدالتان <code>QUARTER_BEGIN</code> و<code>QUARTER_END</code> تاريخَي الحدّين. وقد يصبح الحساب معقداً بعض الشيء لأن <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates/index#para-between">المعامل <code>between</code> يتضمن دائماً قيمتَي الحدّين</a>. ولذلك يجب أن تعيد الدالة <code>QUARTER_END</code> طابعاً زمنياً قبل اليوم الأول من الربع التالي مباشرةً إذا كان <code>SALE_DATE</code> يحتوي مكوّن وقت. ويمكن إخفاء هذا المنطق داخل الدالة.</p>
+<p>وإذا كنت قد أدّيت واجباتك، فستتعرف على النمط من <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-functions-user-defined-functions/index">تمرين جميع الموظفين الذين أعمارهم 42 سنة</a>.</p>
+<p>ويكفي فهرس مباشر على <code>SALE_DATE</code> لتحسين هذا الاستعلام؛ إذ تحسب الدالتان <code>QUARTER_BEGIN</code> و<code>QUARTER_END</code> تاريخَي الحدّين. وقد يصبح الحساب معقداً بعض الشيء لأن <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates/index">المعامل <code>between</code> يتضمن دائماً قيمتَي الحدّين</a>. ولذلك يجب أن تعيد الدالة <code>QUARTER_END</code> طابعاً زمنياً قبل اليوم الأول من الربع التالي مباشرةً إذا كان <code>SALE_DATE</code> يحتوي مكوّن وقت. ويمكن إخفاء هذا المنطق داخل الدالة.</p>
 <p>وتعرض الأمثلة التالية تطبيقات الدالتين <code>QUARTER_BEGIN</code> و<code>QUARTER_END</code> في قواعد بيانات مختلفة.</p>
 <p>Db2 (LUW)</p>
 <pre><code class="language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">FUNCTION</span> quarter_begin(dt <span class="hljs-type">TIMESTAMP</span>)
@@ -200,7 +200,7 @@ AND sale_date &lt;  TRUNC(sysdate + INTERVAL '1' DAY)
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -208,8 +208,8 @@ AND sale_date &lt;  TRUNC(sysdate + INTERVAL '1' DAY)
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

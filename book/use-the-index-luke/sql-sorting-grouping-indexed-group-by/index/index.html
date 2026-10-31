@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -86,8 +86,8 @@ Predicate Information
 <h4>تحذير</h4>
 <p>لا ينفّذ PostgreSQL تلقائياً <code>group by</code> متدفقاً إذا كان الفهرس يعالج قيمة <code>NULL</code> كأصغر قيمة ممكنة. وإضافة جملة <code>order by</code> بترتيب الفهرس تتجاوز هذه المشكلة.</p>
 <p>ولا تستطيع قاعدة بيانات Oracle قراءة فهرس بالاتجاه المعاكس لتنفيذ <code>group by</code> متدفق يتبعه <code>order by</code>.</p>
-<p>وتتوفر مزيد من التفاصيل في الملحقين المعنيين: <a href="/arabic-cs-library/book/use-the-index-luke/sql-example-schema-postgresql-sorting-grouping/index#apc-pg-ord-group">PostgreSQL</a> و<a href="/arabic-cs-library/book/use-the-index-luke/sql-example-schema-oracle-sorting-grouping/index#apc-ora-ord-group">Oracle</a>.</p>
-<p>وإذا وسّعنا الاستعلام ليشمل جميع المبيعات <em>منذ الأمس</em>، كما فعلنا في مثال <code>order by</code> المتدفق، فسيُمنع <code>group by</code> المتدفق للسبب نفسه السابق: إذ لا يعيد <code>INDEX RANGE SCAN</code> الصفوف مرتَّبة بمفتاح التجميع (قارن <a href="/arabic-cs-library/book/use-the-index-luke/sql-sorting-grouping-indexed-order-by/index#fig-order-concat">الشكل 6.1</a>).</p>
+<p>وتتوفر مزيد من التفاصيل في الملحقين المعنيين: <a href="/arabic-cs-library/book/use-the-index-luke/sql-example-schema-postgresql-sorting-grouping/index">PostgreSQL</a> و<a href="/arabic-cs-library/book/use-the-index-luke/sql-example-schema-oracle-sorting-grouping/index">Oracle</a>.</p>
+<p>وإذا وسّعنا الاستعلام ليشمل جميع المبيعات <em>منذ الأمس</em>، كما فعلنا في مثال <code>order by</code> المتدفق، فسيُمنع <code>group by</code> المتدفق للسبب نفسه السابق: إذ لا يعيد <code>INDEX RANGE SCAN</code> الصفوف مرتَّبة بمفتاح التجميع (قارن <a href="/arabic-cs-library/book/use-the-index-luke/sql-sorting-grouping-indexed-order-by/index">الشكل 6.1</a>).</p>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> product_id, <span class="hljs-built_in">sum</span>(eur_value)
   <span class="hljs-keyword">FROM</span> sales
  <span class="hljs-keyword">WHERE</span> sale_date <span class="hljs-operator">&gt;=</span> TRUNC(sysdate) <span class="hljs-operator">-</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">&#x27;1&#x27;</span> <span class="hljs-keyword">DAY</span>
@@ -133,7 +133,7 @@ ID | Operation                   |                      Rows |  Cost
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -141,8 +141,8 @@ ID | Operation                   |                      Rows |  Cost
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

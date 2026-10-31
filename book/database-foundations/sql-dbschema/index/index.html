@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -67,7 +67,7 @@
 <h2 id="إجراء-quotالهندسة-العكسيةquot-لمخطط">إجراء &quot;الهندسة العكسية&quot; لمخطط</h2>
 <p>نستخدم DBSchema عادةً كما يلي: ترسم نموذجًا فيزيائيًا ويولّد DBSchema جميع شيفرة SQL لبناء هذا النموذج في PostgreSQL على الخادم.</p>
 <p>لكن يمكن فعل ذلك بالعكس أيضًا. وفي هذا القسم نوضّح كيفية استخدام DBSchema لإجراء <em>هندسة عكسية لمخطط موجود على خادم قاعدة بياناتنا.</em> يتصل DBSchema بالمخطط الموجود ويعيد بناء نموذج فيزيائي منه.</p>
-<p>في <a href="/arabic-cs-library/book/database-foundations/sql-eenopveel/index#Translation-to-relational-model">فصل &quot;علاقات واحد إلى متعدد&quot;</a> بنيت نموذجًا صغيرًا (يتكوّن من جدولين &quot;Course&quot; و&quot;Lecturer&quot;) في المخطط المسمّى برقم r الخاص بك، في قاعدة بيانات مجموعتك. وتحقق الآن عبر pgAdmin مما إذا كان ذلك المخطط لا يزال موجودًا؟ وإن لم يكن: أنشئه <a href="/arabic-cs-library/book/database-foundations/sql-eenopveel/index#Realization-in-your-own-schema">عبر الخطوات في ذلك القسم</a> (عشر دقائق من العمل).</p>
+<p>في <a href="/arabic-cs-library/book/database-foundations/sql-eenopveel/index">فصل &quot;علاقات واحد إلى متعدد&quot;</a> بنيت نموذجًا صغيرًا (يتكوّن من جدولين &quot;Course&quot; و&quot;Lecturer&quot;) في المخطط المسمّى برقم r الخاص بك، في قاعدة بيانات مجموعتك. وتحقق الآن عبر pgAdmin مما إذا كان ذلك المخطط لا يزال موجودًا؟ وإن لم يكن: أنشئه <a href="/arabic-cs-library/book/database-foundations/sql-eenopveel/index">عبر الخطوات في ذلك القسم</a> (عشر دقائق من العمل).</p>
 <p>وفي النص التالي يتصل DBSchema بخادم قاعدة بياناتنا ويحوّل مخططك إلى نموذج فيزيائي. وكالعادة: نفّذ هذه الخطوات بنفسك!</p>
 <p>ويوضح الفيديو التالي كيفية استيراد مخطط موجود إلى DBSchema وكيفية تغيير بعض الإعدادات بعده. وأسفل الفيلم الخطوات المحددة التي عليك اتخاذها. وقد تجد الجمع بين الفيلم والخطة خطوة بخطوة مثاليًا؟ شاهد الفيلم أولًا ثم اقرأ خطوات المهمة واحدة واحدة ونفّذها.</p>
 <p>رمز المحاضر الخاص بي (وبالتالي اسم مخططي) هو &quot;u0012047&quot;. وبالطبع، استبدل ذلك في الخطوات التالية برقم r الخاص بك.</p>
@@ -75,7 +75,7 @@
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
 <span class="hljs-keyword">FROM</span> ‘u0012047’.course; <span class="hljs-comment">--and likewise for the table lecturer</span>
 </code></pre>
-<p>يبدو ذلك جيدًا! حان وقت تشغيل DBSchema. وفي صفحة الفتح اختر &quot;Start New Project&quot; مع الخيار &quot;Connect to Database&quot;. ويمكن فعل ذلك أيضًا من القائمة، بالمناسبة: &quot;Model &gt; New connected to the database&quot;. <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-2-startnewproject.webp" alt=""> ويستطيع DBSchema التعامل مع عشرات أنظمة إدارة قواعد البيانات. واختر من القائمة الفيل (المألوف الآن): <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-3-kiespostgres.webp" alt=""> وفي مربع الحوار التالي، تحت &quot;JDBC URL&quot;، اختر الخيار &quot;Standard&quot;. ثم املأ التفاصيل كما في اللقطة أدناه. وكـ &quot;Database User&quot; اختر المستخدم المحلي الذي أنشأته لاتصال التجميع وكلمة المرور المقابلة (وقد دوّنتهما في مكان ما عندما اتبعت <a href="/arabic-cs-library/book/database-foundations/sql-pgadmin/index#Installation-pgAdmin">دليل التثبيت</a>. ومن الواضح أن تختار <em>رقم المنفذ الصحيح لاتصال التجميع</em>: وتُظهر اللقطة إصدار السنة الدراسية 2022-23. وفي &quot;Database&quot; ينبغي على الأرجح أن <em>تكتب</em> اسم قاعدة بيانات صفك (مثل 1TI9). <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-4-connectiedialoog.webp" alt=""> وفي علامة التبويب &quot;Settings&quot;، تحت &quot;Connection Properies&quot; أضف <code>prepareThreshold=0;</code>: <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-5-preparethreshold.webp" alt=""> ويمكنك الآن تأكيد هذه النافذة بـ &quot;Connect&quot;. وإذا سار كل شيء على ما يرام، سترى محتويات قاعدة البيانات. واختر الآن المخطط الذي تريد إجراء الهندسة العكسية له فقط: <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-6-checkboxes.webp" alt=""> وهذه هي النتيجة في DBSchema: <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-7-resultaatMet.webp" alt=""> وهناك بعض الأمور التي لا نريدها:</p>
+<p>يبدو ذلك جيدًا! حان وقت تشغيل DBSchema. وفي صفحة الفتح اختر &quot;Start New Project&quot; مع الخيار &quot;Connect to Database&quot;. ويمكن فعل ذلك أيضًا من القائمة، بالمناسبة: &quot;Model &gt; New connected to the database&quot;. <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-2-startnewproject.webp" alt=""> ويستطيع DBSchema التعامل مع عشرات أنظمة إدارة قواعد البيانات. واختر من القائمة الفيل (المألوف الآن): <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-3-kiespostgres.webp" alt=""> وفي مربع الحوار التالي، تحت &quot;JDBC URL&quot;، اختر الخيار &quot;Standard&quot;. ثم املأ التفاصيل كما في اللقطة أدناه. وكـ &quot;Database User&quot; اختر المستخدم المحلي الذي أنشأته لاتصال التجميع وكلمة المرور المقابلة (وقد دوّنتهما في مكان ما عندما اتبعت <a href="/arabic-cs-library/book/database-foundations/sql-pgadmin/index">دليل التثبيت</a>. ومن الواضح أن تختار <em>رقم المنفذ الصحيح لاتصال التجميع</em>: وتُظهر اللقطة إصدار السنة الدراسية 2022-23. وفي &quot;Database&quot; ينبغي على الأرجح أن <em>تكتب</em> اسم قاعدة بيانات صفك (مثل 1TI9). <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-4-connectiedialoog.webp" alt=""> وفي علامة التبويب &quot;Settings&quot;، تحت &quot;Connection Properies&quot; أضف <code>prepareThreshold=0;</code>: <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-5-preparethreshold.webp" alt=""> ويمكنك الآن تأكيد هذه النافذة بـ &quot;Connect&quot;. وإذا سار كل شيء على ما يرام، سترى محتويات قاعدة البيانات. واختر الآن المخطط الذي تريد إجراء الهندسة العكسية له فقط: <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-6-checkboxes.webp" alt=""> وهذه هي النتيجة في DBSchema: <img src="/arabic-cs-library/images/database-foundations/sql-dbschema-7-resultaatMet.webp" alt=""> وهناك بعض الأمور التي لا نريدها:</p>
 <ul>
 <li>مربع التعليق &quot;This is a layout ...&quot;؛</li>
 <li>المستطيل &quot;lecturer&quot;؛</li>
@@ -120,7 +120,7 @@
 <h4>إنشاء المخطط</h4>
 <p>في النسخة الاحترافية (المدفوعة) من DBSchema، يمكنك أولًا تصميم نموذج دون اتصال وحفظه ثم مزامنته مع قاعدة البيانات. أما في النسخة المجانية، فيجب أن يوجد مخطط أولًا على نظام إدارة قواعد البيانات العلائقية ولا يمكنك حفظ النموذج دون اتصال. وهذا في الواقع ليس اعتراضًا تقريبًا على المشروع الجماعي الذي تحصل عليه في هذه الدورة، لذا نشرح الطريقة الثانية.</p>
 <p>تحديث نوفمبر 2024: أصبح من الممكن الآن إنشاء مخطط جديد في خادم قاعدة بياناتنا في نسخة المجتمع (النسخة المجانية) من DBSchema بالنقر بزر الفأرة الأيمن في مستعرض قاعدة البيانات (على الجانب الأيسر من الشاشة) على &quot;Schemas&quot; ثم اختيار &quot;Create Schema&quot;.</p>
-<p>أنشئ أولًا مخططًا جديدًا في قاعدة بيانات مجموعتك (1TI9 وغيرها). وللقيام بذلك، شغّل pgAdmin واستخدم اتصال التجميع لإنشاء مخطط في قاعدة البيانات المناسبة باسم &quot;rxxxxxxx-movie&quot; (باستخدام رقم r الخاص بك). <a href="/arabic-cs-library/book/database-foundations/sql-intro/index#Create-schema">أتذكر كيف تُنشئ مخططًا جديدًا في قاعدة بيانات؟</a></p>
+<p>أنشئ أولًا مخططًا جديدًا في قاعدة بيانات مجموعتك (1TI9 وغيرها). وللقيام بذلك، شغّل pgAdmin واستخدم اتصال التجميع لإنشاء مخطط في قاعدة البيانات المناسبة باسم &quot;rxxxxxxx-movie&quot; (باستخدام رقم r الخاص بك). <a href="/arabic-cs-library/book/database-foundations/sql-intro/index">أتذكر كيف تُنشئ مخططًا جديدًا في قاعدة بيانات؟</a></p>
 <p>وقد تحصل على رسالة خطأ (<code>syntax error at or near &quot;-&quot;</code>) إن لم تتذكر إحاطة اسم المخطط بـ<em>علامات اقتباس مزدوجة</em>. وهذا غير ضروري عادةً، لكن بسبب المحرف الخاص &quot;-&quot; في الاسم تكون علامات الاقتباس المزدوجة إلزامية. ولو كتبت اسم المخطط بشرطة سفلية (_) لجاز لك إغفالها.</p>
 <h4>الاتصال بهذا المخطط في DBSchema</h4>
 <p>فعلنا ذلك بالفعل في بداية الفصل، انظر <a href="#One-scheme-%E2%80%98reverse-engineering%E2%80%99">&quot;الهندسة العكسية&quot;</a>. واختر المخطط الذي أنشأته للتو!</p>
@@ -185,7 +185,7 @@
 <p>وفي الشيفرة جملة <code>ALTER TABLE</code>. ولا شيء خطأ في ذلك، لكنه أجمل قليلًا لو وضعت ما يأتي بعد <code>ADD</code> في <code>CREATE</code> الخاص بجدول &quot;movie&quot;. ولسبب ما يفعل DBSchema ذلك دائمًا عبر <code>ALTER TABLE</code>.</p>
 <h2 id="ملء-قاعدة-البيانات-بالبيانات">ملء قاعدة البيانات بالبيانات</h2>
 <h3 id="يدويا-بواسطة-insert-into">يدويًا بواسطة INSERT INTO</h3>
-<p>تضيف صفوفًا إلى جدول عبر جمل <code>INSERT INTO</code>. <a href="/arabic-cs-library/book/database-foundations/sql-intro/index#Add-data-with-INSERT-INTO">وقد فعلت ذلك بالفعل في فصل SQL التمهيدي.</a></p>
+<p>تضيف صفوفًا إلى جدول عبر جمل <code>INSERT INTO</code>. <a href="/arabic-cs-library/book/database-foundations/sql-intro/index">وقد فعلت ذلك بالفعل في فصل SQL التمهيدي.</a></p>
 <p>شغّل pgAdmin وأضف يدويًا المعلومات التالية. صدر فيلم &quot;Star Wars&quot; في عام 1977. وطول الفيلم 121 دقيقة وأخرجه George Lucas (المولود في 14 مايو 1944). وGeorge Walton Lucas Jr. من Modesto، كاليفورنيا، الولايات المتحدة. ويمثل Harrison Ford (شيكاغو، الولايات المتحدة، المولود في 13 يوليو 1942) دور Han Solo. وكان دور الأميرة Leia للممثلة الأمريكية Carrie Frances Fisher (المولودة في 21 أكتوبر 1956، والمتوفاة في 2016). وأمنح هذا الفيلم 5 نجوم!</p>
 <p><img src="/arabic-cs-library/images/database-foundations/sql-dbschema-11-starwars.webp" alt=""></p>
 <p>وفي أداة استعلامات في pgAdmin، أضف هذه المعلومات إلى مخططك. وهذه طريقة بطيئة لإضافة البيانات، لكنها نقطة بداية جيدة. فهي في النهاية تجعلك تفكر في البيانات التي ينبغي إضافتها بالضبط وبأي ترتيب.</p>
@@ -225,7 +225,7 @@
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -233,8 +233,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

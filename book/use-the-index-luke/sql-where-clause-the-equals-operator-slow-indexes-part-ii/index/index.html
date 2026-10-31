@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -99,7 +99,7 @@ Predicate Information (identified by operation id):
 <p>يشرح <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan/index">الملحق أ، «<em>خطط التنفيذ</em>»</a> كيفية العثور على «معلومات المُسندات» في قواعد بيانات أخرى.</p>
 <p>يطبّق <code>INDEX RANGE SCAN</code> ذو معرّف العملية 2 (<a href="#ex-plan-revised-pk">المثال 2.1</a>) مرشّح <code>SUBSIDIARY_ID=30</code> فقط. ويعني ذلك أنه يجتاز شجرة الفهرس للعثور على أول مدخل للشركة الفرعية 30. ثم يتبّع سلسلة عقد الأوراق للعثور على جميع المدخلات الأخرى لتلك الشركة الفرعية. ونتيجة <code>INDEX RANGE SCAN</code> قائمة من <code>ROWID</code> تحقق شرط <code>SUBSIDIARY_ID</code>: فبحسب حجم الشركة الفرعية قد يكون عددها قليلاً أو قد يبلغ مئات كثيرة.</p>
 <p>والخطوة التالية هي عملية <code>TABLE ACCESS BY INDEX ROWID</code>. وهي تستخدم <code>ROWID</code> من الخطوة السابقة لجلب الصفوف—جميع الأعمدة—من الجدول. وبمجرد توفر العمود <code>LAST_NAME</code>، يمكن لقاعدة البيانات تقييم الجزء المتبقي من عبارة <code>where</code>. ويعني ذلك أن قاعدة البيانات يجب أن تجلب جميع صفوف <code>SUBSIDIARY_ID=30</code> قبل أن تتمكن من تطبيق مرشّح <code>LAST_NAME</code>.</p>
-<p>ولا يعتمد زمن استجابة العبارة على حجم مجموعة النتائج بل على عدد الموظفين في تلك الشركة الفرعية. فإذا كان للشركة الفرعية عدد قليل من الأعضاء، كان أداء <code>INDEX RANGE SCAN</code> أفضل. ومع ذلك قد يكون <code>TABLE ACCESS FULL</code> أسرع لشركة فرعية ضخمة لأنه يستطيع قراءة أجزاء كبيرة من الجدول دفعة واحدة (انظر <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index#sb-full-table-scan">«<em>مسح كامل للجدول</em>»</a>).</p>
+<p>ولا يعتمد زمن استجابة العبارة على حجم مجموعة النتائج بل على عدد الموظفين في تلك الشركة الفرعية. فإذا كان للشركة الفرعية عدد قليل من الأعضاء، كان أداء <code>INDEX RANGE SCAN</code> أفضل. ومع ذلك قد يكون <code>TABLE ACCESS FULL</code> أسرع لشركة فرعية ضخمة لأنه يستطيع قراءة أجزاء كبيرة من الجدول دفعة واحدة (انظر <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index">«<em>مسح كامل للجدول</em>»</a>).</p>
 <h4>إن أعجبك هذا الموضوع، قد يعجبك أيضاً…</h4>
 <p>… أن <a href="https://winand.at/lists">تشترك في <strong>القوائم البريدية</strong></a>، و<a href="https://use-the-index-luke.com/shop">تحصل على <strong>ملصقات مجانية</strong></a>، و<a href="https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=sec-slow-index-ii&amp;utm_medium=web">تشتري <strong>كتابي</strong></a>، أو <a href="https://winand.at/sql-training/open-online-class">تنضم إلى <strong>دورة تدريبية</strong></a>.</p>
 <p>الاستعلام بطيء لأن البحث بالفهرس يعيد <code>ROWID</code> كثيرة—واحداً لكل موظف من الشركة الأصلية—ويجب على قاعدة البيانات جلبها فرادى. إنها التركيبة المثالية للمكوّنين اللذين يجعلان الفهرس بطيئاً: تقرأ قاعدة البيانات نطاق فهرس واسعاً ويجب أن تجلب صفوفاً كثيرة فرادى.</p>
@@ -150,7 +150,7 @@ Predicate Information (identified by operation id):
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -158,8 +158,8 @@ Predicate Information (identified by operation id):
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

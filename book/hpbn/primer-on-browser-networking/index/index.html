@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -52,7 +52,7 @@
 <p>تطبيقات الويب التي تعمل في المتصفح لا تدير دورة حياة (lifecycle) مآخذ الشبكة (network sockets) الفردية، وهذا أمر جيد. من خلال تأجيل هذا العمل للمتصفح، نمكّنه من أتمتة عدد من تحسينات الأداء (performance optimizations) الحاسمة، مثل إعادة استخدام المآخذ (socket reuse)، وتحديد أولويات الطلبات (request prioritization) والربط المتأخر (late binding)، والتفاوض على البروتوكول (protocol negotiation)، وفرض حدود الاتصال (connection limits)، وأكثر من ذلك بكثير. في الحقيقة، يفصل المتصفح عمداً دورة حياة <em>إدارة الطلبات (request management)</em> عن <em>إدارة المآخذ (socket management)</em>. هذا تمايز دقيق (subtle) لكن حاسم (critical). تُنظَّم المآخذ (sockets) في تجمعات (pools) (الشكل 14-2)، مجمّعة حسب الأصل (origin)، وكل تجمع يفرض حدود الاتصال (connection limits) وقيود الأمان (security constraints) الخاصة به. تُوضَع الطلبات المعلقة (pending requests) في طابور، وتُعطى أولويات، ثم تُربط بمآخذ فردية في التجمع. وبالتالي، ما لم يغلق الخادم (server) الاتصال عمداً، يمكن إعادة استخدام نفس المأخذ (socket) تلقائياً عبر طلبات متعددة! <img src="/arabic-cs-library/images/hpbn/primer-on-browser-networking-1d7d7e4dc5954b7ee5beb4312a660849.svg.svg" alt=""> الشكل 14-2. تجمعات المآخذ (socket pools) المُدارة تلقائياً مشتركة بين جميع عمليات المتصفح (browser processes). الأصل (Origin) ثلاثية من بروتوكول التطبيق (application protocol)، واسم النطاق (domain name)، ورقم المنفذ (port number)—مثلاً، (http, www.example.com, 80) و(https, www.example.com, 443) تُعتبر أصولاً (origins) مختلفة. تجمع المآخذ (Socket pool) مجموعة من المآخذ (sockets) لنفس الأصل (origin). في الممارسة، تحد جميع المتصفحات الرئيسية الحد الأقصى لحجم التجمع بستة مآخذ (sockets). أتمتة تجمع المآخذ (socket pooling) تؤتمت إعادة استخدام اتصالات TCP، مما يوفر فوائد أداء (performance benefits) كبيرة؛ راجع فوائد اتصالات الإبقاء على قيد الحياة (Benefits of Keepalive Connections). ومع ذلك، هذا ليس كل شيء. هذه البنية (architecture) تمكّن أيضاً من عدد من فرص التحسين (optimization opportunities) الإضافية:</p>
 <p>باختصار، حزمة الشبكات (networking stack) في المتصفح هي حليفنا الاستراتيجي في سعينا لتقديم تطبيقات عالية الأداء (high-performance applications). لا يتطلب أي من الوظائف (functionality) التي غطّيناها أي عمل من جانبنا! ومع ذلك، هذا لا يعني أننا لا يمكننا مساعدة المتصفح. قرارات التصميم (design decisions) في تطبيقاتنا التي تحدد أنماط الاتصال (communication patterns) بالشبكة، ونوع ووتيرة عمليات النقل (transfers)، واختيار البروتوكولات (protocols)، وضبط وتحسين حزم خوادمنا (server stacks) تلعب أدواراً حاسمة في الأداء النهائي (end performance) لأي تطبيق.</p>
 <h4>التحسين التخميني (Speculative Networking Optimization) في Google Chrome</h4>
-<p>لقد أثبتنا بالفعل أن حزمة الشبكات (network stack) في متصفح حديث هي أكثر بكثير من مدير مآخذ (socket manager) بسيط. ومع ذلك، حتى ذلك لا يُعطي حقاً لبعض تقنيات التحسين (optimization techniques) التي تؤديها المتصفحات الحديثة. على سبيل المثال، متصفح Google Chrome يصبح أسرع كلما استخدمته. يتعلم Chrome طوبولوجيا (topology) المواقع المزارة (visited sites) وأنماط التصفح (browsing patterns) النموذجية، ثم يستفيد من هذه المعلومات لأداء مجموعة من &quot;التحسينات التخمينية (speculative optimizations)&quot; المصممة للتنبؤ (anticipate) بإجراءات المستخدم المحتملة (likely user actions) والقضاء على زمن انتقال الشبكة (network latency) غير الضروري: DNS pre-resolving وTCP pre-connect وpage pre-rendering، وأكثر. الإجراءات البسيطة، مثل تمرير الفأرة (mouse hover) فوق رابط، يمكن أن تُطلق إشارة من المتصفح إلى &quot;المتنبئ (predictor)&quot; في حزمة الشبكات، الذي قد يختار بعدها أفضل تحسين بناءً على بيانات الأداء (performance data) السابقة! لمزيد من التفاصيل، راجع مناقشتنا السابقة حول <a href="/arabic-cs-library/book/hpbn/primer-on-web-performance/#browser-optimization">تحسين المتصفح (Browser Optimization)</a>. وإذا كنت فضولياً لمعرفة المزيد عن تحسين شبكات Chrome، فراجع &quot;High Performance Networking in Google Chrome&quot;.</p>
+<p>لقد أثبتنا بالفعل أن حزمة الشبكات (network stack) في متصفح حديث هي أكثر بكثير من مدير مآخذ (socket manager) بسيط. ومع ذلك، حتى ذلك لا يُعطي حقاً لبعض تقنيات التحسين (optimization techniques) التي تؤديها المتصفحات الحديثة. على سبيل المثال، متصفح Google Chrome يصبح أسرع كلما استخدمته. يتعلم Chrome طوبولوجيا (topology) المواقع المزارة (visited sites) وأنماط التصفح (browsing patterns) النموذجية، ثم يستفيد من هذه المعلومات لأداء مجموعة من &quot;التحسينات التخمينية (speculative optimizations)&quot; المصممة للتنبؤ (anticipate) بإجراءات المستخدم المحتملة (likely user actions) والقضاء على زمن انتقال الشبكة (network latency) غير الضروري: DNS pre-resolving وTCP pre-connect وpage pre-rendering، وأكثر. الإجراءات البسيطة، مثل تمرير الفأرة (mouse hover) فوق رابط، يمكن أن تُطلق إشارة من المتصفح إلى &quot;المتنبئ (predictor)&quot; في حزمة الشبكات، الذي قد يختار بعدها أفضل تحسين بناءً على بيانات الأداء (performance data) السابقة! لمزيد من التفاصيل، راجع مناقشتنا السابقة حول <a href="/arabic-cs-library/book/hpbn/primer-on-web-performance/index#%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%85%D8%AA%D8%B5%D9%81%D8%AD">تحسين المتصفح (Browser Optimization)</a>. وإذا كنت فضولياً لمعرفة المزيد عن تحسين شبكات Chrome، فراجع &quot;High Performance Networking in Google Chrome&quot;.</p>
 <h2 id="أمان-الشبكة-والعزل-network-security-and-sandboxing">أمان الشبكة والعزل (Network Security and Sandboxing)</h2>
 <p>تأجيل إدارة المآخذ (sockets) الفردية يخدم غرضاً مهماً آخر: يمكّن المتصفح من عزل (sandbox) وفرض مجموعة متسقة من قيود الأمان (security) والسياسات (policy constraints) على كود التطبيق (application code) غير الموثوق. على سبيل المثال، لا يسمح المتصفح بالوصول (API access) المباشر إلى مآخذ الشبكة (network sockets) الخام (raw)، لأن ذلك سيسمح لتطبيق خبيث (malicious application) ببدء اتصالات عشوائية (arbitrary connections) إلى أي مضيف (host)—مثلاً، تشغيل فحص منافذ (port scan)، الاتصال بخادم بريد (mail server) وبدء إرسال رسائل غير مقصودة، وما إلى ذلك. حدود الاتصال (Connection limits) يدير المتصفح جميع تجمعات المآخذ (socket pools) المفتوحة ويفرض حدود الاتصال لحماية كل من العميل (client) والخادم (server) من استنفاد الموارد (resource exhaustion). تنسيق الطلبات (Request formatting) ومعالجة الاستجابات (response processing) ينسّق المتصفح جميع الطلبات الصادرة (outgoing requests) لفرض دلالات بروتوكول (protocol semantics) متسقة وسليمة لحماية الخادم. وبالمثل، يتم فك ترميز الاستجابة (response decoding) تلقائياً لحماية المستخدم من الخوادم الخبيثة (malicious servers). التفاوض على TLS (TLS negotiation) يُجري المتصفح مصافحة TLS (TLS handshake) ويُجري فحوصات التحقق (verification checks) الضرورية للشهادات (certificates). يُحذَّر المستخدم عندما/إذا فشل أي من التحققات—مثلاً، الخادم يستخدم شهادة موقّعة ذاتياً (self-signed certificate). سياسة الأصل نفسه (Same-origin policy) يفرض المتصفح قيوداً على الطلبات التي يمكن للتطبيق بدؤها (initiate) وإلى أي أصل (origin). القائمة السابقة ليست كاملة، لكنها تُبرز مبدأ &quot;أقل امتياز (least privilege)&quot; في العمل. يُعرِض المتصفح فقط واجهات البرمجة (APIs) والموارد (resources) الضرورية لكود التطبيق: يُوفِّر التطبيق البيانات (data) وعنوان URL، والمتصفح ينسّق الطلب (request) ويدير دورة حياة (lifecycle) كل اتصال. تجدر الإشارة إلى أنه لا توجد &quot;سياسة أصل واحد (same-origin policy)&quot; واحدة. بدلاً من ذلك، توجد مجموعة من الآليات (mechanisms) ذات الصلة التي تفرض قيوداً على الوصول إلى DOM (DOM access)، وإدارة حالة ملفات تعريف الارتباط (cookie) والجلسات (session state management)، والشبكات، ومكونات أخرى من المتصفح. يتطلب نقاش كامل حول أمان المتصفح (browser security) كتاباً منفصلاً بذاته. إذا كنت فضولياً، فإن <em>The Tangled Web: A Guide to Securing Modern Web Applications</em> لـ Michal Zalewski هو مورد رائع.</p>
 <h2 id="التخزين-المؤقت-للموارد-وحالة-العميل-resource-and-client-state-caching">التخزين المؤقت للموارد وحالة العميل (Resource and Client State Caching)</h2>
@@ -67,7 +67,7 @@
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -75,8 +75,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

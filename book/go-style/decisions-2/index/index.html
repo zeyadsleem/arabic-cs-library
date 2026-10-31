@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.B55olAsT.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CVEMTEZv.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DvuGziri.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.B8iUwJeL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C_TBKUOx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CASNbxld.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CX9Up9nw.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Ddr5HnAg.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DNHH1Px9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Cp2OxN2B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -327,7 +327,7 @@ func (r *SomeType) SomeLongFunctionName(foo1, foo2, foo3 string,
     // ...
 }
 </code></pre>
-<p>راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index#funcargs">أفضل الممارسات</a> للاطّلاع على بعض الخيارات لتقصير مواضع استدعاء الدوال التي قد تحتوي خلاف ذلك على وسائط كثيرة.</p>
+<p>راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index">أفضل الممارسات</a> للاطّلاع على بعض الخيارات لتقصير مواضع استدعاء الدوال التي قد تحتوي خلاف ذلك على وسائط كثيرة.</p>
 <p>كثيرًا ما يمكن تقصير الأسطر باستخراج متغيّرات محلية.</p>
 <pre><code>// Good:
 local := helper(some, parameters, here)
@@ -521,7 +521,7 @@ func Consumer(r Record) {...} // Makes a copy of r.buf
 <p>لا تستخدم <code>panic</code> في معالجة الأخطاء العادية، بل استخدم <code>error</code> وقيم الإرجاع المتعدّدة. راجع <a href="http://golang.org/doc/effective_go.html#errors">قسم الأخطاء في Effective Go</a>.</p>
 <p>داخل <code>package main</code> وكود التهيئة، فكّر في استخدام <a href="https://pkg.go.dev/github.com/golang/glog#Exit"><code>log.Exit</code></a> للأخطاء التي ينبغي أن تنهي البرنامج (مثل إعدادات غير صالحة)، لأنه في كثير من هذه الحالات لن يساعد تتبّع المكدّس (stack trace) القارئ. ولاحظ أن <a href="https://pkg.go.dev/github.com/golang/glog#Exit"><code>log.Exit</code></a> يستدعي <a href="https://pkg.go.dev/os#Exit"><code>os.Exit</code></a> ولن تُنفَّذ أي دوال مؤجَّلة.</p>
 <p>أما الأخطاء التي تشير إلى حالات &quot;مستحيلة&quot;، أي أخطاء برمجية ينبغي دائمًا اكتشافها أثناء مراجعة الكود و/أو الاختبار، فيجوز للدالة أن تُرجع خطأً أو تستدعي <a href="https://pkg.go.dev/github.com/golang/glog#Fatal"><code>log.Fatal</code></a>.</p>
-<p>راجع أيضًا <a href="/arabic-cs-library/book/go-style/best-practices-2/index#when-to-panic">متى يكون <code>panic</code> مقبولًا</a>.</p>
+<p>راجع أيضًا <a href="/arabic-cs-library/book/go-style/best-practices-2/index">متى يكون <code>panic</code> مقبولًا</a>.</p>
 <p><strong>ملاحظة:</strong> <code>log.Fatalf</code> لا يشير إلى حزمة <code>log</code> في المكتبة القياسية. راجع [#logging].</p>
 <h3 id="دوال-must-must-functions">دوال Must (Must functions)</h3>
 <p>تتبع دوال المساعدة الإعدادية التي توقف البرنامج عند الفشل اصطلاح التسمية (naming) <code>MustXYZ</code> (أو <code>mustXYZ</code>). وينبغي عمومًا استدعاؤها فقط في وقت مبكّر من بدء تشغيل البرنامج، لا على أشياء مثل مدخلات المستخدم حيث تُفضَّل معالجة الأخطاء العادية في Go.</p>
@@ -563,9 +563,9 @@ func TestCreateObject(t *testing.T) {
   // ...
 }
 </code></pre>
-<p>في كلتا الحالتين، تكمن قيمة هذا النمط في إمكانية استدعاء المساعدات في سياق &quot;قيمي&quot;. ولا ينبغي استدعاء هذه المساعدات في مواضع يصعب فيها ضمان اكتشاف الخطأ أو في سياق ينبغي فيه <a href="/arabic-cs-library/book/go-style/decisions-1/index#handle-errors">التحقق من الخطأ</a> (مثل كثير من معالجات الطلبات). وبالنسبة إلى المدخلات الثابتة، يتيح ذلك للاختبارات التأكد بسهولة من أن وسائط <code>Must</code> سليمة التكوين، وبالنسبة إلى المدخلات غير الثابتة، يتيح للاختبارات التحقق من أن الأخطاء <a href="/arabic-cs-library/book/go-style/best-practices-2/index#error-handling">تُعالَج أو تُمرَّر على النحو الصحيح</a>.</p>
+<p>في كلتا الحالتين، تكمن قيمة هذا النمط في إمكانية استدعاء المساعدات في سياق &quot;قيمي&quot;. ولا ينبغي استدعاء هذه المساعدات في مواضع يصعب فيها ضمان اكتشاف الخطأ أو في سياق ينبغي فيه <a href="/arabic-cs-library/book/go-style/decisions-1/index#handle-errors">التحقق من الخطأ</a> (مثل كثير من معالجات الطلبات). وبالنسبة إلى المدخلات الثابتة، يتيح ذلك للاختبارات التأكد بسهولة من أن وسائط <code>Must</code> سليمة التكوين، وبالنسبة إلى المدخلات غير الثابتة، يتيح للاختبارات التحقق من أن الأخطاء <a href="/arabic-cs-library/book/go-style/best-practices-2/index">تُعالَج أو تُمرَّر على النحو الصحيح</a>.</p>
 <p>وعند استخدام دوال <code>Must</code> في اختبار، ينبغي عمومًا <a href="#mark-test-helpers">وسمها كمساعد اختبار</a> وأن تستدعي <code>t.Fatal</code> عند حدوث خطأ (راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index#test-helper-error-handling">معالجة الأخطاء في مساعدات الاختبار</a> لمزيد من الاعتبارات المتعلّقة بذلك).</p>
-<p>ولا ينبغي استخدامها عندما تكون <a href="/arabic-cs-library/book/go-style/best-practices-2/index#error-handling">معالجة الأخطاء العادية</a> ممكنة (بما في ذلك مع إجراء بعض إعادة الهيكلة):</p>
+<p>ولا ينبغي استخدامها عندما تكون <a href="/arabic-cs-library/book/go-style/best-practices-2/index">معالجة الأخطاء العادية</a> ممكنة (بما في ذلك مع إجراء بعض إعادة الهيكلة):</p>
 <pre><code>// Bad:
 func Version(o *servicepb.Object) (*version.Version, error) {
     // Return error instead of using Must functions.
@@ -626,7 +626,7 @@ func (w *Worker) Run() {
 <li><a href="https://dave.cheney.net/2016/12/22/never-start-a-goroutine-without-knowing-how-it-will-stop">Never start a goroutine without knowing how it will stop</a></li>
 <li>Rethinking Classical Concurrency Patterns: <a href="https://drive.google.com/file/d/1nPdvhB0PutEJzdCq5ms6UI58dp50fcAN/view">slides</a>, <a href="https://www.youtube.com/watch?v=5zXAHh5tJqQ">video</a></li>
 <li><a href="https://changelog.com/gotime/165">When Go programs end</a></li>
-<li><a href="/arabic-cs-library/book/go-style/best-practices-2/index#documentation-conventions-contexts">Documentation Conventions: Contexts</a></li>
+<li><a href="/arabic-cs-library/book/go-style/best-practices-2/index">Documentation Conventions: Contexts</a></li>
 </ul>
 <h3 id="الواجهات-interfaces">الواجهات (Interfaces)</h3>
 <p>تجنّب إنشاء الواجهات (interfaces) حتى تنشأ <a href="/arabic-cs-library/book/go-style/guide/index#simplicity">حاجة حقيقية</a>. وركّز على السلوك المطلوب بدلًا من مجرّد أنماط مسماة مجرّدة مثل &quot;service&quot; أو &quot;repository&quot; وما شابه.</p>
@@ -637,9 +637,9 @@ func (w *Worker) Run() {
 <p>صمّم الواجهات لتكون صغيرة لسهولة التنفيذ والتركيب (<a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #78: Minimal Viable Interfaces</a>). ووثّق الواجهات على النحو المناسب، بما في ذلك عقدها وحالاتها الحدّية وأخطاؤها المتوقّعة. وأبقِ أنواع الواجهات غير مصدَّرة إذا كانت تُستخدم داخليًا فقط ضمن الحزمة.</p>
 <p>ينبغي أن يعرّفها مستهلك الواجهة (لا الحزمة التي تنفّذ الواجهة)، مع ضمان أنها تتضمّن فقط الطرق التي يستخدمها فعليًا. ويجوز لحزمة المنتِج تصدير الواجهة إذا كانت الواجهة هي المنتج (بروتوكول شائع) لمنع تضخّم إعادة تعريف الواجهة.</p>
 <p>هناك قول مأثور: ينبغي أن تأخذ الدوال الواجهات كوسائط لكن أن تُرجع أنواعًا ملموسة (<a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #49: Accept Interfaces, Return Concrete Types</a>). فإرجاع الأنواع الملموسة يتيح للمستدعي الوصول إلى كل طريقة وحقل عام في ذلك التنفيذ المحدّد، لا مجرّد مجموعة الطرق المعرّفة في واجهة مختارة مسبقًا. ويمكن للمستدعي رغم ذلك تمرير تلك النتيجة الملموسة إلى أي دالة أخرى تتوقّع واجهة. وأحيانًا يكون إرجاع واجهة مقبولًا لأغراض التغليف (مثل واجهة <code>error</code>)، وبعض الأنماط مثل command وchaining وfactory و<a href="https://en.wikipedia.org/wiki/Strategy_pattern">strategy</a>.</p>
-<p>يوجد نقاش أعمق حول الواجهات في <a href="/arabic-cs-library/book/go-style/best-practices-2/index#interfaces">قسم الواجهات في أفضل الممارسات</a>.</p>
+<p>يوجد نقاش أعمق حول الواجهات في <a href="/arabic-cs-library/book/go-style/best-practices-2/index">قسم الواجهات في أفضل الممارسات</a>.</p>
 <h3 id="الأنواع-العامة-generics">الأنواع العامة (Generics)</h3>
-<p>الأنواع العامة (generics)، وتُسمّى رسميًا &quot;<a href="https://go.dev/design/43651-type-parameters">وسائط الأنواع</a>&quot;، مسموح بها حيث تلبّي متطلبات عملك. وفي كثير من التطبيقات، يعمل النهج التقليدي باستخدام ميزات اللغة الموجودة (الشرائح والخرائط والواجهات وما إلى ذلك) بشكل جيد دون التعقيد الإضافي، فكن حذرًا من الاستخدام المبكّر. راجع النقاش حول <a href="/arabic-cs-library/book/go-style/guide/index#least-mechanism">أقل آلية ممكنة</a>.</p>
+<p>الأنواع العامة (generics)، وتُسمّى رسميًا &quot;<a href="https://go.dev/design/43651-type-parameters">وسائط الأنواع</a>&quot;، مسموح بها حيث تلبّي متطلبات عملك. وفي كثير من التطبيقات، يعمل النهج التقليدي باستخدام ميزات اللغة الموجودة (الشرائح والخرائط والواجهات وما إلى ذلك) بشكل جيد دون التعقيد الإضافي، فكن حذرًا من الاستخدام المبكّر. راجع النقاش حول <a href="/arabic-cs-library/book/go-style/guide/index">أقل آلية ممكنة</a>.</p>
 <p>عند تقديم واجهة برمجية مصدَّرة تستخدم الأنواع العامة، تأكد من توثيقها توثيقًا مناسبًا. ويُشجَّع بشدة على تضمين <a href="/arabic-cs-library/book/go-style/decisions-1/index#examples">أمثلة</a> قابلة للتشغيل ومحفّزة.</p>
 <p>لا تستخدم الأنواع العامة لمجرد أنك تنفّذ خوارزمية أو بنية بيانات لا يهمّها نوع عناصرها. وإذا لم يكن هناك في الممارسة العملية سوى نوع واحد يُنشأ منه، فابدأ بجعل كودك يعمل على ذلك النوع دون استخدام الأنواع العامة إطلاقًا. وسيكون إضافة تعدد الأشكال (polymorphism) لاحقًا أمرًا مباشرًا مقارنةً بإزالة تجريد يتبيّن أنه غير ضروري.</p>
 <p>لا تستخدم الأنواع العامة لاختراع لغات خاصة بمجال معيّن (DSLs). وبوجه خاص، امتنع عن تقديم أطر لمعالجة الأخطاء قد تفرض عبئًا كبيرًا على القرّاء. وفضّل بدلًا من ذلك ممارسات <a href="#errors">معالجة الأخطاء</a> الراسخة. وفي الاختبار، كن حذرًا بشكل خاص من تقديم <a href="#assert">مكتبات تحقق</a> أو أطر تؤدي إلى <a href="#useful-test-failures">حالات فشل اختبار</a> أقل فائدة.</p>
@@ -784,7 +784,7 @@ fmt.Printf(&quot;value '%s' looks like English text&quot;, someText)
 <p>يقدّم Go 1.18 نوع <code>any</code> كـ<a href="https://go.googlesource.com/proposal/+/master/design/18130-type-alias.md">اسم مستعار</a> لـ<code>interface{}</code>. ولأنه اسم مستعار، فإن <code>any</code> يعادل <code>interface{}</code> في كثير من الحالات، وفي حالات أخرى يمكن التبادل بينهما بسهولة عبر تحويل صريح. وفضّل استخدام <code>any</code> في الكود الجديد.</p>
 <h2 id="المكتبات-الشائعة-common-libraries">المكتبات الشائعة (Common libraries)</h2>
 <h3 id="الأعلام-flags">الأعلام (Flags)</h3>
-<p>تستخدم برامج Go في قاعدة كود Google صيغة داخلية من <a href="https://golang.org/pkg/flag/">حزمة <code>flag</code> القياسية</a>. ولها واجهة مشابهة لكنها تتفاهم جيدًا مع أنظمة Google الداخلية. وينبغي أن تفضّل أسماء الأعلام في ملفات Go الثنائية استخدام الشرطات السفلية للفصل بين الكلمات، في حين ينبغي أن تتبع المتغيّرات التي تحمل قيمة العلم نمط أسماء Go القياسي (<a href="/arabic-cs-library/book/go-style/guide/index#mixed-caps">أسماء الحروف المختلطة</a>). وتحديدًا، ينبغي أن يكون اسم العلم بصيغة snake_case، وأن يكون اسم المتغيّر هو الاسم المكافئ بصيغة camelCase.</p>
+<p>تستخدم برامج Go في قاعدة كود Google صيغة داخلية من <a href="https://golang.org/pkg/flag/">حزمة <code>flag</code> القياسية</a>. ولها واجهة مشابهة لكنها تتفاهم جيدًا مع أنظمة Google الداخلية. وينبغي أن تفضّل أسماء الأعلام في ملفات Go الثنائية استخدام الشرطات السفلية للفصل بين الكلمات، في حين ينبغي أن تتبع المتغيّرات التي تحمل قيمة العلم نمط أسماء Go القياسي (<a href="/arabic-cs-library/book/go-style/guide/index">أسماء الحروف المختلطة</a>). وتحديدًا، ينبغي أن يكون اسم العلم بصيغة snake_case، وأن يكون اسم المتغيّر هو الاسم المكافئ بصيغة camelCase.</p>
 <pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
 <span class="hljs-title function_">var</span> (
     pollInterval = flag.<span class="hljs-title class_">Duration</span>(<span class="hljs-string">&quot;poll_interval&quot;</span>, time.<span class="hljs-property">Minute</span>, <span class="hljs-string">&quot;Interval to use for polling.&quot;</span>)
@@ -798,7 +798,7 @@ fmt.Printf(&quot;value '%s' looks like English text&quot;, someText)
 <p>لا يجوز تعريف الأعلام (flags) إلا في <code>package main</code> أو ما يعادلها.</p>
 <p>ينبغي ضبط الحزم عامّة الغرض باستخدام واجهات Go البرمجية، لا من خلال النفاذ مباشرةً إلى واجهة سطر الأوامر؛ فلا تدع استيراد مكتبة يصدّر أعلامًا جديدة كأثر جانبي. أي فضّل وسائط الدوال الصريحة أو الإسناد إلى حقول البنى، أو — بشكل أقل كثيرًا وتحت أدقّ تدقيق — المتغيّرات العامة المصدَّرة. وفي الحالة النادرة جدًا التي يلزم فيها خرق هذه القاعدة، يجب أن يشير اسم العلم بوضوح إلى الحزمة التي يضبطها.</p>
 <p>إذا كانت أعلامك متغيّرات عامة، فضعها في مجموعة <code>var</code> خاصة بها بعد قسم الاستيرادات.</p>
-<p>هناك نقاش إضافي حول أفضل الممارسات لإنشاء <a href="/arabic-cs-library/book/go-style/best-practices-2/index#complex-clis">واجهات سطر أوامر معقّدة</a> بأوامر فرعية.</p>
+<p>هناك نقاش إضافي حول أفضل الممارسات لإنشاء <a href="/arabic-cs-library/book/go-style/best-practices-2/index">واجهات سطر أوامر معقّدة</a> بأوامر فرعية.</p>
 <p>راجع أيضًا:</p>
 <ul>
 <li><a href="https://abseil.io/tips/45">Tip of the Week #45: Avoid Flags, Especially in Library Code</a></li>
@@ -811,8 +811,8 @@ fmt.Printf(&quot;value '%s' looks like English text&quot;, someText)
 <p><strong>نصيحة:</strong> <code>log.Info(v)</code> يعادل <code>log.Infof(&quot;%v&quot;, v)</code>، وينطبق الأمر نفسه على مستويات التسجيل الأخرى. وفضّل النسخة غير المنسّقة عندما لا يكون لديك تنسيق تريد القيام به.</p>
 <p>راجع أيضًا:</p>
 <ul>
-<li>أفضل الممارسات في <a href="/arabic-cs-library/book/go-style/best-practices-2/index#error-logging">تسجيل الأخطاء</a> و<a href="/arabic-cs-library/book/go-style/best-practices-2/index#vlog">مستويات الإسهاب المخصّصة</a></li>
-<li>متى وكيف تُستخدم حزمة log لـ<a href="/arabic-cs-library/book/go-style/best-practices-2/index#checks-and-panics">إيقاف البرنامج</a></li>
+<li>أفضل الممارسات في <a href="/arabic-cs-library/book/go-style/best-practices-2/index">تسجيل الأخطاء</a> و<a href="/arabic-cs-library/book/go-style/best-practices-2/index">مستويات الإسهاب المخصّصة</a></li>
+<li>متى وكيف تُستخدم حزمة log لـ<a href="/arabic-cs-library/book/go-style/best-practices-2/index">إيقاف البرنامج</a></li>
 </ul>
 <h3 id="السياقات-contexts">السياقات (Contexts) <span class="content-anchor" id="contexts"></span></h3>
 <p>تحمل قيم النوع <a href="https://pkg.go.dev/context"><code>context.Context</code></a> بيانات اعتماد أمنية ومعلومات تتبّع ومواعيد نهائية وإشارات إلغاء عبر حدود الواجهات البرمجية والعمليات. وخلافًا لـ C++ وJava، اللتين تستخدمان في قاعدة كود Google تخزينًا محليًا للخيط، تمرّر برامج Go السياقات صراحةً على طول سلسلة استدعاء الدوال كاملة من طلبات RPC وطلبات HTTP الواردة إلى الطلبات الصادرة.</p>
@@ -882,7 +882,7 @@ func Key() string {
 <p>وفيما يلي الأعراف المحدّدة لتحقيق هذا الهدف.</p>
 <h3 id="مكتبات-التحقق-assertion-libraries">مكتبات التحقق (Assertion libraries) <span class="content-anchor" id="assert"></span></h3>
 <p>لا تنشئ &quot;مكتبات تحقق&quot; كمساعدات للاختبار.</p>
-<p>مكتبات التحقق هي مكتبات تحاول الجمع بين التحقق من رسائل الفشل وإنتاجها داخل الاختبار (وإن كانت المزالق نفسها قد تنطبق على مساعدات اختبار أخرى أيضًا). ولمزيد من التفصيل حول الفرق بين مساعدات الاختبار ومكتبات التحقق، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index#test-functions">أفضل الممارسات</a>.</p>
+<p>مكتبات التحقق هي مكتبات تحاول الجمع بين التحقق من رسائل الفشل وإنتاجها داخل الاختبار (وإن كانت المزالق نفسها قد تنطبق على مساعدات اختبار أخرى أيضًا). ولمزيد من التفصيل حول الفرق بين مساعدات الاختبار ومكتبات التحقق، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index">أفضل الممارسات</a>.</p>
 <pre><code class="language-javascript"><span class="hljs-comment">// Bad:</span>
 <span class="hljs-keyword">var</span> obj <span class="hljs-title class_">BlogPost</span>
 assert.<span class="hljs-title class_">IsNotNil</span>(t, <span class="hljs-string">&quot;obj&quot;</span>, obj)
@@ -931,7 +931,7 @@ func TestBlogPost_VeritableRant(t *testing.T) {
 <ul>
 <li><a href="#types-of-equality">مقارنة التساوي والفروق</a></li>
 <li><a href="#print-diffs">طباعة الفروق</a></li>
-<li>لمزيد من التفصيل حول الفرق بين مساعدات الاختبار ومساعدات التحقق، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index#test-functions">أفضل الممارسات</a></li>
+<li>لمزيد من التفصيل حول الفرق بين مساعدات الاختبار ومساعدات التحقق، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index">أفضل الممارسات</a></li>
 <li>قسم <a href="https://go.dev/doc/faq">Go FAQ</a> حول <a href="https://go.dev/doc/faq#testing_framework">testing frameworks</a> وغيابها المتعمّد</li>
 </ul>
 <h3 id="تحديد-الدالة-identify-the-function">تحديد الدالة (Identify the function) <span class="content-anchor" id="identify-the-function"></span></h3>
@@ -995,7 +995,7 @@ if gotDecoded != input {
 }
 </span></code></pre>
 <p>في الاختبار القائم على الجداول، فكّر في استخدام الاختبارات الفرعية واستخدام <code>t.Fatal</code> بدلًا من <code>t.Error</code> و<code>continue</code>. راجع أيضًا <a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #25: Subtests: Making Your Tests Lean</a>.</p>
-<p><strong>أفضل ممارسة:</strong> لمزيد من النقاش حول متى ينبغي استخدام <code>t.Fatal</code>، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index#t-fatal">أفضل الممارسات</a>.</p>
+<p><strong>أفضل ممارسة:</strong> لمزيد من النقاش حول متى ينبغي استخدام <code>t.Fatal</code>، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index">أفضل الممارسات</a>.</p>
 <h3 id="مقارنة-التساوي-والفروق-equality-comparison-and-diffs">مقارنة التساوي والفروق (Equality comparison and diffs) <span class="content-anchor" id="types-of-equality"></span></h3>
 <p>يقيّم المعامل <code>==</code> التساوي باستخدام <a href="http://golang.org/ref/spec#Comparison_operators">مقارنات معرّفة في اللغة</a>. وتُقارن القيم القياسية (الأعداد والمنطقيات وما إلى ذلك) بناءً على قيمها، لكن بعض البنى والواجهات فقط يمكن مقارنتها بهذه الطريقة. وتُقارن المؤشّرات بناءً على ما إذا كانت تشير إلى المتغيّر نفسه، لا بناءً على تساوي القيم التي تشير إليها.</p>
 <p>يمكن لحزمة <a href="https://pkg.go.dev/github.com/google/go-cmp/cmp"><code>cmp</code></a> مقارنة بنى بيانات أكثر تعقيدًا لا يتعامل معها <code>==</code> على النحو المناسب، مثل الشرائح. استخدم <a href="https://pkg.go.dev/github.com/google/go-cmp/cmp#Equal"><code>cmp.Equal</code></a> لمقارنة التساوي و<a href="https://pkg.go.dev/github.com/google/go-cmp/cmp#Diff"><code>cmp.Diff</code></a> للحصول على فرق مقروء بين الكائنات.</p>
@@ -1054,9 +1054,9 @@ if diff := cmp.Diff(want, got, protocmp.Transform()); diff != &quot;&quot; {
 <p>سيمتد الفرق على عدة أسطر، لذا ينبغي طباعة سطر جديد قبل طباعة الفرق.</p>
 <h3 id="دلالات-أخطاء-الاختبار-test-error-semantics">دلالات أخطاء الاختبار (Test error semantics)</h3>
 <p>عندما يُجري اختبار وحدة مقارنات نصية أو يستخدم <code>cmp</code> العادية للتحقق من أن أنواعًا معيّنة من الأخطاء تُرجَع لمدخلات معيّنة، فقد تجد أن اختباراتك هشّة إذا أُعيدت صياغة أي من رسائل الأخطاء تلك في المستقبل. ولأن ذلك قد يحوّل اختبار الوحدة لديك إلى كاشف تغييرات (راجع <a href="https://testing.googleblog.com/2015/01/testing-on-toilet-change-detector-tests.html">TotT: Change-Detector Tests Considered Harmful</a>), فلا تستخدم المقارنة النصية للتحقق من نوع الخطأ الذي تُرجعه دالتك. غير أنه يجوز استخدام المقارنات النصية للتحقق من أن رسائل الأخطاء الآتية من الحزمة قيد الاختبار تحقّق خصائص معيّنة، مثل تضمينها اسم الوسيط.</p>
-<p>تحتوي قيم الأخطاء في Go عادةً على مكوّن موجّه للعين البشرية ومكوّن موجّه لتدفق التحكم الدلالي. وينبغي أن تسعى الاختبارات إلى اختبار المعلومات الدلالية التي يمكن ملاحظتها بشكل موثوق فقط، لا عرض المعلومات الموجّهة لتنقيح البشر، لأن هذه غالبًا ما تكون عرضة للتغييرات المستقبلية. وللحصول على إرشاد حول إنشاء أخطاء ذات معنى دلالي، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index#error-handling">أفضل الممارسات المتعلّقة بالأخطاء</a>. وإذا كان خطأ بمعلومات دلالية غير كافية يأتي من اعتمادية خارج سيطرتك، ففكّر في تقديم تقرير خطأ إلى مالكها للمساعدة في تحسين الواجهة البرمجية، بدلًا من الاعتماد على تحليل نص الخطأ.</p>
+<p>تحتوي قيم الأخطاء في Go عادةً على مكوّن موجّه للعين البشرية ومكوّن موجّه لتدفق التحكم الدلالي. وينبغي أن تسعى الاختبارات إلى اختبار المعلومات الدلالية التي يمكن ملاحظتها بشكل موثوق فقط، لا عرض المعلومات الموجّهة لتنقيح البشر، لأن هذه غالبًا ما تكون عرضة للتغييرات المستقبلية. وللحصول على إرشاد حول إنشاء أخطاء ذات معنى دلالي، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index">أفضل الممارسات المتعلّقة بالأخطاء</a>. وإذا كان خطأ بمعلومات دلالية غير كافية يأتي من اعتمادية خارج سيطرتك، ففكّر في تقديم تقرير خطأ إلى مالكها للمساعدة في تحسين الواجهة البرمجية، بدلًا من الاعتماد على تحليل نص الخطأ.</p>
 <p>داخل اختبارات الوحدة، من الشائع الاهتمام فقط بما إذا حدث خطأ أم لا. وفي هذه الحالة، يكفي اختبار ما إذا كان الخطأ غير nil عندما توقّعت خطأً. وإذا أردت اختبار أن الخطأ يطابق دلاليًا خطأً آخر، ففكّر في استخدام <a href="https://pkg.go.dev/errors#Is"><code>errors.Is</code></a> أو <code>cmp</code> مع <a href="https://pkg.go.dev/github.com/google/go-cmp/cmp/cmpopts#EquateErrors"><code>cmpopts.EquateErrors</code></a>.</p>
-<p><strong>ملاحظة:</strong> إذا استخدم اختبار <a href="https://pkg.go.dev/github.com/google/go-cmp/cmp/cmpopts#EquateErrors"><code>cmpopts.EquateErrors</code></a> لكن كانت كل قيم <code>wantErr</code> لديه إما <code>nil</code> أو <code>cmpopts.AnyError</code>، فإن استخدام <code>cmp</code> يكون <a href="/arabic-cs-library/book/go-style/guide/index#least-mechanism">آلية غير ضرورية</a>. بسّط الكود بجعل حقل want من النوع <code>bool</code>. ويمكنك حينئذٍ استخدام مقارنة بسيطة بـ<code>!=</code>.</p>
+<p><strong>ملاحظة:</strong> إذا استخدم اختبار <a href="https://pkg.go.dev/github.com/google/go-cmp/cmp/cmpopts#EquateErrors"><code>cmpopts.EquateErrors</code></a> لكن كانت كل قيم <code>wantErr</code> لديه إما <code>nil</code> أو <code>cmpopts.AnyError</code>، فإن استخدام <code>cmp</code> يكون <a href="/arabic-cs-library/book/go-style/guide/index">آلية غير ضرورية</a>. بسّط الكود بجعل حقل want من النوع <code>bool</code>. ويمكنك حينئذٍ استخدام مقارنة بسيطة بـ<code>!=</code>.</p>
 <pre><code>// Good:
 err := f(test.input)
 if gotErr := err != nil; gotErr != test.wantErr {
@@ -1309,7 +1309,7 @@ func readFile(t *testing.T, filename string) string {
 }
 </code></pre>
 <p>لا تستخدم هذا النمط عندما يحجب الصلة بين فشل الاختبار والظروف التي أدّت إليه. وتحديدًا، يظلّ الإرشاد الخاص بـ<a href="#assert">مكتبات التحقق</a> ساريًا، ولا ينبغي استخدام <a href="https://pkg.go.dev/testing#T.Helper"><code>t.Helper</code></a> لتنفيذ مثل هذه المكتبات.</p>
-<p><strong>نصيحة:</strong> لمزيد من التفصيل حول الفرق بين مساعدات الاختبار ومساعدات التحقق، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index#test-functions">أفضل الممارسات</a>.</p>
+<p><strong>نصيحة:</strong> لمزيد من التفصيل حول الفرق بين مساعدات الاختبار ومساعدات التحقق، راجع <a href="/arabic-cs-library/book/go-style/best-practices-2/index">أفضل الممارسات</a>.</p>
 <p>على الرغم من أن ما سبق يشير إلى <code>*testing.T</code>، فإن كثيرًا من النصائح يبقى كما هو بالنسبة إلى مساعدات القياس (benchmark) والاختبار العشوائي (fuzz).</p>
 <h3 id="حزمة-الاختبار-test-package">حزمة الاختبار (Test package)</h3>
 <h4>اختبارات في الحزمة نفسها (Tests in the same package)</h4>
@@ -1384,7 +1384,7 @@ package fireworks_test
 			
 			<script>
 				{
-					__sveltekit_1r05sp = {
+					__sveltekit_t48gs0 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1392,8 +1392,8 @@ package fireworks_test
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.B55olAsT.js"),
-						import("../../../../_app/immutable/entry/app.B8iUwJeL.js")
+						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
+						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
