@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -69,7 +69,7 @@
 <p>يعرض <code>aws sns list-topics --region us-east-1 --output json</code> موضوعًا بالـ ARN <code>arn:aws:sns:us-east-1:123456789012:my-frontend-app-alerts</code>.</p>
 <h2 id="الاشتراك-ببريدك-الإلكتروني">الاشتراك ببريدك الإلكتروني</h2>
 <p>اشترك بعنوان بريدك الإلكتروني في الموضوع. بعد تشغيل أمر الاشتراك، افحص صندوق الوارد بحثًا عن رسالة التأكيد وانقر رابط التأكيد.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقق</h3>
 <p>يعرض <code>aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:123456789012:my-frontend-app-alerts --region us-east-1 --output json</code> اشتراكك بـ ARN حقيقي (وليس <code>pending confirmation</code>).</p>
 <h2 id="إنشاء-إنذار-عدد-الأخطاء">إنشاء إنذار عدد الأخطاء</h2>
 <p>أنشئ إنذار CloudWatch باسم <code>my-frontend-app-api-error-count</code> يقوم بما يلي:</p>
@@ -82,7 +82,7 @@
 <li>يرسل إشعارات إلى موضوع SNS عند الانتقالين <code>ALARM</code> و<code>OK</code></li>
 </ul>
 <p>فكّر في أي <code>--comparison-operator</code> تحتاج. فـ«أكبر من 3» ليس مثل «أكبر من أو يساوي 3».</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقق</h3>
 <p>يُرجع <code>aws cloudwatch describe-alarms --alarm-names my-frontend-app-api-error-count --region us-east-1 --output json</code> الإنذار مع:</p>
 <ul>
 <li><code>StateValue</code> بقيمة <code>INSUFFICIENT_DATA</code> (طبيعي لإنذار جديد)</li>
@@ -102,7 +102,7 @@
 <li>يرسل إشعارات إلى موضوع SNS عند الانتقال إلى <code>ALARM</code></li>
 </ul>
 <p>تذكّر: يُقاس <code>Duration</code> في Lambda بالمللي ثانية.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقق</h3>
 <p>يُرجع <code>aws cloudwatch describe-alarms --alarm-names my-frontend-app-api-high-duration --region us-east-1 --output json</code> الإنذار مع:</p>
 <ul>
 <li><code>MetricName</code> بقيمة <code>Duration</code></li>
@@ -116,7 +116,7 @@
 <li>افحص بريدك الإلكتروني بحثًا عن إشعار SNS</li>
 <li>انتظر بضع دقائق — سيعود الإنذار إلى حالته الفعلية في التقييم التالي</li>
 </ol>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقق</h3>
 <ul>
 <li>تلقّيت بريدًا إلكترونيًا من SNS يتضمن تفاصيل الإنذار</li>
 <li>يتضمن البريد اسم الإنذار والسبب وانتقال الحالة</li>
@@ -137,7 +137,7 @@
 };
 </code></pre>
 <p>بعد التحقق من انطلاق الإنذار، <strong>أعد نشر المعالج العامل</strong>. لا تترك دالة معطّلة منشورة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-5">نقطة تحقق</h3>
 <ul>
 <li>انتقل الإنذار من <code>INSUFFICIENT_DATA</code> (أو <code>OK</code>) إلى <code>ALARM</code></li>
 <li>تلقّيت إشعار بريد إلكتروني من SNS</li>
@@ -150,7 +150,7 @@
   --region us-east-1 \
   --output json
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-6">نقطة تحقق</h3>
 <p>تُسرد إنذاران، وكلاهما يشير إلى موضوع SNS نفسه، مع المقاييس والحدود وفترات التقييم الصحيحة.</p>
 <h2 id="ملخص-نقاط-التحقق">ملخّص نقاط التحقق</h2>
 <ul>
@@ -180,7 +180,7 @@
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -188,8 +188,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -264,7 +264,7 @@ prefix_rule(
 <li><strong>التنقيح.</strong> إن لم يُطلق الخطّاف كما هو متوقّع، فتحقّق من صلاحية <code>.claude/settings.json</code> كـ JSON، وتأكّد أن السكربت قابل للتنفيذ، وشغّله مباشرةً بحمولة نموذجية على المدخل القياسي: <code><span class="line"><span style="color:#C5E478;font-style:italic">echo</span><span style="color:#D9F5DD"> '</span><span style="color:#ECC48D">{&quot;tool_input&quot;:{&quot;command&quot;:&quot;git commit --no-verify&quot;}}</span><span style="color:#D9F5DD">'</span><span style="color:#F78C6C"> &lt;/span&gt;</span>
 <span class="line"><span style="color:#7FDBCA"> |</span><span style="color:#82AAFF;font-style:italic"> node</span><span style="color:#ECC48D"> .claude/hooks/block-no-verify.mjs</span></span></code> رمز الخروج <code>0</code> دون أي مخرجات قياسية يعني «اسمح». ورمز الخروج <code>0</code> مع حمولة JSON فيها <code>permissionDecision: &quot;deny&quot;</code> على المخرجات القياسية يعني «احجب». وأي رمز خروج آخر يظهر كخطأ في الخطّاف.</li>
 </ul>
-<h3 id="claude">Claude</h3>
+<h3 id="claude-1">Claude</h3>
 <p>يستطيع Claude فعل ذلك مباشرة لأن خطّافات <code>PreToolUse</code> يمكنها اعتراض <code>Edit</code> و<code>Write</code> قبل تنفيذهما.</p>
 <p>سجّل الخطّاف في <code>.claude/settings.json</code>:</p>
 <pre><code class="language-json"><span class="hljs-punctuation">{</span>
@@ -340,7 +340,7 @@ prefix_rule(
 <blockquote>
 <p><strong>إن كنت تسمح بـ Bash أيضًا، فتذكّر أن Bash مسار منفصل. فالأمر الصدفي يمكنه إعادة كتابة الملفات ما لم تحجبه بأذونات Bash أو بالعزل.</strong></p>
 </blockquote>
-<h3 id="codex">Codex</h3>
+<h3 id="codex-1">Codex</h3>
 <p>خطّافات Codex ما زالت تجريبية، وهي ليست بديلًا عن العزل أو <code>.rules</code>. استخدم العزل لحدود نظام الملفات، و<code>.rules</code> لسياسة الأوامر البسيطة خارج العزل، والخطّافات حين يعتمد القرار على محتوى الأمر أو الفرق الناتج. واعتبارًا من كتابة هذه السطور، تحتاج إلى تفعيل الخطّافات صراحةً في <code>.codex/config.toml</code> قبل أن يعمل أي شيء في هذا القسم (راجع <a href="https://developers.openai.com/codex/hooks">وثائق خطّافات Codex</a> للتركيب الحالي):</p>
 <pre><code class="language-toml"><span class="hljs-section">[features]</span>
 <span class="hljs-attr">codex_hooks</span> = <span class="hljs-literal">true</span>
@@ -446,7 +446,7 @@ prefix_rule(
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -454,8 +454,8 @@ prefix_rule(
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

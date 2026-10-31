@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -166,7 +166,7 @@ pnpm --filter @pulse/legacy dev &amp;
 <p><strong>الوسيط هو الخنّاق</strong></p>
 <p>خادم التطوير في التطبيق الحديث هو نقطة الدخول الوحيدة. وهو يملك قرار التوجيه: الطلبات إلى <code>/legacy/*</code> تُمرَّر إلى الخادم القديم، وكل ما عداها يتولاه التطبيق الحديث. ولتهاجر مسارًا، تتوقف عن تمريره إلى القديم وتضيفه إلى موجّه التطبيق الحديث بدل ذلك. ولا يعرف المستخدم أبدًا أي تطبيق قدّم الصفحة — فبنية URL تبقى كما هي. وفي الإنتاج، سيكون هذا الوسيط وكيلًا عكسيًا (Nginx أو CloudFront أو التوجيه الطرفي في شبكة توصيل المحتوى لديك) لا وسيط Vite للتطوير.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقق</h3>
 <p>التطبيقان متاحان عبر نقطة دخول واحدة عند <code>localhost:5173</code>. والمسارات الحديثة تُصيَّر من تطبيق لوحة التحكم. والمسارات القديمة تُمرَّر عبر الوسيط إلى التطبيق القديم على المنفذ 5174.</p>
 <h2 id="هاجر-مسارا-واحدا">هاجر مسارًا واحدًا</h2>
 <p>خُذ عرض التحليلات القديم واستبدله بحزمة <code>@pulse/analytics</code> الحديثة.</p>
@@ -201,7 +201,7 @@ pnpm --filter @pulse/legacy dev &amp;
 <p><strong>الترحيل عملية مسار واحد في كل مرة</strong></p>
 <p>في مشروع حقيقي، ستهاجر أبسط مسار أو أكثره حركة أولًا — للتحقق من النمط وبناء الثقة. وكل ترحيل طلب سحب منفصل: حدّث الوسيط/التوجيه، وتحقّق من عمل النسخة الحديثة، وأضف إعادة التوجيه من القديم. ويتقلّص التطبيق القديم مع كل طلب سحب. وعندما تُهاجر كل المسارات، تحذف <code>apps/legacy/</code> بالكامل. والانتظام الجوهري هو: لا تهاجر مسارين في طلب السحب نفسه أبدًا. وينبغي أن يكون كل ترحيل قابلًا للرجوع عنه باستقلال.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقق</h3>
 <p>مسار التحليلات مهاجَر بالكامل. والتحليلات القديمة تعيد التوجيه إلى التطبيق الحديث. وبقية المسارات القديمة ما زالت تعمل عبر الوسيط.</p>
 <h2 id="اكتب-أداة-تحويل-برمجي-بـjscodeshift">اكتب أداة تحويل برمجي بـjscodeshift</h2>
 <p>في التطبيق القديم أنماط استيراد تحتاج إلى تحويل لأجل المعمارية الحديثة. وستكتب أداة تحويل برمجي تُؤتمت ذلك.</p>
@@ -353,7 +353,7 @@ pnpm --filter @pulse/legacy dev &amp;
 <p><strong>فحص الأنواع سيفشل هنا</strong></p>
 <p>تحوّل أداة التحويل <code>import { LegacyChart } from &quot;./legacy-chart&quot;</code> إلى <code>import { Chart } from &quot;@pulse/analytics&quot;</code>، لكن التطبيق القديم لا يملك <code>@pulse/analytics</code> كتبعية. وفي ترحيل حقيقي، ستضيف الحزم الحديثة إلى <code>package.json</code> في التطبيق القديم قبل تشغيل فاحص الأنواع. وفي هذا التمرين، يؤكد خطأ الأنواع أن الأداة تنتج المخرَج الصحيح — فقط أرجع الملفات بـ<code>git checkout apps/legacy/src/</code> وانتقل إلى كتابة الاختبارات.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقق</h3>
 <p>تحوّل أداة التحويل الاستيرادات القديمة إلى استيرادات الحزم الحديثة. ويعرض الفرق تغييرات نظيفة ومتوقعة.</p>
 <p><img src="/arabic-cs-library/images/kinney/181d4ee2a16088cc.webp" alt="فرق Git يُظهر تحويلات الاستيراد التي أجرتها أداة التحويل"></p>
 <h2 id="اكتب-اختبارات-لأداة-التحويل">اكتب اختبارات لأداة التحويل</h2>
@@ -415,7 +415,7 @@ pnpm --filter @pulse/legacy dev &amp;
 <p><strong>اختبار أدوات التحويل هو اختبار تحويلات من نص إلى نص</strong></p>
 <p>تقدّم سلسلة نصية مصدرية، وتشغّل التحويل، وتتحقق من خصائص السلسلة الناتجة. ولا يحتاج الاختبار إلى نظام ملفات حقيقي ولا إلى تطبيق يعمل. وهذا يجعل اختبارات أدوات التحويل سريعة وسهلة الكتابة — أضف حالة اختبار لكل حالة حدية تصادفها. وعندما تنتج الأداة مخرَجًا غير صحيح على ملف حقيقي، انسخ القسم المشكِل من ذلك الملف إلى حالة اختبار، وأصلح التحويل، وتحقق من نجاح الاختبار.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقق</h3>
 <p>تنجح اختبارات أداة التحويل. وكل اختبار يتحقق من سيناريو تحويل محدد. والحالات الحدية مغطاة.</p>
 <p><img src="/arabic-cs-library/images/kinney/7b59a6f171e7e252.webp" alt="نتائج اختبارات أداة التحويل تُظهر نجاح كل الاختبارات"></p>
 <h2 id="الحل">الحل</h2>
@@ -437,7 +437,7 @@ pnpm install
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -445,8 +445,8 @@ pnpm install
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

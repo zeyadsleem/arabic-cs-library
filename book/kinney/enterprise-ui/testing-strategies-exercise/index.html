@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -181,7 +181,7 @@ test.<span class="hljs-title function_">describe</span>(<span class="hljs-string
 <p><strong>لماذا نختبر التنقل، لا تصيير المكوّنات</strong></p>
 <p>تتحقق اختبارات الوحدة بـVitest وTesting Library من أن المكوّنات الفردية تُصيّر بشكل صحيح بخصائص محددة. أما اختبارات E2E فتتحقق من <em>التكامل</em> — أن الموجّه يحمّل المسار الكسول الصحيح، وأن MSW يعترض نداء الواجهة البرمجية، وأن المكوّن يجلب البيانات ويعرضها بشكل صحيح، وأن التنقل بعيدًا وعودة لا يكسر الحالة. فهذه هي المفاصل بين الحزم، وهي بالضبط المفاصل التي تنكسر في مستودع أحادي عندما يغيّر أحدهم نوعًا مشتركًا أو يعيد هيكلة الواجهة البرمجية العامة لحزمة.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقّق</h3>
 <p>تنجح ثلاثة اختبارات E2E على الأقل. وهي تغطّي التنقل بين التحليلات والمستخدمين والإعدادات، وتتحقق من تحميل البيانات بشكل صحيح عبر انتقالات المسارات.</p>
 <p><img src="/arabic-cs-library/images/kinney/69c930130eec1050.webp" alt="نتائج اختبارات Playwright تعرض اختبارات ناجحة"></p>
 <h2 id="اكتب-اختبارات-مع-التحقق-من-بيانات-msw">اكتب اختبارات مع التحقق من بيانات MSW</h2>
@@ -224,7 +224,7 @@ test.<span class="hljs-title function_">describe</span>(<span class="hljs-string
 <p>شغّل الاختبارات الجديدة:</p>
 <pre><code class="language-bash">npx playwright <span class="hljs-built_in">test</span> tests/e2e/analytics.spec.ts --config tests/e2e/playwright.config.ts
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقّق</h3>
 <p>تنجح اختبارات التحليلات. وهي تتحقق من أن بيانات MSW المُحاكاة تُصيّر بشكل صحيح، وأن عناصر التحكم التفاعلية في المخطط تعمل.</p>
 <h2 id="سجل-ملفات-har-وأعد-تشغيلها">سجّل ملفات HAR وأعد تشغيلها</h2>
 <p>تلتقط ملفات HAR (أرشيف HTTP) تفاعلات شبكة حقيقية بصيغة JSON. ويستطيع Playwright تسجيلها أثناء تشغيل الاختبار وإعادة تشغيلها لاحقًا لنتائج حتمية.</p>
@@ -286,7 +286,7 @@ test.<span class="hljs-title function_">describe</span>(<span class="hljs-string
 <p><strong>إعادة تشغيل HAR مقابل المحاكاة بـ<code>page.route()</code></strong></p>
 <p>إعادة تشغيل HAR مفيدة عندما تريد التقاط الشكل الدقيق لاستجابات واجهة برمجية حقيقية — بما فيها الترويسات، ورموز الحالة، وتوقيت الاستجابة — دون بناء بيانات محاكاة يدويًا. وهي قيّمة خصوصًا للواجهات المعقّدة بأجسام استجابات متداخلة بعمق. والعيب أن ملفات HAR تتقادم عندما تتغيّر الواجهة البرمجية. أما المحاكاة بـ<code>page.route()</code> فهي أفضل عندما تحتاج تحكمًا دقيقًا في سيناريوهات محددة (حالات الأخطاء، والحالات الحدّية، وبيانات مخصّصة). استخدم HAR لاختبارات «المسار الذهبي» و<code>page.route()</code> لاختبارات الحالات الحدّية.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقّق</h3>
 <p>يوجد ملف HAR في <code>tests/fixtures/</code>. ويعيد اختبار تشغيل HAR لنتائج حتمية دون ضرب معالجات MSW الحيّة. وينجح الاختبار بالتأكيدات نفسها.</p>
 <h2 id="اختبار-العقود">اختبار العقود</h2>
 <p>شغّل كل الاختبارات مرة أخرى:</p>
@@ -298,7 +298,7 @@ test.<span class="hljs-title function_">describe</span>(<span class="hljs-string
 <p>تتحقق اختبارات E2E بواجهات برمجية مُحاكاة من أن واجهتك الأمامية تُصيّر بشكل صحيح بمعطى شكل استجابة محدد. لكنها لا تتحقق من أن الواجهة البرمجية تعيد ذلك الشكل فعلًا. وتسدّ أدوات اختبار العقود مثل Pact هذه الثغرة: فتعلن الواجهة الأمامية «أتوقع أن يعيد <code>GET /api/analytics/summary</code> القيمة <code>{ totalUsers: number }</code>» ويتحقق الخادم من أنه يحقق ذلك العقد. وعندما يغيّر الخادم <code>totalUsers</code> إلى <code>total_users</code>، يفشل اختبار العقد على جانب الخادم — قبل شحن التغيير. وهذا يلتقط انحراف الواجهة البرمجية دون أن يتطلب من الأمام والخلف النشر والاختبار معًا.</p>
 </blockquote>
 <p>هذه نقطة نقاش، لا تمرين عملي. فكّر أين سيعمل اختبار العقود في خط أنابيب CI لديك، وما الذي سيلتقطه وتفوّته اختباراتك الحالية.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقّق</h3>
 <p>تنجح كل اختبارات Playwright. وتستطيع أن تبيّن هرم الاختبارات في مستودع أحادي: اختبارات الوحدة (Vitest) لمنطق المكوّنات، واختبارات E2E (Playwright) لسلوك التكامل، واختبارات العقود (Pact) لتوافق الواجهة البرمجية.</p>
 <p><img src="/arabic-cs-library/images/kinney/8eb6a24cdf17e4e4.webp" alt="تقرير HTML من Playwright مع ملخّص الاختبارات"></p>
 <h2 id="الحل">الحل</h2>
@@ -320,7 +320,7 @@ pnpm install
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -328,8 +328,8 @@ pnpm install
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

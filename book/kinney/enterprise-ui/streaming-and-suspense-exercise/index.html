@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -563,7 +563,7 @@
 <li>يظهر <code>Chart</code> بعد ~800ms</li>
 <li>يظهر <code>BigTable</code> بعد ~2000ms</li>
 </ul>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقق</h3>
 <p>يُحمَّل كل قسم من لوحة التحليلات الآن باستقلال عبر Suspense. فيظهر شريط الإحصاءات ببطاقات مقاييسه الأربع أولًا، ويتبعه المخطط بعد نحو 600ms، ويصل الجدول أخيرًا. ويعرض كل منها عنصر الهيكل العظمي الخاص به أثناء التحميل. والفرق الجوهري عن الخطوة 1: أن حالة التحميل يديرها الآن آلية Suspense في React، لا <code>useState</code> اليدوي في كل مكوّن.</p>
 <p><img src="/arabic-cs-library/images/kinney/0142a98c5bc53abb.webp" alt="شريط الإحصاءات محمَّل بينما المخطط والجدول ما زالا يعرضان هياكل عظمية"></p>
 <p><img src="/arabic-cs-library/images/kinney/0bd9c26954e3e8f5.webp" alt="المخطط محمَّل مع شريط الإحصاءات، والجدول ما زال يُحمَّل"></p>
@@ -615,7 +615,7 @@
 <p><strong>الترطيب</strong></p>
 <p>عندما يتلقى المتصفح HTML الأولي من التصيير المتدفّق من الخادم، يكون ترميزًا ساكنًا: فلا تستجيب الأزرار للنقر، ولا تُشغّل تغييرات الحالة إعادات تصيير، ولا تعمل التأثيرات. والترطيب هو أن يسير React في DOM القائم، ويقارنه بشجرة المكوّنات التي كان سيصيّرها في العميل، و«يتبنّى» عُقد DOM تلك بربط معالجات الأحداث والمراجع وإدارة الحالة. وبعد اكتمال الترطيب، يصير التطبيق تفاعليًا بالكامل. ولهذا يكون التصيير المتدفّق من الخادم قيّمًا حتى قبل انتهاء الترطيب: فيرى المستخدم محتوى حقيقيًا فورًا (HTML مصيَّرًا في الخادم)، ويصير تفاعليًا تدريجيًا مع ترطيب React لكل حدّ Suspense. أما عدم توافق الترطيب—حيث يختلف HTML المصيَّر في الخادم عمّا سيصيّره العميل—فيجعل React يتخلى عن ترميز الخادم ويعيد التصيير من الصفر، ملغيًا فائدة الأداء.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقق</h3>
 <p>فهمت كيف يستخدم <code>renderToPipeableStream</code> حدود Suspense لديك لبثّ HTML تدريجيًا. فالقشرة (الشريط الجانبي، والترويسة، والهياكل العظمية الاحتياطية) تُرسل أولًا، ثم يُبثّ كل حدّ Suspense محلول كوسم <code>&lt;script&gt;</code> استبدالي.</p>
 <h2 id="جرب-مواضع-الحدود">جرّب مواضع الحدود</h2>
 <p>يغيّر موضع حدود Suspense تجربة المستخدم. جرّب تهيئات مختلفة في <code>packages/analytics/src/analytics-dashboard.tsx</code> لتلمس المقايضات.</p>
@@ -672,7 +672,7 @@
 </blockquote>
 <h3 id="جرب-كل-واحدة">جرّب كل واحدة</h3>
 <p>بدّل بين التهيئات A وB وC. وراقب شلال الشبكة في DevTools وانتبه إلى إحساس الصفحة كمستخدم. ثم استقرّ على أي مقاربة تفضّل واتركها في مكانها.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقق</h3>
 <p>جرّبت موضعين مختلفين على الأقل لحدود Suspense ولاحظت كيف يغيّر كل منهما تجربة التحميل. وتستطيع أن تصف بدقة المقايضة بين زمن وصول المحتوى الأول واستقرار التخطيط.</p>
 <h2 id="الحل">الحل</h2>
 <p>إن كنت بحاجة إلى اللحاق، فالحالة المكتملة لهذا التمرين متاحة على الفرع <code>04-monorepos-start</code>:</p>
@@ -693,7 +693,7 @@ pnpm install
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -701,8 +701,8 @@ pnpm install
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

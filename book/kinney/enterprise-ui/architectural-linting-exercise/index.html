@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -244,7 +244,7 @@ pnpm install
        boundaries/element-types
 </code></pre>
 <p>أزل الانتهاك.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقق</h3>
 <p>قواعد أنواع العناصر مُهيّأة. شغّل <code>pnpm turbo lint</code> وتأكد من نجاح كل الحزم دون انتهاكات (بعد إزالة استيرادات الاختبار).</p>
 <p><img src="/arabic-cs-library/images/kinney/f3a1010f7567b214.webp" alt="مخرَج التدقيق يبيّن خطأ انتهاك حدود"></p>
 <h2 id="أضف-قاعدة-no-private">أضف قاعدة <code>no-private</code></h2>
@@ -293,7 +293,7 @@ pnpm install
 <p><strong>كيف تحدّد <code>no-private</code> ما هو خاص</strong></p>
 <p>تنظر القاعدة إلى نقطة دخول الحزمة — حقل <code>main</code> أو <code>exports</code> في <code>package.json</code>. فإن لم يطابق مسار الاستيراد نقطة دخول مُعلَنة، عُدّ خاصًا. وبما أن <code>@pulse/analytics</code> لا تملك سوى <code>&quot;main&quot;: &quot;./src/index.ts&quot;</code>، فالاستيراد الصالح الوحيد هو <code>import { ... } from &quot;@pulse/analytics&quot;</code>. وأي مسار أعمق مثل <code>@pulse/analytics/src/stats-bar</code> خاص. وهذا هو الحدّ نفسه الذي عرّفته معماريًا حين اخترت تصدير <code>AnalyticsDashboard</code> فقط من <code>index.ts</code> — والآن يفرضه المدقّق.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقق</h3>
 <p>ينجح <code>pnpm turbo lint</code> دون انتهاكات. الاستيراد من <code>@pulse/analytics</code> يعمل، لكن الاستيراد من <code>@pulse/analytics/src/stats-bar</code> يُفعّل خطأ تدقيق. حدّ الواجهة البرمجية العامة مفروض.</p>
 <h2 id="تحقق-من-التهيئة-الكاملة">تحقّق من التهيئة الكاملة</h2>
 <p>شغّل تمريرة التدقيق الكاملة للتأكد من أن كل شيء نظيف:</p>
@@ -341,7 +341,7 @@ pnpm install
   },
 ];
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقق</h3>
 <p>تهيئة الحدود الكاملة في مكانها. يمكن للتطبيقات أن تستورد من الحزم. ويمكن للحزم أن تستورد من حزم أخرى. ولا يستطيع أحد استيراد الداخليات الخاصة. المعمار مُرمَّز في الأدوات.</p>
 <p><img src="/arabic-cs-library/images/kinney/9d8939a6a97a079d.webp" alt="مخرَج تدقيق نظيف دون انتهاكات حدود"></p>
 <h2 id="الحل">الحل</h2>
@@ -363,7 +363,7 @@ pnpm install
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -371,8 +371,8 @@ pnpm install
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

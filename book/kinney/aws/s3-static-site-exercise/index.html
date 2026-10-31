@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -170,7 +170,7 @@
     <span class="hljs-string">&quot;BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false&quot;</span> \
   --region us-east-1
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقّق</h3>
 <p>شغّل ما يلي وتأكد من أن الإعدادات الأربعة كلها <code>false</code>:</p>
 <pre><code class="language-bash">aws s3api get-public-access-block \
   --bucket my-frontend-app-assets \
@@ -195,14 +195,14 @@
   }&#x27;</span> \
   --region us-east-1
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقّق</h3>
 <p>شغّل <code>aws s3api get-bucket-policy --bucket my-frontend-app-assets --region us-east-1 --output json</code> وتأكد من أن السياسة مطبقة.</p>
 <h2 id="ارفع-ملفاتك">ارفع ملفاتك</h2>
 <p>زامن مجلد <code>build/</code> المحلي مع الدلو:</p>
 <pre><code class="language-bash">aws s3 <span class="hljs-built_in">sync</span> ./build s3://my-frontend-app-assets \
   --region us-east-1
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقّق</h3>
 <p>شغّل <code>aws s3 ls s3://my-frontend-app-assets/ --region us-east-1</code> وتأكد من رؤية الملفات الأربعة كلها: <code>index.html</code> و<code>styles.css</code> و<code>app.js</code> و<code>error.html</code>.</p>
 <p>المخرجات المتوقعة:</p>
 <pre><code>2026-03-18 12:00:00        456 app.js
@@ -216,7 +216,7 @@
   --index-document index.html \
   --error-document error.html
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقّق</h3>
 <p>شغّل ما يلي وتأكد من ضبط مستندي الفهرس والخطأ:</p>
 <pre><code class="language-bash">aws s3api get-bucket-website \
   --bucket my-frontend-app-assets \
@@ -238,7 +238,7 @@
 <pre><code>http://my-frontend-app-assets.s3-website-us-east-1.amazonaws.com
 </code></pre>
 <p>ينبغي أن ترى صفحة «مرحبًا من S3» مع طابع زمني يعرض الوقت الحالي. ينبغي أن يكون CSS مطبّقًا (خلفية داكنة ونص موسّط) وينبغي أن يعمل JavaScript (يتحدّث الطابع الزمني في كل تحميل للصفحة).</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-5">نقطة تحقّق</h3>
 <ul>
 <li>تُحمَّل الصفحة وتعرض «مرحبًا من S3»</li>
 <li>يُطبَّق CSS (خلفية داكنة ونص فاتح)</li>
@@ -252,7 +252,7 @@
   --versioning-configuration Status=Enabled \
   --region us-east-1
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-6">نقطة تحقّق</h3>
 <pre><code class="language-bash">aws s3api get-bucket-versioning \
   --bucket my-frontend-app-assets \
   --region us-east-1 \
@@ -275,7 +275,7 @@
   --region us-east-1 \
   --output json
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-7">نقطة تحقّق</h3>
 <p>ينبغي أن ترى نسختين من <code>index.html</code>—الأصلية والمحدّثة. وينبغي أن يكون حقل <code>IsLatest</code> في النسخة الأحدث <code>true</code>.</p>
 <h2 id="تشخيص-الأعطال">تشخيص الأعطال</h2>
 <ul>
@@ -331,7 +331,7 @@ aws s3 rb s3://my-frontend-app-assets --region us-east-1
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -339,8 +339,8 @@ aws s3 rb s3://my-frontend-app-assets --region us-east-1
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

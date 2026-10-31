@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -81,7 +81,7 @@
   --output json
 </code></pre>
 <p>راجع <a href="https://stevekinney.com/courses/aws/uploading-and-organizing-files">تحميل الملفات وتنظيمها</a> لخيارات مثل ترويسات <code>--cache-control</code>.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقّق</h3>
 <pre><code class="language-bash">aws s3 <span class="hljs-built_in">ls</span> s3://my-frontend-app-assets \
   --region us-east-1
 </code></pre>
@@ -94,7 +94,7 @@
 <li>احفظ <code>Id</code> الخاص بـOAC من الاستجابة.</li>
 </ul>
 <p>راجع <a href="https://stevekinney.com/courses/aws/origin-access-control-for-s3">التحكّم في الوصول إلى الأصل في S3</a>.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقّق</h3>
 <pre><code class="language-bash">aws cloudfront list-origin-access-controls \
   --region us-east-1 \
   --output json \
@@ -113,7 +113,7 @@
 </ul>
 <p>راجع <a href="https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution">إنشاء توزيع CloudFront</a> و<a href="https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing">صفحات الأخطاء المخصّصة وتوجيه SPA</a>.</p>
 <p>احفظ معرّف التوزيع واسم النطاق من الاستجابة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقّق</h3>
 <p>انتظر النشر:</p>
 <pre><code class="language-bash">aws cloudfront <span class="hljs-built_in">wait</span> distribution-deployed \
   --<span class="hljs-built_in">id</span> YOUR_DISTRIBUTION_ID \
@@ -132,7 +132,7 @@
 <li><strong>الشرط</strong>: <code>StringEquals</code> على <code>AWS:SourceArn</code> مطابقًا لـARN توزيعك.</li>
 </ul>
 <p>راجع <a href="https://stevekinney.com/courses/aws/origin-access-control-for-s3">التحكّم في الوصول إلى الأصل في S3</a> و<a href="https://stevekinney.com/courses/aws/bucket-policies-and-public-access">سياسات الحاوية والوصول العام</a>.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقّق</h3>
 <p>ينبغي أن يظل CloudFront يعمل:</p>
 <pre><code class="language-bash">curl -I https://YOUR_CLOUDFRONT_DOMAIN/index.html
 </code></pre>
@@ -151,7 +151,7 @@ curl -I https://YOUR_CLOUDFRONT_DOMAIN/any/spa/route
 <span class="hljs-comment"># Direct S3 access is blocked</span>
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-5">نقطة تحقّق</h3>
 <ul>
 <li><code>curl -I https://YOUR_CLOUDFRONT_DOMAIN</code> يعيد <code>200 OK</code></li>
 <li><code>curl -I https://YOUR_CLOUDFRONT_DOMAIN/any/spa/route</code> يعيد <code>200 OK</code> (توجيه SPA)</li>
@@ -180,7 +180,7 @@ curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 <ol>
 <li>انتظر دقيقة، ثم أعد تحميل <code>https://YOUR_CLOUDFRONT_DOMAIN</code>. ينبغي أن ترى المحتوى المحدّث.</li>
 </ol>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-6">نقطة تحقّق</h3>
 <p>محتواك المحدّث متاح مباشرةً على <code>https://YOUR_CLOUDFRONT_DOMAIN</code>. ودورة النشر (المزامنة + الإبطال) تعمل من طرف إلى طرف.</p>
 <h2 id="تشخيص-الأعطال">تشخيص الأعطال</h2>
 <ul>
@@ -204,7 +204,7 @@ curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -212,8 +212,8 @@ curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

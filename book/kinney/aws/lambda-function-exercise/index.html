@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -82,7 +82,7 @@ npm install -D typescript @types/aws-lambda @types/node
 <li>ينبغي أن يكون جسم الاستجابة كائن JSON يحتوي <code>greeting</code> (سلسلة مثل <code>&quot;Hello, World!&quot;</code>) و<code>timestamp</code> (سلسلة تاريخ بصيغة ISO 8601)</li>
 </ol>
 <p>أضف سكربت بناء إلى <code>package.json</code> يشغّل <code>tsc</code>، ثم ابنِ المشروع.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقّق</h3>
 <p>تشغيل <code>npm run build</code> يُنتج <code>dist/handler.js</code> بلا أخطاء TypeScript.</p>
 <h2 id="إنشاء-دور-التنفيذ">إنشاء دور التنفيذ</h2>
 <p>أنشئ ملف سياسة ثقة (<code>trust-policy.json</code>) يسمح لخدمة Lambda (<code>lambda.amazonaws.com</code>) بافتراض الدور.</p>
@@ -97,7 +97,7 @@ npm install -D typescript @types/aws-lambda @types/node
 <li>ARN الخاص بالسياسة المُدارة هو <code>arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole</code></li>
 <li>لقد غطّيت العلاقة بين الأدوار وسياسات الثقة وسياسات الأذونات في <a href="https://stevekinney.com/courses/aws/iam-mental-model">النموذج الذهني لـIAM</a> و<a href="https://stevekinney.com/courses/aws/writing-your-first-iam-policy">كتابة أول سياسة IAM لك</a></li>
 </ul>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقّق</h3>
 <p>يعيد <code>aws iam get-role --role-name my-frontend-app-lambda-role</code> الدور بسياسة الثقة الصحيحة. ويعرض <code>aws iam list-attached-role-policies --role-name my-frontend-app-lambda-role</code> السياسة <code>AWSLambdaBasicExecutionRole</code>.</p>
 <h2 id="التضمين-والنشر">التضمين والنشر</h2>
 <p>أنشئ ملف zip الخاص بالنشر من المخرجات المُصرّفة:</p>
@@ -107,7 +107,7 @@ npm install -D typescript @types/aws-lambda @types/node
 <li>استخدم <code>aws lambda create-function</code> مع اسم الدالة وبيئة التشغيل وARN الدور ومسار المعالج وملف zip و<code>--architectures arm64</code></li>
 </ol>
 <p>ينبغي أن يكون مسار المعالج <code>handler.handler</code>—فكلمة <code>handler</code> الأولى هي اسم الملف (بدون <code>.js</code>)، والثانية هي اسم الدالة المُصدَّرة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقّق</h3>
 <p>يعيد <code>aws lambda get-function --function-name my-frontend-app-api --region us-east-1</code> تهيئة الدالة عارضًا <code>nodejs22.x</code> كبيئة تشغيل وARN دور التنفيذ لديك.</p>
 <h2 id="استدعاء-الدالة">استدعاء الدالة</h2>
 <p>أنشئ ملف حدث اختبار (<code>test-event.json</code>) يحاكي طلب GET مع معامل الاستعلام <code>name=Lambda</code>:</p>
@@ -124,11 +124,11 @@ npm install -D typescript @types/aws-lambda @types/node
 <span class="hljs-punctuation">}</span>
 </code></pre>
 <p>استدعِ الدالة باستخدام سطر الأوامر واقرأ ملف الاستجابة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقّق</h3>
 <p>يحتوي ملف الاستجابة على كائن JSON فيه <code>statusCode: 200</code> وجسم يتضمّن، عند تحليله، <code>greeting: &quot;Hello, Lambda!&quot;</code> و<code>timestamp</code> صالحًا.</p>
 <h2 id="الاستدعاء-دون-معامل-اسم">الاستدعاء دون معامل اسم</h2>
 <p>أنشئ حدث اختبار ثانيًا بلا <code>queryStringParameters</code> (أو احذف الحقل كليًا) واستدعِ الدالة مرة أخرى.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-5">نقطة تحقّق</h3>
 <p>تتضمّن الاستجابة <code>greeting: &quot;Hello, World!&quot;</code>—أي أن قيمتك الافتراضية تعمل بشكل صحيح.</p>
 <h2 id="قراءة-السجلات">قراءة السجلات</h2>
 <p>بعد استدعاء الدالة، تحقّق من أن السجلات تتدفق إلى CloudWatch. وتأكّد من وجود مجموعة السجلات <code>/aws/lambda/my-frontend-app-api</code>:</p>
@@ -137,7 +137,7 @@ npm install -D typescript @types/aws-lambda @types/node
   --region us-east-1 \
   --output json
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-6">نقطة تحقّق</h3>
 <p>مجموعة السجلات موجودة وتحتوي على تدفّق سجلات واحد على الأقل مع أحداث من استدعاءاتك.</p>
 <h2 id="ملخص-نقاط-التحقق">ملخّص نقاط التحقّق</h2>
 <ul>
@@ -168,7 +168,7 @@ npm install -D typescript @types/aws-lambda @types/node
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -176,8 +176,8 @@ npm install -D typescript @types/aws-lambda @types/node
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -147,7 +147,7 @@ pnpm install
 <p><strong>لماذا خصائص CSS المخصّصة بدلًا من ثوابت JavaScript</strong></p>
 <p>ثلاثة أسباب. أولًا، تتوارث خصائص CSS المخصّصة عبر DOM: يمكن للعنصر الأب أن يتجاوز <code>--color-primary</code>، فيلتقط كل مكوّن فرعي يشير إليه القيمة الجديدة دون أي تمرير props أو مزوّدات سياق. ثانيًا، تتيح السمات عبر خصائص <code>data-theme</code>: يمكنك تعريف <code>[data-theme=&quot;dark&quot;] { --color-background: #0f172a; }</code> وتبديل السمات بتغيير خاصية واحدة على العنصر الجذري. ثالثًا، تعمل مع أي أسلوب تنسيق — أصناف Tailwind المساعدة، أو الأنماط المضمّنة، أو وحدات CSS، أو CSS العادي — لأنها تعيش في محرّك أنماط المتصفح لا في JavaScript.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقق</h3>
 <p>افتح أدوات المطوّر في المتصفح على التطبيق العامل (<code>pnpm dev</code> من جذر مساحة العمل) وافحص العنصر <code>:root</code>. ينبغي أن ترى كل الخصائص المخصّصة <code>--color-*</code> و<code>--space-*</code> و<code>--radius-*</code> مدرجة ضمن الأنماط المحسوبة للعنصر.</p>
 <h2 id="اربط-المكونات-بالـ-tokens">اربط المكوّنات بالـ tokens</h2>
 <p>حدّث الآن المكوّنات لتشير إلى خصائص CSS المخصّصة بدلًا من القيم المثبّتة.</p>
@@ -236,7 +236,7 @@ pnpm install
 <p><strong>هذه هي آلية الحوكمة</strong></p>
 <p>قبل هذه الخطوة، كان تغيير اللون الرئيسي يتطلّب العثور على كل مكوّن يثبّته وتحديث كل واحد منها على حدة. أما الآن، فتغيير <code>--color-primary</code> في ملف واحد يتوارث عبر كل مكوّن يشير إليه. ولم يعد ملف الـ tokens زينة — بل صار المصدر الوحيد للحقيقة في قيم الألوان، تفرضه آلية CSS في المتصفح.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقق</h3>
 <p>تُعرض لوحة المعلومات كما كانت تمامًا — الألوان نفسها والتخطيط نفسه. الفرق بنيوي: فالألوان تتدفّق الآن من <code>tokens.css</code> عبر خصائص CSS المخصّصة إلى أنماط المكوّنات. وتغيير قيمة token واحدة في <code>tokens.css</code> يؤثر تأثيرًا مرئيًا في كل مكوّن يستخدمها.</p>
 <h2 id="أضف-اختبارات-الانحدار-البصري">أضف اختبارات الانحدار البصري</h2>
 <p>يحل ربط الـ tokens بالمكوّنات مشكلة الاتساق، لكنه يُدخل خطرًا جديدًا: تغيير token واحدة صار يؤثر في الواجهة كلها. تحتاج إلى وسيلة تتحقّق من أن تغييرات الـ tokens تُنتج النتيجة البصرية <em>المقصودة</em> ولا شيء غيرها. وتفعل مقارنة لقطات الشاشة في Playwright ذلك تلقائيًا.</p>
@@ -298,7 +298,7 @@ test.<span class="hljs-title function_">describe</span>(<span class="hljs-string
 <p><strong>علم <code>--update-snapshots</code> يدوي عن قصد</strong></p>
 <p>يتطلّب تحديث اللقطات الأساسية قرارًا متعمّدًا: «نعم، هكذا ينبغي أن تبدو الواجهة الآن». وهذا يمنع الانحراف العرَضي للأساس. وفي CI، تُشغَّل الاختبارات <em>دون</em> <code>--update-snapshots</code>، لذا يفشل البناء عند أي تغيير بصري حتى يحدّث أحدهم الأساس صراحةً ويُودع لقطات الشاشة المرجعية الجديدة.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقق</h3>
 <p>اختبارات الانحدار البصري أصبحت جاهزة. تغيير قيمة token في <code>tokens.css</code> يُسبّب فشل اختبار مع فروق لقطة شاشة. وتحديث اللقطات الأساسية يتطلّب علم <code>--update-snapshots</code> صريحًا. ونظام التصميم الآن محوكَم على ثلاثة مستويات: الـ tokens تعرّف القيم، والمكوّنات تشير إليها، واختبارات لقطات الشاشة تتحقّق من الناتج المعروض.</p>
 <h2 id="الحل">الحل</h2>
 <p>إذا احتجت إلى اللحاق بالركب، فالحالة المكتملة لهذا التمرين متاحة على الفرع <code>07-cicd-start</code>:</p>
@@ -319,7 +319,7 @@ pnpm install
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -327,8 +327,8 @@ pnpm install
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

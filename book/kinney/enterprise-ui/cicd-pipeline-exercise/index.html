@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -263,7 +263,7 @@ pnpm install
 <p><strong>ميزانيات الأداء تجعل قرارات المعمار قابلة للقياس</strong></p>
 <p>ترتبط ميزانية CLS ارتباطًا مباشرًا بموضع حدّ Suspense من التمرين 3 — فحدود كثيرة مستقلة تسبب انزياحات في التخطيط. وتلتقط ميزانية الوزن الكلي بالبايت تضخّم الاعتمادات الذي قد يفوت الفحص الساكن المعماري من التمرين 6 (فقد تكون الحزمة اعتمادًا صالحًا لكنها كبيرة أكثر من اللازم). وتُغلق هذه الميزانيات حلقة التغذية الراجعة: فلقرارات المعمار نتائج أداء قابلة للقياس، ويفرض CI الحدود.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقّق</h3>
 <p>تهيئة Lighthouse CI صالحة. وتعرّف التحقّقات ميزانيات أداء ملموسة. وتعتمد مهمة <code>lighthouse</code> على اكتمال مهمة <code>build</code> أولًا (عبر <code>needs: build</code>).</p>
 <h2 id="مراجعة-سير-العمل-الكامل">مراجعة سير العمل الكامل</h2>
 <p>تشكّل المهام الثلاث مخطط اعتماد. فمهمة <code>build</code> تشغّل بوابة الجودة المتتابعة. ومهمة <code>test</code> تستخدم استراتيجية مصفوفة لتشغيل اختبارات كل حزمة على التوازي. وتعتمد مهمة <code>lighthouse</code> على اكتمال <code>build</code> أولًا.</p>
@@ -309,7 +309,7 @@ pnpm install
 <pre><code class="language-bash">npx yaml-lint .github/workflows/ci.yml
 </code></pre>
 <p>أو الصقه في محرّر سير العمل في GitHub (تبويب Actions في المستودع) لفحص أخطاء الصيغة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقّق</h3>
 <p>صيغة YAML لسير عمل CI صالحة. وتغطّي فحص الأنواع والفحص الساكن والاختبار والبناء وميزانيات الأداء. ويتولّى Turborepo التخزين المؤقت داخل كل مهمة. والتخزين المؤقت البعيد مهيّأ لمشاركة المخرجات عبر التشغيلات.</p>
 <p><img src="/arabic-cs-library/images/kinney/255f86829c46782e.webp" alt="نظرة عامة على سير عمل CI في GitHub Actions"></p>
 <p><img src="/arabic-cs-library/images/kinney/6da1d3f7cffb34a1.webp" alt="تهيئة Lighthouse CI وميزانيات الأداء"></p>
@@ -332,7 +332,7 @@ pnpm install
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -340,8 +340,8 @@ pnpm install
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

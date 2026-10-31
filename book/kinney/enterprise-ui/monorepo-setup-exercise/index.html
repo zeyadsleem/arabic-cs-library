@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -212,7 +212,7 @@ Cached:    6 cached, 6 total
 </ol>
 <p>فإن طابقت التجزئة تشغيلة سابقة، استعاد Turborepo المخرجات المخزّنة (<code>outputs</code>، أي مجلد <code>dist/</code>) وأعاد تشغيل المخرجات المسجّلة stdout/stderr بدل تنفيذ الأمر. والمخزن محلي افتراضيًا (يُحفظ في <code>node_modules/.cache/turbo</code>)، لكن يمكن مشاركته عبر عوامل CI بالتخزين المؤقت البعيد.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقّق</h3>
 <p><code>pnpm turbo build</code> بمخزن مؤقت نظيف يبني كل شيء. والتشغيلة الثانية تعرض <code>FULL TURBO</code> وتكتمل في أقل من ثانية.</p>
 <p><img src="/arabic-cs-library/images/kinney/97f966da08c122d2.webp" alt="أول بناء بـturbo يعرض حالات cache miss لكل الحزم"></p>
 <p><img src="/arabic-cs-library/images/kinney/72f4d6eb0a1c7233.webp" alt="البناء الثاني بـturbo يعرض FULL TURBO مع كل حالات cache hit"></p>
@@ -238,7 +238,7 @@ Cached:    6 cached, 6 total
 <p>لأن التجزئة تضم تجزئات الاعتمادات. فعندما تتغيّر <code>@pulse/ui</code>، تتغيّر تجزئتها. و<code>@pulse/analytics</code> تعتمد على <code>@pulse/ui</code>، فتضم تجزئة مدخلاتها تجزئة <code>@pulse/ui</code> — التي تغيّرت. وتستمر السلسلة صعودًا في الرسم البياني. وهذا صحيح: فتغيير في <code>@pulse/ui</code> قد يؤثر في مخرجات بناء أي حزمة تستوردها. والتحسين الآمن الوحيد هو تخطي الحزم التي يستحيل إثبات تأثرها — أي الحزم التي لا مسار اعتماد يصل بها إلى الحزمة المتغيرة.</p>
 </blockquote>
 <p>أعد تغييرك في <code>packages/ui/src/button.tsx</code> (أزل التعليق) وشغّل <code>pnpm turbo build</code> مجددًا. ينبغي أن يكون <code>FULL TURBO</code> — فقد عادت الملفات إلى الحالة المخزّنة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقّق</h3>
 <p>بعد تغيير <code>packages/ui</code>، تظهر <code>@pulse/shared</code> وحدها كحالة cache hit. ويُعاد بناء كل ما هو أسفل <code>@pulse/ui</code>. وبعد التراجع، يُستعاد المخزن المؤقت.</p>
 <h2 id="افحص-رسم-الاعتمادات">افحص رسم الاعتمادات</h2>
 <p>يستطيع Turborepo عرض رسم المهام الذي يبنيه.</p>
@@ -260,7 +260,7 @@ Cached:    6 cached, 6 total
 <pre><code class="language-bash">pnpm turbo build --filter=@pulse/analytics... --graph=graph-analytics.html
 </code></pre>
 <p>يولّد هذا رسمًا يعرض فقط الرسم الفرعي المتصل بـ<code>@pulse/analytics</code> واعتماداتها.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقّق</h3>
 <p>تستطيع تصوّر رسم الاعتمادات وتحديد أي الحزم أعلى وأسفل أي حزمة معينة.</p>
 <pre><code>graph TD
     Dashboard[&quot;@pulse/dashboard#build&quot;]
@@ -307,7 +307,7 @@ pnpm install
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -315,8 +315,8 @@ pnpm install
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -82,7 +82,7 @@
 <li><strong>استجابات الأخطاء المخصّصة</strong>: اربط كلاً من <code>403</code> و<code>404</code> بـ<code>/index.html</code> مع رمز استجابة <code>200</code> ومدة تخزين مؤقت للأخطاء <code>10</code> ثوانٍ.</li>
 </ul>
 <p>اكتب تهيئة التوزيع الكاملة بصيغة JSON واستخدم <code>aws cloudfront create-distribution --distribution-config file://distribution-config.json</code>.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقّق</h3>
 <p>يعيد أمر <code>create-distribution</code> معرّف توزيع <code>Id</code> و<code>DomainName</code>. احفظ كليهما. وينبغي أن تكون <code>Status</code> هي <code>&quot;InProgress&quot;</code>. انتظر النشر:</p>
 <pre><code class="language-bash">aws cloudfront <span class="hljs-built_in">wait</span> distribution-deployed \
   --<span class="hljs-built_in">id</span> YOUR_DISTRIBUTION_ID \
@@ -97,7 +97,7 @@
 <li><strong>الشرط</strong>: <code>StringEquals</code> على <code>AWS:SourceArn</code> مطابقًا لـARN توزيعك (<code>arn:aws:cloudfront::123456789012:distribution/YOUR_DISTRIBUTION_ID</code>).</li>
 </ul>
 <p>طبّق السياسة عبر <code>aws s3api put-bucket-policy</code>.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقّق</h3>
 <p>اختبر أن CloudFront يقدّم محتواك:</p>
 <pre><code class="language-bash">curl -I https://YOUR_DISTRIBUTION_DOMAIN/index.html
 </code></pre>
@@ -113,7 +113,7 @@
     <span class="hljs-string">&quot;BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true&quot;</span> \
   --region us-east-1
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقّق</h3>
 <p>تحقّق من أن CloudFront لا يزال يعمل بعد إعادة تفعيل حجب الوصول العام:</p>
 <pre><code class="language-bash">curl -I https://YOUR_DISTRIBUTION_DOMAIN/index.html
 </code></pre>
@@ -123,7 +123,7 @@
 <pre><code class="language-bash">curl -I https://YOUR_DISTRIBUTION_DOMAIN/dashboard/settings
 </code></pre>
 <p>ينبغي أن تحصل على <code>200 OK</code> مع <code>content-type: text/html</code>. وهذا يؤكّد أن استجابة الخطأ المخصّصة تعمل—فـCloudFront يقدّم <code>index.html</code> للمسارات المفقودة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقّق</h3>
 <p>افتح نطاق توزيعك في متصفّح وانتقل إلى مسار SPA. ينبغي أن تُحمّل الصفحة بشكل صحيح، وألّا يُنتج التحديث خطأ 403 أو 404.</p>
 <h2 id="إرفاق-سياسة-ترويسات-الاستجابة">إرفاق سياسة ترويسات الاستجابة</h2>
 <p>أرفق السياسة المُدارة <code>SecurityHeadersPolicy</code> (<code>67f7725c-6f97-4210-82d7-5512b31e9d03</code>) بسلوك التخزين المؤقت الافتراضي:</p>
@@ -132,7 +132,7 @@
 <li>أضف <code>ResponseHeadersPolicyId</code> إلى <code>DefaultCacheBehavior</code>.</li>
 <li>حدّث التوزيع عبر <code>aws cloudfront update-distribution</code>، مستخدمًا <code>ETag</code> من الجلب.</li>
 </ul>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-5">نقطة تحقّق</h3>
 <p>بعد نشر التوزيع، تحقّق من ترويسات الأمان:</p>
 <pre><code class="language-bash">curl -I https://YOUR_DISTRIBUTION_DOMAIN/index.html
 </code></pre>
@@ -185,7 +185,7 @@ curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -193,8 +193,8 @@ curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

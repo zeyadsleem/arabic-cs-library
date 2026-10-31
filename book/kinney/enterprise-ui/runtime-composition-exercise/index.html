@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -116,7 +116,7 @@ pnpm dev
 <p>رأيت التطبيق العامل في المتصفح وفهمت التهيئة التي تشغّله: <code>remotes</code> لدى المضيف وهي تشير إلى عنوان البيان، و<code>exposes</code> لدى الوحدة البعيدة وهي تعلن وحداتها العامة، والاستيراد الديناميكي المتأخر في المضيف، والحدّ غير المتزامن في <code>index.tsx</code>.</p>
 <h2 id="تفاوض-الاعتمادات-المشتركة">تفاوض الاعتمادات المشتركة</h2>
 <p>يستخدم كل من المضيف والوحدة البعيدة React. وبلا تهيئة الاعتمادات المشتركة، سيحزم كل منهما نسخته الخاصة—وهو ما يكسر الخطافات والسياق وكل ما يعتمد على نسخة React واحدة.</p>
-<h3 id="ما-الذي-تنظر-إليه">ما الذي تنظر إليه</h3>
+<h3 id="ما-الذي-تنظر-إليه-1">ما الذي تنظر إليه</h3>
 <p>في ملفي تهيئة rsbuild (<a href="https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/rsbuild.config.ts"><code>host/rsbuild.config.ts</code></a> و<a href="https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/rsbuild.config.ts"><code>remote-analytics/rsbuild.config.ts</code></a>)، ابحث عن تهيئة <code>shared</code>. ويضبط الملفان <code>singleton: true</code> و<code>eager: true</code> على كل الاعتمادات المشتركة:</p>
 <p><em>rsbuild.config.ts (shared)</em></p>
 <pre><code class="language-typescript"><span class="hljs-attr">shared</span>: {
@@ -153,7 +153,7 @@ pnpm dev
 <p>وهذا مقصود: فقد رفضت الوحدة البعيدة إصدار React المتاح قبل أن تُصيَّر أي واجهة. وهكذا تلتقط انحراف الإصدارات بين وحدات بعيدة تُنشر باستقلال.</p>
 <p><img src="/arabic-cs-library/images/kinney/e30f5dd1ded90d7d.webp" alt="صفحة فارغة بعد خطأ عدم توافق الإصدار"></p>
 <p><strong>أزل الحقلين وأعد التهيئة الأصلية قبل المتابعة.</strong> أوقف خوادم التطوير وشغّل <code>pnpm dev</code> مرة أخرى لالتقاط التهيئة المُرجَعة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقق</h3>
 <p>ينبغي أن تكون الطرفية نظيفة: بلا أخطاء وحدات مشتركة. ولا تُحمَّل إلا نسخة واحدة من React. وإن كانت React DevTools مثبَّتة لديك، فسترى شجرة React واحدة تمتد عبر مكونات المضيف والوحدة البعيدة معًا.</p>
 <blockquote>
 <p><strong>رسائل <code>[Federation Runtime] Warn</code></strong></p>
@@ -204,7 +204,7 @@ pnpm dev
 <p>عندما ينادي المضيف <code>createContext(...)</code>، يعود إليه كائن JavaScript محدد—لنسمّه <code>ContextA</code>. وعندما تنادي الحزمة المبنية منفصلةً في الوحدة البعيدة <code>createContext(...)</code> كذلك (أو تستورد ما يبدو أنه السياق نفسه من ملف مشترك)، يعود إليها كائن JavaScript <em>مختلف</em> هو <code>ContextB</code>. ويعمل خُطّاف <a href="https://react.dev/reference/react/useContext"><code>useContext</code></a> في React بالصعود في شجرة المكوّنات للعثور على <code>&lt;Context.Provider&gt;</code> يكون كائن سياقه <code>===</code> للكائن الممرَّر. فـ<code>&lt;AuthContext.Provider&gt;</code> لدى المضيف يوفّر <code>ContextA</code>؛ أما <code>useContext(AuthContext)</code> لدى الوحدة البعيدة فيطلب <code>ContextB</code>. ولا يتطابقان أبدًا—فتقرأ الوحدة البعيدة القيمة الافتراضية دائمًا.</p>
 <p>قد تظن: «صدّر السياق من <code>@pulse/shared</code> واستورده في الموضعين». حتى هذا لن يعمل: فهوية سياق React تقوم على <em>نسخة الوحدة</em>، لا على النوع. فأنواع TypeScript تُمحى وقت التصريف؛ وما يهم وقت التشغيل هو هل تلقّى جزءا الشيفرة <em>كائن JavaScript نفسه</em>. ومع اتحاد الوحدات، ما لم تُعلَن حزمة كاعتماد مشترك أحادي النسخة، يقيّمها المضيف والوحدة البعيدة باستقلال—فيُشغَّل <code>createContext()</code> مرتين، منتجًا كائنين متمايزين. ونقل <code>createContext</code> إلى حزمة مشتركة لا يفيد إلا إن كانت تلك الحزمة نفسها وحدة مشتركة أحادية النسخة.</p>
 </blockquote>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقق</h3>
 <p>فهمت لماذا تعرض لوحة التحليلات <strong>Not authenticated</strong>: فأشجار سياق React لا تمتد عبر حدود الاتحاد. ولدى المضيف بيانات المصادقة، لكن الوحدة البعيدة لا تستطيع الوصول إليها عبر آليات React المدمجة.</p>
 <h2 id="التواصل-العابر-للحدود">التواصل العابر للحدود</h2>
 <p>الحل هو استخدام مكتبة إدارة حالة مستقلة عن إطار العمل يستطيع المضيف والوحدة البعيدة مشاركتها. و<code>nanostores</code> مثبَّتة بالفعل في <code>@pulse/shared</code>، وكل ما تحتاجه هو إنشاء المخزن وربطه.</p>
@@ -302,7 +302,7 @@ pnpm dev
 </blockquote>
 <p>وهذا هو الإدراك الجوهري: <strong>الحالة المستقلة عن إطار العمل (nanostores، وBroadcastChannel، والأحداث المخصصة) تعبر الحدود التي لا تستطيع الحالة الخاصة بإطار العمل (سياق React) عبورها</strong>—لكن فقط إن كانت الوحدة التي تنشئ الحالة مشتركة بين الجانبين.</p>
 <p>أوقف خوادم التطوير (<code>Ctrl+C</code>) وشغّل <code>pnpm dev</code> مرة أخرى لالتقاط الملف الجديد، والتصدير الجديد، والاعتماد المثبَّت حديثًا. ثم افتح <a href="http://localhost:3000/">http://localhost:3000</a>.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقق</h3>
 <p>تعرض لوحة التحليلات الآن شارة خضراء <strong>«Viewing as: Grace Hopper»</strong> بدل الشارة الكهرمانية «Not authenticated». فسياق المصادقة يتدفق من المضيف إلى الوحدة البعيدة عبر مخزن nanostores المشترك.</p>
 <p><img src="/arabic-cs-library/images/kinney/257dcc36abbba701.webp" alt="التطبيق بعد الإصلاح يعرض Viewing as Grace Hopper"></p>
 <h2 id="أهداف-إضافية">أهداف إضافية</h2>
@@ -378,7 +378,7 @@ pnpm dev
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -386,8 +386,8 @@ pnpm dev
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

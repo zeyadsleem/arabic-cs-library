@@ -1,0 +1,395 @@
+const s="kinney",n="self-testing-ai-agents",a="وكلاء ذكاء اصطناعي يختبرون أنفسهم",e="instructions-that-wire-the-agent-in",t="كتابة تعليمات جيدة",l=[{depth:2,id:"القاعدة",text:"القاعدة"},{depth:2,id:"ما-الذي-تستبعده",text:"ما الذي تستبعده"},{depth:2,id:"ما-الذي-يتضمنه",text:"ما الذي يتضمّنه"},{depth:2,id:"مرتكز-ما-معنى-النجاح",text:"مرتكز «ما معنى النجاح»"},{depth:2,id:"مثال-غير-ناجح-قبل-وبعد",text:"مثال غير ناجح، قبل وبعد"},{depth:2,id:"كيف-ينطبق-هذا-على-الوكلاء-الآخرين",text:"كيف ينطبق هذا على الوكلاء الآخرين"},{depth:2,id:"ضبط-الأذونات",text:"ضبط الأذونات"},{depth:3,id:"claude",text:"Claude"},{depth:3,id:"codex",text:"Codex"},{depth:2,id:"استخدام-الخطافات-لفحوص-السياسة-وقت-التشغيل",text:"استخدام الخطّافات لفحوص السياسة وقت التشغيل"},{depth:3,id:"ميكانيكا-الخطافات-التي-ينبغي-أن-تعرفها-قبل-الأمثلة",text:"ميكانيكا الخطّافات التي ينبغي أن تعرفها قبل الأمثلة"},{depth:3,id:"claude-1",text:"Claude"},{depth:3,id:"codex-1",text:"Codex"},{depth:2,id:"قراءات-إضافية",text:"قراءات إضافية"}],p=`<blockquote>
+<p><strong>لنتحدّث عمّا <em>لا</em> ينبغي فعله.</strong></p>
+<p>كتابة مجموعة تعليمات مثالية فنّ بحدّ ذاته. تركيزنا اليوم على ما تفعله حين لا تعطي تعليماتك <em>النتائج</em> التي تتوقّعها، وكيف تبني نظامًا يفرض تفضيلنا. ومع ذلك، من المنطقي أن ننظر في بعض الأنماط والأنماط المضادّة كي نكون على الصفحة نفسها، وكي نفهم <em>لماذا</em> نفعل ما نفعله.</p>
+</blockquote>
+<p>إن كنت قد استخدمت <a href="https://docs.claude.com/en/docs/claude-code/overview">Claude Code</a>، أو <a href="https://cursor.com/">Cursor</a>، أو Codex أكثر من عصر واحد، فقد كتبت شكلًا من أشكال ملف التعليمات. <a href="https://docs.claude.com/en/docs/claude-code/memory"><code>CLAUDE.md</code></a>، <code>AGENTS.md</code> — كلها الفكرة نفسها بأسماء ملفات مختلفة. ملف markdown في جذر المستودع يقرأه الوكيل قبل أن يفعل أي شيء آخر.</p>
+<p>كتبت الكثير من هذه، ومعظمها كان <em>سيئًا</em>. لا سيئًا بمعنى «المعلومة الخاطئة»، بل سيئًا بمعنى «لم يستطع الوكيل أن يفعل شيئًا بما كتبته».</p>
+<p>هذا الدرس هو القاعدة الوحيدة التي أريدك أن تأخذها معك عن ملفات التعليمات. يمكن لدورات أخرى أن تعلّمك التصنيف الكامل لأنماط <a href="https://docs.claude.com/en/docs/claude-code/memory"><code>CLAUDE.md</code></a>. سنركّز على شيء واحد: <strong>كيف تستخدم ملف التعليمات لربط الوكيل بحلقة التغذية الراجعة التي سنقضي بقيّة اليوم في بنائها</strong>.</p>
+<h2 id="القاعدة">القاعدة</h2>
+<blockquote>
+<p>أي شيء لا يستطيع الوكيل التصرّف فيه آليًا لا مكان له في ملف التعليمات.</p>
+</blockquote>
+<p>هذه هي. هذه هي القاعدة كلها. إن لم تستطع تخيّل الوكيل يقرأ سطرًا ويفعل شيئًا محدّدًا في الثلاثين ثانية التالية بسببه، فالسطر يشغل مساحة.</p>
+<h2 id="ما-الذي-تستبعده">ما الذي تستبعده</h2>
+<p>معظم ما يكتبه الناس في ملفات التعليمات، بصراحة. فقد تبيّن أن التعليمات الغامضة لا تنفع البشر ولا وكلاء الذكاء الاصطناعي الذين يتظاهرون بأنهم بشر.</p>
+<ul>
+<li><strong>«اكتب شيفرة نظيفة».</strong> نظيفة بمقياس مَن؟ لا يملك الوكيل أي معيار.</li>
+<li><strong>«اتّبع أفضل الممارسات».</strong> ممارسات مَن؟ أفضل الممارسات لأي منظومة، وأي عصر، وأي فريق؟</li>
+<li><strong>«استخدم أسماء متغيّرات جيدة».</strong> هذا تفضيل جمالي مُتنكّر في هيئة توجيه.</li>
+<li><strong>«كن موجزًا».</strong> سيكون الوكيل موجزًا في ردّ واحد ومطنبًا في التالي.</li>
+<li><strong>«فكّر بعناية قبل إجراء التغييرات».</strong> إنه نموذج لغوي كبير. ليس فيه رافعة «فكّر بعناية أكبر» يمكنك سحبها من ملف markdown.</li>
+</ul>
+<p>لا أنقد هذه لأنها <em>خاطئة</em> — فهي ليست خاطئة تمامًا. إنها فقط غير قابلة للتنفيذ. لا يستطيع الوكيل أن يعرف هل اتّبعها. ولا تستطيع أنت أن تعرف هل اتّبعها. إنها انطباعات، والانطباعات لا تصمد إلى الجلسة التالية.</p>
+<p>العلامة الأخرى أن تجد نفسك تكتب تعليمات هي في الحقيقة تعليمات <em>لنفسك</em> — أشياء كنت تتمنّى أنك تذكّرتها. مكانها قائمة تحقّق أو قالب مراجعة شيفرة، لا طلب الوكيل.</p>
+<h2 id="ما-الذي-يتضمنه">ما الذي يتضمّنه</h2>
+<p>الخبر الجيد أن القاعدة مولّدة لا مقصورة على المنع. فحين تكتب فقط أشياء يستطيع الوكيل التصرّف فيها، ينفتح أمامك كثير من المفيد.</p>
+<p>أشياء <em>يستطيع</em> الوكيل التصرّف فيها آليًا:</p>
+<ul>
+<li>«شغّل <code>npm run test</code> قبل أن تعلن انتهاء المهمة. وإن فشل شيء، فاقرأ مخرجات الفشل وأصلحه قبل أن تعود بالنتيجة.»</li>
+<li>«اكتب اختبارًا فاشلًا قبل أن تكتب التنفيذ. أول التزام في المهمة ينبغي أن يكون الاختبار.»</li>
+<li>«حين يفشل اختبار Playwright، اقرأ ملف التتبّع في <code>playwright-report/trace.zip</code> قبل أن تخمّن إصلاحًا.»</li>
+<li>«لا تستخدم <code>page.waitForTimeout</code> أبدًا. إن أغراك ذلك، فاستخدم <code>page.waitForResponse</code> أو <code>getByRole</code> مع <code>expect</code> بدلًا منه.»</li>
+<li>«حالة <code>green</code> في هذه الشيفرة تعني: أن تنتهي <code>npm run typecheck</code> و<code>npm run lint</code> و<code>npm run test</code> جميعًا بالرمز صفر. لا تقل إن مهمة انتهت حتى تخضرّ الثلاثة. وإن أضفت الطبقة الثابتة لاحقًا في الدورة، فمدّد القائمة بـ <code>npm run knip</code> و<code>npm run pre-push</code>.»</li>
+</ul>
+<p>لاحظ القاسم المشترك. كل واحد منها يشير إلى أمر محدّد، أو مسار ملف محدّد، أو واجهة برمجية محدّدة. لا شيء يحتاج تفسيرًا. يقرأ الوكيل القاعدة فيمتثل أو لا يمتثل، ويمكنك أن تعرف أيّهما من الفرق.</p>
+<p>في Shelf، تأتي هذه القواعد الملموسة من ملفات حقيقية مباشرة. فأوامر «النجاح يعني النجاح» تعيش في <code>package.json</code>، والقواعد الأقوى تشير إلى مواضع فعلية في الشجرة مثل <code>src/lib/components</code> أو <code>tests/</code> بدلًا من أفكار مبهمة مثل «مجلد المكوّنات». وإن لم تستطع قاعدة أن تسمّي الأمر أو المسار الذي تعتمد عليه، فهي على الأرجح ما زالت غامضة أكثر من اللازم.</p>
+<h2 id="مرتكز-ما-معنى-النجاح">مرتكز «ما معنى النجاح»</h2>
+<p>إن كنت ستضع شيئًا واحدًا فقط في قواعد وكيلك بعد هذه الورشة، فليكن هذا: <strong>تعريف لما يعنيه «النجاح» في هذه الشيفرة، مع الأوامر الدقيقة.</strong></p>
+<p>نسخة تقوم بالعمل:</p>
+<pre><code class="language-markdown"><span class="hljs-section"># Shelf Starter Instructions</span>
+
+Shelf is the starter repository for the <span class="hljs-strong">**Self-Testing AI Agents**</span> course. It is a real SvelteKit + TypeScript book application, not a generated scaffold.
+
+<span class="hljs-section">## What &quot;done&quot; means</span>
+
+A task is not done until all three exit zero, in this order:
+
+<span class="hljs-bullet">1.</span> <span class="hljs-code">\`npm run typecheck\`</span>
+<span class="hljs-bullet">2.</span> <span class="hljs-code">\`npm run lint\`</span>
+<span class="hljs-bullet">3.</span> <span class="hljs-code">\`npm run test\`</span>
+
+Do not report a task complete with any of these failing. If you later add the static layer, extend this list with <span class="hljs-code">\`npm run knip\`</span> and <span class="hljs-code">\`npm run pre-push\`</span>. If a failure looks unrelated, say so explicitly and link the failing test name in your summary.
+</code></pre>
+<p>هذا المقطع وحده يلتقط من مخرجات الوكيل السيئة أكثر من أي عدد من توجيهات «اكتب شيفرة نظيفة». إنه آلي. وقابل للفحص. ويُرمّز الحلقة.</p>
+<h2 id="مثال-غير-ناجح-قبل-وبعد">مثال غير ناجح، قبل وبعد</h2>
+<p>هذا ملف <code>CLAUDE.md</code> حقيقي كنت سأكتبه قبل عامين. ولست فخورًا به.</p>
+<pre><code class="language-markdown"><span class="hljs-section"># Project Guidelines</span>
+
+<span class="hljs-bullet">-</span> Write clean, readable code
+<span class="hljs-bullet">-</span> Follow best practices for TypeScript
+<span class="hljs-bullet">-</span> Use descriptive variable names
+<span class="hljs-bullet">-</span> Add comments where appropriate
+<span class="hljs-bullet">-</span> Test your changes
+<span class="hljs-bullet">-</span> Consider edge cases
+<span class="hljs-bullet">-</span> Be mindful of performance
+</code></pre>
+<p>كل واحدة من تلك النقاط صحيحة. وكل واحدة منها أيضًا عديمة النفع للوكيل. لا أمر يُشغَّل، ولا ملف يُفتح، ولا قاعدة تفشل بصوت عالٍ حين تُخترق.</p>
+<p>وهذا هو النصف الافتتاحي من ملف <code>CLAUDE.md</code> الحالي في Shelf:</p>
+<pre><code class="language-markdown"><span class="hljs-section"># Shelf Starter Instructions</span>
+
+Shelf is the starter repository for the <span class="hljs-strong">**Self-Testing AI Agents**</span> course. It is a real SvelteKit + TypeScript book application, not a generated scaffold.
+
+<span class="hljs-section">## What &quot;done&quot; means</span>
+
+A task is not done until all three exit zero, in this order:
+
+<span class="hljs-bullet">1.</span> <span class="hljs-code">\`npm run typecheck\`</span>
+<span class="hljs-bullet">2.</span> <span class="hljs-code">\`npm run lint\`</span>
+<span class="hljs-bullet">3.</span> <span class="hljs-code">\`npm run test\`</span>
+
+Do not report a task complete with any of these failing. If you later add the static layer, extend this list with <span class="hljs-code">\`npm run knip\`</span> and <span class="hljs-code">\`npm run pre-push\`</span>. If a failure looks unrelated, say so explicitly and link the failing test name in your summary.
+
+<span class="hljs-section">## Routes</span>
+
+<span class="hljs-bullet">-</span> Public: <span class="hljs-code">\`/\`</span>, <span class="hljs-code">\`/login\`</span>, <span class="hljs-code">\`/design-system\`</span>, <span class="hljs-code">\`/playground\`</span>
+<span class="hljs-bullet">-</span> Protected: <span class="hljs-code">\`/search\`</span>, <span class="hljs-code">\`/shelf\`</span>, <span class="hljs-code">\`/goals\`</span>, <span class="hljs-code">\`/admin\`</span> — gate server-side on <span class="hljs-code">\`locals.user\`</span>, never with client guards
+<span class="hljs-bullet">-</span> Do not reintroduce <span class="hljs-code">\`src/routes/demo/\`</span> or any generated starter pages
+<span class="hljs-bullet">-</span> New routes must match the Shelf product domain (books, shelves, ratings)
+
+<span class="hljs-section">## How tests get written</span>
+
+<span class="hljs-bullet">-</span> Write a failing test before the implementation. Commit the test first.
+<span class="hljs-bullet">-</span> Unit tests live next to the file under test as <span class="hljs-code">\`&lt;name&gt;.test.ts\`</span> and run with Vitest.
+<span class="hljs-bullet">-</span> End-to-end tests live in <span class="hljs-code">\`tests/end-to-end/\`</span> and run with Playwright.
+<span class="hljs-bullet">-</span> Seed JSON lives in <span class="hljs-code">\`tests/data/\`</span>. Later labs introduce <span class="hljs-code">\`tests/fixtures/\`</span> for HARs and other artifacts. Share data from those paths instead of redefining it per spec.
+
+<span class="hljs-section">## Playwright locator rules</span>
+
+<span class="hljs-bullet">-</span> <span class="hljs-code">\`getByRole\`</span> first. <span class="hljs-code">\`getByLabel\`</span> or <span class="hljs-code">\`getByText\`</span> second. <span class="hljs-code">\`data-testid\`</span> only when semantics genuinely don&#x27;t exist.
+<span class="hljs-bullet">-</span> Never use raw CSS or XPath selectors in specs.
+<span class="hljs-bullet">-</span> Never use <span class="hljs-code">\`page.waitForTimeout\`</span> or <span class="hljs-code">\`page.waitForLoadState(&#x27;networkidle&#x27;)\`</span>. Use <span class="hljs-code">\`expect(locator).toBeVisible()\`</span>, <span class="hljs-code">\`page.waitForResponse\`</span>, or <span class="hljs-code">\`page.waitForRequest\`</span>.
+<span class="hljs-bullet">-</span> When a Playwright test fails, open <span class="hljs-code">\`playwright-report/index.html\`</span> and its trace before proposing a fix.
+</code></pre>
+<p>يستمر الملف الانطلاقي المشحون بقواعد نصوص واجهة المستخدم وقائمة قصيرة «لا تفعل»، وستنمّي الدورة الملف عبر المختبرات اللاحقة بأقسام عن المصادقة، والتهيئة بالبيانات، وملفات HAR، وإتاحة الوصول، وفرز الأعطال، والتحليل الثابت، والخطّافات. المهم في هذا الدرس هو النمط: كل قسم يسمّي أوامر أو مسارات أو واجهات برمجية أو تعديلات محرّمة بعينها.</p>
+<p>لاحظ عائلة القواعد الأخيرة في الملف الحقيقي. فملفات التعليمات يجب أن تُبقي الوكيل صادقًا في أكثر من الأوامر وقواعد التدقيق — يجب أيضًا أن تمنعه من تسريب السقالات إلى المنتج. فالوكيل الذي يكتب بلطف «Loading seeded fixtures…» في صفحة رفّ حقيقية ليس بارعًا؛ إنه ينزف طبقة الاختبار إلى سطح المنتج. وقاعدة واحدة قابلة للفحص آليًا تمنع ذلك («لا تذكر Playwright أو البيانات المزروعة أو معرّفات الاختبار أو ملفات HAR أو مواد الدورة في نصوص الصفحات المعروضة») بطريقة لا تستطيع «أبقِ الواجهة نظيفة» أن تمنعها.</p>
+<p>هذا هو الشكل نفسه الذي عليه بقية القواعد في الملف. فهو يسمّي صنفًا محدّدًا من السلاسل النصية التي يجب ألّا ينتجها الوكيل، ويمكنك رصد المخالفة بقراءة الفرق. وهو أيضًا بالضبط نوع القاعدة التي سيطلب منك مختبر هذا القسم إضافتها إلى تعليمات وكيلك.</p>
+<p>كل سطر في النسخة الثانية شيء يستطيع الوكيل <em>فعله</em>. النسخة الأولى عبارة عن انطباع. والنسخة الثانية حلقة.</p>
+<h2 id="كيف-ينطبق-هذا-على-الوكلاء-الآخرين">كيف ينطبق هذا على الوكلاء الآخرين</h2>
+<p>النمط نفسه يعمل في <a href="https://cursor.com/">Cursor</a> (<code>.cursor/rules/*.mdc</code>)، وCodex (<a href="https://developers.openai.com/codex/guides/agents-md"><code>AGENTS.md</code></a> بالإضافة إلى <a href="https://developers.openai.com/codex/rules"><code>.rules</code></a>)، وCopilot (<code>.github/copilot-instructions.md</code>). تتغيّر أسماء الملفات، ويتغيّر المجلد، ويتغيّر تركيب تحديد النطاق. أما القاعدة فلا تتغيّر. وإن كان ملف تعليماتك مليئًا بالصفات، فستعاني سوءًا أيًّا كان الوكيل الذي يقرأه.</p>
+<p>يستحق Codex إشارة خاصة لأنه يقسّم المشكلة إلى قسمين:</p>
+<ul>
+<li><code>AGENTS.md</code> هو حيث تعيش تعليمات المشروع</li>
+<li>ملفات <code>.rules</code> هي حيث تعيش سياسة الموافقة على الأوامر خارج العزل</li>
+</ul>
+<p>هذا تمييز مهم. فـ <code>AGENTS.md</code> يخبر Codex <em>كيف يتصرّف داخل المستودع</em>. و<code>.rules</code> تخبر Codex <em>أي الأوامر المصعّدة يجوز له تشغيلها خارج العزل</em>.</p>
+<p>سنعود إلى ملفات التعليمات في كل درس تقريبًا من هنا فصاعدًا. فـ<a href="https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy">تسلسل المحدّدات الهرمي</a> ينتهي قاعدةً في هذا الملف. و<a href="https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails">إعداد التدقيق</a> ينتهي قاعدةً في هذا الملف. و<a href="https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort">أمر التكامل المستمر المعتمد</a> ينتهي «معنى النجاح» في هذا الملف. فملف التعليمات هو حيث <em>تُسمّى</em> للوكيل بقية حلقة الورشة.</p>
+<h2 id="ضبط-الأذونات">ضبط الأذونات</h2>
+<p>الأذونات هي النقطة التي يتوقّف عندها «من فضلك لا تلمس هذا» عن كونه طلبًا مؤدّبًا ليصبح حدًّا فعليًا. فإن كان ملف محظورًا حقًا، فلا تخفِ القاعدة في النثر. ضعها في نموذج وصول الوكيل كي تفشل القراءة أو التعديل قبل أن يصيرا فرقًا.</p>
+<p>استخدم الأذونات للحدود الثابتة:</p>
+<ul>
+<li>أسرار يجب ألّا يقرأها الوكيل أبدًا</li>
+<li>ملفات إعداد ينبغي أن يتعامل معها الوكيل كقراءة فقط</li>
+<li>مخرجات مولّدة يجب ألّا يعيد الوكيل كتابتها بالخطأ</li>
+</ul>
+<h3 id="claude">Claude</h3>
+<p>يمنحك Claude Code قواعد أذونات محدّدة النطاق بالمسار في <code>.claude/settings.json</code> أو <code>.claude/settings.local.json</code>.</p>
+<p>إن أردت أن يبقى Claude بعيدًا عن الأسرار كليًا، فارفض استدعاءات <code>Read(...)</code> المعنية:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;deny&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Read(./.env)&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Read(/content/private/**)&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Read(//Users/you/.ssh/**)&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>وإن أردت أن <em>يرى</em> Claude ملفًا لكن لا يعيد كتابته أبدًا، فارفض أدوات جهة الكتابة بدلًا من ذلك:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;deny&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-string">&quot;Edit(/eslint.config.js)&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-string">&quot;Edit(/eslint.config.ts)&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-string">&quot;Edit(/.eslintrc*)&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-string">&quot;Write(/src/generated/**)&quot;</span>
+    <span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>هذا المثال الثاني هو النمط الشائع: اجعل المستودع قابلًا للقراءة على نطاق واسع، ثم اقتطع بضعة مسارات للقراءة فقط أو محظورة كليًا.</p>
+<p>الفارق الدقيق المهم: قواعد <code>Read(...)</code> و<code>Edit(...)</code> و<code>Write(...)</code> في Claude تنطبق على أدوات Claude المدمجة. وهي <em>لا</em> تمنع عملية Bash فرعية من تنفيذ <code>cat .env</code> أو <code>sed -i eslint.config.js</code>. إن احتجت فرضًا على مستوى نظام التشغيل، فاقرن القواعد بالعزل.</p>
+<h3 id="codex">Codex</h3>
+<p>يقسّم Codex الأذونات بين آليتين:</p>
+<ul>
+<li>العزل يتحكّم فيما يستطيع الوكيل كتابته دون تصعيد</li>
+<li><code>.rules</code> تتحكّم في الأوامر التي يجوز لـ Codex تشغيلها خارج ذلك العزل</li>
+</ul>
+<p>بالنسبة لحدود نظام الملفات، نموذج العزل الموثّق قائم على مساحة العمل، وليس بقواعد منع لكل ملف كما يعرضها Claude. في نمط <code>workspace-write</code>، يكون دليل العمل الحالي قابلًا للكتابة افتراضيًا. و<code>writable_roots</code> <em>تضيف</em> أدلّة فوق ذلك — ولا تستبدل جذر مساحة العمل.</p>
+<p>هذا يعني أن أضيق إعداد هو: ابدأ Codex من الدليل الذي تريد أن يكتب فيه.</p>
+<pre><code class="language-bash">codex --<span class="hljs-built_in">cd</span> /Users/you/project/courses/self-testing-ai-agents
+</code></pre>
+<p>الآن جذر مساحة العمل <em>هو</em> دليل الدرس. وكل ما خارجه مرئي لكن غير قابل للكتابة. وإن احتجت إلى إضافة موضع ثانٍ قابل للكتابة (قل، دليل <code>tmp/</code> مشترك)، فاستخدم <code>writable_roots</code>:</p>
+<pre><code class="language-toml"><span class="hljs-attr">sandbox_mode</span> = <span class="hljs-string">&quot;workspace-write&quot;</span>
+
+<span class="hljs-section">[sandbox_workspace_write]</span>
+<span class="hljs-attr">writable_roots</span> = [
+  <span class="hljs-string">&quot;/Users/you/project/tmp&quot;</span>
+]
+</code></pre>
+<p>هذا هو التمييز المهم الذي يجب فهمه: يتيح لك Claude أن تقول «لا تقرأ <em>هذا الملف</em>» مباشرة. أما ضوابط نظام الملفات في Codex فأخشن — تُصغّر مساحة العمل لتصغّر نطاق الأثر.</p>
+<p>للموافقات خارج العزل، يستخدم Codex ملفات <code>.rules</code> مكتوبة بـ <code>Starlark</code>. هذا هو التركيب الصحيح لقواعد Codex. فهو ليس JSON ولا TOML ولا مقدّمة markdown.</p>
+<pre><code class="language-starlark"># ~/.codex/rules/default.rules
+prefix_rule(
+    pattern = [&quot;gh&quot;, &quot;pr&quot;, &quot;view&quot;],
+    decision = &quot;prompt&quot;,
+    justification = &quot;Viewing pull requests is allowed with approval&quot;,
+    match = [
+        &quot;gh pr view 7888&quot;,
+        &quot;gh pr view --repo openai/codex&quot;,
+        &quot;gh pr view 7888 --json title,body,comments&quot;,
+    ],
+    not_match = [
+        &quot;gh pr --repo openai/codex view 7888&quot;,
+    ],
+)
+</code></pre>
+<p>هناك تفصيلان مهمّان هنا:</p>
+<ul>
+<li><code>pattern</code> يطابق بادئة وسائط دقيقة، لا سلسلة فرعية</li>
+<li><code>match</code> و<code>not_match</code> اختبارات مضمّنة يتحقّق منها Codex عند تحميل الملف</li>
+</ul>
+<p>بعد أن تضيف ملف <code>.rules</code> أو تغيّره، أعد تشغيل Codex كي يعيد تحميل مجموعة القواعد. ثم اختبر القاعدة قبل أن تثق بها:</p>
+<pre><code class="language-bash">codex execpolicy check --pretty \\
+  --rules ~/.codex/rules/default.rules \\
+  -- gh <span class="hljs-built_in">pr</span> view 7888 --json title,body,comments
+</code></pre>
+<p>إذن النموذج الذهني هو:</p>
+<ul>
+<li><code>AGENTS.md</code>: تعليمات المشروع</li>
+<li><code>sandbox_mode</code> مع <code>writable_roots</code>: حدود نظام الملفات القابل للكتابة</li>
+<li><code>.rules</code>: سياسة الأوامر خارج العزل</li>
+<li><a href="https://code.claude.com/docs/en/permissions">أذونات Claude Code</a></li>
+<li><a href="https://developers.openai.com/codex/guides/agents-md">دليل AGENTS.md في Codex</a></li>
+<li><a href="https://developers.openai.com/codex/rules">قواعد Codex</a></li>
+<li><a href="https://developers.openai.com/codex/config-reference">مرجع إعداد Codex</a></li>
+</ul>
+<h2 id="استخدام-الخطافات-لفحوص-السياسة-وقت-التشغيل">استخدام الخطّافات لفحوص السياسة وقت التشغيل</h2>
+<p>الأذونات تجيب عن <strong>أي المسارات داخل الحدود</strong>. والقواعد تجيب عن <strong>أي الأوامر خارج العزل ينبغي السماح به أصلًا</strong>. أما الخطّافات فتجيب عن <strong>بالنظر إلى هذا الاستدعاء أو النتيجة بالضبط، هل نسمح به الآن</strong>. تلك هي الطبقة التي تستخدمها حين تعتمد القاعدة على محتوى الملف لا على اسم مسار أو بادئة أمر فحسب.</p>
+<p>في هذا المثال نريد فحصين وقت التشغيل:</p>
+<ol>
+<li>ألّا ندع الوكيل يغيّر إعداد التدقيق أبدًا</li>
+<li>ألّا ندع الوكيل يعدّل ملفًا يحتوي محتواه على كلمة <code>autogenerated</code></li>
+</ol>
+<h3 id="ميكانيكا-الخطافات-التي-ينبغي-أن-تعرفها-قبل-الأمثلة">ميكانيكا الخطّافات التي ينبغي أن تعرفها قبل الأمثلة</h3>
+<p>قبل الغوص في أمثلة السياسة، ثمة ملاحظات تنطبق على كل خطّاف Claude Code ستكتبه:</p>
+<ul>
+<li><strong>أنواع الخطّافات.</strong> يُطلق <code>PreToolUse</code> قبل تنفيذ استدعاء الأداة ويستطيع رفضه. ويُطلق <code>PostToolUse</code> بعد النجاح. ويُطلق <code>PostToolUseFailure</code> حين يفشل استدعاء الأداة، وهو المكان الصحيح لإثراء دور الوكيل التالي بسياق تشخيصي. استخدم <code>PreToolUse</code> للمنع، و<code>PostToolUseFailure</code> للتعافي.</li>
+<li><strong><code>$CLAUDE_PROJECT_DIR</code>.</strong> يضبط Claude Code هذا المتغيّر البيئي على جذر المستودع وقت التشغيل. استخدمه داخل أوامر الخطّاف كي يُحلّ الخطّاف على نحو صحيح أيًّا كان الدليل الفرعي الذي بدأ منه Claude Code.</li>
+<li><strong>لغة السكربت.</strong> الخطّافات مجرّد أوامر. تعرض أمثلة هذه الورشة كليهما: <code>.mjs</code> يُشغَّل بـ <code>node</code> (أقصى قابلية للنقل) و<code>.ts</code> يُشغَّل بـ <code>bun</code> (موجز إن كان مشروعك يستخدم Bun أصلًا). اختر واحدة لكل مستودع والتزم بها — فخلط بيئات التشغيل داخل <code>.claude/hooks/</code> هو كيف تبدأ جلسات تنقيح «لماذا يفشل هذا؟».</li>
+<li><strong>أبقِ الخطّافات سريعة.</strong> تعمل الخطّافات تزامنيًا في مسار استدعاء الأداة. قراءة ملفات إعداد صغيرة أمر مقبول. أما تشغيل عمليات فرعية، أو الاتصال بالشبكة، أو تشغيل تدقيق كامل، فسيُبطئ كل استدعاء أداة بشكل ملحوظ. إن كان الفحص بطيئًا، فانقله إلى التكامل المستمر أو إلى خطّاف <code>PostToolUseFailure</code> حيث يكون التأخير أقل كلفة.</li>
+<li><strong>التنقيح.</strong> إن لم يُطلق الخطّاف كما هو متوقّع، فتحقّق من صلاحية <code>.claude/settings.json</code> كـ JSON، وتأكّد أن السكربت قابل للتنفيذ، وشغّله مباشرةً بحمولة نموذجية على المدخل القياسي: <code><span class="line"><span style="color:#C5E478;font-style:italic">echo</span><span style="color:#D9F5DD"> '</span><span style="color:#ECC48D">{&quot;tool_input&quot;:{&quot;command&quot;:&quot;git commit --no-verify&quot;}}</span><span style="color:#D9F5DD">'</span><span style="color:#F78C6C"> &lt;/span&gt;</span>
+<span class="line"><span style="color:#7FDBCA"> |</span><span style="color:#82AAFF;font-style:italic"> node</span><span style="color:#ECC48D"> .claude/hooks/block-no-verify.mjs</span></span></code> رمز الخروج <code>0</code> دون أي مخرجات قياسية يعني «اسمح». ورمز الخروج <code>0</code> مع حمولة JSON فيها <code>permissionDecision: &quot;deny&quot;</code> على المخرجات القياسية يعني «احجب». وأي رمز خروج آخر يظهر كخطأ في الخطّاف.</li>
+</ul>
+<h3 id="claude-1">Claude</h3>
+<p>يستطيع Claude فعل ذلك مباشرة لأن خطّافات <code>PreToolUse</code> يمكنها اعتراض <code>Edit</code> و<code>Write</code> قبل تنفيذهما.</p>
+<p>سجّل الخطّاف في <code>.claude/settings.json</code>:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;hooks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;PreToolUse&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;matcher&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Edit|Write&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;hooks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+          <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;command&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;command&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bun \\&quot;$CLAUDE_PROJECT_DIR/.claude/hooks/block-protected-edits.ts\\&quot;&quot;</span>
+          <span class="hljs-punctuation">}</span>
+        <span class="hljs-punctuation">]</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>ثم نفّذ سكربت السياسة:</p>
+<pre><code class="language-typescript"><span class="hljs-meta">#!/usr/bin/env bun</span>
+
+<span class="hljs-keyword">import</span> { existsSync, readFileSync } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:fs&#x27;</span>;
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:path&#x27;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ClaudeHookInput</span> = {
+  <span class="hljs-attr">tool_input</span>?: {
+    <span class="hljs-attr">file_path</span>?: <span class="hljs-built_in">string</span>;
+  };
+};
+
+<span class="hljs-keyword">const</span> input = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-title function_">readFileSync</span>(<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;utf8&#x27;</span>)) <span class="hljs-keyword">as</span> <span class="hljs-title class_">ClaudeHookInput</span>;
+<span class="hljs-keyword">const</span> filePath = input.<span class="hljs-property">tool_input</span>?.<span class="hljs-property">file_path</span>;
+
+<span class="hljs-keyword">if</span> (!filePath) {
+  process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">0</span>);
+}
+
+<span class="hljs-keyword">const</span> lintRuleFiles = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>([
+  <span class="hljs-string">&#x27;eslint.config.js&#x27;</span>,
+  <span class="hljs-string">&#x27;eslint.config.ts&#x27;</span>,
+  <span class="hljs-string">&#x27;.eslintrc&#x27;</span>,
+  <span class="hljs-string">&#x27;.eslintrc.js&#x27;</span>,
+  <span class="hljs-string">&#x27;.eslintrc.cjs&#x27;</span>,
+  <span class="hljs-string">&#x27;.eslintrc.json&#x27;</span>,
+]);
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">deny</span>(<span class="hljs-params"><span class="hljs-attr">reason</span>: <span class="hljs-built_in">string</span></span>): <span class="hljs-built_in">never</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+    <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({
+      <span class="hljs-attr">hookSpecificOutput</span>: {
+        <span class="hljs-attr">hookEventName</span>: <span class="hljs-string">&#x27;PreToolUse&#x27;</span>,
+        <span class="hljs-attr">permissionDecision</span>: <span class="hljs-string">&#x27;deny&#x27;</span>,
+        <span class="hljs-attr">permissionDecisionReason</span>: reason,
+      },
+    }),
+  );
+  process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">0</span>);
+}
+
+<span class="hljs-keyword">if</span> (lintRuleFiles.<span class="hljs-title function_">has</span>(path.<span class="hljs-title function_">basename</span>(filePath))) {
+  <span class="hljs-title function_">deny</span>(<span class="hljs-string">&#x27;Editing lint rules is blocked by policy.&#x27;</span>);
+}
+
+<span class="hljs-keyword">if</span> (<span class="hljs-title function_">existsSync</span>(filePath)) {
+  <span class="hljs-keyword">const</span> currentContents = <span class="hljs-title function_">readFileSync</span>(filePath, <span class="hljs-string">&#x27;utf8&#x27;</span>);
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/autogenerated/i</span>.<span class="hljs-title function_">test</span>(currentContents)) {
+    <span class="hljs-title function_">deny</span>(<span class="hljs-string">&#x27;Files marked as autogenerated must not be edited by the agent.&#x27;</span>);
+  }
+}
+</code></pre>
+<p>إن لم تطابق أي من القاعدتين، يخرج السكربت بالرمز <code>0</code> دون مخرجات ويكمل Claude. وإن طابقت إحداهما، يعيد الخطّاف <code>permissionDecision: &quot;deny&quot;</code> ولا يحدث التعديل أبدًا.</p>
+<blockquote>
+<p><strong>إن كنت تسمح بـ Bash أيضًا، فتذكّر أن Bash مسار منفصل. فالأمر الصدفي يمكنه إعادة كتابة الملفات ما لم تحجبه بأذونات Bash أو بالعزل.</strong></p>
+</blockquote>
+<h3 id="codex-1">Codex</h3>
+<p>خطّافات Codex ما زالت تجريبية، وهي ليست بديلًا عن العزل أو <code>.rules</code>. استخدم العزل لحدود نظام الملفات، و<code>.rules</code> لسياسة الأوامر البسيطة خارج العزل، والخطّافات حين يعتمد القرار على محتوى الأمر أو الفرق الناتج. واعتبارًا من كتابة هذه السطور، تحتاج إلى تفعيل الخطّافات صراحةً في <code>.codex/config.toml</code> قبل أن يعمل أي شيء في هذا القسم (راجع <a href="https://developers.openai.com/codex/hooks">وثائق خطّافات Codex</a> للتركيب الحالي):</p>
+<pre><code class="language-toml"><span class="hljs-section">[features]</span>
+<span class="hljs-attr">codex_hooks</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<p>أو مرّر العلم عند الإطلاق: <code>codex --enable codex_hooks</code>.</p>
+<p>مع تفعيل الخطّافات، يعترض <code>PreToolUse</code> و<code>PostToolUse</code> استدعاءات <code>Bash</code> فقط، لا <code>Write</code> أو <code>Edit</code> المدمجتين. لذا نسخة Codex سلك تعثّر صدفي لا نموذج وصول كامل للملفات.</p>
+<p>هذا يعني أن الحدّ الصارم ينبغي أن يبقى في العزل و<code>.rules</code>. فالخطّاف خطّ الدفاع الثاني: يفحص ما غيّره أمر Bash ويمنع Codex من المتابعة إن لمس الأمر ملفًا محميًا. وللخطّافات المحلّية في المستودع، فضّل الحلّ من جذر git بدلًا من مسار نسبي كي يعمل الخطّاف حتى حين يبدأ Codex في دليل فرعي.</p>
+<p>سجّل الخطّاف في <code>.codex/hooks.json</code>:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;hooks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;PostToolUse&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;matcher&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Bash&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;hooks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+          <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;command&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;command&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bun \\&quot;$(git rev-parse --show-toplevel)/.codex/hooks/review-protected-shell-edits.ts\\&quot;&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;statusMessage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Reviewing shell edits for protected files&quot;</span>
+          <span class="hljs-punctuation">}</span>
+        <span class="hljs-punctuation">]</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>ثم افحص الملفات المتغيّرة بعد كل أمر Bash:</p>
+<pre><code class="language-typescript"><span class="hljs-meta">#!/usr/bin/env bun</span>
+
+<span class="hljs-keyword">import</span> { execFileSync } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:child_process&#x27;</span>;
+<span class="hljs-keyword">import</span> { existsSync, readFileSync } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:fs&#x27;</span>;
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:path&#x27;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">CodexHookInput</span> = {
+  <span class="hljs-attr">cwd</span>: <span class="hljs-built_in">string</span>;
+};
+
+<span class="hljs-keyword">const</span> lintRuleNames = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>([
+  <span class="hljs-string">&#x27;eslint.config.js&#x27;</span>,
+  <span class="hljs-string">&#x27;eslint.config.ts&#x27;</span>,
+  <span class="hljs-string">&#x27;.eslintrc&#x27;</span>,
+  <span class="hljs-string">&#x27;.eslintrc.js&#x27;</span>,
+  <span class="hljs-string">&#x27;.eslintrc.cjs&#x27;</span>,
+  <span class="hljs-string">&#x27;.eslintrc.json&#x27;</span>,
+]);
+
+<span class="hljs-keyword">const</span> input = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-title function_">readFileSync</span>(<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;utf8&#x27;</span>)) <span class="hljs-keyword">as</span> <span class="hljs-title class_">CodexHookInput</span>;
+<span class="hljs-keyword">const</span> changedPaths = <span class="hljs-title function_">execFileSync</span>(<span class="hljs-string">&#x27;git&#x27;</span>, [<span class="hljs-string">&#x27;diff&#x27;</span>, <span class="hljs-string">&#x27;--name-only&#x27;</span>, <span class="hljs-string">&#x27;--relative&#x27;</span>], {
+  <span class="hljs-attr">cwd</span>: input.<span class="hljs-property">cwd</span>,
+  <span class="hljs-attr">encoding</span>: <span class="hljs-string">&#x27;utf8&#x27;</span>,
+})
+  .<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;\\n&#x27;</span>)
+  .<span class="hljs-title function_">filter</span>(<span class="hljs-title class_">Boolean</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">violations</span>: <span class="hljs-built_in">string</span>[] = [];
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> relativePath <span class="hljs-keyword">of</span> changedPaths) {
+  <span class="hljs-keyword">const</span> absolutePath = path.<span class="hljs-title function_">join</span>(input.<span class="hljs-property">cwd</span>, relativePath);
+
+  <span class="hljs-keyword">if</span> (lintRuleNames.<span class="hljs-title function_">has</span>(path.<span class="hljs-title function_">basename</span>(relativePath))) {
+    violations.<span class="hljs-title function_">push</span>(<span class="hljs-string">\`<span class="hljs-subst">\${relativePath}</span> is a lint configuration file\`</span>);
+    <span class="hljs-keyword">continue</span>;
+  }
+
+  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">existsSync</span>(absolutePath)) {
+    <span class="hljs-keyword">continue</span>;
+  }
+
+  <span class="hljs-keyword">const</span> contents = <span class="hljs-title function_">readFileSync</span>(absolutePath, <span class="hljs-string">&#x27;utf8&#x27;</span>);
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/autogenerated/i</span>.<span class="hljs-title function_">test</span>(contents)) {
+    violations.<span class="hljs-title function_">push</span>(<span class="hljs-string">\`<span class="hljs-subst">\${relativePath}</span> is marked autogenerated\`</span>);
+  }
+}
+
+<span class="hljs-keyword">if</span> (violations.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) {
+  process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">0</span>);
+}
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+  <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({
+    <span class="hljs-attr">decision</span>: <span class="hljs-string">&#x27;block&#x27;</span>,
+    <span class="hljs-attr">reason</span>: <span class="hljs-string">&#x27;Protected shell edits detected.&#x27;</span>,
+    <span class="hljs-attr">hookSpecificOutput</span>: {
+      <span class="hljs-attr">hookEventName</span>: <span class="hljs-string">&#x27;PostToolUse&#x27;</span>,
+      <span class="hljs-attr">additionalContext</span>: <span class="hljs-string">\`Revert the protected changes and continue without editing those files: <span class="hljs-subst">\${violations.join(<span class="hljs-string">&#x27;; &#x27;</span>)}</span>\`</span>,
+    },
+  }),
+);
+</code></pre>
+<p>هذا ليس تمامًا كما في Claude. فأمر Bash يكون قد نُفّذ بحلول إطلاق <code>PostToolUse</code>، لذا لا يستطيع الخطّاف التراجع عن الآثار الجانبية. وحين يُخرج السكربت <code>&quot;decision&quot;: &quot;block&quot;</code>، يستبدل Codex نتيجة الأداة بملاحظاتك ويتيح للوكيل الردّ عليها — لكنه لا يتراجع عن الأمر. ما <em>يستطيعه</em> هو منع Codex من المضي قدمًا بلا اكتراث كأن شيئًا لم يحدث. وهذا غالبًا كافٍ لفرض حلقة تراجع وإعادة محاولة بدلًا من ترك الوكيل يهيم أبعد عن السياسة.</p>
+<ul>
+<li><a href="https://code.claude.com/docs/en/hooks">خطّافات Claude Code</a></li>
+<li><a href="https://developers.openai.com/codex/hooks">خطّافات Codex</a></li>
+</ul>
+<h2 id="قراءات-إضافية">قراءات إضافية</h2>
+<ul>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis">الفرضية</a></li>
+<li><a href="https://stevekinney.com/courses/self-testing-ai-agents/lab-rewrite-the-bad-claude-md">مختبر: أعد كتابة ملف CLAUDE.md السيئ</a></li>
+</ul>
+`,o={book:s,chapter:n,chapterTitle:a,slug:e,title:t,headings:l,html:p};export{s as book,n as chapter,a as chapterTitle,o as default,l as headings,p as html,e as slug,t as title};

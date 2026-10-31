@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -85,7 +85,7 @@
 </ul>
 <p>قيّد السياسة على ARN الجدول المحدد: <code>arn:aws:dynamodb:us-east-1:123456789012:table/my-frontend-app-data</code>.</p>
 <p>تذكّر مبدأ الامتياز الأدنى من <a href="https://stevekinney.com/courses/aws/principle-of-least-privilege">مبدأ الامتياز الأدنى</a>—لا تمنح <code>dynamodb:*</code> ولا تستخدم <code>*</code> كمورد.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقق</h3>
 <p><code>aws iam list-attached-role-policies --role-name my-frontend-app-lambda-role --region us-east-1 --output json</code> يعرض كلا من <code>AWSLambdaBasicExecutionRole</code> وسياستك الجديدة لـ DynamoDB.</p>
 <h2 id="تثبيت-sdk-وتحديث-المعالج">تثبيت SDK وتحديث المعالج</h2>
 <p>أضف حزم SDK الخاصة بـ DynamoDB إلى مشروع Lambda لديك:</p>
@@ -109,7 +109,7 @@ npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 <li>التقاط الأخطاء وإرجاع 500 برسالة خطأ عامة</li>
 </ol>
 <p>ابنِ المشروع وتحقق من أنه يُصرّف دون أخطاء.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقق</h3>
 <p><code>npm run build</code> يكتمل دون أخطاء TypeScript. و<code>dist/handler.js</code> موجود.</p>
 <h2 id="تعيين-متغير-البيئة-والنشر">تعيين متغير البيئة والنشر</h2>
 <p>عيّن متغير البيئة <code>TABLE_NAME</code> على دالة Lambda لديك:</p>
@@ -120,7 +120,7 @@ npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
   --output json
 </code></pre>
 <p>حزّم وانشر شيفرة المعالج المحدثة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقق</h3>
 <p><code>aws lambda get-function-configuration --function-name my-frontend-app-api --region us-east-1 --output json --query &quot;Environment&quot;</code> يعرض <code>TABLE_NAME</code> مضبوطًا على <code>my-frontend-app-data</code>.</p>
 <h2 id="اختبار-إنشاء-عنصر">اختبار إنشاء عنصر</h2>
 <p>استدعِ الدالة بحدث POST:</p>
@@ -138,7 +138,7 @@ npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 <span class="hljs-punctuation">}</span>
 </code></pre>
 <p>احفظ هذا باسم <code>test-create.json</code> واستدعِ الدالة. تحقق من الاستجابة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقق</h3>
 <p>تحتوي الاستجابة على <code>statusCode: 201</code> ويتضمن الجسم <code>userId</code> و<code>itemId</code> و<code>title</code> و<code>status</code> و<code>createdAt</code>.</p>
 <h2 id="اختبار-سرد-العناصر">اختبار سرد العناصر</h2>
 <p>أنشئ عنصرًا ثانيًا بعنوان مختلف (استخدم <code>userId</code> نفسه)، ثم استدعِ بحدث GET يتضمن <code>userId</code> فقط — دون <code>itemId</code>:</p>
@@ -154,7 +154,7 @@ npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-5">نقطة تحقق</h3>
 <p>تحتوي الاستجابة على <code>statusCode: 200</code> ويتضمن الجسم مصفوفة <code>items</code> بالعنصرين اللذين أنشأتهما.</p>
 <h2 id="اختبار-حذف-عنصر">اختبار حذف عنصر</h2>
 <p>استخدم <code>itemId</code> من أحد العناصر التي أنشأتها. استدعِ بحدث DELETE:</p>
@@ -172,11 +172,11 @@ npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 <span class="hljs-punctuation">}</span>
 </code></pre>
 <p>استبدل <code>item-1234567890</code> بـ <code>itemId</code> الفعلي من إحدى استجابات POST لديك. ثم اسرد العناصر مجددًا عبر GET للتأكد من زوال العنصر.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-6">نقطة تحقق</h3>
 <p>استجابة DELETE تحتوي على <code>statusCode: 200</code> و<code>{ &quot;deleted&quot;: true }</code>. واستجابة GET اللاحقة للمستخدم نفسه تعرض عنصرًا واحدًا فقط.</p>
 <h2 id="اختبار-حالات-الخطأ">اختبار حالات الخطأ</h2>
 <p>استدعِ الدالة مع فقدان المعامل <code>userId</code> وتأكد من حصولك على استجابة 400. واستدعِ بطريقة غير مدعومة (مثل PUT) وتأكد من حصولك على 405.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-7">نقطة تحقق</h3>
 <p>فقدان <code>userId</code> يُرجع <code>statusCode: 400</code>. والطريقة غير المدعومة تُرجع <code>statusCode: 405</code>.</p>
 <h2 id="ملخص-نقاط-التحقق">ملخص نقاط التحقق</h2>
 <ul>
@@ -209,7 +209,7 @@ npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -217,8 +217,8 @@ npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

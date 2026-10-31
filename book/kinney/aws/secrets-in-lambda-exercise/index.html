@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -88,7 +88,7 @@ npm install -D typescript @types/aws-lambda @types/node
 </ol>
 <p>استخدم النوع <code>APIGatewayProxyHandlerV2</code> للمعالج.</p>
 <p>ابنِ المشروع وتحقّق من أنه يُترجَم بلا أخطاء.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقق</h3>
 <p>تشغيل <code>npm run build</code> ينتج <code>dist/handler.js</code> دون أخطاء TypeScript.</p>
 <h2 id="تحديث-دور-التنفيذ">تحديث دور التنفيذ</h2>
 <p>يحتاج دور تنفيذ Lambda الخاص بك (<code>my-frontend-app-lambda-role</code>) إلى صلاحيتين جديدتين:</p>
@@ -98,7 +98,7 @@ npm install -D typescript @types/aws-lambda @types/node
 </ol>
 <p>اكتب ملف JSON للسياسة وأرفقه بدور التنفيذ باستخدام <code>aws iam put-role-policy</code> (سياسة مضمّنة) أو <code>aws iam create-policy</code> متبوعًا بـ<code>aws iam attach-role-policy</code> (سياسة مُدارة). في هذا التمرين، فضّل النهج <strong>المضمّن</strong>—فالسياسة خاصة بهذا الدور وحده ولا تحتاج إلى مشاركتها، وهذا يطابق النمط المستخدم في <a href="https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions">أدوار وصلاحيات تنفيذ Lambda</a>. أما السياسات المُدارة فهي الخيار الصحيح عندما تُعاد السياسة نفسها عبر أدوار متعددة.</p>
 <p>تحقّق من إرفاق السياسة بسرد سياسات الدور.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقق</h3>
 <p>لدور التنفيذ سياسة تمنح <code>ssm:GetParameter</code> على ARN المُعامل المحدد و<code>kms:Decrypt</code> على مفتاح KMS.</p>
 <h2 id="النشر-والاستدعاء">النشر والاستدعاء</h2>
 <p>حزّم دالة Lambda وانشرها:</p>
@@ -121,12 +121,12 @@ npm install -D typescript @types/aws-lambda @types/node
   response.json
 </code></pre>
 <p>اقرأ ملف الاستجابة وتحقّق من أن الدالة أعادت أول 7 أحرف من مفتاح API الخاص بك.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقق</h3>
 <p>يحتوي ملف الاستجابة على رمز حالة 200 وجسم يحمل رسالة تؤكد تحميل السرّ. وتطابق بادئة المفتاح أول 7 أحرف من القيمة التي خزّنتها.</p>
 <h2 id="الاختبار-عبر-api-gateway">الاختبار عبر API Gateway</h2>
 <p>إن كانت لديك واجهة HTTP API في API Gateway من <a href="https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda">توصيل API Gateway بـ Lambda</a>، فأضف مسارًا يشير إلى هذه الدالة—أو استدعِ نقطة النهاية الموجودة إن كانت الدالة موصولة بالفعل.</p>
 <p>وإن لم يكن لديك API Gateway مُعدّ، فيمكنك الاختبار باستدعاء سطر الأوامر من القسم السابق. وتكامل API Gateway هدف إضافي.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقق</h3>
 <p>طلب <code>curl</code> إلى نقطة نهاية API Gateway يعيد استجابة JSON وقد حُمّل السرّ بنجاح.</p>
 <h2 id="التحقق-من-أن-السر-ليس-في-متغيرات-البيئة">التحقق من أن السرّ ليس في متغيّرات البيئة</h2>
 <p>شغّل <code>get-function-configuration</code> وتأكد من أن مفتاح API <strong>ليس</strong> ضمن متغيّرات البيئة:</p>
@@ -137,7 +137,7 @@ npm install -D typescript @types/aws-lambda @types/node
   --output json
 </code></pre>
 <p>ينبغي أن يُظهر الناتج إعدادك غير الحساس (مثل <code>TABLE_NAME</code>) دون مفتاح API. فمفتاح API يعيش في Parameter Store، ولا يمكن الوصول إليه إلا عبر SDK بصلاحيات IAM مناسبة.</p>
-<h3 id="نقطة-تحقق">نقطة تحقق</h3>
+<h3 id="نقطة-تحقق-5">نقطة تحقق</h3>
 <p>متغيّرات بيئة الدالة لا تحتوي على مفتاح API. فالمفتاح موجود في Parameter Store فقط.</p>
 <h2 id="ملخص-نقاط-التحقق">ملخص نقاط التحقق</h2>
 <ul>
@@ -167,7 +167,7 @@ npm install -D typescript @types/aws-lambda @types/node
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -175,8 +175,8 @@ npm install -D typescript @types/aws-lambda @types/node
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

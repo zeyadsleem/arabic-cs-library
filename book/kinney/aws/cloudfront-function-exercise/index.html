@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -87,7 +87,7 @@
 <li>تظهر رؤوس الأمان الأربعة في استجابة المخرجات</li>
 <li>يُحافَظ على رأس <code>content-type</code> الأصلي</li>
 </ul>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-1">نقطة تحقّق</h3>
 <p>يعيد <code>aws cloudfront test-function</code> نتيجة ناجحة مع رؤوس الأمان الأربعة كلها في الاستجابة والرؤوس الأصلية سليمة.</p>
 <h2 id="اكتب-دالة-إعادة-التوجيه-القديمة">اكتب دالة إعادة التوجيه القديمة</h2>
 <p>اكتب دالة CloudFront تقوم بما يلي:</p>
@@ -102,7 +102,7 @@
 <li>تستخدم بيئة التشغيل <code>cloudfront-js-2.0</code></li>
 <li>تُفعَّل عند أحداث <code>viewer-request</code></li>
 </ul>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-2">نقطة تحقّق</h3>
 <p>لديك دالة JavaScript تعيد استجابة 301 لـ <code>/old-path</code> وتعيد الطلب غير المعدّل لجميع المسارات الأخرى.</p>
 <h2 id="أنشئ-دالة-إعادة-التوجيه-القديمة-واختبرنها">أنشئ دالة إعادة التوجيه القديمة واختبرنها</h2>
 <p>أنشئ الدالة باستخدام CLI واختبرها بحدثين مختلفين:</p>
@@ -110,11 +110,11 @@
 <li>طلب إلى <code>/old-path</code>—ينبغي أن يعيد استجابة 301 مع <code>Location: /new-path</code></li>
 <li>طلب إلى <code>/about</code>—ينبغي أن يعيد الطلب دون تغيير (تمرير)</li>
 </ol>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-3">نقطة تحقّق</h3>
 <p>تنتج حالتا الاختبار المخرجات المتوقعة: إعادة توجيه لـ <code>/old-path</code> وتمرير لـ <code>/about</code>.</p>
 <h2 id="انشر-الدالتين">انشر الدالتين</h2>
 <p>انشر الدالتين من <code>DEVELOPMENT</code> إلى <code>LIVE</code> باستخدام <code>aws cloudfront publish-function</code>. تذكّر أن كل عملية نشر تتطلب <code>ETag</code> الحالي.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-4">نقطة تحقّق</h3>
 <p>الدالتان في مرحلة <code>LIVE</code>. يمكنك التحقق بـ <code>aws cloudfront describe-function --name security-headers --stage LIVE --region us-east-1 --output json</code>.</p>
 <h2 id="اربط-الدالتين-بتوزيعك">اربط الدالتين بتوزيعك</h2>
 <p>استرجع تهيئة توزيعك وحدّث سلوك التخزين المؤقت الافتراضي ليتضمن ارتباطَي الدالتين:</p>
@@ -124,7 +124,7 @@
 </ul>
 <p>تذكّر: يمكن أن يكون للسلوك الواحد <strong>دالة واحدة</strong> لكل نوع حدث. أنت تربط دالتين مختلفتين بحدثين مختلفين على السلوك نفسه.</p>
 <p>بعد التحديث، انتظر حتى تتغير حالة التوزيع من <code>InProgress</code> إلى <code>Deployed</code>.</p>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-5">نقطة تحقّق</h3>
 <p>يعرض <code>aws cloudfront get-distribution-config --id E1A2B3C4D5E6F7 --region us-east-1 --output json</code> ارتباطَي الدالتين في سلوك التخزين المؤقت الافتراضي.</p>
 <h2 id="تحقق-في-الإنتاج">تحقق في الإنتاج</h2>
 <p>اختبر رؤوس الأمان بإرسال طلب إلى توزيعك وفحص رؤوس الاستجابة:</p>
@@ -133,7 +133,7 @@
 <p>اختبر إعادة التوجيه:</p>
 <pre><code class="language-bash">curl -I https://d111111abcdef8.cloudfront.net/old-path
 </code></pre>
-<h3 id="نقطة-تحقق">نقطة تحقّق</h3>
+<h3 id="نقطة-تحقق-6">نقطة تحقّق</h3>
 <ul>
 <li>تتضمن استجابة رؤوس الأمان <code>Strict-Transport-Security</code> و<code>X-Content-Type-Options</code> و<code>X-Frame-Options</code> و<code>Referrer-Policy</code></li>
 <li>يعيد طلب <code>/old-path</code> استجابة <code>301 Moved Permanently</code> مع <code>Location: /new-path</code></li>
@@ -167,7 +167,7 @@
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -175,8 +175,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

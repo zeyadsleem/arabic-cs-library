@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Cwfc-WaD.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/gA_SwXza.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CRRs0bIY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLSLknUV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwbWyC1B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B7VL98tJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.wuQRaXzJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BHhji0EQ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.L7F5BdKL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DoyhZZPT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dci37nAp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D4XjRu7L.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CRteu7Jd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/C2sIb40M.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DcJqq-nz.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dkdwlyzy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFY4QfsS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DPTCBSV9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Relhvhe6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwMR_YY0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -574,7 +574,7 @@ CARRY OUT:  A AND B                       # 1 when both A and B are 1
 <p><img src="/arabic-cs-library/images/dive-into-systems/c5-arch-3-regfile.webp" alt="ملف السجلات" id="Figregfile"> الشكل 4. ملف السجلات: مجموعة سجلات المعالج العامة المستخدمة لتخزين قيم معاملات التعليمات ونتائجها.</p>
 <h4>سجلات الأغراض الخاصة <span class="content-anchor" id="_special_purpose_registers"></span></h4>
 <p>إضافةً إلى مجموعة السجلات العامة في ملف السجلات، تحتوي وحدة المعالجة المركزية سجلات أغراض خاصة تخزّن عنوان التعليمات ومحتواها. ويخزّن <strong>عدّاد البرنامج</strong> (PC) عنوان ذاكرة التعليمة التالية المطلوب تنفيذها، ويخزّن <strong>سجل التعليمات</strong> (IR) بتّات التعليمة الحالية التي تنفّذها وحدة المعالجة المركزية. وتُستخدم بتّات التعليمة المخزّنة في IR كمدخل إلى أجزاء مختلفة من وحدة المعالجة المركزية أثناء تنفيذ التعليمة. ونناقش هذين السجلين بمزيد من التفصيل في القسم التالي عن <a href="https://diveintosystems.org/book/C5-Arch/instrexec.html#_the_processors_execution_of_program_instructions">تنفيذ التعليمات</a>.</p>
-<h3 id="553-المعالج">5.5.3. المعالج <span class="content-anchor" id="_the_cpu"></span></h3>
+<h3 id="553-المعالج">5.5.3. المعالج <span class="content-anchor" id="_the_cpu-1"></span></h3>
 <p>بدائرتَي وحدة الحساب والمنطق وملف السجلات، يمكننا بناء الأجزاء الرئيسية لوحدة المعالجة المركزية كما في <a href="#Figcpu">الشكل 5</a>. ولأن معاملات التعليمات تأتي غالباً من قيم مخزّنة في السجلات العامة، ترسل مخارج ملف السجلات بيانات إلى مدخلات وحدة الحساب والمنطق. وبالمثل، ولأن نتائج التعليمات تُخزَّن غالباً في السجلات، يُرسَل خرج نتيجة وحدة الحساب والمنطق كمدخل إلى ملف السجلات. ولدى وحدة المعالجة المركزية دوائر إضافية لنقل البيانات بين وحدة الحساب والمنطق وملف السجلات ومكوّنات أخرى (مثل الذاكرة الرئيسية).</p>
 <p><img src="/arabic-cs-library/images/dive-into-systems/c5-arch-4-cpu.webp" alt="يُبنى المعالج من ملف السجلات ودوائر وحدة الحساب والمنطق" id="Figcpu"> الشكل 5. تشكّل وحدة الحساب والمنطق وملف السجلات الأجزاء الرئيسية لوحدة المعالجة المركزية. وتنفّذ وحدة الحساب والمنطق العمليات، ويخزّن ملف السجلات القيم المدخلة والنتائج. وتخزّن سجلات أغراض خاصة إضافية عناوين التعليمات (PC) ومحتوياتها (IR). لاحظ أن التعليمات قد تجلب المعاملات من مواقع أو تخزّن النتائج في مواقع غير ملف السجلات (مثل الذاكرة الرئيسية).</p>
 <p>تشكّل هذه الأجزاء الرئيسية لوحدة المعالجة المركزية <strong>مسار البيانات</strong> (data path) فيها. ويتألف مسار البيانات من أجزاء وحدة المعالجة المركزية التي تنفّذ عمليات الحساب والمنطق (وحدة الحساب والمنطق) وتخزّن البيانات (السجلات)، والنواقل التي تربط هذه الأجزاء. وتنفّذ وحدة المعالجة المركزية أيضاً <strong>مسار التحكم</strong> (control path) الذي يدير تنفيذ تعليمات البرنامج بوحدة الحساب والمنطق على معاملات مخزّنة في ملف السجلات. وإضافةً إلى ذلك، يصدر مسار التحكم أوامر إلى أجهزة الإدخال/الإخراج وينسّق الوصولات إلى الذاكرة حسب حاجة التعليمات. فمثلاً، قد تحصل بعض التعليمات على قيم معاملاتها مباشرةً من مواقع ذاكرة (أو تخزّن نتائجها مباشرةً فيها) بدلاً من السجلات العامة. وفي القسم التالي، نركّز مناقشتنا لتنفيذ تعليمات وحدة المعالجة المركزية على التعليمات التي تحصل على قيم المعاملات وتخزّن النتائج في ملف السجلات. وتحتاج وحدة المعالجة المركزية إلى دوائر تحكم إضافية لقراءة قيم المعاملات أو كتابة نتائج التعليمات في مواقع أخرى، لكن خطوات تنفيذ التعليمات الرئيسية تسلك السلوك نفسه بصرف النظر عن مواقع المصدر والوجهة.</p>
@@ -699,7 +699,7 @@ L2:
 <li><strong>التنفيذ الراغب</strong>: في التنفيذ الراغب (eager execution)، ينفّذ المعالج جانبي التفرّع ويجري نقل بيانات شرطياً لا نقلاً للتحكم (ويُنفَّذ عبر تعليمتي <a href="https://diveintosystems.org/book/C7-x86_64/if_statements.html#_the_cmov_instructions">cmov</a> و<a href="https://diveintosystems.org/book/C9-ARM64/if_statements.html#_the_conditional_select_instruction">csel</a> في x86 وARMv8-A على الترتيب). ويتيح النقل الشرطي للبيانات للمعالج مواصلة التنفيذ دون تعطيل خط الأنابيب. غير أن ليس كل الشيفرة قادرة على الاستفادة من التنفيذ الراغب، وقد يكون ذلك خطيراً في حالة إلغاء الإشارة إلى المؤشّرات والآثار الجانبية.</li>
 </ul>
 <p><img src="/arabic-cs-library/images/dive-into-systems/c5-arch-3-controlHazardsol.webp" alt="خطر تحكمي 2" id="controlHaz"> الشكل 4. الحلول المحتملة للتعامل مع مخاطر التحكم.</p>
-<h3 id="المراجع">المراجع</h3>
+<h3 id="المراجع-1">المراجع</h3>
 <ol>
 <li>بيتر برايت. <a href="https://arstechnica.com/gadgets/2019/02/google-software-is-never-going-to-be-able-to-fix-spectre-type-bugs/">Google: لن تستطيع البرمجيات أبداً إصلاح أخطاء من نوع Spectre</a> <em>Ars Technica</em> 2019.</li>
 </ol>
@@ -763,7 +763,7 @@ L2:
 			
 			<script>
 				{
-					__sveltekit_t48gs0 = {
+					__sveltekit_1yik5oz = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -771,8 +771,8 @@ L2:
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Cwfc-WaD.js"),
-						import("../../../../_app/immutable/entry/app.wuQRaXzJ.js")
+						import("../../../../_app/immutable/entry/start.CRRs0bIY.js"),
+						import("../../../../_app/immutable/entry/app.BHhji0EQ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
