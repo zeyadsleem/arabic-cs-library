@@ -1,0 +1,1064 @@
+const t="open-workbook-cryptology",n="ch03",o="أنظمة التشفير غير المتماثلة [المفتاح العام]",e="index",d="أنظمة التشفير غير المتماثلة [المفتاح العام]",r=[{depth:2,id:"أنظمة-التشفير-المتماثلة-وغير-المتماثلة-والمملحة-الأساسيات",text:"أنظمة التشفير المتماثلة وغير المتماثلة و«المملّحة»: الأساسيات"},{depth:2,id:"استخدام-نظام-rsa-غير-المتماثل-في-python",text:"استخدام نظام RSA غير المتماثل في Python"},{depth:3,id:"rsa-مباشر-غير-آمن-تماما-في-python",text:"RSA مباشر — غير آمن تمامًا! — في Python"},{depth:3,id:"rsa-أكثر-أمانا-في-python-باستخدام-oaep-وpkcs-1",text:"RSA أكثر أمانًا في Python باستخدام OAEP وPKCS #1"},{depth:3,id:"كيف-نستخدم-rsa-بطريقة-سريعة-وآمنة-معا",text:"كيف نستخدم RSA بطريقة سريعة وآمنة معًا"},{depth:2,id:"التوقيعات-الرقمية",text:"التوقيعات الرقمية"},{depth:3,id:"توقيعات-رقمية-ساذجة",text:"توقيعات رقمية ساذجة"},{depth:3,id:"توقيعات-رقمية-أفضل-باستخدام-دوال-التلبيد",text:"توقيعات رقمية أفضل باستخدام دوال التلبيد"},{depth:2,id:"إدارة-المفاتيح-والحاجة-إلى-بنية-مفاتيح-عامة-متينة",text:"إدارة المفاتيح والحاجة إلى بنية مفاتيح عامة متينة"},{depth:2,id:"خاتمة-ولنفكر-في-سلسلة-الكتل",text:"خاتمة؛ ولنفكّر في سلسلة الكتل"}],c=`<h1>الفصل 3: أنظمة التشفير غير المتماثلة [المفتاح العام]</h1>
+<p><strong>Jonathan A. Poritz</strong></p>
+<p>رأينا أن هناك أنظمة تشفير آمنة وسريعة و(نسبيًا) سهلة الاستخدام، لكنها تتطلّب نشاطًا خاصًا قبل أن تبدأ الاتصالات العادية: تبادل مفتاح سرّي آمن. وهناك مقاربات متنوعة لتجاوز الصعوبة العملية التي قد يمثّلها ذلك في العالم الواقعي (مثل إيصال رقم بطاقتك الائتمانية بأمان إلى متجر إلكتروني لم تُتحَ لك فرصة أداء طقس تبادل المفتاح السرّي معه)، ومنها:</p>
+<ul>
+<li>بروتوكولات تتيح لطرفين إنشاء سرّ مشترك عبر تبادل رسائل على شبكة عامة: لا يحتاج Alice وBob إلا إلى تبادل رسالتين لينتهي بهما الأمر إلى قيمة سرّية مشتركة لن تستطيع Eve حسابها حتى لو رأت الرسالتين معًا. ثم يمكن استخدام تلك القيمة المشتركة، مباشرةً أو بعد معالجة إضافية، مفتاحًا لشيفرة كتل لاتصالات أكثر أمانًا. وأشهر هذه البروتوكولات هو تبادل مفاتيح Diffie-Hellman، ويمكن العثور على مزيد من المعلومات عنه، مثلًا، هنا:
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Diffie-Hellman_key_exchange">صفحة ويكيبيديا «تبادل مفاتيح Diffie-Hellman»</a></li>
+<li><a href="https://ieeexplore.ieee.org/document/1006971">مقال مسحي جيد</a> — Marks 1999</li>
+<li><a href="https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.37.9720">الورقة الأصلية عن اكتشافهما له لدى Diffie وHellman</a> — Diffie and Hellman 1976
+وتستند تفاصيل Diffie-Hellman إلى رياضيات متواضعة: وهي في متناول طالب متقدّم في تخصّص الرياضيات بالمرحلة الجامعية الأولى بسهولة. أما أمنه فيرتكز على فرضية يعتقدها كثير من الرياضيين وعلماء الحاسوب اعتقادًا واسعًا، لكنها لم تُبرهن قط!</li>
+</ul>
+</li>
+<li>وبدلًا من أن نبني طريقة آمنة ليصنع الأطراف سرًّا مشتركًا عبر اتصالات على قناة عامة على فرضيات نظرية، هناك طريقة لفعل الشيء نفسه بالاستعانة بعتاد متخصّص وفهم عميق لميكانيكا الكم. وتُسمّى <strong>توزيع المفاتيح الكمّي [QKD]</strong>، وقد ابتُكرت في ثمانينيات القرن العشرين، ثم بُرِّئت تجريبيًا منذ ذلك الحين في المختبرات وعلى مسافات متزايدة، لكنها ليست بعدُ شائعة الاستخدام عمليًا. ولمزيد من المعلومات:
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Quantum_key_distribution">صفحة ويكيبيديا «توزيع المفاتيح الكمّي»</a></li>
+<li>موقع تعريفي عام: <a href="https://web.archive.org/web/20131225083723/https://uwaterloo.ca/institute-for-quantum-computing/quantum-computing-101">Quantum computing 101</a></li>
+<li><a href="https://arxiv.org/pdf/2003.06557.pdf">ورقة Bennett وBrassard البحثية الأصلية سنة 1984 في هذا الموضوع</a> — Bennett and Brassard 2020</li>
+</ul>
+</li>
+<li>وهناك مقاربة أخرى واسعة التطبيقات ومثيرة للاهتمام، وهي موضوع معظم هذا الفصل: أنظمة التشفير غير المتماثلة.</li>
+</ul>
+<h2 id="أنظمة-التشفير-المتماثلة-وغير-المتماثلة-والمملحة-الأساسيات">أنظمة التشفير المتماثلة وغير المتماثلة و«المملّحة»: الأساسيات</h2>
+<p>إذا نظرنا عن كثب، نجد أن المشكلة التي لاحظناها في نهاية الفصل السابق تنبع من أن Alice وBob يجب أن يملكا المفتاح نفسه للتشفير وفكّ التشفير، وعليهما بالتالي إبقاءه بعيدًا عن Eve. فلو كان المفتاح بيد Eve، لأمكنها أن تشفّر رسائل وترسلها إلى Bob منتحلةً شخص Alice، ولأمكنها أيضًا أن تعترض رسائل Alice الحقيقية إلى Bob وتفكّ تشفيرها. هذه هي مشكلة استخدام المفتاح نفسه. ولأنظمة التشفير التي تفعل ذلك اسم:</p>
+<p><strong>التعريف 2.1.1.</strong> <strong>نظام التشفير المتماثل</strong> هو الذي يُستخدم فيه المفتاح نفسه لتشفير النصوص الصريحة إلى نصوص مشفَّرة، ولفكّ تشفير النصوص المشفَّرة إلى نصوص صريحة.</p>
+<p>تُسمّى أنظمة التشفير المتماثلة أحيانًا <strong>أنظمة التشفير بالمفتاح الخاص</strong>.</p>
+<p>وبيانيًا، تعمل أنظمة التشفير المتماثلة هكذا:</p>
+<p><strong>نظام تشفير متماثل [مفتاح خاص]، بيانيًا:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>على الشبكة العامة</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>(حيث تراقب Eve)</td>
+<td></td>
+</tr>
+<tr>
+<td>تُنشئ رسالة النص الصريح m_A؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وباستخدام k، تشفّر m_A إلى c_A</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وترسل c_A</td>
+<td>↣ النص المشفَّر c_A ↣</td>
+<td>تستقبل c_A؛</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وباستخدام k، تفكّ تشفير c_A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وتستعيد النص الصريح m_A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وتُنشئ رسالة النص الصريح m_B؛</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وباستخدام k، تشفّر m_B إلى c_B</td>
+</tr>
+<tr>
+<td>وتستقبل c_B؛</td>
+<td>↢ النص المشفَّر c_B ↢</td>
+<td>وترسل c_B</td>
+</tr>
+<tr>
+<td>وباستخدام k، تفكّ تشفير c_B</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وتستعيد النص الصريح m_B</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>والمشكلة التي نتعامل معها الآن هي الاتفاق الخاص المسبق على المفتاح السرّي k.</p>
+<p>ومن الطرق إلى تجاوز هذه المشكلة أن يستخدم Alice وBob مفتاحين مختلفين للتشفير وفكّ التشفير. ولهذا النوع من أنظمة التشفير اسم أيضًا:</p>
+<p><strong>التعريف 2.1.2.</strong> <strong>نظام التشفير غير المتماثل</strong> هو الذي يُستخدم فيه مفتاح kₑ، ويُسمّى <strong>مفتاح التشفير</strong> أو <strong>المفتاح العام</strong>، لتشفير النصوص الصريحة إلى نصوص مشفَّرة، بينما يلزم مفتاح مختلف k_d، ويُسمّى <strong>مفتاح فكّ التشفير</strong> أو <strong>المفتاح الخاص</strong>، لفكّ تشفير النصوص المشفَّرة إلى نصوص صريحة.</p>
+<p>تُسمّى أنظمة التشفير غير المتماثلة أحيانًا <strong>أنظمة التشفير بالمفتاح العام</strong>، لأن المستخدم حين يستخدمها ينشر عادةً مفتاح تشفيره kₑ في مكان عام ليراه الجميع ويستخدموه.</p>
+<p>وبيانيًا، تعمل أنظمة التشفير غير المتماثلة هكذا:</p>
+<p><strong>نظام تشفير غير متماثل [مفتاح عام]، بيانيًا:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Alice</th>
+<th>على الشبكة العامة</th>
+<th>Bob</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>(حيث تراقب Eve)</td>
+<td></td>
+</tr>
+<tr>
+<td>تُولّد زوج المفاتيح (k^Aₑ، k^A_d)</td>
+<td></td>
+<td>يُولّد زوج المفاتيح (k^Bₑ، k^B_d)</td>
+</tr>
+<tr>
+<td>تُنزّل k^Bₑ</td>
+<td>↢ مفتاح التشفير العام k^Bₑ ↢</td>
+<td>ينشر k^Bₑ</td>
+</tr>
+<tr>
+<td>تنشر k^Aₑ</td>
+<td>↣ مفتاح التشفير العام k^Aₑ ↣</td>
+<td>يُنزّل k^Aₑ</td>
+</tr>
+<tr>
+<td>تُنشئ رسالة النص الصريح m_A؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وباستخدام k^Bₑ، تشفّر m_A إلى c_A</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وترسل c_A</td>
+<td>↣ النص المشفَّر c_A ↣</td>
+<td>تستقبل c_A؛</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وباستخدام k^B_d، تفكّ تشفير c_A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وتستعيد النص الصريح m_A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وتُنشئ رسالة النص الصريح m_B؛</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وباستخدام k^Aₑ، تشفّر m_B إلى c_B</td>
+</tr>
+<tr>
+<td>وتستقبل c_B؛</td>
+<td>↢ النص المشفَّر c_B ↢</td>
+<td>وترسل c_B</td>
+</tr>
+<tr>
+<td>وباستخدام k^A_d، تفكّ تشفير c_B</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وتستعيد النص الصريح m_B</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تفهم كيف سيستخدم Alice وBob نظام تشفير غير متماثل؟</p>
+</blockquote>
+<p>وأبسط جزء في تصميم أنظمة التشفير غير المتماثلة <em>الآمنة</em> هو أنه <strong>يجب أن يكون حساب مفتاح فكّ التشفير k_d مستحيلًا عمليًا على Eve حتى حين تعرف مفتاح التشفير [العام] kₑ</strong>. فمفتاح التشفير عام، ولو كان هذا الحساب ممكنًا لفعلته Eve ببساطة، ولأمكنها فكّ تشفير كل النصوص المشفَّرة بنفسها.</p>
+<p>وهناك اعتبار آخر لأمن هذه الأنظمة: يجب أن يكون فضاء مفاتيح فكّ التشفير الممكنة كبيرًا جدًا. وإلا لأمكن Eve ببساطة تنفيذ هجوم القوة الغاشمة بتجربة كل مفاتيح فكّ التشفير الممكنة.</p>
+<p>وفي الحقيقة، هناك هجوم قوة غاشمة آخر ممكن على أنظمة التشفير غير المتماثلة، وهو كالتالي: لو كان لدى Eve تصوّر جيد إلى حد ما لمجموعة صغيرة من الرسائل المحتملة التي قد تشفّرها Alice لترسلها إلى Bob، لأمكنها أن تستخدم مفتاح التشفير العام بنفسها وتنفّذ كل تلك التشفيرات. فإن أصابت إحدى تخميناتها للرسالة الأصلية، فسيكون تشفيرها هو نفسه النص المشفَّر الذي رأته على الشبكة العامة منتقلًا من Alice إلى Bob. لذلك يجب أن يكون فضاء الرسائل المحتملة كبيرًا جدًا لمنع هذا النوع من هجمات القوة الغاشمة.</p>
+<p>وهناك في الواقع طريقة جميلة لمنع هجوم القوة الغاشمة هذا القائم على فضاء الرسائل، وهي أن تُكبَّر رسالة النص الصريح تكبيرًا مصطنعًا قبل تشفيرها. ويُفعل ذلك عادةً بإضافة ما يلي:</p>
+<p><strong>التعريف 2.1.3.</strong> <strong>المِلح التشفيري</strong> هو بيانات عشوائية تُضاف إلى رسالة تريد Alice إرسالها إلى Bob قبل أن تشفّرها، وتُزال تلقائيًا عند طرف Bob بعد أن يفكّ تشفير النص المشفَّر.</p>
+<p>وبمجرد أن تملّح Alice رسالتها، فإن أرادت Eve تنفيذ هجوم القوة الغاشمة القائم على فضاء الرسائل، فعليها أن تجرّب تشفير كل الرسائل المحتملة التي قد تكون Alice أرسلتها، <em>إضافة إلى</em> كل الاختيارات العشوائية الممكنة للملح. وحتى بعدد صغير نسبيًا من بتات الملح، سيجعل ذلك هذا الهجوم مكلفًا من حيث الزمن أكثر من اللازم بكثير.</p>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تفهم هذا «هجوم القوة الغاشمة القائم على فضاء الرسائل»، وكيف يمنعه الملح التشفيري؟</p>
+</blockquote>
+<p>وتبقى ملاحظة أخيرة عن المفاتيح و<em>توليدها</em> في أنظمة التشفير غير المتماثلة: مفاتيح هذه الأنظمة أكثر حساسية من مفاتيح الأنظمة المتماثلة. فعادةً يُختار مفتاح خاص/لفكّ التشفير بحجم معيّن — كبير، لمنع هجمات القوة الغاشمة، وباستخدام عشوائية قوية في الغالب، لمنع هجمات القوة الغاشمة التي تصبح ممكنة لو عرف الخصم شيئًا عن بنية المفاتيح التي يُرجَّح أن تختارها.</p>
+<p>ثم يُجرى حساب باستخدام ذلك المفتاح الخاص/لفكّ التشفير لإنتاج مفتاح التشفير/العام المقابل. ويجب أن يكون هذا الحساب عسيرًا جدًا في الاتجاه <em>العكسي</em>، وإلا لأمكن Eve العثور على المفتاح الخاص بمعرفة مفتاحه العام!</p>
+<p>لذلك قد تكون عملية إنشاء المفاتيح كلها معقّدة إلى حد بعيد في أنظمة التشفير غير المتماثلة. فيجب أن تتضمّن التنفيذات خطوة توليد مفاتيح قد تكون مكلفة زمنيًا فعلًا، لكنها تُنفَّذ مرة واحدة فقط من الشخص الذي يريد أن يكون قادرًا على استقبال رسائل مشفَّرة من غرباء على الشبكة. وهذا بالطبع على النقيض من حال أنظمة التشفير المتماثلة، حيث يتفق Alice وBob ببساطة على مفتاح ما بالعدد الصحيح من البايتات، كيفما شاءا، ويبدآن التشفير وفكّ التشفير فورًا: فلا وجود لخطوة «<em>توليد مفاتيح</em>» خاصة في الأنظمة المتماثلة.</p>
+<h2 id="استخدام-نظام-rsa-غير-المتماثل-في-python">استخدام نظام RSA غير المتماثل في Python</h2>
+<p>من أقدم أنظمة التشفير غير المتماثلة وأكثرها استخدامًا حتى اليوم<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> نظام يُعرف باسم <strong>RSA</strong>، سُمّي تكريمًا لمخترعيه الثلاثة: Ron <strong>R</strong>ivest وAdi <strong>S</strong>hamir وLeonard <strong>A</strong>dleman. وسنستخدم تنفيذًا بلغة <strong>Python</strong> لـRSA لاستكشاف الخصائص الأساسية لاستخدام أنظمة التشفير غير المتماثلة، كتوليد المفاتيح والتشفير وفكّ التشفير، أولًا بطريقة مباشرة تمامًا غير آمنة تمامًا. ثم سنعود إلى هذه الدوال الأساسية في إعداد أكثر تعقيدًا بقليل لكنه آمن فعلًا.</p>
+<h3 id="rsa-مباشر-غير-آمن-تماما-في-python">RSA مباشر — غير آمن تمامًا! — في Python</h3>
+<p>تضمّن وحدة <strong>Python</strong> المسماة <code>Crypto</code> وحدة فرعية هي <code>Crypto.PublicKey</code> تنفّذ صنفًا هو <code>RSA</code>. ويمكنك استخدام هذا الصنف بالطريقة المعتادة:</p>
+<pre><code class="language-text">from Crypto.PublicKey import RSA
+</code></pre>
+<p>وأول ما تفعله بكائن <code>RSA</code> هو توليد كائن جديد، وذلك بـ:</p>
+<pre><code class="language-text">key=RSA.generate(n)
+</code></pre>
+<p>ويجب أن تكون القيم المسموح بها لهذا المعامل 1024 على الأقل، وأن تكون من مضاعفات 256.</p>
+<p>وكما هي الحال كثيرًا، فكلما كان المفتاح أكبر كان نظام التشفير أكثر أمانًا، لكن كانت الحسابات أبطأ في توليد المفتاح وأيضًا في التشفير وفكّ التشفير. ومن القيم الشائعة اليوم 1024 و2048، ولا يندر أيضًا 4096.</p>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>اكتب دالة <strong>Python</strong> اسمها <code>timeRSAkeygen(n)</code> تأخذ مدخلًا حجم مفتاح <code>n</code> وتولّد 100 مفتاح RSA بذلك الحجم. وقِس زمن توليد كل مفتاح باستخدام مقاربة قياس زمن التنفيذ المعروفة في المهمة البرمجية، ثم أضف زمن التنفيذ الجديد إلى قائمة. وينبغي أن تُعيد <code>timeRSAkeygen(n)</code> بعد ذلك متوسط هذه القائمة من مئة قياس.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>ثم شغّل هذا البرنامج <code>timeRSAkeygen(n)</code> لأحجام المفاتيح التي تبدأ من 1024 وتصعد إلى 4096 بخطوة 256، أي لقيم <code>n</code> التي تتراوح في القائمة <code>[x for x in range(1024,4097,256)]</code>، واطبع لكل حجم مفتاح متوسط زمن توليد المفاتيح الذي أنتجته <code>timeRSAkeygen(n)</code> لذلك الحجم.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<p>ارسم مخططًا لبيانات الزمن التي جمعتها للتو. أي إنك حسبت لكل طول مفتاح متوسط الزمن المستغرق في توليد كل مفتاح من ذلك الطول على مدى مئة مرة. ارسم الآن مخططًا خطيًا تكون فيه قيم x هي أحجام المفاتيح تلك، وقيم y المقابلة هي متوسطات أزمنة توليد المفاتيح بذلك الحجم. واحرص على أن يكون للمخطط عنوان وتسميات لمحوري x وy.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<p>إن لم تكن على دراية برسم المخططات الخطية البسيطة في <strong>Python</strong>، فابحث فقط عن «<em>python line plot</em>»، وستجد حرفيًا مئات الصفحات التي تحوي أدلة بداية سريعة لرسم المخططات الخطية باستخدام <code>matplotlib.pyplot</code>، وكثير منها يحوي شيفرة يمكنك نسخها وتكييفها بسهولة.</p>
+</blockquote>
+<p>لننظر إلى أحد المفاتيح المولّدة بـ<code>RSA.generate</code>، باستخدام دالة <code>exportKey</code><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> من صنف <code>RSA</code>:</p>
+<pre><code class="language-text">&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; key = RSA.generate(1024)
+&gt;&gt;&gt; key.exportKey()
+b&#x27;-----BEGIN RSA PRIVATE KEY-----\\nMIICXQIBAAKBgQDRpxdIHxJTpuM3R/mHKurOrAXnJ5a/nlucxvst3lpHVcs9Yv+Q\\nTTtOrDVvgs7BBq2pdjODOYxEmAX2GGDuJIFMKZ8Se2ZUGWeJZ0sJolUoANQ0ihIj\\nD7zvFz40kuWLU7imSMOlQpWk35lyN2BR4I6DvAo6f4JKzEJ1l2wuig+75QIDAQAB\\nAoGAQsKHamLijhq1fdQAhGdJMBidJJd5rHj7yTefomKMsuyB9IFCyiuduBakSWcI\\n+XRr9mt6Sc4YeXtDYrMuooajWQ6Ltg8sGqjpDtrYzPILiVgN8fXz1R2TKAePrZUO\\nKazRnkMN6QcgX1xilfXFtr3Q2OB67dpnVwK3mtAI3E6tZ4ECQQDZWhogDB3+xkkO\\nES0mH0DtyeEbLSknAF84/xSylD58vVYvwWGma4dHEmZcjKEobc8dQQrndBm8jVQS\\niDblKjhhAkEA9u6EZfk+JqeuoUleirRI5X1Kwvy8jo77kEf3noVBE3Eve9eJgcX2\\nO+ZrAWke3tKqqu6+Tdy9AKkgl1s5EdfiBQJBAK3My7k2l0Gj4sT53SVvtmaumG83\\nxIFoXbxg1Hcb7X+nkuRq+R+vOiQNxYZZ+YAvln8pBIQhpXbNeB29iE/lW+ECQFWB\\nxqshIdp02k3TgD97qnp9ZnQa3Jho/se5hA+KiTxYR18VBfLAQEIByjAU3LHANYU3\\nYwLHW1NtPXHsDtkU7pkCQQC4N+Q/IHEY/Sc+fvha5x8zdWmGwODheGJ6Q2i6GN+I\\n9LvYjKW5hZ1GirUBjonzNi1vrQsaaVZatRsLa1iwTRIa\\n-----END RSA PRIVATE KEY-----&#x27;
+</code></pre>
+<ul>
+<li>يبدو أن هذه <strong>مفتاح خاص</strong>! أي إنها من نوع ما يجب، في نظام تشفير غير متماثل، أن يبقى سرًّا.</li>
+<li>كذلك، فحين تصدّر مفتاحًا فإنه يكون سلسلة بايتات. وهذا يعني أنك إن أردت كتابته إلى ملف، فعليك فتح الملف بأمر من هذا النوع: <code>file_handle = open(&quot;filename&quot;, &quot;wb&quot;)</code> أي <strong>ك</strong>تابة في نمط <strong>البايتات</strong>.</li>
+</ul>
+<p>وإذا كان بمقدورك تصدير مفتاح، فمن المنطقي أن يكون بمقدورك استيراد مفتاح أيضًا. وهذا سهل فعلًا: افترض أن سلسلة بايتات المفتاح الخاص مخزّنة في متغيّر اسمه <code>exported_key</code>. عندئذٍ يمكنك صنع كائن RSA مطابق تمامًا بـ:</p>
+<pre><code class="language-text">&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; new_key = RSA.importKey(exported_key)
+</code></pre>
+<p>فيصبح لديك كائن مطابق للكائن <code>key</code> الأصلي أعلاه.</p>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>اكتب دالة <strong>Python</strong> اسمها <code>gen_save_RSA_private(n, name)</code> تأخذ مدخلًا حجم مفتاح <code>n</code> وسلسلة <code>name</code>. وينبغي أن تولّد مفتاح RSA بالحجم <code>n</code> وتخزّنه في ملف بالاسم المعطى. وينبغي أيضًا أن تعيد ذلك الكائن نفسه.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>ثم اكتب دالة <strong>Python</strong> اسمها <code>recall_RSA_private(name)</code> تأخذ مدخلًا سلسلة <code>name</code>. وينبغي أن تفتح الملف بذلك الاسم، وتنشئ كائنًا من صنف RSA بالقيمة المخزّنة في الملف، وتعيد ذلك الكائن.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>الفكرة أن يكون بمقدورك استخدام هذه الدوال في مواقف مثل:</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<pre><code class="language-text">&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; key = gen_save_RSA_private(1024, &quot;AliceRSA&quot;)
+&gt;&gt;&gt; # do lots of encryption and decryption with this key
+&gt;&gt;&gt; # ... then take a break and even quit Python and
+&gt;&gt;&gt; # reboot the computer
+&gt;&gt;&gt; # ... but eventually restart the computer and Python
+&gt;&gt;&gt; # and do this:
+&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; key = recall_RSA_private(&quot;AliceRSA&quot;)
+&gt;&gt;&gt; # and then lots more encryption and decryption with
+&gt;&gt;&gt; # the same key [identity] as before
+</code></pre>
+</blockquote>
+<p>وكما ذكرنا قرب نهاية القسم 2.2، في نظام التشفير غير المتماثل يُحسب المفتاح الخاص أولًا، ثم يُحسب من المفتاح الخاص المفتاح العام المقابل. وفي الحقيقة، وكما ذُكر أيضًا، فمن المهم لأمن النظام غير المتماثل أن يكون حساب المفتاح الخاص ⇝ المفتاح العام ممكنًا في زمن معقول — ولا يلزم أن يكون سريعًا، لأنه سيجري مرة واحدة فقط عند إعداد النظام — بينما يجب أن يكون الحساب العكسي، أي المفتاح الخاص ⇜ المفتاح العام، غير عملي تمامًا مهما كانت الموارد الحاسوبية المتاحة للأعداء الذين يُتصوّر أنهم سيحاولون كسر هذا الاتصال الآمن.</p>
+<p>وفي حالة RSA، فإن الاتجاه السهل من المفتاح الخاص إلى المفتاح العام هو مجرّد <em>ضرب</em>، والاتجاه الصعب العكسي هو في الأساس مجرّد <em>قسمة</em>. وكما يتذكّر معظمنا من المدرسة الابتدائية، فمن الأسهل والأكثر مباشرة بكثير ضرب عددين من قسمة أحدهما على الآخر. وفي RSA، العددان اللذان يُضرب أحدهما في الآخر هما <strong>عددان أوّليان</strong>، أي عددان ليس لهما عوامل صحيحة موجبة غير الواحد ونفسيهما. ويبقى ضرب الأعداد الأولية سهلًا (وسريعًا) كضرب أي نوع آخر من الأعداد، حتى لو كانت مئات الأرقام طولًا. لكن إن أُعطيت عددًا من 600 رقم وقيل لك إنه حاصل ضرب عددين أوّليين من 300 رقم، فسيستغرق العثور على هذين العددين الأوليين زمنًا هائلًا — جزءًا كبيرًا من عمر الكون: <em>زمنًا هائلًا حقًا</em> — ولو بأفضل الخوارزميات والعتاد المتاحين اليوم.</p>
+<p>غير أنه ليس مبرهنة رياضية (حتى الآن) أن لا وجود لخوارزمية تحليل عاملة عظيمة لم تُكتشف بعد تجعل خطوة المفتاح الخاص ⇜ المفتاح العام سريعة نسبيًا في RSA، أكثر أنظمة التشفير غير المتماثلة استخدامًا على الكوكب الآن. وقد يريحك ذلك أو لا يريحك....<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تفهم كيف يمكن أن يعتمد أمن RSA على سهولة الضرب وصعوبة القسمة [التحليل]؟</p>
+</blockquote>
+<p>وبصرف النظر عن هذه الاعتبارات العامة حول أمن RSA، فلأنه نظام تشفير غير متماثل عامل، فلا بدّ من طريقة للحصول على المفتاح العام ذلك من المفتاح الخاص في <strong>Python</strong>. وهذا هو:</p>
+<pre><code class="language-text">&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; key = RSA.generate(1024)
+&gt;&gt;&gt; key.exportKey()
+b&#x27;-----BEGIN RSA PRIVATE KEY-----\\nMIICXQIBAAKBgQDRpxdIHxJTpuM3R/mHKurOrAXnJ5a/nlucxvst3lpHVcs9Yv+Q\\nTTtOrDVvgs7BBq2pdjODOYxEmAX2GGDuJIFMKZ8Se2ZUGWeJZ0sJolUoANQ0ihIj\\nD7zvFz40kuWLU7imSMOlQpWk35lyN2BR4I6DvAo6f4JKzEJ1l2wuig+75QIDAQAB\\nAoGAQsKHamLijhq1fdQAhGdJMBidJJd5rHj7yTefomKMsuyB9IFCyiuduBakSWcI\\n+XRr9mt6Sc4YeXtDYrMuooajWQ6Ltg8sGqjpDtrYzPILiVgN8fXz1R2TKAePrZUO\\nKazRnkMN6QcgX1xilfXFtr3Q2OB67dpnVwK3mtAI3E6tZ4ECQQDZWhogDB3+xkkO\\nES0mH0DtyeEbLSknAF84/xSylD58vVYvwWGma4dHEmZcjKEobc8dQQrndBm8jVQS\\niDblKjhhAkEA9u6EZfk+JqeuoUleirRI5X1Kwvy8jo77kEf3noVBE3Eve9eJgcX2\\nO+ZrAWke3tKqqu6+Tdy9AKkgl1s5EdfiBQJBAK3My7k2l0Gj4sT53SVvtmaumG83\\nxIFoXbxg1Hcb7X+nkuRq+R+vOiQNxYZZ+YAvln8pBIQhpXbNeB29iE/lW+ECQFWB\\nxqshIdp02k3TgD97qnp9ZnQa3Jho/se5hA+KiTxYR18VBfLAQEIByjAU3LHANYU3\\nYwLHW1NtPXHsDtkU7pkCQQC4N+Q/IHEY/Sc+fvha5x8zdWmGwODheGJ6Q2i6GN+I\\n9LvYjKW5hZ1GirUBjonzNi1vrQsaaVZatRsLa1iwTRIa\\n-----ENDRSA PRIVATE KEY-----&#x27;
+&gt;&gt;&gt; public_key = key.publicKey()
+&gt;&gt;&gt; public_key.exportKey()
+b&#x27;-----BEGIN PUBLIC KEY-----\\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDRpxdIHxJTpuM3R/mHKurOrAXn\\nJ5a/nlucxvst3lpHVcs9Yv+QTTtOrDVvgs7BBq2pdjODOYxEmAX2GGDuJIFMKZ8S\\ne2ZUGWeJZ0sJolUoANQ0ihIjD7zvFz40kuWLU7imSMOlQpWk35lyN2BR4I6DvAo6\\nf4JKzEJ1l2wuig+75QIDAQAB\\n-----END PUBLIC KEY-----&#x27;
+</code></pre>
+<p>وسيبني ذلك كائنًا من صنف RSA يحمل المفتاح العام فقط، فيستطيع التشفير لكن لا يستطيع فكّ التشفير. وهذا هو نوع كائن مفتاح RSA الذي سيبنيه معظم المستخدمين لإرسال رسائل مشفَّرة إلى صاحب المفتاح الخاص، بينما ينبغي أن يكون الكائن الأصلي الكامل، الذي يحمل المفتاحين الخاص والعام، معروفًا فقط للشخص الذي يستقبل تلك الرسائل ويفكّ تشفيرها، ومستخدمًا منه وحده.</p>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>نفّذ نسخة من المهمة البرمجية تحفظ المفتاح العام أيضًا في ملف منفصل. أي اصنع دالة <strong>Python</strong> اسمها <code>gen_save_RSA_pub_priv(n, name)</code> تأخذ مدخلًا حجم مفتاح <code>n</code> وسلسلة <code>name</code>. وينبغي أن تولّد مفتاح RSA بالحجم <code>n</code> وتخزّنه في ملف اسمه <code>name+&quot;.private&quot;</code>، وأن تخزّن أيضًا المفتاح العام المقابل وحده في ملف اسمه <code>name+&quot;.public&quot;</code>. وأخيرًا ينبغي أن تعيد الكائن الكامل (لا النسخة العامة فقط).</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>ثم اكتب دالة <strong>Python</strong> اسمها <code>recall_RSA_public(name)</code> تأخذ مدخلًا سلسلة <code>name</code>. وينبغي أن تفتح الملف اسمه <code>name+&quot;.public&quot;</code>، وتنشئ كائنًا من صنف RSA بالقيمة المخزّنة في ذلك الملف، وتعيد ذلك الكائن.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>الفكرة أن يكون بمقدورك استخدام هذه الدوال في مواقف مثل:</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<pre><code class="language-text">&gt;&gt;&gt; # Bob does:
+&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; key = gen_save_RSA_pub_priv(1024, &quot;BobRSA&quot;)
+&gt;&gt;&gt; # then puts the file &quot;BobRSA.public&quot; on an open
+&gt;&gt;&gt; # website, where Alice could download it
+&gt;&gt;&gt; # ... then, with this file on her machine,
+&gt;&gt;&gt; # Alice can do:
+&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; public_key = recall_RSA_public(&quot;BobRSA.public&quot;)
+&gt;&gt;&gt; # and Alice can encrypt using this new
+&gt;&gt;&gt; # public key and send messages which only Bob
+&gt;&gt;&gt; # will be able to decrypt using his original
+&gt;&gt;&gt; # key which has both public and private keys
+</code></pre>
+</blockquote>
+<p>لم نستخدم بعد كائنات مفاتيح RSA هذه لتشفير الرسائل وفكّ تشفيرها. وتذكّر أن الكائن مثل <code>public_key</code> في المثال أعلاه هو كل ما يلزم للتشفير (ونستخدم المفتاح نفسه أعلاه لا مفتاحًا جديدًا، فقط من أجل الاتساق)، وقد نُنشئه بـ:</p>
+<pre><code class="language-text">&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; public_key = RSA.importKey(b&#x27;-----BEGIN PUBLIC KEY-----\\n&gt;&gt;&gt; public_key = RSA.importKey(b&#x27;-----BEGIN PUBLIC KEY-----\\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDRpxdIHxJTpuM3R/mHKurOrAXn\\nJ5a/nlucxvst3lpHVcs9Yv+QTTtOrDVvgs7BBq2pdjODOYxEmAX2GGDuJIFMKZ8S\\ne2ZUGWeJZ0sJolUoANQ0ihIjD7zvFz40kuWLU7imSMOlQpWk35lyN2BR4I6DvAo6\\nf4JKzEJ1l2wuig+75QIDAQAB\\n-----END PUBLIC KEY-----&#x27;)\\n-----END PUBLIC KEY-----&#x27;)
+</code></pre>
+<p>لاستخدام الكائن في التشفير. لكن لاحظ أولًا أن <code>encrypt</code> له وسيط ثانٍ، فقط للتوافق العكسي مع نسخ أقدم من هذه الوحدة، ويجب أن يكون عددًا صحيحًا طويلًا يُتجاهَل تمامًا في الواقع. لاحظ أيضًا أن القيمة المعادة من <code>encrypt</code> هي صف (tuple) عنصره الأول سلسلة بايتات النص المشفَّر، وهكذا:</p>
+<pre><code class="language-text">&gt;&gt;&gt; ciphertext = public_key.encrypt(b&#x27;This is a test&#x27;,1)[0]
+&gt;&gt;&gt; print(ciphertext)
+b&#x27;\\xbfa\\xb0\\x8b\\x08*\\xdf\\x96gK0B/\\xa2\\x8e\\x1e\\x86\\xf2]8\\xd9\\xcb\\xc2w\\xad\\x82}\\xb5\\xf4\\x97\\xe1g\\x91\\xc8\\x00\\x14fr\\x15\\xc1\\x8b\\xbd\\x8di\\x1f\\xbc\\tt\\x8f\\xfa\\x1c\\xad\\xb8V\\xca\\xc7\\xed\\xb3X&quot;\\xb7ra\\xf8h\\x01\\x94c\\xc9\\xaf\\xf6\\xd5\\x0f/\\x83[\\xea\\xfd\\x85\\xdep9\\xf2\\xee\\xfc\\xec\\xd7\\xfc\\xfd\\xe0\\xf1\\xcc\\x12\\x8fZ\\xad\\xf0|n@\\xe8vD\\xb48}a\\xd8^\\xdb#\\xbb\\x01\\x8e\\x8c\\x1a;[\\x8e\\xfd@\\xc1\\xb8Ohw\\xc4\\x15&#x27;
+</code></pre>
+<p>وكما ذكرنا أعلاه، فهذا الكائن <code>public_key</code> لا يستطيع فكّ التشفير. وفي الحقيقة إن حاولت ذلك فستحصل على خطأ من هذا القبيل:</p>
+<pre><code class="language-text">&gt;&gt;&gt; public_key.decrypt(ciphertext)
+  File &quot;/usr/lib/python3/dist-packages/Crypto/PublicKey/RSA.py&quot;, line 174, in decrypt    return pubkey.pubkey.decrypt(self, ciphertext)  File &quot;/usr/lib/python3/dist-packages/Crypto/PublicKey/pubkey.py&quot;, line 93, in decrypt    plaintext=self._decrypt(ciphertext)  File &quot;/usr/lib/python3/dist-packages/Crypto/PublicKey/RSA.py&quot;, line 239, in _decrypt    mp = self.key._decrypt(cp)TypeError: Private key not available in this object
+</code></pre>
+<p>ومن جهة أخرى، لو كان الكائن <code>key</code> الذي يحمل المفتاح الخاص لا يزال بين يدينا — أو لو كنّا حفظنا نسخته المصدَّرة في ملف ثم أعدنا بناء <code>key</code> بـ<code>RSA.importKey</code> على سلسلة البايتات في ذلك الملف — لأمكننا فكّ التشفير ببساطة:</p>
+<pre><code class="language-text">&gt;&gt;&gt; key.decrypt(ciphertext)
+b&#x27;This is a test&#x27;
+</code></pre>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>نفّذ نسخة من المهمة البرمجية الخاصة بـRSA.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>أي اصنع كائن <code>key</code> جديدًا من RSA بحجم مفتاح 1024. واختر نصًا صريحًا عشوائيًا طوله نحو 100 بايت. ثم شفّره 100 مرة بـ<code>key.encrypt</code> وأبلغ عن متوسط الزمن الذي يستغرقه التشفير (باستخدام طريقة القياس الموصوفة في المهمة البرمجية).</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>وبالمثل خذ النص المشفَّر الناتج من أي من تلك التشفيرات بـ<code>key</code> ونفّذ عليه 100 عملية فكّ تشفير، وأبلغ عن متوسط الزمن الذي يستغرقه فكّ التشفير.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>نفّذ نسخة من المهمة البرمجية الخاصة بـRSA.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>أي اصنع كائن <code>key</code> جديدًا من RSA بحجم مفتاح 1024. واختر نصًا صريحًا يعجبك طوله نحو 80 أو 100 بايت. واصنع نسختين من النص الصريح تختلفان في بتة واحدة فقط.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>شفّر نسختي النص الصريح بـ<code>key.encrypt</code> واستخدم برنامجك <code>bits_diff_display</code> من المهمة البرمجية لترى أين يختلف النصان المشفَّران ومقدار الاختلاف.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>قد تجرّب أيضًا ما سبق بعدة مفاتيح مختلفة، فقط للتأكد من أن الأمر ليس صدفة خاصة باختيار المفتاح الذي وقع عليه اختيارك.</p>
+</blockquote>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تشعر بالارتياح لاستخدام تنفيذ <strong>Python</strong> لنظام تشفير RSA؟</p>
+</blockquote>
+<h3 id="rsa-أكثر-أمانا-في-python-باستخدام-oaep-وpkcs-1">RSA أكثر أمانًا في Python باستخدام OAEP وPKCS #1</h3>
+<p>للأسف، الاستخدام المباشر لـRSA كما فعلنا للتو لا يُعدّ آمنًا. وذلك لأسباب عدة، بعضها يتعلّق بالبنية الخاصة لـRSA، وبعضها يتعلّق ببساطة بأن RSA العاري الذي استخدمناه أعلاه لا ملح فيه، فيشفّر دائمًا النص الصريح نفسه إلى النص المشفَّر نفسه عند استخدام المفتاح نفسه — وللتفاصيل (بعضها) انظر قسم <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Attacks_against_plain_RSA">Attacks against plain RSA</a> في مقال ويكيبيديا <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA (cryptosystem)</a>.</p>
+<p>وقد طوّر مجتمع التشفير بنية نظرية تحمي من هذه الهجمات على RSA العاري تُسمّى <strong>حشو التشفير غير المتماثل الأمثل [OAEP]</strong>. وقد أُدرج OAEP في معيار يُسمّى <strong>PKCS #1، معيار التشفير بالمفتاح العام رقم 1</strong>، أصدرته مختبرات RSA، وهي شركة أمن تقنية معلومات أمريكية أسّسها Rivest وShamir وAdleman أنفسهم، مبتكرو نظام RSA. والمعيار الذي يُعدّ آمنًا للاستخدام العملي هو PKCS #1<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>.</p>
+<p>ويُنفَّذ PKCS #1 في <strong>Python</strong> بصنف <code>PKCS1_OAEP</code> في الوحدة <code>Crypto.Cipher</code>. ولأنه في جوهره مجرّد حشو لنظام تشفير غير متماثل — والحرف «P» في «OAEP» — فإننا نصنع كائن تشفير PKCS #1 بإطعامه كائن مفتاح RSA:</p>
+<pre><code class="language-text">&gt;&gt;&gt; # Bob does:
+&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; key = gen_save_RSA_pub_priv(1024, &quot;BobRSA&quot;)
+&gt;&gt;&gt; # then puts the file &quot;BobRSA.public&quot; on an open website
+&gt;&gt;&gt; # ... then, Alice gets this file on her machine, and does:
+&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; public_key = recall_RSA_public(&quot;BobRSA.public&quot;)
+&gt;&gt;&gt; from Crypto.Cipher import PKCS1_OAEP
+&gt;&gt;&gt; cipher_for_encryption = PKCS1_OAEP.new(public_key)
+&gt;&gt;&gt; # and Alice can encrypt messages, e.g.,
+&gt;&gt;&gt; cleartext = b&#x27;This is a test. This is only a test.&#x27;
+&gt;&gt;&gt; ciphertext = cipher_for_encryption.encrypt(cleartext)
+&gt;&gt;&gt; print(ciphertext)
+b&#x27;\\x17\\xf4\\xaa\\xc8\\x84\\xa9\\xe5\\x7f8\\xa7\\x86\`\\xea\\x13\\x1c\\x1d&gt;d\\xd5\\xaeI\\xed\\xf8~$Y\\xa3\\x7f\\xb7h\\x14W\\x1a\\x99\\\\\\xdd]P\\x08\\x0f*\\xd4z\\xc2u-\\xd6\\xbb\\xf3\\xe2;\\xf6\\xdaZ\\xc9!0-\\xce\\xa1S\\xb4\\xccx08\\x0c#\\x00v\\x87Kn41\\x84\\xc8\\x18\\xdf\\xc9\\xd8\\x83?\\xb5\\xce\\xbf\\x9b&lt;\\xadr.6xa\\xa8\\xad\\xca\\x0c\\x1b\\xf4\\xc3\\x8c\\xe0\\x05\\\\U\\xc3\\x0b\\xdf\\x02\\xfdk*l\\xa3*\\xa5&gt;\\x7f\\xcd\\xfa\\xb3\\xdb\\x91\\xfd\\xd5\\x15\\x8b&#x27;
+&gt;&gt;&gt; # Bob, on his machine, where he the key object which also
+&gt;&gt;&gt; # contains the private key, can do decryption by
+&gt;&gt;&gt; from Crypto.Cipher import PKCS1_OAEP
+&gt;&gt;&gt; cipher_for_decryption = PKCS1_OAEP.new(key)
+&gt;&gt;&gt; cleared_text = cipher_for_decryption.decrypt(ciphertext)
+&gt;&gt;&gt; print(cleared_text)
+b&#x27;This is a test. This is only a test.&#x27;
+</code></pre>
+<ul>
+<li>إن كتبتَ، عزيزي القارئ، الأوامر نفسها حرفيًا في حاسوبك، فستحصل عند فكّ التشفير على النص الصريح الأصلي نفسه، لكن الخطوة الوسيطة، أي النص المشفَّر، ستكون مختلفة عن المبيَّن أعلاه. والسبب في ذلك أن OAEP يتضمّن بعض الملح التشفيري، فتحصل في كل مرة تشفّر فيها، حتى للنص الصريح نفسه، على نص مشفَّر مختلف. (وهذا <strong>أمر جيد</strong>، فهو يزيد الأمان.)</li>
+<li>لا يمكنك تشفير نصوص صريحة كبيرة جدًا بالمقاربة الموصوفة أعلاه. ففي الوضع العملي يجب إما تجزيء رسالة طويلة إلى قطع صغيرة وتشفير كل منها، وإما استخدام مقاربة أخرى تتفادى حدّ الحجم. وسيُوصف الحل الثاني في القسم التالي مباشرةً.</li>
+</ul>
+<p>وكما يمكنك أن تخمّن، صار من المنطقي الآن أن نرى هل هذه النسخة الجديدة الأكثر أمانًا من RSA بطيئة أم سريعة، وهل تحقّق شرط الانتشار عند شانون.</p>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>نفّذ نسخة من المهمة البرمجية الخاصة بـRSA في نسخة PKCS #1/OAEP.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>أي اصنع كائن <code>key</code> جديدًا من RSA بحجم مفتاح 1024. واستخدمه لصنع كائن تشفير <code>PKCS1_OAEP</code>. واختر نصًا صريحًا عشوائيًا طوله نحو 100 بايت. ثم شفّره 100 مرة بـ<code>cipher.encrypt</code> وأبلغ عن متوسط الزمن الذي يستغرقه التشفير (باستخدام طريقة القياس الموصوفة في المهمة البرمجية).</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>وبالمثل خذ النص المشفَّر الناتج من أي من تلك التشفيرات ونفّذ عليه 100 عملية فكّ تشفير، وأبلغ عن متوسط الزمن الذي يستغرقه فكّ التشفير.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>نفّذ نسخة من المهمة البرمجية الخاصة بـRSA في نسخة PKCS #1/OAEP.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>أي اصنع كائن <code>key</code> جديدًا من RSA بحجم مفتاح 1024. واستخدمه لصنع كائن تشفير <code>PKCS1_OAEP</code>. واختر نصًا صريحًا يعجبك طوله نحو 80 أو 100 بايت. واصنع نسختين من النص الصريح تختلفان في بتة واحدة فقط.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>شفّر نسختي النص الصريح بـ<code>cipher.encrypt</code> واستخدم برنامجك <code>bits_diff_display</code> من المهمة البرمجية لترى أين يختلف النصان المشفَّران ومقدار الاختلاف.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>قد تجرّب أيضًا ما سبق بعدة مفاتيح مختلفة، فقط للتأكد من أن الأمر ليس صدفة خاصة باختيار المفتاح الذي وقع عليه اختيارك.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>قد تجرّب أيضًا مقارنة تشفيرين أُجريا بالطريقة نفسها تمامًا، لنص صريح واحد بعينه، ببرنامجك <code>bits_diff_display</code> لترى أن الملح التشفيري الذي يستخدمه OAEP يجعل النصوص المشفَّرة مختلفة تمامًا في كل مرة تشفّر فيها، حتى انطلاقًا من النص الصريح نفسه.</p>
+</blockquote>
+<h3 id="كيف-نستخدم-rsa-بطريقة-سريعة-وآمنة-معا">كيف نستخدم RSA بطريقة سريعة وآمنة معًا</h3>
+<p>كان ينبغي أن يكون واضحًا من المهام البرمجية أعلاه أن RSA، مع ما له من خصائص جميلة كنظام تشفير غير متماثل من حيث توزيع المفاتيح وإدارتها، بطيء جدًا. وإضافة إلى ذلك، فيه مشكلة أنه لا يمكن تشفير رسائل كبيرة — وإن كان في الإمكان افتراضًا حلّ هذه المشكلة بإحدى طرائق تسلسل الكتل التي نوقشت أعلاه. لكن هناك مقاربة أخرى تستفيد من مزايا أنظمة التشفير غير المتماثلة وتتفادى نقاط ضعفها.</p>
+<p>ولذلك تُستخدم المقاربة الكاملة الموصوفة في هذا الفصل للتشفير غير المتماثل، بما فيها توليد مفتاح عام ومفتاح خاص، ونشر المفتاح العام على موقع عام ليستخدمه أي أحد، <em>وغير ذلك</em>. لكن بدلًا من إجراء الاتصال كله بـRSA (أو بنظام تشفير غير متماثل آخر)، يُستخدم ذلك النظام غير المتماثل البطيء والآمن لنقل «مفتاح جلسة» مختار عشوائيًا. ثم يُجرى بقية الاتصال بشيفرة كتل سريعة جيدة التسلسل (مثل AES).</p>
+<p>وقد تتكوّن «الجلسة» في هذا السياق من عدد متفق عليه من الرسائل، أو من كل الرسائل اللازمة لإتمام بروتوكول ما (كإجراء دفع ببطاقة ائتمانية على الشبكة)، أو من كل الرسائل المُرسَلة قبل انقضاء حدّ زمني ما. وأيًّا كان ما ينهي الجلسة، فعند حدوثه يجب توليد مفتاح جلسة عشوائي جديد لمزيد من الاتصالات الآمنة بين الطرفين أنفسهما.</p>
+<p>وهذه المقاربة شائعة للغاية على الإنترنت اليوم. فمعظم الوقت الذي يشاهد فيه العملاء فيلمًا عبر الإنترنت، تكون هذه هي طريقة إرسال بثّ الفيديو إليهم من المزوّد. فالمزوّدون يريدون إرسال بيانات الفيديو مشفَّرة، كي لا تُسرق أفلامهم الثمينة من شخص يراقب الحزم فقط وهي تمرّ على الشبكة. ولأن العملاء لم يقابلوا المزوّدين شخصيًا على الأرجح ليتفقوا على مفتاح لنظام تشفير متماثل، يبدو أن على المزوّدين استخدام نظام غير متماثل لبثّ الفيديو المشفَّر هذا — لكن أنظمة التشفير غير المتماثلة أبطأ من أن تمرّ بها فيديوهات دون أن يلاحظ المشاهد البشري! وفي المقابل، شيفرات الكتل مثل AES <em>سريعة</em> بما يكفي. ولأن التفاوض على مفتاح الجلسة في بداية البثّ يستغرق جزءًا من الثانية، فإن مقاربة هذا القسم تتيح الأمان بلا صعوبات توزيع المفاتيح، ومع ذلك باستخدام شيفرة كتل سريعة (للبثّ كله، بعد إرسال مفتاح الجلسة الأولي بنظام تشفير غير متماثل).</p>
+<p>وفيما يلي تصوير بياني لهذه المقاربة، بافتراض أن Aragorn تريد بدء اتصال سريع وآمن مع Bilbo، مع أنهما لم يلتقيا شخصيًا ليتشاركا أي مفتاح. ولاحظ أنه بمجرد انتهاء التفاوض الأولي على مفتاح الجلسة، يمكن أن يكون هناك أي عدد من الرسائل من أي من الطرفين حتى تنتهي الجلسة — والمثال في هذا المخطط حيث تتعاقب الرسائل بصرامة هو احتمال واحد فقط. بل إن Aragorn كثيرًا ما ترسل رسالتيها الأوليين إلى Bilbo (رقم 1 ورقم 2 أدناه) رسالة واحدة أكبر مدمجة هي c_(k_(AB)) + c₁ (باستخدام صيغة «+» في <strong>Python</strong> لدمج سلاسل البايتات)، لأنها لا تحتاج إلى انتظار أي ردّ من Bilbo بعد رقم 1 قبل تنفيذ رقم 2.</p>
+<p><strong>اتصال سريع وآمن قائم على مفتاح جلسة، بيانيًا:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aragorn</th>
+<th>على الشبكة العامة</th>
+<th>Bilbo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>(حيث يراقب Gollum)</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>يُولّد زوج المفاتيح (k^Bₑ، k^B_d) للنظام</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>غير المتماثل Aa؛</td>
+</tr>
+<tr>
+<td>تُنزّل k^Bₑ</td>
+<td>↢ مفتاح التشفير العام k^Bₑ ↢</td>
+<td>ينشر k^Bₑ</td>
+</tr>
+<tr>
+<td>تختار مفتاح جلسة عشوائي k_(AB)</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td>للنظام المتماثل Ss؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وتشفّر k_(AB) بـAa باستخدام</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>المفتاح العام k^Bₑ، فتحصل على c_(AB)؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وترسل c_(AB)</td>
+<td>↣ مفتاح الجلسة المشفَّر بـAa هو c_(AB) ↣</td>
+<td>تستقبل c_(AB)؛</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وتفكّ تشفير c_(AB) بـAa باستخدام</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>المفتاح الخاص k^B_d، فتحصل على k_(AB)</td>
+</tr>
+<tr>
+<td>وتُنشئ رسالة النص الصريح m₁؛</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>وتشفّر m₁ بـSs باستخدام</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>مفتاح الجلسة k_(AB)، فتحصل على c₁؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وترسل c₁</td>
+<td>↣ النص المشفَّر c₁ المشفَّر بـSs ↣</td>
+<td>تستقبل c₁؛</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وتفكّ تشفير c₁ بـSs باستخدام</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>مفتاح الجلسة k_(AB)، فتحصل على m₁</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>وتُنشئ رسالة النص الصريح m₂؛</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وتشفّر m₂ بـSs باستخدام</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>مفتاح الجلسة k_(AB)، فتحصل على c₂؛</td>
+</tr>
+<tr>
+<td>وتستقبل c₂؛</td>
+<td>↢ النص المشفَّر c₂ المشفَّر بـSs ↢</td>
+<td>وترسل c₂</td>
+</tr>
+<tr>
+<td>وتفكّ تشفير c₂ بـSs باستخدام</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>مفتاح الجلسة k_(AB)، فتحصل على m₂</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وتُنشئ رسالة النص الصريح m₃؛</td>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td>وتشفّر m₃ بـSs باستخدام</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>مفتاح الجلسة k_(AB)، فتحصل على c₃؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وترسل c₃</td>
+<td>↣ النص المشفَّر c₃ المشفَّر بـSs ↣</td>
+<td>تستقبل c₃؛</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وتفكّ تشفير c₃ بـSs باستخدام</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>مفتاح الجلسة k_(AB)، فتحصل على m₃</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تفهم كيف سيستخدم Alice وBob مقاربة الجلسات هذه؟</p>
+</blockquote>
+<p>ومن المهم أن تأتي مفاتيح الجلسة المستخدمة في المخطّط أعلاه من مصدر عشوائية جيد. ولحسن الحظ، تضمّن وحدة <strong>Python</strong> المسماة <code>Crypto</code> وحدة فرعية هي <code>Crypto.Random</code> تنفّذ دالة <code>get_random_bytes(N)</code> تولّد سلسلة بايتات عشوائية جيدة بطول <code>N</code>. وينبغي استخدام هذه الدالة عند إنشاء مفاتيح الجلسات.</p>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<p>نفّذ المقاربة القائمة على الجلسات أعلاه للاتصالات السريعة والآمنة.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<p>لأننا لا نهتم (في الوقت الحالي) بالتفاصيل التقنية لنشر المواد (كمفاتيح التشفير العامة) على الشبكة أو لإرسال الرسائل عبر الإنترنت، فسيتعيّن عليك أن تلعب دور Aragorn وBilbo معًا. وبدلًا من نشر الملفات والبيانات أو إرسالها، ستضع هذه الأشياء في ملفات فقط، ثم يقرأ البرنامج التالي ذلك الملف، ونتخيّل أنه وصل من الإنترنت.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<p>أملًا في إبقاء الأمور واضحة، سنشترط أن يكون لكل دالة <strong>Python</strong> ينبغي أن تشغّلها Aragorn اسم يبدأ بحرف <code>A</code>، بينما تكون أسماء ما يشغّله Bilbo بداءةً بحرف <code>B</code>. ولإحكام هذه الفكرة الفاصلة، ينبغي أن تستخدم الدوال التي تبدأ بـ<code>A</code> معلومات تنشئها بنفسها أو تحصل عليها من ملفات على القرص (الذي يلعب دور الإنترنت العام في هذا السيناريو) أسماؤها تنتهي بـ<code>.public</code>، ولا تستخدم معلومات داخلية من الدوال التي تبدأ بـ<code>B</code>؛ والعكس صحيح لما تستخدمه دوال <code>B</code>.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<p>إليك الخطوات التي ينبغي أن تكتب لها شيفرة، مرقّمة بما يوافق الخطوات المرقّمة في المخطط أعلاه، وبالحرف الأول من الفاعل الذي يُتصوّر أنه ينفّذ العمل في ذلك المخطط البروتوكولي (أي إن الحرف الأول يدلّ أساسًا على أي عمود في المخطط هو المقصود):</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<ul>
+<li><strong><strong>B</strong> 1:</strong> اكتب دالة <strong>Python</strong> اسمها <code>B_asym_keygensend(n)</code> تأخذ مدخلًا حجم مفتاح <code>n</code>. وينبغي أن تقوم الدالة بما يلي:</li>
+<li>توليد مفتاح RSA بالحجم <code>n</code></li>
+<li>تخزين النسخة الكاملة (العامة والخاصة) في ملف <code>B_asym_key.private</code>، و</li>
+<li>تخزين الجزء العام فقط من المفتاح في ملف <code>B_asym_key.public</code>. وتذكّر أن حفظ بيانات في ملف اسمه ينتهي بـ<code>.public</code> هو «إرسال» للملف عبر الشبكة العامة، في استعارة هذه المسألة. [لاحظ أنك تستطيع إنجاز ذلك بأسطر قليلة جدًا بمجرّد استدعاء الدالة <code>gen_save_RSA_pub_priv(n, name)</code> من المهمة البرمجية بالوسائط الصحيحة!]</li>
+<li><strong><strong>A</strong> 2:</strong> اكتب دالة <strong>Python</strong> اسمها <code>A_session_keygensend()</code> تولّد مفتاح جلسة لنظام تشفير AES و«ترسله» (تضعه في ملف على القرص اسمه ينتهي بـ<code>.public</code>). وينبغي أن تقوم هذه الدالة الجديدة بما يلي:</li>
+<li>استخدام <code>get_random_bytes</code> لتوليد مفتاح جلسة k_(AB) عالي الجودة بالحجم المناسب لـAES،</li>
+<li>تشفير k_(AB) بـ<code>PKCS1_OAEP</code> (يمكنك إعادة استخدام بعض أسطر الشيفرة من المهام البرمجية أو من هنا)، و</li>
+<li>تخزين النص المشفَّر الناتج في ملف <code>encrypted_session_key.public</code></li>
+<li>تخزين مفتاح الجلسة k_(AB) غير المشفَّر في ملف <code>A_session_key</code> لاستخدام دوال <code>A</code> له لاحقًا. وتذكّر، كما نوقش قبل المهمة البرمجية أعلاه مباشرةً، أنك حين تريد كتابة بيانات مشفَّرة إلى ملف، ينبغي أن تفتح الملف بالأمر <code>file_handle = open(&quot;filename&quot;, &quot;wb&quot;)</code> ثم تكتب البيانات كالمعتاد بـ<code>file_handle.write(data_bytestring)</code>).</li>
+<li><strong><strong>B</strong> 2:</strong> اكتب دالة <strong>Python</strong> اسمها <code>B_session_keyreceive()</code> تقرأ مفتاح الجلسة الذي أنشأته Aragorn للتوّ و«أرسلته»، وتفكّ تشفيره. وعليها للقيام بذلك أن:</li>
+<li>تفتح الملف <code>encrypted_session_key.public</code> لقراءة البايتات وتحصل على محتواه،</li>
+<li>تقرأ المفتاح في الملف <code>B_asym_key.private</code> (استخدم دالتك <code>recall_RSA_private</code> من المهمة البرمجية لفعل ذلك!),</li>
+<li>تستخدم كائن المفتاح ذلك لإنشاء كائن تشفير <code>PKCS1_OAEP</code>،</li>
+<li>تفكّ تشفير مفتاح الجلسة المقروء سابقًا، و</li>
+<li>تحفظ (بايتات) مفتاح الجلسة المفكوك لاستخدامه لاحقًا في ملف <code>B_session_key</code>.</li>
+<li><strong><strong>A</strong> 3:</strong> اكتب دالة <strong>Python</strong> اسمها <code>A_send_encrypted_message(m, n)</code> تأخذ مدخلًا سلسلة بايتات <code>m</code> (الرسالة)، وعددًا صحيحًا <code>n</code> (رقم الرسالة). وينبغي أن تقوم هذه الدالة بما يلي:</li>
+<li>تفتح الملف <code>A_session_key</code> لقراءة البايتات وتحصل على محتواه،</li>
+<li>تستخدم ذلك المفتاح لإنشاء كائن <code>Crypto.Cipher</code> الخاص بـAES في نمط CBC (كما فعلنا في القسم 1.2)،</li>
+<li>تشفّر الرسالة <code>m</code> بكائن التشفير ذلك،</li>
+<li>تفتح ملفًا اسمه <code>c''+str(n)</code> لكتابة البايتات، و</li>
+<li>تكتب (بايتات) الرسالة المشفَّرة في ذلك الملف.</li>
+<li><strong><strong>B</strong> 3:</strong> اكتب دالة <strong>Python</strong> اسمها <code>B_receive_encrypted_message(n)</code> تأخذ مدخلًا عددًا صحيحًا <code>n</code> (رقم الرسالة) وتعيد الرسالة المفكوكة. وينبغي أن تقوم هذه الدالة بما يلي:</li>
+<li>تفتح الملف <code>B_session_key</code> لقراءة البايتات وتحصل على محتواه،</li>
+<li>تستخدم ذلك المفتاح لإنشاء كائن <code>Crypto.Cipher</code> الخاص بـAES في نمط CBC (كما فعلنا في القسم 1.2)،</li>
+<li>تفتح ملفًا اسمه <code>c''+str(n)</code> لكتابة البايتات،</li>
+<li>تقرأ (بايتات) الرسالة المشفَّرة من ذلك الملف،</li>
+<li>تفكّ تشفير الرسالة <code>m</code> بكائن التشفير المبنيّ سابقًا، و</li>
+<li>تعيد النص الصريح.</li>
+<li><strong><strong>B</strong> 4:</strong> اكتب دالة <strong>Python</strong> اسمها <code>B_send_encrypted_message(m, n)</code> تأخذ مدخلًا سلسلة بايتات <code>m</code> (الرسالة)، وعددًا صحيحًا <code>n</code> (رقم الرسالة). وينبغي أن تفعل هذه الدالة الشيء نفسه تمامًا الذي تفعله <code>A_send_encrypted_message(m, n)</code> الموصوفة أعلاه، مع تبديل الحرفين <code>A</code> و<code>B</code> في كل موضع فقط.</li>
+<li><strong><strong>A</strong> 4:</strong> اكتب دالة <strong>Python</strong> اسمها <code>A_receive_encrypted_message(n)</code> تأخذ مدخلًا عددًا صحيحًا <code>n</code> (رقم الرسالة) وتعيد الرسالة المفكوكة. وينبغي أن تفعل هذه الدالة الشيء نفسه تمامًا الذي تفعله <code>B_receive_encrypted_message(n)</code> الموصوفة أعلاه، مع تبديل الحرفين <code>A</code> و<code>B</code> في كل موضع فقط.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<p>[نعم، تبدو هذه المهمة طويلة، لكنها تعيد استخدام شيفرة كثيرة كتبتها من قبلُ أو تبني عليها، وتعليماتها مفصّلة جدًا!]</p>
+</blockquote>
+<h2 id="التوقيعات-الرقمية">التوقيعات الرقمية</h2>
+<p>لقد غيّر اكتشاف أنظمة التشفير غير المتماثلة — أو كما تُسمّى أكثر في السياقات غير التقنية كالفقرة الحالية، أنظمة التشفير بالمفتاح العام — وجه الإنترنت، إذ أتاح اتصالات آمنة بين كيانات لم تلتقِ قطّ في العالم الواقعي لتتشارك مفتاحًا سرّيًا. ولولا هذا الابتكار لكانت التجارة عبر الإنترنت أعقد بمراحل لا نهائية، مثلًا. لكن أبعد من هذا التطبيق المباشر لتشفير المفتاح العام في تأمين الاتصالات من المتلصّصين، اكتُشفت تطبيقات أخرى قوية أيضًا. ومنها تطبيق جميل جدًا كثير الاستخدام في عالم الشبكات، وهو فكرة:</p>
+<p><strong>التعريف 2.3.1.</strong> <strong>التوقيع الرقمي</strong> قطعة S من البيانات ترافق رسالة m. وهناك أيضًا خوارزمية تُسمّى <strong>التحقّق من التوقيع</strong> يمكن تشغيلها بمدخلات هي S وm وبعض البيانات العامة الأخرى، والتي إذا أعادت <em>قبولًا</em> برهنت على أن التوقيع لم يكن ليُنتج إلا من شخص يملك قطعة معيّنة من البيانات السرّية.</p>
+<p>وإذا افترضنا بعض الافتراضات حول السلوك في العالم الواقعي — وقد تكون مبرَّرة أو غير مبرَّرة! — فسيكون لهذه التوقيعات الرقمية تطبيقات بالغة القيمة. ومن الافتراضات التي سنحتاجها:</p>
+<ul>
+<li>وجود ارتباط موثوق بين المعلومة العامة المستخدمة للتحقّق من التوقيع والشخص الواقعي الذي يدّعي أنه أنشأ التوقيع. فمثلًا، ربما يلزم، كي تُدرَج المعلومة العامة على موقع معروف موثوق بجوار اسم إنسان، أن يذهب ذلك الإنسان إلى مكتب حكومي ما، ويعرض هوية، ويسجّل بياناته العامة.</li>
+<li>إمكان الوثوق بأن البشر يحفظون البيانات السرّية اللازمة لتوليد تلك التوقيعات آمنةً حفظًا موثوقًا. فمثلًا، لا يحفظونها على جهاز يمكن اختراقه أبدًا، ولا ينسون محوها قبل أن يتخلّصوا من قرص صلب قديم، <em>وغير ذلك</em>.</li>
+</ul>
+<p>والآن بعض التفاصيل.</p>
+<h3 id="توقيعات-رقمية-ساذجة">توقيعات رقمية ساذجة</h3>
+<p>كان من المهم منذ بداية دراستنا لعلم التشفير أن التشفير وفكّ التشفير <em>متضادان</em>: أي ما نسمّيه في الرياضيات «دوالًّا عكسية»<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>، بمعنى أن إجراء إحداهما ثم الأخرى يعيدك ببساطة إلى ما بدأت منه. ولأن الدوال العكسية تعمل بأي ترتيب، فهذا يعني أن فكّ تشفير تشفير رسالة ما ليس مجرّد الرسالة الأصلية فحسب، بل إن تشفير فكّ تشفير رسالة ما هو أيضًا كذلك.</p>
+<p>وقد يبدو ذلك مجرّد طرافة حسابية — ولماذا يفكّ أحد تشفير رسالة لم تُشفَّر أولًا؟ — لكن فيه في الواقع خصيصة جميلة جدًا: لا يستطيع فكّ التشفير إلا من يملك المفتاح الخاص لنظام تشفير غير متماثل ما، بينما يستطيع أي شخص نزّل مفتاح التشفير العام المقابل أن يشفّر. وحالة أن يستطيع شخص واحد فقط يملك معلومة سرّية (المفتاح الخاص) فعْل شيء ما بينما يستطيع كل الآخرين فعل شيء آخر بقطعة معلومة عامة (المفتاح العام) تبدو شبيهة جدًا بما يُفترض أن يحدث في نظام توقيع رقمي.</p>
+<p>وبالتحديد، لنفترض أن Bilbo يريد أن يوقّع رقميًا رسالة m ما، وأن Aragorn يريد أن يتحقّق من التوقيع. أولًا ينبغي أن يولّد Bilbo زوج مفاتيح عام/خاص ويضع مفتاحه العام على موقعه. ثم ينبغي أن يستخدم خوارزمية فكّ التشفير بمفتاحه الخاص على الرسالة m، فيحصل على قطعة بيانات نسمّيها s. وأخيرًا ينبغي أن يرسل Bilbo الرسالة m والتوقيع s معًا إلى Aragorn.</p>
+<p>وسيكون Aragorn قد نزّل مفتاح Bilbo العام. وما يمكنه فعله هو تشفير توقيع Bilbo (المدَّعى) s باستخدام ذلك المفتاح العام، فيحصل على قطعة بيانات نسمّيها mprime. ثم سـ<strong>يقبل</strong> Aragorn التوقيع صحيحًا إذا كان mprime لديه هو نفسه رسالة Bilbo m. ولأنه لا ينبغي أن يكون قادرًا على صنع قطعة بيانات s التي تشفيرها m إلا من يملك مفتاح Bilbo الخاص، فإن هذه الطريقة تنفّذ نظام التوقيع الرقمي فعلًا كما وُعد.</p>
+<p>وبيانيًا:</p>
+<p><strong>توقيعات رقمية ساذجة:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aragorn</th>
+<th>على الشبكة العامة</th>
+<th>Bilbo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>يُولّد زوج المفاتيح (k^Bₑ، k^B_d) للنظام</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>غير المتماثل Aa؛</td>
+</tr>
+<tr>
+<td>يُنزّل k^Bₑ</td>
+<td>↢ مفتاح التشفير العام k^Bₑ ↢</td>
+<td>ينشر k^Bₑ</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>ومع الرسالة m:</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>يفكّ تشفير m بـAa باستخدام</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>المفتاح الخاص k^B_d، فيحصل على s؛</td>
+</tr>
+<tr>
+<td>يستقبل (m,s)</td>
+<td>↢ الرسالة الموقّعة (m,s) ↢</td>
+<td>يرسل (m,s)</td>
+</tr>
+<tr>
+<td>ويشفّر s بـAa باستخدام</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>المفتاح العام k^Bₑ، فيحصل على mprime؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>فإن كان mprime=m</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><em>يقبل</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وإلا</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تشعر بالارتياح لطريقة توليد هذه التوقيعات الرقمية الساذجة والتحقّق منها؟</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>اكتب دالة <strong>Python</strong> اسمها <code>sign(key, m)</code> تأخذ مدخلًا مفتاحًا كاملًا (عامًّا وخاصًّا) <code>key</code> لـRSA، في صورة سلسلة بايتات قد تكون أنتجها <code>exportKey()</code>، ورسالة <code>m</code> (سلسلة بايتات)، وتنتج التوقيع <code>s</code> على <code>m</code> كما وُصف أعلاه. وللقيام بذلك استخدم <code>RSA.importKey</code> على المتغيّر <code>key</code> لبناء كائن RSA. واستخدم دالة <code>decrypt</code> لهذا الكائن على المتغيّر <code>m</code> لإنتاج التوقيع <code>s</code>، الذي ينبغي أن تعيده دالتك.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>ثم اكتب دالة <strong>Python</strong> اسمها <code>verify(pk, m, s)</code> تأخذ مدخلًا مفتاحًا عامًّا <code>pk</code> لـRSA، في صورة سلسلة بايتات قد تكون أنتجها <code>exportKey()</code>، ورسالة <code>m</code> (سلسلة بايتات)، وتوقيعًا <code>s</code> (سلسلة بايتات) على تلك الرسالة، وتعيد قيمة منطقية تشير إلى صحة التوقيع أو عدمه، وفق المخطّط أعلاه. وللقيام بذلك استخدم <code>RSA.importKey</code> على المتغيّر <code>pk</code> لبناء كائن RSA اسمه <code>public_key</code>، واستخدم دالة <code>encrypt</code> للكائن <code>public_key</code> لإنشاء سلسلة البايتات <code>mprime</code>. ولا تنسَ أن <code>encrypt</code> يأخذ متغيّرًا ثانيًا شكليًا قد تكون قيمته <code>1</code>، ويعيد صفًا عنصره رقم 0 هو التشفير. بعبارة أخرى، عليك أن تستخدم <code>mprime = public_key(s, 1)[0]</code>. ثم أعِد ببساطة القيمة (المنطقية) لـ<code>mprime == m</code>.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>الفكرة أن يكون بمقدورك استخدام هذه الدوال في مواقف مثل:</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<pre><code class="language-text">&gt;&gt;&gt; # Bilbo does:
+&gt;&gt;&gt; from Crypto.PublicKey import RSA
+&gt;&gt;&gt; key = RSA.generate(1024)
+&gt;&gt;&gt; full_key_exported = key.exportKey()
+&gt;&gt;&gt; public_key_exported = key.publicKey().exportKey()
+&gt;&gt;&gt; # Bilbo puts the public_key_exported on his website
+&gt;&gt;&gt; m = b&#x27;some message Bilbo wants to sign&#x27;
+&gt;&gt;&gt; s = sign(full_key_exported, m)
+&gt;&gt;&gt; # Bilblo sends (m,s) to Aragorn, maybe by email
+&gt;&gt;&gt; # Aragorn downloads the public_key_exported and
+&gt;&gt;&gt; # gets an email containing (m,s) and does:
+&gt;&gt;&gt; verify(public_key_exported, m, s)
+&gt;&gt;&gt; # if it is True, he can trust the message
+</code></pre>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>:</p>
+</blockquote>
+<h3 id="توقيعات-رقمية-أفضل-باستخدام-دوال-التلبيد">توقيعات رقمية أفضل باستخدام دوال التلبيد</h3>
+<p>من المشكلات الكبيرة في التوقيعات الرقمية الساذجة الموصوفة أعلاه أنها (قد تكون)... كبيرة. أي إن التوقيع s على رسالة m يكون في جوهره بالحجم نفسه الذي عليه الرسالة نفسها — فهو فكّ تشفير في نهاية المطاف، متظاهرًا بأن الرسالة نص مشفَّر. فتوقيع مستند كبير، أو ربما قاعدة بيانات كبيرة أو صورة عالية الدقة، سيتطلّب أساسًا ضعف المساحة اللازمة للتخزين أو الإرسال، وهو أمر غير مقبول!</p>
+<p>وما نحتاجه لصنع توقيعات أصغر بكثير هو نوع من الخوارزميات التي <em>تلخّص</em> في جوهرها محتوى الرسالة m التي تريد توقيعها. وعندئذٍ يمكن لنظام توقيع شبيه جدًا بالذي وُصف أعلاه أن ينفّذ خوارزمية تحقّقه بمقارنة التوقيع المشفَّر بملخّص الرسالة، لا بالرسالة كاملة.</p>
+<p>ولهذه الخوارزمية الملخِّصة السحرية اسم:</p>
+<p><strong>التعريف 2.3.2.</strong> <strong>دالة التلبيد التشفيرية</strong> خوارزمية H تأخذ مدخلات سلاسل بتات x بطول اعتباطي وتنتج مخرجات H(x) ثابتة الحجم، محقّقةً الخصائص الآتية:</p>
+<ol>
+<li>«<strong>سهولة الحساب</strong>»: حساب H(x) سريع جدًا؛</li>
+<li>«<strong>مقاومة الصورة السابقة</strong>»: إذا بدأت بأي سلسلة بتات y بحجم مخرجات H، فمن العسير جدًا العثور على سلسلة بتات x بحيث H(x)=y؛</li>
+<li>«<strong>مقاومة الصورة السابقة الثانية</strong>»: إذا بدأت بسلسلة بتات محدّدة x₁، فمن العسير جدًا العثور على x₂ أخرى بحيث H(x₂)=H(x₁)؛</li>
+<li>«<strong>مقاومة التصادم</strong>»: من العسير جدًا العثور على أي سلسلتي بتات x₁ وx₂ بحيث H(x₂)=H(x₁).</li>
+</ol>
+<p>وبمعنى ما، فإن العبارة المفتاحية في التعريف أعلاه هي «عسير جدًا»، بمعنى أن هناك بالتأكيد مدخلات ممكنة كثيرة جدًا لدالة تلبيد تعطي المخرج نفسه — بل هناك عدد لا نهائي من هذه المدخلات المتصادمة! فكّر في الأمر: لو كان حجم مخرج دالة تلبيد، مثلًا، 256 بتة، فماذا يحدث إن نظرت إلى سلاسل بتات مدخلة بطول 257 بتة؟ هناك ضعف عدد المدخلات بذلك الحجم مقارنةً بالمخرجات، فأكفأ طريقة ممكنة لتوزيع علاقة المخرجات بالمدخلات ستجعل كل مخرج ناتجًا عن مدخلين! والقدر نفسه من البرهان يقول إن هناك أربعة مدخلات على الأقل بطول 258 بتة تعطي المخرج نفسه، <em>وهكذا</em>. لكن ليسطر كونها دالة تلبيد تشفيرية يجب أن يكون العثور على هذه التصادمات <em>عسيرًا جدًا</em>.</p>
+<p>وعمليًا، يعني ذلك أن الخوارزميات المستخدمة في دوال التلبيد تُجري كثيرًا من العبث العشوائي ببتات مدخلاتها، فلا تبقى في الخوارزمية بنية كافية قد تمنح مهاجمًا طريقة منتظمة لمحاولة إيجاد تصادمات أو صور سابقة أو صور سابقة ثانية. وبلا بنية، تبدو الخيار الوحيد المتبقي هو هجوم القوة الغاشمة، لكن بما أن عدد سلاسل البتات بطول 256 بتة يساوي تقريبًا عدد الجسيمات في الكون (باستثناء الفوتونات والنيوترينوات، مع ذلك)، فليس القوة الغاشمة هجومًا قابلًا للتنفيذ.</p>
+<p>ودوال التلبيد التشفيرية مفيدة لأنه إذا كانت لديك رسالة أو مستند — فكّر فيه سلسلة بتات m — فإن H(m) يعمل نوعًا من «بصمة» لـm. فمثلًا: لنفترض أن Bilbo أخبر Aragorn ما هو H(m) دون أن يكشف m يوم الاثنين، ثم كشف m يوم الجمعة فقط. فيمكن Aragorn أن يثق بأنها الرسالة m نفسها التي كان Bilbo يفكّر فيها يوم الاثنين كالتي كشفها يوم الجمعة، لأنه كان سيكون «عسيرًا جدًا» العثور على mprime أخرى بحيث H(mprime)=H(m).</p>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تشعر بأنك تفهم ما هو مفيد في دالة التلبيد، ولماذا يوجد نظريًا عدد لا نهائي من الإخفاقات لشروط مقاومة الصورة السابقة ومقاومة الصورة السابقة الثانية ومقاومة التصادم، ومع ذلك فإن كون العثور على تلك الإخفاقات «عسيرًا جدًا» يجعل دوال التلبيد عملية؟</p>
+</blockquote>
+<p>وهناك عدد من دوال التلبيد المستخدمة اليوم، وهناك دوال استُخدمت زمنًا ثم لم تعد تُعدّ آمنة. وكما ذُكر أعلاه، فإن أمن دالة التلبيد يرتكز جزئيًا على انعدام بنيتها... لكن أي خوارزمية واضحة بما يكفي لتُكتب وتُقبل معيارًا لا بدّ أن تحوي بعض البنية، وقد وجد علماء الحاسوب في النهاية سبيلًا لمهاجمة بعض دوال التلبيد الأقدم باستخدام ذلك القليل من البنية فقط. وهنا بعض دوال التلبيد التي كانت أو ما زالت مستخدمة على نطاق واسع:</p>
+<ul>
+<li>لعقد من الزمن تقريبًا انطلاقًا من مطلع تسعينيات القرن العشرين، كانت دالة التلبيد التشفيرية الأكثر استخدامًا تُسمّى <strong>md5</strong>. وقد طوّرها Ron Rivest ونشرها سنة 1992. وحجم مخرج md5 هو 128 بتة. ومع أن md5 كان يُظنّ معيبًا منذ منتصف التسعينيات، لم يُنشر هجوم فعلي إلا سنة 2004، حين بُيِّن أنه غير مقاوم للتصادم — Wang and Yu 2005. غير أن md5 ما زال مستخدمًا على نطاق واسع اليوم للتحقّق من أن نقل بيانات كبير لم يعانِ خطأ في الإرسال — أي إنه ما زال أداة مفيدة لاختبار التلف غير المتعمَّد في البيانات.</li>
+<li>أما دالة التلبيد التشفيرية الأكثر استخدامًا من أواخر التسعينيات حتى وقت قريب، والمدمجة في كثير من البروتوكولات التشفيرية المعيارية المقبولة على نطاق واسع، فهي <strong>SHA-1</strong>، بحجم مخرج 160 بتة. طوّرتها وكالة الأمن القومي الأمريكية في عملية شبه علنية، واعتمدها المعهد الوطني للمعايير والتقنية [NIST] ضمن عدة معايير فيدرالية أمريكية لمعالجة المعلومات. وفي سنة 2004 نُشر عمل أشار إلى أن SHA-1 قد يكون عرضة لأنواع معيّنة من الهجوم. (انظر Poritz and Swimmer 2004.) ولهذا طالب NIST سنة 2010 كثيرًا من تطبيقات حماية البيانات الفيدرالية الأمريكية بالانتقال إلى دالة تلبيد أخرى.</li>
+<li>وفي وقت كتابة هذه السطور، يوصي معظم المستخدمين والمؤسسات الواعين بأمن المعلومات بـ<strong>SHA-2</strong>، وبصيغتها <strong>SHA-256</strong> عادةً، التي حجم مخرجها 256 بتة. ونظرًا إلى الكشوف الأخيرة عن تورّط وكالة الأمن القومي في البروتوكولات التشفيرية وإضعافها لها، فقد يكون من دواعي القلق أنها شاركت في تطوير SHA-2.</li>
+</ul>
+<p>ويُنفَّذ SHA-2 في <strong>Python</strong> بصنف <code>SHA256</code> في الوحدة <code>Crypto.Hash</code>. ويمكنك إنشاء هذا الكائن بـ<code>SHA256.new(s)</code>، حيث <code>s</code> هي سلسلة البايتات كاملة المطلوب تلبيدها. وهناك طريقة أخرى لاستخدام هذا الصنف، مفيدة خصوصًا إذا كانت البيانات المطلوب تلبيدها كثيرة، وهي تمرير أول قطعة من البيانات إلى <code>SHA356.new</code>، ثم استدعاء دالة <code>update</code> للصنف ببقية قطع البيانات.</p>
+<p>وفي كلتا الطريقتين، حين تنتهي من إطعام نسخة <code>SHA256</code> بياناتك المطلوب تلبيدها، يمكنك استدعاء دالة <code>digest()</code> للحصول على قيمة التلبيد سلسلةَ بايتات، أو دالة <code>hexdigest()</code> للحصول على قيمة التلبيد نفسها سلسلةً حرفية مكتوبة بالنظام السادس عشري. فمثلًا:</p>
+<pre><code class="language-text">&gt;&gt;&gt; from Crypto.Hash import SHA256
+&gt;&gt;&gt; hash_object = SHA256.new(b&#x27;first bit of data&#x27;)
+&gt;&gt;&gt; hash_object.update(b&#x27;some more data&#x27;)
+&gt;&gt;&gt; hash_object.update(b&#x27;last bit of the data&#x27;)
+&gt;&gt;&gt; hash_object.digest()
+b&#x27;:\\x93&quot;P\`\\xd2Y-\\x8c/\\xab\\xfa=\\x8e\\xa7\\xb7N\\xdcF\\xae[\\xf9\\xa4\\xd6.\\xa1\\xfeR\\xe4\\xcb\\x89\\xb8&#x27;
+&gt;&gt;&gt; hash_object.hexdigest()
+3a93225060d2592d8c2fabfa3d8ea7b74edc46ae5bf9a4d62ea1fe52e4cb89b8
+</code></pre>
+<p>وبدالة <code>update</code> تحصل لاحقًا على <code>digest</code> يكون مخرج دالة التلبيد لكل المدخلات التي أعطيتها تلك النسخة منذ إنشائها بـ<code>new</code>. ويعني ذلك أنه يجب عليك إنشاء نسخة جديدة بـ<code>new</code> في كل مرة تريد أن تبدأ من الصفر في حساب دالة التلبيد لسلسلة بتات جديدة.</p>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>بما أن SHA256 يُعتقد أنه يحوز الخصائص التي تجعله دالة تلبيد تشفيرية جيدة، فلا بدّ أن التغييرات الصغيرة في المدخل تُحدث تغييرات جذرية في المخرج، أي قيمة التلبيد ذات الـ256 بتة. بل إن الأفضل هو أن تُحدث فروق بقدر بتة واحدة في المدخل — بتغيير بتة، أو بإضافة بتة أخرى إلى التسلسل (في أي مكان: في البداية أو النهاية أو في الوسط) — تغيّرًا في نحو نصف بتات قيمة التلبيد. لنختبر ذلك!</p>
+<p><strong>مهمة برمجية.</strong></p>
+<p>أولًا اختر سلسلة بايتات أساسية تعجبك بطول نحو 50 بايتًا. واحسب قيمة تلبيد SHA256 لها. وجرّب الآن تغيير بتة واحدة من هذه المدخلات الأساسية، واحسب قيمة تلبيد سلسلة المدخلات الجديدة، وقارن قيمتي التلبيد ببرنامجك <code>bits_diff_display</code> من المهمة البرمجية لترى أين تختلف قيمتا التلبيد ومقدار الاختلاف.</p>
+<p><strong>مهمة برمجية.</strong></p>
+<p>كرّر ذلك عدة مرات (10 مرات على الأقل)، مع تغيير بتات في مواضع مختلفة من سلسلة المدخلات، وانظر في كل مرة مقدار التغيّر في بتات سلسلة التلبيد. واحسب أيضًا متوسط عدد البتات المتغيّرة في قيمة التلبيد في تجاربك.</p>
+</blockquote>
+<p>وكما ذُكر أعلاه، فإن كون التلبيد التشفيري لرسالة ما بصمةً موثوقة لتلك الرسالة يتيح لنا بناء نظام توقيع أكثر كفاءة بكثير. ففي هذا النظام لا نرسل الرسالة وفكّ تشفيرها، بل نرسل الرسالة وفكّ تشفير تلبيد الرسالة. وبذلك يكون التوقيع قطعة بيانات بحجم مخرج دالة التلبيد المستخدمة، مهما كان حجم الرسالة المطلوب توقيعها.</p>
+<p>وبيانيًا:</p>
+<p><strong>توقيعات رقمية أفضل [أصغر] بالتلبيد:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aragorn</th>
+<th>على الشبكة العامة</th>
+<th>Bilbo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>يُولّد زوج المفاتيح (k^Bₑ، k^B_d) للنظام</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>غير المتماثل Aa؛</td>
+</tr>
+<tr>
+<td>يُنزّل k^Bₑ</td>
+<td>↢ مفتاح التشفير العام k^Bₑ ↢</td>
+<td>ينشر k^Bₑ</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>ومع الرسالة m:</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>يلبّد m فيحصل على d؛</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>ويفكّ تشفير d بـAa باستخدام</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>المفتاح الخاص k^B_d، فيحصل على s؛</td>
+</tr>
+<tr>
+<td>يستقبل (m,s)</td>
+<td>↢ الرسالة الموقّعة (m,s) ↢</td>
+<td>يرسل (m,s)</td>
+</tr>
+<tr>
+<td>ويشفّر s بـAa باستخدام</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>المفتاح العام k^Bₑ، فيحصل على dprime؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ويلبّد m فيحصل على d؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>فإن كان dprime=d</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><em>يقبل</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وإلا</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تشعر بالارتياح لكيف تصنع هذه المقاربة الجديدة نظام توقيع رقمي آمن، بفضل بنيتها وخصائص دالة التلبيد التشفيرية، ومع ذلك أصغر بكثير من التوقيعات الرقمية الساذجة؟</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>نفّذ هذه المقاربة الجديدة لصنع توقيعات رقمية تستخدم دالة تلبيد للحصول على توقيعات أصغر.</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة برمجية.</strong></p>
+<p>أي اصنع دالتين <strong>Python</strong> جديدتين هما <code>signH(key, m)</code> و<code>verifyH(pk, m, s)</code> لهما المدخلات والمخرجات نفسها تمامًا التي لـ<code>sign(key, m)</code> و<code>verify(pk, m, s)</code> من المهمة البرمجية، ويمكن استخدامهما بالطرق نفسها التي تُستخدم بها الدالتان الأصليتان، لكنهما تستخدمان <code>SHA256</code> لصنع توقيعات صغيرة دائمًا.</p>
+</blockquote>
+<h2 id="إدارة-المفاتيح-والحاجة-إلى-بنية-مفاتيح-عامة-متينة">إدارة المفاتيح والحاجة إلى بنية مفاتيح عامة متينة</h2>
+<p>بدأنا هذا الفصل بالبحث عن مقاربة جديدة قد تحلّ مشكلة واجهتنا في أنظمة التشفير المتماثلة: مع أنها سريعة وآمنة، فهناك مواقف كثيرة جدًا يريد فيها أطراف لم يلتقِ بعضهم ببعض في الحياة الواقعية، في مكان وحال يتيحان لهم مشاركة مفتاح سرّي عالي الجودة (أي: كبير وعسير التخمين على الآخرين)، أن يتواصلوا مع ذلك بأمان عبر الإنترنت. وقد حلّت أنظمة التشفير غير المتماثلة هذه المشكلة بتقسيم المفتاح إلى قطعتين، إحداهما يجب أن تبقى سرّية (المفتاح الخاص) والأخرى يجب أن تُنشر (المفتاح العام).</p>
+<p>غير أن هناك مسألة مهمة تبقى، هي إدارة المفاتيح: فمشكلة أن Aragorn وBilbo لم يلتقيا شخصيًا لإنشاء مفتاح سرّي مشترك هي أنهما، أساسًا، يجب أن يثق كلٌّ منهما بموقع الآخر حيث يجب نشر مفتاحه العام. فإن اختُرق الموقع، أو حتى إذا اختُرقت قناة الاتصال بين أحد المشاركين وموقع الآخر، فقد ينتهي بهما الأمر إلى استخدام مفتاح عام ليس لمستقبِل الرسالة المقصود، بل مفتاح عام استبدله المخترق: ويُسمّى هذا <em>هجوم الشخص في المنتصف</em><sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>، وهو يتيح للمخترقين قراءة كل الاتصالات بين الطرفين بل تعديلها دون أن يعلموا أنهم بلا أمان أصلًا!</p>
+<p>وبيانيًا، يعمل هجوم الشخص في المنتصف هكذا:</p>
+<p><strong>هجوم الشخص في المنتصف على أنظمة التشفير غير المتماثلة:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Alice</th>
+<th>Eve</th>
+<th>Bob</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>يُولّد المفاتيح:</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>العام k^Bₑ والخاص k^B_d؛</td>
+</tr>
+<tr>
+<td></td>
+<td>تعترض k^Bₑ ↢</td>
+<td>ينشر k^Bₑ</td>
+</tr>
+<tr>
+<td></td>
+<td>تُولّد المفاتيح:</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>العام k^Eₑ والخاص k^E_d؛</td>
+<td></td>
+</tr>
+<tr>
+<td>تُنزّل k^Eₑ ظانّةً أنها k^Bₑ</td>
+<td>↢ k^Eₑ، مع انتحال المصدر</td>
+<td></td>
+</tr>
+<tr>
+<td>وتُنشئ رسالة النص الصريح m_A؛</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وباستخدام k^Eₑ، تشفّر m_A إلى c_A</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>وترسل c_A</td>
+<td>↣ c_A، مع الاعتراض</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>وباستخدام k^E_d، تفكّ تشفير c_A</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>وتستعيد النص الصريح m_A؛</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>وتقرأ m_A، وتغيّرها إلى m_E إن شاءت</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>وباستخدام k^Bₑ، تشفّر m_E إلى c_E</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>بانتحال المصدر c_E ↣</td>
+<td>تستقبل c_E ظانًّا أنها c_A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>وباستخدام k^B_d، يفكّ تشفير c_E</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>ويستعيد النص الصريح m_E</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>ظانًّا أنه m_A من Alice</td>
+</tr>
+</tbody>
+</table>
+<p>وهناك أيضًا هجوم شخص في المنتصف على التوقيعات الرقمية، قائم على أفكار مشابهة لاستبدال مفتاح Eve العام بمفتاح Bob، نتركه للقارئ ليفكّر فيه بنفسه.</p>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تشعر بالارتياح لكيفية عمل هجوم الشخص في المنتصف على الاتصالات؟ وماذا عن التوقيعات الرقمية؟</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<p>وهذه مهمة إضافية أخرى لا علاقة لها بالبرمجة على الإطلاق:</p>
+</blockquote>
+<blockquote>
+<p><strong>مهمة إضافية.</strong></p>
+<p>اكتب شرحًا لهجوم الشخص في المنتصف على التوقيعات الرقمية. وأدرج فيه مخططًا، مثل المخطط أعلاه المسمّى «توقيعات رقمية أفضل [أصغر] بالتلبيد» ممزوجًا بالمخطط أعلاه المسمّى «هجوم الشخص في المنتصف على أنظمة التشفير غير المتماثلة».</p>
+</blockquote>
+<p>يبدو أن كل عجائب التشفير غير المتماثل ستتهاوى ما لم نكن واثقين أصلًا من أن الشبكات التي نستخدمها والمواقع التي نزورها لا تُخترق أبدًا. أي ما لم تكن هناك طريقة ما لنحصل على نوع من <strong>جذر الثقة</strong>، وهو مفتاح عام مرتبط بكيان واقعي نثق به ضمنًا أصلًا، ونثق أيضًا بممارساته الأمنية، حتى نطمئن إلى أن المفتاح الخاص يُحفظ سرًّا.</p>
+<p>فتأتي أنظمة التشغيل والمتصفحات الحديثة بجذور ثقة مدمجة لا يعرف عنها المستخدمون شيئًا، لكنها تُستخدم للتحقّق من التوقيعات الرقمية التي يوقّعها ذلك الكيان. وربما يكون ذلك الكيان قد أدّى عمل مقابلة Jeff Bezos في الواقع، ثم يصدر توقيعًا على مفتاح Jeff العام. وعندئذٍ إن أردت استخدام بطاقتك الائتمانية على amazon.com، أمكنك تنزيل مفتاح Amazon العام مع توقيع جذر الثقة على ذلك المفتاح، ما يتيح لك الثقة بأن المفتاح الذي يبدو أنه مفتاح Amazon هو في الواقع مفتاح Amazon.</p>
+<p>وتُسمّى هذه التوقيعات الرقمية على المفتاح العام لشخص ما عادةً <strong>الشهادات</strong>، ويُسمّى جذر الثقة في هذا السياق <strong>جهة إصدار الشهادات</strong>.</p>
+<p>والبنية العامة لجهات إصدار الشهادات والمفاتيح العامة التي يمكن الوثوق، ربما بفضل الشهادات، بأنها مرتبطة بأشخاص أو مؤسسات واقعية معيّنة، تُسمّى <strong>بنية المفاتيح العامة [PKI]</strong>. فلو كان للإنترنت بنية مفاتيح عامة متينة موثوقة، لأمكننا أن نحظى باتصالات آمنة واسعة الانتشار، وبمستندات (موقّعة رقميًا) ملزمة قانونًا على الشبكة. وهذه إذن آخر تجلٍّ لمسألة ملازمة طوال هذا الكتاب: إدارة المفاتيح عسيرة جدًا، لكنها مهمة جدًا، كما توضّحه مرة أخرى ضرورة وجود بنية مفاتيح عامة متينة.</p>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تشعر بالارتياح لأفكار جذر الثقة (أو جهة إصدار الشهادات)، والشهادات، وبصفة عامة بنية المفاتيح العامة؟</p>
+</blockquote>
+<h2 id="خاتمة-ولنفكر-في-سلسلة-الكتل">خاتمة؛ ولنفكّر في سلسلة الكتل</h2>
+<p>قد تبدو فكرة نظام التشفير غير المتماثل في البداية شبيهة بالسحر قليلًا. بل يجب الاعتراف بأن أمن كل هذه الأنظمة الشائعة اليوم يقوم على افتراضات تبدو معقولة جدًا، لكنها ليست معلومة بيقين رياضي: فأمن RSA مثلًا يقوم على افتراض أن تحليل الأعداد الكبيرة مستحيل في زمن معقول (بمعنى دقيق ما لكلمة «معقول»).</p>
+<p>(ومن المثير للاهتمام أن أفضل هجوم معروف على هذا الافتراض تحديدًا، باستخدام حاسوب كمّي، بدا زمنًا طويلًا كأنه خيال علمي، لكنه يبدو الآن كأنه سيبدأ بالتأكيد في الانتشار على الأقل من كيانات كالدول القومية التي تملك موارد كافية. فلْيكن الخيال العلمي أفضل سلاح ضد السحر!)</p>
+<p>وإلى أي حدّ تصمد الافتراضات الكامنة وراء التشفير غير المتماثل كله أمام اختبار الزمن، وهل يمكن تصميم أنظمة تشفير غير متماثلة عملية مقاومة للحواسيب الكمّية وتنفيذها، سؤال بالغ الأهمية في العقد أو العقود المقبلة من تاريخ الإنترنت. وبينما يعمل تقنيون مجدّون في الكواليس على فكّ هذا التشويق، هناك تطبيقات غريبة أخرى للتشفير غير المتماثل طُوّرت وتقدّم فوائد محتملة مذهلة... بعضها، في الحقيقة، جيد إلى حدّ يكاد يكون من المؤكد أنه ليس حقيقيًا.</p>
+<p>ومن الأمثلة على ذلك شيء كثر الحديث عنه مؤخرًا يُسمّى <strong>سلسلة الكتل</strong>، وقد سمعت عنه على الأرجح بوصفه البنية التي تقوم عليها العملة الرقمية <strong>Bitcoin</strong>. ولو كنت تعمل في التعليم لسمعت عن سلاسل الكتل بوصفها، على ما يُفترض، أفضل مكان لحفظ شهادات الثانوية وكشوف درجات الجامعات والشهادات المهنية.</p>
+<p>تبدأ سلسلة الكتل ببنية بيانات تُسمّى <strong>سلسلة التلبيد</strong>، وهي أساسًا مجرّد تتابع من كتل بيانات يمكن أن يستمر في النمو (ربما إلى الأبد)، مع حقل إضافي واحد في كل كتلة: تلبيد الكتلة السابقة (بدالة تلبيد تشفيرية ما). ولاحظ أنه بما أن الكتلة السابقة تلك كانت تحوي تلبيد الكتلة التي سبقتها، فإن هذه التلبيبات تربط ضمنًا كل الكتل بالكتلة الأولى في السلسلة، التي تُسمّى غالبًا <strong>كتلة التكوين</strong>. وبيانيًا: كتلة التكوين (genesis block) تحوي بياناتها وحقل تلبيد قيمته معدوم (null)؛ ثم تأتي الكتلة 1 حاملة بياناتها وتلبيد الكتلة السابقة؛ وهكذا تتوالى الكتل، كل واحدة تحمل بياناتها وتلبيد الكتلة التي قبلها.</p>
+<p>وتمنح خصائصُ الأمان لدوال التلبيد التشفيرية المعطاة في التعريف 2.3.2 سلاسلَ التلبيد خاصيةً لافتة: فهي <strong>غير قابلة للتغيير</strong>، أي لا يمكن تعديلها. وبالتحديد، يعني ذلك أنه إذا كان حشد كامل من الناس (لنسمّهم «الهوبيت») يتشاركون نسخًا من سلسلة تلبيد، فلا يمكن لشخص آخر (لنسمّه «Gollum») أن يأتيهم ويدّعي أنه يملك نسخة صحيحة من السلسلة متطابقة في البداية والنهاية، لكن أُدخلت في وسطها كتل زائدة. والسبب في استحالة ذلك أن الكتلة الأولى — ولنقل إنها الكتلة رقم 141592 قرب النهاية حيث يتوافق Gollum مع الهوبيت — ستكون فيها تلبيدُ «كتلة سابقة» مختلفة عن تلبيد «الكتلة السابقة» عند الهوبيت: فالهوبيت لديهم الكتلة نفسها التي يتفقون جميعًا على أنها رقم 141591، بينما لدى Gollum الكتلة الزائدة التي يحاول تهريبها إلى السلسلة... وهاتان القطعتان المختلفتان من البيانات لا يمكن أن يكون لهما التلبيد نفسه (أو، على الأقل، من العسير جدًا معرفة أي بيانات ينبغي أن تكون في الكتلة لتحصل على قيمة التلبيد نفسها).</p>
+<blockquote>
+<p><strong>استجابة القراءة.</strong></p>
+<p>هل كل هذا مفهوم؟ ما الجديد المثير للاهتمام منه، وما القديم غير المثير؟ هل تشعر بالارتياح لأفكار سلسلة التلبيد، ولسبب كونها غير قابلة للتغيير؟</p>
+</blockquote>
+<p>وهناك خصائص إضافية عدة تجعل سلسلة التلبيد سلسلةَ كتل، منها أن أجزاء من البيانات في الكتل يجب أن تحمل توقيعات رقمية صحيحة — وهو موضوع ناقشناه في هذا الفصل! — وأن الكتل الجديدة ناتجة عن <strong>بروتوكول إجماع</strong>. وتتيح هذه البروتوكولات لكل من يحصل على نسخة من سلسلة الكتل أن يثق بأنه يملك سلسلة كتل البيانات نفسها التي يملكها كل من يستخدم تلك السلسلة.</p>
+<p>وبروتوكولات الإجماع موضوع في صفوف تشفير أكثر تقدّمًا: لا تتوقّف هنا، فهناك الكثير الممتع والمفيد والقوي لتتعلّمه في هذا المجال!</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>هذا مؤسف بمعنى ما: فللحصول على الأمن نفسه الذي توفّره أنظمة التشفير بالمنحنيات الإهليلجية بـRSA، يجب استخدام مفاتيح أكبر بكثير، فتكون الحسابات أبطأ بدرجة معتبرة. وميزة RSA على الأرجح أنها تقوم على رياضيات في مستوى المرحلة الجامعية المتقدّم، بينما تقوم أنظمة التشفير بالمنحنيات الإليلجية على رياضيات في مستوى الدراسات العليا. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>قد تُسمّى هذه الدالة <code>export_key</code> إذا كنت تستخدم نسخة أخرى من وحدة <code>Crypto</code>. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>وقد يزيدك شعورًا بعدم الارتياح أو لا أن تعلم أن <strong>الحواسيب الكمّية</strong> — وهي حواسيب تستطيع أداء نوع من الحساب العام في نموذج مختلف لما يعني ذلك، قائم على ميكانيكا الكم — <em>لديها</em> خوارزمية تحليل سريعة. وقد يُكسر RSA فور تشغيل أول حاسوب كمّي حقيقي كامل الحجم! <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>على الأقل بأحجام مفاتيح كبيرة بما يكفي، وإلى أن يشغّل أحدهم حاسوبًا كمّيًا كامل الوظائف. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p><em>مثلًا</em>، التربيع وأخذ الجذر التربيعي متضادان (على الأقل إذا بدأت بأعداد موجبة)، بحيث يعيد تربيع الجذر التربيعي أو أخذ الجذر التربيعي لمربّع العددَ الأصلي. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>مع أن المصطلح المستخدم عادةً أكثر تذكيرًا من كلمة «شخص». <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,p={book:t,chapter:n,chapterTitle:o,slug:e,title:d,headings:r,html:c};export{t as book,n as chapter,o as chapterTitle,p as default,r as headings,c as html,e as slug,d as title};
