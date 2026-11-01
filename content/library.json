@@ -742,11 +742,11 @@
       "title": "كرّاس التشفير المفتوح",
       "titleEn": "Open Workbook of Cryptology",
       "author": "Jonathan A. Poritz",
-      "description": "كرّاس مفتوح في علم التشفير: Freshman's Dream، وPrimality، وDiffie-Hellman، وOne-time pads، وتحليل الشيفرة — 92 صفحة.",
+      "description": "كرّاس عملي في التشفير بلغة Python: شيفرة قيصر وVigenère، وتحليل التكرارات، وشيفرات الكتل وأنماط CBC وECB، وRSA والتوقيعات الرقمية وبنية المفاتيح العامة — 92 صفحة.",
       "sourceUrl": "https://www.poritz.net/jonathan/share/owoc/",
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "status": "planned",
+      "status": "translated",
       "stage": "security",
       "order": 2,
       "format": "latex",
@@ -754,7 +754,8 @@
       "completeCourse": false,
       "prerequisites": [
         "discrete-math"
-      ]
+      ],
+      "note": "ترجمة عربية كاملة (5 أقسام) بموجب رخصة CC BY-SA 4.0؛ تُنشر الترجمة بالرخصة نفسها مع نسبة المصنَّف الأصلي إلى Jonathan A. Poritz."
     },
     {
       "id": "network-security",

@@ -7,13 +7,13 @@
 ## 0. الحالة الحالية (آخر تحديث)
 
 حالة `content/library.json` بعد التحقق الفعلي من المستودع: **56 كتاباً** —
-**52 في حالة `translated`** و**4 في حالة `planned`**، ولا توجد حالة ثالثة.
+**53 في حالة `translated`** و**3 في حالة `planned`**، ولا توجد حالة ثالثة.
 
 | التصنيف | العدد | التفاصيل |
 | --- | --- | --- |
-| كتب بصفحات محلية داخل المكتبة | 45 | 2491 قسماً في `src/lib/generated/sections/` (منها 864 صفحة Kinney يبنيها `scripts/build-kinney.mjs`) |
+| كتب بصفحات محلية داخل المكتبة | 46 | 2496 قسماً في `src/lib/generated/sections/` (منها 864 صفحة Kinney يبنيها `scripts/build-kinney.mjs`) |
 | كتب مستضافة خارجياً عبر `siteUrl` | 7 | `gobyexample-ar` · `learn-go-with-tests-ar` · `go101-ar` · `eloquent-javascript-ar` · `fullstack-open-ar` · `webdev-learn-ar` · `mooc` — ترجمتها كاملة لكنها تُقدَّم من مواقع خارجية، فلا صفحات محلية لها |
-| في طابور الترجمة | 4 | القسم 8 أدناه |
+| في طابور الترجمة | 3 | القسم 8 أدناه |
 
 `go-tour` ليست مستثنية: 103 صفحاتها العربية تُبنى من `src/lib/tour/translations/*.json`
 عبر `scripts/build-go-tour.mjs` ثم تُحقن في البيان عبر تخصيص في `build-content.mjs` —
@@ -23,10 +23,10 @@
 
 | البوابة | النتيجة |
 | --- | --- |
-| `pnpm audit:content` | 2491 قسماً في 46 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
+| `pnpm audit:content` | 2496 قسماً في 47 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
 | `pnpm test:content` | 112/112 تمر، بما فيها دورتا TanStack بعد إكمال 55 درسًا |
 | `pnpm test:import` | 9/9 |
-| `pnpm check:links` | 0 رابط غير محلَّل من 996,273 مرجعاً داخلياً على 2553 صفحة |
+| `pnpm check:links` | 0 رابط غير محلَّل من 996,505 مرجعاً داخلياً على 2558 صفحة |
 | `node scripts/build-content.mjs` | يخرج 0 فقط إذا كانت **كل** صفحة لكل كتاب مصنَّف `translated` بالفعل عربية |
 | `node scripts/check-mooc.mjs` | بوابة صفحة-صفحة لترجمة MOOC (القفل 1 أدناه) |
 | `node scripts/check-kinney.mjs` | 864 صفحة: 864 pass، 0 pending، 0 invalid (القفل 2 أدناه) |
@@ -223,21 +223,22 @@
   أنتج 22 صفحة في `content/mathematics-for-cs/` ثم تُرجمت كاملة.
 - الحالة `translated` الآن، وكل صفحاتها عربية ومدرجة في البيان.
 
-### القفل 4 — أربعة مصادر بلا خط استيراد بعد
+### القفل 4 — ثلاثة مصادر بلا خط استيراد بعد
 
 لا تبدأ ترجمتها قبل بناء `scripts/import-<book>.mjs`:
 (أُنجز قبله كتاب Algorithms Unplugged — 41 فصلاً و48 مفتاحاً في
 `content/algorithms-unplugged/` — فانتقل إلى `translated`. وكذلك كتاب
 Database Performance at Scale — 11 فصلاً + مقدمة + ملحق في
 `content/db-performance-at-scale/` — فانتقل إلى `translated` بلا خط استيراد
-منفصل.)
+منفصل. وكذلك كرّاس التشفير المفتوح Open Workbook of Cryptology — 3 فصول
+ومقدّمتان في `content/open-workbook-cryptology/` — ترجم من LaTeX عبر
+`scripts/import-open-workbook-cryptology.mjs` ثم انتقل إلى `translated`.)
 
 | المصدر | الحجم | المصدر الخام | سلف الحجز قبل الترجمة |
 | --- | --- | --- | --- |
 | `networks-systems-approach` | 920 | RST في `SystemsApproach/book` | **بشرية**: مراسلة `discuss@systemsapproach.org` — ترخيصها CC BY 4.0 لكن سياسة المؤلفين تطلب مناقشة الترجمة |
 | `ocaml-manual` | 1158 | HTML على `ocaml.org/manual/5.5/` | مرجع تدريجي؛ يحتاج قراراً بحجم التغطية قبل البدء |
 | `ostep` | 714 | PDF لكل فصل | **قرار ترخيص**: الكتاب «مجاني» بلا ترخيص صريح والمؤلفان يطلبان التواصل قبل أي إعادة استخدام — يلزم تثبيت الحالة في `library.json` (`planned` مقابل `reference`) قبل أي عمل |
-| `open-workbook-cryptology` | 92 | LaTeX في `poritz.net/.../owoc.tex` | CC BY-SA 4.0، مسودة أولى |
 
 ### بوابة القبول المشتركة لكل مستوى
 

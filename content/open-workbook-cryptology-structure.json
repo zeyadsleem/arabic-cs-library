@@ -1,0 +1,34 @@
+{
+  "chapters": [
+    {
+      "key": "release-notes",
+      "title": "Release Notes",
+      "titleAr": "ملاحظات الإصدار",
+      "sections": [{ "slug": "index", "title": "ملاحظات الإصدار", "order": 0 }]
+    },
+    {
+      "key": "preface",
+      "title": "Preface",
+      "titleAr": "تصدير",
+      "sections": [{ "slug": "index", "title": "تصدير", "order": 0 }]
+    },
+    {
+      "key": "ch01",
+      "title": "Preliminaries",
+      "titleAr": "مقدّمات",
+      "sections": [{ "slug": "index", "title": "مقدّمات", "order": 0 }]
+    },
+    {
+      "key": "ch02",
+      "title": "Block Ciphers",
+      "titleAr": "شيفرات الكتل",
+      "sections": [{ "slug": "index", "title": "شيفرات الكتل", "order": 0 }]
+    },
+    {
+      "key": "ch03",
+      "title": "Asymmetric [Public-Key] Cryptosystems",
+      "titleAr": "أنظمة التشفير غير المتماثلة [المفتاح العام]",
+      "sections": [{ "slug": "index", "title": "أنظمة التشفير غير المتماثلة [المفتاح العام]", "order": 0 }]
+    }
+  ]
+}
