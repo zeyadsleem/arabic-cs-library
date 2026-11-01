@@ -90,12 +90,12 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 استخدم draw.io كأداة رسم لمخططات الكيانات والعلاقات. لقد خصصنا صفحة منفصلة عن هذا التطبيق. اطّلع على:
 
-- [شرح عام لـ draw.io](/book/database-foundations/model-drawio/index#Draw.io-(diagrams.net)-general-introduction)
-- [نموذج البيانات المفاهيمي باستخدام draw.io](/book/database-foundations/model-drawio/index#Draw-a-conceptual-data-model-with-draw.io)
+- [شرح عام لـ draw.io](/book/database-foundations/model-drawio/index#مقدمة-عامة-عن-drawio-diagramsnet)
+- [نموذج البيانات المفاهيمي باستخدام draw.io](/book/database-foundations/model-drawio/index)
 
 ### تمرين نادي الشباب: أنواع الكيانات
 
-أنشئ [التمرين 1: نادي الشباب: أنواع الكيانات](/book/database-foundations/model-conceptueel-oefeningen/index#Exercise-1:-youth-club:-entity-types). وتابع نتيجة التمرين لأننا سنبني النتيجة على عدد من الخطوات.
+أنشئ [التمرين 1: نادي الشباب: أنواع الكيانات](/book/database-foundations/model-conceptueel-oefeningen/index). وتابع نتيجة التمرين لأننا سنبني النتيجة على عدد من الخطوات.
 
 ## الخواص
 
@@ -130,7 +130,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 ### تمرين نادي الشباب: الخواص
 
-أنشئ [التمرين 2: نادي الشباب، الخواص](/book/database-foundations/model-conceptueel-oefeningen/index#Exercise-2:-youth-club:-attributes). وتابع نتيجة التمرين لأننا نواصل بناء النموذج في تمرين لاحق.
+أنشئ [التمرين 2: نادي الشباب، الخواص](/book/database-foundations/model-conceptueel-oefeningen/index). وتابع نتيجة التمرين لأننا نواصل بناء النموذج في تمرين لاحق.
 
 ## العلاقات
 
@@ -296,7 +296,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 ### تمرين جمعية الشباب: العلاقات
 
-أنشئ [التمرين 3: نادي الشباب: العلاقات](/book/database-foundations/model-conceptueel-oefeningen/index#Exercise-3:-youth-club:-relationships). واحتفظ بنتيجة التمرين لأننا سنوسّعها في وقت لاحق.
+أنشئ [التمرين 3: نادي الشباب: العلاقات](/book/database-foundations/model-conceptueel-oefeningen/index). واحتفظ بنتيجة التمرين لأننا سنوسّعها في وقت لاحق.
 
 ## أنواع الخواص
 
@@ -368,11 +368,11 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 ### تمرين نادي الشباب: أنواع الخواص
 
-أنشئ [التمرين 4: نادي الشباب، أنواع الخواص](/book/database-foundations/model-conceptueel-oefeningen/index#Exercise-4:-youth-club:-types-of-attributes).
+أنشئ [التمرين 4: نادي الشباب، أنواع الخواص](/book/database-foundations/model-conceptueel-oefeningen/index).
 
 ### تمرين شركة تأجير السيارات
 
-أنشئ [التمرين 5: شركة تأجير السيارات](/book/database-foundations/model-conceptueel-oefeningen/index#Exercise-5:-car-rental-company).
+أنشئ [التمرين 5: شركة تأجير السيارات](/book/database-foundations/model-conceptueel-oefeningen/index).
 
 ## الكيانات الضعيفة والقوية
 
@@ -392,7 +392,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 ### تمرين إدارة الطلاب
 
-أنشئ [التمرين 6: إدارة الطلاب](/book/database-foundations/model-conceptueel-oefeningen/index#Exercise-6:-student-administration).
+أنشئ [التمرين 6: إدارة الطلاب](/book/database-foundations/model-conceptueel-oefeningen/index).
 
 ## مخطط الكيانات والعلاقات الموسّع (EERD)
 
@@ -441,4 +441,4 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 ### تمرين المكتبة
 
-أنشئ [التمرين 7: المكتبة](/book/database-foundations/model-conceptueel-oefeningen/index#Exercise-7:-library).
+أنشئ [التمرين 7: المكتبة](/book/database-foundations/model-conceptueel-oefeningen/index).

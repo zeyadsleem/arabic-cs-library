@@ -430,7 +430,7 @@ else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ ف
 
 إن أردت مراجعة سريعة، فإنّ الفصل المقابل في الجزء الثاني يتناول الدلالات [بتفصيل أكبر][jlox].
 
-[jlox]: /book/crafting-interpreters/control-flow/index#for-loops
+[jlox]: /book/crafting-interpreters/control-flow/index#حلقات-for
 
 </aside>
 

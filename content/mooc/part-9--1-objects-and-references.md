@@ -942,7 +942,7 @@ class Person:
         return self.year_of_birth < another.year_of_birth:
 ```
 
-> **تمرين برمجي: مقارنة العقارات**
+> **تمرين برمجي: مقارنة العقارات** {#programming-exercise-comparing-properties}
 >
 > تحتوي قاعدة بيانات لوكالة عقارية على سجلات للعقارات المتاحة، مُمثَّلة بكائنات معرّفة بالصنف التالي:
 

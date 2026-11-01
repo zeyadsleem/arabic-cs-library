@@ -4,7 +4,7 @@ lang: ar
 source: https://use-the-index-luke.com/sql/explain-plan/db2/filter-predicates
 ---
 
-لا تقدّم أي قاعدة بيانات أخرى معلومات أفضل عن نمط تقييم المُسندات كما تفعل Db2، لأنها تقول ببساطة في خطة التنفيذ ما إذا كان المُسند يُستخدم كشرط بدء و/أو توقف لـ[IXSCAN](/book/use-the-index-luke/sql-explain-plan-db2-operations/index#apa-db2-ops-ixscan) أو كمُسند ترشيح محض. لكن الأمر مربك لأنها تستخدم تعريفاً قديماً لمصطلح «*sarg*».
+لا تقدّم أي قاعدة بيانات أخرى معلومات أفضل عن نمط تقييم المُسندات كما تفعل Db2، لأنها تقول ببساطة في خطة التنفيذ ما إذا كان المُسند يُستخدم كشرط بدء و/أو توقف لـ[IXSCAN](/book/use-the-index-luke/sql-explain-plan-db2-operations/index) أو كمُسند ترشيح محض. لكن الأمر مربك لأنها تستخدم تعريفاً قديماً لمصطلح «*sarg*».
 
 > في الأيام الأولى، سمّى باحثو IBM هذه الأنواع من شروط البحث «مُسندات قابلة للبحث (sargable predicates)» لأن SARG اختصار لعبارة Search ARGument. وفي أيام لاحقة، أعادت Microsoft وSybase تعريف «sargable» لتعني «يمكن البحث عنه عبر الفهرس».— [SQL Performance Tuning](https://web.archive.org/web/20241210124531/https://www.informit.com/articles/article.aspx?p=30247)
 
@@ -20,7 +20,7 @@ source: https://use-the-index-luke.com/sql/explain-plan/db2/filter-predicates
 
 والجزء الجميل جداً في معلومات المُسندات المعروضة في خطط تنفيذ Db2 أنها لا توسم مُسندات الوصول فحسب، بل تقول صراحةً أي المُسندات تُستخدم كشرطَي `START` و/أو `STOP`.
 
-ويعرض المثال التالي جميع أنواع المُسندات كما يظهرها [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained):
+ويعرض المثال التالي جميع أنواع المُسندات كما يظهرها [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index):
 
 ```
 Explain Plan

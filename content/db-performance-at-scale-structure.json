@@ -1,0 +1,88 @@
+{
+  "chapters": [
+    {
+      "key": "introduction",
+      "title": "Introduction",
+      "titleAr": "مقدّمة الكتاب",
+      "sections": [{ "slug": "index", "title": "مقدّمة الكتاب", "order": 0 }]
+    },
+    {
+      "key": "ch01",
+      "title": "A Taste of What You’re Up Against: Two Tales",
+      "titleAr": "طعم ما أنت مقبل عليه: حكايتان",
+      "sections": [{ "slug": "index", "title": "طعم ما أنت مقبل عليه: حكايتان", "order": 0 }]
+    },
+    {
+      "key": "ch02",
+      "title": "Your Project, Through the Lens of Database Performance",
+      "titleAr": "مشروعك من منظور أداء قواعد البيانات",
+      "sections": [{ "slug": "index", "title": "مشروعك من منظور أداء قواعد البيانات", "order": 0 }]
+    },
+    {
+      "key": "ch03",
+      "title": "Database Internals: Hardware and Operating System Interactions",
+      "titleAr": "داخليات قواعد البيانات: تفاعل العتاد ونظام التشغيل",
+      "sections": [{ "slug": "index", "title": "داخليات قواعد البيانات: تفاعل العتاد ونظام التشغيل", "order": 0 }]
+    },
+    {
+      "key": "ch04",
+      "title": "Database Internals: Algorithmic Optimizations",
+      "titleAr": "داخليات قواعد البيانات: التحسينات الخوارزمية",
+      "sections": [{ "slug": "index", "title": "داخليات قواعد البيانات: التحسينات الخوارزمية", "order": 0 }]
+    },
+    {
+      "key": "ch05",
+      "title": "Database Drivers",
+      "titleAr": "مشغّلات قواعد البيانات",
+      "sections": [{ "slug": "index", "title": "مشغّلات قواعد البيانات", "order": 0 }]
+    },
+    {
+      "key": "ch06",
+      "title": "Getting Data Closer",
+      "titleAr": "تقريب البيانات",
+      "sections": [{ "slug": "index", "title": "تقريب البيانات", "order": 0 }]
+    },
+    {
+      "key": "ch07",
+      "title": "Infrastructure and Deployment Models",
+      "titleAr": "البنية التحتية ونماذج النشر",
+      "sections": [{ "slug": "index", "title": "البنية التحتية ونماذج النشر", "order": 0 }]
+    },
+    {
+      "key": "ch08",
+      "title": "Topology Considerations",
+      "titleAr": "اعتبارات الطوبولوجيا",
+      "sections": [{ "slug": "index", "title": "اعتبارات الطوبولوجيا", "order": 0 }]
+    },
+    {
+      "key": "ch09",
+      "title": "Benchmarking",
+      "titleAr": "القياس المرجعي",
+      "sections": [{ "slug": "index", "title": "القياس المرجعي", "order": 0 }]
+    },
+    {
+      "key": "ch10",
+      "title": "Monitoring",
+      "titleAr": "المراقبة",
+      "sections": [{ "slug": "index", "title": "المراقبة", "order": 0 }]
+    },
+    {
+      "key": "ch11",
+      "title": "Administration",
+      "titleAr": "الإدارة",
+      "sections": [{ "slug": "index", "title": "الإدارة", "order": 0 }]
+    },
+    {
+      "key": "appendix-a",
+      "title": "Appendix A: A Brief Look at Fundamental Database Design Decisions",
+      "titleAr": "الملحق أ: لمحة سريعة عن قرارات تصميم قواعد البيانات الجذرية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الملحق أ: لمحة سريعة عن قرارات تصميم قواعد البيانات الجذرية",
+          "order": 0
+        }
+      ]
+    }
+  ]
+}

@@ -14,9 +14,9 @@ source: https://google.github.io/styleguide/go/decisions
 
 انتقلت الأقسام التالية من قرارات الأسلوب إلى جزء آخر من الدليل:
 
-- **أسماء الحروف المختلطة (MixedCaps)**: راجع [guide#mixed-caps](/book/go-style/guide/index#mixed-caps)
-- **التنسيق (Formatting)**: راجع [guide#formatting](/book/go-style/guide/index#formatting)
-- **طول السطر (Line Length)**: راجع [guide#line-length](/book/go-style/guide/index#line-length)
+- **أسماء الحروف المختلطة (MixedCaps)**: راجع [guide#mixed-caps](/book/go-style/guide/index)
+- **التنسيق (Formatting)**: راجع [guide#formatting](/book/go-style/guide/index)
+- **طول السطر (Line Length)**: راجع [guide#line-length](/book/go-style/guide/index)
 
 ## التسمية {#naming}
 
@@ -48,7 +48,7 @@ source: https://google.github.io/styleguide/go/decisions
 
 تجنّب أسماء الحزم غير المفيدة مثل `util` و`utility` و`common` و`helper` و`model` و`testhelper` وما شابهها، لأنها تغري مستخدمي الحزمة بـ[إعادة تسميتها عند الاستيراد](#import-renaming). راجع:
 
-- [إرشادات حول ما يسمّى "حزم الأدوات المساعدة"](/book/go-style/best-practices-2/index#util-packages)
+- [إرشادات حول ما يسمّى "حزم الأدوات المساعدة"](/book/go-style/best-practices-2/index)
 - [Go Tip #97: What's in a Name](https://google.github.io/styleguide/go/index.html#gotip)
 - [Go Tip #108: The Power of a Good Package Name](https://google.github.io/styleguide/go/index.html#gotip)
 
@@ -74,7 +74,7 @@ source: https://google.github.io/styleguide/go/decisions
 
 ### أسماء الثوابت (Constant names)
 
-يجب أن تستخدم أسماء الثوابت [MixedCaps](/book/go-style/guide/index#mixed-caps) مثل جميع الأسماء الأخرى في Go. (تبدأ الثوابت [المصدَّرة](https://tour.golang.org/basics/3) بحرف كبير، بينما تبدأ الثوابت غير المصدَّرة بحرف صغير.) وينطبق ذلك حتى عندما يخالف أعراف لغات أخرى. ولا ينبغي أن تكون أسماء الثوابت مشتقّة من قيمها، بل ينبغي أن تشرح ما تدلّ عليه القيمة.
+يجب أن تستخدم أسماء الثوابت [MixedCaps](/book/go-style/guide/index) مثل جميع الأسماء الأخرى في Go. (تبدأ الثوابت [المصدَّرة](https://tour.golang.org/basics/3) بحرف كبير، بينما تبدأ الثوابت غير المصدَّرة بحرف صغير.) وينطبق ذلك حتى عندما يخالف أعراف لغات أخرى. ولا ينبغي أن تكون أسماء الثوابت مشتقّة من قيمها، بل ينبغي أن تشرح ما تدلّ عليه القيمة.
 
 ```javascript
 // Good:
@@ -289,15 +289,15 @@ func (db *DB) UserCount() (int, error) {
 
 تهدف الأعراف المتعلّقة بالتعليقات (التي تشمل ما يجب التعليق عليه، والأسلوب المستخدم، وكيفية تقديم أمثلة قابلة للتشغيل، وما إلى ذلك) إلى دعم تجربة قراءة توثيق واجهة برمجية عامة. راجع [Effective Go](http://golang.org/doc/effective_go.html#commentary) لمزيد من المعلومات.
 
-ويناقش قسم [أعراف التوثيق](/book/go-style/best-practices-2/index#documentation-conventions) في مستند أفضل الممارسات هذا الأمر بمزيد من التفصيل.
+ويناقش قسم [أعراف التوثيق](/book/go-style/best-practices-2/index) في مستند أفضل الممارسات هذا الأمر بمزيد من التفصيل.
 
-**أفضل ممارسة:** استخدم [معاينة التوثيق](/book/go-style/best-practices-2/index#documentation-preview) أثناء التطوير ومراجعة الكود للتحقق مما إذا كان التوثيق والأمثلة القابلة للتشغيل مفيدة وتُعرض بالطريقة التي تتوقعها.
+**أفضل ممارسة:** استخدم [معاينة التوثيق](/book/go-style/best-practices-2/index) أثناء التطوير ومراجعة الكود للتحقق مما إذا كان التوثيق والأمثلة القابلة للتشغيل مفيدة وتُعرض بالطريقة التي تتوقعها.
 
 **نصيحة:** يستخدم Godoc تنسيقًا خاصًا قليلًا جدًا؛ وينبغي عادةً إزاحة القوائم ومقاطع الكود لتجنّب التفاف الأسطر. وبعيدًا عن الإزاحة، ينبغي عمومًا تجنّب الزخرفة.
 
 ### طول سطر التعليق
 
-لا يوجد [طول سطر](/book/go-style/guide/index#line-length) ثابت للتعليقات في Go.
+لا يوجد [طول سطر](/book/go-style/guide/index) ثابت للتعليقات في Go.
 
 ينبغي لفّ أسطر التعليقات الطويلة لضمان قابلية قراءة المصدر في الأدوات التي لا تقوم باللفّ التلقائي لأسطر التعليقات. وإذا لم تكن متأكدًا من مكان اللفّ، فمن الخيارات الشائعة 80 أو 100 عمود. ومع ذلك، هذا ليس حدًّا صارمًا؛ فهناك حالات يكون فيها كسر نص حرفي طويل ضارًّا. ولا يوجد اشتراط لعرض عمود معيّن يتم عنده اللفّ. استهدف [الاتساق](/book/go-style/guide/index#consistency) داخل الملف.
 
@@ -504,7 +504,7 @@ package template
 
 *يجب* إعادة تسمية الحزمة المستوردة لتجنّب تعارض الاسم مع استيرادات أخرى. (ومن لوازم ذلك أن [أسماء الحزم الجيدة](#package-names) ينبغي ألّا تتطلّب إعادة تسمية.) وفي حال حدوث تعارض بالأسماء، فضّل إعادة تسمية الاستيراد الأكثر محلية أو الأكثر ارتباطًا بالمشروع.
 
-*يجب* إعادة تسمية حزم protocol buffer المولَّدة لإزالة الشرطات السفلية من أسمائها، ويجب أن تكون أسماؤها المحلية منتهية باللاحقة `pb`. راجع [أفضل ممارسات proto والـ stub](/book/go-style/best-practices-2/index#import-protos) لمزيد من المعلومات.
+*يجب* إعادة تسمية حزم protocol buffer المولَّدة لإزالة الشرطات السفلية من أسمائها، ويجب أن تكون أسماؤها المحلية منتهية باللاحقة `pb`. راجع [أفضل ممارسات proto والـ stub](/book/go-style/best-practices-2/index) لمزيد من المعلومات.
 
 ```python
 // Good:
@@ -668,7 +668,7 @@ var b *bytes.Buffer
 n, _ := b.Write(p) // never returns a non-nil error
 ```
 
-لمزيد من النقاش والأمثلة حول معالجة الأخطاء، راجع [Effective Go](http://golang.org/doc/effective_go.html#errors) و[أفضل الممارسات](/book/go-style/best-practices-2/index#error-handling).
+لمزيد من النقاش والأمثلة حول معالجة الأخطاء، راجع [Effective Go](http://golang.org/doc/effective_go.html#errors) و[أفضل الممارسات](/book/go-style/best-practices-2/index).
 
 ### الأخطاء داخل النطاق (In-band errors) {#in-band-errors}
 

@@ -42,6 +42,7 @@ const EXERCISES_MARKER = '*سيتم عرض قائمة التمارين في هذ
 const ALL_EXERCISES_MARKER = '*سيتم عرض قائمة جميع التمارين هنا.*';
 const TOC_MARKER = '*جدول المحتويات*';
 const EXERCISE_MARKER = /^> \*\*(تمرين برمجي|تمرين تفاعلي)(?:: (.*?))?\*\*[ \t]*$/gm;
+const EXERCISE_LINE = /^> \*\*(?:تمرين برمجي|تمرين تفاعلي)(?:: (.*?))?\*\*[ \t]*$/;
 
 /** Headings outside fenced and indented code, in document order.
  * The Python samples here are full of `# comment` lines, and reading one as a
@@ -179,6 +180,35 @@ const restoreAnchors = (translated, source, anchors) => {
   return { body: lines.join('\n'), attached };
 };
 
+/** The anchor the course site gives an exercise named in its own component. */
+const exerciseSlug = (name) => `programming-exercise-${slugifyHeading(name)}`;
+
+/** Write the exercise anchors onto the translated exercise labels.
+ * Exercises publish as blockquotes rather than headings, so the heading pass
+ * above never sees them; their names stay English in the source, which is
+ * exactly what the course site slugged, so the two lists pair by position.
+ * @param {string} translated @param {string} source @param {Set<string>} anchors
+ * @returns {{body: string, attached: Set<string>}}
+ */
+const restoreExerciseAnchors = (translated, source, anchors) => {
+  const attached = new Set();
+  const wanted = pageExercises(source).map((exercise) => exerciseSlug(exercise.name));
+  if (!wanted.length || !wanted.some((slug) => anchors.has(slug))) return { body: translated, attached };
+  const lines = translated.split('\n');
+  const exerciseLines = [];
+  lines.forEach((line, index) => {
+    if (line.match(EXERCISE_LINE)) exerciseLines.push(index);
+  });
+  if (exerciseLines.length !== wanted.length) return { body: translated, attached };
+  exerciseLines.forEach((lineIndex, position) => {
+    const slug = wanted[position];
+    if (!slug || !anchors.has(slug) || ATTRIBUTE_BLOCK.test(lines[lineIndex])) return;
+    lines[lineIndex] = `${lines[lineIndex].replace(/[ \t]+$/, '')} {#${slug}}`;
+    attached.add(slug);
+  });
+  return { body: lines.join('\n'), attached };
+};
+
 /** The exercises a page announces, in document order. */
 const pageExercises = (body) => {
   const exercises = [];
@@ -284,9 +314,11 @@ const main = () => {
         unresolvedLinks.push(...rewritten.unresolved);
         const anchored = restoreAnchors(rewritten.body, page.body, anchors);
         for (const anchor of anchored.attached) attachedAnchors.add(anchor);
+        const anchoredExercises = restoreExerciseAnchors(anchored.body, page.body, anchors);
+        for (const anchor of anchoredExercises.attached) attachedAnchors.add(anchor);
         title = translation.title;
         lang = 'ar';
-        body = anchored.body;
+        body = anchoredExercises.body;
         translated.push(page.key);
       }
     }

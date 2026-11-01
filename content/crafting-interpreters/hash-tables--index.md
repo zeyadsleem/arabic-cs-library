@@ -764,7 +764,7 @@ name="delete">العنونة المفتوحة</span> أمر صعب.
 من أجل الحصول على مساواة قيمة حقيقية. يمكننا أن نفعل ذلك في `findEntry()`، لكنّ ذلك <span
 name="hash-collision">بطيء</span>.
 
-[equals]: /book/crafting-interpreters/strings/index#operations-on-strings
+[equals]: /book/crafting-interpreters/strings/index#العمليات-على-النصوص
 
 <aside name="hash-collision">
 

@@ -17,7 +17,6 @@ source: "https://programming-26.mooc.fi/part-8"
 - [أصغر متوسط نتيجة](/book/mooc/part-8/1-objects-and-methods)
 - [مجاميع الصفوف](/book/mooc/part-8/1-objects-and-methods)
 - [قائمة السنوات](/book/mooc/part-8/2-classes-and-objects)
-- [قائمة التسوق](/book/mooc/part-8/2-classes-and-objects)
 - [الكتاب](/book/mooc/part-8/3-defining-classes)
 - [ثلاثة أصناف](/book/mooc/part-8/3-defining-classes)
 - [تعريف صنف: Pet](/book/mooc/part-8/3-defining-classes)
@@ -28,5 +27,4 @@ source: "https://programming-26.mooc.fi/part-8"
 - [إحصاءات على الأعداد](/book/mooc/part-8/4-defining-methods)
 - [ساعة الإيقاف](/book/mooc/part-8/5-more-examples-of-classes)
 - [الساعة](/book/mooc/part-8/5-more-examples-of-classes)
-- [LunchCard](/book/mooc/part-8/5-more-examples-of-classes)
 - [المسلسل](/book/mooc/part-8/5-more-examples-of-classes)

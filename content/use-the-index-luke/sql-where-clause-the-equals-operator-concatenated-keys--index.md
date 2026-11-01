@@ -60,7 +60,7 @@ SELECT first_name, last_name
 
 #### نصيحة
 
-يساعد تصوّر الفهرس في فهم الاستعلامات التي يدعمها. ويمكنك الاستعلام من قاعدة البيانات لاسترجاع المدخلات بترتيب الفهرس (صيغة SQL:2008، انظر [صيغة استعلامات top-n](/book/use-the-index-luke/sql-partial-results-top-n-queries/index#overview_top_n) للحلول الخاصة باستخدام `LIMIT` أو `TOP` أو `ROWNUM`):
+يساعد تصوّر الفهرس في فهم الاستعلامات التي يدعمها. ويمكنك الاستعلام من قاعدة البيانات لاسترجاع المدخلات بترتيب الفهرس (صيغة SQL:2008، انظر [صيغة استعلامات top-n](/book/use-the-index-luke/sql-partial-results-top-n-queries/index) للحلول الخاصة باستخدام `LIMIT` أو `TOP` أو `ROWNUM`):
 
 ```sql
 SELECT <INDEX COLUMN LIST> 

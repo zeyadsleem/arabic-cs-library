@@ -96,7 +96,7 @@ ORDER BY 3, 4; -- add 1 to all column numbers
 
 ## الترتيب حسب التعبيرات
 
-أنت تعرف بالفعل أنه يمكنك إضافة أعمدة جديدة بنفسك ([انظر فصل SELECT](/book/database-foundations/sql-select/index#Creating-new-columns)). ويمكنك فعل الشيء نفسه في جملة ORDER BY كما يوضح المثال التالي:
+أنت تعرف بالفعل أنه يمكنك إضافة أعمدة جديدة بنفسك ([انظر فصل SELECT](/book/database-foundations/sql-select/index)). ويمكنك فعل الشيء نفسه في جملة ORDER BY كما يوضح المثال التالي:
 
 ```sql
 SELECT code, coordinator, credits, name
@@ -120,7 +120,7 @@ ORDER BY substring(code FROM 6); -- all letters from the 6th, so only the last l
 
 ## ماذا عن قيم NULL؟
 
-كما شُرح بالفعل في [حل التمرين الأول على مجموعة بيانات CSV](/book/database-foundations/sql-csv/index#Ranking-based-on-Internet-speed)، لا يحدد معيار SQL ما ينبغي فعله بقيم `NULL` في عمود يُرتَّب. ويعتبر PostgreSQL قيمة `NULL` أكبر من جميع القيم الأخرى، وبالتالي ستظهر الصفوف التي تحتوي هذه القيمة في العمود المرتَّب حسبه في أسفل القائمة. وهناك أنظمة قواعد بيانات أخرى تفعل العكس...
+كما شُرح بالفعل في [حل التمرين الأول على مجموعة بيانات CSV](/book/database-foundations/sql-csv/index)، لا يحدد معيار SQL ما ينبغي فعله بقيم `NULL` في عمود يُرتَّب. ويعتبر PostgreSQL قيمة `NULL` أكبر من جميع القيم الأخرى، وبالتالي ستظهر الصفوف التي تحتوي هذه القيمة في العمود المرتَّب حسبه في أسفل القائمة. وهناك أنظمة قواعد بيانات أخرى تفعل العكس...
 
 ## تمارين
 

@@ -102,7 +102,7 @@ arguments      → expression ( "," expression )* ;
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-call].
 
-[appendix-call]: /book/crafting-interpreters/appendix-ii/index#call-expression
+[appendix-call]: /book/crafting-interpreters/appendix-ii/index#تعبير-استدعاء
 
 </aside>
 
@@ -460,7 +460,7 @@ name="fun-ast">AST</span> الناتجة ليست سيّئة.
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-fun].
 
-[appendix-fun]: /book/crafting-interpreters/appendix-ii/index#function-statement
+[appendix-fun]: /book/crafting-interpreters/appendix-ii/index#جملة-دالة
 
 </aside>
 
@@ -702,7 +702,7 @@ return nil;
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-return].
 
-[appendix-return]: /book/crafting-interpreters/appendix-ii/index#return-statement
+[appendix-return]: /book/crafting-interpreters/appendix-ii/index#جملة-return
 
 </aside>
 

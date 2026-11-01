@@ -7,13 +7,13 @@
 ## 0. الحالة الحالية (آخر تحديث)
 
 حالة `content/library.json` بعد التحقق الفعلي من المستودع: **56 كتاباً** —
-**49 في حالة `translated`** و**7 في حالة `planned`**، ولا توجد حالة ثالثة.
+**52 في حالة `translated`** و**4 في حالة `planned`**، ولا توجد حالة ثالثة.
 
 | التصنيف | العدد | التفاصيل |
 | --- | --- | --- |
-| كتب بصفحات محلية داخل المكتبة | 43 | 2211 قسماً في `src/lib/generated/sections/` (منها 864 صفحة Kinney يبنيها `scripts/build-kinney.mjs`) |
+| كتب بصفحات محلية داخل المكتبة | 45 | 2491 قسماً في `src/lib/generated/sections/` (منها 864 صفحة Kinney يبنيها `scripts/build-kinney.mjs`) |
 | كتب مستضافة خارجياً عبر `siteUrl` | 7 | `gobyexample-ar` · `learn-go-with-tests-ar` · `go101-ar` · `eloquent-javascript-ar` · `fullstack-open-ar` · `webdev-learn-ar` · `mooc` — ترجمتها كاملة لكنها تُقدَّم من مواقع خارجية، فلا صفحات محلية لها |
-| في طابور الترجمة | 7 | القسم 8 أدناه |
+| في طابور الترجمة | 4 | القسم 8 أدناه |
 
 `go-tour` ليست مستثنية: 103 صفحاتها العربية تُبنى من `src/lib/tour/translations/*.json`
 عبر `scripts/build-go-tour.mjs` ثم تُحقن في البيان عبر تخصيص في `build-content.mjs` —
@@ -23,10 +23,10 @@
 
 | البوابة | النتيجة |
 | --- | --- |
-| `pnpm audit:content` | 2211 قسماً في 43 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
+| `pnpm audit:content` | 2491 قسماً في 46 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
 | `pnpm test:content` | 112/112 تمر، بما فيها دورتا TanStack بعد إكمال 55 درسًا |
 | `pnpm test:import` | 9/9 |
-| `pnpm check:links` | 0 رابط غير محلَّل من 936,298 مرجعاً داخلياً على 2273 صفحة |
+| `pnpm check:links` | 0 رابط غير محلَّل من 996,273 مرجعاً داخلياً على 2553 صفحة |
 | `node scripts/build-content.mjs` | يخرج 0 فقط إذا كانت **كل** صفحة لكل كتاب مصنَّف `translated` بالفعل عربية |
 | `node scripts/check-mooc.mjs` | بوابة صفحة-صفحة لترجمة MOOC (القفل 1 أدناه) |
 | `node scripts/check-kinney.mjs` | 864 صفحة: 864 pass، 0 pending، 0 invalid (القفل 2 أدناه) |
@@ -54,11 +54,11 @@
 | `reference` | متاح للقراءة فقط (ND أو بلا ترخيص) | شارة «مرجع» + رابط المصدر |
 | `blocked` | ND أو كتاب ناقص | شارة «غير قابل للترجمة» + بديل |
 
-## 2. خارطة التعلّم (13 مرحلة)
+## 2. خارطة التعلّم (14 مرحلة)
 
 | # | المرحلة | المصادر بالترتيب | المتطلب السابق |
 | --- | --- | --- | --- |
-| ① | التأسيس | SICP (✅) · Hello Algo (✅) | — |
+| ① | التأسيس | SICP (✅) · Hello Algo (✅) · Algorithms Unplugged (✅) | — |
 | ② | أدوات المبرمج | Missing Semester (✅ 13 محاضرة) | — |
 | ③ | الرياضيات | Discrete Math (Levin) (✅) · MCS · IntroTCS (✅) | — |
 | ④ | بنى البيانات | Open Data Structures (✅) | — |
@@ -71,6 +71,7 @@
 | ⑪ | اللغات | Learn Programming with OCaml · OCaml Manual (مرجع) · CS3110 (✅) · Crafting Interpreters (✅) | — |
 | ⑫ | معمارية البرمجيات | 500 Lines (✅) · AOSA (✅) · Game Programming Patterns (✅) | — |
 | ⑬ | الأمن | Crypto 101 (✅) · Open Workbook of Cryptology · Network Security (✅) · Cryptopals (✅) | — |
+| ⑭ | DevOps | DevOps Roadmap (✅ 35 درساً) | — |
 
 ## 3. مص_matrix التحقق (ملخّص ما تم التحقق منه فعلياً)
 
@@ -147,7 +148,7 @@
 | 5 | SICP | HTML (38 صفحة) | 5 فصول | ✅ مترجم |
 | 6 | Nand2Tetris I + II | صفحات المشاريع + PDF | 12 مشروعاً | ✅ مترجم (I و II) |
 | 7 | xv6 | HTML + شيفرة C | 15 فصلاً | ✅ مترجم |
-| 8 | Learn Programming with OCaml | PDF/EPUB | 13 فصلاً | في الطابور |
+| 8 | Learn Programming with OCaml | PDF/EPUB | 13 فصلاً | ✅ مترجم |
 | 9 | Crypto 101 | Markdown | ~250 صفحة | ✅ مترجم |
 | 10 | OSTEP | PDF لكل فصل | 45 فصلاً | في الطابور |
 | 11 | Crafting Interpreters | HTML/Markdown | 30 فصلاً | ✅ مترجم |
@@ -155,7 +156,7 @@
 | 13 | Game Programming Patterns | Markdown | 21 فصلاً | ✅ مترجم |
 | 14 | Dive into Systems | HTML | ~20 قسماً | ✅ مترجم |
 | 15 | IntroTCS | Markdown | 24 فصلاً | ✅ مترجم |
-| 16 | MCS | PDF | 22 فصلاً | في الطابور |
+| 16 | MCS | PDF | 22 فصلاً | ✅ مترجم |
 | 17 | AOSA v1 + v2 | LaTeX | 49 فصلاً | ✅ مترجم |
 | 18 | Computer Networks (Sys. Approach) | RST | 9 فصول | ينتظر موافقة المؤلفين |
 | 19 | Network Security | RST | 9 فصول | ✅ مترجم |
@@ -169,6 +170,7 @@
 | 27 | DB Performance at Scale | PDF | 11 فصلاً | في الطابور |
 | 28 | TanStack Router (دورة Ali Alaa على يوتيوب) | تفريغات التسميات التوضيحية (VTT) | 34 درساً | ✅ مترجم |
 | 29 | TanStack Form (دورة Ali Alaa على يوتيوب) | تفريغات التسميات التوضيحية (VTT) | 21 درساً | ✅ مترجم |
+| 30 | Algorithms Unplugged | PDF (Springer) | 41 فصلاً + 4 أجزاء | ✅ مترجم |
 
 ### نمط التنفيذ لكل مصدر
 1. `scripts/import-<book>.mjs` ← تنزيل المصدر الرسمي (مع إعادة محاولة وتفضيل IPv4).
@@ -185,7 +187,7 @@
 المستويات مرتَّبة بالجاهزية: كل مستوى ما لم يكتمل لا يُفتح الذي يليه. الحجم
 مقاس بالصفحات الفعلية والبايتات، لا بالتخمين.
 
-### القفل 1 — MOOC (قيد التنفيذ الآن · 89 صفحة · 880KB)
+### القفل 1 — MOOC (✅ مكتمل · 89 صفحة · 880KB)
 
 | البند | القيمة |
 | --- | --- |
@@ -215,24 +217,26 @@
 `kinney: 864 pages (864 Arabic, 0 English)`، و`node scripts/check-kinney.mjs`
 يطبع `864 page(s): 864 pass, 0 pending, 0 invalid`.
 
-### القفل 3 — MCS: الرياضيات لعلوم الحاسوب (22 صفحة)
+### القفل 3 — MCS: الرياضيات لعلوم الحاسوب (✅ مكتمل — 22 فصلاً عربياً)
 
 - الاستيراد جاهز: `scripts/import-mcs.mjs` من `content-src/mcs/mcs.pdf`، وقد
-  أنتج 22 صفحة في `content/mathematics-for-cs/` كلها `lang: en`.
-- الحجم صغير، لذلك يُنفَّذ بعقدة مصغّرة على غرار MOOC ثم ترجمة الدفعة الواحدة.
-- الحالة `planned` بصدق الآن. («1048 صفحة» في `library.json` عدّ صفحات الـPDF
-  لا وحدات الترجمة؛ الوحدات الفعلية هي 22 ملفاً.)
+  أنتج 22 صفحة في `content/mathematics-for-cs/` ثم تُرجمت كاملة.
+- الحالة `translated` الآن، وكل صفحاتها عربية ومدرجة في البيان.
 
-### القفل 4 — خمسة مصادر بلا خط استيراد بعد
+### القفل 4 — أربعة مصادر بلا خط استيراد بعد
 
 لا تبدأ ترجمتها قبل بناء `scripts/import-<book>.mjs`:
+(أُنجز قبله كتاب Algorithms Unplugged — 41 فصلاً و48 مفتاحاً في
+`content/algorithms-unplugged/` — فانتقل إلى `translated`. وكذلك كتاب
+Database Performance at Scale — 11 فصلاً + مقدمة + ملحق في
+`content/db-performance-at-scale/` — فانتقل إلى `translated` بلا خط استيراد
+منفصل.)
 
 | المصدر | الحجم | المصدر الخام | سلف الحجز قبل الترجمة |
 | --- | --- | --- | --- |
 | `networks-systems-approach` | 920 | RST في `SystemsApproach/book` | **بشرية**: مراسلة `discuss@systemsapproach.org` — ترخيصها CC BY 4.0 لكن سياسة المؤلفين تطلب مناقشة الترجمة |
 | `ocaml-manual` | 1158 | HTML على `ocaml.org/manual/5.5/` | مرجع تدريجي؛ يحتاج قراراً بحجم التغطية قبل البدء |
 | `ostep` | 714 | PDF لكل فصل | **قرار ترخيص**: الكتاب «مجاني» بلا ترخيص صريح والمؤلفان يطلبان التواصل قبل أي إعادة استخدام — يلزم تثبيت الحالة في `library.json` (`planned` مقابل `reference`) قبل أي عمل |
-| `db-performance-at-scale` | 270 | PDF أولي من Springer | CC BY 4.0 — مسالك الـPDF (استخراج صفحات) كما في MCS |
 | `open-workbook-cryptology` | 92 | LaTeX في `poritz.net/.../owoc.tex` | CC BY-SA 4.0، مسودة أولى |
 
 ### بوابة القبول المشتركة لكل مستوى

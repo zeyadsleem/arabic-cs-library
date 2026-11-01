@@ -34,7 +34,7 @@ SELECT ...
 
 والخيار التالي هو [فهرس قائم على دالة](/book/use-the-index-luke/sql-where-clause-functions-case-insensitive-search/index) إذا كانت قاعدة البيانات تدعمه—رغم أن له كل العيوب [التي نوقشت سابقاً](/book/use-the-index-luke/sql-where-clause-obfuscation-dates/index). وعند استخدام MySQL، لا تكون الفهارس القائمة على الدوال خياراً على أي حال.
 
-لا يزال ممكناً كتابة الاستعلام بحيث تستطيع قاعدة البيانات استخدام فهرس مُسلسل على `DATE_COLUMN` و`TIME_COLUMN` مع [مُسند وصول](/book/use-the-index-luke/sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates/index#imp-index-predicate-types)—جزئياً على الأقل. ولذلك نضيف شرطاً إضافياً على `DATE_COLUMN`.
+لا يزال ممكناً كتابة الاستعلام بحيث تستطيع قاعدة البيانات استخدام فهرس مُسلسل على `DATE_COLUMN` و`TIME_COLUMN` مع [مُسند وصول](/book/use-the-index-luke/sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates/index)—جزئياً على الأقل. ولذلك نضيف شرطاً إضافياً على `DATE_COLUMN`.
 
 ```
  WHERE ADDTIME(date_column, time_column)
@@ -49,7 +49,7 @@ SELECT ...
 
 استخدم شرطاً زائداً على العمود الأكثر أهمية عندما يجمع شرط نطاق بين عدة أعمدة.
 
-وبالنسبة لـPostgreSQL، يُفضَّل استخدام [صيغة قيم الصف](/book/use-the-index-luke/sql-partial-results-fetch-next-page/index#ch07-paging-row-values-example).
+وبالنسبة لـPostgreSQL، يُفضَّل استخدام [صيغة قيم الصف](/book/use-the-index-luke/sql-partial-results-fetch-next-page/index).
 
 يمكنك أيضاً استخدام هذه التقنية عند تخزين التاريخ والوقت في أعمدة نصية، لكن عليك استخدام تنسيقات تاريخ ووقت تعطي ترتيباً زمنياً عند الفرز معجمياً—مثل ما تقترحه [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) (`YYYY-MM-DD HH:MM:SS`). ويستخدم المثال التالي دالة `TO_CHAR` في قاعدة بيانات Oracle لهذا الغرض:
 

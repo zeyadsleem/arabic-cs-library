@@ -302,7 +302,7 @@ ORDER BY preparation_time DESC;
 
 #### الحل
 
-هذا تمرين صعب، [انظر أيضًا عنوان "تحديد الصفوف التي لا تحقق شرطًا معينًا في الجزء الخاص بـ OUTER JOIN](/book/database-foundations/sql-outerjoin/index#Select-rows-that-do-NOT-meet-a-certain-condition). اسرد جميع الأطباق في قاعدة البيانات التي *ليس* موضوعها Mediterranean أو Italian أو Fish ولا يتضمن وصف الطبق كلمة summer، مرتبة حسب مدة تحضير الطبق المتناقصة.
+هذا تمرين صعب، [انظر أيضًا عنوان "تحديد الصفوف التي لا تحقق شرطًا معينًا في الجزء الخاص بـ OUTER JOIN](/book/database-foundations/sql-outerjoin/index). اسرد جميع الأطباق في قاعدة البيانات التي *ليس* موضوعها Mediterranean أو Italian أو Fish ولا يتضمن وصف الطبق كلمة summer، مرتبة حسب مدة تحضير الطبق المتناقصة.
 
 ## استعلامات SQL، الجزء 2
 

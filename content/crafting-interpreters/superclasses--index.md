@@ -207,7 +207,7 @@ class OhNo < NotClass {}
 في أيام jlox الهادئة، عرضتُ لك [هذا المثال الحرِج][example] لشرح طريقة توجيه
 استدعاءات super:
 
-[example]: /book/crafting-interpreters/inheritance/index#semantics
+[example]: /book/crafting-interpreters/inheritance/index#الدلالات
 
 ```lox
 class A {

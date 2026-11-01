@@ -546,7 +546,7 @@ IS_STRING(POP())
 تلك الدالة الفارغة التي عرّفناها [منذ زمن بعيد][vm] تفعل شيئاً أخيراً! فهي تستدعي
 هذه:
 
-[vm]: /book/crafting-interpreters/a-virtual-machine/index#an-instruction-execution-machine
+[vm]: /book/crafting-interpreters/a-virtual-machine/index#آلة-تنفيذ-التعليمات
 
 ^code free-objects-h (1 before, 2 after)
 

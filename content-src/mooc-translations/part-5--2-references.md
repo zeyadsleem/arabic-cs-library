@@ -269,7 +269,7 @@ after the function is executed: [1, 2, 3]
 
 تُوضّح سلسلة الصور التالية حالات المتغيّرات في مراحل مختلفة أثناء تنفيذ الدالة:
 
-<img src="/images/mooc/part-5/5_2_9.png" width="400">
+<img src="/images/mooc/part-5/5_2_9.png" width="400" alt="صورة توضيحية لتغيّر قيم المتغيّرات أثناء تنفيذ الدالة">
 
 -->
 

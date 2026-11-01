@@ -233,7 +233,7 @@ __PACKAGE__->add_columns(qw/junk/);
 
 الصنف `Sales` مشتق من الصنف `SalesHead` ويضيف الخاصية الناقصة. ويمكنك استخدام الصنفين حسب حاجتك. يرجى ملاحظة أن إعداد الجدول مطلوب في الصنف المشتق أيضاً.
 
-ويمكنك جلب جميع تفاصيل الموظف عبر [prefetch](/book/use-the-index-luke/sql-join-nested-loops-join-n1-problem/index#orm-join) أو جلب أعمدة مختارة فقط كما هو موضح أدناه:
+ويمكنك جلب جميع تفاصيل الموظف عبر [prefetch](/book/use-the-index-luke/sql-join-nested-loops-join-n1-problem/index) أو جلب أعمدة مختارة فقط كما هو موضح أدناه:
 
 ```
 my @sales =

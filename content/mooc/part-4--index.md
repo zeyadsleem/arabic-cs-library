@@ -25,7 +25,6 @@ source: "https://programming-26.mooc.fi/part-4"
 - [شجرة التنوب](/book/mooc/part-4/2-more-functions)
 - [أكبر عدد](/book/mooc/part-4/2-more-functions)
 - [نفس المحارف](/book/mooc/part-4/2-more-functions)
-- [الكلمات الأولى والثانية والأخيرة](/book/mooc/part-4/2-more-functions)
 - [تغيير قيمة عنصر](/book/mooc/part-4/3-lists)
 - [إضافة عناصر إلى قائمة](/book/mooc/part-4/3-lists)
 - [الإضافة والإزالة](/book/mooc/part-4/3-lists)

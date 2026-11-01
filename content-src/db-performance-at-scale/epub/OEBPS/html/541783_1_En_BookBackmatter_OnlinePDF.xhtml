@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Database Performance at Scale</title><meta content="text/html; charset=utf-8" http-equiv="content-type"/><link href="../css/springer_epub.css" rel="styleSheet" type="text/css"/></head><body><div epub:type="backmatter"><div class="BookBackmatter"><aside aria-labelledby="App1Heading" class="Appendix" id="App1"><div epub:type="appendix" role="doc-appendix">
+          <section class="Section1 RenderAsSection1" id="Sec1">
+            <h2 class="Heading" id="App1Heading">Appendix A: A Brief Look at Fundamental Database Design Decisions</h2>
+            <p class="Para" id="Par1">This appendix briefly touches on a number of fundamental database design decisions that impact database performance. Why “briefly?” First, because we suspect that many readers are already familiar with them. But, more importantly, because other resources have covered them quite extensively, and extremely well. Honestly, there’s not much to add. So, we’ll offer a short take on some of the most pressing decisions that any distributed database must make, then share our top picks for learning more on each topic.</p>
+            <section class="Section2 RenderAsSection2" id="Sec2">
+              <h3 class="Heading">Sharding and Replication</h3>
+              <p class="Para" id="Par2">Modern databases can rarely afford to be a single-node instance. The most obvious reason for being distributed is the need to avoid data loss in the case of a crash of any kind. Keeping data distributed across several nodes in a cluster inevitably means that the data needs to be split up (sharded) and copied between those nodes (replicated). The result is a distributed system in which users can quickly access data according to their queries.</p>
+              <section class="Section3 RenderAsSection3" id="Sec3">
+                <h4 class="Heading">Sharding</h4>
+                <p class="Para" id="Par3">The point of <span id="ITerm1">sharding</span> is to ensure that data is well-balanced across your cluster for reading and writing. You’re going to get the best performance by having all available nodes reading and writing data—not by overloading some nodes while others are idle or highly underutilized.</p>
+                <p class="Para" id="Par4">With most databases, sharding is built into its architecture. If that’s the case, it’s important to get the data modeling correct (e.g., high cardinality partition keys) to help the database’s automated sharding approach achieve an efficient balance across nodes. However, if the database requires you to define the sharding strategy, you’re going to have to bear the burden of more decisions that can impact balancing and, ultimately, performance. If you see that certain shards are receiving or handling more requests than others, it’s time to reconsider your <span id="ITerm2">strategy</span>.</p>
+                <div class="Para" id="Par5">Also, all automated sharding is not the same. The two most common approaches used in the class of databases we’ve been covering in this book are:<div class="UnorderedList"><ul class="UnorderedListMarkBullet"><li>
+                    <p class="Para" id="Par6"><span id="ITerm3"><strong class="EmphasisTypeBold ">Range-based sharding</strong></span>: Dividing data into contiguous ranges determined by the shard key values. This offers the best performance for range lookups, but is otherwise prone to hotspots. (Bigtable and HBase use this approach.)</p>
+                  </li><li>
+                    <p class="Para" id="Par7"><span id="ITerm4"><strong class="EmphasisTypeBold ">Hash-based sharding</strong></span>: Dividing data evenly and randomly across shards as determined by a sharding algorithm. This offers the best performance for most scenarios. (Cassandra, ScyllaDB, DynamoDB, and Redis use this approach.)</p>
+                  </li></ul></div></div>
+                <p class="Para" id="Par8">The level at which the sharding is performed also matters. The most common approach is to shard per node: Distribute <span id="ITerm5">data</span> into separate database server nodes. Another option is to shard per each core in your server, across all the servers in the cluster. This divides a server’s resources into shared-nothing units of CPU core, RAM, persistent storage, and network I/O. The advantage of this approach is that it maximizes utilization of all the available cores of multi-CPU hardware architectures. If paired with shard-aware drivers, each client writing or requesting data can send queries directly to the CPU core responsible for that shard of data. This minimizes hot shards and removes extra hops—improving performance. However, if you’re not running on powerful servers, you’re less likely to take full advantage of the potential performance gains here.</p>
+              </section>
+
+              <section class="Section3 RenderAsSection3" id="Sec4">
+                <h4 class="Heading">Replication</h4>
+                <p class="Para" id="Par9">Being synchronous, replication affects the performance of the database at runtime. Poorly designed or inappropriately selected replication can cause performance bottlenecks.</p>
+                <p class="Para" id="Par10">There are many possible approaches to the design and implementation of database <span id="ITerm6">replication</span>. Database replication can either happen on an explicit command or be an ongoing background process. Either approach should be well-accommodated by the infrastructure that the database is running on.</p>
+                <p class="Para" id="Par11">For data replication, the database engineer needs to select a replication strategy: The process for selecting the nodes to which each portion of data will be copied. Some replication strategies don’t just copy data to a set of nodes; they also apply prioritization. One or more nodes are called <span id="ITerm7"><em class="EmphasisTypeItalic ">primary replicas</em></span> for this portion of data, while the other nodes are called <span id="ITerm8"><em class="EmphasisTypeItalic ">secondary replicas</em></span><em class="EmphasisTypeItalic ">.</em></p>
+                <div class="Para" id="Par12">Think about the number of nodes in the replica sets. To begin with, each piece of data can be replicated to a single node, as shown in Figure <span class="InternalRef"><a href="#Fig1">A-1</a></span>.<figure class="Figure" id="Fig1"><div class="MediaObject" id="MO1">
+                    <img alt="" aria-describedby="d65e306" src="../images/541783_1_En_BookBackmatter_Fig1_HTML.jpg" style="width:23.65em"/><div class="TextObject" id="d65e306">
+                      <p class="Para" id="Par66">A diagram of data sharding has 3 nodes. The first node has 2 letters A and B, the second node has C and D, and the third node has E and F.</p>
+                    </div>
+                    
+                  </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-1</span>
+                      <p class="SimplePara">Replicating data to a single node</p>
+                    </div></figcaption></figure></div>
+                <p class="Para" id="Par13">Here, data is sharded across the different nodes for load balancing, but it doesn’t provide high availability because none of the shards is replicated.</p>
+                <div class="Para" id="Par14">In more complex cases (shown in Figure <span class="InternalRef"><a href="#Fig2">A-2</a></span>), there’s one primary replica and one or more secondary replica nodes.<figure class="Figure" id="Fig2"><div class="MediaObject" id="MO2">
+                    <img alt="" aria-describedby="d65e343" src="../images/541783_1_En_BookBackmatter_Fig2_HTML.jpg" style="width:25.1em"/><div class="TextObject" id="d65e343">
+                      <p class="Para" id="Par67">A diagram of data replication has 3 nodes. The data of the first node, A, B, C, D, E, and F is replicated to the 2 secondary nodes.</p>
+                    </div>
+                    
+                  </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-2</span>
+                      <p class="SimplePara">Replicating data to several nodes, with a single primary and multiple secondary <span id="ITerm9">replicas</span></p>
+                    </div></figcaption></figure></div>
+                <p class="Para" id="Par15">Here, one node writes data, which then can be propagated to other read-only nodes. This approach provides some level of high availability since a replica can take over the cluster if the primary goes offline. However, it does not properly balance your workload. All writes must be handled by the primary—which means that the primary becomes a bottleneck. As a result, this method of data replication may be impractical for write-intensive workloads. Spreading out the primary replicas for different portions of data across different nodes in the cluster is one potential way to address this.</p>
+                <div class="Para" id="Par16">In a more extreme form, there are no secondary replicas (like in Figure <span class="InternalRef"><a href="#Fig3">A-3</a></span>).<figure class="Figure" id="Fig3"><div class="MediaObject" id="MO3">
+                    <img alt="" aria-describedby="d65e378" src="../images/541783_1_En_BookBackmatter_Fig3_HTML.jpg" style="width:25.1em"/><div class="TextObject" id="d65e378">
+                      <p class="Para" id="Par68">A diagram of data replication in active-active-style has 3 nodes. The data of the middle node, A, B, C, D, E, and F are replicated to the 2 secondary nodes on the sides.</p>
+                    </div>
+                    
+                  </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-3</span>
+                      <p class="SimplePara"><span id="ITerm10">Full active-active-style replication</span></p>
+                    </div></figcaption></figure></div>
+                <p class="Para" id="Par17">Here, all data is replicated in an <span id="ITerm11">active-active leaderless topology</span>. Every node can accept read and write operations, so all are peers in managing the workload. When this strategy is applied, any loss to part of the cluster will not result in lost data.</p>
+                <p class="Para" id="Par18">This active-active leaderless topology leads to what is called <span id="ITerm12"><em class="EmphasisTypeItalic ">eventual consistency</em></span>: The guarantee that when an update is made in a distributed database, that update will <em class="EmphasisTypeItalic ">eventually</em> be reflected in all nodes that store the data—resulting in the same response every time the data is queried. In an eventually consistent system, the replication strategy defines a number called the “replication factor” (RF), which is the number of nodes on which the portion of data can be found. Writing the data to (and reading the data from) such a system also conforms to different consistency requirements, which is referred to as <em class="EmphasisTypeItalic ">consistency level</em> <span id="ITerm13">(CL)</span><span id="ITerm14"/>.</p>
+                <p class="Para" id="Par19">The most restrictive consistency level is often called “all.” Writing in this mode means that the data must be written on disk on all replica nodes in the cluster. Reading returns the data after all replicas have responded, and the read operation fails if at least one replica does not respond.</p>
+                <p class="Para" id="Par20">Some less restrictive, but more performant, consistency levels may specify the exact number of nodes that must confirm the operation. Usually, this number is selected in the range of one through three, depending on how many replicas the cluster operator expects to crash.</p>
+                <p class="Para" id="Par21">“Quorum” consistency level provides much stronger consistency for the data. Writing or reading the data at this level means that the majority of nodes from the replica set should confirm the operation. In multi-datacenter setups, quorum consistency often has sub-levels depending on which datacenters the nodes from the replica set belong <span id="ITerm15">to</span>.</p>
+                <p class="Para" id="Par22">Note that read and write consistency levels are independent of each other. Even if data was written with one consistency level (e.g. quorum), reading can use a different consistency level depending on the intention. For example, a CL of <span class="EmphasisFontCategoryNonProportional ">ONE</span> can be used for data that doesn’t need to be consistent, <span class="EmphasisFontCategoryNonProportional ">QUORUM</span> CL can be used for a regular (or “unsure”) case, and the most restrictive level of <span class="EmphasisFontCategoryNonProportional ">ALL</span> can be used to effectively force full data repair.</p>
+              </section>
+
+              <section class="Section3 RenderAsSection3" id="Sec5">
+                <h4 class="Heading">Learning More</h4>
+                <p class="Para" id="Par23"><span class="ExternalRef"><a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/"><span class="RefSource"><em class="EmphasisTypeItalic ">Designing Data-Intensive Applications</em></span></a></span>, by Martin Kleppman (Chapters 5 and 6)</p>
+                <p class="Para" id="Par24"><span class="ExternalRef"><a href="https://www.oreilly.com/library/view/database-internals/9781492040330/"><span class="RefSource"><em class="EmphasisTypeItalic ">Database Internals: A Deep Dive Into How Distributed Data Systems Work</em></span></a></span>, by Alex Petrov (Chapters 11, 12, and 13)</p>
+                <p class="Para" id="Par25"><span class="ExternalRef"><a href="https://martinfowler.com/books/nosql.html"><span class="RefSource"><em class="EmphasisTypeItalic ">NoSQL Distilled: A Brief Guide to the Emerging World of Polyglot Persistence</em></span></a></span>, by Pramod J. Sadalage and Martin Fowler (Chapters 4 and 5)</p>
+              </section>
+
+            </section>
+
+            <section class="Section2 RenderAsSection2" id="Sec6">
+              <h3 class="Heading">Consensus Algorithms</h3>
+              <p class="Para" id="Par26">Even though quorum consistency level works extremely well and provides data persistence, data consistency, and low latency access, it still does not guarantee the linearizability, isolation, and atomicity required by transactions: queries that heavily rely on ACID properties. One of the simplest and most obvious examples of a transaction can be any CAS (compare-and-set) operation (e.g., increment a counter provided its value is below 42). When transactions come into play, simple eventually consistent models stop working and call for stronger means. One option can be a consensus algorithm on a distributed system.</p>
+              <div class="Para" id="Par27">Consensus algorithms provide strong <span id="ITerm16">consistency guarantees</span> about the underlying data and allow a set of replicas to work together as a coherent unit. Provided the nodes conform to the protocol, algorithms tolerate failures of less than half of replicas even in the presence of message loss and reordering. They <span id="ITerm17">guarantee</span> the following properties:<div class="UnorderedList"><ul class="UnorderedListMarkBullet"><li>
+                  <p class="Para" id="Par28"><strong class="EmphasisTypeBold ">Validity</strong>: If a decision is made, it must have been proposed by at least one of the replicas.</p>
+                </li><li>
+                  <p class="Para" id="Par29"><strong class="EmphasisTypeBold ">Agreement</strong>: If a decision is made at some point, nodes shouldn’t decide differently.</p>
+                </li><li>
+                  <p class="Para" id="Par30"><strong class="EmphasisTypeBold ">Stability</strong>: If a decision is made at some point, it remains such forever.</p>
+                </li><li>
+                  <p class="Para" id="Par31"><strong class="EmphasisTypeBold ">Termination</strong>: If a decision is made, it eventually gets spread to all correct replicas.</p>
+                </li></ul></div></div>
+              <p class="Para" id="Par32">Consensus algorithms fall into two large classes—those that need a leader to make a decision and those that don’t. The latter are called leaderless. Algorithms from the former class can suffer from periods of silence if the leader fails, so the new leader election process is started and the cluster cannot service requests while it’s happening.</p>
+              <section class="Section3 RenderAsSection3" id="Sec7">
+                <h4 class="Heading">Raft</h4>
+                <p class="Para" id="Par33"><span id="ITerm18">Raft</span><span id="ITerm19"/> is an example of a consensus algorithm with a leader. Raft was invented to be simple. It replicates a log of commands from a leader to follower nodes; that log of commands is called a “replicated state machine.” And, of course, it has the leader-election algorithm on board too.</p>
+                <div class="Para" id="Par34">Each replica participating in Raft replication can be in one of three states: follower, candidate, or leader (see Figure <span class="InternalRef"><a href="#Fig4">A-4</a></span>). Any attempt to make a decision over the cluster must be described in terms of a state change in the replicated state machine. Since the client may not know who the leader is, it sends its decision requests to whatever node it selects first. Thus, if the decision request is not sent to the leader, followers would re-route it to one, and then the leader would replicate the decision across its followers. In the case of leader failure, the followers turn into candidates. The election process ultimately converts one of those candidates into a leader after it obtains votes from a majority of replicas.<figure class="Figure" id="Fig4"><div class="MediaObject" id="MO4">
+                    <img alt="" aria-describedby="d65e575" src="../images/541783_1_En_BookBackmatter_Fig4_HTML.jpg" style="width:14.68em"/><div class="TextObject" id="d65e575">
+                      <p class="Para" id="Par69">A flow diagram of the raft replication comprises the 3 states, follower, candidate, and leader.</p>
+                    </div>
+                    
+                  </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-4</span>
+                      <p class="SimplePara">Each replica participating in Raft replication can be a follower, leader, or candidate; upon leader failure, followers can turn into candidates, and a candidate is elected <span id="ITerm20">leader</span></p>
+                    </div></figcaption></figure></div>
+              </section>
+
+              <section class="Section3 RenderAsSection3" id="Sec8">
+                <h4 class="Heading">Paxos</h4>
+                <p class="Para" id="Par35"><span id="ITerm21">Paxos</span><span id="ITerm22"/> appeared earlier than Raft. It’s an example of a leaderless algorithm, and it was one of the first algorithms that proved the quorum-based way of making distributed decisions.</p>
+                <div class="Para" id="Par36">According to the algorithm, each replica can play one or more of three roles—the proposer, the acceptor, and the learner (see Figure <span class="InternalRef"><a href="#Fig5">A-5</a></span>). The decision is made through a two-step process in which the roles are involved, but from a practical perspective, nodes usually combine those roles. The first step, or, as it’s usually called—the phase—is in proposing some value. In order to be proposed, the value must be accompanied with the sequence number. After the proposal is confirmed by the majority of acceptors, the proposer may proceed to the confirmation phase. After the confirmation phase is confirmed (again) by the majority of acceptors, the decision is made.<figure class="Figure" id="Fig5"><div class="MediaObject" id="MO5">
+                    <img alt="" aria-describedby="d65e624" src="../images/541783_1_En_BookBackmatter_Fig5_HTML.jpg" style="width:26.58em"/><div class="TextObject" id="d65e624">
+                      <p class="Para" id="Par70">A diagram describes that each replica can play one or more of three roles, proposer. acceptor, and learner.</p>
+                    </div>
+                    
+                  </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-5</span>
+                      <p class="SimplePara">Each replica participating in Paxos can be the proposer, accepter, or <span id="ITerm23">learner</span></p>
+                    </div></figcaption></figure></div>
+                <p class="Para" id="Par37">Once the decision is made, none of the participants may fall back to the first phase. If the next decision should be made, a new run of the algorithm should be taken. Due to this, Paxos is never used alone. It’s always part of a larger algorithm that implements all the necessary “paperwork” needed to instantiate, execute, and wrap up algorithm runs for individual decisions. One example of such a larger algorithm might be “distributed log replication.”</p>
+                <div class="FormalPara FormalParaRenderingStyle1 ParaTypeImportant" id="FPar1">
+                  <div class="Heading">Note</div>
+                  <p class="Para FirstParaInFormalPara" id="Par38">It’s worth mentioning that Paxos was one of the first consensus algorithms that appeared and its goal was to prove how the distributed consensus is made. It’s not used in its pure form; it’s commonly extended with something else. One such extension was Raft, which (pretty successfully) tried to reduce Paxos’ complexity at the cost of a potential imbalance in nodes’ roles.</p>
+                </div>
+              </section>
+
+              <section class="Section3 RenderAsSection3" id="Sec9">
+                <h4 class="Heading">Comparing Leaderless and “Leader-Based” Classes</h4>
+                <p class="Para" id="Par39">Although both leaderless and leader-based <span id="ITerm24">algorithm</span><span id="ITerm25"/> classes solve similar problems, the approach that involves a leader in the decision is considered to be simpler to implement and maintain. It also requires less time to converge upon a decision.</p>
+                <p class="Para" id="Par40">Even though “new leader selection” is just as complex as leaderless algorithms, it happens rarely and is considered to be a necessary evil. On the other hand, the single-leader approach often becomes a limitation to scaling consensus on large clusters—then, leader-less algorithms come to the rescue. Another option to overcome the leadership bottleneck is to apply some sharding on the decisions themselves. However, even when this is feasible, the added complexity might not be worth it.</p>
+              </section>
+
+              <section class="Section3 RenderAsSection3" id="Sec10">
+                <h4 class="Heading">Learning More</h4>
+                <p class="Para" id="Par41"><span class="ExternalRef"><a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/"><span class="RefSource"><em class="EmphasisTypeItalic ">Designing Data-Intensive Applications</em></span></a></span>, by Martin Kleppman (Chapter 9)</p>
+                <p class="Para" id="Par42"><span class="ExternalRef"><a href="https://www.oreilly.com/library/view/database-internals/9781492040330/"><span class="RefSource"><em class="EmphasisTypeItalic ">Database Internals: A Deep Dive Into How Distributed Data Systems Work</em></span></a></span>, by Alex Petrov (Chapter 14)</p>
+                <p class="Para" id="Par43"><span class="ExternalRef"><a href="https://martinfowler.com/books/nosql.html"><span class="RefSource"><em class="EmphasisTypeItalic ">NoSQL Distilled: A Brief Guide to the Emerging World of Polyglot Persistence</em></span></a></span>, by Pramod J. Sadalage and Martin Fowler (Chapter 4)</p>
+              </section>
+
+            </section>
+
+            <section class="Section2 RenderAsSection2" id="Sec11">
+              <h3 class="Heading">B-Tree vs LSM Tree</h3>
+              <div class="Para" id="Par44">As mentioned when talking about read-write ratios back in Chapter <span class="ExternalRef"><a href="541783_1_En_2_Chapter.xhtml"><span class="RefSource">2</span></a></span>, LSM trees, illustrated in Figure <span class="InternalRef"><a href="#Fig6">A-6</a></span>, are optimized for heavy write workloads and B-trees are optimized for heavy read workloads. <span id="ITerm26">LSM-based databases</span><span id="ITerm27"/> are append-only. They never update values; they just add new ones. This means that when the database is servicing reads, it might have to search quite a while to find the appropriate value. However, compaction can help to avoid this read amplification. Choosing an effective compaction strategy for your workload, as well as optimizing when compactions are performed, can significantly impact the read penalty sometimes associated with LSM trees. Also, mechanisms like built-in caching can enable an LSM-based database to achieve fast reads as well as writes.<figure class="Figure" id="Fig6"><div class="MediaObject" id="MO6">
+                  <img alt="" aria-describedby="d65e748" src="../images/541783_1_En_BookBackmatter_Fig6_HTML.jpg" style="width:42.82em"/><div class="TextObject" id="d65e748">
+                    <p class="Para" id="Par71">An L S M tree that is optimized for heavy write workloads. The L S M tree never updates values, it only adds new values to the database.</p>
+                  </div>
+                  
+                </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-6</span>
+                    <p class="SimplePara">With LSM <span id="ITerm28">trees</span>, compaction creates fewer (and larger) files</p>
+                  </div></figcaption></figure></div>
+              <div class="Para" id="Par45">On the other hand, B-tree based databases (as in Figure <span class="InternalRef"><a href="#Fig7">A-7</a></span>) are optimized for reads. B-trees offer fast reads since their structure—and lack of duplication—makes them much more efficient to search than LSM trees. Traversing the tree is a straightforward path down a tree (as opposed to searching through potentially many files, as is the case with LSM trees).<figure class="Figure" id="Fig7"><div class="MediaObject" id="MO7">
+                  <img alt="" aria-describedby="d65e782" src="../images/541783_1_En_BookBackmatter_Fig7_HTML.jpg" style="width:32.48em"/><div class="TextObject" id="d65e782">
+                    <p class="Para" id="Par72">A B tree that is optimized for heavy read workloads. The B tree updates values that already exist there, and a leaf is added if the value does not exist.</p>
+                  </div>
+                  
+                </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-7</span>
+                    <p class="SimplePara">B-trees are updated in place (vs LSM <span id="ITerm29">trees</span>, which are append only</p>
+                  </div></figcaption></figure></div>
+              <p class="Para" id="Par46">The B-tree write path is not optimized for speed, though. Each time there’s a write, the database must traverse the tree to find the appropriate location. If a value already exists there, it’s updated. If not, a new leaf is added. This is quite disk-intensive, even for small records. In some cases, moving to faster disks can improve performance.</p>
+              <p class="Para" id="Par47">The database creates a snapshot of the tree each time, which enables you to perform rollback (including point-in-time restore). B-trees are also well suited to transactions. When you are going to perform a transaction, you typically want to read the data and then start snapshotting everything. If the conflict resolution doesn’t go as planned, you can simply roll it all back. B-trees make this feasible.</p>
+              <section class="Section3 RenderAsSection3" id="Sec12">
+                <h4 class="Heading">Learning More</h4>
+                <p class="Para" id="Par48"><span class="ExternalRef"><a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/"><span class="RefSource"><em class="EmphasisTypeItalic ">Designing Data-Intensive Applications</em></span></a></span>, by Martin Kleppman (Chapter 3)</p>
+                <p class="Para" id="Par49"><span class="ExternalRef"><a href="https://www.oreilly.com/library/view/database-internals/9781492040330/"><span class="RefSource"><em class="EmphasisTypeItalic ">Database Internals: A Deep Dive Into How Distributed Data Systems Work</em></span></a></span>, by Alex Petrov (Chapters 2, 4, 6, and 7)</p>
+                <p class="Para" id="Par50"><span class="ExternalRef"><a href="https://photondb.io/2022/08/15/bw-tree.html"><span class="RefSource"><em class="EmphasisTypeItalic ">The B-Tree, LSM-Tree, and the Bw-Tree in Between</em></span></a></span>, by PhotonDB</p>
+              </section>
+
+            </section>
+
+            <section class="Section2 RenderAsSection2" id="Sec13">
+              <h3 class="Heading">Record Storage Approach</h3>
+              <p class="Para" id="Par51">One of the fundamental properties of the database is the way to store the data records in persistent storage. A wrong choice at this stage may force end-users into one of two alternatives—exabytes of data migrations vs extremely inefficient disk usage on user queries. To explore the impact, let’s look at two fundamentally different approaches—row-oriented and column-oriented, each of which is suitable for different use cases.</p>
+              <div class="Para" id="Par52"><span id="ITerm30">Data stored</span> on a hard disk is always split into blocks of a fixed size, which is the smallest I/O unit the application can use (see Figure <span class="InternalRef"><a href="#Fig8">A-8</a></span>). Databases looking for the data will need to load all the information from the blocks that contain it. Respectively, the fewer blocks the target data is stored in, the faster the database operates. For spinning disks, this requirement always comes next to the data locality one—it’s better for the blocks the database reads to get data that’s adjacent rather than dispersed across the disk.<figure class="Figure" id="Fig8"><div class="MediaObject" id="MO8">
+                  <img alt="" aria-describedby="d65e869" src="../images/541783_1_En_BookBackmatter_Fig8_HTML.jpg" style="width:23.7em"/><div class="TextObject" id="d65e869">
+                    <p class="Para" id="Par73">A cylindrical diagram depicts how data stored on the disk, is split into 4 blocks, block 1, block 2, block 3, and block 4. The target data is stored in blocks 2 and 4.</p>
+                  </div>
+                  
+                </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-8</span>
+                    <p class="SimplePara">Data is split into blocks of a fixed size; adjacent data is preferred over data dispersed across the disk</p>
+                  </div></figcaption></figure></div>
+              <p class="Para" id="Par53">There are many algorithms to group data in a logical way, each trying to improve <span id="ITerm31">search efficiency</span> (for example, partition and clustering).</p>
+              <p class="Para" id="Par54">When data is organized in the form of a table, the cells can be stored in at least two ways: row-oriented (e.g., wide column) and column-oriented. It’s not feasible to shift from one approach to the other because of the amount of I/O required to convert data between versions. At the same time, this decision has a major impact on the database’s performance. The choice between row-oriented or column-oriented usually aligns with different access patterns (i.e. whether it’s optimized for analytical or transactional workloads).</p>
+              <section class="Section3 RenderAsSection3" id="Sec14">
+                <h4 class="Heading">Row-Oriented Databases</h4>
+                <div class="Para" id="Par55">Let’s look at a sample table for a better understanding of how different storage <span id="ITerm32">approaches</span> work. Figure <span class="InternalRef"><a href="#Fig9">A-9</a></span> shows a table containing information about a person in each row (the person’s name, age, address, etc.).<figure class="Figure" id="Fig9"><div class="MediaObject" id="MO9">
+                    <img alt="" aria-describedby="d65e919" src="../images/541783_1_En_BookBackmatter_Fig9_HTML.jpg" style="width:42.82em"/><div class="TextObject" id="d65e919">
+                      <p class="Para" id="Par74">A table presents information about a person. Each row contains, name, age, address, zipcode, city, and country. The information of Ally and Joao is stored in block 1, and the information of Alexys, and Michael is stored in block 2.</p>
+                    </div>
+                    
+                  </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-9</span>
+                      <p class="SimplePara">Row-based storage</p>
+                    </div></figcaption></figure></div>
+                <p class="Para" id="Par56">With row-oriented storage, data is put on disk row-by-row, and each chunk of data from a block consists of the cells from one table row. This design is perfect for so-called OLTP (Online Transaction Processing) applications, since such workloads can often modify the data by adding—or deleting—entities in the table. Writing a new row is optimal because it involves just appending an entire row to the existing blocks or putting it into new blocks. Another reason that row-oriented storage is good for OLTP workloads is because these workloads are typically loaded with requests retrieving every attribute from a single entity. Some examples of row-oriented databases are Cassandra, <span id="ITerm33">ScyllaDB</span>, <span id="ITerm34">Postgres</span>, and <span id="ITerm35">MySQL</span>.</p>
+                <p class="Para" id="Par57">In other words, row-oriented storage is beneficial when all or most of the record needs to be accessed in the same query or transaction. In this case, it’s better to have narrow tables. The more columns there are in a given table, the less likely it is that your query will need all of them. In the extreme case when the query requires only a few columns (or even a single column), the row-store becomes too expensive. It needs to read the whole block, but the whole block will likely contain redundant data that would just be thrown away after being read.</p>
+              </section>
+
+              <section class="Section3 RenderAsSection3" id="Sec15">
+                <h4 class="Heading">Column-Oriented Databases</h4>
+                <div class="Para" id="Par58">On the other hand, column-oriented databases store data on disk column-by-column. Let’s take the same table, but consider each data chunk to be its column, not the row. As shown in Figure <span class="InternalRef"><a href="#Fig10">A-10</a></span>, the “names” will be grouped together on the <span id="ITerm36">disk</span>, the “ages” will be grouped together on the disk, the “addresses” will be grouped together on the disk, and so on and so forth.<figure class="Figure" id="Fig10"><div class="MediaObject" id="MO10">
+                    <img alt="" aria-describedby="d65e977" src="../images/541783_1_En_BookBackmatter_Fig10_HTML.jpg" style="width:42.82em"/><div class="TextObject" id="d65e977">
+                      <p class="Para" id="Par75">A table presents information about a person. Each row contains, name, age, address, zipcode, city, and country. The information about name and age is stored in block 1, and the information about address and zip code is stored in block 2.</p>
+                    </div>
+                    
+                  </div><figcaption class="Caption" lang="en"><div class="CaptionContent"><span class="CaptionNumber">Figure A-10</span>
+                      <p class="SimplePara">Column-based storage</p>
+                    </div></figcaption></figure></div>
+                <p class="Para" id="Par59">This approach is a good choice for OLAP (Online Analytical <span id="ITerm37">Processing</span>) workloads because those workloads generally aggregate specific data over a very large number of records. OLAP queries are mainly interested in a small subset of columns; for example, calculating the average age of the people from the table. Also, these workloads rarely modify data, and even when they do, the modification is appending new records. Some examples of column-oriented databases are Google <span id="ITerm38">BigQuery</span> and Amazon Redshift.</p>
+                <p class="Para" id="Par60">It’s also worth mentioning that the compression rate is often much higher in column-store rather than in row-store. That’s because in column-store, all cells from the column have the same data type, and that makes it quite compression-friendly.</p>
+                <div class="Para" id="Par61">Table <span class="InternalRef"><a href="Table_99_9999_0001.xhtml">A-1</a></span> breaks down the impact of these different approaches to storing records on the disk.<div class="Table ExternalTable" id="Tab1"><div class="Caption" lang="en"><div class="CaptionContent"><a href="Table_99_9999_0001.xhtml"><span class="CaptionNumber">Table A-1</span></a>
+                      <p class="SimplePara">Row-Oriented and Column-Oriented Approaches at a <span id="ITerm39">Glance</span></p>
+                    </div></div></div></div>
+                <p class="Para" id="Par62">These are just two representative examples. Data can also be stored using document, graph, and other <span id="ITerm40">models</span>. See the following resources for a comprehensive discussion of how the various models store data, and the best and worst use cases for each.</p>
+              </section>
+
+              <section class="Section3 RenderAsSection3" id="Sec16">
+                <h4 class="Heading">Learning More</h4>
+                <p class="Para" id="Par63"><span class="ExternalRef"><a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/"><span class="RefSource"><em class="EmphasisTypeItalic ">Designing Data-Intensive Applications</em></span></a></span>, by Martin Kleppman (Chapter 3)</p>
+                <p class="Para" id="Par64"><span class="ExternalRef"><a href="https://www.oreilly.com/library/view/database-internals/9781492040330/"><span class="RefSource"><em class="EmphasisTypeItalic ">Database Internals: A Deep Dive Into How Distributed Data Systems Work</em></span></a></span>, by Alex Petrov (Chapter 1)</p>
+                <p class="Para" id="Par65"><span class="ExternalRef"><a href="https://martinfowler.com/books/nosql.html"><span class="RefSource"><em class="EmphasisTypeItalic ">NoSQL Distilled: A Brief Guide to the Emerging World of Polyglot Persistence</em></span></a></span>, by Pramod J. Sadalage and Martin Fowler (Chapters 8-11)</p>
+              </section>
+
+            </section>
+
+          </section>
+
+        </div></aside><div class="Index" epub:type="index" id="Ind1" role="doc-index"><div class="Headings"><div class="Heading">Index</div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">A</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Active-active leaderless topology</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Administration</div>
+              <div class="SecondaryIE">backups</div>
+              <div class="TertiaryIE">definition</div>
+              <div class="TertiaryIE">impacts</div>
+              <div class="TertiaryIE">optimization</div>
+              <div class="SecondaryIE">compaction</div>
+              <div class="TertiaryIE">impacts</div>
+              <div class="TertiaryIE">optimization</div>
+              <div class="TertiaryIE">strategies</div>
+              <div class="SecondaryIE">operation/performance</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">AdTech use case</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Advanced Vector Extensions (AVX)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Algorithmic optimization</div>
+              <div class="SecondaryIE">B-trees</div>
+              <div class="SecondaryIE">cache implementations</div>
+              <div class="SecondaryIE">database</div>
+              <div class="SecondaryIE">linear search, steroids</div>
+              <div class="SecondaryIE">optimizing collections</div>
+              <div class="SecondaryIE">scanning tree</div>
+              <div class="SecondaryIE">separation key</div>
+              <div class="SecondaryIE">tree size</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Amazon DynamoDB</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Apache Cassandra-compatible database</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Asynchronous Direct I/O (AIO/DIO)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Atomic, consistent, isolated, and durable (ACID)</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">B</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">B+-tree</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">B-tree <em class="EmphasisTypeItalic ">vs</em>. LSM Tree</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Batch (analytical) workload</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Benchmarking</div>
+              <div class="SecondaryIE">admin operations</div>
+              <div class="SecondaryIE">cache</div>
+              <div class="SecondaryIE">client side mistakes</div>
+              <div class="SecondaryIE">database’s superpowers</div>
+              <div class="SecondaryIE">data models</div>
+              <div class="SecondaryIE">dataset size</div>
+              <div class="SecondaryIE">domain-specific knowledge</div>
+              <div class="SecondaryIE">extreme scale</div>
+              <div class="SecondaryIE">goals</div>
+              <div class="SecondaryIE">latency/throughput</div>
+              <div class="SecondaryIE">networking issues</div>
+              <div class="SecondaryIE">observability</div>
+              <div class="SecondaryIE">phased approach</div>
+              <div class="SecondaryIE">production</div>
+              <div class="SecondaryIE">repeatability</div>
+              <div class="SecondaryIE">reporting</div>
+              <div class="SecondaryIE">results</div>
+              <div class="SecondaryIE">steady state</div>
+              <div class="SecondaryIE">testing disaster recovery</div>
+              <div class="SecondaryIE">tools</div>
+              <div class="SecondaryIE">workloads</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Binary tree</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Blockchain</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Branch mispredictions</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">C</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Caching</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Cassandra-stress</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Cloud-based deployments</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Commit log</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Concurrency</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Conflict-free replicated data types (CRDT)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Consensus algorithms</div>
+              <div class="SecondaryIE">consistency guarantees</div>
+              <div class="SecondaryIE">leader-based classes</div>
+              <div class="SecondaryIE">Paxos</div>
+              <div class="SecondaryIE">Raft</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Consistency level (CL)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Conventional networking functionality</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Conveyor</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">COUNT function</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">CPU</div>
+              <div class="SecondaryIE">cores</div>
+              <div class="SecondaryIE">execution stages</div>
+              <div class="SecondaryIE">futures and promises</div>
+              <div class="SecondaryIE">software architects</div>
+              <div class="SecondaryIE">SSD drive</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">CQL protocol</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">D</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Database as a compute engine</div>
+              <div class="SecondaryIE">CPU power</div>
+              <div class="SecondaryIE">data locality</div>
+              <div class="SecondaryIE">user-defined aggregates</div>
+              <div class="SecondaryIE">user-defined computations</div>
+              <div class="SecondaryIE">user-defined functions/procedures</div>
+              <div class="SecondaryIE">WebAssembly</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Database-as-a-service (DBaaS)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Database cluster KPIs</div>
+              <div class="SecondaryIE">average read/write latencies</div>
+              <div class="SecondaryIE">caching</div>
+              <div class="SecondaryIE">column database</div>
+              <div class="SecondaryIE">CPU level</div>
+              <div class="SecondaryIE">GC</div>
+              <div class="SecondaryIE">industries/use cases</div>
+              <div class="SecondaryIE">I/O queues</div>
+              <div class="SecondaryIE">node availability</div>
+              <div class="SecondaryIE">operations per second</div>
+              <div class="SecondaryIE">timeouts</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Database drivers</div>
+              <div class="SecondaryIE">choosing driver</div>
+              <div class="SecondaryIE">clients/server</div>
+              <div class="TertiaryIE">batch (analytical) workload</div>
+              <div class="TertiaryIE">characteristics</div>
+              <div class="TertiaryIE">distributed system</div>
+              <div class="TertiaryIE">interactive workload</div>
+              <div class="TertiaryIE">scalability</div>
+              <div class="TertiaryIE">workload types</div>
+              <div class="SecondaryIE">concurrency</div>
+              <div class="TertiaryIE">modern hardware</div>
+              <div class="TertiaryIE">modern software</div>
+              <div class="SecondaryIE">paging</div>
+              <div class="SecondaryIE">query locality</div>
+              <div class="SecondaryIE">request caching</div>
+              <div class="SecondaryIE">retries</div>
+              <div class="SecondaryIE">throughput <em class="EmphasisTypeItalic ">vs.</em> goodput</div>
+              <div class="SecondaryIE">timeouts</div>
+              <div class="TertiaryIE">client-side</div>
+              <div class="TertiaryIE">server-side</div>
+              <div class="SecondaryIE">topology/metadata</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Data locality</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Decoded μop cache (DSB)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Deployment models</div>
+              <div class="SecondaryIE">cloud providers</div>
+              <div class="SecondaryIE">cloud vendors</div>
+              <div class="SecondaryIE">Containers/Kubernetes</div>
+              <div class="SecondaryIE">DBaaS</div>
+              <div class="SecondaryIE">NVMes</div>
+              <div class="SecondaryIE">physical hardware</div>
+              <div class="SecondaryIE">serverless</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">“do not retry” approach</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Driver’s retry policy</div>
+              <div class="SecondaryIE">error categories</div>
+              <div class="SecondaryIE">idempotence</div>
+              <div class="SecondaryIE">retry policies</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">E</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Edge computing</div>
+              <div class="SecondaryIE">CRDT</div>
+              <div class="TertiaryIE">characteristics</div>
+              <div class="TertiaryIE">definition</div>
+              <div class="TertiaryIE">G-set</div>
+              <div class="TertiaryIE">LWW-set</div>
+              <div class="TertiaryIE">PN-counter</div>
+              <div class="SecondaryIE">database drivers</div>
+              <div class="SecondaryIE">performance</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Eventual consistency</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">External caches</div>
+              <div class="SecondaryIE">complexity</div>
+              <div class="SecondaryIE">cost</div>
+              <div class="SecondaryIE">database caching</div>
+              <div class="SecondaryIE">database knowledge/resources</div>
+              <div class="SecondaryIE">decreases availability</div>
+              <div class="SecondaryIE">latency</div>
+              <div class="SecondaryIE">security risks</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">F</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Final function</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Full active-active-style replication</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Full-stack APM system</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">G</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Garbage Collector (GC)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Golang abstraction layer</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Goodput</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Google Cloud storage</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">GROUP BY statement</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Grow-only counter</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">H</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Hard disk drives (HDDs)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Hardware components</div>
+              <div class="SecondaryIE">CPU</div>
+              <div class="SecondaryIE">memory (RAM)</div>
+              <div class="SecondaryIE">network</div>
+              <div class="SecondaryIE">storage</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Hardware considerations</div>
+              <div class="SecondaryIE">balance</div>
+              <div class="SecondaryIE">performance bottlenecks</div>
+              <div class="SecondaryIE">setting realistic expectations</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Hash-based sharding</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Hashing key implementation</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">I</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Intel Xeon Processor</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Internet of Things (IoT)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">I/O</div>
+              <div class="SecondaryIE">access methods</div>
+              <div class="SecondaryIE">AIO/DIO</div>
+              <div class="SecondaryIE">definition</div>
+              <div class="SecondaryIE">direct I/O</div>
+              <div class="SecondaryIE">filesystem/disk, choosing</div>
+              <div class="SecondaryIE">filesystem <em class="EmphasisTypeItalic ">vs</em>. raw disk</div>
+              <div class="SecondaryIE">mmap</div>
+              <div class="SecondaryIE">SSDs work</div>
+              <div class="SecondaryIE">traditional method</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">I/O scheduling</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">J</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Just-in-time compilation (JIT)</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">K</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Key performance indicators (KPIs)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Kubernetes</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">L</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Last-write-wins set</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Leader-based algorithm classes</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Linear root</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Log-structured allocation</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Log-structured approach</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">LSM-tree based databases</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">M</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Memory management</div>
+              <div class="SecondaryIE">allocation</div>
+              <div class="SecondaryIE">cache control</div>
+              <div class="SecondaryIE">database engineering</div>
+              <div class="SecondaryIE">definition</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">mmap method</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Monitoring</div>
+              <div class="SecondaryIE">custom alerts</div>
+              <div class="SecondaryIE">dashboards/alerting</div>
+              <div class="SecondaryIE">database KPIs</div>
+              <div class="TertiaryIE">applications</div>
+              <div class="TertiaryIE">database cluster</div>
+              <div class="TertiaryIE">high-performance database</div>
+              <div class="TertiaryIE">infrastructure/hardware</div>
+              <div class="SecondaryIE">database monitoring tool</div>
+              <div class="SecondaryIE">full-stack APM system</div>
+              <div class="SecondaryIE">proactive approach</div>
+              <div class="SecondaryIE">sample scenarios</div>
+              <div class="SecondaryIE">vendor’s monitoring stack</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Multi-hop routing</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">N</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Networking</div>
+              <div class="SecondaryIE">DPDK</div>
+              <div class="SecondaryIE">intensive applications</div>
+              <div class="SecondaryIE">IRQ binding</div>
+              <div class="SecondaryIE">Linux</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Non-Uniform Memory Architecture (NUMA)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Nonvolatile memory express (NVMe) disks</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">O</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Online analytical processing (OLAP)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Online transaction processing (OLTP)</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">P, Q</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Partitioner</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Paxos</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Pool allocation strategy</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Positive-Negative counter</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">PostgreSQL</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Prepared statements</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Primary replicas</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">R</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Raft</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Range-based sharding</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Receive-side scaling (RSS)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Record storage approach</div>
+              <div class="SecondaryIE">column-oriented databases</div>
+              <div class="SecondaryIE">data stored</div>
+              <div class="SecondaryIE">raw-oriented databases</div>
+              <div class="SecondaryIE">search efficiency</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">REDUCEFUNC keyword</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Redundant Array of Independent Disks (RAID) array</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Replication</div>
+              <div class="SecondaryIE">cluster</div>
+              <div class="SecondaryIE">multi-availability zones <em class="EmphasisTypeItalic ">vs</em>. multi-region</div>
+              <div class="SecondaryIE">multi-region/global</div>
+              <div class="SecondaryIE">racks</div>
+              <div class="SecondaryIE">RF</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Runtime</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">S</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Scalar functions</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">ScyllaDB</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Secondary replicas</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Serial AT Attachment (SATA) interface</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Serverless</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Sharding</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">SIMD-optimized linear search</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Solid-state drives (SSDs)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Staged Event-Driven Architecture (SEDA)</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">State transition function</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Storage</div>
+              <div class="SecondaryIE">disk performance</div>
+              <div class="SecondaryIE">disk setup</div>
+              <div class="SecondaryIE">disk size</div>
+              <div class="SecondaryIE">disk types</div>
+              <div class="SecondaryIE">raw devices/custom drivers</div>
+              <div class="SecondaryIE">tiered storage</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Streaming media</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">T</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">Throughput</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Tiered storage</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Topology</div>
+              <div class="SecondaryIE">abstraction layers</div>
+              <div class="SecondaryIE">load balancer</div>
+              <div class="SecondaryIE">scaling up <em class="EmphasisTypeItalic ">vs</em>. scaling out</div>
+              <div class="SecondaryIE">workloads</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">U, V</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">User-defined aggregates</div>
+              <div class="SecondaryIE">aggregate definition</div>
+              <div class="SecondaryIE">aggregate functions</div>
+              <div class="SecondaryIE">best practices</div>
+              <div class="SecondaryIE">built-in aggregation functions</div>
+              <div class="SecondaryIE">client-side</div>
+              <div class="SecondaryIE">components</div>
+              <div class="SecondaryIE">distributed</div>
+              <div class="SecondaryIE">examples</div>
+              <div class="SecondaryIE">final function</div>
+              <div class="SecondaryIE">state transition function</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">User-defined functions/procedures</div>
+              <div class="SecondaryIE">best practices</div>
+              <div class="SecondaryIE">computations</div>
+              <div class="SecondaryIE">core strategies</div>
+              <div class="SecondaryIE">determinism</div>
+              <div class="SecondaryIE">examples</div>
+              <div class="SecondaryIE">JIT</div>
+              <div class="SecondaryIE">latency</div>
+              <div class="SecondaryIE">scalar functions</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">User-Defined Types (UDTs)</div>
+            </div></div><div class="IndexDiv"><div class="Headings"><div class="Heading">W, X, Y, Z</div></div><div class="IndexEntry">
+              <div class="PrimaryIE">WebAssembly</div>
+            </div><div class="IndexEntry">
+              <div class="PrimaryIE">Workload (read/write ratio)</div>
+              <div class="SecondaryIE">ACID properties</div>
+              <div class="SecondaryIE">concurrency</div>
+              <div class="SecondaryIE">connected technologies</div>
+              <div class="SecondaryIE">consistency</div>
+              <div class="SecondaryIE">consistency requirements</div>
+              <div class="SecondaryIE">dataset size</div>
+              <div class="SecondaryIE">delete-heavy workloads</div>
+              <div class="SecondaryIE">demand fluctuations</div>
+              <div class="SecondaryIE">expected throughput</div>
+              <div class="SecondaryIE">geographic distribution</div>
+              <div class="SecondaryIE">heavy workloads</div>
+              <div class="SecondaryIE">high-availability expectations</div>
+              <div class="SecondaryIE">item size</div>
+              <div class="SecondaryIE">item type</div>
+              <div class="SecondaryIE">latency expectation</div>
+              <div class="SecondaryIE">mixed access patterns</div>
+              <div class="SecondaryIE">OLTP <em class="EmphasisTypeItalic ">vs</em>. OLAP</div>
+              <div class="SecondaryIE">read-heavy workloads</div>
+              <div class="SecondaryIE">write-heavy workload</div>
+            </div></div></div></div></div></body></html>

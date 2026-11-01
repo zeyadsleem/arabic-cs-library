@@ -30,7 +30,6 @@ source: "https://programming-26.mooc.fi/part-5"
 - [المضاريب](/book/mooc/part-5/3-dictionary)
 - [مدرّج تكرار](/book/mooc/part-5/3-dictionary)
 - [دفتر الهاتف، الإصدار 1](/book/mooc/part-5/3-dictionary)
-- [دفتر الهاتف، الإصدار 2](/book/mooc/part-5/3-dictionary)
 - [قلب قاموس](/book/mooc/part-5/3-dictionary)
 - [الأرقام مكتوبة بالحروف](/book/mooc/part-5/3-dictionary)
 - [قاعدة بيانات الأفلام](/book/mooc/part-5/3-dictionary)

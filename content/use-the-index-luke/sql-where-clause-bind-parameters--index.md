@@ -239,7 +239,7 @@ dbh.execute(subsidiary_id);
 
 #### انظر أيضاً
 
-[أمثلة باستخدام أدوات ORM](/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index#myth-dynamic-sql-sample)
+[أمثلة باستخدام أدوات ORM](/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index)
 
 علامة الاستفهام (`?`) هي محرف العنصر النائب الوحيد الذي يعرّفه معيار SQL. وعلامات الاستفهام معاملات موضعية؛ أي أنها ترقَّم من اليسار إلى اليمين. ولربط قيمة بعلامة استفهام معينة، عليك تحديد رقمها. وقد يكون ذلك غير عملي جداً لأن الترقيم يتغير عند إضافة عناصر نائبة أو حذفها. وتقدّم قواعد بيانات كثيرة امتداداً خاصاً للمعاملات المسمّاة لحل هذه المشكلة—مثلاً باستخدام رمز «at» (`@name`) أو النقطتين (`:name`).
 
@@ -265,5 +265,5 @@ sql.execute('employees', 'employee_id = 1');
 
 #### انظر أيضاً
 
-- يضم [*المنطق الذكي*](/book/use-the-index-luke/sql-where-clause-obfuscation-smart-logic/index#smart_logic_affected) مزيداً من المعلومات عن قدرات التخزين المؤقت لخطط التنفيذ في مختلف قواعد البيانات.
+- يضم [*المنطق الذكي*](/book/use-the-index-luke/sql-where-clause-obfuscation-smart-logic/index) مزيداً من المعلومات عن قدرات التخزين المؤقت لخطط التنفيذ في مختلف قواعد البيانات.
 - مقال: [Planning for Execution Plan Reuse](https://use-the-index-luke.com/blog/2011-07-16/planning-for-reuse)

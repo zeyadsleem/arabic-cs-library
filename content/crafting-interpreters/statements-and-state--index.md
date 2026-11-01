@@ -417,7 +417,7 @@ AST نضيف عقدة <span name="var-stmt-ast">جملة جديدة</span> لت�
 
 الشيفرة المولَّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-var-stmt].
 
-[appendix-var-stmt]: /book/crafting-interpreters/appendix-ii/index#variable-statement
+[appendix-var-stmt]: /book/crafting-interpreters/appendix-ii/index#جملة-متغير
 
 </aside>
 
@@ -436,7 +436,7 @@ AST نضيف عقدة <span name="var-stmt-ast">جملة جديدة</span> لت�
 
 الشيفرة المولَّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-var-expr].
 
-[appendix-var-expr]: /book/crafting-interpreters/appendix-ii/index#variable-expression
+[appendix-var-expr]: /book/crafting-interpreters/appendix-ii/index#تعبير-متغير
 
 </aside>
 
@@ -787,7 +787,7 @@ instance.field = "value";
 
 الشيفرة المولَّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-assign].
 
-[appendix-assign]: /book/crafting-interpreters/appendix-ii/index#assign-expression
+[appendix-assign]: /book/crafting-interpreters/appendix-ii/index#تعبير-الإسناد
 
 </aside>
 
@@ -1227,7 +1227,7 @@ block          → "{" declaration* "}" ;
 
 الشيفرة المولَّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-block].
 
-[appendix-block]: /book/crafting-interpreters/appendix-ii/index#block-statement
+[appendix-block]: /book/crafting-interpreters/appendix-ii/index#جملة-الكتلة-block
 
 </aside>
 

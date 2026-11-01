@@ -37,7 +37,7 @@ DBSchema *أداة متقدمة لإدارة قواعد البيانات*. وي�
 
 لكن يمكن فعل ذلك بالعكس أيضًا. وفي هذا القسم نوضّح كيفية استخدام DBSchema لإجراء *هندسة عكسية لمخطط موجود على خادم قاعدة بياناتنا.* يتصل DBSchema بالمخطط الموجود ويعيد بناء نموذج فيزيائي منه.
 
-في [فصل "علاقات واحد إلى متعدد"](/book/database-foundations/sql-eenopveel/index#Translation-to-relational-model) بنيت نموذجًا صغيرًا (يتكوّن من جدولين "Course" و"Lecturer") في المخطط المسمّى برقم r الخاص بك، في قاعدة بيانات مجموعتك. وتحقق الآن عبر pgAdmin مما إذا كان ذلك المخطط لا يزال موجودًا؟ وإن لم يكن: أنشئه [عبر الخطوات في ذلك القسم](/book/database-foundations/sql-eenopveel/index#Realization-in-your-own-schema) (عشر دقائق من العمل).
+في [فصل "علاقات واحد إلى متعدد"](/book/database-foundations/sql-eenopveel/index) بنيت نموذجًا صغيرًا (يتكوّن من جدولين "Course" و"Lecturer") في المخطط المسمّى برقم r الخاص بك، في قاعدة بيانات مجموعتك. وتحقق الآن عبر pgAdmin مما إذا كان ذلك المخطط لا يزال موجودًا؟ وإن لم يكن: أنشئه [عبر الخطوات في ذلك القسم](/book/database-foundations/sql-eenopveel/index) (عشر دقائق من العمل).
 
 وفي النص التالي يتصل DBSchema بخادم قاعدة بياناتنا ويحوّل مخططك إلى نموذج فيزيائي. وكالعادة: نفّذ هذه الخطوات بنفسك!
 
@@ -52,7 +52,7 @@ SELECT *
 FROM ‘u0012047’.course; --and likewise for the table lecturer
 ```
 
-يبدو ذلك جيدًا! حان وقت تشغيل DBSchema. وفي صفحة الفتح اختر "Start New Project" مع الخيار "Connect to Database". ويمكن فعل ذلك أيضًا من القائمة، بالمناسبة: "Model > New connected to the database". ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-2-startnewproject.webp) ويستطيع DBSchema التعامل مع عشرات أنظمة إدارة قواعد البيانات. واختر من القائمة الفيل (المألوف الآن): ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-3-kiespostgres.webp) وفي مربع الحوار التالي، تحت "JDBC URL"، اختر الخيار "Standard". ثم املأ التفاصيل كما في اللقطة أدناه. وكـ "Database User" اختر المستخدم المحلي الذي أنشأته لاتصال التجميع وكلمة المرور المقابلة (وقد دوّنتهما في مكان ما عندما اتبعت [دليل التثبيت](/book/database-foundations/sql-pgadmin/index#Installation-pgAdmin). ومن الواضح أن تختار *رقم المنفذ الصحيح لاتصال التجميع*: وتُظهر اللقطة إصدار السنة الدراسية 2022-23. وفي "Database" ينبغي على الأرجح أن *تكتب* اسم قاعدة بيانات صفك (مثل 1TI9). ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-4-connectiedialoog.webp) وفي علامة التبويب "Settings"، تحت "Connection Properies" أضف `prepareThreshold=0;`: ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-5-preparethreshold.webp) ويمكنك الآن تأكيد هذه النافذة بـ "Connect". وإذا سار كل شيء على ما يرام، سترى محتويات قاعدة البيانات. واختر الآن المخطط الذي تريد إجراء الهندسة العكسية له فقط: ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-6-checkboxes.webp) وهذه هي النتيجة في DBSchema: ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-7-resultaatMet.webp) وهناك بعض الأمور التي لا نريدها:
+يبدو ذلك جيدًا! حان وقت تشغيل DBSchema. وفي صفحة الفتح اختر "Start New Project" مع الخيار "Connect to Database". ويمكن فعل ذلك أيضًا من القائمة، بالمناسبة: "Model > New connected to the database". ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-2-startnewproject.webp) ويستطيع DBSchema التعامل مع عشرات أنظمة إدارة قواعد البيانات. واختر من القائمة الفيل (المألوف الآن): ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-3-kiespostgres.webp) وفي مربع الحوار التالي، تحت "JDBC URL"، اختر الخيار "Standard". ثم املأ التفاصيل كما في اللقطة أدناه. وكـ "Database User" اختر المستخدم المحلي الذي أنشأته لاتصال التجميع وكلمة المرور المقابلة (وقد دوّنتهما في مكان ما عندما اتبعت [دليل التثبيت](/book/database-foundations/sql-pgadmin/index). ومن الواضح أن تختار *رقم المنفذ الصحيح لاتصال التجميع*: وتُظهر اللقطة إصدار السنة الدراسية 2022-23. وفي "Database" ينبغي على الأرجح أن *تكتب* اسم قاعدة بيانات صفك (مثل 1TI9). ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-4-connectiedialoog.webp) وفي علامة التبويب "Settings"، تحت "Connection Properies" أضف `prepareThreshold=0;`: ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-5-preparethreshold.webp) ويمكنك الآن تأكيد هذه النافذة بـ "Connect". وإذا سار كل شيء على ما يرام، سترى محتويات قاعدة البيانات. واختر الآن المخطط الذي تريد إجراء الهندسة العكسية له فقط: ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-6-checkboxes.webp) وهذه هي النتيجة في DBSchema: ![](https://df.webontwerp.ucll.be/images/database-foundations/sql-dbschema-7-resultaatMet.webp) وهناك بعض الأمور التي لا نريدها:
 
 - مربع التعليق "This is a layout ..."؛
 - المستطيل "lecturer"؛
@@ -129,7 +129,7 @@ FROM ‘u0012047’.course; --and likewise for the table lecturer
 
 تحديث نوفمبر 2024: أصبح من الممكن الآن إنشاء مخطط جديد في خادم قاعدة بياناتنا في نسخة المجتمع (النسخة المجانية) من DBSchema بالنقر بزر الفأرة الأيمن في مستعرض قاعدة البيانات (على الجانب الأيسر من الشاشة) على "Schemas" ثم اختيار "Create Schema".
 
-أنشئ أولًا مخططًا جديدًا في قاعدة بيانات مجموعتك (1TI9 وغيرها). وللقيام بذلك، شغّل pgAdmin واستخدم اتصال التجميع لإنشاء مخطط في قاعدة البيانات المناسبة باسم "rxxxxxxx-movie" (باستخدام رقم r الخاص بك). [أتذكر كيف تُنشئ مخططًا جديدًا في قاعدة بيانات؟](/book/database-foundations/sql-intro/index#Create-schema)
+أنشئ أولًا مخططًا جديدًا في قاعدة بيانات مجموعتك (1TI9 وغيرها). وللقيام بذلك، شغّل pgAdmin واستخدم اتصال التجميع لإنشاء مخطط في قاعدة البيانات المناسبة باسم "rxxxxxxx-movie" (باستخدام رقم r الخاص بك). [أتذكر كيف تُنشئ مخططًا جديدًا في قاعدة بيانات؟](/book/database-foundations/sql-intro/index)
 
 وقد تحصل على رسالة خطأ (`syntax error at or near "-"`) إن لم تتذكر إحاطة اسم المخطط بـ*علامات اقتباس مزدوجة*. وهذا غير ضروري عادةً، لكن بسبب المحرف الخاص "-" في الاسم تكون علامات الاقتباس المزدوجة إلزامية. ولو كتبت اسم المخطط بشرطة سفلية (_) لجاز لك إغفالها.
 
@@ -218,7 +218,7 @@ CREATE  TABLE "u0152691-movie".actor_movie (
 
 ### يدويًا بواسطة INSERT INTO
 
-تضيف صفوفًا إلى جدول عبر جمل `INSERT INTO`. [وقد فعلت ذلك بالفعل في فصل SQL التمهيدي.](/book/database-foundations/sql-intro/index#Add-data-with-INSERT-INTO)
+تضيف صفوفًا إلى جدول عبر جمل `INSERT INTO`. [وقد فعلت ذلك بالفعل في فصل SQL التمهيدي.](/book/database-foundations/sql-intro/index)
 
 شغّل pgAdmin وأضف يدويًا المعلومات التالية. صدر فيلم "Star Wars" في عام 1977. وطول الفيلم 121 دقيقة وأخرجه George Lucas (المولود في 14 مايو 1944). وGeorge Walton Lucas Jr. من Modesto، كاليفورنيا، الولايات المتحدة. ويمثل Harrison Ford (شيكاغو، الولايات المتحدة، المولود في 13 يوليو 1942) دور Han Solo. وكان دور الأميرة Leia للممثلة الأمريكية Carrie Frances Fisher (المولودة في 21 أكتوبر 1956، والمتوفاة في 2016). وأمنح هذا الفيلم 5 نجوم!
 

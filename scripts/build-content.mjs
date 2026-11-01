@@ -64,6 +64,16 @@ const addHeadingIds = (html) =>
     }
   );
 
+/** Give repeated headings distinct ids, the way GitHub numbers duplicates. */
+const dedupeIds = (html) => {
+  const seen = new Map();
+  return html.replace(/\sid="([^"]+)"/g, (match, id) => {
+    const count = seen.get(id) ?? 0;
+    seen.set(id, count + 1);
+    return count === 0 ? match : ` id="${id}-${count}"`;
+  });
+};
+
 const mathErrors = [];
 let currentSection = '';
 installContentMath(markdown, {
@@ -338,6 +348,7 @@ const run = () => {
         let html = markdown.render(content);
         html = addHeadingIds(html);
         html = wrapExercises(html);
+        html = dedupeIds(html);
         html = withBasePath(html);
 
         emitSection(book, chapterEntry, slug, data.title || section.title, html);

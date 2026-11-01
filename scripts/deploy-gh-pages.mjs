@@ -63,6 +63,80 @@ if (!fs.existsSync(path.join(buildDir, 'index.html'))) {
   process.exit(1);
 }
 
+/** Drop images no built page, script or style sheet mentions.
+ * The image directories keep every figure the sources ever imported, including
+ * ones the translated pages never embed; shipping them costs tens of megabytes
+ * on the published branch and helps nobody. Only `build/` is touched, so the
+ * sources keep their figures for future imports.
+ * @param {string} directory @returns {{removed: number, bytes: number}}
+ */
+const pruneUnreferencedImages = (directory) => {
+  const text = [];
+  const walk = (current) => {
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const target = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name === 'images' && current === directory) continue;
+        walk(target);
+      } else if (/\.(?:html|js|json|css|xml|txt|webmanifest)$/.test(entry.name)) {
+        text.push(fs.readFileSync(target, 'utf8'));
+      }
+    }
+  };
+  walk(directory);
+  const blob = text.join('\n');
+  const images = path.join(directory, 'images');
+  if (!fs.existsSync(images)) return { removed: 0, bytes: 0 };
+  let removed = 0;
+  let bytes = 0;
+  const prune = (current) => {
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const target = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        prune(target);
+        if (!fs.readdirSync(target).length) fs.rmdirSync(target);
+      } else {
+        const relative = path.relative(directory, target).split(path.sep).join('/');
+        if (blob.includes(relative) || blob.includes(encodeURI(relative))) return;
+        bytes += fs.statSync(target).size;
+        fs.rmSync(target);
+        removed += 1;
+      }
+    }
+  };
+  prune(images);
+  return { removed, bytes };
+};
+
+const pruned = pruneUnreferencedImages(buildDir);
+if (pruned.removed) {
+  console.log(
+    `حُذفت ${pruned.removed} صورة غير مُشار إليها من مخرجات النشر (${(pruned.bytes / 1e6).toFixed(1)} ميغابايت).`
+  );
+}
+
+/** Give the static fallback page the head tags the client-rendered error view owns.
+ * The adapter writes 404.html before any page renders, so it ships without a
+ * title or description and every mistyped URL looks untitled in a browser tab.
+ * @param {string} file @returns {boolean}
+ */
+const stampFallbackPage = (file) => {
+  if (!fs.existsSync(file)) return false;
+  const html = fs.readFileSync(file, 'utf8');
+  if (/<title>/.test(html)) return false;
+  const title = '<title>الصفحة غير موجودة | المكتبة العربية لعلوم الحاسوب</title>';
+  const description =
+    '<meta name="description" content="الرابط المطلوب غير موجود في المكتبة العربية لعلوم الحاسوب.">';
+  const stamped = html.replace(/<\/head>/i, `  ${title}\n    ${description}\n  </head>`);
+  if (stamped === html) return false;
+  fs.writeFileSync(file, stamped);
+  return true;
+};
+
+if (stampFallbackPage(path.join(buildDir, '404.html'))) {
+  console.log('أُضيف عنوان ووصف إلى صفحة 404 الاحتياطية.');
+}
+
 let branchExists = false;
 try {
   const heads = run('git', ['ls-remote', '--heads', repoUrl, 'gh-pages']);

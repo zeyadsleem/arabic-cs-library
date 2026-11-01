@@ -94,7 +94,7 @@ ANALYZE employees;
 - عرضا `GENERATOR_X` مولّدان للصفوف كما هو موصوف في مقال [مولّد صفوف MySQL](https://use-the-index-luke.com/blog/2011-07-30/mysql-row-generator). وفي الوقت نفسه، يدعم SQLite [جملة WITH التعاودية (منذ 3.8.3)](https://modern-sql.com/caniuse/with_recursive_(top_level)) لكن هذا النهج يعمل مع إصدارات أقدم من SQLite أيضاً.
 - يُستخدم العمود `JUNK` للحصول على طول صف واقعي. ولولا هذا العمود لصار الجدول صغيراً بصورة غير واقعية ولما نجح بعض العروض.
 - تُملأ بيانات عشوائية في الجدول، باستثناء مدخلي أنا، الذي يُحدَّث بعد الإدراج.
-- تُجمع [إحصاءات](/book/use-the-index-luke/sql-where-clause-the-equals-operator-slow-indexes-part-ii/index#sb-statistics) الجدول والفهرس ليعرف [المُحسِّن](/book/use-the-index-luke/sql-where-clause-the-equals-operator-slow-indexes-part-ii/index#sb-optimizer) شيئاً عن محتوى الجدول.
+- تُجمع [إحصاءات](/book/use-the-index-luke/sql-where-clause-the-equals-operator-slow-indexes-part-ii/index) الجدول والفهرس ليعرف [المُحسِّن](/book/use-the-index-luke/sql-where-clause-the-equals-operator-slow-indexes-part-ii/index) شيئاً عن محتوى الجدول.
 
 ### المفاتيح المُدمجة
 

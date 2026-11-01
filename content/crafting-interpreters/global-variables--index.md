@@ -289,7 +289,7 @@ eat(brunch);
 وبالنسبة إلى Lox، اخترنا حدود التصاريح لتكون تلك النقطة. والآن بعد أن لدينا التصاريح، يمكننا
 تنفيذ المزامنة.
 
-[errors]: /book/crafting-interpreters/compiling-expressions/index#handling-syntax-errors
+[errors]: /book/crafting-interpreters/compiling-expressions/index#معالجة-أخطاء-الصياغة
 
 ^code call-synchronize (1 before, 1 after)
 
@@ -566,7 +566,7 @@ menu.brunch(sunday).beverage = "mimosa";
 الفرق الآخر هو أنّ تعيين متغيّر لا يُسقط القيمة من المكدّس. تذكّر، أنّ الإسناد تعبير، لذا يحتاج
 إلى ترك تلك القيمة هناك تحسّبًا لأن يكون الإسناد متداخلًا داخل تعبير أكبر ما.
 
-[implicit]: /book/crafting-interpreters/statements-and-state/index#design-note
+[implicit]: /book/crafting-interpreters/statements-and-state/index
 
 أضف قليلًا من التفكيك:
 

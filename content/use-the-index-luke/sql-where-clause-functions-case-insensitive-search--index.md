@@ -108,7 +108,7 @@ Predicate Information
       STOP ( UPPER(Q1.LAST_NAME) = 'WINAND')
 ```
 
-غُيّر الاستعلام إلى `WHERE UPPER(last_name) = 'WINAND'` (بدون `UPPER` في الطرف الأيمن) للحصول على النتيجة المتوقعة. وعند استخدام `UPPER('winand')`، يخطئ المُحسِّن خطأً جسيماً في التقدير ويتوقع اختيار 4% من صفوف الجدول. وهذا يجعل المُحسِّن يتجاهل الفهرس وينفّذ `TBSCAN`. انظر [*مسح كامل للجدول*](/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index#sb-full-table-scan) لترى لماذا قد يكون ذلك منطقياً.
+غُيّر الاستعلام إلى `WHERE UPPER(last_name) = 'WINAND'` (بدون `UPPER` في الطرف الأيمن) للحصول على النتيجة المتوقعة. وعند استخدام `UPPER('winand')`، يخطئ المُحسِّن خطأً جسيماً في التقدير ويتوقع اختيار 4% من صفوف الجدول. وهذا يجعل المُحسِّن يتجاهل الفهرس وينفّذ `TBSCAN`. انظر [*مسح كامل للجدول*](/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index) لترى لماذا قد يكون ذلك منطقياً.
 
 Oracle
 
@@ -143,7 +143,7 @@ Bitmap Heap Scan on employees
 
 #### تحذير
 
-تستخدم أدوات ORM أحياناً `UPPER` و`LOWER` دون علم المطوّر. فمثلاً، يحقن Hibernate [دالة `LOWER` ضمنية](/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index#myth-dynamic-sql-sample) للبحث غير الحساس لحالة الأحرف.
+تستخدم أدوات ORM أحياناً `UPPER` و`LOWER` دون علم المطوّر. فمثلاً، يحقن Hibernate [دالة `LOWER` ضمنية](/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index) للبحث غير الحساس لحالة الأحرف.
 
 لا تزال خطة التنفيذ ليست نفسها كما كانت في القسم السابق بدون `UPPER`؛ فتقدير عدد الصفوف مرتفع جداً. ومن الغريب بشكل خاص أن يتوقع المُحسِّن جلب صفوف من الجدول أكثر مما يقدّمه `INDEX RANGE SCAN` في المقام الأول. فكيف يجلب 100 صف من الجدول إذا كان مسح الفهرس السابق أعاد 40 صفاً فقط؟ الجواب أنه لا يستطيع. والتقديرات المتناقضة كهذه غالباً ما تدل على مشكلات في الإحصاءات. وفي هذه الحالة بالتحديد يرجع ذلك إلى أن قاعدة بيانات Oracle لا تحدّث إحصاءات الجدول عند إنشاء فهرس جديد (انظر أيضاً [«*إحصاءات Oracle للفهارس القائمة على الدوال*»](#sb-collecting-statistics)).
 

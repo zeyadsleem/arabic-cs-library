@@ -21,7 +21,6 @@ source: "https://programming-26.mooc.fi/part-10"
 - [الجرعة السحرية السرية](/book/mooc/part-10/2-access-modifiers)
 - [المال](/book/mooc/part-10/3-oo-programming-techniques)
 - [تاريخ بسيط](/book/mooc/part-10/3-oo-programming-techniques)
-- [قائمة تسوق قابلة للتكرار](/book/mooc/part-10/3-oo-programming-techniques)
 - [توسعة دفتر الهاتف، الإصدار 1](/book/mooc/part-10/4-application-development)
 - [توسعة دفتر الهاتف، الإصدار 2](/book/mooc/part-10/4-application-development)
 - [CourseRecords](/book/mooc/part-10/4-application-development)

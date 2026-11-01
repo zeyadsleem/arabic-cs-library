@@ -16,7 +16,7 @@ source: https://use-the-index-luke.com/sql/explain-plan/db2/operations
 
 ويشير غياب مُسندَي `START` و`STOP` إلى مسح فهرس كامل.
 
-ويشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained) إلى المسح المعاكس بين قوسين (مثل `IXSCAN (REVERSE)`).
+ويشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index) إلى المسح المعاكس بين قوسين (مثل `IXSCAN (REVERSE)`).
 
 [FETCH](https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021323.htm)
 
@@ -24,7 +24,7 @@ source: https://use-the-index-luke.com/sql/explain-plan/db2/operations
 
 [TBSCAN](https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021339.htm)
 
-وتُعرف أيضاً بالمسح الكامل للجدول. تقرأ الجدول بأكمله — جميع الصفوف والأعمدة — كما هو مخزّن على القرص. ومع أن عمليات القراءة متعددة الكتل تحسّن سرعة المسح الكامل تحسناً كبيراً، فهو لا يزال من أغلى العمليات. فإلى جانب معدلات الإدخال/الإخراج العالية، يجب أن يفحص المسح الكامل جميع صفوف الجدول، لذا قد يستهلك أيضاً قدراً كبيراً من وقت المعالج. انظر أيضاً [«*المسح الكامل للجدول*»](/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index#sb-full-table-scan).
+وتُعرف أيضاً بالمسح الكامل للجدول. تقرأ الجدول بأكمله — جميع الصفوف والأعمدة — كما هو مخزّن على القرص. ومع أن عمليات القراءة متعددة الكتل تحسّن سرعة المسح الكامل تحسناً كبيراً، فهو لا يزال من أغلى العمليات. فإلى جانب معدلات الإدخال/الإخراج العالية، يجب أن يفحص المسح الكامل جميع صفوف الجدول، لذا قد يستهلك أيضاً قدراً كبيراً من وقت المعالج. انظر أيضاً [«*المسح الكامل للجدول*»](/book/use-the-index-luke/sql-where-clause-the-equals-operator-concatenated-keys/index).
 
 [RIDSCN](https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021335.htm)
 
@@ -56,7 +56,7 @@ source: https://use-the-index-luke.com/sql/explain-plan/db2/operations
 
 ترتّب النتيجة وفق جملة `order by`. وتحتاج هذه العملية إلى كميات كبيرة من الذاكرة لتجسيد النتيجة الوسيطة (غير متدفقة). وتُستخدم أيضاً لإنشاء الترتيب المطلوب لعمليات [`MSJOIN`](#apa-db2-ops-msjoin) أو [`GRPBY`](#apa-db2-ops-grpby). إضافةً إلى ذلك، قد تحذف `SORT` الصفوف المكرّرة لعملية `distinct`. انظر أيضاً [«*فهرسة Order By*»](/book/use-the-index-luke/sql-sorting-grouping-indexed-order-by/index).
 
-ويشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained) إلى ما إذا كان هناك إزالة للتكرار بين قوسين (مثل `SORT (UNIQUE)`). وتُوسم عمليات فرز Top-N بـ`TOP-N` (مثلاً بسبب `fetch first ... rows only`).
+ويشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index) إلى ما إذا كان هناك إزالة للتكرار بين قوسين (مثل `SORT (UNIQUE)`). وتُوسم عمليات فرز Top-N بـ`TOP-N` (مثلاً بسبب `fetch first ... rows only`).
 
 [UNIQUE](https://www.ibm.com/docs/en/db2/11.5.x?topic=SSEPGG_11.5.0/com.ibm.db2.luw.admin.explain.doc/doc/r0021338.htm)
 
@@ -66,10 +66,10 @@ source: https://use-the-index-luke.com/sql/explain-plan/db2/operations
 
 تجمّع مجموعة وفق جملة `group by`. وقد تُنفَّذ هذه العملية بخوارزمية فرز/تجميع أو بنهج قائم على التجزئة (منذ الإصدار 10.1). انظر أيضاً [«*فهرسة Group By*»](/book/use-the-index-luke/sql-sorting-grouping-indexed-group-by/index).
 
-ويشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained) إلى نمط التجميع بين قوسين (مثل `GRPBY (HASH COMPLETE)`).
+ويشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index) إلى نمط التجميع بين قوسين (مثل `GRPBY (HASH COMPLETE)`).
 
 ## استعلامات Top-N
 
-ليس في Db2 (LUW) عمليات خطة تنفيذ تتصل مباشرةً بجمل Top-N مثل `fetch first ... rows only`. غير أنه إذا نُفِّذت عملية `SORT`، يشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained) إلى تحسين Top-N بين قوسين (مثل `SORT (TOP-N)`).
+ليس في Db2 (LUW) عمليات خطة تنفيذ تتصل مباشرةً بجمل Top-N مثل `fetch first ... rows only`. غير أنه إذا نُفِّذت عملية `SORT`، يشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index) إلى تحسين Top-N بين قوسين (مثل `SORT (TOP-N)`).
 
 وإذا لم تكن هناك حاجة إلى عملية `SORT`، فلا توجد علامة ظاهرة لسلوك Top-N في خطة التنفيذ. لكن الانخفاض المفاجئ في قيمة التكلفة أو في تقديرات عدد الصفوف مع غياب المُسندات قد يلمّح إلى وجود جملة Top-N عاملة.

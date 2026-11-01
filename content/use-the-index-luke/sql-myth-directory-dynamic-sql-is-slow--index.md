@@ -40,7 +40,7 @@ ResultSet rs = con.executeQuery(sql);
 
 ووسائط الربط مهمة جداً للأمان والأداء.
 
-ومن الاستخدامات المعقولة لـSQL الديناميكي تغيير *بنية* العبارة في زمن التشغيل، وهو أمر [لا يمكن تحقيقه بوسائط الربط](/book/use-the-index-luke/sql-where-clause-bind-parameters/index#note-bind-not-dynamic-sql)؛ مثل جملة `where` شرطية:
+ومن الاستخدامات المعقولة لـSQL الديناميكي تغيير *بنية* العبارة في زمن التشغيل، وهو أمر [لا يمكن تحقيقه بوسائط الربط](/book/use-the-index-luke/sql-where-clause-bind-parameters/index)؛ مثل جملة `where` شرطية:
 
 ```
 String where = "";

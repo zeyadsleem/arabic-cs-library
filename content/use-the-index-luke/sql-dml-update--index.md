@@ -16,7 +16,7 @@ source: https://use-the-index-luke.com/sql/dml/update
 
 لتحسين أداء `update`، عليك أن تحرص على تحديث الأعمدة التي تغيّرت فقط. وهذا بيّن إذا كتبت عبارة `update` يدوياً. أما أدوات ORM فقد تولّد عبارات `update` تضبط جميع الأعمدة في كل مرة. ويفعل Hibernate ذلك، على سبيل المثال، عند تعطيل [*وضع التحديث الديناميكي*](https://docs.hibernate.org/orm/6.2/userguide/html_single/#pc-managed-state-dynamic-update). ومنذ الإصدار 4.0، هذا الوضع مُفعَّل افتراضياً.
 
-عند استخدام أدوات ORM، من الممارسات الجيدة تمكين تسجيل الاستعلامات (query logging) أحياناً في بيئة التطوير للتحقق من عبارات SQL المولَّدة. وتحتوي النصيحة المعنونة [«*تمكين تسجيل SQL*»](/book/use-the-index-luke/sql-join-nested-loops-join-n1-problem/index#tip-orm-log-sql) على نظرة موجزة عن كيفية تمكين تسجيل SQL في بعض أدوات ORM الشائعة الاستخدام.
+عند استخدام أدوات ORM، من الممارسات الجيدة تمكين تسجيل الاستعلامات (query logging) أحياناً في بيئة التطوير للتحقق من عبارات SQL المولَّدة. وتحتوي النصيحة المعنونة [«*تمكين تسجيل SQL*»](/book/use-the-index-luke/sql-join-nested-loops-join-n1-problem/index) على نظرة موجزة عن كيفية تمكين تسجيل SQL في بعض أدوات ORM الشائعة الاستخدام.
 
 #### فكّر في الأمر
 

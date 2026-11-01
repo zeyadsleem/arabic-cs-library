@@ -26,7 +26,7 @@ SELECT first_name, last_name, phone_number
 
 #### تحذير
 
-أحياناً تستخدم أدوات ORM دالتَي `UPPER` و`LOWER` دون علم المطوّر. فمثلاً [تحقن Hibernate دالة `LOWER` ضمنياً](/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index#myth-dynamic-sql-sample) في عمليات البحث غير الحسّاسة لحالة الأحرف.
+أحياناً تستخدم أدوات ORM دالتَي `UPPER` و`LOWER` دون علم المطوّر. فمثلاً [تحقن Hibernate دالة `LOWER` ضمنياً](/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index) في عمليات البحث غير الحسّاسة لحالة الأحرف.
 
 #### نصيحة
 

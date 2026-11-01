@@ -20,7 +20,7 @@ source: https://use-the-index-luke.com/sql/testing-scalability/system-load
 
 … أن [تشترك في **القوائم البريدية**](https://winand.at/lists)، و[تحصل على **ملصقات مجانية**](https://use-the-index-luke.com/shop)، و[تشتري **كتابي**](https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&utm_campaign=sec-scale-load&utm_medium=web)، أو [تنضم إلى **دورة تدريبية**](https://winand.at/sql-training/open-online-class).
 
-يرسم [الشكل 3.4](#fig-scale-load) زمن الاستجابة بدلالة معدل الوصول — مع بقاء حجم البيانات دون تغيير. وهو يعرض زمن تنفيذ الاستعلام نفسه كما في السابق ويستخدم دائماً القسم ذا أكبر حجم بيانات؛ ويعني ذلك أن النقطة الأخيرة من [الشكل 3.2](/book/use-the-index-luke/sql-testing-scalability-data-volume/index#fig-scale-data) تقابل النقطة الأولى في هذا المخطط.
+يرسم [الشكل 3.4](#fig-scale-load) زمن الاستجابة بدلالة معدل الوصول — مع بقاء حجم البيانات دون تغيير. وهو يعرض زمن تنفيذ الاستعلام نفسه كما في السابق ويستخدم دائماً القسم ذا أكبر حجم بيانات؛ ويعني ذلك أن النقطة الأخيرة من [الشكل 3.2](/book/use-the-index-luke/sql-testing-scalability-data-volume/index) تقابل النقطة الأولى في هذا المخطط.
 
 الشكل 3.4 قابلية التوسع حسب حِمل النظام
 

@@ -164,7 +164,7 @@ name="if-ast">شجرة التركيب</span> لها حقول لكل واحدة �
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-if].
 
-[appendix-if]: /book/crafting-interpreters/appendix-ii/index#if-statement
+[appendix-if]: /book/crafting-interpreters/appendix-ii/index#جملة-if
 
 </aside>
 
@@ -312,7 +312,7 @@ logic_and      → equality ( "and" equality )* ;
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-logical].
 
-[appendix-logical]: /book/crafting-interpreters/appendix-ii/index#logical-expression
+[appendix-logical]: /book/crafting-interpreters/appendix-ii/index#تعبير-منطقي
 
 </aside>
 
@@ -385,7 +385,7 @@ whileStmt      → "while" "(" expression ")" statement ;
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-while].
 
-[appendix-while]: /book/crafting-interpreters/appendix-ii/index#while-statement
+[appendix-while]: /book/crafting-interpreters/appendix-ii/index#جملة-while
 
 </aside>
 

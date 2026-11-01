@@ -480,7 +480,7 @@
       "languages": [
         "SQL"
       ],
-      "status": "planned",
+      "status": "translated",
       "stage": "databases",
       "order": 2,
       "format": "pdf",
@@ -1213,8 +1213,8 @@
       "sourceUrl": "https://link.springer.com/book/10.1007/978-3-642-15328-0",
       "license": "حقوق النشر © Springer-Verlag Berlin Heidelberg 2011. جميع الحقوق محفوظة؛ ترجمة عربية غير رسمية بإذن خاص من الناشر (إذن مؤكَّد من المستخدم).",
       "licenseUrl": "https://link.springer.com/book/10.1007/978-3-642-15328-0",
-      "status": "planned",
-      "note": "ترجمة عربية قيد الإعداد بإذن صريح من الناشر Springer (إذن مؤكَّد من المستخدم)؛ الترجمة غير رسمية وغير تجارية وغير معتمدة من Springer. جميع الأشكال والصور من الكتاب الأصلي وحقوقها محفوظة للناشر.",
+      "status": "translated",
+      "note": "ترجمة عربية كاملة (41 فصلاً) بإذن صريح من الناشر Springer (إذن مؤكَّد من المستخدم)؛ الترجمة غير رسمية وغير تجارية وغير معتمدة من Springer. جميع الأشكال والصور من الكتاب الأصلي وحقوقها محفوظة للناشر.",
       "stage": "foundations",
       "order": 4,
       "format": "pdf",

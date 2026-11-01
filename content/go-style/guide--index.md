@@ -62,7 +62,7 @@ https://google.github.io/styleguide/go/guide
 تحتوي المكتبة القياسية على أمثلة كثيرة على هذا المبدأ عمليًا. ومنها:
 
 - تعليقات المشرفين في [`package sort`](https://cs.opensource.google/go/go/+/refs/tags/go1.19.2:src/sort/sort.go).
-- [أمثلة قابلة للتشغيل في الحزمة نفسها](https://cs.opensource.google/go/go/+/refs/tags/go1.19.2:src/sort/example_search_test.go) الجيدة، والتي تفيد المستخدمين (إذ [تظهر في godoc](https://pkg.go.dev/sort#pkg-examples)) والمشرفين (إذ [تعمل كجزء من الاختبارات](/book/go-style/decisions-2/index#examples)) على حد سواء.
+- [أمثلة قابلة للتشغيل في الحزمة نفسها](https://cs.opensource.google/go/go/+/refs/tags/go1.19.2:src/sort/example_search_test.go) الجيدة، والتي تفيد المستخدمين (إذ [تظهر في godoc](https://pkg.go.dev/sort#pkg-examples)) والمشرفين (إذ [تعمل كجزء من الاختبارات](/book/go-style/decisions-2/index)) على حد سواء.
 - يتألف [`strings.Cut`](https://pkg.go.dev/strings#Cut) من أربعة أسطر فقط من الشيفرة، لكنها تحسّن [وضوح مواضع الاستدعاء وصحتها](https://github.com/golang/go/issues/46336).
 
 ### البساطة {#simplicity}
@@ -127,7 +127,7 @@ if err := doSomething(); err != nil {
 }
 ```
 
-إذا كانت الشيفرة تشبه هذه كثيرًا لكنها مختلفة بشكل خفي، فقد لا يلاحظ القارئ التغيير. في حالات كهذه، يجدر ["تعزيز"](/book/go-style/best-practices-2/index#signal-boost) إشارة فحص الخطأ عن قصد بإضافة تعليق يلفت الانتباه إليه.
+إذا كانت الشيفرة تشبه هذه كثيرًا لكنها مختلفة بشكل خفي، فقد لا يلاحظ القارئ التغيير. في حالات كهذه، يجدر ["تعزيز"](/book/go-style/best-practices-2/index) إشارة فحص الخطأ عن قصد بإضافة تعليق يلفت الانتباه إليه.
 
 ```
 // Good:
@@ -236,11 +236,11 @@ leap := leap4 && (!leap100 || leap400)
 
 التسمية (naming) فن أكثر منها علمًا. في Go، تميل الأسماء إلى أن تكون أقصر إلى حد ما مما هي عليه في لغات كثيرة أخرى، لكن تنطبق [الإرشادات العامة](https://testing.googleblog.com/2017/10/code-health-identifiernamingpostforworl.html) نفسها. وينبغي للأسماء أن:
 
-- لا تبدو [متكررة](/book/go-style/decisions-2/index#repetition) عند استخدامها
+- لا تبدو [متكررة](/book/go-style/decisions-2/index) عند استخدامها
 - تراعي السياق
 - لا تكرر مفاهيم واضحة أصلًا
 
-يمكنك العثور على إرشادات أكثر تحديدًا حول التسمية في [القرارات](/book/go-style/decisions-2/index#naming).
+يمكنك العثور على إرشادات أكثر تحديدًا حول التسمية في [القرارات](/book/go-style/decisions-2/index).
 
 ### الاتساق المحلي
 

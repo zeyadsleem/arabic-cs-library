@@ -20,7 +20,7 @@ source: https://devopsroadmap.io/getting-started
 
 ## خطّة التعلّم {#learning-plan}
 
-تشجّعك خارطة الطريق هذه على التعلّم بالطريقة الأنسب لك. كما تقدّم لك [خطّة تعلّم عامّة](/book/devops-roadmap/general/learning-plan) قد تساعدك على التقدّم في خارطة الطريق (غير أنّ الخطّة قد تختلف [بحسب خلفيتك](/book/devops-roadmap/general/faq#who-is-the-target-audience-for-this-roadmap)).
+تشجّعك خارطة الطريق هذه على التعلّم بالطريقة الأنسب لك. كما تقدّم لك [خطّة تعلّم عامّة](/book/devops-roadmap/general/learning-plan) قد تساعدك على التقدّم في خارطة الطريق (غير أنّ الخطّة قد تختلف [بحسب خلفيتك](/book/devops-roadmap/general/faq#من-الجمهور-المستهدف-لخارطة-الطريق-هذه)).
 
 ## كيف تستخدم خارطة الطريق هذه؟ {#how-to-use-this-roadmap}
 

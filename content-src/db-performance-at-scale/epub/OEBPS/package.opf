@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<package xmlns="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:dcterms="http://purl.org/dc/terms/" version="3.0" xml:lang="en"
+  unique-identifier="pub-identifier">
+  <metadata>
+    <dc:identifier id="pub-identifier">urn:isbn:978-1-4842-9711-7</dc:identifier>
+    <dc:title id="pub-title">Database Performance at Scale</dc:title>
+    <meta refines="#pub-title" property="title-type">main</meta>
+    <dc:title id="pub-subtitle">A Practical Guide</dc:title>
+    <meta refines="#pub-subtitle" property="title-type">subtitle</meta>
+    <dc:language id="pub-language">en</dc:language>
+    <meta property="dcterms:modified">2023-09-07T14:27:50Z</meta>
+    <dc:creator id="creator1">Felipe Cardeneti Mendes</dc:creator>
+    <meta refines="#creator1" property="display-seq">1</meta>
+    <meta refines="#creator1" property="role" scheme="marc:relators">aut</meta>
+    <dc:creator id="creator2">Piotr Sarna</dc:creator>
+    <meta refines="#creator2" property="display-seq">2</meta>
+    <meta refines="#creator2" property="role" scheme="marc:relators">aut</meta>
+    <dc:creator id="creator3">Pavel Emelyanov</dc:creator>
+    <meta refines="#creator3" property="display-seq">3</meta>
+    <meta refines="#creator3" property="role" scheme="marc:relators">aut</meta>
+    <dc:creator id="creator4">Cynthia Dunlop</dc:creator>
+    <meta refines="#creator4" property="display-seq">4</meta>
+    <meta refines="#creator4" property="role" scheme="marc:relators">aut</meta>
+    <dc:publisher>Apress</dc:publisher>
+    <dc:rights>Copyright &#x00A9; 2023 Felipe Cardeneti Mendes, Piotr Sarna, Pavel Emelyanov, Cynthia Dunlop</dc:rights>
+    <meta property="schema:accessMode">textual</meta>
+    <meta property="schema:accessMode">visual</meta>
+    <meta property="schema:accessModeSufficient">textual,visual</meta>
+    <meta property="schema:accessibilitySummary">This publication is missing alternative text for complex diagrams. The publication otherwise conforms to the EPUB Accessibility specification at WCAG Level A.</meta>
+    <meta property="schema:accessibilityFeature">structuralNavigation</meta>
+    <meta property="schema:accessibilityFeature">readingOrder</meta>
+    <meta property="schema:accessibilityFeature">tableOfContents</meta>
+    <meta property="schema:accessibilityHazard">none</meta>
+    <!-- Springer Nature EPUB3 Converter v2.27 -->
+  </metadata>
+  <manifest>
+    <item id="nav" properties="nav" href="navigation.xhtml" media-type="application/xhtml+xml"/>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+    <item id="ACover" href="html/Cover.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_BookFrontmatter_OnlinePDF" href="html/541783_1_En_BookFrontmatter_OnlinePDF.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_1_Chapter" href="html/541783_1_En_1_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_2_Chapter" href="html/541783_1_En_2_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_3_Chapter" href="html/541783_1_En_3_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_4_Chapter" href="html/541783_1_En_4_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_5_Chapter" href="html/541783_1_En_5_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_6_Chapter" href="html/541783_1_En_6_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_7_Chapter" href="html/541783_1_En_7_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_8_Chapter" href="html/541783_1_En_8_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_9_Chapter" href="html/541783_1_En_9_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_10_Chapter" href="html/541783_1_En_10_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_11_Chapter" href="html/541783_1_En_11_Chapter.xhtml" media-type="application/xhtml+xml"/>
+    <item id="A541783_1_En_BookBackmatter_OnlinePDF" href="html/541783_1_En_BookBackmatter_OnlinePDF.xhtml" media-type="application/xhtml+xml"/>
+    <item id="ATable_99_9999_0001" href="html/Table_99_9999_0001.xhtml" media-type="application/xhtml+xml"/>
+    <item id="ATable_01_0009_0001" href="html/Table_01_0009_0001.xhtml" media-type="application/xhtml+xml"/>
+    <item id="ATable_01_0003_0001" href="html/Table_01_0003_0001.xhtml" media-type="application/xhtml+xml"/>
+    <item id="ATable_01_0011_0001" href="html/Table_01_0011_0001.xhtml" media-type="application/xhtml+xml"/>
+    <item id="Acss_springer_epub" href="css/springer_epub.css" media-type="text/css"/>
+    <item id="Acss_envelope" href="css/envelope.png" media-type="image/png"/>
+    <item id="Acss_sidebar" href="css/sidebar.gif" media-type="image/gif"/>
+    <item id="Acss_cc-by" href="css/cc-by.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig10_HTML" href="images/541783_1_En_BookBackmatter_Fig10_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig1_HTML" href="images/541783_1_En_BookBackmatter_Fig1_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig7_HTML" href="images/541783_1_En_BookBackmatter_Fig7_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig3_HTML" href="images/541783_1_En_BookBackmatter_Fig3_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig8_HTML" href="images/541783_1_En_BookBackmatter_Fig8_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig6_HTML" href="images/541783_1_En_BookBackmatter_Fig6_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_978-1-4842-9711-7_CoverFigure" href="images/978-1-4842-9711-7_CoverFigure.jpg" media-type="image/jpeg" properties="cover-image"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig9_HTML" href="images/541783_1_En_BookBackmatter_Fig9_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookFrontmatter_Figd_HTML" href="images/541783_1_En_BookFrontmatter_Figd_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookFrontmatter_Figb_HTML" href="images/541783_1_En_BookFrontmatter_Figb_HTML.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_BookFrontmatter_Figh_HTML" href="images/541783_1_En_BookFrontmatter_Figh_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookFrontmatter_Figf_HTML" href="images/541783_1_En_BookFrontmatter_Figf_HTML.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_BookFrontmatter_Fige_HTML" href="images/541783_1_En_BookFrontmatter_Fige_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig2_HTML" href="images/541783_1_En_BookBackmatter_Fig2_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig5_HTML" href="images/541783_1_En_BookBackmatter_Fig5_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookFrontmatter_Figc_HTML" href="images/541783_1_En_BookFrontmatter_Figc_HTML.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_BookBackmatter_Fig4_HTML" href="images/541783_1_En_BookBackmatter_Fig4_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_BookFrontmatter_Figg_HTML" href="images/541783_1_En_BookFrontmatter_Figg_HTML.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_BookFrontmatter_Figa_HTML" href="images/541783_1_En_BookFrontmatter_Figa_HTML.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_3_Chapter_541783_1_En_3_Fig6_HTML" href="images/541783_1_En_3_Chapter/541783_1_En_3_Fig6_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_3_Chapter_541783_1_En_3_Fig4_HTML" href="images/541783_1_En_3_Chapter/541783_1_En_3_Fig4_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_3_Chapter_541783_1_En_3_Fig5_HTML" href="images/541783_1_En_3_Chapter/541783_1_En_3_Fig5_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_3_Chapter_541783_1_En_3_Fig3_HTML" href="images/541783_1_En_3_Chapter/541783_1_En_3_Fig3_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_3_Chapter_541783_1_En_3_Fig1_HTML" href="images/541783_1_En_3_Chapter/541783_1_En_3_Fig1_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_3_Chapter_541783_1_En_3_Fig2_HTML" href="images/541783_1_En_3_Chapter/541783_1_En_3_Fig2_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_10_Chapter_541783_1_En_10_Fig7_HTML" href="images/541783_1_En_10_Chapter/541783_1_En_10_Fig7_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_10_Chapter_541783_1_En_10_Fig8_HTML" href="images/541783_1_En_10_Chapter/541783_1_En_10_Fig8_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_10_Chapter_541783_1_En_10_Fig6_HTML" href="images/541783_1_En_10_Chapter/541783_1_En_10_Fig6_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_10_Chapter_541783_1_En_10_Fig2_HTML" href="images/541783_1_En_10_Chapter/541783_1_En_10_Fig2_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_10_Chapter_541783_1_En_10_Fig4_HTML" href="images/541783_1_En_10_Chapter/541783_1_En_10_Fig4_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_10_Chapter_541783_1_En_10_Fig1_HTML" href="images/541783_1_En_10_Chapter/541783_1_En_10_Fig1_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_10_Chapter_541783_1_En_10_Fig3_HTML" href="images/541783_1_En_10_Chapter/541783_1_En_10_Fig3_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_10_Chapter_541783_1_En_10_Fig5_HTML" href="images/541783_1_En_10_Chapter/541783_1_En_10_Fig5_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_10_Chapter_541783_1_En_10_Fig9_HTML" href="images/541783_1_En_10_Chapter/541783_1_En_10_Fig9_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_2_Chapter_541783_1_En_2_Fig1_HTML" href="images/541783_1_En_2_Chapter/541783_1_En_2_Fig1_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_2_Chapter_541783_1_En_2_Fig2_HTML" href="images/541783_1_En_2_Chapter/541783_1_En_2_Fig2_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_9_Chapter_541783_1_En_9_Fig4_HTML" href="images/541783_1_En_9_Chapter/541783_1_En_9_Fig4_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_9_Chapter_541783_1_En_9_Fig1_HTML" href="images/541783_1_En_9_Chapter/541783_1_En_9_Fig1_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_9_Chapter_541783_1_En_9_Fig7_HTML" href="images/541783_1_En_9_Chapter/541783_1_En_9_Fig7_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_9_Chapter_541783_1_En_9_Fig2_HTML" href="images/541783_1_En_9_Chapter/541783_1_En_9_Fig2_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_9_Chapter_541783_1_En_9_Fig3_HTML" href="images/541783_1_En_9_Chapter/541783_1_En_9_Fig3_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_9_Chapter_541783_1_En_9_Fig6_HTML" href="images/541783_1_En_9_Chapter/541783_1_En_9_Fig6_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_9_Chapter_541783_1_En_9_Fig5_HTML" href="images/541783_1_En_9_Chapter/541783_1_En_9_Fig5_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_7_Chapter_541783_1_En_7_Fig4_HTML" href="images/541783_1_En_7_Chapter/541783_1_En_7_Fig4_HTML.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_7_Chapter_541783_1_En_7_Fig2_HTML" href="images/541783_1_En_7_Chapter/541783_1_En_7_Fig2_HTML.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_7_Chapter_541783_1_En_7_Fig3_HTML" href="images/541783_1_En_7_Chapter/541783_1_En_7_Fig3_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_7_Chapter_541783_1_En_7_Fig1_HTML" href="images/541783_1_En_7_Chapter/541783_1_En_7_Fig1_HTML.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig11_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig11_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig8_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig8_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig7_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig7_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig5_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig5_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig9_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig9_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig4_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig4_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig6_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig6_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig3_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig3_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig10_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig10_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig1_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig1_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_5_Chapter_541783_1_En_5_Fig2_HTML" href="images/541783_1_En_5_Chapter/541783_1_En_5_Fig2_HTML.png" media-type="image/png"/>
+    <item id="Aimages_541783_1_En_4_Chapter_541783_1_En_4_Fig6_HTML" href="images/541783_1_En_4_Chapter/541783_1_En_4_Fig6_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_4_Chapter_541783_1_En_4_Fig1_HTML" href="images/541783_1_En_4_Chapter/541783_1_En_4_Fig1_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_4_Chapter_541783_1_En_4_Fig4_HTML" href="images/541783_1_En_4_Chapter/541783_1_En_4_Fig4_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_4_Chapter_541783_1_En_4_Fig8_HTML" href="images/541783_1_En_4_Chapter/541783_1_En_4_Fig8_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_4_Chapter_541783_1_En_4_Fig5_HTML" href="images/541783_1_En_4_Chapter/541783_1_En_4_Fig5_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_4_Chapter_541783_1_En_4_Fig2_HTML" href="images/541783_1_En_4_Chapter/541783_1_En_4_Fig2_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_4_Chapter_541783_1_En_4_Fig7_HTML" href="images/541783_1_En_4_Chapter/541783_1_En_4_Fig7_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_4_Chapter_541783_1_En_4_Fig3_HTML" href="images/541783_1_En_4_Chapter/541783_1_En_4_Fig3_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Fige_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Fige_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figq_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figq_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figp_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figp_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figj_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figj_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figa_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figa_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figh_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figh_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Fign_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Fign_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figc_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figc_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figd_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figd_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Fig1_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Fig1_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figo_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figo_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figl_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figl_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figi_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figi_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figs_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figs_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figr_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figr_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figt_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figt_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figf_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figf_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figm_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figm_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figb_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figb_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figg_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figg_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Fig2_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Fig2_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_11_Chapter_541783_1_En_11_Figk_HTML" href="images/541783_1_En_11_Chapter/541783_1_En_11_Figk_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_8_Chapter_541783_1_En_8_Fig3_HTML" href="images/541783_1_En_8_Chapter/541783_1_En_8_Fig3_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_8_Chapter_541783_1_En_8_Fig2_HTML" href="images/541783_1_En_8_Chapter/541783_1_En_8_Fig2_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_8_Chapter_541783_1_En_8_Fig1_HTML" href="images/541783_1_En_8_Chapter/541783_1_En_8_Fig1_HTML.jpg" media-type="image/jpeg"/>
+    <item id="Aimages_541783_1_En_8_Chapter_541783_1_En_8_Fig4_HTML" href="images/541783_1_En_8_Chapter/541783_1_En_8_Fig4_HTML.jpg" media-type="image/jpeg"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="ACover" linear="no"/>
+    <itemref idref="A541783_1_En_BookFrontmatter_OnlinePDF"/>
+    <itemref idref="A541783_1_En_1_Chapter"/>
+    <itemref idref="A541783_1_En_2_Chapter"/>
+    <itemref idref="A541783_1_En_3_Chapter"/>
+    <itemref idref="A541783_1_En_4_Chapter"/>
+    <itemref idref="A541783_1_En_5_Chapter"/>
+    <itemref idref="A541783_1_En_6_Chapter"/>
+    <itemref idref="A541783_1_En_7_Chapter"/>
+    <itemref idref="A541783_1_En_8_Chapter"/>
+    <itemref idref="A541783_1_En_9_Chapter"/>
+    <itemref idref="A541783_1_En_10_Chapter"/>
+    <itemref idref="A541783_1_En_11_Chapter"/>
+    <itemref idref="A541783_1_En_BookBackmatter_OnlinePDF"/>
+    <itemref idref="ATable_99_9999_0001" linear="no"/>
+    <itemref idref="ATable_01_0009_0001" linear="no"/>
+    <itemref idref="ATable_01_0003_0001" linear="no"/>
+    <itemref idref="ATable_01_0011_0001" linear="no"/>
+  </spine>
+  <guide>
+    <reference type="cover" title="Cover" href="html/Cover.xhtml"/>
+    <reference type="toc" title="Table of Contents" href="html/541783_1_En_BookFrontmatter_OnlinePDF.xhtml#Toc"/>
+    <reference type="text" title="Body Matter" href="html/541783_1_En_1_Chapter.xhtml"/>
+  </guide>
+</package>

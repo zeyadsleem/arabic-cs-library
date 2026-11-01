@@ -520,7 +520,7 @@ Python وRuby وLua وOCaml وErlang وغيرها. وفي جوانب كثيرة�
 
 في jlox، كانت أداتنا المكافئة هي [صنف AstPrinter][].
 
-[astprinter class]: /book/crafting-interpreters/representing-code/index#a-not-very-pretty-printer
+[astprinter class]: /book/crafting-interpreters/representing-code/index#طابع-جميل-إلى-حد-ما
 
 </aside>
 

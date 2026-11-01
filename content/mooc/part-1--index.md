@@ -15,7 +15,6 @@ source: "https://programming-26.mooc.fi/part-1"
 **تمارين هذا القسم:**
 
 - [الوجه المبتسم](/book/mooc/part-1/1-getting-started)
-- [إصلاح الشيفرة: الإخوة السبعة](/book/mooc/part-1/1-getting-started)
 - [صف، صف، صف قاربك](/book/mooc/part-1/1-getting-started)
 - [الدقائق في السنة](/book/mooc/part-1/1-getting-started)
 - [اطبع بعض الشيفرة](/book/mooc/part-1/1-getting-started)

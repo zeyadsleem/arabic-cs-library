@@ -544,7 +544,7 @@ name="pop">لإسقاطه</span> من المكدّس.
 لدينا حالة حدّية أخرى نتعامل معها قبل أن ننهي هذا الفصل. تذكّر هذا الوحش الغريب
 الذي التقيناه أول مرة في [تنفيذ jlox لحلّ المتغيّرات][shadow]:
 
-[shadow]: /book/crafting-interpreters/resolving-and-binding/index#resolving-variable-declarations
+[shadow]: /book/crafting-interpreters/resolving-and-binding/index#حل-تصريحات-المتغيرات
 
 ```lox
 {

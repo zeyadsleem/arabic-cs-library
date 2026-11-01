@@ -94,7 +94,7 @@ WHERE C.name = 'Campus Proximus';
 
 ## استعلام فرعي مع المعامل IN
 
-نظرنا في المعامل `IN` بالفعل [في قسم جملة `WHERE`](/book/database-foundations/sql-where/index#IN). ويمكن استخدام نتيجة استعلام فرعي بعد `IN`. جرّب التمرين التالي.
+نظرنا في المعامل `IN` بالفعل [في قسم جملة `WHERE`](/book/database-foundations/sql-where/index). ويمكن استخدام نتيجة استعلام فرعي بعد `IN`. جرّب التمرين التالي.
 
 اعرض أقدم خمسة طلاب يرتادون حرمًا في Heverlee. واعمل باستعلام فرعي.
 

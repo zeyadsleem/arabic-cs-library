@@ -37,7 +37,7 @@ SELECT first_name, last_name
 
 Db2 (LUW)
 
-جُمعت خطة التنفيذ التالية باستخدام عرض [`last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained) المتاح من [الملحق](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained).
+جُمعت خطة التنفيذ التالية باستخدام عرض [`last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index) المتاح من [الملحق](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index).
 
 ```
 Explain Plan

@@ -74,7 +74,7 @@ This program prints three lines of text on the screen.
 ```
 
 
-> **تمرين تفاعلي: إصلاح الشيفرة: الإخوة السبعة**
+> **تمرين تفاعلي: إصلاح الشيفرة: الإخوة السبعة** {#programming-exercise-fix-the-code-seven-brothers}
 >
 > "Seitsemän veljestä" هي واحدة من أوائل الروايات التي كُتبت في الفنلندية على الإطلاق. وهي قصة سبعة إخوة يتامى يتعلمون كيف يجدون طريقهم في العالم ([اقرأ المزيد على ويكيبيديا](https://en.wikipedia.org/wiki/Seitsem%C3%A4n_veljest%C3%A4)).
 

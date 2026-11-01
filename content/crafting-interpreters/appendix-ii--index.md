@@ -7,7 +7,7 @@ source: https://craftinginterpreters.com/
 لمنفعة القارئ، هاهو الشيفرة التي يُنتجها [السكربت الصغير الذي بنيناه][generator]
 لأتمتة توليد أصناف شجرة التحليل الخاصّة بـ jlox.
 
-[generator]: /book/crafting-interpreters/representing-code/index#metaprogramming-the-trees
+[generator]: /book/crafting-interpreters/representing-code/index#البرمجة-البينية-للأشجار
 
 ## التعبيرات
 
@@ -20,7 +20,7 @@ source: https://craftinginterpreters.com/
 
 ### تعبير الإسناد
 
-إسناد (assignment) المتغيّرات مُقدَّم في "[الجمل والحالة](/book/crafting-interpreters/statements-and-state/index#assignment)".
+إسناد (assignment) المتغيّرات مُقدَّم في "[الجمل والحالة](/book/crafting-interpreters/statements-and-state/index#الإسناد)".
 
 ^code expr-assign
 
@@ -34,14 +34,14 @@ source: https://craftinginterpreters.com/
 ### تعبير استدعاء
 
 تعبيرات استدعاء الدوال مُقدَّمة في
-"[الدوال](/book/crafting-interpreters/functions/index#function-calls)".
+"[الدوال](/book/crafting-interpreters/functions/index#استدعاءات-الدوال)".
 
 ^code expr-call
 
 ### تعبير الجلب (get)
 
 الوصول إلى الخصائص، أو تعبيرات "get"، مُقدَّمة في
-"[الأصناف](/book/crafting-interpreters/classes/index#properties-on-instances)".
+"[الأصناف](/book/crafting-interpreters/classes/index#الخصائص-على-النسخ)".
 
 ^code expr-get
 
@@ -62,21 +62,21 @@ source: https://craftinginterpreters.com/
 ### تعبير منطقي
 
 معاملا `and` و`or` المنطقيان مُقدَّمان في "[التحكّم في
-المسار](/book/crafting-interpreters/control-flow/index#logical-operators)".
+المسار](/book/crafting-interpreters/control-flow/index#المشغلات-المنطقية)".
 
 ^code expr-logical
 
 ### تعبير الضبط (set)
 
 إسناد الخصائص، أو تعبيرات "set"، مُقدَّمة في
-"[الأصناف](/book/crafting-interpreters/classes/index#properties-on-instances)".
+"[الأصناف](/book/crafting-interpreters/classes/index#الخصائص-على-النسخ)".
 
 ^code expr-set
 
 ### تعبير الاستدعاء الفائق (super)
 
 تعبير `super` مُقدَّم في
-"[الوراثة](/book/crafting-interpreters/inheritance/index#calling-superclass-methods)".
+"[الوراثة](/book/crafting-interpreters/inheritance/index#استدعاء-دوال-الصنف-الأب)".
 
 ^code expr-super
 
@@ -95,7 +95,7 @@ source: https://craftinginterpreters.com/
 ### تعبير متغيّر
 
 تعبيرات الوصول إلى المتغيّرات (variables) مُقدَّمة في "[البيانات
-والحالة](/book/crafting-interpreters/statements-and-state/index#variable-syntax)".
+والحالة](/book/crafting-interpreters/statements-and-state/index#صياغة-المتغيرات)".
 
 ^code expr-variable
 
@@ -110,62 +110,62 @@ source: https://craftinginterpreters.com/
 ### جملة الكتلة (block)
 
 جملة الكتلة بأقواسها المعقوفة التي تُعرّف نطاقاً (scope) محلياً مُقدَّمة في
-"[الجمل والحالة](/book/crafting-interpreters/statements-and-state/index#block-syntax-and-semantics)".
+"[الجمل والحالة](/book/crafting-interpreters/statements-and-state/index#صياغة-الكتل-ودلالتها)".
 
 ^code stmt-block
 
 ### جملة الصنف (class)
 
 إعلانات الأصناف مُقدَّمة -- ومن المتوقّع تماماً -- في
-"[الأصناف](/book/crafting-interpreters/classes/index#class-declarations)".
+"[الأصناف](/book/crafting-interpreters/classes/index#إعلانات-الأصناف)".
 
 ^code stmt-class
 
 ### جملة تعبير
 
 جملة التعبير مُقدَّمة في "[البيانات
-والحالة](/book/crafting-interpreters/statements-and-state/index#statements)".
+والحالة](/book/crafting-interpreters/statements-and-state/index#الجمل)".
 
 ^code stmt-expression
 
 ### جملة دالة
 
 إعلانات الدوال مُقدَّمة -- وقد خمّنت ذلك -- في
-"[الدوال](/book/crafting-interpreters/functions/index#function-declarations)".
+"[الدوال](/book/crafting-interpreters/functions/index#إعلانات-الدوال)".
 
 ^code stmt-function
 
 ### جملة `if`
 
 جملة `if` مُقدَّمة في "[التحكّم في
-المسار](/book/crafting-interpreters/control-flow/index#conditional-execution)".
+المسار](/book/crafting-interpreters/control-flow/index#التنفيذ-الشرطي)".
 
 ^code stmt-if
 
 ### جملة `print`
 
 جملة `print` مُقدَّمة في "[البيانات
-والحالة](/book/crafting-interpreters/statements-and-state/index#statements)".
+والحالة](/book/crafting-interpreters/statements-and-state/index#الجمل)".
 
 ^code stmt-print
 
 ### جملة `return`
 
 تحتاج دالة كي تُرجع منها، لذا فإنّ جُمل `return` مُقدَّمة في
-"[الدوال](/book/crafting-interpreters/functions/index#return-statements)".
+"[الدوال](/book/crafting-interpreters/functions/index#جمل-الإرجاع)".
 
 ^code stmt-return
 
 ### جملة متغيّر
 
 إعلانات المتغيّرات مُقدَّمة في "[البيانات
-والحالة](/book/crafting-interpreters/statements-and-state/index#variable-syntax)".
+والحالة](/book/crafting-interpreters/statements-and-state/index#صياغة-المتغيرات)".
 
 ^code stmt-var
 
 ### جملة `while`
 
 جملة `while` مُقدَّمة في "[التحكّم في
-المسار](/book/crafting-interpreters/control-flow/index#while-loops)".
+المسار](/book/crafting-interpreters/control-flow/index#حلقات-while)".
 
 ^code stmt-while

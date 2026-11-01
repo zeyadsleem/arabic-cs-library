@@ -4,7 +4,7 @@ lang: ar
 source: https://use-the-index-luke.com/sql/where-clause/obfuscation/smart-logic
 ---
 
-من الميزات الأساسية لقواعد بيانات SQL (databases) دعمها للاستعلامات المخصّصة: فيمكن تنفيذ استعلامات جديدة في أي وقت. وهذا ممكن فقط لأن [مُحسِّن الاستعلام](/book/use-the-index-luke/sql-where-clause-the-equals-operator-slow-indexes-part-ii/index#sb-optimizer) (query optimizer) (مخطِّط الاستعلام) يعمل في زمن التشغيل؛ فهو يحلّل كل عبارة عند استلامها ويولّد خطة تنفيذ معقولة فوراً. ويمكن تقليل العبء الناتج عن التحسين في زمن التشغيل باستخدام [معاملات الربط](/book/use-the-index-luke/sql-where-clause-bind-parameters/index).
+من الميزات الأساسية لقواعد بيانات SQL (databases) دعمها للاستعلامات المخصّصة: فيمكن تنفيذ استعلامات جديدة في أي وقت. وهذا ممكن فقط لأن [مُحسِّن الاستعلام](/book/use-the-index-luke/sql-where-clause-the-equals-operator-slow-indexes-part-ii/index) (query optimizer) (مخطِّط الاستعلام) يعمل في زمن التشغيل؛ فهو يحلّل كل عبارة عند استلامها ويولّد خطة تنفيذ معقولة فوراً. ويمكن تقليل العبء الناتج عن التحسين في زمن التشغيل باستخدام [معاملات الربط](/book/use-the-index-luke/sql-where-clause-bind-parameters/index).
 
 وخلاصة هذا التذكير أن قواعد البيانات مُحسَّنة لـSQL الديناميكي—فاستخدمه إذا احتجت إليه.
 
@@ -131,6 +131,6 @@ SQL Server
 
 #### انظر أيضاً
 
-[استخدام متغيّرات الربط - أمثلة](/book/use-the-index-luke/sql-where-clause-bind-parameters/index#samples_bind_parameters)
+[استخدام متغيّرات الربط - أمثلة](/book/use-the-index-luke/sql-where-clause-bind-parameters/index)
 
-[بناء SQL الديناميكي باستخدام أدوات ORM - أمثلة](/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index#myth-dynamic-sql-sample)
+[بناء SQL الديناميكي باستخدام أدوات ORM - أمثلة](/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index)

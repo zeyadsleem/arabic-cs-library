@@ -12,7 +12,7 @@ SELECT ...
  WHERE numeric_string = '42'
 ```
 
-بالطبع يمكن لهذه العبارة استخدام فهرس على `NUMERIC_STRING`. لكن إذا قارنتها باستخدام رقم، فلن تستطيع قاعدة البيانات (database) بعد ذلك استخدام هذا الشرط كـ[مُسند وصول](/book/use-the-index-luke/sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates/index#imp-index-predicate-types).
+بالطبع يمكن لهذه العبارة استخدام فهرس على `NUMERIC_STRING`. لكن إذا قارنتها باستخدام رقم، فلن تستطيع قاعدة البيانات (database) بعد ذلك استخدام هذا الشرط كـ[مُسند وصول](/book/use-the-index-luke/sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates/index).
 
 ```sql
 SELECT ...

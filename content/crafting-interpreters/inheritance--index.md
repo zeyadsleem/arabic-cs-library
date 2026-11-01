@@ -305,7 +305,7 @@ method();
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-super].
 
-[appendix-super]: /book/crafting-interpreters/appendix-ii/index#super-expression
+[appendix-super]: /book/crafting-interpreters/appendix-ii/index#تعبير-الاستدعاء-الفائق-super
 
 </aside>
 
@@ -661,7 +661,7 @@ Lox ممتعة وشغّلها في مفسّرك. (قد ترغب في إضافة 
     أن يأتي ببعض الميزات التي ترى أن اللغة تفتقدها. والآن بما أنك تعرف كيف تبني
     مفسّراً، نفّذ إحدى تلك الميزات.
 
-[challenge]: /book/crafting-interpreters/the-lox-language/index#challenges
+[challenge]: /book/crafting-interpreters/the-lox-language/index#التحديات
 [inner]: http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/
 [beta]: https://beta.cs.au.dk/
 

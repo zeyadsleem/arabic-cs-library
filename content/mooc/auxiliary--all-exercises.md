@@ -7,7 +7,6 @@ source: "https://programming-26.mooc.fi/all-exercises"
 **الجزء 1: البدء:**
 
 - [الوجه المبتسم](/book/mooc/part-1/1-getting-started)
-- [إصلاح الشيفرة: الإخوة السبعة](/book/mooc/part-1/1-getting-started)
 - [صف، صف، صف قاربك](/book/mooc/part-1/1-getting-started)
 - [الدقائق في السنة](/book/mooc/part-1/1-getting-started)
 - [اطبع بعض الشيفرة](/book/mooc/part-1/1-getting-started)
@@ -61,7 +60,6 @@ source: "https://programming-26.mooc.fi/all-exercises"
 - [الرمز السري وعدد المحاولات](/book/mooc/part-2/4-simple-loops)
 - [السنة الكبيسة التالية](/book/mooc/part-2/4-simple-loops)
 - [القصّة](/book/mooc/part-2/4-simple-loops)
-- [العمل مع الأعداد](/book/mooc/part-2/4-simple-loops)
 
 **الجزء 3: الحلقات:**
 
@@ -112,7 +110,6 @@ source: "https://programming-26.mooc.fi/all-exercises"
 - [شجرة التنوب](/book/mooc/part-4/2-more-functions)
 - [أكبر عدد](/book/mooc/part-4/2-more-functions)
 - [نفس المحارف](/book/mooc/part-4/2-more-functions)
-- [الكلمات الأولى والثانية والأخيرة](/book/mooc/part-4/2-more-functions)
 - [تغيير قيمة عنصر](/book/mooc/part-4/3-lists)
 - [إضافة عناصر إلى قائمة](/book/mooc/part-4/3-lists)
 - [الإضافة والإزالة](/book/mooc/part-4/3-lists)
@@ -160,7 +157,6 @@ source: "https://programming-26.mooc.fi/all-exercises"
 - [المضاريب](/book/mooc/part-5/3-dictionary)
 - [مدرّج تكرار](/book/mooc/part-5/3-dictionary)
 - [دفتر الهاتف، الإصدار 1](/book/mooc/part-5/3-dictionary)
-- [دفتر الهاتف، الإصدار 2](/book/mooc/part-5/3-dictionary)
 - [قلب قاموس](/book/mooc/part-5/3-dictionary)
 - [الأرقام مكتوبة بالحروف](/book/mooc/part-5/3-dictionary)
 - [قاعدة بيانات الأفلام](/book/mooc/part-5/3-dictionary)
@@ -178,7 +174,6 @@ source: "https://programming-26.mooc.fi/all-exercises"
 - [المصفوفة](/book/mooc/part-6/1-reading-files)
 - [تقييم الدورة، الجزء 1](/book/mooc/part-6/1-reading-files)
 - [تقييم الدورة، الجزء 2](/book/mooc/part-6/1-reading-files)
-- [تقييم الدورة، الجزء 3](/book/mooc/part-6/1-reading-files)
 - [المدقّق الإملائي](/book/mooc/part-6/1-reading-files)
 - [البحث عن الوصفات](/book/mooc/part-6/1-reading-files)
 - [دراجات المدينة](/book/mooc/part-6/1-reading-files)
@@ -219,7 +214,6 @@ source: "https://programming-26.mooc.fi/all-exercises"
 - [أصغر متوسط نتيجة](/book/mooc/part-8/1-objects-and-methods)
 - [مجاميع الصفوف](/book/mooc/part-8/1-objects-and-methods)
 - [قائمة السنوات](/book/mooc/part-8/2-classes-and-objects)
-- [قائمة التسوق](/book/mooc/part-8/2-classes-and-objects)
 - [الكتاب](/book/mooc/part-8/3-defining-classes)
 - [ثلاثة أصناف](/book/mooc/part-8/3-defining-classes)
 - [تعريف صنف: Pet](/book/mooc/part-8/3-defining-classes)
@@ -230,7 +224,6 @@ source: "https://programming-26.mooc.fi/all-exercises"
 - [إحصاءات على الأعداد](/book/mooc/part-8/4-defining-methods)
 - [ساعة الإيقاف](/book/mooc/part-8/5-more-examples-of-classes)
 - [الساعة](/book/mooc/part-8/5-more-examples-of-classes)
-- [LunchCard](/book/mooc/part-8/5-more-examples-of-classes)
 - [المسلسل](/book/mooc/part-8/5-more-examples-of-classes)
 
 **الجزء 9: المزيد عن الكائنات:**
@@ -239,10 +232,7 @@ source: "https://programming-26.mooc.fi/all-exercises"
 - [الإرسالات الناجحة](/book/mooc/part-9/1-objects-and-references)
 - [مركز الأطفال](/book/mooc/part-9/1-objects-and-references)
 - [LunchCard وPaymentTerminal](/book/mooc/part-9/1-objects-and-references)
-- [مقارنة العقارات](/book/mooc/part-9/1-objects-and-references)
 - [الحيوانات الأليفة](/book/mooc/part-9/2-objects-as-attributes)
-- [صندوق هدايا](/book/mooc/part-9/2-objects-as-attributes)
-- [أقصر شخص في الغرفة](/book/mooc/part-9/2-objects-as-attributes)
 - [السيارة](/book/mooc/part-9/3-encapsulation)
 - [التسجيل](/book/mooc/part-9/3-encapsulation)
 - [محطة الطقس](/book/mooc/part-9/3-encapsulation)
@@ -261,7 +251,6 @@ source: "https://programming-26.mooc.fi/all-exercises"
 - [الجرعة السحرية السرية](/book/mooc/part-10/2-access-modifiers)
 - [المال](/book/mooc/part-10/3-oo-programming-techniques)
 - [تاريخ بسيط](/book/mooc/part-10/3-oo-programming-techniques)
-- [قائمة تسوق قابلة للتكرار](/book/mooc/part-10/3-oo-programming-techniques)
 - [توسعة دفتر الهاتف، الإصدار 1](/book/mooc/part-10/4-application-development)
 - [توسعة دفتر الهاتف، الإصدار 2](/book/mooc/part-10/4-application-development)
 - [CourseRecords](/book/mooc/part-10/4-application-development)

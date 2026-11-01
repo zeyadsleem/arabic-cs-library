@@ -559,7 +559,7 @@ print(same_chars("programmer", 0, 12)) # False
 ```
 
 
-> **تمرين برمجي: الكلمات الأولى والثانية والأخيرة**
+> **تمرين برمجي: الكلمات الأولى والثانية والأخيرة** {#programming-exercise-first-second-and-last-words}
 >
 > اكتب ثلاث دوال: `first_word` و`second_word` و`last_word`. تأخذ كل دالة سلسلة نصية كوسيط.
 

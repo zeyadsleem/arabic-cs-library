@@ -49,9 +49,9 @@ SELECT ...
                      AND quarter_end(?)
 ```
 
-وإذا كنت قد أدّيت واجباتك، فستتعرف على النمط من [تمرين جميع الموظفين الذين أعمارهم 42 سنة](/book/use-the-index-luke/sql-where-clause-functions-user-defined-functions/index#think-age-index).
+وإذا كنت قد أدّيت واجباتك، فستتعرف على النمط من [تمرين جميع الموظفين الذين أعمارهم 42 سنة](/book/use-the-index-luke/sql-where-clause-functions-user-defined-functions/index).
 
-ويكفي فهرس مباشر على `SALE_DATE` لتحسين هذا الاستعلام؛ إذ تحسب الدالتان `QUARTER_BEGIN` و`QUARTER_END` تاريخَي الحدّين. وقد يصبح الحساب معقداً بعض الشيء لأن [المعامل `between` يتضمن دائماً قيمتَي الحدّين](/book/use-the-index-luke/sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates/index#para-between). ولذلك يجب أن تعيد الدالة `QUARTER_END` طابعاً زمنياً قبل اليوم الأول من الربع التالي مباشرةً إذا كان `SALE_DATE` يحتوي مكوّن وقت. ويمكن إخفاء هذا المنطق داخل الدالة.
+ويكفي فهرس مباشر على `SALE_DATE` لتحسين هذا الاستعلام؛ إذ تحسب الدالتان `QUARTER_BEGIN` و`QUARTER_END` تاريخَي الحدّين. وقد يصبح الحساب معقداً بعض الشيء لأن [المعامل `between` يتضمن دائماً قيمتَي الحدّين](/book/use-the-index-luke/sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates/index). ولذلك يجب أن تعيد الدالة `QUARTER_END` طابعاً زمنياً قبل اليوم الأول من الربع التالي مباشرةً إذا كان `SALE_DATE` يحتوي مكوّن وقت. ويمكن إخفاء هذا المنطق داخل الدالة.
 
 وتعرض الأمثلة التالية تطبيقات الدالتين `QUARTER_BEGIN` و`QUARTER_END` في قواعد بيانات مختلفة.
 

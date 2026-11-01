@@ -64,9 +64,9 @@ Oracle
 
 ولا تستطيع قاعدة بيانات Oracle قراءة فهرس بالاتجاه المعاكس لتنفيذ `group by` متدفق يتبعه `order by`.
 
-وتتوفر مزيد من التفاصيل في الملحقين المعنيين: [PostgreSQL](/book/use-the-index-luke/sql-example-schema-postgresql-sorting-grouping/index#apc-pg-ord-group) و[Oracle](/book/use-the-index-luke/sql-example-schema-oracle-sorting-grouping/index#apc-ora-ord-group).
+وتتوفر مزيد من التفاصيل في الملحقين المعنيين: [PostgreSQL](/book/use-the-index-luke/sql-example-schema-postgresql-sorting-grouping/index) و[Oracle](/book/use-the-index-luke/sql-example-schema-oracle-sorting-grouping/index).
 
-وإذا وسّعنا الاستعلام ليشمل جميع المبيعات *منذ الأمس*، كما فعلنا في مثال `order by` المتدفق، فسيُمنع `group by` المتدفق للسبب نفسه السابق: إذ لا يعيد `INDEX RANGE SCAN` الصفوف مرتَّبة بمفتاح التجميع (قارن [الشكل 6.1](/book/use-the-index-luke/sql-sorting-grouping-indexed-order-by/index#fig-order-concat)).
+وإذا وسّعنا الاستعلام ليشمل جميع المبيعات *منذ الأمس*، كما فعلنا في مثال `order by` المتدفق، فسيُمنع `group by` المتدفق للسبب نفسه السابق: إذ لا يعيد `INDEX RANGE SCAN` الصفوف مرتَّبة بمفتاح التجميع (قارن [الشكل 6.1](/book/use-the-index-luke/sql-sorting-grouping-indexed-order-by/index)).
 
 ```sql
 SELECT product_id, sum(eur_value)

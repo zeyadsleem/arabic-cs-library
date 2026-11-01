@@ -611,7 +611,7 @@ A Good Cup of Java
 
 
 
-> **تمرين برمجي: قائمة تسوق قابلة للتكرار**
+> **تمرين برمجي: قائمة تسوق قابلة للتكرار** {#programming-exercise-an-iterable-shopping-list}
 >
 > يحتوي قالب التمرين على الصنف `ShoppingList` من [التمرين في الجزء 8](/book/mooc/part-8/2-classes-and-objects#programming-exercise-shopping-list). يُرجى تعديل الصنف بحيث يصبح قابلًا للتكرار ويمكن استخدامه هكذا:
 

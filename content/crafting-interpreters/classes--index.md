@@ -111,7 +111,7 @@ classDecl      → "class" IDENTIFIER "{" function* "}" ;
 تعتمد قاعدة `classDecl` الجديدة على قاعدة `function` التي عرّفناها
 [سابقًا][function rule]. ولِتُذكّر ذاكرتك:
 
-[function rule]: /book/crafting-interpreters/functions/index#function-declarations
+[function rule]: /book/crafting-interpreters/functions/index#إعلانات-الدوال
 
 ```ebnf
 function       → IDENTIFIER "(" parameters? ")" block ;
@@ -154,7 +154,7 @@ name="class-ast">عقدة</span> جملة خاصة بها.
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-class].
 
-[appendix-class]: /book/crafting-interpreters/appendix-ii/index#class-statement
+[appendix-class]: /book/crafting-interpreters/appendix-ii/index#جملة-الصنف-class
 
 </aside>
 
@@ -341,7 +341,7 @@ call           → primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-get].
 
-[appendix-get]: /book/crafting-interpreters/appendix-ii/index#get-expression
+[appendix-get]: /book/crafting-interpreters/appendix-ii/index#تعبير-الجلب-get
 
 </aside>
 
@@ -459,7 +459,7 @@ assignment     → ( call "." )? IDENTIFIER "=" assignment
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-set].
 
-[appendix-set]: /book/crafting-interpreters/appendix-ii/index#set-expression
+[appendix-set]: /book/crafting-interpreters/appendix-ii/index#تعبير-الضبط-set
 
 </aside>
 
@@ -854,7 +854,7 @@ callback();
 
 الشيفرة المولّدة للعقدة الجديدة موجودة في [الملحق الثاني][appendix-this].
 
-[appendix-this]: /book/crafting-interpreters/appendix-ii/index#this-expression
+[appendix-this]: /book/crafting-interpreters/appendix-ii/index#تعبير-this
 
 </aside>
 

@@ -18,7 +18,6 @@ source: "https://programming-26.mooc.fi/part-6"
 - [المصفوفة](/book/mooc/part-6/1-reading-files)
 - [تقييم الدورة، الجزء 1](/book/mooc/part-6/1-reading-files)
 - [تقييم الدورة، الجزء 2](/book/mooc/part-6/1-reading-files)
-- [تقييم الدورة، الجزء 3](/book/mooc/part-6/1-reading-files)
 - [المدقّق الإملائي](/book/mooc/part-6/1-reading-files)
 - [البحث عن الوصفات](/book/mooc/part-6/1-reading-files)
 - [دراجات المدينة](/book/mooc/part-6/1-reading-files)

@@ -34,4 +34,3 @@ source: "https://programming-26.mooc.fi/part-2"
 - [الرمز السري وعدد المحاولات](/book/mooc/part-2/4-simple-loops)
 - [السنة الكبيسة التالية](/book/mooc/part-2/4-simple-loops)
 - [القصّة](/book/mooc/part-2/4-simple-loops)
-- [العمل مع الأعداد](/book/mooc/part-2/4-simple-loops)

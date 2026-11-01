@@ -96,7 +96,7 @@ ID | Operation                      |               Rows |   Cost
 Predicate Information
 ```
 
-لا يظهر سلوك Top-N مباشرةً في خطة تنفيذ Db2 إلا إذا لزمت عملية `SORT` (وعندها يشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained) إليه بين قوسين: `SORT (TOP-N)`، انظر المثال التالي).
+لا يظهر سلوك Top-N مباشرةً في خطة تنفيذ Db2 إلا إذا لزمت عملية `SORT` (وعندها يشير [عرض `last_explained`](/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index) إليه بين قوسين: `SORT (TOP-N)`، انظر المثال التالي).
 
 وفي هذا المثال تحديداً، قد يُشتبه في أن هذا لا بد أن يكون استعلام Top-N بسبب الانخفاض المفاجئ في تقدير عدد الصفوف الذي لا تفسّره أي مُسندات ترشيح (فقسم Predicate Information فارغ).
 

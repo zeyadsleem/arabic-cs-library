@@ -828,7 +828,7 @@ unary → ( "!" | "-" | "+" ) unary
 بعد، لذا سنحلّل إلى شجرة تركيب ثم نستخدم صنف AstPrinter من [الفصل الأخير][ast-printer]
 لعرضها.
 
-[ast-printer]: /book/crafting-interpreters/representing-code/index#a-not-very-pretty-printer
+[ast-printer]: /book/crafting-interpreters/representing-code/index#طابع-جميل-إلى-حد-ما
 
 احذف الشيفرة القديمة التي تطبع الرموز الممسوحة بدلًا منها ضع هذه:
 

@@ -251,7 +251,7 @@ closure(argument);
 بالنسخة التي تمّ الوصول إلى الدالة منها. وهنا المثال من [حين أضفنا الدوال إلى
 jlox][jlox]:
 
-[jlox]: /book/crafting-interpreters/classes/index#methods-on-classes
+[jlox]: /book/crafting-interpreters/classes/index#الدوال-على-الأصناف
 
 ```lox
 class Person {
@@ -278,9 +278,9 @@ method(); // ?
 [القيم الملتقَطة][upvalues]. ويفرض ذلك حلّاً أعقد قليلاً لتتبّع المستقبِل (receiver)
 الدالة في clox، ونوعاً زمنياً جديداً.
 
-[locals]: /book/crafting-interpreters/local-variables/index#representing-local-variables
-[globals]: /book/crafting-interpreters/global-variables/index#variable-declarations
-[upvalues]: /book/crafting-interpreters/closures/index#upvalues
+[locals]: /book/crafting-interpreters/local-variables/index#تمثيل-المتغيرات-المحلية
+[globals]: /book/crafting-interpreters/global-variables/index#تصريحات-المتغيرات
+[upvalues]: /book/crafting-interpreters/closures/index#القيم-العليا
 
 ### الدوال المربوطة
 
@@ -1129,7 +1129,7 @@ oops.field();
 تصميم سابقة][note]، فإنّ التعلّم مسألة نقل *الفارق* بين ما يعرفه المستخدم أصلاً وما
 يحتاج إلى معرفته.
 
-[note]: /book/crafting-interpreters/parsing-expressions/index#design-note
+[note]: /book/crafting-interpreters/parsing-expressions/index
 
 كثير من المستخدمين المحتملين للغة يعرفون لغة برمجة أخرى. وأيّ ميزات تتشاركها
 لغتك مع تلك اللغة تكون أساساً "مجاناً" من ناحية التعلّم. فهي موجودة أصلاً في عقلهم،
