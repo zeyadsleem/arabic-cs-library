@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.38">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<link rel="stylesheet" type="text/css" href="manual.css">
+<title>12.21 Alerts</title>
+</head>
+<body>
+<a href="emptyvariants.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="extn.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="generalizedopens.html"><img src="next_motif.svg" alt="Next"></a>
+<hr>
+<h2 class="section" id="s:alerts"><a class="section-anchor" href="#s:alerts" aria-hidden="true">﻿</a>12.21 Alerts</h2>
+<ul>
+<li><a href="alerts.html#ss%3Aalert_marking">12.21.1 Marking a component</a>
+</li><li><a href="alerts.html#ss%3Acontrol">12.21.2 Controlling which alerts are enabled</a>
+</li><li><a href="alerts.html#ss%3Aalert_deprecated">12.21.3 Shorthand syntax for deprecation</a>
+</li></ul>
+<p>(Introduced in 4.08)</p><p>Since OCaml 4.08, it is possible to mark components (such as value or
+type declarations) in signatures with “alerts” that will be reported
+when those components are referenced. This generalizes the notion of
+“deprecated” components which were previously reported as warning 3.
+Those alerts can be used for instance to report usage of unsafe
+features, or of features which are only available on some platforms,
+etc.</p><p>Alert categories are identified by a symbolic identifier (a lowercase
+identifier, following the usual lexical rules) and an optional
+message. The identifier is used to control which alerts are enabled,
+and which ones are turned into fatal errors. The message is reported
+to the user when the alert is triggered (i.e. when the marked
+component is referenced).</p><p>The <span class="machine"><span class="font-tt">ocaml.alert</span></span> or <span class="machine"><span class="font-tt">alert</span></span> attribute serves two purposes: (i) to
+mark component with an alert to be triggered when the component is
+referenced, and (ii) to control which alerts are enabled.</p>
+<h3 class="subsection" id="ss:alert_marking"><a class="section-anchor" href="#ss:alert_marking" aria-hidden="true">﻿</a>12.21.1 Marking a component</h3>
+<p>When marking a component, the attribute takes an identifier possibly
+followed by a message. Here is an example of a value declaration marked
+with an alert:</p><div class="caml-example signature">
+
+<div class="ocaml">
+
+
+
+<div class="pre caml-input"><span class="ocamlkeyword">module</span> U: <span class="ocamlkeyword">sig</span>
+  <span class="ocamlkeyword">val</span> fork: unit -&gt; bool
+    [@@alert unix <span class="ocamlstring">"This function is only available under Unix."</span>]
+<span class="ocamlkeyword">end</span></div></div>
+
+</div><p>Here <span class="machine"><span class="font-tt">unix</span></span> is the identifier for the alert. If this alert category
+is enabled, any reference to <span class="machine"><span class="font-tt">U.fork</span></span> will produce a message at
+compile time, which can be turned or not into a fatal error.</p><p>For other structure or signature components, the syntax is as follows:</p><div class="caml-example verbatim">
+
+<div class="ocaml">
+
+
+
+<div class="pre caml-input"><span class="ocamlkeyword">module</span> <span class="ocamlkeyword">type</span> Sig = <span class="ocamlkeyword">sig</span>
+  <span class="ocamlkeyword">val</span> v: int [@@alert name]
+<span class="ocamlkeyword">end</span>
+
+<span class="ocamlkeyword">let</span> v [@alert name] = 1
+<span class="ocamlkeyword">let</span> `A (v [@alert name]) = `A 1
+
+<span class="ocamlkeyword">external</span> e : int -&gt; int = <span class="ocamlstring">"c_function"</span> [@@alert name]
+
+<span class="ocamlkeyword">type</span> t1 = A | B [@@alert name]
+<span class="ocamlcomment">(* N.B.: this only alerts on use of "t1", not uses of the constructors "A"
+   and "B". So let x = A wouldn't alert, so long as you don't write down its
+   type. *)</span>
+
+<span class="ocamlkeyword">type</span> t2 = A | B [@alert name]
+<span class="ocamlcomment">(* Alerts on use of "B", but not "A" nor "t2". Note the single "@". *)</span>
+
+<span class="ocamlkeyword">type</span> t3 = { a : int; b : int [@alert name] }
+<span class="ocamlcomment">(* Alerts on use of "b", but not "a" nor "t3". Note the single "@". *)</span>
+
+<span class="ocamlkeyword">exception</span> E <span class="ocamlkeyword">of</span> int [@alert name]
+<span class="ocamlcomment">(* Alerts on use of "E". Note the single "@". *)</span>
+
+<span class="ocamlkeyword">module</span> M = <span class="ocamlkeyword">struct</span> <span class="ocamlkeyword">end</span> [@@alert name]
+<span class="ocamlkeyword">module</span> <span class="ocamlkeyword">type</span> S = <span class="ocamlkeyword">sig</span> <span class="ocamlkeyword">end</span> [@@alert name]
+<span class="ocamlkeyword">class</span> c1 = <span class="ocamlkeyword">object</span> <span class="ocamlkeyword">end</span> [@@alert name]
+<span class="ocamlkeyword">class</span> <span class="ocamlkeyword">type</span> c2 = <span class="ocamlkeyword">object</span> <span class="ocamlkeyword">end</span> [@@alert name]</div></div>
+
+</div><p>When the typer coerces a signature with alerts to a signature with different
+alerts:</p><div class="caml-example verbatim">
+
+<div class="ocaml">
+
+
+
+<div class="pre caml-input"><span class="ocamlkeyword">module</span> M : <span class="ocamlkeyword">sig</span>
+  <span class="ocamlhighlight">val x : int</span>
+  <span class="ocamlkeyword">val</span> y : int [@@alert name]
+<span class="ocamlkeyword">end</span> = <span class="ocamlhighlight">struct
+  let x [@alert name] = 0
+  let y = 1
+end</span></div></div>
+
+</div><p>any alert that isn’t passed through, i.e. the alert on <span class="machine"><span class="font-tt">x</span></span> here, gets
+triggered.</p><p>Finally, to alert when the module corresponding to a file is referenced,
+a floating attribute can be written at the top of the “.mli” file
+(i.e. before any other non-attribute item), or the top of the “.ml” file
+if there is no “.mli” file:</p><div class="caml-example verbatim">
+
+<div class="ocaml">
+
+
+
+<div class="pre caml-input">[@@@alert unsafe <span class="ocamlstring">"This module is unsafe!"</span>]</div></div>
+
+</div>
+<h3 class="subsection" id="ss:control"><a class="section-anchor" href="#ss:control" aria-hidden="true">﻿</a>12.21.2 Controlling which alerts are enabled</h3>
+<p>Controlling which alerts are enabled and whether they are turned into
+fatal errors is done either through the compiler’s command-line option
+<span class="machine"><span class="font-tt">-alert &lt;spec&gt;</span></span> or locally in the code through the <span class="machine"><span class="font-tt">alert</span></span> or
+<span class="machine"><span class="font-tt">ocaml.alert</span></span> attribute taking a single string payload <span class="machine"><span class="font-tt">&lt;spec&gt;</span></span>. In
+both cases, the syntax for <span class="machine"><span class="font-tt">&lt;spec&gt;</span></span> is a concatenation of items of the
+form:</p><ul class="itemize"><li class="li-itemize"><span class="machine"><span class="font-tt">+id</span></span> enables alert <span class="machine"><span class="font-tt">id</span></span>.
+</li><li class="li-itemize"><span class="machine"><span class="font-tt">-id</span></span> disables alert <span class="machine"><span class="font-tt">id</span></span>.
+</li><li class="li-itemize"><span class="machine"><span class="font-tt">++id</span></span> turns alert <span class="machine"><span class="font-tt">id</span></span> into a fatal error.
+</li><li class="li-itemize"><span class="machine"><span class="font-tt">--id</span></span> turns alert <span class="machine"><span class="font-tt">id</span></span> into non-fatal mode.
+</li><li class="li-itemize"><span class="machine"><span class="font-tt">@id</span></span> equivalent to <span class="machine"><span class="font-tt">++id+id</span></span> (enables <span class="machine"><span class="font-tt">id</span></span> and turns it into a fatal-error)
+</li></ul><p>As a special case, if <span class="machine"><span class="font-tt">id</span></span> is <span class="machine"><span class="font-tt">all</span></span>, it stands for all alerts.</p><p>Here are some examples:</p><pre>
+(* Disable all alerts, reenables just unix (as a soft alert) and window
+   (as a fatal-error), for the rest of the current structure *)
+
+[@@@alert "-all--all+unix@window"]
+ ...
+
+let x =
+  (* Locally disable the window alert *)
+  begin[@alert "-window"]
+      ...
+  end
+</pre>
+<h3 class="subsection" id="ss:alert_deprecated"><a class="section-anchor" href="#ss:alert_deprecated" aria-hidden="true">﻿</a>12.21.3 Shorthand syntax for deprecation</h3>
+<p>Before OCaml 4.08, there was support for a single kind of deprecation
+alert. It is now known as the <span class="machine"><span class="font-tt">deprecated</span></span> alert, but legacy
+attributes to trigger it and the legacy ways to control it as warning
+3 are still supported. For instance, passing <span class="machine"><span class="font-tt">-w +3</span></span> on the
+command-line is equivalent to <span class="machine"><span class="font-tt">-alert +deprecated</span></span>, and:</p><div class="caml-example signature">
+
+<div class="ocaml">
+
+
+
+<div class="pre caml-input"><span class="ocamlkeyword">val</span> x: int
+  [@@ocaml.deprecated <span class="ocamlstring">"Please do something else"</span>]</div></div>
+
+</div><p>is equivalent to:</p><div class="caml-example signature">
+
+<div class="ocaml">
+
+
+
+<div class="pre caml-input"><span class="ocamlkeyword">val</span> x: int
+  [@@ocaml.alert deprecated <span class="ocamlstring">"Please do something else"</span>]</div></div>
+
+</div>
+<hr>
+<a href="emptyvariants.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="extn.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="generalizedopens.html"><img src="next_motif.svg" alt="Next"></a>
+</body>
+</html>

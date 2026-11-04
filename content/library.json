@@ -435,8 +435,8 @@
       "repoUrl": "https://github.com/SystemsApproach/book",
       "license": "CC BY 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "status": "planned",
-      "note": "الترخيص يسمح بالترجمة، لكن إدارة المشروع تطلب التواصل مع discuss@systemsapproach.org قبل نشر أي ترجمة. نبدأ بالنص بعد موافقتهم.",
+      "status": "translated",
+      "note": "الترجمة العربية الكاملة بموجب رخصة CC BY 4.0 مع نسبة العمل إلى مؤلفيه Peterson وDavie.",
       "stage": "networks",
       "order": 1,
       "format": "rst",
@@ -614,7 +614,8 @@
       "languages": [
         "OCaml"
       ],
-      "status": "planned",
+      "status": "translated",
+      "note": "الترجمة العربية الكاملة بموجب رخصة CC BY-SA 4.0 (ترخيص المشاركة بالمثل) مع نسبة العمل إلى INRIA ومساهمي OCaml.",
       "stage": "languages",
       "order": 3,
       "format": "html",

@@ -1,0 +1,148 @@
+{
+  "chapters": [
+    {
+      "key": "preface",
+      "title": "Preface",
+      "titleAr": "تصدير",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "تصدير",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "foreword",
+      "title": "Foreword",
+      "titleAr": "تقديم",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "تقديم",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "foreword-1e",
+      "title": "Foreword to the First Edition",
+      "titleAr": "تقديم الطبعة الأولى",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "تقديم الطبعة الأولى",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch01",
+      "title": "Foundation",
+      "titleAr": "الأساس",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الأساس",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch02",
+      "title": "Direct Links",
+      "titleAr": "الروابط المباشرة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الروابط المباشرة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch03",
+      "title": "Internetworking",
+      "titleAr": "التشبيك البيني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التشبيك البيني",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch04",
+      "title": "Advanced Internetworking",
+      "titleAr": "التشبيك البيني المتقدّم",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التشبيك البيني المتقدّم",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch05",
+      "title": "End-to-End Protocols",
+      "titleAr": "بروتوكولات الطرف إلى الطرف",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "بروتوكولات الطرف إلى الطرف",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch06",
+      "title": "Congestion Control",
+      "titleAr": "التحكّم في الازدحام",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التحكّم في الازدحام",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch07",
+      "title": "End-to-End Data",
+      "titleAr": "البيانات بين الطرفين",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البيانات بين الطرفين",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch08",
+      "title": "Network Security",
+      "titleAr": "أمن الشبكات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أمن الشبكات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch09",
+      "title": "Applications",
+      "titleAr": "التطبيقات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التطبيقات",
+          "order": 0
+        }
+      ]
+    }
+  ]
+}

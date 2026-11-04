@@ -1,0 +1,499 @@
+{
+  "chapters": [
+    {
+      "key": "foreword",
+      "title": "Foreword",
+      "titleAr": "تصدير",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Foreword",
+          "titleAr": "تصدير",
+          "order": 0
+        }
+      ],
+      "order": 0
+    },
+    {
+      "key": "ch01",
+      "title": "The core language",
+      "titleAr": "اللغة الأساسية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The core language",
+          "titleAr": "اللغة الأساسية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch02",
+      "title": "The module system",
+      "titleAr": "نظام الوحدات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The module system",
+          "titleAr": "نظام الوحدات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch03",
+      "title": "Objects in OCaml",
+      "titleAr": "الكائنات في OCaml",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Objects in OCaml",
+          "titleAr": "الكائنات في OCaml",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch04",
+      "title": "Labeled arguments",
+      "titleAr": "الوسائط المُعنونة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Labeled arguments",
+          "titleAr": "الوسائط المُعنونة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch05",
+      "title": "Polymorphic variants",
+      "titleAr": "المتغيّرات متعدّدة الأشكال",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Polymorphic variants",
+          "titleAr": "المتغيّرات متعدّدة الأشكال",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch06",
+      "title": "Polymorphism and its limitations",
+      "titleAr": "تعدّد الأشكال وحدوده",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Polymorphism and its limitations",
+          "titleAr": "تعدّد الأشكال وحدوده",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch07",
+      "title": "Generalized algebraic datatypes",
+      "titleAr": "أنواع البيانات الجبرية المعمّمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Generalized algebraic datatypes",
+          "titleAr": "أنواع البيانات الجبرية المعمّمة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch08",
+      "title": "Advanced examples with classes and modules",
+      "titleAr": "أمثلة متقدّمة بالأصناف والوحدات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Advanced examples with classes and modules",
+          "titleAr": "أمثلة متقدّمة بالأصناف والوحدات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch09",
+      "title": "Parallel programming",
+      "titleAr": "البرمجة المتوازية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Parallel programming",
+          "titleAr": "البرمجة المتوازية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch10",
+      "title": "Memory model: The hard bits",
+      "titleAr": "نموذج الذاكرة: الأجزاء الصعبة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Memory model: The hard bits",
+          "titleAr": "نموذج الذاكرة: الأجزاء الصعبة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch11",
+      "title": "The OCaml language",
+      "titleAr": "لغة OCaml",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The OCaml language",
+          "titleAr": "لغة OCaml",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch12",
+      "title": "Language extensions",
+      "titleAr": "امتدادات اللغة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Language extensions",
+          "titleAr": "امتدادات اللغة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch13",
+      "title": "Batch compilation (ocamlc)",
+      "titleAr": "الترجمة الدفعية (ocamlc)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Batch compilation (ocamlc)",
+          "titleAr": "الترجمة الدفعية (ocamlc)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch14",
+      "title": "The toplevel system or REPL (ocaml)",
+      "titleAr": "النظام التفاعلي أو REPL (ocaml)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The toplevel system or REPL (ocaml)",
+          "titleAr": "النظام التفاعلي أو REPL (ocaml)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch15",
+      "title": "The runtime system (ocamlrun)",
+      "titleAr": "نظام التشغيل (ocamlrun)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The runtime system (ocamlrun)",
+          "titleAr": "نظام التشغيل (ocamlrun)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch16",
+      "title": "Native-code compilation (ocamlopt)",
+      "titleAr": "الترجمة إلى الشيفرة الأصلية (ocamlopt)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Native-code compilation (ocamlopt)",
+          "titleAr": "الترجمة إلى الشيفرة الأصلية (ocamlopt)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch17",
+      "title": "Lexer and parser generators (ocamllex, ocamlyacc)",
+      "titleAr": "مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Lexer and parser generators (ocamllex, ocamlyacc)",
+          "titleAr": "مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch18",
+      "title": "Dependency generator (ocamldep)",
+      "titleAr": "مولّد التبعيات (ocamldep)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dependency generator (ocamldep)",
+          "titleAr": "مولّد التبعيات (ocamldep)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch19",
+      "title": "The documentation generator (ocamldoc)",
+      "titleAr": "مولّد التوثيق (ocamldoc)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The documentation generator (ocamldoc)",
+          "titleAr": "مولّد التوثيق (ocamldoc)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch20",
+      "title": "The debugger (ocamldebug)",
+      "titleAr": "المنقّح (ocamldebug)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The debugger (ocamldebug)",
+          "titleAr": "المنقّح (ocamldebug)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch21",
+      "title": "Native debugging (gdb, lldb)",
+      "titleAr": "التنقيح الأصلي (gdb, lldb)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Native debugging (gdb, lldb)",
+          "titleAr": "التنقيح الأصلي (gdb, lldb)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch22",
+      "title": "Profiling (ocamlprof, perf)",
+      "titleAr": "قياس الأداء (ocamlprof, perf)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Profiling (ocamlprof, perf)",
+          "titleAr": "قياس الأداء (ocamlprof, perf)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch23",
+      "title": "Interfacing C with OCaml",
+      "titleAr": "الربط البيني مع لغة C",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Interfacing C with OCaml",
+          "titleAr": "الربط البيني مع لغة C",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch24",
+      "title": "Optimisation with Flambda",
+      "titleAr": "التحسين باستخدام Flambda",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Optimisation with Flambda",
+          "titleAr": "التحسين باستخدام Flambda",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch25",
+      "title": "Fuzzing with afl-fuzz",
+      "titleAr": "الاختبار العشوائي باستخدام afl-fuzz",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Fuzzing with afl-fuzz",
+          "titleAr": "الاختبار العشوائي باستخدام afl-fuzz",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch26",
+      "title": "Runtime tracing with runtime events",
+      "titleAr": "تتبّع زمن التشغيل بأحداث runtime",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Runtime tracing with runtime events",
+          "titleAr": "تتبّع زمن التشغيل بأحداث runtime",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch27",
+      "title": "The \"Tail Modulo Constructor\" program transformation",
+      "titleAr": "تحويل البرنامج «ذَيلِي مع الباني»",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The \"Tail Modulo Constructor\" program transformation",
+          "titleAr": "تحويل البرنامج «ذَيلِي مع الباني»",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch28",
+      "title": "Runtime detection of data races with ThreadSanitizer",
+      "titleAr": "الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Runtime detection of data races with ThreadSanitizer",
+          "titleAr": "الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch29",
+      "title": "The core library",
+      "titleAr": "المكتبة الأساسية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The core library",
+          "titleAr": "المكتبة الأساسية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch30",
+      "title": "The standard library",
+      "titleAr": "المكتبة القياسية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The standard library",
+          "titleAr": "المكتبة القياسية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch31",
+      "title": "The compiler front-end",
+      "titleAr": "واجهة المترجم الأمامية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The compiler front-end",
+          "titleAr": "واجهة المترجم الأمامية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch32",
+      "title": "The unix library: Unix system calls",
+      "titleAr": "مكتبة unix: نداءات نظام Unix",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The unix library: Unix system calls",
+          "titleAr": "مكتبة unix: نداءات نظام Unix",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch33",
+      "title": "The str library: regular expressions and string processing",
+      "titleAr": "مكتبة str: التعابير النمطية ومعالجة السلاسل",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The str library: regular expressions and string processing",
+          "titleAr": "مكتبة str: التعابير النمطية ومعالجة السلاسل",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch34",
+      "title": "The runtime_events library",
+      "titleAr": "مكتبة runtime_events",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The runtime_events library",
+          "titleAr": "مكتبة runtime_events",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch35",
+      "title": "The threads library",
+      "titleAr": "مكتبة threads",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The threads library",
+          "titleAr": "مكتبة threads",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch36",
+      "title": "The dynlink library: dynamic loading and linking of object files",
+      "titleAr": "مكتبة dynlink: التحميل والربط الديناميان",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The dynlink library: dynamic loading and linking of object files",
+          "titleAr": "مكتبة dynlink: التحميل والربط الديناميان",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch37",
+      "title": "Recently removed or moved libraries (Graphics, Bigarray, Num, LablTk)",
+      "titleAr": "المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Recently removed or moved libraries (Graphics, Bigarray, Num, LablTk)",
+          "titleAr": "المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)",
+          "order": 0
+        }
+      ]
+    }
+  ]
+}

@@ -7,13 +7,13 @@
 ## 0. الحالة الحالية (آخر تحديث)
 
 حالة `content/library.json` بعد التحقق الفعلي من المستودع: **56 كتاباً** —
-**53 في حالة `translated`** و**3 في حالة `planned`**، ولا توجد حالة ثالثة.
+**55 في حالة `translated`** و**1 في حالة `planned`**، ولا توجد حالة ثالثة.
 
 | التصنيف | العدد | التفاصيل |
 | --- | --- | --- |
-| كتب بصفحات محلية داخل المكتبة | 46 | 2496 قسماً في `src/lib/generated/sections/` (منها 864 صفحة Kinney يبنيها `scripts/build-kinney.mjs`) |
+| كتب بصفحات محلية داخل المكتبة | 48 | 2546 قسماً في `src/lib/generated/sections/` (منها 864 صفحة Kinney يبنيها `scripts/build-kinney.mjs`) |
 | كتب مستضافة خارجياً عبر `siteUrl` | 7 | `gobyexample-ar` · `learn-go-with-tests-ar` · `go101-ar` · `eloquent-javascript-ar` · `fullstack-open-ar` · `webdev-learn-ar` · `mooc` — ترجمتها كاملة لكنها تُقدَّم من مواقع خارجية، فلا صفحات محلية لها |
-| في طابور الترجمة | 3 | القسم 8 أدناه |
+| في طابور الترجمة | 1 | القسم 8 أدناه |
 
 `go-tour` ليست مستثنية: 103 صفحاتها العربية تُبنى من `src/lib/tour/translations/*.json`
 عبر `scripts/build-go-tour.mjs` ثم تُحقن في البيان عبر تخصيص في `build-content.mjs` —
@@ -23,10 +23,10 @@
 
 | البوابة | النتيجة |
 | --- | --- |
-| `pnpm audit:content` | 2496 قسماً في 47 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
+| `pnpm audit:content` | 2546 قسماً في 49 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
 | `pnpm test:content` | 112/112 تمر، بما فيها دورتا TanStack بعد إكمال 55 درسًا |
 | `pnpm test:import` | 9/9 |
-| `pnpm check:links` | 0 رابط غير محلَّل من 996,505 مرجعاً داخلياً على 2558 صفحة |
+| `pnpm check:links` | 0 رابط غير محلَّل من 996,505 مرجعاً داخلياً على 2558 صفحة (آخر بناء كامل قبل إضافة الكتابين) |
 | `node scripts/build-content.mjs` | يخرج 0 فقط إذا كانت **كل** صفحة لكل كتاب مصنَّف `translated` بالفعل عربية |
 | `node scripts/check-mooc.mjs` | بوابة صفحة-صفحة لترجمة MOOC (القفل 1 أدناه) |
 | `node scripts/check-kinney.mjs` | 864 صفحة: 864 pass، 0 pending، 0 invalid (القفل 2 أدناه) |
@@ -66,9 +66,9 @@
 | ⑥ | مسار Go | Go by Example (✅) · Learn Go with Tests (✅) · Go 101 (✅) | — |
 | ⑦ | JavaScript | Eloquent JavaScript (✅) | — |
 | ⑧ | تطوير الويب | Full Stack open (✅) · Patterns.dev (✅) · AHA Stack (✅) · Frontend Architecture (✅) · TanStack Router (✅) · TanStack Form (✅) · معمل التعلّم — web.dev (✅) | Eloquent JS |
-| ⑨ | الشبكات | Computer Networks (بانتظار موافقة المؤلفين) | Nand2Tetris I |
+| ⑨ | الشبكات | Computer Networks (✅) | Nand2Tetris I |
 | ⑩ | قواعد البيانات | DB Design (✅) · DB Performance at Scale · Database Foundations (✅) · PostgreSQL Internals (✅) · Use The Index (✅) | — |
-| ⑪ | اللغات | Learn Programming with OCaml · OCaml Manual (مرجع) · CS3110 (✅) · Crafting Interpreters (✅) | — |
+| ⑪ | اللغات | Learn Programming with OCaml (✅) · OCaml Manual (✅) · CS3110 (✅) · Crafting Interpreters (✅) | — |
 | ⑫ | معمارية البرمجيات | 500 Lines (✅) · AOSA (✅) · Game Programming Patterns (✅) | — |
 | ⑬ | الأمن | Crypto 101 (✅) · Open Workbook of Cryptology · Network Security (✅) · Cryptopals (✅) | — |
 | ⑭ | DevOps | DevOps Roadmap (✅ 35 درساً) | — |
@@ -87,12 +87,12 @@
 | Database Design 2e | CC BY 4.0 | Pressbooks `open/download?type=xhtml` | 16 فصلاً، 153 صفحة | أسهل استيراد (XHTML نظيف) |
 | DB Performance at Scale | CC BY 4.0 | Springer OA PDF | 11 فصلاً، 270 صفحة | PDF فقط |
 | Learn Programming with OCaml | CC BY-SA 4.0 | PDF/EPUB من `usr.lmf.cnrs.fr/lpo/` | 13 فصلاً، 431 صفحة | الطبعة الإنجليزية (مترجمة عن الفرنسية) |
-| OCaml Manual 5.5 | CC BY-SA 4.0 | `ocaml.org/manual/5.5/` | 37 فصلاً، 1158 صفحة | مرجع لا كتاب تدرّج |
+| OCaml Manual 5.5 | CC BY-SA 4.0 | `ocaml.org/manual/5.5/` | 37 فصلاً، 1158 صفحة | ✅ مترجم — 38 صفحة عبر `scripts/import-ocaml-manual.mjs` |
 | 500 Lines or Less | CC BY 3.0 | `raw.githubusercontent.com/aosabook/500lines/master/{ch}/{ch}.markdown` | 22 فصلاً، 470 صفحة | Markdown نظيف ⇒ أسرع استيراد |
 | AOSA v1+v2 | CC BY 3.0 | LaTeX في `aosabook/aosabook` | 49 فصلاً، ~800 صفحة | دراسات حالة طويلة |
 | Crypto 101 | CC BY-NC 4.0 | `github.com/crypto101/book` | 254 صفحة | الترخيص يدعو للترجمات |
 | Open Workbook of Cryptology | CC BY-SA 4.0 | `poritz.net/.../owoc.tex` | 92 صفحة | مسودة أولى |
-| Computer Networks (Sys. Approach) | CC BY 4.0 | `SystemsApproach/book` (RST) | 9 فصول، 920 صفحة | **المؤلفون يطلبون مناقشة الترجمات** |
+| Computer Networks (Sys. Approach) | CC BY 4.0 | `SystemsApproach/book` (RST) | 9 فصول، 920 صفحة | ✅ مترجم — 12 صفحة، 245 شكلاً عبر `scripts/import-networks-systems-approach.mjs` |
 
 ### غير قابلة للترجمة + البديل
 | الكتاب | سبب الحظر | البديل في المكتبة |
@@ -131,10 +131,8 @@
 
 ## 6. إجراءات بشرية لا يمكن للأدوات تنفيذها
 
-1. **مراسلة إدارة SystemsApproach** (`discuss@systemsapproach.org`) للموافقة على
-   ترجمة «شبكات الحاسوب» — ترخيصها يسمح، لكن سياستهم طلب المناقشة.
-2. **مراجعة بشرية** لكل دفعة ترجمة قبل النشر: عيّنة عشوائية للمصطلحات والروابط والصور.
-3. المصادر التي بلا ترخيص أو ND تبقى في الطابور بقرار المستخدم، مع إبقاء إسناد
+1. **مراجعة بشرية** لكل دفعة ترجمة قبل النشر: عيّنة عشوائية للمصطلحات والروابط والصور.
+2. المصادر التي بلا ترخيص أو ND تبقى في الطابور بقرار المستخدم، مع إبقاء إسناد
    المصدر الأصلي وإبراز قيود الترخيص في صفحة كل كتاب.
 
 ## 7. طابور التنفيذ (بالترتيب)
@@ -158,13 +156,13 @@
 | 15 | IntroTCS | Markdown | 24 فصلاً | ✅ مترجم |
 | 16 | MCS | PDF | 22 فصلاً | ✅ مترجم |
 | 17 | AOSA v1 + v2 | LaTeX | 49 فصلاً | ✅ مترجم |
-| 18 | Computer Networks (Sys. Approach) | RST | 9 فصول | ينتظر موافقة المؤلفين |
+| 18 | Computer Networks (Sys. Approach) | RST | 9 فصول | ✅ مترجم |
 | 19 | Network Security | RST | 9 فصول | ✅ مترجم |
 | 20 | PostgreSQL Internals | HTML | 12 فصلاً | ✅ مترجم |
 | 21 | Use The Index, Luke! | HTML | 54 صفحة | ✅ مترجم |
 | 22 | Database Foundations (UCLL) | HTML | 24 وحدة | ✅ مترجم |
 | 23 | Cryptopals | HTML | 66 تحدياً | ✅ مترجم |
-| 24 | OCaml Manual 5.5 | HTML | 37 فصلاً | مرجع/اختياري |
+| 24 | OCaml Manual 5.5 | HTML | 37 فصلاً | ✅ مترجم |
 | 25 | Open Data Structures | LaTeX | 14 فصلاً | ✅ مترجم |
 | 26 | Open Workbook of Cryptology | LaTeX | 92 صفحة | في الطابور |
 | 27 | DB Performance at Scale | PDF | 11 فصلاً | في الطابور |
@@ -223,7 +221,7 @@
   أنتج 22 صفحة في `content/mathematics-for-cs/` ثم تُرجمت كاملة.
 - الحالة `translated` الآن، وكل صفحاتها عربية ومدرجة في البيان.
 
-### القفل 4 — ثلاثة مصادر بلا خط استيراد بعد
+### القفل 4 — مصدر واحد بلا خط استيراد بعد
 
 لا تبدأ ترجمتها قبل بناء `scripts/import-<book>.mjs`:
 (أُنجز قبله كتاب Algorithms Unplugged — 41 فصلاً و48 مفتاحاً في
@@ -232,12 +230,20 @@ Database Performance at Scale — 11 فصلاً + مقدمة + ملحق في
 `content/db-performance-at-scale/` — فانتقل إلى `translated` بلا خط استيراد
 منفصل. وكذلك كرّاس التشفير المفتوح Open Workbook of Cryptology — 3 فصول
 ومقدّمتان في `content/open-workbook-cryptology/` — ترجم من LaTeX عبر
-`scripts/import-open-workbook-cryptology.mjs` ثم انتقل إلى `translated`.)
+`scripts/import-open-workbook-cryptology.mjs` ثم انتقل إلى `translated`.
+وكذلك كتاب شبكات الحاسوب: مقاربة الأنظمة — 12 صفحة و245 شكلاً في
+`content/networks-systems-approach/` — ترجم من RST عبر
+`scripts/import-networks-systems-approach.mjs` مع فاحص لكل فصل
+(`content-src/networks-systems-approach/check-chapter.mjs`) ثم انتقل إلى `translated`.)
+
+وكذلك دليل لغة OCaml (INRIA 5.5): 38 صفحة (تصدير + 37 فصلاً) في
+`content/ocaml-manual/` — ترجم من HTML عبر
+`scripts/import-ocaml-manual.mjs` مع فاحص لكل فصل
+(`content-src/ocaml-manual/check-chapter.mjs`) يطابق عدد كتل الشيفرة ونصوصها
+حرفياً وجداولها وهوامشها وعناوينها مع الأصل، ثم انتقل إلى `translated`.
 
 | المصدر | الحجم | المصدر الخام | سلف الحجز قبل الترجمة |
 | --- | --- | --- | --- |
-| `networks-systems-approach` | 920 | RST في `SystemsApproach/book` | **بشرية**: مراسلة `discuss@systemsapproach.org` — ترخيصها CC BY 4.0 لكن سياسة المؤلفين تطلب مناقشة الترجمة |
-| `ocaml-manual` | 1158 | HTML على `ocaml.org/manual/5.5/` | مرجع تدريجي؛ يحتاج قراراً بحجم التغطية قبل البدء |
 | `ostep` | 714 | PDF لكل فصل | **قرار ترخيص**: الكتاب «مجاني» بلا ترخيص صريح والمؤلفان يطلبان التواصل قبل أي إعادة استخدام — يلزم تثبيت الحالة في `library.json` (`planned` مقابل `reference`) قبل أي عمل |
 
 ### بوابة القبول المشتركة لكل مستوى
