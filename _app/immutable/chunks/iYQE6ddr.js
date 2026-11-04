@@ -1,0 +1,1316 @@
+const s="ocaml-manual",a="ch03",n="الكائنات في OCaml",l="index",p="الكائنات في OCaml",e=[{depth:2,id:"31-الأصناف-والكائنات",text:"3.1 الأصناف والكائنات"},{depth:2,id:"32-الكائنات-المباشرة",text:"3.2 الكائنات المباشرة"},{depth:2,id:"33-الإشارة-إلى-الذات",text:"3.3 الإشارة إلى الذات"},{depth:2,id:"34-المهيئات",text:"3.4 المهيّئات"},{depth:2,id:"35-الدوال-المجردة",text:"3.5 الدوال المجرّدة"},{depth:2,id:"36-الدوال-الخاصة",text:"3.6 الدوال الخاصة"},{depth:2,id:"37-واجهات-الأصناف",text:"3.7 واجهات الأصناف"},{depth:2,id:"38-الوراثة",text:"3.8 الوراثة"},{depth:2,id:"39-الوراثة-المتعددة",text:"3.9 الوراثة المتعددة"},{depth:2,id:"310-الأصناف-ذات-المعاملات",text:"3.10 الأصناف ذات المعاملات"},{depth:2,id:"311-الدوال-متعددة-الأشكال",text:"3.11 الدوال متعدّدة الأشكال"},{depth:2,id:"312-استعمال-الإكراهات",text:"3.12 استعمال الإكراهات"},{depth:2,id:"313-الكائنات-الدالية",text:"3.13 الكائنات الدالية"},{depth:2,id:"314-استنساخ-الكائنات",text:"3.14 استنساخ الكائنات"},{depth:2,id:"315-الأصناف-العودية",text:"3.15 الأصناف العودية"},{depth:2,id:"316-الدوال-الثنائية",text:"3.16 الدوال الثنائية"},{depth:2,id:"317-الأصدقاء",text:"3.17 الأصدقاء"}],c=`<h1>الفصل 3: الكائنات في OCaml</h1>
+<p><em>كتب هذا الفصل جيروم فوويون وديدييه ريمي وجاك غاريغ</em></p>
+<p>يقدّم هذا الفصل نظرة عامة على ميزات البرمجة الكائنية في OCaml.</p>
+<p>لاحظ أنّ العلاقة بين الكائن والصنف والنوع في OCaml تختلف عنها في اللغات الكائنية الشائعة مثل Java و++C، فلا تفترض أنّ الكلمات المفتاحية المتشابهة تعني الشيء نفسه. تُستعمل الميزات الكائنية في OCaml أقلّ بكثير مما في تلك اللغات. فلـ OCaml بدائل غالبًا ما تكون أنسب، مثل الوحدات والموصِّلات. بل إنّ كثيرًا من برامج OCaml لا تستعمل الكائنات إطلاقًا.</p>
+<h2 id="31-الأصناف-والكائنات">3.1 الأصناف والكائنات</h2>
+<p>يعرّف الصنف <code>point</code> أدناه متغيّر نسخة واحدًا هو <code>x</code> ودالتين هما <code>get_x</code> و<code>move</code>. القيمة الابتدائية لمتغيّر النسخة هي <code>0</code>. وقد أُعلن المتغيّر <code>x</code> قابلًا للتغيير، لذا يمكن للدالة <code>move</code> أن تغيّر قيمته.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> point =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = <span class="hljs-number">0</span>
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point :
+  <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ننشئ الآن نقطة جديدة <code>p</code> هي نسخة من الصنف <code>point</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> point;;
+
+<span class="hljs-keyword">val</span> p : point = &lt;obj&gt;
+</code></pre>
+<p>لاحظ أنّ نوع <code>p</code> هو <code>point</code>. هذا اختصار يعرّفه تعريف الصنف أعلاه تلقائيًا. وهو يرمز إلى نوع الكائن <code>&lt;get_x : int; move : int -&gt; unit&gt;</code>، الذي يسرد دوال الصنف <code>point</code> مع أنواعها.</p>
+<p>نستدعي الآن بعض دوال <code>p</code>:</p>
+<pre><code class="language-ocaml"># p#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>
+
+# p#move <span class="hljs-number">3</span>;;
+
+- : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+
+# p#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+</code></pre>
+<p>لا يجري تقييم جسم الصنف إلا عند إنشاء الكائن. لذلك، في المثال التالي، يُهيَّأ متغيّر النسخة <code>x</code> بقيمتين مختلفتين لكائنين مختلفين.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> x0 = <span class="hljs-built_in">ref</span> <span class="hljs-number">0</span>;;
+
+<span class="hljs-keyword">val</span> x0 : <span class="hljs-built_in">int</span> <span class="hljs-built_in">ref</span> = {contents = <span class="hljs-number">0</span>}
+
+# <span class="hljs-keyword">class</span> point =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = incr x0; !x0
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point :
+  <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">new</span> point#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>
+
+# <span class="hljs-keyword">new</span> point#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span>
+</code></pre>
+<p>يمكن أيضًا تجريد الصنف <code>point</code> فوق القيم الابتدائية للإحداثي <code>x</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> point = <span class="hljs-keyword">fun</span> x_init -&gt;
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وكما في تعريفات الدوال، يمكن اختصار التعريف أعلاه كما يلي:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> point x_init =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>أصبحت نسخة الصنف <code>point</code> الآن دالة تتوقّع وسيطًا ابتدائيًا لإنشاء كائن نقطة:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">new</span> point;;
+
+- : <span class="hljs-built_in">int</span> -&gt; point = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> point <span class="hljs-number">7</span>;;
+
+<span class="hljs-keyword">val</span> p : point = &lt;obj&gt;
+</code></pre>
+<p>الوسيط <code>x_init</code> ظاهر بالطبع في جسم التعريف كله، بما في ذلك الدوال. ومثالًا على ذلك، تُعيد الدالة <code>get_offset</code> في الصنف أدناه موضع الكائن نسبةً إلى موضعه الابتدائي.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> point x_init =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> get_offset = x - x_init
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_offset : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>يمكن تقييم التعابير وربطها قبل تعريف جسم كائن الصنف. وهذا مفيد لفرض الثوابت. فمثلًا يمكن ضبط النقاط تلقائيًا على أقرب نقطة في شبكة كما يلي:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> adjusted_point x_init =
+    <span class="hljs-keyword">let</span> origin = (x_init / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = origin
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> get_offset = x - origin
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> adjusted_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_offset : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>(ويمكن أيضًا رفع استثناء إذا لم يكن الإحداثي <code>x_init</code> على الشبكة.) بل يمكن الحصول على الأثر نفسه هنا باستدعاء تعريف الصنف <code>point</code> بالقيمة <code>origin</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> adjusted_point x_init =  point ((x_init / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>);;
+
+<span class="hljs-keyword">class</span> adjusted_point : <span class="hljs-built_in">int</span> -&gt; point
+</code></pre>
+<p>ومن الحلول البديلة تعريف الضبط في دالة تخصيص خاصة:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> new_adjusted_point x_init = <span class="hljs-keyword">new</span> point ((x_init / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>);;
+
+<span class="hljs-keyword">val</span> new_adjusted_point : <span class="hljs-built_in">int</span> -&gt; point = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>غير أنّ النمط الأول أنسب عمومًا، لأنّ شيفرة الضبط جزء من تعريف الصنف وستُورَّث.</p>
+<p>توفّر هذه الإمكانية بواني أصناف كما تُوجد في لغات أخرى. ويمكن تعريف عدّة بوانٍ بهذه الطريقة لبناء كائنات من الصنف نفسه بأنماط تهيئة مختلفة؛ والبديل هو استعمال المهيّئات كما هو موصوف أدناه في القسم 3.4.</p>
+<h2 id="32-الكائنات-المباشرة">3.2 الكائنات المباشرة</h2>
+<p>ثمّة طريقة أخرى أكثر مباشرة لإنشاء كائن: إنشاؤه من دون المرور بصنف.</p>
+<p>الصياغة مطابقة تمامًا لصياغة تعابير الأصناف، لكن النتيجة كائن واحد لا صنف. وكل التركيبات الموصوفة في بقيّة هذا القسم تنطبق أيضًا على الكائنات المباشرة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> p =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = <span class="hljs-number">0</span>
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">val</span> p : &lt; get_x : <span class="hljs-built_in">int</span>; move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> &gt; = &lt;obj&gt;
+
+# p#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>
+
+# p#move <span class="hljs-number">3</span>;;
+
+- : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+
+# p#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+</code></pre>
+<p>وخلافًا للأصناف، التي لا يمكن تعريفها داخل تعبير، يمكن للكائنات المباشرة أن تظهر في أي موضع، مستعملةً متغيّرات من محيطها.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> minmax x y =
+    <span class="hljs-keyword">if</span> x &lt; y <span class="hljs-keyword">then</span> <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> min = x <span class="hljs-keyword">method</span> max = y <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> min = y <span class="hljs-keyword">method</span> max = x <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">val</span> minmax : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; &lt; max : <span class="hljs-symbol">&#x27;a</span>; min : <span class="hljs-symbol">&#x27;a</span> &gt; = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>للكائنات المباشرة ضعفان مقارنةً بالأصناف: أنواعها غير مختصرة، ولا يمكن الوراثة منها. لكنّ هذين الضعفين قد يكونان ميزتين في بعض الحالات، كما سنرى في القسمين 3.3 و3.10.</p>
+<h2 id="33-الإشارة-إلى-الذات">3.3 الإشارة إلى الذات</h2>
+<p>يمكن لدالة أو لمهيّئ أن يستدعي دوال على الذات (أي الكائن الحالي). ولذلك يجب ربط الذات صراحةً، وهنا بالمتغيّر <code>s</code> (ويمكن أن يكون <code>s</code> أي معرّف، وإن كنّا سنختار غالبًا الاسم <code>self</code>.)</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> printable_point x_init =
+    <span class="hljs-keyword">object</span> (s)
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+      <span class="hljs-keyword">method</span> print = print_int s#get_x
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> printable_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> print : <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> printable_point <span class="hljs-number">7</span>;;
+
+<span class="hljs-keyword">val</span> p : printable_point = &lt;obj&gt;
+
+# p#print;;
+
+<span class="hljs-number">7</span>- : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+</code></pre>
+<p>ديناميكيًا، يُربط المتغيّر <code>s</code> عند استدعاء دالة. وعلى وجه الخصوص، عندما يُورَّث الصنف <code>printable_point</code>، سيُربط المتغيّر <code>s</code> ربطًا صحيحًا بكائن الصنف الفرعي.</p>
+<p>من المشكلات الشائعة في الذات أنّ نوعها قد يُوسَّع في الأصناف الفرعية، فلا يمكن تثبيته مسبقًا. وهذا مثال بسيط.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> ints = <span class="hljs-built_in">ref</span> <span class="hljs-literal">[]</span>;;
+
+<span class="hljs-keyword">val</span> ints : <span class="hljs-symbol">&#x27;_weak1</span> <span class="hljs-built_in">list</span> <span class="hljs-built_in">ref</span> = {contents = <span class="hljs-literal">[]</span>}
+
+# <span class="hljs-keyword">class</span> my_int =
+    <span class="hljs-keyword">object</span> (self)
+      <span class="hljs-keyword">method</span> n = <span class="hljs-number">1</span>
+      <span class="hljs-keyword">method</span> register = ints := self :: !ints
+    <span class="hljs-keyword">end</span> ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">The</span> <span class="hljs-keyword">value</span> self has <span class="hljs-keyword">type</span> &lt; n : <span class="hljs-built_in">int</span>; register : <span class="hljs-symbol">&#x27;a</span>; .. &gt;
+       but an expression was expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;weak1</span>
+       <span class="hljs-type">Self</span> <span class="hljs-keyword">type</span> cannot escape its <span class="hljs-keyword">class</span>
+</code></pre>
+<p>يمكنك تجاهل أوّل سطرين من رسالة الخطأ. المهم هو السطر الأخير: فوضع الذات في مرجع خارجي سيجعل توسيعها بالوراثة مستحيلًا. وسنرى في القسم 3.12 حلًّا بديلًا لهذه المشكلة. غير أنّ المشكلة لا تحدث مع الكائنات المباشرة، لأنها غير قابلة للتوسيع.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> my_int =
+    <span class="hljs-keyword">object</span> (self)
+      <span class="hljs-keyword">method</span> n = <span class="hljs-number">1</span>
+      <span class="hljs-keyword">method</span> register = ints := self :: !ints
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">val</span> my_int : &lt; n : <span class="hljs-built_in">int</span>; register : <span class="hljs-built_in">unit</span> &gt; = &lt;obj&gt;
+</code></pre>
+<h2 id="34-المهيئات">3.4 المهيّئات</h2>
+<p>تُقيَّم روابط let داخل تعريفات الأصناف قبل بناء الكائن. ويمكن أيضًا تقييم تعبير فورًا بعد بناء الكائن. وتُكتب هذه الشيفرة دالةً مخفية مجهولة تُسمّى مهيّئًا. ولذلك يمكنها الوصول إلى الذات وإلى متغيّرات النسخة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> printable_point x_init =
+    <span class="hljs-keyword">let</span> origin = (x_init / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">object</span> (self)
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = origin
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+      <span class="hljs-keyword">method</span> print = print_int self#get_x
+      <span class="hljs-keyword">initializer</span> print_string <span class="hljs-string">&quot;new point at &quot;</span>; self#print; print_newline <span class="hljs-literal">()</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> printable_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> print : <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> printable_point <span class="hljs-number">17</span>;;
+
+<span class="hljs-keyword">new</span> point at <span class="hljs-number">10</span>
+<span class="hljs-keyword">val</span> p : printable_point = &lt;obj&gt;
+</code></pre>
+<p>لا يمكن تجاوز المهيّئات. بل تُقيَّم كل المهيّئات بالتتابع. والمهيّئات مفيدة خصوصًا لفرض الثوابت. ويمكن رؤية مثال آخر في القسم 8.1.</p>
+<h2 id="35-الدوال-المجردة">3.5 الدوال المجرّدة</h2>
+<p>يمكن إعلان دالة من دون تعريفها فعليًا، باستعمال الكلمة المفتاحية <code>virtual</code>. وستُوفَّر هذه الدالة لاحقًا في الأصناف الفرعية. ويجب وسم الصنف الذي يحتوي دوالًا مجرّدة بـ <code>virtual</code>، ولا يمكن إنشاء نسخ منه (أي لا يمكن إنشاء أي كائن من هذا الصنف). لكنه يظلّ يعرّف اختصارات أنواع (بمعاملة الدوال المجرّدة كغيرها من الدوال.)</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">virtual</span> abstract_point x_init =
+    <span class="hljs-keyword">object</span> (self)
+      <span class="hljs-keyword">method</span> <span class="hljs-keyword">virtual</span> get_x : <span class="hljs-built_in">int</span>
+      <span class="hljs-keyword">method</span> get_offset = self#get_x - x_init
+      <span class="hljs-keyword">method</span> <span class="hljs-keyword">virtual</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">virtual</span> abstract_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">method</span> get_offset : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> <span class="hljs-keyword">virtual</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> <span class="hljs-keyword">virtual</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">class</span> point x_init =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">inherit</span> abstract_point x_init
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_offset : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>يمكن أيضًا إعلان متغيّرات النسخة مجرّدة، بالأثر نفسه الذي للدوال.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">virtual</span> abstract_point2 =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> <span class="hljs-keyword">virtual</span> x : <span class="hljs-built_in">int</span>
+      <span class="hljs-keyword">method</span> move d = x &lt;- x + d
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">virtual</span> abstract_point2 :
+  <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> <span class="hljs-keyword">virtual</span> x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">class</span> point2 x_init =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">inherit</span> abstract_point2
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get_offset = x - x_init
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point2 :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_offset : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<h2 id="36-الدوال-الخاصة">3.6 الدوال الخاصة</h2>
+<p>الدوال الخاصة هي دوال لا تظهر في واجهات الكائنات. ولا يمكن استدعاؤها إلا من دوال أخرى في الكائن نفسه.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> restricted_point x_init =
+    <span class="hljs-keyword">object</span> (self)
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> <span class="hljs-keyword">private</span> move d = x &lt;- x + d
+      <span class="hljs-keyword">method</span> bump = self#move <span class="hljs-number">1</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> restricted_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> bump : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> <span class="hljs-keyword">private</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> restricted_point <span class="hljs-number">0</span>;;
+
+<span class="hljs-keyword">val</span> p : restricted_point = &lt;obj&gt;
+
+# p#move <span class="hljs-number">10</span> ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">This</span> expression has <span class="hljs-keyword">type</span> restricted_point
+       <span class="hljs-type">It</span> has no <span class="hljs-keyword">method</span> move
+
+# p#bump;;
+
+- : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+</code></pre>
+<p>لاحظ أنّ هذا ليس الشيء نفسه الذي تعنيه الدوال الخاصة والمحمية في Java أو ++C، والتي يمكن استدعاؤها من كائنات أخرى من الصنف نفسه. وهذا نتيجة مباشرة لاستقلال الأنواع عن الأصناف في OCaml: فقد ينتج صنفان غير مترابطين كائنات من النوع نفسه، ولا سبيل على مستوى النوع إلى التأكّد من أنّ كائنًا ما يأتي من صنف معيّن. غير أنّ طريقة تشفير ممكنة للدوال الصديقة ترد في القسم 3.17.</p>
+<p>تُورَّث الدوال الخاصة (فهي ظاهرة افتراضيًا في الأصناف الفرعية)، إلا إذا حُجبت بمطابقة توقيع كما هو موصوف أدناه.</p>
+<p>ويمكن جعل الدوال الخاصة عامة في صنف فرعي.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> point_again x =
+    <span class="hljs-keyword">object</span> (self)
+      <span class="hljs-keyword">inherit</span> restricted_point x
+      <span class="hljs-keyword">method</span> <span class="hljs-keyword">virtual</span> move : _
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point_again :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> bump : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>لا تُستعمل إضافة <code>virtual</code> هنا إلا للإشارة إلى دالة من دون تقديم تعريفها. ولأننا لم نضف <code>private</code>، صارت الدالة عامة مع الحفاظ على تعريفها الأصلي.</p>
+<p>وثمّة تعريف بديل هو:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> point_again x =
+    <span class="hljs-keyword">object</span> (self : &lt; move : _; ..&gt; )
+      <span class="hljs-keyword">inherit</span> restricted_point x
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point_again :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> bump : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>فالقيد على نوع الذات يفرض وجود دالة عامة <code>move</code>، وهذا كافٍ لتجاوز <code>private</code>.</p>
+<p>قد يُظنّ أنّ الدالة الخاصة ينبغي أن تبقى خاصة في الصنف الفرعي. غير أنّ الدالة، بما أنها ظاهرة في الصنف الفرعي، يمكن دائمًا أخذ شيفرتها وتعريف دالة بالاسم نفسه تُشغّل تلك الشيفرة، فيكون حلّ ثالث (أثقل) هو:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> point_again x =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">inherit</span> restricted_point x <span class="hljs-keyword">as</span> super
+      <span class="hljs-keyword">method</span> move = super#move
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> point_again :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> bump : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وبالطبع يمكن أن تكون الدوال الخاصة مجرّدة أيضًا. وحينها يجب أن تظهر الكلمات المفتاحية بهذا الترتيب: <code>method private virtual</code>.</p>
+<h2 id="37-واجهات-الأصناف">3.7 واجهات الأصناف</h2>
+<p>تُستنتج واجهات الأصناف من تعريفات الأصناف. ويمكن أيضًا تعريفها مباشرةً واستعمالها لتقييد نوع صنف. وهي، مثل تصريحات الأصناف، تعرّف اختصار نوع جديدًا.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> restricted_point_type =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+      <span class="hljs-keyword">method</span> bump : <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> restricted_point_type =
+  <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> bump : <span class="hljs-built_in">unit</span> <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">fun</span> (x : restricted_point_type) -&gt; x;;
+
+- : restricted_point_type -&gt; restricted_point_type = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وإضافةً إلى توثيق البرامج، يمكن استعمال واجهات الأصناف لتقييد نوع صنف. ويمكن لقيد نوع الصنف أن يحجب متغيّرات النسخة الملموسة والدوال الخاصة الملموسة معًا. أمّا الدوال العامة والأعضاء المجرّدة فلا يمكن حجبها.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> restricted_point&#x27; x = (restricted_point x : restricted_point_type);;
+
+<span class="hljs-keyword">class</span> restricted_point&#x27; : <span class="hljs-built_in">int</span> -&gt; restricted_point_type
+</code></pre>
+<p>أو، وبالتكافؤ:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> restricted_point&#x27; = (restricted_point : <span class="hljs-built_in">int</span> -&gt; restricted_point_type);;
+
+<span class="hljs-keyword">class</span> restricted_point&#x27; : <span class="hljs-built_in">int</span> -&gt; restricted_point_type
+</code></pre>
+<p>ويمكن أيضًا تحديد واجهة صنف في توقيع وحدة، واستعمالها لتقييد التوقيع المستنتج لوحدة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">POINT</span> = <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">class</span> restricted_point&#x27; : <span class="hljs-built_in">int</span> -&gt;
+      <span class="hljs-keyword">object</span>
+        <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+        <span class="hljs-keyword">method</span> bump : <span class="hljs-built_in">unit</span>
+      <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">POINT</span> =
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">class</span> restricted_point&#x27; :
+      <span class="hljs-built_in">int</span> -&gt; <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> bump : <span class="hljs-built_in">unit</span> <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">module</span> <span class="hljs-type">Point</span> : <span class="hljs-type">POINT</span> = <span class="hljs-keyword">struct</span>
+    <span class="hljs-keyword">class</span> restricted_point&#x27; = restricted_point
+  <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">Point</span> : <span class="hljs-type">POINT</span>
+</code></pre>
+<h2 id="38-الوراثة">3.8 الوراثة</h2>
+<p>نوضّح الوراثة بتعريف صنف للنقاط الملوّنة يرث من صنف النقاط. لهذا الصنف كل متغيّرات النسخة وكل دوال صنف <code>point</code>، إضافةً إلى متغيّر نسخة جديد <code>c</code> ودالة جديدة <code>color</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> colored_point x (c : <span class="hljs-built_in">string</span>) =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">inherit</span> point x
+      <span class="hljs-keyword">val</span> c = c
+      <span class="hljs-keyword">method</span> color = c
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> colored_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-built_in">string</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> c : <span class="hljs-built_in">string</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> color : <span class="hljs-built_in">string</span>
+    <span class="hljs-keyword">method</span> get_offset : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> p&#x27; = <span class="hljs-keyword">new</span> colored_point <span class="hljs-number">5</span> <span class="hljs-string">&quot;red&quot;</span>;;
+
+<span class="hljs-keyword">val</span> p&#x27; : colored_point = &lt;obj&gt;
+
+# p&#x27;#get_x, p&#x27;#color;;
+
+- : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">string</span> = (<span class="hljs-number">5</span>, <span class="hljs-string">&quot;red&quot;</span>)
+</code></pre>
+<p>النقطة والنقطة الملوّنة لهما نوعان غير متوافقين، لأنّ النقطة لا تملك الدالة <code>color</code>. غير أنّ الدالة <code>get_succ_x</code> أدناه دالة عامة تطبّق الدالة <code>get_x</code> على أي كائن <code>p</code> يملك هذه الدالة (وربما دوال أخرى، تُمثَّل بعلامة حذف في النوع). ولذلك تنطبق على النقاط والنقاط الملوّنة معًا.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> get_succ_x p = p#get_x + <span class="hljs-number">1</span>;;
+
+<span class="hljs-keyword">val</span> get_succ_x : &lt; get_x : <span class="hljs-built_in">int</span>; .. &gt; -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# get_succ_x p + get_succ_x p&#x27;;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">8</span>
+</code></pre>
+<p>لا يلزم أن تُعلَن الدوال مسبقًا، كما يبيّن المثال:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> set_x p = p#set_x;;
+
+<span class="hljs-keyword">val</span> set_x : &lt; set_x : <span class="hljs-symbol">&#x27;a</span>; .. &gt; -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> incr p = set_x p (get_succ_x p);;
+
+<span class="hljs-keyword">val</span> incr : &lt; get_x : <span class="hljs-built_in">int</span>; set_x : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>; .. &gt; -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h2 id="39-الوراثة-المتعددة">3.9 الوراثة المتعددة</h2>
+<p>الوراثة المتعددة مسموح بها. ولا يُحفظ إلا آخر تعريف لدالة: فإعادة تعريف دالة كانت ظاهرة في الصنف الأب في صنف فرعي تتجاوز تعريف الصنف الأب. ويمكن إعادة استعمال التعريفات السابقة لدالة بربط السلف المعني. وفي ما يلي، يُربط <code>super</code> بالسلف <code>printable_point</code>. والاسم <code>super</code> معرّف قيمي زائف لا يمكن استعماله إلا لاستدعاء دالة صنف أب، كما في <code>super#print</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> printable_colored_point y c =
+    <span class="hljs-keyword">object</span> (self)
+      <span class="hljs-keyword">val</span> c = c
+      <span class="hljs-keyword">method</span> color = c
+      <span class="hljs-keyword">inherit</span> printable_point y <span class="hljs-keyword">as</span> super
+      <span class="hljs-keyword">method!</span> print =
+        print_string <span class="hljs-string">&quot;(&quot;</span>;
+        super#print;
+        print_string <span class="hljs-string">&quot;, &quot;</span>;
+        print_string (self#color);
+        print_string <span class="hljs-string">&quot;)&quot;</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> printable_colored_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-built_in">string</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> c : <span class="hljs-built_in">string</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> color : <span class="hljs-built_in">string</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> print : <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> p&#x27; = <span class="hljs-keyword">new</span> printable_colored_point <span class="hljs-number">17</span> <span class="hljs-string">&quot;red&quot;</span>;;
+
+<span class="hljs-keyword">new</span> point at (<span class="hljs-number">10</span>, red)
+<span class="hljs-keyword">val</span> p&#x27; : printable_colored_point = &lt;obj&gt;
+
+# p&#x27;#print;;
+
+(<span class="hljs-number">10</span>, red)- : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+</code></pre>
+<p>والدالة الخاصة التي حُجبت في الصنف الأب لم تعد ظاهرة، فلا تُتجاوز. ولأنّ المهيّئات تُعامَل كدوال خاصة، تُقيَّم كل المهيّئات على طول التسلسل الهرمي للصنف، بالترتيب الذي أُدخلت به.</p>
+<p>لاحظ أنّ الدالة <code>print</code> وُسمت صراحةً، لأجل الوضوح، بأنها تتجاوز تعريفًا آخر، وذلك بإضافة علامة تعجّب <code>!</code> إلى الكلمة المفتاحية <code>method</code>. ولو لم تكن <code>print</code> تتجاوز الدالة <code>print</code> في <code>printable_point</code>، لرفع المترجم خطأً:</p>
+<pre><code class="language-ocaml">#   <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">method!</span> m = <span class="hljs-literal">()</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">The</span> <span class="hljs-keyword">method</span> m has no previous definition
+</code></pre>
+<p>وتعمل إضافة التجاوز الصريحة هذه أيضًا مع <code>val</code> و<code>inherit</code>:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> another_printable_colored_point y c c&#x27; =
+    <span class="hljs-keyword">object</span> (self)
+    <span class="hljs-keyword">inherit</span> printable_point y
+    <span class="hljs-keyword">inherit!</span> printable_colored_point y c
+    <span class="hljs-keyword">val!</span> c = c&#x27;
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> another_printable_colored_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-built_in">string</span> -&gt;
+  <span class="hljs-built_in">string</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> c : <span class="hljs-built_in">string</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> color : <span class="hljs-built_in">string</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> print : <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<h2 id="310-الأصناف-ذات-المعاملات">3.10 الأصناف ذات المعاملات</h2>
+<p>يمكن تنفيذ خلايا المراجع كائناتٍ. والتعريف الساذج يفشل في فحص الأنواع:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> oref x_init =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get = x
+      <span class="hljs-keyword">method</span> set y = x &lt;- y
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">Some</span> <span class="hljs-keyword">type</span> variables are unbound <span class="hljs-keyword">in</span> this <span class="hljs-keyword">type</span>:
+         <span class="hljs-keyword">class</span> oref :
+           <span class="hljs-symbol">&#x27;a</span> -&gt;
+           <span class="hljs-keyword">object</span>
+             <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-symbol">&#x27;a</span>
+             <span class="hljs-keyword">method</span> get : <span class="hljs-symbol">&#x27;a</span>
+             <span class="hljs-keyword">method</span> set : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>
+           <span class="hljs-keyword">end</span>
+       <span class="hljs-type">The</span> <span class="hljs-keyword">method</span> get has <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> where <span class="hljs-symbol">&#x27;a</span> is unbound
+</code></pre>
+<p>والسبب أنّ إحدى الدوال على الأقل لها نوع متعدّد الأشكال (وهنا نوع القيمة المخزّنة في خلية المرجع)، لذا إمّا أن يكون الصنف مُعامَلًا، وإمّا أن يُقيَّد نوع الدالة بنوع أحادي الشكل. ويمكن تعريف نسخة أحادية الشكل من الصنف كما يلي:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> oref (x_init:<span class="hljs-built_in">int</span>) =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get = x
+      <span class="hljs-keyword">method</span> set y = x &lt;- y
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> oref :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> get : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> set : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>لاحظ أنّ الكائنات المباشرة، بما أنها لا تعرّف نوع صنف، لا يقع عليها هذا القيد.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> new_oref x_init =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init
+      <span class="hljs-keyword">method</span> get = x
+      <span class="hljs-keyword">method</span> set y = x &lt;- y
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">val</span> new_oref : <span class="hljs-symbol">&#x27;a</span> -&gt; &lt; get : <span class="hljs-symbol">&#x27;a</span>; set : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span> &gt; = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ومن ناحية أخرى، يجب أن يسرد صنف المراجع متعدّدة الأشكال معاملات النوع صراحةً في تصريحه. وتُسرد معاملات نوع الصنف بين <code>[</code> و<code>]</code>. ويجب أيضًا ربط معاملات النوع في موضع ما في جسم الصنف بقيد نوع.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] oref x_init =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = (x_init : <span class="hljs-symbol">&#x27;a</span>)
+      <span class="hljs-keyword">method</span> get = x
+      <span class="hljs-keyword">method</span> set y = x &lt;- y
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] oref :
+  <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">method</span> get : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">method</span> set : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> r = <span class="hljs-keyword">new</span> oref <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> r#set <span class="hljs-number">2</span>; (r#get);;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span>
+</code></pre>
+<p>وقد يُقيَّد معامل النوع في التصريح فعليًا في جسم تعريف الصنف. وفي نوع الصنف، تُعرض القيمة الفعلية لمعامل النوع في جملة <code>constraint</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] oref_succ (x_init:<span class="hljs-symbol">&#x27;a</span>) =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x = x_init + <span class="hljs-number">1</span>
+      <span class="hljs-keyword">method</span> get = x
+      <span class="hljs-keyword">method</span> set y = x &lt;- y
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] oref_succ :
+  <span class="hljs-symbol">&#x27;a</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">constraint</span> <span class="hljs-symbol">&#x27;a</span> = <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> set : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>لننظر في مثال أعقد: تعريف دائرة قد يكون مركزها أي نوع من النقاط. نضع قيد نوع إضافيًا في الدالة <code>move</code>، لأنه لا يجوز أن تبقى متغيّرات حرّة غير محسوبة بمعاملات نوع الصنف.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] circle (c : <span class="hljs-symbol">&#x27;a</span>) =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> center = c
+      <span class="hljs-keyword">method</span> center = center
+      <span class="hljs-keyword">method</span> set_center c = center &lt;- c
+      <span class="hljs-keyword">method</span> move = (center#move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>)
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] circle :
+  <span class="hljs-symbol">&#x27;a</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">constraint</span> <span class="hljs-symbol">&#x27;a</span> = &lt; move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>; .. &gt;
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> center : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> center : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> set_center : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وثمّة تعريف بديل لـ <code>circle</code> يستعمل جملة <code>constraint</code> في تعريف الصنف، وهو مبين أدناه. والنوع <code>#point</code> المستعمل أدناه في جملة <code>constraint</code> اختصار ينتجه تعريف الصنف <code>point</code>. وهذا الاختصار يتّحد مع نوع أي كائن ينتمي إلى صنف فرعي من الصنف <code>point</code>. وهو يتوسّع فعليًا إلى <code>&lt;get_x : int; move : int -&gt; unit; ..&gt;</code>. وهذا يقود إلى التعريف البديل التالي لـ <code>circle</code>، الذي يفرض قيودًا أقوى قليلًا على وسيطه، لأننا نتوقّع الآن أن يملك <code>center</code> الدالة <code>get_x</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] circle (c : <span class="hljs-symbol">&#x27;a</span>) =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">constraint</span> <span class="hljs-symbol">&#x27;a</span> = #point
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> center = c
+      <span class="hljs-keyword">method</span> center = center
+      <span class="hljs-keyword">method</span> set_center c = center &lt;- c
+      <span class="hljs-keyword">method</span> move = center#move
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] circle :
+  <span class="hljs-symbol">&#x27;a</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">constraint</span> <span class="hljs-symbol">&#x27;a</span> = #point
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> center : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> center : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> set_center : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>والصنف <code>colored_circle</code> نسخة متخصّصة من الصنف <code>circle</code> تشترط أن يتّحد نوع المركز مع <code>#colored_point</code>، وتضيف دالة <code>color</code>. لاحظ أنّك عند تخصيص صنف ذي معاملات يجب أن تعطي نسخة معامل النوع صراحةً دائمًا. وتُكتب هي أيضًا بين <code>[</code> و<code>]</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] colored_circle c =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">constraint</span> <span class="hljs-symbol">&#x27;a</span> = #colored_point
+      <span class="hljs-keyword">inherit</span> [<span class="hljs-symbol">&#x27;a</span>] circle c
+      <span class="hljs-keyword">method</span> color = center#color
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] colored_circle :
+  <span class="hljs-symbol">&#x27;a</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">constraint</span> <span class="hljs-symbol">&#x27;a</span> = #colored_point
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> center : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> center : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> color : <span class="hljs-built_in">string</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> set_center : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<h2 id="311-الدوال-متعددة-الأشكال">3.11 الدوال متعدّدة الأشكال</h2>
+<p>قد تكون الأصناف ذات المعاملات متعدّدة الأشكال في محتوياتها، لكنها لا تكفي للسماح بتعدّد أشكال استعمال الدوال.</p>
+<p>ومن الأمثلة الكلاسيكية تعريف مُكرِّر (iterator).</p>
+<pre><code class="language-ocaml"># <span class="hljs-type">List</span>.fold_left;;
+
+- : (<span class="hljs-symbol">&#x27;acc</span> -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;acc</span>) -&gt; <span class="hljs-symbol">&#x27;acc</span> -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;acc</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] intlist (l : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span>) =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">method</span> empty = (l = <span class="hljs-literal">[]</span>)
+      <span class="hljs-keyword">method</span> fold f (accu : <span class="hljs-symbol">&#x27;a</span>) = <span class="hljs-type">List</span>.fold_left f accu l
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] intlist :
+  <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt;
+  <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> empty : <span class="hljs-built_in">bool</span> <span class="hljs-keyword">method</span> fold : (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>للوهلة الأولى يبدو أن لدينا مكرِّرًا متعدّد الأشكال، لكنّ هذا لا يعمل عمليًا.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> l = <span class="hljs-keyword">new</span> intlist [<span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>];;
+
+<span class="hljs-keyword">val</span> l : <span class="hljs-symbol">&#x27;_weak2</span> intlist = &lt;obj&gt;
+
+# l#fold (<span class="hljs-keyword">fun</span> x y -&gt; x+y) <span class="hljs-number">0</span>;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">6</span>
+
+# l;;
+
+- : <span class="hljs-built_in">int</span> intlist = &lt;obj&gt;
+
+# l#fold (<span class="hljs-keyword">fun</span> s x -&gt; s ^ <span class="hljs-type">Int</span>.to_string x ^ <span class="hljs-string">&quot; &quot;</span>) <span class="hljs-string">&quot;&quot;</span> ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">The</span> <span class="hljs-keyword">value</span> s has <span class="hljs-keyword">type</span> <span class="hljs-built_in">int</span> but an expression was expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> <span class="hljs-built_in">string</span>
+</code></pre>
+<p>يعمل مكرِّرنا، كما يبيّن استعماله الأول للجمع. غير أنّ الكائنات نفسها ليست متعدّدة الأشكال (بل بوانيها فقط)، فاستعمال الدالة <code>fold</code> يثبّت نوعها لهذا الكائن بعينه. ويفشل محاولتنا التالية لاستعماله مكرِّرًا على السلاسل.</p>
+<p>المشكلة هنا أنّ التكميم وُضع في غير موضعه: فليس الصنف هو ما نريد أن يكون متعدّد الأشكال، بل الدالة <code>fold</code>. ويمكن تحقيق ذلك بإعطاء نوع متعدّد الأشكال صراحةً في تعريف الدالة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> intlist (l : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span>) =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">method</span> empty = (l = <span class="hljs-literal">[]</span>)
+      <span class="hljs-keyword">method</span> fold : <span class="hljs-symbol">&#x27;a</span>. (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> =
+        <span class="hljs-keyword">fun</span> f accu -&gt; <span class="hljs-type">List</span>.fold_left f accu l
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> intlist :
+  <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt;
+  <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> empty : <span class="hljs-built_in">bool</span> <span class="hljs-keyword">method</span> fold : (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> l = <span class="hljs-keyword">new</span> intlist [<span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>];;
+
+<span class="hljs-keyword">val</span> l : intlist = &lt;obj&gt;
+
+# l#fold (<span class="hljs-keyword">fun</span> x y -&gt; x+y) <span class="hljs-number">0</span>;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">6</span>
+
+# l#fold (<span class="hljs-keyword">fun</span> s x -&gt; s ^ <span class="hljs-type">Int</span>.to_string x ^ <span class="hljs-string">&quot; &quot;</span>) <span class="hljs-string">&quot;&quot;</span>;;
+
+- : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;1 2 3 &quot;</span>
+</code></pre>
+<p>وكما ترى في نوع الصنف الذي يعرضه المترجم، يجب أن تكون أنواع الدوال متعدّدة الأشكال صريحة تمامًا في تعريفات الأصناف (تظهر فورًا بعد اسم الدالة)، أمّا متغيّرات النوع المكمَّمة فيمكن تركها ضمنية في أوصاف الأصناف. ولماذا نشترط صراحة الأنواع؟ المشكلة أنّ <code>(int -&gt; int -&gt; int) -&gt; int -&gt; int</code> نوع صالح أيضًا للدالة <code>fold</code>، وهو غير متوافق مع النوع متعدّد الأشكال الذي أعطيناه (فالإحلال التلقائي لا يعمل إلا لمتغيّرات النوع في المستوى الأعلى، لا للمكمِّمات الداخلية، حيث تصبح المسألة غير قابلة للحسم.) فلا يستطيع المترجم الاختيار بين هذين النوعين، ويجب مساعدته.</p>
+<p>غير أنّ النوع يمكن حذفه كليًا في تعريف الصنف إذا كان معروفًا سلفًا، بالوراثة أو بقيود النوع على الذات. وهذا مثال على تجاوز دالة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> intlist_rev l =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">inherit</span> intlist l
+      <span class="hljs-keyword">method!</span> fold f accu = <span class="hljs-type">List</span>.fold_left f accu (<span class="hljs-type">List</span>.rev l)
+    <span class="hljs-keyword">end</span>;;
+</code></pre>
+<p>والأسلوب التالي يفصل الوصف عن التعريف.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> [<span class="hljs-symbol">&#x27;a</span>] iterator =
+    <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> fold : (<span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;b</span>) -&gt; <span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-symbol">&#x27;b</span> <span class="hljs-keyword">end</span>;;
+
+# <span class="hljs-keyword">class</span> intlist&#x27; l =
+    <span class="hljs-keyword">object</span> (self : <span class="hljs-built_in">int</span> #iterator)
+      <span class="hljs-keyword">method</span> empty = (l = <span class="hljs-literal">[]</span>)
+      <span class="hljs-keyword">method</span> fold f accu = <span class="hljs-type">List</span>.fold_left f accu l
+    <span class="hljs-keyword">end</span>;;
+</code></pre>
+<p>لاحظ هنا أسلوب <code>(self : int #iterator)</code>، الذي يضمن أن هذا الكائن ينفّذ الواجهة <code>iterator</code>.</p>
+<p>تُستدعى الدوال متعدّدة الأشكال بالطريقة نفسها التي تُستدعى بها الدوال العادية تمامًا، لكن ينبغي أن تنتبه إلى بعض حدود استنتاج الأنواع. أي أنّ الدالة متعدّدة الأشكال لا يمكن استدعاؤها إلا إذا كان نوعها معروفًا عند موضع الاستدعاء. وإلّا فستُفترض الدالة أحادية الشكل، وتُعطى نوعًا غير متوافق.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> sum lst = lst#fold (<span class="hljs-keyword">fun</span> x y -&gt; x+y) <span class="hljs-number">0</span>;;
+
+<span class="hljs-keyword">val</span> sum : &lt; fold : (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span>) -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>; .. &gt; -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# sum l ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">The</span> <span class="hljs-keyword">value</span> l has <span class="hljs-keyword">type</span>
+         intlist = &lt; empty : <span class="hljs-built_in">bool</span>; fold : <span class="hljs-symbol">&#x27;a</span>. (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> &gt;
+       but an expression was expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span>
+         &lt; fold : (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span>) -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;b</span>; .. &gt;
+       <span class="hljs-type">The</span> <span class="hljs-keyword">method</span> fold has <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span>. (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span>,
+       but the expected <span class="hljs-keyword">method</span> <span class="hljs-keyword">type</span> was (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span>) -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;b</span>
+</code></pre>
+<p>والحلّ سهل: ضع قيد نوع على الوسيط.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> sum (lst : _ #iterator) = lst#fold (<span class="hljs-keyword">fun</span> x y -&gt; x+y) <span class="hljs-number">0</span>;;
+
+<span class="hljs-keyword">val</span> sum : <span class="hljs-built_in">int</span> #iterator -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وبالطبع يمكن أن يكون القيد نوع دالة صريحًا. ولا يُشترط إلا مواضع المتغيّرات المكمَّمة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> sum lst =
+    (lst : &lt; fold : <span class="hljs-symbol">&#x27;a</span>. (<span class="hljs-symbol">&#x27;a</span> -&gt; _ -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span>; .. &gt;)#fold (+) <span class="hljs-number">0</span>;;
+
+<span class="hljs-keyword">val</span> sum : &lt; fold : <span class="hljs-symbol">&#x27;a</span>. (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span>; .. &gt; -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ومن استعمالات الدوال متعدّدة الأشكال الأخرى السماح بنوع من الوراثة الضمنية في وسائط الدوال. وقد رأينا في القسم 3.8 كيف يمكن أن تكون بعض الدوال متعدّدة الأشكال في صنف وسيطها. ويمكن توسيع ذلك ليشمل الدوال.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> point0 = <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> point0 = <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">class</span> distance_point x =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">inherit</span> point x
+      <span class="hljs-keyword">method</span> distance : <span class="hljs-symbol">&#x27;a</span>. (#point0 <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-built_in">int</span> =
+        <span class="hljs-keyword">fun</span> other -&gt; abs (other#get_x - x)
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> distance_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> distance : #point0 -&gt; <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_offset : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> distance_point <span class="hljs-number">3</span> <span class="hljs-keyword">in</span>
+  (p#distance (<span class="hljs-keyword">new</span> point <span class="hljs-number">8</span>), p#distance (<span class="hljs-keyword">new</span> colored_point <span class="hljs-number">1</span> <span class="hljs-string">&quot;blue&quot;</span>));;
+
+- : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> = (<span class="hljs-number">5</span>, <span class="hljs-number">2</span>)
+</code></pre>
+<p>لاحظ هنا الصياغة الخاصة <code>(#point0 as 'a)</code> التي يجب استعمالها لتكميم الجزء القابل للتوسيع من <code>#point0</code>. وكما في رابط المتغيّر، يمكن حذفها في مواصفات الأصناف. وإذا أردت تعدّد الأشكال داخل حقل كائن، وجب تكميمه مستقلًّا.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> multi_poly =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">method</span> m1 : <span class="hljs-symbol">&#x27;a</span>. (&lt; n1 : <span class="hljs-symbol">&#x27;b</span>. <span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-symbol">&#x27;b</span>; .. &gt; <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span>) -&gt; _ =
+        <span class="hljs-keyword">fun</span> o -&gt; o#n1 <span class="hljs-literal">true</span>, o#n1 <span class="hljs-string">&quot;hello&quot;</span>
+      <span class="hljs-keyword">method</span> m2 : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-symbol">&#x27;b</span>. (&lt; n2 : <span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-built_in">bool</span>; .. &gt; <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;b</span> -&gt; _ =
+        <span class="hljs-keyword">fun</span> o x -&gt; o#n2 x
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> multi_poly :
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">method</span> m1 : &lt; n1 : <span class="hljs-symbol">&#x27;b</span>. <span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-symbol">&#x27;b</span>; .. &gt; -&gt; <span class="hljs-built_in">bool</span> * <span class="hljs-built_in">string</span>
+    <span class="hljs-keyword">method</span> m2 : &lt; n2 : <span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-built_in">bool</span>; .. &gt; -&gt; <span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-built_in">bool</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>في الدالة <code>m1</code>، يجب أن يكون <code>o</code> كائنًا يملك على الأقل الدالة <code>n1</code>، وهي نفسها متعدّدة الأشكال. وفي الدالة <code>m2</code>، يجب أن يكون لوسيط <code>n2</code> و<code>x</code> النوع نفسه، وهو مكمَّم في المستوى نفسه الذي فيه <code>'a</code>.</p>
+<h2 id="312-استعمال-الإكراهات">3.12 استعمال الإكراهات</h2>
+<p>علاقة النوع الفرعي ليست ضمنية أبدًا. غير أنّ ثمّة طريقتين لتحقيقها. فالتركيب الأكثر عمومية صريح تمامًا: يجب إعطاء كل من مجال النوع ونطاقه في إكراه النوع.</p>
+<p>رأينا أنّ للنقاط والنقاط الملوّنة أنواعًا غير متوافقة. فمثلًا لا يمكن خلطها في القائمة نفسها. غير أنّ النقطة الملوّنة يمكن إكراهها إلى نقطة، مع حجب دالتها <code>color</code>:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> colored_point_to_point cp = (cp : colored_point :&gt; point);;
+
+<span class="hljs-keyword">val</span> colored_point_to_point : colored_point -&gt; point = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> point <span class="hljs-number">3</span> <span class="hljs-keyword">and</span> q = <span class="hljs-keyword">new</span> colored_point <span class="hljs-number">4</span> <span class="hljs-string">&quot;blue&quot;</span>;;
+
+<span class="hljs-keyword">val</span> p : point = &lt;obj&gt;
+<span class="hljs-keyword">val</span> q : colored_point = &lt;obj&gt;
+
+# <span class="hljs-keyword">let</span> l = [p; (colored_point_to_point q)];;
+
+<span class="hljs-keyword">val</span> l : point <span class="hljs-built_in">list</span> = [&lt;obj&gt;; &lt;obj&gt;]
+</code></pre>
+<p>ولا يمكن النظر إلى كائن من النوع <code>t</code> كائنًا من النوع <code>t'</code> إلا إذا كان <code>t</code> نوعًا فرعيًا من <code>t'</code>. فمثلًا لا يمكن النظر إلى نقطة كنقطة ملوّنة.</p>
+<pre><code class="language-ocaml"># (p : point :&gt; colored_point);;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">Type</span> point = &lt; get_offset : <span class="hljs-built_in">int</span>; get_x : <span class="hljs-built_in">int</span>; move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> &gt;
+       is not a subtype <span class="hljs-keyword">of</span>
+         colored_point =
+           &lt; color : <span class="hljs-built_in">string</span>; get_offset : <span class="hljs-built_in">int</span>; get_x : <span class="hljs-built_in">int</span>;
+             move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> &gt;
+       <span class="hljs-type">The</span> first <span class="hljs-keyword">object</span> <span class="hljs-keyword">type</span> has no <span class="hljs-keyword">method</span> color
+</code></pre>
+<p>وبالفعل، فإنّ الإكراهات المُضيِّقة من دون فحوص وقت التشغيل ستكون غير آمنة. وفحوص الأنواع وقت التشغيل قد ترفع استثناءات، وستتطلّب وجود معلومات الأنواع وقت التشغيل، وهذا ليس الحال في نظام OCaml. ولهذه الأسباب لا توجد في اللغة عملية من هذا القبيل.</p>
+<p>كن على علم بأنّ علاقة النوع الفرعي والوراثة غير مترابطتين. فالوراثة علاقة صياغية بين الأصناف، أمّا علاقة النوع الفرعي فعلاقة دلالية بين الأنواع. فمثلًا كان يمكن تعريف صنف النقاط الملوّنة مباشرةً من دون الوراثة من صنف النقاط؛ وسيبقى نوع النقاط الملوّنة على حاله، ومن ثمّ يبقى نوعًا فرعيًا من النقاط.</p>
+<p>وغالبًا ما يمكن حذف مجال الإكراه. فمثلًا يمكن تعريف:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> to_point cp = (cp :&gt; point);;
+
+<span class="hljs-keyword">val</span> to_point : #point -&gt; point = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وفي هذه الحالة، تكون الدالة <code>colored_point_to_point</code> نسخةً من الدالة <code>to_point</code>. لكنّ هذا ليس صحيحًا دائمًا. فالإكراه الصريح تمامًا أدقّ ولا غنى عنه أحيانًا. تخيّل، مثلًا، الصنف التالي:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> c0 = <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m = {&lt; &gt;} <span class="hljs-keyword">method</span> n = <span class="hljs-number">0</span> <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> c0 : <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>) <span class="hljs-keyword">method</span> m : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">method</span> n : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>نوع الكائن <code>c0</code> اختصار لـ <code>&lt;m : 'a; n : int&gt; as 'a</code>. تخيّل الآن تصريح النوع:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> c1 =  <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m : c1 <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> c1 = <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m : c1 <span class="hljs-keyword">end</span>
+</code></pre>
+<p>نوع الكائن <code>c1</code> اختصار للنوع <code>&lt;m : 'a&gt; as 'a</code>. والإكراه من كائن من النوع <code>c0</code> إلى كائن من النوع <code>c1</code> صحيح:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">fun</span> (x:c0) -&gt; (x : c0 :&gt; c1);;
+
+- : c0 -&gt; c1 = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>غير أنّ مجال الإكراه لا يمكن حذفه دائمًا. وفي تلك الحالة يكون الحلّ استعمال الصيغة الصريحة. وأحيانًا قد يحلّ تغيير في تعريف نوع الصنف المشكلة أيضًا.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> c2 = <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>) <span class="hljs-keyword">method</span> m : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> c2 = <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>) <span class="hljs-keyword">method</span> m : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">fun</span> (x:c0) -&gt; (x :&gt; c2);;
+
+- : c0 -&gt; c2 = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>فرغم أنّ نوعي الصنف <code>c1</code> و<code>c2</code> مختلفان، فإنّ نوعي الكائن <code>c1</code> و<code>c2</code> يتوسّعان إلى نوع الكائن نفسه (أسماء الدوال وأنواعها نفسها). ومع ذلك، عندما يُترك مجال الإكراه ضمنيًا ونطاقه اختصار لنوع صنف معروف، يُستعمل نوع الصنف، لا نوع الكائن، لاشتقاق دالة الإكراه. وهذا يسمح بترك المجال ضمنيًا في معظم الحالات عند الإكراه من صنف فرعي إلى صنفه الأب. ويمكن دائمًا النظر إلى نوع الإكراه كما يلي:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> to_c1 x = (x :&gt; c1);;
+
+<span class="hljs-keyword">val</span> to_c1 : &lt; m : #c1; .. &gt; -&gt; c1 = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> to_c2 x = (x :&gt; c2);;
+
+<span class="hljs-keyword">val</span> to_c2 : #c2 -&gt; c2 = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>لاحظ الفرق بين هذين الإكراهين: ففي حالة <code>to_c2</code>، النوع <code>#c2 = &lt;m : 'a; ..&gt; as 'a</code> عودي متعدّد الأشكال (وفق العودية الصريحة في نوع الصنف <code>c2</code>)؛ ومن هنا نجاح تطبيق هذا الإكراه على كائن من الصنف <code>c0</code>. أمّا في الحالة الأولى، فقد وُسِّع <code>c1</code> وفُكّ مرّتين فقط للحصول على <code>&lt;m : &lt;m : c1; ..&gt;; ..&gt;</code> (تذكّر أنّ <code>#c1 = &lt;m : c1; ..&gt;</code>)، من دون إدخال عودية. وقد تلاحظ أيضًا أنّ نوع <code>to_c2</code> هو <code>#c2 -&gt; c2</code> بينما نوع <code>to_c1</code> أعمّ من <code>#c1 -&gt; c1</code>. وهذا ليس صحيحًا دائمًا، إذ توجد أنواع أصناف تكون فيها بعض نسخ <code>#c</code> غير أنواع فرعية من <code>c</code>، كما هو موضّح في القسم 3.16. غير أنّ الإكراه <code>(_ :&gt; c)</code> أعمّ دائمًا من <code>(_ : #c :&gt; c)</code> في الأصناف التي لا معاملات لها.</p>
+<p>وقد تظهر مشكلة شائعة عند محاولة تعريف إكراه إلى صنف <code>c</code> أثناء تعريف الصنف <code>c</code> نفسه. والسبب أنّ اختصار النوع لم يُعرَّف تمامًا بعد، فأنواعه الفرعية غير معروفة بوضوح. وحينها يُؤخذ الإكراه <code>(_ :&gt; c)</code> أو <code>(_ : #c :&gt; c)</code> دالة الهوية، كما في</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">fun</span> x -&gt; (x :&gt; <span class="hljs-symbol">&#x27;a</span>);;
+
+- : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ونتيجةً لذلك، إذا طُبّق الإكراه على الذات كما في المثال التالي، اتّحد نوع الذات مع النوع المغلق <code>c</code> (ونوع الكائن المغلق نوع كائن بلا علامة حذف). وهذا سيقيّد نوع الذات بأن يكون مغلقًا، فيُرفض. وبالفعل لا يمكن أن يكون نوع الذات مغلقًا: فذلك سيمنع أي توسيع لاحق للصنف. ولذلك يُولَّد خطأ نوع عندما يؤدّي اتّحاد هذا النوع مع نوع آخر إلى نوع كائن مغلق.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> c = <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m = <span class="hljs-number">1</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">and</span> d = <span class="hljs-keyword">object</span> (self)
+    <span class="hljs-keyword">inherit</span> c
+    <span class="hljs-keyword">method</span> n = <span class="hljs-number">2</span>
+    <span class="hljs-keyword">method</span> as_c = (self :&gt; c)
+  <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">This</span> expression cannot be coerced <span class="hljs-keyword">to</span> <span class="hljs-keyword">type</span> c = &lt; m : <span class="hljs-built_in">int</span> &gt;; it has <span class="hljs-keyword">type</span>
+         &lt; as_c : c; m : <span class="hljs-built_in">int</span>; n : <span class="hljs-built_in">int</span>; .. &gt;
+       but is here used <span class="hljs-keyword">with</span> <span class="hljs-keyword">type</span> c
+       <span class="hljs-type">Self</span> <span class="hljs-keyword">type</span> cannot escape its <span class="hljs-keyword">class</span>
+</code></pre>
+<p>غير أنّ أكثر صور هذه المشكلة شيوعًا، أي إكراه الذات إلى صنفها الحالي، يكتشفها فاحص الأنواع كحالة خاصة، ويصحّح نوعها.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> c = <span class="hljs-keyword">object</span> (self) <span class="hljs-keyword">method</span> m = (self :&gt; c) <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> c : <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m : c <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وهذا يسمح بالأسلوب التالي، الذي يحفظ قائمة بكل الكائنات التي تنتمي إلى صنف أو إلى أصنافه الفرعية:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> all_c = <span class="hljs-built_in">ref</span> <span class="hljs-literal">[]</span>;;
+
+<span class="hljs-keyword">val</span> all_c : <span class="hljs-symbol">&#x27;_weak3</span> <span class="hljs-built_in">list</span> <span class="hljs-built_in">ref</span> = {contents = <span class="hljs-literal">[]</span>}
+
+# <span class="hljs-keyword">class</span> c (m : <span class="hljs-built_in">int</span>) =
+    <span class="hljs-keyword">object</span> (self)
+      <span class="hljs-keyword">method</span> m = m
+      <span class="hljs-keyword">initializer</span> all_c := (self :&gt; c) :: !all_c
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> c : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ويمكن بدور ذلك استعمال هذا الأسلوب لاسترجاع كائن أُضعف نوعه:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> lookup_obj obj = <span class="hljs-keyword">function</span> <span class="hljs-literal">[]</span> -&gt; raise <span class="hljs-type">Not_found</span>
+    | obj&#x27; :: l -&gt;
+       <span class="hljs-keyword">if</span> (obj :&gt; &lt; &gt;) = (obj&#x27; :&gt; &lt; &gt;) <span class="hljs-keyword">then</span> obj&#x27; <span class="hljs-keyword">else</span> lookup_obj obj l ;;
+
+<span class="hljs-keyword">val</span> lookup_obj : &lt; .. &gt; -&gt; (&lt; .. &gt; <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span>) <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> lookup_c obj = lookup_obj obj !all_c;;
+
+<span class="hljs-keyword">val</span> lookup_c : &lt; .. &gt; -&gt; &lt; m : <span class="hljs-built_in">int</span> &gt; = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>والنوع <code>&lt;m : int&gt;</code> الذي نراه هنا ليس إلا توسيع <code>c</code>، بسبب استعمال مرجع؛ وقد نجحنا في استعادة كائن من النوع <code>c</code>.</p>
+<p>وغالبًا ما يمكن تجنّب مشكلة الإكراه السابقة بتعريف الاختصار أولًا باستعمال نوع صنف:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> c&#x27; = <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">type</span> c&#x27; = <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">class</span> c : c&#x27; = <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m = <span class="hljs-number">1</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">and</span> d = <span class="hljs-keyword">object</span> (self)
+    <span class="hljs-keyword">inherit</span> c
+    <span class="hljs-keyword">method</span> n = <span class="hljs-number">2</span>
+    <span class="hljs-keyword">method</span> as_c = (self :&gt; c&#x27;)
+  <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> c : c&#x27;
+<span class="hljs-keyword">and</span> d : <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> as_c : c&#x27; <span class="hljs-keyword">method</span> m : <span class="hljs-built_in">int</span> <span class="hljs-keyword">method</span> n : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ويمكن أيضًا استعمال صنف مجرّد. فالوراثة من هذا الصنف تفرض في الوقت نفسه أن تكون كل دوال <code>c</code> من النوع نفسه الذي لدوال <code>c'</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">virtual</span> c&#x27; = <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> <span class="hljs-keyword">virtual</span> m : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">virtual</span> c&#x27; : <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> <span class="hljs-keyword">virtual</span> m : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">class</span> c = <span class="hljs-keyword">object</span> (self) <span class="hljs-keyword">inherit</span> c&#x27; <span class="hljs-keyword">method</span> m = <span class="hljs-number">1</span> <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> c : <span class="hljs-keyword">object</span> <span class="hljs-keyword">method</span> m : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>قد يُخطر بالبال تعريف اختصار النوع مباشرةً:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> c&#x27; = &lt;m : <span class="hljs-built_in">int</span>&gt;;;
+</code></pre>
+<p>غير أنّ الاختصار <code>#c'</code> لا يمكن تعريفه مباشرةً بالطريقة نفسها. فلا يمكن تعريفه إلا بتعريف صنف أو نوع صنف. والسبب أنّ اختصار <code>#</code> يحمل متغيّرًا مجهولًا ضمنيًا <code>..</code> لا يمكن تسميته صراحةً. وأقرب ما يمكن الوصول إليه هو:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> c&#x27;_class = <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">constraint</span> <span class="hljs-symbol">&#x27;a</span> = &lt; m : <span class="hljs-built_in">int</span>; .. &gt;;;
+</code></pre>
+<p>مع متغيّر نوع إضافي يلتقط نوع الكائن المفتوح.</p>
+<h2 id="313-الكائنات-الدالية">3.13 الكائنات الدالية</h2>
+<p>يمكن كتابة نسخة من الصنف <code>point</code> بلا إسنادات إلى متغيّرات النسخة. فتركيب التجاوز <code>{&lt; ... &gt;}</code> يُعيد نسخة من «الذات» (أي الكائن الحالي)، مع تغيير قيمة بعض متغيّرات النسخة ربما.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> functional_point y =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> x = y
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = {&lt; x = x + d &gt;}
+      <span class="hljs-keyword">method</span> move_to x = {&lt; x &gt;}
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> functional_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>)
+    <span class="hljs-keyword">val</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> move_to : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> functional_point <span class="hljs-number">7</span>;;
+
+<span class="hljs-keyword">val</span> p : functional_point = &lt;obj&gt;
+
+# p#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">7</span>
+
+# (p#move <span class="hljs-number">3</span>)#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">10</span>
+
+# (p#move_to <span class="hljs-number">15</span>)#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">15</span>
+
+# p#get_x;;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">7</span>
+</code></pre>
+<p>وكما في السجلات، الصيغة <code>{&lt; x &gt;}</code> نسخة مختصرة من <code>{&lt; x = x &gt;}</code> تتجنّب تكرار اسم متغيّر النسخة. لاحظ أنّ اختصار النوع <code>functional_point</code> عودي، ويمكن رؤية ذلك في نوع الصنف <code>functional_point</code>: فنوع الذات هو <code>'a</code>، و<code>'a</code> يظهر داخل نوع الدالة <code>move</code>.</p>
+<p>وتعريف <code>functional_point</code> أعلاه ليس مكافئًا لما يلي:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> bad_functional_point y =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> x = y
+      <span class="hljs-keyword">method</span> get_x = x
+      <span class="hljs-keyword">method</span> move d = <span class="hljs-keyword">new</span> bad_functional_point (x+d)
+      <span class="hljs-keyword">method</span> move_to x = <span class="hljs-keyword">new</span> bad_functional_point x
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> bad_functional_point :
+  <span class="hljs-built_in">int</span> -&gt;
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> get_x : <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">method</span> move : <span class="hljs-built_in">int</span> -&gt; bad_functional_point
+    <span class="hljs-keyword">method</span> move_to : <span class="hljs-built_in">int</span> -&gt; bad_functional_point
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>فرغم أنّ كائنات الصنفين ستتصرّف التصرّف نفسه، ستختلف كائنات أصنافهما الفرعية. ففي صنف فرعي من <code>bad_functional_point</code> ستظلّ الدالة <code>move</code> تُعيد كائنًا من الصنف الأب. وعلى العكس، في صنف فرعي من <code>functional_point</code> ستُعيد الدالة <code>move</code> كائنًا من الصنف الفرعي.</p>
+<p>وغالبًا ما يُستعمل التحديث الدالي مع الدوال الثنائية كما هو موضّح في القسم 8.2.1.</p>
+<h2 id="314-استنساخ-الكائنات">3.14 استنساخ الكائنات</h2>
+<p>يمكن استنساخ الكائنات أيضًا، سواء كانت دالية أو أمرية. فدالة المكتبة <code>Oo.copy</code> تُنشئ نسخة سطحية من كائن. أي أنها تُعيد كائنًا جديدًا يملك الدوال ومتغيّرات النسخة نفسها التي يملكها وسيطها. فمتغيّرات النسخة تُنسخ، لكنّ محتوياتها مشتركة. وإسناد قيمة جديدة إلى متغيّر نسخة في النسخة (باستدعاء دالة) لن يؤثّر في متغيّرات نسخة الأصل، والعكس صحيح. أمّا الإسناد الأعمق (مثلًا إذا كان متغيّر النسخة خلية مرجع) فسيؤثّر بالطبع في الأصل والنسخة معًا.</p>
+<p>ونوع <code>Oo.copy</code> هو التالي:</p>
+<pre><code class="language-ocaml"># <span class="hljs-type">Oo</span>.copy;;
+
+- : (&lt; .. &gt; <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>فالكلمة المفتاحية <code>as</code> في هذا النوع تربط متغيّر النوع <code>'a</code> بنوع الكائن <code>&lt; .. &gt;</code>. ولذلك تأخذ <code>Oo.copy</code> كائنًا له أي دوال (تُمثَّل بعلامة الحذف)، وتُعيد كائنًا من النوع نفسه. ونوع <code>Oo.copy</code> يختلف عن النوع <code>&lt; .. &gt; -&gt; &lt; .. &gt;</code>، لأنّ كل علامة حذف تُمثّل مجموعة دوال مختلفة. فعلًا، تتصّرّف علامة الحذف كمتغيّر نوع.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> point <span class="hljs-number">5</span>;;
+
+<span class="hljs-keyword">val</span> p : point = &lt;obj&gt;
+
+# <span class="hljs-keyword">let</span> q = <span class="hljs-type">Oo</span>.copy p;;
+
+<span class="hljs-keyword">val</span> q : point = &lt;obj&gt;
+
+# q#move <span class="hljs-number">7</span>; (p#get_x, q#get_x);;
+
+- : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> = (<span class="hljs-number">5</span>, <span class="hljs-number">12</span>)
+</code></pre>
+<p>وفي الواقع، ستتصرّف <code>Oo.copy p</code> كما تتصرّف <code>p#copy</code> بافتراض أنّ دالة عامة <code>copy</code> جسمها <code>{&lt; &gt;}</code> قد عُرِّفت في صنف <code>p</code>.</p>
+<p>ويمكن مقارنة الكائنات بدوال المقارنة العامة <code>=</code> و<code>&lt;&gt;</code>. فالكائنان متساويان إذا وفقط إذا كانا متساويين فيزيائيًا. وعلى وجه الخصوص، الكائن ونسخته غير متساويين.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> q = <span class="hljs-type">Oo</span>.copy p;;
+
+<span class="hljs-keyword">val</span> q : point = &lt;obj&gt;
+
+# p = q, p = p;;
+
+- : <span class="hljs-built_in">bool</span> * <span class="hljs-built_in">bool</span> = (<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>)
+</code></pre>
+<p>ويمكن استعمال مقارنات عامة أخرى مثل (<code>&lt;</code>، <code>&lt;=</code>، ...) على الكائنات أيضًا. فالعلاقة <code>&lt;</code> تعرّف ترتيبًا على الكائنات غير محدَّد لكنه صارم. وعلاقة الترتيب بين كائنين تُثبَّت نهائيًا بمجرّد إنشاء الكائنين، ولا تتأثّر بتغيير الحقول.</p>
+<p>للاستنساخ والتجاوز تقاطع غير خالٍ. وهما متبادلان عندما يُستعملان داخل كائن ومن دون تجاوز أي حقل:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> copy =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">method</span> copy = {&lt; &gt;}
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> copy : <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>) <span class="hljs-keyword">method</span> copy : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">class</span> copy =
+    <span class="hljs-keyword">object</span> (self)
+      <span class="hljs-keyword">method</span> copy = <span class="hljs-type">Oo</span>.copy self
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> copy : <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>) <span class="hljs-keyword">method</span> copy : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>فالتجاوز وحده يمكن استعماله لتجاوز الحقول فعليًا، والأولية <code>Oo.copy</code> وحدها يمكن استعمالها من الخارج.</p>
+<p>ويمكن استعمال الاستنساخ أيضًا لتوفير وسائل حفظ حالة الكائنات واستعادتها.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> backup =
+    <span class="hljs-keyword">object</span> (self : <span class="hljs-symbol">&#x27;mytype</span>)
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> copy = <span class="hljs-type">None</span>
+      <span class="hljs-keyword">method</span> save = copy &lt;- <span class="hljs-type">Some</span> {&lt; copy = <span class="hljs-type">None</span> &gt;}
+      <span class="hljs-keyword">method</span> restore = <span class="hljs-keyword">match</span> copy <span class="hljs-keyword">with</span> <span class="hljs-type">Some</span> x -&gt; x | <span class="hljs-type">None</span> -&gt; self
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> backup :
+  <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>)
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> copy : <span class="hljs-symbol">&#x27;a</span> option
+    <span class="hljs-keyword">method</span> restore : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> save : <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>التعريف أعلاه لا ينسخ إلا مستوى واحدًا. ويمكن إضافة وسيلة النسخ الاحتياطي إلى أي صنف باستعمال الوراثة المتعددة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] backup_ref x = <span class="hljs-keyword">object</span> <span class="hljs-keyword">inherit</span> [<span class="hljs-symbol">&#x27;a</span>] oref x <span class="hljs-keyword">inherit</span> backup <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] backup_ref :
+  <span class="hljs-symbol">&#x27;a</span> -&gt;
+  <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;b</span>)
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> copy : <span class="hljs-symbol">&#x27;b</span> option
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> get : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> restore : <span class="hljs-symbol">&#x27;b</span>
+    <span class="hljs-keyword">method</span> save : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> set : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> get p n = <span class="hljs-keyword">if</span> n = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> p # get <span class="hljs-keyword">else</span> get (p # restore) (n-<span class="hljs-number">1</span>);;
+
+<span class="hljs-keyword">val</span> get : (&lt; get : <span class="hljs-symbol">&#x27;b</span>; restore : <span class="hljs-symbol">&#x27;a</span>; .. &gt; <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;b</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> backup_ref <span class="hljs-number">0</span>  <span class="hljs-keyword">in</span>
+  p # save; p # set <span class="hljs-number">1</span>; p # save; p # set <span class="hljs-number">2</span>;
+  [get p <span class="hljs-number">0</span>; get p <span class="hljs-number">1</span>; get p <span class="hljs-number">2</span>; get p <span class="hljs-number">3</span>; get p <span class="hljs-number">4</span>];;
+
+- : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> = [<span class="hljs-number">2</span>; <span class="hljs-number">1</span>; <span class="hljs-number">1</span>; <span class="hljs-number">1</span>; <span class="hljs-number">1</span>]
+</code></pre>
+<p>يمكننا تعريف بديل للنسخ الاحتياطي يحتفظ بكل النسخ. (ونضيف أيضًا دالة <code>clear</code> لمحو كل النسخ يدويًا.)</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> backup =
+    <span class="hljs-keyword">object</span> (self : <span class="hljs-symbol">&#x27;mytype</span>)
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> copy = <span class="hljs-type">None</span>
+      <span class="hljs-keyword">method</span> save = copy &lt;- <span class="hljs-type">Some</span> {&lt; &gt;}
+      <span class="hljs-keyword">method</span> restore = <span class="hljs-keyword">match</span> copy <span class="hljs-keyword">with</span> <span class="hljs-type">Some</span> x -&gt; x | <span class="hljs-type">None</span> -&gt; self
+      <span class="hljs-keyword">method</span> clear = copy &lt;- <span class="hljs-type">None</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> backup :
+  <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>)
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> copy : <span class="hljs-symbol">&#x27;a</span> option
+    <span class="hljs-keyword">method</span> clear : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> restore : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> save : <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] backup_ref x = <span class="hljs-keyword">object</span> <span class="hljs-keyword">inherit</span> [<span class="hljs-symbol">&#x27;a</span>] oref x <span class="hljs-keyword">inherit</span> backup <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> [<span class="hljs-symbol">&#x27;a</span>] backup_ref :
+  <span class="hljs-symbol">&#x27;a</span> -&gt;
+  <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;b</span>)
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> copy : <span class="hljs-symbol">&#x27;b</span> option
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> x : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> clear : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> get : <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> restore : <span class="hljs-symbol">&#x27;b</span>
+    <span class="hljs-keyword">method</span> save : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> set : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> backup_ref <span class="hljs-number">0</span>  <span class="hljs-keyword">in</span>
+  p # save; p # set <span class="hljs-number">1</span>; p # save; p # set <span class="hljs-number">2</span>;
+  [get p <span class="hljs-number">0</span>; get p <span class="hljs-number">1</span>; get p <span class="hljs-number">2</span>; get p <span class="hljs-number">3</span>; get p <span class="hljs-number">4</span>];;
+
+- : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> = [<span class="hljs-number">2</span>; <span class="hljs-number">1</span>; <span class="hljs-number">0</span>; <span class="hljs-number">0</span>; <span class="hljs-number">0</span>]
+</code></pre>
+<h2 id="315-الأصناف-العودية">3.15 الأصناف العودية</h2>
+<p>يمكن استعمال الأصناف العودية لتعريف كائنات أنواعها متبادلة العودية.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> window =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> top_widget = (<span class="hljs-type">None</span> : widget option)
+      <span class="hljs-keyword">method</span> top_widget = top_widget
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">and</span> widget (w : window) =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> window = w
+      <span class="hljs-keyword">method</span> window = window
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> window :
+  <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> top_widget : widget option
+    <span class="hljs-keyword">method</span> top_widget : widget option
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">and</span> widget : window -&gt; <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> window : window <span class="hljs-keyword">method</span> window : window <span class="hljs-keyword">end</span>
+</code></pre>
+<p>فرغم أنّ نوعيهما متبادلا العودية، فإنّ الصنفين <code>widget</code> و<code>window</code> مستقلّان في نفسيهما.</p>
+<h2 id="316-الدوال-الثنائية">3.16 الدوال الثنائية</h2>
+<p>الدالة الثنائية دالة تأخذ وسيطًا من النوع نفسه الذي للذات. والصنف <code>comparable</code> أدناه قالب لأصناف ذات دالة ثنائية <code>leq</code> من النوع <code>'a -&gt; bool</code>، حيث يُربط متغيّر النوع <code>'a</code> بنوع الذات. ولذلك يتوسّع <code>#comparable</code> إلى <code>&lt;leq : 'a -&gt; bool; ..&gt; as 'a</code>. ونرى هنا أنّ الرابط <code>as</code> يسمح بكتابة الأنواع العودية أيضًا.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> <span class="hljs-keyword">virtual</span> comparable =
+    <span class="hljs-keyword">object</span> (_ : <span class="hljs-symbol">&#x27;a</span>)
+      <span class="hljs-keyword">method</span> <span class="hljs-keyword">virtual</span> leq : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">virtual</span> comparable : <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>) <span class="hljs-keyword">method</span> <span class="hljs-keyword">virtual</span> leq : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>نعرّف بعد ذلك صنفًا فرعيًا <code>money</code> من <code>comparable</code>. والصنف <code>money</code> يغلّف ببساطة أعداد الفاصلة العائمة كائناتٍ قابلة للمقارنة.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> وسنوسّع <code>money</code> أدناه بعمليات أخرى. ويجب أن نستعمل قيد نوع على معامل الصنف <code>x</code>، لأنّ الأولية <code>&lt;=</code> دالة متعدّدة الأشكال في OCaml. وتضمن جملة <code>inherit</code> أن يكون نوع كائنات هذا الصنف نسخةً من <code>#comparable</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> money (x : <span class="hljs-built_in">float</span>) =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">inherit</span> comparable
+      <span class="hljs-keyword">val</span> repr = x
+      <span class="hljs-keyword">method</span> <span class="hljs-keyword">value</span> = repr
+      <span class="hljs-keyword">method</span> leq p = repr &lt;= p#<span class="hljs-keyword">value</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> money :
+  <span class="hljs-built_in">float</span> -&gt;
+  <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>)
+    <span class="hljs-keyword">val</span> repr : <span class="hljs-built_in">float</span>
+    <span class="hljs-keyword">method</span> leq : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">method</span> <span class="hljs-keyword">value</span> : <span class="hljs-built_in">float</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>لاحظ أنّ النوع <code>money</code> ليس نوعًا فرعيًا من النوع <code>comparable</code>، لأنّ نوع الذات يظهر في موضع مضادّ التغاير في نوع الدالة <code>leq</code>. فالكائن <code>m</code> من الصنف <code>money</code> يملك دالة <code>leq</code> تتوقّع وسيطًا من النوع <code>money</code>، لأنه يصل إلى دالته <code>value</code>. ولو نُظر إلى <code>m</code> كنوع <code>comparable</code> لأتاح ذلك استدعاء الدالة <code>leq</code> على <code>m</code> بوسيط لا يملك الدالة <code>value</code>، وهذا خطأ.</p>
+<p>وبالمثل، النوع <code>money2</code> أدناه ليس نوعًا فرعيًا من النوع <code>money</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> money2 x =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">inherit</span> money x
+      <span class="hljs-keyword">method</span> times k = {&lt; repr = k *. repr &gt;}
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> money2 :
+  <span class="hljs-built_in">float</span> -&gt;
+  <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>)
+    <span class="hljs-keyword">val</span> repr : <span class="hljs-built_in">float</span>
+    <span class="hljs-keyword">method</span> leq : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">method</span> times : <span class="hljs-built_in">float</span> -&gt; <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> <span class="hljs-keyword">value</span> : <span class="hljs-built_in">float</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>غير أنّه يمكن تعريف دوال تتعامل مع كائنات من النوع <code>money</code> أو <code>money2</code>: فالدالة <code>min</code> ستُعيد أصغر أي كائنين يتّحد نوعهما مع <code>#comparable</code>. ونوع <code>min</code> ليس هو <code>#comparable -&gt; #comparable -&gt; #comparable</code>، لأنّ الاختصار <code>#comparable</code> يخفي متغيّر نوع (علامة حذف). وكل ظهور لهذا الاختصار يولّد متغيّرًا جديدًا.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> min (x : #comparable) y =
+    <span class="hljs-keyword">if</span> x#leq y <span class="hljs-keyword">then</span> x <span class="hljs-keyword">else</span> y;;
+
+<span class="hljs-keyword">val</span> min : (#comparable <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويمكن تطبيق هذه الدالة على كائنات من النوع <code>money</code> أو <code>money2</code>.</p>
+<pre><code class="language-ocaml"># (min (<span class="hljs-keyword">new</span> money  <span class="hljs-number">1.3</span>) (<span class="hljs-keyword">new</span> money <span class="hljs-number">3.1</span>))#<span class="hljs-keyword">value</span>;;
+
+- : <span class="hljs-built_in">float</span> = <span class="hljs-number">1.3</span>
+
+# (min (<span class="hljs-keyword">new</span> money2 <span class="hljs-number">5.0</span>) (<span class="hljs-keyword">new</span> money2 <span class="hljs-number">3.14</span>))#<span class="hljs-keyword">value</span>;;
+
+- : <span class="hljs-built_in">float</span> = <span class="hljs-number">3.14</span>
+</code></pre>
+<p>ويمكن إيجاد مزيد من أمثلة الدوال الثنائية في القسمين 8.2.1 و8.2.3.</p>
+<p>لاحظ استعمال التجاوز في الدالة <code>times</code>. فكتابة <code>new money2 (k *. repr)</code> بدلًا من <code>{&lt; repr = k *. repr &gt;}</code> لن تتصرّف تصرّفًا حسنًا مع الوراثة: ففي صنف فرعي <code>money3</code> من <code>money2</code> ستُعيد الدالة <code>times</code> كائنًا من الصنف <code>money2</code> لا من الصنف <code>money3</code> كما هو متوقّع.</p>
+<p>ويمكن أن يحمل الصنف <code>money</code> بطبيعته دالة ثنائية أخرى. وهذا تعريف مباشر:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> money x =
+    <span class="hljs-keyword">object</span> (self : <span class="hljs-symbol">&#x27;a</span>)
+      <span class="hljs-keyword">val</span> repr = x
+      <span class="hljs-keyword">method</span> <span class="hljs-keyword">value</span> = repr
+      <span class="hljs-keyword">method</span> print = print_float repr
+      <span class="hljs-keyword">method</span> times k = {&lt; repr = k *. x &gt;}
+      <span class="hljs-keyword">method</span> leq (p : <span class="hljs-symbol">&#x27;a</span>) = repr &lt;= p#<span class="hljs-keyword">value</span>
+      <span class="hljs-keyword">method</span> plus (p : <span class="hljs-symbol">&#x27;a</span>) = {&lt; repr = x +. p#<span class="hljs-keyword">value</span> &gt;}
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> money :
+  <span class="hljs-built_in">float</span> -&gt;
+  <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>)
+    <span class="hljs-keyword">val</span> repr : <span class="hljs-built_in">float</span>
+    <span class="hljs-keyword">method</span> leq : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">method</span> plus : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> print : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> times : <span class="hljs-built_in">float</span> -&gt; <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">method</span> <span class="hljs-keyword">value</span> : <span class="hljs-built_in">float</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<h2 id="317-الأصدقاء">3.17 الأصدقاء</h2>
+<p>يكشف الصنف <code>money</code> أعلاه مشكلة تظهر كثيرًا مع الدوال الثنائية. فللتفاعل مع كائنات أخرى من الصنف نفسه، يجب كشف تمثيل كائنات <code>money</code>، بدالة مثل <code>value</code>. وإذا حذفنا كل الدوال الثنائية (وهنا <code>plus</code> و<code>leq</code>)، أمكن حجب التمثيل داخل الكائنات بسهولة بحذف الدالة <code>value</code> أيضًا. غير أنّ هذا غير ممكن بمجرّد أن تحتاج إحدى الدوال الثنائية إلى الوصول إلى تمثيل كائنات من الصنف نفسه (غير الذات).</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> safe_money x =
+    <span class="hljs-keyword">object</span> (self : <span class="hljs-symbol">&#x27;a</span>)
+      <span class="hljs-keyword">val</span> repr = x
+      <span class="hljs-keyword">method</span> print = print_float repr
+      <span class="hljs-keyword">method</span> times k = {&lt; repr = k *. x &gt;}
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> safe_money :
+  <span class="hljs-built_in">float</span> -&gt;
+  <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>)
+    <span class="hljs-keyword">val</span> repr : <span class="hljs-built_in">float</span>
+    <span class="hljs-keyword">method</span> print : <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">method</span> times : <span class="hljs-built_in">float</span> -&gt; <span class="hljs-symbol">&#x27;a</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>هنا لا يعرف تمثيل الكائن إلا كائن معيّن. ولجعله متاحًا لكائنات أخرى من الصنف نفسه، نُضطرّ إلى جعله متاحًا للعالم كله. غير أنّنا نستطيع تقييد ظهور التمثيل بسهولة باستعمال نظام الوحدات.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">MONEY</span> =
+    <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">type</span> t
+      <span class="hljs-keyword">class</span> c : <span class="hljs-built_in">float</span> -&gt;
+        <span class="hljs-keyword">object</span> (<span class="hljs-symbol">&#x27;a</span>)
+          <span class="hljs-keyword">val</span> repr : t
+          <span class="hljs-keyword">method</span> <span class="hljs-keyword">value</span> : t
+          <span class="hljs-keyword">method</span> print : <span class="hljs-built_in">unit</span>
+          <span class="hljs-keyword">method</span> times : <span class="hljs-built_in">float</span> -&gt; <span class="hljs-symbol">&#x27;a</span>
+          <span class="hljs-keyword">method</span> leq : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span>
+          <span class="hljs-keyword">method</span> plus : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span>
+        <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>;;
+
+# <span class="hljs-keyword">module</span> <span class="hljs-type">Euro</span> : <span class="hljs-type">MONEY</span> =
+    <span class="hljs-keyword">struct</span>
+      <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">float</span>
+      <span class="hljs-keyword">class</span> c x =
+        <span class="hljs-keyword">object</span> (self : <span class="hljs-symbol">&#x27;a</span>)
+          <span class="hljs-keyword">val</span> repr = x
+          <span class="hljs-keyword">method</span> <span class="hljs-keyword">value</span> = repr
+          <span class="hljs-keyword">method</span> print = print_float repr
+          <span class="hljs-keyword">method</span> times k = {&lt; repr = k *. x &gt;}
+          <span class="hljs-keyword">method</span> leq (p : <span class="hljs-symbol">&#x27;a</span>) = repr &lt;= p#<span class="hljs-keyword">value</span>
+          <span class="hljs-keyword">method</span> plus (p : <span class="hljs-symbol">&#x27;a</span>) = {&lt; repr = x +. p#<span class="hljs-keyword">value</span> &gt;}
+        <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>;;
+</code></pre>
+<p>وثمّة مثال آخر على دوال الصداقة في القسم 8.2.3. وتظهر هذه الأمثلة عندما يجب أن ترى مجموعة من الكائنات (وهنا كائنات الصنف نفسه) ودوالّ ما تمثيل بعضها الداخلي، بينما يجب أن يبقى تمثيلها محجوبًا عن الخارج. والحلّ دائمًا هو تعريف كل الأصدقاء في الوحدة نفسها، وإتاحة الوصول إلى التمثيل، واستعمال قيد توقيع لجعل التمثيل مجرّدًا خارج الوحدة.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>أعداد الفاصلة العائمة تقريب للأعداد العشرية، وهي غير صالحة للاستعمال في معظم الحسابات النقدية، لأنها قد تُدخل أخطاء. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,o={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:e,html:c};export{s as book,a as chapter,n as chapterTitle,o as default,e as headings,c as html,l as slug,p as title};

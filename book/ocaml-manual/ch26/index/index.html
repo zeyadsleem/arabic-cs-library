@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Dtojx2F1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/COwA5tuQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C8xSp1-s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bk-T7h0B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DyJsUDCS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BEgh7YBq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5TZ6aje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8oEqyd_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.SGl2Uca0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B10blrac.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="تتبّع زمن التشغيل بأحداث runtime — تتبّع زمن التشغيل بأحداث runtime"/><!----><title>تتبّع زمن التشغيل بأحداث runtime | دليل لغة OCaml</title>
+		<link href="../../../../_app/immutable/assets/0.D2oAgqyE.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/ocaml-manual">دليل لغة OCaml</a> <span class="reader-bar__chapter">› تتبّع زمن التشغيل بأحداث runtime</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 27 من 38">27 / 38</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch25/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch27/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>تصدير</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/foreword/index">تصدير</a></li><!--]--></ul><h3>اللغة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch01/index">اللغة الأساسية</a></li><!--]--></ul><h3>نظام الوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch02/index">نظام الوحدات</a></li><!--]--></ul><h3>الكائنات في OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch03/index">الكائنات في OCaml</a></li><!--]--></ul><h3>الوسائط المُعنونة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch04/index">الوسائط المُعنونة</a></li><!--]--></ul><h3>المتغيّرات متعدّدة الأشكال</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch05/index">المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul><h3>تعدّد الأشكال وحدوده</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch06/index">تعدّد الأشكال وحدوده</a></li><!--]--></ul><h3>أنواع البيانات الجبرية المعمّمة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch07/index">أنواع البيانات الجبرية المعمّمة</a></li><!--]--></ul><h3>أمثلة متقدّمة بالأصناف والوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch08/index">أمثلة متقدّمة بالأصناف والوحدات</a></li><!--]--></ul><h3>البرمجة المتوازية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch09/index">البرمجة المتوازية</a></li><!--]--></ul><h3>نموذج الذاكرة: الأجزاء الصعبة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch10/index">نموذج الذاكرة: الأجزاء الصعبة</a></li><!--]--></ul><h3>لغة OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch11/index">لغة OCaml</a></li><!--]--></ul><h3>امتدادات اللغة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch12/index">امتدادات اللغة</a></li><!--]--></ul><h3>الترجمة الدفعية (ocamlc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch13/index">الترجمة الدفعية (ocamlc)</a></li><!--]--></ul><h3>النظام التفاعلي أو REPL (ocaml)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch14/index">النظام التفاعلي أو REPL (ocaml)</a></li><!--]--></ul><h3>نظام التشغيل (ocamlrun)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch15/index">نظام التشغيل (ocamlrun)</a></li><!--]--></ul><h3>الترجمة إلى الشيفرة الأصلية (ocamlopt)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch16/index">الترجمة إلى الشيفرة الأصلية (ocamlopt)</a></li><!--]--></ul><h3>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch17/index">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</a></li><!--]--></ul><h3>مولّد التبعيات (ocamldep)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch18/index">مولّد التبعيات (ocamldep)</a></li><!--]--></ul><h3>مولّد التوثيق (ocamldoc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch19/index">مولّد التوثيق (ocamldoc)</a></li><!--]--></ul><h3>المنقّح (ocamldebug)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch20/index">المنقّح (ocamldebug)</a></li><!--]--></ul><h3>التنقيح الأصلي (gdb, lldb)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch21/index">التنقيح الأصلي (gdb, lldb)</a></li><!--]--></ul><h3>قياس الأداء (ocamlprof, perf)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch22/index">قياس الأداء (ocamlprof, perf)</a></li><!--]--></ul><h3>الربط البيني مع لغة C</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch23/index">الربط البيني مع لغة C</a></li><!--]--></ul><h3>التحسين باستخدام Flambda</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch24/index">التحسين باستخدام Flambda</a></li><!--]--></ul><h3>الاختبار العشوائي باستخدام afl-fuzz</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch25/index">الاختبار العشوائي باستخدام afl-fuzz</a></li><!--]--></ul><h3 class="active-chapter">تتبّع زمن التشغيل بأحداث runtime</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch26/index" class="active">تتبّع زمن التشغيل بأحداث runtime</a></li><!--]--></ul><h3>تحويل البرنامج «ذَيلِي مع الباني»</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch27/index">تحويل البرنامج «ذَيلِي مع الباني»</a></li><!--]--></ul><h3>الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch28/index">الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</a></li><!--]--></ul><h3>المكتبة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch29/index">المكتبة الأساسية</a></li><!--]--></ul><h3>المكتبة القياسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch30/index">المكتبة القياسية</a></li><!--]--></ul><h3>واجهة المترجم الأمامية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch31/index">واجهة المترجم الأمامية</a></li><!--]--></ul><h3>مكتبة unix: نداءات نظام Unix</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch32/index">مكتبة unix: نداءات نظام Unix</a></li><!--]--></ul><h3>مكتبة str: التعابير النمطية ومعالجة السلاسل</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch33/index">مكتبة str: التعابير النمطية ومعالجة السلاسل</a></li><!--]--></ul><h3>مكتبة runtime_events</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch34/index">مكتبة runtime_events</a></li><!--]--></ul><h3>مكتبة threads</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch35/index">مكتبة threads</a></li><!--]--></ul><h3>مكتبة dynlink: التحميل والربط الديناميان</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch36/index">مكتبة dynlink: التحميل والربط الديناميان</a></li><!--]--></ul><h3>المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch37/index">المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>تتبّع زمن التشغيل بأحداث runtime</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#261-نظرة-عامة">26.1 نظرة عامة</a></li><li><a href="#262-البنية">26.2 البنية</a></li><li><a href="#2621-مصادر-الأحداث">26.2.1 مصادر الأحداث</a></li><li><a href="#2622-نقل-الأحداث">26.2.2 نقل الأحداث</a></li><li><a href="#263-الاستعمال">26.3 الاستعمال</a></li><li><a href="#2631-باستعمال-واجهات-ocaml">26.3.1 باستعمال واجهات OCaml</a></li><li><a href="#2632-باستعمال-الأدوات">26.3.2 باستعمال الأدوات</a></li><li><a href="#264-أحداث-مخصصة">26.4 أحداث مخصّصة</a></li><li><a href="#2641-نظرة-عامة">26.4.1 نظرة عامة</a></li><li><a href="#2642-تتبع-أحداث-مخصصة-مثال">26.4.2 تتبّع أحداث مخصّصة: مثال</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الفصل 26: تتبّع زمن التشغيل بأحداث runtime</h1>
+<p>يصف هذا الفصل نظام تتبّع أحداث زمن التشغيل، الذي يتيح استخراجًا متواصلًا لمعلومات الأداء من زمن تشغيل OCaml بعبء إضافي ضئيل جدًّا. والنظام وواجهاته منخفضا المستوى ومرتبطان ارتباطًا وثيقًا بتنفيذ زمن التشغيل، والمقصود أن يعتمد المستخدمون النهائيون على الأدوات لاستهلاك البيانات ذات الأهمية وعرضها بصريًّا.</p>
+<p>وتشمل البيانات المُصدَرة:</p>
+<ul>
+<li>
+<p>أزمنة أحداث مراحل جامع القمامة وزمن التشغيل</p>
+</li>
+<li>
+<p>أحجام الكومتين الصغرى والكبرى ونسب استغلالهما</p>
+</li>
+<li>
+<p>معدّلات التخصيص والترقية بين الكومتين</p>
+</li>
+</ul>
+<p>ويمكن تعريف أحداث إضافية واستهلاكها، ممّا يوفّر قدرات مراقبة أعلى مستوى لمكتبات OCaml. ويُشار إلى هذه الأحداث بـ<em>الأحداث المخصّصة</em>.</p>
+<h2 id="261-نظرة-عامة">26.1 نظرة عامة</h2>
+<p>ثمّة ثلاث فئات رئيسية من الأحداث التي يصدرها نظام أحداث زمن التشغيل:</p>
+<p><strong>الامتدادات</strong></p>
+<p>أحداث تمتدّ على مدة زمنية. فمثلًا، يصدر نظام تتبّع أحداث زمن التشغيل حدث امتداد يبدأ عند بدء جمع صغير في جامع القمامة في OCaml وينتهي عند إتمام الجمع. وقد تحتوي الامتدادات امتدادات أخرى، أي قد تصدر أحداث امتداد تبدأ بعد بدء جمع صغير وتنتهي قبله.</p>
+<p><strong>أحداث دورة الحياة</strong></p>
+<p>أحداث تقع في لحظة زمنية. فمثلًا، عند انتهاء نطاق، يصدر حدث دورة حياة مقابل.</p>
+<p><strong>العدّادات</strong></p>
+<p>أحداث تتضمّن قياسًا لكمية ذات أهمية. فمثلًا، عدد الكلمات المرفَّعة من الكومة الصغرى إلى الكبرى خلال آخر جمع صغير للقمامة يصدر بوصفه حدث عدّاد.</p>
+<p>ونظام تتبّع أحداث زمن التشغيل مصمَّم للاستعمال في سياقات مختلفة:</p>
+<p><strong>المراقبة الذاتية</strong></p>
+<p>تستطيع برامج ومكتبات OCaml تركيب استدعاءاتها الراجعة الخاصة للاستماع إلى أحداث زمن التشغيل والتفاعل معها برمجيًّا، مثلًا لتصدير الأحداث إلى القرص أو عبر الشبكة.</p>
+<p><strong>المراقبة الخارجية</strong></p>
+<p>تستطيع عملية خارجية استهلاك أحداث زمن التشغيل لبرنامج OCaml يكون نظام تتبّعه قد مُمِّكن بضبط متغيّر البيئة المقابل.</p>
+<p>يسجّل نظام تتبّع أحداث زمن التشغيل الأحداث في <em>مخزن حلقي</em>. وبالتالي تُطمَس الأحداث القديمة بأحداث جديدة. ويستطيع المستهلكون إمّا استهلاك الأحداث باستمرار، وإمّا أن يختاروا عدم فعل ذلك إلا استجابةً لظرف ما، مثلًا إذا استغرق استعلام أو عملية معيّنة وقتًا أطول من المتوقّع.</p>
+<h2 id="262-البنية">26.2 البنية</h2>
+<p>يتكوّن نظام التتبّع تصوّرًا من جزأين: 1) مصادر الأحداث التي تصدر الأحداث، و2) ناقل الأحداث الذي يبتلع هذه الأحداث وينقلها.</p>
+<h3 id="2621-مصادر-الأحداث">26.2.1 مصادر الأحداث</h3>
+<p>مصادر الأحداث نقاط مُصدِرة للأحداث. وثمّة عدد منها في نظام زمن تشغيل OCaml. وهي تنقسم كذلك إلى مجموعتين: 1) مصادر أحداث متاحة دائمًا، و2) مصادر أحداث متاحة في زمن التشغيل المجهَّز فقط. ومصادر الأحداث في زمن التشغيل المجهَّز تهمّ مطوّري زمن تشغيل OCaml وجامع القمامة بالأساس، وهي لا تتكوّن حاليًّا إلا من أحداث عدّاد حجم تخصيص الكومة الكبرى.</p>
+<p>ويمكن العثور على المجموعة الكاملة للأحداث التي تصدرها مصادر الأحداث وتوثيقها في الوحدة <code>Runtime_events</code>.</p>
+<h3 id="2622-نقل-الأحداث">26.2.2 نقل الأحداث</h3>
+<p>يبتلع جزء نقل الأحداث من النظام الأحداثَ التي تصدرها مصادر الأحداث ويتيحها للمستهلكين.</p>
+<h4>المخازن الحلقية</h4>
+<p>تُنقل الأحداث باستعمال بنية بيانات تُعرف بـ<em>المخزن الحلقي</em>. وتتكوّن هذه البنية من مؤشرين إلى مصفوفة خطّية داعمة: مؤشر الذيل يشير إلى موضع يمكن كتابة أحداث جديدة فيه، ومؤشر الرأس يشير إلى أقدم حدث في المخزن يمكن قراءته. وعندما لا يتوفّر فراغ كافٍ في المصفوفة الداعمة لكتابة أحداث جديدة، يُقدَّم مؤشر الرأس وتُطمس أقدم الأحداث بأحداث جديدة.</p>
+<p>ولا يمكن كتابة المخزن الحلقي المستعمل في أحداث زمن التشغيل من أكثر من منتج واحد في وقت واحد، لكن يمكن قراءته في الوقت نفسه من عدّة مستهلكين دون تنسيق من المنتج. وثمّة مخزن حلقي واحد لكل نطاق قيد التشغيل، وعند انتهاء نطاق قد يُعاد استعمال مخازنه الحلقية لنطاقات مولَّدة حديثًا. ولا تُخصَّص المخازن الحلقية (بما في ذلك للنطاق الرئيسي) إلا عند تمكين أحداث زمن التشغيل. وتُخزَّن المخازن نفسها في ملف مُخطَّط في الذاكرة يحمل اسمه معرّف العملية وامتداده <code>.events</code>، ممّا يتيح قراءتها من خارج عملية OCaml الرئيسية. انظر <code>Runtime_events</code> لمزيد من المعلومات.</p>
+<h4>واجهات الاستهلاك</h4>
+<p>يوفّر نظام تتبّع أحداث زمن التشغيل واجهتي OCaml وC، وكلتاهما قائمتان على المؤشرات وعلى السحب الدوري. والعملية عالية المستوى لاستهلاك الأحداث كما يلي:</p>
+<ol>
+<li>
+<p>يُنشأ مؤشر عبر <code>Runtime_events.create_cursor</code> إمّا للعملية الحالية وإمّا لعملية خارجية (تُحدَّد بمسار ومعرّف عملية).</p>
+</li>
+<li>
+<p>يُستدعى <code>Runtime_events.Callbacks.create</code> لتسجيل دالة راجعة تستقبل الأحداث.</p>
+</li>
+<li>
+<p>يُسحب المؤشر دوريًّا عبر <code>Runtime_events.read_poll</code> باستعمال الاستدعاءات الراجعة المنشأة في الخطوة السابقة. ولكل حدث مطابق في المخازن الحلقية تُستدعى الدوال الراجعة المقدَّمة. وإضافةً إلى الأحداث المُصدَرة، تُمنح الاستدعاءات الراجعة معرّف نطاق المُصدِر وطابع زمن الإصدار.</p>
+</li>
+</ol>
+<h2 id="263-الاستعمال">26.3 الاستعمال</h2>
+<h3 id="2631-باستعمال-واجهات-ocaml">26.3.1 باستعمال واجهات OCaml</h3>
+<p>نبدأ بمثال بسيط يطبع اسم كل حدث تصدره أدوات تتبّع أحداث زمن التشغيل وزمن بدئه وزمن انتهائه:</p>
+<pre><code class="language-text">let runtime_begin _ ts phase =
+    Printf.printf &quot;Begin\t%s\t%Ld\n&quot;
+        (Runtime_events.runtime_phase_name phase)
+        (Runtime_events.Timestamp.to_int64 ts)
+
+let runtime_end _ ts phase =
+    Printf.printf &quot;End\t%s\t%Ld\n&quot;
+        (Runtime_events.runtime_phase_name phase)
+        (Runtime_events.Timestamp.to_int64 ts)
+
+let () =
+    Runtime_events.start ();
+    let cursor = Runtime_events.create_cursor None in
+    let callbacks = Runtime_events.Callbacks.create ~runtime_begin ~runtime_end ()
+    in
+    while true do
+        let list_ref = ref [] in (* for later fake GC work *)
+        for _ = 1 to 100 do
+            (* here we do some fake GC work *)
+            list_ref := [];
+            for _ = 1 to 10 do
+                list_ref := (Sys.opaque_identity(ref 42)) :: !list_ref
+            done;
+            Gc.full_major ();
+        done;
+        ignore(Runtime_events.read_poll cursor callbacks None);
+        Unix.sleep 1
+    done
+</code></pre>
+<p>والخطوة التالية هي تصريف البرنامج وربطه بمكتبة runtime_events. ويمكن فعل ذلك كما يلي:</p>
+<pre><code class="language-text">       ocamlopt -I +runtime_events -I +unix unix.cmxa runtime_events.cmxa
+            example.ml -o example
+</code></pre>
+<p>وعند استعمال نظام البناء <em>dune</em>، يمكن بناء هذا المثال كما يلي:</p>
+<pre><code class="language-text">(executable
+ (name example)
+ (modules example)
+ (libraries unix runtime_events))
+</code></pre>
+<p>وتشغيل الملف التنفيذي المصرَّف للمثال يعطي خَرْجًا شبيهًا بما يلي:</p>
+<pre><code class="language-text">Begin   explicit_gc_full_major  24086187297852
+Begin   stw_leader      24086187298594
+Begin   minor   24086187299404
+Begin   minor_global_roots      24086187299807
+End     minor_global_roots      24086187331461
+Begin   minor_remembered_set    24086187331631
+Begin   minor_finalizers_oldify 24086187544312
+End     minor_finalizers_oldify 24086187544704
+Begin   minor_remembered_set_promote    24086187544879
+End     minor_remembered_set_promote    24086187606414
+End     minor_remembered_set    24086187606584
+Begin   minor_finalizers_admin  24086187606854
+End     minor_finalizers_admin  24086187607152
+Begin   minor_local_roots       24086187607329
+Begin   minor_local_roots_promote       24086187609699
+End     minor_local_roots_promote       24086187610539
+End     minor_local_roots       24086187610709
+End     minor   24086187611746
+Begin   minor_clear     24086187612238
+End     minor_clear     24086187612580
+End     stw_leader      24086187613209
+...
+</code></pre>
+<p>هذا مثال على المراقبة الذاتية، حيث يبدأ برنامج صراحةً الاستماع إلى أحداث زمن التشغيل ويراقب نفسه.</p>
+<p>أمّا المراقبة الخارجية، فلا يحتاج البرنامج فيها إلى معرفة بوجود أحداث زمن التشغيل. ويمكن التحكّم في أحداث زمن التشغيل بمتغيّر البيئة <code>OCAML_RUNTIME_EVENTS_START</code> الذي، عند ضبطه، يجعل نظام التتبّع يبدأ عند تهيئة البرنامج.</p>
+<p>ويمكننا حذف <code>Runtime_events.start ();</code> من المثال السابق، والاستدعاء بدلًا من ذلك كما يلي للحصول على النتيجة نفسها:</p>
+<pre><code class="language-text">OCAML_RUNTIME_EVENTS_START=1 ./example
+</code></pre>
+<h4>متغيّرات البيئة</h4>
+<p>يمكن استعمال متغيّرات البيئة للتحكّم في جوانب مختلفة من نظام تتبّع أحداث زمن التشغيل. ومتغيّرات البيئة المتاحة هي:</p>
+<ul>
+<li>
+<p><code>OCAML_RUNTIME_EVENTS_START</code>: عند ضبطه يجعل نظام أحداث زمن التشغيل يبدأ ضمن تهيئة زمن تشغيل OCaml.</p>
+</li>
+<li>
+<p><code>OCAML_RUNTIME_EVENTS_DIR</code>: يضبط الدليل الذي ستوضع فيه ملفات <code>.events</code> الحاوية للمخازن الحلقية لنظام تتبّع أحداث زمن التشغيل. وإذا لم يكن موجودًا يُستعمل دليل عمل البرنامج.</p>
+</li>
+<li>
+<p><code>OCAML_RUNTIME_EVENTS_PRESERVE</code>: عند ضبطه يجعل زمن تشغيل OCaml يحافظ على ملفات المخازن الحلقية لأحداث زمن التشغيل بعد انتهاء برنامج OCaml. ويفيد ذلك في مراقبة البرامج القصيرة جدًّا. وإذا لم يُضبط، تُحذف ملفات <code>.events</code> الخاصة ببرنامج OCaml عند انتهاء البرنامج.</p>
+</li>
+</ul>
+<p>ويمكن ضبط حجم المخازن الحلقية لأحداث زمن التشغيل عبر <code>OCAMLRUNPARAM</code>، انظر القسم 15.2 لمزيد من المعلومات.</p>
+<h4>البناء مع زمن التشغيل المجهَّز</h4>
+<p>بعض الأحداث لا يصدرها إلا زمن التشغيل المجهَّز. ولتلقّيها، يلزم تصريف برنامج OCaml وربطه في زمن التشغيل المجهَّز. وبرنامجنا المثالي السابق، يُنجَز ذلك كما يلي:</p>
+<pre><code class="language-text">ocamlopt -runtime-variant i -I +runtime_events -I +unix unix.cmxa runtime_events.cmxa example.ml -o example
+</code></pre>
+<p>ولـ dune:</p>
+<pre><code class="language-text">(executable
+ (name example)
+ (modules example)
+ (flags &quot;-runtime-variant=i&quot;)
+ (libraries unix runtime_events))
+</code></pre>
+<h3 id="2632-باستعمال-الأدوات">26.3.2 باستعمال الأدوات</h3>
+<p>الوصول البرمجي إلى الأحداث مقصود به بالأساس كاتبو مكتبات الرصد والأدوات للمستخدمين النهائيين. فالواجهة المرنة تتيح استعمال بيانات الأداء من أحداث زمن التشغيل لأغراض التسجيل والمراقبة.</p>
+<p>وفي هذا القسم نتناول عدّة أدوات مساعدة في حزمة <code>runtime_events_tools</code> توفّر طرقًا بسيطة لاستخراج بيانات أحداث زمن التشغيل وتلخيصها. وأداة trace بصفة خاصة تنتج بيانات شبيهة بتلك التي ينتجها نظام تجهيز «eventlog» السابق المتوفّر في OCaml 4.12 حتى 4.14.</p>
+<p>أولًا، ثبّت <code>runtime_events_tools</code> في تبديل opam للإصدار OCaml 5.0 فما فوق:</p>
+<pre><code class="language-text">opam install runtime_events_tools
+</code></pre>
+<p>ومن المفروض أن يثبّت ذلك أداة olly في مسارك. ويمكنك الآن توليد تتبّعات زمن التشغيل للبرامج المصرَّفة بـ OCaml 5.0 فما فوق باستعمال الأمر الفرعي trace:</p>
+<pre><code class="language-text">olly trace trace.json &#x27;your_program.exe .. args ..&#x27;
+</code></pre>
+<p>وستولَّد بيانات تتبّع زمن التشغيل بصيغة JSON Trace Event في الملف trace.json. ويمكن بعدها تحميل هذا الملف في عارض تتبّع Chrome أو في <a href="https://ui.perfetto.dev/">Perfetto</a> لعرض التتبّع المجموع بصريًّا.</p>
+<h4>قياس كمون جامع القمامة</h4>
+<p>تتضمّن أداة olly أيضًا أمرًا فرعيًّا اسمه latency يستهلك بيانات أحداث زمن التشغيل ويصدر عند اكتمال البرنامج ملخّصًا قابلًا للتحليل على هيئة مدراج لتوزيع مدد التوقّف. ويمكن تشغيلها كما يلي:</p>
+<pre><code class="language-text">olly latency &#x27;your_program.exe .. args ..&#x27;
+</code></pre>
+<p>ومن المفروض أن ينتج ذلك خَرْجًا شبيهًا بما يلي:</p>
+<pre><code class="language-text">GC latency profile:
+#[Mean (ms):  2.46,   Stddev (ms):  3.87]
+#[Min (ms):  0.01,   max (ms):  9.17]
+
+Percentile    Latency (ms)
+25.0000    0.01
+50.0000    0.23
+60.0000    0.23
+70.0000    0.45
+75.0000    0.45
+80.0000    0.45
+85.0000    0.45
+90.0000    9.17
+95.0000    9.17
+96.0000    9.17
+97.0000    9.17
+98.0000    9.17
+99.0000    9.17
+99.9000    9.17
+99.9900    9.17
+99.9990    9.17
+99.9999    9.17
+100.0000    9.17
+</code></pre>
+<h2 id="264-أحداث-مخصصة">26.4 أحداث مخصّصة</h2>
+<h3 id="2641-نظرة-عامة">26.4.1 نظرة عامة</h3>
+<p>يدعم نظام أحداث زمن التشغيل تعريف أحداث مخصّصة. وهذه الأحداث، المعرَّفة باسم فريد عالميًّا، تصدر بحمولات من أنواع مدمجة (<code>unit</code>، <code>int</code>، <code>span</code>) وأنواع يعرّفها المستخدم. ولاستيعاب التعامل مع الأحداث المخصّصة، يفيد معرفة كيف تُنقل وتُخزَّن: فتمثيلها يتكوّن من سلسلة اسم (وهي في الحقيقة فهرس في مصفوفة تضمّ جميع الأسماء المخصّصة) ومن متتالية بايتات اعتباطية. ويمكن <em>تسجيل</em> أنواع الأحداث المخصّصة بتقديم دالّتي ترميز وفكّ ترميز من وإلى متتالية بايتات، عبر الدالة <code>Runtime_events.Type.register</code>.</p>
+<p>ويُنجَز تعريف حدث مخصّص جديد (سواء كانت حمولته من نوع مدمج أو من نوع مخصّص) بدالة تسجيل أخرى هي <code>Runtime_events.User.register</code>. وتسجّل هذه الدالة الارتباط بين اسم الحدث المخصّص ونوعه و<em>وسم</em>. ثم يُستعمل الوسم عند إصدار الأحداث المخصّصة أو استهلاكها؛ فهو يعمل اختصارًا لاسم الحدث.</p>
+<p>وما إن يُسجَّل حدث، تُصدَر قيم ذلك الحدث باستعمال <code>Runtime_events.User.write</code>.</p>
+<p>وخلاصةً، كي يصدر مستخدم أحداثًا مخصّصة ويستهلكها باستعمال نوع مخصّص، عليه أن:</p>
+<ol>
+<li>
+<p>يسجّل النوع المخصّص</p>
+</li>
+<li>
+<p>يوسّع المتغيّر <code>Runtime_events.User.tag</code> بباني جديد</p>
+</li>
+<li>
+<p>يسجّل الحدث المخصّص الجديد، رابطًا اسم الحدث المخصّص الجديد والوسم الجديد والنوع المخصّص الجديد</p>
+</li>
+<li>
+<p>يصدر حالات من الحدث باستعمال <code>Runtime_events.User.write</code></p>
+</li>
+<li>
+<p>يشير إلى استدعاء راجع ينبغي أن يستقبل كل أحداث النوع المخصّص باستعمال <code>Runtime_events.Callbacks.add_user_event</code>، لتسجيله داخل كائن <code>Runtime_events.Callbacks.t</code> يُستعمل عند السحب الدوري (انظر القسم 26.3.1 أعلاه).</p>
+</li>
+<li>
+<p><em>(اختياري، إذا كانت ثمة أحداث متمايزة مسجَّلة بالنوع المخصّص نفسه:)</em> في ذلك الاستدعاء الراجع، يطابق نمطيًّا على وسم الحدث لتمييز الوسوم المختلفة للنوع المخصّص نفسه.</p>
+</li>
+</ol>
+<p>ولاحظ أنه إذا كان المُصدِر والمستهلك برنامجين مختلفين، فعلى كليهما إنجاز الخطوات 1 إلى 3 لتسجيل الأحداث المخصّصة وأنواع الأحداث المخصّصة (إن وُجدت). ولاحظ أن قيم الوسوم لا يلزم أن تكون واحدة في البرنامجين؛ فالقيم الوحيدة التي ينبغي أن تتطابق هي الأسماء.</p>
+<p>والأحداث غير المسجَّلة للأنواع المعرَّفة من المستخدم تُتجاهل حاليًّا. وكخيار بديل، تتوفّر الأحداث المخصّصة غير المسجَّلة من نوع مدمج، لكنها كلها موسومة <code>UNK</code> (مجهولة).</p>
+<p>وهكذا ثمّة ثلاث حالات للمستهلك عند تلقّي حدث:</p>
+<ul>
+<li>
+<p>الحدث مسجَّل: تتوفّر الحمولة والوسم.</p>
+</li>
+<li>
+<p>الحدث غير مسجَّل وله نوع حدث مدمج (unit، int، span): تتوفّر الحمولة فقط.</p>
+</li>
+<li>
+<p>الحدث غير مسجَّل وله نوع حدث مخصّص: يُهمَل الحدث.</p>
+</li>
+</ul>
+<p>ولاحظ أن مستهلكي الأحداث يربطون الاستدعاءات الراجعة بـ<em>أنواع</em> الأحداث، فيمكنهم العمل كمستمعين عامّين يفسّرون الحمولات الآتية من أحداث غير مسجَّلة. ولأن ذلك لا يعمل إلا مع أحداث الأنواع المدمجة، فقد يفيد إصدار الأحداث في أزواج: حدث من نوع مخصّص مع حدث من نوع مدمج، ممّا يتيح تصميم مستهلك متخصّص مع البقاء متوافقًا مع أدوات التتبّع العامة.</p>
+<h3 id="2642-تتبع-أحداث-مخصصة-مثال">26.4.2 تتبّع أحداث مخصّصة: مثال</h3>
+<p>يستعمل البرنامج التالي الوحدتين <code>Runtime_events.User</code> و<code>Runtime_events.Type</code> لتعريف حدثين مخصّصين يقدّمان قيمتي <code>span</code> و<code>int</code>. ويُوسَّع المتغيّر القابل للتمديد <code>tag</code> بـ<code>CustomSpan</code> و<code>CustomInt</code>.</p>
+<pre><code class="language-text">type Runtime_events.User.tag += CustomSpan | CustomInt
+
+let count_span =
+    Runtime_events.User.register &quot;count.span&quot; CustomSpan
+        Runtime_events.Type.span
+
+let count_value =
+    Runtime_events.User.register &quot;count.value&quot; CustomInt
+        Runtime_events.Type.int
+
+let count () =
+    Runtime_events.User.write count_span Begin;
+    for i = 1 to 5 do
+        Runtime_events.User.write count_value i
+    done;
+    Runtime_events.User.write count_span End
+
+let () =
+    Runtime_events.start ();
+    for _ = 1 to 3 do
+        count ()
+    done
+</code></pre>
+<p>وعلى جانب المستهلك، يمكن استعمال وسم الحدث ونوعه المقدَّمين للمطابقة على الأحداث ذات الصلة. وللتمام، نفترض أن المستهلك برنامج مختلف، ونكرّر تعريف بواني الوسم الجديدة وتسجيل الأحداث المخصّصة.</p>
+<pre><code class="language-text">type Runtime_events.User.tag += CustomSpan | CustomInt
+
+let count_span =
+    Runtime_events.User.register &quot;count.span&quot; CustomSpan
+        Runtime_events.Type.span
+
+let count_value =
+    Runtime_events.User.register &quot;count.value&quot; CustomInt
+        Runtime_events.Type.int
+
+let span_event_handler domain_id ts event value =
+    (* we&#x27;re only interested in our CustomSpan event *)
+    match Runtime_events.User.tag event, value with
+    | CustomSpan, Runtime_events.Type.Begin -&gt; Printf.printf &quot;&gt; count begin\n&quot;
+    | CustomSpan, End -&gt; Printf.printf &quot;&lt; count end\n&quot;
+    | _ -&gt; ()
+
+let int_event_handler domain_id ts event value =
+    (* we&#x27;re only interested in our CustomInt event *)
+    match Runtime_events.User.tag event with
+    | CustomInt -&gt; Printf.printf &quot;| count %d\n&quot; value
+    | _ -&gt; ()
+
+let () =
+    let open Runtime_events in
+    let cursor = create_cursor None in
+    let callbacks =
+        Callbacks.create ()
+        |&gt; Callbacks.add_user_event Type.span span_event_handler
+        |&gt; Callbacks.add_user_event Type.int int_event_handler
+    in
+    for _ = 0 to 100 do
+        ignore(read_poll cursor callbacks None)
+    done
+</code></pre>
+<p>ممّا يعطي الخَرْج التالي:</p>
+<pre><code class="language-text">&gt; count begin
+| count 1
+| count 2
+| count 3
+| count 4
+| count 5
+&lt; count end
+&gt; count begin
+| count 1
+| count 2
+[...]
+</code></pre>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/ocaml-manual/ch25/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الاختبار العشوائي باستخدام afl-fuzz</span></a><!--]--> <!--[0--><a href="../../../../book/ocaml-manual/ch27/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">تحويل البرنامج «ذَيلِي مع الباني»</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fx90yh = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Dtojx2F1.js"),
+						import("../../../../_app/immutable/entry/app.Bk-T7h0B.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

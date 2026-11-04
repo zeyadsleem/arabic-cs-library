@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Dtojx2F1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/COwA5tuQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C8xSp1-s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bk-T7h0B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DyJsUDCS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BEgh7YBq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5TZ6aje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8oEqyd_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.SGl2Uca0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B10blrac.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المكتبة القياسية — المكتبة القياسية"/><!----><title>المكتبة القياسية | دليل لغة OCaml</title>
+		<link href="../../../../_app/immutable/assets/0.D2oAgqyE.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/ocaml-manual">دليل لغة OCaml</a> <span class="reader-bar__chapter">› المكتبة القياسية</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 31 من 38">31 / 38</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch29/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch31/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>تصدير</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/foreword/index">تصدير</a></li><!--]--></ul><h3>اللغة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch01/index">اللغة الأساسية</a></li><!--]--></ul><h3>نظام الوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch02/index">نظام الوحدات</a></li><!--]--></ul><h3>الكائنات في OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch03/index">الكائنات في OCaml</a></li><!--]--></ul><h3>الوسائط المُعنونة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch04/index">الوسائط المُعنونة</a></li><!--]--></ul><h3>المتغيّرات متعدّدة الأشكال</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch05/index">المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul><h3>تعدّد الأشكال وحدوده</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch06/index">تعدّد الأشكال وحدوده</a></li><!--]--></ul><h3>أنواع البيانات الجبرية المعمّمة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch07/index">أنواع البيانات الجبرية المعمّمة</a></li><!--]--></ul><h3>أمثلة متقدّمة بالأصناف والوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch08/index">أمثلة متقدّمة بالأصناف والوحدات</a></li><!--]--></ul><h3>البرمجة المتوازية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch09/index">البرمجة المتوازية</a></li><!--]--></ul><h3>نموذج الذاكرة: الأجزاء الصعبة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch10/index">نموذج الذاكرة: الأجزاء الصعبة</a></li><!--]--></ul><h3>لغة OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch11/index">لغة OCaml</a></li><!--]--></ul><h3>امتدادات اللغة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch12/index">امتدادات اللغة</a></li><!--]--></ul><h3>الترجمة الدفعية (ocamlc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch13/index">الترجمة الدفعية (ocamlc)</a></li><!--]--></ul><h3>النظام التفاعلي أو REPL (ocaml)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch14/index">النظام التفاعلي أو REPL (ocaml)</a></li><!--]--></ul><h3>نظام التشغيل (ocamlrun)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch15/index">نظام التشغيل (ocamlrun)</a></li><!--]--></ul><h3>الترجمة إلى الشيفرة الأصلية (ocamlopt)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch16/index">الترجمة إلى الشيفرة الأصلية (ocamlopt)</a></li><!--]--></ul><h3>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch17/index">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</a></li><!--]--></ul><h3>مولّد التبعيات (ocamldep)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch18/index">مولّد التبعيات (ocamldep)</a></li><!--]--></ul><h3>مولّد التوثيق (ocamldoc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch19/index">مولّد التوثيق (ocamldoc)</a></li><!--]--></ul><h3>المنقّح (ocamldebug)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch20/index">المنقّح (ocamldebug)</a></li><!--]--></ul><h3>التنقيح الأصلي (gdb, lldb)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch21/index">التنقيح الأصلي (gdb, lldb)</a></li><!--]--></ul><h3>قياس الأداء (ocamlprof, perf)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch22/index">قياس الأداء (ocamlprof, perf)</a></li><!--]--></ul><h3>الربط البيني مع لغة C</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch23/index">الربط البيني مع لغة C</a></li><!--]--></ul><h3>التحسين باستخدام Flambda</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch24/index">التحسين باستخدام Flambda</a></li><!--]--></ul><h3>الاختبار العشوائي باستخدام afl-fuzz</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch25/index">الاختبار العشوائي باستخدام afl-fuzz</a></li><!--]--></ul><h3>تتبّع زمن التشغيل بأحداث runtime</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch26/index">تتبّع زمن التشغيل بأحداث runtime</a></li><!--]--></ul><h3>تحويل البرنامج «ذَيلِي مع الباني»</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch27/index">تحويل البرنامج «ذَيلِي مع الباني»</a></li><!--]--></ul><h3>الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch28/index">الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</a></li><!--]--></ul><h3>المكتبة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch29/index">المكتبة الأساسية</a></li><!--]--></ul><h3 class="active-chapter">المكتبة القياسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch30/index" class="active">المكتبة القياسية</a></li><!--]--></ul><h3>واجهة المترجم الأمامية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch31/index">واجهة المترجم الأمامية</a></li><!--]--></ul><h3>مكتبة unix: نداءات نظام Unix</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch32/index">مكتبة unix: نداءات نظام Unix</a></li><!--]--></ul><h3>مكتبة str: التعابير النمطية ومعالجة السلاسل</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch33/index">مكتبة str: التعابير النمطية ومعالجة السلاسل</a></li><!--]--></ul><h3>مكتبة runtime_events</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch34/index">مكتبة runtime_events</a></li><!--]--></ul><h3>مكتبة threads</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch35/index">مكتبة threads</a></li><!--]--></ul><h3>مكتبة dynlink: التحميل والربط الديناميان</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch36/index">مكتبة dynlink: التحميل والربط الديناميان</a></li><!--]--></ul><h3>المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch37/index">المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المكتبة القياسية</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الفصل 30: المكتبة القياسية</h1>
+<p>يصف هذا الفصل الدوال التي توفّرها المكتبة القياسية في OCaml. تُربط وحدات المكتبة القياسية تلقائيًا بملفات الشيفرة الهدف للمستخدم باستعمال الأمر <code>ocamlc</code>. وبالتالي يمكن استعمال هذه الوحدات في البرامج المستقلة من دون الحاجة إلى إضافة أي ملف <code>.cmo</code> على سطر الأوامر في مرحلة الربط. وبالمثل، في الاستعمال التفاعلي، يمكن استعمال هذه الأسماء العامة في عبارات النظام التفاعلي من دون الحاجة إلى تحميل أي ملف <code>.cmo</code> في الذاكرة.</p>
+<p>وعلى خلاف الوحدة الأساسية <code>Stdlib</code>، لا تُفتح الوحدات الفرعية تلقائيًا عند بدء الترجمة أو عند إطلاق النظام التفاعلي. لذلك يلزم استعمال معرّفات مؤهَّلة للإشارة إلى الدوال التي توفّرها هذه الوحدات، أو إضافة التوجيهات <code>open</code>.</p>
+<ul>
+<li>
+<p>الوحدة <code>Arg</code>: تحليل وسائط سطر الأوامر</p>
+</li>
+<li>
+<p>الوحدة <code>Array</code>: عمليات على المصفوفات</p>
+</li>
+<li>
+<p>الوحدة <code>ArrayLabels</code>: عمليات على المصفوفات (مع وسوم)</p>
+</li>
+<li>
+<p>الوحدة <code>Atomic</code>: مراجع ذرّية</p>
+</li>
+<li>
+<p>الوحدة <code>Bigarray</code>: مصفوفات عددية كبيرة متعدّدة الأبعاد</p>
+</li>
+<li>
+<p>الوحدة <code>Bool</code>: قيم منطقية</p>
+</li>
+<li>
+<p>الوحدة <code>Buffer</code>: مخازن مؤقتة قابلة للتمديد</p>
+</li>
+<li>
+<p>الوحدة <code>Bytes</code>: متتاليات بايتات</p>
+</li>
+<li>
+<p>الوحدة <code>BytesLabels</code>: متتاليات بايتات (مع وسوم)</p>
+</li>
+<li>
+<p>الوحدة <code>Callback</code>: تسجيل قيم OCaml في زمن التشغيل المكتوب بلغة C</p>
+</li>
+<li>
+<p>الوحدة <code>Char</code>: عمليات على المحارف</p>
+</li>
+<li>
+<p>الوحدة <code>Complex</code>: أعداد مركّبة</p>
+</li>
+<li>
+<p>الوحدة <code>Condition</code>: متغيّرات شرطية للمزامنة بين الخيوط</p>
+</li>
+<li>
+<p>الوحدة <code>Domain</code>: توليد النطاقات وضمّها، والمتغيّرات المحلية للنطاق</p>
+</li>
+<li>
+<p>الوحدة <code>Digest</code>: خلاصة رسائل MD5</p>
+</li>
+<li>
+<p>الوحدة <code>Dynarray</code>: مصفوفات دينامية</p>
+</li>
+<li>
+<p>الوحدة <code>Iarray</code>: مصفوفات غير قابلة للتغيير</p>
+</li>
+<li>
+<p>الوحدة <code>Effect</code>: معالجات آثار عميقة وسطحية</p>
+</li>
+<li>
+<p>الوحدة <code>Either</code>: قيم «إمّا»</p>
+</li>
+<li>
+<p>الوحدة <code>Ephemeron</code>: الإفيميرونات وجداول التجزئة الضعيفة</p>
+</li>
+<li>
+<p>الوحدة <code>Filename</code>: عمليات على أسماء الملفات</p>
+</li>
+<li>
+<p>الوحدة <code>Float</code>: أعداد الفاصلة العائمة</p>
+</li>
+<li>
+<p>الوحدة <code>Format</code>: الطباعة الجميلة</p>
+</li>
+<li>
+<p>الوحدة <code>Fun</code>: قيم الدوال</p>
+</li>
+<li>
+<p>الوحدة <code>Gc</code>: التحكّم في إدارة الذاكرة وإحصاءاتها؛ القيم المنهَّاة</p>
+</li>
+<li>
+<p>الوحدة <code>Hashtbl</code>: جداول التجزئة ودوال التجزئة</p>
+</li>
+<li>
+<p>الوحدة <code>In_channel</code>: قنوات الإدخال</p>
+</li>
+<li>
+<p>الوحدة <code>Int</code>: أعداد صحيحة</p>
+</li>
+<li>
+<p>الوحدة <code>Int32</code>: أعداد صحيحة ذات 32 بت</p>
+</li>
+<li>
+<p>الوحدة <code>Int64</code>: أعداد صحيحة ذات 64 بت</p>
+</li>
+<li>
+<p>الوحدة <code>Lazy</code>: حسابات مؤجَّلة</p>
+</li>
+<li>
+<p>الوحدة <code>Lexing</code>: مكتبة زمن التشغيل للمحلّلات المعجمية المولَّدة بـ <code>ocamllex</code></p>
+</li>
+<li>
+<p>الوحدة <code>List</code>: عمليات على القوائم</p>
+</li>
+<li>
+<p>الوحدة <code>ListLabels</code>: عمليات على القوائم (مع وسوم)</p>
+</li>
+<li>
+<p>الوحدة <code>Map</code>: جداول اقتران على أنواع مرتَّبة</p>
+</li>
+<li>
+<p>الوحدة <code>Marshal</code>: تصريف بنى البيانات</p>
+</li>
+<li>
+<p>الوحدة <code>MoreLabels</code>: تضمّ الوحدات <code>Hashtbl</code> و<code>Map</code> و<code>Set</code> مع وسوم</p>
+</li>
+<li>
+<p>الوحدة <code>Mutex</code>: أقفال الاستبعاد المتبادل</p>
+</li>
+<li>
+<p>الوحدة <code>Nativeint</code>: أعداد صحيحة أصلية للمعالج</p>
+</li>
+<li>
+<p>الوحدة <code>Oo</code>: الامتداد الكائني</p>
+</li>
+<li>
+<p>الوحدة <code>Option</code>: القيم الاختيارية</p>
+</li>
+<li>
+<p>الوحدة <code>Out_channel</code>: قنوات الإخراج</p>
+</li>
+<li>
+<p>الوحدة <code>Pair</code>: أزواج القيم</p>
+</li>
+<li>
+<p>الوحدة <code>Parsing</code>: مكتبة زمن التشغيل للمحلّلات النحوية المولَّدة بـ <code>ocamlyacc</code></p>
+</li>
+<li>
+<p>الوحدة <code>Pqueue</code>: قوائم انتظار الأولوية</p>
+</li>
+<li>
+<p>الوحدة <code>Printexc</code>: أدوات لطباعة الاستثناءات</p>
+</li>
+<li>
+<p>الوحدة <code>Printf</code>: دوال الطباعة المنسَّقة</p>
+</li>
+<li>
+<p>الوحدة <code>Queue</code>: قوائم انتظار «أولًا يدخل أولًا يخرج»</p>
+</li>
+<li>
+<p>الوحدة <code>Random</code>: مولّد أعداد عشوائية شبه عشوائية (PRNG)</p>
+</li>
+<li>
+<p>الوحدة <code>Repr</code>: دوال معرَّفة على التمثيل منخفض المستوى للقيم</p>
+</li>
+<li>
+<p>الوحدة <code>Result</code>: قيم النتيجة</p>
+</li>
+<li>
+<p>الوحدة <code>Scanf</code>: دوال إدخال منسَّقة</p>
+</li>
+<li>
+<p>الوحدة <code>Seq</code>: مكرِّرات دالية</p>
+</li>
+<li>
+<p>الوحدة <code>Set</code>: مجموعات على أنواع مرتَّبة</p>
+</li>
+<li>
+<p>الوحدة <code>Semaphore</code>: السَّيْمَافورات، وهي آلية أخرى لمزامنة الخيوط</p>
+</li>
+<li>
+<p>الوحدة <code>Stack</code>: مكدّسات «آخرًا يدخل أولًا يخرج»</p>
+</li>
+<li>
+<p>الوحدة <code>StdLabels</code>: تضمّ الوحدات <code>Array</code> و<code>List</code> و<code>String</code> و<code>Iarray</code> مع وسوم</p>
+</li>
+<li>
+<p>الوحدة <code>String</code>: عمليات على السلاسل</p>
+</li>
+<li>
+<p>الوحدة <code>StringLabels</code>: عمليات على السلاسل (مع وسوم)</p>
+</li>
+<li>
+<p>الوحدة <code>Sys</code>: واجهة النظام</p>
+</li>
+<li>
+<p>الوحدة <code>Type</code>: استبطان الأنواع</p>
+</li>
+<li>
+<p>الوحدة <code>Uchar</code>: محارف يونيكود</p>
+</li>
+<li>
+<p>الوحدة <code>Unit</code>: قيم الوحدة</p>
+</li>
+<li>
+<p>الوحدة <code>Weak</code>: مصفوفات مؤشرات ضعيفة</p>
+</li>
+</ul>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/ocaml-manual/ch29/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المكتبة الأساسية</span></a><!--]--> <!--[0--><a href="../../../../book/ocaml-manual/ch31/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">واجهة المترجم الأمامية</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fx90yh = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Dtojx2F1.js"),
+						import("../../../../_app/immutable/entry/app.Bk-T7h0B.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

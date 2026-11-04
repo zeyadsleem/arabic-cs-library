@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Dtojx2F1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/COwA5tuQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C8xSp1-s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bk-T7h0B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DyJsUDCS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BEgh7YBq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5TZ6aje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8oEqyd_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.SGl2Uca0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B10blrac.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="الترجمة إلى الشيفرة الأصلية (ocamlopt) — الترجمة إلى الشيفرة الأصلية (ocamlopt)"/><!----><title>الترجمة إلى الشيفرة الأصلية (ocamlopt) | دليل لغة OCaml</title>
+		<link href="../../../../_app/immutable/assets/0.D2oAgqyE.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/ocaml-manual">دليل لغة OCaml</a> <span class="reader-bar__chapter">› الترجمة إلى الشيفرة الأصلية (ocamlopt)</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 17 من 38">17 / 38</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch15/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch17/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>تصدير</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/foreword/index">تصدير</a></li><!--]--></ul><h3>اللغة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch01/index">اللغة الأساسية</a></li><!--]--></ul><h3>نظام الوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch02/index">نظام الوحدات</a></li><!--]--></ul><h3>الكائنات في OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch03/index">الكائنات في OCaml</a></li><!--]--></ul><h3>الوسائط المُعنونة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch04/index">الوسائط المُعنونة</a></li><!--]--></ul><h3>المتغيّرات متعدّدة الأشكال</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch05/index">المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul><h3>تعدّد الأشكال وحدوده</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch06/index">تعدّد الأشكال وحدوده</a></li><!--]--></ul><h3>أنواع البيانات الجبرية المعمّمة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch07/index">أنواع البيانات الجبرية المعمّمة</a></li><!--]--></ul><h3>أمثلة متقدّمة بالأصناف والوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch08/index">أمثلة متقدّمة بالأصناف والوحدات</a></li><!--]--></ul><h3>البرمجة المتوازية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch09/index">البرمجة المتوازية</a></li><!--]--></ul><h3>نموذج الذاكرة: الأجزاء الصعبة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch10/index">نموذج الذاكرة: الأجزاء الصعبة</a></li><!--]--></ul><h3>لغة OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch11/index">لغة OCaml</a></li><!--]--></ul><h3>امتدادات اللغة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch12/index">امتدادات اللغة</a></li><!--]--></ul><h3>الترجمة الدفعية (ocamlc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch13/index">الترجمة الدفعية (ocamlc)</a></li><!--]--></ul><h3>النظام التفاعلي أو REPL (ocaml)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch14/index">النظام التفاعلي أو REPL (ocaml)</a></li><!--]--></ul><h3>نظام التشغيل (ocamlrun)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch15/index">نظام التشغيل (ocamlrun)</a></li><!--]--></ul><h3 class="active-chapter">الترجمة إلى الشيفرة الأصلية (ocamlopt)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch16/index" class="active">الترجمة إلى الشيفرة الأصلية (ocamlopt)</a></li><!--]--></ul><h3>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch17/index">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</a></li><!--]--></ul><h3>مولّد التبعيات (ocamldep)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch18/index">مولّد التبعيات (ocamldep)</a></li><!--]--></ul><h3>مولّد التوثيق (ocamldoc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch19/index">مولّد التوثيق (ocamldoc)</a></li><!--]--></ul><h3>المنقّح (ocamldebug)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch20/index">المنقّح (ocamldebug)</a></li><!--]--></ul><h3>التنقيح الأصلي (gdb, lldb)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch21/index">التنقيح الأصلي (gdb, lldb)</a></li><!--]--></ul><h3>قياس الأداء (ocamlprof, perf)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch22/index">قياس الأداء (ocamlprof, perf)</a></li><!--]--></ul><h3>الربط البيني مع لغة C</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch23/index">الربط البيني مع لغة C</a></li><!--]--></ul><h3>التحسين باستخدام Flambda</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch24/index">التحسين باستخدام Flambda</a></li><!--]--></ul><h3>الاختبار العشوائي باستخدام afl-fuzz</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch25/index">الاختبار العشوائي باستخدام afl-fuzz</a></li><!--]--></ul><h3>تتبّع زمن التشغيل بأحداث runtime</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch26/index">تتبّع زمن التشغيل بأحداث runtime</a></li><!--]--></ul><h3>تحويل البرنامج «ذَيلِي مع الباني»</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch27/index">تحويل البرنامج «ذَيلِي مع الباني»</a></li><!--]--></ul><h3>الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch28/index">الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</a></li><!--]--></ul><h3>المكتبة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch29/index">المكتبة الأساسية</a></li><!--]--></ul><h3>المكتبة القياسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch30/index">المكتبة القياسية</a></li><!--]--></ul><h3>واجهة المترجم الأمامية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch31/index">واجهة المترجم الأمامية</a></li><!--]--></ul><h3>مكتبة unix: نداءات نظام Unix</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch32/index">مكتبة unix: نداءات نظام Unix</a></li><!--]--></ul><h3>مكتبة str: التعابير النمطية ومعالجة السلاسل</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch33/index">مكتبة str: التعابير النمطية ومعالجة السلاسل</a></li><!--]--></ul><h3>مكتبة runtime_events</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch34/index">مكتبة runtime_events</a></li><!--]--></ul><h3>مكتبة threads</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch35/index">مكتبة threads</a></li><!--]--></ul><h3>مكتبة dynlink: التحميل والربط الديناميان</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch36/index">مكتبة dynlink: التحميل والربط الديناميان</a></li><!--]--></ul><h3>المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch37/index">المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>الترجمة إلى الشيفرة الأصلية (ocamlopt)</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#161-نظرة-عامة-على-المترجم">16.1 نظرة عامة على المترجم</a></li><li><a href="#162-الخيارات">16.2 الخيارات</a></li><li><a href="#163-الأخطاء-الشائعة">16.3 الأخطاء الشائعة</a></li><li><a href="#164-تشغيل-الملفات-التنفيذية-الناتجة-عن-ocamlopt">16.4 تشغيل الملفات التنفيذية الناتجة عن ocamlopt</a></li><li><a href="#165-التوافق-مع-مترجم-الشيفرة-البايتية">16.5 التوافق مع مترجم الشيفرة البايتية</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الفصل 16: الترجمة إلى الشيفرة الأصلية (ocamlopt)</h1>
+<p>يصف هذا الفصل مترجم OCaml عالي الأداء للشيفرة الأصلية <code>ocamlopt</code>، الذي يترجم ملفات OCaml المصدرية إلى ملفات كائنات بالشيفرة الأصلية، ثم يربط ملفات الكائنات هذه لإنتاج ملفات تنفيذية مستقلة.</p>
+<p>لا يتوافر مترجم الشيفرة الأصلية إلا على منصّات معيّنة. وهو ينتج شيفرة تعمل أسرع من الشيفرة البايتية التي ينتجها <code>ocamlc</code>، على حساب زيادة زمن الترجمة وحجم الشيفرة التنفيذية. أما التوافق مع مترجم الشيفرة البايتية فبالغ الارتفاع: ينبغي أن تعمل الشيفرة المصدرية نفسها العمل نفسه عند ترجمتها بـ <code>ocamlc</code> وبـ <code>ocamlopt</code>.</p>
+<p>لا يمكن خلط ملفات الكائنات بالشيفرة الأصلية التي ينتجها <code>ocamlopt</code> بملفات الكائنات بالشيفرة البايتية التي ينتجها <code>ocamlc</code>: فلا بدّ من ترجمة البرنامج كله بـ <code>ocamlopt</code> أو كله بـ <code>ocamlc</code>. كذلك لا يمكن تحميل ملفات الكائنات بالشيفرة الأصلية التي ينتجها <code>ocamlopt</code> في النظام التفاعلي <code>ocaml</code>.</p>
+<h2 id="161-نظرة-عامة-على-المترجم">16.1 نظرة عامة على المترجم</h2>
+<p>للأمر <code>ocamlopt</code> واجهة سطر أوامر قريبة جدًا من واجهة <code>ocamlc</code>. وهو يقبل الأنماط نفسها من الوسائط، ويعالجها بالتتابع بعد معالجة جميع الخيارات:</p>
+<ul>
+<li>
+<p>الوسائط المنتهية بـ <code>.mli</code> تُعدّ ملفات مصدرية لواجهات وحدات الترجمة. تحدّد الواجهات الأسماء التي تصدّرها وحدات الترجمة: فهي تصرّح بأسماء القيم وأنواعها، وتعرّف أنواع البيانات العامة، وتصرّح بأنواع بيانات مجرّدة، وما إلى ذلك. ومن الملف <em>x</em><code>.mli</code> ينتج المترجم <code>ocamlopt</code> واجهة مترجمة في الملف <em>x</em><code>.cmi</code>. والواجهة الناتجة مطابقة للواجهة التي ينتجها مترجم الشيفرة البايتية <code>ocamlc</code>.</p>
+</li>
+<li>
+<p>الوسائط المنتهية بـ <code>.ml</code> تُعدّ ملفات مصدرية لتنفيذات وحدات الترجمة. تقدّم التنفيذات تعريفات للأسماء التي تصدّرها الوحدة، وتحتوي أيضًا على تعابير تُقيَّم من أجل آثارها الجانبية. ومن الملف <em>x</em><code>.ml</code> ينتج المترجم <code>ocamlopt</code> ملفين: <em>x</em><code>.o</code>، ويحتوي الشيفرة الأصلية للكائنات، و<em>x</em><code>.cmx</code>، ويحتوي معلومات إضافية للربط وتحسين عملاء الوحدة. وينبغي دائمًا الإشارة إلى التنفيذ المترجم باسم <em>x</em><code>.cmx</code> (فعند إعطائه ملف <code>.o</code> أو <code>.obj</code>، يفترض <code>ocamlopt</code> أنه يحتوي شيفرة مترجمة من C لا من OCaml).</p>
+</li>
+</ul>
+<p>يُفحص التنفيذ مقابل ملف الواجهة <em>x</em><code>.mli</code> (إن وُجد) على النحو الموصوف في دليل <code>ocamlc</code> (الفصل 13).</p>
+<ul>
+<li>
+<p>الوسائط المنتهية بـ <code>.cmx</code> تُعدّ شيفرة كائنات مترجمة. وتُربط هذه الملفات معًا، مع ملفات الكائنات الناتجة عن ترجمة وسائط <code>.ml</code> (إن وُجدت)، ومع المكتبة القياسية لـ OCaml، لإنتاج برنامج تنفيذي بالشيفرة الأصلية. وترتيب عرض وسائط <code>.cmx</code> و<code>.ml</code> على سطر الأوامر مهمّ: إذ تُهيَّأ وحدات الترجمة بذلك الترتيب وقت التشغيل، ويُعدّ استعمال مكوّن من وحدة قبل تهيئتها خطأ وقت ربط. لذلك يجب أن يسبق ملف <em>x</em><code>.cmx</code> المعطى جميع ملفات <code>.cmx</code> التي تشير إلى الوحدة <em>x</em>.</p>
+</li>
+<li>
+<p>الوسائط المنتهية بـ <code>.cmxa</code> تُعدّ مكتبات من شيفرة الكائنات. وتضمّ هذه المكتبة في ملفين (<em>lib</em><code>.cmxa</code> و<em>lib</em><code>.a</code>/<code>.lib</code>) مجموعة من ملفات الكائنات (ملفات <code>.cmx</code> و<code>.o</code>/<code>.obj</code>). وتُبنى المكتبات بـ <code>ocamlopt -a</code> (انظر وصف الخيار <code>-a</code> أدناه). وتُربط ملفات الكائنات التي تحتويها المكتبة كملفات <code>.cmx</code> عادية (انظر أعلاه)، بالترتيب المحدّد عند بناء المكتبة. والفرق الوحيد أن ملف كائنات تحتويه مكتبة لا يُربط إن لم يُشَر إليه في أي موضع من البرنامج.</p>
+</li>
+<li>
+<p>الوسائط المنتهية بـ <code>.c</code> تُمرَّر إلى مترجم C، الذي يولّد ملف كائنات <code>.o</code>/<code>.obj</code>. ويُربط ملف الكائنات هذا مع البرنامج.</p>
+</li>
+<li>
+<p>الوسائط المنتهية بـ <code>.o</code> أو <code>.a</code> أو <code>.so</code> (و<code>.obj</code> و<code>.lib</code> و<code>.dll</code> على Windows) يُفترض أنها ملفات كائنات ومكتبات C. وتُربط مع البرنامج.</p>
+</li>
+</ul>
+<p>ومخرَج مرحلة الربط ملف تنفيذي عادي على Unix أو Windows. ولا يحتاج إلى <code>ocamlrun</code> ليعمل.</p>
+<p>ويستطيع المترجم إخراج بعض المعلومات عن مراحله الداخلية:</p>
+<ul>
+<li>ملفات <code>.cmt</code> لتنفيذ وحدة الترجمة و<code>.cmti</code> للتوقيعات إن مُرِّر إليه الخيار <code>-bin-annot</code> (انظر وصف <code>-bin-annot</code> أدناه). ويحتوي كل ملف من هذه الملفات على شجرة تركيب مجرّدة (AST) موسومة بالأنواع، تُنتَج أثناء إجراء فحص الأنواع. وتحتوي هذه الشجرة جميع المعلومات المتاحة عن موضع كل حدّ في الملف المصري ونوعه المحدّد. وتكون شجرة التركيب جزئية إن لم ينجح فحص الأنواع.</li>
+</ul>
+<p>وتفيد ملفات <code>.cmt</code> و<code>.cmti</code> هذه عادةً أدوات فحص الشيفرة.</p>
+<ul>
+<li>ملفات <code>.cmir-linear</code> لتنفيذ وحدة الترجمة إن مُرِّر إليه الخيار <code>-save-ir-after scheduling</code>. ويحتوي كل ملف من هذه الملفات على تمثيل وسيط منخفض المستوى، تنتجه مرحلة جدولة التعليمات.</li>
+</ul>
+<p>ويمكن لأداة خارجية إجراء تحسينات منخفضة المستوى، مثل تخطيط الشيفرة، بتحويل ملف <code>.cmir-linear</code>. ولمواصلة الترجمة يمكن استدعاء المترجم بملف <code>.cmir-linear</code> (معدَّلًا ربما) وسيطًا، بدلًا من الملف المصري المقابل.</p>
+<h2 id="162-الخيارات">16.2 الخيارات</h2>
+<p>يتعرّف <code>ocamlopt</code> على خيارات سطر الأوامر التالية. والخيارات <code>-pack</code> و<code>-a</code> و<code>-shared</code> و<code>-c</code> و<code>-output-obj</code> و<code>-output-complete-obj</code> متنافية.</p>
+<p><strong><code>-a</code></strong></p>
+<p>ابنِ مكتبة (ملفات <code>.cmxa</code> و<code>.a</code>/<code>.lib</code>) من ملفات الكائنات (ملفات <code>.cmx</code> و<code>.o</code>/<code>.obj</code>) المعطاة على سطر الأوامر، بدلًا من ربطها في ملف تنفيذي. ويجب ضبط اسم المكتبة بالخيار <code>-o</code>. وإن مُرِّرت الخيارات <code>-cclib</code> أو <code>-ccopt</code> على سطر الأوامر، خُزّنت هذه الخيارات في المكتبة <code>.cmxa</code> الناتجة. وعندئذ يعيد الربط مع هذه المكتبة إضافة الخيارين <code>-cclib</code> و<code>-ccopt</code> تلقائيًا كما لو كانا معطيين على سطر الأوامر، ما لم يُعطَ الخيار <code>-noautolink</code>.</p>
+<p><strong><code>-absname</code></strong></p>
+<p>أجبر رسائل الخطأ على إظهار المسارات المطلقة لأسماء الملفات.</p>
+<p><strong><code>-no-absname</code></strong></p>
+<p>لا تحاول إظهار أسماء ملفات مطلقة في رسائل الخطأ.</p>
+<p><strong><code>-annot</code></strong></p>
+<p>مهجور منذ OCaml 4.11. استعمل <code>-bin-annot</code> بدلًا منه.</p>
+<p><strong><code>-args</code> <em>filename</em></strong></p>
+<p>اقرأ وسائط إضافية لسطر الأوامر تنتهي بمحارف سطر جديد من <em>filename</em>.</p>
+<p><strong><code>-args0</code> <em>filename</em></strong></p>
+<p>اقرأ وسائط إضافية لسطر الأوامر تنتهي بمحرف عدم null من <em>filename</em>.</p>
+<p><strong><code>-bin-annot</code></strong></p>
+<p>أفرغ معلومات مفصّلة عن الترجمة (الأنواع، الارتباطات، النداءات الذيلية، إلخ) بصيغة ثنائية. وتُوضع معلومات الملف <em>src</em><code>.ml</code> (أو <em>src</em><code>.mli</code>) في الملف <em>src</em><code>.cmt</code> (أو <em>src</em><code>.cmti</code>). وفي حال خطأ في النوع، أفرغ جميع المعلومات التي استنتجها فاحص الأنواع قبل الخطأ. وتحتوي ملفات <code>*.cmt</code> و<code>*.cmti</code> الناتجة عن <code>-bin-annot</code> معلومات أكثر وهي أكثر إحكامًا بكثير من الملفات التي ينتجها <code>-annot</code>.</p>
+<p><strong><code>-c</code></strong></p>
+<p>ترجم فقط. اكبت مرحلة الربط من الترجمة. تتحوّل ملفات الشيفرة المصدرية إلى ملفات مترجمة، لكن لا يُنتَج أي ملف تنفيذي. ويفيد هذا الخيار في ترجمة الوحدات منفصلة.</p>
+<p><strong><code>-cc</code> <em>ccomp</em></strong></p>
+<p>استعمل <em>ccomp</em> رابطًا لـ C يُدعى لبناء الملف التنفيذي النهائي، ومترجمًا لـ C لترجمة ملفات <code>.c</code> المصدرية. وعند ربط ملفات كائنات أنتجها مترجم C++ (مثل <code>g++</code> أو <code>clang++</code>)، يُستحسن استعمال <code>-cc c++</code>.</p>
+<p><strong><code>-cclib</code> <code>-l</code><em>libname</em></strong></p>
+<p>مرّر الخيار <code>-l</code><em>libname</em> إلى الرابط. وبذلك تُربط مكتبة C المعطاة مع البرنامج.</p>
+<p><strong><code>-ccopt</code> <em>option</em></strong></p>
+<p>مرّر الخيار المعطى إلى مترجم C والرابط. فمثلًا يجعل <code>-ccopt -L</code><em>dir</em> رابط C يبحث عن مكتبات C في المجلد <em>dir</em>.</p>
+<p><strong><code>-cmi-file</code> <em>filename</em></strong></p>
+<p>استعمل ملف الواجهة المعطى لفحص أنواع ملف OCaml المصري المطلوب ترجمته. وحين لا يُحدَّد هذا الخيار، يبحث المترجم عن ملف <em>.mli</em> بالاسم الأساسي نفسه للتنفيذ الذي يترجمه وفي المجلد نفسه. وإن وُجد مثل هذا الملف، بحث المترجم عن ملف <em>.cmi</em> مقابل في المجلدات المضمَّنة، وأبلغ بخطأ إن فشل في إيجاده.</p>
+<p><strong><code>-color</code> <em>mode</em></strong></p>
+<p>مكّن الألوان في رسائل المترجم أو عطّلها (خصوصًا التحذيرات والأخطاء). والأنماط المدعومة هي: **<code>auto</code><strong>استعمل استدلالات لتمكين الألوان فقط إذا كان المخرَج يدعمها (طرفية متوافقة مع ANSI)؛</strong><code>always</code><strong>مكّن الألوان بلا شرط؛</strong><code>never</code>**عطّل مخرَج الألوان. ويُؤخذ المتغيّر البيئي <code>OCAML_COLOR</code> في الحسبان إذا لم يُعطَ <code>-color</code>. وقيمه auto/always/never كما سبق. وإن لم يُعطَ <code>-color</code>، ولم يُضبط <code>OCAML_COLOR</code>، وكان المتغيّر البيئي <code>NO_COLOR</code> مضبوطًا، عُطّل مخرَج الألوان. وإلا فالإعداد الافتراضي هو ’auto’، ويقوم الاستدلال الحالي على التحقق من وجود المتغيّر البيئي <code>TERM</code> وأنه ليس فارغًا ولا يساوي <code>dumb</code>، ومن تحقّق ’isatty(stderr)’.</p>
+<p><strong><code>-error-style</code> <em>mode</em></strong></p>
+<p>تحكّم في طريقة طباعة رسائل الخطأ والتحذيرات. والأنماط المدعومة هي: **<code>short</code><strong>اطبع الخطأ وموضعه فقط؛</strong><code>contextual</code>**مثل <code>short</code>، لكن اعرض أيضًا مقتطف الشيفرة المصدرية المقابل لموضع الخطأ. والإعداد الافتراضي هو <code>contextual</code>. ويُؤخذ المتغيّر البيئي <code>OCAML_ERROR_STYLE</code> في الحسبان إذا لم يُعطَ <code>-error-style</code>. وقيمه short/contextual كما سبق.</p>
+<p><strong><code>-compact</code></strong></p>
+<p>حسّن الشيفرة الناتجة من أجل الحجم لا من أجل الزمن. وينتج عن ذلك برامج أصغر قليلًا لكن أبطأ قليلًا. والإعداد الافتراضي هو التحسين من أجل السرعة.</p>
+<p><strong><code>-config</code></strong></p>
+<p>اطبع رقم إصدار <code>ocamlopt</code> وملخّصًا مفصّلًا لإعداده، ثم اخرج.</p>
+<p><strong><code>-config-var</code> <em>var</em></strong></p>
+<p>اطبع قيمة متغيّر إعداد محدّد من مخرَج <code>-config</code>، ثم اخرج. وإن لم يوجد المتغيّر، كان رمز الخروج غير صفري. ولا يتوافر هذا الخيار إلا منذ OCaml 4.08، لذا ينبغي لمؤلفي النصوص البرمجية توفير بديل للإصدارات الأقدم.</p>
+<p><strong><code>-depend</code> <em>ocamldep-args</em></strong></p>
+<p>احسب التبعيات كما يفعل الأمر <code>ocamldep</code>. وتُفسَّر الوسائط المتبقية كما لو أُعطيت للأمر <code>ocamldep</code>.</p>
+<p><strong><code>-for-pack</code> <em>module-path</em></strong></p>
+<p>ولّد ملف كائنات (ملفات <code>.cmx</code> و<code>.o</code>/<code>.obj</code>) يمكن تضمينه لاحقًا وحدة فرعية (بمسار الوصول المعطى) لوحدة ترجمة مبنية بـ <code>-pack</code>. فمثلًا يولّد <code>ocamlopt -for-pack P -c A.ml</code> الملفين <code>a.cmx</code> و<code>a.o</code> اللذين يمكن استعمالهما لاحقًا مع <code>ocamlopt -pack -o P.cmx a.cmx</code>. ملاحظة: يمكنك مع ذلك حزم وحدة ترجمت دون <code>-for-pack</code>، لكن الاستثناءات ستُطبع حينئذ بأسماء خاطئة.</p>
+<p><strong><code>-g</code></strong></p>
+<p>أضف معلومات التنقيح أثناء الترجمة والربط. هذا الخيار لازم لإنتاج آثار عكسية للمكدّس حين ينتهي البرنامج باستثناء غير ملتقط (انظر القسم 15.2).</p>
+<p><strong><code>-no-g</code></strong></p>
+<p>لا تسجّل معلومات التنقيح (الافتراضي).</p>
+<p><strong><code>-i</code></strong></p>
+<p>اجعل المترجم يطبع جميع الأسماء المعرَّفة (بأنواعها المستنتجة أو بتعريفاتها) عند ترجمة تنفيذ (ملف <code>.ml</code>). ولا تُنتَج ملفات مترجمة (ملفات <code>.cmo</code> و<code>.cmi</code>). ويفيد ذلك في التحقق من الأنواع التي يستنتجها المترجم. ولأن المخرَج يتبع صيغة الواجهات، يمكنه أيضًا المساعدة في كتابة واجهة صريحة (ملف <code>.mli</code>) لملف: وجّه المخرَج القياسي للمترجم إلى ملف <code>.mli</code>، ثم حرّر ذلك الملف لإزالة جميع تصريحات الأسماء غير المصدَّرة.</p>
+<p><strong><code>-i-variance</code></strong></p>
+<p>اجعل المترجم يطبع التغاير المحسوب لمعاملات الأنواع عند كل تصريح نوع. وبدون هذا الخيار، لا يُطبع التغاير إلا للأنواع الخاصة أو الأنواع التي لا بيان لها (مثل الأنواع المجرّدة).</p>
+<p><strong><code>-I</code> <em>directory</em></strong></p>
+<p>أضف المجلد المعطى إلى قائمة المجلدات التي يُبحث فيها عن ملفات الواجهات المترجمة (<code>.cmi</code>) وملفات شيفرة الكائنات المترجمة (<code>.cmx</code>) والمكتبات (<code>.cmxa</code>). ويُبحث افتراضيًا في المجلد الحالي أولًا، ثم في مجلد المكتبة القياسية. أما المجلدات المضافة بـ <code>-I</code> فيُبحث فيها بعد المجلد الحالي، بالترتيب الذي أُعطيت به على سطر الأوامر، لكن قبل مجلد المكتبة القياسية. انظر أيضًا الخيار <code>-nostdlib</code>. وإن بدأ المجلد المعطى بـ <code>+</code>، عُدّ نسبيًا إلى مجلد المكتبة القياسية. فمثلًا يضيف <code>-I +unix</code> المجلد الفرعي <code>unix</code> من المكتبة القياسية إلى مسار البحث.</p>
+<p><strong><code>-H</code> <em>directory</em></strong></p>
+<p>يتصرف تصرّف <code>-I</code> نفسه، إلا أن (أ) البرامج لا يجوز أن تشير مباشرةً إلى وحدات أُضيفت إلى مسار البحث بهذه الطريقة، و(ب) يُبحث في هذه المجلدات بعد جميع مجلدات <code>-I</code>. وهذا يتيح تزويد المترجم بملفات الواجهات المترجمة وشيفرة الكائنات لتبعيات البرنامج الحالي غير المباشرة (تبعيات تبعياته) من دون أن تسمح لها بأن تصبح تبعيات مباشرة بصمت.</p>
+<p><strong><code>-impl</code> <em>filename</em></strong></p>
+<p>ترجم الملف <em>filename</em> ملف تنفيذ، حتى لو لم يكن امتداده <code>.ml</code>.</p>
+<p><strong><code>-inline</code> <em>n</em></strong></p>
+<p>اضبط شدة الإدراج المضمّن (inlining) على <em>n</em>، حيث <em>n</em> عدد صحيح موجب. وتحديد <code>-inline 0</code> يمنع إدراج جميع الدوال مضمّنةً، إلا تلك التي جسمها أصغر من موضع النداء. وبذلك لا يسبّب الإدراج المضمّن أي توسّع في حجم الشيفرة. أما الشدة الافتراضية <code>-inline 1</code> فتسمح بإدراج دوال أكبر قليلًا، فينتج توسّع طفيف في حجم الشيفرة. والقيم الأعلى للخيار <code>-inline</code> تجعل دوال أكبر فأكبر مرشّحة للإدراج، لكنها قد تؤدي إلى زيادة كبيرة في حجم الشيفرة.</p>
+<p><strong><code>-intf</code> <em>filename</em></strong></p>
+<p>ترجم الملف <em>filename</em> ملف واجهة، حتى لو لم يكن امتداده <code>.mli</code>.</p>
+<p><strong><code>-intf-suffix</code> <em>string</em></strong></p>
+<p>اعترف بأسماء الملفات المنتهية بـ <em>string</em> ملفات واجهة (بدلًا من <code>.mli</code> الافتراضي).</p>
+<p><strong><code>-keywords</code> <em>version+list</em></strong></p>
+<p>اضبط الكلمات المحجوزة وفق مواصفة <em>version+list</em>. تبدأ هذه المواصفة برقم إصدار اختياري يحدّد مجموعة الكلمات المحجوزة الأساس، ثم قائمة مفصولة بـ <em>+</em> من الكلمات المحجوزة الإضافية التي تُضاف إلى هذه المجموعة الأساس. وبدون رقم إصدار صريح، تكون مجموعة الأساس هي مجموعة الكلمات المحجوزة في الإصدار الحالي من OCaml. والكلمات المحجوزة الإضافية التي لا تطابق أي كلمة محجوزة معروفة في الإصدار الحالي من اللغة تطلق خطأ كلما وُجدت في الشيفرة المصدرية.</p>
+<p><strong><code>-labels</code></strong></p>
+<p>لا تُهمل الوسوم في الأنواع، ويمكن استعمال الوسوم في التطبيقات، ويمكن إعطاء الوسائط الموسومة بأي ترتيب. وهذا هو الافتراضي.</p>
+<p><strong><code>-linkall</code></strong></p>
+<p>أجبر ربط جميع الوحدات التي تحتويها المكتبات. وإن لم يُعطَ هذا الخيار، لا تُربط الوحدات غير المشار إليها. وعند بناء مكتبة (الخيار <code>-a</code>)، ضبطُ الخيار <code>-linkall</code> يجبر جميع عمليات الربط اللاحقة للبرامج التي تشمل تلك المكتبة على ربط كل الوحدات التي تحتويها المكتبة. وعند ترجمة وحدة (الخيار <code>-c</code>)، يضمن ضبط <code>-linkall</code> أن هذه الوحدة ستُربط دائمًا إن وُضعت في مكتبة ورُبطت تلك المكتبة.</p>
+<p><strong><code>-linscan</code></strong></p>
+<p>استعمل تخصيص السجلات بالمسح الخطّي. والترجمة بهذا المخصِّص أسرع من الترجمة بالمخصِّص المعتاد القائم على تلوين الرسم البياني، وأسرع بكثير أحيانًا في الدوال والوحدات الطويلة. وفي المقابل قد تكون الشيفرة الناتجة أبطأ قليلًا.</p>
+<p><strong><code>-match-context-rows</code> <em>number</em></strong></p>
+<p>اضبط عدد صفوف السياق المستعملة في التحسين أثناء ترجمة مطابقة الأنماط. والقيمة الافتراضية 32. والقيم الأصغر تجعل الترجمة أسرع لكن الشيفرة أقل تحسينًا. هذا الخيار متقدّم، والغرض منه حالات تؤدي فيها برامج كثيفة مطابقة الأنماط إلى زيادات كبيرة في زمن الترجمة.</p>
+<p><strong><code>-no-alias-deps</code></strong></p>
+<p>لا تسجّل التبعيات لأسماء الوحدات المستعارة. انظر القسم 12.8 لمزيد من المعلومات.</p>
+<p><strong><code>-no-app-funct</code></strong></p>
+<p>عطّل السلوك التطبيقي للموصِّلات. بهذا الخيار يولّد كل تطبيق موصِّل أنواعًا جديدة في نتيجته، ويؤدي تطبيق الموصِّل نفسه مرتين على الوسيط نفسه إلى بنيتين غير متوافقتين.</p>
+<p><strong><code>-no-float-const-prop</code></strong></p>
+<p>عطّل نشر الثوابت لعمليات الفاصلة العائمة. وينبغي إعطاء هذا الخيار إذا غيّر البرنامج نمط تقريب الأعداد العائمة أثناء تنفيذه.</p>
+<p><strong><code>-noassert</code></strong></p>
+<p>لا تترجم فحوص التأكيدات. لاحظ أن الصيغة الخاصة <code>assert false</code> تُترجم دائمًا لأن نوعها خاص. ولا أثر لهذا الخيار عند ربط ملفات مترجمة سابقًا.</p>
+<p><strong><code>-noautolink</code></strong></p>
+<p>عند ربط مكتبات <code>.cmxa</code>، تجاهل الخيارين <code>-cclib</code> و<code>-ccopt</code> المحتمل احتواؤهما في المكتبات (إن أُعطي هذان الخياران عند بناء المكتبات). ويفيد ذلك إذا احتوت مكتبة مواصفات خاطئة لمكتبات C أو خيارات C؛ وعندئذ اضبط <code>-noautolink</code> أثناء الربط، ومرّر مكتبات C وخياراتها الصحيحة على سطر الأوامر.</p>
+<p><strong><code>-nodynlink</code></strong></p>
+<p>اسمح للمترجم باستعمال بعض التحسينات الصالحة فقط للشيفرة المربوطة ساكنًا لإنتاج ملف تنفيذي غير قابل للنقل. ولا يمكن ربط الشيفرة الناتجة لإنتاج مكتبة مشتركة ولا ملف تنفيذي مستقل عن الموضع (PIE). وتنتج أنظمة تشغيل كثيرة ملفات PIE افتراضيًا، ما يسبّب أخطاء عند ربط شيفرة مترجمة بـ <code>-nodynlink</code>. فإما ألا تستعمل <code>-nodynlink</code>، وإما أن تمرّر الخيار <code>-ccopt -no-pie</code> وقت الربط.</p>
+<p><strong><code>-nolabels</code></strong></p>
+<p>تجاهل الوسوم غير الاختيارية في الأنواع. ولا يمكن استعمال الوسوم في التطبيقات، ويصبح ترتيب الوسائط صارمًا.</p>
+<p><strong><code>-nostdlib</code></strong></p>
+<p>لا تُضف تلقائيًا مجلد المكتبة القياسية إلى قائمة المجلدات التي يُبحث فيها عن ملفات الواجهات المترجمة (<code>.cmi</code>) وملفات شيفرة الكائنات المترجمة (<code>.cmx</code>) والمكتبات (<code>.cmxa</code>). انظر أيضًا الخيار <code>-I</code>.</p>
+<p><strong><code>-o</code> <em>filename</em></strong></p>
+<p>حدّد اسم ملف المخرَج النهائي، سواء أكان ملفًا تنفيذيًا، أم كائنًا مترجمًا (الخيار <code>-c</code>)، أم مكتبة (الخيار <code>-a</code>)، أم كائنًا محزومًا (الخيار <code>-pack</code>)، أم ملحقًا قابلًا للتحميل الدينامي (الخيار <code>-shared</code>)، أم ملف C مصريًا أو ملف كائنات C (الخياران <code>-output-obj</code> و<code>-output-complete-obj</code>). واسم المخرَج الافتراضي للملف التنفيذي يعتمد على المنصّة، فهو <code>a.out</code> على Unix و<code>camlprog.exe</code> على Windows. ويمكن استعماله أيضًا عند ترجمة ملف واجهة أو تنفيذ دون ربطه (الخيار <code>-c</code>)، وعندئذ يضبط اسم ملف <code>cmi</code> أو <code>.cmx</code> واسم وحدة الترجمة على <em>filename</em> حتى أول نقطة.</p>
+<p><strong><code>-opaque</code></strong></p>
+<p>حين يترجم المترجم الأصلي تنفيذًا، ينتج افتراضيًا ملف <code>.cmx</code> يحتوي معلومات للتحسين العابر للوحدات. وهو يتوقع أيضًا وجود ملفات <code>.cmx</code> لتبعيات المصدر المترجم حاليًا، ويستعملها في التحسين. ومنذ OCaml 4.03، يُصدر المترجم تحذيرًا إذا لم يتمكّن من إيجاد ملف <code>.cmx</code> لإحدى تلك التبعيات. والخيار <code>-opaque</code>، المتوافر منذ 4.04، يعطّل معلومات التحسين العابر للوحدات للوحدة المترجمة حاليًا. وعند ترجمة واجهة <code>.mli</code>، يجعل استعمال <code>-opaque</code> الواجهة المترجمة <code>.cmi</code> تُوسم بحيث لا تعتمد الترجمات اللاحقة للوحدات التي تعتمد عليها على ملف <code>.cmx</code> المقابل، ولا تحذّر عند غيابه. وعند ترجمة المترجم الأصلي تنفيذًا <code>.ml</code>، يولّد استعمال <code>-opaque</code> ملف <code>.cmx</code> لا يحتوي أي معلومات للتحسين العابر للوحدات. وقد يؤدّي استعمال هذا الخيار إلى تدهور جودة الشيفرة الناتجة، لكنه يقلّل زمن الترجمة في البناء النظيف والبناء التزايدي معًا. فبالمترجم الأصلي، حين يتغيّر تنفيذ وحدة ترجمة، قد تحتاج كل الوحدات التي تعتمد عليها إلى إعادة الترجمة، لأن المعلومات العابر للوحدات ربما تغيّرت. وإن كانت وحدة الترجمة التي تغيّر تنفيذها قد ترجمت بـ <code>-opaque</code>، فلا حاجة إلى إعادة ترجمة كهذه. ويمكن استعمال هذا الخيار مثلًا للحصول على دورات تحرير-ترجمة-اختبار أسرع.</p>
+<p><strong><code>-open</code> <em>Module</em></strong></p>
+<p>افتح الوحدة المعطاة قبل معالجة ملفات الواجهة أو التنفيذ. وإن أُعطيت عدة خيارات <code>-open</code>، عولجت بالترتيب، كما لو أُضيفت العبارات <code>open!</code> <em>Module1</em><code>;;</code> <code>...</code> <code>open!</code> <em>ModuleN</em><code>;;</code> في أعلى كل ملف.</p>
+<p><strong><code>-output-obj</code></strong></p>
+<p>اجعل الرابط ينتج ملف كائنات C بدلًا من ملف تنفيذي. ويفيد ذلك في تغليف شيفرة OCaml مكتبة C قابلة للاستدعاء من أي برنامج C. انظر الفصل 23، القسم 23.7.6. ويجب ضبط اسم ملف الكائنات الناتج بالخيار <code>-o</code>. ويمكن استعمال هذا الخيار أيضًا لإنتاج مكتبة مشتركة/دينامية مترجمة (امتداد <code>.so</code>، و<code>.dll</code> على Windows).</p>
+<p><strong><code>-output-complete-obj</code></strong></p>
+<p>مثل الخيار <code>-output-obj</code> إلا أن ملف الكائنات الناتج يتضمّن زمن التشغيل ومكتبات الربط التلقائي.</p>
+<p><strong><code>-pack</code></strong></p>
+<p>ابنِ ملف كائنات، يجمع ملفات <code>.cmx</code> وملفات <code>.o</code> أو <code>.obj</code>، مع واجهته المترجمة المرافقة ذات الامتداد <code>.cmi</code>، ويدمج ملفات كائنات <code>.cmx</code> المعطاة على سطر الأوامر، فتبدو وحدات فرعية لملف <code>.cmx</code> الناتج. ويجب إعطاء اسم ملف <code>.cmx</code> الناتج بالخيار <code>-o</code>. فمثلًا يولّد ocamlopt -pack -o P.cmx A.cmx B.cmx C.cmx الملفات المترجمة <code>P.cmx</code> و<code>P.o</code> و<code>P.cmi</code> التي تصف وحدة ترجمة لها ثلاث وحدات فرعية <code>A</code> و<code>B</code> و<code>C</code>، تقابل محتويات ملفات الكائنات <code>A.cmx</code> و<code>B.cmx</code> و<code>C.cmx</code>. ويمكن الإشارة إلى هذه المحتويات بـ <code>P.A</code> و<code>P.B</code> و<code>P.C</code> في بقية البرنامج. ويجب أن تكون ملفات الكائنات <code>.cmx</code> المدموجة قد ترجمت بالخيار <code>-for-pack</code> المناسب. وفي المثال أعلاه، يجب أن تكون <code>A.cmx</code> و<code>B.cmx</code> و<code>C.cmx</code> قد ترجمت بـ <code>ocamlopt -for-pack P</code>. ويمكن تحقيق مستويات متعددة من الحزم بدمج <code>-pack</code> مع <code>-for-pack</code>. خذ المثال التالي: ocamlopt -for-pack P.Q -c A.ml ocamlopt -pack -o Q.cmx -for-pack P A.cmx ocamlopt -for-pack P -c B.ml ocamlopt -pack -o P.cmx Q.cmx B.cmx وملف الكائنات <code>P.cmx</code> الناتج له الوحدات الفرعية <code>P.Q</code> و<code>P.Q.A</code> و<code>P.B</code>.</p>
+<p><strong><code>-pp</code> <em>command</em></strong></p>
+<p>اجعل المترجم يدعو <em>command</em> المعطى معالجًا مسبقًا لكل ملف مصري. ويوجّه مخرَج <em>command</em> إلى ملف وسيط يُترجم. وإن لم توجد أخطاء ترجمة، حُذف الملف الوسيط بعد ذلك.</p>
+<p><strong><code>-ppx</code> <em>command</em></strong></p>
+<p>بعد التحليل النحوي، مرّر شجرة التركيب المجرّدة عبر المعالج المسبق <em>command</em>. والوحدة <code>Ast_mapper</code>، الموصوفة في الفصل 31: <code>Ast_mapper</code>، تنفّذ الواجهة الخارجية للمعالج المسبق.</p>
+<p><strong><code>-principal</code></strong></p>
+<p>افحص مسار المعلومات أثناء فحص الأنواع، للتأكد من أن جميع الأنواع مشتقّة على نحو أصلي. وعند استعمال الوسائط الموسومة و/أو الدوال متعدّدة الأشكال، هذا الخيار لازم لضمان تمكّن إصدارات المترجم المستقبلية من استنتاج الأنواع على نحو صحيح، حتى لو تغيّرت الخوارزميات الداخلية. وجميع البرامج المقبولة في نمط <code>-principal</code> مقبولة أيضًا في النمط الافتراضي بأنواع مكافئة، لكن بتواقيع ثنائية مختلفة، وقد يبطئ ذلك فحص الأنواع؛ ومع ذلك يحسن استعماله مرة قبل نشر الشيفرة المصدرية.</p>
+<p><strong><code>-rectypes</code></strong></p>
+<p>اسمح بأنواع عودية اعتباطية أثناء فحص الأنواع. وافتراضيًا لا تُدعم إلا الأنواع العودية التي تمرّ عوديتها عبر نوع كائن. لاحظ أنك متى أنشأت واجهة بهذا الخيار، وجب استعماله مرة أخرى لجميع التبعيات.</p>
+<p><strong><code>-runtime-variant</code> <em>suffix</em></strong></p>
+<p>أضف السلسلة <em>suffix</em> إلى اسم مكتبة زمن التشغيل التي يستعملها البرنامج. ولا تُدعم حاليًا إلا لاحقة واحدة هي <code>d</code>، وذلك فقط إذا كان مترجم OCaml قد أُعدّ بالخيار <code>-with-debug-runtime</code>. وتعطي هذه اللاحقة نسخة التنقيح من زمن التشغيل، وتفيد في تنقيح مشكلات المؤشرات في الشيفرة منخفضة المستوى مثل وصلات C.</p>
+<p><strong><code>-S</code></strong></p>
+<p>احتفظ بشيفرة التجميع المنتَجة أثناء الترجمة. وتُحفظ شيفرة التجميع للملف المصري <em>x</em><code>.ml</code> في الملف <em>x</em><code>.s</code>.</p>
+<p><strong><code>-safe-string</code></strong></p>
+<p>افرز بين النوعين <code>string</code> و<code>bytes</code>، فتصبح السلاسل للقراءة فقط. وهذا هو الافتراضي، وهو مفروض منذ OCaml 5.0.</p>
+<p><strong><code>-safer-matching</code></strong></p>
+<p>لا تستعمل معلومات الأنواع لتحسين مطابقة الأنماط. وهذا يتيح كشف إخفاقات المطابقة حتى لو افتُرض خطأً أن مطابقة أنماط شاملة. ولا يؤثر ذلك إلا في ترجمة أنواع GADT والمتغيّرات متعدّدة الأشكال.</p>
+<p><strong><code>-save-ir-after</code> <em>pass</em></strong></p>
+<p>احفظ التمثيل الوسيط بعد مرحلة الترجمة المعطاة في ملف. والمراحل المدعومة حاليًا وامتدادات ملفاتها المقابلة هي: <code>scheduling</code> (<code>.cmir-linear</code>). وهذه الميزة التجريبية تتيح للأدوات الخارجية فحص تمثيل المترجم الوسيط للبرنامج والتلاعب به باستعمال مكتبة <code>compiler-libs</code> (انظر الفصل 31 و<code>Compiler_libs</code>).</p>
+<p><strong><code>-set-runtime-default</code> <em>name=value</em></strong></p>
+<p>عند ربط ملف تنفيذي، تجاوز القيمة الافتراضية لإعداد من إعدادات زمن التشغيل. والإعدادات المدعومة حاليًا هي: **<code>standard_library_default</code>**يحدّد الموضع الافتراضي الذي يستعمله الملف التنفيذي لإيجاد المكتبة القياسية. وهو افتراضيًا المسار المطلق للمكتبة القياسية التي أُعدّ بها المترجم نفسه.</p>
+<p><strong><code>-shared</code></strong></p>
+<p>ابنِ ملحقًا (عادةً <code>.cmxs</code>) يمكن تحميله ديناميًا بالوحدة <code>Dynlink</code>. ويجب ضبط اسم الملحق بالخيار <code>-o</code>. ويمكن للملحق أن يضمّ عددًا من وحدات ومكتبات OCaml، وكائنات أصلية إضافية (ملفات <code>.o</code> و<code>.obj</code> و<code>.a</code> و<code>.lib</code>). ولا يُدعم بناء الملاحق الأصلية إلا على بعض أنظمة التشغيل. وفي بعض الأنظمة (Linux AMD 64 حاليًا فقط)، يجب أن تكون كل شيفرة OCaml المربوطة في ملحق قد ترجمت دون الخيار <code>-nodynlink</code>. وقد تنطبق بعض القيود أيضًا على طريقة ترجمة الكائنات الأصلية الإضافية (فعلى Linux AMD 64، يجب ألا تحتوي إلا شيفرة مستقلة عن الموضع).</p>
+<p><strong><code>-short-paths</code></strong></p>
+<p>حين يكون نوع مرئيًا تحت عدة مسارات وحدات، استعمل أقصرها عند طباعة اسم النوع في الواجهات المستنتجة ورسائل الخطأ والتحذير. وأسماء المعرّفات التي تبدأ بشرطة سفلية <code>_</code> أو تحتوي شرطتين سفليتين <code>__</code> تتحمّل عقوبة +10 عند حساب طولها.</p>
+<p><strong><code>-stop-after</code> <em>pass</em></strong></p>
+<p>أوقف الترجمة بعد مرحلة الترجمة المعطاة. والمراحل المدعومة حاليًا هي: <code>parsing</code> و<code>typing</code> و<code>scheduling</code> و<code>emit</code>.</p>
+<p><strong><code>-strict-sequence</code></strong></p>
+<p>أجبر الجزء الأيسر من كل متتالية على أن يكون نوعه unit.</p>
+<p><strong><code>-strict-formats</code></strong></p>
+<p>ارفض الصيغ غير الصالحة التي كانت مقبولة في تنفيذات الصيغ القديمة. وينبغي استعمال هذا الخيار لكشف هذه الصيغ غير الصالحة وإصلاحها، لأن إصدارات OCaml المستقبلية سترفضها.</p>
+<p><strong><code>-unboxed-types</code></strong></p>
+<p>حين يكون نوع قابلًا لإزالة الصندوق (أي سجل بوسيط واحد أو نوع بيانات ملموس بباني واحد ذي وسيط واحد) تُزال صندوقته ما لم يُوسم بـ <code>[@@ocaml.boxed]</code>.</p>
+<p><strong><code>-no-unboxed-types</code></strong></p>
+<p>حين يكون نوع قابلًا لإزالة الصندوق تبقى صندوقته ما لم يُوسم بـ <code>[@@ocaml.unboxed]</code>. وهذا هو الافتراضي.</p>
+<p><strong><code>-unsafe</code></strong></p>
+<p>عطّل فحص الحدود في الوصولات إلى المصفوفات والسلاسل (التركيبان <code>v.(i)</code> و<code>s.[i]</code>). والبرامج المترجمة بـ <code>-unsafe</code> أسرع لذلك، لكنها غير آمنة: قد يحدث أي شيء إذا وصل البرنامج إلى مصفوفة أو سلسلة خارج حدودها. إضافةً إلى ذلك، عطّل فحص المقسوم عليه صفرًا في عمليات القسمة الصحيحة والباقي. وبـ <code>-unsafe</code>، قد توقف القسمة الصحيحة (أو الباقي) على صفر البرنامج أو تكمل بنتيجة غير محدّدة بدلًا من إطلاق استثناء <code>Division_by_zero</code>.</p>
+<p><strong><code>-unsafe-string</code></strong></p>
+<p>اعتبر النوعين <code>string</code> و<code>bytes</code> نوعًا واحدًا، فتصبح السلاسل قابلة للكتابة. والغرض من ذلك التوافق مع الشيفرة المصدرية القديمة، ولا ينبغي استعماله مع البرمجيات الجديدة. وهذا الخيار يطلق خطأ بلا شرط منذ OCaml 5.0.</p>
+<p><strong><code>-v</code></strong></p>
+<p>اطبع رقم إصدار المترجم وموقع مجلد المكتبة القياسية، ثم اخرج.</p>
+<p><strong><code>-verbose</code></strong></p>
+<p>اطبع جميع الأوامر الخارجية قبل تنفيذها، خصوصًا استدعاءات المجمّع ومترجم C والرابط. ويفيد في تنقيح مشكلات مكتبات C.</p>
+<p><strong><code>-version</code> or <code>-vnum</code></strong></p>
+<p>اطبع رقم إصدار المترجم بصيغة قصيرة (مثل <code>3.11.0</code>)، ثم اخرج.</p>
+<p><strong><code>-w</code> <em>warning-list</em></strong></p>
+<p>مكّن التحذيرات المحدّدة بالوسيط <em>warning-list</em> أو عطّلها أو اجعلها قاتلة. ويمكن تمكين كل تحذير أو تعطيله، ويمكن أن يكون كل تحذير قاتلًا أو غير قاتل. وإذا عُطّل تحذير، فإنه لا يُعرض ولا يؤثر في الترجمة بأي شكل (حتى لو كان قاتلًا). وإذا مُكِّن تحذير، عرضه المترجم عادةً كلما أطلقه الكود المصدري. وإذا مُكِّن وكان قاتلًا، توقف المترجم أيضًا بخطأ بعد عرضه. والوسيط <em>warning-list</em> متتالية من محدّدات التحذيرات، دون فواصل بينها. ومحدّد التحذير واحد مما يلي: <strong><code>+</code><em>num</em></strong>مكّن التحذير رقم <em>num</em>.<strong><code>-</code><em>num</em></strong>عطّل التحذير رقم <em>num</em>.<strong><code>@</code><em>num</em></strong>مكّن التحذير رقم <em>num</em> واجعله قاتلًا.<strong><code>+</code><em>num1</em>..<em>num2</em></strong>مكّن التحذيرات في المدى المعطى.<strong><code>-</code><em>num1</em>..<em>num2</em></strong>عطّل التحذيرات في المدى المعطى.<strong><code>@</code><em>num1</em>..<em>num2</em></strong>مكّن التحذيرات في المدى المعطى واجعلها قاتلة.<strong><code>+</code><em>letter</em></strong>مكّن مجموعة التحذيرات الموافقة لـ <em>letter</em>. ويمكن أن يكون الحرف كبيرًا أو صغيرًا.<strong><code>-</code><em>letter</em></strong>عطّل مجموعة التحذيرات الموافقة لـ <em>letter</em>. ويمكن أن يكون الحرف كبيرًا أو صغيرًا.<strong><code>@</code><em>letter</em></strong>مكّن مجموعة التحذيرات الموافقة لـ <em>letter</em> واجعلها قاتلة. ويمكن أن يكون الحرف كبيرًا أو صغيرًا.<em><strong>uppercase-letter</strong></em>مكّن مجموعة التحذيرات الموافقة لـ <em>uppercase-letter</em>.<em><strong>lowercase-letter</strong></em>عطّل مجموعة التحذيرات الموافقة لـ <em>lowercase-letter</em>. وبدلًا من ذلك، يمكن لـ <em>warning-list</em> أن تحدّد تحذيرًا واحدًا باسمه التذكّري (انظر أدناه)، كما يلي: <strong><code>+</code><em>name</em></strong>مكّن التحذير <em>name</em>.<strong><code>-</code><em>name</em></strong>عطّل التحذير <em>name</em>.<strong><code>@</code><em>name</em></strong>مكّن التحذير <em>name</em> واجعله قاتلًا. وتُهمَل أرقام التحذيرات وحروفها وأسماؤها غير المعرَّفة حاليًا. والتحذيرات هي التالية (والاسم الذي يلي كل رقم يحدّد الاسم التذكّري لذلك التحذير).</p>
+<ul>
+<li><strong>1 <code>comment-start</code></strong>: علامة بداية تعليق مريبة.</li>
+<li><strong>2 <code>comment-not-end</code></strong>: علامة نهاية تعليق مريبة.</li>
+<li><strong>3</strong>: مرادف مهجور للتنبيه ’deprecated’.</li>
+<li><strong>4 <code>fragile-match</code></strong>: مطابقة أنماط هشّة: مطابقة تبقى شاملة حتى لو أُضيفت بوانٍ إضافية إلى أحد أنواع المتغيّرات المطابقة.</li>
+<li><strong>5 <code>ignored-partial-application</code></strong>: دالة مطبَّقة جزئيًا: تعبير نتيجته من نوع دالة ويُهمَل.</li>
+<li><strong>6 <code>labels-omitted</code></strong>: وسم محذوف في تطبيق دالة.</li>
+<li><strong>7 <code>method-override</code></strong>: دالة أُعيد تعريفها.</li>
+<li><strong>8 <code>partial-match</code></strong>: مطابقة جزئية: حالات ناقصة في مطابقة الأنماط.</li>
+<li><strong>9 <code>missing-record-field-pattern</code></strong>: حقول ناقصة في نمط سجل.</li>
+<li><strong>10 <code>non-unit-statement</code></strong>: تعبير في الطرف الأيسر من متتالية ليس نوعه <code>unit</code> (وليس دالة، انظر التحذير 5).</li>
+<li><strong>11 <code>redundant-case</code></strong>: حالة زائدة في مطابقة أنماط (حالة مطابقة غير مستعملة).</li>
+<li><strong>12 <code>redundant-subpat</code></strong>: نمط فرعي زائد في مطابقة أنماط.</li>
+<li><strong>13 <code>instance-variable-override</code></strong>: متغيّر نسخة أُعيد تعريفه.</li>
+<li><strong>14 <code>illegal-backslash</code></strong>: محرف هروب خلفي غير صحيح في ثابت سلسلة.</li>
+<li><strong>15 <code>implicit-public-methods</code></strong>: دالة خاصة صارت عامة ضمنًا.</li>
+<li><strong>16 <code>unerasable-optional-argument</code></strong>: معامل اختياري لا يمكن محوه.</li>
+<li><strong>17 <code>undeclared-virtual-method</code></strong>: دالة مجرّدة غير معلنة.</li>
+<li><strong>18 <code>not-principal</code></strong>: نوع غير أصلي.</li>
+<li><strong>19 <code>non-principal-labels</code></strong>: نوع بلا أصلية.</li>
+<li><strong>20 <code>ignored-extra-argument</code></strong>: معامل دالة غير مستعمل.</li>
+<li><strong>21 <code>nonreturning-statement</code></strong>: عبارة لا تعود.</li>
+<li><strong>22 <code>preprocessor</code></strong>: تحذير المعالج السابق.</li>
+<li><strong>23 <code>useless-record-with</code></strong>: عبارة <code>with</code> زائدة في سجل.</li>
+<li><strong>24 <code>bad-module-name</code></strong>: اسم وحدة سيئ: اسم ملف المصدر ليس اسم وحدة OCaml صحيحًا.</li>
+<li><strong>25</strong>: مُهمَل: صار جزءًا من التحذير 8.</li>
+<li><strong>26 <code>unused-var</code></strong>: متغيّر غير مستعمل مريب: متغيّر غير مستعمل مربوط بـ <code>let</code> أو <code>as</code>، ولا يبدأ بشرطة سفلية (<code>_</code>).</li>
+<li><strong>27 <code>unused-var-strict</code></strong>: متغيّر غير مستعمل غير ضار: متغيّر غير مستعمل غير مربوط بـ <code>let</code> ولا <code>as</code>، ولا يبدأ بشرطة سفلية (<code>_</code>).</li>
+<li><strong>28 <code>wildcard-arg-to-constant-constr</code></strong>: نمط بديل معطى وسيطًا لباني ثابت.</li>
+<li><strong>29 <code>eol-in-string</code></strong>: نهاية سطر غير مهروبة في ثابت سلسلة (كود غير محمول).</li>
+<li><strong>30 <code>duplicate-definitions</code></strong>: وسمان أو بانيان بالاسم نفسه معرَّفان في نوعين عوديين متبادلين.</li>
+<li><strong>31 <code>module-linked-twice</code></strong>: وحدة تُربط مرتين في الملف التنفيذي نفسه. مُهمَل: صار خطأً صارمًا (منذ 5.1).</li>
+<li><strong>32 <code>unused-value-declaration</code></strong>: إعلان قيمة غير مستعمل. (منذ 4.00)</li>
+<li><strong>33 <code>unused-open</code></strong>: عبارة open غير مستعملة. (منذ 4.00)</li>
+<li><strong>34 <code>unused-type-declaration</code></strong>: إعلان نوع غير مستعمل. (منذ 4.00)</li>
+<li><strong>35 <code>unused-for-index</code></strong>: فهرس حلقة for غير مستعمل. (منذ 4.00)</li>
+<li><strong>36 <code>unused-ancestor</code></strong>: متغيّر سلف غير مستعمل. (منذ 4.00)</li>
+<li><strong>37 <code>unused-constructor</code></strong>: باني غير مستعمل. (منذ 4.00)</li>
+<li><strong>38 <code>unused-extension</code></strong>: باني امتداد غير مستعمل. (منذ 4.00)</li>
+<li><strong>39 <code>unused-rec-flag</code></strong>: علم rec غير مستعمل. (منذ 4.00)</li>
+<li><strong>40 <code>name-out-of-scope</code></strong>: اسم باني أو وسم مستعمل خارج نطاقه. (منذ 4.01)</li>
+<li><strong>41 <code>ambiguous-name</code></strong>: اسم باني أو وسم ملتبس. (منذ 4.01)</li>
+<li><strong>42 <code>disambiguated-name</code></strong>: اسم باني أو وسم أُزيل التباسه (تحذير توافق). (منذ 4.01)</li>
+<li><strong>43 <code>nonoptional-label</code></strong>: وسم غير اختياري مطبَّق كاختياري. (منذ 4.01)</li>
+<li><strong>44 <code>open-shadow-identifier</code></strong>: عبارة open تحجب معرّفًا معرَّفًا سابقًا. (منذ 4.01)</li>
+<li><strong>45 <code>open-shadow-label-constructor</code></strong>: عبارة open تحجب وسمًا أو بانيًا معرَّفًا سابقًا. (منذ 4.01)</li>
+<li><strong>46 <code>bad-env-variable</code></strong>: خطأ في متغيّر بيئة. (منذ 4.01)</li>
+<li><strong>47 <code>attribute-payload</code></strong>: حمولة سمة غير صحيحة. (منذ 4.02)</li>
+<li><strong>48 <code>eliminated-optional-arguments</code></strong>: حذف ضمني لمعاملات اختيارية. (منذ 4.02)</li>
+<li><strong>49 <code>no-cmi-file</code></strong>: ملف cmi غائب عند البحث عن اسم وحدة مستعار. (منذ 4.02)</li>
+<li><strong>50 <code>unexpected-docstring</code></strong>: تعليق توثيق غير متوقّع. (منذ 4.03)</li>
+<li><strong>51 <code>wrong-tailcall-expectation</code></strong>: نداء دالة موسوم بسمة <code>@tailcall</code> غير صحيحة. (منذ 4.03)</li>
+<li><strong>52 <code>fragile-literal-pattern</code></strong> (انظر <strong>13.5.3</strong>): نمط ثابت هشّ. (منذ 4.03)</li>
+<li><strong>53 <code>misplaced-attribute</code></strong>: سمة لا يمكن أن تظهر في هذا السياق. (منذ 4.03)</li>
+<li><strong>54 <code>duplicated-attribute</code></strong>: سمة مستعملة أكثر من مرة على تعبير. (منذ 4.03)</li>
+<li><strong>55 <code>inlining-impossible</code></strong>: الإدراج المضمَّن مستحيل. (منذ 4.03)</li>
+<li><strong>56 <code>unreachable-case</code></strong>: حالة لا يمكن الوصول إليها في مطابقة أنماط (بالاعتماد على معلومات الأنواع). (منذ 4.03)</li>
+<li><strong>57 <code>ambiguous-var-in-pattern-guard</code></strong> (انظر <strong>13.5.4</strong>): متغيّرات أنماط «أو» ملتبسة تحت حارس. (منذ 4.03)</li>
+<li><strong>58 <code>no-cmx-file</code></strong>: ملف cmx مفقود. (منذ 4.03)</li>
+<li><strong>59 <code>flambda-assignment-to-non-mutable-value</code></strong>: إسناد إلى قيمة غير قابلة للتغيير. (منذ 4.03)</li>
+<li><strong>60 <code>unused-module</code></strong>: إعلان وحدة غير مستعمل. (منذ 4.04)</li>
+<li><strong>61 <code>unboxable-type-in-prim-decl</code></strong>: نوع قابل لنزع الصندوق في إعلان أولي. (منذ 4.04)</li>
+<li><strong>62 <code>constraint-on-gadt</code></strong>: قيد نوع على إعلان نوع GADT. (منذ 4.06)</li>
+<li><strong>63 <code>erroneous-printed-signature</code></strong>: توقيع مطبوع خاطئ. (منذ 4.08)</li>
+<li><strong>64 <code>unsafe-array-syntax-without-parsing</code></strong>: استعمال <code>-unsafe</code> مع معالج سابق يعيد شجرة صياغة. (منذ 4.08)</li>
+<li><strong>65 <code>redefining-unit</code></strong>: إعلان نوع يعرّف باني ’()’ جديدًا. (منذ 4.08)</li>
+<li><strong>66 <code>unused-open-bang</code></strong>: عبارة open! غير مستعملة. (منذ 4.08)</li>
+<li><strong>67 <code>unused-functor-parameter</code></strong>: معامل موصِّل غير مستعمل. (منذ 4.10)</li>
+<li><strong>68 <code>match-on-mutable-state-prevent-uncurry</code></strong>: مطابقة أنماط تعتمد على حالة قابلة للتغيير تمنع تنفيذ المعاملات المتبقية بلا كَري. (منذ 4.12)</li>
+<li><strong>69 <code>unused-field</code></strong>: حقل سجل غير مستعمل. (منذ 4.13)</li>
+<li><strong>70 <code>missing-mli</code></strong>: ملف واجهة مفقود. (منذ 4.13)</li>
+<li><strong>71 <code>unused-tmc-attribute</code></strong>: سمة <code>@tail_mod_cons</code> غير مستعملة. (منذ 4.14)</li>
+<li><strong>72 <code>tmc-breaks-tailcall</code></strong>: نداء ذيلي يتحوّل إلى نداء غير ذيلي بتحويل <code>@tail_mod_cons</code>. (منذ 4.14)</li>
+<li><strong>73 <code>generative-application-expects-unit</code></strong>: موصِّل توليدي مطبَّق على بنية فارغة (<code>struct end</code>) بدلًا من <code>()</code>. (منذ 5.1)</li>
+<li><strong>74 <code>degraded-to-partial-match</code></strong>: مطابقة أنماط تُترجم جزئية حتى لو بدت شاملة. (منذ 5.3)</li>
+<li><strong>75 <code>unnecessarily-partial-tuple-pattern</code></strong>: نمط صفّ ينتهي بـ <code>..</code> لكنه يطابق نوعه المتوقع بالكامل. (منذ 5.4)</li>
+<li><strong>A</strong>: كل التحذيرات.</li>
+<li><strong>C</strong>: التحذيران 1 و2.</li>
+<li><strong>D</strong>: مرادف للتحذير 3.</li>
+<li><strong>E</strong>: مرادف للتحذير 4.</li>
+<li><strong>F</strong>: مرادف للتحذير 5.</li>
+<li><strong>K</strong>: التحذيرات 32 و33 و34 و35 و36 و37 و38 و39.</li>
+<li><strong>L</strong>: مرادف للتحذير 6.</li>
+<li><strong>M</strong>: مرادف للتحذير 7.</li>
+<li><strong>P</strong>: مرادف للتحذير 8.</li>
+<li><strong>R</strong>: مرادف للتحذير 9.</li>
+<li><strong>S</strong>: مرادف للتحذير 10.</li>
+<li><strong>U</strong>: التحذيران 11 و12.</li>
+<li><strong>V</strong>: مرادف للتحذير 13.</li>
+<li><strong>X</strong>: التحذيرات 14 و15 و16 و17 و18 و19 و20 و21 و22 و23 و24 و30.</li>
+<li><strong>Y</strong>: مرادف للتحذير 26.</li>
+<li><strong>Z</strong>: مرادف للتحذير 27.</li>
+</ul>
+<p><strong><code>-warn-error</code> <em>warning-list</em></strong></p>
+<p>اجعل التحذيرات المحدّدة في الوسيط <em>warning-list</em> قاتلة. وسيتوقف المترجم بخطأ حين يُصدر أحد هذه التحذيرات. وللوسيط <em>warning-list</em> المعنى نفسه الذي له في الخيار <code>-w</code>: فإشارة <code>+</code> (أو حرف كبير) تجعل التحذيرات المقابلة قاتلة، وإشارة <code>-</code> (أو حرف صغير) تعيدها تحذيرات غير قاتلة، وإشارة <code>@</code> تمكّن التحذيرات المقابلة وتجعلها قاتلة معًا. ملاحظة: لا يُستحسن استعمال مجموعات التحذيرات (أي الحروف) وسائطَ لـ <code>-warn-error</code> في شيفرة الإنتاج، لأن ذلك قد يعطّل بناءك حين تضيف إصدارات OCaml المستقبلية بعض التحذيرات الجديدة. والإعداد الافتراضي هو <code>-warn-error -a</code> (لا تحذير قاتل).</p>
+<p><strong><code>-warn-help</code></strong></p>
+<p>اعرض وصف جميع أرقام التحذيرات المتاحة.</p>
+<p><strong><code>-where</code></strong></p>
+<p>اطبع موقع المكتبة القياسية، ثم اخرج.</p>
+<p><strong><code>-with-runtime</code></strong></p>
+<p>يعطي الزوجان <code>-with-runtime</code> و<code>-without-runtime</code> تحكّمًا دقيقًا في طريقة ربط زمن التشغيل. و<code>-with-runtime</code> هو الافتراضي. وإجمالًا، يأمر بتضمين نظام زمن التشغيل، أو إشارة إلى المسار الافتراضي لنظام زمن التشغيل، في البرنامج/الملف التنفيذي/ملف الكائنات الناتج. ويعتمد السلوك المفصّل على المترجم والخيارات المستعملة: ففي <code>ocamlc</code>، في نمط الربط الافتراضي (دون استعمال <code>-custom</code> أو <code>-output-*</code>)، ينشئ <code>-with-runtime</code> ملفًا قابلًا للتنفيذ، بينما ينشئ <code>-without-runtime</code> صورة شيفرة بايتية محضة يجب تمريرها صراحةً إلى زمن تشغيل (أي <code>./foo</code> مقابل <code>ocamlrun ./foo</code>). وفي جميع الاستعمالات الأخرى لـ <code>ocamlc</code> و<code>ocamlopt</code>، يتحكّم <code>-with-runtime</code> و<code>-without-runtime</code> في ما إذا كان المترجم يمرّر أعلام الربط مع زمن التشغيل المثبَّت (<code>-with-runtime</code>) أو كان المستعمل مطالبًا بتمريرها (<code>-without-runtime</code>). ولمزيد من المعلومات عن الخيارين <code>-custom</code> و<code>-output-*</code>، انظر توثيقهما والقسم 23.7.6 من الدليل.</p>
+<p><strong><code>-without-runtime</code></strong></p>
+<p>لا يضمّن المترجم نظام زمن التشغيل (ولا إشارة إليه) في البرنامج أو الملف التنفيذي أو ملف الكائنات الناتج؛ بل يجب توفيره منفصلًا. انظر الخيار <code>-with-runtime</code> للتفاصيل.</p>
+<p><strong><code>-</code> <em>file</em></strong></p>
+<p>عالج <em>file</em> اسم ملف، حتى لو بدأ بمحرف شرطة (<code>-</code>).</p>
+<p><strong><code>-help</code> or <code>--help</code></strong></p>
+<p>اعرض ملخّص استعمال قصير، ثم اخرج.</p>
+<h5>خيارات معمارية x86 ذات 64 بت</h5>
+<p>يدعم مولّد الشيفرة ذو 64 بت لمعالجات Intel/AMD x86 (معمارية <code>amd64</code>) الخيارات الإضافية التالية:</p>
+<p><strong><code>-fPIC</code></strong></p>
+<p>ولّد شيفرة آلة مستقلة عن الموضع. وهذا هو الافتراضي.</p>
+<p><strong><code>-fno-PIC</code></strong></p>
+<p>ولّد شيفرة آلة معتمدة على الموضع.</p>
+<h5>التحكّم السياقي في خيارات سطر الأوامر</h5>
+<p>يمكن تعديل سطر أوامر المترجم «من الخارج» بالآليات التالية. وهي تجريبية وقابلة للتغيير. وينبغي استعمالها في العمل التجريبي والتطويري فقط، لا في الحزم المنشورة.</p>
+<p><strong><code>OCAMLPARAM</code></strong>(متغيّر بيئي)**</p>
+<p>مجموعة وسائط تُدرَج قبل الوسائط الآتية من سطر الأوامر أو بعده. وتُحدَّد الوسائط في قائمة مفصولة بفواصل من أزواج <code>name=value</code>. وتُستعمل <code>_</code> لتحديد موضع وسائط سطر الأوامر، أي إن <code>a=x,_,b=y</code> تعني أن <code>a=x</code> ينبغي أن تنفّذ قبل تحليل الوسائط، و<code>b=y</code> بعده. وأخيرًا، يمكن تحديد فاصل بديل في أول محرف من السلسلة، ضمن المجموعة <code>:|; ,</code>.</p>
+<p><strong><code>ocaml_compiler_internal_params</code></strong>(ملف في مجلد المكتبة القياسية)**</p>
+<p>تعيين من أسماء الملفات إلى قوائم الوسائط التي ستُضاف إلى وسائط سطر الأوامر (ووسائط <code>OCAMLPARAM</code>).</p>
+<h2 id="163-الأخطاء-الشائعة">16.3 الأخطاء الشائعة</h2>
+<p>رسائل الخطأ تكاد تكون مطابقة لرسائل <code>ocamlc</code>. انظر القسم 13.4.</p>
+<h2 id="164-تشغيل-الملفات-التنفيذية-الناتجة-عن-ocamlopt">16.4 تشغيل الملفات التنفيذية الناتجة عن ocamlopt</h2>
+<p>الملفات التنفيذية التي يولّدها <code>ocamlopt</code> ملفات أصلية مستقلة يمكن استدعاؤها مباشرةً. وهي لا تعتمد على نظام زمن التشغيل للشيفرة البايتية <code>ocamlrun</code> ولا على مكتبات الوصلات المحمّلة ديناميًا لـ C أو OCaml.</p>
+<p>أثناء تنفيذ ملف تنفيذي ولّده <code>ocamlopt</code>، تُؤخذ المتغيّرات البيئية التالية في الحسبان أيضًا:</p>
+<p><strong><code>OCAMLRUNPARAM</code></strong></p>
+<p>الاستعمال نفسه كما في <code>ocamlrun</code> (انظر القسم 15.2)، إلا أن الخيار <code>l</code> يُهمل (ويُستعمل بدلًا منه حدّ حجم مكدّس نظام التشغيل).</p>
+<p><strong><code>CAMLRUNPARAM</code></strong></p>
+<p>إن لم يوجد <code>OCAMLRUNPARAM</code> في البيئة، استُعمل <code>CAMLRUNPARAM</code> بدلًا منه. وإن لم يوجد <code>CAMLRUNPARAM</code> أيضًا، استُعملت القيم الافتراضية.</p>
+<blockquote>
+<p><strong>Windows:</strong> على Windows، يوسّع الملف التنفيذي الذي يولّده <code>ocamlopt</code> المحارف البديلة <code>*</code> و<code>?</code> في الوسائط قبل أي شيء آخر. وتُبنى مصفوفة السلاسل <code>Sys.argv</code> بالوسائط الموسَّعة. ولتجنّب هذا السلوك، يمكن كتابة نقطة دخول مخصّصة بـ C، على النحو المبيَّن في القسم 23.7.5.</p>
+</blockquote>
+<h2 id="165-التوافق-مع-مترجم-الشيفرة-البايتية">16.5 التوافق مع مترجم الشيفرة البايتية</h2>
+<p>يسرد هذا القسم حالات عدم التوافق المعروفة بين مترجم الشيفرة البايتية ومترجم الشيفرة الأصلية. وفي ما عدا هذه النقاط، ينبغي أن يولّد المترجمان شيفرة تتصرف تصرّفًا متطابقًا.</p>
+<ul>
+<li>
+<p>لا تُكشف الإشارات إلا حين يجري البرنامج تخصيصًا في الكومة. أي إنه إذا وصلت إشارة أثناء وجود البرنامج في قطعة شيفرة لا تخصّص، فلن يُدعى معالجها إلا عند التخصيص التالي في الكومة.</p>
+</li>
+<li>
+<p>على معالجات ARM وPowerPC (32 و64 بت)، يمكن توليد تعليمات ضرب-جمع مدمجة (FMA) لضرب عدد عائم يليه جمع أو طرح عائم، كما في <code>x *. y +. z</code>. وتتجنّب تعليمة FMA تقريب النتيجة الوسيطة <code>x *. y</code>، وهو مفيد عمومًا، لكنها تنتج نتائج عائمة تختلف قليلًا عن تلك التي ينتجها مفسّر الشيفرة البايتية.</p>
+</li>
+<li>
+<p>يجري مترجم الشيفرة الأصلية عددًا من التحسينات التي لا يجريها مترجم الشيفرة البايتية، خصوصًا حين يكون محسّن Flambda نشطًا. وعلى وجه الخصوص، يحدّد مترجم الشيفرة الأصلية «الشيفرة الميتة» ويحذفها، أي الحسابات التي لا تسهم في نتائج البرنامج. فمثلًا، <code>let _ = ignore M.f</code> يحتوي إشارة إلى وحدة الترجمة <code>M</code> حين يُترجم إلى شيفرة بايتية. وهذه الإشارة تجبر ربط <code>M</code> وتنفيذ شيفرة تهيئتها. أما مترجم الشيفرة الأصلية فيحذف الإشارة إلى <code>M</code>، ومن ثم قد لا تُربط وحدة الترجمة <code>M</code> ولا تُنفَّذ. ومن الحلول ترجمة <code>M</code> بالخيار <code>-linkall</code> بحيث تُربط وتُنفَّذ دائمًا، حتى لو لم يُشَر إليها. انظر أيضًا الدالة <code>Sys.opaque_identity</code> من وحدة المكتبة القياسية <code>Sys</code>.</p>
+</li>
+<li>
+<p>قبل 4.10، لم تكن طفح المكدّس، الناتجة عادةً عن عودية بالغة العمق، تتحوّل دائمًا إلى استثناء <code>Stack_overflow</code> كما في مترجم الشيفرة البايتية. ويبذل نظام زمن التشغيل أقصى جهده لاعتراض طفح المكدّس وإطلاق استثناء <code>Stack_overflow</code>، لكنه يفشل أحيانًا ويحدث بدلًا من ذلك «خطأ تجزئة» أو خطأ نظام آخر.</p>
+</li>
+</ul>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/ocaml-manual/ch15/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">نظام التشغيل (ocamlrun)</span></a><!--]--> <!--[0--><a href="../../../../book/ocaml-manual/ch17/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fx90yh = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Dtojx2F1.js"),
+						import("../../../../_app/immutable/entry/app.Bk-T7h0B.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

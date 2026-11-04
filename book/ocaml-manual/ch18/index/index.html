@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Dtojx2F1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/COwA5tuQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C8xSp1-s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bk-T7h0B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DyJsUDCS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BEgh7YBq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5TZ6aje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8oEqyd_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.SGl2Uca0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B10blrac.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="مولّد التبعيات (ocamldep) — مولّد التبعيات (ocamldep)"/><!----><title>مولّد التبعيات (ocamldep) | دليل لغة OCaml</title>
+		<link href="../../../../_app/immutable/assets/0.D2oAgqyE.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/ocaml-manual">دليل لغة OCaml</a> <span class="reader-bar__chapter">› مولّد التبعيات (ocamldep)</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 19 من 38">19 / 38</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch17/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch19/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>تصدير</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/foreword/index">تصدير</a></li><!--]--></ul><h3>اللغة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch01/index">اللغة الأساسية</a></li><!--]--></ul><h3>نظام الوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch02/index">نظام الوحدات</a></li><!--]--></ul><h3>الكائنات في OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch03/index">الكائنات في OCaml</a></li><!--]--></ul><h3>الوسائط المُعنونة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch04/index">الوسائط المُعنونة</a></li><!--]--></ul><h3>المتغيّرات متعدّدة الأشكال</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch05/index">المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul><h3>تعدّد الأشكال وحدوده</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch06/index">تعدّد الأشكال وحدوده</a></li><!--]--></ul><h3>أنواع البيانات الجبرية المعمّمة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch07/index">أنواع البيانات الجبرية المعمّمة</a></li><!--]--></ul><h3>أمثلة متقدّمة بالأصناف والوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch08/index">أمثلة متقدّمة بالأصناف والوحدات</a></li><!--]--></ul><h3>البرمجة المتوازية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch09/index">البرمجة المتوازية</a></li><!--]--></ul><h3>نموذج الذاكرة: الأجزاء الصعبة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch10/index">نموذج الذاكرة: الأجزاء الصعبة</a></li><!--]--></ul><h3>لغة OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch11/index">لغة OCaml</a></li><!--]--></ul><h3>امتدادات اللغة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch12/index">امتدادات اللغة</a></li><!--]--></ul><h3>الترجمة الدفعية (ocamlc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch13/index">الترجمة الدفعية (ocamlc)</a></li><!--]--></ul><h3>النظام التفاعلي أو REPL (ocaml)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch14/index">النظام التفاعلي أو REPL (ocaml)</a></li><!--]--></ul><h3>نظام التشغيل (ocamlrun)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch15/index">نظام التشغيل (ocamlrun)</a></li><!--]--></ul><h3>الترجمة إلى الشيفرة الأصلية (ocamlopt)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch16/index">الترجمة إلى الشيفرة الأصلية (ocamlopt)</a></li><!--]--></ul><h3>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch17/index">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</a></li><!--]--></ul><h3 class="active-chapter">مولّد التبعيات (ocamldep)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch18/index" class="active">مولّد التبعيات (ocamldep)</a></li><!--]--></ul><h3>مولّد التوثيق (ocamldoc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch19/index">مولّد التوثيق (ocamldoc)</a></li><!--]--></ul><h3>المنقّح (ocamldebug)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch20/index">المنقّح (ocamldebug)</a></li><!--]--></ul><h3>التنقيح الأصلي (gdb, lldb)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch21/index">التنقيح الأصلي (gdb, lldb)</a></li><!--]--></ul><h3>قياس الأداء (ocamlprof, perf)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch22/index">قياس الأداء (ocamlprof, perf)</a></li><!--]--></ul><h3>الربط البيني مع لغة C</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch23/index">الربط البيني مع لغة C</a></li><!--]--></ul><h3>التحسين باستخدام Flambda</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch24/index">التحسين باستخدام Flambda</a></li><!--]--></ul><h3>الاختبار العشوائي باستخدام afl-fuzz</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch25/index">الاختبار العشوائي باستخدام afl-fuzz</a></li><!--]--></ul><h3>تتبّع زمن التشغيل بأحداث runtime</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch26/index">تتبّع زمن التشغيل بأحداث runtime</a></li><!--]--></ul><h3>تحويل البرنامج «ذَيلِي مع الباني»</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch27/index">تحويل البرنامج «ذَيلِي مع الباني»</a></li><!--]--></ul><h3>الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch28/index">الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</a></li><!--]--></ul><h3>المكتبة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch29/index">المكتبة الأساسية</a></li><!--]--></ul><h3>المكتبة القياسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch30/index">المكتبة القياسية</a></li><!--]--></ul><h3>واجهة المترجم الأمامية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch31/index">واجهة المترجم الأمامية</a></li><!--]--></ul><h3>مكتبة unix: نداءات نظام Unix</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch32/index">مكتبة unix: نداءات نظام Unix</a></li><!--]--></ul><h3>مكتبة str: التعابير النمطية ومعالجة السلاسل</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch33/index">مكتبة str: التعابير النمطية ومعالجة السلاسل</a></li><!--]--></ul><h3>مكتبة runtime_events</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch34/index">مكتبة runtime_events</a></li><!--]--></ul><h3>مكتبة threads</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch35/index">مكتبة threads</a></li><!--]--></ul><h3>مكتبة dynlink: التحميل والربط الديناميان</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch36/index">مكتبة dynlink: التحميل والربط الديناميان</a></li><!--]--></ul><h3>المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch37/index">المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>مولّد التبعيات (ocamldep)</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الفصل 18: مولّد التبعيات (ocamldep)</h1>
+<p>يقرأ الأمر <code>ocamldep</code> مجموعة من ملفات المصدر في OCaml (ملفات <code>.ml</code> و<code>.mli</code>)، ويبحث فيها عن الإشارات إلى وحدات ترجمة خارجية، ثم يُخرج أسطر التبعيات في صيغة تناسب أداة <code>make</code>. يضمن ذلك أن يترجم <code>make</code> ملفات المصدر بالترتيب الصحيح، وأن يعيد ترجمة الملفات التي تحتاج إلى ذلك عند تعديل أحد ملفات المصدر.</p>
+<p>والاستعمال النمطي هو:</p>
+<pre><code class="language-text">        ocamldep options *.mli *.ml &gt; .depend
+</code></pre>
+<p>حيث يتوسّع <code>*.mli *.ml</code> إلى جميع ملفات المصدر في الدليل الحالي، و<code>.depend</code> هو الملف الذي ينبغي أن يحتوي على التبعيات. (انظر أدناه إلى <code>Makefile</code> نمطي.)</p>
+<p>وتُولَّد التبعيات للترجمة بمترجم الشيفرة البايتية <code>ocamlc</code> وبمترجم الشيفرة الأصلية <code>ocamlopt</code> معًا.</p>
+<h2 id="181-الخيارات">18.1 الخيارات</h2>
+<p>يتعرّف <code>ocamldep</code> على خيارات سطر الأوامر التالية.</p>
+<p><strong><code>-absname</code></strong></p>
+<p>إظهار أسماء الملفات المطلقة في رسائل الخطأ.</p>
+<p><strong><code>-all</code></strong></p>
+<p>توليد التبعيات على جميع الملفات المطلوبة، بدلًا من افتراض تبعيات ضمنية.</p>
+<p><strong><code>-allow-approx</code></strong></p>
+<p>السماح بالرجوع إلى تقريب قائم على المحلّل المعجمي عندما تفشل عملية التحليل النحوي.</p>
+<p><strong><code>-args</code> <em>filename</em></strong></p>
+<p>قراءة وسائط سطر أوامر إضافية من <em>filename</em>، كل واحد منها منتهٍ بمحرف سطر جديد.</p>
+<p><strong><code>-args0</code> <em>filename</em></strong></p>
+<p>قراءة وسائط سطر أوامر إضافية من <em>filename</em>، كل واحد منها منتهٍ بمحرف عدم (null).</p>
+<p><strong><code>-as-map</code></strong></p>
+<p>بالنسبة إلى الملفات التالية، عدم تضمين التبعيات المؤجَّلة الخاصة بأسماء الوحدات المستعارة. يفترض هذا الخيار أن تلك الملفات تُترجم باستعمال الخيارين <code>-no-alias-deps -w -49</code>، وأنها هي أو واجهاتها تُمرَّر مع الخيار <code>-map</code> عند حساب التبعيات لملفات أخرى. لاحظ أيضًا أنه لكي تكون التبعيات صحيحة في تنفيذ ملف خريطة، ينبغي ألّا تجبر واجهته أيًّا من الأسماء المستعارة التي يحتوي عليها على التحويل إلى نوع آخر.</p>
+<p><strong><code>-debug-map</code></strong></p>
+<p>إخراج خريطة التبعيات المؤجَّلة لكل ملف خريطة.</p>
+<p><strong><code>-I</code> <em>directory</em></strong></p>
+<p>إضافة الدليل المحدَّد إلى قائمة الأدلة التي يُبحث فيها عن ملفات المصدر. فإذا أشار ملف مصدر <code>foo.ml</code> إلى وحدة ترجمة خارجية <code>Bar</code>، فلا تُولَّد تبعية على واجهة تلك الوحدة <code>bar.cmi</code> إلا إذا وُجد مصدر <code>bar</code> في الدليل الحالي أو في أحد الأدلة المحدَّدة بالخيار <code>-I</code>. وإلّا افتُرض أن <code>Bar</code> وحدة من المكتبة القياسية، فلا تُولَّد أي تبعيات. وبالنسبة إلى البرامج الممتدة على أدلة متعددة، يُستحسن تمرير الخيارات نفسها من نوع <code>-I</code> إلى <code>ocamldep</code> التي تُمرَّر إلى المترجم.</p>
+<p><strong><code>-H</code> <em>directory</em></strong></p>
+<p>يتصرّف مثل <code>-I</code> تمامًا، إلا أن أدلة <code>-H</code> يُبحث فيها في الآخر. أُضيف هذا الخيار لتسهيل استدعاء <code>ocamldep</code> بالخيارات نفسها التي تُستعمل مع المترجم، حيث يُستعمل <code>-H</code> للتبعيات العابرة التي لا ينبغي أن يذكرها البرنامج مباشرة.</p>
+<p><strong><code>-nocwd</code></strong></p>
+<p>عدم إضافة دليل العمل الحالي إلى قائمة أدلة التضمين.</p>
+<p><strong><code>-impl</code> <em>file</em></strong></p>
+<p>معالجة <em>file</em> كملف <code>.ml</code>.</p>
+<p><strong><code>-intf</code> <em>file</em></strong></p>
+<p>معالجة <em>file</em> كملف <code>.mli</code>.</p>
+<p><strong><code>-keywords</code> <em>version+list</em></strong></p>
+<p>ضبط الكلمات المحجوزة وفق مواصفة <em>version+list</em>. تبدأ هذه المواصفة برقم إصدار اختياري يحدّد المجموعة الأساسية من الكلمات المحجوزة، ثم قائمة من الكلمات المحجوزة الإضافية التي تُضاف إلى هذه المجموعة الأساسية، مفصولة بـ*+*. ومن دون رقم إصدار صريح، تكون المجموعة الأساسية هي مجموعة الكلمات المحجوزة في الإصدار الحالي من OCaml. والكلمات الإضافية التي لا تطابق أي كلمة محجوزة معروفة في الإصدار الحالي من اللغة تُطلق خطأً كلما وردت في الشيفرة المصدرية.</p>
+<p><strong><code>-map</code> <em>file</em></strong></p>
+<p>قراءة التبعيات المؤجَّلة لأسماء الوحدات المستعارة في <em>file</em> ونشرها، حتى تعتمد الملفات التالية على الوحدات المستعارة المُصدَّرة إذا استعملتها. انظر المثال أدناه.</p>
+<p><strong><code>-ml-synonym</code> <em>.ext</em></strong></p>
+<p>اعتبار الامتداد المحدَّد (بنقطة بادئة) مرادفًا للامتداد .ml.</p>
+<p><strong><code>-mli-synonym</code> <em>.ext</em></strong></p>
+<p>اعتبار الامتداد المحدَّد (بنقطة بادئة) مرادفًا للامتداد .mli.</p>
+<p><strong><code>-modules</code></strong></p>
+<p>إخراج تبعيات خام على الشكل filename: Module1 Module2 ... ModuleN حيث <code>Module1</code> … <code>ModuleN</code> أسماء وحدات الترجمة المشار إليها داخل الملف <code>filename</code>، من دون حلّ هذه الأسماء إلى أسماء ملفات مصدر. ولا يمكن أن يستعمل <code>make</code> مثل هذه التبعيات الخام، لكن يمكن أن تعالجها أدوات أخرى بعد ذلك، مثل <code>Omake</code>.</p>
+<p><strong><code>-native</code></strong></p>
+<p>توليد التبعيات لبرنامج أصلي خالص (بلا نسخة شيفرة بايتية). فعندما لا يكون لملف تنفيذ (ملف <code>.ml</code>) ملف واجهة صريح (ملف <code>.mli</code>)، يُولّد <code>ocamldep</code> تبعيات على الملف المترجم إلى شيفرة بايتية (ملف <code>.cmo</code>) لتعكس تغيّرات الواجهة. وقد يسبّب ذلك إعادة ترجمات غير ضرورية إلى شيفرة بايتية في البرامج التي تُترجم إلى الشيفرة الأصلية فقط. ويجعل الخيار <code>-native</code> التبعيات تُولَّد على الملفات المترجمة أصليًا (<code>.cmx</code>) بدلًا من ملفات <code>.cmo</code>. (ولا يُحدث هذا الخيار فرقًا إذا كانت جميع ملفات المصدر لها ملفات واجهة <code>.mli</code> صريحة.)</p>
+<p><strong><code>-one-line</code></strong></p>
+<p>إخراج سطر واحد لكل ملف، مهما كان طوله.</p>
+<p><strong><code>-open</code> <em>module</em></strong></p>
+<p>افتراض أن الوحدة <em>module</em> مفتوحة قبل تحليل كل ملف من الملفات التالية.</p>
+<p><strong><code>-pp</code> <em>command</em></strong></p>
+<p>جعل <code>ocamldep</code> يستدعي الأمر <em>command</em> المحدَّد معالجًا مسبقًا لكل ملف مصدر.</p>
+<p><strong><code>-ppx</code> <em>command</em></strong></p>
+<p>تمرير أشجار التركيب المجرّدة عبر المعالج المسبق <em>command</em>.</p>
+<p><strong><code>-shared</code></strong></p>
+<p>توليد التبعيات لملفات الإضافات الأصلية (.cmxs) إضافةً إلى الملفات المترجمة أصليًا (.cmx).</p>
+<p><strong><code>-slash</code></strong></p>
+<p>تحت Windows، استعمال الشرطة المائلة إلى الأمام (/) فاصلًا للمسارات بدلًا من الشرطة المائلة العكسية المعتادة (). وتحت Unix لا يفعل هذا الخيار شيئًا.</p>
+<p><strong><code>-sort</code></strong></p>
+<p>ترتيب الملفات وفق تبعياتها.</p>
+<p><strong><code>-version</code></strong></p>
+<p>طباعة سلسلة الإصدار والخروج.</p>
+<p><strong><code>-vnum</code></strong></p>
+<p>طباعة رقم الإصدار القصير والخروج.</p>
+<p><strong><code>-help</code> أو <code>--help</code></strong></p>
+<p>عرض ملخّص قصير لطريقة الاستعمال والخروج.</p>
+<h2 id="182-ملف-makefile-نمطي">18.2 ملف Makefile نمطي</h2>
+<p>هذا قالب <code>Makefile</code> لبرنامج OCaml.</p>
+<pre><code class="language-text">OCAMLC=ocamlc
+OCAMLOPT=ocamlopt
+OCAMLDEP=ocamldep
+INCLUDES=                 # all relevant -I options here
+OCAMLFLAGS=$(INCLUDES)    # add other options for ocamlc here
+OCAMLOPTFLAGS=$(INCLUDES) # add other options for ocamlopt here
+
+# prog1 should be compiled to bytecode, and is composed of three
+# units: mod1, mod2 and mod3.
+
+# The list of object files for prog1
+PROG1_OBJS=mod1.cmo mod2.cmo mod3.cmo
+
+prog1: $(PROG1_OBJS)
+        $(OCAMLC) -o prog1 $(OCAMLFLAGS) $(PROG1_OBJS)
+
+# prog2 should be compiled to native-code, and is composed of two
+# units: mod4 and mod5.
+
+# The list of object files for prog2
+PROG2_OBJS=mod4.cmx mod5.cmx
+
+prog2: $(PROG2_OBJS)
+        $(OCAMLOPT) -o prog2 $(OCAMLFLAGS) $(PROG2_OBJS)
+
+# Common rules
+
+%.cmo: %.ml
+        $(OCAMLC) $(OCAMLFLAGS) -c $&lt;
+
+%.cmi: %.mli
+        $(OCAMLC) $(OCAMLFLAGS) -c $&lt;
+
+%.cmx: %.ml
+        $(OCAMLOPT) $(OCAMLOPTFLAGS) -c $&lt;
+
+# Clean up
+clean:
+        rm -f prog1 prog2
+        rm -f *.cm[iox]
+
+# Dependencies
+depend:
+        $(OCAMLDEP) $(INCLUDES) *.mli *.ml &gt; .depend
+
+include .depend
+</code></pre>
+<p>إذا استعملت أسماء وحدات مستعارة لإعطاء أسماء أقصر للوحدات، فأنت بحاجة إلى تغيير التعريفات أعلاه. وبافتراض أن ملف الخريطة لديك اسمه <code>mylib.mli</code>، فهذه تعديلات دنيا:</p>
+<pre><code class="language-text">OCAMLFLAGS=$(INCLUDES) -open Mylib
+
+mylib.cmi: mylib.mli
+        $(OCAMLC) $(INCLUDES) -no-alias-deps -w -49 -c $&lt;
+
+depend:
+        $(OCAMLDEP) $(INCLUDES) -map mylib.mli $(PROG1_OBJS:.cmo=.ml) &gt; .depend
+</code></pre>
+<p>لاحظ أنه في هذه الحالة ينبغي ألّا تحسب التبعيات الخاصة بـ<code>mylib.mli</code> مع الملفات الأخرى، ومن هنا الحاجة إلى تمرير قائمة الملفات التي ستُعالَج صراحةً. وإذا كانت لـ<code>mylib.mli</code> نفسها تبعيات، فينبغي أن تحسبها باستعمال <code>-as-map</code>.</p>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/ocaml-manual/ch17/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</span></a><!--]--> <!--[0--><a href="../../../../book/ocaml-manual/ch19/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مولّد التوثيق (ocamldoc)</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fx90yh = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Dtojx2F1.js"),
+						import("../../../../_app/immutable/entry/app.Bk-T7h0B.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

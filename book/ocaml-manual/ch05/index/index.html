@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Dtojx2F1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/COwA5tuQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C8xSp1-s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bk-T7h0B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DyJsUDCS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BEgh7YBq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5TZ6aje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8oEqyd_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.SGl2Uca0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B10blrac.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المتغيّرات متعدّدة الأشكال — المتغيّرات متعدّدة الأشكال"/><!----><title>المتغيّرات متعدّدة الأشكال | دليل لغة OCaml</title>
+		<link href="../../../../_app/immutable/assets/0.D2oAgqyE.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/ocaml-manual">دليل لغة OCaml</a> <span class="reader-bar__chapter">› المتغيّرات متعدّدة الأشكال</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 6 من 38">6 / 38</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch04/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch06/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>تصدير</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/foreword/index">تصدير</a></li><!--]--></ul><h3>اللغة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch01/index">اللغة الأساسية</a></li><!--]--></ul><h3>نظام الوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch02/index">نظام الوحدات</a></li><!--]--></ul><h3>الكائنات في OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch03/index">الكائنات في OCaml</a></li><!--]--></ul><h3>الوسائط المُعنونة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch04/index">الوسائط المُعنونة</a></li><!--]--></ul><h3 class="active-chapter">المتغيّرات متعدّدة الأشكال</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch05/index" class="active">المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul><h3>تعدّد الأشكال وحدوده</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch06/index">تعدّد الأشكال وحدوده</a></li><!--]--></ul><h3>أنواع البيانات الجبرية المعمّمة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch07/index">أنواع البيانات الجبرية المعمّمة</a></li><!--]--></ul><h3>أمثلة متقدّمة بالأصناف والوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch08/index">أمثلة متقدّمة بالأصناف والوحدات</a></li><!--]--></ul><h3>البرمجة المتوازية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch09/index">البرمجة المتوازية</a></li><!--]--></ul><h3>نموذج الذاكرة: الأجزاء الصعبة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch10/index">نموذج الذاكرة: الأجزاء الصعبة</a></li><!--]--></ul><h3>لغة OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch11/index">لغة OCaml</a></li><!--]--></ul><h3>امتدادات اللغة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch12/index">امتدادات اللغة</a></li><!--]--></ul><h3>الترجمة الدفعية (ocamlc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch13/index">الترجمة الدفعية (ocamlc)</a></li><!--]--></ul><h3>النظام التفاعلي أو REPL (ocaml)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch14/index">النظام التفاعلي أو REPL (ocaml)</a></li><!--]--></ul><h3>نظام التشغيل (ocamlrun)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch15/index">نظام التشغيل (ocamlrun)</a></li><!--]--></ul><h3>الترجمة إلى الشيفرة الأصلية (ocamlopt)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch16/index">الترجمة إلى الشيفرة الأصلية (ocamlopt)</a></li><!--]--></ul><h3>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch17/index">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</a></li><!--]--></ul><h3>مولّد التبعيات (ocamldep)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch18/index">مولّد التبعيات (ocamldep)</a></li><!--]--></ul><h3>مولّد التوثيق (ocamldoc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch19/index">مولّد التوثيق (ocamldoc)</a></li><!--]--></ul><h3>المنقّح (ocamldebug)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch20/index">المنقّح (ocamldebug)</a></li><!--]--></ul><h3>التنقيح الأصلي (gdb, lldb)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch21/index">التنقيح الأصلي (gdb, lldb)</a></li><!--]--></ul><h3>قياس الأداء (ocamlprof, perf)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch22/index">قياس الأداء (ocamlprof, perf)</a></li><!--]--></ul><h3>الربط البيني مع لغة C</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch23/index">الربط البيني مع لغة C</a></li><!--]--></ul><h3>التحسين باستخدام Flambda</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch24/index">التحسين باستخدام Flambda</a></li><!--]--></ul><h3>الاختبار العشوائي باستخدام afl-fuzz</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch25/index">الاختبار العشوائي باستخدام afl-fuzz</a></li><!--]--></ul><h3>تتبّع زمن التشغيل بأحداث runtime</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch26/index">تتبّع زمن التشغيل بأحداث runtime</a></li><!--]--></ul><h3>تحويل البرنامج «ذَيلِي مع الباني»</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch27/index">تحويل البرنامج «ذَيلِي مع الباني»</a></li><!--]--></ul><h3>الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch28/index">الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</a></li><!--]--></ul><h3>المكتبة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch29/index">المكتبة الأساسية</a></li><!--]--></ul><h3>المكتبة القياسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch30/index">المكتبة القياسية</a></li><!--]--></ul><h3>واجهة المترجم الأمامية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch31/index">واجهة المترجم الأمامية</a></li><!--]--></ul><h3>مكتبة unix: نداءات نظام Unix</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch32/index">مكتبة unix: نداءات نظام Unix</a></li><!--]--></ul><h3>مكتبة str: التعابير النمطية ومعالجة السلاسل</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch33/index">مكتبة str: التعابير النمطية ومعالجة السلاسل</a></li><!--]--></ul><h3>مكتبة runtime_events</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch34/index">مكتبة runtime_events</a></li><!--]--></ul><h3>مكتبة threads</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch35/index">مكتبة threads</a></li><!--]--></ul><h3>مكتبة dynlink: التحميل والربط الديناميان</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch36/index">مكتبة dynlink: التحميل والربط الديناميان</a></li><!--]--></ul><h3>المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch37/index">المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المتغيّرات متعدّدة الأشكال</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#51-الاستعمال-الأساسي">5.1 الاستعمال الأساسي</a></li><li><a href="#52-الاستعمال-المتقدم">5.2 الاستعمال المتقدّم</a></li><li><a href="#53-مواطن-ضعف-المتغيرات-متعددة-الأشكال">5.3 مواطن ضعف المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الفصل 5: المتغيّرات متعدّدة الأشكال</h1>
+<p><em>كتب هذا الفصل جاك غاريغ</em></p>
+<p>المتغيّرات كما عُرضت في القسم 1.4 أداة قوية لبناء بنى المعطيات والخوارزميات. غير أنها تفتقر أحيانًا إلى المرونة عند استعمالها في البرمجة المعيارية. والسبب أنّ كل باني يُنسب إلى نوع وحيد عند تعريفه واستعماله. فحتى لو ظهر الاسم نفسه في تعريف أنواع متعدّدة، فإنّ الباني نفسه ينتمي إلى نوع واحد فقط. ولذلك لا يمكن الحكم بأنّ بانيًا معيّنًا ينتمي إلى أنواع متعدّدة، ولا اعتبار قيمة من نوع ما تنتمي إلى نوع آخر ذي بوانٍ أكثر.</p>
+<p>ومع المتغيّرات متعدّدة الأشكال يُرفع هذا الافتراض الأصلي. أي أنّ وسم المتغيّر لا ينتمي إلى أي نوع بعينه، بل يتحقّق نظام الأنواع فقط من أنه قيمة مقبولة بحسب استعماله. فلا حاجة إلى تعريف نوع قبل استعمال وسم متغيّر. وسيُستنتج نوع متغيّر مستقلًّا لكل استعمال من استعمالاته.</p>
+<h2 id="51-الاستعمال-الأساسي">5.1 الاستعمال الأساسي</h2>
+<p>تعمل المتغيّرات متعدّدة الأشكال في البرامج عمل المتغيّرات العادية. ما عليك إلا أن تسبق أسماءها بعلامة الخلف.</p>
+<pre><code class="language-ocaml"># [<span class="hljs-type">`On</span>; <span class="hljs-type">`Off</span>];;
+
+- : [&gt; <span class="hljs-type">`Off</span> | <span class="hljs-type">`On</span> ] <span class="hljs-built_in">list</span> = [<span class="hljs-type">`On</span>; <span class="hljs-type">`Off</span>]
+
+# <span class="hljs-type">`Number</span> <span class="hljs-number">1</span>;;
+
+- : [&gt; <span class="hljs-type">`Number</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> ] = <span class="hljs-type">`Number</span> <span class="hljs-number">1</span>
+
+# <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">function</span> <span class="hljs-type">`On</span> -&gt; <span class="hljs-number">1</span> | <span class="hljs-type">`Off</span> -&gt; <span class="hljs-number">0</span> | <span class="hljs-type">`Number</span> n -&gt; n;;
+
+<span class="hljs-keyword">val</span> f : [&lt; <span class="hljs-type">`Number</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> | <span class="hljs-type">`Off</span> | <span class="hljs-type">`On</span> ] -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-type">List</span>.map f [<span class="hljs-type">`On</span>; <span class="hljs-type">`Off</span>];;
+
+- : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> = [<span class="hljs-number">1</span>; <span class="hljs-number">0</span>]
+</code></pre>
+<p>النوع <code>[&gt;`Off|`On] list</code> يعني أنه لمطابقة هذه القائمة، يجب أن تكون قادرًا على مطابقة <code>`Off</code> و<code>`On</code> على الأقل، من دون وسيط. والنوع <code>[&lt;`On|`Off|`Number of int]</code> يعني أنه يجوز تطبيق <code>f</code> على <code>`Off</code> و<code>`On</code> (كلاهما من دون وسيط)، أو على <code>`Number</code> <em>n</em> حيث <em>n</em> عدد صحيح. وتُظهر علامتا <code>&gt;</code> و<code>&lt;</code> داخل أنواع المتغيّرات أنها قد تُصقَل بعد، إمّا بتعريف وسوم أكثر، وإمّا بالسماح بوسوم أقل. ومن ثمّ فهي تحتوي متغيّر نوع ضمنيًا. ولأنّ كلًّا من أنواع المتغيّرات هذه يظهر مرّة واحدة فقط في النوع كله، فلا تُعرض متغيّرات نوعها الضمنية.</p>
+<p>كانت أنواع المتغيّرات أعلاه متعدّدة الأشكال، إذ تسمح بمزيد من الصقل. أمّا عند كتابة إضافات الأنواع، فسيصف المرء في الغالب أنواع متغيّرات مثبّتة، أي أنواعًا لا يمكن صقلها. وهذا هو الحال أيضًا في اختصارات الأنواع. فلا تحتوي مثل هذه الأنواع علامتي <code>&lt;</code> أو <code>&gt;</code>، بل مجرّد تعداد للوسوم وأنواعها المرتبطة، تمامًا كما في تعريف نوع معطيات عادي.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> vlist = [<span class="hljs-type">`Nil</span> | <span class="hljs-type">`Cons</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> vlist];;
+
+<span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> vlist = [ <span class="hljs-type">`Cons</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> vlist | <span class="hljs-type">`Nil</span> ]
+
+# <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> map f : <span class="hljs-symbol">&#x27;a</span> vlist -&gt; <span class="hljs-symbol">&#x27;b</span> vlist = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">`Nil</span> -&gt; <span class="hljs-type">`Nil</span>
+    | <span class="hljs-type">`Cons</span>(a, l) -&gt; <span class="hljs-type">`Cons</span>(f a, map f l)
+  ;;
+
+<span class="hljs-keyword">val</span> map : (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;b</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> vlist -&gt; <span class="hljs-symbol">&#x27;b</span> vlist = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h2 id="52-الاستعمال-المتقدم">5.2 الاستعمال المتقدّم</h2>
+<p>فحص أنواع المتغيّرات متعدّدة الأشكال أمر دقيق، وقد تُنتج بعض التعابير معلومات نوع أعقد.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">function</span> <span class="hljs-type">`A</span> -&gt; <span class="hljs-type">`C</span> | <span class="hljs-type">`B</span> -&gt; <span class="hljs-type">`D</span> | x -&gt; x;;
+
+<span class="hljs-keyword">val</span> f : ([&gt; <span class="hljs-type">`A</span> | <span class="hljs-type">`B</span> | <span class="hljs-type">`C</span> | <span class="hljs-type">`D</span> ] <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# f <span class="hljs-type">`E</span>;;
+
+- : [&gt; <span class="hljs-type">`A</span> | <span class="hljs-type">`B</span> | <span class="hljs-type">`C</span> | <span class="hljs-type">`D</span> | <span class="hljs-type">`E</span> ] = <span class="hljs-type">`E</span>
+</code></pre>
+<p>نرى هنا ظاهرتين. أولًا، بما أنّ هذه المطابقة مفتوحة (فالحالة الأخيرة تلتقط أي وسم)، نحصل على النوع <code>[&gt; `A | `B]</code> بدلًا من <code>[&lt; `A | `B]</code> كما في مطابقة مغلقة. ثم، بما أنّ <code>x</code> يُعاد كما هو، فنوعا المدخل والمخرج متطابقان. والتدوين <code>as 'a</code> يدلّ على هذا التشارك في النوع. وإذا طبّقنا <code>f</code> على وسم آخر <code>`E</code>، أُضيف إلى القائمة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f1 = <span class="hljs-keyword">function</span> <span class="hljs-type">`A</span> x -&gt; x = <span class="hljs-number">1</span> | <span class="hljs-type">`B</span> -&gt; <span class="hljs-literal">true</span> | <span class="hljs-type">`C</span> -&gt; <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">let</span> f2 = <span class="hljs-keyword">function</span> <span class="hljs-type">`A</span> x -&gt; x = <span class="hljs-string">&quot;a&quot;</span> | <span class="hljs-type">`B</span> -&gt; <span class="hljs-literal">true</span> ;;
+
+<span class="hljs-keyword">val</span> f1 : [&lt; <span class="hljs-type">`A</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> | <span class="hljs-type">`B</span> | <span class="hljs-type">`C</span> ] -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> f2 : [&lt; <span class="hljs-type">`A</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span> | <span class="hljs-type">`B</span> ] -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> f x = f1 x &amp;&amp; f2 x;;
+
+<span class="hljs-keyword">val</span> f : [&lt; <span class="hljs-type">`A</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span> &amp; <span class="hljs-built_in">int</span> | <span class="hljs-type">`B</span> ] -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>هنا تقبل كل من <code>f1</code> و<code>f2</code> الوسمين <code>`A</code> و<code>`B</code>، لكنّ وسيط <code>`A</code> من النوع <code>int</code> في <code>f1</code> ومن النوع <code>string</code> في <code>f2</code>. وفي نوع <code>f</code> يختفي <code>`C</code>، الذي لا يقبله إلا <code>f1</code>، أمّا نوعا الوسيط فيظهران معًا لـ <code>`A</code> على شكل <code>int &amp; string</code>. وهذا يعني أنه إذا مرّرنا الوسم <code>`A</code> إلى <code>f</code>، وجب أن يكون وسيطه <code>int</code> و<code>string</code> معًا في الوقت نفسه. ولأنّ مثل هذه القيمة غير موجودة، لا يمكن تطبيق <code>f</code> على <code>`A</code>، ويكون <code>`B</code> المدخل الوحيد المقبول.</p>
+<p>وحتى إذا كان لقيمة نوع متغيّر مثبّت، يمكن إعطاؤها نوعًا أكبر عبر الإكراهات. وتُكتب الإكراهات عادةً بنوعي المصدر والهدف، لكن يمكن حذف نوع المصدر في الحالات البسيطة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> wlist = [<span class="hljs-type">`Nil</span> | <span class="hljs-type">`Cons</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> wlist | <span class="hljs-type">`Snoc</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> wlist * <span class="hljs-symbol">&#x27;a</span>];;
+
+<span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> wlist = [ <span class="hljs-type">`Cons</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> wlist | <span class="hljs-type">`Nil</span> | <span class="hljs-type">`Snoc</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> wlist * <span class="hljs-symbol">&#x27;a</span> ]
+
+# <span class="hljs-keyword">let</span> wlist_of_vlist  l = (l : <span class="hljs-symbol">&#x27;a</span> vlist :&gt; <span class="hljs-symbol">&#x27;a</span> wlist);;
+
+<span class="hljs-keyword">val</span> wlist_of_vlist : <span class="hljs-symbol">&#x27;a</span> vlist -&gt; <span class="hljs-symbol">&#x27;a</span> wlist = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> open_vlist l = (l : <span class="hljs-symbol">&#x27;a</span> vlist :&gt; [&gt; <span class="hljs-symbol">&#x27;a</span> vlist]);;
+
+<span class="hljs-keyword">val</span> open_vlist : <span class="hljs-symbol">&#x27;a</span> vlist -&gt; [&gt; <span class="hljs-symbol">&#x27;a</span> vlist ] = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">fun</span> x -&gt; (x :&gt; [<span class="hljs-type">`A</span>|<span class="hljs-type">`B</span>|<span class="hljs-type">`C</span>]);;
+
+- : [&lt; <span class="hljs-type">`A</span> | <span class="hljs-type">`B</span> | <span class="hljs-type">`C</span> ] -&gt; [ <span class="hljs-type">`A</span> | <span class="hljs-type">`B</span> | <span class="hljs-type">`C</span> ] = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويمكنك أيضًا إكراه القيم إكراهًا انتقائيًا عبر مطابقة الأنماط.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> split_cases = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">`Nil</span> | <span class="hljs-type">`Cons</span> _ <span class="hljs-keyword">as</span> x -&gt; <span class="hljs-type">`A</span> x
+    | <span class="hljs-type">`Snoc</span> _ <span class="hljs-keyword">as</span> x -&gt; <span class="hljs-type">`B</span> x
+  ;;
+
+<span class="hljs-keyword">val</span> split_cases :
+  [&lt; <span class="hljs-type">`Cons</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-type">`Nil</span> | <span class="hljs-type">`Snoc</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> ] -&gt;
+  [&gt; <span class="hljs-type">`A</span> <span class="hljs-keyword">of</span> [&gt; <span class="hljs-type">`Cons</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-type">`Nil</span> ] | <span class="hljs-type">`B</span> <span class="hljs-keyword">of</span> [&gt; <span class="hljs-type">`Snoc</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> ] ] = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وعندما يُغلَّف نمط «أو» مؤلَّف من وسوم متغيّرات داخل نمط مستعار، يُعطى الاسم المستعار نوعًا يحتوي فقط الوسوم المعدودة في نمط «أو». وهذا يسمح بأدوات مفيدة كثيرة، مثل التعريف التدريجي للدوال.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> num x = <span class="hljs-type">`Num</span> x
+  <span class="hljs-keyword">let</span> eval1 eval (<span class="hljs-type">`Num</span> x) = x
+  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> eval x = eval1 eval x ;;
+
+<span class="hljs-keyword">val</span> num : <span class="hljs-symbol">&#x27;a</span> -&gt; [&gt; <span class="hljs-type">`Num</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> ] = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> eval1 : <span class="hljs-symbol">&#x27;a</span> -&gt; [&lt; <span class="hljs-type">`Num</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> ] -&gt; <span class="hljs-symbol">&#x27;b</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> eval : [&lt; <span class="hljs-type">`Num</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> ] -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> plus x y = <span class="hljs-type">`Plus</span>(x,y)
+  <span class="hljs-keyword">let</span> eval2 eval = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">`Plus</span>(x,y) -&gt; eval x + eval y
+    | <span class="hljs-type">`Num</span> _ <span class="hljs-keyword">as</span> x -&gt; eval1 eval x
+  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> eval x = eval2 eval x ;;
+
+<span class="hljs-keyword">val</span> plus : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;b</span> -&gt; [&gt; <span class="hljs-type">`Plus</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;b</span> ] = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> eval2 : (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">int</span>) -&gt; [&lt; <span class="hljs-type">`Num</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> | <span class="hljs-type">`Plus</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> ] -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> eval : ([&lt; <span class="hljs-type">`Num</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> | <span class="hljs-type">`Plus</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> ] <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ولجعل هذا أيسر، يمكنك استعمال تعريفات الأنواع اختصاراتٍ لأنماط «أو». أي أنه إذا عرّفت <code>type myvariant = [`Tag1 of int | `Tag2 of bool]</code>، فإنّ النمط <code>#myvariant</code> يكافئ كتابة <code>(`Tag1(_ : int) | `Tag2(_ : bool))</code>.</p>
+<p>ويمكن استعمال هذه الاختصارات وحدها،</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">function</span>
+    | #myvariant -&gt; <span class="hljs-string">&quot;myvariant&quot;</span>
+    | <span class="hljs-type">`Tag3</span> -&gt; <span class="hljs-string">&quot;Tag3&quot;</span>;;
+
+<span class="hljs-keyword">val</span> f : [&lt; <span class="hljs-type">`Tag1</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> | <span class="hljs-type">`Tag2</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">bool</span> | <span class="hljs-type">`Tag3</span> ] -&gt; <span class="hljs-built_in">string</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>أو مقترنة بأسماء مستعارة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> g1 = <span class="hljs-keyword">function</span> <span class="hljs-type">`Tag1</span> _ -&gt; <span class="hljs-string">&quot;Tag1&quot;</span> | <span class="hljs-type">`Tag2</span> _ -&gt; <span class="hljs-string">&quot;Tag2&quot;</span>;;
+
+<span class="hljs-keyword">val</span> g1 : [&lt; <span class="hljs-type">`Tag1</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-type">`Tag2</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> ] -&gt; <span class="hljs-built_in">string</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> g = <span class="hljs-keyword">function</span>
+    | #myvariant <span class="hljs-keyword">as</span> x -&gt; g1 x
+    | <span class="hljs-type">`Tag3</span> -&gt; <span class="hljs-string">&quot;Tag3&quot;</span>;;
+
+<span class="hljs-keyword">val</span> g : [&lt; <span class="hljs-type">`Tag1</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> | <span class="hljs-type">`Tag2</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">bool</span> | <span class="hljs-type">`Tag3</span> ] -&gt; <span class="hljs-built_in">string</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h2 id="53-مواطن-ضعف-المتغيرات-متعددة-الأشكال">5.3 مواطن ضعف المتغيّرات متعدّدة الأشكال</h2>
+<p>بعد أن رأينا قوة المتغيّرات متعدّدة الأشكال، قد يتساءل المرء لماذا أُضيفت إلى متغيّرات اللغة الأساسية بدلًا من أن تحلّ محلّها.</p>
+<p>والجواب ذو شقّين. الشقّ الأول أنه رغم كونها فعّالة جدًّا، فإنّ غياب معلومات الأنواع الساكنة يسمح بتحسينات أقل، ويجعل المتغيّرات متعدّدة الأشكال أثقل قليلًا من متغيّرات اللغة الأساسية. غير أنّ الفروق الملحوظة لا تظهر إلا في بنى معطيات ضخمة.</p>
+<p>والأهمّ أنّ المتغيّرات متعدّدة الأشكال، رغم كونها آمنة نوعيًا، تؤدّي إلى انضباط نوعي أضعف. أي أنّ متغيّرات اللغة الأساسية تفعل في الواقع أكثر بكثير من ضمان السلامة النوعية، فهي تتحقّق أيضًا من أنك لا تستعمل إلا البواني المعلنة، وأنّ كل البواني الحاضرة في بنية معطيات متوافقة، وتفرض قيود أنواع على وسائطها.</p>
+<p>ولهذا السبب، يجب أن تكون أكثر حرصًا على جعل الأنواع صريحة عند استعمال المتغيّرات متعدّدة الأشكال. وحين تكتب مكتبة، يكون هذا سهلًا لأنك تستطيع وصف أنواع دقيقة في الواجهات، أمّا في البرامج البسيطة فالأرجح أن تكون متغيّرات اللغة الأساسية أفضل لك.</p>
+<p>واحذر أيضًا أنّ بعض الأساليب تجعل الأخطاء التافهة صعبة الاكتشاف جدًّا. فمثلًا الشيفرة التالية خاطئة على الأرجح، لكن لا سبيل للمترجم إلى رؤية ذلك.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> abc = [<span class="hljs-type">`A</span> | <span class="hljs-type">`B</span> | <span class="hljs-type">`C</span>] ;;
+
+<span class="hljs-keyword">type</span> abc = [ <span class="hljs-type">`A</span> | <span class="hljs-type">`B</span> | <span class="hljs-type">`C</span> ]
+
+# <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">`As</span> -&gt; <span class="hljs-string">&quot;A&quot;</span>
+    | #abc -&gt; <span class="hljs-string">&quot;other&quot;</span> ;;
+
+<span class="hljs-keyword">val</span> f : [&lt; <span class="hljs-type">`A</span> | <span class="hljs-type">`As</span> | <span class="hljs-type">`B</span> | <span class="hljs-type">`C</span> ] -&gt; <span class="hljs-built_in">string</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> f : abc -&gt; <span class="hljs-built_in">string</span> = f ;;
+
+<span class="hljs-keyword">val</span> f : abc -&gt; <span class="hljs-built_in">string</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويمكنك تجنّب مثل هذه المخاطر بإضافة نوع إلى التعريف نفسه.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f : abc -&gt; <span class="hljs-built_in">string</span> = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">`As</span> -&gt; <span class="hljs-string">&quot;A&quot;</span>
+    | #abc -&gt; <span class="hljs-string">&quot;other&quot;</span> ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">This</span> pattern matches values <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> [? <span class="hljs-type">`As</span> ]
+       but a pattern was expected which matches values <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> abc
+       <span class="hljs-type">The</span> second variant <span class="hljs-keyword">type</span> does not allow tag(s) <span class="hljs-type">`As</span>
+</code></pre>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/ocaml-manual/ch04/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الوسائط المُعنونة</span></a><!--]--> <!--[0--><a href="../../../../book/ocaml-manual/ch06/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">تعدّد الأشكال وحدوده</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fx90yh = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Dtojx2F1.js"),
+						import("../../../../_app/immutable/entry/app.Bk-T7h0B.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

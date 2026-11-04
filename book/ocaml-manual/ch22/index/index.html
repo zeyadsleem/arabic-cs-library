@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Dtojx2F1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/COwA5tuQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C8xSp1-s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bk-T7h0B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DyJsUDCS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BEgh7YBq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5TZ6aje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8oEqyd_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.SGl2Uca0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B10blrac.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="قياس الأداء (ocamlprof, perf) — قياس الأداء (ocamlprof, perf)"/><!----><title>قياس الأداء (ocamlprof, perf) | دليل لغة OCaml</title>
+		<link href="../../../../_app/immutable/assets/0.D2oAgqyE.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/ocaml-manual">دليل لغة OCaml</a> <span class="reader-bar__chapter">› قياس الأداء (ocamlprof, perf)</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 23 من 38">23 / 38</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch21/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch23/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>تصدير</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/foreword/index">تصدير</a></li><!--]--></ul><h3>اللغة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch01/index">اللغة الأساسية</a></li><!--]--></ul><h3>نظام الوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch02/index">نظام الوحدات</a></li><!--]--></ul><h3>الكائنات في OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch03/index">الكائنات في OCaml</a></li><!--]--></ul><h3>الوسائط المُعنونة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch04/index">الوسائط المُعنونة</a></li><!--]--></ul><h3>المتغيّرات متعدّدة الأشكال</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch05/index">المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul><h3>تعدّد الأشكال وحدوده</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch06/index">تعدّد الأشكال وحدوده</a></li><!--]--></ul><h3>أنواع البيانات الجبرية المعمّمة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch07/index">أنواع البيانات الجبرية المعمّمة</a></li><!--]--></ul><h3>أمثلة متقدّمة بالأصناف والوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch08/index">أمثلة متقدّمة بالأصناف والوحدات</a></li><!--]--></ul><h3>البرمجة المتوازية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch09/index">البرمجة المتوازية</a></li><!--]--></ul><h3>نموذج الذاكرة: الأجزاء الصعبة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch10/index">نموذج الذاكرة: الأجزاء الصعبة</a></li><!--]--></ul><h3>لغة OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch11/index">لغة OCaml</a></li><!--]--></ul><h3>امتدادات اللغة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch12/index">امتدادات اللغة</a></li><!--]--></ul><h3>الترجمة الدفعية (ocamlc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch13/index">الترجمة الدفعية (ocamlc)</a></li><!--]--></ul><h3>النظام التفاعلي أو REPL (ocaml)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch14/index">النظام التفاعلي أو REPL (ocaml)</a></li><!--]--></ul><h3>نظام التشغيل (ocamlrun)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch15/index">نظام التشغيل (ocamlrun)</a></li><!--]--></ul><h3>الترجمة إلى الشيفرة الأصلية (ocamlopt)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch16/index">الترجمة إلى الشيفرة الأصلية (ocamlopt)</a></li><!--]--></ul><h3>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch17/index">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</a></li><!--]--></ul><h3>مولّد التبعيات (ocamldep)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch18/index">مولّد التبعيات (ocamldep)</a></li><!--]--></ul><h3>مولّد التوثيق (ocamldoc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch19/index">مولّد التوثيق (ocamldoc)</a></li><!--]--></ul><h3>المنقّح (ocamldebug)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch20/index">المنقّح (ocamldebug)</a></li><!--]--></ul><h3>التنقيح الأصلي (gdb, lldb)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch21/index">التنقيح الأصلي (gdb, lldb)</a></li><!--]--></ul><h3 class="active-chapter">قياس الأداء (ocamlprof, perf)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch22/index" class="active">قياس الأداء (ocamlprof, perf)</a></li><!--]--></ul><h3>الربط البيني مع لغة C</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch23/index">الربط البيني مع لغة C</a></li><!--]--></ul><h3>التحسين باستخدام Flambda</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch24/index">التحسين باستخدام Flambda</a></li><!--]--></ul><h3>الاختبار العشوائي باستخدام afl-fuzz</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch25/index">الاختبار العشوائي باستخدام afl-fuzz</a></li><!--]--></ul><h3>تتبّع زمن التشغيل بأحداث runtime</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch26/index">تتبّع زمن التشغيل بأحداث runtime</a></li><!--]--></ul><h3>تحويل البرنامج «ذَيلِي مع الباني»</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch27/index">تحويل البرنامج «ذَيلِي مع الباني»</a></li><!--]--></ul><h3>الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch28/index">الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</a></li><!--]--></ul><h3>المكتبة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch29/index">المكتبة الأساسية</a></li><!--]--></ul><h3>المكتبة القياسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch30/index">المكتبة القياسية</a></li><!--]--></ul><h3>واجهة المترجم الأمامية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch31/index">واجهة المترجم الأمامية</a></li><!--]--></ul><h3>مكتبة unix: نداءات نظام Unix</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch32/index">مكتبة unix: نداءات نظام Unix</a></li><!--]--></ul><h3>مكتبة str: التعابير النمطية ومعالجة السلاسل</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch33/index">مكتبة str: التعابير النمطية ومعالجة السلاسل</a></li><!--]--></ul><h3>مكتبة runtime_events</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch34/index">مكتبة runtime_events</a></li><!--]--></ul><h3>مكتبة threads</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch35/index">مكتبة threads</a></li><!--]--></ul><h3>مكتبة dynlink: التحميل والربط الديناميان</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch36/index">مكتبة dynlink: التحميل والربط الديناميان</a></li><!--]--></ul><h3>المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch37/index">المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>قياس الأداء (ocamlprof, perf)</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#221-قياس-أعداد-التنفيذ-باستعمال-ocamlprof">22.1 قياس أعداد التنفيذ باستعمال ocamlprof</a></li><li><a href="#2211-الترجمة-من-أجل-قياس-الأداء">22.1.1 الترجمة من أجل قياس الأداء</a></li><li><a href="#2212-قياس-تنفيذ-برنامج">22.1.2 قياس تنفيذ برنامج</a></li><li><a href="#2213-طباعة-معلومات-القياس">22.1.3 طباعة معلومات القياس</a></li><li><a href="#222-قياس-الزمن-باستعمال-linux-perf">22.2 قياس الزمن باستعمال Linux perf</a></li><li><a href="#2221-خلفية">22.2.1 خلفية</a></li><li><a href="#2222-الترجمة-من-أجل-قياس-الأداء">22.2.2 الترجمة من أجل قياس الأداء</a></li><li><a href="#2223-قياس-تنفيذ-برنامج">22.2.3 قياس تنفيذ برنامج</a></li><li><a href="#2224-عرض-معلومات-القياس">22.2.4 عرض معلومات القياس</a></li><li><a href="#2225-خاتمة">22.2.5 خاتمة</a></li><li><a href="#223-قياس-الزمن-باستعمال-macos-instruments">22.3 قياس الزمن باستعمال macOS Instruments</a></li><li><a href="#224-المصطلحات">22.4 المصطلحات</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الفصل 22: قياس الأداء (ocamlprof, perf)</h1>
+<p>يصف هذا الفصل طرقًا مختلفة لقياس تنفيذ برامج OCaml.</p>
+<h2 id="221-قياس-أعداد-التنفيذ-باستعمال-ocamlprof">22.1 قياس أعداد التنفيذ باستعمال ocamlprof</h2>
+<p>يصف هذا القسم كيف يمكن قياس تنفيذ برامج OCaml بتسجيل عدد مرات استدعاء الدوال، والأوقات التي تُسلَك فيها فروع الشروط. وينطبق هذا المنهج على برامج OCaml المترجمة بالمنصّة الخلفية للشيفرة البايتية وبالمنصّة الخلفية للشيفرة الأصلية على السواء.</p>
+<h3 id="2211-الترجمة-من-أجل-قياس-الأداء">22.1.1 الترجمة من أجل قياس الأداء</h3>
+<p>قبل قياس تنفيذ برنامج، يجب ترجمته في نمط قياس الأداء، باستعمال الواجهة الأمامية <code>ocamlcp</code> للمترجم <code>ocamlc</code> (انظر الفصل 13) أو الواجهة الأمامية <code>ocamloptp</code> للمترجم <code>ocamlopt</code> (انظر الفصل 16). وعند ترجمة الوحدات منفصلة، يجب استعمال <code>ocamlcp</code> أو <code>ocamloptp</code> عند ترجمة الوحدات (أي عند إنتاج ملفّي <code>.cmo</code> أو <code>.cmx</code>)، ويمكن أيضًا استعمالهما (وإن لم يكن ذلك لازمًا بالضرورة) عند ربطها معًا.</p>
+<h5>ملاحظة</h5>
+<p>إذا لم تكن للوحدة (ملف <code>.ml</code>) واجهة مقابلة (ملف <code>.mli</code>)، فإن ترجمتها بـ <code>ocamlcp</code> ستنتج ملفّات كائن (<code>.cmi</code> و<code>.cmo</code>) غير متوافقة مع تلك التي ينتجها <code>ocamlc</code>، وقد يؤدّي ذلك إلى مشكلات (إذا ظلّ ملفّ <code>.cmi</code> أو <code>.cmo</code> موجودًا) عند التبديل بين ترجمات قياس الأداء وغير قياس الأداء. ولتجنّب هذه المشكلة، ينبغي أن يكون لكل ملف <code>.ml</code> ملف <code>.mli</code>. والمشكلة نفسها قائمة مع <code>ocamloptp</code>.</p>
+<h5>ملاحظة</h5>
+<p>للتأكّد من إمكان ترجمة برامجك في نمط قياس الأداء، تجنّب استعمال أي معرّف يبدأ بـ <code>__ocaml_prof</code>.</p>
+<p>يمكن التحكّم في كمّ معلومات القياس عبر الخيار <code>-P</code> في <code>ocamlcp</code> أو <code>ocamloptp</code>، يتبعه حرف واحد أو عدّة أحرف تشير إلى أجزاء البرنامج التي ينبغي قياسها:</p>
+<p><strong><code>a</code></strong></p>
+<p>كل الخيارات</p>
+<p><strong><code>f</code></strong></p>
+<p>استدعاءات الدوال: تُوضع نقطة عدّ في بداية جسم كل دالة</p>
+<p><strong><code>i</code></strong></p>
+<p>عبارة <strong>if …then …else …</strong>: تُوضع نقطتا عدّ في فرع <strong>then</strong> وفرع <strong>else</strong></p>
+<p><strong><code>l</code></strong></p>
+<p>حلقات <strong>while</strong> و<strong>for</strong>: تُوضع نقطة عدّ في بداية جسم الحلقة</p>
+<p><strong><code>m</code></strong></p>
+<p>فروع <strong>match</strong>: تُوضع نقطة عدّ في بداية جسم كل فرع</p>
+<p><strong><code>t</code></strong></p>
+<p>فروع <strong>try …with …</strong>: تُوضع نقطة عدّ في بداية جسم كل فرع</p>
+<p>فعلى سبيل المثال، تؤدّي الترجمة بـ <code>ocamlcp -P film</code> إلى قياس استدعاءات الدوال، وعبارات if…then…else…، والحلقات، ومطابقة الأنماط.</p>
+<p>استدعاء <code>ocamlcp</code> أو <code>ocamloptp</code> بلا الخيار <code>-P</code> يعادل <code>-P fm</code>، أي أنه لا يُقاس إلا استدعاء الدوال ومطابقة الأنماط.</p>
+<h5>ملاحظة</h5>
+<p>للتوافق مع الإصدارات السابقة، يقبل <code>ocamlcp</code> أيضًا الخيار <code>-p</code> بالوسائط والسلوك نفسيهما اللذين للخيار <code>-P</code>.</p>
+<p>كما يقبل الأمران <code>ocamlcp</code> و<code>ocamloptp</code> جميع خيارات المترجم المقابل <code>ocamlc</code> أو <code>ocamlopt</code>، عدا الخيار <code>-pp</code> (المعالجة المسبقة).</p>
+<h3 id="2212-قياس-تنفيذ-برنامج">22.1.2 قياس تنفيذ برنامج</h3>
+<p>تشغيل ملف تنفيذي جرى ترجمته بـ <code>ocamlcp</code> أو <code>ocamloptp</code> يسجّل أعداد التنفيذ للأجزاء المحدّدة من البرنامج ويحفظها في ملف يُسمّى <code>ocamlprof.dump</code> في الدليل الحالي.</p>
+<p>وإذا كان المتغيّر البيئي <code>OCAMLPROF_DUMP</code> مضبوطًا عند خروج البرنامج، استُعملت قيمته اسمًا للملف بدلًا من <code>ocamlprof.dump</code>.</p>
+<p>ولا يُكتب ملف التصريف إلا إذا انتهى البرنامج انتهاءً طبيعيًا (باستدعاء <code>exit</code> أو بالوصول إلى نهاية التنفيذ). ولا يُكتب إذا انتهى البرنامج باستثناء غير مُلتقَط.</p>
+<p>وإذا وُجد ملف تصريف متوافق في الدليل الحالي، تجمّعت معلومات القياس في هذا الملف. ويتيح ذلك، مثلًا، قياس عدّة تنفيذات لبرنامج على مدخلات مختلفة. ولاحظ أن ملفّات التصريف التي تنتجها الملفّات التنفيذية للشيفرة البايتية (المترجمة بـ <code>ocamlcp</code>) متوافقة مع ملفّات التصريف التي تنتجها الملفّات التنفيذية الأصلية (المترجمة بـ <code>ocamloptp</code>).</p>
+<h3 id="2213-طباعة-معلومات-القياس">22.1.3 طباعة معلومات القياس</h3>
+<p>ينتج الأمر <code>ocamlprof</code> قائمة بالشيفرة المصدرية لوحدات البرنامج مدخلًا فيها أعداد التنفيذ على هيئة تعليقات. فمثلًا،</p>
+<pre><code class="language-text">        ocamlprof foo.ml
+</code></pre>
+<p>يطبع الشيفرة المصدرية لوحدة <code>foo</code>، مصحوبة بتعليقات تبيّن عدد مرات استدعاء الدوال في هذه الوحدة. وبطبيعة الحال، تكون هذه المعلومات دقيقة فقط إذا لم يُعدَّل ملف المصدر بعد ترجمته.</p>
+<p>تعرّف <code>ocamlprof</code> الخيارات التالية:</p>
+<p><strong><code>-args</code> <em>filename</em></strong></p>
+<p>يقرأ وسائط سطر أوامر إضافية منتهية بمحرف سطر جديد من <em>filename</em>.</p>
+<p><strong><code>-args0</code> <em>filename</em></strong></p>
+<p>يقرأ وسائط سطر أوامر إضافية منتهية بمحرف فارغ من <em>filename</em>.</p>
+<p><strong><code>-f</code> <em>dumpfile</em></strong></p>
+<p>يحدّد ملف تصريف بديلًا لمعلومات القياس التي ستُقرأ.</p>
+<p><strong><code>-F</code> <em>string</em></strong></p>
+<p>يحدّد سلسلة إضافية تُخرَج مع معلومات القياس. فبشكل افتراضي، يعلّق <code>ocamlprof</code> على البرامج بتعليقات من الشكل <code>(* *n* *)</code> حيث <em>n</em> قيمة العدّاد عند نقطة قياس. ومع الخيار <code>-F *s*</code> يصير التعليق <code>(* *sn* *)</code>.</p>
+<p><strong><code>-impl</code> <em>filename</em></strong></p>
+<p>يعالج الملف <em>filename</em> ملفًا للتنفيذ، حتى إذا لم تكن امتدادته <code>.ml</code>.</p>
+<p><strong><code>-intf</code> <em>filename</em></strong></p>
+<p>يعالج الملف <em>filename</em> ملفًا للواجهة، حتى إذا لم تكن امتدادته <code>.mli</code>.</p>
+<p><strong><code>-keywords</code> <em>version+list</em></strong></p>
+<p>يضبط الكلمات المفتاحية وفق مواصفة <em>version+list</em>.</p>
+<p><strong><code>-version</code></strong></p>
+<p>يطبع سلسلة الإصدار ثم يخرج.</p>
+<p><strong><code>-vnum</code></strong></p>
+<p>يطبع رقم الإصدار المختصر ثم يخرج.</p>
+<p><strong><code>-help</code> أو <code>--help</code></strong></p>
+<p>يعرض ملخّصًا قصيرًا للاستعمال ثم يخرج.</p>
+<p>لا يسجّل القياس بـ <code>ocamlprof</code> إلا أعداد التنفيذ، لا الزمن الفعلي المستغرق داخل كل دالة. ولا توجد حاليًا طريقة لقياس الزمن في برامج الشيفرة البايتية التي ينتجها <code>ocamlc</code>.</p>
+<h2 id="222-قياس-الزمن-باستعمال-linux-perf">22.2 قياس الزمن باستعمال Linux perf</h2>
+<p>يشرح هذا القسم كيفية استعمال <code>perf</code> لقياس أداء برامج OCaml. وأحداث أداء Linux (المعروفة بـ <code>perf</code>) مجموعة أدوات لمراقبة الأداء مضمّنة في نواة Linux. وأهمّ ما يُغطّى هنا تسجيل الأحداث باستعمال <code>perf-record(1)</code>، وعرض الأحداث المسجّلة بصريًا باستعمال <code>perf-report(1)</code>. ولـ <code>perf</code> ميزات إضافية كثيرة للقياس والعرض المرئي؛ ولمزيد من التوثيق الشامل، انظر صفحة الدليل <code>perf(1)</code> أو <a href="https://perfwiki.github.io/main/">ويكي <code>perf</code></a> أو <a href="https://www.brendangregg.com/perf.html">مدوّنة برندان غريغ</a>.</p>
+<h3 id="2221-خلفية">22.2.1 خلفية</h3>
+<p>يُجرى قياس الزمن عادةً بأخذ عيّنات من رسم استدعاءات المعالج على فترات متقاربة، لجمع إحصاءات عن مسارات الشيفرة التي تستهلك موارد المعالج. ولمعالجة شيفرة OCaml، يحتاج <code>perf</code> إلى فهم رسم استدعاءات برنامج OCaml. ويدعم <code>perf</code> عدّة خيارات لتسجيل رسوم الاستدعاءات:</p>
+<ul>
+<li>
+<p>مؤشرات الإطار (Frame Pointers)، وهي الخيار الافتراضي.</p>
+</li>
+<li>
+<p>معلومات إطار الاستدعاء (CFI) في DWARF.</p>
+</li>
+<li>
+<p>سجل الفرع الأخير في العتاد (LBR).</p>
+</li>
+</ul>
+<p>تعتمد رسوم الاستدعاءات المبنية على مؤشر الإطار على اصطلاح يحمل فيه سجل يُسمّى مؤشر الإطار عنوان بداية إطار المكدّس، وتُخزَّن القيم السابقة لمؤشر الإطار عند إزاحة معروفة من مؤشر الإطار الحالي. وبهذه المعلومات يمكن حساب رسم استدعاءات الدالة الحالية اعتمادًا على المكدّس الحالي وحده، وهي عملية تُسمّى فكّ المكدّس (unwinding). وعلى AMD64 يُستعمل السجل <code>$rbp</code> لتخزين مؤشر الإطار،
+بينما تستعمل ARM64 السجل <code>$x29</code>.
+أدخلت OCaml 5 المكدّسات غير المتجاورة في إطار تنفيذ الآثار؛ انظر <a href="https://dl.acm.org/doi/10.1145/3453483.3454039">Retrofitting effect handlers onto OCaml</a> (القسم 5.5). وبسبب هذا التفصيل في التنفيذ، تعمل مؤشرات الإطار على نحو أفضل مع طبيعة النسخ في <code>perf</code>.</p>
+<p>تستعمل رسوم الاستدعاءات المبنية على DWARF معلومات CFI في DWARF لفكّ المكدّس. لكن هذا يتفاعل تفاعلًا رديئًا مع طبيعة النسخ في <code>perf</code>، فيؤدّي غالبًا إلى رسوم استدعاءات مبتورة حيث لا يكون <code>perf</code> قد نسخ ما يكفي من المكدّس. كما ينتج ملفّات تتبّع أكبر تكون أكثر كلفة في الالتقاط والمعالجة. وأخيرًا، يقتضي تضمين معلومات تنقيح CFI في برنامجك، ما ينتج ملفّات تنفيذية أكبر قليلًا.</p>
+<p>ويستعمل سجل الفرع الأخير في العتاد (LBR) طريقة يوفّرها المعالج لتسجيل رسوم الاستدعاءات. ويحدّه محدودية التوفّر (فهو موجود في بعض معالجات Intel فقط) ومحدودية عمق المكدّس (16 في Haswell و32 منذ Skylake).</p>
+<p>ومن بين هذه الخيارات، يُوصى بمؤشرات الإطار لقياس شيفرة OCaml، ولها المزايا التالية:</p>
+<ul>
+<li>
+<p>حساب فكّ المكدّس أسرع.</p>
+</li>
+<li>
+<p>بيانات التتبّع الناتجة أصغر.</p>
+</li>
+<li>
+<p>توفّر مؤشرات الإطار رسوم استدعاءات أكمل، لا سيّما عند استعمالها مع توزيعة Linux تدعمها.</p>
+</li>
+<li>
+<p>تعمل مؤشرات الإطار على نحو أفضل مع طبيعة النسخ في <code>perf</code> ومع المكدّسات غير المتجاورة في OCaml 5.</p>
+</li>
+</ul>
+<h3 id="2222-الترجمة-من-أجل-قياس-الأداء">22.2.2 الترجمة من أجل قياس الأداء</h3>
+<p>تعتمد عملية ترجمة ملف تنفيذي لقياس الزمن على إصدار OCaml. ففي إصدارات OCaml 4.14 وما قبلها، يمكن استعمال مؤشرات الإطار أو DWARF، أما في OCaml 5.0 وما بعده فيُوصى بتمكين مؤشرات الإطار.</p>
+<p>ولتمكين مؤشرات الإطار، اضبط إعداد المترجم بـ <code>--enable-frame-pointers</code>. أو بدلًا من ذلك، يمكنك تثبيت تبديل opam مع تمكين مؤشرات الإطار كما يلي:</p>
+<pre><code class="language-text">        opam switch create &lt;YOUR-SWITCH-NAME-HERE&gt; ocaml-option-fp
+</code></pre>
+<p>دعم مؤشرات الإطار في OCaml متاح على معمارية AMD64 في Linux بدءًا من OCaml 4.12، وعلى macOS بدءًا من OCaml 5.3. ومعمارية ARM64 مدعومة في Linux وmacOS بدءًا من OCaml 5.4، بينما المعماريات الأخرى من المستوى الأول (POWER وRISC-V وs390x) غير مدعومة حاليًا.</p>
+<h3 id="2223-قياس-تنفيذ-برنامج">22.2.3 قياس تنفيذ برنامج</h3>
+<p>الأمر الأساسي في <code>perf</code> لقياس الأداء هو:</p>
+<pre><code class="language-text">        perf record -F 99 --call-graph fp PROGRAM
+</code></pre>
+<p>يضبط الخيار <code>-F 99</code> معدّل أخذ العيّنات في <code>perf</code> عند 99 هرتز، فيقلّل توليد البيانات المفرط في التشغيلات الطويلة ويقلّل التداخل مع الأنشطة الدورية الأخرى. ويوجّه <code>--call-graph fp</code> الأمر <code>perf</code> إلى استعمال مؤشرات الإطار للحصول على رسم الاستدعاءات، ويتبعه الملفّ التنفيذي لـ OCaml الذي تريد قياسه. وينشئ هذا الأمر ملفًا اسمه <code>perf.data</code> في الدليل الحالي. وبدلًا من ذلك استعمل <code>--output</code> لاختيار اسم ملف أكثر دلالة.</p>
+<p>يعمل الأمر <code>perf record</code> بنسخ مقطع من مكدّس الاستدعاءات عند كل عيّنة وتسجيل هذه البيانات في ملف <code>perf.data</code>. ثم يمكن معالجة هذه العيّنات بعد التسجيل باستعمال <code>perf report</code> لإعادة بناء مكدّس استدعاءات البرنامج المقيس عند كل عيّنة.</p>
+<p>ويستعمل <code>perf</code> الرموز الموجودة في الملف التنفيذي لـ OCaml، لذا يفيد فهم مخطط تشويه الأسماء في OCaml لربط الأسماء بمواضع الشيفرة المصدرية.</p>
+<p>يستعمل OCaml 5.3 وما بعده مخطط تشويه بالأسماء من الشكل <code>caml&lt;MODULE_NAME&gt;.&lt;FUNCTION_NAME&gt;_&lt;NNN&gt;</code> في Linux، حيث <code>NNN</code> عدد يُولَّد عشوائيًا. وفي macOS ومنفذ Windows MSVC (المُعاد في OCaml 5.3)، يستعمل المخطط <code>$</code> فاصلًا.
+قبل OCaml 5.1.1 كان المخطط يستعمل خطّي سفلي مزدوجين فاصلًا، مثل <code>caml&lt;MODULE_NAME&gt;__&lt;FUNCTION_NAME&gt;_&lt;NNN&gt;</code>. وجميع الصيغ مدعومة في <code>perf</code> في Linux.</p>
+<p>خذ البرنامج التالي:</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(* fib.ml *)</span>
+<span class="hljs-keyword">module</span> <span class="hljs-type">Compute</span> = <span class="hljs-keyword">struct</span>
+  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fib n =
+    <span class="hljs-keyword">if</span> n = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-number">0</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> n = <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">else</span> fib (n-<span class="hljs-number">1</span>) + fib (n-<span class="hljs-number">2</span>)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">let</span> main <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> r = <span class="hljs-type">Compute</span>.fib <span class="hljs-number">20</span> <span class="hljs-keyword">in</span>
+  <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;fib(20) = %d&quot;</span> r
+
+<span class="hljs-keyword">let</span> _ = main <span class="hljs-literal">()</span>
+</code></pre>
+<p>ينتج هذا البرنامج الاسمين <code>camlFib.main_274</code> للدالة <code>main</code> و<code>camlFib.fib_271</code> للدالة <code>fib</code> في الوحدة <code>Compute</code>.</p>
+<h3 id="2224-عرض-معلومات-القياس">22.2.4 عرض معلومات القياس</h3>
+<p>يلخّص الأمر <code>perf report</code> البيانات في ملف <code>perf.data</code>. والأمر الأساسي في <code>perf report</code> هو:</p>
+<pre><code class="language-text">        perf report -f --no-children -i perf.data
+</code></pre>
+<p>يوفّر هذا الأمر واجهة تفاعلية تنقّل فيها بين رسوم الاستدعاءات المتراكمة وتختار الدوال والخيوط للحصول على معلومات مفصّلة. وبدلًا من ذلك، يُخرج <code>--stdio</code> بيانات مشابهة في تقرير نصّي يُكتب إلى الخَرْج القياسي. ولاحظ أنه إذا ظهرت آثار المكدّس مبتورة، فقد يكون السبب أن البرمجيات لم تُترجم مع تمكين دعم مؤشرات الإطار.</p>
+<p>خذ البرنامج التالي الذي يحسب دالة تاك:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> (x,y,z) =
+  <span class="hljs-keyword">try</span>
+    <span class="hljs-keyword">let</span> x = int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">1</span>) <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> y = int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">2</span>) <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> z = int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">3</span>) <span class="hljs-keyword">in</span>
+    (x,y,z)
+  <span class="hljs-keyword">with</span> _ -&gt; (<span class="hljs-number">18</span>,<span class="hljs-number">12</span>,<span class="hljs-number">6</span>)
+
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> tak x y z =
+  <span class="hljs-keyword">if</span> x &gt; y <span class="hljs-keyword">then</span>
+    tak (tak (x-<span class="hljs-number">1</span>) y z) (tak (y-<span class="hljs-number">1</span>) z x) (tak (z-<span class="hljs-number">1</span>) x y)
+  <span class="hljs-keyword">else</span> z
+
+<span class="hljs-keyword">let</span> main <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> r = tak x y z <span class="hljs-keyword">in</span>
+  <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;tak %d %d %d = %d\n&quot;</span> x y z r
+
+<span class="hljs-keyword">let</span> _ = main <span class="hljs-literal">()</span>
+</code></pre>
+<p>قد يشبه تقرير <code>perf</code> لهذا البرنامج ما يلي.</p>
+<pre><code class="language-text">Samples: 809  of event &#x27;cycles&#x27;, Event count (approx.): 24701952617
+  Overhead  Command     Shared Object      Symbol
+-  100.00%  tak-fp.exe  tak-fp.exe         [.] Tak.tak_402
+     Tak.tak_402
+     Tak.tak_402
+   + Tak.tak_402
+     0.00%  tak-fp.exe  [kernel.kallsyms]  [k] 0xffffb9a5ff79d854
+     0.00%  perf-exec   [kernel.kallsyms]  [k] 0xffffb9a5ff719c34
+</code></pre>
+<p>وفي برنامج أكثر تشويقًا ينفّذ حلّال سودوكو بخوارزمية التراجع لدى نورفيغ، قد يشبه الخَرْج ما يلي.</p>
+<pre><code class="language-text">Samples: 7K of event &#x27;cycles:P&#x27;, Event count (approx.): 141874642467
+  Overhead  Command          Shared Object      Symbol
+-   35.90%  sudoku_norvig.e  sudoku_norvig.exe  [.] Sudoku_norvig._pow_747
+   - 35.29% Sudoku_norvig._pow_747
+      + 17.70% Sudoku_norvig.eliminate_value_760
+      + 15.74% Sudoku_norvig._pow_747
+      + 1.03% Sudoku_norvig.fun_1435
+     0.61% Sudoku_norvig.eliminate_value_760
+-   12.99%  sudoku_norvig.e  sudoku_norvig.exe  [.] BatList.findnext_1543
+   - 12.00% BatList.findnext_1543
+      - 11.71% BatList.find_all_1539
+         + 8.07% Sudoku_norvig.fun_1421
+         + 2.73% Sudoku_norvig.eliminate_948
+         + 0.90% Sudoku_norvig.assign_949
+-   10.63%  sudoku_norvig.e  sudoku_norvig.exe  [.] Sudoku_norvig.eliminate_value_760
+   + 8.29% Sudoku_norvig.eliminate_value_760
+   + 1.93% Sudoku_norvig._pow_747
++    9.50%  sudoku_norvig.e  [kernel.kallsyms]  [k] asm_exc_nmi
++    7.24%  sudoku_norvig.e  sudoku_norvig.exe  [.] Sudoku_norvig.fun_1435
++    5.06%  sudoku_norvig.e  sudoku_norvig.exe  [.] caml_modify
++    3.10%  sudoku_norvig.e  sudoku_norvig.exe  [.] Sudoku_norvig.fun_1360
++    2.11%  sudoku_norvig.e  sudoku_norvig.exe  [.] Sudoku_norvig.eliminate_948
++    2.00%  sudoku_norvig.e  sudoku_norvig.exe  [.] Stdlib.List.iter_366
++    1.54%  sudoku_norvig.e  sudoku_norvig.exe  [.] Sudoku_norvig.fun_1421
++    1.47%  sudoku_norvig.e  sudoku_norvig.exe  [.] caml_apply2
++    1.42%  sudoku_norvig.e  sudoku_norvig.exe  [.] BatList.find_all_1539
++    1.20%  sudoku_norvig.e  sudoku_norvig.exe  [.] Sudoku_norvig.fun_1366
++    1.09%  sudoku_norvig.e  sudoku_norvig.exe  [.] Stdlib.List.fold_left_380
+</code></pre>
+<p>ولاحظ أن لهذا التنفيذ بوضوح بعض التحسينات الممكنة في <code>_pow_747</code>، وهي دالة عودية تحسب قوّة العدد 2، وأن أجزاء من زمن تشغيل OCaml مثل <code>caml_modify</code> حاضرة.</p>
+<p>ويمكن أيضًا عرض بيانات القياس رسومًا لهبية (Flame Graphs) تبرز مسارات الشيفرة الأكثر تكرارًا في آثار المكدّس. والسكربتات الأصلية <code>stackcollapse-perf.pl</code> و<code>flamegraph.pl</code> تجدها في صفحة <a href="https://www.brendangregg.com/flamegraphs.html">Flame Graphs</a> لبرندان غريغ، وهي تعمل كما يلي:</p>
+<pre><code class="language-text">git clone https://github.com/brendangregg/FlameGraph
+cd FlameGraph
+
+# Collect the results into perf.data
+perf record -F 99 --call-graph fp PROGRAM
+perf script -i perf.data | ./stackcollapse-perf.pl out.folded
+flamegraph.pl out.folded &gt; flamegraph.svg ## Create the FlameGraph svg
+</code></pre>
+<p>وبدلًا من ذلك، <a href="https://github.com/jonhoo/inferno">inferno</a> منفذ بلغة Rust لأدوات الرسوم اللهبية، يعمل بطريقة مشابهة وهو أسرع في معالجة ملفّات <code>perf</code> الكبيرة.</p>
+<pre><code class="language-text">cargo install inferno
+
+# Collect the results into perf.data
+perf script -i perf.data | inferno-collapse-perf &gt; stacks.folded
+cat stacks.folded | inferno-flamegraph &gt; flamegraph.svg
+</code></pre>
+<p>تستعمل بعض أدوات <code>perf</code> (مثل <code>perf-report(1)</code> و<code>perf-annotate(1)</code>) معلومات تنقيح DWARF لربط الرموز بمواضع الشيفرة المصدرية. فإن احتجت هذه الميزات، وجب أن يُترجم البرنامج وتبعياته بالخيار <code>-g</code> لتضمين معلومات التنقيح في الملف التنفيذي.</p>
+<p>ويمكن أيضًا معالجة بيانات القياس الملتقَطة باستعمال <code>perf script</code> بطرق مختلفة، أو بأدوات على الإنترنت مثل <a href="https://www.speedscope.app">speedscope.app</a> و<a href="https://profiler.firefox.com/">profiler.firefox.com</a>، أو أي أداة أخرى تدعم بيانات بصيغة <code>perf</code>.</p>
+<h3 id="2225-خاتمة">22.2.5 خاتمة</h3>
+<p>لقياس الزمن في الشيفرة الأصلية، يُوصى بأدوات قياسية مثل <code>perf</code> وeBPF وDTrace أو Instruments (في macOS). وكثيرًا ما تكون الترجمة مع تمكين مؤشرات الإطار ضرورية لعمل هذه الأدوات على نحو فعّال. ولم يعد القياس بـ <code>gprof</code> مدعومًا.</p>
+<p>وقد يؤثّر تمكين مؤشرات الإطار في الأداء على بعض المعماريات (قيس تأثيره بما يصل إلى 10% على x86_64). ويُشجَّع مستخدمو هذه الميزة على قياس تطبيقاتهم بأنفسهم لتقييم هذا التأثير.</p>
+<h2 id="223-قياس-الزمن-باستعمال-macos-instruments">22.3 قياس الزمن باستعمال macOS Instruments</h2>
+<p>Instruments محلّل أداء تطبيقات وعارض مرئي يوفّره XCode في macOS. وهو يتضمّن أداة سطر أوامر <code>xctrace</code> يمكنها التقاط معلومات قياس الزمن عن برامج OCaml، كما توجد تطبيقة رسومية لتشغيل القياسات وعرضها. ولا نغطّي هنا إلا التقاط قياسات الزمن بـ <code>xctrace</code>؛ ولمزيد من المعلومات عن Instruments راجع توثيق Apple.</p>
+<p>تنطبق المتطلّبات المسبقة نفسها لقياس الزمن بـ macOS Instruments كما في <code>perf</code> في Linux؛ راجع «خلفية» (22.2.1) من القسم السابق لشرح رسوم الاستدعاءات، واتبع الإعداد في «الترجمة من أجل قياس الأداء» (22.2.2).</p>
+<p>والأمر الأساسي في <code>xctrace</code> لقياس الزمن هو:</p>
+<pre><code class="language-text">xcrun xctrace record --output . --template &quot;Time Profiler&quot; \
+  --target-stdout - --launch -- PROGRAM
+</code></pre>
+<p>ويختار الخيار <code>--template &quot;Time Profiler&quot;</code> قالبًا محدّدًا مسبقًا لقياس الزمن، فينشئ ملف تتبّع بامتداد <code>.trace</code> يمكن فتحه بـ Instruments. واستعمل <code>--output</code> لاختيار اسم ملف التتبّع؛ فبشكل افتراضي ينشئ <code>xctrace</code> ملفًا جديدًا في كل تشغيل بدلًا من الكتابة على الملف الموجود.</p>
+<p>ويمكن فتح الملف الناتج بـ Instruments لعرض القياس، وقد يمكن توليد رسوم لهبية باستعمال <a href="https://github.com/jonhoo/inferno">inferno</a> أو السكربتات من <a href="https://github.com/brendangregg/FlameGraph">https://github.com/brendangregg/FlameGraph</a>.</p>
+<h5>ملاحظة</h5>
+<p>تحتاج Instruments أحيانًا إلى استحقاقات (entitlements) تُضاف إلى ملف OCaml التنفيذي قبل أن يتمكّن من قياسه. ويظهر ذلك عادةً فشلًا في إطلاق العملية أو خطأ في الأذونات. وللتحايل على هذه المشكلة، نفّذ الأمر التالي مع تعويض <code>PROGRAM</code> بالبرنامج المطلوب تتبّعه.</p>
+<pre><code class="language-text">$ codesign -s - -v -f --entitlements =(echo -n
+&#x27;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+ &lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot;
+   &quot;https://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;\&gt;
+ &lt;plist version=&quot;1.0&quot;&gt;
+    &lt;dict&gt;
+        &lt;key&gt;com.apple.security.get-task-allow&lt;/key&gt;
+        &lt;true/&gt;
+    &lt;/dict&gt;
+ &lt;/plist&gt;&#x27;) PROGRAM
+</code></pre>
+<p>لمزيد من التفاصيل عن الاستحقاقات وcodesign راجع توثيق Apple.</p>
+<h2 id="224-المصطلحات">22.4 المصطلحات</h2>
+<p>يُستعمل في هذا الفصل من الدليل المصطلح التالي.</p>
+<ul>
+<li>
+<p><strong>رسم الاستدعاءات</strong> سلسلة استدعاءات الدوال التي أدّت إلى الدالة الحالية (ويُسمّى أيضًا مكدّس الاستدعاءات).</p>
+</li>
+<li>
+<p><strong>فكّ المكدّس</strong> عملية الصعود في مكدّس الاستدعاءات (وتُسمّى أيضًا فكّ مكدّس الاستدعاءات).</p>
+</li>
+<li>
+<p><strong>إطار المكدّس</strong> الجزء من المكدّس المخصّص لاستدعاء دالة واحدة (ويُسمّى أيضًا إطار التنشيط أو سجل التنشيط أو الإطار ببساطة).</p>
+</li>
+</ul>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/ocaml-manual/ch21/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">التنقيح الأصلي (gdb, lldb)</span></a><!--]--> <!--[0--><a href="../../../../book/ocaml-manual/ch23/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الربط البيني مع لغة C</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fx90yh = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Dtojx2F1.js"),
+						import("../../../../_app/immutable/entry/app.Bk-T7h0B.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Dtojx2F1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/COwA5tuQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C8xSp1-s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bk-T7h0B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DyJsUDCS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BEgh7YBq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5TZ6aje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8oEqyd_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.SGl2Uca0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B10blrac.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="البرمجة المتوازية — البرمجة المتوازية"/><!----><title>البرمجة المتوازية | دليل لغة OCaml</title>
+		<link href="../../../../_app/immutable/assets/0.D2oAgqyE.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/ocaml-manual">دليل لغة OCaml</a> <span class="reader-bar__chapter">› البرمجة المتوازية</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 10 من 38">10 / 38</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch08/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch10/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>تصدير</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/foreword/index">تصدير</a></li><!--]--></ul><h3>اللغة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch01/index">اللغة الأساسية</a></li><!--]--></ul><h3>نظام الوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch02/index">نظام الوحدات</a></li><!--]--></ul><h3>الكائنات في OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch03/index">الكائنات في OCaml</a></li><!--]--></ul><h3>الوسائط المُعنونة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch04/index">الوسائط المُعنونة</a></li><!--]--></ul><h3>المتغيّرات متعدّدة الأشكال</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch05/index">المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul><h3>تعدّد الأشكال وحدوده</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch06/index">تعدّد الأشكال وحدوده</a></li><!--]--></ul><h3>أنواع البيانات الجبرية المعمّمة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch07/index">أنواع البيانات الجبرية المعمّمة</a></li><!--]--></ul><h3>أمثلة متقدّمة بالأصناف والوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch08/index">أمثلة متقدّمة بالأصناف والوحدات</a></li><!--]--></ul><h3 class="active-chapter">البرمجة المتوازية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch09/index" class="active">البرمجة المتوازية</a></li><!--]--></ul><h3>نموذج الذاكرة: الأجزاء الصعبة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch10/index">نموذج الذاكرة: الأجزاء الصعبة</a></li><!--]--></ul><h3>لغة OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch11/index">لغة OCaml</a></li><!--]--></ul><h3>امتدادات اللغة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch12/index">امتدادات اللغة</a></li><!--]--></ul><h3>الترجمة الدفعية (ocamlc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch13/index">الترجمة الدفعية (ocamlc)</a></li><!--]--></ul><h3>النظام التفاعلي أو REPL (ocaml)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch14/index">النظام التفاعلي أو REPL (ocaml)</a></li><!--]--></ul><h3>نظام التشغيل (ocamlrun)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch15/index">نظام التشغيل (ocamlrun)</a></li><!--]--></ul><h3>الترجمة إلى الشيفرة الأصلية (ocamlopt)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch16/index">الترجمة إلى الشيفرة الأصلية (ocamlopt)</a></li><!--]--></ul><h3>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch17/index">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</a></li><!--]--></ul><h3>مولّد التبعيات (ocamldep)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch18/index">مولّد التبعيات (ocamldep)</a></li><!--]--></ul><h3>مولّد التوثيق (ocamldoc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch19/index">مولّد التوثيق (ocamldoc)</a></li><!--]--></ul><h3>المنقّح (ocamldebug)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch20/index">المنقّح (ocamldebug)</a></li><!--]--></ul><h3>التنقيح الأصلي (gdb, lldb)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch21/index">التنقيح الأصلي (gdb, lldb)</a></li><!--]--></ul><h3>قياس الأداء (ocamlprof, perf)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch22/index">قياس الأداء (ocamlprof, perf)</a></li><!--]--></ul><h3>الربط البيني مع لغة C</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch23/index">الربط البيني مع لغة C</a></li><!--]--></ul><h3>التحسين باستخدام Flambda</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch24/index">التحسين باستخدام Flambda</a></li><!--]--></ul><h3>الاختبار العشوائي باستخدام afl-fuzz</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch25/index">الاختبار العشوائي باستخدام afl-fuzz</a></li><!--]--></ul><h3>تتبّع زمن التشغيل بأحداث runtime</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch26/index">تتبّع زمن التشغيل بأحداث runtime</a></li><!--]--></ul><h3>تحويل البرنامج «ذَيلِي مع الباني»</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch27/index">تحويل البرنامج «ذَيلِي مع الباني»</a></li><!--]--></ul><h3>الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch28/index">الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</a></li><!--]--></ul><h3>المكتبة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch29/index">المكتبة الأساسية</a></li><!--]--></ul><h3>المكتبة القياسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch30/index">المكتبة القياسية</a></li><!--]--></ul><h3>واجهة المترجم الأمامية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch31/index">واجهة المترجم الأمامية</a></li><!--]--></ul><h3>مكتبة unix: نداءات نظام Unix</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch32/index">مكتبة unix: نداءات نظام Unix</a></li><!--]--></ul><h3>مكتبة str: التعابير النمطية ومعالجة السلاسل</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch33/index">مكتبة str: التعابير النمطية ومعالجة السلاسل</a></li><!--]--></ul><h3>مكتبة runtime_events</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch34/index">مكتبة runtime_events</a></li><!--]--></ul><h3>مكتبة threads</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch35/index">مكتبة threads</a></li><!--]--></ul><h3>مكتبة dynlink: التحميل والربط الديناميان</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch36/index">مكتبة dynlink: التحميل والربط الديناميان</a></li><!--]--></ul><h3>المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch37/index">المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>البرمجة المتوازية</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الفصل 9: البرمجة المتوازية</h1>
+<p>ننظر في هذا الفصل إلى إمكانيات البرمجة المتوازية في OCaml. تُتيح المكتبة القياسية في OCaml بدائيات منخفضة المستوى للبرمجة المتوازية. ونوصي المستخدمين باستعمال مكتبات برمجة متوازية أعلى مستوى مثل <a href="https://github.com/ocaml-multicore/domainslib">domainslib</a>. سيغطي هذا الدرس أولًا البرمجة المتوازية عالية المستوى باستخدام domainslib، ثم البدائيات منخفضة المستوى التي يكشفها المترجم.</p>
+<p>تفرّق OCaml بين التزامن والتوازي، وتقدّم آليتين مختلفتين للتعبير عنهما. التزامن هو التنفيذ المتشابك للمهام (القسم 12.24.2)، أما التوازي فهو التنفيذ الآني للمهام. وبوجه خاص، تتراكب المهام المتوازية زمنيًا، بينما قد تتراكب المهام المتزامنة أو لا تتراكب. وقد تُنفَّذ المهام تزامنيًا بأن تسلّم التحكم بعضها إلى بعض. فبينما التزامن آلية لبنية البرامج، فإن التوازي آلية لجعل برامجك أسرع. إذا كنت مهتمًا بآليات البرمجة المتزامنة في OCaml، فراجع القسم 12.24 عن معالجات التأثيرات والفصل 35 عن مكتبة الخيوط.</p>
+<h2 id="91-النطاقات">9.1 النطاقات</h2>
+<p>النطاقات هي وحدات التوازي في OCaml. توفّر الوحدة <code>Domain</code> البدائيات اللازمة لإنشاء النطاقات وإدارتها. ويمكن توليد نطاقات جديدة باستعمال الدالة <code>spawn</code>.</p>
+<pre><code class="language-ocaml"><span class="hljs-type">Domain</span>.spawn (<span class="hljs-keyword">fun</span> _ -&gt; print_endline <span class="hljs-string">&quot;I ran in parallel&quot;</span>)
+
+<span class="hljs-type">I</span> ran <span class="hljs-keyword">in</span> parallel
+- : <span class="hljs-built_in">unit</span> <span class="hljs-type">Domain</span>.t = &lt;abstr&gt;
+</code></pre>
+<p>تنفّذ الدالة <code>spawn</code> الحساب المعطى بالتوازي مع النطاق المستدعي.</p>
+<p>النطاقات كيانات ثقيلة الوزن. يقابل كل نطاق خيط نظام تشغيل واحد مقابل واحد. ولكل نطاق أيضًا حالته الخاصة بزمن التشغيل، وتشمل بنى محلية للنطاق تُستعمل لتخصيص الذاكرة. ومن ثمّ فإن إنشاءها وتفكيكها مكلف نسبيًا.</p>
+<p><em><strong>يوصى ألا تولّد البرامج نطاقات أكثر من عدد الأنوية المتاحة</strong></em>.</p>
+<p>سننفّذ في هذا الدرس برامج متوازية، ونشغّلها، ونقيس أداءها. وتعتمد النتائج الملاحظة على عدد الأنوية المتاحة في الجهاز الهدف. كُتب هذا الدرس على حاسوب MacBook Pro بمعالج Intel Core i7 رباعي النوى بتردد 2.3 غيغاهرتز، وله أربع أنوية وثمانية خيوط عتادية. ومن المعقول توقّع أداء يعادل أربعة أضعاف تقريبًا على أربعة نطاقات للبرامج المتوازية التي فيها تنسيق قليل بين النطاقات، وحين لا يكون الجهاز تحت حمل. وفيما يتجاوز أربعة نطاقات، يُرجَّح أن يكون التسريع أقل من خطي. وسنستعمل أيضًا أداة قياس الأداء على سطر الأوامر <a href="https://github.com/sharkdp/hyperfine">hyperfine</a> لقياس أداء برامجنا.</p>
+<h3 id="911-ضم-النطاقات">9.1.1 ضمّ النطاقات</h3>
+<p>سنكتب برنامجًا لحساب عدد فيبوناتشي رقم <em>n</em> بالعودية كمثال جارٍ. والبرنامج التتابعي لحساب عدد فيبوناتشي رقم <em>n</em> معطى فيما يلي.</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(* fib.ml *)</span>
+<span class="hljs-keyword">let</span> n = <span class="hljs-keyword">try</span> int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">1</span>) <span class="hljs-keyword">with</span> _ -&gt; <span class="hljs-number">1</span>
+
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fib n = <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">then</span> n <span class="hljs-keyword">else</span> fib (n - <span class="hljs-number">1</span>) + fib (n - <span class="hljs-number">2</span>)
+
+<span class="hljs-keyword">let</span> main <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> r = fib n <span class="hljs-keyword">in</span>
+  <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;fib(%d) = %d\n%!&quot;</span> n r
+
+<span class="hljs-keyword">let</span> _ = main <span class="hljs-literal">()</span>
+</code></pre>
+<p>يمكن ترجمة البرنامج وقياس أدائه كما يلي:</p>
+<pre><code class="language-text">$ ocamlopt -o fib.exe fib.ml
+$ ./fib.exe 42
+fib(42) = 267914296
+$ hyperfine &#x27;./fib.exe 42&#x27; # Benchmarking
+Benchmark 1: ./fib.exe 42
+  Time (mean ± sd):     1.193 s ±  0.006 s    [User: 1.186 s, System: 0.003 s]
+  Range (min … max):    1.181 s …  1.202 s    10 runs
+</code></pre>
+<p>نرى أنه يستغرق نحو 1.2 ثانية لحساب عدد فيبوناتشي الثاني والأربعين.</p>
+<p>يمكن ضمّ النطاقات المولَّدة باستعمال الدالة <code>join</code> للحصول على نتائجها. وتنتظر الدالة <code>join</code> انتهاء النطاق الهدف. ويحسب البرنامج التالي عدد فيبوناتشي رقم <em>n</em> مرتين بالتوازي.</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(* fib_twice.ml *)</span>
+<span class="hljs-keyword">let</span> n = int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">1</span>)
+
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fib n = <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">then</span> n <span class="hljs-keyword">else</span> fib (n - <span class="hljs-number">1</span>) + fib (n - <span class="hljs-number">2</span>)
+
+<span class="hljs-keyword">let</span> main <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> d1 = <span class="hljs-type">Domain</span>.spawn (<span class="hljs-keyword">fun</span> _ -&gt; fib n) <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> d2 = <span class="hljs-type">Domain</span>.spawn (<span class="hljs-keyword">fun</span> _ -&gt; fib n) <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> r1 = <span class="hljs-type">Domain</span>.join d1 <span class="hljs-keyword">in</span>
+  <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;fib(%d) = %d\n%!&quot;</span> n r1;
+  <span class="hljs-keyword">let</span> r2 = <span class="hljs-type">Domain</span>.join d2 <span class="hljs-keyword">in</span>
+  <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;fib(%d) = %d\n%!&quot;</span> n r2
+
+<span class="hljs-keyword">let</span> _ = main <span class="hljs-literal">()</span>
+</code></pre>
+<p>يولّد البرنامج نطاقين يحسبان عدد فيبوناتشي رقم <em>n</em>. وتعيد الدالة <code>spawn</code> قيمة من النوع <code>Domain.t</code> يمكن ضمّها للحصول على نتيجة الحساب المتوازي. وتحجب الدالة <code>join</code> حتى يكتمل الحساب.</p>
+<pre><code class="language-text">$ ocamlopt -o fib_twice.exe fib_twice.ml
+$ ./fib_twice.exe 42
+fib(42) = 267914296
+fib(42) = 267914296
+$ hyperfine &#x27;./fib_twice.exe 42&#x27;
+Benchmark 1: ./fib_twice.exe 42
+  Time (mean ± sd):     1.249 s ±  0.025 s    [User: 2.451 s, System: 0.012 s]
+  Range (min … max):    1.221 s …  1.290 s    10 runs
+</code></pre>
+<p>كما يرى المرء، فإن حساب عدد فيبوناتشي رقم <em>n</em> مرتين يستغرق تقريبًا الزمن نفسه الذي يستغرقه حسابه مرة واحدة، بفضل التوازي.</p>
+<h2 id="92-domainslib-مكتبة-للبرمجة-المتوازية-المتشعبة">9.2 Domainslib: مكتبة للبرمجة المتوازية المتشعّبة</h2>
+<p>لنحاول موازاة دالة فيبوناتشي. يمكن تنفيذ النداءين العوديين بالتوازي. غير أن موازاة النداءات العودية على نحو ساذج، بتوليد نطاق لكل نداء، لن تنجح لأنها تولّد نطاقات أكثر من اللازم.</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(* fib_par1.ml *)</span>
+<span class="hljs-keyword">let</span> n = <span class="hljs-keyword">try</span> int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">1</span>) <span class="hljs-keyword">with</span> _ -&gt; <span class="hljs-number">1</span>
+
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fib n =
+  <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">then</span> n <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span>
+    <span class="hljs-keyword">let</span> d1 = <span class="hljs-type">Domain</span>.spawn (<span class="hljs-keyword">fun</span> _ -&gt; fib (n - <span class="hljs-number">1</span>)) <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> d2 = <span class="hljs-type">Domain</span>.spawn (<span class="hljs-keyword">fun</span> _ -&gt; fib (n - <span class="hljs-number">2</span>)) <span class="hljs-keyword">in</span>
+    <span class="hljs-type">Domain</span>.join d1 + <span class="hljs-type">Domain</span>.join d2
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">let</span> main <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> r = fib n <span class="hljs-keyword">in</span>
+  <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;fib(%d) = %d\n%!&quot;</span> n r
+
+<span class="hljs-keyword">let</span> _ = main <span class="hljs-literal">()</span>
+
+fib(<span class="hljs-number">1</span>) = <span class="hljs-number">1</span>
+<span class="hljs-keyword">val</span> n : <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>
+<span class="hljs-keyword">val</span> fib : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> main : <span class="hljs-built_in">unit</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<pre><code class="language-text">$ ocamlopt -o fib_par1.exe fib_par1.ml
+$ ./fib_par1.exe 42
+Fatal error: exception Failure(&quot;failed to allocate domain&quot;)
+</code></pre>
+<p>لOCaml حدّ أقصى قدره 128 نطاقًا يمكن أن تكون نشطة في الوقت نفسه. ومحاولة توليد نطاقات أكثر ترفع استثناءً. فكيف إذن نستطيع موازاة دالة فيبوناتشي؟</p>
+<h3 id="921-موازاة-فيبوناتشي-باستخدام-domainslib">9.2.1 موازاة فيبوناتشي باستخدام domainslib</h3>
+<p>لا توفّر المكتبة القياسية في OCaml إلا بدائيات منخفضة المستوى للبرمجة المتزامنة والمتوازية، وتترك المكتبات عالية المستوى لي تُطوَّر وتُوزَّع خارج توزيعة المترجم الأساسية. و<a href="https://github.com/ocaml-multicore/domainslib">Domainslib</a> مكتبة من هذا القبيل للبرمجة المتوازية المتشعّبة، التي يجسّدها التوازي المتاح في حساب فيبوناتشي العودي. لنستعمل domainslib لموازاة برنامج فيبوناتشي العودي. ويوصى بتثبيت domainslib باستعمال مدير الحزم <a href="https://opam.ocaml.org/">opam</a>. ويستعمل هذا الدرس domainslib بالإصدار 0.5.0.</p>
+<p>توفّر domainslib آلية async/await لتوليد المهام المتوازية وانتظار نتائجها. وفوق هذه الآلية، توفّر domainslib مكرّرات متوازية. ولها في جوهرها تنفيذ فعّال لـ<a href="https://en.wikipedia.org/wiki/Work_stealing">قوائم انتظار سرقة العمل</a> لتقاسم المهام بكفاءة مع النطاقات الأخرى. ويلي تنفيذ متوازٍ لبرنامج فيبوناتشي:</p>
+<pre><code class="language-text">(* fib_par2.ml *)
+let num_domains = int_of_string Sys.argv.(1)
+let n = int_of_string Sys.argv.(2)
+
+let rec fib n = if n &lt; 2 then n else fib (n - 1) + fib (n - 2)
+
+module T = Domainslib.Task
+
+let rec fib_par pool n =
+  if n &gt; 20 then begin
+    let a = T.async pool (fun _ -&gt; fib_par pool (n-1)) in
+    let b = T.async pool (fun _ -&gt; fib_par pool (n-2)) in
+    T.await pool a + T.await pool b
+  end else fib n
+
+let main () =
+  let pool = T.setup_pool ~num_domains:(num_domains - 1) () in
+  let res = T.run pool (fun _ -&gt; fib_par pool n) in
+  T.teardown_pool pool;
+  Printf.printf &quot;fib(%d) = %d\n&quot; n res
+
+let _ = main ()
+</code></pre>
+<p>يأخذ البرنامج عدد النطاقات ومعطى دالة فيبوناتشي كوسيطين أول وثانٍ على سطر الأوامر على الترتيب.</p>
+<p>لنبدأ بالدالة الرئيسية. أولًا نهيّئ بركة نطاقات ستعمل عليها المهام المتوازية المتشعّبة. والنطاق الذي يستدعي الدالة <code>run</code> سيشارك أيضًا في تنفيذ المهام المقدَّمة إلى البركة. ونستدعي دالة فيبوناتشي المتوازية <code>fib_par</code> داخل الدالة <code>run</code>. وأخيرًا نفكّك البركة ونطبع النتيجة.</p>
+<p>من أجل مدخلات كبيرة بما يكفي (<code>n &gt; 20</code>)، تولّد الدالة <code>fib_par</code> النداءين العوديين الأيسر والأيمن لا تزامنيًا في البركة باستعمال الدالة <code>async</code>. وتعيد الدالة <code>async</code> وعدًا بالنتيجة. ويُحصل على نتيجة حساب لا تزامني بانتظار الوعد باستعمال الدالة <code>await</code>. ويحجب نداء الدالة <code>await</code> حتى يُنجَز الوعد.</p>
+<p>من أجل مدخلات صغيرة، تستدعي الدالة <code>fib_par</code> ببساطة دالة فيبوناتشي التتابعية <code>fib</code>. ومن المهم التحوّل إلى النمط التتابعي في أحجام المسائل الصغيرة، وإلا فسترحج كلفة الموازاة العمل المتاح.</p>
+<p>للبساطة نستعمل <code>ocamlfind</code> لترجمة هذا البرنامج. وبوجه عام يُوصى المستخدمين باستعمال <a href="https://github.com/ocaml/dune">dune</a> لبناء البرامج التي تستعمل مكتبات مثبَّتة عبر <a href="https://opam.ocaml.org/">opam</a>.</p>
+<pre><code class="language-text">$ ocamlfind ocamlopt -package domainslib -linkpkg -o fib_par2.exe fib_par2.ml
+$ ./fib_par2.exe 1 42
+fib(42) = 267914296
+$ hyperfine &#x27;./fib.exe 42&#x27; &#x27;./fib_par2.exe 2 42&#x27; \
+            &#x27;./fib_par2.exe 4 42&#x27; &#x27;./fib_par2.exe 8 42&#x27;
+Benchmark 1: ./fib.exe 42
+  Time (mean ± sd):     1.217 s ±  0.018 s    [User: 1.203 s, System: 0.004 s]
+  Range (min … max):    1.202 s …  1.261 s    10 runs
+
+Benchmark 2: ./fib_par2.exe 2 42
+  Time (mean ± sd):    628.2 ms ±   2.9 ms    [User: 1243.1 ms, System: 4.9 ms]
+  Range (min … max):   625.7 ms … 634.5 ms    10 runs
+
+Benchmark 3: ./fib_par2.exe 4 42
+  Time (mean ± sd):    337.6 ms ±  23.4 ms    [User: 1321.8 ms, System: 8.4 ms]
+  Range (min … max):   318.5 ms … 377.6 ms    10 runs
+
+Benchmark 4: ./fib_par2.exe 8 42
+  Time (mean ± sd):    250.0 ms ±   9.4 ms    [User: 1877.1 ms, System: 12.6 ms]
+  Range (min … max):   242.5 ms … 277.3 ms    11 runs
+
+Summary
+  &#x27;./fib_par2.exe 8 42&#x27; ran
+    1.35 ± 0.11 times faster than &#x27;./fib_par2.exe 4 42&#x27;
+    2.51 ± 0.10 times faster than &#x27;./fib_par2.exe 2 42&#x27;
+    4.87 ± 0.20 times faster than &#x27;./fib.exe 42&#x27;
+</code></pre>
+<p>تُظهر النتائج أنه بثمانية نطاقات يعمل برنامج فيبوناتشي المتوازي أسرع 4.87 مرة من النسخة التتابعية.</p>
+<h3 id="922-بنى-التكرار-المتوازي">9.2.2 بنى التكرار المتوازي</h3>
+<p>تستعمل خوارزميات عددية كثيرة حلقات for. وتوفّر البدائية parallel-for طريقة مباشرة لموازاة مثل هذه الشيفرة. لنأخذ معيار <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/spectralnorm.html#spectralnorm">spectral-norm</a> من لعبة معايير لغات الحاسوب ونوازيه. والنسخة التتابعية من البرنامج معطاة فيما يلي.</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(* spectralnorm.ml *)</span>
+<span class="hljs-keyword">let</span> n = <span class="hljs-keyword">try</span> int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">1</span>) <span class="hljs-keyword">with</span> _ -&gt; <span class="hljs-number">32</span>
+
+<span class="hljs-keyword">let</span> eval_A i j = <span class="hljs-number">1.</span> /. <span class="hljs-built_in">float</span>((i+j)*(i+j+<span class="hljs-number">1</span>)/<span class="hljs-number">2</span>+i+<span class="hljs-number">1</span>)
+
+<span class="hljs-keyword">let</span> eval_A_times_u u v =
+  <span class="hljs-keyword">let</span> n = <span class="hljs-type">Array</span>.length v - <span class="hljs-number">1</span> <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">for</span> i = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span>  n <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">let</span> vi = <span class="hljs-built_in">ref</span> <span class="hljs-number">0.</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">for</span> j = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span> vi := !vi +. eval_A i j *. u.(j) <span class="hljs-keyword">done</span>;
+    v.(i) &lt;- !vi
+  <span class="hljs-keyword">done</span>
+
+<span class="hljs-keyword">let</span> eval_At_times_u u v =
+  <span class="hljs-keyword">let</span> n = <span class="hljs-type">Array</span>.length v - <span class="hljs-number">1</span> <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">for</span> i = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">let</span> vi = <span class="hljs-built_in">ref</span> <span class="hljs-number">0.</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">for</span> j = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span> vi := !vi +. eval_A j i *. u.(j) <span class="hljs-keyword">done</span>;
+    v.(i) &lt;- !vi
+  <span class="hljs-keyword">done</span>
+
+<span class="hljs-keyword">let</span> eval_AtA_times_u u v =
+  <span class="hljs-keyword">let</span> w = <span class="hljs-type">Array</span>.make (<span class="hljs-type">Array</span>.length u) <span class="hljs-number">0.0</span> <span class="hljs-keyword">in</span>
+  eval_A_times_u u w; eval_At_times_u w v
+
+<span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> u = <span class="hljs-type">Array</span>.make n <span class="hljs-number">1.0</span>  <span class="hljs-keyword">and</span>  v = <span class="hljs-type">Array</span>.make n <span class="hljs-number">0.0</span> <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">for</span> _i = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-number">9</span> <span class="hljs-keyword">do</span>
+    eval_AtA_times_u u v; eval_AtA_times_u v u
+  <span class="hljs-keyword">done</span>;
+
+  <span class="hljs-keyword">let</span> vv = <span class="hljs-built_in">ref</span> <span class="hljs-number">0.0</span>  <span class="hljs-keyword">and</span>  vBv = <span class="hljs-built_in">ref</span> <span class="hljs-number">0.0</span> <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">for</span> i=<span class="hljs-number">0</span> <span class="hljs-keyword">to</span> n-<span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+    vv := !vv +. v.(i) *. v.(i);
+    vBv := !vBv +. u.(i) *. v.(i)
+  <span class="hljs-keyword">done</span>;
+  <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;%0.9f\n&quot;</span> (sqrt(!vBv /. !vv))
+</code></pre>
+<p>لاحظ أن في البرنامج حلقات متشعّبة في <code>eval_A_times_u</code> و<code>eval_At_times_u</code>. تقرأ كل دورة من جسم الحلقة الخارجية من <code>u</code>، لكنها تكتب في مواقع ذاكرة منفصلة في <code>v</code>. ومن ثمّ فإن دورات الحلقة الخارجية غير متوقفة بعضها على بعض، ويمكن تنفيذها بالتوازي.</p>
+<p>والنسخة المتوازية من المعيار القياسي الطيفي معطاة فيما يلي.</p>
+<pre><code class="language-text">(* spectralnorm_par.ml *)
+let num_domains = try int_of_string Sys.argv.(1) with _ -&gt; 1
+let n = try int_of_string Sys.argv.(2) with _ -&gt; 32
+
+let eval_A i j = 1. /. float((i+j)*(i+j+1)/2+i+1)
+
+module T = Domainslib.Task
+
+let eval_A_times_u pool u v =
+  let n = Array.length v - 1 in
+  T.parallel_for pool ~start:0 ~finish:n ~body:(fun i -&gt;
+    let vi = ref 0. in
+    for j = 0 to n do vi := !vi +. eval_A i j *. u.(j) done;
+    v.(i) &lt;- !vi
+  )
+
+let eval_At_times_u pool u v =
+  let n = Array.length v - 1 in
+  T.parallel_for pool ~start:0 ~finish:n ~body:(fun i -&gt;
+    let vi = ref 0. in
+    for j = 0 to n do vi := !vi +. eval_A j i *. u.(j) done;
+    v.(i) &lt;- !vi
+  )
+
+let eval_AtA_times_u pool u v =
+  let w = Array.make (Array.length u) 0.0 in
+  eval_A_times_u pool u w; eval_At_times_u pool w v
+
+let () =
+  let pool = T.setup_pool ~num_domains:(num_domains - 1) () in
+  let u = Array.make n 1.0  and  v = Array.make n 0.0 in
+  T.run pool (fun _ -&gt;
+  for _i = 0 to 9 do
+    eval_AtA_times_u pool u v; eval_AtA_times_u pool v u
+  done);
+
+  let vv = ref 0.0  and  vBv = ref 0.0 in
+  for i=0 to n-1 do
+    vv := !vv +. v.(i) *. v.(i);
+    vBv := !vBv +. u.(i) *. v.(i)
+  done;
+  T.teardown_pool pool;
+  Printf.printf &quot;%0.9f\n&quot; (sqrt(!vBv /. !vv))
+</code></pre>
+<p>لاحظ أن الدالة <code>parallel_for</code> متماثلة الشكل مع حلقة for في النسخة التتابعية. ولا حاجة إلى أي تغيير آخر سوى الشيفرة النمطية اللازمة لتهيئة البرك وتفكيكها.</p>
+<pre><code class="language-text">$ ocamlopt -o spectralnorm.exe spectralnorm.ml
+$ ocamlfind ocamlopt -package domainslib -linkpkg -o spectralnorm_par.exe \
+  spectralnorm_par.ml
+$ hyperfine &#x27;./spectralnorm.exe 4096&#x27; &#x27;./spectralnorm_par.exe 2 4096&#x27; \
+            &#x27;./spectralnorm_par.exe 4 4096&#x27; &#x27;./spectralnorm_par.exe 8 4096&#x27;
+Benchmark 1: ./spectralnorm.exe 4096
+  Time (mean ± sd):     1.989 s ±  0.013 s    [User: 1.972 s, System: 0.007 s]
+  Range (min … max):    1.975 s …  2.018 s    10 runs
+
+Benchmark 2: ./spectralnorm_par.exe 2 4096
+  Time (mean ± sd):     1.083 s ±  0.015 s    [User: 2.140 s, System: 0.009 s]
+  Range (min … max):    1.064 s …  1.102 s    10 runs
+
+Benchmark 3: ./spectralnorm_par.exe 4 4096
+  Time (mean ± sd):    698.7 ms ±  10.3 ms    [User: 2730.8 ms, System: 18.3 ms]
+  Range (min … max):   680.9 ms … 721.7 ms    10 runs
+
+Benchmark 4: ./spectralnorm_par.exe 8 4096
+  Time (mean ± sd):    921.8 ms ±  52.1 ms    [User: 6711.6 ms, System: 51.0 ms]
+  Range (min … max):   838.6 ms … 989.2 ms    10 runs
+
+Summary
+  &#x27;./spectralnorm_par.exe 4 4096&#x27; ran
+    1.32 ± 0.08 times faster than &#x27;./spectralnorm_par.exe 8 4096&#x27;
+    1.55 ± 0.03 times faster than &#x27;./spectralnorm_par.exe 2 4096&#x27;
+    2.85 ± 0.05 times faster than &#x27;./spectralnorm.exe 4096&#x27;
+</code></pre>
+<p>على جهاز المؤلف، يتوسّع البرنامج توسعًا معقولًا حتى أربعة نطاقات، لكن أداءه يسوء بثمانية نطاقات. تذكّر أن الجهاز له أربع أنوية فيزيائية فقط. وتنقيح مشكلة الأداء هذه وإصلاحها خارج نطاق هذا الدرس.</p>
+<h2 id="93-جمع-القمامة-المتوازي">9.3 جمع القمامة المتوازي</h2>
+<p>من الجوانب المهمة في قابلية التوسّع في برامج OCaml المتوازية قابلية توسّع جامع القمامة (GC). صُمّم جامع القمامة في OCaml ليكون منخفض زمن الاستجابة وجيد قابلية التوسّع المتوازي معًا. ولOCaml جامع قمامة أجيالي له كومة صغرى صغيرة وكومة كبرى كبيرة. تُخصَّص الكائنات الجديدة (حتى حجم معيّن) في الكومة الصغرى. ولكل نطاق ساحة كومة صغرى محلية به تُخصَّص الكائنات الجديدة دون مزامنة مع النطاقات الأخرى. وعندما يستنفد نطاق ساحة كومته الصغرى، يدعو إلى جمع يوقف العالم للكوم الصغرى. وفي مقطع إيقاف العالم، تجمع جميع النطاقات ساحات كومها الصغرى بالتوازي، ناقلةً الناجين إلى الكومة الكبرى.</p>
+<p>أما الكومة الكبرى، فيحتفظ كل نطاق ببرك ذاكرة محلية له مقسّمة بالحجم تُخصَّص فيها الكائنات الكبيرة والناجون من الجمع الصغرى. ووجود برك محلية للنطاق يتجنّب المزامنة في معظم تخصيصات الكومة الكبرى. وتُجمَع الكومة الكبرى بخوارزمية تعليم ومسح متزامنة تتضمن وقفات قصيرة قليلة لإيقاف العالم في كل دورة كبرى.</p>
+<p>بوجه عام، ينبغي للمستخدمين أن يتوقعوا توسّع جامع القمامة توسّعًا جيدًا مع زيادة عدد النطاقات، مع بقاء زمن الاستجابة منخفضًا. ولمزيد من المعلومات عن تصميم جامع القمامة وتقييمه، ألقِ نظرة على ورقة ICFP 2020 عن <a href="https://arxiv.org/abs/2004.11663"><code>Retrofitting Parallelism onto OCaml</code></a>.</p>
+<h2 id="94-نموذج-الذاكرة-الأجزاء-السهلة">9.4 نموذج الذاكرة: الأجزاء السهلة</h2>
+<p>تُحسّن المعالجات والمترجمات الحديثة البرامج بشراسة. وتسرّع هذه التحسينات البرامج التتابعية دون أن تؤثر فيها من غير ذلك، لكنها تجعل سلوكيات مفاجئة مرئية في البرامج المتوازية. وللإفادة من هذه التحسينات، يتبنّى OCaml <em>نموذج ذاكرة مرخيًا</em> يحدّد بدقة أيّ هذه <em>السلوكيات المرخاة</em> يجوز للبرامج أن تلاحظها. وبينما يصعب البرمجة ضد هذه النماذج مباشرةً، يوفّر نموذج ذاكرة OCaml وصفات تحافظ على بساطة الاستدلال التتابعي.</p>
+<p>أولًا، يجوز تقاسم القيم غير القابلة للتغيير بحرية بين نطاقات متعددة، والوصول إليها بالتوازي. أما بنى البيانات القابلة للتغيير، كخلايا المراجع والمصفوفات وحقول السجلات القابلة للتغيير، فينبغي للمبرمجين تجنّب <em>تسابقات البيانات</em>. يُقال إن خلايا المراجع والمصفوفات وحقول السجلات القابلة للتغيير بنى بيانات <em>غير ذرّية</em>. ويحدث تسابق البيانات عندما يصل نطاقان في الوقت نفسه إلى موقع ذاكرة غير ذرّي دون <em>مزامنة</em>، وكان أحد الوصولين على الأقل كتابةً. ويوفّر OCaml عددًا من طرق إدخال المزامنة، منها المتغيّرات الذرّية (القسم 9.7) والأقفال (القسم 9.5).</p>
+<p>والأهم أن <strong>OCaml يوفّر دلالات متسقة تتابعيًا (SC) للبرامج الخالية من تسابقات البيانات (DRF)</strong> — أي أن السلوك الملاحظ لمثل هذه البرامج يمكن تفسيره بتشابك العمليات من نطاقات مختلفة. وتُعرف هذه الخاصية بضمانة DRF-SC. ثمّ إن ضمانة DRF-SC في OCaml نمطية: فإذا كان جزء من برنامج خاليًا من تسابقات البيانات، فإن نموذج ذاكرة OCaml يضمن أن تكون لهذه الأجزاء اتساقية تتابعية رغم وجود تسابقات بيانات في أجزاء أخرى من البرنامج. وحتى في البرامج التي فيها تسابقات بيانات، يوفّر OCaml ضمانات قوية: قد يلاحظ المستخدم سلوكيات غير متسقة تتابعيًا، لكن لا تحدث انهيارات.</p>
+<p>لمزيد من التفاصيل عن السلوكيات المرخاة في وجود تسابقات بيانات، ألقِ نظرة على فصل الأجزاء الصعبة من نموذج الذاكرة (الفصل 10).</p>
+<h2 id="95-المزامنة-الحاجبة">9.5 المزامنة الحاجبة</h2>
+<p>يجوز للنطاقات أن تؤدّي مزامنة حاجبة بمساعدة وحدات <code>Mutex</code> و<code>Condition</code> و<code>Semaphore</code>. وهذه الوحدات هي نفسها المستعملة لمزامنة الخيوط التي تنشئها مكتبة الخيوط (الفصل 35). وللتوضيح، نشير في بقية هذا الفصل إلى الخيوط التي تنشئها مكتبة الخيوط باسم <em>الخيوط النظامية</em>. وينفّذ البرنامج التالي مكدّسًا متزامنًا باستعمال قفل ومتغيّرات شرط.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">module</span> <span class="hljs-type">Blocking_stack</span> : <span class="hljs-keyword">sig</span>
+  <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> t
+  <span class="hljs-keyword">val</span> make : <span class="hljs-built_in">unit</span> -&gt; <span class="hljs-symbol">&#x27;a</span> t
+  <span class="hljs-keyword">val</span> push : <span class="hljs-symbol">&#x27;a</span> t -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">val</span> pop  : <span class="hljs-symbol">&#x27;a</span> t -&gt; <span class="hljs-symbol">&#x27;a</span>
+<span class="hljs-keyword">end</span> = <span class="hljs-keyword">struct</span>
+  <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> t = {
+    <span class="hljs-keyword">mutable</span> contents: <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span>;
+    mutex : <span class="hljs-type">Mutex</span>.t;
+    nonempty : <span class="hljs-type">Condition</span>.t
+  }
+
+  <span class="hljs-keyword">let</span> make <span class="hljs-literal">()</span> = {
+    contents = <span class="hljs-literal">[]</span>;
+    mutex = <span class="hljs-type">Mutex</span>.create <span class="hljs-literal">()</span>;
+    nonempty = <span class="hljs-type">Condition</span>.create <span class="hljs-literal">()</span>
+  }
+
+  <span class="hljs-keyword">let</span> push r v =
+    <span class="hljs-type">Mutex</span>.lock r.mutex;
+    r.contents &lt;- v::r.contents;
+    <span class="hljs-type">Condition</span>.signal r.nonempty;
+    <span class="hljs-type">Mutex</span>.unlock r.mutex
+
+  <span class="hljs-keyword">let</span> pop r =
+    <span class="hljs-type">Mutex</span>.lock r.mutex;
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> loop <span class="hljs-literal">()</span> =
+      <span class="hljs-keyword">match</span> r.contents <span class="hljs-keyword">with</span>
+      | <span class="hljs-literal">[]</span> -&gt;
+          <span class="hljs-type">Condition</span>.wait r.nonempty r.mutex;
+          loop <span class="hljs-literal">()</span>
+      | x::xs -&gt; r.contents &lt;- xs; x
+    <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> res = loop <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-type">Mutex</span>.unlock r.mutex;
+    res
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>يُنفّذ المكدّس المتزامن بسجل من ثلاثة حقول: حقل قابل للتغيير <code>contents</code> يخزّن عناصر المكدّس، و<code>mutex</code> للتحكم في الوصول إلى الحقل <code>contents</code>، ومتغيّر شرط <code>nonempty</code> يُستعمل لإشعار النطاقات المحجوبة التي تنتظر أن يصير المكدّس غير فارغ.</p>
+<p>تقفل عملية <code>push</code> القفل، وتحدّث الحقل <code>contents</code> بقائمة جديدة رأسها العنصر المدَفوع وذيلها القائمة القديمة. ويُشعَر متغيّر الشرط <code>nonempty</code> والقفل ممسوك، وذلك لإيقاظ أي نطاقات تنتظر على هذا الشرط. فإن كانت هناك نطاقات منتظرة، أُوقظ أحدها. وإن لم تكن، فلا أثر لعملية <code>signal</code>.</p>
+<p>تقفل عملية <code>pop</code> القفل وتتحقق مما إذا كان المكدّس فارغًا. فإن كان كذلك، ينتظر النطاق المستدعي على متغيّر الشرط <code>nonempty</code> باستعمال البدائية <code>wait</code>. ويعلّق نداء <code>wait</code> تنفيذ النطاق الحالي ويفتح <code>mutex</code> ذرّيًا. وحين يُوقَظ هذا النطاق مجددًا (حين يعود نداء <code>wait</code>)، يكون ممسكًا بقفل <code>mutex</code>. ويحاول النطاق قراءة محتويات المكدّس مجددًا. فإن رأت عملية <code>pop</code> أن المكدّس غير فارغ، حدّثت <code>contents</code> بذيل القائمة القديمة، وأعادت الرأس.</p>
+<p>وإدخال <code>mutex</code> للتحكم في الوصول إلى المورد المشترك <code>contents</code> يوفّر مزامنة كافية بين نطاقات متعددة تستعمل المكدّس. ومن ثمّ لا تحدث تسابقات بيانات عندما تستعمل نطاقات متعددة المكدّس بالتوازي.</p>
+<h3 id="951-التفاعل-مع-الخيوط-النظامية">9.5.1 التفاعل مع الخيوط النظامية</h3>
+<p>كيف تتفاعل الخيوط النظامية مع النطاقات؟ تبقى الخيوط النظامية المنشأة على نطاق معيّن مثبَّتة على ذلك النطاق. ولا يُسمح إلا لخيط نظامي واحد في المرة بأن يشغّل شيفرة OCaml على نطاق معيّن. غير أن الخيوط النظامية التابعة لنطاق معيّن يجوز أن تشغّل شيفرة مكتبات C أو شيفرة النظام بالتوازي. والخيوط النظامية التابعة لنطاقات مختلفة يجوز أن تُنفَّذ بالتوازي.</p>
+<p>عند استعمال الخيوط النظامية، يُعامَل الخيط المنشأ لتنفيذ الحساب المعطى إلى <code>Domain.spawn</code> خيطًا نظاميًا أيضًا. مثلًا، ينشئ البرنامج التالي في المجموع نطاقين (بما فيهما النطاق الأولي)، لكل منهما خيطان نظاميان (بما فيهما الخيط النظامي الأولي لكل نطاق).</p>
+<pre><code class="language-text">(* dom_thr.ml *)
+let m = Mutex.create ()
+let r = ref None (* protected by m *)
+
+let task () =
+  let my_thr_id = Thread.(id (self ())) in
+  let my_dom_id :&gt; int = Domain.self () in
+  Mutex.lock m;
+  begin match !r with
+  | None -&gt;
+      Printf.printf &quot;Thread %d running on domain %d saw initial write\n%!&quot;
+        my_thr_id my_dom_id
+  | Some their_thr_id -&gt;
+      Printf.printf &quot;Thread %d running on domain %d saw the write by thread %d\n%!&quot;
+        my_thr_id my_dom_id their_thr_id;
+  end;
+  r := Some my_thr_id;
+  Mutex.unlock m
+
+let task&#x27; () =
+  let t = Thread.create task () in
+  task ();
+  Thread.join t
+
+let main () =
+  let d = Domain.spawn task&#x27; in
+  task&#x27; ();
+  Domain.join d
+
+let _ = main ()
+</code></pre>
+<pre><code class="language-text">$ ocamlopt -I +threads -I +unix unix.cmxa threads.cmxa -o dom_thr.exe dom_thr.ml
+$ ./dom_thr.exe
+Thread 1 running on domain 1 saw initial write
+Thread 0 running on domain 0 saw the write by thread 1
+Thread 2 running on domain 1 saw the write by thread 0
+Thread 3 running on domain 0 saw the write by thread 2
+</code></pre>
+<p>يستعمل هذا البرنامج خلية مرجع مشتركة محمية بقفل للتواصل بين الخيوط النظامية المختلفة العاملة على نطاقين مختلفين. ومعرّفات الخيوط النظامية تميّز الخيوط النظامية في البرنامج تمييزًا فريدًا. ويحصل النطاق الأولي على معرّف النطاق 0 ومعرّف الخيط 0. ويحصل النطاق المولَّد حديثًا على معرّف النطاق 1.</p>
+<p>لاحظ أن جميع الخيوط النظامية التابعة لنطاق معيّن تُضمّ عند ضمّ النطاق. وبوجه خاص، إذا كان مثل هذا الخيط النظامي يشغّل حلقة لا نهائية، فلن يعود ضمّ النطاق أبدًا.</p>
+<h2 id="96-التفاعل-مع-ارتباطات-c">9.6 التفاعل مع ارتباطات C</h2>
+<p>أثناء التنفيذ المتوازي بنطاقات متعددة، يجوز أن تعمل شيفرة C العاملة على نطاق بالتوازي مع أي شيفرة C عاملة على نطاقات أخرى، حتى لو لم يحرّر أيّ منهما «قفل النطاق». وقبل OCaml 5.0، ربما افترضت ارتباطات C أنه إذا لم يُحرَّر قفل زمن تشغيل OCaml، فسيكون من الآمن التلاعب بحالة C العمومية (مثل تهيئة قيمة ساكنة محلية لدالة). وهذا لم يعد صحيحًا في وجود تنفيذ متوازٍ بنطاقات متعددة.</p>
+<h2 id="97-المتغيرات-الذرية">9.7 المتغيّرات الذرّية</h2>
+<p>تُستعمل الأقفال ومتغيّرات الشرط والسمافورات لتنفيذ مزامنة حاجبة بين النطاقات. أما للمزامنة غير الحاجبة، فيوفّر OCaml المتغيّرات <code>Atomic</code>. وكما يشير الاسم، لا توفّر المزامنة غير الحاجبة آليات لتعليق النطاقات وإيقاظها. وفي المقابل، غالبًا ما تُترجَم البدائيات المستعملة في المزامنة غير الحاجبة إلى بدائيات ذرّية للقراءة والتعديل والكتابة يوفّرها العتاد. ومثالًا على ذلك، يزيد البرنامج التالي عدّادًا غير ذرّي وعدّادًا ذرّيًا بالتوازي.</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(* incr.ml *)</span>
+<span class="hljs-keyword">let</span> twice_in_parallel f =
+  <span class="hljs-keyword">let</span> d1 = <span class="hljs-type">Domain</span>.spawn f <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> d2 = <span class="hljs-type">Domain</span>.spawn f <span class="hljs-keyword">in</span>
+  <span class="hljs-type">Domain</span>.join d1;
+  <span class="hljs-type">Domain</span>.join d2
+
+<span class="hljs-keyword">let</span> plain_ref n =
+  <span class="hljs-keyword">let</span> r = <span class="hljs-built_in">ref</span> <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> f <span class="hljs-literal">()</span> = <span class="hljs-keyword">for</span> _i=<span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span> incr r <span class="hljs-keyword">done</span> <span class="hljs-keyword">in</span>
+  twice_in_parallel f;
+  <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;Non-atomic ref count: %d\n&quot;</span> !r
+
+<span class="hljs-keyword">let</span> atomic_ref n =
+  <span class="hljs-keyword">let</span> r = <span class="hljs-type">Atomic</span>.make <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> f <span class="hljs-literal">()</span> = <span class="hljs-keyword">for</span> _i=<span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span> <span class="hljs-type">Atomic</span>.incr r <span class="hljs-keyword">done</span> <span class="hljs-keyword">in</span>
+  twice_in_parallel f;
+  <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;Atomic ref count: %d\n&quot;</span> (<span class="hljs-type">Atomic</span>.get r)
+
+<span class="hljs-keyword">let</span> main <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> n = <span class="hljs-keyword">try</span> int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">1</span>) <span class="hljs-keyword">with</span> _ -&gt; <span class="hljs-number">1</span> <span class="hljs-keyword">in</span>
+  plain_ref n;
+  atomic_ref n
+
+<span class="hljs-keyword">let</span> _ = main <span class="hljs-literal">()</span>
+</code></pre>
+<pre><code class="language-text">$ ocamlopt -o incr.exe incr.ml
+$ ./incr.exe 1_000_000
+Non-atomic ref count: 1187193
+Atomic ref count: 2000000
+</code></pre>
+<p>لاحظ أن النتيجة من استعمال العدّاد غير الذرّي أقل من المتوقع على نحو ساذج. والسبب أن الدالة <code>incr</code> غير الذرّية مكافئة لما يلي:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> incr r =
+  <span class="hljs-keyword">let</span> curr = !r <span class="hljs-keyword">in</span>
+        r := curr + <span class="hljs-number">1</span>
+</code></pre>
+<p>لاحظ أن التحميل والتخزين عمليتان منفصلتان، وأن عملية الزيادة ككل لا تُنفَّذ ذرّيًا. فحين ينفّذ نطاقان هذه الشيفرة بالتوازي، قد يقرأ كلاهما القيمة نفسها للعدّاد <code>curr</code> ويحدّثها إلى <code>curr + 1</code>. ومن ثمّ سيكون الأثر أثر زيادة واحدة بدلًا من زيدتين. وفي المقابل، ينفّذ العدّاد الذرّي التحميل والتخزين ذرّيًا بمساعدة دعم العتاد للذرّية. ويعيد العدّاد الذرّي النتيجة المتوقعة.</p>
+<p>يمكن استعمال المتغيّرات الذرّية لمزامنة منخفضة المستوى بين النطاقات. ويستعمل المثال التالي متغيّرًا ذرّيًا لتبادل رسالة بين نطاقين.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> r = <span class="hljs-type">Atomic</span>.make <span class="hljs-type">None</span>
+
+<span class="hljs-keyword">let</span> sender <span class="hljs-literal">()</span> = <span class="hljs-type">Atomic</span>.set r (<span class="hljs-type">Some</span> <span class="hljs-string">&quot;Hello&quot;</span>)
+
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> receiver <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">match</span> <span class="hljs-type">Atomic</span>.get r <span class="hljs-keyword">with</span>
+  | <span class="hljs-type">None</span> -&gt; <span class="hljs-type">Domain</span>.cpu_relax <span class="hljs-literal">()</span>; receiver <span class="hljs-literal">()</span>
+  | <span class="hljs-type">Some</span> m -&gt; print_endline m
+
+<span class="hljs-keyword">let</span> main <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> s = <span class="hljs-type">Domain</span>.spawn sender <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> d = <span class="hljs-type">Domain</span>.spawn receiver <span class="hljs-keyword">in</span>
+  <span class="hljs-type">Domain</span>.join s;
+  <span class="hljs-type">Domain</span>.join d
+
+<span class="hljs-keyword">let</span> _ = main <span class="hljs-literal">()</span>
+
+<span class="hljs-type">Hello</span>
+<span class="hljs-keyword">val</span> r : <span class="hljs-built_in">string</span> option <span class="hljs-type">Atomic</span>.t = &lt;abstr&gt;
+<span class="hljs-keyword">val</span> sender : <span class="hljs-built_in">unit</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> receiver : <span class="hljs-built_in">unit</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> main : <span class="hljs-built_in">unit</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>مع أن المرسل والمستقبل يتنافسان على الوصول إلى <code>r</code>، فإن هذا ليس تسابق بيانات، لأن <code>r</code> مرجع ذرّي.</p>
+<h3 id="971-مكدس-بلا-أقفال">9.7.1 مكدّس بلا أقفال</h3>
+<p>تُستعمل وحدة Atomic لتنفيذ بنى بيانات غير حاجبة وبلا أقفال. وينفّذ البرنامج التالي مكدّسًا بلا أقفال.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">module</span> <span class="hljs-type">Lockfree_stack</span> : <span class="hljs-keyword">sig</span>
+  <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> t
+  <span class="hljs-keyword">val</span> make : <span class="hljs-built_in">unit</span> -&gt; <span class="hljs-symbol">&#x27;a</span> t
+  <span class="hljs-keyword">val</span> push : <span class="hljs-symbol">&#x27;a</span> t -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">val</span> pop  : <span class="hljs-symbol">&#x27;a</span> t -&gt; <span class="hljs-symbol">&#x27;a</span> option
+<span class="hljs-keyword">end</span> = <span class="hljs-keyword">struct</span>
+  <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> t = <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> <span class="hljs-type">Atomic</span>.t
+
+  <span class="hljs-keyword">let</span> make <span class="hljs-literal">()</span> = <span class="hljs-type">Atomic</span>.make <span class="hljs-literal">[]</span>
+
+  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> push r v =
+    <span class="hljs-keyword">let</span> s = <span class="hljs-type">Atomic</span>.get r <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-type">Atomic</span>.compare_and_set r s (v::s) <span class="hljs-keyword">then</span> <span class="hljs-literal">()</span>
+    <span class="hljs-keyword">else</span> (<span class="hljs-type">Domain</span>.cpu_relax <span class="hljs-literal">()</span>; push r v)
+
+  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> pop r =
+    <span class="hljs-keyword">let</span> s = <span class="hljs-type">Atomic</span>.get r <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">match</span> s <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">[]</span> -&gt; <span class="hljs-type">None</span>
+    | x::xs -&gt;
+        <span class="hljs-keyword">if</span> <span class="hljs-type">Atomic</span>.compare_and_set r s xs <span class="hljs-keyword">then</span> <span class="hljs-type">Some</span> x
+        <span class="hljs-keyword">else</span> (<span class="hljs-type">Domain</span>.cpu_relax <span class="hljs-literal">()</span>; pop r)
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>يُمثَّل المكدّس الذرّي بمرجع ذرّي يحمل قائمة. وتستعمل عمليتا <code>push</code> و<code>pop</code> البدائية <code>compare_and_set</code> لمحاولة تحديث المرجع الذرّي ذرّيًا. والتعبير <code>compare_and_set r seen v</code> يضبط قيمة <code>r</code> على <code>v</code> إذا وفقط إذا كانت قيمته الحالية مساوية <code>seen</code> فيزيائيًا. والأهم أن المقارنة والتحديث يحدثان ذرّيًا. ويقيّم التعبير إلى <code>true</code> إذا نجحت المقارنة (وحدث التحديث)، وإلى <code>false</code> خلاف ذلك.</p>
+<p>إذا فشل <code>compare_and_set</code>، فإن نطاقًا آخر يحاول أيضًا تحديث المرجع الذرّي في الوقت نفسه. وفي هذه الحالة تستدعي عمليتا <code>push</code> و<code>pop</code> الدالة <code>Domain.cpu_relax</code> للتراجع مدة قصيرة تتيح للنطاقات المتنافسة التقدّم قبل إعادة محاولة العملية الفاشلة. ويُسمى هذا التنفيذ للمكدّس بلا أقفال <a href="https://en.wikipedia.org/wiki/Treiber_stack">مكدّس Treiber</a>.</p>
+<h3 id="972-حقول-السجلات-الذرية">9.7.2 حقول السجلات الذرّية</h3>
+<p>النوع <code>'a Atomic.t</code> هو النظير الذرّي لنوع مراجع OCaml، <code>'a ref</code>. ومنذ OCaml 5.4، ندعم أيضًا حقول السجلات الذرّية، التي يجب أن تكون قابلة للتغيير، عبر السمة <code>[@atomic]</code>.</p>
+<p>مثلًا:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> refcounted = {
+  <span class="hljs-keyword">value</span> : <span class="hljs-symbol">&#x27;a</span>;
+  <span class="hljs-keyword">mutable</span> readers : <span class="hljs-built_in">int</span> [@atomic];
+}
+</code></pre>
+<p>الحقل <code>readers</code> ذرّي، بحيث تكون القراءة والكتابة في هذا الحقل عمليتين ذرّيتين شبيهتين بـ<code>Atomic.get</code> و<code>Atomic.set</code>. ويمكن إجراء عمليات ذرّية أخرى على هذا الحقل باستعمال عقدة امتداد مدمجة، <code>%atomic.loc</code>: فإذا كانت <code>rc</code> قيمة من النوع <code>foo refcounted</code>، فإن <code>[%atomic.loc rc.readers]</code> تعبير من النوع المدمج <code>foo Atomic.Loc.t</code>، وهو يتيح العمليات الذرّية المعرّفة في وحدة <code>Atomic.Loc</code> من المكتبة القياسية، على غرار العمليات المتاحة للمراجع الذرّية في وحدة <code>Atomic</code>:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> add_reader rc =
+    <span class="hljs-type">Atomic</span>.<span class="hljs-type">Loc</span>.fetch_and_add [%atomic.loc rc.readers] <span class="hljs-number">1</span>;;
+
+<span class="hljs-keyword">val</span> add_reader : <span class="hljs-symbol">&#x27;a</span> refcounted -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# #show <span class="hljs-type">Atomic</span>.<span class="hljs-type">Loc</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">Loc</span> :
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> t = <span class="hljs-symbol">&#x27;a</span> atomic_loc
+    <span class="hljs-keyword">external</span> get : <span class="hljs-symbol">&#x27;a</span> t -&gt; <span class="hljs-symbol">&#x27;a</span> = <span class="hljs-string">&quot;%atomic_load_loc&quot;</span>
+    <span class="hljs-keyword">val</span> set : <span class="hljs-symbol">&#x27;a</span> t -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">external</span> exchange : <span class="hljs-symbol">&#x27;a</span> t -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = <span class="hljs-string">&quot;%atomic_exchange_loc&quot;</span>
+    <span class="hljs-keyword">external</span> compare_and_set : <span class="hljs-symbol">&#x27;a</span> t -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span> = <span class="hljs-string">&quot;%atomic_cas_loc&quot;</span>
+    <span class="hljs-keyword">external</span> fetch_and_add : <span class="hljs-built_in">int</span> t -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = <span class="hljs-string">&quot;%atomic_fetch_add_loc&quot;</span>
+    <span class="hljs-keyword">val</span> incr : <span class="hljs-built_in">int</span> t -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">val</span> decr : <span class="hljs-built_in">int</span> t -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<h5>قيد</h5>
+<p>لا يوجد حاليًا نظير لـ<code>Atomic.make_contended</code> لحقول السجلات الذرّية. فإن كانت المشاركة الزائفة مشكلة في حقل سجل معيّن، فالنهج الأفضل المدعوم هو استعمال حقل من النوع <code>Atomic.t</code>. ونأمل في تنفيذ دعم الحشو عند الطلب لحقول السجلات في المستقبل.</p>
+<h5>ملاحظة حول الأداء</h5>
+<p>يُمثَّل <code>[%atomic.loc rc.readers]</code> داخليًا زوجًا من قيمة السجل وإزاحة حقل. وكلما طُبِّق هذا التعبير مباشرةً على بدائية ذرّية من وحدة <code>Atomic.Loc</code>، سيحسّن المترجم إنشاء الزوج فيزيله؛ إذ يمرّر القيمة والإزاحة معاملين منفصلين إلى بدائية أساسية في زمن التشغيل. وفي المقابل، قد يخصّص تخزين موقع ذرّي في بنية بيانات، أو تمريره إلى دالة أخرى غير مُضمَّنة، زوجًا. وعند الشك، يمكنك فحص التمثيل الوسيط <code>-dcmm</code> لشيفرتك.</p>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/ocaml-manual/ch08/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">أمثلة متقدّمة بالأصناف والوحدات</span></a><!--]--> <!--[0--><a href="../../../../book/ocaml-manual/ch10/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">نموذج الذاكرة: الأجزاء الصعبة</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fx90yh = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Dtojx2F1.js"),
+						import("../../../../_app/immutable/entry/app.Bk-T7h0B.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

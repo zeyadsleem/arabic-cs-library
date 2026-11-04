@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Dtojx2F1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/COwA5tuQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C8xSp1-s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bk-T7h0B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DyJsUDCS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BEgh7YBq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5TZ6aje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8oEqyd_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.SGl2Uca0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B10blrac.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc) — مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)"/><!----><title>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc) | دليل لغة OCaml</title>
+		<link href="../../../../_app/immutable/assets/0.D2oAgqyE.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/ocaml-manual">دليل لغة OCaml</a> <span class="reader-bar__chapter">› مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 18 من 38">18 / 38</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch16/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch18/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>تصدير</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/foreword/index">تصدير</a></li><!--]--></ul><h3>اللغة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch01/index">اللغة الأساسية</a></li><!--]--></ul><h3>نظام الوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch02/index">نظام الوحدات</a></li><!--]--></ul><h3>الكائنات في OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch03/index">الكائنات في OCaml</a></li><!--]--></ul><h3>الوسائط المُعنونة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch04/index">الوسائط المُعنونة</a></li><!--]--></ul><h3>المتغيّرات متعدّدة الأشكال</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch05/index">المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul><h3>تعدّد الأشكال وحدوده</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch06/index">تعدّد الأشكال وحدوده</a></li><!--]--></ul><h3>أنواع البيانات الجبرية المعمّمة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch07/index">أنواع البيانات الجبرية المعمّمة</a></li><!--]--></ul><h3>أمثلة متقدّمة بالأصناف والوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch08/index">أمثلة متقدّمة بالأصناف والوحدات</a></li><!--]--></ul><h3>البرمجة المتوازية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch09/index">البرمجة المتوازية</a></li><!--]--></ul><h3>نموذج الذاكرة: الأجزاء الصعبة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch10/index">نموذج الذاكرة: الأجزاء الصعبة</a></li><!--]--></ul><h3>لغة OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch11/index">لغة OCaml</a></li><!--]--></ul><h3>امتدادات اللغة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch12/index">امتدادات اللغة</a></li><!--]--></ul><h3>الترجمة الدفعية (ocamlc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch13/index">الترجمة الدفعية (ocamlc)</a></li><!--]--></ul><h3>النظام التفاعلي أو REPL (ocaml)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch14/index">النظام التفاعلي أو REPL (ocaml)</a></li><!--]--></ul><h3>نظام التشغيل (ocamlrun)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch15/index">نظام التشغيل (ocamlrun)</a></li><!--]--></ul><h3>الترجمة إلى الشيفرة الأصلية (ocamlopt)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch16/index">الترجمة إلى الشيفرة الأصلية (ocamlopt)</a></li><!--]--></ul><h3 class="active-chapter">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch17/index" class="active">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</a></li><!--]--></ul><h3>مولّد التبعيات (ocamldep)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch18/index">مولّد التبعيات (ocamldep)</a></li><!--]--></ul><h3>مولّد التوثيق (ocamldoc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch19/index">مولّد التوثيق (ocamldoc)</a></li><!--]--></ul><h3>المنقّح (ocamldebug)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch20/index">المنقّح (ocamldebug)</a></li><!--]--></ul><h3>التنقيح الأصلي (gdb, lldb)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch21/index">التنقيح الأصلي (gdb, lldb)</a></li><!--]--></ul><h3>قياس الأداء (ocamlprof, perf)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch22/index">قياس الأداء (ocamlprof, perf)</a></li><!--]--></ul><h3>الربط البيني مع لغة C</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch23/index">الربط البيني مع لغة C</a></li><!--]--></ul><h3>التحسين باستخدام Flambda</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch24/index">التحسين باستخدام Flambda</a></li><!--]--></ul><h3>الاختبار العشوائي باستخدام afl-fuzz</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch25/index">الاختبار العشوائي باستخدام afl-fuzz</a></li><!--]--></ul><h3>تتبّع زمن التشغيل بأحداث runtime</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch26/index">تتبّع زمن التشغيل بأحداث runtime</a></li><!--]--></ul><h3>تحويل البرنامج «ذَيلِي مع الباني»</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch27/index">تحويل البرنامج «ذَيلِي مع الباني»</a></li><!--]--></ul><h3>الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch28/index">الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</a></li><!--]--></ul><h3>المكتبة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch29/index">المكتبة الأساسية</a></li><!--]--></ul><h3>المكتبة القياسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch30/index">المكتبة القياسية</a></li><!--]--></ul><h3>واجهة المترجم الأمامية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch31/index">واجهة المترجم الأمامية</a></li><!--]--></ul><h3>مكتبة unix: نداءات نظام Unix</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch32/index">مكتبة unix: نداءات نظام Unix</a></li><!--]--></ul><h3>مكتبة str: التعابير النمطية ومعالجة السلاسل</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch33/index">مكتبة str: التعابير النمطية ومعالجة السلاسل</a></li><!--]--></ul><h3>مكتبة runtime_events</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch34/index">مكتبة runtime_events</a></li><!--]--></ul><h3>مكتبة threads</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch35/index">مكتبة threads</a></li><!--]--></ul><h3>مكتبة dynlink: التحميل والربط الديناميان</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch36/index">مكتبة dynlink: التحميل والربط الديناميان</a></li><!--]--></ul><h3>المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch37/index">المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الفصل 17: مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h1>
+<p>يصف هذا الفصل مولّدَي برامج: <code>ocamllex</code>، الذي يُنتج محلّلًا معجميًا من مجموعة من التعابير النمطية المرتبطة بأفعال دلالية، و<code>ocamlyacc</code>، الذي يُنتج محلّلًا نحويًا من قواعد نحوية مرتبطة بأفعال دلالية.</p>
+<p>هذان المولّدان قريبان جدًا من الأمرين المعروفين <code>lex</code> و<code>yacc</code> المتاحين في معظم بيئات البرمجة بلغة C. يفترض هذا الفصل امتلاك معرفة عملية بـ <code>lex</code> و<code>yacc</code>: فهو يصف صيغة الإدخال لكل من <code>ocamllex</code> و<code>ocamlyacc</code> والفروق الأساسية عن <code>lex</code> و<code>yacc</code>، لكنه لا يشرح أساسيات كتابة وصف محلّل معجمي أو محلّل نحوي بـ <code>lex</code> و<code>yacc</code>. ويُحال القارئ غير الملمّ بهما إلى كتاب «Compilers: principles, techniques, and tools» لأهو ولام وسيثي وأولمان (بيرسون، 2006)، أو كتاب «Lex &amp; Yacc» لليفين وميسون وبراون (أورايلي، 1992).</p>
+<h2 id="171-نظرة-عامة-على-ocamllex">17.1 نظرة عامة على ocamllex</h2>
+<p>يُنتج الأمر <code>ocamllex</code> محلّلًا معجميًا من مجموعة من التعابير النمطية ذات أفعال دلالية ملحقة، على نمط <code>lex</code>. بافتراض أن ملف الإدخال هو <em>lexer</em><code>.mll</code>، فإن تنفيذ</p>
+<pre><code class="language-text">        ocamllex lexer.mll
+</code></pre>
+<p>يُنتج شيفرة OCaml لمحلّل معجمي في الملف <em>lexer</em><code>.ml</code>. يعرّف هذا الملف دالة تحليل معجمي واحدة لكل نقطة دخول في تعريف المحلّل المعجمي. وتحمل هذه الدوال الأسماء نفسها التي تحملها نقاط الدخول. وتأخذ دوال التحليل المعجمي وسيطًا هو مخزن مؤقت للمحلّل المعجمي، وتعيد السمة الدلالية لنقطة الدخول الموافقة.</p>
+<p>مخازن المحلّل المعجمي نوع بيانات مجرّد مُنفَّذ في الوحدة <code>Lexing</code> من المكتبة القياسية. وتُنشئ الدوال <code>Lexing.from_channel</code> و<code>Lexing.from_string</code> و<code>Lexing.from_function</code> مخازن للمحلّل المعجمي تقرأ، على الترتيب، من قناة إدخال أو من سلسلة محارف أو من أي دالة قراءة. (انظر وصف الوحدة <code>Lexing</code> في الفصل 30.)</p>
+<p>عند استعمالها مع محلّل نحوي مولَّد بواسطة <code>ocamlyacc</code>، تحسب الأفعال الدلالية قيمة تنتمي إلى النوع <code>token</code> الذي تعرّفه وحدة التحليل النحوي المولَّدة. (انظر وصف <code>ocamlyacc</code> أدناه.)</p>
+<h3 id="1711-الخيارات">17.1.1 الخيارات</h3>
+<p>يتعرّف <code>ocamllex</code> على خيارات سطر الأوامر التالية.</p>
+<p><strong><code>-ml</code></strong></p>
+<p>يُخرج شيفرة لا تستعمل مفسّر الآلات المدمج في OCaml. وبدلًا من ذلك، تُرمَّز الآلة بدوال OCaml. يحسّن هذا الخيار الأداء عند استعمال المترجم الأصلي، لكنه يخفضه عند استعمال مترجم الشيفرة البايتية.</p>
+<p><strong><code>-o</code></strong> <em>output-file</em></p>
+<p>يحدّد اسم ملف الإخراج الذي يُنتجه <code>ocamllex</code>. الوضع الافتراضي هو اسم ملف الإدخال مع استبدال امتداده بـ <code>.ml</code>.</p>
+<p><strong><code>-q</code></strong></p>
+<p>الوضع الهادئ. يُخرج <code>ocamllex</code> عادةً رسائل إعلامية إلى المخرج القياسي، وتُكبَت هذه الرسائل إذا استُعمل الخيار <code>-q</code>.</p>
+<p><strong><code>-v</code> أو <code>-version</code></strong></p>
+<p>يطبع سلسلة الإصدار ثم ينتهي.</p>
+<p><strong><code>-vnum</code></strong></p>
+<p>يطبع رقم الإصدار القصير ثم ينتهي.</p>
+<p><strong><code>-help</code> أو <code>--help</code></strong></p>
+<p>يعرض ملخّصًا قصيرًا للاستعمال ثم ينتهي.</p>
+<h2 id="172-صيغة-تعريفات-المحلل-المعجمي">17.2 صيغة تعريفات المحلّل المعجمي</h2>
+<p>صيغة تعريفات المحلّل المعجمي كما يلي:</p>
+<pre><code class="language-text">{ header }
+let ident = regexp …
+[refill { refill-handler }]
+rule entrypoint [arg₁… argₙ] =
+  parse regexp { action }
+      | …
+      | regexp { action }
+and entrypoint [arg₁… argₙ] =
+  parse …
+and …
+{ trailer }
+</code></pre>
+<p>تُحدَّد التعليقات بـ <code>(*</code> و<code>*)</code> كما في OCaml. ويمكن استبدال الكلمة المفتاحية <code>parse</code> بالكلمة المفتاحية <code>shortest</code>، مع العواقب الدلالية المشروحة أدناه.</p>
+<p>معالجات إعادة التعبئة ميزة حديثة (اختيارية) أُدخلت في 4.02، وهي موثّقة أدناه في القسم الفرعي 17.2.7.</p>
+<h3 id="1721-الترويسة-والذيل">17.2.1 الترويسة والذيل</h3>
+<p>قسمَا <em>الترويسة</em> و<em>الذيل</em> نصّ OCaml اعتباطي محصور بين قوسين معقوفين. ويمكن حذف أحدهما أو كليهما. وإذا وُجد أحدهما، يُنسخ نص الترويسة كما هو في بداية ملف الإخراج، ويُنسخ نص الذيل في نهايته. تحتوي الترويسة عادةً على توجيهات <code>open</code> التي تحتاجها الأفعال، وربما بعض الدوال المساعدة المستعملة في الأفعال.</p>
+<h3 id="1722-تسمية-التعابير-النمطية">17.2.2 تسمية التعابير النمطية</h3>
+<p>بين الترويسة ونقاط الدخول، يمكن إعطاء أسماء لتعابير نمطية متكرّرة الظهور. ويُكتب ذلك على الشكل <code>let</code> <em>ident</em> <code>=</code> <em>regexp</em>. وفي التعابير النمطية التي تأتي بعد هذا التصريح، يمكن استعمال المعرّف <em>ident</em> اختصارًا لـ <em>regexp</em>.</p>
+<h3 id="1723-نقاط-الدخول">17.2.3 نقاط الدخول</h3>
+<p>يجب أن تكون أسماء نقاط الدخول معرّفات صالحة لقيم OCaml (تبدأ بحرف صغير). وبالمثل، يجب أن تكون الوسائط <em>arg</em>₁ … <em>arg</em>ₙ معرّفات صالحة في OCaml. وتصبح كل نقطة دخول دالة OCaml تأخذ <em>n</em>+1 وسيطًا، آخرها ضمني إضافي من النوع <code>Lexing.lexbuf</code>. وتُقرأ المحارف من الوسيط <code>Lexing.lexbuf</code> وتُطابَق مع التعابير النمطية الواردة في القاعدة، إلى أن تطابق بادئة من الإدخال إحدى القواعد. عندئذ يُقيَّم الفعل الموافق ويُعاد كنتيجة للدالة.</p>
+<p>إذا طابقت عدة تعابير نمطية بادئة من الإدخال، تُطبَّق قاعدة «أطول مطابقة»: يُختار التعبير النمطي الذي يطابق أطول بادئة من الإدخال. وفي حالة تساوٍ، يُختار التعبير النمطي الذي يظهر أولًا في القاعدة.</p>
+<p>غير أن قواعد المحلّل المعجمي إذا قُدِّمت بالكلمة المفتاحية <code>shortest</code> بدلًا من <code>parse</code>، تُطبَّق قاعدة «أقصر مطابقة»: تُختار أقصر بادئة من الإدخال. وفي حالة تساوٍ، يُختار أيضًا التعبير النمطي الذي يظهر أولًا في القاعدة. وهذه الميزة غير موجَّهة للاستعمال في المحلّلات المعجمية العادية، بل قد تسهّل استعمال <code>ocamllex</code> أداةً بسيطة لمعالجة النصوص.</p>
+<h3 id="1724-التعابير-النمطية">17.2.4 التعابير النمطية</h3>
+<p>التعابير النمطية على نمط <code>lex</code>، لكن بصيغة أقرب إلى OCaml.</p>
+<pre><code class="language-text">regexp::= …
+</code></pre>
+<p><strong><code>'</code> <em>regular-char</em> ∣ <em>escape-sequence</em> <code>'</code></strong></p>
+<p>ثابت محرف، بالصيغة نفسها التي تُكتب بها ثوابت المحارف في OCaml. يطابق المحرف المدلول عليه.</p>
+<p><strong><code>_</code></strong></p>
+<p>(الشرطة السفلية) يطابق أي محرف.</p>
+<p><strong><code>eof</code></strong></p>
+<p>يطابق نهاية إدخال المحلّل المعجمي. <strong>ملاحظة:</strong> في بعض الأنظمة، مع الإدخال التفاعلي، قد تتبع نهاية الملف محارف أخرى. غير أن <code>ocamllex</code> لن يتعامل بشكل صحيح مع تعابير نمطية تحتوي <code>eof</code> متبوعًا بشيء آخر.</p>
+<p><strong><code>&quot;</code> { <em>string-character</em> } <code>&quot;</code></strong></p>
+<p>ثابت سلسلة، بالصيغة نفسها التي تُكتب بها ثوابت السلاسل في OCaml. يطابق متتالية المحارف الموافقة.</p>
+<p><strong><code>[</code> <em>character-set</em> <code>]</code></strong></p>
+<p>يطابق أي محرف واحد ينتمي إلى مجموعة المحارف المعطاة. ومجموعات المحارف الصالحة هي: ثوابت محرف مفردة <code>'</code> <em>c</em> <code>'</code>؛ ومدىات محارف <code>'</code> <em>c</em>₁ <code>'</code> <code>-</code> <code>'</code> <em>c</em>₂ <code>'</code> (كل المحارف بين <em>c</em>₁ و<em>c</em>₂ شاملًا الطرفين)؛ واتحاد مجموعتَي محارف أو أكثر، ويُدلّ عليه بالتلاصق.</p>
+<p><strong><code>[</code> <code>^</code> <em>character-set</em> <code>]</code></strong></p>
+<p>يطابق أي محرف واحد لا ينتمي إلى مجموعة المحارف المعطاة.</p>
+<p><strong><em>regexp</em>₁ <code>#</code> <em>regexp</em>₂</strong></p>
+<p>(فرق مجموعتَي محارف) يجب أن يكون التعبيران النمطيان <em>regexp</em>₁ و<em>regexp</em>₂ مجموعتَي محارف معرَّفتين بـ <code>[</code>… <code>]</code> (أو تعبير محرف مفرد أو الشرطة السفلية <code>_</code>). يطابق فرق مجموعتَي المحارف المحدَّدتين.</p>
+<p><strong><em>regexp</em> <code>*</code></strong></p>
+<p>(التكرار) يطابق تلاصق صفر سلسلة أو أكثر تطابق <em>regexp</em>.</p>
+<p><strong><em>regexp</em> <code>+</code></strong></p>
+<p>(التكرار الصارم) يطابق تلاصق سلسلة واحدة أو أكثر تطابق <em>regexp</em>.</p>
+<p><strong><em>regexp</em> <code>?</code></strong></p>
+<p>(الاختيار) يطابق السلسلة الفارغة، أو سلسلة تطابق <em>regexp</em>.</p>
+<p><strong><em>regexp</em>₁ <code>|</code> <em>regexp</em>₂</strong></p>
+<p>(البديل) يطابق أي سلسلة تطابق <em>regexp</em>₁ أو <em>regexp</em>₂. وإذا كان كل من <em>regexp</em>₁ و<em>regexp</em>₂ مجموعة محارف، أنتج هذا التركيب مجموعة محارف أخرى، نحصل عليها بأخذ اتحاد <em>regexp</em>₁ و<em>regexp</em>₂.</p>
+<p><strong><em>regexp</em>₁ <em>regexp</em>₂</strong></p>
+<p>(التلاصق) يطابق تلاصق سلسلتين، الأولى تطابق <em>regexp</em>₁ والثانية تطابق <em>regexp</em>₂.</p>
+<p><strong><code>(</code> <em>regexp</em> <code>)</code></strong></p>
+<p>يطابق السلاسل نفسها التي يطابقها <em>regexp</em>.</p>
+<p><em><strong>ident</strong></em></p>
+<p>يشير إلى التعبير النمطي المرتبط بـ <em>ident</em> بتعريف سابق من الشكل <code>let</code> <em>ident</em> <code>=</code> <em>regexp</em>.</p>
+<p><strong><em>regexp</em> <code>as</code> <em>ident</em></strong></p>
+<p>يربط السلسلة الفرعية التي يطابقها <em>regexp</em> بالمعرّف <em>ident</em>.</p>
+<p>أما أسبقية المعاملات، فللمعامل <code>#</code> أعلى أسبقية، يليه <code>*</code> و<code>+</code> و<code>?</code>، ثم التلاصق، ثم <code>|</code> (التبديل)، ثم <code>as</code>.</p>
+<h3 id="1725-الأفعال">17.2.5 الأفعال</h3>
+<p>الأفعال تعابير OCaml اعتباطية. وتُقيَّم في سياق تكون فيه المعرّفات المعرَّفة بالتركيب <code>as</code> مرتبطة بأجزاء من السلسلة المطابَقة. وإضافةً إلى ذلك، يكون <code>lexbuf</code> مرتبطًا بمخزن المحلّل المعجمي الحالي. وفيما يلي بعض الاستعمالات النمطية لـ <code>lexbuf</code>، مع العمليات على مخازن المحلّل المعجمي التي تقدّمها وحدة المكتبة القياسية <code>Lexing</code>.</p>
+<p><strong><code>Lexing.lexeme lexbuf</code></strong></p>
+<p>يعيد السلسلة المطابَقة.</p>
+<p><strong><code>Lexing.lexeme_char lexbuf</code></strong> <em>n</em></p>
+<p>يعيد المحرف رقم <em>n</em> في السلسلة المطابَقة. ويوافق المحرف الأول <em>n</em> = 0.</p>
+<p><strong><code>Lexing.lexeme_start lexbuf</code></strong></p>
+<p>يعيد الموضع المطلق في نص الإدخال لبداية السلسلة المطابَقة (أي إزاحة المحرف الأول من السلسلة المطابَقة). ويكون إزاحة أول محرف يُقرأ من نص الإدخال صفرًا.</p>
+<p><strong><code>Lexing.lexeme_end lexbuf</code></strong></p>
+<p>يعيد الموضع المطلق في نص الإدخال لنهاية السلسلة المطابَقة (أي إزاحة أول محرف يلي السلسلة المطابَقة). ويكون إزاحة أول محرف يُقرأ من نص الإدخال صفرًا.</p>
+<p><strong><em>entrypoint</em> [<em>exp</em>₁ … <em>exp</em>ₙ] <code>lexbuf</code></strong></p>
+<p>(حيث <em>entrypoint</em> اسم نقطة دخول أخرى في تعريف المحلّل المعجمي نفسه.) يستدعي المحلّل المعجمي عوديًا على نقطة الدخول المعطاة. لاحظ أن <code>lexbuf</code> هو الوسيط الأخير. وهذا مفيد لتحليل التعليقات المتشعّبة، على سبيل المثال.</p>
+<h3 id="1726-المتغيرات-في-التعابير-النمطية">17.2.6 المتغيّرات في التعابير النمطية</h3>
+<p>تركيب <code>as</code> شبيه بـ «<em>المجموعات</em>» التي تقدّمها كثير من حزم التعابير النمطية. ويمكن أن يكون نوع هذه المتغيّرات <code>string</code> أو <code>char</code> أو <code>string option</code> أو <code>char option</code>.</p>
+<p>ننظر أولًا في حالة الأنماط الخطية، أي الحالة التي تكون فيها كل المتغيّرات المرتبطة بـ <code>as</code> متمايزة. ففي <em>regexp</em> <code>as</code> <em>ident</em>، يكون نوع <em>ident</em> عادةً <code>string</code> (أو <code>string option</code>)، إلا إذا كان <em>regexp</em> ثابت محرف أو شرطة سفلية أو ثابت سلسلة طوله واحد أو مواصفة مجموعة محارف أو تبديلًا من هذه. عندئذ يكون نوع <em>ident</em> هو <code>char</code> (أو <code>char option</code>). وتُدخل أنواع الخيار عندما لا تستلزم مطابقة القاعدة ككل مطابقة النمط الفرعي المرتبط. وهذا هو الحال خصوصًا في <code>(</code> <em>regexp</em> <code>as</code> <em>ident</em> <code>)</code> <code>?</code> وفي <em>regexp</em>₁ <code>|</code> <code>(</code> <em>regexp</em>₂ <code>as</code> <em>ident</em> <code>)</code>.</p>
+<p>لا يوجد قيد خطية على المتغيّرات المرتبطة بـ <code>as</code>. وعندما يُربط متغيّر أكثر من مرة، تُوسَّع القواعد السابقة كما يلي:</p>
+<ul>
+<li>
+<p>يكون المتغيّر متغيّرًا من النوع <code>char</code> عندما تربط كل وراداته ورادات من النوع <code>char</code> بالمعنى السابق.</p>
+</li>
+<li>
+<p>يكون المتغيّر متغيّرًا من نوع <code>option</code> عندما يمكن مطابقة التعبير ككل دون ربط هذا المتغيّر.</p>
+</li>
+</ul>
+<p>فمثلًا، في <code>('a' as x) | ( 'a' (_ as x) )</code> يكون المتغيّر <code>x</code> من النوع <code>char</code>، بينما في <code>(&quot;ab&quot; as x) | ( 'a' (_ as x) ? )</code> يكون المتغيّر <code>x</code> من النوع <code>string option</code>.</p>
+<p>في بعض الحالات، قد لا تُنتج المطابقة الناجحة مجموعة وحيدة من الارتباطات. فمثلًا، قد تُنتج مطابقة <code>aba</code> بالتعبير النمطي <code>(('a'|&quot;ab&quot;) as x) ((&quot;ba&quot;|'a') as y)</code> ربط <code>x</code> بـ <code>&quot;ab&quot;</code> و<code>y</code> بـ <code>&quot;a&quot;</code>، أو ربط <code>x</code> بـ <code>&quot;a&quot;</code> و<code>y</code> بـ <code>&quot;ba&quot;</code>. والآلات التي ينتجها <code>ocamllex</code> على تعابير نمطية ملتبسة كهذه تختار إحدى مجموعات الارتباطات الممكنة. ومجموعة الارتباطات المختارة متروكة عن قصد دون تحديد.</p>
+<h3 id="1727-معالجات-إعادة-التعبئة">17.2.7 معالجات إعادة التعبئة</h3>
+<p>افتراضيًا، حين يبلغ ocamllex نهاية مخزن التحليل المعجمي، يستدعي بصمت الدالة <code>refill_buff</code> في بنية <code>lexbuf</code> ويواصل التحليل. ويكون من المفيد أحيانًا التحكّم في فعل إعادة التعبئة؛ فعادةً، إذا استعملت مكتبة للحساب غير المتزامن، قد ترغب في تغليف فعل إعادة التعبئة بدالة تؤخّره لتجنّب العمليات المتزامنة الحاجبة.</p>
+<p>منذ OCaml 4.02، يمكن تحديد <em>معالج إعادة تعبئة</em>، وهو دالة تُستدعى عند حدوث إعادة التعبئة. ويُمرَّر إليها استمرار التحليل المعجمي، الذي يتحكّم فيه تحكّمًا كاملًا. ويجب أن يكون لتعبير OCaml المستعمل فعلًا لإعادة التعبئة نوع يمثّل نسخة من</p>
+<pre><code class="language-text">   (Lexing.lexbuf -&gt; &#x27;a) -&gt; Lexing.lexbuf -&gt; &#x27;a
+</code></pre>
+<p>حيث الوسيط الأول هو الاستمرار الذي يلتقط المعالجة التي كان ocamllex سيقوم بها عادةً (إعادة تعبئة المخزن، ثم استدعاء دالة التحليل المعجمي مرة أخرى)، ونوع النتيجة التي تُجسِّد [<code>'a</code>] يجب أن يتوحّد مع نوع نتيجة كل قواعد التحليل المعجمي.</p>
+<p>وكمثال، انظر إلى المحلّل المعجمي التالي المُمَعمَّل على موناد اعتباطي:</p>
+<pre><code class="language-text">{
+type token = EOL | INT of int | PLUS
+
+module Make (M : sig
+               type &#x27;a t
+               val return: &#x27;a -&gt; &#x27;a t
+               val bind: &#x27;a t -&gt; (&#x27;a -&gt; &#x27;b t) -&gt; &#x27;b t
+               val fail : string -&gt; &#x27;a t
+
+               (* Set up lexbuf *)
+               val on_refill : Lexing.lexbuf -&gt; unit t
+             end)
+= struct
+
+let refill_handler k lexbuf =
+    M.bind (M.on_refill lexbuf) (fun () -&gt; k lexbuf)
+
+}
+
+refill {refill_handler}
+
+rule token = parse
+| [&#x27; &#x27; &#x27;\t&#x27;]
+    { token lexbuf }
+| &#x27;\n&#x27;
+    { M.return EOL }
+| [&#x27;0&#x27;-&#x27;9&#x27;]+ as i
+    { M.return (INT (int_of_string i)) }
+| &#x27;+&#x27;
+    { M.return PLUS }
+| _
+    { M.fail &quot;unexpected character&quot; }
+{
+end
+}
+</code></pre>
+<h3 id="1728-المعرفات-المحجوزة">17.2.8 المعرّفات المحجوزة</h3>
+<p>كل المعرّفات التي تبدأ بـ <code>__ocaml_lex</code> محجوزة لاستعمال <code>ocamllex</code>؛ لا تستعمل أي معرّف من هذا القبيل في برامجك.</p>
+<h2 id="173-نظرة-عامة-على-ocamlyacc">17.3 نظرة عامة على ocamlyacc</h2>
+<p>يُنتج الأمر <code>ocamlyacc</code> محلّلًا نحويًا من مواصفة قواعد نحوية لا سياقية ذات أفعال دلالية ملحقة، على نمط <code>yacc</code>. بافتراض أن ملف الإدخال هو <em>grammar</em><code>.mly</code>، فإن تنفيذ</p>
+<pre><code class="language-text">        ocamlyacc options grammar.mly
+</code></pre>
+<p>يُنتج شيفرة OCaml لمحلّل نحوي في الملف <em>grammar</em><code>.ml</code>، وواجهته في الملف <em>grammar</em><code>.mli</code>.</p>
+<p>تعرّف الوحدة المولَّدة دالة تحليل نحوي واحدة لكل نقطة دخول في القواعد. وتحمل هذه الدوال الأسماء نفسها التي تحملها نقاط الدخول. وتأخذ دوال التحليل النحوي وسيطين هما محلّل معجمي (دالة من مخازن المحلّل المعجمي إلى الرموز) ومخزن محلّل معجمي، وتعيد السمة الدلالية لنقطة الدخول الموافقة. ودوال المحلّل المعجمي تُولَّد عادةً من مواصفة محلّل معجمي بواسطة برنامج <code>ocamllex</code>. ومخازن المحلّل المعجمي نوع بيانات مجرّد مُنفَّذ في الوحدة <code>Lexing</code> من المكتبة القياسية. والرموز قيم من النوع الملموس <code>token</code>، المعرَّف في ملف الواجهة <em>grammar</em><code>.mli</code> الذي ينتجه <code>ocamlyacc</code>.</p>
+<h2 id="174-صيغة-تعريفات-القواعد-النحوية">17.4 صيغة تعريفات القواعد النحوية</h2>
+<p>تعريفات القواعد النحوية على الشكل التالي:</p>
+<pre><code class="language-text">%{
+  header
+%}
+  declarations
+%%
+  rules
+%%
+  trailer
+</code></pre>
+<p>تُحدَّد التعليقات بـ <code>(*</code> و<code>*)</code> كما في OCaml. وإضافةً إلى ذلك، يمكن تحديد التعليقات بـ <code>/*</code> و<code>*/</code> كما في C، في قسمَي «التصريحات» و«القواعد». وتعليقات نمط C لا تتداخل، أما تعليقات نمط OCaml فتتداخل.</p>
+<h3 id="1741-الترويسة-والذيل">17.4.1 الترويسة والذيل</h3>
+<p>قسمَا الترويسة والذيل شيفرة OCaml تُنسخ كما هي إلى الملف <em>grammar</em><code>.ml</code>. والقسمان اختياريان. وتأتي الترويسة في بداية ملف الإخراج؛ وهي تحتوي عادةً على توجيهات <code>open</code> والدوال المساعدة التي تحتاجها الأفعال الدلالية للقواعد. ويأتي الذيل في نهاية ملف الإخراج.</p>
+<h3 id="1742-التصريحات">17.4.2 التصريحات</h3>
+<p>تُعطى التصريحات واحدًا في كل سطر، وكلها تبدأ بعلامة <code>%</code>.</p>
+<p><strong><code>%token</code> <em>constr</em> … <em>constr</em></strong></p>
+<p>يصرّح بالرموز المعطاة <em>constr</em> … <em>constr</em> رموزًا (رموزًا طرفية). وتُضاف هذه الرموز بواني ثابتة للنوع الملموس <code>token</code>.</p>
+<p><strong><code>%token</code> <code>&lt;</code> <em>typexpr</em> <code>&gt;</code> <em>constr</em> … <em>constr</em></strong></p>
+<p>يصرّح بالرموز المعطاة <em>constr</em> … <em>constr</em> رموزًا ذات سمة ملحقة من النوع المعطى. وتُضاف هذه الرموز بواني بوسائط من النوع المعطى للنوع الملموس <code>token</code>. وجزء <em>typexpr</em> تعبير نوع OCaml اعتباطي، إلا أن كل أسماء بواني الأنواع يجب أن تكون مؤهَّلة تأهيلًا كاملًا (مثل <code>Modname.typename</code>) لكل الأنواع ما عدا الأنواع المدمجة القياسية، حتى لو أُعطيت توجيهات <code>open</code> المناسبة (مثل <code>open Modname</code>) في قسم الترويسة. والسبب أن الترويسة تُنسخ إلى ملف الإخراج <code>.ml</code> فقط، لا إلى ملف الإخراج <code>.mli</code>، بينما يُنسخ جزء <em>typexpr</em> من تصريح <code>%token</code> إلى كليهما.</p>
+<p><strong><code>%start</code> <em>symbol</em> … <em>symbol</em></strong></p>
+<p>يصرّح بالرموز المعطاة نقاط دخول للقواعد. وتُعرَّف لكل نقطة دخول دالة تحليل نحوي بالاسم نفسه في وحدة الإخراج. أما الرموز غير الطرفية غير المصرَّح بها نقاط دخول فليس لها دالة تحليل نحوي كهذه. ويجب إعطاء الرموز البداية نوعًا بالتوجيه <code>%type</code> الوارد أدناه.</p>
+<p><strong><code>%type</code> <code>&lt;</code> <em>typexpr</em> <code>&gt;</code> <em>symbol</em> … <em>symbol</em></strong></p>
+<p>يحدّد نوع السمات الدلالية للرموز المعطاة. وهذا إلزامي للرموز البداية وحدها. أما الرموز غير الطرفية الأخرى فلا حاجة لإعطائها أنواعًا يدويًا: فهذه الأنواع تُستنتاج عند تمرير ملفات الإخراج على مترجم OCaml (ما لم يكن الخيار <code>-s</code> فعّالًا). وجزء <em>typexpr</em> تعبير نوع OCaml اعتباطي، إلا أن كل أسماء بواني الأنواع يجب أن تكون مؤهَّلة تأهيلًا كاملًا، كما شُرح أعلاه لـ <code>%token</code>.</p>
+<p><strong><code>%left</code> <em>symbol</em> … <em>symbol</em></strong></p>
+<p><strong><code>%right</code> <em>symbol</em> … <em>symbol</em></strong></p>
+<p><strong><code>%nonassoc</code> <em>symbol</em> … <em>symbol</em></strong></p>
+<p>يربط أسبقيات وترابطات بالرموز المعطاة. وتُعطى كل الرموز في السطر نفسه الأسبقية نفسها. وهي أعلى أسبقية من الرموز المصرَّح بها قبلها في سطر <code>%left</code> أو <code>%right</code> أو <code>%nonassoc</code>. وهي أدنى أسبقية من الرموز المصرَّح بها بعدها في سطر كهذا. وتُصرَّح الرموز بترابط إلى اليسار (<code>%left</code>)، أو إلى اليمين (<code>%right</code>)، أو بلا ترابط (<code>%nonassoc</code>). والرموز عادةً رموز طرفية. ويمكن أن تكون أيضًا رموزًا غير طرفية صورية، تُستعمل مع التوجيه <code>%prec</code> داخل القواعد. وتُستعمل تصريحات الأسبقية بالطريقة التالية لحلّ تعارضات الاختصار/الاختصار والإزاحة/الاختصار: للرموز والقواعد أسبقيات. وأسبقية القاعدة افتراضيًا هي أسبقية رمزها الطرفي الأيمن. ويمكن تجاوز هذا الافتراضي باستعمال التوجيه <code>%prec</code> في القاعدة.</p>
+<p>ويُحلّ تعارض الاختصار/الاختصار لصالح القاعدة الأولى (بالترتيب الذي يعطيه ملف المصدر)، ويُخرج <code>ocamlyacc</code> تحذيرًا.</p>
+<p>ويُحلّ تعارض الإزاحة/الاختصار بمقارنة أسبقية القاعدة المطلوب اختصارها بأسبقية الرمز المطلوب إزاحته. فإذا كانت أسبقية القاعدة أعلى، اختُصرت القاعدة؛ وإذا كانت أسبقية الرمز أعلى، أُزيح الرمز.</p>
+<p>ويُحلّ تعارض الإزاحة/الاختصار بين قاعدة ورمز لهما الأسبقية نفسها باستعمال الترابط: فإذا كان الرمز يساري الترابط، اختصر المحلّل النحوي؛ وإذا كان الرمز يميني الترابط، أزاح المحلّل النحوي. وإذا كان الرمز لا ترابط له، أعلن المحلّل النحوي خطأ نحويًا.</p>
+<p>وعندما يتعذّر حلّ تعارض إزاحة/اختصار بالطريقة السابقة، يُخرج <code>ocamlyacc</code> تحذيرًا ويُزيح المحلّل النحوي دائمًا.</p>
+<h3 id="1743-القواعد">17.4.3 القواعد</h3>
+<p>صيغة القواعد معتادة:</p>
+<pre><code class="language-text">nonterminal :
+    symbol … symbol { semantic-action }
+  | …
+  | symbol … symbol { semantic-action }
+;
+</code></pre>
+<p>ويمكن أن تحتوي القواعد أيضًا التوجيه <code>%prec</code><em>symbol</em> في الجزء الأيمن، لتجاوز الأسبقية والترابط الافتراضيين للقاعدة بأسبقية وترابط الرمز المعطى.</p>
+<p>الأفعال الدلالية تعابير OCaml اعتباطية تُقيَّم لإنتاج السمة الدلالية الملحقة بالرمز غير الطرفي المعرَّف. ويمكن للأفعال الدلالية الوصول إلى السمات الدلالية للرموز في الجزء الأيمن من القاعدة بترميز <code>$</code>:
+فالرمز <code>$1</code> سمة الرمز الأول (الأقصى يسارًا)،
+والرمز <code>$2</code> سمة الرمز الثاني، وهكذا.</p>
+<p>ويمكن أن تحتوي القواعد الرمز الخاص <code>error</code> للإشارة إلى نقاط إعادة التزامن، كما في <code>yacc</code>.</p>
+<p>الأفعال الواقعة في وسط القواعد غير مدعومة.</p>
+<p>الرموز غير الطرفية مثل رموز OCaml العادية، إلا أنها لا يمكن أن تنتهي بـ <code>'</code> (علامة اقتباس مفردة).</p>
+<h3 id="1744-معالجة-الأخطاء">17.4.4 معالجة الأخطاء</h3>
+<p>يُدعم استرجاع الأخطاء كما يلي: حين يبلغ المحلّل النحوي حالة خطأ (لا يمكن تطبيق أي قاعدة نحوية)، يستدعي دالة اسمها <code>parse_error</code> بالسلسلة <code>&quot;syntax error&quot;</code> وسيطًا. ودالة <code>parse_error</code> الافتراضية لا تفعل شيئًا وتعود، فتبدأ استرجاع الخطأ (انظر أدناه). ويمكن للمستعمل تعريف دالة <code>parse_error</code> مخصّصة في قسم الترويسة من ملف القواعد.</p>
+<p>ويدخل المحلّل النحوي أيضًا وضع استرجاع الأخطاء إذا رفع أحد أفعال القواعد الاستثناء <code>Parsing.Parse_error</code>.</p>
+<p>في وضع استرجاع الأخطاء، يتخلّص المحلّل النحوي من الحالات في المكدّس إلى أن يبلغ موضعًا يمكن فيه إزاحة رمز الخطأ. ثم يتخلّص من الرموز في الإدخال إلى أن يجد ثلاثة رموز متتالية يمكن قبولها، ويبدأ المعالجة بأولها. وإذا لم يمكن كشف أي حالة يمكن فيها إزاحة رمز الخطأ، يتوقف المحلّل النحوي رافعًا الاستثناء <code>Parsing.Parse_error</code>.</p>
+<p>راجع التوثيق المتعلق بـ <code>yacc</code> لمزيد من التفاصيل والإرشاد في كيفية استعمال استرجاع الأخطاء.</p>
+<h2 id="175-الخيارات">17.5 الخيارات</h2>
+<p>يتعرّف الأمر <code>ocamlyacc</code> على الخيارات التالية:</p>
+<p><strong><code>-b</code></strong> <em>prefix</em></p>
+<p>يسمّي ملفات الإخراج <em>prefix</em><code>.ml</code> و<em>prefix</em><code>.mli</code> و<em>prefix</em><code>.output</code>، بدلًا من اصطلاح التسمية الافتراضي.</p>
+<p><strong><code>-q</code></strong></p>
+<p>هذا الخيار لا أثر له.</p>
+<p><strong><code>-v</code></strong></p>
+<p>يولّد وصفًا لجداول التحليل النحوي وتقريرًا عن التعارضات الناتجة من الالتباسات في القواعد. ويُوضع الوصف في الملف <em>grammar</em><code>.output</code>.</p>
+<p><strong><code>-version</code></strong></p>
+<p>يطبع سلسلة الإصدار ثم ينتهي.</p>
+<p><strong><code>-vnum</code></strong></p>
+<p>يطبع رقم الإصدار القصير ثم ينتهي.</p>
+<p><strong><code>-</code></strong></p>
+<p>يقرأ مواصفة القواعد من الإدخال القياسي. وأسماء ملفات الإخراج الافتراضية هي <code>stdin.ml</code> و<code>stdin.mli</code>.</p>
+<p><strong><code>--</code></strong> <em>file</em></p>
+<p>يعالج <em>file</em> مواصفةً للقواعد، حتى لو بدأ اسمه بعلامة شرطة (-). ويجب أن يكون هذا الخيار الأخير في سطر الأوامر.</p>
+<p>أما وقت التشغيل، فيمكن تنقيح المحلّل النحوي المولَّد بـ <code>ocamlyacc</code> بتعيين الخيار <code>p</code> في متغيّر البيئة <code>OCAMLRUNPARAM</code> (انظر القسم 15.2). ويجعل ذلك الآلة ذات المكدّس التي تنفّذ المحلّل النحوي تطبع أثرًا لأفعالها (الرموز المزاحة، والقواعد المختصرة، إلخ). ويذكر الأثر أرقام القواعد وأرقام الحالات التي يمكن تفسيرها بالنظر إلى ملف <em>grammar</em><code>.output</code> الذي يولّده <code>ocamlyacc -v</code>.</p>
+<h2 id="176-مثال-كامل">17.6 مثال كامل</h2>
+<p>المفضّل الدائم: آلة حاسبة مكتبية. يقرأ هذا البرنامج تعابير حسابية من الإدخال القياسي، تعبيرًا في كل سطر، ويطبع قيمها. وفيما يلي تعريف القواعد:</p>
+<pre><code class="language-text">        /* File parser.mly */
+        %token &lt;int&gt; INT
+        %token PLUS MINUS TIMES DIV
+        %token LPAREN RPAREN
+        %token EOL
+        %left PLUS MINUS        /* lowest precedence */
+        %left TIMES DIV         /* medium precedence */
+        %nonassoc UMINUS        /* highest precedence */
+        %start main             /* the entry point */
+        %type &lt;int&gt; main
+        %%
+        main:
+            expr EOL                { $1 }
+        ;
+        expr:
+            INT                     { $1 }
+          | LPAREN expr RPAREN      { $2 }
+          | expr PLUS expr          { $1 + $3 }
+          | expr MINUS expr         { $1 - $3 }
+          | expr TIMES expr         { $1 * $3 }
+          | expr DIV expr           { $1 / $3 }
+          | MINUS expr %prec UMINUS { - $2 }
+        ;
+</code></pre>
+<p>وفيما يلي تعريف المحلّل المعجمي الموافق:</p>
+<pre><code class="language-text">        (* File lexer.mll *)
+        {
+        open Parser        (* The type token is defined in parser.mli *)
+        exception Eof
+        }
+        rule token = parse
+            [&#x27; &#x27; &#x27;\t&#x27;]     { token lexbuf }     (* skip blanks *)
+          | [&#x27;\n&#x27; ]        { EOL }
+          | [&#x27;0&#x27;-&#x27;9&#x27;]+ as lxm { INT(int_of_string lxm) }
+          | &#x27;+&#x27;            { PLUS }
+          | &#x27;-&#x27;            { MINUS }
+          | &#x27;*&#x27;            { TIMES }
+          | &#x27;/&#x27;            { DIV }
+          | &#x27;(&#x27;            { LPAREN }
+          | &#x27;)&#x27;            { RPAREN }
+          | eof            { raise Eof }
+</code></pre>
+<p>وفيما يلي البرنامج الرئيسي، الذي يجمع المحلّل النحوي بالمحلّل المعجمي:</p>
+<pre><code class="language-text">        (* File calc.ml *)
+        let _ =
+          try
+            let lexbuf = Lexing.from_channel stdin in
+            while true do
+              let result = Parser.main Lexer.token lexbuf in
+                print_int result; print_newline(); flush stdout
+            done
+          with Lexer.Eof -&gt;
+            exit 0
+</code></pre>
+<p>ولترجمة كل شيء، نفّذ:</p>
+<pre><code class="language-text">        ocamllex lexer.mll       # generates lexer.ml
+        ocamlyacc parser.mly     # generates parser.ml and parser.mli
+        ocamlc -c parser.mli
+        ocamlc -c lexer.ml
+        ocamlc -c parser.ml
+        ocamlc -c calc.ml
+        ocamlc -o calc lexer.cmo parser.cmo calc.cmo
+</code></pre>
+<h2 id="177-الأخطاء-الشائعة">17.7 الأخطاء الشائعة</h2>
+<p><strong>ocamllex: transition table overflow, automaton is too big</strong></p>
+<p>الآلات الحتمية التي يولّدها <code>ocamllex</code> محدودة بحد أقصى قدره 32767 انتقالًا. والرسالة أعلاه تدل على أن تعريف المحلّل المعجمي معقّد أكثر من اللازم ويتجاوز هذا الحد. ويسبّب ذلك عادةً تعريفات محلّل معجمي لها قواعد منفصلة لكل كلمة مفتاحية أبجدية في اللغة، كما في المثال التالي: قاعدة <code>rule token = parse &quot;keyword1&quot; { KWD1 } | &quot;keyword2&quot; { KWD2 } | ... | &quot;keyword100&quot; { KWD100 } | ['A'-'Z' 'a'-'z'] ['A'-'Z' 'a'-'z' '0'-'9' '_'] * as id { IDENT id }</code>. لإبقاء الآلات المولَّدة صغيرة، أعد كتابة تلك التعريفات بقاعدة «معرّف» عامة واحدة، يتبعها بحث في جدول تجزئة للفصل بين الكلمات المفتاحية والمعرّفات: <code>{ let keyword_table = Hashtbl.create 53 let _ = List.iter (fun (kwd, tok) -&gt; Hashtbl.add keyword_table kwd tok) [ &quot;keyword1&quot;, KWD1; &quot;keyword2&quot;, KWD2; ... &quot;keyword100&quot;, KWD100 ] } rule token = parse ['A'-'Z' 'a'-'z'] ['A'-'Z' 'a'-'z' '0'-'9' '_'] * as id { try Hashtbl.find keyword_table id with Not_found -&gt; IDENT id }</code>.</p>
+<p><strong>ocamllex: Position memory overflow, too many bindings</strong></p>
+<p>تحفظ الآلات الحتمية التي يولّدها <code>ocamllex</code> جدولًا للمواضع داخل مخزن المحلّل المعجمي الممسوح. وحجم هذا الجدول محدود بحد أقصى قدره 255 خليّة. ولا يُفترض أن يظهر هذا الخطأ في الحالات العادية.</p>
+<p><strong>ocamlyacc: concurrency safety</strong></p>
+<p>المحلّلات النحوية التي يولّدها ocamlyacc ليست آمنة للخيوط. فهي تعتمد على حالة عمل داخلية مشتركة بين كل المحلّلات النحوية المولَّدة بـ ocamlyacc. و‏<a href="https://cambium.inria.fr/~fpottier/menhir/">menhir</a> مولّد محلّلات نحوية أفضل خيارًا إذا أردت محلّلات نحوية آمنة للخيوط.</p>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/ocaml-manual/ch16/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الترجمة إلى الشيفرة الأصلية (ocamlopt)</span></a><!--]--> <!--[0--><a href="../../../../book/ocaml-manual/ch18/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مولّد التبعيات (ocamldep)</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fx90yh = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Dtojx2F1.js"),
+						import("../../../../_app/immutable/entry/app.Bk-T7h0B.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

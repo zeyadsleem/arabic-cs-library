@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Dtojx2F1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/COwA5tuQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C8xSp1-s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bk-T7h0B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DyJsUDCS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BEgh7YBq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5TZ6aje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8oEqyd_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.SGl2Uca0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B10blrac.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="نظام الوحدات — نظام الوحدات"/><!----><title>نظام الوحدات | دليل لغة OCaml</title>
+		<link href="../../../../_app/immutable/assets/0.D2oAgqyE.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/ocaml-manual">دليل لغة OCaml</a> <span class="reader-bar__chapter">› نظام الوحدات</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 3 من 38">3 / 38</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch01/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/ocaml-manual/ch03/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>تصدير</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/foreword/index">تصدير</a></li><!--]--></ul><h3>اللغة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch01/index">اللغة الأساسية</a></li><!--]--></ul><h3 class="active-chapter">نظام الوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch02/index" class="active">نظام الوحدات</a></li><!--]--></ul><h3>الكائنات في OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch03/index">الكائنات في OCaml</a></li><!--]--></ul><h3>الوسائط المُعنونة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch04/index">الوسائط المُعنونة</a></li><!--]--></ul><h3>المتغيّرات متعدّدة الأشكال</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch05/index">المتغيّرات متعدّدة الأشكال</a></li><!--]--></ul><h3>تعدّد الأشكال وحدوده</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch06/index">تعدّد الأشكال وحدوده</a></li><!--]--></ul><h3>أنواع البيانات الجبرية المعمّمة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch07/index">أنواع البيانات الجبرية المعمّمة</a></li><!--]--></ul><h3>أمثلة متقدّمة بالأصناف والوحدات</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch08/index">أمثلة متقدّمة بالأصناف والوحدات</a></li><!--]--></ul><h3>البرمجة المتوازية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch09/index">البرمجة المتوازية</a></li><!--]--></ul><h3>نموذج الذاكرة: الأجزاء الصعبة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch10/index">نموذج الذاكرة: الأجزاء الصعبة</a></li><!--]--></ul><h3>لغة OCaml</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch11/index">لغة OCaml</a></li><!--]--></ul><h3>امتدادات اللغة</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch12/index">امتدادات اللغة</a></li><!--]--></ul><h3>الترجمة الدفعية (ocamlc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch13/index">الترجمة الدفعية (ocamlc)</a></li><!--]--></ul><h3>النظام التفاعلي أو REPL (ocaml)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch14/index">النظام التفاعلي أو REPL (ocaml)</a></li><!--]--></ul><h3>نظام التشغيل (ocamlrun)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch15/index">نظام التشغيل (ocamlrun)</a></li><!--]--></ul><h3>الترجمة إلى الشيفرة الأصلية (ocamlopt)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch16/index">الترجمة إلى الشيفرة الأصلية (ocamlopt)</a></li><!--]--></ul><h3>مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch17/index">مولّدات المحلّلات والمحلّلات النحوية (ocamllex, ocamlyacc)</a></li><!--]--></ul><h3>مولّد التبعيات (ocamldep)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch18/index">مولّد التبعيات (ocamldep)</a></li><!--]--></ul><h3>مولّد التوثيق (ocamldoc)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch19/index">مولّد التوثيق (ocamldoc)</a></li><!--]--></ul><h3>المنقّح (ocamldebug)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch20/index">المنقّح (ocamldebug)</a></li><!--]--></ul><h3>التنقيح الأصلي (gdb, lldb)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch21/index">التنقيح الأصلي (gdb, lldb)</a></li><!--]--></ul><h3>قياس الأداء (ocamlprof, perf)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch22/index">قياس الأداء (ocamlprof, perf)</a></li><!--]--></ul><h3>الربط البيني مع لغة C</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch23/index">الربط البيني مع لغة C</a></li><!--]--></ul><h3>التحسين باستخدام Flambda</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch24/index">التحسين باستخدام Flambda</a></li><!--]--></ul><h3>الاختبار العشوائي باستخدام afl-fuzz</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch25/index">الاختبار العشوائي باستخدام afl-fuzz</a></li><!--]--></ul><h3>تتبّع زمن التشغيل بأحداث runtime</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch26/index">تتبّع زمن التشغيل بأحداث runtime</a></li><!--]--></ul><h3>تحويل البرنامج «ذَيلِي مع الباني»</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch27/index">تحويل البرنامج «ذَيلِي مع الباني»</a></li><!--]--></ul><h3>الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch28/index">الكشف عن تسابقات البيانات وقت التشغيل باستخدام ThreadSanitizer</a></li><!--]--></ul><h3>المكتبة الأساسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch29/index">المكتبة الأساسية</a></li><!--]--></ul><h3>المكتبة القياسية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch30/index">المكتبة القياسية</a></li><!--]--></ul><h3>واجهة المترجم الأمامية</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch31/index">واجهة المترجم الأمامية</a></li><!--]--></ul><h3>مكتبة unix: نداءات نظام Unix</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch32/index">مكتبة unix: نداءات نظام Unix</a></li><!--]--></ul><h3>مكتبة str: التعابير النمطية ومعالجة السلاسل</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch33/index">مكتبة str: التعابير النمطية ومعالجة السلاسل</a></li><!--]--></ul><h3>مكتبة runtime_events</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch34/index">مكتبة runtime_events</a></li><!--]--></ul><h3>مكتبة threads</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch35/index">مكتبة threads</a></li><!--]--></ul><h3>مكتبة dynlink: التحميل والربط الديناميان</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch36/index">مكتبة dynlink: التحميل والربط الديناميان</a></li><!--]--></ul><h3>المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</h3> <ul><!--[--><li><a href="../../../../book/ocaml-manual/ch37/index">المكتبات المُزالة أو المنقولة حديثًا (Graphics وBigarray وNum وLablTk)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>نظام الوحدات</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#21-البنى">2.1 البنى</a></li><li><a href="#22-التوقيعات">2.2 التوقيعات</a></li><li><a href="#23-الموصلات">2.3 الموصِّلات</a></li><li><a href="#24-الموصلات-وتجريد-الأنواع">2.4 الموصِّلات وتجريد الأنواع</a></li><li><a href="#25-الوحدات-والترجمة-المنفصلة">2.5 الوحدات والترجمة المنفصلة</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الفصل 2: نظام الوحدات</h1>
+<p>يعرّفنا هذا الفصل بنظام الوحدات في OCaml.</p>
+<h2 id="21-البنى">2.1 البنى</h2>
+<p>من أهم دوافع الوحدات جمع تعريفات مترابطة (كتعريف نوع بيانات والعمليات المقترنة به) في حزمة واحدة، وفرض مخطط تسمية متّسق لهذه التعريفات، فيتجنّب المرء نفاد الأسماء أو الخلط بينها عرضًا. وتُسمّى هذه الحزمة <em>بنية</em>، وتُدخل بالبنية <code>struct</code>…<code>end</code> التي تحوي متتالية اعتباطية من التعريفات. وتُعطى البنية عادةً اسمًا بالربط <code>module</code>. فمثلًا، هذه بنية تجمع نوعًا من طوابير FIFO وعملياته:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-type">Fifo</span> =
+    <span class="hljs-keyword">struct</span>
+      <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> queue = { front: <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span>; rear: <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> }
+      <span class="hljs-keyword">let</span> make front rear =
+        <span class="hljs-keyword">match</span> front <span class="hljs-keyword">with</span>
+        | <span class="hljs-literal">[]</span> -&gt; { front = <span class="hljs-type">List</span>.rev rear; rear = <span class="hljs-literal">[]</span> }
+        | _  -&gt; { front; rear }
+      <span class="hljs-keyword">let</span> empty = { front = <span class="hljs-literal">[]</span>; rear = <span class="hljs-literal">[]</span> }
+      <span class="hljs-keyword">let</span> is_empty = <span class="hljs-keyword">function</span> { front = <span class="hljs-literal">[]</span>; _ } -&gt; <span class="hljs-literal">true</span> | _ -&gt; <span class="hljs-literal">false</span>
+      <span class="hljs-keyword">let</span> add x q = make q.front (x :: q.rear)
+      <span class="hljs-keyword">exception</span> <span class="hljs-type">Empty</span>
+      <span class="hljs-keyword">let</span> top = <span class="hljs-keyword">function</span>
+        | { front = <span class="hljs-literal">[]</span>; _ } -&gt; raise <span class="hljs-type">Empty</span>
+        | { front = x :: _; _ } -&gt; x
+      <span class="hljs-keyword">let</span> pop = <span class="hljs-keyword">function</span>
+        | { front = <span class="hljs-literal">[]</span>; _ } -&gt; raise <span class="hljs-type">Empty</span>
+        | { front = _ :: f; rear = r } -&gt; make f r
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">Fifo</span> :
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> queue = { front : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span>; rear : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span>; }
+    <span class="hljs-keyword">val</span> make : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> empty : <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> is_empty : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">val</span> add : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">exception</span> <span class="hljs-type">Empty</span>
+    <span class="hljs-keyword">val</span> top : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">val</span> pop : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ويمكن الإشارة إلى مكوّنات البنية من خارجها باستعمال «التدوين النقطي»، أي معرّفات مسبوقة باسم البنية. فمثلًا، <code>Fifo.add</code> هي الدالة <code>add</code> المعرَّفة داخل البنية <code>Fifo</code>، و<code>Fifo.queue</code> هو النوع <code>queue</code> المعرَّف في <code>Fifo</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-type">Fifo</span>.add <span class="hljs-string">&quot;hello&quot;</span> <span class="hljs-type">Fifo</span>.empty;;
+
+- : <span class="hljs-built_in">string</span> <span class="hljs-type">Fifo</span>.queue = {<span class="hljs-type">Fifo</span>.front = [<span class="hljs-string">&quot;hello&quot;</span>]; rear = <span class="hljs-literal">[]</span>}
+</code></pre>
+<p>وثمّة إمكانية أخرى هي فتح الوحدة، وهو يجلب جميع المعرّفات المعرَّفة داخل الوحدة إلى نطاق البنية الحالية.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">open</span> <span class="hljs-type">Fifo</span>;;
+
+# add <span class="hljs-string">&quot;hello&quot;</span> empty;;
+
+- : <span class="hljs-built_in">string</span> <span class="hljs-type">Fifo</span>.queue = {front = [<span class="hljs-string">&quot;hello&quot;</span>]; rear = <span class="hljs-literal">[]</span>}
+</code></pre>
+<p>يفتح فتحُ الوحدة سبيلًا أخفّ إلى مكوّناتها، لكنه يجعل تحديد الوحدة التي عُرِّف فيها معرّف ما أصعب. وعلى وجه الخصوص، يمكن للوحدات المفتوحة أن تحجب معرّفات موجودة في النطاق الحالي، وقد يؤدّي ذلك إلى أخطاء مربكة:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> empty = <span class="hljs-literal">[]</span>
+  <span class="hljs-keyword">open</span> <span class="hljs-type">Fifo</span>;;
+
+<span class="hljs-keyword">val</span> empty : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> = <span class="hljs-literal">[]</span>
+
+# <span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span> :: empty ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">The</span> <span class="hljs-keyword">value</span> empty has <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> <span class="hljs-type">Fifo</span>.queue
+       but an expression was expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span>
+</code></pre>
+<p>والحل الجزئي لهذه المعضلة هو فتح الوحدات محليًا، بحيث تصير مكوّنات الوحدة متاحة في التعبير المعني فقط. وقد يجعل هذا الشيفرة أسهل قراءةً (لأنّ عبارة الفتح أقرب إلى موضع استعمالها) وأسهل إعادةَ هيكلة (لأنّ مقطع الشيفرة أكثر استقلالًا). وتتوفر بنيتان لهذا الغرض:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> <span class="hljs-keyword">open</span> <span class="hljs-type">Fifo</span> <span class="hljs-keyword">in</span>
+  add <span class="hljs-string">&quot;hello&quot;</span> empty;;
+
+- : <span class="hljs-built_in">string</span> <span class="hljs-type">Fifo</span>.queue = {front = [<span class="hljs-string">&quot;hello&quot;</span>]; rear = <span class="hljs-literal">[]</span>}
+</code></pre>
+<p>و</p>
+<pre><code class="language-ocaml"># <span class="hljs-type">Fifo</span>.(add <span class="hljs-string">&quot;hello&quot;</span> empty);;
+
+- : <span class="hljs-built_in">string</span> <span class="hljs-type">Fifo</span>.queue = {front = [<span class="hljs-string">&quot;hello&quot;</span>]; rear = <span class="hljs-literal">[]</span>}
+</code></pre>
+<p>وفي الصيغة الثانية، إذا كان جسم الفتح المحلي محصورًا هو نفسه بين أقواس أو أقواس معقوفة أو أقواس مربّعة، جاز إغفال أقواس الفتح المحلي. فمثلًا،</p>
+<pre><code class="language-ocaml"># <span class="hljs-type">Fifo</span>.[empty] = <span class="hljs-type">Fifo</span>.([empty]);;
+
+- : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+
+# <span class="hljs-type">Fifo</span>.[|empty|] = <span class="hljs-type">Fifo</span>.([|empty|]);;
+
+- : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+
+# <span class="hljs-type">Fifo</span>.{ contents = empty } = <span class="hljs-type">Fifo</span>.({ contents = empty });;
+
+- : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<p>وتعمل هذه الصيغة الثانية أيضًا في الأنماط:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> at_most_one_element x = <span class="hljs-keyword">match</span> x <span class="hljs-keyword">with</span>
+  | <span class="hljs-type">Fifo</span>.{ front = (<span class="hljs-literal">[]</span> | [_]); rear = <span class="hljs-literal">[]</span> } -&gt; <span class="hljs-literal">true</span>
+  | _ -&gt; <span class="hljs-literal">false</span> ;;
+
+<span class="hljs-keyword">val</span> at_most_one_element : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-type">Fifo</span>.queue -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويمكن أيضًا نسخ مكوّنات وحدة داخل وحدة أخرى باستعمال العبارة <code>include</code>، وهذا نافع بوجه خاص لتوسيع وحدات قائمة. وللتوضيح، يمكننا إضافة دوال تُعيد قيمة اختيارية بدلًا من رفع استثناء عندما يكون الطابور فارغًا.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-type">FifoOpt</span> =
+  <span class="hljs-keyword">struct</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-type">Fifo</span>
+    <span class="hljs-keyword">let</span> top_opt q = <span class="hljs-keyword">if</span> is_empty q <span class="hljs-keyword">then</span> <span class="hljs-type">None</span> <span class="hljs-keyword">else</span> <span class="hljs-type">Some</span>(top q)
+    <span class="hljs-keyword">let</span> pop_opt q = <span class="hljs-keyword">if</span> is_empty q <span class="hljs-keyword">then</span> <span class="hljs-type">None</span> <span class="hljs-keyword">else</span> <span class="hljs-type">Some</span>(pop q)
+  <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">FifoOpt</span> :
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> queue = <span class="hljs-symbol">&#x27;a</span> <span class="hljs-type">Fifo</span>.queue = { front : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span>; rear : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span>; }
+    <span class="hljs-keyword">val</span> make : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> empty : <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> is_empty : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">val</span> add : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">exception</span> <span class="hljs-type">Empty</span>
+    <span class="hljs-keyword">val</span> top : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">val</span> pop : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> top_opt : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> option
+    <span class="hljs-keyword">val</span> pop_opt : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue option
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<h2 id="22-التوقيعات">2.2 التوقيعات</h2>
+<p>التوقيعات واجهات للبنى. يحدّد التوقيع مكوّنات البنية المتاحة من الخارج، وأنواعها. ويمكن استعماله لإخفاء بعض مكوّنات البنية (كتعريفات الدوال المحلية) أو لتصدير بعضها بنوع مقيَّد. فمثلًا، يحدّد التوقيع التالي عمليات الطابور <code>empty</code> و<code>add</code> و<code>top</code> و<code>pop</code>، لا الدالة المساعدة <code>make</code>. وبالمثل، يجعل نوع <code>queue</code> مجرّدًا (بعدم تقديم تمثيله الفعلي كنوع ملموس)، وهذا يضمن ألّا يستطيع مستعملو الوحدة <code>Fifo</code> خرق ثوابت بنية البيانات التي تعتمد عليها العمليات، مثل «إذا كانت القائمة الأمامية فارغة وجبت أن تكون القائمة الخلفية فارغة أيضًا».</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">FIFO</span> =
+    <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> queue               <span class="hljs-comment">(* now an abstract type *)</span>
+      <span class="hljs-keyword">val</span> empty : <span class="hljs-symbol">&#x27;a</span> queue
+      <span class="hljs-keyword">val</span> add : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+      <span class="hljs-keyword">val</span> top : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span>
+      <span class="hljs-keyword">val</span> pop : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+      <span class="hljs-keyword">exception</span> <span class="hljs-type">Empty</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">FIFO</span> =
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> empty : <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> add : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> top : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">val</span> pop : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">exception</span> <span class="hljs-type">Empty</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ويؤدّي تقييد البنية <code>Fifo</code> بهذا التوقيع إلى رؤية أخرى للبنية <code>Fifo</code> لا تكون فيها الدالة <code>make</code> متاحة ويُخفى فيها التمثيل الفعلي للطوابير:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-type">AbstractQueue</span> = (<span class="hljs-type">Fifo</span> : <span class="hljs-type">FIFO</span>);;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">AbstractQueue</span> : <span class="hljs-type">FIFO</span>
+
+# <span class="hljs-type">AbstractQueue</span>.make [<span class="hljs-number">1</span>] [<span class="hljs-number">2</span>;<span class="hljs-number">3</span>] ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">Unbound</span> <span class="hljs-keyword">value</span> <span class="hljs-type">AbstractQueue</span>.make
+
+# <span class="hljs-type">AbstractQueue</span>.add <span class="hljs-string">&quot;hello&quot;</span> <span class="hljs-type">AbstractQueue</span>.empty;;
+
+- : <span class="hljs-built_in">string</span> <span class="hljs-type">AbstractQueue</span>.queue = &lt;abstr&gt;
+</code></pre>
+<p>ويمكن إجراء التقييد أيضًا أثناء تعريف البنية، كما في</p>
+<pre><code class="language-text">module Fifo = (struct ... end : FIFO);;
+</code></pre>
+<p>وتُقدَّم صيغة بديلة لما سبق:</p>
+<pre><code class="language-text">module Fifo : FIFO = struct ... end;;
+</code></pre>
+<p>وكما في الوحدات، يمكن إدراج توقيع لنسخ مكوّناته داخل التوقيع الحالي. فمثلًا، يمكننا توسيع التوقيع <code>FIFO</code> بالدالتين <code>top_opt</code> و<code>pop_opt</code>:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">FIFO_WITH_OPT</span> =
+    <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">include</span> <span class="hljs-type">FIFO</span>
+      <span class="hljs-keyword">val</span> top_opt: <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> option
+      <span class="hljs-keyword">val</span> pop_opt: <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue option
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">FIFO_WITH_OPT</span> =
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> empty : <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> add : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">val</span> top : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span>
+    <span class="hljs-keyword">val</span> pop : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue
+    <span class="hljs-keyword">exception</span> <span class="hljs-type">Empty</span>
+    <span class="hljs-keyword">val</span> top_opt : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> option
+    <span class="hljs-keyword">val</span> pop_opt : <span class="hljs-symbol">&#x27;a</span> queue -&gt; <span class="hljs-symbol">&#x27;a</span> queue option
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<h2 id="23-الموصلات">2.3 الموصِّلات</h2>
+<p>الموصِّلات «دوال» من وحدات إلى وحدات. وهي تتيح إنشاء وحدات ذات وسائط، ثم تقديم وحدات أخرى وسائطَ للحصول على تنفيذ معيّن. فمثلًا، يمكن أن تكون وحدة <code>Set</code> التي تنفّذ المجموعات كقوائم مرتّبة ذات وسيط، فتعمل مع أي وحدة توفّر نوع عنصر ودالة مقارنة <code>compare</code> (مثل <code>OrderedString</code>):</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> comparison = <span class="hljs-type">Less</span> | <span class="hljs-type">Equal</span> | <span class="hljs-type">Greater</span>;;
+
+<span class="hljs-keyword">type</span> comparison = <span class="hljs-type">Less</span> | <span class="hljs-type">Equal</span> | <span class="hljs-type">Greater</span>
+
+# <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">ORDERED_TYPE</span> =
+    <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">type</span> t
+      <span class="hljs-keyword">val</span> compare: t -&gt; t -&gt; comparison
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">ORDERED_TYPE</span> = <span class="hljs-keyword">sig</span> <span class="hljs-keyword">type</span> t <span class="hljs-keyword">val</span> compare : t -&gt; t -&gt; comparison <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">module</span> <span class="hljs-type">Set</span> =
+    <span class="hljs-keyword">functor</span> (<span class="hljs-type">Elt</span>: <span class="hljs-type">ORDERED_TYPE</span>) -&gt;
+      <span class="hljs-keyword">struct</span>
+        <span class="hljs-keyword">type</span> element = <span class="hljs-type">Elt</span>.t
+        <span class="hljs-keyword">type</span> set = element <span class="hljs-built_in">list</span>
+        <span class="hljs-keyword">let</span> empty = <span class="hljs-literal">[]</span>
+        <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> add x s =
+          <span class="hljs-keyword">match</span> s <span class="hljs-keyword">with</span>
+            <span class="hljs-literal">[]</span> -&gt; [x]
+          | hd::tl -&gt;
+             <span class="hljs-keyword">match</span> <span class="hljs-type">Elt</span>.compare x hd <span class="hljs-keyword">with</span>
+               <span class="hljs-type">Equal</span>   -&gt; s         <span class="hljs-comment">(* x is already in s *)</span>
+             | <span class="hljs-type">Less</span>    -&gt; x :: s    <span class="hljs-comment">(* x is smaller than all elements of s *)</span>
+             | <span class="hljs-type">Greater</span> -&gt; hd :: add x tl
+        <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> member x s =
+          <span class="hljs-keyword">match</span> s <span class="hljs-keyword">with</span>
+            <span class="hljs-literal">[]</span> -&gt; <span class="hljs-literal">false</span>
+          | hd::tl -&gt;
+              <span class="hljs-keyword">match</span> <span class="hljs-type">Elt</span>.compare x hd <span class="hljs-keyword">with</span>
+                <span class="hljs-type">Equal</span>   -&gt; <span class="hljs-literal">true</span>     <span class="hljs-comment">(* x belongs to s *)</span>
+              | <span class="hljs-type">Less</span>    -&gt; <span class="hljs-literal">false</span>    <span class="hljs-comment">(* x is smaller than all elements of s *)</span>
+              | <span class="hljs-type">Greater</span> -&gt; member x tl
+      <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">Set</span> :
+  (<span class="hljs-type">Elt</span> : <span class="hljs-type">ORDERED_TYPE</span>) -&gt;
+    <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">type</span> element = <span class="hljs-type">Elt</span>.t
+      <span class="hljs-keyword">type</span> set = element <span class="hljs-built_in">list</span>
+      <span class="hljs-keyword">val</span> empty : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span>
+      <span class="hljs-keyword">val</span> add : <span class="hljs-type">Elt</span>.t -&gt; <span class="hljs-type">Elt</span>.t <span class="hljs-built_in">list</span> -&gt; <span class="hljs-type">Elt</span>.t <span class="hljs-built_in">list</span>
+      <span class="hljs-keyword">val</span> member : <span class="hljs-type">Elt</span>.t -&gt; <span class="hljs-type">Elt</span>.t <span class="hljs-built_in">list</span> -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وبتطبيق الموصِّل <code>Set</code> على بنية تنفّذ نوعًا مرتّبًا، نحصل على عمليات مجموعات لهذا النوع:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-type">OrderedString</span> =
+    <span class="hljs-keyword">struct</span>
+      <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">string</span>
+      <span class="hljs-keyword">let</span> compare x y = <span class="hljs-keyword">if</span> x = y <span class="hljs-keyword">then</span> <span class="hljs-type">Equal</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> x &lt; y <span class="hljs-keyword">then</span> <span class="hljs-type">Less</span> <span class="hljs-keyword">else</span> <span class="hljs-type">Greater</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">OrderedString</span> :
+  <span class="hljs-keyword">sig</span> <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">string</span> <span class="hljs-keyword">val</span> compare : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; comparison <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">module</span> <span class="hljs-type">StringSet</span> = <span class="hljs-type">Set</span>(<span class="hljs-type">OrderedString</span>);;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">StringSet</span> :
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> element = <span class="hljs-type">OrderedString</span>.t
+    <span class="hljs-keyword">type</span> set = element <span class="hljs-built_in">list</span>
+    <span class="hljs-keyword">val</span> empty : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span>
+    <span class="hljs-keyword">val</span> add : <span class="hljs-type">OrderedString</span>.t -&gt; <span class="hljs-type">OrderedString</span>.t <span class="hljs-built_in">list</span> -&gt; <span class="hljs-type">OrderedString</span>.t <span class="hljs-built_in">list</span>
+    <span class="hljs-keyword">val</span> member : <span class="hljs-type">OrderedString</span>.t -&gt; <span class="hljs-type">OrderedString</span>.t <span class="hljs-built_in">list</span> -&gt; <span class="hljs-built_in">bool</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-type">StringSet</span>.member <span class="hljs-string">&quot;bar&quot;</span> (<span class="hljs-type">StringSet</span>.add <span class="hljs-string">&quot;foo&quot;</span> <span class="hljs-type">StringSet</span>.empty);;
+
+- : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">false</span>
+</code></pre>
+<h2 id="24-الموصلات-وتجريد-الأنواع">2.4 الموصِّلات وتجريد الأنواع</h2>
+<p>كما في مثال <code>Fifo</code>، من حسن الأسلوب إخفاء التنفيذ الفعلي للنوع <code>set</code> كي لا يعتمد مستعملو البنية على كون المجموعات قوائم، فنستطيع لاحقًا الانتقال إلى تمثيل آخر أعلى كفاءة للمجموعات دون إفساد شيفرتهم. ويتحقّق ذلك بتقييد <code>Set</code> بتوقيع موصِّل مناسب:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">SETFUNCTOR</span> =
+    (<span class="hljs-type">Elt</span>: <span class="hljs-type">ORDERED_TYPE</span>) -&gt;
+      <span class="hljs-keyword">sig</span>
+        <span class="hljs-keyword">type</span> element = <span class="hljs-type">Elt</span>.t      <span class="hljs-comment">(* concrete *)</span>
+        <span class="hljs-keyword">type</span> set                  <span class="hljs-comment">(* abstract *)</span>
+        <span class="hljs-keyword">val</span> empty : set
+        <span class="hljs-keyword">val</span> add : element -&gt; set -&gt; set
+        <span class="hljs-keyword">val</span> member : element -&gt; set -&gt; <span class="hljs-built_in">bool</span>
+      <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">SETFUNCTOR</span> =
+  (<span class="hljs-type">Elt</span> : <span class="hljs-type">ORDERED_TYPE</span>) -&gt;
+    <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">type</span> element = <span class="hljs-type">Elt</span>.t
+      <span class="hljs-keyword">type</span> set
+      <span class="hljs-keyword">val</span> empty : set
+      <span class="hljs-keyword">val</span> add : element -&gt; set -&gt; set
+      <span class="hljs-keyword">val</span> member : element -&gt; set -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">module</span> <span class="hljs-type">AbstractSet</span> = (<span class="hljs-type">Set</span> : <span class="hljs-type">SETFUNCTOR</span>);;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">AbstractSet</span> : <span class="hljs-type">SETFUNCTOR</span>
+
+# <span class="hljs-keyword">module</span> <span class="hljs-type">AbstractStringSet</span> = <span class="hljs-type">AbstractSet</span>(<span class="hljs-type">OrderedString</span>);;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">AbstractStringSet</span> :
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> element = <span class="hljs-type">OrderedString</span>.t
+    <span class="hljs-keyword">type</span> set = <span class="hljs-type">AbstractSet</span>(<span class="hljs-type">OrderedString</span>).set
+    <span class="hljs-keyword">val</span> empty : set
+    <span class="hljs-keyword">val</span> add : element -&gt; set -&gt; set
+    <span class="hljs-keyword">val</span> member : element -&gt; set -&gt; <span class="hljs-built_in">bool</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-type">AbstractStringSet</span>.add <span class="hljs-string">&quot;gee&quot;</span> <span class="hljs-type">AbstractStringSet</span>.empty;;
+
+- : <span class="hljs-type">AbstractStringSet</span>.set = &lt;abstr&gt;
+</code></pre>
+<p>سعيًا إلى كتابة قيد النوع أعلاه على نحو أنيق أكثر، قد يرغب المرء في تسمية توقيع البنية التي يُعيدها الموصِّل، ثم استعمال ذلك التوقيع في القيد:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">SET</span> =
+    <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">type</span> element
+      <span class="hljs-keyword">type</span> set
+      <span class="hljs-keyword">val</span> empty : set
+      <span class="hljs-keyword">val</span> add : element -&gt; set -&gt; set
+      <span class="hljs-keyword">val</span> member : element -&gt; set -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">SET</span> =
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> element
+    <span class="hljs-keyword">type</span> set
+    <span class="hljs-keyword">val</span> empty : set
+    <span class="hljs-keyword">val</span> add : element -&gt; set -&gt; set
+    <span class="hljs-keyword">val</span> member : element -&gt; set -&gt; <span class="hljs-built_in">bool</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">module</span> <span class="hljs-type">WrongSet</span> = (<span class="hljs-type">Set</span> : (<span class="hljs-type">Elt</span>: <span class="hljs-type">ORDERED_TYPE</span>) -&gt; <span class="hljs-type">SET</span>);;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">WrongSet</span> : (<span class="hljs-type">Elt</span> : <span class="hljs-type">ORDERED_TYPE</span>) -&gt; <span class="hljs-type">SET</span>
+
+# <span class="hljs-keyword">module</span> <span class="hljs-type">WrongStringSet</span> = <span class="hljs-type">WrongSet</span>(<span class="hljs-type">OrderedString</span>);;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">WrongStringSet</span> :
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> element = <span class="hljs-type">WrongSet</span>(<span class="hljs-type">OrderedString</span>).element
+    <span class="hljs-keyword">type</span> set = <span class="hljs-type">WrongSet</span>(<span class="hljs-type">OrderedString</span>).set
+    <span class="hljs-keyword">val</span> empty : set
+    <span class="hljs-keyword">val</span> add : element -&gt; set -&gt; set
+    <span class="hljs-keyword">val</span> member : element -&gt; set -&gt; <span class="hljs-built_in">bool</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-type">WrongStringSet</span>.add <span class="hljs-string">&quot;gee&quot;</span> <span class="hljs-type">WrongStringSet</span>.empty ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">This</span> constant has <span class="hljs-keyword">type</span> <span class="hljs-built_in">string</span> but an expression was expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span>
+         <span class="hljs-type">WrongStringSet</span>.element = <span class="hljs-type">WrongSet</span>(<span class="hljs-type">OrderedString</span>).element
+</code></pre>
+<p>المشكلة هنا أنّ <code>SET</code> يحدّد النوع <code>element</code> على نحو مجرّد، فتضيع المساواة النوعية بين <code>element</code> في نتيجة الموصِّل و<code>t</code> في وسيطه. وبالتالي فـ <code>WrongStringSet.element</code> ليس النوع نفسه الذي هو <code>string</code>، ولا يمكن تطبيق عمليات <code>WrongStringSet</code> على السلاسل. وكما بُرِهَن أعلاه، من المهم أن يُصرَّح بأنّ النوع <code>element</code> في التوقيع <code>SET</code> مساوٍ لـ <code>Elt.t</code>؛ وللأسف هذا مستحيل في ما سبق لأنّ <code>SET</code> معرَّف في سياق لا وجود فيه لـ <code>Elt</code>. وللتغلّب على هذه الصعوبة، يوفّر OCaml بنية <code>with type</code> على التوقيعات تتيح إغناء توقيع بمساوٍات نوعية إضافية:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-type">AbstractSet2</span> =
+    (<span class="hljs-type">Set</span> : (<span class="hljs-type">Elt</span>: <span class="hljs-type">ORDERED_TYPE</span>) -&gt; (<span class="hljs-type">SET</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">type</span> element = <span class="hljs-type">Elt</span>.t));;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">AbstractSet2</span> :
+  (<span class="hljs-type">Elt</span> : <span class="hljs-type">ORDERED_TYPE</span>) -&gt;
+    <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">type</span> element = <span class="hljs-type">Elt</span>.t
+      <span class="hljs-keyword">type</span> set
+      <span class="hljs-keyword">val</span> empty : set
+      <span class="hljs-keyword">val</span> add : element -&gt; set -&gt; set
+      <span class="hljs-keyword">val</span> member : element -&gt; set -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وكما في حالة البنى البسيطة، تُقدَّم صيغة بديلة لتعريف الموصِّلات وتقييد نتيجتها:</p>
+<pre><code class="language-text">module AbstractSet2(Elt: ORDERED_TYPE) : (SET with type element = Elt.t) =
+  struct ... end;;
+</code></pre>
+<p>تجريد مكوّن نوعي في نتيجة موصِّل تقنية قوية توفّر قدرًا عاليًا من أمان الأنواع، كما نوضّح الآن. لننظر إلى ترتيب على سلاسل المحارف يختلف عن الترتيب القياسي المنفَّذ في البنية <code>OrderedString</code>؛ مثلًا، نقارن السلاسل دون تمييز بين الحروف الكبيرة والصغيرة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">module</span> <span class="hljs-type">NoCaseString</span> =
+    <span class="hljs-keyword">struct</span>
+      <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">string</span>
+      <span class="hljs-keyword">let</span> compare s1 s2 =
+        <span class="hljs-type">OrderedString</span>.compare (<span class="hljs-type">String</span>.lowercase_ascii s1) (<span class="hljs-type">String</span>.lowercase_ascii s2)
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">NoCaseString</span> :
+  <span class="hljs-keyword">sig</span> <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">string</span> <span class="hljs-keyword">val</span> compare : <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> -&gt; comparison <span class="hljs-keyword">end</span>
+
+# <span class="hljs-keyword">module</span> <span class="hljs-type">NoCaseStringSet</span> = <span class="hljs-type">AbstractSet</span>(<span class="hljs-type">NoCaseString</span>);;
+
+<span class="hljs-keyword">module</span> <span class="hljs-type">NoCaseStringSet</span> :
+  <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> element = <span class="hljs-type">NoCaseString</span>.t
+    <span class="hljs-keyword">type</span> set = <span class="hljs-type">AbstractSet</span>(<span class="hljs-type">NoCaseString</span>).set
+    <span class="hljs-keyword">val</span> empty : set
+    <span class="hljs-keyword">val</span> add : element -&gt; set -&gt; set
+    <span class="hljs-keyword">val</span> member : element -&gt; set -&gt; <span class="hljs-built_in">bool</span>
+  <span class="hljs-keyword">end</span>
+
+# <span class="hljs-type">NoCaseStringSet</span>.add <span class="hljs-string">&quot;FOO&quot;</span> <span class="hljs-type">AbstractStringSet</span>.empty ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">The</span> <span class="hljs-keyword">value</span> <span class="hljs-type">AbstractStringSet</span>.empty has <span class="hljs-keyword">type</span>
+         <span class="hljs-type">AbstractStringSet</span>.set = <span class="hljs-type">AbstractSet</span>(<span class="hljs-type">OrderedString</span>).set
+       but an expression was expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span>
+         <span class="hljs-type">NoCaseStringSet</span>.set = <span class="hljs-type">AbstractSet</span>(<span class="hljs-type">NoCaseString</span>).set
+</code></pre>
+<p>لاحظ أنّ النوعين <code>AbstractStringSet.set</code> و<code>NoCaseStringSet.set</code> غير متوافقين، وأنّ قيم هذين النوعين لا تتطابق. وهذا هو السلوك الصحيح: فمع أنّ نوعي المجموعتين يحويان عناصر من النوع نفسه (سلاسل)، فهما مبنيان على ترتيبين مختلفين لذلك النوع، وعلى العمليات أن تحفظ ثوابت مختلفة (التزايد الصارم في الترتيب القياسي وفي الترتيب غير المتأثّر بحالة الأحرف). وتطبيق عمليات من <code>AbstractStringSet</code> على قيم من النوع <code>NoCaseStringSet.set</code> قد يعطي نتائج خاطئة أو يبني قوائم تخرق ثوابت <code>NoCaseStringSet</code>.</p>
+<h2 id="25-الوحدات-والترجمة-المنفصلة">2.5 الوحدات والترجمة المنفصلة</h2>
+<p>قُدِّمت جميع أمثلة الوحدات حتى الآن في سياق النظام التفاعلي. غير أنّ الوحدات أنفع ما تكون في البرامج الكبيرة المترجمة دفعيًا. وفي هذه البرامج، من الضروري عمليًا تقسيم المصدر إلى عدّة ملفات تُسمّى وحدات ترجمة، يمكن ترجمتها منفصلةً، فيُقلَّل بذلك إعادة الترجمة بعد التغييرات.</p>
+<p>وحدات الترجمة في OCaml حالات خاصة من البنى والتوقيعات، ويمكن تفسير العلاقة بين الوحدات بسهولة بمصطلحات نظام الوحدات. تتكوّن وحدة الترجمة <em>A</em> من ملفّين:</p>
+<ul>
+<li>
+<p>ملف التنفيذ <em>A</em><code>.ml</code>، وهو يحوي متتالية من التعريفات نظيرة لما في داخل بنية <code>struct</code>…<code>end</code>؛</p>
+</li>
+<li>
+<p>ملف الواجهة <em>A</em><code>.mli</code>، وهو يحوي متتالية من المواصفات نظيرة لما في داخل بنية <code>sig</code>…<code>end</code>.</p>
+</li>
+</ul>
+<p>ويُعرّف هذان الملفان معًا بنية باسم <em>A</em> كأنّ التعريف التالي أُدخل على المستوى الأعلى:</p>
+<pre><code class="language-text">module A: sig (* contents of file A.mli *) end
+        = struct (* contents of file A.ml *) end;;
+</code></pre>
+<p>ويمكن ترجمة الملفات التي تعرّف وحدات الترجمة منفصلةً بالأمر <code>ocamlc -c</code> (والخيار <code>-c</code> يعني «ترجمة فقط، لا تحاول الربط»)؛ وينتج عن ذلك ملفات واجهة مترجمة (بامتداد <code>.cmi</code>) وملفات شيفرة كائن مترجمة (بامتداد <code>.cmo</code>). وبعد ترجمة جميع الوحدات، تُربط ملفات <code>.cmo</code> معًا بالأمر <code>ocamlc</code>. فمثلًا، تترجم الأوامر التالية برنامجًا يتكوّن من وحدتَي ترجمة <code>Aux</code> و<code>Main</code> وتربطه:</p>
+<pre><code class="language-text">$ ocamlc -c Aux.mli                     # produces aux.cmi
+$ ocamlc -c Aux.ml                      # produces aux.cmo
+$ ocamlc -c Main.mli                    # produces main.cmi
+$ ocamlc -c Main.ml                     # produces main.cmo
+$ ocamlc -o theprogram Aux.cmo Main.cmo
+</code></pre>
+<p>ويسلك البرنامج سلوكًا مطابقًا تمامًا لما لو أُدخلت العبارات التالية على المستوى الأعلى:</p>
+<pre><code class="language-text">module Aux: sig (* contents of Aux.mli *) end
+          = struct (* contents of Aux.ml *) end;;
+module Main: sig (* contents of Main.mli *) end
+           = struct (* contents of Main.ml *) end;;
+</code></pre>
+<p>وعلى وجه الخصوص، يمكن لـ <code>Main</code> أن تشير إلى <code>Aux</code>: فالتعريفات والتصريحات الواردة في <code>Main.ml</code> و<code>Main.mli</code> يمكنها الإشارة إلى تعريفات في <code>Aux.ml</code> باستعمال تدوين <code>Aux.</code><em>ident</em>، بشرط أن تكون تلك التعريفات مصرَّحًا بها في <code>Aux.mli</code>.</p>
+<p>ويحدّد ترتيب إعطاء ملفات <code>.cmo</code> للأمر <code>ocamlc</code> في مرحلة الربط ترتيبَ حدوث تعريفات الوحدات. وعلى هذا، يظهر <code>Aux</code> أولًا في المثال أعلاه، فيمكن لـ <code>Main</code> أن تشير إليه، لكن <code>Aux</code> لا يمكنها أن تشير إلى <code>Main</code>.</p>
+<p>لاحظ أنّ البنى على المستوى الأعلى وحدها هي التي يمكن إسقاطها على ملفات مترجمة منفصلة، لا الموصِّلات ولا أنواع الوحدات. غير أنّ جميع كائنات صنف الوحدات يمكن أن تظهر مكوّنات في بنية، فالحلّ إذًا وضع الموصِّل أو نوع الوحدة داخل بنية، ثم إسقاط تلك البنية على ملف.</p>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/ocaml-manual/ch01/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">اللغة الأساسية</span></a><!--]--> <!--[0--><a href="../../../../book/ocaml-manual/ch03/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الكائنات في OCaml</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_fx90yh = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Dtojx2F1.js"),
+						import("../../../../_app/immutable/entry/app.Bk-T7h0B.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

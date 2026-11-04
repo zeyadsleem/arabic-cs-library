@@ -1,0 +1,2074 @@
+const e="ocaml-manual",s="ch11",n="لغة OCaml",a="index",p="لغة OCaml",l=[{depth:3,id:"تصدير",text:"تصدير"},{depth:3,id:"الاصطلاحات",text:"الاصطلاحات"},{depth:2,id:"111-الاصطلاحات-المعجمية",text:"11.1 الاصطلاحات المعجمية"},{depth:2,id:"112-القيم",text:"11.2 القيم"},{depth:3,id:"1121-القيم-الأساسية",text:"11.2.1 القيم الأساسية"},{depth:3,id:"1122-الصفوف",text:"11.2.2 الصفوف"},{depth:3,id:"1123-السجلات",text:"11.2.3 السجلات"},{depth:3,id:"1124-المصفوفات",text:"11.2.4 المصفوفات"},{depth:3,id:"1125-قيم-المتغيرات",text:"11.2.5 قيم المتغيّرات"},{depth:3,id:"1126-المتغيرات-متعددة-الأشكال",text:"11.2.6 المتغيّرات متعدّدة الأشكال"},{depth:3,id:"1127-الدوال",text:"11.2.7 الدوال"},{depth:3,id:"1128-الكائنات",text:"11.2.8 الكائنات"},{depth:2,id:"113-الأسماء",text:"11.3 الأسماء"},{depth:2,id:"114-تعابير-الأنواع",text:"11.4 تعابير الأنواع"},{depth:2,id:"115-الثوابت",text:"11.5 الثوابت"},{depth:2,id:"116-الأنماط",text:"11.6 الأنماط"},{depth:2,id:"117-التعابير",text:"11.7 التعابير"},{depth:3,id:"1171-الأولوية-والترابط",text:"11.7.1 الأولوية والترابط"},{depth:3,id:"1172-التعابير-الأساسية",text:"11.7.2 التعابير الأساسية"},{depth:3,id:"1173-بنى-التحكم",text:"11.7.3 بنى التحكّم"},{depth:3,id:"1174-عمليات-على-بنى-البيانات",text:"11.7.4 عمليات على بنى البيانات"},{depth:3,id:"1175-المعاملات",text:"11.7.5 المعاملات"},{depth:3,id:"1176-الكائنات",text:"11.7.6 الكائنات"},{depth:3,id:"1177-الإكراهات",text:"11.7.7 الإكراهات"},{depth:3,id:"1178-عناصر-بنيوية-محلية",text:"11.7.8 عناصر بنيوية محلية"},{depth:3,id:"1179-متفرقات",text:"11.7.9 متفرّقات"},{depth:2,id:"118-تعريفات-الأنواع-والاستثناءات",text:"11.8 تعريفات الأنواع والاستثناءات"},{depth:3,id:"1181-تعريفات-الأنواع",text:"11.8.1 تعريفات الأنواع"},{depth:3,id:"1182-تعريفات-الاستثناءات",text:"11.8.2 تعريفات الاستثناءات"},{depth:2,id:"119-الأصناف",text:"11.9 الأصناف"},{depth:3,id:"1191-أنواع-الأصناف",text:"11.9.1 أنواع الأصناف"},{depth:3,id:"1192-تعابير-الأصناف",text:"11.9.2 تعابير الأصناف"},{depth:3,id:"1193-تعريفات-الأصناف",text:"11.9.3 تعريفات الأصناف"},{depth:3,id:"1194-تحديدات-الأصناف",text:"11.9.4 تحديدات الأصناف"},{depth:3,id:"1195-تعريفات-أنواع-الأصناف",text:"11.9.5 تعريفات أنواع الأصناف"},{depth:2,id:"1110-أنواع-الوحدات-تحديدات-الوحدات",text:"11.10 أنواع الوحدات (تحديدات الوحدات)"},{depth:3,id:"11101-أنواع-الوحدات-البسيطة",text:"11.10.1 أنواع الوحدات البسيطة"},{depth:3,id:"11102-التوقيعات",text:"11.10.2 التوقيعات"},{depth:3,id:"11103-أنواع-الموصلات",text:"11.10.3 أنواع الموصِّلات"},{depth:3,id:"11104-المعامل-with",text:"11.10.4 المعامل with"},{depth:2,id:"1111-تعابير-الوحدات-تنفيذات-الوحدات",text:"11.11 تعابير الوحدات (تنفيذات الوحدات)"},{depth:3,id:"11111-تعابير-الوحدات-البسيطة",text:"11.11.1 تعابير الوحدات البسيطة"},{depth:3,id:"11112-البنى",text:"11.11.2 البنى"},{depth:3,id:"11113-الموصلات",text:"11.11.3 الموصِّلات"},{depth:2,id:"1112-وحدات-الترجمة",text:"11.12 وحدات الترجمة"}],t=`<h1>الفصل 11: لغة OCaml</h1>
+<h3 id="تصدير">تصدير</h3>
+<p>هذه الوثيقة مرجعٌ للغة OCaml. تسرد تراكيب اللغة، وتعطي صياغتها الدقيقة ودلالتها غير الرسمية. وليست بأيّ حال مقدّمة تعليمية إلى اللغة؛ بل يُفترض وجود معرفة عملية جيدة بـ OCaml.</p>
+<p>لم يُسعَ إلى الصرامة الرياضية: تُستعمل الكلمات بمعناها الحدسي دون تعريف إضافي. ونتيجة لذلك، تُركت قواعد التنميط خارج النص لغياب الإطار الرياضي اللازم للتعبير عنها، مع أنها جزء لا شك فيه من تعريف رسمي كامل للغة.</p>
+<h3 id="الاصطلاحات">الاصطلاحات</h3>
+<p>تُعطى صياغة اللغة بترميز شبيه بترميز BNF. تُكتب الرموز الطرفية بخط الآلة الكاتبة (<code>like</code> <code>this</code>). وتُكتب الرموز غير الطرفية بخط مائل (<em>like</em> <em>that</em>). وتدلّ الأقواس المربعة […] على مكوّنات اختيارية. وتدلّ الأقواس المعقوفة {…} على تكرار صفر أو واحد أو عدة مرات للمكوّنات المحصورة بينها. وتدلّ الأقواس المعقوفة المتبوعة بعلامة زائد {…}⁺ على تكرار واحد أو عدة مرات للمكوّنات المحصورة بينها. وتدلّ الأقواس الهلالية (…) على التجميع.</p>
+<h2 id="111-الاصطلاحات-المعجمية">11.1 الاصطلاحات المعجمية</h2>
+<h4>ترميز ملف المصدر</h4>
+<p>يُفترض أن تكون ملفات مصدر OCaml نصًّا يونيكوديًا صحيحًا بترميز UTF-8. وتفسير ملفات المصدر غير المشفّرة بـ UTF-8 غير محدَّد، وقد تُرفض هذه الملفات في المستقبل.</p>
+<h4>الفراغات</h4>
+<p>تُعدّ الأحرف التالية فراغات: المسافة، والجدولة الأفقية، وإرجاع العربة، وتغذية السطر، وتغذية النموذج. وتُهمَل الفراغات، لكنها تفصل المعرّفات والمكوّنات الحرفية والكلمات المحجوزة المتجاورة التي كان يمكن أن تُخلَط معًا في معرّف واحد أو مكوّن حرفي واحد أو كلمة محجوزة واحدة.</p>
+<h4>التعليقات</h4>
+<p>تُفتتح التعليقات بالحرفين <code>(*</code> دون فراغات فاصلة، وتُغلق بالحرفين <code>*)</code> دون فراغات فاصلة. وتُعامَل التعليقات معاملة أحرف الفراغ. ولا تظهر التعليقات داخل المكوّنات الحرفية للسّلاسل أو المحارف. وتُعالَج التعليقات المتشابكة على نحو صحيح.</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(* single line comment *)</span>
+
+<span class="hljs-comment">(* multiple line comment, commenting out part of a program, and containing a
+nested comment:
+let f = function
+  | &#x27;A&#x27;..&#x27;Z&#x27; -&gt; &quot;Uppercase&quot;
+    <span class="hljs-comment">(* Add other cases later... *)</span>
+*)</span>
+</code></pre>
+<h4>المعرّفات</h4>
+<pre><code class="language-text">ident::= (letter ∣ _) { letter ∣ 0…9 ∣ _ ∣ &#x27; } capitalized-ident::= uppercase-letter { letter ∣ 0…9 ∣ _ ∣ &#x27; } lowercase-ident::= (\\#)? (lowercase-letter ∣ _) { letter ∣ 0…9 ∣ _ ∣ &#x27; } letter::= uppercase-letter ∣ lowercase-letter lowercase-letter::= a…z ∣ U+00DF … U+00F6 ∣ U+00F8 … U+00FF ∣ U+0153 ∣ U+0161 ∣ U+017E uppercase-letter::= A…Z ∣ U+00C0 … U+00D6 ∣ U+00D8 … U+00DE ∣ U+0152 ∣ U+0160 ∣ U+017D ∣ U+0178 ∣ U+1E9E
+</code></pre>
+<p>المعرّفات متتاليات من الحروف والأرقام والشرطة السفلية <code>_</code> والفاصلة العليا <code>'</code>، تبدأ بحرف أو بشرطة سفلية. وتشمل الحروف 52 حرفًا كبيرًا وصغيرًا من مجموعة ASCII، والحروف <code>ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ</code> من كتلة الملحق اللاتيني-1، والحروف <code>ŠšŽžŒœŸ</code> من كتلة اللاتينية الممتدّة-A، والحرف الكبير ẞ (<code>U+189E</code>). وتُدعَم أيضًا أي متتالية بايتات مكافئة لأحد هذه المحارف اليونيكودية وفق NFC<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
+<p>جميع المحارف في المعرّف ذات دلالة. ويقبل التنفيذ الحالي معرّفات يصل طولها إلى 16000000 محرف.</p>
+<p>يميّز OCaml في مواضع كثيرة بين المعرّفات التي تبدأ بحرف كبير والمعرّفات التي تبدأ بحرف صغير. وتُعدّ الشرطة السفلية حرفًا صغيرًا لهذا الغرض.</p>
+<p>ويُسمّى المعرّف الذي يبدأ بـ <code>\\#</code> <em>معرّفًا خامًا</em>، وهو مكافئ للمعرّف الناتج عن حذف البادئة <code>\\#</code>، إلا أن النتيجة لا تُفسَّر قطّ ككلمة محجوزة (انظر القسم 11.1).</p>
+<h4>المكوّنات الحرفية للأعداد الصحيحة</h4>
+<pre><code class="language-text">integer-literal::= [-] (0…9) { 0…9 ∣ _ } ∣ [-] (0x ∣ 0X) (0…9 ∣ A…F ∣ a…f) { 0…9 ∣ A…F ∣ a…f ∣ _ } ∣ [-] (0o ∣ 0O) (0…7) { 0…7 ∣ _ } ∣ [-] (0b ∣ 0B) (0…1) { 0…1 ∣ _ } int32-literal::= integer-literal l int64-literal::= integer-literal L nativeint-literal::= integer-literal n
+</code></pre>
+<p>المكوّن الحرفي الصحيح متتالية من رقم واحد أو أكثر، قد تسبقه علامة ناقص. وتكون المكوّنات الحرفية الصحيحة بالأساس العشري (الأساس 10) افتراضيًا. وتختار البادئات التالية أساسًا مختلفًا:</p>
+<table>
+<thead>
+<tr>
+<th><strong>البادئة</strong></th>
+<th><strong>الأساس</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x</code>، <code>0X</code></td>
+<td>ست عشري (الأساس 16)</td>
+</tr>
+<tr>
+<td><code>0o</code>، <code>0O</code></td>
+<td>ثماني (الأساس 8)</td>
+</tr>
+<tr>
+<td><code>0b</code>، <code>0B</code></td>
+<td>ثنائي (الأساس 2)</td>
+</tr>
+</tbody>
+</table>
+<p>(الصفر الأولي هو الرقم صفر؛ أما <code>O</code> في النظام الثماني فهو الحرف O.) ويمكن أن يتبع المكوّن الحرفي الصحيح أحد الحروف <code>l</code> أو <code>L</code> أو <code>n</code> للدلالة على أن هذا العدد الصحيح من النوع <code>int32</code> أو <code>int64</code> أو <code>nativeint</code> على الترتيب، بدلًا من النوع الافتراضي <code>int</code> للمكوّنات الحرفية الصحيحة. وتفسير المكوّنات الحرفية الصحيحة التي تقع خارج مدى قيم الأعداد الصحيحة القابلة للتمثيل غير محدَّد.</p>
+<p>للتيسير والوضوح، تُقبل أحرف الشرطة السفلية (<code>_</code>) داخل المكوّنات الحرفية الصحيحة (وتُهمَل).</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> house_number = <span class="hljs-number">37</span>
+  <span class="hljs-keyword">let</span> million = <span class="hljs-number">1_000_000</span>
+  <span class="hljs-keyword">let</span> copyright = <span class="hljs-number">0x00A9</span>
+  <span class="hljs-keyword">let</span> counter64bit = <span class="hljs-built_in">ref</span> <span class="hljs-number">0L</span>;;
+
+<span class="hljs-keyword">val</span> house_number : <span class="hljs-built_in">int</span> = <span class="hljs-number">37</span>
+<span class="hljs-keyword">val</span> million : <span class="hljs-built_in">int</span> = <span class="hljs-number">1000000</span>
+<span class="hljs-keyword">val</span> copyright : <span class="hljs-built_in">int</span> = <span class="hljs-number">169</span>
+<span class="hljs-keyword">val</span> counter64bit : <span class="hljs-built_in">int64</span> <span class="hljs-built_in">ref</span> = {contents = <span class="hljs-number">0L</span>}
+</code></pre>
+<h4>المكوّنات الحرفية للفاصلة العائمة</h4>
+<pre><code class="language-text">float-literal::= [-] (0…9) { 0…9 ∣ _ } [. { 0…9 ∣ _ }] [(e ∣ E) [+ ∣ -] (0…9) { 0…9 ∣ _ }] ∣ [-] (0x ∣ 0X) (0…9 ∣ A…F ∣ a…f) { 0…9 ∣ A…F ∣ a…f ∣ _ } [. { 0…9 ∣ A…F ∣ a…f ∣ _ }] [(p ∣ P) [+ ∣ -] (0…9) { 0…9 ∣ _ }]
+</code></pre>
+<p>تتكوّن المكوّنات الحرفية العشرية للفاصلة العائمة من جزء صحيح وجزء كسري وجزء أُسّي. والجزء الصحيح متتالية من رقم واحد أو أكثر، قد تسبقه علامة ناقص. والجزء الكسري نقطة عشرية تتبعها صفر أو واحد أو أكثر من الأرقام. والجزء الأُسّي هو المحرف <code>e</code> أو <code>E</code> متبوعًا بإشارة <code>+</code> أو <code>-</code> اختيارية، متبوعة برقم واحد أو أكثر، ويُفسَّر كقوة للعدد 10. ويمكن إهمال الجزء الكسري أو الجزء الأُسّي، لكن لا يجوز إهمالهما معًا تجنّبًا للالتباس مع المكوّنات الحرفية الصحيحة. وتفسير المكوّنات الحرفية للفاصلة العائمة التي تقع خارج مدى قيم الفاصلة العائمة القابلة للتمثيل غير محدَّد.</p>
+<p>وتُكتب المكوّنات الحرفية الست عشرية للفاصلة العائمة بالبادئة <code>0x</code> أو <code>0X</code>. والصياغة شبيهة بصياغة المكوّنات العشرية، مع الفروق التالية: يستعمل الجزء الصحيح والجزء الكسري أرقامًا ست عشرية، ويبدأ الجزء الأُسّي بالمحرف <code>p</code> أو <code>P</code>، ويُكتب بالتدوين العشري ويُفسَّر كقوة للعدد 2.</p>
+<p>وللتيسير والوضوح، تُقبل أحرف الشرطة السفلية (<code>_</code>) داخل المكوّنات الحرفية للفاصلة العائمة (وتُهمَل).</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> pi = <span class="hljs-number">3.141_592_653_589_793_12</span>
+  <span class="hljs-keyword">let</span> small_negative = -<span class="hljs-number">1e-5</span>
+  <span class="hljs-keyword">let</span> machine_epsilon = <span class="hljs-number">0x1</span>p-<span class="hljs-number">52</span>;;
+
+<span class="hljs-keyword">val</span> pi : <span class="hljs-built_in">float</span> = <span class="hljs-number">3.14159265358979312</span>
+<span class="hljs-keyword">val</span> small_negative : <span class="hljs-built_in">float</span> = -<span class="hljs-number">1e-05</span>
+<span class="hljs-keyword">val</span> machine_epsilon : <span class="hljs-built_in">float</span> = <span class="hljs-number">2.22044604925031308e-16</span>
+</code></pre>
+<h4>المكوّنات الحرفية للمحارف</h4>
+<pre><code class="language-text">char-literal::= &#x27; regular-char &#x27; ∣ &#x27; escape-sequence &#x27; escape-sequence::= \\ (\\ ∣ &quot; ∣ &#x27; ∣ n ∣ t ∣ b ∣ r ∣ space) ∣ \\ (0…9) (0…9) (0…9) ∣ \\x (0…9 ∣ A…F ∣ a…f) (0…9 ∣ A…F ∣ a…f) ∣ \\o (0…3) (0…7) (0…7)
+</code></pre>
+<p>تُحدَّد المكوّنات الحرفية للمحارف بعلامتي <code>'</code> (الفاصلة العليا). وتحيط العلامتان إمّا بمحرف واحد مختلف عن <code>'</code> و<code>\\</code>، وإمّا بإحدى متتاليات الهروب أدناه:</p>
+<table>
+<thead>
+<tr>
+<th><strong>المتتالية</strong></th>
+<th><strong>المحرف المدلول عليه</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\\\\</code></td>
+<td>الخط المائل العكسي (<code>\\</code>)</td>
+</tr>
+<tr>
+<td><code>\\&quot;</code></td>
+<td>علامة التنصيص (<code>&quot;</code>)</td>
+</tr>
+<tr>
+<td><code>\\'</code></td>
+<td>الفاصلة العليا (<code>'</code>)</td>
+</tr>
+<tr>
+<td><code>\\n</code></td>
+<td>تغذية السطر (LF)</td>
+</tr>
+<tr>
+<td><code>\\r</code></td>
+<td>إرجاع العربة (CR)</td>
+</tr>
+<tr>
+<td><code>\\t</code></td>
+<td>الجدولة الأفقية (TAB)</td>
+</tr>
+<tr>
+<td><code>\\b</code></td>
+<td>مسافة الرجوع (BS)</td>
+</tr>
+<tr>
+<td><code>\\</code><em>space</em></td>
+<td>المسافة (SPC)</td>
+</tr>
+<tr>
+<td><code>\\</code><em>ddd</em></td>
+<td>المحرف ذو رمز ASCII <em>ddd</em> بالتدوين العشري</td>
+</tr>
+<tr>
+<td><code>\\x</code><em>hh</em></td>
+<td>المحرف ذو رمز ASCII <em>hh</em> بالتدوين الست عشري</td>
+</tr>
+<tr>
+<td><code>\\o</code><em>ooo</em></td>
+<td>المحرف ذو رمز ASCII <em>ooo</em> بالتدوين الثماني</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> a = <span class="hljs-string">&#x27;a&#x27;</span>
+  <span class="hljs-keyword">let</span> single_quote = <span class="hljs-string">&#x27;\\&#x27;&#x27;</span>
+  <span class="hljs-keyword">let</span> copyright = <span class="hljs-string">&#x27;\\xA9&#x27;</span>;;
+
+<span class="hljs-keyword">val</span> a : <span class="hljs-built_in">char</span> = <span class="hljs-string">&#x27;a&#x27;</span>
+<span class="hljs-keyword">val</span> single_quote : <span class="hljs-built_in">char</span> = <span class="hljs-string">&#x27;\\&#x27;&#x27;</span>
+<span class="hljs-keyword">val</span> copyright : <span class="hljs-built_in">char</span> = <span class="hljs-string">&#x27;\\169&#x27;</span>
+</code></pre>
+<h4>المكوّنات الحرفية للسّلاسل</h4>
+<pre><code class="language-text">string-literal::= &quot; { string-character } &quot; ∣ { quoted-string-id | { newline ∣ any-char } | quoted-string-id } quoted-string-id::= { lowercase-letter ∣ _ } string-character::= regular-string-char ∣ escape-sequence ∣ \\u{ { 0…9 ∣ A…F ∣ a…f }⁺ } ∣ newline ∣ \\ newline { space ∣ tab }
+</code></pre>
+<p>تُحدَّد المكوّنات الحرفية للسّلاسل بعلامتي <code>&quot;</code> (التنصيص). وتحيط العلامتان متتالية من المحارف المختلفة عن <code>&quot;</code> و<code>\\</code>، أو متتاليات هروب من الجدول المعطى أعلاه للمكوّنات الحرفية للمحارف، أو متتالية هروب لمحرف يونيكودي.</p>
+<p>وتُستبدل متتالية هروب المحرف اليونيكودي بترميز UTF-8 لقيمة يونيكود العددية المحدَّدة. وتُعرَّف القيمة العددية اليونيكودية، وهي عدد صحيح في المدى 0x0000...0xD7FF أو 0xE000...0x10FFFF، باستعمال 1 إلى 6 أرقام ست عشرية، ويُسمح بالأصفار البادئة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> greeting = <span class="hljs-string">&quot;Hello, World!\\n&quot;</span>
+  <span class="hljs-keyword">let</span> superscript_plus = <span class="hljs-string">&quot;\\u{207A}&quot;</span>;;
+
+<span class="hljs-keyword">val</span> greeting : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;Hello, World!\\n&quot;</span>
+<span class="hljs-keyword">val</span> superscript_plus : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;⁺&quot;</span>
+</code></pre>
+<p>ومتتالية السطر الجديد هي تغذية سطر قد تسبقها علامة إرجاع عربة. ومنذ OCaml 5.2، تُسوّى متتالية السطر الجديد الواقعة في مكوّن حرفي سلسلي إلى محرف تغذية سطر واحد.</p>
+<p>وللسماح بتقسيم المكوّنات الحرفية للسّلاسل الطويلة على عدة أسطر، تُهمَل المتتالية <code>\\</code><em>newline</em> <em>spaces-or-tabs</em> (خط مائل عكسي في نهاية سطر متبوعًا بأي عدد من المسافات والجدولات الأفقية في بداية السطر التالي) داخل المكوّنات الحرفية للسّلاسل.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> longstr =
+    <span class="hljs-string">&quot;Call me Ishmael. Some years ago — never mind how long \\
+    precisely — having little or no money in my purse, and \\
+    nothing particular to interest me on shore, I thought I\\
+    \\ would sail about a little and see the watery part of t\\
+    he world.&quot;</span>;;
+
+<span class="hljs-keyword">val</span> longstr : <span class="hljs-built_in">string</span> =
+  <span class="hljs-string">&quot;Call me Ishmael. Some years ago — never mind how long precisely — having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.&quot;</span>
+</code></pre>
+<p>توفّر الأسطر الجديدة المهروبة سلوكًا أيسر من الأسطر الجديدة غير المهروبة، إذ لا يُعدّ الإزاحة جزءًا من المكوّن الحرفي السلسلي.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> contains_unexpected_spaces =
+    <span class="hljs-string">&quot;This multiline literal
+     contains three consecutive spaces.&quot;</span>
+
+  <span class="hljs-keyword">let</span> no_unexpected_spaces =
+    <span class="hljs-string">&quot;This multiline literal \\n\\
+     uses a single space between all words.&quot;</span>;;
+
+<span class="hljs-keyword">val</span> contains_unexpected_spaces : <span class="hljs-built_in">string</span> =
+  <span class="hljs-string">&quot;This multiline literal\\n   contains three consecutive spaces.&quot;</span>
+<span class="hljs-keyword">val</span> no_unexpected_spaces : <span class="hljs-built_in">string</span> =
+  <span class="hljs-string">&quot;This multiline literal \\nuses a single space between all words.&quot;</span>
+</code></pre>
+<p>توفّر المكوّنات الحرفية للسّلاسل المُقتبسة صياغة معجمية بديلة للمكوّنات الحرفية للسّلاسل، وهي مفيدة لتمثيل سلاسل ذات محتوى اعتباطي دون هروب. وتُحدَّد السّلاسل المُقتبسة بزوج متطابق من <code>{</code> <em>quoted-string-id</em> <code>|</code> و<code>|</code> <em>quoted-string-id</em> <code>}</code> له المعرّف <em>quoted-string-id</em> نفسه على الجانبين. ولا تفسّر السّلاسل المُقتبسة أي محرف تفسيرًا خاصًّا<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>، لكنها تشترط ألّا تظهر المتتالية <code>|</code> <em>quoted-string-id</em> <code>}</code> في السلسلة نفسها. والمعرّف <em>quoted-string-id</em> متتالية (قد تكون فارغة) من الحروف الصغيرة والشرطات السفلية، ويمكن اختيارها بحرّية لتجنّب هذه المشكلة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> quoted_greeting = {|<span class="hljs-string">&quot;Hello, World!&quot;</span>|}
+  <span class="hljs-keyword">let</span> nested = {ext|hello {|world|}|ext};;
+
+<span class="hljs-keyword">val</span> quoted_greeting : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;\\&quot;Hello, World!\\&quot;&quot;</span>
+<span class="hljs-keyword">val</span> nested : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;hello {|world|}&quot;</span>
+</code></pre>
+<p>ولا يفرض التنفيذ الحالي عمليًا أي قيود على طول المكوّنات الحرفية للسّلاسل.</p>
+<h4>تسمية الوسوم</h4>
+<p>تجنّبًا للالتباسات، لا يمكن تعريف وسوم التسمية في التعابير صياغيًا بوصفها متتالية الرموز الثلاثة <code>~</code> و<em>ident</em> و<code>:</code> فحسب، بل يجب تعريفها على المستوى المعجمي.</p>
+<pre><code class="language-text">label-name::= lowercase-ident label::= ~ label-name : optlabel::= ? label-name :
+</code></pre>
+<p>تأتي وسوم التسمية على شكلين: <em>label</em> للوسائط العادية و<em>optlabel</em> للوسائط الاختيارية، ويُميَّز بينهما ببساطة بمحرفهما الأول، <code>~</code> أو <code>?</code>.</p>
+<p>ومع أن <em>label</em> و<em>optlabel</em> كيانان معجميان في التعابير، فستُستعمل توسيعاتهما <code>~</code> <em>label-name</em> <code>:</code> و<code>?</code> <em>label-name</em> <code>:</code> في القواعد النحوية، لأجل الوضوح. ولاحظ أيضًا أن هذا التوسيع يمكن أخذه حرفيًا داخل تعابير الأنواع، أي أن هناك فعلًا 3 رموز مع فراغات اختيارية بينها.</p>
+<h4>رموز البادئة والوسيطة</h4>
+<pre><code class="language-text">infix-symbol::= (core-operator-char ∣ % ∣ &lt;) { operator-char } ∣ # { operator-char }⁺ prefix-symbol::= ! { operator-char } ∣ (? ∣ ~) { operator-char }⁺ operator-char::= ~ ∣ ! ∣ ? ∣ core-operator-char ∣ % ∣ &lt; ∣ : ∣ . core-operator-char::= $ ∣ &amp; ∣ * ∣ + ∣ - ∣ / ∣ = ∣ &gt; ∣ @ ∣ ^ ∣ |
+</code></pre>
+<p>انظر أيضًا امتدادات اللغة التالية: عمليات الامتداد، وعمليات الفهرسة الممتدة، وعمليات الربط.</p>
+<p>تُقرأ متتاليات «محارف العمليات»، مثل <code>&lt;=&gt;</code> أو <code>!!</code>، كرمز واحد من صنف <em>infix-symbol</em> أو <em>prefix-symbol</em>. وتُحلَّل هذه الرموز كعمليات بادئة ووسيطة داخل التعابير، لكنها تتصرّف فيما عدا ذلك كمعرّفات عادية.</p>
+<h4>الكلمات المحجوزة</h4>
+<p>المعرّفات أدناه محجوزة ككلمات محجوزة، ويجب تسبيقها بـ <code>\\#</code> لاستعمالها على غير ذلك (انظر القسم 11.1):</p>
+<pre><code class="language-text">      and         as          assert      asr         begin       class
+      constraint  do          done        downto      effect      else
+      end         exception   external    false       for         fun
+      function    functor     if          in          include     inherit
+      initializer land        lazy        let         lor         lsl
+      lsr         lxor        match       method      mod         module
+      mutable     new         nonrec      object      of          open
+      or          private     rec         sig         struct      then
+      to          true        try         type        val         virtual
+      when        while       with
+</code></pre>
+<p>المتتاليات المحرفية التالية كلمات محجوزة أيضًا، وهي خلافًا للمعرّفات أعلاه محجوزة دائمًا:</p>
+<pre><code class="language-text">    !=    #     &amp;     &amp;&amp;    &#x27;     (     )     *     +     ,     -
+    -.    -&gt;    .     ..    .~    :     ::    :=    :&gt;    ;     ;;
+    &lt;     &lt;-    =     &gt;     &gt;]    &gt;}    ?     [     [&lt;    [&gt;    [|
+    ]     _     \`     {     {&lt;    |     |]    ||    }     ~
+</code></pre>
+<p>لاحظ أن المجموعة الدقيقة للكلمات المحجوزة يمكن تعديلها باستعمال العلم <code>-keywords</code> في سطر أوامر المترجم (انظر القسم 13.2). وأخيرًا، لاحظ أن المعرّفات التالية كلمات محجوزة في نظام Camlp4 الذي لم يبقَ مُصانًا، وينبغي تجنّبها لأسباب التوافقية الخلفية.</p>
+<pre><code class="language-text">    parser    value    $     $$    $:    &lt;:    &lt;&lt;    &gt;&gt;    ??
+</code></pre>
+<h4>الالتباسات</h4>
+<p>تُحلّ الالتباسات المعجمية وفق قاعدة «أطول مطابقة»: فعندما يمكن تفكيك متتالية محرفية إلى رمزين بطرق مختلفة، يُحتفظ بالتفكيك ذي الرمز الأول الأطول.</p>
+<h4>توجيهات أرقام الأسطر</h4>
+<pre><code class="language-text">linenum-directive::= # { 0…9 }⁺ &quot; { string-character } &quot;
+</code></pre>
+<p>يمكن للمعالجات المسبقة التي تولّد شيفرة مصدر OCaml أن تدرج توجيهات أرقام الأسطر في مخرجاتها، حتى تحمل رسائل الخطأ التي ينتجها المترجم أرقام أسطر وأسماء ملفات تشير إلى ملف المصدر قبل المعالجة المسبقة لا بعدها. ويبدأ توجيه رقم السطر في بداية سطر، ويتكوّن من <code>#</code> (علامة الشباك) متبوعة بعدد صحيح موجب (رقم سطر المصدر) متبوعًا بسلسلة محارف (اسم ملف المصدر). وتُعامَل توجيهات أرقام الأسطر معاملة الفراغات أثناء التحليل المعجمي.</p>
+<h2 id="112-القيم">11.2 القيم</h2>
+<p>يصف هذا القسم أصناف القيم التي تتعامل معها برامج OCaml.</p>
+<h3 id="1121-القيم-الأساسية">11.2.1 القيم الأساسية</h3>
+<h4>الأعداد الصحيحة</h4>
+<p>قيم الأعداد الصحيحة أعداد صحيحة من −2³⁰ إلى 2³⁰−1، أي من −1073741824 إلى 1073741823. وقد يدعم التنفيذ مدى أوسع من قيم الأعداد الصحيحة: فالتنفيذ الحالي يدعم على المنصّات 64 بت أعدادًا صحيحة من −2⁶² إلى 2⁶²−1.</p>
+<h4>أعداد الفاصلة العائمة</h4>
+<p>قيم الفاصلة العائمة أعداد بتمثيل الفاصلة العائمة. ويستعمل التنفيذ الحالي أعداد الفاصلة العائمة مزدوجة الدقّة المطابقة لمعيار IEEE 754، بطول 53 بت للعاتق وأُسّ يتراوح بين −1022 و1023.</p>
+<h4>المحارف</h4>
+<p>تُمثَّل قيم المحارف كأعداد صحيحة بطول 8 بت بين 0 و255. وتُفسَّر رموز المحارف بين 0 و127 وفق معيار ASCII، ويفسّر التنفيذ الحالي رموز المحارف بين 128 و255 وفق معيار ISO 8859-1.</p>
+<h4>سلاسل المحارف</h4>
+<p>قيم السّلاسل متتاليات منتهية من المحارف. ويدعم التنفيذ الحالي سلاسل تحوي حتى 2²⁴ − 5 محرفًا (16777211 محرفًا)؛ وتكون الحدود على المنصّات 64 بت 2⁵⁷ − 9.</p>
+<h3 id="1122-الصفوف">11.2.2 الصفوف</h3>
+<p>تُكتب صفوف القيم <code>(</code><em>v</em>₁<code>،</code> …<code>،</code> <em>v**n</em><code>)</code>، وتدلّ على الصف ذي الرتبة <em>n</em> من القيم <em>v</em>₁ إلى <em>v**n</em>. ويدعم التنفيذ الحالي صفوفًا تحوي حتى 2²² − 1 عنصرًا (4194303 عنصرًا).</p>
+<h3 id="1123-السجلات">11.2.3 السجلات</h3>
+<p>قيم السجلات صفوف موسومة من القيم. وقيمة السجل المكتوبة <code>{</code> <em>field</em>₁ <code>=</code> <em>v</em>₁<code>;</code> …<code>;</code> <em>field**n</em> <code>=</code> <em>v**n</em> <code>}</code> تربط القيمة <em>v**i</em> بحقل السجل <em>field**i</em>، حيث <em>i</em> = 1 … <em>n</em>. ويدعم التنفيذ الحالي سجلات تحوي حتى 2²² − 1 حقلًا (4194303 حقلًا).</p>
+<h3 id="1124-المصفوفات">11.2.4 المصفوفات</h3>
+<p>المصفوفات متتاليات منتهية متغيّرة الحجم من قيم من النوع نفسه. ويدعم التنفيذ الحالي مصفوفات تحوي حتى 2²² − 1 عنصرًا (4194303 عنصرًا) إلا إذا كانت العناصر أعداد فاصلة عائمة (2097151 عنصرًا في هذه الحالة)؛ وتكون الحدود على المنصّات 64 بت 2⁵⁴ − 1 لجميع المصفوفات.</p>
+<h3 id="1125-قيم-المتغيرات">11.2.5 قيم المتغيّرات</h3>
+<p>قيم المتغيّرات إمّا بانٍ ثابت، وإمّا بانٍ غير ثابت مطبَّق على عدد من القيم. وتُكتب الحالة الأولى <em>constr</em>، وتُكتب الحالة الثانية <em>constr</em> <code>(</code><em>v</em>₁<code>،</code> ... <code>،</code> <em>v**n</em> <code>)</code>، حيث يقال عن القيم <em>v**i</em> إنها وسائط الباني غير الثابت <em>constr</em>. ويمكن إهمال الأقواس إذا كان هناك وسيط واحد فقط.</p>
+<p>وتُعامَل الثوابت التالية كبوانٍ ثابتة مدمجة:</p>
+<table>
+<thead>
+<tr>
+<th><strong>الثابت</strong></th>
+<th><strong>الباني</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>false</code></td>
+<td>القيمة المنطقية false</td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td>القيمة المنطقية true</td>
+</tr>
+<tr>
+<td><code>()</code></td>
+<td>قيمة «الوحدة»</td>
+</tr>
+<tr>
+<td><code>[]</code></td>
+<td>القائمة الفارغة</td>
+</tr>
+</tbody>
+</table>
+<p>ويحدّ التنفيذ الحالي كل نوع متغيّر بأن يكون فيه على الأكثر 246 بانيًا غير ثابت و2³⁰−1 بانيًا ثابتًا.</p>
+<h3 id="1126-المتغيرات-متعددة-الأشكال">11.2.6 المتغيّرات متعدّدة الأشكال</h3>
+<p>المتغيّرات متعدّدة الأشكال شكل بديل من قيم المتغيّرات، لا ينتمي صراحةً إلى نوع متغيّر معرَّف مسبقًا، ويتبع قواعد تنميط خاصة. ويمكن أن تكون ثابتة، وتُكتب <code>*tag-name*، أو غير ثابتة، وتُكتب </code><em>tag-name</em><code>(</code><em>v</em><code>)</code>.</p>
+<h3 id="1127-الدوال">11.2.7 الدوال</h3>
+<p>قيم الدوال تطبيقات من قيم إلى قيم.</p>
+<h3 id="1128-الكائنات">11.2.8 الكائنات</h3>
+<p>تتكوّن الكائنات من حالة داخلية مخفيّة هي سجل من متغيّرات النسخة، ومن مجموعة دوال للوصول إلى هذه المتغيّرات وتعديلها. ويوصف بنيان الكائن بالصنف الأعلى الذي أنشأه.</p>
+<h2 id="113-الأسماء">11.3 الأسماء</h2>
+<p>تُستعمل المعرّفات لإعطاء أسماء لعدة أصناف من كائنات اللغة وللإشارة إلى هذه الكائنات بالاسم لاحقًا. وهذه الأصناف هي:</p>
+<ul>
+<li>
+<p>أسماء القيم (الصنف الصياغي <em>value-name</em>)،</p>
+</li>
+<li>
+<p>بواني القيم وبواني الاستثناءات (الصنف <em>constr-name</em>)،</p>
+</li>
+<li>
+<p>الوسوم (<em>label-name</em>، معرَّفة في القسم 11.1)،</p>
+</li>
+<li>
+<p>وسوم المتغيّرات متعدّدة الأشكال (<em>tag-name</em>)،</p>
+</li>
+<li>
+<p>بواني الأنواع (<em>typeconstr-name</em>)،</p>
+</li>
+<li>
+<p>حقول السجلات (<em>field-name</em>)،</p>
+</li>
+<li>
+<p>أسماء الأصناف (<em>class-name</em>)،</p>
+</li>
+<li>
+<p>أسماء الدوال (<em>method-name</em>)،</p>
+</li>
+<li>
+<p>أسماء متغيّرات النسخة (<em>inst-var-name</em>)،</p>
+</li>
+<li>
+<p>أسماء الوحدات (<em>module-name</em>)،</p>
+</li>
+<li>
+<p>أسماء أنواع الوحدات (<em>modtype-name</em>).</p>
+</li>
+</ul>
+<p>وتُميَّز فضاءات الأسماء الأحد عشر هذه بالسياق وبحالة أحرف المعرّف: هل حرفه الأول صغير (يُكتب <em>lowercase-ident</em> أدناه) أم كبير (يُكتب <em>capitalized-ident</em>)؛ وتُعدّ الشرطة السفلية حرفًا صغيرًا لهذا الغرض.</p>
+<h4>تسمية الكائنات</h4>
+<pre><code class="language-text">value-name::= lowercase-ident ∣ ( operator-name ) operator-name::= prefix-symbol ∣ infix-op infix-op::= infix-symbol ∣ * ∣ + ∣ - ∣ -. ∣ = ∣ != ∣ &lt; ∣ &gt; ∣ or ∣ || ∣ &amp; ∣ &amp;&amp; ∣ := ∣ mod ∣ land ∣ lor ∣ lxor ∣ lsl ∣ lsr ∣ asr constr-name::= capitalized-ident tag-name::= capitalized-ident typeconstr-name::= lowercase-ident field-name::= lowercase-ident module-name::= capitalized-ident modtype-name::= ident class-name::= lowercase-ident inst-var-name::= lowercase-ident method-name::= lowercase-ident
+</code></pre>
+<p>انظر أيضًا امتداد اللغة التالي: عمليات الفهرسة الممتدة.</p>
+<p>كما يظهر أعلاه، يمكن استعمال رموز البادئة والوسيطة وبعض الكلمات المحجوزة كأسماء قيم، بشرط كتابتها بين قوسين. وتُلخَّص قواعد حالة الأحرف في الجدول أدناه.</p>
+<table>
+<thead>
+<tr>
+<th><strong>فضاء الأسماء</strong></th>
+<th><strong>حالة الحرف الأول</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>القيم</td>
+<td>صغير</td>
+</tr>
+<tr>
+<td>البواني</td>
+<td>كبير</td>
+</tr>
+<tr>
+<td>الوسوم</td>
+<td>صغير</td>
+</tr>
+<tr>
+<td>وسوم المتغيّرات متعدّدة الأشكال</td>
+<td>كبير</td>
+</tr>
+<tr>
+<td>الاستثناءات</td>
+<td>كبير</td>
+</tr>
+<tr>
+<td>بواني الأنواع</td>
+<td>صغير</td>
+</tr>
+<tr>
+<td>حقول السجلات</td>
+<td>صغير</td>
+</tr>
+<tr>
+<td>الأصناف</td>
+<td>صغير</td>
+</tr>
+<tr>
+<td>متغيّرات النسخة</td>
+<td>صغير</td>
+</tr>
+<tr>
+<td>الدوال</td>
+<td>صغير</td>
+</tr>
+<tr>
+<td>الوحدات</td>
+<td>كبير</td>
+</tr>
+<tr>
+<td>أنواع الوحدات</td>
+<td>أي حالة</td>
+</tr>
+</tbody>
+</table>
+<p><em>ملاحظة على وسوم المتغيّرات متعدّدة الأشكال:</em> يقبل التنفيذ الحالي الوسوم الصغيرة إضافة إلى الوسوم الكبيرة، لكننا ننصح بتجنّب الوسوم الصغيرة لأسباب قابلية النقل والتوافقية مع إصدارات OCaml المستقبلية.</p>
+<h4>الإشارة إلى الكائنات المسمّاة</h4>
+<pre><code class="language-text">value-path::= [ module-path . ] value-name constr::= [ module-path . ] constr-name typeconstr::= [ extended-module-path . ] typeconstr-name field::= [ module-path . ] field-name modtype-path::= [ extended-module-path . ] modtype-name class-path::= [ module-path . ] class-name classtype-path::= [ extended-module-path . ] class-name module-path::= module-name { . module-name } extended-module-path::= extended-module-name { . extended-module-name } extended-module-name::= module-name { ( extended-module-path ) }
+</code></pre>
+<p>يمكن الإشارة إلى كائن مسمّى إمّا باسمه (وفق قواعد النطاق الساكن المعتادة للأسماء)، وإمّا بمسار وصول <em>prefix</em> <code>.</code> <em>name</em>، حيث يدلّ <em>prefix</em> على وحدة و<em>name</em> على اسم كائن معرَّف في تلك الوحدة. والمكوّن الأول من المسار، <em>prefix</em>، إمّا اسم وحدة بسيط وإمّا مسار وصول <em>name</em>₁ <code>.</code> <em>name</em>₂ …، إذا كانت الوحدة المعرِّفة متداخلة هي نفسها داخل وحدات أخرى. وللإشارة إلى بواني الأنواع أو أنواع الوحدات أو أنواع الأصناف، يمكن أن يحوي <em>prefix</em> أيضًا تطبيقات موصِّلات بسيطة (كما في الصنف الصياغي <em>extended-module-path</em> أعلاه)، إذا كانت الوحدة المعرِّفة ناتجة عن تطبيق موصِّل.</p>
+<p>ولا تحتاج أسماء الوسوم وأسماء العلامات وأسماء الدوال وأسماء متغيّرات النسخة إلى التأهيل: فالأولان عالميان، والأخيران محليان في الصنف.</p>
+<h2 id="114-تعابير-الأنواع">11.4 تعابير الأنواع</h2>
+<pre><code class="language-text">typexpr::= &#x27; ident ∣ _ ∣ ( typexpr ) ∣ [[?]label-name:] typexpr -&gt; typexpr ∣ typexpr { * typexpr }⁺ ∣ typeconstr ∣ typexpr typeconstr ∣ ( typexpr { , typexpr } ) typeconstr ∣ typexpr as &#x27; ident ∣ polymorphic-variant-type ∣ &lt; [..] &gt; ∣ &lt; method-type { ; method-type } [; ∣ ; ..] &gt; ∣ # classtype-path ∣ typexpr # class-path ∣ ( typexpr { , typexpr } ) # class-path poly-typexpr::= typexpr ∣ { &#x27; ident }⁺ . typexpr method-type::= method-name : poly-typexpr
+</code></pre>
+<p>انظر أيضًا امتدادات اللغة التالية: وحدات من الدرجة الأولى، والسمات، وعقد الامتداد، والصفوف الموسومة.</p>
+<p>يبيّن الجدول أدناه الأولويات النسبية والترابط لعمليات البناء غير المغلقة للأنواع والعمليات عليها. وتأتي البنى ذات الأولوية الأعلى أولًا.</p>
+<table>
+<thead>
+<tr>
+<th><strong>العملية</strong></th>
+<th><strong>الترابط</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>تطبيق باني نوع</td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>#</code></td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>-&gt;</code></td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>as</code></td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<p>تدلّ تعابير الأنواع على أنواع في تعريفات أنواع البيانات كما في قيود الأنواع على الأنماط والتعابير.</p>
+<h4>متغيّرات الأنواع</h4>
+<p>يدلّ تعبير النوع <code>'</code> <em>ident</em> على متغيّر النوع المسمّى <em>ident</em>. ويدلّ تعبير النوع <code>_</code> على متغيّر نوع مجهول أو على معاملات نوع مجهولة. وفي تعريفات أنواع البيانات، تكون متغيّرات الأنواع أسماء لمعاملات نوع البيانات. وفي قيود الأنواع، تمثّل أنواعًا غير محدَّدة يمكن أن يُجزَّأ عليها أيّ نوع لتحقيق قيد النوع. وبوجه عام، نطاق متغيّر نوع مسمّى هو العبارة العليا كلها التي يظهر فيها، ولا يمكن تعميمه إلا عند مغادرة هذا النطاق. أما المتغيّرات المجهولة فليس عليها هذا القيد. وفي الحالات التالية يُقصَر نطاق متغيّرات الأنواع المسمّاة على تعبير النوع الذي تظهر فيه: 1) متغيّرات الأنواع الكلّية (متعدّدة الأشكال صراحةً)؛ 2) متغيّرات الأنواع التي تظهر فقط في مواصفات الدوال العمومية (إذ ستُجعل هذه المتغيّرات كلّية، كما هو موصوف في القسم 11.9.1)؛ 3) المتغيّرات المستعملة كأسماء بديلة، عندما يكون النوع الذي يُكنّى به غير صالح في نطاق التعريف المحيط (أي عندما يحوي متغيّرات أنواع كلّية حرّة أو أنواعًا معرَّفة محليًا).</p>
+<h4>الأنواع بين قوسين</h4>
+<p>يدلّ تعبير النوع <code>(</code> <em>typexpr</em> <code>)</code> على النوع نفسه الذي يدلّ عليه <em>typexpr</em>.</p>
+<h4>أنواع الدوال</h4>
+<p>يدلّ تعبير النوع <em>typexpr</em>₁ <code>-&gt;</code> <em>typexpr</em>₂ على نوع الدوال التي تطابق وسائط من النوع <em>typexpr</em>₁ إلى نتائج من النوع <em>typexpr</em>₂.</p>
+<p>ويدلّ <em>label-name</em> <code>:</code> <em>typexpr</em>₁ <code>-&gt;</code> <em>typexpr</em>₂ على نوع الدالة نفسه، لكن الوسيط موسوم بـ <em>label</em>.</p>
+<p>ويدلّ <code>?</code> <em>label-name</em> <code>:</code> <em>typexpr</em>₁ <code>-&gt;</code> <em>typexpr</em>₂ على نوع الدوال التي تطابق وسيطًا موسومًا اختياريًا من النوع <em>typexpr</em>₁ إلى نتائج من النوع <em>typexpr</em>₂. أي إن النوع الفيزيائي للدالة سيكون <em>typexpr</em>₁ <code>option</code> <code>-&gt;</code> <em>typexpr</em>₂.</p>
+<h4>أنواع الصفوف</h4>
+<p>يدلّ تعبير النوع <em>typexpr</em>₁ <code>*</code> … <code>*</code> <em>typexpr**n</em> على نوع الصفوف التي تنتمي عناصرها إلى الأنواع <em>typexpr</em>₁ … <em>typexpr**n</em> على الترتيب.</p>
+<h4>الأنواع المبنيّة</h4>
+<p>بواني الأنواع التي لا معامل لها، كما في <em>typeconstr</em>، تعابير أنواع.</p>
+<p>ويدلّ تعبير النوع <em>typexpr</em> <em>typeconstr</em>، حيث <em>typeconstr</em> باني نوع ذو معامل واحد، على تطبيق باني النوع الأحادي <em>typeconstr</em> على النوع <em>typexpr</em>.</p>
+<p>ويدلّ تعبير النوع (<em>typexpr</em>₁،…،<em>typexpr**n</em>) <em>typeconstr</em>، حيث <em>typeconstr</em> باني نوع ذو <em>n</em> من المعاملات، على تطبيق باني النوع ذي الرتبة <em>n</em> على الأنواع <em>typexpr</em>₁ حتى <em>typexpr**n</em>.</p>
+<p>وفي تعبير النوع <code>_</code> <em>typeconstr</em>، يقوم تعبير النوع المجهول <code>_</code> مقام معاملات نوع مجهولة، وهو مكافئ لـ (<code>_</code>، …،<code>_</code>) بعدد تكرارات لـ <code>_</code> يساوي رتبة <em>typeconstr</em>.</p>
+<h4>الأنواع المكنّاة والعودية</h4>
+<p>يدلّ تعبير النوع <em>typexpr</em> <code>as</code> <code>'</code> <em>ident</em> على النوع نفسه الذي يدلّ عليه <em>typexpr</em>، ويربط أيضًا متغيّر النوع <em>ident</em> بالنوع <em>typexpr</em> في <em>typexpr</em> وفي أنواع أخرى. وبوجه عام، نطاق الكنية هو نطاق متغيّر نوع مسمّى، ويغطّي التعريف المحيط كله. وإذا ظهر متغيّر النوع <em>ident</em> فعلًا في <em>typexpr</em>، نشأ نوع عودي. وتُرفض الأنواع العودية التي يوجد لها مسار عودي لا يحوي باني نوع كائن أو متغيّر متعدّد الأشكال، إلا عند اختيار النمط <code>-rectypes</code>.</p>
+<p>وإذا دلّ <code>'</code> <em>ident</em> على متغيّر متعدّد الأشكال صريح، ودلّ <em>typexpr</em> على نوع كائن أو متغيّر متعدّد الأشكال، أُسر متغيّر الصف في <em>typexpr</em> بـ <code>'</code> <em>ident</em> وكُمّم عليه.</p>
+<h4>أنواع المتغيّرات متعدّدة الأشكال</h4>
+<pre><code class="language-text">polymorphic-variant-type::= [ tag-spec-first { | tag-spec } ] ∣ [&gt; [ tag-spec ] { | tag-spec } ] ∣ [&lt; [|] tag-spec-full { | tag-spec-full } [ &gt; { \`tag-name }⁺ ] ] tag-spec-first::= \`tag-name [ of typexpr ] ∣ [ typexpr ] | tag-spec tag-spec::= \`tag-name [ of typexpr ] ∣ typexpr tag-spec-full::= \`tag-name [ of [&amp;] typexpr { &amp; typexpr } ] ∣ typexpr
+</code></pre>
+<p>توصف أنواع المتغيّرات متعدّدة الأشكال القيم التي قد يأخذها المتغيّر متعدّد الأشكال.</p>
+<p>الحالة الأولى نوع متغيّر تام: جميع الوسوم الممكنة معروفة، مع أنواعها المرتبطة، ويمكن أن تكون كلها حاضرة. وبنيانه معروف تمامًا.</p>
+<p>والحالة الثانية نوع متغيّر مفتوح، يصف قيمة متغيّر متعدّد الأشكال: فهو يعطي قائمة جميع الوسوم التي قد تأخذها القيمة، مع أنواعها المرتبطة. ولا يزال هذا النوع متوافقًا مع نوع متغيّر يحوي وسومًا أكثر. والحالة الخاصة هي النوع المجهول، الذي لا يعرّف أيّ وسم ويكون متوافقًا مع أيّ نوع متغيّر.</p>
+<p>والحالة الثالثة نوع متغيّر مغلق. فهو يعطي معلومات عن جميع الوسوم الممكنة وأنواعها المرتبطة، وعن الوسوم المعروفة التي قد تظهر في القيم. والنوع المتغيّر التام (الحالة الأولى) ليس إلا اختصارًا لنوع متغيّر مغلق تكون فيه جميع الوسوم الممكنة حاضرة أيضًا.</p>
+<p>وفي الحالات الثلاث، يمكن تحديد الوسوم مباشرةً في الصيغة \`\`\`\`\`<em>tag-name</em> [<code>of</code> <em>typexpr</em>]، أو بشكل غير مباشر عبر تعبير نوع يجب أن يتمدّد إلى نوع متغيّر تام تُدرَج مواصفات وسومه في مكانه.</p>
+<p>ولا تُستعمل المواصفات الكاملة لوسوم المتغيّرات إلا في الأنواع المغلقة غير التامة. ويمكن فهمها كنوع عطفي للوسيط: يُراد بها أن تكون جميع الأنواع المذكورة في المواصفة.</p>
+<p>وقد تكون هذه القيود العطفية غير قابلة للإرضاء. وفي هذه الحالة قد لا يمكن استعمال الوسم المقابل في قيمة من هذا النوع. ولا يعني ذلك أن النوع كُلّه غير صالح: فما زال بإمكان المرء استعمال وسوم أخرى متاحة. والقيود العطفية مخصَّصة أساسًا لأن تكون مخرجات من مدقّق الأنواع؛ وعندما تُستعمل في برامج مصدرية، قد تسبّب القيود غير القابلة للحلّ إخفاقات مبكّرة.</p>
+<h4>أنواع الكائنات</h4>
+<p>نوع كائن <code>&lt;</code> [<em>method-type</em> { <code>;</code> <em>method-type</em> }] <code>&gt;</code> هو سجل من أنواع الدوال.</p>
+<p>ويمكن أن يكون لكل دالة نوع متعدّد الأشكال صريح: { <code>'</code> <em>ident</em> }⁺ <code>.</code> <em>typexpr</em>. ولمتغيّرات الأنواع الصريحة نطاق محلي، ولا يمكن توحيد نوع متعدّد الأشكال صريح إلا مع نوع مكافئ، حيث لا يتغيّر إلا ترتيب متغيّرات الأنواع وأسماؤها.</p>
+<p>والنوع <code>&lt;</code> { <em>method-type</em> <code>;</code> } <code>..</code> <code>&gt;</code> هو نوع كائن توصف أسماء دواله وأنواعها بـ <em>method-type</em>₁ … <em>method-type**n</em>، وربما بدوال أخرى تمثّلها القطع. وهذه القطع في الحقيقة نوع خاص من متغيّرات الأنواع (يُسمّى <em>متغيّر صف</em> في الأدبيات) يقوم مقام أي عدد من أنواع الدوال الإضافية.</p>
+<h4>أنواع <code>#</code></h4>
+<p>النوع <code>#</code> <em>classtype-path</em> نوع خاص من الاختصارات. وهو يتوحّد مع نوع أي كائن ينتمي إلى صنف فرعي من نوع الصنف <em>classtype-path</em>. ويُعالَج على نحو خاص لأنه عادةً يخفي متغيّر نوع (قطعة تمثّل الدوال التي قد تُضاف في صنف فرعي). وعلى وجه الخصوص، يتلاشى عندما يُجزَّأ عليه. وكل تعبير نوع <code>#</code> <em>classtype-path</em> يعرّف متغيّر نوع جديدًا، لذا فالنوع <code>#</code> <em>classtype-path</em> <code>-&gt;</code> <code>#</code> <em>classtype-path</em> ليس عادةً النوع نفسه (<code>#</code> <em>classtype-path</em> <code>as</code> <code>'</code> <em>ident</em>) <code>-&gt;</code> <code>'</code> <em>ident</em>.</p>
+<h4>أنواع المتغيّرات وأنواع السجلات</h4>
+<p>لا توجد تعابير أنواع تصف أنواع المتغيّرات (المعرَّفة) ولا أنواع السجلات، لأنها دائمًا مسمّاة، أي معرَّفة قبل الاستعمال ويُشار إليها بالاسم. وتُوصف تعريفات الأنواع في القسم 11.8.1.</p>
+<h2 id="115-الثوابت">11.5 الثوابت</h2>
+<pre><code class="language-text">constant::= integer-literal ∣ int32-literal ∣ int64-literal ∣ nativeint-literal ∣ float-literal ∣ char-literal ∣ string-literal ∣ constr ∣ false ∣ true ∣ () ∣ begin end ∣ [] ∣ [||] ∣ \`tag-name
+</code></pre>
+<p>انظر أيضًا امتداد اللغة التالي: المكوّنات الحرفية للامتدادات.</p>
+<p>يضمّ الصنف الصياغي للثوابت المكوّنات الحرفية من الأنواع الأساسية الأربعة (الأعداد الصحيحة، وأعداد الفاصلة العائمة، والمحارف، وسلاسل المحارف)، والمتغيّرات الصحيحة، والبواني الثابتة من المتغيّرات العادية والمتغيّرات متعدّدة الأشكال، إضافةً إلى الثوابت الخاصة <code>false</code> و<code>true</code> و<code>()</code> و<code>[]</code> و<code>[||]</code> التي تتصرّف كبوانٍ ثابتة، و<code>begin</code> <code>end</code> المكافئ لـ <code>()</code>.</p>
+<h2 id="116-الأنماط">11.6 الأنماط</h2>
+<pre><code class="language-text">pattern::= value-name ∣ _ ∣ constant ∣ pattern as value-name ∣ ( pattern ) ∣ ( pattern : typexpr ) ∣ pattern | pattern ∣ constr pattern ∣ \`tag-name pattern ∣ #typeconstr ∣ pattern { , pattern }⁺ ∣ { field [: typexpr] [= pattern]{ ; field [: typexpr] [= pattern] } [; _ ] [ ; ] } ∣ [ pattern { ; pattern } [ ; ] ] ∣ pattern :: pattern ∣ [| pattern { ; pattern } [ ; ] |] ∣ char-literal .. char-literal ∣ lazy pattern ∣ exception pattern ∣ module-path .( pattern ) ∣ module-path .[ pattern ] ∣ module-path .[| pattern |] ∣ module-path .{ pattern }
+</code></pre>
+<p>انظر أيضًا امتدادات اللغة التالية: وحدات من الدرجة الأولى، والسمات، وعقد الامتداد، ومعالجات التأثيرات، والتفريق الموجَّه بالنوع للمكوّنات الحرفية للمصفوفات وللصفوف الموسومة.</p>
+<p>يبيّن الجدول أدناه الأولويات النسبية والترابط للعمليات ولبنى الأنماط غير المغلقة. وتأتي البنى ذات الأولوية الأعلى أولًا.</p>
+<table>
+<thead>
+<tr>
+<th><strong>العملية</strong></th>
+<th><strong>الترابط</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>..</code></td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>lazy</code> (انظر القسم 11.6)</td>
+<td>–</td>
+</tr>
+<tr>
+<td>تطبيق باني، تطبيق وسم</td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>::</code></td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>يساري</td>
+</tr>
+<tr>
+<td><code>as</code></td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<p>الأنماط قوالب تتيح اختيار بنى بيانات ذات شكل معيّن، وربط معرّفات بمكوّنات بنية البيانات. وتُسمّى عملية الاختيار هذه مطابقة الأنماط؛ ونتيجتها إمّا «هذه القيمة لا تطابق هذا النمط»، وإمّا «هذه القيمة تطابق هذا النمط، وينتج عن ذلك عمليات ربط الأسماء بالقيم التالية».</p>
+<h4>أنماط المتغيّرات</h4>
+<p>النمط الذي يتكوّن من اسم قيمة يطابق أي قيمة، ويربط الاسم بالقيمة. والنمط <code>_</code> يطابق أي قيمة أيضًا، لكنه لا يربط أي اسم.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> is_empty = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span> -&gt; <span class="hljs-literal">true</span>
+    | _ :: _ -&gt; <span class="hljs-literal">false</span>;;
+
+<span class="hljs-keyword">val</span> is_empty : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>الأنماط <em>خطّية</em>: لا يمكن ربط متغيّر واحد عدة مرات بنمط معيّن. وعلى وجه الخصوص، لا سبيل إلى اختبار تساوي جزأين من بنية بيانات باستعمال نمط وحده:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> pair_equal = <span class="hljs-keyword">function</span>
+    | x, x -&gt; <span class="hljs-literal">true</span>
+    | x, y -&gt; <span class="hljs-literal">false</span>;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">Variable</span> x is bound several times <span class="hljs-keyword">in</span> this matching
+</code></pre>
+<p>غير أننا نستطيع استعمال حارس <code>when</code> لهذا الغرض:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> pair_equal = <span class="hljs-keyword">function</span>
+    | x, y <span class="hljs-keyword">when</span> x = y -&gt; <span class="hljs-literal">true</span>
+    | _ -&gt; <span class="hljs-literal">false</span>;;
+
+<span class="hljs-keyword">val</span> pair_equal : <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط الثوابت</h4>
+<p>النمط الذي يتكوّن من ثابت يطابق القيم المساوية لهذا الثابت.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> bool_of_string = <span class="hljs-keyword">function</span>
+    | <span class="hljs-string">&quot;true&quot;</span> -&gt; <span class="hljs-literal">true</span>
+    | <span class="hljs-string">&quot;false&quot;</span> -&gt; <span class="hljs-literal">false</span>
+    | _ -&gt; raise (<span class="hljs-type">Invalid_argument</span> <span class="hljs-string">&quot;bool_of_string&quot;</span>);;
+
+<span class="hljs-keyword">val</span> bool_of_string : <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط الكنى</h4>
+<p>النمط <em>pattern</em>₁ <code>as</code> <em>value-name</em> يطابق القيم نفسها التي يطابقها <em>pattern</em>₁. فإذا نجحت مطابقة <em>pattern</em>₁، رُبط الاسم <em>value-name</em> بالقيمة المطابَقة، إضافةً إلى عمليات الربط التي تجريها مطابقة <em>pattern</em>₁.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> sort_pair ((x, y) <span class="hljs-keyword">as</span> p) =
+    <span class="hljs-keyword">if</span> x &lt;= y <span class="hljs-keyword">then</span> p <span class="hljs-keyword">else</span> (y, x);;
+
+<span class="hljs-keyword">val</span> sort_pair : <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>الأنماط بين قوسين</h4>
+<p>النمط <code>(</code> <em>pattern</em>₁ <code>)</code> يطابق القيم نفسها التي يطابقها <em>pattern</em>₁. ويمكن أن يظهر قيد نوع في نمط بين قوسين، كما في <code>(</code> <em>pattern</em>₁ <code>:</code> <em>typexpr</em> <code>)</code>. ويفرض هذا القيد أن يكون نوع <em>pattern</em>₁ متوافقًا مع <em>typexpr</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> int_triple_is_ordered ((a, b, c) : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span>) =
+    a &lt;= b &amp;&amp; b &lt;= c;;
+
+<span class="hljs-keyword">val</span> int_triple_is_ordered : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط «أو»</h4>
+<p>النمط <em>pattern</em>₁ <code>|</code> <em>pattern</em>₂ يمثّل «أو» المنطقية للنمطين <em>pattern</em>₁ و<em>pattern</em>₂. وتطابق القيمة <em>pattern</em>₁ <code>|</code> <em>pattern</em>₂ إذا طابقت <em>pattern</em>₁ أو <em>pattern</em>₂. ويجب أن يربط النمطان الفرعيان <em>pattern</em>₁ و<em>pattern</em>₂ المعرّفات نفسها بالضبط بقيم من الأنواع نفسها. وتجري المطابقة من اليسار إلى اليمين. وبدقّة أكثر: إذا كانت قيمة <em>v</em> ما تطابق <em>pattern</em>₁ <code>|</code> <em>pattern</em>₂، فعمليات الربط التي تجري هي عمليات <em>pattern</em>₁ عندما تطابق <em>v</em> النمط <em>pattern</em>₁؛ وإلا فإن القيمة <em>v</em> تطابق <em>pattern</em>₂ وتجري عمليات ربطه.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> shape = <span class="hljs-type">Square</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">float</span> | <span class="hljs-type">Rect</span> <span class="hljs-keyword">of</span> (<span class="hljs-built_in">float</span> * <span class="hljs-built_in">float</span>) | <span class="hljs-type">Circle</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">float</span>
+
+  <span class="hljs-keyword">let</span> is_rectangular = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">Square</span> _ | <span class="hljs-type">Rect</span> _ -&gt; <span class="hljs-literal">true</span>
+    | <span class="hljs-type">Circle</span> _ -&gt; <span class="hljs-literal">false</span>;;
+
+<span class="hljs-keyword">type</span> shape = <span class="hljs-type">Square</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">float</span> | <span class="hljs-type">Rect</span> <span class="hljs-keyword">of</span> (<span class="hljs-built_in">float</span> * <span class="hljs-built_in">float</span>) | <span class="hljs-type">Circle</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">float</span>
+<span class="hljs-keyword">val</span> is_rectangular : shape -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط المتغيّرات</h4>
+<p>النمط <em>constr</em> <code>(</code> <em>pattern</em>₁ <code>،</code> … <code>،</code> <em>pattern**n</em> <code>)</code> يطابق جميع المتغيّرات التي يساوي بانيها <em>constr</em> وتطابق وسائطها <em>pattern</em>₁ … <em>pattern**n</em>. ويُعدّ خطأ نوعًا أن لا يكون <em>n</em> هو عدد الوسائط التي يتوقعها الباني.</p>
+<p>والنمط <em>constr</em> <code>_</code> يطابق جميع المتغيّرات التي بانيها <em>constr</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> tree = <span class="hljs-type">Lf</span> | <span class="hljs-type">Br</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> tree * <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> tree
+
+  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> total = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">Br</span> (l, x, r) -&gt; total l + x + total r
+    | <span class="hljs-type">Lf</span> -&gt; <span class="hljs-number">0</span>;;
+
+<span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> tree = <span class="hljs-type">Lf</span> | <span class="hljs-type">Br</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> tree * <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> tree
+<span class="hljs-keyword">val</span> total : <span class="hljs-built_in">int</span> tree -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>والنمط <em>pattern</em>₁ <code>::</code> <em>pattern</em>₂ يطابق القوائم غير الفارغة التي تطابق رؤوسها <em>pattern</em>₁ وتطابق أذنابها <em>pattern</em>₂.</p>
+<p>والنمط <code>[</code> <em>pattern</em>₁ <code>;</code> … <code>;</code> <em>pattern**n</em> <code>]</code> يطابق قوائم طولها <em>n</em> تطابق عناصرها <em>pattern</em>₁ … <em>pattern**n</em> على الترتيب. ويتصرّف هذا النمط كالنمط <em>pattern</em>₁ <code>::</code> … <code>::</code> <em>pattern**n</em> <code>::</code> <code>[]</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> destutter = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span> -&gt; <span class="hljs-literal">[]</span>
+    | [a] -&gt; [a]
+    | a :: b :: t -&gt; <span class="hljs-keyword">if</span> a = b <span class="hljs-keyword">then</span> destutter (b :: t) <span class="hljs-keyword">else</span> a :: destutter (b :: t);;
+
+<span class="hljs-keyword">val</span> destutter : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط المتغيّرات متعدّدة الأشكال</h4>
+<p>النمط \`\`\`\`\`<em>tag-name</em> <em>pattern</em>₁ يطابق جميع المتغيّرات متعدّدة الأشكال التي يساوي وسمها <em>tag-name</em> ويطابق وسيطها <em>pattern</em>₁.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> split = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span> -&gt; (<span class="hljs-literal">[]</span>, <span class="hljs-literal">[]</span>)
+    | h :: t -&gt;
+        <span class="hljs-keyword">let</span> ss, gs = split t <span class="hljs-keyword">in</span>
+          <span class="hljs-keyword">match</span> h <span class="hljs-keyword">with</span>
+          | <span class="hljs-type">\`Sheep</span> _ <span class="hljs-keyword">as</span> s -&gt; (s :: ss, gs)
+          | <span class="hljs-type">\`Goat</span> _ <span class="hljs-keyword">as</span> g -&gt; (ss, g :: gs);;
+
+<span class="hljs-keyword">val</span> split :
+  [&lt; <span class="hljs-type">\`Goat</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-type">\`Sheep</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> ] <span class="hljs-built_in">list</span> -&gt;
+  [&gt; <span class="hljs-type">\`Sheep</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> ] <span class="hljs-built_in">list</span> * [&gt; <span class="hljs-type">\`Goat</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> ] <span class="hljs-built_in">list</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط اختصار المتغيّرات متعدّدة الأشكال</h4>
+<p>إذا عُرّف النوع [<code>('a,'b,</code>…<code>)</code>] <em>typeconstr</em> = <code>[</code> <code>*tag-name*₁ *typexpr*₁ \`|\` … \`|\` </code><em>tag-name**n</em> <em>typexpr**n</em><code>]</code>، فإن النمط <code>#</code><em>typeconstr</em> اختصار للنمط «أو» التالي: <code>(</code> <code>*tag-name*₁\`(_\` \`:\` *typexpr*₁\`)\` \`|\` … \`|\` </code><em>tag-name**n</em><code>(_</code> <code>:</code> <em>typexpr**n</em><code>))</code>. وهو يطابق جميع القيم من النوع <code>[&lt;</code> <em>typeconstr</em> <code>]</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> rectangle = [<span class="hljs-type">\`Square</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-type">\`Rectangle</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span>]
+  <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> shape = [<span class="hljs-type">\`Circle</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-symbol">&#x27;a</span> rectangle]
+
+  <span class="hljs-keyword">let</span> try_rectangle = <span class="hljs-keyword">function</span>
+    | #rectangle <span class="hljs-keyword">as</span> r -&gt; <span class="hljs-type">Some</span> r
+    | <span class="hljs-type">\`Circle</span> _ -&gt; <span class="hljs-type">None</span>;;
+
+<span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> rectangle = [ <span class="hljs-type">\`Rectangle</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-type">\`Square</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> ]
+<span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span> shape = [ <span class="hljs-type">\`Circle</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-type">\`Rectangle</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-type">\`Square</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> ]
+<span class="hljs-keyword">val</span> try_rectangle :
+  [&lt; <span class="hljs-type">\`Circle</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> | <span class="hljs-type">\`Rectangle</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> * <span class="hljs-symbol">&#x27;b</span> | <span class="hljs-type">\`Square</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> ] -&gt;
+  [&gt; <span class="hljs-type">\`Rectangle</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> * <span class="hljs-symbol">&#x27;b</span> | <span class="hljs-type">\`Square</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;b</span> ] option = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط الصفوف</h4>
+<p>النمط <em>pattern</em>₁ <code>،</code> … <code>،</code> <em>pattern**n</em> يطابق الصفوف ذات الرتبة <em>n</em> التي تطابق مكوّناتها الأنماط <em>pattern</em>₁ حتى <em>pattern**n</em>. أي إن النمط يطابق قيم الصفوف (<em>v</em>₁، …، <em>v**n</em>) بحيث يطابق <em>pattern**i</em> القيمة <em>v**i</em> لكل <em>i</em> = 1،…، <em>n</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> vector (x0, y0) (x1, y1) =
+    (x1 -. x0, y1 -. y0);;
+
+<span class="hljs-keyword">val</span> vector : <span class="hljs-built_in">float</span> * <span class="hljs-built_in">float</span> -&gt; <span class="hljs-built_in">float</span> * <span class="hljs-built_in">float</span> -&gt; <span class="hljs-built_in">float</span> * <span class="hljs-built_in">float</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط السجلات</h4>
+<p>النمط <code>{</code> <em>field</em>₁ [<code>=</code> <em>pattern</em>₁] <code>;</code> … <code>;</code> <em>field**n</em> [<code>=</code> <em>pattern**n</em>] <code>}</code> يطابق السجلات التي تعرّف على الأقل الحقول <em>field</em>₁ حتى <em>field**n</em>، والتي تطابق فيها القيمة المرتبطة بـ <em>field**i</em> النمط <em>pattern**i</em>، لكل <em>i</em> = 1،…، <em>n</em>. والمعرّف الواحد <em>field**k</em> يقوم مقام <em>field**k</em> <code>=</code> <em>field**k</em>، والمعرّف المؤهَّل الواحد <em>module-path</em> <code>.</code> <em>field**k</em> يقوم مقام <em>module-path</em> <code>.</code> <em>field**k</em> <code>=</code> <em>field**k</em>. ويمكن أن تعرّف قيمة السجل حقولًا أكثر من <em>field</em>₁…<em>field**n</em>، ولا تُؤخذ القيم المرتبطة بهذه الحقول الإضافية في الحسبان أثناء المطابقة. ويمكن اختياريًا إنهاء نمط السجل بـ <code>;</code> <code>_</code> للإفضاء عن أن جميع حقول نوع السجل ليست مدرَجة في نمط السجل وأن ذلك مقصود. ويمكن إضافة قيود أنواع اختيارية حقلًا حقلًا بالصيغة <code>{</code> <em>field</em>₁ <code>:</code> <em>typexpr</em>₁ <code>=</code> <em>pattern</em>₁ <code>;</code>… <code>;</code><em>field**n</em> <code>:</code> <em>typexpr**n</em> <code>=</code> <em>pattern**n</em> <code>}</code> لفرض أن يكون نوع <em>field**k</em> متوافقًا مع <em>typexpr**k</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> bytes_allocated
+      {<span class="hljs-type">Gc</span>.minor_words = minor;
+       <span class="hljs-type">Gc</span>.major_words = major;
+       <span class="hljs-type">Gc</span>.promoted_words = prom;
+       _}
+    =
+      (<span class="hljs-type">Sys</span>.word_size / <span class="hljs-number">4</span>) * int_of_float (minor +. major -. prom);;
+
+<span class="hljs-keyword">val</span> bytes_allocated : <span class="hljs-type">Gc</span>.stat -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط المصفوفات</h4>
+<p>النمط <code>[|</code> <em>pattern</em>₁ <code>;</code> … <code>;</code> <em>pattern**n</em> <code>|]</code> يطابق المصفوفات التي طولها <em>n</em> بحيث يطابق العنصر ذو الرتبة <em>i</em> من المصفوفة النمط <em>pattern**i</em>، لكل <em>i</em> = 1،…، <em>n</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> matrix3_is_symmetric = <span class="hljs-keyword">function</span>
+    | [|[|_; b; c|];
+        [|d; _; f|];
+        [|g; h; _|]|] -&gt; b = d &amp;&amp; c = g &amp;&amp; f = h
+    | _ -&gt; failwith <span class="hljs-string">&quot;matrix3_is_symmetric: not a 3x3 matrix&quot;</span>;;
+
+<span class="hljs-keyword">val</span> matrix3_is_symmetric : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط المدى</h4>
+<p>النمط <code>'</code> <em>c</em> <code>'</code> <code>..</code> <code>'</code> <em>d</em> <code>'</code> اختصار للنمط <code>'</code> <em>c</em> <code>'</code> <code>|</code> <code>'</code> <em>c</em>₁ <code>'</code> <code>|</code> <code>'</code> <em>c</em>₂ <code>'</code> <code>|</code> … <code>|</code> <code>'</code> <em>c**n</em> <code>'</code> <code>|</code> <code>'</code> <em>d</em> <code>'</code>، حيث <em>c</em>₁، <em>c</em>₂، …، <em>c**n</em> هي المحارف الواقعة بين <em>c</em> و<em>d</em> في مجموعة المحارف ASCII. فمثلًا، النمط <code>'0'\`\`..\`\`'9'</code> يطابق جميع المحارف التي هي أرقام.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> char_class = <span class="hljs-type">Uppercase</span> | <span class="hljs-type">Lowercase</span> | <span class="hljs-type">Digit</span> | <span class="hljs-type">Other</span>
+
+  <span class="hljs-keyword">let</span> classify_char = <span class="hljs-keyword">function</span>
+    | <span class="hljs-string">&#x27;A&#x27;</span>..<span class="hljs-string">&#x27;Z&#x27;</span> -&gt; <span class="hljs-type">Uppercase</span>
+    | <span class="hljs-string">&#x27;a&#x27;</span>..<span class="hljs-string">&#x27;z&#x27;</span> -&gt; <span class="hljs-type">Lowercase</span>
+    | <span class="hljs-string">&#x27;0&#x27;</span>..<span class="hljs-string">&#x27;9&#x27;</span> -&gt; <span class="hljs-type">Digit</span>
+    | _ -&gt; <span class="hljs-type">Other</span>;;
+
+<span class="hljs-keyword">type</span> char_class = <span class="hljs-type">Uppercase</span> | <span class="hljs-type">Lowercase</span> | <span class="hljs-type">Digit</span> | <span class="hljs-type">Other</span>
+<span class="hljs-keyword">val</span> classify_char : <span class="hljs-built_in">char</span> -&gt; char_class = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>أنماط الكسل</h4>
+<p>(أُدخلت في Objective Caml 3.11)</p>
+<p>النمط <code>lazy</code> <em>pattern</em> يطابق قيمة <em>v</em> من النوع <code>Lazy.t</code>، بشرط أن يطابق <em>pattern</em> نتيجة إجبار <em>v</em> بـ <code>Lazy.force</code>. والمطابقة الناجحة لنمط يحوي أنماطًا فرعية من نوع <code>lazy</code> تُجبر الأجزاء المقابلة من القيمة المطابَقة، حتى تلك التي لا تتضمّن أي اختبار مثل <code>lazy</code> <em>value-name</em> أو <code>lazy</code> <code>_</code>. ومطابقة قيمة مع <em>مطابقة أنماط</em> تحوي بعض أنماطها أنماطًا فرعية من نوع <code>lazy</code> قد تؤدّي إلى إجبار أجزاء من القيمة، حتى عندما لا يحوي النمط المختار في النهاية أيّ نمط فرعي من نوع <code>lazy</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> force_opt = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">Some</span> (<span class="hljs-keyword">lazy</span> n) -&gt; n
+    | <span class="hljs-type">None</span> -&gt; <span class="hljs-number">0</span>;;
+
+<span class="hljs-keyword">val</span> force_opt : <span class="hljs-built_in">int</span> <span class="hljs-built_in">lazy_t</span> option -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>للمزيد من المعلومات، انظر وصف الوحدة <code>Lazy</code> في المكتبة القياسية (الوحدة <code>Lazy</code>).</p>
+<h4>أنماط الاستثناءات</h4>
+<p>(أُدخلت في OCaml 4.02)</p>
+<p>يُسمح بشكل جديد من أنماط الاستثناءات، هو <code>exception</code> <em>pattern</em>، كنمط أعلى فقط، أو داخل نمط «أو» أعلى ضمن مطابقة أنماط <code>match</code>...<code>with</code> (وترفض مدقّق الأنواع أي ورود آخر).</p>
+<p>وتُسمّى الحالات التي لها نمط أعلى من هذا القبيل «حالات استثناء»، في مقابل «حالات القيم» العادية. وتُطبَّق حالات الاستثناء عندما يطلق تقييم التعبير المطابَق استثناءً. وتُطابق قيمة الاستثناء حينئذ مع جميع حالات الاستثناء، ويُعاد إطلاقه إن لم يقبله أي منها (كما في كتلة <code>try</code>...<code>with</code>). ولأن أجسام حالات الاستثناء وحالات القيم كلها خارج نطاق معالج الاستثناء، فتُعدّ كلها في الموضع الذَّنَبي: فإذا كانت كتلة <code>match</code>...<code>with</code> نفسها في الموضع الذَّنَبي في الدالة الحالية، أدّى أي نداء دالة في الموضع الذَّنَبي في أحد أجسام الحالات إلى نداء ذَنَبي فعلي.</p>
+<p>ويجب أن تحوي مطابقة الأنماط حالة قيمة واحدة على الأقل. ويُعدّ خطأً أن تكون جميع الحالات استثناءات، لأنه لن توجد شيفرة تعالج عودة قيمة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> find_opt p l =
+    <span class="hljs-keyword">match</span> <span class="hljs-type">List</span>.find p l <span class="hljs-keyword">with</span>
+    | <span class="hljs-keyword">exception</span> <span class="hljs-type">Not_found</span> -&gt; <span class="hljs-type">None</span>
+    | x -&gt; <span class="hljs-type">Some</span> x;;
+
+<span class="hljs-keyword">val</span> find_opt : (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> option = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>الفتح المحلي للأنماط</h4>
+<p>(أُدخل في OCaml 4.04)</p>
+<p>بالنسبة إلى الأنماط، يقتصر الفتح المحلي على البناء <em>module-path</em><code>.(</code><em>pattern</em><code>)</code>. ويفتح هذا البناء محليًا الوحدة المشار إليها بمسار الوحدة <em>module-path</em> في نطاق النمط <em>pattern</em>.</p>
+<p>وعندما يكون جسم نمط مفتوح محليًا محدَّدًا بـ <code>[</code> <code>]</code> أو <code>[|</code> <code>|]</code> أو <code>{</code> <code>}</code>، يمكن إهمال الأقواس. فمثلًا، <em>module-path</em><code>.[</code><em>pattern</em><code>]</code> مكافئ لـ <em>module-path</em><code>.([</code><em>pattern</em><code>])</code>، و<em>module-path</em><code>.[|</code> <em>pattern</em> <code>|]</code> مكافئ لـ <em>module-path</em><code>.([|</code> <em>pattern</em> <code>|])</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> bytes_allocated <span class="hljs-type">Gc</span>.{minor_words; major_words; promoted_words; _} =
+      (<span class="hljs-type">Sys</span>.word_size / <span class="hljs-number">4</span>)
+    * int_of_float (minor_words +. major_words -. promoted_words);;
+
+<span class="hljs-keyword">val</span> bytes_allocated : <span class="hljs-type">Gc</span>.stat -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h2 id="117-التعابير">11.7 التعابير</h2>
+<pre><code class="language-text">expr::= value-path ∣ constant ∣ ( expr ) ∣ begin expr end ∣ ( expr : typexpr ) ∣ expr { , expr }⁺ ∣ constr expr ∣ \`tag-name expr ∣ expr :: expr ∣ [ expr { ; expr } [;] ] ∣ [| expr { ; expr } [;] |] ∣ { field [: typexpr] [= expr]{ ; field [: typexpr] [= expr] } [;] } ∣ { expr with field [: typexpr] [= expr]{ ; field [: typexpr] [= expr] } [;] } ∣ expr { argument }⁺ ∣ prefix-symbol expr ∣ - expr ∣ -. expr ∣ expr infix-op expr ∣ expr . field ∣ expr . field &lt;- expr ∣ expr .( expr ) ∣ expr .( expr ) &lt;- expr ∣ expr .[ expr ] ∣ expr .[ expr ] &lt;- expr ∣ if expr then expr [ else expr ] ∣ while expr do expr done ∣ for value-name = expr ( to ∣ downto ) expr do expr done ∣ expr ; expr ∣ match expr with pattern-matching ∣ function pattern-matching ∣ fun { parameter }⁺ [ : typexpr ] -&gt; expr ∣ try expr with pattern-matching ∣ let [rec] let-binding { and let-binding } in expr ∣ let local-definition in expr ∣ ( expr :&gt; typexpr ) ∣ ( expr : typexpr :&gt; typexpr ) ∣ assert expr ∣ lazy expr ∣ local-open-shorthand ∣ object-expr
+</code></pre>
+<pre><code class="language-text">argument::= expr ∣ ~ label-name ∣ ~ label-name : expr ∣ ? label-name ∣ ? label-name : expr pattern-matching::= [ | ] pattern [when expr] -&gt; expr { | pattern [when expr] -&gt; expr } let-binding::= pattern = expr ∣ value-name { parameter } [: typexpr] [:&gt; typexpr] = expr ∣ value-name : poly-typexpr = expr parameter::= pattern ∣ ~ label-name ∣ ~ ( label-name [: typexpr] ) ∣ ~ label-name : pattern ∣ ? label-name ∣ ? ( label-name [: typexpr] [= expr] ) ∣ ? label-name : pattern ∣ ? label-name : ( pattern [: typexpr] [= expr] ) local-open-shorthand::= ∣ module-path .( expr ) ∣ module-path .[ expr ] ∣ module-path .[| expr |] ∣ module-path .{ expr } ∣ module-path .{&lt; expr &gt;} object-expr::= ∣ new class-path ∣ object class-body end ∣ expr # method-name ∣ inst-var-name ∣ inst-var-name &lt;- expr ∣ {&lt; [ inst-var-name [= expr] { ; inst-var-name [= expr] } [;] ] &gt;}
+</code></pre>
+<p>انظر أيضًا امتدادات اللغة التالية: وحدات من الدرجة الأولى، والتجاوز في عبارات الفتح، وصياغة الوصول إلى Bigarray، والسمات، وعقد الامتداد، وعمليات الفهرسة الممتدة، والتفريق الموجَّه بالنوع للمكوّنات الحرفية للمصفوفات، والصفوف الموسومة.</p>
+<h3 id="1171-الأولوية-والترابط">11.7.1 الأولوية والترابط</h3>
+<p>يبيّن الجدول أدناه الأولويات النسبية والترابط للعمليات والبنى غير المغلقة. وتأتي البنى ذات الأولوية الأعلى أولًا. وبالنسبة إلى رموز البادئة والوسيطة، نكتب «<code>*</code>…» للدلالة على «أي رمز يبدأ بـ <code>*</code>».</p>
+<table>
+<thead>
+<tr>
+<th><strong>البناء أو العملية</strong></th>
+<th><strong>الترابط</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prefix-symbol</td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>. .( .[ .{</code> (انظر القسم 12.11)</td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>#</code>…</td>
+<td>يساري</td>
+</tr>
+<tr>
+<td>تطبيق دالة، تطبيق باني، تطبيق وسم، <code>assert</code>، <code>lazy</code></td>
+<td>يساري</td>
+</tr>
+<tr>
+<td><code>- -.</code> (بادئة)</td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>**</code>…<code>lsl lsr asr</code></td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>*</code>…<code>/</code>…<code>%</code>…<code>mod land lor lxor</code></td>
+<td>يساري</td>
+</tr>
+<tr>
+<td><code>+</code>…<code>-</code>…</td>
+<td>يساري</td>
+</tr>
+<tr>
+<td><code>::</code></td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>@</code>…<code>^</code>…</td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>=</code>…<code>&lt;</code>…<code>&gt;</code>…<code>|</code>…<code>&amp;</code>…<code>$</code>…<code>!=</code></td>
+<td>يساري</td>
+</tr>
+<tr>
+<td><code>&amp; &amp;&amp;</code></td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>or ||</code></td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>&lt;- :=</code></td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>if</code></td>
+<td>–</td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td>يميني</td>
+</tr>
+<tr>
+<td><code>let match fun function try</code></td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<p>ومن السهل اختبار فهم المرء أو تجديده:</p>
+<pre><code class="language-ocaml"># <span class="hljs-number">3</span> + <span class="hljs-number">3</span> <span class="hljs-keyword">mod</span> <span class="hljs-number">2</span>, <span class="hljs-number">3</span> + (<span class="hljs-number">3</span> <span class="hljs-keyword">mod</span> <span class="hljs-number">2</span>), (<span class="hljs-number">3</span> + <span class="hljs-number">3</span>) <span class="hljs-keyword">mod</span> <span class="hljs-number">2</span>;;
+
+- : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> = (<span class="hljs-number">4</span>, <span class="hljs-number">4</span>, <span class="hljs-number">0</span>)
+</code></pre>
+<h3 id="1172-التعابير-الأساسية">11.7.2 التعابير الأساسية</h3>
+<h4>الثوابت</h4>
+<p>التعبير الذي يتكوّن من ثابت يُقيَّم إلى هذا الثابت. مثلًا <code>3.14</code> أو <code>[||]</code>.</p>
+<h4>مسارات القيم</h4>
+<p>التعبير الذي يتكوّن من مسار وصول يُقيَّم إلى القيمة المرتبطة بهذا المسار في بيئة التقييم الحالية. ويمكن أن يكون المسار إمّا اسم قيمة، وإمّا مسار وصول إلى مكوّن قيمي في وحدة.</p>
+<pre><code class="language-ocaml"># <span class="hljs-type">Float</span>.<span class="hljs-type">ArrayLabels</span>.to_list;;
+
+- : <span class="hljs-type">Float</span>.<span class="hljs-type">ArrayLabels</span>.t -&gt; <span class="hljs-built_in">float</span> <span class="hljs-built_in">list</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>التعابير بين قوسين</h4>
+<p>للتعبيرين <code>(</code> <em>expr</em> <code>)</code> و<code>begin</code> <em>expr</em> <code>end</code> القيمة نفسها التي لـ <em>expr</em>. والبناءان متكافئان دلاليًا، لكن من الأسلوب الجيد استعمال <code>begin</code> … <code>end</code> داخل بنى التحكّم:</p>
+<pre><code class="language-text">        if … then begin … ; … end else begin … ; … end
+</code></pre>
+<p>و<code>(</code> … <code>)</code> في حالات التجميع الأخرى.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span> + <span class="hljs-number">2</span> * <span class="hljs-number">3</span>
+  <span class="hljs-keyword">let</span> y = (<span class="hljs-number">1</span> + <span class="hljs-number">2</span>) * <span class="hljs-number">3</span>;;
+
+<span class="hljs-keyword">val</span> x : <span class="hljs-built_in">int</span> = <span class="hljs-number">7</span>
+<span class="hljs-keyword">val</span> y : <span class="hljs-built_in">int</span> = <span class="hljs-number">9</span>
+</code></pre>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f a b =
+    <span class="hljs-keyword">if</span> a = b <span class="hljs-keyword">then</span>
+      print_endline <span class="hljs-string">&quot;Equal&quot;</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span>
+        print_string <span class="hljs-string">&quot;Not Equal: &quot;</span>;
+        print_int a;
+        print_string <span class="hljs-string">&quot; and &quot;</span>;
+        print_int b;
+        print_newline <span class="hljs-literal">()</span>
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">val</span> f : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويمكن أن تحوي التعابير بين قوسين قيد نوع، كما في <code>(</code> <em>expr</em> <code>:</code> <em>typexpr</em> <code>)</code>. ويفرض هذا القيد أن يكون نوع <em>expr</em> متوافقًا مع <em>typexpr</em>.</p>
+<p>ويمكن أن تحوي التعابير بين قوسين أيضًا إكراهات <code>(</code> <em>expr</em> [<code>:</code> <em>typexpr</em>] <code>:&gt;</code> <em>typexpr</em><code>)</code> (انظر القسم الفرعي 11.7.7 أدناه).</p>
+<h4>تطبيق الدوال</h4>
+<p>يُدلّ على تطبيق الدالة بمجاورة تعابير (قد تكون موسومة). والتعبير <em>expr</em> <em>argument</em>₁ … <em>argument**n</em> يقيّم التعبير <em>expr</em> والتعابير الظاهرة في <em>argument</em>₁ إلى <em>argument**n</em>. ويجب أن يُقيَّم التعبير <em>expr</em> إلى قيمة دالية <em>f</em>، تُطبَّق حينئذ على قيم <em>argument</em>₁ … <em>argument**n</em>.</p>
+<p>والترتيب الذي تُقيَّم به التعابير <em>expr</em> و<em>argument</em>₁ … <em>argument**n</em> غير محدَّد.</p>
+<pre><code class="language-ocaml"># <span class="hljs-type">List</span>.fold_left ( + ) <span class="hljs-number">0</span> [<span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>; <span class="hljs-number">4</span>; <span class="hljs-number">5</span>];;
+
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">15</span>
+</code></pre>
+<p>وتُطابَق الوسائط والمعاملات وفق وسومها الخاصة. وترتيب الوسائط غير ذي أثر، إلا بين وسائط لها الوسم نفسه أو ليس لها وسم.</p>
+<pre><code class="language-ocaml"># <span class="hljs-type">ListLabels</span>.fold_left ~f:( @ ) ~init:<span class="hljs-literal">[]</span> [[<span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>]; [<span class="hljs-number">4</span>; <span class="hljs-number">5</span>; <span class="hljs-number">6</span>]; [<span class="hljs-number">7</span>; <span class="hljs-number">8</span>; <span class="hljs-number">9</span>]];;
+
+- : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> = [<span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>; <span class="hljs-number">4</span>; <span class="hljs-number">5</span>; <span class="hljs-number">6</span>; <span class="hljs-number">7</span>; <span class="hljs-number">8</span>; <span class="hljs-number">9</span>]
+</code></pre>
+<p>وإذا حُدِّد معامل كاختياري (بوسم مسبوق بـ <code>?</code>) في نوع <em>expr</em>، فسيُلفّ الوسيط المقابل تلقائيًا بالباني <code>Some</code>، إلا إذا كان الوسيط نفسه مسبوقًا بـ <code>?</code> أيضًا، وفي هذه الحالة يُمرَّر كما هو.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> fullname ?title first second =
+    <span class="hljs-keyword">match</span> title <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Some</span> t -&gt; t ^ <span class="hljs-string">&quot; &quot;</span> ^ first ^ <span class="hljs-string">&quot; &quot;</span> ^ second
+    | <span class="hljs-type">None</span> -&gt; first ^ <span class="hljs-string">&quot; &quot;</span> ^ second
+
+  <span class="hljs-keyword">let</span> name = fullname ~title:<span class="hljs-string">&quot;Mrs&quot;</span> <span class="hljs-string">&quot;Jane&quot;</span> <span class="hljs-string">&quot;Fisher&quot;</span>
+
+  <span class="hljs-keyword">let</span> address ?title first second town =
+    fullname ?title first second ^ <span class="hljs-string">&quot;\\n&quot;</span> ^ town;;
+
+<span class="hljs-keyword">val</span> fullname : ?title:<span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> name : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;Mrs Jane Fisher&quot;</span>
+<span class="hljs-keyword">val</span> address : ?title:<span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وإذا مُرِّر وسيط غير موسوم، وكان معامله المقابل مسبوقًا بمعامل اختياري واحد أو أكثر، فإن هذه المعاملات تُؤخذ <em>بقيمتها الافتراضية</em>، أي تُمرَّر لها القيمة <code>None</code>. وستُحفظ جميع المعاملات الناقصة الأخرى (التي لا وسيط مقابل لها)، الاختيارية وغير الاختيارية، وستكون نتيجة الدالة لا تزال دالة في هذه المعاملات الناقصة إلى جسم <em>f</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> fullname ?title first second =
+    <span class="hljs-keyword">match</span> title <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Some</span> t -&gt; t ^ <span class="hljs-string">&quot; &quot;</span> ^ first ^ <span class="hljs-string">&quot; &quot;</span> ^ second
+    | <span class="hljs-type">None</span> -&gt; first ^ <span class="hljs-string">&quot; &quot;</span> ^ second
+
+  <span class="hljs-keyword">let</span> name = fullname <span class="hljs-string">&quot;Jane&quot;</span> <span class="hljs-string">&quot;Fisher&quot;</span>;;
+
+<span class="hljs-keyword">val</span> fullname : ?title:<span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> name : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;Jane Fisher&quot;</span>
+</code></pre>
+<p>وفي جميع الحالات عدا التطابق التام في الترتيب والوسوم دون معاملات اختيارية، ينبغي أن يكون نوع الدالة معروفًا عند موضع التطبيق. ويمكن ضمان ذلك بإضافة قيد نوع. ويمكن التحقّق من أصالة الاستنتاج في النمط <code>-principal</code>.</p>
+<p>وكحالة خاصة، يدعم OCaml التطبيقات الكاملة <code>labels-omitted</code>: فإذا كانت للدالة رتبة معروفة، وكانت جميع الوسائط غير موسومة، وكان عددها يطابق عدد المعاملات غير الاختيارية، تُهمَل الوسوم وتُطابَق المعاملات غير الاختيارية بترتيب تعريفها. وتُؤخذ المعاملات الاختيارية بقيمها الافتراضية. ويُنصح بتجنّب إهمال الوسوم هذا، إذ يؤدّي إلى تحذير، انظر 13.5.1.</p>
+<h4>تعريف الدوال</h4>
+<p>تُقدَّم صيغتان صياغيتان لتعريف الدوال. الصيغة الأولى تُقدَّم بالكلمة المحجوزة <code>function</code>:</p>
+<table>
+<thead>
+<tr>
+<th><code>function</code>pattern₁<code>-&gt;</code>expr₁ <code>|</code>… <code>|</code>pattern<em>n</em><code>-&gt;</code>expr<em>n</em></th>
+</tr>
+</thead>
+</table>
+<p>يُقيَّم هذا التعبير إلى قيمة دالية بوسيط واحد. وعندما تُطبَّق هذه الدالة على قيمة <em>v</em>، تُطابَق هذه القيمة مع كل نمط من <em>pattern</em>₁ إلى <em>pattern**n</em>. فإذا نجحت إحدى هذه المطابقات، أي إذا طابقت القيمة <em>v</em> النمط <em>pattern**i</em> لبعض <em>i</em>، قُيِّم التعبير <em>expr**i</em> المرتبط بالنمط المختار، وأصبحت قيمته قيمة تطبيق الدالة. ويجري تقييم <em>expr**i</em> في بيئة مُثراة بعمليات الربط التي جرت أثناء المطابقة.</p>
+<p>وإذا طابقت عدة أنماط الوسيط <em>v</em>، اختير النمط الأسبق ورودًا في تعريف الدالة. وإذا لم يطابق أيّ نمط الوسيط، أُطلق الاستثناء <code>Match_failure</code>.</p>
+<pre><code class="language-ocaml"># (<span class="hljs-keyword">function</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>) -&gt; <span class="hljs-string">&quot;both zero&quot;</span>
+          | (<span class="hljs-number">0</span>, _) -&gt; <span class="hljs-string">&quot;first only zero&quot;</span>
+          | (_, <span class="hljs-number">0</span>) -&gt; <span class="hljs-string">&quot;second only zero&quot;</span>
+          | (_, _) -&gt; <span class="hljs-string">&quot;neither zero&quot;</span>)
+  (<span class="hljs-number">7</span>, <span class="hljs-number">0</span>);;
+
+- : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;second only zero&quot;</span>
+</code></pre>
+<p>وصيغة تعريف الدوال الأخرى تُقدَّم بالكلمة المحجوزة <code>fun</code>: <code>fun</code> <em>parameter</em>₁ … <em>parameter</em>ₙ <code>-&gt;</code> <em>expr</em>.</p>
+<p>وهذا التعبير مكافئ لـ: <code>fun</code> <em>parameter</em>₁ <code>-&gt;</code> … <code>fun</code> <em>parameter</em>ₙ <code>-&gt;</code> <em>expr</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f = (<span class="hljs-keyword">fun</span> a -&gt; <span class="hljs-keyword">fun</span> b -&gt; <span class="hljs-keyword">fun</span> c -&gt; a + b + c)
+  <span class="hljs-keyword">let</span> g = (<span class="hljs-keyword">fun</span> a b c -&gt; a + b + c);;
+
+<span class="hljs-keyword">val</span> f : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> g : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويمكن إضافة قيد نوع اختياري <em>typexpr</em> قبل <code>-&gt;</code> لفرض أن تكون نتيجة الدالة متوافقة مع القيد <em>typexpr</em>: الصيغة <code>fun</code> <em>parameter</em>₁ … <em>parameter</em>ₙ <code>:</code> <em>typexpr</em> <code>-&gt;</code> <em>expr</em> مكافئة لـ <code>fun</code> <em>parameter</em>₁ <code>-&gt;</code> … <code>fun</code> <em>parameter</em>ₙ <code>-&gt;</code> <code>(</code> <em>expr</em> <code>:</code> <em>typexpr</em> <code>)</code>.</p>
+<p>واحذر الفرق الصياغي الصغير بين قيد نوع على المعامل الأخير، <code>fun</code> <em>parameter</em>₁ … <code>(</code> <em>parameter</em>ₙ <code>:</code> <em>typexpr</em> <code>)</code> <code>-&gt;</code> <em>expr</em>، وقيد على النتيجة، <code>fun</code> <em>parameter</em>₁ … <em>parameter</em>ₙ <code>:</code> <em>typexpr</em> <code>-&gt;</code> <em>expr</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> eq = <span class="hljs-keyword">fun</span> (a : <span class="hljs-built_in">int</span>) (b : <span class="hljs-built_in">int</span>) -&gt; a = b
+  <span class="hljs-keyword">let</span> eq2 = <span class="hljs-keyword">fun</span> a b : <span class="hljs-built_in">bool</span> -&gt; a = b
+  <span class="hljs-keyword">let</span> eq3 = <span class="hljs-keyword">fun</span> (a : <span class="hljs-built_in">int</span>) (b : <span class="hljs-built_in">int</span>) : <span class="hljs-built_in">bool</span> -&gt; a = b;;
+
+<span class="hljs-keyword">val</span> eq : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> eq2 : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> eq3 : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ونمطا المعامل <code>~</code><em>lab</em> و<code>~(</code><em>lab</em> [<code>:</code> <em>typ</em>]<code>)</code> اختصاران لـ <code>~</code><em>lab</em><code>:</code><em>lab</em> و<code>~</code><em>lab</em><code>:(</code><em>lab</em> [<code>:</code> <em>typ</em>]<code>)</code> على الترتيب، وكذلك نظيراهما الاختياريان.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> bool_map ~cmp:(cmp : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span>) l =
+    <span class="hljs-type">List</span>.map cmp l
+
+  <span class="hljs-keyword">let</span> bool_map&#x27; ~(cmp : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span>) l =
+    <span class="hljs-type">List</span>.map cmp l;;
+
+<span class="hljs-keyword">val</span> bool_map : cmp:(<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span>) -&gt; <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt; (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span>) <span class="hljs-built_in">list</span> =
+  &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> bool_map&#x27; : cmp:(<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span>) -&gt; <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt; (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span>) <span class="hljs-built_in">list</span> =
+  &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> open_file_for_input ?binary filename =
+    <span class="hljs-keyword">match</span> binary <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Some</span> <span class="hljs-literal">true</span> -&gt; open_in_bin filename
+    | <span class="hljs-type">Some</span> <span class="hljs-literal">false</span> | <span class="hljs-type">None</span> -&gt; open_in filename
+
+  <span class="hljs-keyword">let</span> open_file_for_input&#x27; ?(binary=<span class="hljs-literal">false</span>) filename =
+    <span class="hljs-keyword">if</span> binary <span class="hljs-keyword">then</span> open_in_bin filename <span class="hljs-keyword">else</span> open_in filename;;
+
+<span class="hljs-keyword">val</span> open_file_for_input : ?binary:<span class="hljs-built_in">bool</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">in_channel</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> open_file_for_input&#x27; : ?binary:<span class="hljs-built_in">bool</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">in_channel</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وبعد هذين التحويلين، تصبح التعابير على الشكل: <code>fun</code> [<code>label</code>₁] <em>pattern</em>₁ <code>-&gt;</code> … <code>fun</code> [\`label*ₙ] <em>pattern</em>ₙ \`-&gt;\` <em>expr</em>.</p>
+<p>وإذا أغفلنا الوسوم، التي لا تكون ذات معنى إلا عند تطبيق الدالة، كان ذلك مكافئًا لـ: <code>function</code> <em>pattern</em>₁ <code>-&gt;</code> … <code>function</code> <em>pattern</em>ₙ <code>-&gt;</code> <em>expr</em>.</p>
+<p>أي إن تعبير <code>fun</code> أعلاه يُقيَّم إلى دالة مكارية بوسائط عددها <em>n</em>: فبعد تطبيق هذه الدالة <em>n</em> مرة على القيم <em>v</em>₁ … <em>v**n</em>، تُطابَق القيم على التوازي مع الأنماط <em>pattern</em>₁ … <em>pattern**n</em>. وإذا نجحت المطابقة، أعادت الدالة قيمة <em>expr</em> في بيئة مُثراة بعمليات الربط التي جرت أثناء المطابقات. وإذا فشلت المطابقة، أُطلق الاستثناء <code>Match_failure</code>.</p>
+<h4>الحُرّاس في مطابقات الأنماط</h4>
+<p>يمكن أن تحوي حالات مطابقة النمط (في البنى <code>function</code> و<code>match</code> و<code>try</code>) تعابير حُرّاس، وهي تعابير منطقية اعتباطية يجب أن تُقيَّم إلى <code>true</code> لاختيار حالة المطابقة. وتظهر الحُرّاس قبل الرمز <code>-&gt;</code> مباشرةً، وتُقدَّم بالكلمة المحجوزة <code>when</code>:</p>
+<table>
+<thead>
+<tr>
+<th><code>function</code><em>pattern</em>₁ [<code>when</code> <em>cond</em>₁]<code>-&gt;</code><em>expr</em>₁ <code>|</code>… <code>|</code><em>pattern**n</em> [<code>when</code> <em>cond**n</em>]<code>-&gt;</code><em>expr**n</em></th>
+</tr>
+</thead>
+</table>
+<p>وتجري المطابقة كما وُصف سابقًا، إلا أنه إذا طابقت القيمة نمطًا ما <em>pattern**i</em> له حارس <em>cond**i</em>، قُيِّم التعبير <em>cond**i</em> (في بيئة مُثراة بعمليات الربط التي جرت أثناء المطابقة). فإذا قُيِّم <em>cond**i</em> إلى <code>true</code>، قُيِّم <em>expr**i</em> وأُعيدت قيمته نتيجةً للمطابقة، كالمعتاد. أما إذا قُيِّم <em>cond**i</em> إلى <code>false</code>، استُؤنفت المطابقة مع الأنماط التي تلي <em>pattern**i</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> repeat f = <span class="hljs-keyword">function</span>
+    | <span class="hljs-number">0</span> -&gt; <span class="hljs-literal">()</span>
+    | n <span class="hljs-keyword">when</span> n &gt; <span class="hljs-number">0</span> -&gt; f <span class="hljs-literal">()</span>; repeat f (n - <span class="hljs-number">1</span>)
+    | _ -&gt; raise (<span class="hljs-type">Invalid_argument</span> <span class="hljs-string">&quot;repeat&quot;</span>);;
+
+<span class="hljs-keyword">val</span> repeat : (<span class="hljs-built_in">unit</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>التعريفات المحلية</h4>
+<p>تربط البنى <code>let</code> و<code>let</code> <code>rec</code> أسماء القيم محليًا. والبناء <code>let</code> <em>pattern</em>₁ <code>=</code> <em>expr</em>₁ <code>and</code> … <code>and</code> <em>pattern</em>ₙ <code>=</code> <em>expr</em>ₙ <code>in</code> <em>expr</em> يقيّم <em>expr</em>₁ … <em>expr**n</em> بترتيب غير محدَّد ويطابق قيمها مع الأنماط <em>pattern</em>₁ … <em>pattern**n</em>. فإذا نجحت المطابقات، قُيِّم <em>expr</em> في بيئة مُثراة بعمليات الربط التي جرت أثناء المطابقة، وأُعيدت قيمة <em>expr</em> قيمةً لتعبير <code>let</code> كله. وإذا فشلت إحدى المطابقات، أُطلق الاستثناء <code>Match_failure</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> v =
+    <span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> [x; x; x]
+
+  <span class="hljs-keyword">let</span> v&#x27; =
+    <span class="hljs-keyword">let</span> a, b = (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">in</span> a + b
+
+  <span class="hljs-keyword">let</span> v&#x27;&#x27; =
+    <span class="hljs-keyword">let</span> a = <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> b = <span class="hljs-number">2</span> <span class="hljs-keyword">in</span> a + b;;
+
+<span class="hljs-keyword">val</span> v : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> = [<span class="hljs-number">1</span>; <span class="hljs-number">1</span>; <span class="hljs-number">1</span>]
+<span class="hljs-keyword">val</span> v&#x27; : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+<span class="hljs-keyword">val</span> v&#x27;&#x27; : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+</code></pre>
+<p>وتُقدَّم صياغة بديلة لربط المتغيّرات بقيم دالية: فبدلًا من كتابة <code>let</code> <em>ident</em> <code>=</code> <code>fun</code> <em>parameter</em>₁ … <em>parameter</em>ₘ <code>-&gt;</code> <em>expr</em> في تعبير <code>let</code>، يمكن للمرء أن يكتب <code>let</code> <em>ident</em> <em>parameter</em>₁ … <em>parameter</em>ₘ <code>=</code> <em>expr</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">fun</span> x -&gt; <span class="hljs-keyword">fun</span> y -&gt; <span class="hljs-keyword">fun</span> z -&gt; x + y + z
+
+  <span class="hljs-keyword">let</span> f&#x27; = <span class="hljs-keyword">fun</span> x y z -&gt; x + y + z
+
+  <span class="hljs-keyword">let</span> f&#x27;&#x27; x y z = x + y + z;;
+
+<span class="hljs-keyword">val</span> f : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> f&#x27; : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> f&#x27;&#x27; : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وتُقدَّم التعريفات العودية للأسماء بـ <code>let</code> <code>rec</code>: <code>let</code> <code>rec</code> <em>pattern</em>₁ <code>=</code> <em>expr</em>₁ <code>and</code> … <code>and</code> <em>pattern</em>ₙ <code>=</code> <em>expr</em>ₙ <code>in</code> <em>expr</em>.</p>
+<p>والفرق الوحيد مع بناء <code>let</code> الموصوف أعلاه أن عمليات ربط الأسماء بالقيم التي تجريها مطابقة الأنماط تُعدّ قد جرت سابقًا عندما تُقيَّم التعابير <em>expr</em>₁ إلى <em>expr**n</em>. أي إن التعابير <em>expr</em>₁ إلى <em>expr**n</em> يمكن أن تشير إلى معرّفات يربطها أحد الأنماط <em>pattern</em>₁ … <em>pattern**n</em>، وتتوقع أن تكون لها القيمة نفسها كما في <em>expr</em>، جسم بناء <code>let</code> <code>rec</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> even =
+    <span class="hljs-keyword">function</span> <span class="hljs-number">0</span> -&gt; <span class="hljs-literal">true</span> | n -&gt; odd (n - <span class="hljs-number">1</span>)
+  <span class="hljs-keyword">and</span> odd =
+    <span class="hljs-keyword">function</span> <span class="hljs-number">0</span> -&gt; <span class="hljs-literal">false</span> | n -&gt; even (n - <span class="hljs-number">1</span>)
+  <span class="hljs-keyword">in</span>
+    even <span class="hljs-number">1000</span>;;
+
+- : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<p>ويُضمن أن يتصرّف التعريف العودي كما وُصف أعلاه إذا كانت التعابير <em>expr</em>₁ إلى <em>expr**n</em> تعريفات دوال (<code>fun</code> … أو <code>function</code> …)، وكانت الأنماط <em>pattern</em>₁ … <em>pattern**n</em> مجرّد أسماء قيم، كما في: <code>let</code> <code>rec</code> <em>name</em>₁ <code>=</code> <code>fun</code> … <code>and</code> … <code>and</code> <em>name</em>ₙ <code>=</code> <code>fun</code> … <code>in</code> <em>expr</em>.</p>
+<p>وهذا يعرّف <em>name</em>₁ … <em>name**n</em> كدوال عودية متبادلة محلية في <em>expr</em>.</p>
+<p>وسلوك الأشكال الأخرى من تعريفات <code>let</code> <code>rec</code> يعتمد على التنفيذ. ويدعم التنفيذ الحالي أيضًا صنفًا معيّنًا من التعريفات العودية للقيم غير الدالية، كما هو مشروح في القسم 12.1.</p>
+<h4>تعليقات الأنواع متعدّدة الأشكال الصريحة</h4>
+<p>(أُدخلت في OCaml 3.12)</p>
+<p>تتصرّف تعليقات الأنواع متعدّدة الأشكال في تعريفات <code>let</code> على نحو شبيه بالدوال متعدّدة الأشكال: <code>let</code> <em>pattern</em>₁ <code>:</code> <em>typ</em>₁ … <em>typ</em>ₙ <code>.</code> <em>typexpr</em> <code>=</code> <em>expr</em>.</p>
+<p>وتفرض هذه التعليقات صراحةً أن تكون القيمة المعرَّفة متعدّدة الأشكال، وتتيح استعمال تعدّد الأشكال هذا في الورودات العودية (عند استعمال <code>let</code> <code>rec</code>). لكن لاحظ أن هذا نوع متعدّد الأشكال عادي، قابل للتوحيد مع أي تجسيد منه.</p>
+<h3 id="1173-بنى-التحكم">11.7.3 بنى التحكّم</h3>
+<h4>التتالي</h4>
+<p>التعبير <em>expr</em>₁ <code>;</code> <em>expr</em>₂ يقيّم <em>expr</em>₁ أولًا، ثم <em>expr</em>₂، ويعيد قيمة <em>expr</em>₂.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> print_pair (a, b) =
+    print_string <span class="hljs-string">&quot;(&quot;</span>;
+    print_string (string_of_int a);
+    print_string <span class="hljs-string">&quot;,&quot;</span>;
+    print_string (string_of_int b);
+    print_endline <span class="hljs-string">&quot;)&quot;</span>;;
+
+<span class="hljs-keyword">val</span> print_pair : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>الشرط</h4>
+<p>التعبير <code>if</code> <em>expr</em>₁ <code>then</code> <em>expr</em>₂ <code>else</code> <em>expr</em>₃ يُقيَّم إلى قيمة <em>expr</em>₂ إذا قُيِّم <em>expr</em>₁ إلى المنطقي <code>true</code>، وإلى قيمة <em>expr</em>₃ إذا قُيِّم <em>expr</em>₁ إلى المنطقي <code>false</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> factorial x =
+    <span class="hljs-keyword">if</span> x &lt;= <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> x * factorial (x - <span class="hljs-number">1</span>);;
+
+<span class="hljs-keyword">val</span> factorial : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويمكن إهمال الجزء <code>else</code> <em>expr</em>₃، وفي هذه الحالة يكون الافتراضي <code>else</code> <code>()</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> debug = <span class="hljs-built_in">ref</span> <span class="hljs-literal">false</span>
+
+  <span class="hljs-keyword">let</span> log msg =
+    <span class="hljs-keyword">if</span> !debug <span class="hljs-keyword">then</span> prerr_endline msg;;
+
+<span class="hljs-keyword">val</span> debug : <span class="hljs-built_in">bool</span> <span class="hljs-built_in">ref</span> = {contents = <span class="hljs-literal">false</span>}
+<span class="hljs-keyword">val</span> log : <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>تعبير الحالة</h4>
+<table>
+<thead>
+<tr>
+<th><code>match</code> <em>expr</em> <code>with</code> <em>pattern</em>₁ <code>-&gt;</code> <em>expr</em>₁ <code>|</code> … <code>|</code> <em>pattern</em>ₙ <code>-&gt;</code> <em>expr</em>ₙ</th>
+</tr>
+</thead>
+</table>
+<p>يطابق هذا التعبير قيمة <em>expr</em> مع الأنماط <em>pattern</em>₁ إلى <em>pattern</em>ₙ. فإذا نجحت المطابقة مع النمط <em>pattern</em>ᵢ، قُيِّم التعبير المرتبط <em>expr</em>ᵢ، وأصبحت قيمته قيمة تعبير <code>match</code> كله. ويجري تقييم <em>expr</em>ᵢ في بيئة مُثراة بعمليات الربط التي جرت أثناء المطابقة. وإذا طابقت عدة أنماط قيمة <em>expr</em>، اختير النمط الأسبق ورودًا في تعبير <code>match</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> sum l =
+    <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">[]</span> -&gt; <span class="hljs-number">0</span>
+    | h :: t -&gt; h + sum t;;
+
+<span class="hljs-keyword">val</span> sum : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وإذا لم يطابق أيّ نمط قيمة <em>expr</em>، أُطلق الاستثناء <code>Match_failure</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> unoption o =
+    <span class="hljs-keyword">match</span> o <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Some</span> x -&gt; x ;;
+
+<span class="hljs-type">Warning</span> <span class="hljs-number">8</span> [partial-<span class="hljs-keyword">match</span>]: this pattern-matching is not exhaustive.
+  <span class="hljs-type">Here</span> is an example <span class="hljs-keyword">of</span> a case that is not matched: <span class="hljs-type">None</span>
+
+<span class="hljs-keyword">val</span> unoption : <span class="hljs-symbol">&#x27;a</span> option -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+
+# <span class="hljs-keyword">let</span> l = <span class="hljs-type">List</span>.map unoption [<span class="hljs-type">Some</span> <span class="hljs-number">1</span>; <span class="hljs-type">Some</span> <span class="hljs-number">10</span>; <span class="hljs-type">None</span>; <span class="hljs-type">Some</span> <span class="hljs-number">2</span>];;
+
+<span class="hljs-type">Exception</span>: <span class="hljs-type">Match_failure</span> (<span class="hljs-string">&quot;expr.etex&quot;</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>).
+</code></pre>
+<h4>المعاملات المنطقية</h4>
+<p>يُقيَّم التعبير <em>expr</em>₁ <code>&amp;&amp;</code> <em>expr</em>₂ إلى <code>true</code> إذا قُيّم كلٌّ من التعبيرين <em>expr</em>₁ و<em>expr</em>₂ إلى <code>true</code>، وإلا قُيّم إلى <code>false</code>. يُقيَّم المكوّن الأول <em>expr</em>₁ أولًا، ولا يُقيَّم المكوّن الثاني <em>expr</em>₂ إذا قُيّم الأول إلى <code>false</code>. ولهذا يتصرّف التعبير <em>expr</em>₁ <code>&amp;&amp;</code> <em>expr</em>₂ تمامًا كما يتصرّف <code>if</code> <em>expr</em>₁ <code>then</code> <em>expr</em>₂ <code>else</code> <code>false</code>.</p>
+<p>ويُقيَّم التعبير <em>expr</em>₁ <code>||</code> <em>expr</em>₂ إلى <code>true</code> إذا قُيّم أحد التعبيرين <em>expr</em>₁ و<em>expr</em>₂ إلى <code>true</code>، وإلا قُيّم إلى <code>false</code>. يُقيَّم المكوّن الأول <em>expr</em>₁ أولًا، ولا يُقيَّم المكوّن الثاني <em>expr</em>₂ إذا قُيّم الأول إلى <code>true</code>. ولهذا يتصرّف التعبير <em>expr</em>₁ <code>||</code> <em>expr</em>₂ تمامًا كما يتصرّف <code>if</code> <em>expr</em>₁ <code>then</code> <code>true</code> <code>else</code> <em>expr</em>₂.</p>
+<p>والمعاملان المنطقيان <code>&amp;</code> و<code>or</code> مرادفان مهجوران للمعاملين <code>&amp;&amp;</code> و<code>||</code> على الترتيب.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> xor a b =
+    (a || b) &amp;&amp; not (a &amp;&amp; b);;
+
+<span class="hljs-keyword">val</span> xor : <span class="hljs-built_in">bool</span> -&gt; <span class="hljs-built_in">bool</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>الحلقات</h4>
+<p>يُقيّم التعبير <code>while</code> <em>expr</em>₁ <code>do</code> <em>expr</em>₂ <code>done</code> التعبير <em>expr</em>₂ مرارًا ما دام <em>expr</em>₁ يُقيَّم إلى <code>true</code>. يُقيَّم شرط الحلقة <em>expr</em>₁ ويُفحص في بداية كل دورة. ويُقيَّم التعبير الكامل <code>while</code> … <code>done</code> إلى القيمة الواحدية <code>()</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> chars_of_string s =
+    <span class="hljs-keyword">let</span> i = <span class="hljs-built_in">ref</span> <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> chars = <span class="hljs-built_in">ref</span> <span class="hljs-literal">[]</span> <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">while</span> !i &lt; <span class="hljs-type">String</span>.length s <span class="hljs-keyword">do</span>
+        chars := s.[!i] :: !chars;
+        i := !i + <span class="hljs-number">1</span>
+      <span class="hljs-keyword">done</span>;
+      <span class="hljs-type">List</span>.rev !chars;;
+
+<span class="hljs-keyword">val</span> chars_of_string : <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">char</span> <span class="hljs-built_in">list</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وكحالة خاصة، يُمنح التعبير <code>while</code> <code>true</code> <code>do</code> <em>expr</em> <code>done</code> نوعًا متعدّد الأشكال، ما يسمح باستعماله بدلًا من أي تعبير (في أحد فروع أي مطابقة أنماط مثلًا).</p>
+<p>ويُقيّم التعبير <code>for</code> <em>name</em> <code>=</code> <em>expr</em>₁ <code>to</code> <em>expr</em>₂ <code>do</code> <em>expr</em>₃ <code>done</code> أولًا التعبيرين <em>expr</em>₁ و<em>expr</em>₂ (الحدّين) إلى قيمتين صحيحتين <em>n</em> و<em>p</em>. ثم يُقيَّم جسم الحلقة <em>expr</em>₃ مرارًا في بيئة يُربط فيها <em>name</em> تباعًا بالقيم <em>n</em>، <em>n</em>+1، …، <em>p</em>−1، <em>p</em>. ولا يُقيَّم جسم الحلقة أبدًا إذا كان <em>n</em> &gt; <em>p</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> chars_of_string s =
+    <span class="hljs-keyword">let</span> l = <span class="hljs-built_in">ref</span> <span class="hljs-literal">[]</span> <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">for</span> p = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-type">String</span>.length s - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+        l := s.[p] :: !l
+      <span class="hljs-keyword">done</span>;
+      <span class="hljs-type">List</span>.rev !l;;
+
+<span class="hljs-keyword">val</span> chars_of_string : <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">char</span> <span class="hljs-built_in">list</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويُقيّم التعبير <code>for</code> <em>name</em> <code>=</code> <em>expr</em>₁ <code>downto</code> <em>expr</em>₂ <code>do</code> <em>expr</em>₃ <code>done</code> على نحو مشابه، إلا أن <em>name</em> يُربط تباعًا بالقيم <em>n</em>، <em>n</em>−1، …، <em>p</em>+1، <em>p</em>. ولا يُقيَّم جسم الحلقة أبدًا إذا كان <em>n</em> &lt; <em>p</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> chars_of_string s =
+    <span class="hljs-keyword">let</span> l = <span class="hljs-built_in">ref</span> <span class="hljs-literal">[]</span> <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">for</span> p = <span class="hljs-type">String</span>.length s - <span class="hljs-number">1</span> <span class="hljs-keyword">downto</span> <span class="hljs-number">0</span> <span class="hljs-keyword">do</span>
+        l := s.[p] :: !l
+      <span class="hljs-keyword">done</span>;
+      !l;;
+
+<span class="hljs-keyword">val</span> chars_of_string : <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">char</span> <span class="hljs-built_in">list</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وفي كلتا الحالتين، يُقيَّم تعبير <code>for</code> الكامل إلى القيمة الواحدية <code>()</code>.</p>
+<h4>معالجة الاستثناءات</h4>
+<p>يُقيّم التعبير</p>
+<table>
+<thead>
+<tr>
+<th><code>try</code> <em>expr</em> <code>with</code> <em>pattern</em>₁ <code>-&gt;</code> <em>expr</em>₁ <code>|</code> … <code>|</code> <em>pattern</em>ₙ <code>-&gt;</code> <em>expr</em>ₙ</th>
+</tr>
+</thead>
+</table>
+<p>التعبير <em>expr</em> ويعيد قيمته إذا لم يُثر تقييم <em>expr</em> أي استثناء. أما إذا أثار تقييم <em>expr</em> استثناءً، فتُطابَق قيمة الاستثناء مع الأنماط من <em>pattern</em>₁ إلى <em>pattern</em>ₙ. وإذا نجحت المطابقة مع <em>pattern</em>ᵢ، يُقيَّم التعبير المرتبط <em>expr</em>ᵢ، وتصبح قيمته قيمة تعبير <code>try</code> كاملًا. ويجري تقييم <em>expr</em>ᵢ في بيئة تُثرى بالارتباطات التي أُنجزت أثناء المطابقة. وإذا طابق عدة أنماط قيمة <em>expr</em>، اختير النمط الأول ورودًا في تعبير <code>try</code>. وإذا لم يطابق أي نمط قيمة <em>expr</em>، أُثيرت قيمة الاستثناء من جديد، فتمرّ «عبر» بنية <code>try</code> بشفافية.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> find_opt p l =
+    <span class="hljs-keyword">try</span> <span class="hljs-type">Some</span> (<span class="hljs-type">List</span>.find p l) <span class="hljs-keyword">with</span> <span class="hljs-type">Not_found</span> -&gt; <span class="hljs-type">None</span>;;
+
+<span class="hljs-keyword">val</span> find_opt : (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">bool</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> option = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h3 id="1174-عمليات-على-بنى-البيانات">11.7.4 عمليات على بنى البيانات</h3>
+<h4>الجداءات</h4>
+<p>يُقيَّم التعبير <em>expr</em>₁ <code>,</code> … <code>,</code> <em>expr</em>ₙ إلى الصفّ <em>n</em> من قيم التعبيرات من <em>expr</em>₁ إلى <em>expr</em>ₙ. وترتيب تقييم التعبيرات الفرعية غير محدّد.</p>
+<pre><code class="language-ocaml"># (<span class="hljs-number">1</span> + <span class="hljs-number">2</span> * <span class="hljs-number">3</span>, (<span class="hljs-number">1</span> + <span class="hljs-number">2</span>) * <span class="hljs-number">3</span>, <span class="hljs-number">1</span> + (<span class="hljs-number">2</span> * <span class="hljs-number">3</span>));;
+
+- : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> = (<span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">7</span>)
+</code></pre>
+<h4>المتغيّرات</h4>
+<p>يُقيَّم التعبير <em>constr</em> <em>expr</em> إلى قيمة المتغيّر الأحادي الذي بانيه <em>constr</em> ومعامله قيمة <em>expr</em>. وعلى المنوال نفسه، يُقيَّم التعبير <em>constr</em> <code>(</code> <em>expr</em>₁ <code>,</code> … <code>,</code> <em>expr</em>ₙ <code>)</code> إلى قيمة المتغيّر ذي الرتبة n الذي بانيه <em>constr</em> ومعاملاته قيم <em>expr</em>₁، …، <em>expr</em>ₙ.</p>
+<p>ويُقيَّم التعبير <em>constr</em> <code>(</code> <em>expr</em>₁, …, <em>expr</em>ₙ <code>)</code> إلى قيمة المتغيّر الذي بانيه <em>constr</em> ومعاملاته قيم <em>expr</em>₁ … <em>expr</em>ₙ.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> t = <span class="hljs-type">Var</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span> | <span class="hljs-type">Not</span> <span class="hljs-keyword">of</span> t | <span class="hljs-type">And</span> <span class="hljs-keyword">of</span> t * t | <span class="hljs-type">Or</span> <span class="hljs-keyword">of</span> t * t
+
+  <span class="hljs-keyword">let</span> test = <span class="hljs-type">And</span> (<span class="hljs-type">Var</span> <span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-type">Not</span> (<span class="hljs-type">Or</span> (<span class="hljs-type">Var</span> <span class="hljs-string">&quot;y&quot;</span>, <span class="hljs-type">Var</span> <span class="hljs-string">&quot;z&quot;</span>)));;
+
+<span class="hljs-keyword">type</span> t = <span class="hljs-type">Var</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span> | <span class="hljs-type">Not</span> <span class="hljs-keyword">of</span> t | <span class="hljs-type">And</span> <span class="hljs-keyword">of</span> t * t | <span class="hljs-type">Or</span> <span class="hljs-keyword">of</span> t * t
+<span class="hljs-keyword">val</span> test : t = <span class="hljs-type">And</span> (<span class="hljs-type">Var</span> <span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-type">Not</span> (<span class="hljs-type">Or</span> (<span class="hljs-type">Var</span> <span class="hljs-string">&quot;y&quot;</span>, <span class="hljs-type">Var</span> <span class="hljs-string">&quot;z&quot;</span>)))
+</code></pre>
+<p>وتُقدَّم للقوائم بعض السكر النحوي. فالتعبير <em>expr</em>₁ <code>::</code> <em>expr</em>₂ يمثّل الباني <code>(</code> <code>::</code> <code>)</code> مطبَّقًا على المعاملين <code>(</code> <em>expr</em>₁ <code>,</code> <em>expr</em>₂ <code>)</code>، ولذلك يُقيَّم إلى القائمة التي رأسها قيمة <em>expr</em>₁ وذيلها قيمة <em>expr</em>₂. والتعبير <code>[</code> <em>expr</em>₁ <code>;</code> … <code>;</code> <em>expr</em>ₙ <code>]</code> يكافئ <em>expr</em>₁ <code>::</code> … <code>::</code> <em>expr</em>ₙ <code>::</code> <code>[]</code>، ولذلك يُقيَّم إلى القائمة التي عناصرها قيم <em>expr</em>₁ إلى <em>expr</em>ₙ.</p>
+<pre><code class="language-ocaml"># <span class="hljs-number">0</span> :: [<span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>] = <span class="hljs-number">0</span> :: <span class="hljs-number">1</span> :: <span class="hljs-number">2</span> :: <span class="hljs-number">3</span> :: <span class="hljs-literal">[]</span>;;
+
+- : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<h4>المتغيّرات متعدّدة الأشكال</h4>
+<p>يُقيَّم التعبير <code>\`</code><em>tag-name</em> <em>expr</em> إلى قيمة المتغيّر متعدّد الأشكال الذي وسمه <em>tag-name</em> ومعامله قيمة <em>expr</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> with_counter x = <span class="hljs-type">\`V</span> (x, <span class="hljs-built_in">ref</span> <span class="hljs-number">0</span>);;
+
+<span class="hljs-keyword">val</span> with_counter : <span class="hljs-symbol">&#x27;a</span> -&gt; [&gt; <span class="hljs-type">\`V</span> <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;a</span> * <span class="hljs-built_in">int</span> <span class="hljs-built_in">ref</span> ] = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>السجلات</h4>
+<p>يُقيَّم التعبير <code>{</code> <em>field</em>₁ [<code>=</code> <em>expr</em>₁] <code>;</code> … <code>;</code> <em>field</em>ₙ [<code>=</code> <em>expr</em>ₙ] <code>}</code> إلى قيمة السجل { <em>field</em>₁ = <em>v</em>₁; …; <em>field</em>ₙ = <em>v</em>ₙ } حيث <em>v</em>ᵢ قيمة <em>expr</em>ᵢ من أجل <em>i</em> = 1، …، <em>n</em>. ويمثّل المعرّف المفرد <em>field</em>ₖ التعبير <em>field</em>ₖ <code>=</code> <em>field</em>ₖ، ويمثّل المعرّف المؤهَّل <em>module-path</em> <code>.</code> <em>field</em>ₖ التعبير <em>module-path</em> <code>.</code> <em>field</em>ₖ <code>=</code> <em>field</em>ₖ. ويجب أن تنتمي الحقول من <em>field</em>₁ إلى <em>field</em>ₙ جميعها إلى نوع السجل نفسه؛ ويجب أن يظهر كل حقل من هذا النوع مرة واحدة بالضبط في تعبير السجل، وإن جاز أن تظهر بأي ترتيب. وترتيب تقييم <em>expr</em>₁ إلى <em>expr</em>ₙ غير محدّد. ويمكن إضافة قيود نوع اختيارية بعد كل حقل، على الصيغة <code>{</code> <em>field</em>₁ <code>:</code> <em>typexpr</em>₁ <code>=</code> <em>expr</em>₁ <code>;</code> … <code>;</code> <em>field</em>ₙ <code>:</code> <em>typexpr</em>ₙ <code>=</code> <em>expr</em>ₙ <code>}</code>، لإلزام نوع <em>field</em>ₖ بأن يكون متوافقًا مع <em>typexpr</em>ₖ.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> t = {house_no : <span class="hljs-built_in">int</span>; street : <span class="hljs-built_in">string</span>; town : <span class="hljs-built_in">string</span>; postcode : <span class="hljs-built_in">string</span>}
+
+  <span class="hljs-keyword">let</span> address x =
+    <span class="hljs-type">Printf</span>.sprintf <span class="hljs-string">&quot;The occupier\\n%i %s\\n%s\\n%s&quot;</span>
+      x.house_no x.street x.town x.postcode;;
+
+<span class="hljs-keyword">type</span> t = {
+  house_no : <span class="hljs-built_in">int</span>;
+  street : <span class="hljs-built_in">string</span>;
+  town : <span class="hljs-built_in">string</span>;
+  postcode : <span class="hljs-built_in">string</span>;
+}
+<span class="hljs-keyword">val</span> address : t -&gt; <span class="hljs-built_in">string</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>أما التعبير <code>{</code> <em>expr</em> <code>with</code> <em>field</em>₁ [<code>=</code> <em>expr</em>₁] <code>;</code> … <code>;</code> <em>field</em>ₙ [<code>=</code> <em>expr</em>ₙ] <code>}</code> فيبني سجلًا جديدًا تكون حقوله من <em>field</em>₁ إلى <em>field</em>ₙ مساوية لـ <em>expr</em>₁ إلى <em>expr</em>ₙ، وتأخذ جميع الحقوق الأخرى القيمة نفسها التي لها في السجل <em>expr</em>. وبعبارة أخرى، يعيد نسخة سطحية من السجل <em>expr</em>، باستثناء الحقول من <em>field</em>₁ إلى <em>field</em>ₙ التي تُهيَّأ بقيم <em>expr</em>₁ إلى <em>expr</em>ₙ. وكما سبق، يمثّل المعرّف المفرد <em>field</em>ₖ التعبير <em>field</em>ₖ <code>=</code> <em>field</em>ₖ، ويمثّل المعرّف المؤهَّل <em>module-path</em> <code>.</code> <em>field</em>ₖ التعبير <em>module-path</em> <code>.</code> <em>field</em>ₖ <code>=</code> <em>field</em>ₖ، ويمكن إضافة قيد نوع اختياري على كل حقل يُحدَّث بالصيغة <code>{</code> <em>expr</em> <code>with</code> <em>field</em>₁ <code>:</code> <em>typexpr</em>₁ <code>=</code> <em>expr</em>₁ <code>;</code> … <code>;</code> <em>field</em>ₙ <code>:</code> <em>typexpr</em>ₙ <code>=</code> <em>expr</em>ₙ <code>}</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> t = {house_no : <span class="hljs-built_in">int</span>; street : <span class="hljs-built_in">string</span>; town : <span class="hljs-built_in">string</span>; postcode : <span class="hljs-built_in">string</span>}
+
+  <span class="hljs-keyword">let</span> uppercase_town address =
+    {address <span class="hljs-keyword">with</span> town = <span class="hljs-type">String</span>.uppercase_ascii address.town};;
+
+<span class="hljs-keyword">type</span> t = {
+  house_no : <span class="hljs-built_in">int</span>;
+  street : <span class="hljs-built_in">string</span>;
+  town : <span class="hljs-built_in">string</span>;
+  postcode : <span class="hljs-built_in">string</span>;
+}
+<span class="hljs-keyword">val</span> uppercase_town : t -&gt; t = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويقيّم التعبير <em>expr</em>₁ <code>.</code> <em>field</em> التعبير <em>expr</em>₁ إلى قيمة سجل، ثم يعيد القيمة المرتبطة بـ <em>field</em> في هذه القيمة.</p>
+<p>أما التعبير <em>expr</em>₁ <code>.</code> <em>field</em> <code>&lt;-</code> <em>expr</em>₂ فيقيّم <em>expr</em>₁ إلى قيمة سجل، ثم يعدّلها في مكانها باستبدال القيمة المرتبطة بـ <em>field</em> في هذا السجل بقيمة <em>expr</em>₂. ولا يُسمح بهذه العملية إلا إذا كان <em>field</em> قد أُعلن <code>mutable</code> في تعريف نوع السجل. ويُقيَّم التعبير الكامل <em>expr</em>₁ <code>.</code> <em>field</em> <code>&lt;-</code> <em>expr</em>₂ إلى القيمة الواحدية <code>()</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">type</span> t = {<span class="hljs-keyword">mutable</span> upper : <span class="hljs-built_in">int</span>; <span class="hljs-keyword">mutable</span> lower : <span class="hljs-built_in">int</span>; <span class="hljs-keyword">mutable</span> other : <span class="hljs-built_in">int</span>}
+
+  <span class="hljs-keyword">let</span> stats = {upper = <span class="hljs-number">0</span>; lower = <span class="hljs-number">0</span>; other = <span class="hljs-number">0</span>}
+
+  <span class="hljs-keyword">let</span> collect =
+    <span class="hljs-type">String</span>.iter
+      (<span class="hljs-keyword">function</span>
+       | <span class="hljs-string">&#x27;A&#x27;</span>..<span class="hljs-string">&#x27;Z&#x27;</span> -&gt; stats.upper &lt;- stats.upper + <span class="hljs-number">1</span>
+       | <span class="hljs-string">&#x27;a&#x27;</span>..<span class="hljs-string">&#x27;z&#x27;</span> -&gt; stats.lower &lt;- stats.lower + <span class="hljs-number">1</span>
+       | _ -&gt; stats.other &lt;- stats.other + <span class="hljs-number">1</span>);;
+
+<span class="hljs-keyword">type</span> t = { <span class="hljs-keyword">mutable</span> upper : <span class="hljs-built_in">int</span>; <span class="hljs-keyword">mutable</span> lower : <span class="hljs-built_in">int</span>; <span class="hljs-keyword">mutable</span> other : <span class="hljs-built_in">int</span>; }
+<span class="hljs-keyword">val</span> stats : t = {upper = <span class="hljs-number">0</span>; lower = <span class="hljs-number">0</span>; other = <span class="hljs-number">0</span>}
+<span class="hljs-keyword">val</span> collect : <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>المصفوفات</h4>
+<p>يُقيَّم التعبير <code>[|</code> <em>expr</em>₁ <code>;</code> … <code>;</code> <em>expr</em>ₙ <code>|]</code> إلى مصفوفة من <em>n</em> عنصرًا تُهيَّأ عناصرها بقيم <em>expr</em>₁ إلى <em>expr</em>ₙ على الترتيب. وترتيب تقييم هذه التعبيرات غير محدّد.</p>
+<p>ويعيد التعبير <em>expr</em>₁ <code>.(</code> <em>expr</em>₂ <code>)</code> قيمة العنصر ذي الرقم <em>expr</em>₂ في المصفوفة التي يدلّ عليها <em>expr</em>₁. رقم العنصر الأول 0، ورقم العنصر الأخير <em>n</em>−1 حيث <em>n</em> حجم المصفوفة. ويُثار الاستثناء <code>Invalid_argument</code> إذا كان الوصول خارج الحدود.</p>
+<p>ويعدّل التعبير <em>expr</em>₁ <code>.(</code> <em>expr</em>₂ <code>)</code> <code>&lt;-</code> <em>expr</em>₃ المصفوفة التي يدلّ عليها <em>expr</em>₁ في مكانها، باستبدال العنصر ذي الرقم <em>expr</em>₂ بقيمة <em>expr</em>₃. ويُثار الاستثناء <code>Invalid_argument</code> إذا كان الوصول خارج الحدود. وقيمة التعبير كاملًا <code>()</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> scale arr n =
+    <span class="hljs-keyword">for</span> x = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-type">Array</span>.length arr - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+      arr.(x) &lt;- arr.(x) * n
+    <span class="hljs-keyword">done</span>
+
+  <span class="hljs-keyword">let</span> x = [|<span class="hljs-number">1</span>; <span class="hljs-number">10</span>; <span class="hljs-number">100</span>|]
+  <span class="hljs-keyword">let</span> _ = scale x <span class="hljs-number">2</span>;;
+
+<span class="hljs-keyword">val</span> scale : <span class="hljs-built_in">int</span> <span class="hljs-built_in">array</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> x : <span class="hljs-built_in">int</span> <span class="hljs-built_in">array</span> = [|<span class="hljs-number">2</span>; <span class="hljs-number">20</span>; <span class="hljs-number">200</span>|]
+</code></pre>
+<h4>السلاسل</h4>
+<p>يعيد التعبير <em>expr</em>₁ <code>.[</code> <em>expr</em>₂ <code>]</code> قيمة المحرف ذي الرقم <em>expr</em>₂ في السلسلة التي يدلّ عليها <em>expr</em>₁. رقم المحرف الأول 0، ورقم المحرف الأخير <em>n</em>−1 حيث <em>n</em> طول السلسلة. ويُثار الاستثناء <code>Invalid_argument</code> إذا كان الوصول خارج الحدود.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> iter f s =
+    <span class="hljs-keyword">for</span> x = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-type">String</span>.length s - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span> f s.[x] <span class="hljs-keyword">done</span>;;
+
+<span class="hljs-keyword">val</span> iter : (<span class="hljs-built_in">char</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويعدّل التعبير <em>expr</em>₁ <code>.[</code> <em>expr</em>₂ <code>]</code> <code>&lt;-</code> <em>expr</em>₃ السلسلة التي يدلّ عليها <em>expr</em>₁ في مكانها، باستبدال المحرف ذي الرقم <em>expr</em>₂ بقيمة <em>expr</em>₃. ويُثار الاستثناء <code>Invalid_argument</code> إذا كان الوصول خارج الحدود. وقيمة التعبير كاملًا <code>()</code>. <strong>ملاحظة:</strong> هذه الإمكانية معروضة لتوافق خلفي مع إصدارات OCaml الأقدم فقط، وستُزال في إصدار مستقبلي. وينبغي للشيفرة الجديدة أن تستعمل متتاليات البايتات ودالة <code>Bytes.set</code>.</p>
+<h3 id="1175-المعاملات">11.7.5 المعاملات</h3>
+<p>يمكن أن تظهر الرموز من صنف <em>infix-symbol</em>، وكذلك الكلمات المحجوزة <code>*</code> و<code>+</code> و<code>-</code> و<code>-.</code> و<code>=</code> و<code>!=</code> و<code>&lt;</code> و<code>&gt;</code> و<code>or</code> و<code>||</code> و<code>&amp;</code> و<code>&amp;&amp;</code> و<code>:=</code> و<code>mod</code> و<code>land</code> و<code>lor</code> و<code>lxor</code> و<code>lsl</code> و<code>lsr</code> و<code>asr</code>، في موضع وسيط (بين تعبيرين). ويمكن أن تظهر الرموز من صنف <em>prefix-symbol</em>، وكذلك الكلمات المحجوزة <code>-</code> و<code>-.</code>، في موضع بادئ (قبل تعبير).</p>
+<pre><code class="language-ocaml"># (( * ), ( := ), ( || ));;
+
+- : (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span>) * (<span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">ref</span> -&gt; <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>) * (<span class="hljs-built_in">bool</span> -&gt; <span class="hljs-built_in">bool</span> -&gt; <span class="hljs-built_in">bool</span>) =
+(&lt;<span class="hljs-keyword">fun</span>&gt;, &lt;<span class="hljs-keyword">fun</span>&gt;, &lt;<span class="hljs-keyword">fun</span>&gt;)
+</code></pre>
+<p>لا معنى ثابتًا للرموز الوسيطة والبائدة: فهي تُفسَّر ببساطة تطبيقاتٍ لدوال مرتبطة بالأسماء المقابلة للرموز. ويُفسَّر التعبير <em>prefix-symbol</em> <em>expr</em> تطبيقًا للصيغة <code>(</code> <em>prefix-symbol</em> <code>)</code> <em>expr</em>. وعلى المنوال نفسه، يُفسَّر التعبير <em>expr</em>₁ <em>infix-symbol</em> <em>expr</em>₂ تطبيقًا للصيغة <code>(</code> <em>infix-symbol</em> <code>)</code> <em>expr</em>₁ <em>expr</em>₂.</p>
+<p>يسرد الجدول التالي الرموز المعرَّفة في البيئة الابتدائية ومعانيها الابتدائية. (راجع وصف وحدة المكتبة الأساسية <code>Stdlib</code> في الفصل 29 لمزيد من التفصيل.) ويمكن تغيير معانيها في أي وقت بالصيغة <code>let</code> <code>(</code> <em>infix-op</em> <code>)</code> <em>name</em>₁ <em>name</em>₂ <code>=</code> …</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> ( + ), ( - ), ( * ), ( / ) = <span class="hljs-type">Int64</span>.(add, sub, mul, div);;
+
+<span class="hljs-keyword">val</span> ( + ) : <span class="hljs-built_in">int64</span> -&gt; <span class="hljs-built_in">int64</span> -&gt; <span class="hljs-built_in">int64</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> ( - ) : <span class="hljs-built_in">int64</span> -&gt; <span class="hljs-built_in">int64</span> -&gt; <span class="hljs-built_in">int64</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> ( * ) : <span class="hljs-built_in">int64</span> -&gt; <span class="hljs-built_in">int64</span> -&gt; <span class="hljs-built_in">int64</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> ( / ) : <span class="hljs-built_in">int64</span> -&gt; <span class="hljs-built_in">int64</span> -&gt; <span class="hljs-built_in">int64</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ملاحظة: تُعالَج المعاملات <code>&amp;&amp;</code> و<code>||</code> و<code>~-</code> معالجة خاصة، ولا يُنصح بتغيير معانيها.</p>
+<p>ويمكن أن تظهر الكلمتان المحجوزتان <code>-</code> و<code>-.</code> معاملين وسيطين وبادئين معًا. وعندما تظهران معاملين بادئين، تُفسَّران على الترتيب بالدالتين <code>(~-)</code> و<code>(~-.)</code>.</p>
+<table>
+<thead>
+<tr>
+<th><strong>المعامل</strong></th>
+<th><strong>المعنى الابتدائي</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td>جمع الأعداد الصحيحة.</td>
+</tr>
+<tr>
+<td><code>-</code> (وسيط)</td>
+<td>طرح الأعداد الصحيحة.</td>
+</tr>
+<tr>
+<td><code>~- -</code> (بادئ)</td>
+<td>سالب العدد الصحيح.</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>ضرب الأعداد الصحيحة.</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>قسمة الأعداد الصحيحة. يثير <code>Division_by_zero</code> إذا كان المعامل الثاني صفرًا.</td>
+</tr>
+<tr>
+<td><code>mod</code></td>
+<td>باقي قسمة الأعداد الصحيحة. يثير <code>Division_by_zero</code> إذا كان المعامل الثاني صفرًا.</td>
+</tr>
+<tr>
+<td><code>land</code></td>
+<td>«و» المنطقية على مستوى البتات للأعداد الصحيحة.</td>
+</tr>
+<tr>
+<td><code>lor</code></td>
+<td>«أو» المنطقية على مستوى البتات للأعداد الصحيحة.</td>
+</tr>
+<tr>
+<td><code>lxor</code></td>
+<td>«أو الحصرية» المنطقية على مستوى البتات للأعداد الصحيحة.</td>
+</tr>
+<tr>
+<td><code>lsl</code></td>
+<td>الإزاحة المنطقية لليسار على مستوى البتات للأعداد الصحيحة.</td>
+</tr>
+<tr>
+<td><code>lsr</code></td>
+<td>الإزاحة المنطقية لليمين على مستوى البتات للأعداد الصحيحة.</td>
+</tr>
+<tr>
+<td><code>asr</code></td>
+<td>الإزاحة الحسابية لليمين على مستوى البتات للأعداد الصحيحة.</td>
+</tr>
+<tr>
+<td><code>+.</code></td>
+<td>جمع أعداد الفاصلة العائمة.</td>
+</tr>
+<tr>
+<td><code>-.</code> (وسيط)</td>
+<td>طرح أعداد الفاصلة العائمة.</td>
+</tr>
+<tr>
+<td><code>~-. -.</code> (بادئ)</td>
+<td>سالب عدد الفاصلة العائمة.</td>
+</tr>
+<tr>
+<td><code>*.</code></td>
+<td>ضرب أعداد الفاصلة العائمة.</td>
+</tr>
+<tr>
+<td><code>/.</code></td>
+<td>قسمة أعداد الفاصلة العائمة.</td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>رفع عدد الفاصلة العائمة إلى قوة.</td>
+</tr>
+<tr>
+<td><code>@</code></td>
+<td>وصل القوائم.</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>وصل السلاسل.</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>إلغاء الإسناد (إعادة المحتوى الحالي لمرجع).</td>
+</tr>
+<tr>
+<td><code>:=</code></td>
+<td>إسناد إلى مرجع (تحديث المرجع المعطى معاملًا أول بقيمة المعامل الثاني).</td>
+</tr>
+<tr>
+<td><code>=</code></td>
+<td>اختبار المساواة البنيوية.</td>
+</tr>
+<tr>
+<td><code>&lt;&gt;</code></td>
+<td>اختبار اللامساواة البنيوية.</td>
+</tr>
+<tr>
+<td><code>==</code></td>
+<td>اختبار المساواة الفيزيائية.</td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>اختبار اللامساواة الفيزيائية.</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>اختبار «أصغر من».</td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>اختبار «أصغر من أو يساوي».</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>اختبار «أكبر من».</td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>اختبار «أكبر من أو يساوي».</td>
+</tr>
+<tr>
+<td><code>&amp;&amp; &amp;</code></td>
+<td>العطف المنطقي.</td>
+</tr>
+<tr>
+<td><code>|| or</code></td>
+<td>الفصل المنطقي.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1176-الكائنات">11.7.6 الكائنات</h3>
+<h4>إنشاء الكائنات</h4>
+<p>عندما يُقيَّم <em>class-path</em> إلى جسم صنف، يُقيَّم <code>new</code> <em>class-path</em> إلى كائن جديد يحوي متغيّرات النسخة ودوال الصنف.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> of_list (lst : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span>) = <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> l = lst
+    <span class="hljs-keyword">method</span> next =
+      <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span>
+      | <span class="hljs-literal">[]</span> -&gt; raise (<span class="hljs-type">Failure</span> <span class="hljs-string">&quot;empty list&quot;</span>);
+      | h::t -&gt; l &lt;- t; h
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">let</span> a = <span class="hljs-keyword">new</span> of_list [<span class="hljs-number">1</span>; <span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>; <span class="hljs-number">5</span>; <span class="hljs-number">8</span>; <span class="hljs-number">13</span>]
+
+  <span class="hljs-keyword">let</span> b = <span class="hljs-keyword">new</span> of_list;;
+
+<span class="hljs-keyword">class</span> of_list :
+  <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> l : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> <span class="hljs-keyword">method</span> next : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">val</span> a : of_list = &lt;obj&gt;
+<span class="hljs-keyword">val</span> b : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt; of_list = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وعندما يُقيَّم <em>class-path</em> إلى دالة صنف، يُقيَّم <code>new</code> <em>class-path</em> إلى دالة تنتظر العدد نفسه من المعاملات وتعيد كائنًا جديدًا من هذا الصنف.</p>
+<h4>إنشاء الكائن المباشر</h4>
+<p>إن إنشاء كائن مباشرةً ببنية <code>object</code> <em>class-body</em> <code>end</code> يكافئ عمليًا تعريف صنف محليًا بالصيغة <code>class</code> <em>class-name</em> <code>=</code> <code>object</code> <em>class-body</em> <code>end</code> — انظر القسمين 11.9.2 وما يليهما لصياغة <em>class-body</em> — ثم إنشاء كائن واحد منه فورًا بـ <code>new</code> <em>class-name</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> o =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> secret = <span class="hljs-number">99</span>
+      <span class="hljs-keyword">val</span> password = <span class="hljs-string">&quot;unlock&quot;</span>
+      <span class="hljs-keyword">method</span> get guess = <span class="hljs-keyword">if</span> guess &lt;&gt; password <span class="hljs-keyword">then</span> <span class="hljs-type">None</span> <span class="hljs-keyword">else</span> <span class="hljs-type">Some</span> secret
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">val</span> o : &lt; get : <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">int</span> option &gt; = &lt;obj&gt;
+</code></pre>
+<p>ويختلف تنميط الكائنات المباشرة عن تعريف صنف صراحةً من وجهين. أولًا، قد يحوي نوع الكائن المستنتج متغيّرات نوع حرّة. وثانيًا، بما أن جسم صنف الكائن المباشر لن يُمدَّد أبدًا، فيمكن توحيد نوع ذاتِه مع نوع كائن مغلق.</p>
+<h4>استدعاء الدوال</h4>
+<p>يستدعي التعبير <em>expr</em> <code>#</code> <em>method-name</em> الدالة <em>method-name</em> للكائن الذي يدلّ عليه <em>expr</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> of_list (lst : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span>) = <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> l = lst
+    <span class="hljs-keyword">method</span> next =
+      <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span>
+      | <span class="hljs-literal">[]</span> -&gt; raise (<span class="hljs-type">Failure</span> <span class="hljs-string">&quot;empty list&quot;</span>);
+      | h::t -&gt; l &lt;- t; h
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">let</span> a = <span class="hljs-keyword">new</span> of_list [<span class="hljs-number">1</span>; <span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>; <span class="hljs-number">5</span>; <span class="hljs-number">8</span>; <span class="hljs-number">13</span>]
+
+  <span class="hljs-keyword">let</span> third = ignore a#next; ignore a#next; a#next;;
+
+<span class="hljs-keyword">class</span> of_list :
+  <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> l : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> <span class="hljs-keyword">method</span> next : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">val</span> a : of_list = &lt;obj&gt;
+<span class="hljs-keyword">val</span> third : <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span>
+</code></pre>
+<p>وإذا كانت <em>method-name</em> دالةً متعدّدة الأشكال، فينبغي أن يكون نوعها معروفًا في موضع الاستدعاء. ويصحّ ذلك مثلًا إذا كان <em>expr</em> اسم كائن جديد (<code>let</code> <em>ident</em> <code>=</code> <code>new</code> <em>class-path</em> …) أو إذا وُجد قيد نوع. ويمكن التحقّق من أصلية الاستنتاج في النمط <code>-principal</code>.</p>
+<h4>الوصول إلى متغيّرات النسخة وتعديلها</h4>
+<p>لا تُرى متغيّرات نسخة الصنف إلا في جسم الدوال المعرَّفة في الصنف نفسه أو في صنف يرث من الصنف الذي يعرّف متغيّرات النسخة. ويُقيَّم التعبير <em>inst-var-name</em> إلى قيمة متغيّر النسخة المعطى. ويُسنِد التعبير <em>inst-var-name</em> <code>&lt;-</code> <em>expr</em> قيمة <em>expr</em> إلى متغيّر النسخة <em>inst-var-name</em>، الذي يجب أن يكون قابلًا للتعديل. ويُقيَّم التعبير الكامل <em>inst-var-name</em> <code>&lt;-</code> <em>expr</em> إلى <code>()</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">class</span> of_list (lst : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span>) = <span class="hljs-keyword">object</span>
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> l = lst
+    <span class="hljs-keyword">method</span> next =
+      <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span>                            <span class="hljs-comment">(* access instance variable *)</span>
+      | <span class="hljs-literal">[]</span> -&gt; raise (<span class="hljs-type">Failure</span> <span class="hljs-string">&quot;empty list&quot;</span>);
+      | h::t -&gt; l &lt;- t; h                     <span class="hljs-comment">(* modify instance variable *)</span>
+  <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">class</span> of_list :
+  <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-keyword">object</span> <span class="hljs-keyword">val</span> <span class="hljs-keyword">mutable</span> l : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> <span class="hljs-keyword">method</span> next : <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<h4>تكرار الكائنات</h4>
+<p>يمكن تكرار كائن باستعمال دالة المكتبة <code>Oo.copy</code> (انظر الوحدة <code>Oo</code>). وداخل دالة، يعيد التعبير <code>{&lt;</code> [<em>inst-var-name</em> [<code>=</code> <em>expr</em>] { <code>;</code> <em>inst-var-name</em> [<code>=</code> <em>expr</em>] }] <code>&gt;}</code> نسخةً من الذات استُبدلت فيها متغيّرات النسخة المعطاة بقيم التعبيرات المرتبطة بها. ويمثّل اسم متغيّر النسخة المفرد <em>id</em> التعبير <em>id</em> <code>=</code> <em>id</em>. وللمتغيّرات الأخرى القيمة نفسها في الكائن المعاد كما في الذات.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> o =
+    <span class="hljs-keyword">object</span>
+      <span class="hljs-keyword">val</span> secret = <span class="hljs-number">99</span>
+      <span class="hljs-keyword">val</span> password = <span class="hljs-string">&quot;unlock&quot;</span>
+      <span class="hljs-keyword">method</span> get guess = <span class="hljs-keyword">if</span> guess &lt;&gt; password <span class="hljs-keyword">then</span> <span class="hljs-type">None</span> <span class="hljs-keyword">else</span> <span class="hljs-type">Some</span> secret
+      <span class="hljs-keyword">method</span> with_new_secret s = {&lt; secret = s &gt;}
+    <span class="hljs-keyword">end</span>;;
+
+<span class="hljs-keyword">val</span> o : &lt; get : <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">int</span> option; with_new_secret : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span> &gt; <span class="hljs-keyword">as</span> <span class="hljs-symbol">&#x27;a</span> =
+  &lt;obj&gt;
+</code></pre>
+<h3 id="1177-الإكراهات">11.7.7 الإكراهات</h3>
+<p>يمكن إكراه التعابير التي يحوي نوعها أنواع كائنات أو أنواع متغيّرات متعدّدة الأشكال (إضعافها) صراحةً إلى نوع أعلى. ويُكره التعبير <code>(</code> <em>expr</em> <code>:&gt;</code> <em>typexpr</em> <code>)</code> التعبير <em>expr</em> إلى النوع <em>typexpr</em>. ويُكره التعبير <code>(</code> <em>expr</em> <code>:</code> <em>typexpr</em>₁ <code>:&gt;</code> <em>typexpr</em>₂ <code>)</code> التعبير <em>expr</em> من النوع <em>typexpr</em>₁ إلى النوع <em>typexpr</em>₂.</p>
+<p>وقد يفشل المعامل الأول أحيانًا في إكراه تعبير <em>expr</em> من نوع <em>typ</em>₁ إلى نوع <em>typ</em>₂ حتى لو كان النوع <em>typ</em>₁ نوعًا فرعيًا من <em>typ</em>₂: فهو لا يوسّع في التنفيذ الحالي إلا مستويين من اختصارات الأنواع الحاوية كائنات و/أو متغيّرات متعدّدة الأشكال، ولا يحتفظ بالعودية إلا حين تكون صريحة في نوع الصنف (بالنسبة إلى الكائنات). واستثناءً من الخوارزمية السابقة، إذا كان النوع المستنتج لـ <em>expr</em> و<em>typ</em> كلاهما أرضيًّا (<em>أي</em> لا يحوي متغيّرات نوع)، تصرّف المعامل الأول كالمعامل الثاني، آخذًا النوع المستنتج لـ <em>expr</em> نوعًا لـ <em>typ</em>₁. وفي حال الفشل بالمعامل الأول، ينبغي استعمال الثاني.</p>
+<p>ولا يمكن إكراه تعبير <em>expr</em> من نوع <em>typ</em>₁ إلى نوع <em>typ</em>₂ إلا إذا كان نوع <em>expr</em> حالةً من <em>typ</em>₁ (كما في تعليمة النوع)، وكان <em>typ</em>₁ نوعًا فرعيًا من <em>typ</em>₂. ونوع التعبير المكرَه حالةٌ من <em>typ</em>₂. وإذا كانت الأنواع تحوي متغيّرات، فقد تُجزَّأ بخوارزمية النوع الفرعي، لكن ذلك لا يحدث إلا بعد تحديد ما إذا كان <em>typ</em>₁ نوعًا فرعيًا محتملًا لـ <em>typ</em>₂. وهذا يعني أن التنميط قد يفشل في خطوة التوحيد الأخيرة هذه حتى لو كان بعض حالات <em>typ</em>₁ نوعًا فرعيًا لبعض حالات <em>typ</em>₂. ونصف في الفقرات التالية علاقة النوع الفرعي المستعملة.</p>
+<h4>أنواع الكائنات</h4>
+<p>يقبل نوع الكائن الثابت، نوعًا فرعيًا، كل نوع كائن يحوي جميع دواله. ويجب أن تكون أنواع الدوال أنواعًا فرعية من نظيراتها في النوع الأعلى. أي إن:</p>
+<p><code>&lt;</code> <em>met</em>₁ <code>:</code> <em>typ</em>₁ <code>;</code> … <code>;</code> <em>met</em>ₙ <code>:</code> <em>typ</em>ₙ <code>&gt;</code> نوعٌ أعلى من <code>&lt;</code> <em>met</em>₁ <code>:</code> <em>typ</em>′₁ <code>;</code> … <code>;</code> <em>met</em>ₙ <code>:</code> <em>typ</em>′ₙ <code>;</code> <em>met</em>ₙ₊₁ <code>:</code> <em>typ</em>′ₙ₊₁ <code>;</code> … <code>;</code> <em>met</em>ₙ₊ₘ <code>:</code> <em>typ</em>′ₙ₊ₘ [<code>;</code> <code>..</code>] <code>&gt;</code></p>
+<p>وقد يحوي هذا الأخير علامة حذف <code>..</code> إذا كان كل <em>typ</em>ᵢ نوعًا أعلى من <em>typ</em>′ᵢ المقابل له.</p>
+<p>ويمكن أن يكون نوع دالة أحادية الشكل نوعًا أعلى من نوع دالة متعدّدة الأشكال. أي إنه إذا كان <em>typ</em> حالةً من <em>typ</em>′، فإن <code>'</code> <em>a</em>₁ … <code>'</code> <em>a</em>ₙ <code>.</code> <em>typ</em>′ نوعٌ فرعي من <em>typ</em>.</p>
+<p>وداخل تعريف صنف، لا تكون الأنواع المعرَّفة حديثًا متاحة للنوع الفرعي، لأن اختصارات الأنواع لم تُعرَّف تمامًا بعد. وثمة استثناء لإكراه الذات إلى النوع (المضبوط) لصنفها: يُسمح بذلك إذا لم يظهر نوع الذات في موضع معاكس التغاير في نوع الصنف، <em>أي</em> إذا لم توجد دوال ثنائية.</p>
+<h4>أنواع المتغيّرات متعدّدة الأشكال</h4>
+<p>يكون نوع المتغيّر متعدّد الأشكال <em>typ</em> نوعًا فرعيًا من نوع متغيّر متعدّد الأشكال آخر <em>typ</em>′ إذا كان الحدّ الأعلى لـ <em>typ</em> (<em>أي</em> أكبر مجموعة من البواني التي قد تظهر في حالة من <em>typ</em>) محتوىً في الحدّ الأدنى لـ <em>typ</em>′، وكانت أنواع معاملات بواني <em>typ</em> أنواعًا فرعية من نظيراتها في <em>typ</em>′. أي إن:</p>
+<p><code>[[&lt;]</code> <code>\`</code><em>C</em>₁ <code>of</code> <em>typ</em>₁ <code>|</code> … <code>|</code> <code>\`</code><em>C</em>ₙ <code>of</code> <em>typ</em>ₙ<code>]</code></p>
+<p>الذي قد يكون نوعًا قابلًا للانكماش، نوعٌ فرعي من</p>
+<p><code>[[&gt;]</code> <code>\`</code><em>C</em>₁ <code>of</code> <em>typ</em>′₁ <code>|</code> … <code>|</code> <code>\`</code><em>C</em>ₙ <code>of</code> <em>typ</em>′ₙ <code>|</code> <code>\`</code><em>C</em>ₙ₊₁ <code>of</code> <em>typ</em>′ₙ₊₁ <code>|</code> … <code>|</code> <code>\`</code><em>C</em>ₙ₊ₘ <code>of</code> <em>typ</em>′ₙ₊ₘ<code>]</code></p>
+<p>الذي قد يكون نوعًا قابلًا للتوسّع، إذا كان كل <em>typ</em>ᵢ نوعًا فرعيًا من <em>typ</em>′ᵢ.</p>
+<h4>التغاير</h4>
+<p>لا تُدخل الأنواع الأخرى علاقة نوع فرعي جديدة، لكنها قد تنقل علاقة النوع الفرعي لمعاملاتها. فمثلًا، <em>typ</em>₁ <code>*</code> <em>typ</em>₂ نوع فرعي من <em>typ</em>′₁ <code>*</code> <em>typ</em>′₂ عندما يكون <em>typ</em>₁ و<em>typ</em>₂ نوعين فرعيين من <em>typ</em>′₁ و<em>typ</em>′₂ على الترتيب. أما أنواع الدوال فالعلاقة فيها أدقّ: <em>typ</em>₁ <code>-&gt;</code> <em>typ</em>₂ نوع فرعي من <em>typ</em>′₁ <code>-&gt;</code> <em>typ</em>′₂ إذا كان <em>typ</em>₁ نوعًا أعلى من <em>typ</em>′₁ وكان <em>typ</em>₂ نوعًا فرعيًا من <em>typ</em>′₂. ولهذا تكون أنواع الدوال متغايرة طرديًا في معاملها الثاني (كالصفوف)، ومتغايرة عكسيًا في معاملها الأول. أما الأنواع القابلة للتعديل، مثل <code>array</code> أو <code>ref</code>، فليست طردية ولا عكسية، بل غير متغايرة، أي إنها لا تنقل النوع الفرعي.</p>
+<p>وبالنسبة إلى الأنواع المعرَّفة من المستخدم، يُستنتج التغاير تلقائيًا: يكون المعامل متغايرًا طرديًا إذا كانت له ورادات طردية فقط، ومتغايرًا عكسيًا إذا كانت له ورادات عكسية فقط، وخاليًا من التغاير إذا لم تكن له ورادات، وغير متغاير فيما عدا ذلك. ويمكن للمعامل الخالي من التغاير أن يتغيّر بحرية عبر النوع الفرعي، فلا يلزم أن يكون نوعًا فرعيًا أو نوعًا أعلى. أما الأنواع المجرّدة والخاصة، فيجب إعطاء التغاير صراحةً (انظر القسم 11.8.1)، وإلا فالمعيار هو عدم التغاير. وهذا هو الحال أيضًا بالنسبة إلى المعاملات المقيَّدة في تعريفات الأنواع.</p>
+<h3 id="1178-عناصر-بنيوية-محلية">11.7.8 عناصر بنيوية محلية</h3>
+<p>(أُدخلت الحالة العامة في OCaml 5.5، أما <code>let</code> <code>open</code> و<code>let</code> <code>exception</code> و<code>let</code> <code>module</code> فقد كانت مدعومة قبل ذلك.)</p>
+<p>تُدخل الصيغة <code>let</code> <em>local-definition</em> <code>in</code> <em>expr</em> العنصر البنيوي (انظر 11.11.2) <em>local-definition</em> في النطاق أثناء تقييم <em>expr</em>.</p>
+<p>وتكافئ هذه البنية إدخال البنية</p>
+<p>struct</p>
+<p>local-definition</p>
+<p>let</p>
+<p>body</p>
+<p>=</p>
+<p>expr</p>
+<p>end</p>
+<p>محليًا في سياق تعبير <code>let</code>، وإعادة قيمة <code>body</code> نتيجةً.</p>
+<p>وتحوي بقية هذا القسم ملاحظات وأمثلة خاصة بحالات معيّنة من هذه البنية.</p>
+<h4>الفتح المحلي</h4>
+<p>يتكافئ التعبيران <code>let</code> <code>open</code> <em>module-path</em> <code>in</code> <em>expr</em> و<em>module-path</em> <code>.(</code> <em>expr</em> <code>)</code> تكافؤًا تامًّا. وتفتح هاتان البنيتان الوحدة المشار إليها بمسار الوحدة <em>module-path</em> محليًا في نطاق التعبير <em>expr</em> المعني.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> map_3d_matrix f m =
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">open</span> <span class="hljs-type">Array</span> <span class="hljs-keyword">in</span>
+      map (map (map f)) m
+
+  <span class="hljs-keyword">let</span> map_3d_matrix&#x27; f =
+    <span class="hljs-type">Array</span>.(map (map (map f)));;
+
+<span class="hljs-keyword">val</span> map_3d_matrix :
+  (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;b</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> -&gt; <span class="hljs-symbol">&#x27;b</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+<span class="hljs-keyword">val</span> map_3d_matrix&#x27; :
+  (<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;b</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> -&gt; <span class="hljs-symbol">&#x27;b</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وعندما يكون جسم تعبير الفتح المحلي محدَّدًا بـ <code>[</code> <code>]</code> أو <code>[|</code> <code>|]</code> أو <code>{</code> <code>}</code>، يمكن إغفال الأقواس. وبالنسبة إلى التعابير، يمكن أيضًا إغفال الأقواس في حالة <code>{&lt;</code> <code>&gt;}</code>. فمثلًا، <em>module-path</em> <code>.[</code> <em>expr</em> <code>]</code> يكافئ <em>module-path</em> <code>.([</code> <em>expr</em> <code>])</code>، و<em>module-path</em> <code>.[|</code> <em>expr</em> <code>|]</code> يكافئ <em>module-path</em> <code>.([|</code> <em>expr</em> <code>|])</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> vector = <span class="hljs-type">Random</span>.[|<span class="hljs-built_in">int</span> <span class="hljs-number">255</span>; <span class="hljs-built_in">int</span> <span class="hljs-number">255</span>; <span class="hljs-built_in">int</span> <span class="hljs-number">255</span>; <span class="hljs-built_in">int</span> <span class="hljs-number">255</span>|];;
+
+<span class="hljs-keyword">val</span> vector : <span class="hljs-built_in">int</span> <span class="hljs-built_in">array</span> = [|<span class="hljs-number">220</span>; <span class="hljs-number">90</span>; <span class="hljs-number">247</span>; <span class="hljs-number">144</span>|]
+</code></pre>
+<h4>الوحدات المحلية</h4>
+<p>يربط التعبير <code>let</code> <em>module-definition</em> <code>in</code> <em>expr</em> تعريف الوحدة <em>module-definition</em> محليًا أثناء تقييم التعبير <em>expr</em>، ثم يعيد قيمة <em>expr</em>. مثلًا:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> remove_duplicates comparison_fun string_list =
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">module</span> <span class="hljs-type">StringSet</span> =
+      <span class="hljs-type">Set</span>.<span class="hljs-type">Make</span>(<span class="hljs-keyword">struct</span> <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">string</span>
+                      <span class="hljs-keyword">let</span> compare = comparison_fun <span class="hljs-keyword">end</span>)
+    <span class="hljs-keyword">in</span>
+      <span class="hljs-type">StringSet</span>.elements
+        (<span class="hljs-type">List</span>.fold_right <span class="hljs-type">StringSet</span>.add string_list <span class="hljs-type">StringSet</span>.empty);;
+
+<span class="hljs-keyword">val</span> remove_duplicates :
+  (<span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">string</span> -&gt; <span class="hljs-built_in">int</span>) -&gt; <span class="hljs-built_in">string</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-built_in">string</span> <span class="hljs-built_in">list</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>الاستثناءات المحلية</h4>
+<p>(أُدخلت في OCaml 4.04)</p>
+<p>يمكن تعريف استثناءات محلية في التعابير: <code>let</code> <em>exception</em> <em>constr-decl</em> <code>in</code> <em>expr</em>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> map_empty_on_negative f l =
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">exception</span> <span class="hljs-type">Negative</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> aux x = <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> raise <span class="hljs-type">Negative</span> <span class="hljs-keyword">else</span> f x <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">try</span> <span class="hljs-type">List</span>.map aux l <span class="hljs-keyword">with</span> <span class="hljs-type">Negative</span> -&gt; <span class="hljs-literal">[]</span>;;
+
+<span class="hljs-keyword">val</span> map_empty_on_negative : (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>النطاق النحوي لباني الاستثناء هو التعبير الداخلي، لكن لا شيء يمنع قيم الاستثناءات المنشأة بهذا الباني من الإفلات من هذا النطاق. وينتج عن تنفيذين للتعريف السابق بانيان غير متوافقين (كما في أي تعريف استثناء). مثلًا:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> gen <span class="hljs-literal">()</span> = <span class="hljs-keyword">let</span> <span class="hljs-keyword">exception</span> <span class="hljs-type">A</span> <span class="hljs-keyword">in</span> <span class="hljs-type">A</span>
+
+  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = <span class="hljs-keyword">assert</span>(gen <span class="hljs-literal">()</span> = gen <span class="hljs-literal">()</span>);;
+
+<span class="hljs-type">Exception</span>: <span class="hljs-type">Assert_failure</span> (<span class="hljs-string">&quot;expr.etex&quot;</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>).
+</code></pre>
+<p>ويمكن إدخال أنواع المتغيّرات القابلة للتوسّع (انظر 12.14) بالطريقة نفسها. ويُظهر المثال التالي دالةً تستعمل أثرًا محليًا لتحويل مكرِّر إلى متتالية («عكس التحكّم»).</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> invert (<span class="hljs-keyword">type</span> a) ~(iter : (a -&gt; <span class="hljs-built_in">unit</span>) -&gt; <span class="hljs-built_in">unit</span>) : a <span class="hljs-type">Seq</span>.t =
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">type</span> _ <span class="hljs-type">Effect</span>.t += <span class="hljs-type">Yield</span> : a -&gt; <span class="hljs-built_in">unit</span> <span class="hljs-type">Effect</span>.t <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> yield v = <span class="hljs-type">Effect</span>.perform (<span class="hljs-type">Yield</span> v) <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">fun</span> <span class="hljs-literal">()</span> -&gt; <span class="hljs-keyword">match</span> iter yield <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">()</span> -&gt; <span class="hljs-type">Seq</span>.<span class="hljs-type">Nil</span>
+    | effect <span class="hljs-type">Yield</span> v, k -&gt; <span class="hljs-type">Seq</span>.<span class="hljs-type">Cons</span> (v, <span class="hljs-type">Effect</span>.<span class="hljs-type">Deep</span>.continue k)
+  ;;
+
+<span class="hljs-keyword">val</span> invert : iter:((<span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-built_in">unit</span>) -&gt; <span class="hljs-built_in">unit</span>) -&gt; <span class="hljs-symbol">&#x27;a</span> <span class="hljs-type">Seq</span>.t = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>الأنواع المحلية</h4>
+<p>تُدخل الصيغة <code>let</code> <em>type-definition</em> <code>in</code> <em>expr</em> نوعًا (أو مجموعة أنواع متبادلة العودية) في نطاق تعبير:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f x y =
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">type</span> t = {x: <span class="hljs-built_in">float</span>; y: <span class="hljs-built_in">float</span>} <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> norm p = p.x *. p.x +. p.y *. p.y <span class="hljs-keyword">in</span>
+    norm {x; y}
+  ;;
+
+<span class="hljs-keyword">val</span> f : <span class="hljs-built_in">float</span> -&gt; <span class="hljs-built_in">float</span> -&gt; <span class="hljs-built_in">float</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ويتحقّق المترجم من أن القيم المنشأة من هذا النوع لا تفلت من هذا النطاق:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f x y =
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">type</span> t = {x: <span class="hljs-built_in">float</span>; y: <span class="hljs-built_in">float</span>} <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> twice p = {x = p.x +. p.x; y = p.y +. p.y} <span class="hljs-keyword">in</span>
+    twice {x; y}
+  ;;
+
+<span class="hljs-type">Error</span>: <span class="hljs-type">This</span> expression has <span class="hljs-keyword">type</span> t but an expression was expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> <span class="hljs-symbol">&#x27;a</span>
+       <span class="hljs-type">The</span> <span class="hljs-keyword">type</span> constructor t would escape its scope
+</code></pre>
+<h3 id="1179-متفرقات">11.7.9 متفرّقات</h3>
+<h4>فحص التأكيدات</h4>
+<p>يدعم OCaml بنية <code>assert</code> لفحص تأكيدات التنقيح. ويقيّم التعبير <code>assert</code> <em>expr</em> التعبير <em>expr</em> ويعيد <code>()</code> إذا قُيّم <em>expr</em> إلى <code>true</code>. وإذا قُيّم إلى <code>false</code>، أُثير الاستثناء <code>Assert_failure</code> مع اسم ملف المصدر وموضع <em>expr</em> معاملين. ويمكن إيقاف فحص التأكيدات بخيار المترجم <code>-noassert</code>. وفي هذه الحالة لا يُقيَّم <em>expr</em> إطلاقًا.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f a b c =
+    <span class="hljs-keyword">assert</span> (a &lt;= b &amp;&amp; b &lt;= c);
+    (b -. a) /. (c -. b);;
+
+<span class="hljs-keyword">val</span> f : <span class="hljs-built_in">float</span> -&gt; <span class="hljs-built_in">float</span> -&gt; <span class="hljs-built_in">float</span> -&gt; <span class="hljs-built_in">float</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وكحالة خاصة، يُختزل <code>assert false</code> إلى <code>raise</code> <code>(</code> <code>Assert_failure ...</code> <code>)</code>، ما يمنحه نوعًا متعدّد الأشكال. وهذا يعني أنه يمكن استعماله بدلًا من أي تعبير (في أحد فروع أي مطابقة أنماط مثلًا). ويعني أيضًا أن «تأكيدات» <code>assert false</code> لا يمكن إيقافها بالخيار <code>-noassert</code>.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> min_known_nonempty = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span> -&gt; <span class="hljs-keyword">assert</span> <span class="hljs-literal">false</span>
+    | l -&gt; <span class="hljs-type">List</span>.hd (<span class="hljs-type">List</span>.sort compare l);;
+
+<span class="hljs-keyword">val</span> min_known_nonempty : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h4>التعابير الكسولة</h4>
+<p>يعيد التعبير <code>lazy</code> <em>expr</em> قيمةً <em>v</em> من النوع <code>Lazy.t</code> تغلّف حساب <em>expr</em>. ولا يُقيَّم المعامل <em>expr</em> في هذه النقطة من البرنامج؛ بل يجري تقييمه أول مرة تُطبَّق فيها الدالة <code>Lazy.force</code> على القيمة <em>v</em>، فتعيد القيمة الفعلية لـ <em>expr</em>. ولا تُقيّم التطبيقات اللاحقة لـ <code>Lazy.force</code> على <em>v</em> التعبير <em>expr</em> من جديد. وقد تكون تطبيقات <code>Lazy.force</code> ضمنية عبر مطابقة الأنماط (انظر 11.6).</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> lazy_greeter = <span class="hljs-keyword">lazy</span> (print_string <span class="hljs-string">&quot;Hello, World!\\n&quot;</span>);;
+
+<span class="hljs-keyword">val</span> lazy_greeter : <span class="hljs-built_in">unit</span> <span class="hljs-built_in">lazy_t</span> = &lt;<span class="hljs-keyword">lazy</span>&gt;
+
+# <span class="hljs-type">Lazy</span>.force lazy_greeter;;
+
+<span class="hljs-type">Hello</span>, <span class="hljs-type">World</span>!
+- : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+</code></pre>
+<h2 id="118-تعريفات-الأنواع-والاستثناءات">11.8 تعريفات الأنواع والاستثناءات</h2>
+<h3 id="1181-تعريفات-الأنواع">11.8.1 تعريفات الأنواع</h3>
+<p>تربط تعريفات الأنواع بواني الأنواع بأنواع البيانات: إما أنواع المتغيّرات، أو أنواع السجلات، أو اختصارات الأنواع، أو أنواع البيانات المجرّدة. وتربط أيضًا بواني القيم وحقول السجلات المرتبطة بالتعريف.</p>
+<pre><code class="language-text">type-definition::= type [nonrec] typedef { and typedef } typedef::= [type-params] typeconstr-name type-information type-information::= [type-equation] [type-representation] { type-constraint } type-equation::= = typexpr type-representation::= = [|] constr-decl { | constr-decl } ∣ = record-decl ∣ = | type-params::= type-param ∣ ( type-param { , type-param } ) type-param::= [ext-variance] &#x27; ident ext-variance::= variance [injectivity] ∣ injectivity [variance] variance::= + ∣ - ∣ +- ∣ -+ injectivity::= ! record-decl::= { field-decl { ; field-decl } [;] } constr-decl::= (constr-name ∣ [] ∣ (::)) [ of constr-args ] constr-args::= typexpr { * typexpr } field-decl::= [mutable] field-name : poly-typexpr type-constraint::= constraint typexpr = typexpr
+</code></pre>
+<p>انظر أيضًا امتدادات اللغة التالية: الأنواع الخاصة، وأنواع البيانات الجبرية المعمّمة، والسمات، وعقد الامتداد، وأنواع المتغيّرات القابلة للتوسّع، والسجلات المضمّنة.</p>
+<p>تُقدَّم تعريفات الأنواع بالكلمة المحجوزة <code>type</code>، وتتألف من تعريف بسيط واحد أو عدة تعريفات بسيطة، قد تكون متبادلة العودية، تفصل بينها الكلمة المحجوزة <code>and</code>. ويعرّف كل تعريف بسيط باني نوع واحدًا.</p>
+<p>ويتألف التعريف البسيط من معرّف يبدأ بحرف صغير، قد تسبقه معاملات نوع واحدة أو عدة، وتلحقه معادلة نوع اختيارية، ثم تمثيل نوع اختياري، ثم جملة قيد. والمعرّف هو اسم باني النوع المعرَّف.</p>
+<pre><code class="language-text">type colour =
+  | Red | Green | Blue | Yellow | Black | White
+  | RGB of {r : int; g : int; b : int}
+
+type &#x27;a tree = Lf | Br of &#x27;a * &#x27;a tree * &#x27;a;;
+
+type t = {decoration : string; substance : t&#x27;}
+and t&#x27; = Int of int | List of t list
+</code></pre>
+<p>وفي الطرف الأيمن من تعريفات الأنواع، تُعدّ الإشارات إلى أحد أسماء بواني الأنواع المعرَّفة إشارات عودية، ما لم تتبع <code>type</code> الكلمة <code>nonrec</code>. وقد أُدخلت الكلمة المحجوزة <code>nonrec</code> في OCaml 4.02.2.</p>
+<p>أما معاملات النوع الاختيارية فهي إما متغيّر نوع واحد <code>'</code> <em>ident</em>، لبواني الأنواع ذات المعامل الواحد، أو قائمة متغيّرات أنواع <code>('</code> <em>ident</em>₁, …, <code>'</code> <em>ident</em>ₙ <code>)</code>، لبواني الأنواع ذات المعاملات المتعددة. ويمكن أن يسبق كل معامل نوع قيد تغاير <code>+</code> (أو <code>-</code>) يدلّ على أن المعامل متغاير طرديًا (أو عكسيًا)، وتعليمة حقنية <code>!</code> تدلّ على أن المعامل يمكن استنتاجه من النوع كاملًا. ويمكن أن تظهر معاملات النوع هذه في تعابير الأنواع في الطرف الأيمن من التعريف، مقيَّدة اختياريًا بقيد تغاير؛ <em>أي</em> إن المعامل الطردي لا يظهر إلا في يمين سهم دالي (وبالأحرى في الفرع الأيسر من عدد زوجي من الأسهم)، والمعامل العكسي لا يظهر إلا في اليسار (الفرع الأيسر من عدد فردي من الأسهم). وإذا كان للنوع تمثيل أو معادلة، وكان المعامل حرًّا (<em>أي</em> غير مرتبط بقيد نوع بنوع مبنيّ)، فيُتحقَّق من قيد تغايره، لكن النوع الفرعي <em>وما إليه</em> سيستعمل التغاير المستنتج للمعامل، الذي قد يكون أقل تقييدًا؛ وإلا (<em>أي</em> في الأنواع المجرّدة أو المعاملات غير الحرّة)، فيجب إعطاء التغاير صراحةً، ويكون المعامل غير متغاير إذا لم يُعطَ تغاير.</p>
+<p>وتجعل معادلة النوع الاختيارية <code>=</code> <em>typexpr</em> النوع المعرَّف مكافئًا لتعبير النوع <em>typexpr</em>: فيمكن استبدال أحدهما بالآخر أثناء التنميط. وإذا لم تُعطَ معادلة نوع، وُلّد نوع جديد: فيكون النوع المعرَّف غير متوافق مع أي نوع آخر.</p>
+<p>ويصف تمثيل النوع الاختياري بنية البيانات الممثِّلة للنوع المعرَّف، بإعطاء قائمة البواني المرتبطة (إذا كان نوع متغيّر) أو الحقول المرتبطة (إذا كان نوع سجل). وإذا لم يُعطَ تمثيل نوع، لم يُفترض شيء عن بنية النوع عدا ما تنصّ عليه معادلة النوع الاختيارية.</p>
+<p>وتمثيل النوع <code>=</code> [<code>|</code>] <em>constr-decl</em> { <code>|</code> <em>constr-decl</em> } يصف نوع متغيّر. وتصف تصريحات البواني <em>constr-decl</em>₁، …، <em>constr-decl</em>ₙ البواني المرتبطة بهذا النوع. ويصرّح تعريف الباني <em>constr-name</em> <code>of</code> <em>typexpr</em>₁ <code>*</code> … <code>*</code> <em>typexpr</em>ₙ بالاسم <em>constr-name</em> بانيًا غير ثابت، أنواع معاملاته <em>typexpr</em>₁ … <em>typexpr</em>ₙ. ويصرّح تعريف الباني <em>constr-name</em> بالاسم <em>constr-name</em> بانيًا ثابتًا. ويجب أن تبدأ أسماء البواني بحرف كبير.</p>
+<p>وتمثيل النوع <code>=</code> <code>{</code> <em>field-decl</em> { <code>;</code> <em>field-decl</em> } [<code>;</code>] <code>}</code> يصف نوع سجل. وتصف تصريحات الحقول <em>field-decl</em>₁، …، <em>field-decl</em>ₙ الحقول المرتبطة بهذا النوع. ويصرّح تعريف الحقل <em>field-name</em> <code>:</code> <em>poly-typexpr</em> بالاسم <em>field-name</em> حقلًا نوع معامله <em>poly-typexpr</em>. ويتصرّف تعريف الحقل <code>mutable</code> <em>field-name</em> <code>:</code> <em>poly-typexpr</em> على نحو مشابه؛ ويزيد أنه يسمح بتعديل هذا الحقل فيزيائيًا. والحقول غير القابلة للتعديل متغايرة طرديًا، والحقول القابلة للتعديل غير متغايرة. ومنذ OCaml 5.4، يمكن وسم الحقول القابلة للتعديل بـ <code>[@atomic]</code> للوصول المتزامن، انظر 9.7.2. ويمكن أن يكون للحقول القابلة للتعديل وغير القابلة له أنواع متعدّدة الأشكال صريحة. ويُتحقَّق من تعدّد أشكال المحتوى ساكنًا كلما أُنشئت قيمة سجل أو عُدّلت. وقد تُجزَّأ أنواع القيم المستخرجة.</p>
+<p>ويمكن دمج مكوّني تعريف النوع، المعادلة الاختيارية والتمثيل الاختياري، مستقلَّين، ما يعطي أربع حالات نموذجية:</p>
+<p><strong><strong>نوع مجرّد: لا معادلة ولا تمثيل.</strong></strong></p>
+<p>حين يظهر هذا التعريف في توقيع وحدة، فإنه لا يحدّد شيئًا عن باني النوع عدا عدد معاملاته: فتمثيله مخفيّ ويُفترض أنه غير متوافق مع أي نوع آخر.</p>
+<p><strong><strong>اختصار نوع: معادلة بلا تمثيل.</strong></strong></p>
+<p>يعرّف هذا باني النوع اختصارًا لتعبير النوع على يمين علامة <code>=</code>.</p>
+<p><strong><strong>نوع متغيّر أو نوع سجل جديد: لا معادلة، بل تمثيل.</strong></strong></p>
+<p>يولّد هذا باني نوع جديدًا ويعرّف البواني أو الحقول المرتبطة، التي يمكن من خلالها بناء قيم هذا النوع أو فحصها مباشرةً.</p>
+<p><strong><strong>نوع متغيّر أو نوع سجل معاد تصديره: معادلة وتمثيل.</strong></strong></p>
+<p>في هذه الحالة، يُعرَّف باني النوع اختصارًا لتعبير النوع المعطى في المعادلة، غير أن البواني أو الحقول المعطاة في التمثيل تبقى مرتبطة بباني النوع المعرَّف. ويجب أن يتوافق تعبير النوع في جزء المعادلة مع التمثيل: فيجب أن يكون من النوع نفسه (سجل أو متغيّر)، وأن يحوي البواني أو الحقول نفسها بالضبط، بالترتيب نفسه، وبالمعاملات نفسها. وعلاوةً على ذلك، يجب أن تكون لباني النوع الجديد الرتبة نفسها وقيود النوع نفسها التي لباني النوع الأصلي.</p>
+<p>ويمكن أن تسبق متغيّرات الأنواع الظاهرة معاملاتِ نوعٍ ما بادئةٌ <code>+</code> أو <code>-</code> أو <code>+-</code> أو <code>-+</code> تدلّ على أن لباني النوع تغايرًا خاصًّا بالنسبة إلى هذا المعامل. فالمعامل المسبوق بـ <code>+</code> متغاير طرديًا، والمسبوق بـ <code>-</code> متغاير عكسيًا. ويمكن أن يكون المعامل طرديًا وعكسيًا معًا، أي متغايرًا في الاتجاهين، ببادئة <code>+-</code> أو <code>-+</code>. وتُستعمل معلومة التغاير هذه لتحديد علاقات النوع الفرعي عند التحقّق من صحة الإكراهات <code>:&gt;</code> (انظر القسم 11.7.7).</p>
+<p>فمثلًا، يصرّح <code>type +'a t</code> بأن <code>t</code> نوع مجرّد متغاير طرديًا في معامله؛ وهذا يعني أنه إذا كان النوع τ نوعًا فرعيًا من النوع σ، فإن τ<code>t</code> نوع فرعي من σ<code>t</code>. وعلى المنوال نفسه، يصرّح <code>type -'a t</code> بأن النوع المجرّد <code>t</code> متغاير عكسيًا في معامله: فإذا كان τ نوعًا فرعيًا من σ، فإن σ<code>t</code> نوع فرعي من τ<code>t</code>. وإذا لم تُعطَ تعليمة تغاير <code>+</code> أو <code>-</code>، فُرض أن باني النوع غير متغاير في المعامل المقابل. فمثلًا، يعني تصريح النوع المجرّد <code>type 'a t</code> أن τ<code>t</code> ليس نوعًا فرعيًا ولا نوعًا أعلى من σ<code>t</code> إذا كان τ نوعًا فرعيًا من σ.</p>
+<p>ولا يُفرض التغاير المشار إليه بتعليمتي <code>+</code> و<code>-</code> على المعاملات إلا في الأنواع المجرّدة والخاصة، أو حين توجد قيود نوع. وفيما عدا ذلك، أي في الاختصارات وأنواع المتغيّرات والسجلات بلا قيود نوع، تُستنتج خصائص التغاير لباني النوع من تعريفه، ولا تُفحص تعليمات التغاير إلا من حيث مطابقتها للتعريف.</p>
+<p>ولا تلزم التعليمات الحقنية إلا في الأنواع المجرّدة وأنواع الصفوف الخاصة، إذ يمكن عدا ذلك استنتاجها من تصريح النوع: فجميع المعاملات حقنية في تصريحات أنواع السجلات والمتغيّرات (بما فيها الأنواع القابلة للتوسّع)؛ وفي اختصارات الأنواع يكون المعامل حقنيًا إذا كانت له ورادة حقنية في معادلته المعرِّفة (سواء كانت خاصة أم لا). أما معاملات الأنواع المقيَّدة في اختصارات الأنواع، فهي حقنية إذا ظهرت في موضع حقني في الجسم، أو إذا كانت جميع متغيّرات أنواعها حقنية؛ وبوجه خاص، إذا حوى معامل نوع مقيَّد متغيّرًا لا يظهر في الجسم، فلا يمكن أن يكون حقنيًا.</p>
+<p>وتسمح البنية <code>constraint</code> <code>'</code> <em>ident</em> <code>=</code> <em>typexpr</em> بتحديد معاملات الأنواع. ويجب أن تكون كل حجّة نوع فعلية تقابل معامل النوع <em>ident</em> حالةً من <em>typexpr</em> (وبالأحرى تُوحَّد <em>ident</em> و<em>typexpr</em>). ويمكن أن تظهر متغيّرات أنواع <em>typexpr</em> في معادلة النوع وتصريح النوع.</p>
+<h3 id="1182-تعريفات-الاستثناءات">11.8.2 تعريفات الاستثناءات</h3>
+<pre><code class="language-text">exception-definition::= exception constr-decl ∣ exception constr-name = constr
+</code></pre>
+<p>تضيف تعريفات الاستثناءات بواني جديدة إلى نوع المتغيّرات المدمج <code>exn</code> لقيم الاستثناءات. وتُصرَّح البواني كما في تعريف نوع متغيّر.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">exception</span> <span class="hljs-type">E</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> * <span class="hljs-built_in">string</span>;;
+
+<span class="hljs-keyword">exception</span> <span class="hljs-type">E</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> * <span class="hljs-built_in">string</span>
+</code></pre>
+<p>وتولّد الصيغة <code>exception</code> <em>constr-decl</em> استثناءً جديدًا متميزًا عن جميع الاستثناءات الأخرى في النظام. وتمنح الصيغة <code>exception</code> <em>constr-name</em> <code>=</code> <em>constr</em> اسمًا بديلًا لاستثناء موجود.</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">exception</span> <span class="hljs-type">E</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> * <span class="hljs-built_in">string</span>
+
+  <span class="hljs-keyword">exception</span> <span class="hljs-type">F</span> = <span class="hljs-type">E</span>
+
+  <span class="hljs-keyword">let</span> eq =
+     <span class="hljs-type">E</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&quot;one&quot;</span>) = <span class="hljs-type">F</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&quot;one&quot;</span>);;
+
+<span class="hljs-keyword">exception</span> <span class="hljs-type">E</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> * <span class="hljs-built_in">string</span>
+<span class="hljs-keyword">exception</span> <span class="hljs-type">F</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> * <span class="hljs-built_in">string</span>
+<span class="hljs-keyword">val</span> eq : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<h2 id="119-الأصناف">11.9 الأصناف</h2>
+<p>تُعرَّف الأصناف بلغة صغيرة تشبه لغة الوحدات.</p>
+<h3 id="1191-أنواع-الأصناف">11.9.1 أنواع الأصناف</h3>
+<p>أنواع الأصناف هي المكافئ على مستوى الأصناف لتعبيرات الأنواع: فهي تحدّد الشكل العام والخصائص النوعية للأصناف.</p>
+<pre><code class="language-text">class-type::= [[?]label-name:] typexpr -&gt; class-type ∣ class-body-type class-body-type::= object [( typexpr )] { class-field-spec } end ∣ [[ typexpr { , typexpr } ]] classtype-path ∣ let open module-path in class-body-type class-field-spec::= inherit class-body-type ∣ val [mutable] [virtual] inst-var-name : typexpr ∣ val virtual mutable inst-var-name : typexpr ∣ method [private] [virtual] method-name : poly-typexpr ∣ method virtual private method-name : poly-typexpr ∣ constraint typexpr = typexpr
+</code></pre>
+<p>انظر أيضًا امتدادات اللغة التالية: السمات وعقد الامتداد.</p>
+<h4>تعابير الأصناف البسيطة</h4>
+<p>يكافئ التعبير <em>classtype-path</em> نوع الصنف المرتبط بالاسم <em>classtype-path</em>. وعلى المنوال نفسه، يكافئ التعبير <code>[</code> <em>typexpr</em>₁ <code>,</code> … <code>,</code> <em>typexpr</em>ₙ <code>]</code> <em>classtype-path</em> نوع الصنف ذا المعاملات المرتبط بالاسم <em>classtype-path</em>، بعد أن جُزِّئت معاملات نوعه إلى <em>typexpr</em>₁، …، <em>typexpr</em>ₙ على الترتيب.</p>
+<h4>نوع الدالة الصنفية</h4>
+<p>تعبير نوع الصنف <em>typexpr</em> <code>-&gt;</code> <em>class-type</em> هو نوع الدوال الصنفية (دوال من القيم إلى الأصناف) التي تأخذ معاملًا من النوع <em>typexpr</em> وتعيد نتيجةً صنفًا من النوع <em>class-type</em>.</p>
+<h4>نوع جسم الصنف</h4>
+<p>تعبير نوع الصنف <code>object</code> [<code>(</code> <em>typexpr</em> <code>)</code>] { <em>class-field-spec</em> } <code>end</code> هو نوع جسم صنف. ويحدّد متغيّرات نسخته ودواله. وفي هذا النوع، تُطابَق <em>typexpr</em> مع نوع الذات، فتوفّر بذلك اسمًا لنوع الذات.</p>
+<p>ويطابق جسم الصنف نوع جسم صنف إذا قدّم تعريفات لجميع المكوّنات المحدّدة في نوع جسم الصنف، وكانت هذه التعريفات تحقّق شروط النوع المعطاة في نوع جسم الصنف. وعلاوةً على ذلك، يجب أن تكون جميع الدوال، المجرّدة أو العامة، الموجودة في جسم الصنف موجودة أيضًا في نوع جسم الصنف (أما بعض متغيّرات النسخة والدوال الخاصة الملموسة فقد تُغفَل). وتطابق الدالة المجرّدة دالةً ملموسة، ما يجعل من الممكن نسيان تنفيذها. ويطابق متغيّر النسخة غير القابل للتعديل متغيّر نسخة قابلًا للتعديل.</p>
+<h4>الفتح المحلي</h4>
+<p>الفتح المحلي مدعوم في أنواع الأصناف منذ OCaml 4.06.</p>
+<h4>الوراثة</h4>
+<p>تتيح بنية الوراثة <code>inherit</code> <em>class-body-type</em> ضمّ الدوال ومتغيّرات النسخة من أنواع أصناف أخرى. فتُضاف أنواع متغيّرات النسخة والدوال من <em>class-body-type</em> إلى نوع الصنف الحالي.</p>
+<h4>تحديد متغيّر النسخة</h4>
+<p>يُكتب تحديد متغيّر النسخة على الصيغة <code>val</code> [<code>mutable</code>] [<code>virtual</code>] <em>inst-var-name</em> <code>:</code> <em>typexpr</em>، حيث <em>inst-var-name</em> اسم متغيّر النسخة و<em>typexpr</em> نوعه المتوقّع. وتدلّ العلامة <code>mutable</code> على ما إذا كان هذا المتغيّر قابلًا للتعديل فيزيائيًا. وتدلّ العلامة <code>virtual</code> على أن هذا المتغيّر غير مهيّأ، ويمكن تهيئته لاحقًا عبر الوراثة.</p>
+<p>ويخفي تحديد متغيّر النسخة أي تحديد سابق لمتغيّر نسخة بالاسم نفسه.</p>
+<h4>تحديد الدالة</h4>
+<p>يُكتب تحديد الدالة على الصيغة <code>method</code> [<code>private</code>] <em>method-name</em> <code>:</code> <em>poly-typexpr</em>، حيث <em>method-name</em> اسم الدالة و<em>poly-typexpr</em> نوعها المتوقّع، الذي قد يكون متعدّد الأشكال. وتدلّ العلامة <code>private</code> على أن الدالة لا يمكن الوصول إليها من خارج الكائن.</p>
+<p>ويمكن إغفال تعدّد الأشكال في تحديدات الدوال العامة: فكل متغيّر نوع غير مرتبط بمعامل صنف ولا يظهر في موضع آخر داخل تحديد الصنف يُفترض أنه كلي، ويُجعل متعدّد الأشكال في نوع الدالة الناتج. وكتابة نوع متعدّد الأشكال صراحةً تعطّل هذا السلوك.</p>
+<p>وإذا وُجدت عدة تحديدات للدالة نفسها، فيجب أن تكون أنواعها متوافقة. ويفرض أي تحديد غير خاص لدالة أن تكون عامة.</p>
+<h4>تحديد الدالة المجرّدة</h4>
+<p>يُكتب تحديد الدالة المجرّدة على الصيغة <code>method</code> [<code>private</code>] <code>virtual</code> <em>method-name</em> <code>:</code> <em>poly-typexpr</em>، حيث <em>method-name</em> اسم الدالة و<em>poly-typexpr</em> نوعها المتوقّع.</p>
+<h4>قيود على معاملات الأنواع</h4>
+<p>تفرض البنية <code>constraint</code> <em>typexpr</em>₁ <code>=</code> <em>typexpr</em>₂ تساوي تعبيري النوع. ويُستعمل هذا عادةً لتحديد معاملات الأنواع: إذ يمكن بهذه الطريقة ربطها بتعبيرات أنواع محدّدة.</p>
+<h3 id="1192-تعابير-الأصناف">11.9.2 تعابير الأصناف</h3>
+<p>تعابير الأصناف هي المكافئ على مستوى الأصناف لتعبيرات القيم: فهي تُقيَّم إلى أصناف، فتوفّر بذلك تنفيذات للتحديدات المعبَّر عنها في أنواع الأصناف.</p>
+<pre><code class="language-text">class-expr::= class-path ∣ [ typexpr { , typexpr } ] class-path ∣ ( class-expr ) ∣ ( class-expr : class-type ) ∣ class-expr { argument }⁺ ∣ fun { parameter }⁺ -&gt; class-expr ∣ let [rec] let-binding { and let-binding } in class-expr ∣ object class-body end ∣ let open module-path in class-expr
+</code></pre>
+<pre><code class="language-text">class-field::= inherit class-expr [as lowercase-ident] ∣ inherit! class-expr [as lowercase-ident] ∣ val [mutable] inst-var-name [: typexpr] = expr ∣ val! [mutable] inst-var-name [: typexpr] = expr ∣ val [mutable] virtual inst-var-name : typexpr ∣ val virtual mutable inst-var-name : typexpr ∣ method [private] method-name { parameter } [: typexpr] = expr ∣ method! [private] method-name { parameter } [: typexpr] = expr ∣ method [private] method-name : poly-typexpr = expr ∣ method! [private] method-name : poly-typexpr = expr ∣ method [private] virtual method-name : poly-typexpr ∣ method virtual private method-name : poly-typexpr ∣ constraint typexpr = typexpr ∣ initializer expr
+</code></pre>
+<p>انظر أيضًا امتدادات اللغة التالية: الأنواع المجرّدة المحلية، والسمات، وعقد الامتداد.</p>
+<h4>تعابير الأصناف البسيطة</h4>
+<p>يُقيَّم التعبير <em>class-path</em> إلى الصنف المرتبط بالاسم <em>class-path</em>. وعلى المنوال نفسه، يُقيَّم التعبير <code>[</code> <em>typexpr</em>₁ <code>,</code> … <code>,</code> <em>typexpr</em>ₙ <code>]</code> <em>class-path</em> إلى الصنف ذي المعاملات المرتبط بالاسم <em>class-path</em>، بعد أن جُزِّئت معاملات نوعه إلى <em>typexpr</em>₁، …، <em>typexpr</em>ₙ على الترتيب.</p>
+<p>ويُقيَّم التعبير <code>(</code> <em>class-expr</em> <code>)</code> إلى الوحدة نفسها <em>class-expr</em>.</p>
+<p>ويتحقّق التعبير <code>(</code> <em>class-expr</em> <code>:</code> <em>class-type</em> <code>)</code> من مطابقة <em>class-type</em> لنوع <em>class-expr</em> (أي من أن التنفيذ <em>class-expr</em> يحقّق تحديد النوع <em>class-type</em>). ويُقيَّم التعبير كاملًا إلى الصنف نفسه <em>class-expr</em>، باستثناء أن جميع المكوّنات غير المحدّدة في <em>class-type</em> تصير مخفيّة ولا يمكن الوصول إليها.</p>
+<h4>تطبيق الأصناف</h4>
+<p>يُشار إلى تطبيق الأصناف بمجاورة تعابير (قد تكون معنونة). ويدلّ على الصنف الذي بانيه التعبير الأول مطبَّقًا على المعاملات المعطاة. وتُقيَّم المعاملات كما في تطبيق التعابير، لكن الباني نفسه لا يُقيَّم إلا عند إنشاء الكائنات. وبوجه خاص، لا تحدث الآثار الجانبية الناتجة عن تطبيق الباني إلا في وقت إنشاء الكائن.</p>
+<h4>الدالة الصنفية</h4>
+<p>يُقيَّم التعبير <code>fun</code> [[<code>?</code>] <em>label-name</em> <code>:</code>] <em>pattern</em> <code>-&gt;</code> <em>class-expr</em> إلى دالة من القيم إلى الأصناف. وعندما تُطبَّق هذه الدالة على قيمة <em>v</em>، تُطابَق هذه القيمة مع النمط <em>pattern</em>، وتكون النتيجة نتيجة تقييم <em>class-expr</em> في البيئة الموسَّعة.</p>
+<p>والتحويل من دوال ذات قيم معيارية إلى دوال بالأنماط فقط يعمل في الدوال الصنفية كما يعمل في الدوال العادية.</p>
+<p>والتعبير</p>
+<p>fun</p>
+<p>parameter</p>
+<p>1</p>
+<p>…</p>
+<p>parameter</p>
+<p>n</p>
+<p>-&gt;</p>
+<p>class-expr</p>
+<p>صيغة مختصرة عن</p>
+<p>fun</p>
+<p>parameter</p>
+<p>1</p>
+<p>-&gt;</p>
+<p>…</p>
+<p>fun</p>
+<p>parameter</p>
+<p>n</p>
+<p>-&gt;</p>
+<p>expr</p>
+<h4>التعريفات المحلية</h4>
+<p>تربط بنيتا <code>let</code> و<code>let rec</code> أسماء القيم محليًا، كما في تعابير اللغة الأساسية.</p>
+<p>وإذا حدث تعريف محلي في بداية تعريف الصنف تمامًا، فإنه يُقيَّم عند إنشاء الصنف (كما لو كان التعريف خارج الصنف). وإلا فإنه يُقيَّم عند استدعاء باني الكائن.</p>
+<h4>الفتح المحلي</h4>
+<p>الفتح المحلي مدعوم في تعابير الأصناف منذ OCaml 4.06.</p>
+<h4>جسم الصنف</h4>
+<pre><code class="language-text">class-body::= [( pattern [: typexpr] )] { class-field }
+</code></pre>
+<p>يدلّ التعبير <code>object</code> <em>class-body</em> <code>end</code> على جسم صنف. وهذا هو النموذج الأوّلي للكائن: إذ يسرد متغيّرات النسخة ودوال كائن من هذا الصنف.</p>
+<p>وجسم الصنف قيمة صنفية: فهو لا يُقيَّم دفعةً واحدة، بل تُقيَّم مكوّناته في كل مرة يُنشأ فيها كائن.</p>
+<p>وفي جسم الصنف، يُطابَق النمط <code>(</code> <em>pattern</em> [<code>:</code> <em>typexpr</em>] <code>)</code> مع الذات، فيوفّر بذلك ارتباطًا للذات ولنوع الذات. ولا يمكن استعمال الذات إلا في الدوال والمهيّئات.</p>
+<p>ولا يمكن أن يكون نوع الذات نوع كائن مغلق، حتى يبقى الصنف قابلًا للتوسّع.</p>
+<p>ومنذ OCaml 4.01، يُعدّ خطأً تعريف الاسم نفسه لدالة أو متغيّر نسخة عدة مرات في جسم الصنف نفسه.</p>
+<h4>الوراثة</h4>
+<p>تتيح بنية الوراثة <code>inherit</code> <em>class-expr</em> إعادة استعمال الدوال ومتغيّرات النسخة من أصناف أخرى. ويجب أن يُقيَّم تعبير الصنف <em>class-expr</em> إلى جسم صنف. وتُضاف متغيّرات النسخة والدوال والمهيّئات من جسم الصنف هذا إلى الصنف الحالي. ووجود دالة يُلغي أي دالة سابقة معرَّفة بالاسم نفسه.</p>
+<p>ويمكن ربط سلف بإلحاق <code>as</code> <em>lowercase-ident</em> ببنية الوراثة. وليس <em>lowercase-ident</em> متغيّرًا حقيقيًا، ولا يمكن استعماله إلا لاختيار دالة، أي في تعبير <em>lowercase-ident</em> <code>#</code> <em>method-name</em>. ويتيح ذلك الوصول إلى الدالة <em>method-name</em> كما عُرِّفت في الصنف الأب حتى لو أُعيد تعريفها في الصنف الحالي. ويقتصر نطاق ارتباط السلف هذا على الصنف الحالي. ويمكن استدعاء دالة السلف من صنف فرعي، لكن بشكل غير مباشر فقط.</p>
+<h4>تعريف متغيّر النسخة</h4>
+<p>يضيف التعريف <code>val</code> [<code>mutable</code>] <em>inst-var-name</em> <code>=</code> <em>expr</em> متغيّر نسخة <em>inst-var-name</em> قيمته الابتدائية قيمة التعبير <em>expr</em>. وتسمح العلامة <code>mutable</code> للدوال بتعديل هذا المتغيّر فيزيائيًا.</p>
+<p>ولا يمكن استعمال متغيّر النسخة إلا في الدوال والمهيّئات التي تلي تعريفه.</p>
+<p>ومنذ الإصدار 3.10، لا تنشئ إعادة تعريف متغيّر نسخة مرئي بالاسم نفسه متغيّرًا جديدًا، بل يُدمجان، وتُستعمل القيمة الأخيرة للتهيئة. ويجب أن يكون لهما النوعان نفسهما وقابلية التعديل نفسها. أما إذا حُجب متغيّر نسخة بإغفاله من واجهة، فسيبقى متميزًا عن متغيّرات النسخة الأخرى بالاسم نفسه.</p>
+<h4>تعريف متغيّر النسخة المجرّد</h4>
+<p>يُكتب تحديد المتغيّر على الصيغة <code>val</code> [<code>mutable</code>] <code>virtual</code> <em>inst-var-name</em> <code>:</code> <em>typexpr</em>. ويحدّد ما إذا كان المتغيّر قابلًا للتعديل، ويعطي نوعه.</p>
+<p>وقد أُضيفت متغيّرات النسخة المجرّدة في الإصدار 3.10.</p>
+<h4>تعريف الدالة</h4>
+<p>يُكتب تعريف الدالة على الصيغة <code>method</code> <em>method-name</em> <code>=</code> <em>expr</em>. ويلغي تعريف الدالة أي تعريف سابق لهذه الدالة. وتكون الدالة عامة (أي غير خاصة) إذا نصّ على ذلك أي من تعريفاتها.</p>
+<p>والدالة الخاصة، <code>method</code> <code>private</code> <em>method-name</em> <code>=</code> <em>expr</em>، دالة لا يمكن استدعاؤها إلا على الذات (من دوال أخرى للكائن نفسه، معرَّفة في هذا الصنف أو في أحد أصنافه الفرعية). ويجري هذا الاستدعاء بالتعبير <em>value-name</em> <code>#</code> <em>method-name</em>، حيث <em>value-name</em> مرتبط مباشرةً بالذات في بداية تعريف الصنف. ولا تظهر الدوال الخاصة في أنواع الكائنات. وقد تكون للدالة تعريفات عامة وخاصة معًا، لكن حالما يوجد تعريف عام تصبح جميع التعريفات اللاحقة عامة.</p>
+<p>وقد يكون للدوال نوع متعدّد الأشكال صريح، ما يسمح باستعمالها استعمالًا متعدّد الأشكال في البرامج (حتى للكائن نفسه). ويجوز الإعلان الصريح بإحدى ثلاث طرق: (1) بإعطاء نوع متعدّد الأشكال صريح في تعريف الدالة، مباشرةً بعد اسم الدالة، <em>أي</em> <code>method</code> [<code>private</code>] <em>method-name</em> <code>:</code> { <code>'</code> <em>ident</em> }⁺ <code>.</code> <em>typexpr</em> <code>=</code> <em>expr</em>؛ (2) بإعلان مسبق للنوع متعدّد الأشكال الصريح عبر تعريف دالة مجرّدة؛ (3) باستيراد إعلان كهذا عبر الوراثة و/أو تقييد نوع الذات.</p>
+<p>وثمة تعابير خاصة متاحة في أجسام الدوال للتعامل مع متغيّرات النسخة وتكرار الذات:</p>
+<pre><code class="language-text">expr::= … ∣ inst-var-name &lt;- expr ∣ {&lt; [ inst-var-name = expr { ; inst-var-name = expr } [;] ] &gt;}
+</code></pre>
+<p>ويعدّل التعبير <em>inst-var-name</em> <code>&lt;-</code> <em>expr</em> الكائن الحالي في مكانه، باستبدال القيمة المرتبطة بـ <em>inst-var-name</em> بقيمة <em>expr</em>. ويجب بطبيعة الحال أن يكون متغيّر النسخة هذا قد صُرِّح قابلًا للتعديل.</p>
+<p>ويُقيَّم التعبير <code>{&lt;</code> <em>inst-var-name</em>₁ <code>=</code> <em>expr</em>₁ <code>;</code> … <code>;</code> <em>inst-var-name</em>ₙ <code>=</code> <em>expr</em>ₙ <code>&gt;}</code> إلى نسخة من الكائن الحالي استُبدلت فيها قيم متغيّرات النسخة <em>inst-var-name</em>₁، …، <em>inst-var-name</em>ₙ بقيم التعبيرات المقابلة <em>expr</em>₁، …، <em>expr</em>ₙ.</p>
+<h4>تعريف الدالة المجرّدة</h4>
+<p>يُكتب تحديد الدالة على الصيغة <code>method</code> [<code>private</code>] <code>virtual</code> <em>method-name</em> <code>:</code> <em>poly-typexpr</em>. ويحدّد ما إذا كانت الدالة عامة أو خاصة، ويعطي نوعها. وإذا كان المقصود أن تكون الدالة متعدّدة الأشكال، فيجب أن يكون النوع متعدّد الأشكال صراحةً.</p>
+<h4>الإلغاء الصريح</h4>
+<p>منذ Ocaml 3.12، للكلمات المحجوزة <code>inherit!</code> و<code>val!</code> و<code>method!</code> الدلالة نفسها التي لـ <code>inherit</code> و<code>val</code> و<code>method</code>، غير أنها تشترط إضافةً أن يكون التعريف الذي تُدخله ملغيًا. فـ <code>method!</code> تشترط أن يكون <em>method-name</em> معرَّفًا سابقًا في هذا الصنف، و<code>val!</code> تشترط أن يكون <em>inst-var-name</em> معرَّفًا سابقًا في هذا الصنف، و<code>inherit!</code> تشترط أن يلغي <em>class-expr</em> بعض التعريفات. وإذا لم يحدث إلغاء كهذا، أُشير إلى خطأ.</p>
+<p>وكأثر جانبي، تتجنّب هذه الكلمات الثلاث التحذيرين 7 (إلغاء الدالة) و13 (إلغاء متغيّر النسخة). ولاحظ أن التحذير 7 معطَّل افتراضيًا.</p>
+<h4>قيود على معاملات الأنواع</h4>
+<p>تفرض البنية <code>constraint</code> <em>typexpr</em>₁ <code>=</code> <em>typexpr</em>₂ تساوي تعبيري النوع. ويُستعمل هذا عادةً لتحديد معاملات الأنواع: إذ يمكن بهذه الطريقة ربطها بتعبيرات أنواع محدّدة.</p>
+<h4>المهيّئات</h4>
+<p>يحدّد مهيّئ الصنف <code>initializer</code> <em>expr</em> تعبيرًا يُقيَّم كلما أُنشئ كائن من الصنف، بعد تهيئة جميع متغيّرات نسخته.</p>
+<h3 id="1193-تعريفات-الأصناف">11.9.3 تعريفات الأصناف</h3>
+<pre><code class="language-text">class-definition::= class class-binding { and class-binding } class-binding::= [virtual] [[ type-parameters ]] class-name { parameter } [: class-type] = class-expr type-parameters::= &#x27; ident { , &#x27; ident }
+</code></pre>
+<p>تعريف الصنف <code>class</code> <em>class-binding</em> { <code>and</code> <em>class-binding</em> } عودي. ويعرّف كل <em>class-binding</em> اسم صنف <em>class-name</em> يمكن استعماله في التعبير كاملًا باستثناء الوراثة. ويمكن استعماله في الوراثة أيضًا، لكن فقط في التعريفات التي تلي تعريفه.</p>
+<p>ويربط ارتباط الصنف اسم الصنف <em>class-name</em> بقيمة التعبير <em>class-expr</em>. ويربط أيضًا نوع الصنف <em>class-name</em> بنوع الصنف، ويعرّف اختصارَي نوع: <em>class-name</em> و<code>#</code> <em>class-name</em>. الأول نوع كائنات هذا الصنف، والثاني أعمّ لأنه يتوحّد مع نوع أي كائن ينتمي إلى صنف فرعي (انظر القسم 11.4).</p>
+<h4>الصنف المجرّد</h4>
+<p>يجب وسم الصنف بأنه مجرّد إذا كانت إحدى دواله مجرّدة (أي تظهر في نوع الصنف، لكنها غير معرَّفة فعليًا). ولا يمكن إنشاء كائنات من صنف مجرّد.</p>
+<h4>معاملات الأنواع</h4>
+<p>تقابل معاملات نوع الصنف معاملات نوع الصنف واختصارَي النوع اللذين يعرّفهما ارتباط الصنف. ويجب ربطها بأنواع فعلية في تعريف الصنف باستعمال قيود النوع. ولكي تكون الاختصارات سليمة الصياغة، يجب أن تكون متغيّرات أنواع النوع المستنتج للصنف إما معاملات أنواع أو مرتبطة في جملة القيد.</p>
+<h3 id="1194-تحديدات-الأصناف">11.9.4 تحديدات الأصناف</h3>
+<pre><code class="language-text">class-specification::= class class-spec { and class-spec } class-spec::= [virtual] [[ type-parameters ]] class-name : class-type
+</code></pre>
+<p>هذا هو النظير في التوقيعات لتعريفات الأصناف. ويطابق تحديد الصنف تعريف صنف إذا كان لهما معاملات الأنواع نفسها وكان نوعاهما متطابقين.</p>
+<h3 id="1195-تعريفات-أنواع-الأصناف">11.9.5 تعريفات أنواع الأصناف</h3>
+<pre><code class="language-text">classtype-definition::= class type classtype-def { and classtype-def } classtype-def::= [virtual] [[ type-parameters ]] class-name = class-body-type
+</code></pre>
+<p>يعرّف تعريف نوع الصنف <code>class</code> <em>class-name</em> <code>=</code> <em>class-body-type</em> اختصارًا <em>class-name</em> لنوع جسم الصنف <em>class-body-type</em>. وكما في تعريفات الأصناف، يُعرَّف أيضًا اختصارا نوع: <em>class-name</em> و<code>#</code> <em>class-name</em>. ويمكن أن يكون التعريف ذا معاملات أنواع. وإذا كانت إحدى دوال جسم نوع الصنف مجرّدة، فيجب وسم التعريف بـ <code>virtual</code>.</p>
+<p>ويتطابق تعريفا نوع صنف إذا كان لهما معاملات الأنواع نفسها وكانا يتمدّدان إلى نوعين متطابقين.</p>
+<h2 id="1110-أنواع-الوحدات-تحديدات-الوحدات">11.10 أنواع الوحدات (تحديدات الوحدات)</h2>
+<p>أنواع الوحدات هي المكافئ على مستوى الوحدات لتعبيرات الأنواع: فهي تحدّد الشكل العام والخصائص النوعية للوحدات.</p>
+<pre><code class="language-text">module-type::= modtype-path ∣ sig { specification [;;] } end ∣ [functor] { ( module-name : module-type ) }⁺ -&gt; module-type ∣ module-type -&gt; module-type ∣ module-type with mod-constraint { and mod-constraint } ∣ ( module-type ) mod-constraint::= type [type-params] typeconstr type-equation { type-constraint } ∣ module module-path = extended-module-path
+</code></pre>
+<pre><code class="language-text">specification::= val value-name : typexpr ∣ external value-name : typexpr = external-declaration ∣ type-definition ∣ exception constr-decl ∣ class-specification ∣ classtype-definition ∣ module module-name : module-type ∣ module module-name { ( module-name : module-type ) } : module-type ∣ module type modtype-name ∣ module type modtype-name = module-type ∣ open module-path ∣ include module-type
+</code></pre>
+<p>انظر أيضًا امتدادات اللغة التالية: استرجاع نوع وحدة، والاستبدال داخل توقيع، وكنى الوحدات على مستوى الأنواع، والسمات، وعقد الامتداد، والموصِّلات التوليدية، واستبدالات أنواع الوحدات.</p>
+<h3 id="11101-أنواع-الوحدات-البسيطة">11.10.1 أنواع الوحدات البسيطة</h3>
+<p>يكافئ التعبير <em>modtype-path</em> نوع الوحدة المرتبط بالاسم <em>modtype-path</em>. ويدلّ التعبير <code>(</code> <em>module-type</em> <code>)</code> على النوع نفسه <em>module-type</em>.</p>
+<h3 id="11102-التوقيعات">11.10.2 التوقيعات</h3>
+<p>التوقيعات تحديدات أنواع للبنى. والتوقيعات <code>sig</code> … <code>end</code> مجموعات من تحديدات الأنواع لأسماء القيم وأسماء الأنواع والاستثناءات وأسماء الوحدات وأسماء أنواع الوحدات. وتطابق البنية توقيعًا إذا كانت تقدّم تعريفات (تنفيذات) لجميع الأسماء المحدّدة في التوقيع (وقد تزيد عليها)، وكانت هذه التعريفات تحقّق شروط النوع المعطاة في التوقيع.</p>
+<p>ويُسمح بـ <code>;;</code> اختيارية بعد كل تحديد في توقيع. وهي تعمل فاصلًا نحويًا لا معنى دلاليًا له.</p>
+<h4>تحديدات القيم</h4>
+<p>يُكتب تحديد مكوّن قيمة في توقيع على الصيغة <code>val</code> <em>value-name</em> <code>:</code> <em>typexpr</em>، حيث <em>value-name</em> اسم القيمة و<em>typexpr</em> نوعها المتوقّع.</p>
+<p>وتشبه صيغة <code>external</code> <em>value-name</em> <code>:</code> <em>typexpr</em> <code>=</code> <em>external-declaration</em> ذلك، غير أنها تشترط إضافةً تنفيذ الاسم كالدالة الخارجية المحدّدة في <em>external-declaration</em> (انظر الفصل 23).</p>
+<h4>تحديدات الأنواع</h4>
+<p>يُكتب تحديد مكوّن نوع واحد أو عدة في توقيع على الصيغة <code>type</code> <em>typedef</em> { <code>and</code> <em>typedef</em> }، ويتألف من متتالية تعريفات متبادلة العودية لأسماء الأنواع.</p>
+<p>ويحدّد كل تعريف نوع في التوقيع معادلة نوع اختيارية <code>=</code> <em>typexpr</em> وتمثيل نوع اختياريًا <code>=</code> <em>constr-decl</em> … أو <code>=</code> <code>{</code> <em>field-decl</em> … <code>}</code>. ويجب أن يكون تنفيذ اسم النوع في بنية مطابقة متوافقًا مع تعبير النوع المحدّد في المعادلة (إن أُعطي)، وأن يمتلك التمثيل المحدّد (إن أُعطي). وفي المقابل، سيتمكّن مستعملو هذا التوقيع من الاعتماد على معادلة النوع أو تمثيل النوع إن أُعطيا. وبالأحرى، لدينا الحالات الأربع التالية:</p>
+<p><strong><strong>نوع مجرّد: لا معادلة ولا تمثيل.</strong></strong></p>
+<p>يمكن تنفيذ الأسماء المعرَّفة أنواعًا مجرّدة في توقيع بأي نوع من تعريفات الأنواع (بشرط أن يكون لها العدد نفسه من معاملات الأنواع) في بنية مطابقة. وسيكون التنفيذ المضبوط للنوع مخفيًّا عن مستعملي البنية. وبوجه خاص، إذا نُفِّذ النوع نوع متغيّر أو نوع سجل، فلن تكون البواني والحقول المرتبطة متاحة للمستعملين؛ وإذا نُفِّذ النوع اختصارًا، فستُخفى عن مستعملي البنية المساواة النوعية بين اسم النوع والطرف الأيمن من الاختصار. ويعتبر مستعملو البنية هذا النوع غير متوافق مع أي نوع آخر: فقد وُلّد نوع جديد.</p>
+<p><strong><strong>اختصار نوع: معادلة <code>=</code> <em>typexpr</em>، بلا تمثيل.</strong></strong></p>
+<p>يجب أن يُنفَّذ اسم النوع بنوع متوافق مع <em>typexpr</em>. ويعلم جميع مستعملي البنية أن اسم النوع متوافق مع <em>typexpr</em>.</p>
+<p><strong><strong>نوع متغيّر أو نوع سجل جديد: لا معادلة، بل تمثيل.</strong></strong></p>
+<p>يجب أن يُنفَّذ اسم النوع بنوع متغيّر أو نوع سجل يحوي البواني أو الحقول المحدّدة بالضبط. ويتمكّن جميع مستعملي البنية من الوصول إلى البواني أو الحقول، واستعمالها لإنشاء قيم من ذلك النوع أو فحصها. غير أن مستعملي البنية يعتبرون هذا النوع غير متوافق مع أي نوع آخر: فقد وُلّد نوع جديد.</p>
+<p><strong><strong>نوع متغيّر أو نوع سجل معاد تصديره: معادلة وتمثيل.</strong></strong></p>
+<p>تجمع هذه الحالة الحالتين السابقتين: فيُجعل تمثيل النوع مرئيًا لجميع المستعملين، ولا يُولّد نوع جديد.</p>
+<h4>تحديد الاستثناء</h4>
+<p>يشترط التحديد <code>exception</code> <em>constr-decl</em> في توقيع أن تقدّم البنية المطابقة استثناءً بالاسم والمعاملات المحدّدة في التعريف، ويجعل الاستثناء متاحًا لجميع مستعملي البنية.</p>
+<h4>تحديدات الأصناف</h4>
+<p>يُكتب تحديد صنف واحد أو عدة في توقيع على الصيغة <code>class</code> <em>class-spec</em> { <code>and</code> <em>class-spec</em> }، ويتألف من متتالية تعريفات متبادلة العودية لأسماء الأصناف.</p>
+<p>وتُوصف تحديدات الأصناف بمزيد من الدقة في القسم 11.9.4.</p>
+<h4>تحديدات أنواع الأصناف</h4>
+<p>يُكتب تحديد نوع صنف واحد أو عدة في توقيع على الصيغة <code>class</code> <code>type</code> <em>classtype-def</em> { <code>and</code> <em>classtype-def</em> }، ويتألف من متتالية تعريفات متبادلة العودية لأسماء أنواع الأصناف. وتُوصف تحديدات أنواع الأصناف بمزيد من الدقة في القسم 11.9.5.</p>
+<h4>تحديدات الوحدات</h4>
+<p>يُكتب تحديد مكوّن وحدة في توقيع على الصيغة <code>module</code> <em>module-name</em> <code>:</code> <em>module-type</em>، حيث <em>module-name</em> اسم مكوّن الوحدة و<em>module-type</em> نوعه المتوقّع. ويمكن تداخل الوحدات اعتباطًا؛ وبوجه خاص، يمكن أن تظهر الموصِّلات مكوّناتٍ للبنى وأنواع الموصِّلات مكوّناتٍ للتوقيعات.</p>
+<p>ولتحديد مكوّن وحدة يكون موصِّلًا، يمكن كتابة</p>
+<p>module</p>
+<p>module-name</p>
+<p>(</p>
+<p>name</p>
+<p>1</p>
+<p>:</p>
+<p>module-type</p>
+<p>1</p>
+<p>)</p>
+<p>…</p>
+<p>(</p>
+<p>name</p>
+<p>n</p>
+<p>:</p>
+<p>module-type</p>
+<p>n</p>
+<p>)</p>
+<p>:</p>
+<p>module-type</p>
+<p>بدلًا من</p>
+<p>module</p>
+<p>module-name</p>
+<p>:</p>
+<p>(</p>
+<p>name</p>
+<p>1</p>
+<p>:</p>
+<p>module-type</p>
+<p>1</p>
+<p>)</p>
+<p>…</p>
+<p>(</p>
+<p>name</p>
+<p>n</p>
+<p>:</p>
+<p>module-type</p>
+<p>n</p>
+<p>)</p>
+<p>-&gt;</p>
+<p>module-type</p>
+<h4>تحديدات أنواع الوحدات</h4>
+<p>يمكن تحديد مكوّن نوع وحدة في توقيع إما كنوع وحدة ظاهر وإما كنوع وحدة مجرّد.</p>
+<p>ويتيح تحديد نوع الوحدة المجرّد <code>module</code> <code>type</code> <em>modtype-name</em> تنفيذ الاسم <em>modtype-name</em> بأي نوع وحدة في توقيع مطابق، لكنه يخفي تنفيذ نوع الوحدة عن جميع مستعملي التوقيع.</p>
+<p>أما تحديد نوع الوحدة الظاهر <code>module</code> <code>type</code> <em>modtype-name</em> <code>=</code> <em>module-type</em> فيشترط تنفيذ الاسم <em>modtype-name</em> بنوع الوحدة <em>module-type</em> في توقيع مطابق، لكنه يجعل المساواة بين <em>modtype-name</em> و<em>module-type</em> ظاهرةً لجميع مستعملي التوقيع.</p>
+<h4>فتح مسار وحدة</h4>
+<p>لا يحدّد التعبير <code>open</code> <em>module-path</em> في توقيع أي مكوّنات. فهو يؤثر فقط في تحليل العناصر التالية من التوقيع، فيتيح الإشارة إلى مكوّنات الوحدة التي يدلّ عليها <em>module-path</em> بأسمائها البسيطة <em>name</em> بدلًا من وصولات المسار <em>module-path</em> <code>.</code> <em>name</em>. وينتهي نطاق <code>open</code> بانتهاء تعبير التوقيع.</p>
+<h4>تضمين توقيع</h4>
+<p>يجري التعبير <code>include</code> <em>module-type</em> في توقيع تضمينًا نصيًا لمكوّنات التوقيع الذي يدلّ عليه <em>module-type</em>. وهو يتصرّف كما لو نُسخت مكوّنات التوقيع المضمَّن في موضع <code>include</code>. ويجب أن يشير المعامل <em>module-type</em> إلى نوع وحدة يكون توقيعًا، لا نوع موصِّل.</p>
+<h3 id="11103-أنواع-الموصلات">11.10.3 أنواع الموصِّلات</h3>
+<p>تعبير نوع الوحدة [<code>functor</code>] <code>(</code> <em>module-name</em> <code>:</code> <em>module-type</em>₁ <code>)</code> <code>-&gt;</code> <em>module-type</em>₂ هو نوع الموصِّلات (دوال من الوحدات إلى الوحدات) التي تأخذ معاملًا وحدةً من النوع <em>module-type</em>₁ وتعيد نتيجةً وحدةً من النوع <em>module-type</em>₂. ويمكن لنوع الوحدة <em>module-type</em>₂ أن يستعمل الاسم <em>module-name</em> للإشارة إلى مكوّنات أنواع المعامل الفعلي للموصِّل. وإذا لم يكن النوع <em>module-type</em>₂ يعتمد على مكوّنات أنواع <em>module-name</em>، فيمكن تبسيط تعبير نوع الوحدة بالصيغة المختصرة البديلة <em>module-type</em>₁ <code>-&gt;</code> <em>module-type</em>₂. ولا تُفرض أي قيود على نوع معامل الموصِّل؛ وبوجه خاص، يمكن للموصِّل أن يأخذ موصِّلًا آخر معاملًا («موصِّل عالي الرتبة»).</p>
+<p>وعندما يكون نوع الوحدة الناتج موصِّلًا بذاته،</p>
+<p>(</p>
+<p>name</p>
+<p>1</p>
+<p>:</p>
+<p>module-type</p>
+<p>1</p>
+<p>)</p>
+<p>-&gt;</p>
+<p>…</p>
+<p>-&gt;</p>
+<p>(</p>
+<p>name</p>
+<p>n</p>
+<p>:</p>
+<p>module-type</p>
+<p>n</p>
+<p>)</p>
+<p>-&gt;</p>
+<p>module-type</p>
+<p>يمكن استعمال الصيغة المختصرة</p>
+<p>(</p>
+<p>name</p>
+<p>1</p>
+<p>:</p>
+<p>module-type</p>
+<p>1</p>
+<p>)</p>
+<p>…</p>
+<p>(</p>
+<p>name</p>
+<p>n</p>
+<p>:</p>
+<p>module-type</p>
+<p>n</p>
+<p>)</p>
+<p>-&gt;</p>
+<p>module-type</p>
+<h3 id="11104-المعامل-with">11.10.4 المعامل with</h3>
+<p>بافتراض أن <em>module-type</em> يدلّ على توقيع، يدلّ التعبير <em>module-type</em> <code>with</code> <em>mod-constraint</em> { <code>and</code> <em>mod-constraint</em> } على التوقيع نفسه بعد إضافة معادلات أنواع إلى بعض تحديدات الأنواع، وفقًا للقيود التي تلي الكلمة المحجوزة <code>with</code>. ويضيف القيد <code>type</code> [<em>type-parameters</em>] <em>typeconstr</em> <code>=</code> <em>typexpr</em> معادلة النوع <code>=</code> <em>typexpr</em> إلى تحديد مكوّن النوع المسمّى <em>typeconstr</em> في التوقيع المقيَّد. ويضيف القيد <code>module</code> <em>module-path</em> <code>=</code> <em>extended-module-path</em> معادلات أنواع إلى جميع مكوّنات أنواع البنية الفرعية التي يدلّ عليها <em>module-path</em>، فيجعلها مكافئة لمكوّنات الأنواع المقابلة في البنية التي يدلّ عليها <em>extended-module-path</em>.</p>
+<p>فمثلًا، إذا كان اسم نوع الوحدة <code>S</code> مرتبطًا بالتوقيع</p>
+<pre><code class="language-text">        sig type t module M: (sig type u end) end
+</code></pre>
+<p>فإن <code>S with type t=int</code> يدلّ على التوقيع</p>
+<pre><code class="language-text">        sig type t=int module M: (sig type u end) end
+</code></pre>
+<p>و<code>S with module M = N</code> يدلّ على التوقيع</p>
+<pre><code class="language-text">        sig type t module M: (sig type u=N.u end) end
+</code></pre>
+<p>ويُكتب الموصِّل الذي يأخذ معاملين من النوع <code>S</code> يتشاركان مكوّن <code>t</code> على الصيغة</p>
+<pre><code class="language-text">        functor (A: S) (B: S with type t = A.t) ...
+</code></pre>
+<p>وتُضاف القيود من اليسار إلى اليمين. وبعد تطبيق كل قيد، يجب أن يكون التوقيع الناتج نوعًا فرعيًا من التوقيع قبل تطبيق القيد. وبهذا لا يستطيع المعامل <code>with</code> إلا إضافة معلومات على مكوّنات أنواع توقيع، لا إزالة معلومات أبدًا.</p>
+<h2 id="1111-تعابير-الوحدات-تنفيذات-الوحدات">11.11 تعابير الوحدات (تنفيذات الوحدات)</h2>
+<p>تعابير الوحدات هي المكافئ على مستوى الوحدات لتعبيرات القيم: فهي تُقيَّم إلى وحدات، فتوفّر بذلك تنفيذات للتحديدات المعبَّر عنها في أنواع الوحدات.</p>
+<pre><code class="language-text">module-expr::= module-path ∣ struct [ module-items ] end ∣ functor { ( module-name : module-type ) }⁺ -&gt; module-expr ∣ module-expr ( module-expr ) ∣ ( module-expr ) ∣ ( module-expr : module-type ) module-items::= { ;; } ( definition ∣ expr ) { { ;; } ( definition ∣ ;; expr) } { ;; } module-definition::= module module-name { ( module-name : module-type ) } [ : module-type ] = module-expr local-definition::= external value-name : typexpr = external-declaration ∣ type-definition ∣ exception-definition ∣ class-definition ∣ classtype-definition ∣ module-definition ∣ module type modtype-name = module-type ∣ open module-path definition::= let [rec] let-binding { and let-binding } ∣ include module-expr ∣ local-definition
+</code></pre>
+<p>انظر أيضًا امتدادات اللغة التالية: الوحدات العودية، والوحدات من الدرجة الأولى، والإلغاء في عبارات open، والسمات، وعقد الامتداد، والموصِّلات التوليدية.</p>
+<h3 id="11111-تعابير-الوحدات-البسيطة">11.11.1 تعابير الوحدات البسيطة</h3>
+<p>يُقيَّم التعبير <em>module-path</em> إلى الوحدة المرتبطة بالاسم <em>module-path</em>.</p>
+<p>ويُقيَّم التعبير <code>(</code> <em>module-expr</em> <code>)</code> إلى الوحدة نفسها <em>module-expr</em>.</p>
+<p>ويتحقّق التعبير <code>(</code> <em>module-expr</em> <code>:</code> <em>module-type</em> <code>)</code> من أن نوع <em>module-expr</em> نوع فرعي من <em>module-type</em>، أي من أن جميع المكوّنات المحدّدة في <em>module-type</em> منفَّذة في <em>module-expr</em>، وأن تنفيذها يحقّق الشروط المعطاة في <em>module-type</em>. وبعبارة أخرى، يتحقّق من أن التنفيذ <em>module-expr</em> يحقّق تحديد النوع <em>module-type</em>. ويُقيَّم التعبير كاملًا إلى الوحدة نفسها <em>module-expr</em>، باستثناء أن جميع المكوّنات غير المحدّدة في <em>module-type</em> تصير مخفيّة ولا يمكن الوصول إليها.</p>
+<h3 id="11112-البنى">11.11.2 البنى</h3>
+<p>البنى <code>struct</code> … <code>end</code> مجموعات من التعريفات لأسماء القيم وأسماء الأنواع والاستثناءات وأسماء الوحدات وأسماء أنواع الوحدات. وتُقيَّم التعريفات بالترتيب الذي تظهر به في البنية. وتمتدّ نطاقات الارتباطات التي تُجريها التعريفات إلى نهاية البنية. ونتيجةً لذلك، يمكن لتعريف أن يشير إلى أسماء مرتبطة بتعريفات سابقة في البنية نفسها.</p>
+<p>وللتوافق مع عبارات النظام التفاعلي (الفصل 14)، يُسمح بـ <code>;;</code> اختيارية بعد كل تعريف في بنية وقبله. ولا معنى دلاليًا لهذه <code>;;</code>. وعلى المنوال نفسه، يُسمح بعبارة <em>expr</em> مسبوقة بـ <code>;;</code> مكوّنًا من مكوّنات بنية. وهي تكافئ <code>let</code> <code>_</code> <code>=</code> <em>expr</em>، أي إن <em>expr</em> تُقيَّم من أجل آثارها الجانبية لكنها لا تُربط بأي معرّف. وإذا كانت <em>expr</em> المكوّن الأول في بنية، فيمكن إغفال <code>;;</code> السابقة.</p>
+<h4>تعريفات القيم</h4>
+<p>يربط تعريف القيمة <code>let</code> [<code>rec</code>] <em>let-binding</em> { <code>and</code> <em>let-binding</em> } أسماء القيم بالطريقة نفسها التي يربطها بها تعبير <code>let</code> … <code>in</code> … (انظر القسم 11.7.2). وتُربط أسماء القيم الظاهرة في الأطراف اليسرى للارتباطات بالقيم المقابلة في الأطراف اليمنى.</p>
+<p>وينفّذ تعريف القيمة <code>external</code> <em>value-name</em> <code>:</code> <em>typexpr</em> <code>=</code> <em>external-declaration</em> الاسم <em>value-name</em> كالدالة الخارجية المحدّدة في <em>external-declaration</em> (انظر الفصل 23).</p>
+<h4>تعريفات الأنواع</h4>
+<p>يُكتب تعريف مكوّن نوع واحد أو عدة على الصيغة <code>type</code> <em>typedef</em> { <code>and</code> <em>typedef</em> }، ويتألف من متتالية تعريفات متبادلة العودية لأسماء الأنواع.</p>
+<h4>تعريفات الاستثناءات</h4>
+<p>تُعرَّف الاستثناءات بالصيغة <code>exception</code> <em>constr-decl</em> أو <code>exception</code> <em>constr-name</em> <code>=</code> <em>constr</em>.</p>
+<h4>تعريفات الأصناف</h4>
+<p>يُكتب تعريف صنف واحد أو عدة على الصيغة <code>class</code> <em>class-binding</em> { <code>and</code> <em>class-binding</em> }، ويتألف من متتالية تعريفات متبادلة العودية لأسماء الأصناف. وتُوصف تعريفات الأصناف بمزيد من الدقة في القسم 11.9.3.</p>
+<h4>تعريفات أنواع الأصناف</h4>
+<p>يُكتب تعريف صنف واحد أو عدة على الصيغة <code>class</code> <code>type</code> <em>classtype-def</em> { <code>and</code> <em>classtype-def</em> }، ويتألف من متتالية تعريفات متبادلة العودية لأسماء أنواع الأصناف. وتُوصف تعريفات أنواع الأصناف بمزيد من الدقة في القسم 11.9.5.</p>
+<h4>تعريفات الوحدات</h4>
+<p>الصيغة الأساسية لتعريف مكوّن وحدة هي <code>module</code> <em>module-name</em> <code>=</code> <em>module-expr</em>، وهي تقيّم <em>module-expr</em> وتربط النتيجة بالاسم <em>module-name</em>.</p>
+<p>ويمكن كتابة</p>
+<p>module</p>
+<p>module-name</p>
+<p>:</p>
+<p>module-type</p>
+<p>=</p>
+<p>module-expr</p>
+<p>بدلًا من</p>
+<p>module</p>
+<p>module-name</p>
+<p>=</p>
+<p>(</p>
+<p>module-expr</p>
+<p>:</p>
+<p>module-type</p>
+<p>)</p>
+<p>وثمة صيغة مشتقّة أخرى هي</p>
+<p>module</p>
+<p>module-name</p>
+<p>(</p>
+<p>name</p>
+<p>1</p>
+<p>:</p>
+<p>module-type</p>
+<p>1</p>
+<p>)</p>
+<p>…</p>
+<p>(</p>
+<p>name</p>
+<p>n</p>
+<p>:</p>
+<p>module-type</p>
+<p>n</p>
+<p>)</p>
+<p>=</p>
+<p>module-expr</p>
+<p>وهي تكافئ</p>
+<p>module</p>
+<p>module-name</p>
+<p>=</p>
+<p>functor</p>
+<p>(</p>
+<p>name</p>
+<p>1</p>
+<p>:</p>
+<p>module-type</p>
+<p>1</p>
+<p>)</p>
+<p>-&gt;</p>
+<p>…</p>
+<p>-&gt;</p>
+<p>module-expr</p>
+<h4>تعريفات أنواع الوحدات</h4>
+<p>يُكتب تعريف نوع وحدة على الصيغة <code>module</code> <code>type</code> <em>modtype-name</em> <code>=</code> <em>module-type</em>. وهو يربط الاسم <em>modtype-name</em> بنوع الوحدة الذي يدلّ عليه التعبير <em>module-type</em>.</p>
+<h4>فتح مسار وحدة</h4>
+<p>لا يعرّف التعبير <code>open</code> <em>module-path</em> في بنية أي مكوّنات ولا يُجري أي ارتباطات. فهو يؤثر فقط في تحليل العناصر التالية من البنية، فيتيح الإشارة إلى مكوّنات الوحدة التي يدلّ عليها <em>module-path</em> بأسمائها البسيطة <em>name</em> بدلًا من وصولات المسار <em>module-path</em> <code>.</code> <em>name</em>. وينتهي نطاق <code>open</code> بانتهاء تعبير البنية.</p>
+<h4>تضمين مكوّنات بنية أخرى</h4>
+<p>يعيد التعبير <code>include</code> <em>module-expr</em> في بنية تصدير جميع تعريفات البنية التي يدلّ عليها <em>module-expr</em> في البنية الحالية. فمثلًا، إذا عرّفت وحدة <code>S</code> كما يلي</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">module</span> <span class="hljs-type">S</span> = <span class="hljs-keyword">struct</span> <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">int</span>  <span class="hljs-keyword">let</span> x = <span class="hljs-number">2</span> <span class="hljs-keyword">end</span>
+</code></pre>
+<p>فإن تعريف الوحدة <code>B</code> على الصيغة</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">module</span> <span class="hljs-type">B</span> = <span class="hljs-keyword">struct</span> <span class="hljs-keyword">include</span> <span class="hljs-type">S</span>  <span class="hljs-keyword">let</span> y = (x + <span class="hljs-number">1</span> : t) <span class="hljs-keyword">end</span>
+</code></pre>
+<p>يكافئ تعريفها على الصيغة</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">module</span> <span class="hljs-type">B</span> = <span class="hljs-keyword">struct</span> <span class="hljs-keyword">type</span> t = <span class="hljs-type">S</span>.t  <span class="hljs-keyword">let</span> x = <span class="hljs-type">S</span>.x  <span class="hljs-keyword">let</span> y = (x + <span class="hljs-number">1</span> : t) <span class="hljs-keyword">end</span>
+</code></pre>
+<p>والفرق بين <code>open</code> و<code>include</code> أن <code>open</code> يوفّر ببساطة أسماء قصيرة لمكوّنات البنية المفتوحة دون تعريف أي مكوّنات في البنية الحالية، أما <code>include</code> فيضيف أيضًا تعريفات لمكوّنات البنية المضمَّنة.</p>
+<h3 id="11113-الموصلات">11.11.3 الموصِّلات</h3>
+<h4>تعريف الموصِّل</h4>
+<p>يُقيَّم التعبير <code>functor</code> <code>(</code> <em>module-name</em> <code>:</code> <em>module-type</em> <code>)</code> <code>-&gt;</code> <em>module-expr</em> إلى موصِّل يأخذ معاملًا وحداتٍ من النوع <em>module-type</em>₁، ويربط <em>module-name</em> بهذه الوحدات، ويقيّم <em>module-expr</em> في البيئة الموسَّعة، ويعيد الوحدات الناتجة نتائج. ولا تُفرض أي قيود على نوع معامل الموصِّل؛ وبوجه خاص، يمكن للموصِّل أن يأخذ موصِّلًا آخر معاملًا («موصِّل عالي الرتبة»).</p>
+<p>وعندما يكون تعبير الوحدة الناتج موصِّلًا بذاته،</p>
+<p>functor</p>
+<p>(</p>
+<p>name</p>
+<p>1</p>
+<p>:</p>
+<p>module-type</p>
+<p>1</p>
+<p>)</p>
+<p>-&gt;</p>
+<p>…</p>
+<p>-&gt;</p>
+<p>functor</p>
+<p>(</p>
+<p>name</p>
+<p>n</p>
+<p>:</p>
+<p>module-type</p>
+<p>n</p>
+<p>)</p>
+<p>-&gt;</p>
+<p>module-expr</p>
+<p>يمكن استعمال الصيغة المختصرة</p>
+<p>functor</p>
+<p>(</p>
+<p>name</p>
+<p>1</p>
+<p>:</p>
+<p>module-type</p>
+<p>1</p>
+<p>)</p>
+<p>…</p>
+<p>(</p>
+<p>name</p>
+<p>n</p>
+<p>:</p>
+<p>module-type</p>
+<p>n</p>
+<p>)</p>
+<p>-&gt;</p>
+<p>module-expr</p>
+<h4>تطبيق الموصِّل</h4>
+<p>يقيّم التعبير <em>module-expr</em>₁ <code>(</code> <em>module-expr</em>₂ <code>)</code> التعبير <em>module-expr</em>₁ إلى موصِّل والتعبير <em>module-expr</em>₂ إلى وحدة، ثم يطبّق الأول على الثاني. ويجب أن يطابق نوع <em>module-expr</em>₂ النوع المتوقّع لمعاملات الموصِّل <em>module-expr</em>₁.</p>
+<h2 id="1112-وحدات-الترجمة">11.12 وحدات الترجمة</h2>
+<pre><code class="language-text">unit-interface::= { specification [;;] } unit-implementation::= [ module-items ]
+</code></pre>
+<p>تجسر وحدات الترجمة بين نظام الوحدات ونظام الترجمة المنفصلة. وتتألف وحدة الترجمة من جزأين: واجهة وتنفيذ. وتحوي الواجهة متتالية تحديدات، كما في داخل تعبير توقيع <code>sig</code> … <code>end</code>. ويحوي التنفيذ متتالية تعريفات وتعبيرات، كما في داخل تعبير وحدة <code>struct</code> … <code>end</code>. ولكلوحدة الترجمة اسم <em>unit-name</em> مشتقّ من أسماء الملفات الحاوية للواجهة والتنفيذ (انظر الفصل 13 لمزيد من التفصيل). وتتصرّف وحدة الترجمة تقريبًا كما يتصرّف تعريف الوحدة</p>
+<p>module</p>
+<p>unit-name</p>
+<p>:</p>
+<p>sig</p>
+<p>unit-interface</p>
+<p>end</p>
+<p>=</p>
+<p>struct</p>
+<p>unit-implementation</p>
+<p>end</p>
+<p>ويمكن لوحدة ترجمة أن تشير إلى وحدات ترجمة أخرى بأسمائها، كما لو كانت وحدات عادية. فمثلًا، إذا كانت <code>U</code> وحدة ترجمة تعرّف نوعًا <code>t</code>، فيمكن لوحدات ترجمة أخرى أن تشير إلى ذلك النوع بالاسم <code>U.t</code>؛ ويمكنها أيضًا أن تشير إلى <code>U</code> كبنية كاملة. وفيما عدا أسماء وحدات الترجمة الأخرى، يجب ألا يكون لواجهة وحدة أو تنفيذ وحدة أي متغيّرات حرّة أخرى. وبعبارة أخرى، يجري تنميط واجهة أو تنفيذ وترجمته في البيئة الابتدائية</p>
+<p>name</p>
+<p>1</p>
+<p>:</p>
+<p>sig</p>
+<p>specification</p>
+<p>1</p>
+<p>end</p>
+<p>…</p>
+<p>name</p>
+<p>n</p>
+<p>:</p>
+<p>sig</p>
+<p>specification</p>
+<p>n</p>
+<p>end</p>
+<p>حيث <em>name</em>₁ … <em>name</em>ₙ أسماء وحدات الترجمة الأخرى المتاحة في مسار البحث (انظر الفصل 13 لمزيد من التفصيل)، و<em>specification</em>₁ … <em>specification</em>ₙ واجهاتها على الترتيب.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>نموذج التطبيع C <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>باستثناء تطبيع متتاليات الأسطر الجديدة إلى محرف سطر واحد، كما ذُكر سابقًا. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,c={book:e,chapter:s,chapterTitle:n,slug:a,title:p,headings:l,html:t};export{e as book,s as chapter,n as chapterTitle,c as default,l as headings,t as html,a as slug,p as title};
