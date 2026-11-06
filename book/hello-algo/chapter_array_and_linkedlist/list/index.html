@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DDtYzQp0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJihtwqa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CV_7-CKa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app._UIXThwk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BHmmBNfD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CBtjfW4t.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DtszrmNE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZw2NPJg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Ce5AuMca.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CdymPtEF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -65,7 +65,8 @@ nums1: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</
 <span class="hljs-comment"># With initial values</span>
 nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>] = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>]
 </code></pre>
-</div>### الوصول إلى العناصر
+</div>
+### الوصول إلى العناصر
 <p>بما أن القائمة هي في جوهرها مصفوفة، يمكننا الوصول إلى العناصر وتحديثها بتعقيد زمني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>، وهو أمر بالغ الكفاءة.</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -75,7 +76,8 @@ num: <span class="hljs-built_in">int</span> = nums[<span class="hljs-number">1</
 <span class="hljs-comment"># Update an element</span>
 nums[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>    <span class="hljs-comment"># Update element at index 1 to 0</span>
 </code></pre>
-</div>### إدراج العناصر وحذفها
+</div>
+### إدراج العناصر وحذفها
 <p>بالمقارنة مع المصفوفات، تستطيع القوائم إضافة العناصر وحذفها بحرية. وإضافة عنصر في نهاية القائمة لها تعقيد زمني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>، أما إدراج العناصر وحذفها فتبقى بكفاءة المصفوفات نفسها، بتعقيد زمني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>.</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -95,7 +97,8 @@ nums.insert(<span class="hljs-number">3</span>, <span class="hljs-number">6</spa
 <span class="hljs-comment"># Delete an element</span>
 nums.pop(<span class="hljs-number">3</span>)        <span class="hljs-comment"># Delete element at index 3</span>
 </code></pre>
-</div>### اجتياز القائمة
+</div>
+### اجتياز القائمة
 <p>على غرار المصفوفات، يمكن اجتياز القوائم بالفهرس أو بالتكرار المباشر عبر العناصر.</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -108,7 +111,8 @@ count = <span class="hljs-number">0</span>
 <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
     count += num
 </code></pre>
-</div>### دمج القوائم
+</div>
+### دمج القوائم
 <p>بمعطى قائمة جديدة <code>nums1</code>، يمكننا دمجها في نهاية القائمة الأصلية.</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -116,14 +120,16 @@ count = <span class="hljs-number">0</span>
 nums1: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>] = [<span class="hljs-number">6</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">10</span>, <span class="hljs-number">9</span>]
 nums += nums1  <span class="hljs-comment"># Concatenate list nums1 to the end of nums</span>
 </code></pre>
-</div>### ترتيب القائمة
+</div>
+### ترتيب القائمة
 <p>بعد ترتيب القائمة، يمكننا استخدام خوارزميتَي «البحث الثنائي» و«المؤشرين»، وهما كثيراً ما يُختبران في مسائل خوارزميات المصفوفات.</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-python"><span class="hljs-comment"># Sort a list</span>
 nums.sort()  <span class="hljs-comment"># After sorting, list elements are arranged from smallest to largest</span>
 </code></pre>
-</div>## تنفيذ القائمة
+</div>
+## تنفيذ القائمة
 <p>تحتوي كثير من لغات البرمجة على قوائم مدمجة، مثل Java وC++ وPython. وتطبيقاتها معقدة إلى حد ما، ومعاملاتها مدروسة بعناية، مثل السعة الأولية ومضاعفات التوسيع وغيرها. ويمكن للقارئ المهتم الرجوع إلى الشيفرة المصدرية لمعرفة المزيد.</p>
 <p>لتعميق فهمنا لطريقة عمل القوائم، نحاول تنفيذ قائمة بسيطة مع ثلاثة اعتبارات تصميمية رئيسية:</p>
 <ul>
@@ -134,38 +140,38 @@ nums.sort()  <span class="hljs-comment"># After sorting, list elements are arran
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyList</span>:
-    <span class="hljs-string">&quot;&quot;&quot;List class&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;صنف القائمة&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;المنشئ&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>._capacity: <span class="hljs-built_in">int</span> = <span class="hljs-number">10</span>  <span class="hljs-comment"># سعة القائمة</span>
         <span class="hljs-variable language_">self</span>._arr: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>] = [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>._capacity  <span class="hljs-comment"># المصفوفة (تخزن عناصر القائمة)</span>
         <span class="hljs-variable language_">self</span>._size: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>  <span class="hljs-comment"># طول القائمة (عدد العناصر الحالي)</span>
         <span class="hljs-variable language_">self</span>._extend_ratio: <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span>  <span class="hljs-comment"># معامل نمو سعة القائمة في كل مرة</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Get the list length (current number of elements)&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;الحصول على طول القائمة (عدد العناصر الحالي)&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._size
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">capacity</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Get the list capacity&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;الحصول على سعة القائمة&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._capacity
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, index: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Access an element&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;وصول إلى عنصر&quot;&quot;&quot;</span>
         <span class="hljs-comment"># أطلق استثناء إذا خرج الفهرس عن الحدود؛ وينطبق الأمر نفسه فيما يلي</span>
         <span class="hljs-keyword">if</span> index &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> index &gt;= <span class="hljs-variable language_">self</span>._size:
             <span class="hljs-keyword">raise</span> IndexError(<span class="hljs-string">&quot;Index out of bounds&quot;</span>)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._arr[index]
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">set</span>(<span class="hljs-params">self, num: <span class="hljs-built_in">int</span>, index: <span class="hljs-built_in">int</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Update an element&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;حدّث عنصرًا&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> index &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> index &gt;= <span class="hljs-variable language_">self</span>._size:
             <span class="hljs-keyword">raise</span> IndexError(<span class="hljs-string">&quot;Index out of bounds&quot;</span>)
         <span class="hljs-variable language_">self</span>._arr[index] = num
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">self, num: <span class="hljs-built_in">int</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Append an element at the end&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;ألحق عنصرًا في النهاية&quot;&quot;&quot;</span>
         <span class="hljs-comment"># زِد السعة عندما يتجاوز إضافة عنصرٍ حدّها</span>
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.size() == <span class="hljs-variable language_">self</span>.capacity():
             <span class="hljs-variable language_">self</span>.extend_capacity()
@@ -173,7 +179,7 @@ nums.sort()  <span class="hljs-comment"># After sorting, list elements are arran
         <span class="hljs-variable language_">self</span>._size += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, num: <span class="hljs-built_in">int</span>, index: <span class="hljs-built_in">int</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Insert an element in the middle&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;أدخل عنصرًا في المنتصف&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> index &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> index &gt;= <span class="hljs-variable language_">self</span>._size:
             <span class="hljs-keyword">raise</span> IndexError(<span class="hljs-string">&quot;Index out of bounds&quot;</span>)
         <span class="hljs-comment"># زِد السعة عندما يتجاوز إضافة عنصرٍ حدّها</span>
@@ -187,7 +193,7 @@ nums.sort()  <span class="hljs-comment"># After sorting, list elements are arran
         <span class="hljs-variable language_">self</span>._size += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">self, index: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Remove an element&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;احذف عنصرًا&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> index &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> index &gt;= <span class="hljs-variable language_">self</span>._size:
             <span class="hljs-keyword">raise</span> IndexError(<span class="hljs-string">&quot;Index out of bounds&quot;</span>)
         num = <span class="hljs-variable language_">self</span>._arr[index]
@@ -200,23 +206,24 @@ nums.sort()  <span class="hljs-comment"># After sorting, list elements are arran
         <span class="hljs-keyword">return</span> num
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">extend_capacity</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Grow the list capacity&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;زيادة سعة القائمة&quot;&quot;&quot;</span>
         <span class="hljs-comment"># أنشئ مصفوفة جديدة طولها _extend_ratio ضعف الطول الأصلي وانسخ الأصلية فيها</span>
         <span class="hljs-variable language_">self</span>._arr = <span class="hljs-variable language_">self</span>._arr + [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.capacity() * (<span class="hljs-variable language_">self</span>._extend_ratio - <span class="hljs-number">1</span>)
         <span class="hljs-comment"># حدّث سعة القائمة</span>
         <span class="hljs-variable language_">self</span>._capacity = <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>._arr)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">to_array</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
-        <span class="hljs-string">&quot;&quot;&quot;Return the portion of the list that contains elements&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;إرجاع الجزء من القائمة الذي يحتوي عناصر&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._arr[: <span class="hljs-variable language_">self</span>._size]
 </code></pre>
-</div><!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/hello-algo/chapter_array_and_linkedlist/linked_list"><span class="prev-next__label">السابق</span> <span class="prev-next__title">القائمة المترابطة</span></a><!--]--> <!--[0--><a href="../../../../book/hello-algo/chapter_array_and_linkedlist/ram_and_cache"><span class="prev-next__label">التالي</span> <span class="prev-next__title">ذاكرة الوصول العشوائي وذاكرة التخزين المؤقت *</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+</div>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/hello-algo/chapter_array_and_linkedlist/linked_list"><span class="prev-next__label">السابق</span> <span class="prev-next__title">القائمة المترابطة</span></a><!--]--> <!--[0--><a href="../../../../book/hello-algo/chapter_array_and_linkedlist/ram_and_cache"><span class="prev-next__label">التالي</span> <span class="prev-next__title">ذاكرة الوصول العشوائي وذاكرة التخزين المؤقت *</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_z8h3v6 = {
+					__sveltekit_1kfktix = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -224,8 +231,8 @@ nums.sort()  <span class="hljs-comment"># After sorting, list elements are arran
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
-						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
+						import("../../../../_app/immutable/entry/start.DDtYzQp0.js"),
+						import("../../../../_app/immutable/entry/app._UIXThwk.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

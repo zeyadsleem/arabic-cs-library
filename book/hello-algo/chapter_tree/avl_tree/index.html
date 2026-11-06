@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DDtYzQp0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJihtwqa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CV_7-CKa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app._UIXThwk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BHmmBNfD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CBtjfW4t.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DtszrmNE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZw2NPJg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Ce5AuMca.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CdymPtEF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -66,27 +66,30 @@
         <span class="hljs-variable language_">self</span>.left: TreeNode | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>   <span class="hljs-comment"># Left child reference</span>
         <span class="hljs-variable language_">self</span>.right: TreeNode | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>  <span class="hljs-comment"># Right child reference</span>
 </code></pre>
-</div>يشير "ارتفاع العقدة" إلى المسافة من تلك العقدة إلى أبعد عقدة ورقة عنها، أي عدد الأضلاع على المسار. ومن المهم ملاحظة أن ارتفاع عقدة الورقة هو $0$، وارتفاع العقدة الفارغة هو $-1$. سننشئ دالتين مساعدتين للحصول على ارتفاع العقدة وتحديثه:
+</div>
+يشير "ارتفاع العقدة" إلى المسافة من تلك العقدة إلى أبعد عقدة ورقة عنها، أي عدد الأضلاع على المسار. ومن المهم ملاحظة أن ارتفاع عقدة الورقة هو $0$، وارتفاع العقدة الفارغة هو $-1$. سننشئ دالتين مساعدتين للحصول على ارتفاع العقدة وتحديثه:
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update_height</span>(<span class="hljs-params">self, node: TreeNode | <span class="hljs-literal">None</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Update the node height&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;حدّث ارتفاع العقدة&quot;&quot;&quot;</span>
         <span class="hljs-comment"># ارتفاع العقدة يساوي ارتفاع أطول شجرتها الجزئية + 1</span>
         node.height = <span class="hljs-built_in">max</span>([<span class="hljs-variable language_">self</span>.height(node.left), <span class="hljs-variable language_">self</span>.height(node.right)]) + <span class="hljs-number">1</span>
 </code></pre>
-</div>### معامل توازن العقدة
+</div>
+### معامل توازن العقدة
 <p>يُعرَّف <u>معامل التوازن</u> للعقدة بأنه ارتفاع الشجرة الفرعية اليسرى للعقدة مطروحاً منه ارتفاع شجرتها الفرعية اليمنى، ويُعرَّف معامل توازن العقدة الفارغة بأنه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>. كما نغلّف دالة الحصول على معامل توازن العقدة لتسهيل استخدامها لاحقاً:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">balance_factor</span>(<span class="hljs-params">self, node: TreeNode | <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Get the balance factor&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;الحصول على عامل التوازن&quot;&quot;&quot;</span>
         <span class="hljs-comment"># عامل التوازن للشجرة الجزئية الفارغة هو 0</span>
         <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
         <span class="hljs-comment"># عامل توازن العقدة = ارتفاع الشجرة الجزئية اليسرى - ارتفاع اليمنى</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.height(node.left) - <span class="hljs-variable language_">self</span>.height(node.right)
 </code></pre>
-</div><div class="note">
+</div>
+<div class="note">
 <p>ليكن معامل التوازن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span>، فيستوفي معامل توازن أي عقدة في شجرة AVL الشرط <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn><mo>≤</mo><mi>f</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1 \le f \le 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>.</p>
 </div>
 <h2 id="الدورانات-في-أشجار-avl">الدورانات في أشجار AVL</h2>
@@ -100,7 +103,7 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">right_rotate</span>(<span class="hljs-params">self, node: TreeNode | <span class="hljs-literal">None</span></span>) -&gt; TreeNode | <span class="hljs-literal">None</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Right rotation&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;إدارة يمينية&quot;&quot;&quot;</span>
         child = node.left
         grand_child = child.right
         <span class="hljs-comment"># أدر node حول child إلى اليمين</span>
@@ -112,7 +115,8 @@
         <span class="hljs-comment"># أعد جذر الشجرة الجزئية بعد الإدارة</span>
         <span class="hljs-keyword">return</span> child
 </code></pre>
-</div>### الدوران الأيسر
+</div>
+### الدوران الأيسر
 <p>وبالمقابل، إذا نظرنا إلى &quot;المرآة&quot; المقابلة للشجرة الثنائية غير المتوازنة السابقة، فيلزم تنفيذ عملية &quot;الدوران الأيسر&quot; الموضحة في الشكل أدناه.</p>
 <p><img src="/arabic-cs-library/images/hello-algo/chapter_tree--avltree_left_rotate.png" alt="عملية الدوران الأيسر"></p>
 <p>وبالمثل، وكما يوضح الشكل أدناه، عندما تكون للعقدة <code>child</code> عقدة ابنة يسرى (نرمز لها بـ<code>grand_child</code>)، يلزم إضافة خطوة في الدوران الأيسر: عيّن <code>grand_child</code> ابناً أيمن للعقدة <code>node</code>.</p>
@@ -121,7 +125,7 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">left_rotate</span>(<span class="hljs-params">self, node: TreeNode | <span class="hljs-literal">None</span></span>) -&gt; TreeNode | <span class="hljs-literal">None</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Left rotation&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;إدارة يسرية&quot;&quot;&quot;</span>
         child = node.right
         grand_child = child.left
         <span class="hljs-comment"># أدر node حول child إلى اليسار</span>
@@ -133,7 +137,8 @@
         <span class="hljs-comment"># أعد جذر الشجرة الجزئية بعد الإدارة</span>
         <span class="hljs-keyword">return</span> child
 </code></pre>
-</div>### الدوران الأيسر ثم الدوران الأيمن
+</div>
+### الدوران الأيسر ثم الدوران الأيمن
 <p>بالنسبة إلى العقدة غير المتوازنة 3 في الشكل أدناه، لا يمكن باستخدام الدوران الأيسر أو الدوران الأيمن وحده إعادة الشجرة الفرعية إلى التوازن. وفي هذه الحالة، يجب تنفيذ &quot;دوران أيسر&quot; على <code>child</code> أولاً، ثم &quot;دوران أيمن&quot; على <code>node</code>.</p>
 <p><img src="/arabic-cs-library/images/hello-algo/chapter_tree--avltree_left_right_rotate.png" alt="الدوران الأيسر ثم الأيمن"></p>
 <h3 id="الدوران-الأيمن-ثم-الدوران-الأيسر">الدوران الأيمن ثم الدوران الأيسر</h3>
@@ -179,7 +184,7 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rotate</span>(<span class="hljs-params">self, node: TreeNode | <span class="hljs-literal">None</span></span>) -&gt; TreeNode | <span class="hljs-literal">None</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Perform rotations to restore balance in this subtree&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;إجراء الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية&quot;&quot;&quot;</span>
         <span class="hljs-comment"># احصل على عامل توازن العقدة</span>
         balance_factor = <span class="hljs-variable language_">self</span>.balance_factor(node)
         <span class="hljs-comment"># شجرة مائلة لليسار</span>
@@ -203,13 +208,14 @@
         <span class="hljs-comment"># الشجرة متوازنة؛ أعد دون إدارة</span>
         <span class="hljs-keyword">return</span> node
 </code></pre>
-</div>## العمليات الشائعة في أشجار AVL
+</div>
+## العمليات الشائعة في أشجار AVL
 <h3 id="إدراج-عقدة">إدراج عقدة</h3>
 <p>تتشابه عملية إدراج العقد في أشجار AVL من حيث المبدأ مع نظيرتها في أشجار البحث الثنائية. والفرق الوحيد هو أنه بعد إدراج عقدة في شجرة AVL، قد تظهر سلسلة من العقد غير المتوازنة على المسار من تلك العقدة إلى الجذر. لذلك <strong>نحتاج إلى البدء من هذه العقدة وتنفيذ عمليات الدوران من الأسفل إلى الأعلى، لإعادة التوازن إلى جميع العقد غير المتوازنة</strong>. والشيفرة كما يلي:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert_helper</span>(<span class="hljs-params">self, node: TreeNode | <span class="hljs-literal">None</span>, val: <span class="hljs-built_in">int</span></span>) -&gt; TreeNode:
-        <span class="hljs-string">&quot;&quot;&quot;Insert a node recursively (helper method)&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;إدراج عقدة تعاوديًا (دالة مساعدة)&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
             <span class="hljs-keyword">return</span> TreeNode(val)
         <span class="hljs-comment"># 1. أوجد موضع الإدراج وأدخل العقدة</span>
@@ -225,12 +231,13 @@
         <span class="hljs-comment"># 2. أجرِ الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.rotate(node)
 </code></pre>
-</div>### حذف العقدة
+</div>
+### حذف العقدة
 <p>وبالمثل، واستناداً إلى طريقة حذف العقد في شجرة البحث الثنائية، يجب تنفيذ عمليات الدوران من الأسفل إلى الأعلى لإعادة التوازن إلى جميع العقد غير المتوازنة. والشيفرة كما يلي:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove_helper</span>(<span class="hljs-params">self, node: TreeNode | <span class="hljs-literal">None</span>, val: <span class="hljs-built_in">int</span></span>) -&gt; TreeNode | <span class="hljs-literal">None</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Remove a node recursively (helper method)&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;حذف عقدة تعاوديًا (دالة مساعدة)&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
         <span class="hljs-comment"># 1. أوجد العقدة واحذفها</span>
@@ -259,7 +266,8 @@
         <span class="hljs-comment"># 2. أجرِ الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.rotate(node)
 </code></pre>
-</div>### البحث عن عقدة
+</div>
+### البحث عن عقدة
 <p>تتوافق عملية البحث عن عقدة في أشجار AVL مع نظيرتها في أشجار البحث الثنائية، ولن نتوسع فيها هنا.</p>
 <h2 id="التطبيقات-النموذجية-لأشجار-avl">التطبيقات النموذجية لأشجار AVL</h2>
 <ul>
@@ -273,7 +281,7 @@
 			
 			<script>
 				{
-					__sveltekit_z8h3v6 = {
+					__sveltekit_1kfktix = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -281,8 +289,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
-						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
+						import("../../../../_app/immutable/entry/start.DDtYzQp0.js"),
+						import("../../../../_app/immutable/entry/app._UIXThwk.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DDtYzQp0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJihtwqa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CV_7-CKa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app._UIXThwk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BHmmBNfD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CBtjfW4t.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DtszrmNE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZw2NPJg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Ce5AuMca.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CdymPtEF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -57,7 +57,7 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">level_order</span>(<span class="hljs-params">root: TreeNode | <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
-    <span class="hljs-string">&quot;&quot;&quot;Level-order traversal&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;اجتياز بالمستويات&quot;&quot;&quot;</span>
     <span class="hljs-comment"># مهّد طابورًا وأدخل الجذر إليه</span>
     queue: deque[TreeNode] = deque()
     queue.append(root)
@@ -72,7 +72,8 @@
             queue.append(node.right)  <span class="hljs-comment"># أدخل الابن الأيمن إلى الطابور</span>
     <span class="hljs-keyword">return</span> res
 </code></pre>
-</div>### تحليل التعقيد
+</div>
+### تحليل التعقيد
 <ul>
 <li><strong>التعقيد الزمني هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></strong>: تُزار جميع العقد مرة واحدة، مستخدماً زمن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو عدد العقد.</li>
 <li><strong>التعقيد المكاني هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></strong>: في أسوأ الحالات، أي في شجرة ثنائية تامة، وقبل الاجتياز إلى المستوى السفلي، يحتوي الطابور في الوقت نفسه على <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">(n + 1) / 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">/2</span></span></span></span> عقدة على الأكثر، شاغلاً مساحة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>.</li>
@@ -86,7 +87,7 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">post_order</span>(<span class="hljs-params">root: TreeNode | <span class="hljs-literal">None</span></span>):
-    <span class="hljs-string">&quot;&quot;&quot;Postorder traversal&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;اجتياز الطلب اللاحق&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> root <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
         <span class="hljs-keyword">return</span>
     <span class="hljs-comment"># ترتيب الزيارة: الشجرة الجزئية اليسرى -&gt; اليمنى -&gt; الجذر</span>
@@ -94,7 +95,8 @@
     post_order(root=root.right)
     res.append(root.val)
 </code></pre>
-</div><div class="note">
+</div>
+<div class="note">
 <p>يمكن أيضاً تنفيذ البحث بالعمق أولاً تكرارياً، ويمكن للقارئ المهتم أن يستكشف ذلك بنفسه.</p>
 </div>
 <p>يوضح الشكل أدناه العملية التعاودية للاجتياز المسبق لشجرة ثنائية، ويمكن تقسيمها إلى مرحلتين متعاكستين: «النزول» و«العودة».</p>
@@ -113,7 +115,7 @@
 			
 			<script>
 				{
-					__sveltekit_z8h3v6 = {
+					__sveltekit_1kfktix = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -121,8 +123,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
-						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
+						import("../../../../_app/immutable/entry/start.DDtYzQp0.js"),
+						import("../../../../_app/immutable/entry/app._UIXThwk.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

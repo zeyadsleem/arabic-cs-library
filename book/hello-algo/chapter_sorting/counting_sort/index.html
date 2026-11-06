@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DDtYzQp0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJihtwqa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CV_7-CKa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app._UIXThwk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BHmmBNfD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CBtjfW4t.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DtszrmNE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZw2NPJg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Ce5AuMca.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CdymPtEF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -59,7 +59,7 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">counting_sort_naive</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]</span>):
-    <span class="hljs-string">&quot;&quot;&quot;Counting sort&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;الترتيب بالعدّ&quot;&quot;&quot;</span>
     <span class="hljs-comment"># تنفيذ بسيط؛ لا يمكن استخدامه لترتيب الكائنات</span>
     <span class="hljs-comment"># 1. أوجد أكبر عنصر في المصفوفة m</span>
     m = <span class="hljs-built_in">max</span>(nums)
@@ -75,7 +75,8 @@
             nums[i] = num
             i += <span class="hljs-number">1</span>
 </code></pre>
-</div><div class="note">
+</div>
+<div class="note">
 <p class="note__title">الصلة بين الترتيب بالعد وترتيب الدلاء</p>
 <p>من منظور ترتيب الدلاء، يمكن النظر إلى كل فهرس في مصفوفة العدّ <code>counter</code> باعتباره دلو، ويمكن اعتبار عملية العدّ توزيعاً للعناصر على الدلاء المقابلة لها. وفي جوهر الأمر، الترتيب بالعد حالة خاصة من ترتيب الدلاء لبيانات الأعداد الصحيحة.</p>
 </div>
@@ -95,7 +96,7 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">counting_sort</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]</span>):
-    <span class="hljs-string">&quot;&quot;&quot;Counting sort&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;الترتيب بالعدّ&quot;&quot;&quot;</span>
     <span class="hljs-comment"># تنفيذ كامل؛ مستقر وقابل للتكيف لترتيب الكائنات</span>
     <span class="hljs-comment"># 1. أوجد أكبر عنصر في المصفوفة m</span>
     m = <span class="hljs-built_in">max</span>(nums)
@@ -120,7 +121,8 @@
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
         nums[i] = res[i]
 </code></pre>
-</div>## خصائص الخوارزمية
+</div>
+## خصائص الخوارزمية
 <ul>
 <li><strong>التعقيد الزمني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n + m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mclose">)</span></span></span></span>، والترتيب بالعد غير تكيّفي (non-adaptive)</strong>: يستغرق اجتياز <code>nums</code> و<code>counter</code> زمناً خطياً. وبشكل عام، عندما <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≫</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n \gg m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≫</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span>، يقترب التعقيد الزمني من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>.</li>
 <li><strong>التعقيد المكاني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n + m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mclose">)</span></span></span></span>، وترتيب ليس في المكان (non-in-place)</strong>: يستخدم المصفوفتين <code>res</code> و<code>counter</code> بطولين <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> على التوالي.</li>
@@ -136,7 +138,7 @@
 			
 			<script>
 				{
-					__sveltekit_z8h3v6 = {
+					__sveltekit_1kfktix = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -144,8 +146,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
-						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
+						import("../../../../_app/immutable/entry/start.DDtYzQp0.js"),
+						import("../../../../_app/immutable/entry/app._UIXThwk.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

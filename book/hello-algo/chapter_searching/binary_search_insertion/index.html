@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DDtYzQp0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJihtwqa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CV_7-CKa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app._UIXThwk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BHmmBNfD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CBtjfW4t.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DtszrmNE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZw2NPJg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Ce5AuMca.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CdymPtEF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -61,7 +61,7 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search_insertion_simple</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], target: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-    <span class="hljs-string">&quot;&quot;&quot;Find an insertion point using binary search (no duplicates)&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;العثور على نقطة إدراج بالبحث الثنائي (بلا مكررات)&quot;&quot;&quot;</span>
     i, j = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>  <span class="hljs-comment"># مهّد المجال المغلق [0, n-1]</span>
     <span class="hljs-keyword">while</span> i &lt;= j:
         m = (i + j) // <span class="hljs-number">2</span>  <span class="hljs-comment"># احسب فهرس نقطة المنتصف m</span>
@@ -74,7 +74,8 @@
     <span class="hljs-comment"># لم يُوجد الهدف؛ أعد نقطة الإدراج i</span>
     <span class="hljs-keyword">return</span> i
 </code></pre>
-</div>## حالة وجود عناصر مكررة
+</div>
+## حالة وجود عناصر مكررة
 <div class="note">
 <p>بناءً على المسألة السابقة، افترض أن المصفوفة قد تحتوي على عناصر مكررة، مع بقاء كل ما عدا ذلك على حاله.</p>
 </div>
@@ -97,7 +98,7 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search_insertion</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], target: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-    <span class="hljs-string">&quot;&quot;&quot;Find an insertion point using binary search (with duplicates)&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;العثور على نقطة إدراج بالبحث الثنائي (مع مكررات)&quot;&quot;&quot;</span>
     i, j = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>  <span class="hljs-comment"># مهّد المجال المغلق [0, n-1]</span>
     <span class="hljs-keyword">while</span> i &lt;= j:
         m = (i + j) // <span class="hljs-number">2</span>  <span class="hljs-comment"># احسب فهرس نقطة المنتصف m</span>
@@ -110,7 +111,8 @@
     <span class="hljs-comment"># أعد نقطة الإدراج i</span>
     <span class="hljs-keyword">return</span> i
 </code></pre>
-</div><div class="note">
+</div>
+<div class="note">
 <p>تستخدم شيفرة هذا القسم نهج «المجال المغلق» في كل مواضعها. ويمكن للقارئ المهتم تنفيذ نهج «مغلق من اليسار، مفتوح من اليمين» بنفسه.</p>
 </div>
 <p>إجمالاً، البحث الثنائي ليس سوى تحديد هدف بحث منفصل لكل من المؤشرين <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span>. وقد يكون الهدف عنصراً محدداً (مثل <code>target</code>) أو نطاقاً من العناصر (مثل العناصر الأصغر من <code>target</code>).</p>
@@ -121,7 +123,7 @@
 			
 			<script>
 				{
-					__sveltekit_z8h3v6 = {
+					__sveltekit_1kfktix = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -129,8 +131,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
-						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
+						import("../../../../_app/immutable/entry/start.DDtYzQp0.js"),
+						import("../../../../_app/immutable/entry/app._UIXThwk.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

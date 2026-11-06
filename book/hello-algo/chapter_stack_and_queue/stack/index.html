@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DDtYzQp0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJihtwqa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CV_7-CKa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app._UIXThwk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BHmmBNfD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CBtjfW4t.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DtszrmNE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZw2NPJg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Ce5AuMca.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CdymPtEF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -116,43 +116,43 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LinkedListStack</span>:
-    <span class="hljs-string">&quot;&quot;&quot;Stack implemented with a linked list&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;مكدس منفذ بقائمة مترابطة&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;المنشئ&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>._peek: ListNode | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
         <span class="hljs-variable language_">self</span>._size: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Get the stack size&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;احصل على حجم المكدس&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._size
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_empty</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">bool</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Check whether the stack is empty&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;التحقق مما إذا كان المكدس فارغًا&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._size == <span class="hljs-number">0</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, val: <span class="hljs-built_in">int</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Push&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;دفع&quot;&quot;&quot;</span>
         node = ListNode(val)
         node.<span class="hljs-built_in">next</span> = <span class="hljs-variable language_">self</span>._peek
         <span class="hljs-variable language_">self</span>._peek = node
         <span class="hljs-variable language_">self</span>._size += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Pop&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;سحب&quot;&quot;&quot;</span>
         num = <span class="hljs-variable language_">self</span>.peek()
         <span class="hljs-variable language_">self</span>._peek = <span class="hljs-variable language_">self</span>._peek.<span class="hljs-built_in">next</span>
         <span class="hljs-variable language_">self</span>._size -= <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> num
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">peek</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Access the top element&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;وصول إلى عنصر القمة&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_empty():
             <span class="hljs-keyword">raise</span> IndexError(<span class="hljs-string">&quot;Stack is empty&quot;</span>)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._peek.val
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">to_list</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
-        <span class="hljs-string">&quot;&quot;&quot;Convert to a list for printing&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;تحويل إلى قائمة للطباعة&quot;&quot;&quot;</span>
         arr = []
         node = <span class="hljs-variable language_">self</span>._peek
         <span class="hljs-keyword">while</span> node:
@@ -168,38 +168,38 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ArrayStack</span>:
-    <span class="hljs-string">&quot;&quot;&quot;Stack implemented with an array&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;مكدس منفذ بمصفوفة&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;المنشئ&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>._stack: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>] = []
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Get the stack size&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;احصل على حجم المكدس&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>._stack)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_empty</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">bool</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Check whether the stack is empty&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;التحقق مما إذا كان المكدس فارغًا&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.size() == <span class="hljs-number">0</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, item: <span class="hljs-built_in">int</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Push&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;دفع&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>._stack.append(item)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Pop&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;سحب&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_empty():
             <span class="hljs-keyword">raise</span> IndexError(<span class="hljs-string">&quot;Stack is empty&quot;</span>)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._stack.pop()
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">peek</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Access the top element&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;وصول إلى عنصر القمة&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_empty():
             <span class="hljs-keyword">raise</span> IndexError(<span class="hljs-string">&quot;Stack is empty&quot;</span>)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._stack[-<span class="hljs-number">1</span>]
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">to_list</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
-        <span class="hljs-string">&quot;&quot;&quot;Return a list for printing&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;إعادة قائمة للطباعة&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._stack
 </code></pre>
 </div>
@@ -229,7 +229,7 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
 			
 			<script>
 				{
-					__sveltekit_z8h3v6 = {
+					__sveltekit_1kfktix = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -237,8 +237,8 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
-						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
+						import("../../../../_app/immutable/entry/start.DDtYzQp0.js"),
+						import("../../../../_app/immutable/entry/app._UIXThwk.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

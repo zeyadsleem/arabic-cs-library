@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DDtYzQp0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJihtwqa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CV_7-CKa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app._UIXThwk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BHmmBNfD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CBtjfW4t.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DtszrmNE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZw2NPJg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Ce5AuMca.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CdymPtEF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -64,7 +64,8 @@
 <span class="hljs-comment"># Using None to represent empty slots</span>
 tree = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">12</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">15</span>]
 </code></pre>
-</div>![التمثيل المصفوفي لشجرة ثنائية عشوائية](/images/hello-algo/chapter_tree--array_representation_with_empty.png)
+</div>
+![التمثيل المصفوفي لشجرة ثنائية عشوائية](/images/hello-algo/chapter_tree--array_representation_with_empty.png)
 <p>جدير بالذكر أن <strong>الأشجار الثنائية الكاملة ملائمة جداً للتمثيل المصفوفي</strong>. وباستذكار تعريف الشجرة الثنائية الكاملة، لا تظهر <code>None</code> إلا في المستوى السفلي وفي الجهة اليمنى، <strong>ما يعني أن جميع قيم <code>None</code> يجب أن تظهر في نهاية تسلسل الاجتياز بالمستويات</strong>.</p>
 <p>وهذا يعني أنه عند استخدام مصفوفة لتمثيل شجرة ثنائية كاملة، يمكن إغفال تخزين جميع قيم <code>None</code>، وهو أمر مريح للغاية. ويقدّم الشكل أدناه مثالاً على ذلك.</p>
 <p><img src="/arabic-cs-library/images/hello-algo/chapter_tree--array_representation_complete_binary_tree.png" alt="التمثيل المصفوفي لشجرة ثنائية كاملة"></p>
@@ -76,37 +77,37 @@ tree = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, 
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ArrayBinaryTree</span>:
-    <span class="hljs-string">&quot;&quot;&quot;Binary tree class using an array representation&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;صنف شجرة ثنائية بتمثيل مصفوفي&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, arr: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span> | <span class="hljs-literal">None</span>]</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;المنشئ&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>._tree = <span class="hljs-built_in">list</span>(arr)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Length of the backing list&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;طول القائمة الداعمة&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>._tree)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">val</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span> | <span class="hljs-literal">None</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Get the value of the node at index i&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;الحصول على قيمة العقدة عند الفهرس i&quot;&quot;&quot;</span>
         <span class="hljs-comment"># إذا خرج الفهرس عن الحدود، أعد None لتمثيل موضع فارغ</span>
         <span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> i &gt;= <span class="hljs-variable language_">self</span>.size():
             <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._tree[i]
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">left</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span> | <span class="hljs-literal">None</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Get the left child index of the node at index i&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;الحصول على فهرس الابن الأيسر للعقدة عند الفهرس i&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * i + <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">right</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span> | <span class="hljs-literal">None</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Get the right child index of the node at index i&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;الحصول على فهرس الابن الأيمن للعقدة عند الفهرس i&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * i + <span class="hljs-number">2</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">parent</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span> | <span class="hljs-literal">None</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Get the parent index of the node at index i&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;الحصول على فهرس العقدة الأصل للعقدة عند الفهرس i&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> (i - <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">level_order</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
-        <span class="hljs-string">&quot;&quot;&quot;Level-order traversal&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;اجتياز بالمستويات&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>.res = []
         <span class="hljs-comment"># اجتز المصفوفة مباشرةً</span>
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.size()):
@@ -115,7 +116,7 @@ tree = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, 
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.res
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span>, order: <span class="hljs-built_in">str</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Depth-first traversal&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;الاجتياز بالعمق أولًا&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.val(i) <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
             <span class="hljs-keyword">return</span>
         <span class="hljs-comment"># اجتياز الطلب المسبق</span>
@@ -131,24 +132,25 @@ tree = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, 
             <span class="hljs-variable language_">self</span>.res.append(<span class="hljs-variable language_">self</span>.val(i))
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">pre_order</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
-        <span class="hljs-string">&quot;&quot;&quot;Preorder traversal&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;اجتياز الطلب المسبق&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>.res = []
         <span class="hljs-variable language_">self</span>.dfs(<span class="hljs-number">0</span>, order=<span class="hljs-string">&quot;pre&quot;</span>)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.res
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">in_order</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
-        <span class="hljs-string">&quot;&quot;&quot;Inorder traversal&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;الاجتياز الداخلي&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>.res = []
         <span class="hljs-variable language_">self</span>.dfs(<span class="hljs-number">0</span>, order=<span class="hljs-string">&quot;in&quot;</span>)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.res
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">post_order</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
-        <span class="hljs-string">&quot;&quot;&quot;Postorder traversal&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;اجتياز الطلب اللاحق&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>.res = []
         <span class="hljs-variable language_">self</span>.dfs(<span class="hljs-number">0</span>, order=<span class="hljs-string">&quot;post&quot;</span>)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.res
 </code></pre>
-</div>## المزايا والقيود
+</div>
+## المزايا والقيود
 <p>يتمتع التمثيل المصفوفي للأشجار الثنائية بالمزايا التالية:</p>
 <ul>
 <li>تُخزَّن المصفوفات في مساحة ذاكرة متجاورة، وهو ما يلائم ذاكرة التخزين المؤقت (cache) ويتيح وصولاً واجتيازاً أسرع.</li>
@@ -167,7 +169,7 @@ tree = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, 
 			
 			<script>
 				{
-					__sveltekit_z8h3v6 = {
+					__sveltekit_1kfktix = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -175,8 +177,8 @@ tree = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, 
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
-						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
+						import("../../../../_app/immutable/entry/start.DDtYzQp0.js"),
+						import("../../../../_app/immutable/entry/app._UIXThwk.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

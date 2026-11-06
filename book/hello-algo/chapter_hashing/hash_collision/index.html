@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DDtYzQp0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJihtwqa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CV_7-CKa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app._UIXThwk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BHmmBNfD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CBtjfW4t.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DtszrmNE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZw2NPJg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Ce5AuMca.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CdymPtEF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -75,10 +75,10 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HashMapChaining</span>:
-    <span class="hljs-string">&quot;&quot;&quot;Hash table with separate chaining&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;جدول تجزئة بالتسلسل المنفصل&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;المنشئ&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>.size = <span class="hljs-number">0</span>  <span class="hljs-comment"># عدد ثنائيات المفتاح-القيمة</span>
         <span class="hljs-variable language_">self</span>.capacity = <span class="hljs-number">4</span>  <span class="hljs-comment"># سعة جدول التجزئة</span>
         <span class="hljs-variable language_">self</span>.load_thres = <span class="hljs-number">2.0</span> / <span class="hljs-number">3.0</span>  <span class="hljs-comment"># عتبة عامل التحميل التي تطلق نموّ السعة</span>
@@ -86,15 +86,15 @@
         <span class="hljs-variable language_">self</span>.buckets = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.capacity)]  <span class="hljs-comment"># مصفوفة السلال</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">hash_func</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Hash function&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;دالة التجزئة&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> key % <span class="hljs-variable language_">self</span>.capacity
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">load_factor</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">float</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Load factor&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;عامل التحميل&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.size / <span class="hljs-variable language_">self</span>.capacity
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Lookup operation&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;عملية البحث&quot;&quot;&quot;</span>
         index = <span class="hljs-variable language_">self</span>.hash_func(key)
         bucket = <span class="hljs-variable language_">self</span>.buckets[index]
         <span class="hljs-comment"># اجتز السلة؛ إذا وُجد key فأعد val المقابل له</span>
@@ -105,7 +105,7 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">put</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span>, val: <span class="hljs-built_in">str</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Insert operation&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;عملية الإدراج&quot;&quot;&quot;</span>
         <span class="hljs-comment"># زِد السعة عندما يتجاوز عامل التحميل العتبة</span>
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.load_factor() &gt; <span class="hljs-variable language_">self</span>.load_thres:
             <span class="hljs-variable language_">self</span>.extend()
@@ -122,7 +122,7 @@
         <span class="hljs-variable language_">self</span>.size += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Remove operation&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;عملية الحذف&quot;&quot;&quot;</span>
         index = <span class="hljs-variable language_">self</span>.hash_func(key)
         bucket = <span class="hljs-variable language_">self</span>.buckets[index]
         <span class="hljs-comment"># اجتز السلة واحذف الثنائية</span>
@@ -133,7 +133,7 @@
                 <span class="hljs-keyword">break</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">extend</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Grow the hash table capacity&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;زيادة سعة جدول التجزئة&quot;&quot;&quot;</span>
         <span class="hljs-comment"># احتفظ بإشارة إلى جدول التجزئة الأصلي</span>
         buckets = <span class="hljs-variable language_">self</span>.buckets
         <span class="hljs-comment"># مهّد جدول تجزئة جديدًا بالسعة الموسعة</span>
@@ -146,14 +146,15 @@
                 <span class="hljs-variable language_">self</span>.put(pair.key, pair.val)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">print</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Print the hash table&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;طباعة جدول التجزئة&quot;&quot;&quot;</span>
         <span class="hljs-keyword">for</span> bucket <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.buckets:
             res = []
             <span class="hljs-keyword">for</span> pair <span class="hljs-keyword">in</span> bucket:
                 res.append(<span class="hljs-built_in">str</span>(pair.key) + <span class="hljs-string">&quot; -&gt; &quot;</span> + pair.val)
             <span class="hljs-built_in">print</span>(res)
 </code></pre>
-</div>وتجدر الإشارة إلى أنه عندما تصبح القائمة المترابطة طويلة جداً، يكون زمن الاستعلام $O(n)$ ضعيفاً. **وفي هذه الحالة يمكن تحويل القائمة المترابطة إلى شجرة AVL أو شجرة حمراء-سوداء**، مما يقلل التعقيد الزمني لعمليات البحث إلى $O(\log n)$.
+</div>
+وتجدر الإشارة إلى أنه عندما تصبح القائمة المترابطة طويلة جداً، يكون زمن الاستعلام $O(n)$ ضعيفاً. **وفي هذه الحالة يمكن تحويل القائمة المترابطة إلى شجرة AVL أو شجرة حمراء-سوداء**، مما يقلل التعقيد الزمني لعمليات البحث إلى $O(\log n)$.
 <h2 id="العنونة-المفتوحة">العنونة المفتوحة</h2>
 <p>لا تُدخل <u>العنونة المفتوحة</u> بنى بيانات إضافية. بل تعالج تصادمات التجزئة عبر الفحص المتكرر. وتشمل استراتيجيات الفحص الشائعة الفحص الخطي والفحص التربيعي والتجزئة المتعددة.</p>
 <p>ولنأخذ الفحص الخطي مثالاً لتوضيح آلية جداول التجزئة بالعنونة المفتوحة.</p>
@@ -175,10 +176,10 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HashMapOpenAddressing</span>:
-    <span class="hljs-string">&quot;&quot;&quot;Hash table with open addressing&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;جدول تجزئة بالعنونة المفتوحة&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;المنشئ&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>.size = <span class="hljs-number">0</span>  <span class="hljs-comment"># عدد ثنائيات المفتاح-القيمة</span>
         <span class="hljs-variable language_">self</span>.capacity = <span class="hljs-number">4</span>  <span class="hljs-comment"># سعة جدول التجزئة</span>
         <span class="hljs-variable language_">self</span>.load_thres = <span class="hljs-number">2.0</span> / <span class="hljs-number">3.0</span>  <span class="hljs-comment"># عتبة عامل التحميل التي تطلق نموّ السعة</span>
@@ -187,15 +188,15 @@
         <span class="hljs-variable language_">self</span>.TOMBSTONE = Pair(-<span class="hljs-number">1</span>, <span class="hljs-string">&quot;-1&quot;</span>)  <span class="hljs-comment"># علامة شاهد القبر</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">hash_func</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Hash function&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;دالة التجزئة&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> key % <span class="hljs-variable language_">self</span>.capacity
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">load_factor</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">float</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Load factor&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;عامل التحميل&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.size / <span class="hljs-variable language_">self</span>.capacity
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_bucket</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Find the bucket index for key&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;أوجد فهرس سلة key&quot;&quot;&quot;</span>
         index = <span class="hljs-variable language_">self</span>.hash_func(key)
         first_tombstone = -<span class="hljs-number">1</span>
         <span class="hljs-comment"># تتبّع خطيًا حتى تصل إلى سلة فارغة</span>
@@ -217,7 +218,7 @@
         <span class="hljs-keyword">return</span> index <span class="hljs-keyword">if</span> first_tombstone == -<span class="hljs-number">1</span> <span class="hljs-keyword">else</span> first_tombstone
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">str</span>:
-        <span class="hljs-string">&quot;&quot;&quot;Lookup operation&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;عملية البحث&quot;&quot;&quot;</span>
         <span class="hljs-comment"># أوجد فهرس سلة key</span>
         index = <span class="hljs-variable language_">self</span>.find_bucket(key)
         <span class="hljs-comment"># إذا وُجدت الثنائية فأعد val الخاص بها</span>
@@ -227,7 +228,7 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">put</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span>, val: <span class="hljs-built_in">str</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Insert operation&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;عملية الإدراج&quot;&quot;&quot;</span>
         <span class="hljs-comment"># زِد السعة عندما يتجاوز عامل التحميل العتبة</span>
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.load_factor() &gt; <span class="hljs-variable language_">self</span>.load_thres:
             <span class="hljs-variable language_">self</span>.extend()
@@ -242,7 +243,7 @@
         <span class="hljs-variable language_">self</span>.size += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span></span>):
-        <span class="hljs-string">&quot;&quot;&quot;Remove operation&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;عملية الحذف&quot;&quot;&quot;</span>
         <span class="hljs-comment"># أوجد فهرس سلة key</span>
         index = <span class="hljs-variable language_">self</span>.find_bucket(key)
         <span class="hljs-comment"># إذا وُجدت الثنائية فاستبدلها بشاهد قبر</span>
@@ -251,7 +252,7 @@
             <span class="hljs-variable language_">self</span>.size -= <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">extend</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Grow the hash table capacity&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;زيادة سعة جدول التجزئة&quot;&quot;&quot;</span>
         <span class="hljs-comment"># احتفظ بإشارة إلى جدول التجزئة الأصلي</span>
         buckets_tmp = <span class="hljs-variable language_">self</span>.buckets
         <span class="hljs-comment"># مهّد جدول تجزئة جديدًا بالسعة الموسعة</span>
@@ -264,7 +265,7 @@
                 <span class="hljs-variable language_">self</span>.put(pair.key, pair.val)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">print</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;Print the hash table&quot;&quot;&quot;</span>
+        <span class="hljs-string">&quot;&quot;&quot;طباعة جدول التجزئة&quot;&quot;&quot;</span>
         <span class="hljs-keyword">for</span> pair <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.buckets:
             <span class="hljs-keyword">if</span> pair <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
                 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;None&quot;</span>)
@@ -273,7 +274,8 @@
             <span class="hljs-keyword">else</span>:
                 <span class="hljs-built_in">print</span>(pair.key, <span class="hljs-string">&quot;-&gt;&quot;</span>, pair.val)
 </code></pre>
-</div>### الفحص التربيعي
+</div>
+### الفحص التربيعي
 <p>الفحص التربيعي مشابه للفحص الخطي، وهو إحدى الاستراتيجيات الشائعة للعنونة المفتوحة. فعند حدوث تصادم، لا يتخطى الفحص التربيعي ببساطة عدداً ثابتاً من الخطوات، بل يتخطى عدداً من الخطوات يساوي «مربع عدد عمليات الفحص»، أي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo separator="true">,</mo><mn>4</mn><mo separator="true">,</mo><mn>9</mn><mo separator="true">,</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">1, 4, 9, \dots</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">9</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span></span></span></span> خطوة.</p>
 <p>وللفحص التربيعي المزايا التالية:</p>
 <ul>
@@ -308,7 +310,7 @@
 			
 			<script>
 				{
-					__sveltekit_z8h3v6 = {
+					__sveltekit_1kfktix = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -316,8 +318,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
-						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
+						import("../../../../_app/immutable/entry/start.DDtYzQp0.js"),
+						import("../../../../_app/immutable/entry/app._UIXThwk.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

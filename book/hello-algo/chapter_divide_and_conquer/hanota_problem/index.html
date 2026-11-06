@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DDtYzQp0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJihtwqa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CV_7-CKa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app._UIXThwk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BHmmBNfD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CBtjfW4t.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DtszrmNE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZw2NPJg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Ce5AuMca.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CdymPtEF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -88,12 +88,13 @@
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_hanota</span>(<span class="hljs-params">A: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], B: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], C: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]</span>):
-    <span class="hljs-string">&quot;&quot;&quot;Solve the Tower of Hanoi problem&quot;&quot;&quot;</span>
+    <span class="hljs-string">&quot;&quot;&quot;حل مسألة برج هانوي&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(A)
     <span class="hljs-comment"># انقل أعلى n من الأقراص من A إلى C باستخدام B</span>
     dfs(n, A, B, C)
 </code></pre>
-</div>وكما يوضح الشكل أدناه، تشكّل مسألة أبراج هانوي شجرة تعاود بارتفاع $n$، حيث تمثّل كل عقدة مسألة فرعية تقابل استدعاءً للدالة `dfs()`، **لذا يكون التعقيد الزمني $O(2^n)$ والتعقيد المكاني $O(n)$**.
+</div>
+وكما يوضح الشكل أدناه، تشكّل مسألة أبراج هانوي شجرة تعاود بارتفاع $n$، حيث تمثّل كل عقدة مسألة فرعية تقابل استدعاءً للدالة `dfs()`، **لذا يكون التعقيد الزمني $O(2^n)$ والتعقيد المكاني $O(n)$**.
 <p><img src="/arabic-cs-library/images/hello-algo/chapter_divide_and_conquer--hanota_recursive_tree.png" alt="شجرة التعاود لمسألة أبراج هانوي"></p>
 <div class="note">
 <p>تستمد مسألة أبراج هانوي أصلها من أسطورة قديمة. ففي معبد بالهند القديمة، كان لدى الرهبان ثلاثة أعمدة ماسية شاهقة و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn></mrow><annotation encoding="application/x-tex">64</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">64</span></span></span></span> قرصاً ذهبياً مختلف الأحجام. وكان الرهبان ينقلون هذه الأقراص باستمرار، معتقدين أنه عندما يوضع القرص الأخير في مكانه الصحيح، ينتهي العالم.</p>
@@ -105,7 +106,7 @@
 			
 			<script>
 				{
-					__sveltekit_z8h3v6 = {
+					__sveltekit_1kfktix = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -113,8 +114,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
-						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
+						import("../../../../_app/immutable/entry/start.DDtYzQp0.js"),
+						import("../../../../_app/immutable/entry/app._UIXThwk.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
