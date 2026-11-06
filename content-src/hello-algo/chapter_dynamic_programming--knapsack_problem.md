@@ -64,6 +64,27 @@ The search code includes the following elements.
 - **Termination condition**: when there are no items left ($i = 0$) or the remaining knapsack capacity is $0$, terminate the recursion and return value $0$.
 - **Pruning**: if the weight of the current item exceeds the remaining knapsack capacity, only the option of not putting it in is available.
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def knapsack_dfs(wgt: list[int], val: list[int], i: int, c: int) -> int:
+    """0-1 knapsack: brute-force search"""
+    # If all items have been considered or no capacity remains, return value 0
+    if i == 0 or c == 0:
+        return 0
+    # If the item exceeds the remaining capacity, it must be excluded
+    if wgt[i - 1] > c:
+        return knapsack_dfs(wgt, val, i - 1, c)
+    # Calculate the maximum values obtained by excluding and including item i
+    no = knapsack_dfs(wgt, val, i - 1, c)
+    yes = knapsack_dfs(wgt, val, i - 1, c - wgt[i - 1]) + val[i - 1]
+    # Return the larger value from the two choices
+    return max(no, yes)
+```
+
+</div>
+
 As shown in the figure below, since each item generates two search branches, excluding it and including it, the time complexity is $O(2^n)$.
 
 Observing the recursion tree, it is easy to see overlapping subproblems, such as $dp[1, 10]$. When there are many items, large knapsack capacity, and especially many items with the same weight, the number of overlapping subproblems will increase significantly.
@@ -76,6 +97,16 @@ To ensure that overlapping subproblems are only computed once, we use a memo lis
 
 After introducing memoization, **the time complexity depends on the number of subproblems**, which is $O(n \times cap)$. The implementation code is as follows:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def knapsack_dfs_mem(
+    wgt: list[int], val: list[int], mem: list[list[int]], i: int, c: int
+```
+
+</div>
+
 The figure below shows the search branches pruned in memoization.
 
 ![Memoization recursion tree for 0-1 knapsack problem](/images/hello-algo/chapter_dynamic_programming--knapsack_dfs_mem.png)
@@ -83,6 +114,29 @@ The figure below shows the search branches pruned in memoization.
 ### Method 3: Dynamic Programming
 
 Dynamic programming is essentially the process of filling the $dp$ table during state transitions. The code is as follows:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
+    """0-1 knapsack: dynamic programming"""
+    n = len(wgt)
+    # Initialize the dp table
+    dp = [[0] * (cap + 1) for _ in range(n + 1)]
+    # State transitions
+    for i in range(1, n + 1):
+        for c in range(1, cap + 1):
+            if wgt[i - 1] > c:
+                # If item i exceeds the remaining capacity, do not choose it
+                dp[i][c] = dp[i - 1][c]
+            else:
+                # Take the larger value obtained by excluding and including item i
+                dp[i][c] = max(dp[i - 1][c], dp[i - 1][c - wgt[i - 1]] + val[i - 1])
+    return dp[n][cap]
+```
+
+</div>
 
 As shown in the figure below, both time complexity and space complexity are determined by the size of the array `dp`, which is $O(n \times cap)$.
 
@@ -98,3 +152,27 @@ Further thinking, can we achieve space optimization using just one array? Observ
 The figure below shows the transition process from row $i = 1$ to row $i = 2$ using a single array. Please consider the difference between forward and reverse traversal.
 
 In the code implementation, we simply need to delete the first dimension $i$ of the array `dp` and change the inner loop to reverse traversal:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
+    """0-1 knapsack: space-optimized dynamic programming"""
+    n = len(wgt)
+    # Initialize the dp table
+    dp = [0] * (cap + 1)
+    # State transitions
+    for i in range(1, n + 1):
+        # Traverse in decreasing order
+        for c in range(cap, 0, -1):
+            if wgt[i - 1] > c:
+                # If item i exceeds the remaining capacity, do not choose it
+                dp[c] = dp[c]
+            else:
+                # Take the larger value obtained by excluding and including item i
+                dp[c] = max(dp[c], dp[c - wgt[i - 1]] + val[i - 1])
+    return dp[cap]
+```
+
+</div>

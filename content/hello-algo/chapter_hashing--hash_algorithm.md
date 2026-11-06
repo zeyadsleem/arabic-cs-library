@@ -53,41 +53,19 @@ index = hash(key) % capacity
 - **التجزئة الدوارة**: راكم رمز ASCII لكل حرف في قيمة تجزئة، مع إجراء عملية دوران على قيمة التجزئة قبل كل تجميع.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* التجزئة الدوارة */
-func rotHash(key string) int {
-	var hash int64
-	var modulus int64
-
-	modulus = 1000000007
-	for _, b := range []byte(key) {
-		hash = ((hash << 4) ^ (hash >> 28) ^ int64(b)) % modulus
-	}
-	return int(hash)
-}
+```py
+def rot_hash(key: str) -> int:
+    """Rotating hash"""
+    hash = 0
+    modulus = 1000000007
+    for c in key:
+        hash = (hash << 4) ^ (hash >> 28) ^ ord(c)
+    return hash % modulus
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* التجزئة الدوارة */
-function rotHash(key: string): number {
-    let hash = 0;
-    const MODULUS = 1000000007;
-    for (const c of key) {
-        hash = ((hash << 4) ^ (hash >> 28) ^ c.charCodeAt(0)) % MODULUS;
-    }
-    return hash;
-}
-```
-
-</div>
-
 يمكننا ملاحظة أن الخطوة الأخيرة في كل خوارزمية تجزئة هي أخذ باقي قسمة النتيجة على العدد الأولي الكبير $1000000007$، بما يضمن بقاء قيمة التجزئة ضمن نطاق مناسب. وهذا يطرح سؤالاً طبيعياً: لِمَ التأكيد على استخدام مقياس أولي، وما عيوب استخدام مقياس مركب؟
 
 باختصار: **استخدام عدد أولي كبير كمقياس يساعد على تعظيم انتظام قيم التجزئة**. ولأن العدد الأولي لا يشارك أعداداً أخرى في عوامل مشتركة، فإنه يقلل الأنماط الدورية التي تُدخلها عملية باقي القسمة، وبذلك يخفف تصادمات التجزئة.
@@ -154,23 +132,35 @@ $$
 </div>
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="built_in_hash.go"
-// لا توفّر Go دوال تجزئة مدمجة
+```python title="built_in_hash.py"
+num = 3
+hash_num = hash(num)
+# Hash value of integer 3 is 3
+
+bol = True
+hash_bol = hash(bol)
+# Hash value of boolean True is 1
+
+dec = 3.14159
+hash_dec = hash(dec)
+# Hash value of decimal 3.14159 is 326484311674566659
+
+str = "Hello 算法"
+hash_str = hash(str)
+# Hash value of string "Hello 算法" is 4617003410720528961
+
+tup = (12836, "小哈")
+hash_tup = hash(tup)
+# Hash value of tuple (12836, '小哈') is 1029005403108185979
+
+obj = ListNode(0)
+hash_obj = hash(obj)
+# Hash value of ListNode object at 0x1058fd810 is 274267521
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="built_in_hash.ts"
-// لا توفّر TypeScript دوال تجزئة مدمجة
-```
-
-</div>
-
 في كثير من لغات البرمجة، **لا يمكن إلا للكائنات غير القابلة للتغيير أن تكون `key` في جدول تجزئة**. فإذا استخدمنا قائمة (مصفوفة ديناميكية) كـ`key`، فعند تغيّر محتوى القائمة تتغير قيمة تجزئتها أيضاً، ولن نستطيع بعد ذلك العثور على `value` الأصلي في جدول التجزئة.
 
 وعلى الرغم من أن متغيّرات الأعضاء للكائن المخصص (مثل عقدة قائمة مترابطة) قابلة للتغيير، فإنها قابلة للتجزئة. **وهذا لأن قيمة تجزئة الكائن تُولَّد عادةً استناداً إلى عنوانه في الذاكرة**، وحتى إذا تغيّر محتوى الكائن، يبقى عنوان الذاكرة نفسه، فتبقى قيمة التجزئة دون تغيير.

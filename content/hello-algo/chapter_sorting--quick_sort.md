@@ -24,31 +24,26 @@ lang: ar
 </div>
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* التقسيم بالمحمّي */
-func (q *quickSort) partition(nums []int, left, right int) int {
-	// استخدم nums[left] محوراً
-	i, j := left, right
-	for i < j {
-		for i < j && nums[j] >= nums[left] {
-			j-- // ابحث من اليمين إلى اليسار عن أول عنصر أصغر من المحور
-		}
-		for i < j && nums[i] <= nums[left] {
-			i++ // ابحث من اليسار إلى اليمين عن أول عنصر أكبر من المحور
-		}
-		// بدّل العنصرين
-		nums[i], nums[j] = nums[j], nums[i]
-	}
-	// بدّل المحور إلى الحد الفاصل بين المصفوفتين الفرعيتين
-	nums[i], nums[left] = nums[left], nums[i]
-	return i // أعد فهرس المحور
-}
+```py
+    def partition(self, nums: list[int], left: int, right: int) -> int:
+        """Two-pointer partitioning"""
+        # Use nums[left] as the pivot
+        i, j = left, right
+        while i < j:
+            while i < j and nums[j] >= nums[left]:
+                j -= 1  # Scan from right to left for the first element smaller than the pivot
+            while i < j and nums[i] <= nums[left]:
+                i += 1  # Scan from left to right for the first element larger than the pivot
+            # Swap the elements
+            nums[i], nums[j] = nums[j], nums[i]
+        # Swap the pivot into the boundary position between the two subarrays
+        nums[i], nums[left] = nums[left], nums[i]
+        return i  # Return the pivot index
 ```
 
 </div>
-
 ## سير الخوارزمية
 
 يوضح الشكل أدناه السير الكامل للترتيب السريع.
@@ -60,25 +55,22 @@ func (q *quickSort) partition(nums []int, left, right int) int {
 ![سير الترتيب السريع](/images/hello-algo/chapter_sorting--quick_sort_overview.png)
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الترتيب السريع */
-func (q *quickSort) quickSort(nums []int, left, right int) {
-	// أوقف التعاود عندما يصبح طول المصفوفة الفرعية 1
-	if left >= right {
-		return
-	}
-	// التقسيم بالمحمّي
-	pivot := q.partition(nums, left, right)
-	// عالج المصفوفتين الفرعيتين اليسرى واليمنى تعاودياً
-	q.quickSort(nums, left, pivot-1)
-	q.quickSort(nums, pivot+1, right)
-}
+```py
+    def quick_sort(self, nums: list[int], left: int, right: int):
+        """Quick sort"""
+        # Stop recursing when the subarray has at most one element
+        if left >= right:
+            return
+        # Two-pointer partitioning
+        pivot = self.partition(nums, left, right)
+        # Recurse on the left and right subarrays
+        self.quick_sort(nums, left, pivot - 1)
+        self.quick_sort(nums, pivot + 1, right)
 ```
 
 </div>
-
 ## خصائص الخوارزمية
 
 - **تعقيد زمني $O(n \log n)$؛ ترتيب غير تكيّفي**: في المتوسط، ينتج التقسيم بالمحمّي $\log n$ مستوى تعاودياً، ويكون العدد الإجمالي لتكرارات الحلقة في كل مستوى $n$، لذا يكون التعقيد الزمني الكلي $O(n \log n)$. وفي أسوأ حالة، يقسّم كل جولة من التقسيم بالمحمّي مصفوفة طولها $n$ إلى مصفوفتين فرعيتين طولاهما $0$ و$n - 1$. ويبلغ عمق التعاود حينئذٍ $n$، مع $n$ تكرار حلقة في كل مستوى، فيكون التعقيد الزمني الكلي $O(n^2)$.
@@ -106,31 +98,26 @@ func (q *quickSort) quickSort(nums []int, left, right int) {
 وتكون شيفرة المثال كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* التقسيم بالمحمّي */
-func (q *quickSort) partition(nums []int, left, right int) int {
-	// استخدم nums[left] محوراً
-	i, j := left, right
-	for i < j {
-		for i < j && nums[j] >= nums[left] {
-			j-- // ابحث من اليمين إلى اليسار عن أول عنصر أصغر من المحور
-		}
-		for i < j && nums[i] <= nums[left] {
-			i++ // ابحث من اليسار إلى اليمين عن أول عنصر أكبر من المحور
-		}
-		// بدّل العنصرين
-		nums[i], nums[j] = nums[j], nums[i]
-	}
-	// بدّل المحور إلى الحد الفاصل بين المصفوفتين الفرعيتين
-	nums[i], nums[left] = nums[left], nums[i]
-	return i // أعد فهرس المحور
-}
+```py
+    def partition(self, nums: list[int], left: int, right: int) -> int:
+        """Two-pointer partitioning"""
+        # Use nums[left] as the pivot
+        i, j = left, right
+        while i < j:
+            while i < j and nums[j] >= nums[left]:
+                j -= 1  # Scan from right to left for the first element smaller than the pivot
+            while i < j and nums[i] <= nums[left]:
+                i += 1  # Scan from left to right for the first element larger than the pivot
+            # Swap the elements
+            nums[i], nums[j] = nums[j], nums[i]
+        # Swap the pivot into the boundary position between the two subarrays
+        nums[i], nums[left] = nums[left], nums[i]
+        return i  # Return the pivot index
 ```
 
 </div>
-
 ## تحسين عمق التعاود
 
 **قد يستهلك الترتيب السريع أيضاً مساحة أكبر في بعض المدخلات**. تأمّل مصفوفة إدخال مرتبة بالكامل. وليكن طول المصفوفة الفرعية الحالية في التعاود $m$. ينتج عن كل جولة من التقسيم بالمحمّي مصفوفة فرعية يسرى طولها $0$ ومصفوفة فرعية يمنى طولها $m - 1$، مما يعني أن كل استدعاء تعاودي يقلّص حجم المسألة بمقدار عنصر واحد فقط. وبذلك يمكن أن تبلغ شجرة التعاود ارتفاعاً قدره $n - 1$، مستهلكة مساحة إطار مكدس $O(n)$.
@@ -138,21 +125,19 @@ func (q *quickSort) partition(nums []int, left, right int) int {
 لمنع تراكم إطارات المكدس، يمكننا مقارنة طولي المصفوفتين الفرعيتين بعد كل جولة من التقسيم بالمحمّي، **والتعاود على المصفوفة الأقصر فقط**. ولأن طول المصفوفة الفرعية الأقصر لا يتجاوز $n / 2$، يضمن هذا الأسلوب ألا يتجاوز عمق التعاود $\log n$، مما يقلل التعقيد المكاني في أسوأ حالة إلى $O(\log n)$. وتظهر الشيفرة أدناه:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الترتيب السريع */
-func (q *quickSort) quickSort(nums []int, left, right int) {
-	// أوقف التعاود عندما يصبح طول المصفوفة الفرعية 1
-	if left >= right {
-		return
-	}
-	// التقسيم بالمحمّي
-	pivot := q.partition(nums, left, right)
-	// عالج المصفوفتين الفرعيتين اليسرى واليمنى تعاودياً
-	q.quickSort(nums, left, pivot-1)
-	q.quickSort(nums, pivot+1, right)
-}
+```py
+    def quick_sort(self, nums: list[int], left: int, right: int):
+        """Quick sort"""
+        # Stop recursing when the subarray has at most one element
+        if left >= right:
+            return
+        # Two-pointer partitioning
+        pivot = self.partition(nums, left, right)
+        # Recurse on the left and right subarrays
+        self.quick_sort(nums, left, pivot - 1)
+        self.quick_sort(nums, pivot + 1, right)
 ```
 
 </div>

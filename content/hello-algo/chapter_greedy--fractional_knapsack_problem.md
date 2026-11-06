@@ -38,70 +38,31 @@ lang: ar
 نعرّف صنف `Item` بحيث يمكن ترتيب العناصر حسب القيمة الوحدية. ثم نجتاز العناصر المرتبة جشعاً، ونتوقف بمجرد امتلاء الحقيبة ونعيد النتيجة:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الحقيبة الكسرية: خوارزمية جشعة */
-func fractionalKnapsack(wgt []int, val []int, cap int) float64 {
-	// أنشئ قائمة العناصر بسمتين: الوزن والقيمة
-	items := make([]Item, len(wgt))
-	for i := 0; i < len(wgt); i++ {
-		items[i] = Item{wgt[i], val[i]}
-	}
-	// رتّب حسب القيمة الوحدية item.v / item.w من الأعلى إلى الأدنى
-	sort.Slice(items, func(i, j int) bool {
-		return float64(items[i].v)/float64(items[i].w) > float64(items[j].v)/float64(items[j].w)
-	})
-	// حلقة الاختيار الجشع
-	res := 0.0
-	for _, item := range items {
-		if item.w <= cap {
-			// إذا كانت السعة المتبقية كافية، ضع العنصر الحالي كاملاً في الحقيبة
-			res += float64(item.v)
-			cap -= item.w
-		} else {
-			// إذا لم تكن السعة المتبقية كافية، ضع جزءاً من العنصر الحالي في الحقيبة
-			res += float64(item.v) / float64(item.w) * float64(cap)
-			// لا توجد سعة متبقية، لذا اخرج من الحلقة
-			break
-		}
-	}
-	return res
-}
+```py
+def fractional_knapsack(wgt: list[int], val: list[int], cap: int) -> int:
+    """Fractional knapsack: greedy algorithm"""
+    # Create a list of items, each with two attributes: weight and value
+    items = [Item(w, v) for w, v in zip(wgt, val)]
+    # Sort by value per unit weight, item.v / item.w, in descending order
+    items.sort(key=lambda item: item.v / item.w, reverse=True)
+    # Repeatedly make greedy choices
+    res = 0
+    for item in items:
+        if item.w <= cap:
+            # If enough capacity remains, put the entire current item in the knapsack
+            res += item.v
+            cap -= item.w
+        else:
+            # If the remaining capacity is insufficient, put part of the current item in the knapsack
+            res += (item.v / item.w) * cap
+            # No capacity remains, so exit the loop
+            break
+    return res
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الحقيبة الكسرية: خوارزمية جشعة */
-function fractionalKnapsack(wgt: number[], val: number[], cap: number): number {
-    // أنشئ قائمة العناصر بسمتين: الوزن والقيمة
-    const items: Item[] = wgt.map((w, i) => new Item(w, val[i]));
-    // رتّب حسب القيمة الوحدية item.v / item.w من الأعلى إلى الأدنى
-    items.sort((a, b) => b.v / b.w - a.v / a.w);
-    // حلقة الاختيار الجشع
-    let res = 0;
-    for (const item of items) {
-        if (item.w <= cap) {
-            // إذا كانت السعة المتبقية كافية، ضع العنصر الحالي كاملاً في الحقيبة
-            res += item.v;
-            cap -= item.w;
-        } else {
-            // إذا لم تكن السعة المتبقية كافية، ضع جزءاً من العنصر الحالي في الحقيبة
-            res += (item.v / item.w) * cap;
-            // لا توجد سعة متبقية، لذا اخرج من الحلقة
-            break;
-        }
-    }
-    return res;
-}
-```
-
-</div>
-
 تستغرق خوارزميات الترتيب المدمجة عادةً زمن $O(n \log n)$، ويكون تعقيدها المكاني عادةً $O(\log n)$ أو $O(n)$، حسب التنفيذ المحدد للغة البرمجة.
 
 وفيما عدا الترتيب، يجب في أسوأ الحالات اجتياز قائمة العناصر كاملة، **لذا فإن التعقيد الزمني هو $O(n)$**، حيث $n$ عدد العناصر.

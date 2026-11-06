@@ -31,48 +31,22 @@ Here, $\lfloor a \rfloor$ denotes rounding the floating-point number $a$ down, a
 Additionally, we need to slightly modify the counting sort code to make it sort based on the $k$th digit of the number:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Radix sort */
-func radixSort(nums []int) {
-	// Get the maximum element of the array, used to determine the maximum number of digits
-	max := math.MinInt
-	for _, num := range nums {
-		if num > max {
-			max = num
-		}
-	}
-	// Traverse from the lowest to the highest digit
-	for exp := 1; max >= exp; exp *= 10 {
-		// Perform counting sort on the k-th digit of array elements
-		// k = 1 -> exp = 1
-		// k = 2 -> exp = 10
-		// i.e., exp = 10^(k-1)
-		countingSortDigit(nums, exp)
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Radix sort */
-function radixSort(nums: number[]): void {
-    // Get the maximum element of the array, used to determine the maximum number of digits
-    let m: number = Math.max(... nums);
-    // Traverse from the lowest to the highest digit
-    for (let exp = 1; exp <= m; exp *= 10) {
-        // Perform counting sort on the k-th digit of array elements
-        // k = 1 -> exp = 1
-        // k = 2 -> exp = 10
-        // i.e., exp = 10^(k-1)
-        countingSortDigit(nums, exp);
-    }
-}
+```py
+def radix_sort(nums: list[int]):
+    """Radix sort"""
+    # Get the largest array element to determine the maximum number of digits
+    m = max(nums)
+    # Process digits from least significant to most significant
+    exp = 1
+    while exp <= m:
+        # Apply counting sort to the k-th digit of the array elements
+        # k = 1 -> exp = 1
+        # k = 2 -> exp = 10
+        # That is, exp = 10^(k-1)
+        counting_sort_digit(nums, exp)
+        exp *= 10
 ```
 
 </div>

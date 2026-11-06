@@ -23,39 +23,14 @@ Observing the figure above, the basic unit of a linked list is a <u>node</u> obj
 As shown in the following code, a linked list node `ListNode` contains not only a value but also an additional reference (pointer). Therefore, **linked lists occupy more memory space than arrays when storing the same amount of data**.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* Linked list node structure */
-type ListNode struct {
-    Val  int       // Node value
-    Next *ListNode // Pointer to the next node
-}
-
-// NewListNode Constructor, creates a new linked list
-func NewListNode(val int) *ListNode {
-    return &ListNode{
-        Val:  val,
-        Next: nil,
-    }
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* Linked list node class */
-class ListNode {
-    val: number;
-    next: ListNode | null;
-    constructor(val?: number, next?: ListNode | null) {
-        this.val = val === undefined ? 0 : val;        // Node value
-        this.next = next === undefined ? null : next;  // Reference to the next node
-    }
-}
+```python title=""
+class ListNode:
+    """Linked list node class"""
+    def __init__(self, val: int):
+        self.val: int = val               # Node value
+        self.next: ListNode | None = None # Reference to the next node
 ```
 
 </div>
@@ -67,41 +42,21 @@ class ListNode {
 Building a linked list involves two steps: first, initializing each node object; second, constructing the reference relationships between nodes. Once initialization is complete, we can traverse all nodes starting from the head node of the linked list through the reference `next`.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="linked_list.go"
-/* Initialize linked list 1 -> 3 -> 2 -> 5 -> 4 */
-// Initialize each node
-n0 := NewListNode(1)
-n1 := NewListNode(3)
-n2 := NewListNode(2)
-n3 := NewListNode(5)
-n4 := NewListNode(4)
-// Build references between nodes
-n0.Next = n1
-n1.Next = n2
-n2.Next = n3
-n3.Next = n4
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="linked_list.ts"
-/* Initialize linked list 1 -> 3 -> 2 -> 5 -> 4 */
-// Initialize each node
-const n0 = new ListNode(1);
-const n1 = new ListNode(3);
-const n2 = new ListNode(2);
-const n3 = new ListNode(5);
-const n4 = new ListNode(4);
-// Build references between nodes
-n0.next = n1;
-n1.next = n2;
-n2.next = n3;
-n3.next = n4;
+```python title="linked_list.py"
+# Initialize linked list 1 -> 3 -> 2 -> 5 -> 4
+# Initialize each node
+n0 = ListNode(1)
+n1 = ListNode(3)
+n2 = ListNode(2)
+n3 = ListNode(5)
+n4 = ListNode(4)
+# Build references between nodes
+n0.next = n1
+n1.next = n2
+n2.next = n3
+n3.next = n4
 ```
 
 </div>
@@ -117,15 +72,14 @@ In contrast, the time complexity of inserting an element in an array is $O(n)$, 
 ![Example of inserting a node into a linked list](/images/hello-algo/chapter_array_and_linkedlist--linkedlist_insert_node.png)
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Insert node P after node n0 in the linked list */
-function insert(n0: ListNode, P: ListNode): void {
-    const n1 = n0.next;
-    P.next = n1;
-    n0.next = P;
-}
+```py
+def insert(n0: ListNode, P: ListNode):
+    """Insert node P after node n0 in the linked list"""
+    n1 = n0.next
+    P.next = n1
+    n0.next = P
 ```
 
 </div>
@@ -139,19 +93,17 @@ Note that although node `P` still points to `n1` after the deletion operation is
 ![Removing a node from a linked list](/images/hello-algo/chapter_array_and_linkedlist--linkedlist_remove_node.png)
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Remove the first node after node n0 in the linked list */
-function remove(n0: ListNode): void {
-    if (!n0.next) {
-        return;
-    }
-    // n0 -> P -> n1
-    const P = n0.next;
-    const n1 = P.next;
-    n0.next = n1;
-}
+```py
+def remove(n0: ListNode):
+    """Remove the first node after node n0 in the linked list"""
+    if not n0.next:
+        return
+    # n0 -> P -> n1
+    P = n0.next
+    n1 = P.next
+    n0.next = n1
 ```
 
 </div>
@@ -161,37 +113,16 @@ function remove(n0: ListNode): void {
 **Accessing nodes in a linked list is less efficient**. As mentioned in the previous section, we can access any element in an array in $O(1)$ time. This is not the case with linked lists. The program needs to start from the head node and traverse backward one by one until the target node is found. That is, accessing the $i$-th node in a linked list requires $i - 1$ iterations, with a time complexity of $O(n)$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Access the node at index index in the linked list */
-func access(head *ListNode, index int) *ListNode {
-	for i := 0; i < index; i++ {
-		if head == nil {
-			return nil
-		}
-		head = head.Next
-	}
-	return head
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Access the node at index index in the linked list */
-function access(head: ListNode | null, index: number): ListNode | null {
-    for (let i = 0; i < index; i++) {
-        if (!head) {
-            return null;
-        }
-        head = head.next;
-    }
-    return head;
-}
+```py
+def access(head: ListNode, index: int) -> ListNode | None:
+    """Access the node at index `index` in the linked list"""
+    for _ in range(index):
+        if not head:
+            return None
+        head = head.next
+    return head
 ```
 
 </div>
@@ -201,21 +132,18 @@ function access(head: ListNode | null, index: number): ListNode | null {
 Traverse the linked list to find a node with value `target`, and output the index of that node in the linked list. This process is also a linear search. The code is shown below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Find the first node with value target in the linked list */
-function find(head: ListNode | null, target: number): number {
-    let index = 0;
-    while (head !== null) {
-        if (head.val === target) {
-            return index;
-        }
-        head = head.next;
-        index += 1;
-    }
-    return -1;
-}
+```py
+def find(head: ListNode, target: int) -> int:
+    """Find the first node with value target in the linked list"""
+    index = 0
+    while head:
+        if head.val == target:
+            return index
+        head = head.next
+        index += 1
+    return -1
 ```
 
 </div>
@@ -244,43 +172,15 @@ As shown in the figure below, there are three common types of linked lists:
 - **Doubly linked list**: Compared to a singly linked list, a doubly linked list records references in both directions. The node definition of a doubly linked list includes references to both the successor node (next node) and the predecessor node (previous node). Compared to a singly linked list, a doubly linked list is more flexible and can traverse the linked list in both directions, but it also requires more memory space.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* Doubly linked list node structure */
-type DoublyListNode struct {
-    Val  int             // Node value
-    Next *DoublyListNode // Pointer to the successor node
-    Prev *DoublyListNode // Pointer to the predecessor node
-}
-
-// NewDoublyListNode Initialization
-func NewDoublyListNode(val int) *DoublyListNode {
-    return &DoublyListNode{
-        Val:  val,
-        Next: nil,
-        Prev: nil,
-    }
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* Doubly linked list node class */
-class ListNode {
-    val: number;
-    next: ListNode | null;
-    prev: ListNode | null;
-    constructor(val?: number, next?: ListNode | null, prev?: ListNode | null) {
-        this.val = val  ===  undefined ? 0 : val;        // Node value
-        this.next = next  ===  undefined ? null : next;  // Reference to the successor node
-        this.prev = prev  ===  undefined ? null : prev;  // Reference to the predecessor node
-    }
-}
+```python title=""
+class ListNode:
+    """Doubly linked list node class"""
+    def __init__(self, val: int):
+        self.val: int = val                # Node value
+        self.next: ListNode | None = None  # Reference to the successor node
+        self.prev: ListNode | None = None  # Reference to the predecessor node
 ```
 
 </div>

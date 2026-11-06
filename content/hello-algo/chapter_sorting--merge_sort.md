@@ -30,45 +30,23 @@ lang: ar
 يُعرض تنفيذ ترتيب الدمج في الشيفرة أدناه. لاحظ أن المجال المراد دمجه في `nums` هو `[left, right]`، بينما المجال المقابل في `tmp` هو `[0, right - left]`.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* ترتيب الدمج */
-func mergeSort(nums []int, left, right int) {
-	// شرط الإنهاء
-	if left >= right {
-		return
-	}
-	// مرحلة التقسيم والدمج
-	mid := left + (right - left) / 2
-	mergeSort(nums, left, mid)
-	mergeSort(nums, mid+1, right)
-	// مرحلة الدمج
-	merge(nums, left, mid, right)
-}
+```py
+def merge_sort(nums: list[int], left: int, right: int):
+    """Merge sort"""
+    # Base case
+    if left >= right:
+        return  # Stop recursing when the subarray has at most one element
+    # Divide phase
+    mid = (left + right) // 2 # Calculate the midpoint
+    merge_sort(nums, left, mid)  # Recurse on the left subarray
+    merge_sort(nums, mid + 1, right)  # Recurse on the right subarray
+    # Merge phase
+    merge(nums, left, mid, right)
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* ترتيب الدمج */
-function mergeSort(nums: number[], left: number, right: number): void {
-    // شرط الإنهاء
-    if (left >= right) return; // أنهِ التعاود عندما يصبح طول المصفوفة الفرعية 1
-    // مرحلة التقسيم والدمج
-    let mid = Math.floor(left + (right - left) / 2); // احسب نقطة المنتصف
-    mergeSort(nums, left, mid); // عالج المصفوفة الفرعية اليسرى تعاودياً
-    mergeSort(nums, mid + 1, right); // عالج المصفوفة الفرعية اليمنى تعاودياً
-    // مرحلة الدمج
-    merge(nums, left, mid, right);
-}
-```
-
-</div>
-
 ## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n \log n)$؛ ترتيب الدمج غير تكيّفي (non-adaptive)**: تنتج مرحلة التقسيم شجرة تعاود بارتفاع $\log n$، ويبلغ إجمالي عدد العمليات المنفذة أثناء الدمج في كل مستوى $n$، لذا فإن التعقيد الزمني الكلي هو $O(n \log n)$.

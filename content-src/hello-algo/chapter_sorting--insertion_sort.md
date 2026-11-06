@@ -28,45 +28,20 @@ The overall flow of insertion sort is shown in the figure below.
 Example code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Insertion sort */
-func insertionSort(nums []int) {
-	// Outer loop: sorted interval is [0, i-1]
-	for i := 1; i < len(nums); i++ {
-		base := nums[i]
-		j := i - 1
-		// Inner loop: insert base into the correct position within the sorted interval [0, i-1]
-		for j >= 0 && nums[j] > base {
-			nums[j+1] = nums[j] // Move nums[j] to the right by one position
-			j--
-		}
-		nums[j+1] = base // Assign base to the correct position
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Insertion sort */
-function insertionSort(nums: number[]): void {
-    // Outer loop: sorted interval is [0, i-1]
-    for (let i = 1; i < nums.length; i++) {
-        const base = nums[i];
-        let j = i - 1;
-        // Inner loop: insert base into the correct position within the sorted interval [0, i-1]
-        while (j >= 0 && nums[j] > base) {
-            nums[j + 1] = nums[j]; // Move nums[j] to the right by one position
-            j--;
-        }
-        nums[j + 1] = base; // Assign base to the correct position
-    }
-}
+```py
+def insertion_sort(nums: list[int]):
+    """Insertion sort"""
+    # Outer loop: the sorted range is [0, i-1]
+    for i in range(1, len(nums)):
+        base = nums[i]
+        j = i - 1
+        # Inner loop: insert base at the correct position in the sorted range [0, i-1]
+        while j >= 0 and nums[j] > base:
+            nums[j + 1] = nums[j]  # Shift nums[j] one position to the right
+            j -= 1
+        nums[j + 1] = base  # Place base at the correct position
 ```
 
 </div>

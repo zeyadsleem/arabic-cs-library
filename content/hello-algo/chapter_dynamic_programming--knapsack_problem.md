@@ -68,6 +68,26 @@ $$
 
 وبمراقبة شجرة التعاود، يسهل ملاحظة مسائل فرعية متداخلة، مثل $dp[1, 10]$. وعندما تكون العناصر كثيرة وسعة الحقيبة كبيرة، ولا سيما عندما تكون العناصر ذات الوزن نفسه كثيرة، يزداد عدد المسائل الفرعية المتداخلة زيادة كبيرة.
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def knapsack_dfs(wgt: list[int], val: list[int], i: int, c: int) -> int:
+    """0-1 knapsack: brute-force search"""
+    # If all items have been considered or no capacity remains, return value 0
+    if i == 0 or c == 0:
+        return 0
+    # If the item exceeds the remaining capacity, it must be excluded
+    if wgt[i - 1] > c:
+        return knapsack_dfs(wgt, val, i - 1, c)
+    # Calculate the maximum values obtained by excluding and including item i
+    no = knapsack_dfs(wgt, val, i - 1, c)
+    yes = knapsack_dfs(wgt, val, i - 1, c - wgt[i - 1]) + val[i - 1]
+    # Return the larger value from the two choices
+    return max(no, yes)
+```
+
+</div>
 ![شجرة تعاود البحث بالقوة الغاشمة لمشكلة الحقيبة 0-1](/images/hello-algo/chapter_dynamic_programming--knapsack_dfs.png)
 
 ### الطريقة 2: الحفظ
@@ -78,6 +98,15 @@ $$
 
 يوضح الشكل أدناه فروع البحث التي شُذّبت في الحفظ.
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def knapsack_dfs_mem(
+    wgt: list[int], val: list[int], mem: list[list[int]], i: int, c: int
+```
+
+</div>
 ![شجرة تعاود الحفظ لمشكلة الحقيبة 0-1](/images/hello-algo/chapter_dynamic_programming--knapsack_dfs_mem.png)
 
 ### الطريقة 3: البرمجة الديناميكية
@@ -86,6 +115,28 @@ $$
 
 كما يوضح الشكل أدناه، يُحدَّد التعقيد الزمني والتعقيد المكاني معاً بحجم المصفوفة `dp`، وهو $O(n \times cap)$.
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
+    """0-1 knapsack: dynamic programming"""
+    n = len(wgt)
+    # Initialize the dp table
+    dp = [[0] * (cap + 1) for _ in range(n + 1)]
+    # State transitions
+    for i in range(1, n + 1):
+        for c in range(1, cap + 1):
+            if wgt[i - 1] > c:
+                # If item i exceeds the remaining capacity, do not choose it
+                dp[i][c] = dp[i - 1][c]
+            else:
+                # Take the larger value obtained by excluding and including item i
+                dp[i][c] = max(dp[i - 1][c], dp[i - 1][c - wgt[i - 1]] + val[i - 1])
+    return dp[n][cap]
+```
+
+</div>
 ### تحسين المساحة
 
 بما أن كل حالة مرتبطة فقط بالحالة في الصف الذي فوقها، يمكننا استخدام مصفوفتين متدحرجتين لتقليل التعقيد المكاني من $O(n \times cap)$ إلى $O(cap)$.
@@ -98,3 +149,26 @@ $$
 يوضح الشكل أدناه عملية الانتقال من الصف $i = 1$ إلى الصف $i = 2$ باستخدام مصفوفة واحدة. يرجى التفكير في الفرق بين الاجتياز الأمامي والاجتياز العكسي.
 
 في تنفيذ الشيفرة، نحتاج ببساطة إلى حذف البعد الأول $i$ من المصفوفة `dp` وتغيير الحلقة الداخلية إلى اجتياز عكسي:
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
+    """0-1 knapsack: space-optimized dynamic programming"""
+    n = len(wgt)
+    # Initialize the dp table
+    dp = [0] * (cap + 1)
+    # State transitions
+    for i in range(1, n + 1):
+        # Traverse in decreasing order
+        for c in range(cap, 0, -1):
+            if wgt[i - 1] > c:
+                # If item i exceeds the remaining capacity, do not choose it
+                dp[c] = dp[c]
+            else:
+                # Take the larger value obtained by excluding and including item i
+                dp[c] = max(dp[c], dp[c - wgt[i - 1]] + val[i - 1])
+    return dp[cap]
+```
+
+</div>

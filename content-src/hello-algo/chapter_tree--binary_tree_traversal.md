@@ -23,58 +23,24 @@ Level-order traversal is essentially <u>breadth-first traversal</u>, also known 
 Breadth-first traversal is typically implemented with the help of a "queue". The queue follows the "first in, first out" rule, while breadth-first traversal follows the "layer-by-layer progression" rule; the underlying ideas of the two are consistent. The implementation code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Level-order traversal */
-func levelOrder(root *TreeNode) []any {
-	// Initialize queue, add root node
-	queue := list.New()
-	queue.PushBack(root)
-	// Initialize a slice to save traversal sequence
-	nums := make([]any, 0)
-	for queue.Len() > 0 {
-		// Dequeue
-		node := queue.Remove(queue.Front()).(*TreeNode)
-		// Save node value
-		nums = append(nums, node.Val)
-		if node.Left != nil {
-			// Left child node enqueue
-			queue.PushBack(node.Left)
-		}
-		if node.Right != nil {
-			// Right child node enqueue
-			queue.PushBack(node.Right)
-		}
-	}
-	return nums
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Level-order traversal */
-function levelOrder(root: TreeNode | null): number[] {
-    // Initialize queue, add root node
-    const queue = [root];
-    // Initialize a list to save the traversal sequence
-    const list: number[] = [];
-    while (queue.length) {
-        let node = queue.shift() as TreeNode; // Dequeue
-        list.push(node.val); // Save node value
-        if (node.left) {
-            queue.push(node.left); // Left child node enqueue
-        }
-        if (node.right) {
-            queue.push(node.right); // Right child node enqueue
-        }
-    }
-    return list;
-}
+```py
+def level_order(root: TreeNode | None) -> list[int]:
+    """Level-order traversal"""
+    # Initialize a queue and enqueue the root
+    queue: deque[TreeNode] = deque()
+    queue.append(root)
+    # Initialize a list to store the traversal sequence
+    res = []
+    while queue:
+        node: TreeNode = queue.popleft()  # Dequeue from the queue
+        res.append(node.val)  # Store the node value
+        if node.left is not None:
+            queue.append(node.left)  # Enqueue the left child
+        if node.right is not None:
+            queue.append(node.right)  # Enqueue the right child
+    return res
 ```
 
 </div>
@@ -97,37 +63,17 @@ The figure below shows how depth-first traversal works on a binary tree. **Depth
 Depth-first search is usually implemented based on recursion:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Postorder traversal */
-func postOrder(node *TreeNode) {
-	if node == nil {
-		return
-	}
-	// Visit priority: left subtree -> right subtree -> root node
-	postOrder(node.Left)
-	postOrder(node.Right)
-	nums = append(nums, node.Val)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Postorder traversal */
-function postOrder(root: TreeNode | null): void {
-    if (root === null) {
-        return;
-    }
-    // Visit priority: left subtree -> right subtree -> root node
-    postOrder(root.left);
-    postOrder(root.right);
-    list.push(root.val);
-}
+```py
+def post_order(root: TreeNode | None):
+    """Postorder traversal"""
+    if root is None:
+        return
+    # Visit order: left subtree -> right subtree -> root
+    post_order(root=root.left)
+    post_order(root=root.right)
+    res.append(root.val)
 ```
 
 </div>

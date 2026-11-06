@@ -42,92 +42,45 @@ In practical applications, we can directly use the heap class (or priority queue
 Similar to "ascending order" and "descending order" in sorting algorithms, we can implement conversion between "min heap" and "max heap" by setting a `flag` or modifying the `Comparator`. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="heap.go"
-// In Go, we can construct a max heap of integers by implementing heap.Interface
-// Implementing heap.Interface also requires implementing sort.Interface
-type intHeap []any
+```python title="heap.py"
+# Initialize a min heap
+min_heap, flag = [], 1
+# Initialize a max heap
+max_heap, flag = [], -1
 
-// Push implements the heap.Interface method for pushing an element into the heap
-func (h *intHeap) Push(x any) {
-    // Push and Pop use pointer receiver as parameters
-    // because they not only adjust the slice contents but also modify the slice length
-    *h = append(*h, x.(int))
-}
+# Python's heapq module implements a min heap by default
+# Consider negating elements before pushing them to the heap, which inverts the size relationship and thus implements a max heap
+# In this example, flag = 1 corresponds to a min heap, flag = -1 corresponds to a max heap
 
-// Pop implements the heap.Interface method for popping the heap top element
-func (h *intHeap) Pop() any {
-    // The element to be removed is stored at the end
-    last := (*h)[len(*h)-1]
-    *h = (*h)[:len(*h)-1]
-    return last
-}
+# Push elements into the heap
+heapq.heappush(max_heap, flag * 1)
+heapq.heappush(max_heap, flag * 3)
+heapq.heappush(max_heap, flag * 2)
+heapq.heappush(max_heap, flag * 5)
+heapq.heappush(max_heap, flag * 4)
 
-// Len is a sort.Interface method
-func (h *intHeap) Len() int {
-    return len(*h)
-}
+# Get the heap top element
+peek: int = flag * max_heap[0] # 5
 
-// Less is a sort.Interface method
-func (h *intHeap) Less(i, j int) bool {
-    // To implement a min heap, change this to a less-than sign
-    return (*h)[i].(int) > (*h)[j].(int)
-}
+# Remove the heap top element
+# The removed elements will form a descending sequence
+val = flag * heapq.heappop(max_heap) # 5
+val = flag * heapq.heappop(max_heap) # 4
+val = flag * heapq.heappop(max_heap) # 3
+val = flag * heapq.heappop(max_heap) # 2
+val = flag * heapq.heappop(max_heap) # 1
 
-// Swap is a sort.Interface method
-func (h *intHeap) Swap(i, j int) {
-    (*h)[i], (*h)[j] = (*h)[j], (*h)[i]
-}
+# Get the heap size
+size: int = len(max_heap)
 
-// Top gets the heap top element
-func (h *intHeap) Top() any {
-    return (*h)[0]
-}
+# Check if the heap is empty
+is_empty: bool = not max_heap
 
-/* Driver Code */
-func TestHeap(t *testing.T) {
-    /* Initialize a heap */
-    // Initialize a max heap
-    maxHeap := &intHeap{}
-    heap.Init(maxHeap)
-    /* Push elements into the heap */
-    // Call heap.Interface methods to add elements
-    heap.Push(maxHeap, 1)
-    heap.Push(maxHeap, 3)
-    heap.Push(maxHeap, 2)
-    heap.Push(maxHeap, 4)
-    heap.Push(maxHeap, 5)
-
-    /* Get the heap top element */
-    top := maxHeap.Top()
-    fmt.Printf("Heap top element is %d\n", top)
-
-    /* Remove the heap top element */
-    // Call heap.Interface methods to remove elements
-    heap.Pop(maxHeap) // 5
-    heap.Pop(maxHeap) // 4
-    heap.Pop(maxHeap) // 3
-    heap.Pop(maxHeap) // 2
-    heap.Pop(maxHeap) // 1
-
-    /* Get the heap size */
-    size := len(*maxHeap)
-    fmt.Printf("Number of heap elements is %d\n", size)
-
-    /* Check if the heap is empty */
-    isEmpty := len(*maxHeap) == 0
-    fmt.Printf("Is the heap empty? %t\n", isEmpty)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="heap.ts"
-// TypeScript does not provide a built-in Heap class
+# Build a heap from an input list
+min_heap: list[int] = [1, 3, 2, 5, 4]
+heapq.heapify(min_heap)
 ```
 
 </div>
@@ -149,14 +102,12 @@ As shown in the figure below, given an index $i$, the index of its left child is
 We can encapsulate the index mapping formula into functions for convenient subsequent use:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Get index of parent node */
-func (h *maxHeap) parent(i int) int {
-	// Floor division
-	return (i - 1) / 2
-}
+```py
+    def parent(self, i: int) -> int:
+        """Get the parent index"""
+        return (i - 1) // 2  # Floor division
 ```
 
 </div>
@@ -166,13 +117,12 @@ func (h *maxHeap) parent(i int) int {
 The heap top element is the root node of the binary tree, which is also the first element of the list:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Access top element */
-func (h *maxHeap) peek() any {
-	return h.data[0]
-}
+```py
+    def peek(self) -> int:
+        """Access the top element of the heap"""
+        return self.max_heap[0]
 ```
 
 </div>
@@ -186,24 +136,21 @@ Starting from the inserted node, **perform heapify from bottom to top**. As show
 Given a total of $n$ nodes, the tree height is $O(\log n)$. Thus, the number of loop iterations in the heapify operation is at most $O(\log n)$, **making the time complexity of the element insertion operation $O(\log n)$**. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Starting from node i, heapify from bottom to top */
-func (h *maxHeap) siftUp(i int) {
-	for true {
-		// Get parent node of node i
-		p := h.parent(i)
-		// When "crossing root node" or "node needs no repair", end heapify
-		if p < 0 || h.data[i].(int) <= h.data[p].(int) {
-			break
-		}
-		// Swap two nodes
-		h.swap(i, p)
-		// Loop upward heapify
-		i = p
-	}
-}
+```py
+    def sift_up(self, i: int):
+        """Sift up starting from node i"""
+        while True:
+            # Get the parent of node i
+            p = self.parent(i)
+            # Stop sifting when the root has been passed or the node needs no repair
+            if p < 0 or self.max_heap[i] <= self.max_heap[p]:
+                break
+            # Swap the two nodes
+            self.swap(i, p)
+            # Continue sifting up
+            i = p
 ```
 
 </div>
@@ -221,30 +168,25 @@ As shown in the figure below, **the direction of "top-to-bottom heapify" is oppo
 Similar to the element insertion operation, the time complexity of the heap top element removal operation is also $O(\log n)$. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Starting from node i, heapify from top to bottom */
-func (h *maxHeap) siftDown(i int) {
-	for true {
-		// Find node with maximum value among nodes i, l, r, denoted as max
-		l, r, max := h.left(i), h.right(i), i
-		if l < h.size() && h.data[l].(int) > h.data[max].(int) {
-			max = l
-		}
-		if r < h.size() && h.data[r].(int) > h.data[max].(int) {
-			max = r
-		}
-		// Swap two nodes
-		if max == i {
-			break
-		}
-		// Swap two nodes
-		h.swap(i, max)
-		// Loop downwards heapification
-		i = max
-	}
-}
+```py
+    def sift_down(self, i: int):
+        """Sift down starting from node i"""
+        while True:
+            # Find the node with the largest value among i, l, and r, and store its index in ma
+            l, r, ma = self.left(i), self.right(i), i
+            if l < self.size() and self.max_heap[l] > self.max_heap[ma]:
+                ma = l
+            if r < self.size() and self.max_heap[r] > self.max_heap[ma]:
+                ma = r
+            # Stop if node i is largest or both child indices l and r are out of bounds
+            if ma == i:
+                break
+            # Swap the two nodes
+            self.swap(i, ma)
+            # Continue sifting down
+            i = ma
 ```
 
 </div>

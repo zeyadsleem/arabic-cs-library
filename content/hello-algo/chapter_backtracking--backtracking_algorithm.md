@@ -20,25 +20,21 @@ lang: ar
 بالنسبة إلى هذه المسألة، ننفّذ اجتيازاً مسبقاً للشجرة ونتحقق مما إذا كانت قيمة العقدة الحالية $7$. وإذا كانت كذلك، نضيف العقدة إلى قائمة النتائج `res`. ويظهر التنفيذ ذو الصلة في الشكل والشيفرة التاليين:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* الاجتياز المسبق: المثال 1 */
-function preOrder(root: TreeNode | null, res: TreeNode[]): void {
-    if (root === null) {
-        return;
-    }
-    if (root.val === 7) {
-        // سجّل الحل
-        res.push(root);
-    }
-    preOrder(root.left, res);
-    preOrder(root.right, res);
-}
+```py
+def pre_order(root: TreeNode):
+    """Preorder traversal: example 1"""
+    if root is None:
+        return
+    if root.val == 7:
+        # Record the solution
+        res.append(root)
+    pre_order(root.left)
+    pre_order(root.right)
 ```
 
 </div>
-
 ![البحث عن العقد في الاجتياز المسبق](/images/hello-algo/chapter_backtracking--preorder_find_nodes.png)
 
 ## المحاولة والتتبّع الرجعي
@@ -59,33 +55,25 @@ function preOrder(root: TreeNode | null, res: TreeNode[]): void {
 استناداً إلى شيفرة المثال 1، نحتاج إلى استخدام قائمة `path` لتسجيل مسار العقد المزارة. وعندما نصل إلى عقدة قيمتها $7$، ننسخ `path` ونضيفها إلى قائمة النتائج `res`. وبعد اكتمال الاجتياز، تحتوي `res` على جميع الحلول. والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* الاجتياز المسبق: المثال 2 */
-function preOrder(
-    root: TreeNode | null,
-    path: TreeNode[],
-    res: TreeNode[][]
-): void {
-    if (root === null) {
-        return;
-    }
-    // محاولة
-    path.push(root);
-    if (root.val === 7) {
-        // سجّل الحل
-        res.push([...path]);
-    }
-    preOrder(root.left, path, res);
-    preOrder(root.right, path, res);
-    // تتبّع رجعي
-    path.pop();
-}
+```py
+def pre_order(root: TreeNode):
+    """Preorder traversal: example 2"""
+    if root is None:
+        return
+    # Try
+    path.append(root)
+    if root.val == 7:
+        # Record the solution
+        res.append(list(path))
+    pre_order(root.left)
+    pre_order(root.right)
+    # Backtrack
+    path.pop()
 ```
 
 </div>
-
 في كل «محاولة»، نسجّل المسار بإضافة العقدة الحالية إلى `path`؛ وقبل «التتبّع الرجعي»، نحتاج إلى إزالة العقدة من `path`، **لاستعادة الحالة قبل هذه المحاولة**.
 
 وبمراقبة العملية الموضحة في الشكل التالي، **يمكننا فهم المحاولة والتتبّع الرجعي على أنهما «التقدم» و«الإلغاء»**، وهما عمليتان متعاكستان.
@@ -104,34 +92,26 @@ function preOrder(
 لتحقيق القيود أعلاه، **نحتاج إلى إضافة عمليات تشذيب**: أثناء عملية البحث، إذا صادفنا عقدة قيمتها $3$، نعود مبكراً ولا نواصل البحث. والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* الاجتياز المسبق: المثال 3 */
-function preOrder(
-    root: TreeNode | null,
-    path: TreeNode[],
-    res: TreeNode[][]
-): void {
-    // تشذيب
-    if (root === null || root.val === 3) {
-        return;
-    }
-    // محاولة
-    path.push(root);
-    if (root.val === 7) {
-        // سجّل الحل
-        res.push([...path]);
-    }
-    preOrder(root.left, path, res);
-    preOrder(root.right, path, res);
-    // تتبّع رجعي
-    path.pop();
-}
+```py
+def pre_order(root: TreeNode):
+    """Preorder traversal: example 3"""
+    # Prune
+    if root is None or root.val == 3:
+        return
+    # Try
+    path.append(root)
+    if root.val == 7:
+        # Record the solution
+        res.append(list(path))
+    pre_order(root.left)
+    pre_order(root.right)
+    # Backtrack
+    path.pop()
 ```
 
 </div>
-
 «التشذيب» مصطلح معبّر. وكما يوضح الشكل التالي، أثناء عملية البحث، **نقوم «بتشذيب» فروع البحث التي لا تحقق القيود**، متجنبين بذلك كثيراً من المحاولات بلا معنى، وبالتالي نحسّن كفاءة البحث.
 
 ![التشذيب وفق القيود](/images/hello-algo/chapter_backtracking--preorder_find_constrained_paths.png)
@@ -143,97 +123,40 @@ function preOrder(
 في شيفرة الإطار التالية، تمثّل `state` الحالة الحالية للمسألة، وتمثّل `choices` الخيارات المتاحة في الحالة الحالية:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* إطار خوارزمية التتبّع الرجعي */
-func backtrack(state *State, choices []Choice, res *[]State) {
-    // تحقق مما إذا كان حلاً
-    if isSolution(state) {
-        // سجّل الحل
-        recordSolution(state, res)
-        // أوقف البحث
+```python title=""
+def backtrack(state: State, choices: list[choice], res: list[state]):
+    """Backtracking algorithm framework"""
+    # Check if it is a solution
+    if is_solution(state):
+        # Record the solution
+        record_solution(state, res)
+        # Stop searching
         return
-    }
-    // اجتز جميع الخيارات
-    for _, choice := range choices {
-        // تشذيب: تحقق من صلاحية الاختيار
-        if isValid(state, choice) {
-            // محاولة: اتخذ قراراً وحدّث الحالة
-            makeChoice(state, choice)
+    # Traverse all choices
+    for choice in choices:
+        # Pruning: check if the choice is valid
+        if is_valid(state, choice):
+            # Attempt: make a choice and update the state
+            make_choice(state, choice)
             backtrack(state, choices, res)
-            // تتبّع رجعي: ألغِ الاختيار واستعد الحالة السابقة
-            undoChoice(state, choice)
-        }
-    }
-}
+            # Backtrack: undo the choice and restore to the previous state
+            undo_choice(state, choice)
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* إطار خوارزمية التتبّع الرجعي */
-function backtrack(state: State, choices: Choice[], res: State[]): void {
-    // تحقق مما إذا كان حلاً
-    if (isSolution(state)) {
-        // سجّل الحل
-        recordSolution(state, res);
-        // أوقف البحث
-        return;
-    }
-    // اجتز جميع الخيارات
-    for (let choice of choices) {
-        // تشذيب: تحقق من صلاحية الاختيار
-        if (isValid(state, choice)) {
-            // محاولة: اتخذ قراراً وحدّث الحالة
-            makeChoice(state, choice);
-            backtrack(state, choices, res);
-            // تتبّع رجعي: ألغِ الاختيار واستعد الحالة السابقة
-            undoChoice(state, choice);
-        }
-    }
-}
-```
-
-</div>
-
 بعد ذلك، نحل المثال 3 استناداً إلى شيفرة الإطار. فالحالة `state` هي مسار اجتياز العقد، والخيارات `choices` هي عقدتا الابن اليسرى واليمنى للعقدة الحالية، والنتيجة `res` هي قائمة مسارات:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* خوارزمية التتبّع الرجعي: المثال 3 */
-function backtrack(
-    state: TreeNode[],
-    choices: TreeNode[],
-    res: TreeNode[][]
-): void {
-    // تحقق مما إذا كان حلاً
-    if (isSolution(state)) {
-        // سجّل الحل
-        recordSolution(state, res);
-    }
-    // اجتز جميع الخيارات
-    for (const choice of choices) {
-        // تشذيب: تحقق من صلاحية الاختيار
-        if (isValid(state, choice)) {
-            // محاولة: اتخذ قراراً وحدّث الحالة
-            makeChoice(state, choice);
-            // تابع إلى الجولة التالية من الاختيار
-            backtrack(state, [choice.left, choice.right], res);
-            // تتبّع رجعي: ألغِ الاختيار واستعد الحالة السابقة
-            undoChoice(state);
-        }
-    }
-}
+```py
+def backtrack(
+    state: list[TreeNode], choices: list[TreeNode], res: list[list[TreeNode]]
 ```
 
 </div>
-
 وفق نص المسألة، ينبغي أن نواصل البحث بعد العثور على عقدة قيمتها $7$. **لذلك نحتاج إلى إزالة عبارة `return` بعد تسجيل الحل**. ويقارن الشكل التالي عملية البحث مع وجود عبارة `return` وبدونها.
 
 ![مقارنة عملية البحث مع عبارة return وبدونها](/images/hello-algo/chapter_backtracking--backtrack_remove_return_or_not.png)

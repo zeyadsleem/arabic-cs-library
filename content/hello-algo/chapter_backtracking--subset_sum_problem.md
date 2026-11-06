@@ -26,33 +26,16 @@ lang: ar
 وبخلاف مسألة التباديل، **يمكن اختيار العناصر في هذه المسألة أي عدد من المرات**، لذا لا حاجة إلى استخدام قائمة منطقية `selected` لتتبّع ما إذا كان عنصر قد اختير بالفعل. وبتغييرات صغيرة على شيفرة التباديل نحصل على حل أولي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حل مجموع المجموعات الجزئية I (مع توليفات مكررة) */
-func subsetSumINaive(nums []int, target int) [][]int {
-	state := make([]int, 0) // الحالة (المجموعة الجزئية)
-	total := 0              // مجموع المجموعة الجزئية
-	res := make([][]int, 0) // قائمة النتائج (قائمة المجموعات الجزئية)
-	backtrackSubsetSumINaive(total, target, &state, &nums, &res)
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* حل مجموع المجموعات الجزئية I (مع توليفات مكررة) */
-function subsetSumINaive(nums: number[], target: number): number[][] {
-    const state = []; // الحالة (المجموعة الجزئية)
-    const total = 0; // مجموع المجموعة الجزئية
-    const res = []; // قائمة النتائج (قائمة المجموعات الجزئية)
-    backtrack(state, target, total, nums, res);
-    return res;
-}
+```py
+def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
+    """Solve subset sum I (with duplicate subsets)"""
+    state = []  # State (subset)
+    total = 0  # Subset sum
+    res = []  # Result list (list of subsets)
+    backtrack(state, target, total, nums, res)
+    return res
 ```
 
 </div>
@@ -95,35 +78,17 @@ function subsetSumINaive(nums: number[], target: number): number[][] {
 - احذف متغير مجموع العناصر `total` و**استخدم الطرح من `target` لتتبّع مجموع العناصر**. وسجّل الحل عندما يساوي `target` القيمة $0$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حل مجموع المجموعات الجزئية I */
-func subsetSumI(nums []int, target int) [][]int {
-	state := make([]int, 0) // الحالة (المجموعة الجزئية)
-	sort.Ints(nums)         // رتّب nums
-	start := 0              // نقطة بداية الاجتياز
-	res := make([][]int, 0) // قائمة النتائج (قائمة المجموعات الجزئية)
-	backtrackSubsetSumI(start, target, &state, &nums, &res)
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* حل مجموع المجموعات الجزئية I */
-function subsetSumI(nums: number[], target: number): number[][] {
-    const state = []; // الحالة (المجموعة الجزئية)
-    nums.sort((a, b) => a - b); // رتّب nums
-    const start = 0; // نقطة بداية الاجتياز
-    const res = []; // قائمة النتائج (قائمة المجموعات الجزئية)
-    backtrack(state, target, nums, start, res);
-    return res;
-}
+```py
+def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
+    """Solve subset sum I"""
+    state = []  # State (subset)
+    nums.sort()  # Sort nums
+    start = 0  # Starting index for iteration
+    res = []  # Result list (list of subsets)
+    backtrack(state, target, nums, start, res)
+    return res
 ```
 
 </div>
@@ -156,4 +121,19 @@ function subsetSumI(nums: number[], target: number): number[][] {
 
 يوضح الشكل أدناه عملية التتبّع الرجعي للمصفوفة $[4, 4, 5]$ بالقيمة المستهدفة $9$، وتتضمن أربعة أنواع من عمليات التشذيب. اجمع بين الرسم وتعليقات الشيفرة لفهم عملية البحث بأكملها وكيفية عمل كل عملية تشذيب.
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def subset_sum_ii(nums: list[int], target: int) -> list[list[int]]:
+    """Solve subset sum II"""
+    state = []  # State (subset)
+    nums.sort()  # Sort nums
+    start = 0  # Starting index for iteration
+    res = []  # Result list (list of subsets)
+    backtrack(state, target, nums, start, res)
+    return res
+```
+
+</div>
 ![عملية التتبّع الرجعي لمجموع المجموعات الجزئية II](/images/hello-algo/chapter_backtracking--subset_sum_ii.png)

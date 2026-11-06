@@ -28,56 +28,24 @@ The greedy strategy for this problem is shown in the figure below. Given a targe
 The implementation code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Coin change: Greedy algorithm */
-func coinChangeGreedy(coins []int, amt int) int {
-	// Assume coins list is sorted
-	i := len(coins) - 1
-	count := 0
-	// Loop to make greedy choices until no remaining amount
-	for amt > 0 {
-		// Find the coin that is less than and closest to the remaining amount
-		for i > 0 && coins[i] > amt {
-			i--
-		}
-		// Choose coins[i]
-		amt -= coins[i]
-		count++
-	}
-	// If no feasible solution is found, return -1
-	if amt != 0 {
-		return -1
-	}
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Coin change: Greedy algorithm */
-function coinChangeGreedy(coins: number[], amt: number): number {
-    // Assume coins array is sorted
-    let i = coins.length - 1;
-    let count = 0;
-    // Loop to make greedy choices until no remaining amount
-    while (amt > 0) {
-        // Find the coin that is less than and closest to the remaining amount
-        while (i > 0 && coins[i] > amt) {
-            i--;
-        }
-        // Choose coins[i]
-        amt -= coins[i];
-        count++;
-    }
-    // If no feasible solution is found, return -1
-    return amt === 0 ? count : -1;
-}
+```py
+def coin_change_greedy(coins: list[int], amt: int) -> int:
+    """Coin change: greedy algorithm"""
+    # Assume the coins list is sorted
+    i = len(coins) - 1
+    count = 0
+    # Repeatedly make greedy choices until no amount remains
+    while amt > 0:
+        # Find the largest coin no greater than the remaining amount
+        while i > 0 and coins[i] > amt:
+            i -= 1
+        # Choose coins[i]
+        amt -= coins[i]
+        count += 1
+    # Return -1 if no feasible solution was found
+    return count if amt == 0 else -1
 ```
 
 </div>

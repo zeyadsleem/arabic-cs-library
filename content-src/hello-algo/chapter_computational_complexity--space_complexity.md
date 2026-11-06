@@ -31,64 +31,26 @@ When analyzing the space complexity of a program, **we usually consider three pa
 The related code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* Structure */
-type node struct {
-    val  int
-    next *node
-}
+```python title=""
+class Node:
+    """Class"""
+    def __init__(self, x: int):
+        self.val: int = x              # Node value
+        self.next: Node | None = None  # Reference to the next node
 
-/* Create node structure */
-func newNode(val int) *node {
-    return &node{val: val}
-}
-
-/* Function */
-func function() int {
-    // Perform some operations...
+def function() -> int:
+    """Function"""
+    # Perform some operations...
     return 0
-}
 
-func algorithm(n int) int { // Input data
-    const a = 0             // Temporary data (constant)
-    b := 0                  // Temporary data (variable)
-    newNode(0)              // Temporary data (object)
-    c := function()         // Stack frame space (function call)
-    return a + b + c        // Output data
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* Class */
-class Node {
-    val: number;
-    next: Node | null;
-    constructor(val?: number) {
-        this.val = val === undefined ? 0 : val; // Node value
-        this.next = null;                       // Reference to the next node
-    }
-}
-
-/* Function */
-function constFunc(): number {
-    // Perform some operations
-    return 0;
-}
-
-function algorithm(n: number): number { // Input data
-    const a = 0;                        // Temporary data (constant)
-    let b = 0;                          // Temporary data (variable)
-    const node = new Node(0);           // Temporary data (object)
-    const c = constFunc();              // Stack frame space (function call)
-    return a + b + c;                   // Output data
-}
+def algorithm(n) -> int:  # Input data
+    A = 0                 # Temporary data (constant, usually represented by uppercase letters)
+    b = 0                 # Temporary data (variable)
+    node = Node(0)        # Temporary data (object)
+    c = function()        # Stack frame space (function call)
+    return A + b + c      # Output data
 ```
 
 </div>
@@ -105,33 +67,14 @@ Observe the following code. Here, "worst case" in worst-case space complexity ha
 2. **Based on the peak memory during algorithm execution**: For example, before executing the last line, the program occupies $O(1)$ space; when initializing the array `nums`, the program occupies $O(n)$ space, so the worst-case space complexity is $O(n)$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-func algorithm(n int) {
-    a := 0                      // O(1)
-    b := make([]int, 10000)     // O(1)
-    var nums []int
-    if n > 10 {
-        nums := make([]int, n)  // O(n)
-    }
-    fmt.Println(a, b, nums)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-function algorithm(n: number): void {
-    const a = 0;                   // O(1)
-    const b = new Array(10000);    // O(1)
-    if (n > 10) {
-        const nums = new Array(n); // O(n)
-    }
-}
+```python title=""
+def algorithm(n: int):
+    a = 0               # O(1)
+    b = [0] * 10000     # O(1)
+    if n > 10:
+        nums = [0] * n  # O(n)
 ```
 
 </div>
@@ -139,51 +82,23 @@ function algorithm(n: number): void {
 **In recursive functions, it is necessary to count the stack frame space**. Observe the following code:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-func function() int {
-    // Perform some operations
+```python title=""
+def function() -> int:
+    # Perform some operations
     return 0
-}
 
-/* Loop has space complexity of O(1) */
-func loop(n int) {
-    for i := 0; i < n; i++ {
+def loop(n: int):
+    """Loop has space complexity of O(1)"""
+    for _ in range(n):
         function()
-    }
-}
 
-/* Recursion has space complexity of O(n) */
-func recur(n int) {
-    if n == 1 {
+def recur(n: int):
+    """Recursion has space complexity of O(n)"""
+    if n == 1:
         return
-    }
-    recur(n - 1)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-function constFunc(): number {
-    // Perform some operations
-    return 0;
-}
-/* Loop has space complexity of O(1) */
-function loop(n: number): void {
-    for (let i = 0; i < n; i++) {
-        constFunc();
-    }
-}
-/* Recursion has space complexity of O(n) */
-function recur(n: number): void {
-    if (n === 1) return;
-    return recur(n - 1);
-}
+    return recur(n - 1)
 ```
 
 </div>
@@ -213,25 +128,21 @@ Constant order is common for constants, variables, and objects whose number is i
 It should be noted that memory occupied by initializing variables or calling functions in a loop is released when entering the next iteration, so it does not accumulate space, and the space complexity remains $O(1)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Constant order */
-function constant(n: number): void {
-    // Constants, variables, objects occupy O(1) space
-    const a = 0;
-    const b = 0;
-    const nums = new Array(10000);
-    const node = new ListNode(0);
-    // Variables in the loop occupy O(1) space
-    for (let i = 0; i < n; i++) {
-        const c = 0;
-    }
-    // Functions in the loop occupy O(1) space
-    for (let i = 0; i < n; i++) {
-        constFunc();
-    }
-}
+```py
+def constant(n: int):
+    """Constant complexity"""
+    # Constants, variables, and objects occupy O(1) space
+    a = 0
+    nums = [0] * 10000
+    node = ListNode(0)
+    # Variables in the loop occupy O(1) space
+    for _ in range(n):
+        c = 0
+    # Function calls in the loop occupy O(1) space
+    for _ in range(n):
+        function()
 ```
 
 </div>
@@ -241,24 +152,17 @@ function constant(n: number): void {
 Linear order is common in arrays, linked lists, stacks, queues, etc., where the number of elements is proportional to $n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Linear order */
-function linear(n: number): void {
-    // Array of length n uses O(n) space
-    const nums = new Array(n);
-    // A list of length n occupies O(n) space
-    const nodes: ListNode[] = [];
-    for (let i = 0; i < n; i++) {
-        nodes.push(new ListNode(i));
-    }
-    // A hash table of length n occupies O(n) space
-    const map = new Map();
-    for (let i = 0; i < n; i++) {
-        map.set(i, i.toString());
-    }
-}
+```py
+def linear(n: int):
+    """Linear complexity"""
+    # A list of length n occupies O(n) space
+    nums = [0] * n
+    # A hash table with n entries occupies O(n) space
+    hmap = dict[int, str]()
+    for i in range(n):
+        hmap[i] = str(i)
 ```
 
 </div>
@@ -266,15 +170,15 @@ function linear(n: number): void {
 As shown in the following figure, the recursion depth of this function is $n$, meaning that there are $n$ unreturned `linear_recur()` functions existing simultaneously, using $O(n)$ stack frame space:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Linear order (recursive implementation) */
-function linearRecur(n: number): void {
-    console.log(`Recursion n = ${n}`);
-    if (n === 1) return;
-    linearRecur(n - 1);
-}
+```py
+def linear_recur(n: int):
+    """Linear complexity (recursive implementation)"""
+    print("Recursion: n =", n)
+    if n == 1:
+        return
+    linear_recur(n - 1)
 ```
 
 </div>
@@ -286,25 +190,13 @@ function linearRecur(n: number): void {
 Quadratic order is common in matrices and graphs, where the number of elements is quadratically related to $n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Exponential order */
-function quadratic(n: number): void {
-    // Matrix uses O(n^2) space
-    const numMatrix = Array(n)
-        .fill(null)
-        .map(() => Array(n).fill(null));
-    // 2D list uses O(n^2) space
-    const numList = [];
-    for (let i = 0; i < n; i++) {
-        const tmp = [];
-        for (let j = 0; j < n; j++) {
-            tmp.push(0);
-        }
-        numList.push(tmp);
-    }
-}
+```py
+def quadratic(n: int):
+    """Quadratic complexity"""
+    # The two-dimensional list occupies O(n^2) space
+    num_matrix = [[0] * n for _ in range(n)]
 ```
 
 </div>
@@ -312,16 +204,16 @@ function quadratic(n: number): void {
 As shown in the following figure, the recursion depth of this function is $n$, and an array is initialized in each recursive function with lengths of $n$, $n-1$, $\dots$, $2$, $1$, with an average length of $n / 2$, thus occupying $O(n^2)$ space overall:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Quadratic order (recursive implementation) */
-function quadraticRecur(n: number): number {
-    if (n <= 0) return 0;
-    const nums = new Array(n);
-    console.log(`In recursion n = ${n}, nums length = ${nums.length}`);
-    return quadraticRecur(n - 1);
-}
+```py
+def quadratic_recur(n: int) -> int:
+    """Quadratic complexity (recursive implementation)"""
+    if n <= 0:
+        return 0
+    # The lengths of array nums are n, n-1, ..., 2, 1
+    nums = [0] * n
+    return quadratic_recur(n - 1)
 ```
 
 </div>
@@ -333,35 +225,17 @@ function quadraticRecur(n: number): number {
 Exponential order is common in binary trees. Observe the following figure: a "full binary tree" with $n$ levels has $2^n - 1$ nodes, occupying $O(2^n)$ space:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Driver Code */
-func buildTree(n int) *TreeNode {
-	if n == 0 {
-		return nil
-	}
-	root := NewTreeNode(0)
-	root.Left = buildTree(n - 1)
-	root.Right = buildTree(n - 1)
-	return root
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Driver Code */
-function buildTree(n: number): TreeNode | null {
-    if (n === 0) return null;
-    const root = new TreeNode(0);
-    root.left = buildTree(n - 1);
-    root.right = buildTree(n - 1);
-    return root;
-}
+```py
+def build_tree(n: int) -> TreeNode | None:
+    """Exponential complexity (building a perfect binary tree)"""
+    if n == 0:
+        return None
+    root = TreeNode(0)
+    root.left = build_tree(n - 1)
+    root.right = build_tree(n - 1)
+    return root
 ```
 
 </div>

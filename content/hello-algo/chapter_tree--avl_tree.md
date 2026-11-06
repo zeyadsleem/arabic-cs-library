@@ -27,83 +27,50 @@ lang: ar
 بما أن العمليات المتعلقة بأشجار AVL تتطلب الحصول على ارتفاعات العقد، نحتاج إلى إضافة متغير `height` إلى صنف العقدة:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* عقدة شجرة AVL */
-type TreeNode struct {
-    Val    int       // قيمة العقدة
-    Height int       // ارتفاع العقدة
-    Left   *TreeNode // مرجع الابن الأيسر
-    Right  *TreeNode // مرجع الابن الأيمن
-}
+```python title=""
+class TreeNode:
+    """AVL tree node"""
+    def __init__(self, val: int):
+        self.val: int = val                 # Node value
+        self.height: int = 0                # Node height
+        self.left: TreeNode | None = None   # Left child reference
+        self.right: TreeNode | None = None  # Right child reference
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* عقدة شجرة AVL */
-class TreeNode {
-    val: number;            // قيمة العقدة
-    height: number;         // ارتفاع العقدة
-    left: TreeNode | null;  // مؤشر الابن الأيسر
-    right: TreeNode | null; // مؤشر الابن الأيمن
-    constructor(val?: number, height?: number, left?: TreeNode | null, right?: TreeNode | null) {
-        this.val = val === undefined ? 0 : val;
-        this.height = height === undefined ? 0 : height;
-        this.left = left === undefined ? null : left;
-        this.right = right === undefined ? null : right;
-    }
-}
-```
-
-</div>
-
 يشير "ارتفاع العقدة" إلى المسافة من تلك العقدة إلى أبعد عقدة ورقة عنها، أي عدد الأضلاع على المسار. ومن المهم ملاحظة أن ارتفاع عقدة الورقة هو $0$، وارتفاع العقدة الفارغة هو $-1$. سننشئ دالتين مساعدتين للحصول على ارتفاع العقدة وتحديثه:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حدّث ارتفاع العقدة */
-func (t *aVLTree) updateHeight(node *TreeNode) {
-	lh := t.height(node.Left)
-	rh := t.height(node.Right)
-	// ارتفاع العقدة يساوي ارتفاع أطول شجرة فرعية + 1
-	if lh > rh {
-		node.Height = lh + 1
-	} else {
-		node.Height = rh + 1
-	}
-}
+```py
+    def update_height(self, node: TreeNode | None):
+        """Update the node height"""
+        # The node height equals the height of its taller subtree + 1
+        node.height = max([self.height(node.left), self.height(node.right)]) + 1
 ```
 
 </div>
-
 ### معامل توازن العقدة
 
 يُعرَّف <u>معامل التوازن</u> للعقدة بأنه ارتفاع الشجرة الفرعية اليسرى للعقدة مطروحاً منه ارتفاع شجرتها الفرعية اليمنى، ويُعرَّف معامل توازن العقدة الفارغة بأنه $0$. كما نغلّف دالة الحصول على معامل توازن العقدة لتسهيل استخدامها لاحقاً:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* احصل على معامل التوازن */
-func (t *aVLTree) balanceFactor(node *TreeNode) int {
-	// معامل توازن العقدة الفارغة هو 0
-	if node == nil {
-		return 0
-	}
-	// معامل توازن العقدة = ارتفاع الشجرة الفرعية اليسرى - ارتفاع الشجرة الفرعية اليمنى
-	return t.height(node.Left) - t.height(node.Right)
-}
+```py
+    def balance_factor(self, node: TreeNode | None) -> int:
+        """Get the balance factor"""
+        # An empty subtree has balance factor 0
+        if node is None:
+            return 0
+        # Node balance factor = left subtree height - right subtree height
+        return self.height(node.left) - self.height(node.right)
 ```
 
 </div>
-
 <div class="note">
 
 ليكن معامل التوازن $f$، فيستوفي معامل توازن أي عقدة في شجرة AVL الشرط $-1 \le f \le 1$.
@@ -127,26 +94,24 @@ func (t *aVLTree) balanceFactor(node *TreeNode) int {
 "الدوران الأيمن" تعبير مجازي؛ ومن الناحية العملية يُنفَّذ بتعديل مؤشرات العقد، كما في الشيفرة التالية:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* عملية الدوران الأيمن */
-func (t *aVLTree) rightRotate(node *TreeNode) *TreeNode {
-	child := node.Left
-	grandChild := child.Right
-	// باستخدام child كمحور، أدر node إلى اليمين
-	child.Right = node
-	node.Left = grandChild
-	// حدّث ارتفاع العقدة
-	t.updateHeight(node)
-	t.updateHeight(child)
-	// أعد عقدة جذر الشجرة الفرعية بعد الدوران
-	return child
-}
+```py
+    def right_rotate(self, node: TreeNode | None) -> TreeNode | None:
+        """Right rotation"""
+        child = node.left
+        grand_child = child.right
+        # Rotate node to the right around child
+        child.right = node
+        node.left = grand_child
+        # Update the node height
+        self.update_height(node)
+        self.update_height(child)
+        # Return the root of the rotated subtree
+        return child
 ```
 
 </div>
-
 ### الدوران الأيسر
 
 وبالمقابل، إذا نظرنا إلى "المرآة" المقابلة للشجرة الثنائية غير المتوازنة السابقة، فيلزم تنفيذ عملية "الدوران الأيسر" الموضحة في الشكل أدناه.
@@ -160,26 +125,24 @@ func (t *aVLTree) rightRotate(node *TreeNode) *TreeNode {
 يمكن ملاحظة أن **عمليتي الدوران الأيمن والدوران الأيسر متماثلتان مرآتياً في المنطق، وأن حالتي عدم التوازن اللتين تعالجانهما متماثلتان أيضاً**. واستناداً إلى هذا التماثل، يكفي أن نستبدل جميع `left` في شيفرة تنفيذ الدوران الأيمن بـ`right`، وجميع `right` بـ`left`، لنحصل على شيفرة تنفيذ الدوران الأيسر:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* عملية الدوران الأيسر */
-func (t *aVLTree) leftRotate(node *TreeNode) *TreeNode {
-	child := node.Right
-	grandChild := child.Left
-	// باستخدام child كمحور، أدر node إلى اليسار
-	child.Left = node
-	node.Right = grandChild
-	// حدّث ارتفاع العقدة
-	t.updateHeight(node)
-	t.updateHeight(child)
-	// أعد عقدة جذر الشجرة الفرعية بعد الدوران
-	return child
-}
+```py
+    def left_rotate(self, node: TreeNode | None) -> TreeNode | None:
+        """Left rotation"""
+        child = node.right
+        grand_child = child.left
+        # Rotate node to the left around child
+        child.left = node
+        node.right = grand_child
+        # Update the node height
+        self.update_height(node)
+        self.update_height(child)
+        # Return the root of the rotated subtree
+        return child
 ```
 
 </div>
-
 ### الدوران الأيسر ثم الدوران الأيمن
 
 بالنسبة إلى العقدة غير المتوازنة 3 في الشكل أدناه، لا يمكن باستخدام الدوران الأيسر أو الدوران الأيمن وحده إعادة الشجرة الفرعية إلى التوازن. وفي هذه الحالة، يجب تنفيذ "دوران أيسر" على `child` أولاً، ثم "دوران أيمن" على `node`.
@@ -212,43 +175,36 @@ func (t *aVLTree) leftRotate(node *TreeNode) *TreeNode {
 لتسهيل الاستخدام، نغلّف عمليات الدوران في دالة واحدة. **وبهذه الدالة يمكننا تنفيذ الدورانات لمختلف حالات عدم التوازن، وإعادة التوازن إلى العقد غير المتوازنة**. والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* نفّذ عملية الدوران لاستعادة توازن هذه الشجرة الفرعية */
-func (t *aVLTree) rotate(node *TreeNode) *TreeNode {
-	// احصل على معامل توازن العقدة
-	// توصي Go بأسماء متغيرات قصيرة، وهنا يشير bf إلى t.balanceFactor
-	bf := t.balanceFactor(node)
-	// شجرة مائلة لليسار
-	if bf > 1 {
-		if t.balanceFactor(node.Left) >= 0 {
-			// دوران أيمن
-			return t.rightRotate(node)
-		} else {
-			// دوران أيسر ثم دوران أيمن
-			node.Left = t.leftRotate(node.Left)
-			return t.rightRotate(node)
-		}
-	}
-	// شجرة مائلة لليمين
-	if bf < -1 {
-		if t.balanceFactor(node.Right) <= 0 {
-			// دوران أيسر
-			return t.leftRotate(node)
-		} else {
-			// دوران أيمن ثم دوران أيسر
-			node.Right = t.rightRotate(node.Right)
-			return t.leftRotate(node)
-		}
-	}
-	// شجرة متوازنة، لا حاجة إلى دوران، أعد مباشرة
-	return node
-}
+```py
+    def rotate(self, node: TreeNode | None) -> TreeNode | None:
+        """Perform rotations to restore balance in this subtree"""
+        # Get the balance factor of node
+        balance_factor = self.balance_factor(node)
+        # Left-heavy tree
+        if balance_factor > 1:
+            if self.balance_factor(node.left) >= 0:
+                # Rotate right
+                return self.right_rotate(node)
+            else:
+                # Rotate left, then right
+                node.left = self.left_rotate(node.left)
+                return self.right_rotate(node)
+        # Right-heavy tree
+        elif balance_factor < -1:
+            if self.balance_factor(node.right) <= 0:
+                # Rotate left
+                return self.left_rotate(node)
+            else:
+                # Rotate right, then left
+                node.right = self.right_rotate(node.right)
+                return self.left_rotate(node)
+        # The tree is balanced; return without rotating
+        return node
 ```
 
 </div>
-
 ## العمليات الشائعة في أشجار AVL
 
 ### إدراج عقدة
@@ -256,86 +212,68 @@ func (t *aVLTree) rotate(node *TreeNode) *TreeNode {
 تتشابه عملية إدراج العقد في أشجار AVL من حيث المبدأ مع نظيرتها في أشجار البحث الثنائية. والفرق الوحيد هو أنه بعد إدراج عقدة في شجرة AVL، قد تظهر سلسلة من العقد غير المتوازنة على المسار من تلك العقدة إلى الجذر. لذلك **نحتاج إلى البدء من هذه العقدة وتنفيذ عمليات الدوران من الأسفل إلى الأعلى، لإعادة التوازن إلى جميع العقد غير المتوازنة**. والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* أدرج عقدة تعاودياً (دالة مساعدة) */
-func (t *aVLTree) insertHelper(node *TreeNode, val int) *TreeNode {
-	if node == nil {
-		return NewTreeNode(val)
-	}
-	/* 1. ابحث عن موضع الإدراج وأدرج العقدة */
-	if val < node.Val.(int) {
-		node.Left = t.insertHelper(node.Left, val)
-	} else if val > node.Val.(int) {
-		node.Right = t.insertHelper(node.Right, val)
-	} else {
-		// عقدة مكررة لم تُدرَج، أعد مباشرة
-		return node
-	}
-	// حدّث ارتفاع العقدة
-	t.updateHeight(node)
-	/* 2. نفّذ عملية الدوران لاستعادة توازن هذه الشجرة الفرعية */
-	node = t.rotate(node)
-	// أعد عقدة جذر الشجرة الفرعية
-	return node
-}
+```py
+    def insert_helper(self, node: TreeNode | None, val: int) -> TreeNode:
+        """Insert a node recursively (helper method)"""
+        if node is None:
+            return TreeNode(val)
+        # 1. Find the insertion position and insert the node
+        if val < node.val:
+            node.left = self.insert_helper(node.left, val)
+        elif val > node.val:
+            node.right = self.insert_helper(node.right, val)
+        else:
+            # Return without inserting a duplicate node
+            return node
+        # Update the node height
+        self.update_height(node)
+        # 2. Perform rotations to restore balance in this subtree
+        return self.rotate(node)
 ```
 
 </div>
-
 ### حذف العقدة
 
 وبالمثل، واستناداً إلى طريقة حذف العقد في شجرة البحث الثنائية، يجب تنفيذ عمليات الدوران من الأسفل إلى الأعلى لإعادة التوازن إلى جميع العقد غير المتوازنة. والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* احذف عقدة تعاودياً (دالة مساعدة) */
-func (t *aVLTree) removeHelper(node *TreeNode, val int) *TreeNode {
-	if node == nil {
-		return nil
-	}
-	/* 1. ابحث عن العقدة واحذفها */
-	if val < node.Val.(int) {
-		node.Left = t.removeHelper(node.Left, val)
-	} else if val > node.Val.(int) {
-		node.Right = t.removeHelper(node.Right, val)
-	} else {
-		if node.Left == nil || node.Right == nil {
-			child := node.Left
-			if node.Right != nil {
-				child = node.Right
-			}
-			if child == nil {
-				// عدد العقد الابنة = 0، احذف العقدة مباشرة وأعد
-				return nil
-			} else {
-				// عدد العقد الابنة = 1، احذف العقدة مباشرة
-				node = child
-			}
-		} else {
-			// عدد العقد الابنة = 2، احذف العقدة التالية في الاجتياز الوسطي واستبدل العقدة الحالية بها
-			temp := node.Right
-			for temp.Left != nil {
-				temp = temp.Left
-			}
-			node.Right = t.removeHelper(node.Right, temp.Val.(int))
-			node.Val = temp.Val
-		}
-	}
-	// حدّث ارتفاع العقدة
-	t.updateHeight(node)
-	/* 2. نفّذ عملية الدوران لاستعادة توازن هذه الشجرة الفرعية */
-	node = t.rotate(node)
-	// أعد عقدة جذر الشجرة الفرعية
-	return node
-}
+```py
+    def remove_helper(self, node: TreeNode | None, val: int) -> TreeNode | None:
+        """Remove a node recursively (helper method)"""
+        if node is None:
+            return None
+        # 1. Find and remove the node
+        if val < node.val:
+            node.left = self.remove_helper(node.left, val)
+        elif val > node.val:
+            node.right = self.remove_helper(node.right, val)
+        else:
+            if node.left is None or node.right is None:
+                child = node.left or node.right
+                # Number of children = 0: remove node and return
+                if child is None:
+                    return None
+                # Number of children = 1: remove node directly
+                else:
+                    node = child
+            else:
+                # Number of children = 2: remove the inorder successor and use its value to replace the current node value
+                temp = node.right
+                while temp.left is not None:
+                    temp = temp.left
+                node.right = self.remove_helper(node.right, temp.val)
+                node.val = temp.val
+        # Update the node height
+        self.update_height(node)
+        # 2. Perform rotations to restore balance in this subtree
+        return self.rotate(node)
 ```
 
 </div>
-
 ### البحث عن عقدة
 
 تتوافق عملية البحث عن عقدة في أشجار AVL مع نظيرتها في أشجار البحث الثنائية، ولن نتوسع فيها هنا.

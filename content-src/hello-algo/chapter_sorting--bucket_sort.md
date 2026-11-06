@@ -23,74 +23,30 @@ Consider an array of length $n$, whose elements are floating-point numbers in th
 The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Bucket sort */
-func bucketSort(nums []float64) {
-	// Initialize k = n/2 buckets, expected to allocate 2 elements per bucket
-	k := len(nums) / 2
-	buckets := make([][]float64, k)
-	for i := 0; i < k; i++ {
-		buckets[i] = make([]float64, 0)
-	}
-	// 1. Distribute array elements into various buckets
-	for _, num := range nums {
-		// Input data range is [0, 1), use num * k to map to index range [0, k-1]
-		i := int(num * float64(k))
-		// Add num to bucket i
-		buckets[i] = append(buckets[i], num)
-	}
-	// 2. Sort each bucket
-	for i := 0; i < k; i++ {
-		// Use built-in slice sorting function, can also be replaced with other sorting algorithms
-		sort.Float64s(buckets[i])
-	}
-	// 3. Traverse buckets to merge results
-	i := 0
-	for _, bucket := range buckets {
-		for _, num := range bucket {
-			nums[i] = num
-			i++
-		}
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Bucket sort */
-function bucketSort(nums: number[]): void {
-    // Initialize k = n/2 buckets, expected to allocate 2 elements per bucket
-    const k = nums.length / 2;
-    const buckets: number[][] = [];
-    for (let i = 0; i < k; i++) {
-        buckets.push([]);
-    }
-    // 1. Distribute array elements into various buckets
-    for (const num of nums) {
-        // Input data range is [0, 1), use num * k to map to index range [0, k-1]
-        const i = Math.floor(num * k);
-        // Add num to bucket i
-        buckets[i].push(num);
-    }
-    // 2. Sort each bucket
-    for (const bucket of buckets) {
-        // Use built-in sorting function, can also replace with other sorting algorithms
-        bucket.sort((a, b) => a - b);
-    }
-    // 3. Traverse buckets to merge results
-    let i = 0;
-    for (const bucket of buckets) {
-        for (const num of bucket) {
-            nums[i++] = num;
-        }
-    }
-}
+```py
+def bucket_sort(nums: list[float]):
+    """Bucket sort"""
+    # Initialize k = n/2 buckets, expecting 2 elements per bucket
+    k = len(nums) // 2
+    buckets = [[] for _ in range(k)]
+    # 1. Distribute the array elements among the buckets
+    for num in nums:
+        # The input range is [0, 1); use num * k to map each value to an index in [0, k-1]
+        i = int(num * k)
+        # Add num to bucket i
+        buckets[i].append(num)
+    # 2. Sort each bucket
+    for bucket in buckets:
+        # Use the built-in sorting function, or replace it with another sorting algorithm
+        bucket.sort()
+    # 3. Traverse the buckets to combine the results
+    i = 0
+    for bucket in buckets:
+        for num in bucket:
+            nums[i] = num
+            i += 1
 ```
 
 </div>

@@ -26,33 +26,16 @@ Similar to the permutation problem, we can view the process of generating subset
 Unlike the permutation problem, **elements in this problem can be selected any number of times**, so we do not need to use a `selected` boolean list to track whether an element has already been selected. With a few small changes to the permutation code, we obtain an initial solution:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Solve subset sum I (including duplicate subsets) */
-func subsetSumINaive(nums []int, target int) [][]int {
-	state := make([]int, 0) // State (subset)
-	total := 0              // Subset sum
-	res := make([][]int, 0) // Result list (subset list)
-	backtrackSubsetSumINaive(total, target, &state, &nums, &res)
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Solve subset sum I (including duplicate subsets) */
-function subsetSumINaive(nums: number[], target: number): number[][] {
-    const state = []; // State (subset)
-    const total = 0; // Subset sum
-    const res = []; // Result list (subset list)
-    backtrack(state, target, total, nums, res);
-    return res;
-}
+```py
+def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
+    """Solve subset sum I (with duplicate subsets)"""
+    state = []  # State (subset)
+    total = 0  # Subset sum
+    res = []  # Result list (list of subsets)
+    backtrack(state, target, total, nums, res)
+    return res
 ```
 
 </div>
@@ -95,35 +78,17 @@ In addition, we have made the following two optimizations to the code:
 - Omit the element sum variable `total` and **use subtraction on `target` to track the sum of elements**. Record the solution when `target` equals $0$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Solve subset sum I */
-func subsetSumI(nums []int, target int) [][]int {
-	state := make([]int, 0) // State (subset)
-	sort.Ints(nums)         // Sort nums
-	start := 0              // Start point for traversal
-	res := make([][]int, 0) // Result list (subset list)
-	backtrackSubsetSumI(start, target, &state, &nums, &res)
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Solve subset sum I */
-function subsetSumI(nums: number[], target: number): number[][] {
-    const state = []; // State (subset)
-    nums.sort((a, b) => a - b); // Sort nums
-    const start = 0; // Start point for traversal
-    const res = []; // Result list (subset list)
-    backtrack(state, target, nums, start, res);
-    return res;
-}
+```py
+def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
+    """Solve subset sum I"""
+    state = []  # State (subset)
+    nums.sort()  # Sort nums
+    start = 0  # Starting index for iteration
+    res = []  # Result list (list of subsets)
+    backtrack(state, target, nums, start, res)
+    return res
 ```
 
 </div>
@@ -153,6 +118,22 @@ To solve this problem, **we need to limit equal elements to be selected only onc
 At the same time, **this problem specifies that each array element can only be selected once**. Fortunately, we can also use the variable `start` to satisfy this constraint: after making choice $x_{i}$, set the next round to start traversal from index $i + 1$ onwards. This both eliminates duplicate subsets and avoids selecting elements multiple times.
 
 ### Code Implementation
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def subset_sum_ii(nums: list[int], target: int) -> list[list[int]]:
+    """Solve subset sum II"""
+    state = []  # State (subset)
+    nums.sort()  # Sort nums
+    start = 0  # Starting index for iteration
+    res = []  # Result list (list of subsets)
+    backtrack(state, target, nums, start, res)
+    return res
+```
+
+</div>
 
 The figure below shows the backtracking process for array $[4, 4, 5]$ with target value $9$, which includes four types of pruning operations. Combine the illustration with the code comments to understand the entire search process and how each pruning operation works.
 

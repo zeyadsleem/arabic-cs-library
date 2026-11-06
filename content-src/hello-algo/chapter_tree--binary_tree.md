@@ -9,43 +9,15 @@ lang: en
 A <u>binary tree</u> is a non-linear data structure that models the hierarchical relationship between "ancestors" and "descendants" and embodies a divide-and-conquer pattern in which each split branches into two. Similar to a linked list, the basic unit of a binary tree is a node, and each node contains a value, a reference to its left child node, and a reference to its right child node.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* Binary tree node */
-type TreeNode struct {
-    Val   int
-    Left  *TreeNode
-    Right *TreeNode
-}
-/* Constructor */
-func NewTreeNode(v int) *TreeNode {
-    return &TreeNode{
-        Left:  nil, // Pointer to left child node
-        Right: nil, // Pointer to right child node
-        Val:   v,   // Node value
-    }
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* Binary tree node */
-class TreeNode {
-    val: number;
-    left: TreeNode | null;
-    right: TreeNode | null;
-
-    constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
-        this.val = val === undefined ? 0 : val; // Node value
-        this.left = left === undefined ? null : left; // Reference to left child node
-        this.right = right === undefined ? null : right; // Reference to right child node
-    }
-}
+```python title=""
+class TreeNode:
+    """Binary tree node"""
+    def __init__(self, val: int):
+        self.val: int = val                # Node value
+        self.left: TreeNode | None = None  # Reference to left child node
+        self.right: TreeNode | None = None # Reference to right child node
 ```
 
 </div>
@@ -84,41 +56,21 @@ We usually define "height" and "depth" as the number of edges traversed, but som
 Similar to a linked list, the initialization of a binary tree involves first creating the nodes and then establishing the references (pointers) between them.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="binary_tree.go"
-/* Initializing a binary tree */
-// Initializing nodes
-n1 := NewTreeNode(1)
-n2 := NewTreeNode(2)
-n3 := NewTreeNode(3)
-n4 := NewTreeNode(4)
-n5 := NewTreeNode(5)
-// Linking references (pointers) between nodes
-n1.Left = n2
-n1.Right = n3
-n2.Left = n4
-n2.Right = n5
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="binary_tree.ts"
-/* Initializing a binary tree */
-// Initializing nodes
-let n1 = new TreeNode(1),
-    n2 = new TreeNode(2),
-    n3 = new TreeNode(3),
-    n4 = new TreeNode(4),
-    n5 = new TreeNode(5);
-// Linking references (pointers) between nodes
-n1.left = n2;
-n1.right = n3;
-n2.left = n4;
-n2.right = n5;
+```python title="binary_tree.py"
+# Initializing a binary tree
+# Initializing nodes
+n1 = TreeNode(val=1)
+n2 = TreeNode(val=2)
+n3 = TreeNode(val=3)
+n4 = TreeNode(val=4)
+n5 = TreeNode(val=5)
+# Linking references (pointers) between nodes
+n1.left = n2
+n1.right = n3
+n2.left = n4
+n2.right = n5
 ```
 
 </div>
@@ -130,31 +82,16 @@ Similar to a linked list, inserting and removing nodes in a binary tree can be a
 ![Inserting and removing nodes in a binary tree](/images/hello-algo/chapter_tree--binary_tree_add_remove.png)
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="binary_tree.go"
-/* Inserting and removing nodes */
-// Inserting node P between n1 and n2
-p := NewTreeNode(0)
-n1.Left = p
-p.Left = n2
-// Removing node P
-n1.Left = n2
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="binary_tree.ts"
-/* Inserting and removing nodes */
-const P = new TreeNode(0);
-// Inserting node P between n1 and n2
-n1.left = P;
-P.left = n2;
-// Removing node P
-n1.left = n2;
+```python title="binary_tree.py"
+# Inserting and removing nodes
+p = TreeNode(0)
+# Inserting node P between n1 -> n2
+n1.left = p
+p.left = n2
+# Removing node P
+n1.left = n2
 ```
 
 </div>

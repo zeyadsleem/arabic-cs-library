@@ -75,6 +75,33 @@ Observing the state transition equation, the solution $dp[i, j]$ depends on solu
 
 ### Code Implementation
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def edit_distance_dp(s: str, t: str) -> int:
+    """Edit distance: dynamic programming"""
+    n, m = len(s), len(t)
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    # State transitions: first row and first column
+    for i in range(1, n + 1):
+        dp[i][0] = i
+    for j in range(1, m + 1):
+        dp[0][j] = j
+    # State transitions: remaining rows and columns
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if s[i - 1] == t[j - 1]:
+                # If the two characters are equal, skip both of them
+                dp[i][j] = dp[i - 1][j - 1]
+            else:
+                # Minimum edits = the minimum among the insertion, deletion, and replacement subproblems + 1
+                dp[i][j] = min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]) + 1
+    return dp[n][m]
+```
+
+</div>
+
 As shown in the figure below, the state transition process for the edit distance problem is very similar to that of the knapsack problem; both can be viewed as the process of filling a two-dimensional grid.
 
 ### Space Optimization
@@ -82,3 +109,34 @@ As shown in the figure below, the state transition process for the edit distance
 Since $dp[i, j]$ depends on the states above $dp[i-1, j]$, to the left $dp[i, j-1]$, and at the upper-left $dp[i-1, j-1]$, forward traversal will lose the upper-left state $dp[i-1, j-1]$, while reverse traversal cannot construct $dp[i, j-1]$ in advance, so neither traversal order is suitable.
 
 For this reason, we can use a variable `leftup` to temporarily store the upper-left solution $dp[i-1, j-1]$, so we only need to consider the solutions to the left and above. This situation is the same as in the unbounded knapsack problem, so we can use forward traversal. The code is as follows:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def edit_distance_dp_comp(s: str, t: str) -> int:
+    """Edit distance: space-optimized dynamic programming"""
+    n, m = len(s), len(t)
+    dp = [0] * (m + 1)
+    # State transitions: first row
+    for j in range(1, m + 1):
+        dp[j] = j
+    # State transitions: remaining rows
+    for i in range(1, n + 1):
+        # State transitions: first column
+        leftup = dp[0]  # Temporarily store dp[i-1, j-1]
+        dp[0] += 1
+        # State transitions: remaining columns
+        for j in range(1, m + 1):
+            temp = dp[j]
+            if s[i - 1] == t[j - 1]:
+                # If the two characters are equal, skip both of them
+                dp[j] = leftup
+            else:
+                # Minimum edits = the minimum among the insertion, deletion, and replacement subproblems + 1
+                dp[j] = min(dp[j - 1], dp[j], leftup) + 1
+            leftup = temp  # Update to dp[i-1, j-1] for the next iteration
+    return dp[m]
+```
+
+</div>

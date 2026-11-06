@@ -22,33 +22,17 @@ For the best reading experience, it is recommended that you read through this se
 - This book partially relaxes conventional programming-language comment styles in favor of a more compact layout. Comments are mainly divided into three types: title comments, content comments, and multi-line comments.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* Title comment, used to label functions, classes, test cases, etc. */
+```python title=""
+"""Title comment, used to label functions, classes, test cases, etc."""
 
-// Content comment, used to explain code in detail
+# Content comment, used to explain code in detail
 
-/**
- * Multi-line
- * comment
- */
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* Title comment, used to label functions, classes, test cases, etc. */
-
-// Content comment, used to explain code in detail
-
-/**
- * Multi-line
- * comment
- */
+"""
+Multi-line
+comment
+"""
 ```
 
 </div>
@@ -59,7 +43,7 @@ Compared with plain text, videos and images have higher information density and 
 
 If, while reading this book, you encounter an animated illustration like the one shown below, **treat the illustration as primary and the text as supplementary**, and use both together to understand the content.
 
-![Example of animated illustrations](/images/hello-algo/chapter_preface--animation_en.gif)
+![Example of animated illustrations](/images/hello-algo/chapter_preface--animation.gif)
 
 ## Deepening Understanding Through Code Practice
 
@@ -73,7 +57,7 @@ Compared with simply reading code, writing it yourself often brings greater rewa
 
 Getting the code running mainly involves three preliminary steps.
 
-**Step 1: Install the local programming environment**. Please follow the [tutorial](https://www.hello-algo.com/en/chapter_appendix/installation/) in the appendix. If it is already installed, you can skip this step.
+**Step 1: Install the local programming environment**. Please follow the [tutorial](https://www.hello-algo.com/chapter_appendix/installation/) in the appendix. If it is already installed, you can skip this step.
 
 **Step 2: Clone or download the code repository**. Visit the [GitHub repository](https://github.com/krahets/hello-algo). If you have already installed [Git](https://git-scm.com/downloads), you can clone this repository with the following command:
 
@@ -83,11 +67,11 @@ git clone https://github.com/krahets/hello-algo.git
 
 Alternatively, you can click the "Download ZIP" button shown below to download a ZIP archive of the repository directly and then extract it locally.
 
-![Clone repository and download code](/images/hello-algo/chapter_preface--download_code_en.png)
+![Clone repository and download code](/images/hello-algo/chapter_preface--download_code.png)
 
 **Step 3: Run the source code**. As shown in the figure below, for code blocks with file names at the top, we can find the corresponding source code files in the `codes` folder of the repository. The source code files can be run with one click, which will help you save unnecessary debugging time and allow you to focus on learning content.
 
-![Code blocks and corresponding source code files](/images/hello-algo/chapter_preface--code_md_to_repo_en.png)
+![Code blocks and corresponding source code files](/images/hello-algo/chapter_preface--code_md_to_repo.png)
 
 In addition to running code locally, **the web version also supports visual execution of Python code** (implemented based on [pythontutor](https://pythontutor.com/)). As shown in the figure below, you can click "Visual Run" below the code block to expand the view and observe the execution process of the algorithm code; you can also click "Full Screen View" for a better viewing experience.
 
@@ -99,7 +83,7 @@ When reading this book, please do not skip over points that you still do not ful
 
 As shown in the figure below, the web version has a comments section at the bottom of each chapter. I encourage you to pay close attention to the discussions there. On the one hand, you can learn about the problems that others encounter, thereby filling gaps in your own understanding and prompting deeper thought. On the other hand, I hope you will generously answer other readers' questions, share your insights, and help others improve.
 
-![Example of comments section](/images/hello-algo/chapter_preface--comment_en.png)
+![Example of comments section](/images/hello-algo/chapter_preface--comment.gif)
 
 ## Algorithm Learning Roadmap
 

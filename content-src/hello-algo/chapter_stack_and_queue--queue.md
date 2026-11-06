@@ -27,63 +27,34 @@ The common operations on a queue are shown in the table below. Note that method 
 We can directly use the queue classes provided by the programming language:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="queue_test.go"
-/* Initialize queue */
-// In Go, use list as a queue
-queue := list.New()
+```python title="queue.py"
+from collections import deque
 
-/* Enqueue elements */
-queue.PushBack(1)
-queue.PushBack(3)
-queue.PushBack(2)
-queue.PushBack(5)
-queue.PushBack(4)
+# Initialize queue
+# In Python, we generally use the deque class as a queue
+# Although queue.Queue() is a pure queue class, it is not very user-friendly, so it is not recommended
+que: deque[int] = deque()
 
-/* Access front element */
-peek := queue.Front()
+# Enqueue elements
+que.append(1)
+que.append(3)
+que.append(2)
+que.append(5)
+que.append(4)
 
-/* Dequeue element */
-pop := queue.Front()
-queue.Remove(pop)
+# Access front element
+front: int = que[0]
 
-/* Get queue length */
-size := queue.Len()
+# Dequeue element
+pop: int = que.popleft()
 
-/* Check if queue is empty */
-isEmpty := queue.Len() == 0
-```
+# Get queue length
+size: int = len(que)
 
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="queue.ts"
-/* Initialize queue */
-// TypeScript does not have a built-in queue, can use Array as a queue
-const queue: number[] = [];
-
-/* Enqueue elements */
-queue.push(1);
-queue.push(3);
-queue.push(2);
-queue.push(5);
-queue.push(4);
-
-/* Access front element */
-const peek = queue[0];
-
-/* Dequeue element */
-// The underlying structure is an array, so shift() has O(n) time complexity
-const pop = queue.shift();
-
-/* Get queue length */
-const size = queue.length;
-
-/* Check if queue is empty */
-const empty = queue.length === 0;
+# Check if queue is empty
+is_empty: bool = len(que) == 0
 ```
 
 </div>
@@ -99,73 +70,62 @@ As shown in the figure below, we can treat the "head node" and "tail node" of a 
 Below is the code for implementing a queue using a linked list:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Queue based on linked list implementation */
-class LinkedListQueue {
-    private front: ListNode | null; // Head node front
-    private rear: ListNode | null; // Tail node rear
-    private queSize: number = 0;
+```py
+class LinkedListQueue:
+    """Queue implemented with a linked list"""
 
-    constructor() {
-        this.front = null;
-        this.rear = null;
-    }
+    def __init__(self):
+        """Constructor"""
+        self._front: ListNode | None = None  # Head node front
+        self._rear: ListNode | None = None  # Tail node rear
+        self._size: int = 0
 
-    /* Get the length of the queue */
-    get size(): number {
-        return this.queSize;
-    }
+    def size(self) -> int:
+        """Get the queue size"""
+        return self._size
 
-    /* Check if the queue is empty */
-    isEmpty(): boolean {
-        return this.size === 0;
-    }
+    def is_empty(self) -> bool:
+        """Check whether the queue is empty"""
+        return self._size == 0
 
-    /* Enqueue */
-    push(num: number): void {
-        // Add num after the tail node
-        const node = new ListNode(num);
-        // If the queue is empty, make both front and rear point to the node
-        if (!this.front) {
-            this.front = node;
-            this.rear = node;
-            // If the queue is not empty, add the node after the tail node
-        } else {
-            this.rear!.next = node;
-            this.rear = node;
-        }
-        this.queSize++;
-    }
+    def push(self, num: int):
+        """Enqueue"""
+        # Add num after the tail node
+        node = ListNode(num)
+        # If the queue is empty, make both the head and tail point to this node
+        if self._front is None:
+            self._front = node
+            self._rear = node
+        # If the queue is not empty, add this node after the tail node
+        else:
+            self._rear.next = node
+            self._rear = node
+        self._size += 1
 
-    /* Dequeue */
-    pop(): number {
-        const num = this.peek();
-        if (!this.front) throw new Error('Queue is empty');
-        // Delete head node
-        this.front = this.front.next;
-        this.queSize--;
-        return num;
-    }
+    def pop(self) -> int:
+        """Dequeue"""
+        num = self.peek()
+        # Remove the head node
+        self._front = self._front.next
+        self._size -= 1
+        return num
 
-    /* Return list for printing */
-    peek(): number {
-        if (this.size === 0) throw new Error('Queue is empty');
-        return this.front!.val;
-    }
+    def peek(self) -> int:
+        """Access the front element"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self._front.val
 
-    /* Convert linked list to Array and return */
-    toArray(): number[] {
-        let node = this.front;
-        const res = new Array<number>(this.size);
-        for (let i = 0; i < res.length; i++) {
-            res[i] = node!.val;
-            node = node!.next;
-        }
-        return res;
-    }
-}
+    def to_list(self) -> list[int]:
+        """Convert to a list for printing"""
+        queue = []
+        temp = self._front
+        while temp:
+            queue.append(temp.val)
+            temp = temp.next
+        return queue
 ```
 
 </div>
@@ -188,74 +148,63 @@ You may notice a problem: as we continuously enqueue and dequeue, both `front` a
 For a circular array, we need to let `front` or `rear` wrap around to the beginning of the array when they cross the end. This periodic pattern can be implemented using the "modulo operation," as shown in the code below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Queue based on circular array implementation */
-class ArrayQueue {
-    private nums: number[]; // Array for storing queue elements
-    private front: number; // Front pointer, points to the front of the queue element
-    private queSize: number; // Queue length
+```py
+class ArrayQueue:
+    """Queue implemented with a circular array"""
 
-    constructor(capacity: number) {
-        this.nums = new Array(capacity);
-        this.front = this.queSize = 0;
-    }
+    def __init__(self, size: int):
+        """Constructor"""
+        self._nums: list[int] = [0] * size  # Array that stores the queue elements
+        self._front: int = 0  # Front pointer, pointing to the first element
+        self._size: int = 0  # Queue size
 
-    /* Get the capacity of the queue */
-    get capacity(): number {
-        return this.nums.length;
-    }
+    def capacity(self) -> int:
+        """Get the queue capacity"""
+        return len(self._nums)
 
-    /* Get the length of the queue */
-    get size(): number {
-        return this.queSize;
-    }
+    def size(self) -> int:
+        """Get the queue size"""
+        return self._size
 
-    /* Check if the queue is empty */
-    isEmpty(): boolean {
-        return this.queSize === 0;
-    }
+    def is_empty(self) -> bool:
+        """Check whether the queue is empty"""
+        return self._size == 0
 
-    /* Enqueue */
-    push(num: number): void {
-        if (this.size === this.capacity) {
-            console.log('Queue is full');
-            return;
-        }
-        // Use modulo operation to wrap rear around to the head after passing the tail of the array
-        // Add num to the rear of the queue
-        const rear = (this.front + this.queSize) % this.capacity;
-        // Front pointer moves one position backward
-        this.nums[rear] = num;
-        this.queSize++;
-    }
+    def push(self, num: int):
+        """Enqueue"""
+        if self._size == self.capacity():
+            raise IndexError("Queue is full")
+        # Calculate the rear pointer, which points one position past the last element
+        # Use modulo to wrap rear to the beginning when it passes the end of the array
+        rear: int = (self._front + self._size) % self.capacity()
+        # Add num to the rear
+        self._nums[rear] = num
+        self._size += 1
 
-    /* Dequeue */
-    pop(): number {
-        const num = this.peek();
-        // Move front pointer backward by one position, if it passes the tail, return to array head
-        this.front = (this.front + 1) % this.capacity;
-        this.queSize--;
-        return num;
-    }
+    def pop(self) -> int:
+        """Dequeue"""
+        num: int = self.peek()
+        # Advance the front pointer by one position, wrapping to the beginning if it passes the end
+        self._front = (self._front + 1) % self.capacity()
+        self._size -= 1
+        return num
 
-    /* Return list for printing */
-    peek(): number {
-        if (this.isEmpty()) throw new Error('Queue is empty');
-        return this.nums[this.front];
-    }
+    def peek(self) -> int:
+        """Access the front element"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self._nums[self._front]
 
-    /* Return Array */
-    toArray(): number[] {
-        // Elements enqueue
-        const arr = new Array(this.size);
-        for (let i = 0, j = this.front; i < this.size; i++, j++) {
-            arr[i] = this.nums[j % this.capacity];
-        }
-        return arr;
-    }
-}
+    def to_list(self) -> list[int]:
+        """Return a list for printing"""
+        res = [0] * self.size()
+        j: int = self._front
+        for i in range(self.size()):
+            res[i] = self._nums[(j % self.capacity())]
+            j += 1
+        return res
 ```
 
 </div>

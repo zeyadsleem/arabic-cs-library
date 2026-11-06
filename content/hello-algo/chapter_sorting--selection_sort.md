@@ -19,55 +19,24 @@ lang: ar
 في الشيفرة نستخدم $k$ لتتبع أصغر عنصر داخل المجال غير المرتب:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* ترتيب الاختيار */
-func selectionSort(nums []int) {
-	n := len(nums)
-	// الحلقة الخارجية: المجال غير المرتب هو [i, n-1]
-	for i := 0; i < n-1; i++ {
-		// الحلقة الداخلية: ابحث عن أصغر عنصر داخل المجال غير المرتب
-		k := i
-		for j := i + 1; j < n; j++ {
-			if nums[j] < nums[k] {
-				// سجّل فهرس أصغر عنصر
-				k = j
-			}
-		}
-		// بدّل أصغر عنصر مع العنصر الأول من المجال غير المرتب
-		nums[i], nums[k] = nums[k], nums[i]
-
-	}
-}
+```py
+def selection_sort(nums: list[int]):
+    """Selection sort"""
+    n = len(nums)
+    # Outer loop: the unsorted range is [i, n-1]
+    for i in range(n - 1):
+        # Inner loop: find the smallest element in the unsorted range
+        k = i
+        for j in range(i + 1, n):
+            if nums[j] < nums[k]:
+                k = j  # Record the index of the smallest element
+        # Swap the smallest element with the first element of the unsorted range
+        nums[i], nums[k] = nums[k], nums[i]
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* ترتيب الاختيار */
-function selectionSort(nums: number[]): void {
-    let n = nums.length;
-    // الحلقة الخارجية: المجال غير المرتب هو [i, n-1]
-    for (let i = 0; i < n - 1; i++) {
-        // الحلقة الداخلية: ابحث عن أصغر عنصر داخل المجال غير المرتب
-        let k = i;
-        for (let j = i + 1; j < n; j++) {
-            if (nums[j] < nums[k]) {
-                k = j; // سجّل فهرس أصغر عنصر
-            }
-        }
-        // بدّل أصغر عنصر مع العنصر الأول من المجال غير المرتب
-        [nums[i], nums[k]] = [nums[k], nums[i]];
-    }
-}
-```
-
-</div>
-
 ## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n^2)$؛ ترتيب غير تكيّفي (non-adaptive)**: تضم الحلقة الخارجية $n - 1$ جولة إجمالاً. وتُنفَّذ الحلقة الداخلية $n - 1$ مرة في الجولة الأولى ومرة واحدة في الجولة الأخيرة. وبذلك تُنفَّذ $n - 1$ و$n - 2$ و$\dots$ و$2$ و$1$ مرة على التوالي، ومجموعها $\frac{n(n - 1)}{2}$.

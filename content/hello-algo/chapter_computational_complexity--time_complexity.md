@@ -15,41 +15,20 @@ lang: ar
 فمثلاً، في الشيفرة التالية، حجم بيانات الإدخال هو $n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-// على منصة تشغيل معينة
-func algorithm(n int) {
-    a := 2     // 1 ns
-    a = a + 1  // 1 ns
-    a = a * 2  // 10 ns
-    // حلقة n مرة
-    for i := 0; i < n; i++ {  // 1 ns
-        fmt.Println(a)        // 5 ns
-    }
-}
+```python title=""
+# On a certain running platform
+def algorithm(n: int):
+    a = 2      # 1 ns
+    a = a + 1  # 1 ns
+    a = a * 2  # 10 ns
+    # Loop n times
+    for _ in range(n):  # 1 ns
+        print(0)        # 5 ns
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-// على منصة تشغيل معينة
-function algorithm(n: number): void {
-    var a: number = 2; // 1 ns
-    a = a + 1; // 1 ns
-    a = a * 2; // 10 ns
-    // حلقة n مرة
-    for(let i = 0; i < n; i++) { // 1 ns
-        console.log(0); // 5 ns
-    }
-}
-```
-
-</div>
-
 وبحسب الطريقة أعلاه، يمكن الحصول على زمن تشغيل الخوارزمية وهو $(6n + 12)$ ns:
 
 $$
@@ -65,53 +44,23 @@ $$
 مفهوم «اتجاه نمو الزمن» مجرّد بعض الشيء؛ ولنفهمه عبر مثال. لنفترض أن حجم بيانات الإدخال هو $n$، وبمعطى ثلاث خوارزميات `A` و`B` و`C`:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-// التعقيد الزمني للخوارزمية A: رتبة ثابتة
-func algorithm_A(n int) {
-    fmt.Println(0)
-}
-// التعقيد الزمني للخوارزمية B: رتبة خطية
-func algorithm_B(n int) {
-    for i := 0; i < n; i++ {
-        fmt.Println(0)
-    }
-}
-// التعقيد الزمني للخوارزمية C: رتبة ثابتة
-func algorithm_C(n int) {
-    for i := 0; i < 1000000; i++ {
-        fmt.Println(0)
-    }
-}
+```python title=""
+# Time complexity of algorithm A: constant order
+def algorithm_A(n: int):
+    print(0)
+# Time complexity of algorithm B: linear order
+def algorithm_B(n: int):
+    for _ in range(n):
+        print(0)
+# Time complexity of algorithm C: constant order
+def algorithm_C(n: int):
+    for _ in range(1000000):
+        print(0)
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-// التعقيد الزمني للخوارزمية A: رتبة ثابتة
-function algorithm_A(n: number): void {
-    console.log(0);
-}
-// التعقيد الزمني للخوارزمية B: رتبة خطية
-function algorithm_B(n: number): void {
-    for (let i = 0; i < n; i++) {
-        console.log(0);
-    }
-}
-// التعقيد الزمني للخوارزمية C: رتبة ثابتة
-function algorithm_C(n: number): void {
-    for (let i = 0; i < 1000000; i++) {
-        console.log(0);
-    }
-}
-```
-
-</div>
-
 يوضح الشكل أدناه التعقيد الزمني لدوال الخوارزميات الثلاث أعلاه.
 
 - تحتوي الخوارزمية `A` على عملية طباعة واحدة فقط، ولا ينمو زمن تشغيل الخوارزمية مع زيادة $n$. ونسمّي التعقيد الزمني لهذه الخوارزمية «الرتبة الثابتة».
@@ -131,39 +80,19 @@ function algorithm_C(n: number): void {
 بمعطى دالة حجم إدخالها $n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-func algorithm(n int) {
-    a := 1      // +1
-    a = a + 1   // +1
-    a = a * 2   // +1
-    // حلقة n مرة
-    for i := 0; i < n; i++ {   // +1
-        fmt.Println(a)         // +1
-    }
-}
+```python title=""
+def algorithm(n: int):
+    a = 1      # +1
+    a = a + 1  # +1
+    a = a * 2  # +1
+    # Loop n times
+    for i in range(n):  # +1
+        print(0)        # +1
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-function algorithm(n: number): void{
-    var a: number = 1; // +1
-    a += 1; // +1
-    a *= 2; // +1
-    // حلقة n مرة
-    for(let i = 0; i < n; i++){ // +1 (يُنفَّذ i++ في كل جولة)
-        console.log(0); // +1
-    }
-}
-```
-
-</div>
-
 ولتكن عدد عمليات الخوارزمية دالةً في حجم بيانات الإدخال $n$، ويرمز إليها بـ$T(n)$. عندئذٍ يكون عدد عمليات الدالة أعلاه:
 
 $$
@@ -204,49 +133,22 @@ $T(n)$ دالة خطية، مما يدل على أن اتجاه نمو زمن ت
 بمعطى دالة، يمكننا استخدام التقنيات أعلاه لإحصاء عدد العمليات:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-func algorithm(n int) {
-    a := 1     // +0 (التقنية 1)
-    a = a + n  // +0 (التقنية 1)
-    // +n (التقنية 2)
-    for i := 0; i < 5 * n + 1; i++ {
-        fmt.Println(0)
-    }
-    // +n*n (التقنية 3)
-    for i := 0; i < 2 * n; i++ {
-        for j := 0; j < n + 1; j++ {
-            fmt.Println(0)
-        }
-    }
-}
+```python title=""
+def algorithm(n: int):
+    a = 1      # +0 (Technique 1)
+    a = a + n  # +0 (Technique 1)
+    # +n (Technique 2)
+    for i in range(5 * n + 1):
+        print(0)
+    # +n*n (Technique 3)
+    for i in range(2 * n):
+        for j in range(n + 1):
+            print(0)
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-function algorithm(n: number): void {
-    let a = 1;  // +0 (التقنية 1)
-    a = a + n;  // +0 (التقنية 1)
-    // +n (التقنية 2)
-    for (let i = 0; i < 5 * n + 1; i++) {
-        console.log(0);
-    }
-    // +n*n (التقنية 3)
-    for (let i = 0; i < 2 * n; i++) {
-        for (let j = 0; j < n + 1; j++) {
-            console.log(0);
-        }
-    }
-}
-```
-
-</div>
-
 تعرض الصيغة التالية نتائج الإحصاء قبل استخدام التقنيات أعلاه وبعدها؛ وكلاهما يؤدي إلى تعقيد زمني $O(n^2)$.
 
 $$
@@ -293,107 +195,52 @@ $$
 في الدالة التالية، رغم أن قيمة `size` قد تكون كبيرة، فهي مستقلة عن حجم بيانات الإدخال $n$، لذا يبقى التعقيد الزمني $O(1)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة الثابتة */
-func constant(n int) int {
-	count := 0
-	size := 100000
-	for i := 0; i < size; i++ {
-		count++
-	}
-	return count
-}
+```py
+def constant(n: int) -> int:
+    """Constant complexity"""
+    count = 0
+    size = 100000
+    for _ in range(size):
+        count += 1
+    return count
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة الثابتة */
-function constant(n: number): number {
-    let count = 0;
-    const size = 100000;
-    for (let i = 0; i < size; i++) count++;
-    return count;
-}
-```
-
-</div>
-
 ### الرتبة الخطية $O(n)$
 
 ينمو عدد العمليات في الرتبة الخطية خطياً مع حجم بيانات الإدخال $n$. وتظهر الرتبة الخطية عادةً في الحلقات أحادية الطبقة:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة الخطية */
-func linear(n int) int {
-	count := 0
-	for i := 0; i < n; i++ {
-		count++
-	}
-	return count
-}
+```py
+def linear(n: int) -> int:
+    """Linear complexity"""
+    count = 0
+    for _ in range(n):
+        count += 1
+    return count
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة الخطية */
-function linear(n: number): number {
-    let count = 0;
-    for (let i = 0; i < n; i++) count++;
-    return count;
-}
-```
-
-</div>
-
 عمليات مثل اجتياز المصفوفات واجتياز القوائم المترابطة لها تعقيد زمني $O(n)$، حيث $n$ طول المصفوفة أو القائمة المترابطة:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة الخطية (اجتياز مصفوفة) */
-func arrayTraversal(nums []int) int {
-	count := 0
-	// عدد التكرارات يتناسب مع طول المصفوفة
-	for range nums {
-		count++
-	}
-	return count
-}
+```py
+def array_traversal(nums: list[int]) -> int:
+    """Linear complexity (array traversal)"""
+    count = 0
+    # The number of iterations is proportional to the array length
+    for num in nums:
+        count += 1
+    return count
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة الخطية (اجتياز مصفوفة) */
-function arrayTraversal(nums: number[]): number {
-    let count = 0;
-    // عدد التكرارات يتناسب مع طول المصفوفة
-    for (let i = 0; i < nums.length; i++) {
-        count++;
-    }
-    return count;
-}
-```
-
-</div>
-
 ومن الجدير بالذكر أن **حجم بيانات الإدخال $n$ ينبغي أن يُحدَّد وفق نوع بيانات الإدخال**. فمثلاً، في المثال الأول يكون المتغير $n$ هو حجم بيانات الإدخال؛ وفي المثال الثاني يكون طول المصفوفة $n$ هو حجم البيانات.
 
 ### الرتبة التربيعية $O(n^2)$
@@ -401,43 +248,20 @@ function arrayTraversal(nums: number[]): number {
 ينمو عدد العمليات في الرتبة التربيعية تربيعياً مع حجم بيانات الإدخال $n$. وتظهر الرتبة التربيعية عادةً في الحلقات المتداخلة، حيث يكون التعقيد الزمني للحلقتين الخارجية والداخلية $O(n)$، فيكون التعقيد الزمني الإجمالي $O(n^2)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة الأسية */
-func quadratic(n int) int {
-	count := 0
-	// عدد التكرارات يرتبط تربيعياً بحجم البيانات n
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			count++
-		}
-	}
-	return count
-}
+```py
+def quadratic(n: int) -> int:
+    """Quadratic complexity"""
+    count = 0
+    # The number of iterations is proportional to the square of the input size n
+    for i in range(n):
+        for j in range(n):
+            count += 1
+    return count
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة الأسية */
-function quadratic(n: number): number {
-    let count = 0;
-    // عدد التكرارات يرتبط تربيعياً بحجم البيانات n
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
-            count++;
-        }
-    }
-    return count;
-}
-```
-
-</div>
-
 يقارن الشكل أدناه التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية.
 
 ![التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية](/images/hello-algo/chapter_computational_complexity--time_complexity_constant_linear_quadratic.png)
@@ -445,57 +269,26 @@ function quadratic(n: number): number {
 وبأخذ الترتيب الفقاعي مثالاً، تنفّذ الحلقة الخارجية $n - 1$ مرة، وتنفّذ الحلقة الداخلية $n-1$ ثم $n-2$ ثم $\dots$ ثم $2$ ثم $1$ مرة، بمتوسط $n / 2$ مرة، فيكون التعقيد الزمني $O((n - 1) n / 2) = O(n^2)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة التربيعية (الترتيب الفقاعي) */
-func bubbleSort(nums []int) int {
-	count := 0 // عدّاد
-	// الحلقة الخارجية: الجزء غير المرتب هو [0, i]
-	for i := len(nums) - 1; i > 0; i-- {
-		// الحلقة الداخلية: بدّل أكبر عنصر في الجزء غير المرتب [0, i] إلى الطرف الأيمن من ذلك الجزء
-		for j := 0; j < i; j++ {
-			if nums[j] > nums[j+1] {
-				// بدّل nums[j] وnums[j + 1]
-				tmp := nums[j]
-				nums[j] = nums[j+1]
-				nums[j+1] = tmp
-				count += 3 // تبديل العنصر يتضمن 3 عمليات وحدة
-			}
-		}
-	}
-	return count
-}
+```py
+def bubble_sort(nums: list[int]) -> int:
+    """Quadratic complexity (bubble sort)"""
+    count = 0  # Counter
+    # Outer loop: the unsorted range is [0, i]
+    for i in range(len(nums) - 1, 0, -1):
+        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        for j in range(i):
+            if nums[j] > nums[j + 1]:
+                # Swap nums[j] and nums[j + 1]
+                tmp: int = nums[j]
+                nums[j] = nums[j + 1]
+                nums[j + 1] = tmp
+                count += 3  # Swapping two elements takes 3 elementary operations
+    return count
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة التربيعية (الترتيب الفقاعي) */
-function bubbleSort(nums: number[]): number {
-    let count = 0; // عدّاد
-    // الحلقة الخارجية: الجزء غير المرتب هو [0, i]
-    for (let i = nums.length - 1; i > 0; i--) {
-        // الحلقة الداخلية: بدّل أكبر عنصر في الجزء غير المرتب [0, i] إلى الطرف الأيمن من ذلك الجزء
-        for (let j = 0; j < i; j++) {
-            if (nums[j] > nums[j + 1]) {
-                // بدّل nums[j] وnums[j + 1]
-                let tmp = nums[j];
-                nums[j] = nums[j + 1];
-                nums[j + 1] = tmp;
-                count += 3; // تبديل العنصر يتضمن 3 عمليات وحدة
-            }
-        }
-    }
-    return count;
-}
-```
-
-</div>
-
 ### الرتبة الأسية $O(2^n)$
 
 يُعدّ «انقسام الخلايا» البيولوجي مثالاً نموذجياً على النمو بالرتبة الأسية: فالحالة الابتدائية خلية واحدة، وبعد جولة انقسام واحدة تصبح $2$، وبعد جولتين تصبح $4$، وهكذا؛ وبعد $n$ جولة من الانقسام توجد $2^n$ خلية.
@@ -503,80 +296,39 @@ function bubbleSort(nums: number[]): number {
 يحاكي الشكل أدناه والشيفرة التالية عملية انقسام الخلايا، بتعقيد زمني $O(2^n)$. لاحظ أن المدخل $n$ يمثّل عدد جولات الانقسام، وأن القيمة المعادة `count` تمثّل العدد الإجمالي للانقسامات.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة الأسية (تنفيذ بحلقة) */
-func exponential(n int) int {
-	count, base := 0, 1
-	// تنقسم الخلايا إلى خليتين في كل جولة، فتكوّن المتتالية 1, 2, 4, 8, ..., 2^(n-1)
-	for i := 0; i < n; i++ {
-		for j := 0; j < base; j++ {
-			count++
-		}
-		base *= 2
-	}
-	// count = 1 + 2 + 4 + 8 + .. + 2^(n-1) = 2^n - 1
-	return count
-}
+```py
+def exponential(n: int) -> int:
+    """Exponential complexity (iterative implementation)"""
+    count = 0
+    base = 1
+    # Each cell divides into two per round, giving the sequence 1, 2, 4, 8, ..., 2^(n-1)
+    for _ in range(n):
+        for _ in range(base):
+            count += 1
+        base *= 2
+    # count = 1 + 2 + 4 + 8 + .. + 2^(n-1) = 2^n - 1
+    return count
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة الأسية (تنفيذ بحلقة) */
-function exponential(n: number): number {
-    let count = 0,
-        base = 1;
-    // تنقسم الخلايا إلى خليتين في كل جولة، فتكوّن المتتالية 1, 2, 4, 8, ..., 2^(n-1)
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < base; j++) {
-            count++;
-        }
-        base *= 2;
-    }
-    // count = 1 + 2 + 4 + 8 + .. + 2^(n-1) = 2^n - 1
-    return count;
-}
-```
-
-</div>
-
 ![التعقيد الزمني للرتبة الأسية](/images/hello-algo/chapter_computational_complexity--time_complexity_exponential.png)
 
 وفي الخوارزميات الفعلية، تظهر الرتبة الأسية غالباً في الدوال التعاودية. فمثلاً، في الشيفرة التالية، تنقسم الدالة تعاودياً إلى قسمين، وتتوقف بعد $n$ انقسام:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة الأسية (تنفيذ تعاودي) */
-func expRecur(n int) int {
-	if n == 1 {
-		return 1
-	}
-	return expRecur(n-1) + expRecur(n-1) + 1
-}
+```py
+def exp_recur(n: int) -> int:
+    """Exponential complexity (recursive implementation)"""
+    if n == 1:
+        return 1
+    return exp_recur(n - 1) + exp_recur(n - 1) + 1
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة الأسية (تنفيذ تعاودي) */
-function expRecur(n: number): number {
-    if (n === 1) return 1;
-    return expRecur(n - 1) + expRecur(n - 1) + 1;
-}
-```
-
-</div>
-
 نمو الرتبة الأسية سريع جداً، وهو شائع في الطرق الاستنفادية (البحث الشامل، والتتبّع الرجعي، وغيرها). وبالنسبة إلى المسائل ذات أحجام البيانات الكبيرة، لا تُقبل الرتبة الأسية، وتتطلب عادةً حلولاً بالبرمجة الديناميكية أو الخوارزميات الجشعة.
 
 ### الرتبة اللوغاريتمية $O(\log n)$
@@ -586,71 +338,35 @@ function expRecur(n: number): number {
 يحاكي الشكل أدناه والشيفرة التالية عملية «التنصيف في كل جولة»، بتعقيد زمني $O(\log_2 n)$، ويُختصر إلى $O(\log n)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة اللوغاريتمية (تنفيذ بحلقة) */
-func logarithmic(n int) int {
-	count := 0
-	for n > 1 {
-		n = n / 2
-		count++
-	}
-	return count
-}
+```py
+def logarithmic(n: int) -> int:
+    """Logarithmic complexity (iterative implementation)"""
+    count = 0
+    while n > 1:
+        n = n / 2
+        count += 1
+    return count
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة اللوغاريتمية (تنفيذ بحلقة) */
-function logarithmic(n: number): number {
-    let count = 0;
-    while (n > 1) {
-        n = n / 2;
-        count++;
-    }
-    return count;
-}
-```
-
-</div>
-
 ![التعقيد الزمني للرتبة اللوغاريتمية](/images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic.png)
 
 وعلى غرار الرتبة الأسية، تظهر الرتبة اللوغاريتمية أيضاً في الدوال التعاودية. وتشكّل الشيفرة التالية شجرة تعاود ارتفاعها $\log_2 n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة اللوغاريتمية (تنفيذ تعاودي) */
-func logRecur(n int) int {
-	if n <= 1 {
-		return 0
-	}
-	return logRecur(n/2) + 1
-}
+```py
+def log_recur(n: int) -> int:
+    """Logarithmic complexity (recursive implementation)"""
+    if n <= 1:
+        return 0
+    return log_recur(n / 2) + 1
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة اللوغاريتمية (تنفيذ تعاودي) */
-function logRecur(n: number): number {
-    if (n <= 1) return 0;
-    return logRecur(n / 2) + 1;
-}
-```
-
-</div>
-
 تظهر الرتبة اللوغاريتمية عادةً في الخوارزميات القائمة على استراتيجية التقسيم والتغلب، وتعكس فكرة تقسيم المسألة وتبسيطها مراراً. وهي تنمو ببطء، وهي التعقيد الزمني المثالي بعد الرتبة الثابتة.
 
 <div class="note">
@@ -671,41 +387,22 @@ $$
 تظهر الرتبة الخطية اللوغاريتمية عادةً في الحلقات المتداخلة، حيث يكون التعقيد الزمني لطبقتي الحلقة $O(\log n)$ و$O(n)$ على التوالي. والشيفرة ذات الصلة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة الخطية اللوغاريتمية */
-func linearLogRecur(n int) int {
-	if n <= 1 {
-		return 1
-	}
-	count := linearLogRecur(n/2) + linearLogRecur(n/2)
-	for i := 0; i < n; i++ {
-		count++
-	}
-	return count
-}
+```py
+def linear_log_recur(n: int) -> int:
+    """Linearithmic complexity"""
+    if n <= 1:
+        return 1
+    # Split into two subproblems, each half the original size
+    count = linear_log_recur(n // 2) + linear_log_recur(n // 2)
+    # The current subproblem includes n operations
+    for _ in range(n):
+        count += 1
+    return count
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة الخطية اللوغاريتمية */
-function linearLogRecur(n: number): number {
-    if (n <= 1) return 1;
-    let count = linearLogRecur(n / 2) + linearLogRecur(n / 2);
-    for (let i = 0; i < n; i++) {
-        count++;
-    }
-    return count;
-}
-```
-
-</div>
-
 يوضح الشكل أدناه كيف تنشأ الرتبة الخطية اللوغاريتمية. فكل مستوى من الشجرة الثنائية يحتوي في المجموع على $n$ عملية، وللشجرة $\log_2 n + 1$ مستوى، فيكون التعقيد الزمني $O(n \log n)$.
 
 ![التعقيد الزمني للرتبة الخطية اللوغاريتمية](/images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic_linear.png)
@@ -723,43 +420,21 @@ $$
 يُنفَّذ المضروب عادةً بالتعاود. وكما هو موضح في الشكل أدناه والشيفرة التالية، يتفرع المستوى الأول إلى $n$ فرعاً، ويتفرع المستوى الثاني إلى $n - 1$ فرعاً، وهكذا، حتى المستوى $n$ حيث يتوقف التفرع:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الرتبة العاملية (تنفيذ تعاودي) */
-func factorialRecur(n int) int {
-	if n == 0 {
-		return 1
-	}
-	count := 0
-	// التفرع من 1 إلى n
-	for i := 0; i < n; i++ {
-		count += factorialRecur(n - 1)
-	}
-	return count
-}
+```py
+def factorial_recur(n: int) -> int:
+    """Factorial complexity (recursive implementation)"""
+    if n == 0:
+        return 1
+    count = 0
+    # Split one problem into n subproblems
+    for _ in range(n):
+        count += factorial_recur(n - 1)
+    return count
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الرتبة العاملية (تنفيذ تعاودي) */
-function factorialRecur(n: number): number {
-    if (n === 0) return 1;
-    let count = 0;
-    // التفرع من 1 إلى n
-    for (let i = 0; i < n; i++) {
-        count += factorialRecur(n - 1);
-    }
-    return count;
-}
-```
-
-</div>
-
 ![التعقيد الزمني للرتبة العاملية](/images/hello-algo/chapter_computational_complexity--time_complexity_factorial.png)
 
 لاحظ أنه بما أن $n! > 2^n$ دائماً عندما $n \geq 4$، فإن الرتبة العاملية تنمو أسرع من الرتبة الأسية، وهي أيضاً غير مقبولة لأجل $n$ الكبيرة.
@@ -774,43 +449,20 @@ function factorialRecur(n: number): number {
 يقابل «التعقيد الزمني في أسوأ حالة» الحد الأعلى التقاربي للدالة، ويُرمز إليه بترميز $O$ الكبير. وبالمقابل، يقابل «التعقيد الزمني في أفضل حالة» الحد الأدنى التقاربي للدالة، ويُرمز إليه بترميز $\Omega$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* ابحث عن فهرس العدد 1 في المصفوفة nums */
-func findOne(nums []int) int {
-	for i := 0; i < len(nums); i++ {
-		// عندما يكون العنصر 1 في رأس المصفوفة، نحصل على أفضل تعقيد زمني O(1)
-		// عندما يكون العنصر 1 في ذيل المصفوفة، نحصل على أسوأ تعقيد زمني O(n)
-		if nums[i] == 1 {
-			return i
-		}
-	}
-	return -1
-}
+```py
+def find_one(nums: list[int]) -> int:
+    """Find the index of the number 1 in array nums"""
+    for i in range(len(nums)):
+        # When 1 is at the start of the array, the best-case time complexity is O(1)
+        # When 1 is at the end of the array, the worst-case time complexity is O(n)
+        if nums[i] == 1:
+            return i
+    return -1
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* ابحث عن فهرس العدد 1 في المصفوفة nums */
-function findOne(nums: number[]): number {
-    for (let i = 0; i < nums.length; i++) {
-        // عندما يكون العنصر 1 في رأس المصفوفة، نحصل على أفضل تعقيد زمني O(1)
-        // عندما يكون العنصر 1 في ذيل المصفوفة، نحصل على أسوأ تعقيد زمني O(n)
-        if (nums[i] === 1) {
-            return i;
-        }
-    }
-    return -1;
-}
-```
-
-</div>
-
 ومن الجدير بالذكر أننا نادراً ما نستخدم التعقيد الزمني في أفضل حالة عملياً، لأنه لا يتحقق عادةً إلا باحتمال ضئيل جداً وقد يكون مضللاً بعض الشيء. **أما التعقيد الزمني في أسوأ حالة فهو أكثر عملية لأنه يعطي قيمة أمان للكفاءة**، مما يتيح لنا استخدام الخوارزمية بثقة.
 
 ومن المثال أعلاه نرى أن التعقيد الزمني في أسوأ حالة وفي أفضل حالة ينشأ كلاهما فقط في ظل توزيعات إدخال معينة، قد تحدث باحتمال منخفض جداً وقد لا تعكس كفاءة تشغيل الخوارزمية انعكاساً حقيقياً. وفي المقابل، **يستطيع التعقيد الزمني المتوسط أن يعكس كفاءة تشغيل الخوارزمية في ظل بيانات إدخال عشوائية**، ويُرمز إليه بترميز $\Theta$.

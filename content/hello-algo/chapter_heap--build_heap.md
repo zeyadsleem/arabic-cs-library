@@ -29,6 +29,20 @@ lang: ar
 
 وتجدر الإشارة إلى أنه **بما أن العقد الأوراق لا أبناء لها، فهي أكوام فرعية صالحة بطبيعتها ولا تحتاج إلى تعديل**. وكما هو موضح في الشيفرة أدناه، فإن آخر عقدة غير ورقة هي عقدة أب العقدة الأخيرة؛ نبدأ من تلك العقدة ونعدّل الكومة أثناء الاجتياز بالترتيب العكسي:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+    def __init__(self, nums: list[int]):
+        """Constructor: build a heap from the input list"""
+        # Place the list elements in the heap without changing their order
+        self.max_heap = nums
+        # Sift down from every non-leaf node
+        for i in range(self.parent(self.size() - 1), -1, -1):
+            self.sift_down(i)
+```
+
+</div>
 ## تحليل التعقيد
 
 لنحاول الآن اشتقاق التعقيد الزمني لطريقة بناء الكومة الثانية هذه.

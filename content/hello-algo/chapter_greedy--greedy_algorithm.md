@@ -28,60 +28,27 @@ lang: ar
 وشيفرة التنفيذ كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* تغيير العملات: خوارزمية جشعة */
-func coinChangeGreedy(coins []int, amt int) int {
-	// افترض أن قائمة العملات مرتبة
-	i := len(coins) - 1
-	count := 0
-	// كرّر اتخاذ الخيارات الجشعة حتى لا يتبقى أي مبلغ
-	for amt > 0 {
-		// ابحث عن العملة الأصغر من المبلغ المتبقي والأقرب إليه
-		for i > 0 && coins[i] > amt {
-			i--
-		}
-		// اختر coins[i]
-		amt -= coins[i]
-		count++
-	}
-	// إذا لم يوجد حل ممكن، أعد -1
-	if amt != 0 {
-		return -1
-	}
-	return count
-}
+```py
+def coin_change_greedy(coins: list[int], amt: int) -> int:
+    """Coin change: greedy algorithm"""
+    # Assume the coins list is sorted
+    i = len(coins) - 1
+    count = 0
+    # Repeatedly make greedy choices until no amount remains
+    while amt > 0:
+        # Find the largest coin no greater than the remaining amount
+        while i > 0 and coins[i] > amt:
+            i -= 1
+        # Choose coins[i]
+        amt -= coins[i]
+        count += 1
+    # Return -1 if no feasible solution was found
+    return count if amt == 0 else -1
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* تغيير العملات: خوارزمية جشعة */
-function coinChangeGreedy(coins: number[], amt: number): number {
-    // افترض أن مصفوفة العملات مرتبة
-    let i = coins.length - 1;
-    let count = 0;
-    // كرّر اتخاذ الخيارات الجشعة حتى لا يتبقى أي مبلغ
-    while (amt > 0) {
-        // ابحث عن العملة الأصغر من المبلغ المتبقي والأقرب إليه
-        while (i > 0 && coins[i] > amt) {
-            i--;
-        }
-        // اختر coins[i]
-        amt -= coins[i];
-        count++;
-    }
-    // إذا لم يوجد حل ممكن، أعد -1
-    return amt === 0 ? count : -1;
-}
-```
-
-</div>
-
 قد تجد نفسك تهتف: «ما أنظف هذا!». فخوارزمية الجشع تحل مسألة تغيير العملات بنحو عشرة أسطر من الشيفرة فقط.
 
 ## مزايا الخوارزميات الجشعة وقيودها

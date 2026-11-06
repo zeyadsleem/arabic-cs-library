@@ -33,105 +33,49 @@ lang: ar
 تشمل العمليات الشائعة على جداول التجزئة: التهيئة، وعمليات الاستعلام، وإضافة أزواج المفتاح-القيمة، وحذف أزواج المفتاح-القيمة. وتظهر الشيفرة المثالية أدناه:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="hash_map_test.go"
-/* تهيئة جدول التجزئة */
-hmap := make(map[int]string)
+```python title="hash_map.py"
+# Initialize hash table
+hmap: dict = {}
 
-/* عملية الإضافة */
-// أضف زوج المفتاح-القيمة (key, value) إلى جدول التجزئة
+# Add operation
+# Add key-value pair (key, value) to hash table
 hmap[12836] = "XiaoHa"
 hmap[15937] = "XiaoLuo"
 hmap[16750] = "XiaoSuan"
 hmap[13276] = "XiaoFa"
 hmap[10583] = "XiaoYa"
 
-/* عملية الاستعلام */
-// أدخل المفتاح إلى جدول التجزئة للحصول على القيمة
-name := hmap[15937]
+# Query operation
+# Input key into hash table to get value
+name: str = hmap[15937]
 
-/* عملية الحذف */
-// احذف زوج المفتاح-القيمة (key, value) من جدول التجزئة
-delete(hmap, 10583)
+# Delete operation
+# Delete key-value pair (key, value) from hash table
+hmap.pop(10583)
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="hash_map.ts"
-/* تهيئة جدول التجزئة */
-const map = new Map<number, string>();
-/* عملية الإضافة */
-// أضف زوج المفتاح-القيمة (key, value) إلى جدول التجزئة
-map.set(12836, 'XiaoHa');
-map.set(15937, 'XiaoLuo');
-map.set(16750, 'XiaoSuan');
-map.set(13276, 'XiaoFa');
-map.set(10583, 'XiaoYa');
-console.info('\nAfter adding, hash table is\nKey -> Value');
-console.info(map);
-
-/* عملية الاستعلام */
-// أدخل المفتاح إلى جدول التجزئة للحصول على القيمة
-let name = map.get(15937);
-console.info('\nInput student ID 15937, queried name ' + name);
-
-/* عملية الحذف */
-// احذف زوج المفتاح-القيمة (key, value) من جدول التجزئة
-map.delete(10583);
-console.info('\nAfter deleting 10583, hash table is\nKey -> Value');
-console.info(map);
-```
-
-</div>
-
 هناك ثلاث طرق شائعة لاجتياز جدول التجزئة: اجتياز أزواج المفتاح-القيمة، واجتياز المفاتيح، واجتياز القيم. وتظهر الشيفرة المثالية أدناه:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="hash_map_test.go"
-/* اجتياز جدول التجزئة */
-// اجتَز أزواج المفتاح-القيمة key->value
-for key, value := range hmap {
-    fmt.Println(key, "->", value)
-}
-// اجتَز المفاتيح فقط
-for key := range hmap {
-    fmt.Println(key)
-}
-// اجتَز القيم فقط
-for _, value := range hmap {
-    fmt.Println(value)
-}
+```python title="hash_map.py"
+# Traverse hash table
+# Traverse key-value pairs key->value
+for key, value in hmap.items():
+    print(key, "->", value)
+# Traverse keys only
+for key in hmap.keys():
+    print(key)
+# Traverse values only
+for value in hmap.values():
+    print(value)
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="hash_map.ts"
-/* اجتياز جدول التجزئة */
-console.info('\nTraverse key-value pairs Key->Value');
-for (const [k, v] of map.entries()) {
-    console.info(k + ' -> ' + v);
-}
-console.info('\nTraverse keys only Key');
-for (const k of map.keys()) {
-    console.info(k);
-}
-console.info('\nTraverse values only Value');
-for (const v of map.values()) {
-    console.info(v);
-}
-```
-
-</div>
-
 ## تنفيذ بسيط لجدول التجزئة
 
 لنبدأ بأبسط حالة: **تنفيذ جدول تجزئة بمصفوفة فقط**. في جدول التجزئة، تسمى كل خانة فارغة في المصفوفة <u>دلواً</u> (bucket)، ويمكن لكل دلو تخزين زوج مفتاح-قيمة واحد. لذا يتلخّص البحث في إيجاد الدلو الخاص بالمفتاح `key` وقراءة القيمة `value` المخزنة فيه.
@@ -156,89 +100,74 @@ index = hash(key) % capacity
 تنفّذ الشيفرة التالية جدول تجزئة بسيطاً. وهنا نغلّف `key` و`value` في فئة `Pair` لتمثيل زوج مفتاح-قيمة.
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* جدول تجزئة بتنفيذ قائم على مصفوفة */
-class ArrayHashMap {
-    private readonly buckets: (Pair | null)[];
+```py
+class ArrayHashMap:
+    """Hash table implemented with an array"""
 
-    constructor() {
-        // هيّئ مصفوفة بـ 100 دلو
-        this.buckets = new Array(100).fill(null);
-    }
+    def __init__(self):
+        """Constructor"""
+        # Initialize an array containing 100 buckets
+        self.buckets: list[Pair | None] = [None] * 100
 
-    /* دالة التجزئة */
-    private hashFunc(key: number): number {
-        return key % 100;
-    }
+    def hash_func(self, key: int) -> int:
+        """Hash function"""
+        index = key % 100
+        return index
 
-    /* عملية الاستعلام */
-    public get(key: number): string | null {
-        let index = this.hashFunc(key);
-        let pair = this.buckets[index];
-        if (pair === null) return null;
-        return pair.val;
-    }
+    def get(self, key: int) -> str | None:
+        """Lookup operation"""
+        index: int = self.hash_func(key)
+        pair: Pair = self.buckets[index]
+        if pair is None:
+            return None
+        return pair.val
 
-    /* عملية الإضافة */
-    public set(key: number, val: string) {
-        let index = this.hashFunc(key);
-        this.buckets[index] = new Pair(key, val);
-    }
+    def put(self, key: int, val: str):
+        """Insert and update operations"""
+        pair = Pair(key, val)
+        index: int = self.hash_func(key)
+        self.buckets[index] = pair
 
-    /* عملية الحذف */
-    public delete(key: number) {
-        let index = this.hashFunc(key);
-        // اضبط على null لتمثيل الحذف
-        this.buckets[index] = null;
-    }
+    def remove(self, key: int):
+        """Remove operation"""
+        index: int = self.hash_func(key)
+        # Set to None to mark removal
+        self.buckets[index] = None
 
-    /* احصل على جميع أزواج المفتاح-القيمة */
-    public entries(): (Pair | null)[] {
-        let arr: (Pair | null)[] = [];
-        for (let i = 0; i < this.buckets.length; i++) {
-            if (this.buckets[i]) {
-                arr.push(this.buckets[i]);
-            }
-        }
-        return arr;
-    }
+    def entry_set(self) -> list[Pair]:
+        """Get all key-value pairs"""
+        result: list[Pair] = []
+        for pair in self.buckets:
+            if pair is not None:
+                result.append(pair)
+        return result
 
-    /* احصل على جميع المفاتيح */
-    public keys(): (number | undefined)[] {
-        let arr: (number | undefined)[] = [];
-        for (let i = 0; i < this.buckets.length; i++) {
-            if (this.buckets[i]) {
-                arr.push(this.buckets[i].key);
-            }
-        }
-        return arr;
-    }
+    def key_set(self) -> list[int]:
+        """Get all keys"""
+        result = []
+        for pair in self.buckets:
+            if pair is not None:
+                result.append(pair.key)
+        return result
 
-    /* احصل على جميع القيم */
-    public values(): (string | undefined)[] {
-        let arr: (string | undefined)[] = [];
-        for (let i = 0; i < this.buckets.length; i++) {
-            if (this.buckets[i]) {
-                arr.push(this.buckets[i].val);
-            }
-        }
-        return arr;
-    }
+    def value_set(self) -> list[str]:
+        """Get all values"""
+        result = []
+        for pair in self.buckets:
+            if pair is not None:
+                result.append(pair.val)
+        return result
 
-    /* اطبع جدول التجزئة */
-    public print() {
-        let pairSet = this.entries();
-        for (const pair of pairSet) {
-            console.info(`${pair.key} -> ${pair.val}`);
-        }
-    }
-}
+    def print(self):
+        """Print the hash table"""
+        for pair in self.buckets:
+            if pair is not None:
+                print(pair.key, "->", pair.val)
 ```
 
 </div>
-
 ## تصادم التجزئة وإعادة التحجيم
 
 في جوهر الأمر، تربط دالة التجزئة فضاء الإدخال المكوّن من جميع المفاتيح `key` بفضاء الإخراج المكوّن من جميع فهارس المصفوفة، وغالباً ما يكون فضاء الإدخال أكبر بكثير من فضاء الإخراج. لذلك **يجب نظرياً أن تُسند مدخلات مختلفة أحياناً إلى الإخراج نفسه**.

@@ -31,52 +31,25 @@ $$
 وبالإضافة إلى ذلك، نحتاج إلى تعديل شيفرة الترتيب بالعد تعديلاً طفيفاً لتجعلها ترتّب استناداً إلى الخانة $k$ من العدد:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الترتيب الجذري */
-func radixSort(nums []int) {
-	// احصل على أكبر عنصر في المصفوفة، لتحديد الحد الأقصى لعدد الخانات
-	max := math.MinInt
-	for _, num := range nums {
-		if num > max {
-			max = num
-		}
-	}
-	// اجتز الخانات من الأقل إلى الأعلى
-	for exp := 1; max >= exp; exp *= 10 {
-		// نفّذ الترتيب بالعد على الخانة k من عناصر المصفوفة
-		// k = 1 -> exp = 1
-		// k = 2 -> exp = 10
-		// أي exp = 10^(k-1)
-		countingSortDigit(nums, exp)
-	}
-}
+```py
+def radix_sort(nums: list[int]):
+    """Radix sort"""
+    # Get the largest array element to determine the maximum number of digits
+    m = max(nums)
+    # Process digits from least significant to most significant
+    exp = 1
+    while exp <= m:
+        # Apply counting sort to the k-th digit of the array elements
+        # k = 1 -> exp = 1
+        # k = 2 -> exp = 10
+        # That is, exp = 10^(k-1)
+        counting_sort_digit(nums, exp)
+        exp *= 10
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الترتيب الجذري */
-function radixSort(nums: number[]): void {
-    // احصل على أكبر عنصر في المصفوفة، لتحديد الحد الأقصى لعدد الخانات
-    let m: number = Math.max(... nums);
-    // اجتز الخانات من الأقل إلى الأعلى
-    for (let exp = 1; exp <= m; exp *= 10) {
-        // نفّذ الترتيب بالعد على الخانة k من عناصر المصفوفة
-        // k = 1 -> exp = 1
-        // k = 2 -> exp = 10
-        // أي exp = 10^(k-1)
-        countingSortDigit(nums, exp);
-    }
-}
-```
-
-</div>
-
 <div class="note">
 <p class="note__title">لماذا نبدأ الترتيب من أقل خانة؟</p>
 

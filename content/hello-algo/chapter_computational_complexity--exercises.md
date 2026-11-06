@@ -14,37 +14,18 @@ lang: ar
 وأجب عن الأسئلة باتباع ترتيب تنفيذ البرنامج الفعلي، ثم قارن كفاءة الطريقتين.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الجمع بالتكرار */
-func sumIter(n int) int {
-	res := 0
-	for i := 1; i <= n; i++ {
-		res += i
-	}
-	return res
-}
+```py
+def sum_iter(n: int) -> int:
+    """Sum using iteration"""
+    res = 0
+    for i in range(1, n + 1):
+        res += i
+    return res
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الجمع بالتكرار */
-function sumIter(n: number): number {
-    let res = 0;
-    for (let i = 1; i <= n; i++) {
-        res += i;
-    }
-    return res;
-}
-```
-
-</div>
-
 <!-- numbered-subquestions -->
 
 1. عند تشغيل الدالة التكرارية بقيمة `n = 4`، ما قيمة المجمّع `res` بعد كل دورة من دورات الحلقة؟
@@ -75,37 +56,18 @@ function sumIter(n: number): number {
 يأخذ كل مقطع من مقاطع الشيفرة التالية عدداً صحيحاً موجباً $n$ كمدخل. رتّبها من الأدنى إلى الأعلى من حيث التعقيد الزمني، واذكر تعقيد كل واحد منها.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حلقة خطية */
-func linearLoop(n int) int {
-	res := 0
-	for i := 0; i < n; i++ {
-		res += i
-	}
-	return res
-}
+```py
+def linear_loop(n: int) -> int:
+    """Linear-time loop"""
+    res = 0
+    for i in range(n):
+        res += i
+    return res
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* حلقة خطية */
-function linearLoop(n: number): number {
-    let res = 0;
-    for (let i = 0; i < n; i++) {
-        res += i;
-    }
-    return res;
-}
-```
-
-</div>
-
 <div class="note">
 <p class="note__title">الإجابة</p>
 

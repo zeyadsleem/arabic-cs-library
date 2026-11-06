@@ -24,49 +24,22 @@ lang: ar
 مثال الشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* ترتيب الفقاعات */
-func bubbleSort(nums []int) {
-	// الحلقة الخارجية: المجال غير المرتب هو [0, i]
-	for i := len(nums) - 1; i > 0; i-- {
-		// الحلقة الداخلية: بدّل أكبر عنصر في المجال غير المرتب [0, i] إلى الطرف الأيمن من ذلك المجال
-		for j := 0; j < i; j++ {
-			if nums[j] > nums[j+1] {
-				// بدّل nums[j] و nums[j + 1]
-				nums[j], nums[j+1] = nums[j+1], nums[j]
-			}
-		}
-	}
-}
+```py
+def bubble_sort(nums: list[int]):
+    """Bubble sort"""
+    n = len(nums)
+    # Outer loop: the unsorted range is [0, i]
+    for i in range(n - 1, 0, -1):
+        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        for j in range(i):
+            if nums[j] > nums[j + 1]:
+                # Swap nums[j] and nums[j + 1]
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* ترتيب الفقاعات */
-function bubbleSort(nums: number[]): void {
-    // الحلقة الخارجية: المجال غير المرتب هو [0, i]
-    for (let i = nums.length - 1; i > 0; i--) {
-        // الحلقة الداخلية: بدّل أكبر عنصر في المجال غير المرتب [0, i] إلى الطرف الأيمن من ذلك المجال
-        for (let j = 0; j < i; j++) {
-            if (nums[j] > nums[j + 1]) {
-                // بدّل nums[j] و nums[j + 1]
-                let tmp = nums[j];
-                nums[j] = nums[j + 1];
-                nums[j + 1] = tmp;
-            }
-        }
-    }
-}
-```
-
-</div>
-
 ## تحسين الكفاءة
 
 يمكننا أن نلاحظ أنه إذا لم يحدث أي تبديل خلال جولة "تفقيع"، فالمصفوفة مرتبة بالفعل ويمكن للخوارزمية أن تعود فوراً. لذلك يمكننا إضافة علامة `flag` لكشف هذا الوضع والإنهاء بمجرد حدوثه.
@@ -74,57 +47,26 @@ function bubbleSort(nums: number[]): void {
 بعد هذا التحسين، يبقى التعقيد الزمني لترتيب الفقاعات في أسوأ الحالات ومتوسطها $O(n^2)$؛ غير أنه عندما تكون مصفوفة الإدخال مرتبة بالفعل، يصبح التعقيد الزمني في أفضل الحالات $O(n)$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* ترتيب الفقاعات (تحسين العلامة) */
-func bubbleSortWithFlag(nums []int) {
-	// الحلقة الخارجية: المجال غير المرتب هو [0, i]
-	for i := len(nums) - 1; i > 0; i-- {
-		flag := false // هيّئ العلامة
-		// الحلقة الداخلية: بدّل أكبر عنصر في المجال غير المرتب [0, i] إلى الطرف الأيمن من ذلك المجال
-		for j := 0; j < i; j++ {
-			if nums[j] > nums[j+1] {
-				// بدّل nums[j] و nums[j + 1]
-				nums[j], nums[j+1] = nums[j+1], nums[j]
-				flag = true // سجّل تبديل العنصر
-			}
-		}
-		if flag == false { // لم تُبدَّل أي عناصر في هذه الجولة من "التفقيع"، اخرج مباشرة
-			break
-		}
-	}
-}
+```py
+def bubble_sort_with_flag(nums: list[int]):
+    """Bubble sort (flag optimization)"""
+    n = len(nums)
+    # Outer loop: the unsorted range is [0, i]
+    for i in range(n - 1, 0, -1):
+        flag = False  # Initialize the flag
+        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        for j in range(i):
+            if nums[j] > nums[j + 1]:
+                # Swap nums[j] and nums[j + 1]
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
+                flag = True  # Record that a swap occurred
+        if not flag:
+            break  # Exit immediately if this pass made no swaps
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* ترتيب الفقاعات (تحسين العلامة) */
-function bubbleSortWithFlag(nums: number[]): void {
-    // الحلقة الخارجية: المجال غير المرتب هو [0, i]
-    for (let i = nums.length - 1; i > 0; i--) {
-        let flag = false; // هيّئ العلامة
-        // الحلقة الداخلية: بدّل أكبر عنصر في المجال غير المرتب [0, i] إلى الطرف الأيمن من ذلك المجال
-        for (let j = 0; j < i; j++) {
-            if (nums[j] > nums[j + 1]) {
-                // بدّل nums[j] و nums[j + 1]
-                let tmp = nums[j];
-                nums[j] = nums[j + 1];
-                nums[j + 1] = tmp;
-                flag = true; // سجّل تبديل العنصر
-            }
-        }
-        if (!flag) break; // لم تُبدَّل أي عناصر في هذه الجولة من "التفقيع"، اخرج مباشرة
-    }
-}
-```
-
-</div>
-
 ## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n^2)$؛ ترتيب تكيّفي (adaptive)**: في الجولات المتتالية من "التفقيع"، تبلغ أطوال الجزء المجتاز من المصفوفة $n - 1$ و$n - 2$ و$\dots$ و$2$ و$1$، أي مجموع $(n - 1) n / 2$. وبعد إدخال تحسين `flag`، يمكن أن يصل التعقيد الزمني في أفضل الحالات إلى $O(n)$.

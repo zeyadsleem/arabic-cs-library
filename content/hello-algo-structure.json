@@ -9,8 +9,7 @@
           "title": "Preface",
           "order": 0
         }
-      ],
-      "titleAr": "قبل أن تبدأ"
+      ]
     },
     {
       "key": "chapter_preface",
@@ -36,8 +35,7 @@
           "title": "Summary",
           "order": 4
         }
-      ],
-      "titleAr": "المقدمة"
+      ]
     },
     {
       "key": "chapter_introduction",
@@ -63,8 +61,7 @@
           "title": "Summary",
           "order": 8
         }
-      ],
-      "titleAr": "لقاء مع الخوارزميات"
+      ]
     },
     {
       "key": "chapter_computational_complexity",
@@ -105,8 +102,7 @@
           "title": "Exercises",
           "order": 15
         }
-      ],
-      "titleAr": "تحليل التعقيد"
+      ]
     },
     {
       "key": "chapter_data_structure",
@@ -147,8 +143,7 @@
           "title": "Exercises",
           "order": 22
         }
-      ],
-      "titleAr": "بنى البيانات"
+      ]
     },
     {
       "key": "chapter_array_and_linkedlist",
@@ -189,8 +184,7 @@
           "title": "Exercises",
           "order": 29
         }
-      ],
-      "titleAr": "المصفوفات والقوائم المترابطة"
+      ]
     },
     {
       "key": "chapter_stack_and_queue",
@@ -226,8 +220,7 @@
           "title": "Exercises",
           "order": 35
         }
-      ],
-      "titleAr": "الأكوام والطوابير"
+      ]
     },
     {
       "key": "chapter_hashing",
@@ -263,8 +256,7 @@
           "title": "Exercises",
           "order": 41
         }
-      ],
-      "titleAr": "التجزئة"
+      ]
     },
     {
       "key": "chapter_tree",
@@ -310,8 +302,7 @@
           "title": "Exercises",
           "order": 49
         }
-      ],
-      "titleAr": "الأشجار"
+      ]
     },
     {
       "key": "chapter_heap",
@@ -347,8 +338,7 @@
           "title": "Exercises",
           "order": 55
         }
-      ],
-      "titleAr": "الأكوام (Heaps)"
+      ]
     },
     {
       "key": "chapter_graph",
@@ -384,8 +374,7 @@
           "title": "Exercises",
           "order": 61
         }
-      ],
-      "titleAr": "الرسوم البيانية"
+      ]
     },
     {
       "key": "chapter_searching",
@@ -431,8 +420,7 @@
           "title": "Exercises",
           "order": 69
         }
-      ],
-      "titleAr": "البحث"
+      ]
     },
     {
       "key": "chapter_sorting",
@@ -503,8 +491,7 @@
           "title": "Exercises",
           "order": 82
         }
-      ],
-      "titleAr": "الترتيب"
+      ]
     },
     {
       "key": "chapter_divide_and_conquer",
@@ -545,8 +532,7 @@
           "title": "Exercises",
           "order": 89
         }
-      ],
-      "titleAr": "التقسيم والتغلب"
+      ]
     },
     {
       "key": "chapter_backtracking",
@@ -587,8 +573,7 @@
           "title": "Exercises",
           "order": 96
         }
-      ],
-      "titleAr": "التتبّع الرجعي"
+      ]
     },
     {
       "key": "chapter_dynamic_programming",
@@ -639,8 +624,7 @@
           "title": "Exercises",
           "order": 105
         }
-      ],
-      "titleAr": "البرمجة الديناميكية"
+      ]
     },
     {
       "key": "chapter_greedy",
@@ -681,8 +665,7 @@
           "title": "Exercises",
           "order": 112
         }
-      ],
-      "titleAr": "الخوارزميات الجشعة"
+      ]
     },
     {
       "key": "chapter_appendix",
@@ -708,8 +691,7 @@
           "title": "Glossary",
           "order": 116
         }
-      ],
-      "titleAr": "الملاحق"
+      ]
     },
     {
       "key": "chapter_reference",
@@ -720,8 +702,7 @@
           "title": "References",
           "order": 117
         }
-      ],
-      "titleAr": "المراجع"
+      ]
     }
   ]
 }

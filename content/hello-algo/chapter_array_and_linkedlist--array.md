@@ -17,30 +17,15 @@ lang: ar
 يمكننا الاختيار بين طريقتين لتهيئة المصفوفة حسب حاجتنا: مع قيم أولية أو دونها. وعندما لا تُحدَّد قيم أولية، تهيّئ معظم لغات البرمجة عناصر المصفوفة إلى $0$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="array.go"
-/* تهيئة المصفوفة */
-var arr [5]int
-// في Go، تحديد الطول ([5]int) ينشئ مصفوفة؛ وعدم تحديد الطول ([]int) ينشئ slice
-// وبما أن مصفوفات Go مصممة بحيث يُحدَّد طولها في زمن الترجمة، فلا يمكن استخدام سوى الثوابت لتحديد الطول
-// لتسهيل تنفيذ الدالة extend()، تُعامَل slices كمصفوفات فيما يلي
-nums := []int{1, 3, 2, 5, 4}
+```python title="array.py"
+# Initialize array
+arr: list[int] = [0] * 5  # [ 0, 0, 0, 0, 0 ]
+nums: list[int] = [1, 3, 2, 5, 4]
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="array.ts"
-/* تهيئة المصفوفة */
-let arr: number[] = new Array(5).fill(0);
-let nums: number[] = [1, 3, 2, 5, 4];
-```
-
-</div>
-
 ### الوصول إلى العناصر
 
 تُخزَّن عناصر المصفوفة في مساحة ذاكرة متجاورة، مما يعني أن حساب العنوان في الذاكرة لعناصر المصفوفة سهل للغاية. وبمعرفة عنوان المصفوفة في الذاكرة (عنوان أول عنصر فيها) وفهرس العنصر، يمكننا استخدام الصيغة الموضحة في الشكل أدناه لحساب عنوان العنصر في الذاكرة والوصول إليه مباشرةً.
@@ -52,37 +37,19 @@ let nums: number[] = [1, 3, 2, 5, 4];
 والوصول إلى عناصر المصفوفة عالي الكفاءة؛ إذ يمكننا الوصول العشوائي إلى أي عنصر في المصفوفة في زمن $O(1)$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الوصول العشوائي إلى عنصر */
-func randomAccess(nums []int) (randomNum int) {
-	// اختيار عدد عشوائي في الفترة [0, nums.length)
-	randomIndex := rand.Intn(len(nums))
-	// استرجاع العنصر العشوائي وإعادته
-	randomNum = nums[randomIndex]
-	return
-}
+```py
+def random_access(nums: list[int]) -> int:
+    """Access an element at a random index"""
+    # Choose a random number in the range [0, len(nums)-1]
+    random_index = random.randint(0, len(nums) - 1)
+    # Get and return the randomly selected element
+    random_num = nums[random_index]
+    return random_num
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الوصول العشوائي إلى عنصر */
-function randomAccess(nums: number[]): number {
-    // اختيار عدد عشوائي في الفترة [0, nums.length)
-    const random_index = Math.floor(Math.random() * nums.length);
-    // استرجاع العنصر العشوائي وإعادته
-    const random_num = nums[random_index];
-    return random_num;
-}
-```
-
-</div>
-
 ### إدراج العناصر
 
 تتراصّ عناصر المصفوفة معاً بإحكام في الذاكرة، ولا توجد مساحة إضافية بينها لبيانات أخرى. وكما يوضح الشكل أدناه، إذا أردنا إدراج عنصر في منتصف المصفوفة، فعلينا إزاحة جميع العناصر اللاحقة موضعاً واحداً إلى اليمين ثم إسناد القيمة عند ذلك الفهرس.
@@ -92,39 +59,19 @@ function randomAccess(nums: number[]): number {
 وجدير بالذكر أنه بما أن طول المصفوفة ثابت، فسيؤدي إدراج عنصر حتماً إلى دفع العنصر الأخير خارج المصفوفة. وسنترك حل هذه المشكلة لمناقشته في فصل «القائمة».
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* إدراج العنصر num عند الفهرس index في المصفوفة */
-func insert(nums []int, num int, index int) {
-	// إزاحة جميع العناصر عند الفهرس index وما بعده موضعاً واحداً إلى الخلف
-	for i := len(nums) - 1; i > index; i-- {
-		nums[i] = nums[i-1]
-	}
-	// إسناد num إلى العنصر عند الفهرس index
-	nums[index] = num
-}
+```py
+def insert(nums: list[int], num: int, index: int):
+    """Insert element num at index `index` in the array"""
+    # Shift all elements at and after index `index` one position to the right
+    for i in range(len(nums) - 1, index, -1):
+        nums[i] = nums[i - 1]
+    # Assign num to the element at index `index`
+    nums[index] = num
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* إدراج العنصر num عند الفهرس index في المصفوفة */
-function insert(nums: number[], num: number, index: number): void {
-    // إزاحة جميع العناصر عند الفهرس index وما بعده موضعاً واحداً إلى الخلف
-    for (let i = nums.length - 1; i > index; i--) {
-        nums[i] = nums[i - 1];
-    }
-    // إسناد num إلى العنصر عند الفهرس index
-    nums[index] = num;
-}
-```
-
-</div>
-
 ### حذف العناصر
 
 وبالمثل، وكما يوضح الشكل أدناه، لحذف العنصر عند الفهرس $i$، علينا إزاحة جميع العناصر بعد الفهرس $i$ موضعاً واحداً إلى الأمام.
@@ -134,35 +81,17 @@ function insert(nums: number[], num: number, index: number): void {
 لاحظ أنه بعد اكتمال الحذف لم يعد للعنصر الأخير الأصلي معنى، لذا لا حاجة إلى تعديله صراحةً.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حذف العنصر عند الفهرس index */
-func remove(nums []int, index int) {
-	// إزاحة جميع العناصر بعد الفهرس index موضعاً واحداً إلى الأمام
-	for i := index; i < len(nums)-1; i++ {
-		nums[i] = nums[i+1]
-	}
-}
+```py
+def remove(nums: list[int], index: int):
+    """Remove the element at index `index`"""
+    # Shift all elements after index `index` one position to the left
+    for i in range(index, len(nums) - 1):
+        nums[i] = nums[i + 1]
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* حذف العنصر عند الفهرس index */
-function remove(nums: number[], index: number): void {
-    // إزاحة جميع العناصر بعد الفهرس index موضعاً واحداً إلى الأمام
-    for (let i = index; i < nums.length - 1; i++) {
-        nums[i] = nums[i + 1];
-    }
-}
-```
-
-</div>
-
 إجمالاً، لعمليتي الإدراج والحذف في المصفوفة العيوب التالية:
 
 - **تعقيد زمني مرتفع**: متوسط التعقيد الزمني للإدراج والحذف في المصفوفة معاً هو $O(n)$، حيث $n$ طول المصفوفة.
@@ -174,51 +103,25 @@ function remove(nums: number[], index: number): void {
 في معظم لغات البرمجة، يمكننا اجتياز المصفوفة إما بالفهرس وإما بالتكرار المباشر على كل عنصر في المصفوفة:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* اجتياز المصفوفة */
-func traverse(nums []int) {
-	count := 0
-	// اجتياز المصفوفة بالفهرس
-	for i := 0; i < len(nums); i++ {
-		count += nums[i]
-	}
-	count = 0
-	// الاجتياز المباشر لعناصر المصفوفة
-	for _, num := range nums {
-		count += num
-	}
-	// اجتياز فهرس البيانات وعناصرها معاً
-	for i, num := range nums {
-		count += nums[i]
-		count += num
-	}
-}
+```py
+def traverse(nums: list[int]):
+    """Traverse the array"""
+    count = 0
+    # Traverse the array by index
+    for i in range(len(nums)):
+        count += nums[i]
+    # Iterate directly over the array elements
+    for num in nums:
+        count += num
+    # Iterate over both the indices and the elements
+    for i, num in enumerate(nums):
+        count += nums[i]
+        count += num
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* اجتياز المصفوفة */
-function traverse(nums: number[]): void {
-    let count = 0;
-    // اجتياز المصفوفة بالفهرس
-    for (let i = 0; i < nums.length; i++) {
-        count += nums[i];
-    }
-    // الاجتياز المباشر لعناصر المصفوفة
-    for (const num of nums) {
-        count += num;
-    }
-}
-```
-
-</div>
-
 ### البحث عن العناصر
 
 يتطلب البحث عن عنصر محدد في المصفوفة اجتيازها والتحقق في كل تكرار مما إذا كانت قيمة العنصر مطابقة؛ فإن تطابقت، أخرج الفهرس المقابل.
@@ -226,41 +129,18 @@ function traverse(nums: number[]): void {
 وبما أن المصفوفة بنية بيانات خطية، تُسمى عملية البحث أعلاه «البحث الخطي».
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* البحث عن العنصر المحدد في المصفوفة */
-func find(nums []int, target int) (index int) {
-	index = -1
-	for i := 0; i < len(nums); i++ {
-		if nums[i] == target {
-			index = i
-			break
-		}
-	}
-	return
-}
+```py
+def find(nums: list[int], target: int) -> int:
+    """Find a specified element in the array"""
+    for i in range(len(nums)):
+        if nums[i] == target:
+            return i
+    return -1
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* البحث عن العنصر المحدد في المصفوفة */
-function find(nums: number[], target: number): number {
-    for (let i = 0; i < nums.length; i++) {
-        if (nums[i] === target) {
-            return i;
-        }
-    }
-    return -1;
-}
-```
-
-</div>
-
 ### توسيع المصفوفات
 
 في بيئات الأنظمة المعقّدة، لا تستطيع البرامج ضمان توفر مساحة الذاكرة بعد المصفوفة، مما يجعل توسيع سعة المصفوفة غير آمن. لذلك، في معظم لغات البرمجة، **طول المصفوفة غير قابل للتغيير**.
@@ -268,45 +148,23 @@ function find(nums: number[], target: number): number {
 وإذا أردنا توسيع مصفوفة، فعلينا إنشاء مصفوفة جديدة أكبر ثم نسخ عناصر المصفوفة الأصلية إلى المصفوفة الجديدة عنصراً عنصراً. وهذه عملية بتعقيد $O(n)$، وتستهلك وقتاً طويلاً عندما تكون المصفوفة كبيرة. وتظهر الشيفرة أدناه:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* توسيع طول المصفوفة */
-func extend(nums []int, enlarge int) []int {
-	// تهيئة مصفوفة بطول موسّع
-	res := make([]int, len(nums)+enlarge)
-	// نسخ جميع عناصر المصفوفة الأصلية إلى المصفوفة الجديدة
-	for i, num := range nums {
-		res[i] = num
-	}
-	// إعادة المصفوفة الجديدة الموسّعة
-	return res
-}
+```py
+# Note that a Python list is a dynamic array and can be extended directly
+# For learning purposes, this function treats a list as a fixed-length array
+def extend(nums: list[int], enlarge: int) -> list[int]:
+    """Extend the array length"""
+    # Initialize an array with the extended length
+    res = [0] * (len(nums) + enlarge)
+    # Copy all elements from the original array to the new array
+    for i in range(len(nums)):
+        res[i] = nums[i]
+    # Return the new, extended array
+    return res
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* توسيع طول المصفوفة */
-// ملاحظة: Array في TypeScript مصفوفة ديناميكية، ويمكن توسيعها مباشرةً
-// لأغراض التعلّم، تتعامل هذه الدالة مع Array على أنها مصفوفة ثابتة الطول
-function extend(nums: number[], enlarge: number): number[] {
-    // تهيئة مصفوفة بطول موسّع
-    const res = new Array(nums.length + enlarge).fill(0);
-    // نسخ جميع عناصر المصفوفة الأصلية إلى المصفوفة الجديدة
-    for (let i = 0; i < nums.length; i++) {
-        res[i] = nums[i];
-    }
-    // إعادة المصفوفة الجديدة الموسّعة
-    return res;
-}
-```
-
-</div>
-
 ## مزايا المصفوفات وحدودها
 
 تُخزَّن المصفوفات في مساحة ذاكرة متجاورة بعناصر من النوع نفسه. ويحتوي هذا الأسلوب على معلومات مسبقة غنية يمكن للنظام استخدامها لتحسين كفاءة عمليات بنى البيانات.

@@ -60,58 +60,26 @@ The code runs for at most $n$ rounds, **so the time complexity is $O(n)$**.
 Variables $i$, $j$, and $res$ use only a constant amount of extra space, **so the space complexity is $O(1)$**.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Max capacity: Greedy algorithm */
-func maxCapacity(ht []int) int {
-	// Initialize i, j to be at both ends of the array
-	i, j := 0, len(ht)-1
-	// Initial max capacity is 0
-	res := 0
-	// Loop for greedy selection until the two boards meet
-	for i < j {
-		// Update max capacity
-		capacity := int(math.Min(float64(ht[i]), float64(ht[j]))) * (j - i)
-		res = int(math.Max(float64(res), float64(capacity)))
-		// Move the shorter board inward
-		if ht[i] < ht[j] {
-			i++
-		} else {
-			j--
-		}
-	}
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Max capacity: Greedy algorithm */
-function maxCapacity(ht: number[]): number {
-    // Initialize i, j to be at both ends of the array
-    let i = 0,
-        j = ht.length - 1;
-    // Initial max capacity is 0
-    let res = 0;
-    // Loop for greedy selection until the two boards meet
-    while (i < j) {
-        // Update max capacity
-        const cap: number = Math.min(ht[i], ht[j]) * (j - i);
-        res = Math.max(res, cap);
-        // Move the shorter board inward
-        if (ht[i] < ht[j]) {
-            i += 1;
-        } else {
-            j -= 1;
-        }
-    }
-    return res;
-}
+```py
+def max_capacity(ht: list[int]) -> int:
+    """Maximum container capacity: greedy algorithm"""
+    # Initialize i and j at opposite ends of the array
+    i, j = 0, len(ht) - 1
+    # The initial maximum capacity is 0
+    res = 0
+    # Repeatedly make greedy choices until the two sides meet
+    while i < j:
+        # Update the maximum capacity
+        cap = min(ht[i], ht[j]) * (j - i)
+        res = max(res, cap)
+        # Move the shorter side inward
+        if ht[i] < ht[j]:
+            i += 1
+        else:
+            j -= 1
+    return res
 ```
 
 </div>

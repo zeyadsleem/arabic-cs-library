@@ -52,31 +52,14 @@ lang: ar
 بعد فهم المعلومات أعلاه، يمكننا ملء الفراغات في الشيفرة القالبية. ولاختصار الشيفرة الإجمالية، لا ننفّذ كل دالة في القالب على حدة، بل ننشرها داخل الدالة `backtrack()`:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* التباديل I */
-func permutationsI(nums []int) [][]int {
-	res := make([][]int, 0)
-	state := make([]int, 0)
-	selected := make([]bool, len(nums))
-	backtrackI(&state, &nums, &selected, &res)
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* التباديل I */
-function permutationsI(nums: number[]): number[][] {
-    const res: number[][] = [];
-    backtrack([], nums, Array(nums.length).fill(false), res);
-    return res;
-}
+```py
+def permutations_i(nums: list[int]) -> list[list[int]]:
+    """Permutations I"""
+    res = []
+    backtrack(state=[], choices=nums, selected=[False] * len(nums), res=res)
+    return res
 ```
 
 </div>
@@ -114,6 +97,19 @@ function permutationsI(nums: number[]): number[][] {
 بافتراض أن العناصر مختلفة مثنى مثنى، فإن عدد تباديل $n$ عنصراً هو $n!$ (المضروب). وعند تسجيل النتائج نحتاج إلى نسخ قائمة طولها $n$، وهو ما يستغرق زمن $O(n)$. **لذلك يكون التعقيد الزمني $O(n! \cdot n)$**.
 
 أقصى عمق للتعاود هو $n$، وهو ما يستهلك مساحة إطارات المكدس $O(n)$. وتستهلك `selected` مساحة $O(n)$. ويوجد في الوقت نفسه $n$ مجموعة `duplicated` على الأكثر، وهو ما يستهلك مساحة $O(n^2)$. **لذلك يكون التعقيد المكاني $O(n^2)$**.
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def permutations_ii(nums: list[int]) -> list[list[int]]:
+    """Permutations II"""
+    res = []
+    backtrack(state=[], choices=nums, selected=[False] * len(nums), res=res)
+    return res
+```
+
+</div>
 
 ### مقارنة طريقتي التشذيب
 

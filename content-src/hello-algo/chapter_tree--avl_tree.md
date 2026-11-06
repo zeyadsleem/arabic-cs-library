@@ -27,37 +27,16 @@ An AVL tree is both a binary search tree and a balanced binary tree, simultaneou
 Since the operations related to AVL trees require obtaining node heights, we need to add a `height` variable to the node class:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* AVL tree node */
-type TreeNode struct {
-    Val    int       // Node value
-    Height int       // Node height
-    Left   *TreeNode // Left child reference
-    Right  *TreeNode // Right child reference
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* AVL tree node */
-class TreeNode {
-    val: number;            // Node value
-    height: number;         // Node height
-    left: TreeNode | null;  // Left child pointer
-    right: TreeNode | null; // Right child pointer
-    constructor(val?: number, height?: number, left?: TreeNode | null, right?: TreeNode | null) {
-        this.val = val === undefined ? 0 : val;
-        this.height = height === undefined ? 0 : height;
-        this.left = left === undefined ? null : left;
-        this.right = right === undefined ? null : right;
-    }
-}
+```python title=""
+class TreeNode:
+    """AVL tree node"""
+    def __init__(self, val: int):
+        self.val: int = val                 # Node value
+        self.height: int = 0                # Node height
+        self.left: TreeNode | None = None   # Left child reference
+        self.right: TreeNode | None = None  # Right child reference
 ```
 
 </div>
@@ -65,20 +44,13 @@ class TreeNode {
 The "node height" refers to the distance from that node to its farthest leaf node, i.e., the number of edges on the path. It is important to note that the height of a leaf node is $0$, and the height of a null node is $-1$. We will create two utility functions for getting and updating the height of a node:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Update node height */
-func (t *aVLTree) updateHeight(node *TreeNode) {
-	lh := t.height(node.Left)
-	rh := t.height(node.Right)
-	// Node height equals the height of the tallest subtree + 1
-	if lh > rh {
-		node.Height = lh + 1
-	} else {
-		node.Height = rh + 1
-	}
-}
+```py
+    def update_height(self, node: TreeNode | None):
+        """Update the node height"""
+        # The node height equals the height of its taller subtree + 1
+        node.height = max([self.height(node.left), self.height(node.right)]) + 1
 ```
 
 </div>
@@ -88,18 +60,16 @@ func (t *aVLTree) updateHeight(node *TreeNode) {
 The <u>balance factor</u> of a node is defined as the height of the node's left subtree minus the height of its right subtree, and the balance factor of a null node is defined as $0$. We also encapsulate the function to obtain the node's balance factor for convenient subsequent use:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Get balance factor */
-func (t *aVLTree) balanceFactor(node *TreeNode) int {
-	// Empty node balance factor is 0
-	if node == nil {
-		return 0
-	}
-	// Node balance factor = left subtree height - right subtree height
-	return t.height(node.Left) - t.height(node.Right)
-}
+```py
+    def balance_factor(self, node: TreeNode | None) -> int:
+        """Get the balance factor"""
+        # An empty subtree has balance factor 0
+        if node is None:
+            return 0
+        # Node balance factor = left subtree height - right subtree height
+        return self.height(node.left) - self.height(node.right)
 ```
 
 </div>
@@ -127,22 +97,21 @@ As shown in the figure below, when the `child` node has a right child (denoted a
 "Right rotation" is a figurative term; in practice, it is achieved by modifying node pointers, as shown in the following code:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Right rotation operation */
-func (t *aVLTree) rightRotate(node *TreeNode) *TreeNode {
-	child := node.Left
-	grandChild := child.Right
-	// Using child as pivot, rotate node to the right
-	child.Right = node
-	node.Left = grandChild
-	// Update node height
-	t.updateHeight(node)
-	t.updateHeight(child)
-	// Return root node of subtree after rotation
-	return child
-}
+```py
+    def right_rotate(self, node: TreeNode | None) -> TreeNode | None:
+        """Right rotation"""
+        child = node.left
+        grand_child = child.right
+        # Rotate node to the right around child
+        child.right = node
+        node.left = grand_child
+        # Update the node height
+        self.update_height(node)
+        self.update_height(child)
+        # Return the root of the rotated subtree
+        return child
 ```
 
 </div>
@@ -160,22 +129,21 @@ Similarly, as shown in the figure below, when the `child` node has a left child 
 It can be observed that **right rotation and left rotation operations are mirror symmetric in logic, and the two imbalance cases they solve are also symmetric**. Based on symmetry, we only need to replace all `left` in the right rotation implementation code with `right`, and all `right` with `left`, to obtain the left rotation implementation code:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Left rotation operation */
-func (t *aVLTree) leftRotate(node *TreeNode) *TreeNode {
-	child := node.Right
-	grandChild := child.Left
-	// Using child as pivot, rotate node to the left
-	child.Left = node
-	node.Right = grandChild
-	// Update node height
-	t.updateHeight(node)
-	t.updateHeight(child)
-	// Return root node of subtree after rotation
-	return child
-}
+```py
+    def left_rotate(self, node: TreeNode | None) -> TreeNode | None:
+        """Left rotation"""
+        child = node.right
+        grand_child = child.left
+        # Rotate node to the left around child
+        child.left = node
+        node.right = grand_child
+        # Update the node height
+        self.update_height(node)
+        self.update_height(child)
+        # Return the root of the rotated subtree
+        return child
 ```
 
 </div>
@@ -212,39 +180,33 @@ As shown in the table below, we determine which case the unbalanced node belongs
 For ease of use, we encapsulate the rotation operations into a function. **With this function, we can perform rotations for various imbalance situations, restoring balance to unbalanced nodes**. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Perform rotation operation to restore balance to this subtree */
-func (t *aVLTree) rotate(node *TreeNode) *TreeNode {
-	// Get balance factor of node
-	// Go recommends short variables, here bf refers to t.balanceFactor
-	bf := t.balanceFactor(node)
-	// Left-leaning tree
-	if bf > 1 {
-		if t.balanceFactor(node.Left) >= 0 {
-			// Right rotation
-			return t.rightRotate(node)
-		} else {
-			// First left rotation then right rotation
-			node.Left = t.leftRotate(node.Left)
-			return t.rightRotate(node)
-		}
-	}
-	// Right-leaning tree
-	if bf < -1 {
-		if t.balanceFactor(node.Right) <= 0 {
-			// Left rotation
-			return t.leftRotate(node)
-		} else {
-			// First right rotation then left rotation
-			node.Right = t.rightRotate(node.Right)
-			return t.leftRotate(node)
-		}
-	}
-	// Balanced tree, no rotation needed, return directly
-	return node
-}
+```py
+    def rotate(self, node: TreeNode | None) -> TreeNode | None:
+        """Perform rotations to restore balance in this subtree"""
+        # Get the balance factor of node
+        balance_factor = self.balance_factor(node)
+        # Left-heavy tree
+        if balance_factor > 1:
+            if self.balance_factor(node.left) >= 0:
+                # Rotate right
+                return self.right_rotate(node)
+            else:
+                # Rotate left, then right
+                node.left = self.left_rotate(node.left)
+                return self.right_rotate(node)
+        # Right-heavy tree
+        elif balance_factor < -1:
+            if self.balance_factor(node.right) <= 0:
+                # Rotate left
+                return self.left_rotate(node)
+            else:
+                # Rotate right, then left
+                node.right = self.right_rotate(node.right)
+                return self.left_rotate(node)
+        # The tree is balanced; return without rotating
+        return node
 ```
 
 </div>
@@ -256,30 +218,25 @@ func (t *aVLTree) rotate(node *TreeNode) *TreeNode {
 The node insertion operation in AVL trees is similar in principle to that in binary search trees. The only difference is that after inserting a node in an AVL tree, a series of unbalanced nodes may appear on the path from that node to the root. Therefore, **we need to start from this node and perform rotation operations from bottom to top, restoring balance to all unbalanced nodes**. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Recursively insert node (helper function) */
-func (t *aVLTree) insertHelper(node *TreeNode, val int) *TreeNode {
-	if node == nil {
-		return NewTreeNode(val)
-	}
-	/* 1. Find insertion position and insert node */
-	if val < node.Val.(int) {
-		node.Left = t.insertHelper(node.Left, val)
-	} else if val > node.Val.(int) {
-		node.Right = t.insertHelper(node.Right, val)
-	} else {
-		// Duplicate node not inserted, return directly
-		return node
-	}
-	// Update node height
-	t.updateHeight(node)
-	/* 2. Perform rotation operation to restore balance to this subtree */
-	node = t.rotate(node)
-	// Return root node of subtree
-	return node
-}
+```py
+    def insert_helper(self, node: TreeNode | None, val: int) -> TreeNode:
+        """Insert a node recursively (helper method)"""
+        if node is None:
+            return TreeNode(val)
+        # 1. Find the insertion position and insert the node
+        if val < node.val:
+            node.left = self.insert_helper(node.left, val)
+        elif val > node.val:
+            node.right = self.insert_helper(node.right, val)
+        else:
+            # Return without inserting a duplicate node
+            return node
+        # Update the node height
+        self.update_height(node)
+        # 2. Perform rotations to restore balance in this subtree
+        return self.rotate(node)
 ```
 
 </div>
@@ -289,49 +246,38 @@ func (t *aVLTree) insertHelper(node *TreeNode, val int) *TreeNode {
 Similarly, on the basis of the binary search tree's node removal method, rotation operations need to be performed from bottom to top to restore balance to all unbalanced nodes. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Recursively remove node (helper function) */
-func (t *aVLTree) removeHelper(node *TreeNode, val int) *TreeNode {
-	if node == nil {
-		return nil
-	}
-	/* 1. Find node and delete */
-	if val < node.Val.(int) {
-		node.Left = t.removeHelper(node.Left, val)
-	} else if val > node.Val.(int) {
-		node.Right = t.removeHelper(node.Right, val)
-	} else {
-		if node.Left == nil || node.Right == nil {
-			child := node.Left
-			if node.Right != nil {
-				child = node.Right
-			}
-			if child == nil {
-				// Number of child nodes = 0, delete node directly and return
-				return nil
-			} else {
-				// Number of child nodes = 1, delete node directly
-				node = child
-			}
-		} else {
-			// Number of child nodes = 2, delete the next node in inorder traversal and replace current node with it
-			temp := node.Right
-			for temp.Left != nil {
-				temp = temp.Left
-			}
-			node.Right = t.removeHelper(node.Right, temp.Val.(int))
-			node.Val = temp.Val
-		}
-	}
-	// Update node height
-	t.updateHeight(node)
-	/* 2. Perform rotation operation to restore balance to this subtree */
-	node = t.rotate(node)
-	// Return root node of subtree
-	return node
-}
+```py
+    def remove_helper(self, node: TreeNode | None, val: int) -> TreeNode | None:
+        """Remove a node recursively (helper method)"""
+        if node is None:
+            return None
+        # 1. Find and remove the node
+        if val < node.val:
+            node.left = self.remove_helper(node.left, val)
+        elif val > node.val:
+            node.right = self.remove_helper(node.right, val)
+        else:
+            if node.left is None or node.right is None:
+                child = node.left or node.right
+                # Number of children = 0: remove node and return
+                if child is None:
+                    return None
+                # Number of children = 1: remove node directly
+                else:
+                    node = child
+            else:
+                # Number of children = 2: remove the inorder successor and use its value to replace the current node value
+                temp = node.right
+                while temp.left is not None:
+                    temp = temp.left
+                node.right = self.remove_helper(node.right, temp.val)
+                node.val = temp.val
+        # Update the node height
+        self.update_height(node)
+        # 2. Perform rotations to restore balance in this subtree
+        return self.rotate(node)
 ```
 
 </div>

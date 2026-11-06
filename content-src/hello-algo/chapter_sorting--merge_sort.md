@@ -30,41 +30,20 @@ The recursive order of merge sort is consistent with the post-order traversal of
 The implementation of merge sort is shown in the code below. Note that the interval to be merged in `nums` is `[left, right]`, while the corresponding interval in `tmp` is `[0, right - left]`.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Merge sort */
-func mergeSort(nums []int, left, right int) {
-	// Termination condition
-	if left >= right {
-		return
-	}
-	// Divide and conquer stage
-	mid := left + (right - left) / 2
-	mergeSort(nums, left, mid)
-	mergeSort(nums, mid+1, right)
-	// Merge stage
-	merge(nums, left, mid, right)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Merge sort */
-function mergeSort(nums: number[], left: number, right: number): void {
-    // Termination condition
-    if (left >= right) return; // Terminate recursion when subarray length is 1
-    // Divide and conquer stage
-    let mid = Math.floor(left + (right - left) / 2); // Calculate midpoint
-    mergeSort(nums, left, mid); // Recursively process the left subarray
-    mergeSort(nums, mid + 1, right); // Recursively process the right subarray
-    // Merge stage
-    merge(nums, left, mid, right);
-}
+```py
+def merge_sort(nums: list[int], left: int, right: int):
+    """Merge sort"""
+    # Base case
+    if left >= right:
+        return  # Stop recursing when the subarray has at most one element
+    # Divide phase
+    mid = (left + right) // 2 # Calculate the midpoint
+    merge_sort(nums, left, mid)  # Recurse on the left subarray
+    merge_sort(nums, mid + 1, right)  # Recurse on the right subarray
+    # Merge phase
+    merge(nums, left, mid, right)
 ```
 
 </div>

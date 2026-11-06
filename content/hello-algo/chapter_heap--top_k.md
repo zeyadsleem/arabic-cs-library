@@ -36,6 +36,27 @@ lang: ar
 
 ![الترتيب لإيجاد أكبر k عنصر](/images/hello-algo/chapter_heap--top_k_sorting.png)
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def top_k_heap(nums: list[int], k: int) -> list[int]:
+    """Use a heap to find the k largest elements in an array"""
+    # Initialize a min heap
+    heap = []
+    # Push the first k array elements onto the heap
+    for i in range(k):
+        heapq.heappush(heap, nums[i])
+    # Starting with element k+1, keep the heap size at k
+    for i in range(k, len(nums)):
+        # If the current element is larger than the heap top, pop the top element and push the current element
+        if nums[i] > heap[0]:
+            heapq.heappop(heap)
+            heapq.heappush(heap, nums[i])
+    return heap
+```
+
+</div>
 ## الطريقة 3: الكومة
 
 يمكننا حل مسألة أعلى k بكفاءة أكبر باستخدام كومة، كما يوضح الشكل أدناه.

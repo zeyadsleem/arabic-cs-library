@@ -51,26 +51,17 @@ lang: ar
 وبعبارة أخرى، **توفر أنواع البيانات الأساسية «نوع المحتوى» للبيانات، بينما توفر بنى البيانات «طريقة التنظيم» للبيانات**. وعلى سبيل المثال، في الشيفرة التالية نستخدم بنية البيانات نفسها (المصفوفة) لتخزين أنواع بيانات أساسية مختلفة وتمثيلها، بما فيها `int` و`float` و`char` و`bool` وغيرها.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-// هيّئ المصفوفات باستخدام أنواع بيانات أساسية متنوعة
-var numbers = [5]int{}
-var decimals = [5]float64{}
-var characters = [5]byte{}
-var bools = [5]bool{}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-// هيّئ المصفوفات باستخدام أنواع بيانات أساسية متنوعة
-const numbers: number[] = [];
-const characters: string[] = [];
-const bools: boolean[] = [];
+```python title=""
+# Initialize arrays using various basic data types
+numbers: list[int] = [0] * 5
+decimals: list[float] = [0.0] * 5
+# In Python, characters are actually strings of length 1
+characters: list[str] = ['0'] * 5
+bools: list[bool] = [False] * 5
+# Python lists can freely store various basic data types and object references
+data = [0, 0.0, 'a', False, ListNode(0)]
 ```
 
 </div>

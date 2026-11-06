@@ -29,66 +29,34 @@ lang: ar
 عادةً يمكننا استخدام فئة المكدس المدمجة التي توفرها لغة البرمجة مباشرة. ومع ذلك، قد لا توفر بعض اللغات فئة مكدس مخصصة. في هذه الحالات، يمكننا استخدام "المصفوفة" أو "القائمة المترابطة" في اللغة كمكدس، بشرط تجنّب استخدام العمليات غير المتعلقة بسلوك المكدس.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="stack_test.go"
-/* تهيئة المكدس */
-// في Go، يُنصح باستخدام Slice كمكدس
-var stack []int
+```python title="stack.py"
+# Initialize stack
+# Python does not have a built-in stack class, can use list as a stack
+stack: list[int] = []
 
-/* دفع العناصر */
-stack = append(stack, 1)
-stack = append(stack, 3)
-stack = append(stack, 2)
-stack = append(stack, 5)
-stack = append(stack, 4)
+# Push elements
+stack.append(1)
+stack.append(3)
+stack.append(2)
+stack.append(5)
+stack.append(4)
 
-/* الاطّلاع على العنصر العلوي */
-peek := stack[len(stack)-1]
+# Access top element
+peek: int = stack[-1]
 
-/* سحب العنصر */
-pop := stack[len(stack)-1]
-stack = stack[:len(stack)-1]
+# Pop element
+pop: int = stack.pop()
 
-/* الحصول على طول المكدس */
-size := len(stack)
+# Get stack length
+size: int = len(stack)
 
-/* التحقق مما إذا كان فارغاً */
-isEmpty := len(stack) == 0
+# Check if empty
+is_empty: bool = len(stack) == 0
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="stack.ts"
-/* تهيئة المكدس */
-// لا تحتوي TypeScript على فئة مكدس مدمجة، ويمكن استخدام Array كمكدس
-const stack: number[] = [];
-
-/* دفع العناصر */
-stack.push(1);
-stack.push(3);
-stack.push(2);
-stack.push(5);
-stack.push(4);
-
-/* الاطّلاع على العنصر العلوي */
-const peek = stack[stack.length - 1];
-
-/* سحب العنصر */
-const pop = stack.pop();
-
-/* الحصول على طول المكدس */
-const size = stack.length;
-
-/* التحقق مما إذا كان فارغاً */
-const is_empty = stack.length === 0;
-```
-
-</div>
-
 ## تنفيذ المكدس
 
 لفهم كيفية عمل المكدس فهماً أعمق، دعنا نحاول تنفيذ فئة مكدس بأنفسنا.
@@ -104,66 +72,57 @@ const is_empty = stack.length === 0;
 فيما يلي شيفرة نموذجية لتنفيذ مكدس قائم على قائمة مترابطة:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* مكدس قائم على تنفيذ قائمة مترابطة */
-class LinkedListStack {
-    private stackPeek: ListNode | null; // استخدم العقدة الرأسية كقمة للمكدس
-    private stkSize: number = 0; // طول المكدس
+```py
+class LinkedListStack:
+    """Stack implemented with a linked list"""
 
-    constructor() {
-        this.stackPeek = null;
-    }
+    def __init__(self):
+        """Constructor"""
+        self._peek: ListNode | None = None
+        self._size: int = 0
 
-    /* الحصول على طول المكدس */
-    get size(): number {
-        return this.stkSize;
-    }
+    def size(self) -> int:
+        """Get the stack size"""
+        return self._size
 
-    /* التحقق مما إذا كان المكدس فارغاً */
-    isEmpty(): boolean {
-        return this.size === 0;
-    }
+    def is_empty(self) -> bool:
+        """Check whether the stack is empty"""
+        return self._size == 0
 
-    /* الدفع */
-    push(num: number): void {
-        const node = new ListNode(num);
-        node.next = this.stackPeek;
-        this.stackPeek = node;
-        this.stkSize++;
-    }
+    def push(self, val: int):
+        """Push"""
+        node = ListNode(val)
+        node.next = self._peek
+        self._peek = node
+        self._size += 1
 
-    /* السحب */
-    pop(): number {
-        const num = this.peek();
-        if (!this.stackPeek) throw new Error('Stack is empty');
-        this.stackPeek = this.stackPeek.next;
-        this.stkSize--;
-        return num;
-    }
+    def pop(self) -> int:
+        """Pop"""
+        num = self.peek()
+        self._peek = self._peek.next
+        self._size -= 1
+        return num
 
-    /* إعادة القائمة للطباعة */
-    peek(): number {
-        if (!this.stackPeek) throw new Error('Stack is empty');
-        return this.stackPeek.val;
-    }
+    def peek(self) -> int:
+        """Access the top element"""
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self._peek.val
 
-    /* تحويل القائمة المترابطة إلى Array وإعادتها */
-    toArray(): number[] {
-        let node = this.stackPeek;
-        const res = new Array<number>(this.size);
-        for (let i = res.length - 1; i >= 0; i--) {
-            res[i] = node!.val;
-            node = node!.next;
-        }
-        return res;
-    }
-}
+    def to_list(self) -> list[int]:
+        """Convert to a list for printing"""
+        arr = []
+        node = self._peek
+        while node:
+            arr.append(node.val)
+            node = node.next
+        arr.reverse()
+        return arr
 ```
 
 </div>
-
 ### التنفيذ بمصفوفة
 
 عند تنفيذ مكدس باستخدام مصفوفة، يمكننا اعتبار نهاية المصفوفة قمةَ المكدس. وكما يظهر في الشكل التالي، تقابل عمليتا الدفع والسحب إضافة عناصر وحذفها عند نهاية المصفوفة، وكلتاهما بتعقيد زمني $O(1)$.
@@ -171,52 +130,46 @@ class LinkedListStack {
 بما أن العناصر المدفوعة إلى المكدس قد تزداد باستمرار، يمكننا استخدام مصفوفة ديناميكية، مما يلغي الحاجة إلى معالجة توسيع المصفوفة بأنفسنا. وإليك الشيفرة النموذجية:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* مكدس قائم على تنفيذ مصفوفة */
-class ArrayStack {
-    private stack: number[];
-    constructor() {
-        this.stack = [];
-    }
+```py
+class ArrayStack:
+    """Stack implemented with an array"""
 
-    /* الحصول على طول المكدس */
-    get size(): number {
-        return this.stack.length;
-    }
+    def __init__(self):
+        """Constructor"""
+        self._stack: list[int] = []
 
-    /* التحقق مما إذا كان المكدس فارغاً */
-    isEmpty(): boolean {
-        return this.stack.length === 0;
-    }
+    def size(self) -> int:
+        """Get the stack size"""
+        return len(self._stack)
 
-    /* الدفع */
-    push(num: number): void {
-        this.stack.push(num);
-    }
+    def is_empty(self) -> bool:
+        """Check whether the stack is empty"""
+        return self.size() == 0
 
-    /* السحب */
-    pop(): number | undefined {
-        if (this.isEmpty()) throw new Error('Stack is empty');
-        return this.stack.pop();
-    }
+    def push(self, item: int):
+        """Push"""
+        self._stack.append(item)
 
-    /* إعادة القائمة للطباعة */
-    top(): number | undefined {
-        if (this.isEmpty()) throw new Error('Stack is empty');
-        return this.stack[this.stack.length - 1];
-    }
+    def pop(self) -> int:
+        """Pop"""
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self._stack.pop()
 
-    /* إعادة Array */
-    toArray() {
-        return this.stack;
-    }
-}
+    def peek(self) -> int:
+        """Access the top element"""
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self._stack[-1]
+
+    def to_list(self) -> list[int]:
+        """Return a list for printing"""
+        return self._stack
 ```
 
 </div>
-
 ## مقارنة بين التنفيذين
 
 **العمليات المدعومة**

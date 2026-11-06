@@ -49,28 +49,14 @@ lang: ar
 في شيفرة التنفيذ، نعرّف دالة تعاودية `dfs()` لحل المسألة $f(i, j)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* البحث الثنائي */
-func binarySearch(nums []int, target int) int {
-	n := len(nums)
-	return dfs(nums, target, 0, n-1)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* البحث الثنائي */
-function binarySearch(nums: number[], target: number): number {
-    const n = nums.length;
-    // حل المسألة f(0, n-1)
-    return dfs(nums, target, 0, n - 1);
-}
+```py
+def binary_search(nums: list[int], target: int) -> int:
+    """Binary search"""
+    n = len(nums)
+    # Solve problem f(0, n-1)
+    return dfs(nums, target, 0, n - 1)
 ```
 
 </div>

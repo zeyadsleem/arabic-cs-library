@@ -23,43 +23,17 @@ lang: ar
 وكما توضح الشيفرة التالية، لا تحتوي عقدة القائمة المترابطة `ListNode` على قيمة فحسب، بل على مرجع (مؤشر) إضافي أيضاً. لذلك **تشغل القوائم المترابطة مساحة ذاكرة أكبر من المصفوفات عند تخزين الكمية نفسها من البيانات**.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* بنية عقدة القائمة المترابطة */
-type ListNode struct {
-    Val  int       // قيمة العقدة
-    Next *ListNode // مؤشر إلى العقدة التالية
-}
-
-// NewListNode مُنشئ، ينشئ قائمة مترابطة جديدة
-func NewListNode(val int) *ListNode {
-    return &ListNode{
-        Val:  val,
-        Next: nil,
-    }
-}
+```python title=""
+class ListNode:
+    """Linked list node class"""
+    def __init__(self, val: int):
+        self.val: int = val               # Node value
+        self.next: ListNode | None = None # Reference to the next node
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* فئة عقدة القائمة المترابطة */
-class ListNode {
-    val: number;
-    next: ListNode | null;
-    constructor(val?: number, next?: ListNode | null) {
-        this.val = val === undefined ? 0 : val;        // قيمة العقدة
-        this.next = next === undefined ? null : next;  // مرجع إلى العقدة التالية
-    }
-}
-```
-
-</div>
-
 ## العمليات الشائعة على القوائم المترابطة
 
 ### تهيئة قائمة مترابطة
@@ -67,45 +41,24 @@ class ListNode {
 يتضمن بناء قائمة مترابطة خطوتين: أولاً تهيئة كل كائن عقدة؛ وثانياً إنشاء علاقات المرجع بين العقد. وبعد اكتمال التهيئة، يمكننا اجتياز جميع العقد بدءاً من العقدة الرأسية للقائمة المترابطة عبر المرجع `next`.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="linked_list.go"
-/* هيّئ القائمة المترابطة 1 -> 3 -> 2 -> 5 -> 4 */
-// هيّئ كل عقدة
-n0 := NewListNode(1)
-n1 := NewListNode(3)
-n2 := NewListNode(2)
-n3 := NewListNode(5)
-n4 := NewListNode(4)
-// أنشئ المراجع بين العقد
-n0.Next = n1
-n1.Next = n2
-n2.Next = n3
-n3.Next = n4
+```python title="linked_list.py"
+# Initialize linked list 1 -> 3 -> 2 -> 5 -> 4
+# Initialize each node
+n0 = ListNode(1)
+n1 = ListNode(3)
+n2 = ListNode(2)
+n3 = ListNode(5)
+n4 = ListNode(4)
+# Build references between nodes
+n0.next = n1
+n1.next = n2
+n2.next = n3
+n3.next = n4
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="linked_list.ts"
-/* هيّئ القائمة المترابطة 1 -> 3 -> 2 -> 5 -> 4 */
-// هيّئ كل عقدة
-const n0 = new ListNode(1);
-const n1 = new ListNode(3);
-const n2 = new ListNode(2);
-const n3 = new ListNode(5);
-const n4 = new ListNode(4);
-// أنشئ المراجع بين العقد
-n0.next = n1;
-n1.next = n2;
-n2.next = n3;
-n3.next = n4;
-```
-
-</div>
-
 المصفوفة متغير واحد؛ فمثلاً تحتوي المصفوفة `nums` على العناصر `nums[0]` و`nums[1]` وهكذا. أما القائمة المترابطة فتتكوّن من كائنات عقد مستقلة متعددة. **ونستخدم عادةً العقدة الرأسية ممثلاً للقائمة المترابطة بأكملها**؛ على سبيل المثال، يمكن الإشارة إلى القائمة المترابطة في الشيفرة أعلاه بالقائمة المترابطة `n0`.
 
 ### إدراج عقدة
@@ -117,19 +70,17 @@ n3.next = n4;
 ![مثال على إدراج عقدة في قائمة مترابطة](/images/hello-algo/chapter_array_and_linkedlist--linkedlist_insert_node.png)
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* أدرج العقدة P بعد العقدة n0 في القائمة المترابطة */
-function insert(n0: ListNode, P: ListNode): void {
-    const n1 = n0.next;
-    P.next = n1;
-    n0.next = P;
-}
+```py
+def insert(n0: ListNode, P: ListNode):
+    """Insert node P after node n0 in the linked list"""
+    n1 = n0.next
+    P.next = n1
+    n0.next = P
 ```
 
 </div>
-
 ### حذف عقدة
 
 وكما يوضح الشكل أدناه، فإن حذف عقدة في قائمة مترابطة مريح جداً أيضاً. **لا نحتاج إلا إلى تغيير مرجع عقدة واحدة (مؤشرها)**.
@@ -139,87 +90,58 @@ function insert(n0: ListNode, P: ListNode): void {
 ![حذف عقدة من قائمة مترابطة](/images/hello-algo/chapter_array_and_linkedlist--linkedlist_remove_node.png)
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* احذف العقدة الأولى بعد العقدة n0 في القائمة المترابطة */
-function remove(n0: ListNode): void {
-    if (!n0.next) {
-        return;
-    }
-    // n0 -> P -> n1
-    const P = n0.next;
-    const n1 = P.next;
-    n0.next = n1;
-}
+```py
+def remove(n0: ListNode):
+    """Remove the first node after node n0 in the linked list"""
+    if not n0.next:
+        return
+    # n0 -> P -> n1
+    P = n0.next
+    n1 = P.next
+    n0.next = n1
 ```
 
 </div>
-
 ### الوصول إلى عقدة
 
 **الوصول إلى العقد في القائمة المترابطة أقل كفاءة**. وكما ذُكر في القسم السابق، يمكننا الوصول إلى أي عنصر في مصفوفة في زمن $O(1)$. أما القوائم المترابطة فليس الأمر كذلك فيها. إذ يحتاج البرنامج إلى البدء من العقدة الرأسية والاجتياز واحداً واحداً حتى العثور على العقدة الهدف. أي إن الوصول إلى العقدة رقم $i$ في قائمة مترابطة يتطلب $i - 1$ تكرار، بتعقيد زمني $O(n)$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* اوصل إلى العقدة عند الفهرس index في القائمة المترابطة */
-func access(head *ListNode, index int) *ListNode {
-	for i := 0; i < index; i++ {
-		if head == nil {
-			return nil
-		}
-		head = head.Next
-	}
-	return head
-}
+```py
+def access(head: ListNode, index: int) -> ListNode | None:
+    """Access the node at index `index` in the linked list"""
+    for _ in range(index):
+        if not head:
+            return None
+        head = head.next
+    return head
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* اوصل إلى العقدة عند الفهرس index في القائمة المترابطة */
-function access(head: ListNode | null, index: number): ListNode | null {
-    for (let i = 0; i < index; i++) {
-        if (!head) {
-            return null;
-        }
-        head = head.next;
-    }
-    return head;
-}
-```
-
-</div>
-
 ### البحث عن عقدة
 
 اجتَز القائمة المترابطة للعثور على عقدة قيمتها `target`، وأخرج فهرس تلك العقدة في القائمة المترابطة. وهذه العملية بحث خطي أيضاً. وتُعرض الشيفرة أدناه:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* ابحث عن أول عقدة قيمتها target في القائمة المترابطة */
-function find(head: ListNode | null, target: number): number {
-    let index = 0;
-    while (head !== null) {
-        if (head.val === target) {
-            return index;
-        }
-        head = head.next;
-        index += 1;
-    }
-    return -1;
-}
+```py
+def find(head: ListNode, target: int) -> int:
+    """Find the first node with value target in the linked list"""
+    index = 0
+    while head:
+        if head.val == target:
+            return index
+        head = head.next
+        index += 1
+    return -1
 ```
 
 </div>
-
 ## المصفوفات مقابل القوائم المترابطة
 
 يلخص الجدول أدناه خصائص المصفوفات والقوائم المترابطة ويقارن كفاءة عملياتهما. ولأنهما يستخدمان استراتيجيتي تخزين متعاكستين، فإن خصائصهما المختلفة وكفاءة عملياتهما تظهر أيضاً سمات متباينة.
@@ -244,47 +166,18 @@ function find(head: ListNode | null, target: number): number {
 - **القائمة المترابطة المزدوجة**: بالمقارنة مع القائمة المترابطة الأحادية، تسجّل القائمة المترابطة المزدوجة المراجع في الاتجاهين. ويتضمن تعريف عقدة القائمة المترابطة المزدوجة مرجعاً إلى العقدة اللاحقة (العقدة التالية) ومرجعاً إلى العقدة السابقة. وبالمقارنة مع القائمة المترابطة الأحادية، فإن القائمة المترابطة المزدوجة أكثر مرونة ويمكنها اجتياز القائمة المترابطة في الاتجاهين، لكنها تتطلب مساحة ذاكرة أكبر أيضاً.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* بنية عقدة القائمة المترابطة المزدوجة */
-type DoublyListNode struct {
-    Val  int             // قيمة العقدة
-    Next *DoublyListNode // مؤشر إلى العقدة اللاحقة
-    Prev *DoublyListNode // مؤشر إلى العقدة السابقة
-}
-
-// NewDoublyListNode التهيئة
-func NewDoublyListNode(val int) *DoublyListNode {
-    return &DoublyListNode{
-        Val:  val,
-        Next: nil,
-        Prev: nil,
-    }
-}
+```python title=""
+class ListNode:
+    """Doubly linked list node class"""
+    def __init__(self, val: int):
+        self.val: int = val                # Node value
+        self.next: ListNode | None = None  # Reference to the successor node
+        self.prev: ListNode | None = None  # Reference to the predecessor node
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* فئة عقدة القائمة المترابطة المزدوجة */
-class ListNode {
-    val: number;
-    next: ListNode | null;
-    prev: ListNode | null;
-    constructor(val?: number, next?: ListNode | null, prev?: ListNode | null) {
-        this.val = val  ===  undefined ? 0 : val;        // قيمة العقدة
-        this.next = next  ===  undefined ? null : next;  // مرجع إلى العقدة اللاحقة
-        this.prev = prev  ===  undefined ? null : prev;  // مرجع إلى العقدة السابقة
-    }
-}
-```
-
-</div>
-
 ![الأنواع الشائعة للقوائم المترابطة](/images/hello-algo/chapter_array_and_linkedlist--linkedlist_common_types.png)
 
 ## التطبيقات النموذجية للقوائم المترابطة

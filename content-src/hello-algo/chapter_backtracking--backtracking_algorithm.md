@@ -20,21 +20,18 @@ Given a binary tree, search and record all nodes with value $7$, and return a li
 For this problem, we perform a preorder traversal of the tree and check whether the current node's value is $7$. If it is, we add the node to the result list `res`. The relevant implementation is shown in the following figure and code:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Preorder traversal: Example 1 */
-function preOrder(root: TreeNode | null, res: TreeNode[]): void {
-    if (root === null) {
-        return;
-    }
-    if (root.val === 7) {
-        // Record solution
-        res.push(root);
-    }
-    preOrder(root.left, res);
-    preOrder(root.right, res);
-}
+```py
+def pre_order(root: TreeNode):
+    """Preorder traversal: example 1"""
+    if root is None:
+        return
+    if root.val == 7:
+        # Record the solution
+        res.append(root)
+    pre_order(root.left)
+    pre_order(root.right)
 ```
 
 </div>
@@ -59,29 +56,22 @@ In a binary tree, search all nodes with value $7$, **and return the paths from t
 Based on the code from Example 1, we need to use a list `path` to record the path of visited nodes. When we reach a node with value $7$, we copy `path` and add it to the result list `res`. After traversal is complete, `res` contains all the solutions. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Preorder traversal: Example 2 */
-function preOrder(
-    root: TreeNode | null,
-    path: TreeNode[],
-    res: TreeNode[][]
-): void {
-    if (root === null) {
-        return;
-    }
-    // Attempt
-    path.push(root);
-    if (root.val === 7) {
-        // Record solution
-        res.push([...path]);
-    }
-    preOrder(root.left, path, res);
-    preOrder(root.right, path, res);
-    // Backtrack
-    path.pop();
-}
+```py
+def pre_order(root: TreeNode):
+    """Preorder traversal: example 2"""
+    if root is None:
+        return
+    # Try
+    path.append(root)
+    if root.val == 7:
+        # Record the solution
+        res.append(list(path))
+    pre_order(root.left)
+    pre_order(root.right)
+    # Backtrack
+    path.pop()
 ```
 
 </div>
@@ -104,30 +94,23 @@ In a binary tree, search all nodes with value $7$ and return the paths from the 
 To satisfy the above constraints, **we need to add pruning operations**: during the search process, if we encounter a node with value $3$, we return early and do not continue searching. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Preorder traversal: Example 3 */
-function preOrder(
-    root: TreeNode | null,
-    path: TreeNode[],
-    res: TreeNode[][]
-): void {
-    // Pruning
-    if (root === null || root.val === 3) {
-        return;
-    }
-    // Attempt
-    path.push(root);
-    if (root.val === 7) {
-        // Record solution
-        res.push([...path]);
-    }
-    preOrder(root.left, path, res);
-    preOrder(root.right, path, res);
-    // Backtrack
-    path.pop();
-}
+```py
+def pre_order(root: TreeNode):
+    """Preorder traversal: example 3"""
+    # Prune
+    if root is None or root.val == 3:
+        return
+    # Try
+    path.append(root)
+    if root.val == 7:
+        # Record the solution
+        res.append(list(path))
+    pre_order(root.left)
+    pre_order(root.right)
+    # Backtrack
+    path.pop()
 ```
 
 </div>
@@ -143,59 +126,26 @@ Next, we attempt to extract a general framework centered on backtracking's "atte
 In the following framework code, `state` represents the current state of the problem, and `choices` represents the choices available in the current state:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* Backtracking algorithm framework */
-func backtrack(state *State, choices []Choice, res *[]State) {
-    // Check if it is a solution
-    if isSolution(state) {
-        // Record the solution
-        recordSolution(state, res)
-        // Stop searching
+```python title=""
+def backtrack(state: State, choices: list[choice], res: list[state]):
+    """Backtracking algorithm framework"""
+    # Check if it is a solution
+    if is_solution(state):
+        # Record the solution
+        record_solution(state, res)
+        # Stop searching
         return
-    }
-    // Traverse all choices
-    for _, choice := range choices {
-        // Pruning: check if the choice is valid
-        if isValid(state, choice) {
-            // Attempt: make a choice and update the state
-            makeChoice(state, choice)
+    # Traverse all choices
+    for choice in choices:
+        # Pruning: check if the choice is valid
+        if is_valid(state, choice):
+            # Attempt: make a choice and update the state
+            make_choice(state, choice)
             backtrack(state, choices, res)
-            // Backtrack: undo the choice and restore to the previous state
-            undoChoice(state, choice)
-        }
-    }
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* Backtracking algorithm framework */
-function backtrack(state: State, choices: Choice[], res: State[]): void {
-    // Check if it is a solution
-    if (isSolution(state)) {
-        // Record the solution
-        recordSolution(state, res);
-        // Stop searching
-        return;
-    }
-    // Traverse all choices
-    for (let choice of choices) {
-        // Pruning: check if the choice is valid
-        if (isValid(state, choice)) {
-            // Attempt: make a choice and update the state
-            makeChoice(state, choice);
-            backtrack(state, choices, res);
-            // Backtrack: undo the choice and restore to the previous state
-            undoChoice(state, choice);
-        }
-    }
-}
+            # Backtrack: undo the choice and restore to the previous state
+            undo_choice(state, choice)
 ```
 
 </div>
@@ -203,33 +153,11 @@ function backtrack(state: State, choices: Choice[], res: State[]): void {
 Next, we solve Example 3 based on the framework code. The state `state` is the node traversal path, the choices `choices` are the left and right child nodes of the current node, and the result `res` is a list of paths:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Backtracking algorithm: Example 3 */
-function backtrack(
-    state: TreeNode[],
-    choices: TreeNode[],
-    res: TreeNode[][]
-): void {
-    // Check if it is a solution
-    if (isSolution(state)) {
-        // Record solution
-        recordSolution(state, res);
-    }
-    // Traverse all choices
-    for (const choice of choices) {
-        // Pruning: check if the choice is valid
-        if (isValid(state, choice)) {
-            // Attempt: make choice, update state
-            makeChoice(state, choice);
-            // Proceed to the next round of selection
-            backtrack(state, [choice.left, choice.right], res);
-            // Backtrack: undo choice, restore to previous state
-            undoChoice(state);
-        }
-    }
-}
+```py
+def backtrack(
+    state: list[TreeNode], choices: list[TreeNode], res: list[list[TreeNode]]
 ```
 
 </div>

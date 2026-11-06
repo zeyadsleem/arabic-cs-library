@@ -19,35 +19,16 @@ The `for` loop is one of the most common forms of iteration, **suitable for use 
 The following function implements the summation $1 + 2 + \dots + n$ using a `for` loop, with the result stored in the variable `res`. Note that in Python, `range(a, b)` corresponds to a "left-closed, right-open" interval, with the traversal range being $a, a + 1, \dots, b-1$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* for loop */
-func forLoop(n int) int {
-	res := 0
-	// Sum 1, 2, ..., n-1, n
-	for i := 1; i <= n; i++ {
-		res += i
-	}
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* for loop */
-function forLoop(n: number): number {
-    let res = 0;
-    // Sum 1, 2, ..., n-1, n
-    for (let i = 1; i <= n; i++) {
-        res += i;
-    }
-    return res;
-}
+```py
+def for_loop(n: int) -> int:
+    """for loop"""
+    res = 0
+    # Sum 1, 2, ..., n-1, n in a loop
+    for i in range(1, n + 1):
+        res += i
+    return res
 ```
 
 </div>
@@ -65,41 +46,18 @@ Similar to the `for` loop, the `while` loop is also a method for implementing it
 Below we use a `while` loop to implement the summation $1 + 2 + \dots + n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* while loop */
-func whileLoop(n int) int {
-	res := 0
-	// Initialize condition variable
-	i := 1
-	// Sum 1, 2, ..., n-1, n
-	for i <= n {
-		res += i
-		// Update condition variable
-		i++
-	}
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* while loop */
-function whileLoop(n: number): number {
-    let res = 0;
-    let i = 1; // Initialize condition variable
-    // Sum 1, 2, ..., n-1, n
-    while (i <= n) {
-        res += i;
-        i++; // Update condition variable
-    }
-    return res;
-}
+```py
+def while_loop(n: int) -> int:
+    """while loop"""
+    res = 0
+    i = 1  # Initialize the loop control variable
+    # Sum 1, 2, ..., n-1, n in a loop
+    while i <= n:
+        res += i
+        i += 1  # Update the loop control variable
+    return res
 ```
 
 </div>
@@ -108,6 +66,25 @@ function whileLoop(n: number): number {
 
 For example, in the following code, the condition variable $i$ is updated twice per round, which is not convenient to implement using a `for` loop:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def while_loop_ii(n: int) -> int:
+    """while loop (two updates)"""
+    res = 0
+    i = 1  # Initialize the loop control variable
+    # Sum 1, 4, 10, ... in a loop
+    while i <= n:
+        res += i
+        # Update the loop control variable
+        i += 1
+        i *= 2
+    return res
+```
+
+</div>
+
 Overall, **`for` loops have more compact code, while `while` loops are more flexible**; both can implement iterative structures. The choice of which to use should be determined based on the requirements of the specific problem.
 
 ### Nested Loops
@@ -115,41 +92,18 @@ Overall, **`for` loops have more compact code, while `while` loops are more flex
 We can nest one loop structure inside another. Below is an example using `for` loops:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Nested for loop */
-func nestedForLoop(n int) string {
-	res := ""
-	// Loop i = 1, 2, ..., n-1, n
-	for i := 1; i <= n; i++ {
-		for j := 1; j <= n; j++ {
-			// Loop j = 1, 2, ..., n-1, n
-			res += fmt.Sprintf("(%d, %d), ", i, j)
-		}
-	}
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Nested for loop */
-function nestedForLoop(n: number): string {
-    let res = '';
-    // Loop i = 1, 2, ..., n-1, n
-    for (let i = 1; i <= n; i++) {
-        // Loop j = 1, 2, ..., n-1, n
-        for (let j = 1; j <= n; j++) {
-            res += `(${i}, ${j}), `;
-        }
-    }
-    return res;
-}
+```py
+def nested_for_loop(n: int) -> str:
+    """Nested for loops"""
+    res = ""
+    # Loop over i = 1, 2, ..., n-1, n
+    for i in range(1, n + 1):
+        # Loop over j = 1, 2, ..., n-1, n
+        for j in range(1, n + 1):
+            res += f"({i}, {j}), "
+    return res
 ```
 
 </div>
@@ -178,37 +132,18 @@ From an implementation perspective, recursive code mainly consists of three elem
 Observe the following code. We only need to call the function `recur(n)` to complete the calculation of $1 + 2 + \dots + n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Recursion */
-func recur(n int) int {
-	// Termination condition
-	if n == 1 {
-		return 1
-	}
-	// Recurse: recursive call
-	res := recur(n - 1)
-	// Return: return result
-	return n + res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Recursion */
-function recur(n: number): number {
-    // Termination condition
-    if (n === 1) return 1;
-    // Recurse: recursive call
-    const res = recur(n - 1);
-    // Return: return result
-    return n + res;
-}
+```py
+def recur(n: int) -> int:
+    """Recursion"""
+    # Base case
+    if n == 1:
+        return 1
+    # Recurse: make a recursive call
+    res = recur(n - 1)
+    # Unwind: return the result
+    return n + res
 ```
 
 </div>
@@ -250,33 +185,16 @@ Interestingly, **if a function makes the recursive call as the very last step be
 Taking the calculation of $1 + 2 + \dots + n$ as an example, we can set the result variable `res` as a function parameter to implement tail recursion:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Tail recursion */
-func tailRecur(n int, res int) int {
-	// Termination condition
-	if n == 0 {
-		return res
-	}
-	// Tail recursive call
-	return tailRecur(n-1, res+n)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Tail recursion */
-function tailRecur(n: number, res: number): number {
-    // Termination condition
-    if (n === 0) return res;
-    // Tail recursive call
-    return tailRecur(n - 1, res + n);
-}
+```py
+def tail_recur(n, res):
+    """Tail recursion"""
+    # Base case
+    if n == 0:
+        return res
+    # Tail-recursive call
+    return tail_recur(n - 1, res + n)
 ```
 
 </div>
@@ -312,37 +230,18 @@ Let the $n$-th number of the Fibonacci sequence be $f(n)$. Two conclusions can b
 Following the recurrence relation to make recursive calls, with the first two numbers as termination conditions, we can write the recursive code. Calling `fib(n)` will give us the $n$-th number of the Fibonacci sequence:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Fibonacci sequence: recursion */
-func fib(n int) int {
-	// Termination condition f(1) = 0, f(2) = 1
-	if n == 1 || n == 2 {
-		return n - 1
-	}
-	// Recursive call f(n) = f(n-1) + f(n-2)
-	res := fib(n-1) + fib(n-2)
-	// Return result f(n)
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Fibonacci sequence: recursion */
-function fib(n: number): number {
-    // Termination condition f(1) = 0, f(2) = 1
-    if (n === 1 || n === 2) return n - 1;
-    // Recursive call f(n) = f(n-1) + f(n-2)
-    const res = fib(n - 1) + fib(n - 2);
-    // Return result f(n)
-    return res;
-}
+```py
+def fib(n: int) -> int:
+    """Fibonacci sequence: recursion"""
+    # Base cases: f(1) = 0, f(2) = 1
+    if n == 1 or n == 2:
+        return n - 1
+    # Recursive calls: f(n) = f(n-1) + f(n-2)
+    res = fib(n - 1) + fib(n - 2)
+    # Return the result f(n)
+    return res
 ```
 
 </div>
@@ -385,54 +284,24 @@ In fact, recursive terminology such as "call stack" and "stack frame space" alre
 Therefore, **we can use an explicit stack to simulate the behavior of the call stack**, thus transforming recursion into iterative form:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Simulate recursion using iteration */
-func forLoopRecur(n int) int {
-	// Use an explicit stack to simulate the system call stack
-	stack := list.New()
-	res := 0
-	// Recurse: recursive call
-	for i := n; i > 0; i-- {
-		// Simulate "recurse" with "push"
-		stack.PushBack(i)
-	}
-	// Return: return result
-	for stack.Len() != 0 {
-		// Simulate "return" with "pop"
-		res += stack.Back().Value.(int)
-		stack.Remove(stack.Back())
-	}
-	// res = 1+2+3+...+n
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Simulate recursion using iteration */
-function forLoopRecur(n: number): number {
-    // Use an explicit stack to simulate the system call stack
-    const stack: number[] = [];
-    let res: number = 0;
-    // Recurse: recursive call
-    for (let i = n; i > 0; i--) {
-        // Simulate "recurse" with "push"
-        stack.push(i);
-    }
-    // Return: return result
-    while (stack.length) {
-        // Simulate "return" with "pop"
-        res += stack.pop();
-    }
-    // res = 1+2+3+...+n
-    return res;
-}
+```py
+def for_loop_recur(n: int) -> int:
+    """Simulate recursion using iteration"""
+    # Use an explicit stack to simulate the system call stack
+    stack = []
+    res = 0
+    # Simulate the recursive-call phase
+    for i in range(n, 0, -1):
+        # Simulate recursive calls by pushing onto the stack
+        stack.append(i)
+    # Simulate unwinding and accumulating the result
+    while stack:
+        # Simulate unwinding by popping from the stack
+        res += stack.pop()
+    # res = 1+2+3+...+n
+    return res
 ```
 
 </div>

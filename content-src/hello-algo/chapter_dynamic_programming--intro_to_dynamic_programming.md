@@ -24,38 +24,18 @@ As shown in the figure below, for a $3$-step staircase, there are $3$ different 
 The goal of this problem is to determine the number of ways, so **we can consider using backtracking to enumerate all possibilities**. Specifically, imagine climbing stairs as a multi-round selection process: starting from the ground, choosing to go up $1$ or $2$ steps in each round, incrementing the count by $1$ whenever the top of the stairs is reached, and pruning when exceeding the top. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Climbing stairs: Backtracking */
-func climbingStairsBacktrack(n int) int {
-	// Can choose to climb up 1 or 2 stairs
-	choices := []int{1, 2}
-	// Start climbing from the 0-th stair
-	state := 0
-	res := make([]int, 1)
-	// Use res[0] to record the solution count
-	res[0] = 0
-	backtrack(choices, state, n, res)
-	return res[0]
-}
-```
+```py
+        # Backtrack
 
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Climbing stairs: Backtracking */
-function climbingStairsBacktrack(n: number): number {
-    const choices = [1, 2]; // Can choose to climb up 1 or 2 stairs
-    const state = 0; // Start climbing from the 0-th stair
-    const res = new Map();
-    res.set(0, 0); // Use res[0] to record the solution count
-    backtrack(choices, state, n, res);
-    return res.get(0);
-}
+def climbing_stairs_backtrack(n: int) -> int:
+    """Climbing stairs: backtracking"""
+    choices = [1, 2]  # Choose to climb 1 or 2 steps
+    state = 0  # Start climbing from step 0
+    res = [0]  # Use res[0] to record the number of ways
+    backtrack(choices, state, n, res)
+    return res[0]
 ```
 
 </div>
@@ -86,6 +66,17 @@ We can obtain a brute force search solution based on the recurrence formula. Sta
 
 Observe the following code: like standard backtracking code, it also uses depth-first search but is more concise:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def climbing_stairs_dfs(n: int) -> int:
+    """Climbing stairs: search"""
+    return dfs(n)
+```
+
+</div>
+
 The figure below shows the recursion tree formed by brute force search. For the problem $dp[n]$, the depth of its recursion tree is $n$, with a time complexity of $O(2^n)$. Exponential growth is explosive; if we input a relatively large $n$, the wait can be very long.
 
 ![Recursion tree for climbing stairs](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_tree.png)
@@ -103,6 +94,19 @@ To improve algorithm efficiency, **we want all overlapping subproblems to be com
 
 The code is as follows:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def climbing_stairs_dfs_mem(n: int) -> int:
+    """Climbing stairs: memoized search"""
+    # mem[i] stores the number of ways to reach step i; -1 means no result has been recorded
+    mem = [-1] * (n + 1)
+    return dfs(n, mem)
+```
+
+</div>
+
 Observe the figure below: **after memoization, all overlapping subproblems need to be computed only once, reducing the time complexity to $O(n)$**, which is a tremendous leap.
 
 ![Recursion tree with memoization](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_memo_tree.png)
@@ -114,6 +118,26 @@ Observe the figure below: **after memoization, all overlapping subproblems need 
 In contrast, **dynamic programming is a "bottom-up" method**: starting from the solutions to the smallest subproblems, iteratively constructing solutions to larger subproblems until obtaining the solution to the original problem.
 
 Since dynamic programming does not include a backtracking process, it only requires loop iteration for implementation and does not need recursion. In the following code, we initialize an array `dp` to store the solutions to subproblems, which serves the same recording function as the array `mem` in memoization:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def climbing_stairs_dp(n: int) -> int:
+    """Climbing stairs: dynamic programming"""
+    if n == 1 or n == 2:
+        return n
+    # Initialize the dp table to store subproblem solutions
+    dp = [0] * (n + 1)
+    # Initial states: set the solutions to the smallest subproblems
+    dp[1], dp[2] = 1, 2
+    # State transitions: solve progressively larger subproblems using smaller ones
+    for i in range(3, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+    return dp[n]
+```
+
+</div>
 
 The figure below simulates the execution process of the above code.
 
@@ -130,6 +154,22 @@ Based on the above content, we can summarize the commonly used terminology in dy
 ## Space Optimization
 
 Observant readers may have noticed that **since $dp[i]$ is only related to $dp[i-1]$ and $dp[i-2]$, we do not need to use an array `dp` to store the solutions to all subproblems**, and can instead use two variables that roll forward. The code is as follows:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def climbing_stairs_dp_comp(n: int) -> int:
+    """Climbing stairs: space-optimized dynamic programming"""
+    if n == 1 or n == 2:
+        return n
+    a, b = 1, 2
+    for _ in range(3, n + 1):
+        a, b = b, a + b
+    return b
+```
+
+</div>
 
 As the above code shows, by eliminating the space occupied by the array `dp`, the space complexity is reduced from $O(n)$ to $O(1)$.
 

@@ -21,64 +21,28 @@ lang: ar
 والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الترتيب بالعد */
-// تنفيذ بسيط، لا يصلح لترتيب الكائنات
-func countingSortNaive(nums []int) {
-	// 1. عدّ أكبر عنصر m في المصفوفة
-	m := 0
-	for _, num := range nums {
-		if num > m {
-			m = num
-		}
-	}
-	// 2. عدّ مرات ظهور كل عدد
-	// يمثّل counter[num] عدد مرات ظهور num
-	counter := make([]int, m+1)
-	for _, num := range nums {
-		counter[num]++
-	}
-	// 3. اجتز counter، واكتب كل عنصر مرة أخرى في المصفوفة الأصلية nums
-	for i, num := 0, 0; num < m+1; num++ {
-		for j := 0; j < counter[num]; j++ {
-			nums[i] = num
-			i++
-		}
-	}
-}
+```py
+def counting_sort_naive(nums: list[int]):
+    """Counting sort"""
+    # Simple implementation; cannot be used to sort objects
+    # 1. Find the maximum array element m
+    m = max(nums)
+    # 2. Count the occurrences of each number
+    # counter[num] is the number of occurrences of num
+    counter = [0] * (m + 1)
+    for num in nums:
+        counter[num] += 1
+    # 3. Traverse counter and fill the original array nums with the elements
+    i = 0
+    for num in range(m + 1):
+        for _ in range(counter[num]):
+            nums[i] = num
+            i += 1
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الترتيب بالعد */
-// تنفيذ بسيط، لا يصلح لترتيب الكائنات
-function countingSortNaive(nums: number[]): void {
-    // 1. عدّ أكبر عنصر m في المصفوفة
-    let m: number = Math.max(...nums);
-    // 2. عدّ مرات ظهور كل عدد
-    // يمثّل counter[num] عدد مرات ظهور num
-    const counter: number[] = new Array<number>(m + 1).fill(0);
-    for (const num of nums) {
-        counter[num]++;
-    }
-    // 3. اجتز counter، واكتب كل عنصر مرة أخرى في المصفوفة الأصلية nums
-    let i = 0;
-    for (let num = 0; num < m + 1; num++) {
-        for (let j = 0; j < counter[num]; j++, i++) {
-            nums[i] = num;
-        }
-    }
-}
-```
-
-</div>
-
 <div class="note">
 <p class="note__title">الصلة بين الترتيب بالعد وترتيب الدلاء</p>
 
@@ -106,86 +70,37 @@ $$
 ويُعرض تنفيذ الترتيب بالعد أدناه:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الترتيب بالعد */
-// تنفيذ كامل، يمكنه ترتيب الكائنات وهو ترتيب مستقر
-func countingSort(nums []int) {
-	// 1. عدّ أكبر عنصر m في المصفوفة
-	m := 0
-	for _, num := range nums {
-		if num > m {
-			m = num
-		}
-	}
-	// 2. عدّ مرات ظهور كل عدد
-	// يمثّل counter[num] عدد مرات ظهور num
-	counter := make([]int, m+1)
-	for _, num := range nums {
-		counter[num]++
-	}
-	// 3. احسب المجموع البادئ لـcounter، وحوّل «عدد مرات الظهور» إلى «فهرس الذيل»
-	// counter[num]-1 هو آخر فهرس يظهر فيه num في res
-	for i := 0; i < m; i++ {
-		counter[i+1] += counter[i]
-	}
-	// 4. اجتز nums بترتيب عكسي، وضع كل عنصر في المصفوفة الناتجة res
-	// هيّئ المصفوفة res لتسجيل النتائج
-	n := len(nums)
-	res := make([]int, n)
-	for i := n - 1; i >= 0; i-- {
-		num := nums[i]
-		// ضع num عند الفهرس المقابل
-		res[counter[num]-1] = num
-		// قلّل المجموع البادئ بمقدار 1 للحصول على الفهرس التالي لوضع num
-		counter[num]--
-	}
-	// استخدم المصفوفة الناتجة res لاستبدال المصفوفة الأصلية nums
-	copy(nums, res)
-}
+```py
+def counting_sort(nums: list[int]):
+    """Counting sort"""
+    # Full implementation; stable and adaptable to sorting objects
+    # 1. Find the maximum array element m
+    m = max(nums)
+    # 2. Count the occurrences of each number
+    # counter[num] is the number of occurrences of num
+    counter = [0] * (m + 1)
+    for num in nums:
+        counter[num] += 1
+    # 3. Compute prefix sums of counter to convert occurrence counts into end positions
+    # That is, counter[num]-1 is the index of the last occurrence of num in res
+    for i in range(m):
+        counter[i + 1] += counter[i]
+    # 4. Traverse nums in reverse and place each element in the result array res
+    # Initialize array res to store the result
+    n = len(nums)
+    res = [0] * n
+    for i in range(n - 1, -1, -1):
+        num = nums[i]
+        res[counter[num] - 1] = num  # Place num at the corresponding index
+        counter[num] -= 1  # Decrement the prefix sum by 1 to determine where to place the next occurrence of num
+    # Overwrite the original array nums with the result array res
+    for i in range(n):
+        nums[i] = res[i]
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الترتيب بالعد */
-// تنفيذ كامل، يمكنه ترتيب الكائنات وهو ترتيب مستقر
-function countingSort(nums: number[]): void {
-    // 1. عدّ أكبر عنصر m في المصفوفة
-    let m: number = Math.max(...nums);
-    // 2. عدّ مرات ظهور كل عدد
-    // يمثّل counter[num] عدد مرات ظهور num
-    const counter: number[] = new Array<number>(m + 1).fill(0);
-    for (const num of nums) {
-        counter[num]++;
-    }
-    // 3. احسب المجموع البادئ لـcounter، وحوّل «عدد مرات الظهور» إلى «فهرس الذيل»
-    // counter[num]-1 هو آخر فهرس يظهر فيه num في res
-    for (let i = 0; i < m; i++) {
-        counter[i + 1] += counter[i];
-    }
-    // 4. اجتز nums بترتيب عكسي، وضع كل عنصر في المصفوفة الناتجة res
-    // هيّئ المصفوفة res لتسجيل النتائج
-    const n = nums.length;
-    const res: number[] = new Array<number>(n);
-    for (let i = n - 1; i >= 0; i--) {
-        const num = nums[i];
-        res[counter[num] - 1] = num; // ضع num عند الفهرس المقابل
-        counter[num]--; // قلّل المجموع البادئ بمقدار 1 للحصول على الفهرس التالي لوضع num
-    }
-    // استخدم المصفوفة الناتجة res لاستبدال المصفوفة الأصلية nums
-    for (let i = 0; i < n; i++) {
-        nums[i] = res[i];
-    }
-}
-```
-
-</div>
-
 ## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n + m)$، والترتيب بالعد غير تكيّفي (non-adaptive)**: يستغرق اجتياز `nums` و`counter` زمناً خطياً. وبشكل عام، عندما $n \gg m$، يقترب التعقيد الزمني من $O(n)$.

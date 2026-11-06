@@ -27,67 +27,37 @@ lang: ar
 يمكننا استخدام فئات الطابور التي توفرها لغة البرمجة مباشرةً:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="queue_test.go"
-/* تهيئة الطابور */
-// في Go، استخدم list كطابور
-queue := list.New()
+```python title="queue.py"
+from collections import deque
 
-/* إدخال العناصر إلى الطابور */
-queue.PushBack(1)
-queue.PushBack(3)
-queue.PushBack(2)
-queue.PushBack(5)
-queue.PushBack(4)
+# Initialize queue
+# In Python, we generally use the deque class as a queue
+# Although queue.Queue() is a pure queue class, it is not very user-friendly, so it is not recommended
+que: deque[int] = deque()
 
-/* الوصول إلى العنصر الأمامي */
-peek := queue.Front()
+# Enqueue elements
+que.append(1)
+que.append(3)
+que.append(2)
+que.append(5)
+que.append(4)
 
-/* إخراج عنصر من الطابور */
-pop := queue.Front()
-queue.Remove(pop)
+# Access front element
+front: int = que[0]
 
-/* الحصول على طول الطابور */
-size := queue.Len()
+# Dequeue element
+pop: int = que.popleft()
 
-/* فحص ما إذا كان الطابور فارغاً */
-isEmpty := queue.Len() == 0
+# Get queue length
+size: int = len(que)
+
+# Check if queue is empty
+is_empty: bool = len(que) == 0
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="queue.ts"
-/* تهيئة الطابور */
-// لا يوفّر TypeScript طابوراً مدمجاً، ويمكن استخدام Array كطابور
-const queue: number[] = [];
-
-/* إدخال العناصر إلى الطابور */
-queue.push(1);
-queue.push(3);
-queue.push(2);
-queue.push(5);
-queue.push(4);
-
-/* الوصول إلى العنصر الأمامي */
-const peek = queue[0];
-
-/* إخراج عنصر من الطابور */
-// البنية الأساسية مصفوفة، لذا فإن التعقيد الزمني لـ shift() هو O(n)
-const pop = queue.shift();
-
-/* الحصول على طول الطابور */
-const size = queue.length;
-
-/* فحص ما إذا كان الطابور فارغاً */
-const empty = queue.length === 0;
-```
-
-</div>
-
 ## تنفيذ الطابور
 
 لتنفيذ طابور، نحتاج إلى بنية بيانات تتيح إضافة العناصر من أحد الطرفين وإزالة العناصر من الطرف الآخر. وتلبي كل من القوائم المترابطة والمصفوفات هذا المطلب.
@@ -99,77 +69,65 @@ const empty = queue.length === 0;
 وفيما يلي الكود الخاص بتنفيذ طابور باستخدام قائمة مترابطة:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* طابور منفّذ بقائمة مترابطة */
-class LinkedListQueue {
-    private front: ListNode | null; // العقدة الرأسية: المقدمة
-    private rear: ListNode | null; // العقدة الذيلية: المؤخرة
-    private queSize: number = 0;
+```py
+class LinkedListQueue:
+    """Queue implemented with a linked list"""
 
-    constructor() {
-        this.front = null;
-        this.rear = null;
-    }
+    def __init__(self):
+        """Constructor"""
+        self._front: ListNode | None = None  # Head node front
+        self._rear: ListNode | None = None  # Tail node rear
+        self._size: int = 0
 
-    /* الحصول على طول الطابور */
-    get size(): number {
-        return this.queSize;
-    }
+    def size(self) -> int:
+        """Get the queue size"""
+        return self._size
 
-    /* فحص ما إذا كان الطابور فارغاً */
-    isEmpty(): boolean {
-        return this.size === 0;
-    }
+    def is_empty(self) -> bool:
+        """Check whether the queue is empty"""
+        return self._size == 0
 
-    /* الإدخال إلى الطابور */
-    push(num: number): void {
-        // أضف num بعد العقدة الذيلية
-        const node = new ListNode(num);
-        // إذا كان الطابور فارغاً، اجعل المقدمة والمؤخرة معاً تشيران إلى node
-        if (!this.front) {
-            this.front = node;
-            this.rear = node;
-            // إذا لم يكن الطابور فارغاً، أضف node بعد العقدة الذيلية
-        } else {
-            this.rear!.next = node;
-            this.rear = node;
-        }
-        this.queSize++;
-    }
+    def push(self, num: int):
+        """Enqueue"""
+        # Add num after the tail node
+        node = ListNode(num)
+        # If the queue is empty, make both the head and tail point to this node
+        if self._front is None:
+            self._front = node
+            self._rear = node
+        # If the queue is not empty, add this node after the tail node
+        else:
+            self._rear.next = node
+            self._rear = node
+        self._size += 1
 
-    /* الإخراج من الطابور */
-    pop(): number {
-        const num = this.peek();
-        if (!this.front) throw new Error('Queue is empty');
-        // احذف العقدة الرأسية
-        this.front = this.front.next;
-        this.queSize--;
-        return num;
-    }
+    def pop(self) -> int:
+        """Dequeue"""
+        num = self.peek()
+        # Remove the head node
+        self._front = self._front.next
+        self._size -= 1
+        return num
 
-    /* إعادة قائمة للطباعة */
-    peek(): number {
-        if (this.size === 0) throw new Error('Queue is empty');
-        return this.front!.val;
-    }
+    def peek(self) -> int:
+        """Access the front element"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self._front.val
 
-    /* حوّل القائمة المترابطة إلى Array وأعدها */
-    toArray(): number[] {
-        let node = this.front;
-        const res = new Array<number>(this.size);
-        for (let i = 0; i < res.length; i++) {
-            res[i] = node!.val;
-            node = node!.next;
-        }
-        return res;
-    }
-}
+    def to_list(self) -> list[int]:
+        """Convert to a list for printing"""
+        queue = []
+        temp = self._front
+        while temp:
+            queue.append(temp.val)
+            temp = temp.next
+        return queue
 ```
 
 </div>
-
 ### التنفيذ بالمصفوفة
 
 حذف العنصر الأول في مصفوفة له تعقيد زمني $O(n)$، وهو ما يجعل عملية الإخراج من الطابور غير فعّالة. غير أننا يمكننا استخدام الطريقة الذكية التالية لتجنب هذه المشكلة.
@@ -188,78 +146,66 @@ class LinkedListQueue {
 بالنسبة إلى المصفوفة الدائرية، نحتاج إلى إعادة `front` أو `rear` إلى بداية المصفوفة عند تجاوزهما النهاية. ويمكن تنفيذ هذا النمط الدوري باستخدام «عملية باقي القسمة» (modulo)، كما هو موضح في الكود أدناه:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* طابور منفّذ بمصفوفة دائرية */
-class ArrayQueue {
-    private nums: number[]; // مصفوفة لتخزين عناصر الطابور
-    private front: number; // مؤشر المقدمة، يشير إلى مقدمة عنصر الطابور
-    private queSize: number; // طول الطابور
+```py
+class ArrayQueue:
+    """Queue implemented with a circular array"""
 
-    constructor(capacity: number) {
-        this.nums = new Array(capacity);
-        this.front = this.queSize = 0;
-    }
+    def __init__(self, size: int):
+        """Constructor"""
+        self._nums: list[int] = [0] * size  # Array that stores the queue elements
+        self._front: int = 0  # Front pointer, pointing to the first element
+        self._size: int = 0  # Queue size
 
-    /* الحصول على سعة الطابور */
-    get capacity(): number {
-        return this.nums.length;
-    }
+    def capacity(self) -> int:
+        """Get the queue capacity"""
+        return len(self._nums)
 
-    /* الحصول على طول الطابور */
-    get size(): number {
-        return this.queSize;
-    }
+    def size(self) -> int:
+        """Get the queue size"""
+        return self._size
 
-    /* فحص ما إذا كان الطابور فارغاً */
-    isEmpty(): boolean {
-        return this.queSize === 0;
-    }
+    def is_empty(self) -> bool:
+        """Check whether the queue is empty"""
+        return self._size == 0
 
-    /* الإدخال إلى الطابور */
-    push(num: number): void {
-        if (this.size === this.capacity) {
-            console.log('Queue is full');
-            return;
-        }
-        // استخدم عملية باقي القسمة لالتفاف rear إلى الرأس بعد تجاوز ذيل المصفوفة
-        // أضف num إلى مؤخرة الطابور
-        const rear = (this.front + this.queSize) % this.capacity;
-        // يتحرك مؤشر المقدمة موضعاً واحداً إلى الخلف
-        this.nums[rear] = num;
-        this.queSize++;
-    }
+    def push(self, num: int):
+        """Enqueue"""
+        if self._size == self.capacity():
+            raise IndexError("Queue is full")
+        # Calculate the rear pointer, which points one position past the last element
+        # Use modulo to wrap rear to the beginning when it passes the end of the array
+        rear: int = (self._front + self._size) % self.capacity()
+        # Add num to the rear
+        self._nums[rear] = num
+        self._size += 1
 
-    /* الإخراج من الطابور */
-    pop(): number {
-        const num = this.peek();
-        // حرّك مؤشر المقدمة موضعاً واحداً إلى الخلف، وإذا تجاوز الذيل فأعده إلى رأس المصفوفة
-        this.front = (this.front + 1) % this.capacity;
-        this.queSize--;
-        return num;
-    }
+    def pop(self) -> int:
+        """Dequeue"""
+        num: int = self.peek()
+        # Advance the front pointer by one position, wrapping to the beginning if it passes the end
+        self._front = (self._front + 1) % self.capacity()
+        self._size -= 1
+        return num
 
-    /* إعادة قائمة للطباعة */
-    peek(): number {
-        if (this.isEmpty()) throw new Error('Queue is empty');
-        return this.nums[this.front];
-    }
+    def peek(self) -> int:
+        """Access the front element"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self._nums[self._front]
 
-    /* إعادة المصفوفة */
-    toArray(): number[] {
-        // إدخال العناصر إلى الطابور
-        const arr = new Array(this.size);
-        for (let i = 0, j = this.front; i < this.size; i++, j++) {
-            arr[i] = this.nums[j % this.capacity];
-        }
-        return arr;
-    }
-}
+    def to_list(self) -> list[int]:
+        """Return a list for printing"""
+        res = [0] * self.size()
+        j: int = self._front
+        for i in range(self.size()):
+            res[i] = self._nums[(j % self.capacity())]
+            j += 1
+        return res
 ```
 
 </div>
-
 لا يزال الطابور المنفّذ أعلاه محدوداً: فطوله غير قابل للتغيير. غير أن هذه المشكلة ليست صعبة الحل، إذ يمكننا استبدال المصفوفة بمصفوفة ديناميكية لإدخال آلية توسّع. ويمكن للقرّاء المهتمين محاولة تنفيذ ذلك بأنفسهم.
 
 وتتفق استنتاجات المقارنة بين التنفيذين مع نظيراتها الخاصة بالمكدسات، ولن نعيدها هنا.

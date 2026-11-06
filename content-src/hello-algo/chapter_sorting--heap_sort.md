@@ -37,45 +37,20 @@ In fact, the element removal operation also includes steps `2.` and `3.`, with t
 In the code below, we use the same `sift_down()` function for top-to-bottom heapify as in the "Heap" chapter. It is worth noting that since the heap length decreases as the largest element is extracted, we need to add a length parameter $n$ to `sift_down()` to specify the current effective length of the heap. The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Heap sort */
-func heapSort(nums *[]int) {
-	// Build heap operation: heapify all nodes except leaves
-	for i := len(*nums)/2 - 1; i >= 0; i-- {
-		siftDown(nums, len(*nums), i)
-	}
-	// Extract the largest element from the heap and repeat for n-1 rounds
-	for i := len(*nums) - 1; i > 0; i-- {
-		// Delete node
-		(*nums)[0], (*nums)[i] = (*nums)[i], (*nums)[0]
-		// Start heapifying the root node, from top to bottom
-		siftDown(nums, i, 0)
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Heap sort */
-function heapSort(nums: number[]): void {
-    // Build heap operation: heapify all nodes except leaves
-    for (let i = Math.floor(nums.length / 2) - 1; i >= 0; i--) {
-        siftDown(nums, nums.length, i);
-    }
-    // Extract the largest element from the heap and repeat for n-1 rounds
-    for (let i = nums.length - 1; i > 0; i--) {
-        // Delete node
-        [nums[0], nums[i]] = [nums[i], nums[0]];
-        // Start heapifying the root node, from top to bottom
-        siftDown(nums, i, 0);
-    }
-}
+```py
+def heap_sort(nums: list[int]):
+    """Heap sort"""
+    # Build the heap by sifting down from every non-leaf node
+    for i in range(len(nums) // 2 - 1, -1, -1):
+        sift_down(nums, len(nums), i)
+    # Extract the largest element from the heap, repeating for n-1 rounds
+    for i in range(len(nums) - 1, 0, -1):
+        # Swap the root with the rightmost leaf on the last level (the first and last elements of the current heap)
+        nums[0], nums[i] = nums[i], nums[0]
+        # Sift down starting at the root
+        sift_down(nums, i, 0)
 ```
 
 </div>

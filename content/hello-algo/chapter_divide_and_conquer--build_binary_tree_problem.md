@@ -66,42 +66,18 @@ lang: ar
 لتحسين كفاءة الاستعلام عن $m$، نستخدم جدول تجزئة `hmap` لتخزين التعيين من عناصر مصفوفة `inorder` إلى فهارسها:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* بناء شجرة ثنائية */
-func buildTree(preorder, inorder []int) *TreeNode {
-	// هيّئ جدول التجزئة، وخزّن التعيين من عناصر inorder إلى الفهارس
-	inorderMap := make(map[int]int, len(inorder))
-	for i := 0; i < len(inorder); i++ {
-		inorderMap[inorder[i]] = i
-	}
-
-	root := dfsBuildTree(preorder, inorderMap, 0, 0, len(inorder)-1)
-	return root
-}
+```py
+def build_tree(preorder: list[int], inorder: list[int]) -> TreeNode | None:
+    """Build a binary tree"""
+    # Initialize a hash table mapping each element in inorder to its index
+    inorder_map = {val: i for i, val in enumerate(inorder)}
+    root = dfs(preorder, inorder_map, 0, 0, len(inorder) - 1)
+    return root
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* بناء شجرة ثنائية */
-function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
-    // هيّئ جدول التجزئة، وخزّن التعيين من عناصر inorder إلى الفهارس
-    let inorderMap = new Map<number, number>();
-    for (let i = 0; i < inorder.length; i++) {
-        inorderMap.set(inorder[i], i);
-    }
-    const root = dfs(preorder, inorderMap, 0, 0, inorder.length - 1);
-    return root;
-}
-```
-
-</div>
-
 يوضح الشكل أدناه العملية التعاودية لبناء الشجرة الثنائية. فكل عقدة تُنشأ أثناء عملية "التعاود" النازلة، بينما يُنشأ كل ضلع (مرجع) أثناء عملية "العودة" الصاعدة.
 
 وتظهر نتائج تقسيم الاجتياز المسبق `preorder` والاجتياز الوسطي `inorder` داخل كل دالة تعاودية في الشكل أدناه.

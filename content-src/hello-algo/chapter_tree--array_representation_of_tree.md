@@ -31,23 +31,12 @@ As shown in the figure below, given a non-perfect binary tree, the above method 
 To solve this problem, **we can explicitly write out all `None` values in the level-order traversal sequence**. As shown in the figure below, once we do this, the level-order traversal sequence can uniquely represent a binary tree. Example code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* Array representation of a binary tree */
-// Using an any type slice, allowing for nil to mark empty slots
-tree := []any{1, 2, 3, 4, nil, 6, 7, 8, 9, nil, nil, 12, nil, nil, 15}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* Array representation of a binary tree */
-// Using null to represent empty slots
-let tree: (number | null)[] = [1, 2, 3, 4, null, 6, 7, 8, 9, null, null, 12, null, null, 15];
+```python title=""
+# Array representation of a binary tree
+# Using None to represent empty slots
+tree = [1, 2, 3, 4, None, 6, 7, 8, 9, None, None, 12, None, None, 15]
 ```
 
 </div>
@@ -66,90 +55,81 @@ The following code implements a binary tree using an array representation, inclu
 - Obtain the preorder, inorder, postorder, and level-order traversal sequences.
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Binary tree class represented by array */
-class ArrayBinaryTree {
-    #tree: (number | null)[];
+```py
+class ArrayBinaryTree:
+    """Binary tree class using an array representation"""
 
-    /* Constructor */
-    constructor(arr: (number | null)[]) {
-        this.#tree = arr;
-    }
+    def __init__(self, arr: list[int | None]):
+        """Constructor"""
+        self._tree = list(arr)
 
-    /* List capacity */
-    size(): number {
-        return this.#tree.length;
-    }
+    def size(self):
+        """Length of the backing list"""
+        return len(self._tree)
 
-    /* Get value of node at index i */
-    val(i: number): number | null {
-        // If index out of bounds, return null to represent empty position
-        if (i < 0 || i >= this.size()) return null;
-        return this.#tree[i];
-    }
+    def val(self, i: int) -> int | None:
+        """Get the value of the node at index i"""
+        # If the index is out of bounds, return None to represent an empty position
+        if i < 0 or i >= self.size():
+            return None
+        return self._tree[i]
 
-    /* Get index of left child node of node at index i */
-    left(i: number): number {
-        return 2 * i + 1;
-    }
+    def left(self, i: int) -> int | None:
+        """Get the left child index of the node at index i"""
+        return 2 * i + 1
 
-    /* Get index of right child node of node at index i */
-    right(i: number): number {
-        return 2 * i + 2;
-    }
+    def right(self, i: int) -> int | None:
+        """Get the right child index of the node at index i"""
+        return 2 * i + 2
 
-    /* Get index of parent node of node at index i */
-    parent(i: number): number {
-        return Math.floor((i - 1) / 2); // Floor division
-    }
+    def parent(self, i: int) -> int | None:
+        """Get the parent index of the node at index i"""
+        return (i - 1) // 2
 
-    /* Level-order traversal */
-    levelOrder(): number[] {
-        let res = [];
-        // Traverse array directly
-        for (let i = 0; i < this.size(); i++) {
-            if (this.val(i) !== null) res.push(this.val(i));
-        }
-        return res;
-    }
+    def level_order(self) -> list[int]:
+        """Level-order traversal"""
+        self.res = []
+        # Traverse the array directly
+        for i in range(self.size()):
+            if self.val(i) is not None:
+                self.res.append(self.val(i))
+        return self.res
 
-    /* Depth-first traversal */
-    #dfs(i: number, order: Order, res: (number | null)[]): void {
-        // If empty position, return
-        if (this.val(i) === null) return;
-        // Preorder traversal
-        if (order === 'pre') res.push(this.val(i));
-        this.#dfs(this.left(i), order, res);
-        // Inorder traversal
-        if (order === 'in') res.push(this.val(i));
-        this.#dfs(this.right(i), order, res);
-        // Postorder traversal
-        if (order === 'post') res.push(this.val(i));
-    }
+    def dfs(self, i: int, order: str):
+        """Depth-first traversal"""
+        if self.val(i) is None:
+            return
+        # Preorder traversal
+        if order == "pre":
+            self.res.append(self.val(i))
+        self.dfs(self.left(i), order)
+        # Inorder traversal
+        if order == "in":
+            self.res.append(self.val(i))
+        self.dfs(self.right(i), order)
+        # Postorder traversal
+        if order == "post":
+            self.res.append(self.val(i))
 
-    /* Preorder traversal */
-    preOrder(): (number | null)[] {
-        const res = [];
-        this.#dfs(0, 'pre', res);
-        return res;
-    }
+    def pre_order(self) -> list[int]:
+        """Preorder traversal"""
+        self.res = []
+        self.dfs(0, order="pre")
+        return self.res
 
-    /* Inorder traversal */
-    inOrder(): (number | null)[] {
-        const res = [];
-        this.#dfs(0, 'in', res);
-        return res;
-    }
+    def in_order(self) -> list[int]:
+        """Inorder traversal"""
+        self.res = []
+        self.dfs(0, order="in")
+        return self.res
 
-    /* Postorder traversal */
-    postOrder(): (number | null)[] {
-        const res = [];
-        this.#dfs(0, 'post', res);
-        return res;
-    }
-}
+    def post_order(self) -> list[int]:
+        """Postorder traversal"""
+        self.res = []
+        self.dfs(0, order="post")
+        return self.res
 ```
 
 </div>

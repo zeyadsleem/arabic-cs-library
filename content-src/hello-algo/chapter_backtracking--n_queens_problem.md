@@ -55,48 +55,20 @@ Similarly, **for all squares on an anti-diagonal, the sum $row + col$ is a const
 Please note that in an $n \times n$ square matrix, the range of $row - col$ is $[-n + 1, n - 1]$, and the range of $row + col$ is $[0, 2n - 2]$. Therefore, the number of both main diagonals and anti-diagonals is $2n - 1$, meaning the length of both arrays `diags1` and `diags2` is $2n - 1$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Solve N queens */
-func nQueens(n int) [][][]string {
-	// Initialize an n*n chessboard, where 'Q' represents a queen and '#' represents an empty cell
-	state := make([][]string, n)
-	for i := 0; i < n; i++ {
-		row := make([]string, n)
-		for i := 0; i < n; i++ {
-			row[i] = "#"
-		}
-		state[i] = row
-	}
-	// Record whether there is a queen in the column
-	cols := make([]bool, n)
-	diags1 := make([]bool, 2*n-1)
-	diags2 := make([]bool, 2*n-1)
-	res := make([][][]string, 0)
-	backtrack(0, n, &state, &res, &cols, &diags1, &diags2)
-	return res
-}
-```
+```py
+def n_queens(n: int) -> list[list[list[str]]]:
+    """Solve the n-queens problem"""
+    # Initialize an n*n board, where 'Q' represents a queen and '#' represents an empty square
+    state = [["#" for _ in range(n)] for _ in range(n)]
+    cols = [False] * n  # Track whether a column contains a queen
+    diags1 = [False] * (2 * n - 1)  # Track whether a main diagonal contains a queen
+    diags2 = [False] * (2 * n - 1)  # Track whether an anti-diagonal contains a queen
+    res = []
+    backtrack(0, n, state, res, cols, diags1, diags2)
 
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Solve N queens */
-function nQueens(n: number): string[][][] {
-    // Initialize an n*n chessboard, where 'Q' represents a queen and '#' represents an empty cell
-    const state = Array.from({ length: n }, () => Array(n).fill('#'));
-    const cols = Array(n).fill(false); // Record whether there is a queen in the column
-    const diags1 = Array(2 * n - 1).fill(false); // Record whether there is a queen on the main diagonal
-    const diags2 = Array(2 * n - 1).fill(false); // Record whether there is a queen on the anti-diagonal
-    const res: string[][][] = [];
-
-    backtrack(0, n, state, res, cols, diags1, diags2);
-    return res;
-}
+    return res
 ```
 
 </div>

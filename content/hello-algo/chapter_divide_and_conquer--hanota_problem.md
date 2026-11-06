@@ -61,33 +61,17 @@ lang: ar
 في الشيفرة، نعرّف دالة تعاودية `dfs(i, src, buf, tar)`، غرضها نقل الأقراص $i$ العلوية من العمود `src` إلى العمود الهدف `tar` بمساعدة العمود المؤقت `buf`:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حل مسألة أبراج هانوي */
-func solveHanota(A, B, C *list.List) {
-	n := A.Len()
-	// انقل الأقراص n العلوية من A إلى C بمساعدة B
-	dfsHanota(n, A, B, C)
-}
+```py
+def solve_hanota(A: list[int], B: list[int], C: list[int]):
+    """Solve the Tower of Hanoi problem"""
+    n = len(A)
+    # Move the top n disks from A to C using B
+    dfs(n, A, B, C)
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* حل مسألة أبراج هانوي */
-function solveHanota(A: number[], B: number[], C: number[]): void {
-    const n = A.length;
-    // انقل الأقراص n العلوية من A إلى C بمساعدة B
-    dfs(n, A, B, C);
-}
-```
-
-</div>
-
 وكما يوضح الشكل أدناه، تشكّل مسألة أبراج هانوي شجرة تعاود بارتفاع $n$، حيث تمثّل كل عقدة مسألة فرعية تقابل استدعاءً للدالة `dfs()`، **لذا يكون التعقيد الزمني $O(2^n)$ والتعقيد المكاني $O(n)$**.
 
 ![شجرة التعاود لمسألة أبراج هانوي](/images/hello-algo/chapter_divide_and_conquer--hanota_recursive_tree.png)

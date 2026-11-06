@@ -17,26 +17,12 @@ An <u>array</u> is a linear data structure that stores elements of the same type
 We can choose between two array initialization methods based on our needs: with or without initial values. When no initial values are specified, most programming languages initialize array elements to $0$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="array.go"
-/* Initialize array */
-var arr [5]int
-// In Go, specifying length ([5]int) creates an array; not specifying length ([]int) creates a slice
-// Since Go's arrays are designed to have their length determined at compile time, only constants can be used to specify the length
-// For convenience in implementing the extend() method, slices are treated as arrays below
-nums := []int{1, 3, 2, 5, 4}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="array.ts"
-/* Initialize array */
-let arr: number[] = new Array(5).fill(0);
-let nums: number[] = [1, 3, 2, 5, 4];
+```python title="array.py"
+# Initialize array
+arr: list[int] = [0] * 5  # [ 0, 0, 0, 0, 0 ]
+nums: list[int] = [1, 3, 2, 5, 4]
 ```
 
 </div>
@@ -52,33 +38,16 @@ Observing the figure above, we find that the first element of an array has an in
 Accessing elements in an array is highly efficient; we can randomly access any element in the array in $O(1)$ time.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Random access to element */
-func randomAccess(nums []int) (randomNum int) {
-	// Randomly select a number in the interval [0, nums.length)
-	randomIndex := rand.Intn(len(nums))
-	// Retrieve and return the random element
-	randomNum = nums[randomIndex]
-	return
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Random access to element */
-function randomAccess(nums: number[]): number {
-    // Randomly select a number in the interval [0, nums.length)
-    const random_index = Math.floor(Math.random() * nums.length);
-    // Retrieve and return the random element
-    const random_num = nums[random_index];
-    return random_num;
-}
+```py
+def random_access(nums: list[int]) -> int:
+    """Access an element at a random index"""
+    # Choose a random number in the range [0, len(nums)-1]
+    random_index = random.randint(0, len(nums) - 1)
+    # Get and return the randomly selected element
+    random_num = nums[random_index]
+    return random_num
 ```
 
 </div>
@@ -92,35 +61,16 @@ Array elements are packed tightly together in memory, with no extra space betwee
 It is worth noting that since the length of an array is fixed, inserting an element will inevitably push the last element out of the array. We will leave the solution to this problem for discussion in the "List" chapter.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Insert element num at index index in the array */
-func insert(nums []int, num int, index int) {
-	// Move all elements at and after index index backward by one position
-	for i := len(nums) - 1; i > index; i-- {
-		nums[i] = nums[i-1]
-	}
-	// Assign num to the element at index index
-	nums[index] = num
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Insert element num at index index in the array */
-function insert(nums: number[], num: number, index: number): void {
-    // Move all elements at and after index index backward by one position
-    for (let i = nums.length - 1; i > index; i--) {
-        nums[i] = nums[i - 1];
-    }
-    // Assign num to the element at index index
-    nums[index] = num;
-}
+```py
+def insert(nums: list[int], num: int, index: int):
+    """Insert element num at index `index` in the array"""
+    # Shift all elements at and after index `index` one position to the right
+    for i in range(len(nums) - 1, index, -1):
+        nums[i] = nums[i - 1]
+    # Assign num to the element at index `index`
+    nums[index] = num
 ```
 
 </div>
@@ -134,31 +84,14 @@ Similarly, as shown in the figure below, to delete the element at index $i$, we 
 Note that after the deletion is complete, the original last element is no longer meaningful, so we do not need to modify it explicitly.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Remove the element at index index */
-func remove(nums []int, index int) {
-	// Move all elements after index index forward by one position
-	for i := index; i < len(nums)-1; i++ {
-		nums[i] = nums[i+1]
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Remove the element at index index */
-function remove(nums: number[], index: number): void {
-    // Move all elements after index index forward by one position
-    for (let i = index; i < nums.length - 1; i++) {
-        nums[i] = nums[i + 1];
-    }
-}
+```py
+def remove(nums: list[int], index: int):
+    """Remove the element at index `index`"""
+    # Shift all elements after index `index` one position to the left
+    for i in range(index, len(nums) - 1):
+        nums[i] = nums[i + 1]
 ```
 
 </div>
@@ -174,47 +107,22 @@ Overall, array insertion and deletion operations have the following drawbacks:
 In most programming languages, we can traverse an array either by index or by directly iterating through each element in the array:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Traverse array */
-func traverse(nums []int) {
-	count := 0
-	// Traverse array by index
-	for i := 0; i < len(nums); i++ {
-		count += nums[i]
-	}
-	count = 0
-	// Direct traversal of array elements
-	for _, num := range nums {
-		count += num
-	}
-	// Traverse simultaneously data index and elements
-	for i, num := range nums {
-		count += nums[i]
-		count += num
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Traverse array */
-function traverse(nums: number[]): void {
-    let count = 0;
-    // Traverse array by index
-    for (let i = 0; i < nums.length; i++) {
-        count += nums[i];
-    }
-    // Direct traversal of array elements
-    for (const num of nums) {
-        count += num;
-    }
-}
+```py
+def traverse(nums: list[int]):
+    """Traverse the array"""
+    count = 0
+    # Traverse the array by index
+    for i in range(len(nums)):
+        count += nums[i]
+    # Iterate directly over the array elements
+    for num in nums:
+        count += num
+    # Iterate over both the indices and the elements
+    for i, num in enumerate(nums):
+        count += nums[i]
+        count += num
 ```
 
 </div>
@@ -226,37 +134,15 @@ Finding a specified element in an array requires traversing the array and checki
 Since an array is a linear data structure, the above search operation is called a "linear search".
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Find the specified element in the array */
-func find(nums []int, target int) (index int) {
-	index = -1
-	for i := 0; i < len(nums); i++ {
-		if nums[i] == target {
-			index = i
-			break
-		}
-	}
-	return
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Find the specified element in the array */
-function find(nums: number[], target: number): number {
-    for (let i = 0; i < nums.length; i++) {
-        if (nums[i] === target) {
-            return i;
-        }
-    }
-    return -1;
-}
+```py
+def find(nums: list[int], target: int) -> int:
+    """Find a specified element in the array"""
+    for i in range(len(nums)):
+        if nums[i] == target:
+            return i
+    return -1
 ```
 
 </div>
@@ -268,41 +154,20 @@ In complex system environments, programs cannot guarantee that the memory space 
 If we want to expand an array, we need to create a new, larger array and then copy the original array elements to the new array one by one. This is an $O(n)$ operation, which is very time-consuming when the array is large. The code is shown below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Extend array length */
-func extend(nums []int, enlarge int) []int {
-	// Initialize an array with extended length
-	res := make([]int, len(nums)+enlarge)
-	// Copy all elements from the original array to the new array
-	for i, num := range nums {
-		res[i] = num
-	}
-	// Return the extended new array
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Extend array length */
-// Note: TypeScript's Array is dynamic array, can be directly expanded
-// For learning purposes, this function treats Array as fixed-length array
-function extend(nums: number[], enlarge: number): number[] {
-    // Initialize an array with extended length
-    const res = new Array(nums.length + enlarge).fill(0);
-    // Copy all elements from the original array to the new array
-    for (let i = 0; i < nums.length; i++) {
-        res[i] = nums[i];
-    }
-    // Return the extended new array
-    return res;
-}
+```py
+# Note that a Python list is a dynamic array and can be extended directly
+# For learning purposes, this function treats a list as a fixed-length array
+def extend(nums: list[int], enlarge: int) -> list[int]:
+    """Extend the array length"""
+    # Initialize an array with the extended length
+    res = [0] * (len(nums) + enlarge)
+    # Copy all elements from the original array to the new array
+    for i in range(len(nums)):
+        res[i] = nums[i]
+    # Return the new, extended array
+    return res
 ```
 
 </div>

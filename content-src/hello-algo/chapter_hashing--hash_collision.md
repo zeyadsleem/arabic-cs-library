@@ -38,112 +38,87 @@ The code below provides a simple implementation of a separate chaining hash tabl
 - This implementation includes a hash table expansion method. When the load factor exceeds $\frac{2}{3}$, we expand the hash table to $2$ times its original size.
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Hash table with separate chaining */
-class HashMapChaining {
-    #size: number; // Number of key-value pairs
-    #capacity: number; // Hash table capacity
-    #loadThres: number; // Load factor threshold for triggering expansion
-    #extendRatio: number; // Expansion multiplier
-    #buckets: Pair[][]; // Bucket array
+```py
+class HashMapChaining:
+    """Hash table with separate chaining"""
 
-    /* Constructor */
-    constructor() {
-        this.#size = 0;
-        this.#capacity = 4;
-        this.#loadThres = 2.0 / 3.0;
-        this.#extendRatio = 2;
-        this.#buckets = new Array(this.#capacity).fill(null).map((x) => []);
-    }
+    def __init__(self):
+        """Constructor"""
+        self.size = 0  # Number of key-value pairs
+        self.capacity = 4  # Hash table capacity
+        self.load_thres = 2.0 / 3.0  # Load factor threshold that triggers capacity growth
+        self.extend_ratio = 2  # Capacity growth factor
+        self.buckets = [[] for _ in range(self.capacity)]  # Bucket array
 
-    /* Hash function */
-    #hashFunc(key: number): number {
-        return key % this.#capacity;
-    }
+    def hash_func(self, key: int) -> int:
+        """Hash function"""
+        return key % self.capacity
 
-    /* Load factor */
-    #loadFactor(): number {
-        return this.#size / this.#capacity;
-    }
+    def load_factor(self) -> float:
+        """Load factor"""
+        return self.size / self.capacity
 
-    /* Query operation */
-    get(key: number): string | null {
-        const index = this.#hashFunc(key);
-        const bucket = this.#buckets[index];
-        // Traverse bucket, if key is found, return corresponding val
-        for (const pair of bucket) {
-            if (pair.key === key) {
-                return pair.val;
-            }
-        }
-        // If key is not found, return null
-        return null;
-    }
+    def get(self, key: int) -> str | None:
+        """Lookup operation"""
+        index = self.hash_func(key)
+        bucket = self.buckets[index]
+        # Traverse the bucket; if key is found, return its corresponding val
+        for pair in bucket:
+            if pair.key == key:
+                return pair.val
+        # Return None if key is not found
+        return None
 
-    /* Add operation */
-    put(key: number, val: string): void {
-        // When load factor exceeds threshold, perform expansion
-        if (this.#loadFactor() > this.#loadThres) {
-            this.#extend();
-        }
-        const index = this.#hashFunc(key);
-        const bucket = this.#buckets[index];
-        // Traverse bucket, if specified key is encountered, update corresponding val and return
-        for (const pair of bucket) {
-            if (pair.key === key) {
-                pair.val = val;
-                return;
-            }
-        }
-        // If key does not exist, append key-value pair to the end
-        const pair = new Pair(key, val);
-        bucket.push(pair);
-        this.#size++;
-    }
+    def put(self, key: int, val: str):
+        """Insert operation"""
+        # Grow the capacity when the load factor exceeds the threshold
+        if self.load_factor() > self.load_thres:
+            self.extend()
+        index = self.hash_func(key)
+        bucket = self.buckets[index]
+        # Traverse the bucket; if the specified key is found, update its val and return
+        for pair in bucket:
+            if pair.key == key:
+                pair.val = val
+                return
+        # If key is absent, append the key-value pair at the end
+        pair = Pair(key, val)
+        bucket.append(pair)
+        self.size += 1
 
-    /* Remove operation */
-    remove(key: number): void {
-        const index = this.#hashFunc(key);
-        let bucket = this.#buckets[index];
-        // Traverse bucket and remove key-value pair from it
-        for (let i = 0; i < bucket.length; i++) {
-            if (bucket[i].key === key) {
-                bucket.splice(i, 1);
-                this.#size--;
-                break;
-            }
-        }
-    }
+    def remove(self, key: int):
+        """Remove operation"""
+        index = self.hash_func(key)
+        bucket = self.buckets[index]
+        # Traverse the bucket and remove the key-value pair
+        for pair in bucket:
+            if pair.key == key:
+                bucket.remove(pair)
+                self.size -= 1
+                break
 
-    /* Expand hash table */
-    #extend(): void {
-        // Temporarily store the original hash table
-        const bucketsTmp = this.#buckets;
-        // Initialize expanded new hash table
-        this.#capacity *= this.#extendRatio;
-        this.#buckets = new Array(this.#capacity).fill(null).map((x) => []);
-        this.#size = 0;
-        // Move key-value pairs from original hash table to new hash table
-        for (const bucket of bucketsTmp) {
-            for (const pair of bucket) {
-                this.put(pair.key, pair.val);
-            }
-        }
-    }
+    def extend(self):
+        """Grow the hash table capacity"""
+        # Keep a reference to the original hash table
+        buckets = self.buckets
+        # Initialize a new hash table with the expanded capacity
+        self.capacity *= self.extend_ratio
+        self.buckets = [[] for _ in range(self.capacity)]
+        self.size = 0
+        # Move the key-value pairs from the original hash table to the new one
+        for bucket in buckets:
+            for pair in bucket:
+                self.put(pair.key, pair.val)
 
-    /* Print hash table */
-    print(): void {
-        for (const bucket of this.#buckets) {
-            let res = [];
-            for (const pair of bucket) {
-                res.push(pair.key + ' -> ' + pair.val);
-            }
-            console.log(res);
-        }
-    }
-}
+    def print(self):
+        """Print the hash table"""
+        for bucket in self.buckets:
+            res = []
+            for pair in bucket:
+                res.append(str(pair.key) + " -> " + pair.val)
+            print(res)
 ```
 
 </div>
@@ -182,147 +157,107 @@ To address this, we can record the index of the first `TOMBSTONE` encountered du
 The code below implements an open addressing (linear probing) hash table with lazy deletion. To make better use of the hash table space, we treat the hash table as a "circular array". When going beyond the end of the array, we return to the beginning and continue traversing.
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Hash table with open addressing */
-class HashMapOpenAddressing {
-    private size: number; // Number of key-value pairs
-    private capacity: number; // Hash table capacity
-    private loadThres: number; // Load factor threshold for triggering expansion
-    private extendRatio: number; // Expansion multiplier
-    private buckets: Array<Pair | null>; // Bucket array
-    private TOMBSTONE: Pair; // Removal marker
+```py
+class HashMapOpenAddressing:
+    """Hash table with open addressing"""
 
-    /* Constructor */
-    constructor() {
-        this.size = 0; // Number of key-value pairs
-        this.capacity = 4; // Hash table capacity
-        this.loadThres = 2.0 / 3.0; // Load factor threshold for triggering expansion
-        this.extendRatio = 2; // Expansion multiplier
-        this.buckets = Array(this.capacity).fill(null); // Bucket array
-        this.TOMBSTONE = new Pair(-1, '-1'); // Removal marker
-    }
+    def __init__(self):
+        """Constructor"""
+        self.size = 0  # Number of key-value pairs
+        self.capacity = 4  # Hash table capacity
+        self.load_thres = 2.0 / 3.0  # Load factor threshold that triggers capacity growth
+        self.extend_ratio = 2  # Capacity growth factor
+        self.buckets: list[Pair | None] = [None] * self.capacity  # Bucket array
+        self.TOMBSTONE = Pair(-1, "-1")  # Tombstone marker
 
-    /* Hash function */
-    private hashFunc(key: number): number {
-        return key % this.capacity;
-    }
+    def hash_func(self, key: int) -> int:
+        """Hash function"""
+        return key % self.capacity
 
-    /* Load factor */
-    private loadFactor(): number {
-        return this.size / this.capacity;
-    }
+    def load_factor(self) -> float:
+        """Load factor"""
+        return self.size / self.capacity
 
-    /* Search for bucket index corresponding to key */
-    private findBucket(key: number): number {
-        let index = this.hashFunc(key);
-        let firstTombstone = -1;
-        // Linear probing, break when encountering an empty bucket
-        while (this.buckets[index] !== null) {
-            // If key is encountered, return the corresponding bucket index
-            if (this.buckets[index]!.key === key) {
-                // If a removal marker was encountered before, move the key-value pair to that index
-                if (firstTombstone !== -1) {
-                    this.buckets[firstTombstone] = this.buckets[index];
-                    this.buckets[index] = this.TOMBSTONE;
-                    return firstTombstone; // Return the moved bucket index
-                }
-                return index; // Return bucket index
-            }
-            // Record the first removal marker encountered
-            if (
-                firstTombstone === -1 &&
-                this.buckets[index] === this.TOMBSTONE
-            ) {
-                firstTombstone = index;
-            }
-            // Calculate bucket index, wrap around to the head if past the tail
-            index = (index + 1) % this.capacity;
-        }
-        // If key does not exist, return the index for insertion
-        return firstTombstone === -1 ? index : firstTombstone;
-    }
+    def find_bucket(self, key: int) -> int:
+        """Find the bucket index for key"""
+        index = self.hash_func(key)
+        first_tombstone = -1
+        # Probe linearly until an empty bucket is reached
+        while self.buckets[index] is not None:
+            # If key is found, return its bucket index
+            if self.buckets[index].key == key:
+                # If a tombstone was encountered earlier, move the key-value pair to that index
+                if first_tombstone != -1:
+                    self.buckets[first_tombstone] = self.buckets[index]
+                    self.buckets[index] = self.TOMBSTONE
+                    return first_tombstone  # Return the bucket index after the move
+                return index  # Return the bucket index
+            # Record the first tombstone encountered
+            if first_tombstone == -1 and self.buckets[index] is self.TOMBSTONE:
+                first_tombstone = index
+            # Calculate the bucket index, wrapping to the beginning after the end
+            index = (index + 1) % self.capacity
+        # If key is absent, return the index for insertion
+        return index if first_tombstone == -1 else first_tombstone
 
-    /* Query operation */
-    get(key: number): string | null {
-        // Search for bucket index corresponding to key
-        const index = this.findBucket(key);
-        // If key-value pair is found, return corresponding val
-        if (
-            this.buckets[index] !== null &&
-            this.buckets[index] !== this.TOMBSTONE
-        ) {
-            return this.buckets[index]!.val;
-        }
-        // If key-value pair does not exist, return null
-        return null;
-    }
+    def get(self, key: int) -> str:
+        """Lookup operation"""
+        # Find the bucket index for key
+        index = self.find_bucket(key)
+        # If the key-value pair is found, return its val
+        if self.buckets[index] not in [None, self.TOMBSTONE]:
+            return self.buckets[index].val
+        # Return None if the key-value pair is absent
+        return None
 
-    /* Add operation */
-    put(key: number, val: string): void {
-        // When load factor exceeds threshold, perform expansion
-        if (this.loadFactor() > this.loadThres) {
-            this.extend();
-        }
-        // Search for bucket index corresponding to key
-        const index = this.findBucket(key);
-        // If key-value pair is found, overwrite val and return
-        if (
-            this.buckets[index] !== null &&
-            this.buckets[index] !== this.TOMBSTONE
-        ) {
-            this.buckets[index]!.val = val;
-            return;
-        }
-        // If key-value pair does not exist, add the key-value pair
-        this.buckets[index] = new Pair(key, val);
-        this.size++;
-    }
+    def put(self, key: int, val: str):
+        """Insert operation"""
+        # Grow the capacity when the load factor exceeds the threshold
+        if self.load_factor() > self.load_thres:
+            self.extend()
+        # Find the bucket index for key
+        index = self.find_bucket(key)
+        # If the key-value pair is found, overwrite val and return
+        if self.buckets[index] not in [None, self.TOMBSTONE]:
+            self.buckets[index].val = val
+            return
+        # If the key-value pair is absent, insert it
+        self.buckets[index] = Pair(key, val)
+        self.size += 1
 
-    /* Remove operation */
-    remove(key: number): void {
-        // Search for bucket index corresponding to key
-        const index = this.findBucket(key);
-        // If key-value pair is found, overwrite it with removal marker
-        if (
-            this.buckets[index] !== null &&
-            this.buckets[index] !== this.TOMBSTONE
-        ) {
-            this.buckets[index] = this.TOMBSTONE;
-            this.size--;
-        }
-    }
+    def remove(self, key: int):
+        """Remove operation"""
+        # Find the bucket index for key
+        index = self.find_bucket(key)
+        # If the key-value pair is found, replace it with a tombstone
+        if self.buckets[index] not in [None, self.TOMBSTONE]:
+            self.buckets[index] = self.TOMBSTONE
+            self.size -= 1
 
-    /* Expand hash table */
-    private extend(): void {
-        // Temporarily store the original hash table
-        const bucketsTmp = this.buckets;
-        // Initialize expanded new hash table
-        this.capacity *= this.extendRatio;
-        this.buckets = Array(this.capacity).fill(null);
-        this.size = 0;
-        // Move key-value pairs from original hash table to new hash table
-        for (const pair of bucketsTmp) {
-            if (pair !== null && pair !== this.TOMBSTONE) {
-                this.put(pair.key, pair.val);
-            }
-        }
-    }
+    def extend(self):
+        """Grow the hash table capacity"""
+        # Keep a reference to the original hash table
+        buckets_tmp = self.buckets
+        # Initialize a new hash table with the expanded capacity
+        self.capacity *= self.extend_ratio
+        self.buckets = [None] * self.capacity
+        self.size = 0
+        # Move the key-value pairs from the original hash table to the new one
+        for pair in buckets_tmp:
+            if pair not in [None, self.TOMBSTONE]:
+                self.put(pair.key, pair.val)
 
-    /* Print hash table */
-    print(): void {
-        for (const pair of this.buckets) {
-            if (pair === null) {
-                console.log('null');
-            } else if (pair === this.TOMBSTONE) {
-                console.log('TOMBSTONE');
-            } else {
-                console.log(pair.key + ' -> ' + pair.val);
-            }
-        }
-    }
-}
+    def print(self):
+        """Print the hash table"""
+        for pair in self.buckets:
+            if pair is None:
+                print("None")
+            elif pair is self.TOMBSTONE:
+                print("TOMBSTONE")
+            else:
+                print(pair.key, "->", pair.val)
 ```
 
 </div>

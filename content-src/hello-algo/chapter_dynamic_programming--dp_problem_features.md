@@ -43,11 +43,49 @@ So, does the stair climbing problem from the previous section have optimal subst
 
 According to the state transition equation and the initial states $dp[1] = cost[1]$ and $dp[2] = cost[2]$, we can obtain the dynamic programming code:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def min_cost_climbing_stairs_dp(cost: list[int]) -> int:
+    """Minimum cost to climb stairs: dynamic programming"""
+    n = len(cost) - 1
+    if n == 1 or n == 2:
+        return cost[n]
+    # Initialize the dp table to store subproblem solutions
+    dp = [0] * (n + 1)
+    # Initial states: set the solutions to the smallest subproblems
+    dp[1], dp[2] = cost[1], cost[2]
+    # State transitions: solve progressively larger subproblems using smaller ones
+    for i in range(3, n + 1):
+        dp[i] = min(dp[i - 1], dp[i - 2]) + cost[i]
+    return dp[n]
+```
+
+</div>
+
 The figure below shows the dynamic programming process for the above code.
 
 ![Dynamic programming process for climbing stairs with minimum cost](/images/hello-algo/chapter_dynamic_programming--min_cost_cs_dp.png)
 
 This problem can also be space-optimized, compressing from one dimension to zero, reducing the space complexity from $O(n)$ to $O(1)$:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def min_cost_climbing_stairs_dp_comp(cost: list[int]) -> int:
+    """Minimum cost to climb stairs: space-optimized dynamic programming"""
+    n = len(cost) - 1
+    if n == 1 or n == 2:
+        return cost[n]
+    a, b = cost[1], cost[2]
+    for i in range(3, n + 1):
+        a, b = b, min(a, b) + cost[i]
+    return b
+```
+
+</div>
 
 ## No Aftereffects
 
@@ -89,6 +127,28 @@ $$
 ![Recurrence relation considering constraints](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_constraint_state_transfer.png)
 
 Finally, return $dp[n, 1] + dp[n, 2]$, where the sum of the two represents the total number of ways to climb to the $n$-th step:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def climbing_stairs_constraint_dp(n: int) -> int:
+    """Climbing stairs with constraints: dynamic programming"""
+    if n == 1 or n == 2:
+        return 1
+    # Initialize the dp table to store subproblem solutions
+    dp = [[0] * 3 for _ in range(n + 1)]
+    # Initial states: set the solutions to the smallest subproblems
+    dp[1][1], dp[1][2] = 1, 0
+    dp[2][1], dp[2][2] = 0, 1
+    # State transitions: solve progressively larger subproblems using smaller ones
+    for i in range(3, n + 1):
+        dp[i][1] = dp[i - 1][2]
+        dp[i][2] = dp[i - 2][1] + dp[i - 2][2]
+    return dp[n][1] + dp[n][2]
+```
+
+</div>
 
 In the above case, since we only need to consider one more preceding state, we can still make the problem satisfy no aftereffects by expanding the state definition. However, some problems have very severe "aftereffects".
 

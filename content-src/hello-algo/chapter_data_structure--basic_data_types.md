@@ -51,26 +51,17 @@ If we want to represent "a row of numbers", we naturally think of using an array
 In other words, **basic data types provide the "content type" of data, while data structures provide the "organization method" of data**. For example, in the following code, we use the same data structure (array) to store and represent different basic data types, including `int`, `float`, `char`, `bool`, etc.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-// Initialize arrays using various basic data types
-var numbers = [5]int{}
-var decimals = [5]float64{}
-var characters = [5]byte{}
-var bools = [5]bool{}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-// Initialize arrays using various basic data types
-const numbers: number[] = [];
-const characters: string[] = [];
-const bools: boolean[] = [];
+```python title=""
+# Initialize arrays using various basic data types
+numbers: list[int] = [0] * 5
+decimals: list[float] = [0.0] * 5
+# In Python, characters are actually strings of length 1
+characters: list[str] = ['0'] * 5
+bools: list[bool] = [False] * 5
+# Python lists can freely store various basic data types and object references
+data = [0, 0.0, 'a', False, ListNode(0)]
 ```
 
 </div>

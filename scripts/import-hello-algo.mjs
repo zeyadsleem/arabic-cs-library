@@ -225,6 +225,72 @@ const extractTypeScript = (chapterDir, file, className, funcName) => {
   return fs.readFileSync(actual, 'utf8').trim();
 };
 
+const pythonBodyEnd = (lines, startIndex, defIndent) => {
+  let i = startIndex + 1;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (line.trim() === '') {
+      i += 1;
+      continue;
+    }
+    if (indentOf(line) <= defIndent) break;
+    i += 1;
+  }
+  return i;
+};
+
+const pythonLeadingComments = (lines, startIndex) => {
+  let i = startIndex - 1;
+  while (i >= 0 && lines[i].trim() === '') i -= 1;
+  const commentEnd = i;
+  while (i >= 0 && lines[i].trim().startsWith('#')) i -= 1;
+  return i + 1 <= commentEnd ? i + 1 : startIndex;
+};
+
+const extractPython = (chapterDir, file, className, funcName) => {
+  const base = path.join(codesDir, 'python', chapterDir);
+  const candidates = [
+    path.join(base, file.replace(/-/g, '_') + '.py'),
+    path.join(base, file + '.py'),
+  ];
+  const actual = candidates.find((candidate) => fs.existsSync(candidate));
+  if (!actual) return null;
+  const lines = fs.readFileSync(actual, 'utf8').split('\n');
+
+  const extractDefinition = (namePatterns) => {
+    for (let i = 0; i < lines.length; i += 1) {
+      if (!namePatterns.some((pattern) => pattern.test(lines[i]))) continue;
+      const defIndent = indentOf(lines[i]);
+      const start = pythonLeadingComments(lines, i);
+      let end = pythonBodyEnd(lines, i, defIndent);
+      while (end > 0 && lines[end - 1].trim() === '') end -= 1;
+      return lines.slice(start, end).join('\n');
+    }
+    return null;
+  };
+
+  if (funcName) {
+    const camel = toCamel(funcName);
+    return extractDefinition([
+      new RegExp(`^\\s*def\\s+${funcName}\\s*\\(`),
+      new RegExp(`^\\s*def\\s+${camel}\\s*\\(`),
+    ]);
+  }
+
+  if (className) {
+    const pascal = toPascal(className);
+    return extractDefinition([new RegExp(`^\\s*class\\s+${pascal}\\b`)]);
+  }
+
+  const text = fs.readFileSync(actual, 'utf8');
+  return (text.startsWith('"""')
+    ? text.replace(/^"""[\s\S]*?"""\n+/, '')
+    : text
+  )
+    .replace(/^#\s*File:.*\n(#[^\n]*\n)*/m, '')
+    .trim();
+};
+
 const copyImage = (fileDir, src) => {
   const resolved = path.join(docsDir, fileDir, src);
   if (!fs.existsSync(resolved)) return null;
@@ -260,16 +326,9 @@ const parseIndented = (lines, startIndex, baseIndent) => {
 };
 
 const resolveMacro = (fileDir, file, className, funcName) => {
-  const goCode = extractGo(fileDir, file, className, funcName);
-  const tsCode = extractTypeScript(fileDir, file, className, funcName);
-  let out = '';
-  if (goCode) {
-    out += `\n<div class="lang-tab">\n<p class="lang-tab__label">Go</p>\n\n\`\`\`go\n${goCode}\n\`\`\`\n\n</div>\n`;
-  }
-  if (tsCode) {
-    out += `\n<div class="lang-tab">\n<p class="lang-tab__label">TypeScript</p>\n\n\`\`\`ts\n${tsCode}\n\`\`\`\n\n</div>\n`;
-  }
-  return out;
+  const pyCode = extractPython(fileDir, file, className, funcName);
+  if (!pyCode) return '';
+  return `\n<div class="lang-tab">\n<p class="lang-tab__label">Python</p>\n\n\`\`\`py\n${pyCode}\n\`\`\`\n\n</div>\n`;
 };
 
 const convertBody = (fileDir, raw) => {
@@ -320,10 +379,9 @@ const convertBody = (fileDir, raw) => {
       const lang = tabMatch[1];
       const base = indentOf(line);
       const { content, next } = parseIndented(lines, i + 1, base);
-      if (['Go', 'TypeScript', 'TS'].includes(lang)) {
-        const label = lang === 'TS' ? 'TypeScript' : lang;
+      if (lang === 'Python') {
         output.push(`\n<div class="lang-tab">`);
-        output.push(`<p class="lang-tab__label">${label}</p>`);
+        output.push(`<p class="lang-tab__label">${lang}</p>`);
         output.push('');
         output.push(content);
         output.push('');
@@ -434,6 +492,287 @@ for (const chapter of chapters) {
 fs.writeFileSync(
   path.join(root, 'content', 'hello-algo-structure.json'),
   JSON.stringify({ chapters: structure }, null, 2)
+);
+
+const parseLangTabRuns = (text) => {
+  const runs = [];
+  const lines = text.split('\n');
+  let start = -1;
+  for (let i = 0; i < lines.length; i += 1) {
+    if (lines[i] === '<div class="lang-tab">' && start < 0) {
+      start = i;
+      continue;
+    }
+    if (lines[i] === '</div>' && start >= 0) {
+      const block = lines.slice(start, i + 1);
+      const label = block
+        .find((line) => line.startsWith('<p class="lang-tab__label">'))
+        ?.match(/>([^<]*)</)?.[1];
+      runs.push({ bg: start, end: i, label });
+      start = -1;
+    }
+  }
+  if (start >= 0) throw new Error('Unmatched lang-tab opening div');
+  return runs;
+};
+
+const mergeAdjacentRuns = (runs, lines) => {
+  const groups = [];
+  for (const run of runs) {
+    const last = groups[groups.length - 1];
+    if (last) {
+      const between = lines.slice(last.end + 1, run.bg);
+      if (between.every((line) => line.trim() === '')) {
+        last.end = run.end;
+        last.labels.push(run.label);
+        continue;
+      }
+    }
+    groups.push({ bg: run.bg, end: run.end, labels: [run.label] });
+  }
+  return groups;
+};
+
+const parseAnchors = (lines) => {
+  const anchors = [];
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    const image = line.match(/^!\[.*\]\((\/images\/[^)\s]+|[^)\s]*\.png|[^)\s]*\.svg)\)/);
+    if (image) {
+      anchors.push({ line: i, key: `img:${image[1]}` });
+      continue;
+    }
+    const heading = line.match(/^(#{1,6}) /);
+    if (heading) anchors.push({ line: i, key: `h${heading[1].length}` });
+  }
+  return anchors;
+};
+
+const lcsAnchorAlignment = (a, b) => {
+  const m = a.length;
+  const n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = m - 1; i >= 0; i -= 1) {
+    for (let j = n - 1; j >= 0; j -= 1) {
+      dp[i][j] =
+        a[i].key === b[j].key
+          ? dp[i + 1][j + 1] + 1
+          : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    }
+  }
+  const pairs = [];
+  let i = 0;
+  let j = 0;
+  while (i < m && j < n) {
+    if (a[i].key === b[j].key) {
+      pairs.push({ a: a[i], b: b[j] });
+      i += 1;
+      j += 1;
+    } else if (dp[i + 1][j] >= dp[i][j + 1]) {
+      i += 1;
+    } else {
+      j += 1;
+    }
+  }
+  return pairs;
+};
+
+const buildFullContent = (arabic, arabicGroups, english, englishGroups) => {
+  const arabicLines = arabic.split('\n');
+  const englishLines = english.split('\n');
+  let output = '';
+  let cursor = 0;
+  for (let i = 0; i < arabicGroups.length; i += 1) {
+    const sourceGroup = arabicGroups[i];
+    const pythonGroup = englishGroups[i];
+    if (!pythonGroup.labels.every((l) => l === 'Python')) {
+      throw new Error('expected aligned Python group');
+    }
+    output +=
+      arabicLines.slice(cursor, sourceGroup.bg).join('\n') +
+      '\n' +
+      englishLines.slice(pythonGroup.bg, pythonGroup.end + 1).join('\n');
+    cursor = sourceGroup.end + 1;
+  }
+  output += arabicLines.slice(cursor).join('\n');
+  return output.replace(/\n{3,}/g, '\n\n').replace(/[ \t]+\n/g, '\n');
+};
+
+const contentDir = path.join(root, 'content', 'hello-algo');
+const updateArabicContent = () => {
+  fs.mkdirSync(contentDir, { recursive: true });
+  const files = fs.readdirSync(contentDir).filter((f) => f.endsWith('.md'));
+  const stats = { files: 0, replaced: 0, skipped: [] };
+  for (const file of files) {
+    const englishPath = path.join(outDir, file);
+    if (!fs.existsSync(englishPath)) {
+      stats.skipped.push(`${file} (no english source)`);
+      continue;
+    }
+    const arabic = fs.readFileSync(path.join(contentDir, file), 'utf8');
+    const english = fs.readFileSync(englishPath, 'utf8');
+    const arabicLines = arabic.split('\n');
+    const englishLines = english.split('\n');
+    const arabicGroups = mergeAdjacentRuns(parseLangTabRuns(arabic), arabicLines);
+    const englishGroups = mergeAdjacentRuns(parseLangTabRuns(english), englishLines);
+    if (arabicGroups.length === 0 && englishGroups.length === 0) continue;
+
+    const isPurePython = (group) => group.labels.every((l) => l === 'Python');
+    if (arabicGroups.length === englishGroups.length) {
+      if (
+        arabicGroups.every(isPurePython)
+      ) {
+        continue;
+      }
+      if (
+        arabicGroups.every((g) =>
+          g.labels.every((l) => ['Go', 'TypeScript'].includes(l))
+        )
+      ) {
+        const output = buildFullContent(arabic, arabicGroups, english, englishGroups);
+        fs.writeFileSync(path.join(contentDir, file), output);
+        stats.files += 1;
+        stats.replaced += arabicGroups.length;
+        continue;
+      }
+      stats.skipped.push(
+        `${file} (unexpected labels: ${arabicGroups
+          .flatMap((g) => g.labels)
+          .join(', ')})`
+      );
+      continue;
+    }
+    if (
+      !arabicGroups.every((g) =>
+        g.labels.every((l) => ['Go', 'TypeScript'].includes(l))
+      ) ||
+      !englishGroups.every(isPurePython)
+    ) {
+      stats.skipped.push(
+        `${file} (${arabicGroups.length} go/ts groups -> ${englishGroups.length} python)`
+      );
+      continue;
+    }
+
+    // Align groups between the two documents using image/heading anchors so
+    // extra python tabs (the group is missing from the arabic translation)
+    // are merged into the nearest neighbour.
+    const arabicAnchors = parseAnchors(arabicLines);
+    const englishAnchors = parseAnchors(englishLines);
+    const pairs = lcsAnchorAlignment(arabicAnchors, englishAnchors);
+    const intervalOf = (line, anchors, side) => {
+      for (let idx = 0; idx <= pairs.length; idx += 1) {
+        const before = idx === 0 ? -1 : pairs[idx - 1][side].line + 1;
+        const after = idx === pairs.length ? Infinity : pairs[idx][side].line;
+        if (line >= before && line < after) return idx;
+      }
+      return -1;
+    };
+    // Maps intervals (indices relative to matched anchors) to groups.
+    const buckets = {
+      arabic: new Map(),
+      english: new Map(),
+    };
+    arabicGroups.forEach((group, idx) => {
+      const interval = intervalOf(group.bg, arabicAnchors, 'a');
+      buckets.arabic.set(interval, [...(buckets.arabic.get(interval) ?? []), idx]);
+    });
+    englishGroups.forEach((group, idx) => {
+      const interval = intervalOf(group.bg, englishAnchors, 'b');
+      buckets.english.set(interval, [...(buckets.english.get(interval) ?? []), idx]);
+    });
+    const intervals = new Set([
+      ...buckets.arabic.keys(),
+      ...buckets.english.keys(),
+    ]);
+    let balanced = true;
+    const plan = [];
+    for (const interval of intervals) {
+      const arabicIds = buckets.arabic.get(interval) ?? [];
+      const englishIds = buckets.english.get(interval) ?? [];
+      if (arabicIds.length === englishIds.length && arabicIds.length > 0) {
+        for (let k = 0; k < arabicIds.length; k += 1) {
+          plan.push({ type: 'replace', arabic: arabicIds[k], english: englishIds[k] });
+        }
+        continue;
+      }
+      if (arabicIds.length === 0 && englishIds.length > 0 && pairs.length > 0) {
+        const anchorIndex = interval === pairs.length ? pairs.length - 1 : interval;
+        plan.push({
+          type: 'insert-before-anchor',
+          anchor: pairs[anchorIndex],
+          englishIds,
+        });
+        continue;
+      }
+      balanced = false;
+      break;
+    }
+    if (!balanced) {
+      stats.skipped.push(
+        `${file} (${arabicGroups.length} go/ts groups -> ${englishGroups.length} python [unbalanced])`
+      );
+      continue;
+    }
+    plan.sort((x, y) =>
+      x.type === 'replace' && y.type === 'replace'
+        ? arabicGroups[x.arabic].bg - arabicGroups[y.arabic].bg
+        : x.type === 'replace'
+          ? arabicGroups[x.arabic].bg - y.anchor.a.line
+          : x.anchor.a.line - (y.type === 'replace' ? arabicGroups[y.arabic].bg : y.anchor.a.line)
+    );
+    const processed = new Set();
+    // Rebuild with plan; conversion deletes aligned arabic groups by id.
+    const planOutputs = new Map();
+    const removed = new Set(
+      plan.filter((p) => p.type === 'replace').map((p) => ({
+        bg: arabicGroups[p.arabic].bg,
+        end: arabicGroups[p.arabic].end,
+      }))
+    );
+    const inserts = plan.filter((p) => p.type === 'insert-before-anchor');
+    let outLines = [];
+    let cursor = 0;
+    for (const pair of plan) {
+      if (pair.type === 'replace') {
+        const sourceGroup = arabicGroups[pair.arabic];
+        const pythonGroup = englishGroups[pair.english];
+        outLines = outLines
+          .concat(arabicLines.slice(cursor, sourceGroup.bg))
+          .concat(englishLines.slice(pythonGroup.bg, pythonGroup.end + 1));
+        cursor = sourceGroup.end + 1;
+      } else {
+        const anchorLine = pair.anchor.a.line;
+        const blocks = pair.englishIds
+          .map((idx) => englishLines.slice(englishGroups[idx].bg, englishGroups[idx].end + 1).join('\n'))
+          .join('\n');
+        outLines = outLines
+          .concat(arabicLines.slice(cursor, anchorLine))
+          .concat([blocks]);
+        cursor = anchorLine;
+      }
+    }
+    outLines = outLines.concat(arabicLines.slice(cursor));
+    const output = outLines
+      .join('\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .replace(/[ \t]+\n/g, '\n');
+    fs.writeFileSync(path.join(contentDir, file), output);
+    stats.files += 1;
+    stats.replaced += plan.filter((p) => p.type === 'replace').length + inserts.length;
+    void removed;
+    void intervals;
+  }
+  return stats;
+};
+
+const stats = updateArabicContent();
+if (stats.skipped.length) {
+  console.log(`hello-algo: arabic update skipped files:`);
+  for (const entry of stats.skipped) console.log(`  - ${entry}`);
+}
+console.log(
+  `hello-algo: ${stats.files} arabic files rebuilt with ${stats.replaced} python tabs`
 );
 
 console.log(

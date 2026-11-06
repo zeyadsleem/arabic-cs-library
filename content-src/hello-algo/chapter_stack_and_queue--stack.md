@@ -29,62 +29,31 @@ The common operations on a stack are shown in the table below. The specific meth
 Typically, we can directly use the built-in stack class provided by the programming language. However, some languages may not provide a dedicated stack class. In such cases, we can use the language's "array" or "linked list" as a stack and simply avoid using operations unrelated to stack behavior.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="stack_test.go"
-/* Initialize stack */
-// In Go, it is recommended to use Slice as a stack
-var stack []int
+```python title="stack.py"
+# Initialize stack
+# Python does not have a built-in stack class, can use list as a stack
+stack: list[int] = []
 
-/* Push elements */
-stack = append(stack, 1)
-stack = append(stack, 3)
-stack = append(stack, 2)
-stack = append(stack, 5)
-stack = append(stack, 4)
+# Push elements
+stack.append(1)
+stack.append(3)
+stack.append(2)
+stack.append(5)
+stack.append(4)
 
-/* Access top element */
-peek := stack[len(stack)-1]
+# Access top element
+peek: int = stack[-1]
 
-/* Pop element */
-pop := stack[len(stack)-1]
-stack = stack[:len(stack)-1]
+# Pop element
+pop: int = stack.pop()
 
-/* Get stack length */
-size := len(stack)
+# Get stack length
+size: int = len(stack)
 
-/* Check if empty */
-isEmpty := len(stack) == 0
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="stack.ts"
-/* Initialize stack */
-// TypeScript does not have a built-in stack class, can use Array as a stack
-const stack: number[] = [];
-
-/* Push elements */
-stack.push(1);
-stack.push(3);
-stack.push(2);
-stack.push(5);
-stack.push(4);
-
-/* Access top element */
-const peek = stack[stack.length - 1];
-
-/* Pop element */
-const pop = stack.pop();
-
-/* Get stack length */
-const size = stack.length;
-
-/* Check if empty */
-const is_empty = stack.length === 0;
+# Check if empty
+is_empty: bool = len(stack) == 0
 ```
 
 </div>
@@ -104,62 +73,54 @@ As shown in the figure below, for the push operation, we simply insert an elemen
 Below is sample code for implementing a stack based on a linked list:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Stack based on linked list implementation */
-class LinkedListStack {
-    private stackPeek: ListNode | null; // Use head node as stack top
-    private stkSize: number = 0; // Stack length
+```py
+class LinkedListStack:
+    """Stack implemented with a linked list"""
 
-    constructor() {
-        this.stackPeek = null;
-    }
+    def __init__(self):
+        """Constructor"""
+        self._peek: ListNode | None = None
+        self._size: int = 0
 
-    /* Get the length of the stack */
-    get size(): number {
-        return this.stkSize;
-    }
+    def size(self) -> int:
+        """Get the stack size"""
+        return self._size
 
-    /* Check if the stack is empty */
-    isEmpty(): boolean {
-        return this.size === 0;
-    }
+    def is_empty(self) -> bool:
+        """Check whether the stack is empty"""
+        return self._size == 0
 
-    /* Push */
-    push(num: number): void {
-        const node = new ListNode(num);
-        node.next = this.stackPeek;
-        this.stackPeek = node;
-        this.stkSize++;
-    }
+    def push(self, val: int):
+        """Push"""
+        node = ListNode(val)
+        node.next = self._peek
+        self._peek = node
+        self._size += 1
 
-    /* Pop */
-    pop(): number {
-        const num = this.peek();
-        if (!this.stackPeek) throw new Error('Stack is empty');
-        this.stackPeek = this.stackPeek.next;
-        this.stkSize--;
-        return num;
-    }
+    def pop(self) -> int:
+        """Pop"""
+        num = self.peek()
+        self._peek = self._peek.next
+        self._size -= 1
+        return num
 
-    /* Return list for printing */
-    peek(): number {
-        if (!this.stackPeek) throw new Error('Stack is empty');
-        return this.stackPeek.val;
-    }
+    def peek(self) -> int:
+        """Access the top element"""
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self._peek.val
 
-    /* Convert linked list to Array and return */
-    toArray(): number[] {
-        let node = this.stackPeek;
-        const res = new Array<number>(this.size);
-        for (let i = res.length - 1; i >= 0; i--) {
-            res[i] = node!.val;
-            node = node!.next;
-        }
-        return res;
-    }
-}
+    def to_list(self) -> list[int]:
+        """Convert to a list for printing"""
+        arr = []
+        node = self._peek
+        while node:
+            arr.append(node.val)
+            node = node.next
+        arr.reverse()
+        return arr
 ```
 
 </div>
@@ -171,48 +132,43 @@ When implementing a stack using an array, we can treat the end of the array as t
 Since elements pushed onto the stack may increase continuously, we can use a dynamic array, which eliminates the need to handle array expansion ourselves. Here is the sample code:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Stack based on array implementation */
-class ArrayStack {
-    private stack: number[];
-    constructor() {
-        this.stack = [];
-    }
+```py
+class ArrayStack:
+    """Stack implemented with an array"""
 
-    /* Get the length of the stack */
-    get size(): number {
-        return this.stack.length;
-    }
+    def __init__(self):
+        """Constructor"""
+        self._stack: list[int] = []
 
-    /* Check if the stack is empty */
-    isEmpty(): boolean {
-        return this.stack.length === 0;
-    }
+    def size(self) -> int:
+        """Get the stack size"""
+        return len(self._stack)
 
-    /* Push */
-    push(num: number): void {
-        this.stack.push(num);
-    }
+    def is_empty(self) -> bool:
+        """Check whether the stack is empty"""
+        return self.size() == 0
 
-    /* Pop */
-    pop(): number | undefined {
-        if (this.isEmpty()) throw new Error('Stack is empty');
-        return this.stack.pop();
-    }
+    def push(self, item: int):
+        """Push"""
+        self._stack.append(item)
 
-    /* Return list for printing */
-    top(): number | undefined {
-        if (this.isEmpty()) throw new Error('Stack is empty');
-        return this.stack[this.stack.length - 1];
-    }
+    def pop(self) -> int:
+        """Pop"""
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self._stack.pop()
 
-    /* Return Array */
-    toArray() {
-        return this.stack;
-    }
-}
+    def peek(self) -> int:
+        """Access the top element"""
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self._stack[-1]
+
+    def to_list(self) -> list[int]:
+        """Return a list for printing"""
+        return self._stack
 ```
 
 </div>

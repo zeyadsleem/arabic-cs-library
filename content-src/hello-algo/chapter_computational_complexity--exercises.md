@@ -14,33 +14,15 @@ The two functions below both calculate $1 + 2 + \dots + n$ (assume $n \ge 1$). S
 answer the questions by following the program's actual execution order, and then compare the efficiency of the two approaches.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Iterative summation */
-func sumIter(n int) int {
-	res := 0
-	for i := 1; i <= n; i++ {
-		res += i
-	}
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Iterative summation */
-function sumIter(n: number): number {
-    let res = 0;
-    for (let i = 1; i <= n; i++) {
-        res += i;
-    }
-    return res;
-}
+```py
+def sum_iter(n: int) -> int:
+    """Sum using iteration"""
+    res = 0
+    for i in range(1, n + 1):
+        res += i
+    return res
 ```
 
 </div>
@@ -75,33 +57,15 @@ function sumIter(n: number): number {
 Each of the following code fragments takes a positive integer $n$ as input. Order them from lowest to highest time complexity, and give the complexity of each one.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Linear loop */
-func linearLoop(n int) int {
-	res := 0
-	for i := 0; i < n; i++ {
-		res += i
-	}
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Linear loop */
-function linearLoop(n: number): number {
-    let res = 0;
-    for (let i = 0; i < n; i++) {
-        res += i;
-    }
-    return res;
-}
+```py
+def linear_loop(n: int) -> int:
+    """Linear-time loop"""
+    res = 0
+    for i in range(n):
+        res += i
+    return res
 ```
 
 </div>

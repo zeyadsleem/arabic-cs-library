@@ -24,38 +24,18 @@ lang: ar
 هدف هذه المسألة هو تحديد عدد الطرق، لذا **يمكننا التفكير في استخدام التتبّع الرجعي لسرد جميع الاحتمالات**. وتحديداً، تخيّل صعود الدرج عملية اختيار متعددة الجولات: نبدأ من الأرض، ونختار في كل جولة الصعود درجة واحدة أو درجتين، ونزيد العدّاد بواحد كلما بلغنا قمة الدرج، ونشذّب عند تجاوز القمة. والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* صعود الدرج: التتبّع الرجعي */
-func climbingStairsBacktrack(n int) int {
-	// يمكن اختيار الصعود درجة أو درجتين
-	choices := []int{1, 2}
-	// ابدأ الصعود من الدرجة رقم 0
-	state := 0
-	res := make([]int, 1)
-	// استخدم res[0] لتسجيل عدد الحلول
-	res[0] = 0
-	backtrack(choices, state, n, res)
-	return res[0]
-}
-```
+```py
+        # Backtrack
 
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* صعود الدرج: التتبّع الرجعي */
-function climbingStairsBacktrack(n: number): number {
-    const choices = [1, 2]; // يمكن اختيار الصعود درجة أو درجتين
-    const state = 0; // ابدأ الصعود من الدرجة رقم 0
-    const res = new Map();
-    res.set(0, 0); // استخدم res[0] لتسجيل عدد الحلول
-    backtrack(choices, state, n, res);
-    return res.get(0);
-}
+def climbing_stairs_backtrack(n: int) -> int:
+    """Climbing stairs: backtracking"""
+    choices = [1, 2]  # Choose to climb 1 or 2 steps
+    state = 0  # Start climbing from step 0
+    res = [0]  # Use res[0] to record the number of ways
+    backtrack(choices, state, n, res)
+    return res[0]
 ```
 
 </div>
@@ -88,6 +68,16 @@ $$
 
 يوضح الشكل أدناه الشجرة التعاودية الناتجة عن البحث بالقوة الغاشمة. فبالنسبة إلى المسألة $dp[n]$، يكون عمق شجرتها التعاودية $n$، بتعقيد زمني $O(2^n)$. والنمو الأسي متفجر؛ فإذا أدخلنا قيمة $n$ كبيرة نسبياً، فقد يكون الانتظار طويلاً جداً.
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def climbing_stairs_dfs(n: int) -> int:
+    """Climbing stairs: search"""
+    return dfs(n)
+```
+
+</div>
 ![الشجرة التعاودية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_tree.png)
 
 وبمراقبة الشكل أعلاه، نجد أن **التعقيد الزمني الأسي ناتج عن «المسائل الفرعية المتداخلة»**. على سبيل المثال، تُحلَّل $dp[9]$ إلى $dp[8]$ و$dp[7]$، وتُحلَّل $dp[8]$ إلى $dp[7]$ و$dp[6]$، وكلتاهما تحتويان المسألة الفرعية $dp[7]$.
@@ -105,6 +95,18 @@ $$
 
 راقب الشكل أدناه: **بعد الحفظ، لا تحتاج جميع المسائل الفرعية المتداخلة إلى الحساب إلا مرة واحدة، فينخفض التعقيد الزمني إلى $O(n)$**، وهي قفزة هائلة.
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def climbing_stairs_dfs_mem(n: int) -> int:
+    """Climbing stairs: memoized search"""
+    # mem[i] stores the number of ways to reach step i; -1 means no result has been recorded
+    mem = [-1] * (n + 1)
+    return dfs(n, mem)
+```
+
+</div>
 ![الشجرة التعاودية مع الحفظ](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_memo_tree.png)
 
 ## الطريقة الثالثة: البرمجة الديناميكية
@@ -117,6 +119,25 @@ $$
 
 ويحاكي الشكل أدناه عملية تنفيذ الشيفرة أعلاه.
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def climbing_stairs_dp(n: int) -> int:
+    """Climbing stairs: dynamic programming"""
+    if n == 1 or n == 2:
+        return n
+    # Initialize the dp table to store subproblem solutions
+    dp = [0] * (n + 1)
+    # Initial states: set the solutions to the smallest subproblems
+    dp[1], dp[2] = 1, 2
+    # State transitions: solve progressively larger subproblems using smaller ones
+    for i in range(3, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+    return dp[n]
+```
+
+</div>
 ![عملية البرمجة الديناميكية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dp.png)
 
 ومثل خوارزميات التتبّع الرجعي، تستخدم البرمجة الديناميكية أيضاً مفهوم «الحالة» لتمثيل مراحل محددة من حل المسألة، حيث تقابل كل حالة مسألة فرعية والحل الأمثل المحلي المقابل لها. على سبيل المثال، تُعرَّف الحالة في مسألة صعود الدرج بأنها رقم الدرجة الحالية $i$.
@@ -130,6 +151,21 @@ $$
 ## تحسين المساحة
 
 ربما لاحظ القارئ المتيقّظ أنه **بما أن $dp[i]$ لا يرتبط إلا بـ $dp[i-1]$ و$dp[i-2]$، فلا حاجة إلى استخدام مصفوفة `dp` لتخزين حلول جميع المسائل الفرعية**، ويمكن الاستعاضة عن ذلك بمتغيرين يتدحرجان إلى الأمام. والشيفرة كما يلي:
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def climbing_stairs_dp_comp(n: int) -> int:
+    """Climbing stairs: space-optimized dynamic programming"""
+    if n == 1 or n == 2:
+        return n
+    a, b = 1, 2
+    for _ in range(3, n + 1):
+        a, b = b, a + b
+    return b
+```
+
+</div>
 
 وكما توضح الشيفرة أعلاه، بإلغاء المساحة التي تشغلها المصفوفة `dp`، ينخفض التعقيد المكاني من $O(n)$ إلى $O(1)$.
 

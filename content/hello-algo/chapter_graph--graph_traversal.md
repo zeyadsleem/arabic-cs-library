@@ -32,6 +32,35 @@ lang: ar
 
 </div>
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def graph_bfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
+    """Breadth-first traversal"""
+    # Represent the graph with an adjacency list to access all neighbors of a given vertex
+    # Vertex traversal sequence
+    res = []
+    # Hash set recording visited vertices
+    visited = set[Vertex]([start_vet])
+    # Use a queue to implement BFS
+    que = deque[Vertex]([start_vet])
+    # Starting from start_vet, loop until all reachable vertices have been visited
+    while len(que) > 0:
+        vet = que.popleft()  # Dequeue the front vertex
+        res.append(vet)  # Record the visited vertex
+        # Traverse all neighbors of this vertex
+        for adj_vet in graph.adj_list[vet]:
+            if adj_vet in visited:
+                continue  # Skip vertices that have already been visited
+            que.append(adj_vet)  # Enqueue only unvisited vertices
+            visited.add(adj_vet)  # Mark this vertex as visited
+    # Return the vertex traversal sequence
+    return res
+```
+
+</div>
+
 الشيفرة مجرّدة نسبياً؛ ويُوصى بالرجوع إلى الشكل أدناه لتعميق الفهم.
 
 <div class="note">
@@ -56,6 +85,23 @@ lang: ar
 ### تنفيذ الخوارزمية
 
 يُنفَّذ هذا النموذج الخوارزمي القائم على «المضي إلى أبعد حد ممكن ثم العودة» عادةً باستخدام التعاود. وكما في البحث بالعرض أولاً، نحتاج في البحث بالعمق أولاً أيضاً إلى مجموعة تجزئة `visited` لتسجيل الرؤوس المزارة وتجنّب إعادة زيارتها.
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def graph_dfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
+    """Depth-first traversal"""
+    # Represent the graph with an adjacency list to access all neighbors of a given vertex
+    # Vertex traversal sequence
+    res = []
+    # Hash set recording visited vertices
+    visited = set[Vertex]()
+    dfs(graph, visited, res, start_vet)
+    return res
+```
+
+</div>
 
 يوضح الشكل أدناه سير خوارزمية البحث بالعمق أولاً.
 

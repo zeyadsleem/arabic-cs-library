@@ -29,6 +29,21 @@ The reason for choosing reverse-order traversal is that it ensures the subtrees 
 
 It's worth noting that **since leaf nodes have no children, they are naturally valid sub-heaps and do not require heapification**. As shown in the code below, the last non-leaf node is the parent of the last node; we start from that node and heapify while traversing in reverse order:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+    def __init__(self, nums: list[int]):
+        """Constructor: build a heap from the input list"""
+        # Place the list elements in the heap without changing their order
+        self.max_heap = nums
+        # Sift down from every non-leaf node
+        for i in range(self.parent(self.size() - 1), -1, -1):
+            self.sift_down(i)
+```
+
+</div>
+
 ## Complexity Analysis
 
 Next, let's attempt to derive the time complexity of this second heap construction method.

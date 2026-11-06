@@ -60,62 +60,29 @@ $$
 لا تستخدم المتغيرات $i$ و$j$ و$res$ سوى مقدار ثابت من المساحة الإضافية، **لذا فإن التعقيد المكاني هو $O(1)$**.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* السعة القصوى: الخوارزمية الجشعة */
-func maxCapacity(ht []int) int {
-	// هيّئ i وj عند طرفي المصفوفة
-	i, j := 0, len(ht)-1
-	// السعة القصوى الابتدائية هي 0
-	res := 0
-	// كرّر الاختيار الجشع حتى يلتقي الحاجزان
-	for i < j {
-		// حدّث السعة القصوى
-		capacity := int(math.Min(float64(ht[i]), float64(ht[j]))) * (j - i)
-		res = int(math.Max(float64(res), float64(capacity)))
-		// حرّك الحاجز الأقصر إلى الداخل
-		if ht[i] < ht[j] {
-			i++
-		} else {
-			j--
-		}
-	}
-	return res
-}
+```py
+def max_capacity(ht: list[int]) -> int:
+    """Maximum container capacity: greedy algorithm"""
+    # Initialize i and j at opposite ends of the array
+    i, j = 0, len(ht) - 1
+    # The initial maximum capacity is 0
+    res = 0
+    # Repeatedly make greedy choices until the two sides meet
+    while i < j:
+        # Update the maximum capacity
+        cap = min(ht[i], ht[j]) * (j - i)
+        res = max(res, cap)
+        # Move the shorter side inward
+        if ht[i] < ht[j]:
+            i += 1
+        else:
+            j -= 1
+    return res
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* السعة القصوى: الخوارزمية الجشعة */
-function maxCapacity(ht: number[]): number {
-    // هيّئ i وj عند طرفي المصفوفة
-    let i = 0,
-        j = ht.length - 1;
-    // السعة القصوى الابتدائية هي 0
-    let res = 0;
-    // كرّر الاختيار الجشع حتى يلتقي الحاجزان
-    while (i < j) {
-        // حدّث السعة القصوى
-        const cap: number = Math.min(ht[i], ht[j]) * (j - i);
-        res = Math.max(res, cap);
-        // حرّك الحاجز الأقصر إلى الداخل
-        if (ht[i] < ht[j]) {
-            i += 1;
-        } else {
-            j -= 1;
-        }
-    }
-    return res;
-}
-```
-
-</div>
-
 ### برهان الصحة
 
 سبب كون الجشع أسرع من التعداد الشامل هو أن كل جولة اختيار جشع «تتخطى» بعض الحالات.

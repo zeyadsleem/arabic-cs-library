@@ -28,67 +28,34 @@ The common operations on a deque are shown in the table below. The specific meth
 Similarly, we can directly use the deque classes provided by the programming language:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="deque_test.go"
-/* Initialize deque */
-// In Go, use list as a deque
-deque := list.New()
+```python title="deque.py"
+from collections import deque
 
-/* Enqueue elements */
-deque.PushBack(2)      // Add to rear
-deque.PushBack(5)
-deque.PushBack(4)
-deque.PushFront(3)     // Add to front
-deque.PushFront(1)
+# Initialize deque
+deq: deque[int] = deque()
 
-/* Access elements */
-front := deque.Front() // Front element
-rear := deque.Back()   // Rear element
+# Enqueue elements
+deq.append(2)      # Add to rear
+deq.append(5)
+deq.append(4)
+deq.appendleft(3)  # Add to front
+deq.appendleft(1)
 
-/* Dequeue elements */
-deque.Remove(front)    // Front element dequeue
-deque.Remove(rear)     // Rear element dequeue
+# Access elements
+front: int = deq[0]  # Front element
+rear: int = deq[-1]  # Rear element
 
-/* Get deque length */
-size := deque.Len()
+# Dequeue elements
+pop_front: int = deq.popleft()  # Front element dequeue
+pop_rear: int = deq.pop()       # Rear element dequeue
 
-/* Check if deque is empty */
-isEmpty := deque.Len() == 0
-```
+# Get deque length
+size: int = len(deq)
 
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="deque.ts"
-/* Initialize deque */
-// TypeScript does not have a built-in deque, can only use Array as a deque
-const deque: number[] = [];
-
-/* Enqueue elements */
-deque.push(2);
-deque.push(5);
-deque.push(4);
-// Please note that since it's an array, unshift() has O(n) time complexity
-deque.unshift(3);
-deque.unshift(1);
-
-/* Access elements */
-const peekFirst: number = deque[0];
-const peekLast: number = deque[deque.length - 1];
-
-/* Dequeue elements */
-// Please note that since it's an array, shift() has O(n) time complexity
-const popFront: number = deque.shift() as number;
-const popBack: number = deque.pop() as number;
-
-/* Get deque length */
-const size: number = deque.length;
-
-/* Check if deque is empty */
-const isEmpty: boolean = size === 0;
+# Check if deque is empty
+is_empty: bool = len(deq) == 0
 ```
 
 </div>
@@ -108,118 +75,110 @@ As shown in the figure below, we treat the head and tail nodes of the doubly lin
 The implementation code is shown below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Double-ended queue based on doubly linked list implementation */
-class LinkedListDeque {
-    private front: ListNode; // Head node front
-    private rear: ListNode; // Tail node rear
-    private queSize: number; // Length of the double-ended queue
+```py
+class LinkedListDeque:
+    """Deque implemented with a doubly linked list"""
 
-    constructor() {
-        this.front = null;
-        this.rear = null;
-        this.queSize = 0;
-    }
+    def __init__(self):
+        """Constructor"""
+        self._front: ListNode | None = None  # Head node front
+        self._rear: ListNode | None = None  # Tail node rear
+        self._size: int = 0  # Deque size
 
-    /* Rear of the queue enqueue operation */
-    pushLast(val: number): void {
-        const node: ListNode = new ListNode(val);
-        // If the linked list is empty, make both front and rear point to node
-        if (this.queSize === 0) {
-            this.front = node;
-            this.rear = node;
-        } else {
-            // Add node to the tail of the linked list
-            this.rear.next = node;
-            node.prev = this.rear;
-            this.rear = node; // Update tail node
-        }
-        this.queSize++;
-    }
+    def size(self) -> int:
+        """Get the deque size"""
+        return self._size
 
-    /* Front of the queue enqueue operation */
-    pushFirst(val: number): void {
-        const node: ListNode = new ListNode(val);
-        // If the linked list is empty, make both front and rear point to node
-        if (this.queSize === 0) {
-            this.front = node;
-            this.rear = node;
-        } else {
-            // Add node to the head of the linked list
-            this.front.prev = node;
-            node.next = this.front;
-            this.front = node; // Update head node
-        }
-        this.queSize++;
-    }
+    def is_empty(self) -> bool:
+        """Check whether the deque is empty"""
+        return self._size == 0
 
-    /* Temporarily store tail node value */
-    popLast(): number {
-        if (this.queSize === 0) {
-            return null;
-        }
-        const value: number = this.rear.val; // Store tail node value
-        // Update tail node
-        let temp: ListNode = this.rear.prev;
-        if (temp !== null) {
-            temp.next = null;
-            this.rear.prev = null;
-        }
-        this.rear = temp; // Update tail node
-        this.queSize--;
-        return value;
-    }
+    def push(self, num: int, is_front: bool):
+        """Enqueue operation"""
+        node = ListNode(num)
+        # If the linked list is empty, make both front and rear point to node
+        if self.is_empty():
+            self._front = self._rear = node
+        # Enqueue at the front
+        elif is_front:
+            # Add node to the head of the linked list
+            self._front.prev = node
+            node.next = self._front
+            self._front = node  # Update the head node
+        # Enqueue at the rear
+        else:
+            # Add node to the tail of the linked list
+            self._rear.next = node
+            node.prev = self._rear
+            self._rear = node  # Update the tail node
+        self._size += 1  # Update the deque size
 
-    /* Temporarily store head node value */
-    popFirst(): number {
-        if (this.queSize === 0) {
-            return null;
-        }
-        const value: number = this.front.val; // Store tail node value
-        // Delete head node
-        let temp: ListNode = this.front.next;
-        if (temp !== null) {
-            temp.prev = null;
-            this.front.next = null;
-        }
-        this.front = temp; // Update head node
-        this.queSize--;
-        return value;
-    }
+    def push_first(self, num: int):
+        """Enqueue at the front"""
+        self.push(num, True)
 
-    /* Driver Code */
-    peekLast(): number {
-        return this.queSize === 0 ? null : this.rear.val;
-    }
+    def push_last(self, num: int):
+        """Enqueue at the rear"""
+        self.push(num, False)
 
-    /* Return list for printing */
-    peekFirst(): number {
-        return this.queSize === 0 ? null : this.front.val;
-    }
+    def pop(self, is_front: bool) -> int:
+        """Dequeue operation"""
+        if self.is_empty():
+            raise IndexError("Deque is empty")
+        # When the deque size is 1, the head and tail point to the same node
+        if self._size == 1:
+            val: int = self._front.val
+            self._front = None
+            self._rear = None
+        # Dequeue from the front
+        elif is_front:
+            val: int = self._front.val  # Save the head node value
+            # Remove the head node
+            fnext: ListNode | None = self._front.next
+            fnext.prev = None
+            self._front.next = None
+            self._front = fnext  # Update the head node
+        # Dequeue from the rear
+        else:
+            val: int = self._rear.val  # Save the tail node value
+            # Remove the tail node
+            rprev: ListNode | None = self._rear.prev
+            rprev.next = None
+            self._rear.prev = None
+            self._rear = rprev  # Update the tail node
+        self._size -= 1  # Update the deque size
+        return val
 
-    /* Get the length of the double-ended queue */
-    size(): number {
-        return this.queSize;
-    }
+    def pop_first(self) -> int:
+        """Dequeue from the front"""
+        return self.pop(True)
 
-    /* Check if the double-ended queue is empty */
-    isEmpty(): boolean {
-        return this.queSize === 0;
-    }
+    def pop_last(self) -> int:
+        """Dequeue from the rear"""
+        return self.pop(False)
 
-    /* Print deque */
-    print(): void {
-        const arr: number[] = [];
-        let temp: ListNode = this.front;
-        while (temp !== null) {
-            arr.push(temp.val);
-            temp = temp.next;
-        }
-        console.log('[' + arr.join(', ') + ']');
-    }
-}
+    def peek_first(self) -> int:
+        """Access the front element"""
+        if self.is_empty():
+            raise IndexError("Deque is empty")
+        return self._front.val
+
+    def peek_last(self) -> int:
+        """Access the rear element"""
+        if self.is_empty():
+            raise IndexError("Deque is empty")
+        return self._rear.val
+
+    def to_array(self) -> list[int]:
+        """Return an array for printing"""
+        node = self._front
+        res = [0] * self.size()
+        for i in range(self.size()):
+            res[i] = node.val
+            node = node.next
+        return res
 ```
 
 </div>
@@ -231,112 +190,95 @@ As shown in the figure below, similar to implementing a queue based on an array,
 Based on the queue implementation, we only need to add methods for "enqueue at front" and "dequeue from rear":
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Double-ended queue based on circular array implementation */
-class ArrayDeque {
-    private nums: number[]; // Array for storing double-ended queue elements
-    private front: number; // Front pointer, points to the front of the queue element
-    private queSize: number; // Double-ended queue length
+```py
+class ArrayDeque:
+    """Deque implemented with a circular array"""
 
-    /* Constructor */
-    constructor(capacity: number) {
-        this.nums = new Array(capacity);
-        this.front = 0;
-        this.queSize = 0;
-    }
+    def __init__(self, capacity: int):
+        """Constructor"""
+        self._nums: list[int] = [0] * capacity
+        self._front: int = 0
+        self._size: int = 0
 
-    /* Get the capacity of the double-ended queue */
-    capacity(): number {
-        return this.nums.length;
-    }
+    def capacity(self) -> int:
+        """Get the deque capacity"""
+        return len(self._nums)
 
-    /* Get the length of the double-ended queue */
-    size(): number {
-        return this.queSize;
-    }
+    def size(self) -> int:
+        """Get the deque size"""
+        return self._size
 
-    /* Check if the double-ended queue is empty */
-    isEmpty(): boolean {
-        return this.queSize === 0;
-    }
+    def is_empty(self) -> bool:
+        """Check whether the deque is empty"""
+        return self._size == 0
 
-    /* Calculate circular array index */
-    index(i: number): number {
-        // Use modulo operation to wrap the array head and tail together
-        // When i passes the tail of the array, return to the head
-        // When i passes the head of the array, return to the tail
-        return (i + this.capacity()) % this.capacity();
-    }
+    def index(self, i: int) -> int:
+        """Calculate an index in the circular array"""
+        # Use modulo to connect the end of the array to its beginning
+        # When i passes the end of the array, wrap around to the beginning
+        # When i passes the beginning of the array, wrap around to the end
+        return (i + self.capacity()) % self.capacity()
 
-    /* Front of the queue enqueue */
-    pushFirst(num: number): void {
-        if (this.queSize === this.capacity()) {
-            console.log('Double-ended queue is full');
-            return;
-        }
-        // Use modulo operation to wrap front around to the tail after passing the head of the array
-        // Add num to the front of the queue
-        this.front = this.index(this.front - 1);
-        // Add num to front of queue
-        this.nums[this.front] = num;
-        this.queSize++;
-    }
+    def push_first(self, num: int):
+        """Enqueue at the front"""
+        if self._size == self.capacity():
+            print("Deque is full")
+            return
+        # Move the front pointer one position to the left
+        # Use modulo to wrap front to the end when it passes the beginning of the array
+        self._front = self.index(self._front - 1)
+        # Add num to the front
+        self._nums[self._front] = num
+        self._size += 1
 
-    /* Rear of the queue enqueue */
-    pushLast(num: number): void {
-        if (this.queSize === this.capacity()) {
-            console.log('Double-ended queue is full');
-            return;
-        }
-        // Use modulo operation to wrap rear around to the head after passing the tail of the array
-        const rear: number = this.index(this.front + this.queSize);
-        // Front pointer moves one position backward
-        this.nums[rear] = num;
-        this.queSize++;
-    }
+    def push_last(self, num: int):
+        """Enqueue at the rear"""
+        if self._size == self.capacity():
+            print("Deque is full")
+            return
+        # Calculate the rear pointer, which points one position past the last element
+        rear = self.index(self._front + self._size)
+        # Add num to the rear
+        self._nums[rear] = num
+        self._size += 1
 
-    /* Rear of the queue dequeue */
-    popFirst(): number {
-        const num: number = this.peekFirst();
-        // Move front pointer backward by one position
-        this.front = this.index(this.front + 1);
-        this.queSize--;
-        return num;
-    }
+    def pop_first(self) -> int:
+        """Dequeue from the front"""
+        num = self.peek_first()
+        # Advance the front pointer by one position
+        self._front = self.index(self._front + 1)
+        self._size -= 1
+        return num
 
-    /* Access rear of the queue element */
-    popLast(): number {
-        const num: number = this.peekLast();
-        this.queSize--;
-        return num;
-    }
+    def pop_last(self) -> int:
+        """Dequeue from the rear"""
+        num = self.peek_last()
+        self._size -= 1
+        return num
 
-    /* Return list for printing */
-    peekFirst(): number {
-        if (this.isEmpty()) throw new Error('The Deque Is Empty.');
-        return this.nums[this.front];
-    }
+    def peek_first(self) -> int:
+        """Access the front element"""
+        if self.is_empty():
+            raise IndexError("Deque is empty")
+        return self._nums[self._front]
 
-    /* Driver Code */
-    peekLast(): number {
-        if (this.isEmpty()) throw new Error('The Deque Is Empty.');
-        // Initialize double-ended queue
-        const last = this.index(this.front + this.queSize - 1);
-        return this.nums[last];
-    }
+    def peek_last(self) -> int:
+        """Access the rear element"""
+        if self.is_empty():
+            raise IndexError("Deque is empty")
+        # Calculate the index of the last element
+        last = self.index(self._front + self._size - 1)
+        return self._nums[last]
 
-    /* Return array for printing */
-    toArray(): number[] {
-        // Elements enqueue
-        const res: number[] = [];
-        for (let i = 0, j = this.front; i < this.queSize; i++, j++) {
-            res[i] = this.nums[this.index(j)];
-        }
-        return res;
-    }
-}
+    def to_array(self) -> list[int]:
+        """Return an array for printing"""
+        # Convert only the list elements within the occupied range
+        res = []
+        for i in range(self._size):
+            res.append(self._nums[self.index(self._front + i)])
+        return res
 ```
 
 </div>

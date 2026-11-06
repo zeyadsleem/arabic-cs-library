@@ -40,6 +40,28 @@ $$
 
 وبمقارنة شيفرة المشكلتين، نجد تغييراً واحداً في انتقال الحالة من $i-1$ إلى $i$، مع تطابق كل ما عدا ذلك:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
+    """Unbounded knapsack: dynamic programming"""
+    n = len(wgt)
+    # Initialize the dp table
+    dp = [[0] * (cap + 1) for _ in range(n + 1)]
+    # State transitions
+    for i in range(1, n + 1):
+        for c in range(1, cap + 1):
+            if wgt[i - 1] > c:
+                # If item i exceeds the remaining capacity, do not choose it
+                dp[i][c] = dp[i - 1][c]
+            else:
+                # Take the larger value obtained by excluding and including item i
+                dp[i][c] = max(dp[i - 1][c], dp[i][c - wgt[i - 1]] + val[i - 1])
+    return dp[n][cap]
+```
+
+</div>
 ### تحسين المساحة
 
 بما أن الحالة الحالية تنتقل من حالات على اليسار وفوق، **فبعد تحسين المساحة ينبغي اجتياز كل صف في جدول $dp$ بالترتيب الأمامي**.
@@ -48,6 +70,29 @@ $$
 
 وتنفيذ الشيفرة بسيط نسبياً، إذ يكفي حذف البُعد الأول من المصفوفة `dp`:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def unbounded_knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
+    """Unbounded knapsack: space-optimized dynamic programming"""
+    n = len(wgt)
+    # Initialize the dp table
+    dp = [0] * (cap + 1)
+    # State transitions
+    for i in range(1, n + 1):
+        # Traverse in increasing order
+        for c in range(1, cap + 1):
+            if wgt[i - 1] > c:
+                # If item i exceeds the remaining capacity, do not choose it
+                dp[c] = dp[c]
+            else:
+                # Take the larger value obtained by excluding and including item i
+                dp[c] = max(dp[c], dp[c - wgt[i - 1]] + val[i - 1])
+    return dp[cap]
+```
+
+</div>
 ## مشكلة تغيير العملات
 
 تمثل مشكلة الحقيبة صنفاً واسعاً من مسائل البرمجة الديناميكية، ولها متغيّرات كثيرة، مثل مشكلة تغيير العملات.
@@ -99,10 +144,61 @@ $$
 
 يوضح الشكل أدناه عملية البرمجة الديناميكية لتغيير العملات، وهي تشبه مشكلة الحقيبة غير المحدودة إلى حد كبير.
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def coin_change_dp(coins: list[int], amt: int) -> int:
+    """Coin change: dynamic programming"""
+    n = len(coins)
+    MAX = amt + 1
+    # Initialize the dp table
+    dp = [[0] * (amt + 1) for _ in range(n + 1)]
+    # State transitions: first row and first column
+    for a in range(1, amt + 1):
+        dp[0][a] = MAX
+    # State transitions: remaining rows and columns
+    for i in range(1, n + 1):
+        for a in range(1, amt + 1):
+            if coins[i - 1] > a:
+                # If the coin value exceeds the current amount a, do not choose coin i
+                dp[i][a] = dp[i - 1][a]
+            else:
+                # Take the smaller result of not choosing and choosing coin i
+                dp[i][a] = min(dp[i - 1][a], dp[i][a - coins[i - 1]] + 1)
+    return dp[n][amt] if dp[n][amt] != MAX else -1
+```
+
+</div>
 ### تحسين المساحة
 
 يُعالَج تحسين المساحة لمشكلة تغيير العملات بالطريقة نفسها المتبعة في مشكلة الحقيبة غير المحدودة:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def coin_change_dp_comp(coins: list[int], amt: int) -> int:
+    """Coin change: space-optimized dynamic programming"""
+    n = len(coins)
+    MAX = amt + 1
+    # Initialize the dp table
+    dp = [MAX] * (amt + 1)
+    dp[0] = 0
+    # State transitions
+    for i in range(1, n + 1):
+        # Traverse in increasing order
+        for a in range(1, amt + 1):
+            if coins[i - 1] > a:
+                # If the coin value exceeds the current amount a, do not choose coin i
+                dp[a] = dp[a]
+            else:
+                # Take the smaller result of not choosing and choosing coin i
+                dp[a] = min(dp[a], dp[a - coins[i - 1]] + 1)
+    return dp[amt] if dp[amt] != MAX else -1
+```
+
+</div>
 ## مشكلة تغيير العملات II
 
 <div class="note">
@@ -127,6 +223,55 @@ $$
 
 ### تنفيذ الشيفرة
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def coin_change_ii_dp(coins: list[int], amt: int) -> int:
+    """Coin change II: dynamic programming"""
+    n = len(coins)
+    # Initialize the dp table
+    dp = [[0] * (amt + 1) for _ in range(n + 1)]
+    # Initialize the first column
+    for i in range(n + 1):
+        dp[i][0] = 1
+    # State transitions
+    for i in range(1, n + 1):
+        for a in range(1, amt + 1):
+            if coins[i - 1] > a:
+                # If the coin value exceeds the current amount a, do not choose coin i
+                dp[i][a] = dp[i - 1][a]
+            else:
+                # Add the numbers of ways without and with coin i
+                dp[i][a] = dp[i - 1][a] + dp[i][a - coins[i - 1]]
+    return dp[n][amt]
+```
+
+</div>
 ### تحسين المساحة
 
 يُعالَج تحسين المساحة بالطريقة نفسها، إذ يكفي حذف بُعد العملات:
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def coin_change_ii_dp_comp(coins: list[int], amt: int) -> int:
+    """Coin change II: space-optimized dynamic programming"""
+    n = len(coins)
+    # Initialize the dp table
+    dp = [0] * (amt + 1)
+    dp[0] = 1
+    # State transitions
+    for i in range(1, n + 1):
+        # Traverse in increasing order
+        for a in range(1, amt + 1):
+            if coins[i - 1] > a:
+                # If the coin value exceeds the current amount a, do not choose coin i
+                dp[a] = dp[a]
+            else:
+                # Add the numbers of ways without and with coin i
+                dp[a] = dp[a] + dp[a - coins[i - 1]]
+    return dp[amt]
+```
+
+</div>

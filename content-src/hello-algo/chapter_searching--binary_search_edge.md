@@ -24,39 +24,18 @@ Consider implementing the left boundary search using the insertion point finding
 When either of these situations occurs, simply return $-1$. The code is shown below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Binary search for the leftmost target */
-func binarySearchLeftEdge(nums []int, target int) int {
-	// Equivalent to finding the insertion point of target
-	i := binarySearchInsertion(nums, target)
-	// Target not found, return -1
-	if i == len(nums) || nums[i] != target {
-		return -1
-	}
-	// Found target, return index i
-	return i
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Binary search for the leftmost target */
-function binarySearchLeftEdge(nums: Array<number>, target: number): number {
-    // Equivalent to finding the insertion point of target
-    const i = binarySearchInsertion(nums, target);
-    // Target not found, return -1
-    if (i === nums.length || nums[i] !== target) {
-        return -1;
-    }
-    // Found target, return index i
-    return i;
-}
+```py
+def binary_search_left_edge(nums: list[int], target: int) -> int:
+    """Find the leftmost occurrence of target using binary search"""
+    # This is equivalent to finding the insertion point of target
+    i = binary_search_insertion(nums, target)
+    # If target was not found, return -1
+    if i == len(nums) or nums[i] != target:
+        return -1
+    # Target was found; return index i
+    return i
 ```
 
 </div>
@@ -78,43 +57,20 @@ As shown in the figure below, after the search completes, the pointer $i$ points
 Note that the returned insertion point is $i$, so we need to subtract $1$ from it to obtain $j$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Binary search for the rightmost target */
-func binarySearchRightEdge(nums []int, target int) int {
-	// Convert to finding the leftmost target + 1
-	i := binarySearchInsertion(nums, target+1)
-	// j points to the rightmost target, i points to the first element greater than target
-	j := i - 1
-	// Target not found, return -1
-	if j == -1 || nums[j] != target {
-		return -1
-	}
-	// Found target, return index j
-	return j
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Binary search for the rightmost target */
-function binarySearchRightEdge(nums: Array<number>, target: number): number {
-    // Convert to finding the leftmost target + 1
-    const i = binarySearchInsertion(nums, target + 1);
-    // j points to the rightmost target, i points to the first element greater than target
-    const j = i - 1;
-    // Target not found, return -1
-    if (j === -1 || nums[j] !== target) {
-        return -1;
-    }
-    // Found target, return index j
-    return j;
-}
+```py
+def binary_search_right_edge(nums: list[int], target: int) -> int:
+    """Find the rightmost occurrence of target using binary search"""
+    # Reduce the problem to finding the leftmost insertion point of target + 1
+    i = binary_search_insertion(nums, target + 1)
+    # j is the candidate rightmost target index; i is the index of the first element greater than target, or len(nums)
+    j = i - 1
+    # If target was not found, return -1
+    if j == -1 or nums[j] != target:
+        return -1
+    # Target was found; return index j
+    return j
 ```
 
 </div>

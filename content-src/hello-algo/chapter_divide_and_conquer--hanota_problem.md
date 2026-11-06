@@ -61,29 +61,14 @@ For these two subproblems $f(n-1)$, **we can recursively divide them in the same
 In the code, we declare a recursive function `dfs(i, src, buf, tar)`, whose purpose is to move the top $i$ discs from pillar `src` to target pillar `tar` with the help of buffer pillar `buf`:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Solve the Tower of Hanoi problem */
-func solveHanota(A, B, C *list.List) {
-	n := A.Len()
-	// Move the top n disks from A to C using B
-	dfsHanota(n, A, B, C)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Solve the Tower of Hanoi problem */
-function solveHanota(A: number[], B: number[], C: number[]): void {
-    const n = A.length;
-    // Move the top n disks from A to C using B
-    dfs(n, A, B, C);
-}
+```py
+def solve_hanota(A: list[int], B: list[int], C: list[int]):
+    """Solve the Tower of Hanoi problem"""
+    n = len(A)
+    # Move the top n disks from A to C using B
+    dfs(n, A, B, C)
 ```
 
 </div>

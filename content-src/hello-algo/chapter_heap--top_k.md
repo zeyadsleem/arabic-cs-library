@@ -47,6 +47,28 @@ We can solve the Top-k problem more efficiently with a heap, as shown in the fig
 
 Example code is as follows:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def top_k_heap(nums: list[int], k: int) -> list[int]:
+    """Use a heap to find the k largest elements in an array"""
+    # Initialize a min heap
+    heap = []
+    # Push the first k array elements onto the heap
+    for i in range(k):
+        heapq.heappush(heap, nums[i])
+    # Starting with element k+1, keep the heap size at k
+    for i in range(k, len(nums)):
+        # If the current element is larger than the heap top, pop the top element and push the current element
+        if nums[i] > heap[0]:
+            heapq.heappop(heap)
+            heapq.heappush(heap, nums[i])
+    return heap
+```
+
+</div>
+
 A total of $n$ rounds of heap insertions and removals are performed, with the heap's maximum length being $k$, so the time complexity is $O(n \log k)$. This method is very efficient; when $k$ is small, the time complexity approaches $O(n)$; when $k$ is large, the time complexity does not exceed $O(n \log n)$.
 
 Additionally, this method is well suited to dynamic data streams. As new data arrives, we can continuously maintain the elements in the heap, enabling dynamic updates to the largest $k$ elements.

@@ -114,6 +114,27 @@ Starting from state $[i, j]$, we continuously decompose it into smaller states $
 
 The implementation code is as follows:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def min_path_sum_dfs(grid: list[list[int]], i: int, j: int) -> int:
+    """Minimum path sum: brute-force search"""
+    # Stop searching at the top-left cell
+    if i == 0 and j == 0:
+        return grid[0][0]
+    # If a row or column index is out of bounds, return a cost of +∞
+    if i < 0 or j < 0:
+        return inf
+    # Calculate the minimum path costs from the top-left corner to (i-1, j) and (i, j-1)
+    up = min_path_sum_dfs(grid, i - 1, j)
+    left = min_path_sum_dfs(grid, i, j - 1)
+    # Return the minimum path cost from the top-left corner to (i, j)
+    return min(left, up) + grid[i][j]
+```
+
+</div>
+
 The figure below shows the recursion tree rooted at $dp[2, 1]$, which includes some overlapping subproblems whose number will increase sharply as the size of grid `grid` grows.
 
 Essentially, the reason for overlapping subproblems is: **there are multiple paths from the top-left corner to reach a certain cell**.
@@ -126,6 +147,16 @@ Each state has two choices, down and right, so the total number of steps from th
 
 We introduce a memo list `mem` of the same size as grid `grid` to record the solutions to subproblems and prune overlapping subproblems:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def min_path_sum_dfs_mem(
+    grid: list[list[int]], mem: list[list[int]], i: int, j: int
+```
+
+</div>
+
 As shown in the figure below, after introducing memoization, all subproblem solutions only need to be computed once, so the time complexity depends on the total number of states, which is the grid size $O(nm)$.
 
 ![Memoization recursion tree](/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs_mem.png)
@@ -133,6 +164,31 @@ As shown in the figure below, after introducing memoization, all subproblem solu
 ### Method 3: Dynamic Programming
 
 Implement the dynamic programming solution based on iteration, as shown in the code below:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def min_path_sum_dp(grid: list[list[int]]) -> int:
+    """Minimum path sum: dynamic programming"""
+    n, m = len(grid), len(grid[0])
+    # Initialize the dp table
+    dp = [[0] * m for _ in range(n)]
+    dp[0][0] = grid[0][0]
+    # State transitions: first row
+    for j in range(1, m):
+        dp[0][j] = dp[0][j - 1] + grid[0][j]
+    # State transitions: first column
+    for i in range(1, n):
+        dp[i][0] = dp[i - 1][0] + grid[i][0]
+    # State transitions: remaining rows and columns
+    for i in range(1, n):
+        for j in range(1, m):
+            dp[i][j] = min(dp[i][j - 1], dp[i - 1][j]) + grid[i][j]
+    return dp[n - 1][m - 1]
+```
+
+</div>
 
 The figure below shows the state transition process for minimum path sum, which traverses the entire grid, **thus the time complexity is $O(nm)$**.
 
@@ -143,3 +199,28 @@ The array `dp` has size $n \times m$, **thus the space complexity is $O(nm)$**.
 Since each cell is only related to the cell to its left and the cell above it, we can use a single-row array to implement the $dp$ table.
 
 Note that since the array `dp` can only represent the state of one row, we cannot initialize the first column state in advance, but rather update it when traversing each row:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def min_path_sum_dp_comp(grid: list[list[int]]) -> int:
+    """Minimum path sum: space-optimized dynamic programming"""
+    n, m = len(grid), len(grid[0])
+    # Initialize the dp table
+    dp = [0] * m
+    # State transitions: first row
+    dp[0] = grid[0][0]
+    for j in range(1, m):
+        dp[j] = dp[j - 1] + grid[0][j]
+    # State transitions: remaining rows
+    for i in range(1, n):
+        # State transitions: first column
+        dp[0] = dp[0] + grid[i][0]
+        # State transitions: remaining columns
+        for j in range(1, m):
+            dp[j] = min(dp[j - 1], dp[j]) + grid[i][j]
+    return dp[m - 1]
+```
+
+</div>

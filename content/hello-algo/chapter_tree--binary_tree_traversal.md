@@ -23,62 +23,27 @@ lang: ar
 يُنفَّذ الاجتياز بالعرض أولاً عادةً بمساعدة «الطابور». فالطابور يتبع قاعدة «أول ما يدخل يخرج أولاً»، بينما يتبع الاجتياز بالعرض أولاً قاعدة «التقدم طبقةً طبقة»؛ والفكرتان الكامنتان وراءهما متطابقتان. وشيفرة التنفيذ كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الاجتياز بالمستويات */
-func levelOrder(root *TreeNode) []any {
-	// هيّئ الطابور، وأضف عقدة الجذر
-	queue := list.New()
-	queue.PushBack(root)
-	// هيّئ slice لحفظ تسلسل الاجتياز
-	nums := make([]any, 0)
-	for queue.Len() > 0 {
-		// أخرج من الطابور
-		node := queue.Remove(queue.Front()).(*TreeNode)
-		// احفظ قيمة العقدة
-		nums = append(nums, node.Val)
-		if node.Left != nil {
-			// أدخل عقدة الابن الأيسر إلى الطابور
-			queue.PushBack(node.Left)
-		}
-		if node.Right != nil {
-			// أدخل عقدة الابن الأيمن إلى الطابور
-			queue.PushBack(node.Right)
-		}
-	}
-	return nums
-}
+```py
+def level_order(root: TreeNode | None) -> list[int]:
+    """Level-order traversal"""
+    # Initialize a queue and enqueue the root
+    queue: deque[TreeNode] = deque()
+    queue.append(root)
+    # Initialize a list to store the traversal sequence
+    res = []
+    while queue:
+        node: TreeNode = queue.popleft()  # Dequeue from the queue
+        res.append(node.val)  # Store the node value
+        if node.left is not None:
+            queue.append(node.left)  # Enqueue the left child
+        if node.right is not None:
+            queue.append(node.right)  # Enqueue the right child
+    return res
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الاجتياز بالمستويات */
-function levelOrder(root: TreeNode | null): number[] {
-    // هيّئ الطابور، وأضف عقدة الجذر
-    const queue = [root];
-    // هيّئ قائمة لحفظ تسلسل الاجتياز
-    const list: number[] = [];
-    while (queue.length) {
-        let node = queue.shift() as TreeNode; // أخرج من الطابور
-        list.push(node.val); // احفظ قيمة العقدة
-        if (node.left) {
-            queue.push(node.left); // أدخل عقدة الابن الأيسر إلى الطابور
-        }
-        if (node.right) {
-            queue.push(node.right); // أدخل عقدة الابن الأيمن إلى الطابور
-        }
-    }
-    return list;
-}
-```
-
-</div>
-
 ### تحليل التعقيد
 
 - **التعقيد الزمني هو $O(n)$**: تُزار جميع العقد مرة واحدة، مستخدماً زمن $O(n)$، حيث $n$ هو عدد العقد.
@@ -97,41 +62,20 @@ function levelOrder(root: TreeNode | null): number[] {
 يُنفَّذ البحث بالعمق أولاً عادةً استناداً إلى التعاود:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الاجتياز اللاحق */
-func postOrder(node *TreeNode) {
-	if node == nil {
-		return
-	}
-	// أولوية الزيارة: الشجرة الفرعية اليسرى -> الشجرة الفرعية اليمنى -> عقدة الجذر
-	postOrder(node.Left)
-	postOrder(node.Right)
-	nums = append(nums, node.Val)
-}
+```py
+def post_order(root: TreeNode | None):
+    """Postorder traversal"""
+    if root is None:
+        return
+    # Visit order: left subtree -> right subtree -> root
+    post_order(root=root.left)
+    post_order(root=root.right)
+    res.append(root.val)
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الاجتياز اللاحق */
-function postOrder(root: TreeNode | null): void {
-    if (root === null) {
-        return;
-    }
-    // أولوية الزيارة: الشجرة الفرعية اليسرى -> الشجرة الفرعية اليمنى -> عقدة الجذر
-    postOrder(root.left);
-    postOrder(root.right);
-    list.push(root.val);
-}
-```
-
-</div>
-
 <div class="note">
 
 يمكن أيضاً تنفيذ البحث بالعمق أولاً تكرارياً، ويمكن للقارئ المهتم أن يستكشف ذلك بنفسه.

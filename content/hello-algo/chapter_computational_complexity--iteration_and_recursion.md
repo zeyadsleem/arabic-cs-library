@@ -19,35 +19,16 @@ lang: ar
 تنفّذ الدالة التالية عملية الجمع $1 + 2 + \dots + n$ باستخدام حلقة `for`، وتُخزَّن النتيجة في المتغير `res`. لاحظ أن `range(a, b)` في Python يقابل مجالاً «مغلقاً من اليسار مفتوحاً من اليمين»، ويكون نطاق الاجتياز $a, a + 1, \dots, b-1$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حلقة for */
-func forLoop(n int) int {
-	res := 0
-	// اجمع 1, 2, ..., n-1, n
-	for i := 1; i <= n; i++ {
-		res += i
-	}
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* حلقة for */
-function forLoop(n: number): number {
-    let res = 0;
-    // اجمع 1, 2, ..., n-1, n
-    for (let i = 1; i <= n; i++) {
-        res += i;
-    }
-    return res;
-}
+```py
+def for_loop(n: int) -> int:
+    """for loop"""
+    res = 0
+    # Sum 1, 2, ..., n-1, n in a loop
+    for i in range(1, n + 1):
+        res += i
+    return res
 ```
 
 </div>
@@ -65,41 +46,37 @@ function forLoop(n: number): number {
 وفيما يلي نستخدم حلقة `while` لتنفيذ الجمع $1 + 2 + \dots + n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حلقة while */
-func whileLoop(n int) int {
-	res := 0
-	// هيّئ متغير الشرط
-	i := 1
-	// اجمع 1, 2, ..., n-1, n
-	for i <= n {
-		res += i
-		// حدّث متغير الشرط
-		i++
-	}
-	return res
-}
+```py
+def while_loop(n: int) -> int:
+    """while loop"""
+    res = 0
+    i = 1  # Initialize the loop control variable
+    # Sum 1, 2, ..., n-1, n in a loop
+    while i <= n:
+        res += i
+        i += 1  # Update the loop control variable
+    return res
 ```
 
 </div>
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* حلقة while */
-function whileLoop(n: number): number {
-    let res = 0;
-    let i = 1; // هيّئ متغير الشرط
-    // اجمع 1, 2, ..., n-1, n
-    while (i <= n) {
-        res += i;
-        i++; // حدّث متغير الشرط
-    }
-    return res;
-}
+```py
+def while_loop_ii(n: int) -> int:
+    """while loop (two updates)"""
+    res = 0
+    i = 1  # Initialize the loop control variable
+    # Sum 1, 4, 10, ... in a loop
+    while i <= n:
+        res += i
+        # Update the loop control variable
+        i += 1
+        i *= 2
+    return res
 ```
 
 </div>
@@ -115,41 +92,18 @@ function whileLoop(n: number): number {
 يمكننا تداخل بنية حلقية داخل أخرى. وفيما يلي مثال باستخدام حلقات `for`:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حلقة for متداخلة */
-func nestedForLoop(n int) string {
-	res := ""
-	// حلقة i = 1, 2, ..., n-1, n
-	for i := 1; i <= n; i++ {
-		for j := 1; j <= n; j++ {
-			// حلقة j = 1, 2, ..., n-1, n
-			res += fmt.Sprintf("(%d, %d), ", i, j)
-		}
-	}
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* حلقة for متداخلة */
-function nestedForLoop(n: number): string {
-    let res = '';
-    // حلقة i = 1, 2, ..., n-1, n
-    for (let i = 1; i <= n; i++) {
-        // حلقة j = 1, 2, ..., n-1, n
-        for (let j = 1; j <= n; j++) {
-            res += `(${i}, ${j}), `;
-        }
-    }
-    return res;
-}
+```py
+def nested_for_loop(n: int) -> str:
+    """Nested for loops"""
+    res = ""
+    # Loop over i = 1, 2, ..., n-1, n
+    for i in range(1, n + 1):
+        # Loop over j = 1, 2, ..., n-1, n
+        for j in range(1, n + 1):
+            res += f"({i}, {j}), "
+    return res
 ```
 
 </div>
@@ -178,37 +132,18 @@ function nestedForLoop(n: number): string {
 لاحظ الشيفرة التالية. لا يلزمنا سوى استدعاء الدالة `recur(n)` لإكمال حساب $1 + 2 + \dots + n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* التعاود */
-func recur(n int) int {
-	// شرط التوقف
-	if n == 1 {
-		return 1
-	}
-	// النزول: الاستدعاء التعاودي
-	res := recur(n - 1)
-	// الصعود: إعادة النتيجة
-	return n + res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* التعاود */
-function recur(n: number): number {
-    // شرط التوقف
-    if (n === 1) return 1;
-    // النزول: الاستدعاء التعاودي
-    const res = recur(n - 1);
-    // الصعود: إعادة النتيجة
-    return n + res;
-}
+```py
+def recur(n: int) -> int:
+    """Recursion"""
+    # Base case
+    if n == 1:
+        return 1
+    # Recurse: make a recursive call
+    res = recur(n - 1)
+    # Unwind: return the result
+    return n + res
 ```
 
 </div>
@@ -250,33 +185,16 @@ function recur(n: number): number {
 وباتخاذ حساب $1 + 2 + \dots + n$ مثالاً، يمكننا تعيين متغير النتيجة `res` معاملاً للدالة لتنفيذ التعاود الذيل:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* التعاود الذيل */
-func tailRecur(n int, res int) int {
-	// شرط التوقف
-	if n == 0 {
-		return res
-	}
-	// الاستدعاء التعاودي الذيل
-	return tailRecur(n-1, res+n)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* التعاود الذيل */
-function tailRecur(n: number, res: number): number {
-    // شرط التوقف
-    if (n === 0) return res;
-    // الاستدعاء التعاودي الذيل
-    return tailRecur(n - 1, res + n);
-}
+```py
+def tail_recur(n, res):
+    """Tail recursion"""
+    # Base case
+    if n == 0:
+        return res
+    # Tail-recursive call
+    return tail_recur(n - 1, res + n)
 ```
 
 </div>
@@ -312,37 +230,18 @@ function tailRecur(n: number, res: number): number {
 وباتباع علاقة التعاود لإجراء استدعاءات تعاودية، مع اعتبار العددين الأولين شرطي توقف، يمكننا كتابة الشيفرة التعاودية. فاستدعاء `fib(n)` سيعطينا العدد رقم $n$ من متتالية فيبوناتشي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* متتالية فيبوناتشي: التعاود */
-func fib(n int) int {
-	// شرط التوقف f(1) = 0, f(2) = 1
-	if n == 1 || n == 2 {
-		return n - 1
-	}
-	// الاستدعاء التعاودي f(n) = f(n-1) + f(n-2)
-	res := fib(n-1) + fib(n-2)
-	// أعد النتيجة f(n)
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* متتالية فيبوناتشي: التعاود */
-function fib(n: number): number {
-    // شرط التوقف f(1) = 0, f(2) = 1
-    if (n === 1 || n === 2) return n - 1;
-    // الاستدعاء التعاودي f(n) = f(n-1) + f(n-2)
-    const res = fib(n - 1) + fib(n - 2);
-    // أعد النتيجة f(n)
-    return res;
-}
+```py
+def fib(n: int) -> int:
+    """Fibonacci sequence: recursion"""
+    # Base cases: f(1) = 0, f(2) = 1
+    if n == 1 or n == 2:
+        return n - 1
+    # Recursive calls: f(n) = f(n-1) + f(n-2)
+    res = fib(n - 1) + fib(n - 2)
+    # Return the result f(n)
+    return res
 ```
 
 </div>
@@ -385,54 +284,24 @@ function fib(n: number): number {
 لذلك، **يمكننا استخدام مكدس صريح لمحاكاة سلوك مكدس الاستدعاء**، فنحوّل التعاود بذلك إلى صيغة تكرارية:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حاكِ التعاود باستخدام التكرار */
-func forLoopRecur(n int) int {
-	// استخدم مكدساً صريحاً لمحاكاة مكدس استدعاء النظام
-	stack := list.New()
-	res := 0
-	// النزول: الاستدعاء التعاودي
-	for i := n; i > 0; i-- {
-		// حاكِ «النزول» بـ«الدفع»
-		stack.PushBack(i)
-	}
-	// الصعود: إعادة النتيجة
-	for stack.Len() != 0 {
-		// حاكِ «الصعود» بـ«السحب»
-		res += stack.Back().Value.(int)
-		stack.Remove(stack.Back())
-	}
-	// res = 1+2+3+...+n
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* حاكِ التعاود باستخدام التكرار */
-function forLoopRecur(n: number): number {
-    // استخدم مكدساً صريحاً لمحاكاة مكدس استدعاء النظام
-    const stack: number[] = [];
-    let res: number = 0;
-    // النزول: الاستدعاء التعاودي
-    for (let i = n; i > 0; i--) {
-        // حاكِ «النزول» بـ«الدفع»
-        stack.push(i);
-    }
-    // الصعود: إعادة النتيجة
-    while (stack.length) {
-        // حاكِ «الصعود» بـ«السحب»
-        res += stack.pop();
-    }
-    // res = 1+2+3+...+n
-    return res;
-}
+```py
+def for_loop_recur(n: int) -> int:
+    """Simulate recursion using iteration"""
+    # Use an explicit stack to simulate the system call stack
+    stack = []
+    res = 0
+    # Simulate the recursive-call phase
+    for i in range(n, 0, -1):
+        # Simulate recursive calls by pushing onto the stack
+        stack.append(i)
+    # Simulate unwinding and accumulating the result
+    while stack:
+        # Simulate unwinding by popping from the stack
+        res += stack.pop()
+    # res = 1+2+3+...+n
+    return res
 ```
 
 </div>

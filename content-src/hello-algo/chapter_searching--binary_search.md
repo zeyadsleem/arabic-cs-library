@@ -33,57 +33,24 @@ It's worth noting that since both $i$ and $j$ are of `int` type, **$i + j$ may e
 The code is shown below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Binary search (closed interval on both sides) */
-func binarySearch(nums []int, target int) int {
-	// Initialize closed interval [0, n-1], i.e., i, j point to the first and last elements of the array
-	i, j := 0, len(nums)-1
-	// Loop, exit when the search interval is empty (empty when i > j)
-	for i <= j {
-		m := i + (j-i)/2      // Calculate the midpoint index m
-		if nums[m] < target { // This means target is in the interval [m+1, j]
-			i = m + 1
-		} else if nums[m] > target { // This means target is in the interval [i, m-1]
-			j = m - 1
-		} else { // Found the target element, return its index
-			return m
-		}
-	}
-	// Target element not found, return -1
-	return -1
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Binary search (closed interval on both sides) */
-function binarySearch(nums: number[], target: number): number {
-    // Initialize closed interval [0, n-1], i.e., i, j point to the first and last elements of the array
-    let i = 0,
-        j = nums.length - 1;
-    // Loop, exit when the search interval is empty (empty when i > j)
-    while (i <= j) {
-        // Calculate the midpoint index m
-        const m = Math.floor(i + (j - i) / 2);
-        if (nums[m] < target) {
-            // This means target is in the interval [m+1, j]
-            i = m + 1;
-        } else if (nums[m] > target) {
-            // This means target is in the interval [i, m-1]
-            j = m - 1;
-        } else {
-            // Found the target element, return its index
-            return m;
-        }
-    }
-    return -1; // Target element not found, return -1
-}
+```py
+def binary_search(nums: list[int], target: int) -> int:
+    """Binary search (closed interval)"""
+    # Initialize the closed interval [0, n-1], with i and j pointing to the first and last elements
+    i, j = 0, len(nums) - 1
+    # Loop until the search interval is empty (when i > j)
+    while i <= j:
+        # Python integers can grow arbitrarily large, subject to available memory, so integer overflow is not a concern
+        m = (i + j) // 2  # Calculate the midpoint index m
+        if nums[m] < target:
+            i = m + 1  # In this case, target must be in [m+1, j] if it exists
+        elif nums[m] > target:
+            j = m - 1  # In this case, target must be in [i, m-1] if it exists
+        else:
+            return m  # The target element was found; return its index
+    return -1  # The target element was not found; return -1
 ```
 
 </div>
@@ -97,6 +64,28 @@ function binarySearch(nums: number[], target: number): number {
 In addition to the closed interval mentioned above, another common interval representation is the "left-closed right-open" interval, defined as $[0, n)$, meaning that the left boundary is inclusive while the right boundary is exclusive. Under this representation, the interval $[i, j)$ is empty when $i = j$.
 
 We can implement a binary search algorithm with the same functionality based on this representation:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def binary_search_lcro(nums: list[int], target: int) -> int:
+    """Binary search (left-closed, right-open interval)"""
+    # Initialize the left-closed, right-open interval [0, n), with i at the first element and j one past the last
+    i, j = 0, len(nums)
+    # Loop until the search interval is empty (when i = j)
+    while i < j:
+        m = (i + j) // 2  # Calculate the midpoint index m
+        if nums[m] < target:
+            i = m + 1  # In this case, target must be in [m+1, j) if it exists
+        elif nums[m] > target:
+            j = m  # In this case, target must be in [i, m) if it exists
+        else:
+            return m  # The target element was found; return its index
+    return -1  # The target element was not found; return -1
+```
+
+</div>
 
 As shown in the figure below, under the two interval representations, the initialization, loop condition, and interval narrowing operations of the binary search algorithm are all different.
 

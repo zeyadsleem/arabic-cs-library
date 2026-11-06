@@ -31,27 +31,15 @@ lang: ar
 لحل هذه المشكلة، **يمكننا كتابة جميع قيم `None` صراحةً في تسلسل الاجتياز بالمستويات**. وكما يوضح الشكل أدناه، بمجرد فعل ذلك، يستطيع تسلسل الاجتياز بالمستويات تمثيل شجرة ثنائية تمثيلاً فريداً. والشيفرة المثالية كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* التمثيل المصفوفي لشجرة ثنائية */
-// استخدام شريحة من النوع any، بما يسمح باستخدام nil لتعليم المواضع الفارغة
-tree := []any{1, 2, 3, 4, nil, 6, 7, 8, 9, nil, nil, 12, nil, nil, 15}
+```python title=""
+# Array representation of a binary tree
+# Using None to represent empty slots
+tree = [1, 2, 3, 4, None, 6, 7, 8, 9, None, None, 12, None, None, 15]
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* التمثيل المصفوفي لشجرة ثنائية */
-// استخدام null لتمثيل المواضع الفارغة
-let tree: (number | null)[] = [1, 2, 3, 4, null, 6, 7, 8, 9, null, null, 12, null, null, 15];
-```
-
-</div>
-
 ![التمثيل المصفوفي لشجرة ثنائية عشوائية](/images/hello-algo/chapter_tree--array_representation_with_empty.png)
 
 جدير بالذكر أن **الأشجار الثنائية الكاملة ملائمة جداً للتمثيل المصفوفي**. وباستذكار تعريف الشجرة الثنائية الكاملة، لا تظهر `None` إلا في المستوى السفلي وفي الجهة اليمنى، **ما يعني أن جميع قيم `None` يجب أن تظهر في نهاية تسلسل الاجتياز بالمستويات**.
@@ -66,94 +54,84 @@ let tree: (number | null)[] = [1, 2, 3, 4, null, 6, 7, 8, 9, null, null, 12, nul
 - الحصول على تسلسلات الاجتياز المسبق والوسطي واللاحق وبالمستويات.
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* صنف الشجرة الثنائية الممثلة بالمصفوفة */
-class ArrayBinaryTree {
-    #tree: (number | null)[];
+```py
+class ArrayBinaryTree:
+    """Binary tree class using an array representation"""
 
-    /* الباني */
-    constructor(arr: (number | null)[]) {
-        this.#tree = arr;
-    }
+    def __init__(self, arr: list[int | None]):
+        """Constructor"""
+        self._tree = list(arr)
 
-    /* سعة القائمة */
-    size(): number {
-        return this.#tree.length;
-    }
+    def size(self):
+        """Length of the backing list"""
+        return len(self._tree)
 
-    /* احصل على قيمة العقدة عند الفهرس i */
-    val(i: number): number | null {
-        // إذا خرج الفهرس عن الحدود، أعد null لتمثيل موضع فارغ
-        if (i < 0 || i >= this.size()) return null;
-        return this.#tree[i];
-    }
+    def val(self, i: int) -> int | None:
+        """Get the value of the node at index i"""
+        # If the index is out of bounds, return None to represent an empty position
+        if i < 0 or i >= self.size():
+            return None
+        return self._tree[i]
 
-    /* احصل على فهرس عقدة الابن الأيسر للعقدة عند الفهرس i */
-    left(i: number): number {
-        return 2 * i + 1;
-    }
+    def left(self, i: int) -> int | None:
+        """Get the left child index of the node at index i"""
+        return 2 * i + 1
 
-    /* احصل على فهرس عقدة الابن الأيمن للعقدة عند الفهرس i */
-    right(i: number): number {
-        return 2 * i + 2;
-    }
+    def right(self, i: int) -> int | None:
+        """Get the right child index of the node at index i"""
+        return 2 * i + 2
 
-    /* احصل على فهرس العقدة الأب للعقدة عند الفهرس i */
-    parent(i: number): number {
-        return Math.floor((i - 1) / 2); // قسمة بتقريب للأسفل
-    }
+    def parent(self, i: int) -> int | None:
+        """Get the parent index of the node at index i"""
+        return (i - 1) // 2
 
-    /* الاجتياز بالمستويات */
-    levelOrder(): number[] {
-        let res = [];
-        // اجتَز المصفوفة مباشرة
-        for (let i = 0; i < this.size(); i++) {
-            if (this.val(i) !== null) res.push(this.val(i));
-        }
-        return res;
-    }
+    def level_order(self) -> list[int]:
+        """Level-order traversal"""
+        self.res = []
+        # Traverse the array directly
+        for i in range(self.size()):
+            if self.val(i) is not None:
+                self.res.append(self.val(i))
+        return self.res
 
-    /* الاجتياز بالعمق أولاً */
-    #dfs(i: number, order: Order, res: (number | null)[]): void {
-        // إذا كان الموضع فارغاً، عُد
-        if (this.val(i) === null) return;
-        // الاجتياز المسبق
-        if (order === 'pre') res.push(this.val(i));
-        this.#dfs(this.left(i), order, res);
-        // الاجتياز الوسطي
-        if (order === 'in') res.push(this.val(i));
-        this.#dfs(this.right(i), order, res);
-        // الاجتياز اللاحق
-        if (order === 'post') res.push(this.val(i));
-    }
+    def dfs(self, i: int, order: str):
+        """Depth-first traversal"""
+        if self.val(i) is None:
+            return
+        # Preorder traversal
+        if order == "pre":
+            self.res.append(self.val(i))
+        self.dfs(self.left(i), order)
+        # Inorder traversal
+        if order == "in":
+            self.res.append(self.val(i))
+        self.dfs(self.right(i), order)
+        # Postorder traversal
+        if order == "post":
+            self.res.append(self.val(i))
 
-    /* الاجتياز المسبق */
-    preOrder(): (number | null)[] {
-        const res = [];
-        this.#dfs(0, 'pre', res);
-        return res;
-    }
+    def pre_order(self) -> list[int]:
+        """Preorder traversal"""
+        self.res = []
+        self.dfs(0, order="pre")
+        return self.res
 
-    /* الاجتياز الوسطي */
-    inOrder(): (number | null)[] {
-        const res = [];
-        this.#dfs(0, 'in', res);
-        return res;
-    }
+    def in_order(self) -> list[int]:
+        """Inorder traversal"""
+        self.res = []
+        self.dfs(0, order="in")
+        return self.res
 
-    /* الاجتياز اللاحق */
-    postOrder(): (number | null)[] {
-        const res = [];
-        this.#dfs(0, 'post', res);
-        return res;
-    }
-}
+    def post_order(self) -> list[int]:
+        """Postorder traversal"""
+        self.res = []
+        self.dfs(0, order="post")
+        return self.res
 ```
 
 </div>
-
 ## المزايا والقيود
 
 يتمتع التمثيل المصفوفي للأشجار الثنائية بالمزايا التالية:

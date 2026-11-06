@@ -33,57 +33,27 @@ As we can see, **insertion, deletion, lookup, and update operations in a hash ta
 Common operations on hash tables include: initialization, query operations, adding key-value pairs, and deleting key-value pairs. Example code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="hash_map_test.go"
-/* Initialize hash table */
-hmap := make(map[int]string)
+```python title="hash_map.py"
+# Initialize hash table
+hmap: dict = {}
 
-/* Add operation */
-// Add key-value pair (key, value) to hash table
+# Add operation
+# Add key-value pair (key, value) to hash table
 hmap[12836] = "XiaoHa"
 hmap[15937] = "XiaoLuo"
 hmap[16750] = "XiaoSuan"
 hmap[13276] = "XiaoFa"
 hmap[10583] = "XiaoYa"
 
-/* Query operation */
-// Input key into hash table to get value
-name := hmap[15937]
+# Query operation
+# Input key into hash table to get value
+name: str = hmap[15937]
 
-/* Delete operation */
-// Delete key-value pair (key, value) from hash table
-delete(hmap, 10583)
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="hash_map.ts"
-/* Initialize hash table */
-const map = new Map<number, string>();
-/* Add operation */
-// Add key-value pair (key, value) to hash table
-map.set(12836, 'XiaoHa');
-map.set(15937, 'XiaoLuo');
-map.set(16750, 'XiaoSuan');
-map.set(13276, 'XiaoFa');
-map.set(10583, 'XiaoYa');
-console.info('\nAfter adding, hash table is\nKey -> Value');
-console.info(map);
-
-/* Query operation */
-// Input key into hash table to get value
-let name = map.get(15937);
-console.info('\nInput student ID 15937, queried name ' + name);
-
-/* Delete operation */
-// Delete key-value pair (key, value) from hash table
-map.delete(10583);
-console.info('\nAfter deleting 10583, hash table is\nKey -> Value');
-console.info(map);
+# Delete operation
+# Delete key-value pair (key, value) from hash table
+hmap.pop(10583)
 ```
 
 </div>
@@ -91,43 +61,19 @@ console.info(map);
 There are three common ways to traverse a hash table: traversing key-value pairs, traversing keys, and traversing values. Example code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="hash_map_test.go"
-/* Traverse hash table */
-// Traverse key-value pairs key->value
-for key, value := range hmap {
-    fmt.Println(key, "->", value)
-}
-// Traverse keys only
-for key := range hmap {
-    fmt.Println(key)
-}
-// Traverse values only
-for _, value := range hmap {
-    fmt.Println(value)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="hash_map.ts"
-/* Traverse hash table */
-console.info('\nTraverse key-value pairs Key->Value');
-for (const [k, v] of map.entries()) {
-    console.info(k + ' -> ' + v);
-}
-console.info('\nTraverse keys only Key');
-for (const k of map.keys()) {
-    console.info(k);
-}
-console.info('\nTraverse values only Value');
-for (const v of map.values()) {
-    console.info(v);
-}
+```python title="hash_map.py"
+# Traverse hash table
+# Traverse key-value pairs key->value
+for key, value in hmap.items():
+    print(key, "->", value)
+# Traverse keys only
+for key in hmap.keys():
+    print(key)
+# Traverse values only
+for value in hmap.values():
+    print(value)
 ```
 
 </div>
@@ -156,85 +102,71 @@ Suppose the array length is `capacity = 100` and the hash algorithm is `hash(key
 The following code implements a simple hash table. Here, we encapsulate `key` and `value` into a class `Pair` to represent a key-value pair.
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Hash table based on array implementation */
-class ArrayHashMap {
-    private readonly buckets: (Pair | null)[];
+```py
+class ArrayHashMap:
+    """Hash table implemented with an array"""
 
-    constructor() {
-        // Initialize array with 100 buckets
-        this.buckets = new Array(100).fill(null);
-    }
+    def __init__(self):
+        """Constructor"""
+        # Initialize an array containing 100 buckets
+        self.buckets: list[Pair | None] = [None] * 100
 
-    /* Hash function */
-    private hashFunc(key: number): number {
-        return key % 100;
-    }
+    def hash_func(self, key: int) -> int:
+        """Hash function"""
+        index = key % 100
+        return index
 
-    /* Query operation */
-    public get(key: number): string | null {
-        let index = this.hashFunc(key);
-        let pair = this.buckets[index];
-        if (pair === null) return null;
-        return pair.val;
-    }
+    def get(self, key: int) -> str | None:
+        """Lookup operation"""
+        index: int = self.hash_func(key)
+        pair: Pair = self.buckets[index]
+        if pair is None:
+            return None
+        return pair.val
 
-    /* Add operation */
-    public set(key: number, val: string) {
-        let index = this.hashFunc(key);
-        this.buckets[index] = new Pair(key, val);
-    }
+    def put(self, key: int, val: str):
+        """Insert and update operations"""
+        pair = Pair(key, val)
+        index: int = self.hash_func(key)
+        self.buckets[index] = pair
 
-    /* Remove operation */
-    public delete(key: number) {
-        let index = this.hashFunc(key);
-        // Set to null to represent deletion
-        this.buckets[index] = null;
-    }
+    def remove(self, key: int):
+        """Remove operation"""
+        index: int = self.hash_func(key)
+        # Set to None to mark removal
+        self.buckets[index] = None
 
-    /* Get all key-value pairs */
-    public entries(): (Pair | null)[] {
-        let arr: (Pair | null)[] = [];
-        for (let i = 0; i < this.buckets.length; i++) {
-            if (this.buckets[i]) {
-                arr.push(this.buckets[i]);
-            }
-        }
-        return arr;
-    }
+    def entry_set(self) -> list[Pair]:
+        """Get all key-value pairs"""
+        result: list[Pair] = []
+        for pair in self.buckets:
+            if pair is not None:
+                result.append(pair)
+        return result
 
-    /* Get all keys */
-    public keys(): (number | undefined)[] {
-        let arr: (number | undefined)[] = [];
-        for (let i = 0; i < this.buckets.length; i++) {
-            if (this.buckets[i]) {
-                arr.push(this.buckets[i].key);
-            }
-        }
-        return arr;
-    }
+    def key_set(self) -> list[int]:
+        """Get all keys"""
+        result = []
+        for pair in self.buckets:
+            if pair is not None:
+                result.append(pair.key)
+        return result
 
-    /* Get all values */
-    public values(): (string | undefined)[] {
-        let arr: (string | undefined)[] = [];
-        for (let i = 0; i < this.buckets.length; i++) {
-            if (this.buckets[i]) {
-                arr.push(this.buckets[i].val);
-            }
-        }
-        return arr;
-    }
+    def value_set(self) -> list[str]:
+        """Get all values"""
+        result = []
+        for pair in self.buckets:
+            if pair is not None:
+                result.append(pair.val)
+        return result
 
-    /* Print hash table */
-    public print() {
-        let pairSet = this.entries();
-        for (const pair of pairSet) {
-            console.info(`${pair.key} -> ${pair.val}`);
-        }
-    }
-}
+    def print(self):
+        """Print the hash table"""
+        for pair in self.buckets:
+            if pair is not None:
+                print(pair.key, "->", pair.val)
 ```
 
 </div>

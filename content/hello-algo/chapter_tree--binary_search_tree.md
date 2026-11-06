@@ -28,32 +28,27 @@ lang: ar
 تتبع عملية البحث في شجرة البحث الثنائية المبدأ نفسه الذي يتبعه البحث الثنائي: كل جولة تستبعد نصف الحالات المتبقية. وعدد تكرارات الحلقة لا يزيد على ارتفاع الشجرة. وعندما تكون الشجرة متوازنة، يستغرق البحث زمن $O(\log n)$. وشيفرة المثال كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* ابحث عن عقدة */
-func (bst *binarySearchTree) search(num int) *TreeNode {
-	node := bst.root
-	// البحث بحلقة، واخرج بعد تجاوز عقدة ورقة
-	for node != nil {
-		if node.Val.(int) < num {
-			// العقدة المستهدفة في الشجرة الفرعية اليمنى لـcur
-			node = node.Right
-		} else if node.Val.(int) > num {
-			// العقدة المستهدفة في الشجرة الفرعية اليسرى لـcur
-			node = node.Left
-		} else {
-			// وُجدت العقدة المستهدفة، اخرج من الحلقة
-			break
-		}
-	}
-	// أعد العقدة المستهدفة
-	return node
-}
+```py
+    def search(self, num: int) -> TreeNode | None:
+        """Find a node"""
+        cur = self._root
+        # Search in a loop, stopping if cur becomes None
+        while cur is not None:
+            # If present, the target node is in the right subtree of cur
+            if cur.val < num:
+                cur = cur.right
+            # If present, the target node is in the left subtree of cur
+            elif cur.val > num:
+                cur = cur.left
+            # The target node was found; exit the loop
+            else:
+                break
+        return cur
 ```
 
 </div>
-
 ### إدراج عقدة
 
 بمعطى عنصر `num` مطلوب إدراجه، ومن أجل الحفاظ على خاصية شجرة البحث الثنائية «الشجرة الفرعية اليسرى < العقدة الجذرية < الشجرة الفرعية اليمنى»، تكون عملية الإدراج كما يوضح الشكل أدناه.
@@ -69,43 +64,37 @@ func (bst *binarySearchTree) search(num int) *TreeNode {
 - لتنفيذ إدراج العقدة، يلزمنا استخدام العقدة `pre` لحفظ العقدة من الجولة السابقة. وبهذه الطريقة، عندما نصل في الاجتياز إلى `None`، يمكننا الحصول على عقدتها الأب، وبذلك نكمل عملية إدراج العقدة.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* أدرج عقدة */
-func (bst *binarySearchTree) insert(num int) {
-	cur := bst.root
-	// إذا كانت الشجرة فارغة، هيّئ العقدة الجذرية
-	if cur == nil {
-		bst.root = NewTreeNode(num)
-		return
-	}
-	// موضع العقدة السابقة للعقدة المطلوب إدراجها
-	var pre *TreeNode = nil
-	// البحث بحلقة، واخرج بعد تجاوز عقدة ورقة
-	for cur != nil {
-		if cur.Val == num {
-			return
-		}
-		pre = cur
-		if cur.Val.(int) < num {
-			cur = cur.Right
-		} else {
-			cur = cur.Left
-		}
-	}
-	// أدرج العقدة
-	node := NewTreeNode(num)
-	if pre.Val.(int) < num {
-		pre.Right = node
-	} else {
-		pre.Left = node
-	}
-}
+```py
+    def insert(self, num: int):
+        """Insert a node"""
+        # If the tree is empty, initialize the root node
+        if self._root is None:
+            self._root = TreeNode(num)
+            return
+        # Search in a loop, stopping if cur becomes None
+        cur, pre = self._root, None
+        while cur is not None:
+            # Return immediately if a duplicate node is found
+            if cur.val == num:
+                return
+            pre = cur
+            # The insertion position lies in the right subtree of cur
+            if cur.val < num:
+                cur = cur.right
+            # The insertion position lies in the left subtree of cur
+            else:
+                cur = cur.left
+        # Insert a node
+        node = TreeNode(num)
+        if pre.val < num:
+            pre.right = node
+        else:
+            pre.left = node
 ```
 
 </div>
-
 وعلى غرار البحث عن عقدة، يستغرق إدراج عقدة زمن $O(\log n)$.
 
 ### حذف عقدة
@@ -130,73 +119,57 @@ func (bst *binarySearchTree) insert(num int) {
 وتستغرق عملية حذف العقدة أيضاً زمن $O(\log n)$، حيث يتطلب العثور على العقدة المطلوب حذفها زمن $O(\log n)$، ويتطلب الحصول على عقدة الخَلَف في الاجتياز الوسطي زمن $O(\log n)$. وشيفرة المثال كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* احذف عقدة */
-func (bst *binarySearchTree) remove(num int) {
-	cur := bst.root
-	// إذا كانت الشجرة فارغة، عُد مباشرة
-	if cur == nil {
-		return
-	}
-	// موضع العقدة السابقة للعقدة المطلوب حذفها
-	var pre *TreeNode = nil
-	// البحث بحلقة، واخرج بعد تجاوز عقدة ورقة
-	for cur != nil {
-		if cur.Val == num {
-			break
-		}
-		pre = cur
-		if cur.Val.(int) < num {
-			// العقدة المطلوب حذفها في الشجرة الفرعية اليمنى
-			cur = cur.Right
-		} else {
-			// العقدة المطلوب حذفها في الشجرة الفرعية اليسرى
-			cur = cur.Left
-		}
-	}
-	// إذا لم توجد عقدة للحذف، عُد مباشرة
-	if cur == nil {
-		return
-	}
-	// عدد العقد الابنة 0 أو 1
-	if cur.Left == nil || cur.Right == nil {
-		var child *TreeNode = nil
-		// احصل على العقدة الابنة للعقدة المطلوب حذفها
-		if cur.Left != nil {
-			child = cur.Left
-		} else {
-			child = cur.Right
-		}
-		// احذف العقدة cur
-		if cur != bst.root {
-			if pre.Left == cur {
-				pre.Left = child
-			} else {
-				pre.Right = child
-			}
-		} else {
-			// إذا كانت العقدة المحذوفة هي العقدة الجذرية، أعد إسناد العقدة الجذرية
-			bst.root = child
-		}
-		// عدد العقد الابنة 2
-	} else {
-		// احصل على العقدة التالية للعقدة cur المطلوب حذفها في الاجتياز الوسطي
-		tmp := cur.Right
-		for tmp.Left != nil {
-			tmp = tmp.Left
-		}
-		// احذف العقدة tmp تعاودياً
-		bst.remove(tmp.Val.(int))
-		// استبدل cur بـtmp
-		cur.Val = tmp.Val
-	}
-}
+```py
+    def remove(self, num: int):
+        """Remove a node"""
+        # Return immediately if the tree is empty
+        if self._root is None:
+            return
+        # Search in a loop, stopping if cur becomes None
+        cur, pre = self._root, None
+        while cur is not None:
+            # The node to remove was found; exit the loop
+            if cur.val == num:
+                break
+            pre = cur
+            # If present, the node to remove is in the right subtree of cur
+            if cur.val < num:
+                cur = cur.right
+            # If present, the node to remove is in the left subtree of cur
+            else:
+                cur = cur.left
+        # Return immediately if the node to remove does not exist
+        if cur is None:
+            return
+
+        # Number of children = 0 or 1
+        if cur.left is None or cur.right is None:
+            # With 0 or 1 child, child is None or that child, respectively
+            child = cur.left or cur.right
+            # Remove node cur
+            if cur != self._root:
+                if pre.left == cur:
+                    pre.left = child
+                else:
+                    pre.right = child
+            else:
+                # If the removed node is the root, assign the new root
+                self._root = child
+        # Number of children = 2
+        else:
+            # Get the inorder successor of cur
+            tmp: TreeNode = cur.right
+            while tmp.left is not None:
+                tmp = tmp.left
+            # Recursively remove node tmp
+            self.remove(tmp.val)
+            # Replace the value of cur with the value of tmp
+            cur.val = tmp.val
 ```
 
 </div>
-
 ### الاجتياز الوسطي مرتّب
 
 كما يوضح الشكل أدناه، يتبع الاجتياز الوسطي للشجرة الثنائية ترتيب الاجتياز «يسار $\rightarrow$ جذر $\rightarrow$ يمين»، بينما تستوفي شجرة البحث الثنائية علاقة الحجم «العقدة الابنة اليسرى $<$ العقدة الجذرية $<$ العقدة الابنة اليمنى».

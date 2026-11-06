@@ -21,60 +21,25 @@ Let's start with a simple example. Given an array `nums` of length $n$, where th
 The code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Counting sort */
-// Simple implementation, cannot be used for sorting objects
-func countingSortNaive(nums []int) {
-	// 1. Count the maximum element m in the array
-	m := 0
-	for _, num := range nums {
-		if num > m {
-			m = num
-		}
-	}
-	// 2. Count the occurrence of each number
-	// counter[num] represents the occurrence of num
-	counter := make([]int, m+1)
-	for _, num := range nums {
-		counter[num]++
-	}
-	// 3. Traverse counter, filling each element back into the original array nums
-	for i, num := 0, 0; num < m+1; num++ {
-		for j := 0; j < counter[num]; j++ {
-			nums[i] = num
-			i++
-		}
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Counting sort */
-// Simple implementation, cannot be used for sorting objects
-function countingSortNaive(nums: number[]): void {
-    // 1. Count the maximum element m in the array
-    let m: number = Math.max(...nums);
-    // 2. Count the occurrence of each number
-    // counter[num] represents the occurrence of num
-    const counter: number[] = new Array<number>(m + 1).fill(0);
-    for (const num of nums) {
-        counter[num]++;
-    }
-    // 3. Traverse counter, filling each element back into the original array nums
-    let i = 0;
-    for (let num = 0; num < m + 1; num++) {
-        for (let j = 0; j < counter[num]; j++, i++) {
-            nums[i] = num;
-        }
-    }
-}
+```py
+def counting_sort_naive(nums: list[int]):
+    """Counting sort"""
+    # Simple implementation; cannot be used to sort objects
+    # 1. Find the maximum array element m
+    m = max(nums)
+    # 2. Count the occurrences of each number
+    # counter[num] is the number of occurrences of num
+    counter = [0] * (m + 1)
+    for num in nums:
+        counter[num] += 1
+    # 3. Traverse counter and fill the original array nums with the elements
+    i = 0
+    for num in range(m + 1):
+        for _ in range(counter[num]):
+            nums[i] = num
+            i += 1
 ```
 
 </div>
@@ -106,82 +71,34 @@ After the traversal is complete, the array `res` contains the sorted result, and
 The counting sort implementation is shown below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Counting sort */
-// Complete implementation, can sort objects and is a stable sort
-func countingSort(nums []int) {
-	// 1. Count the maximum element m in the array
-	m := 0
-	for _, num := range nums {
-		if num > m {
-			m = num
-		}
-	}
-	// 2. Count the occurrence of each number
-	// counter[num] represents the occurrence of num
-	counter := make([]int, m+1)
-	for _, num := range nums {
-		counter[num]++
-	}
-	// 3. Calculate the prefix sum of counter, converting "occurrence count" to "tail index"
-	// counter[num]-1 is the last index where num appears in res
-	for i := 0; i < m; i++ {
-		counter[i+1] += counter[i]
-	}
-	// 4. Traverse nums in reverse order, placing each element into the result array res
-	// Initialize the array res to record results
-	n := len(nums)
-	res := make([]int, n)
-	for i := n - 1; i >= 0; i-- {
-		num := nums[i]
-		// Place num at the corresponding index
-		res[counter[num]-1] = num
-		// Decrement the prefix sum by 1, getting the next index to place num
-		counter[num]--
-	}
-	// Use result array res to overwrite the original array nums
-	copy(nums, res)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Counting sort */
-// Complete implementation, can sort objects and is a stable sort
-function countingSort(nums: number[]): void {
-    // 1. Count the maximum element m in the array
-    let m: number = Math.max(...nums);
-    // 2. Count the occurrence of each number
-    // counter[num] represents the occurrence of num
-    const counter: number[] = new Array<number>(m + 1).fill(0);
-    for (const num of nums) {
-        counter[num]++;
-    }
-    // 3. Calculate the prefix sum of counter, converting "occurrence count" to "tail index"
-    // counter[num]-1 is the last index where num appears in res
-    for (let i = 0; i < m; i++) {
-        counter[i + 1] += counter[i];
-    }
-    // 4. Traverse nums in reverse order, placing each element into the result array res
-    // Initialize the array res to record results
-    const n = nums.length;
-    const res: number[] = new Array<number>(n);
-    for (let i = n - 1; i >= 0; i--) {
-        const num = nums[i];
-        res[counter[num] - 1] = num; // Place num at the corresponding index
-        counter[num]--; // Decrement the prefix sum by 1, getting the next index to place num
-    }
-    // Use result array res to overwrite the original array nums
-    for (let i = 0; i < n; i++) {
-        nums[i] = res[i];
-    }
-}
+```py
+def counting_sort(nums: list[int]):
+    """Counting sort"""
+    # Full implementation; stable and adaptable to sorting objects
+    # 1. Find the maximum array element m
+    m = max(nums)
+    # 2. Count the occurrences of each number
+    # counter[num] is the number of occurrences of num
+    counter = [0] * (m + 1)
+    for num in nums:
+        counter[num] += 1
+    # 3. Compute prefix sums of counter to convert occurrence counts into end positions
+    # That is, counter[num]-1 is the index of the last occurrence of num in res
+    for i in range(m):
+        counter[i + 1] += counter[i]
+    # 4. Traverse nums in reverse and place each element in the result array res
+    # Initialize array res to store the result
+    n = len(nums)
+    res = [0] * n
+    for i in range(n - 1, -1, -1):
+        num = nums[i]
+        res[counter[num] - 1] = num  # Place num at the corresponding index
+        counter[num] -= 1  # Decrement the prefix sum by 1 to determine where to place the next occurrence of num
+    # Overwrite the original array nums with the result array res
+    for i in range(n):
+        nums[i] = res[i]
 ```
 
 </div>

@@ -37,49 +37,23 @@ lang: ar
 في الشيفرة أدناه، نستخدم الدالة `sift_down()` نفسها لإعادة بناء الكومة من الأعلى إلى الأسفل كما في فصل «الكومة». ومن الجدير بالذكر أنه بما أن طول الكومة يتناقص مع استخراج أكبر عنصر، فإننا نحتاج إلى إضافة معامل طول $n$ إلى `sift_down()` لتحديد الطول الفعلي الحالي للكومة. والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* الترتيب بالكومة */
-func heapSort(nums *[]int) {
-	// عملية بناء الكومة: أعد بناء جميع العقد عدا الأوراق
-	for i := len(*nums)/2 - 1; i >= 0; i-- {
-		siftDown(nums, len(*nums), i)
-	}
-	// استخرج أكبر عنصر من الكومة وكرّر ذلك n-1 مرة
-	for i := len(*nums) - 1; i > 0; i-- {
-		// حذف العقدة
-		(*nums)[0], (*nums)[i] = (*nums)[i], (*nums)[0]
-		// ابدأ إعادة بناء الكومة من العقدة الجذرية، من الأعلى إلى الأسفل
-		siftDown(nums, i, 0)
-	}
-}
+```py
+def heap_sort(nums: list[int]):
+    """Heap sort"""
+    # Build the heap by sifting down from every non-leaf node
+    for i in range(len(nums) // 2 - 1, -1, -1):
+        sift_down(nums, len(nums), i)
+    # Extract the largest element from the heap, repeating for n-1 rounds
+    for i in range(len(nums) - 1, 0, -1):
+        # Swap the root with the rightmost leaf on the last level (the first and last elements of the current heap)
+        nums[0], nums[i] = nums[i], nums[0]
+        # Sift down starting at the root
+        sift_down(nums, i, 0)
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* الترتيب بالكومة */
-function heapSort(nums: number[]): void {
-    // عملية بناء الكومة: أعد بناء جميع العقد عدا الأوراق
-    for (let i = Math.floor(nums.length / 2) - 1; i >= 0; i--) {
-        siftDown(nums, nums.length, i);
-    }
-    // استخرج أكبر عنصر من الكومة وكرّر ذلك n-1 مرة
-    for (let i = nums.length - 1; i > 0; i--) {
-        // حذف العقدة
-        [nums[0], nums[i]] = [nums[i], nums[0]];
-        // ابدأ إعادة بناء الكومة من العقدة الجذرية، من الأعلى إلى الأسفل
-        siftDown(nums, i, 0);
-    }
-}
-```
-
-</div>
-
 ## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n \log n)$؛ الترتيب بالكومة غير تكيّفي (non-adaptive)**: يستغرق بناء الكومة زمن $O(n)$. ويستغرق استخراج أكبر عنصر من الكومة زمن $O(\log n)$، ويتكرر ذلك $n - 1$ من الجولات.

@@ -24,27 +24,14 @@ In fact, **the list types provided by the standard libraries of many programming
 We typically initialize a list in one of two ways: empty or with predefined values:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="list_test.go"
-/* Initialize a list */
-// Without initial values
-nums1 := []int{}
-// With initial values
-nums := []int{1, 3, 2, 5, 4}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="list.ts"
-/* Initialize a list */
-// Without initial values
-const nums1: number[] = [];
-// With initial values
-const nums: number[] = [1, 3, 2, 5, 4];
+```python title="list.py"
+# Initialize a list
+# Without initial values
+nums1: list[int] = []
+# With initial values
+nums: list[int] = [1, 3, 2, 5, 4]
 ```
 
 </div>
@@ -54,27 +41,14 @@ const nums: number[] = [1, 3, 2, 5, 4];
 Since a list is essentially an array, we can access and update elements in $O(1)$ time complexity, which is very efficient.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="list_test.go"
-/* Access an element */
-num := nums[1]  // Access element at index 1
+```python title="list.py"
+# Access an element
+num: int = nums[1]  # Access element at index 1
 
-/* Update an element */
-nums[1] = 0     // Update element at index 1 to 0
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="list.ts"
-/* Access an element */
-const num: number = nums[1];  // Access element at index 1
-
-/* Update an element */
-nums[1] = 0;  // Update element at index 1 to 0
+# Update an element
+nums[1] = 0    # Update element at index 1 to 0
 ```
 
 </div>
@@ -84,47 +58,24 @@ nums[1] = 0;  // Update element at index 1 to 0
 Compared to arrays, lists can freely add and delete elements. Adding an element at the end of a list has a time complexity of $O(1)$, but inserting and deleting elements still have the same efficiency as arrays, with a time complexity of $O(n)$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="list_test.go"
-/* Clear the list */
-nums = nil
+```python title="list.py"
+# Clear the list
+nums.clear()
 
-/* Add elements at the end */
-nums = append(nums, 1)
-nums = append(nums, 3)
-nums = append(nums, 2)
-nums = append(nums, 5)
-nums = append(nums, 4)
+# Add elements at the end
+nums.append(1)
+nums.append(3)
+nums.append(2)
+nums.append(5)
+nums.append(4)
 
-/* Insert an element in the middle */
-nums = append(nums[:3], append([]int{6}, nums[3:]...)...) // Insert number 6 at index 3
+# Insert an element in the middle
+nums.insert(3, 6)  # Insert number 6 at index 3
 
-/* Delete an element */
-nums = append(nums[:3], nums[4:]...) // Delete element at index 3
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="list.ts"
-/* Clear the list */
-nums.length = 0;
-
-/* Add elements at the end */
-nums.push(1);
-nums.push(3);
-nums.push(2);
-nums.push(5);
-nums.push(4);
-
-/* Insert an element in the middle */
-nums.splice(3, 0, 6); // Insert number 6 at index 3
-
-/* Delete an element */
-nums.splice(3, 1);  // Delete element at index 3
+# Delete an element
+nums.pop(3)        # Delete element at index 3
 ```
 
 </div>
@@ -134,39 +85,17 @@ nums.splice(3, 1);  // Delete element at index 3
 Like arrays, lists can be traversed by index or by directly iterating through elements.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="list_test.go"
-/* Traverse the list by index */
-count := 0
-for i := 0; i < len(nums); i++ {
-    count += nums[i]
-}
-
-/* Traverse list elements directly */
+```python title="list.py"
+# Traverse the list by index
 count = 0
-for _, num := range nums {
+for i in range(len(nums)):
+    count += nums[i]
+
+# Traverse list elements directly
+for num in nums:
     count += num
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="list.ts"
-/* Traverse the list by index */
-let count = 0;
-for (let i = 0; i < nums.length; i++) {
-    count += nums[i];
-}
-
-/* Traverse list elements directly */
-count = 0;
-for (const num of nums) {
-    count += num;
-}
 ```
 
 </div>
@@ -176,23 +105,12 @@ for (const num of nums) {
 Given a new list `nums1`, we can concatenate it to the end of the original list.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="list_test.go"
-/* Concatenate two lists */
-nums1 := []int{6, 8, 7, 10, 9}
-nums = append(nums, nums1...)  // Concatenate list nums1 to the end of nums
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="list.ts"
-/* Concatenate two lists */
-const nums1: number[] = [6, 8, 7, 10, 9];
-nums.push(...nums1);  // Concatenate list nums1 to the end of nums
+```python title="list.py"
+# Concatenate two lists
+nums1: list[int] = [6, 8, 7, 10, 9]
+nums += nums1  # Concatenate list nums1 to the end of nums
 ```
 
 </div>
@@ -202,21 +120,11 @@ nums.push(...nums1);  // Concatenate list nums1 to the end of nums
 After sorting a list, we can use "binary search" and "two-pointer" algorithms, which are frequently tested in array algorithm problems.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="list_test.go"
-/* Sort a list */
-sort.Ints(nums)  // After sorting, list elements are arranged from smallest to largest
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="list.ts"
-/* Sort a list */
-nums.sort((a, b) => a - b);  // After sorting, list elements are arranged from smallest to largest
+```python title="list.py"
+# Sort a list
+nums.sort()  # After sorting, list elements are arranged from smallest to largest
 ```
 
 </div>
@@ -232,104 +140,85 @@ To deepen our understanding of how lists work, we attempt to implement a simple 
 - **Expansion mechanism**: When the list capacity is full upon inserting an element, we need to expand. We create a larger array based on the expansion multiple and then move all elements from the current array to the new array in order. In this example, we specify that the array should be expanded to 2 times its previous size each time.
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* List class */
-class MyList {
-    private arr: Array<number>; // Array (stores list elements)
-    private _capacity: number = 10; // List capacity
-    private _size: number = 0; // List length (current number of elements)
-    private extendRatio: number = 2; // Multiple by which the list capacity is extended each time
+```py
+class MyList:
+    """List class"""
 
-    /* Constructor */
-    constructor() {
-        this.arr = new Array(this._capacity);
-    }
+    def __init__(self):
+        """Constructor"""
+        self._capacity: int = 10  # List capacity
+        self._arr: list[int] = [0] * self._capacity  # Array (stores the list elements)
+        self._size: int = 0  # List length (current number of elements)
+        self._extend_ratio: int = 2  # Factor by which the list capacity grows each time
 
-    /* Get list length (current number of elements) */
-    public size(): number {
-        return this._size;
-    }
+    def size(self) -> int:
+        """Get the list length (current number of elements)"""
+        return self._size
 
-    /* Get list capacity */
-    public capacity(): number {
-        return this._capacity;
-    }
+    def capacity(self) -> int:
+        """Get the list capacity"""
+        return self._capacity
 
-    /* Update element */
-    public get(index: number): number {
-        // If the index is out of bounds, throw an exception, as below
-        if (index < 0 || index >= this._size) throw new Error('Index out of bounds');
-        return this.arr[index];
-    }
+    def get(self, index: int) -> int:
+        """Access an element"""
+        # Raise an exception if the index is out of bounds; the same applies below
+        if index < 0 or index >= self._size:
+            raise IndexError("Index out of bounds")
+        return self._arr[index]
 
-    /* Add elements at the end */
-    public set(index: number, num: number): void {
-        if (index < 0 || index >= this._size) throw new Error('Index out of bounds');
-        this.arr[index] = num;
-    }
+    def set(self, num: int, index: int):
+        """Update an element"""
+        if index < 0 or index >= self._size:
+            raise IndexError("Index out of bounds")
+        self._arr[index] = num
 
-    /* Direct traversal of list elements */
-    public add(num: number): void {
-        // If length equals capacity, need to expand
-        if (this._size === this._capacity) this.extendCapacity();
-        // Add new element to end of list
-        this.arr[this._size] = num;
-        this._size++;
-    }
+    def add(self, num: int):
+        """Append an element at the end"""
+        # Grow the capacity when adding an element would exceed it
+        if self.size() == self.capacity():
+            self.extend_capacity()
+        self._arr[self._size] = num
+        self._size += 1
 
-    /* Sort list */
-    public insert(index: number, num: number): void {
-        if (index < 0 || index >= this._size) throw new Error('Index out of bounds');
-        // When the number of elements exceeds capacity, trigger the extension mechanism
-        if (this._size === this._capacity) {
-            this.extendCapacity();
-        }
-        // Move all elements after index index forward by one position
-        for (let j = this._size - 1; j >= index; j--) {
-            this.arr[j + 1] = this.arr[j];
-        }
-        // Update the number of elements
-        this.arr[index] = num;
-        this._size++;
-    }
+    def insert(self, num: int, index: int):
+        """Insert an element in the middle"""
+        if index < 0 or index >= self._size:
+            raise IndexError("Index out of bounds")
+        # Grow the capacity when adding an element would exceed it
+        if self._size == self.capacity():
+            self.extend_capacity()
+        # Shift all elements at and after index `index` one position to the right
+        for j in range(self._size - 1, index - 1, -1):
+            self._arr[j + 1] = self._arr[j]
+        self._arr[index] = num
+        # Update the number of elements
+        self._size += 1
 
-    /* Remove element */
-    public remove(index: number): number {
-        if (index < 0 || index >= this._size) throw new Error('Index out of bounds');
-        let num = this.arr[index];
-        // Move all elements after index forward by one position
-        for (let j = index; j < this._size - 1; j++) {
-            this.arr[j] = this.arr[j + 1];
-        }
-        // Update the number of elements
-        this._size--;
-        // Return the removed element
-        return num;
-    }
+    def remove(self, index: int) -> int:
+        """Remove an element"""
+        if index < 0 or index >= self._size:
+            raise IndexError("Index out of bounds")
+        num = self._arr[index]
+        # Shift all elements after index `index` one position to the left
+        for j in range(index, self._size - 1):
+            self._arr[j] = self._arr[j + 1]
+        # Update the number of elements
+        self._size -= 1
+        # Return the removed element
+        return num
 
-    /* Driver Code */
-    public extendCapacity(): void {
-        // Create new array of length size and copy original array to new array
-        this.arr = this.arr.concat(
-            new Array(this.capacity() * (this.extendRatio - 1))
-        );
-        // Add elements at the end
-        this._capacity = this.arr.length;
-    }
+    def extend_capacity(self):
+        """Grow the list capacity"""
+        # Create a new array with _extend_ratio times the original length and copy the original array into it
+        self._arr = self._arr + [0] * self.capacity() * (self._extend_ratio - 1)
+        # Update the list capacity
+        self._capacity = len(self._arr)
 
-    /* Convert list to array */
-    public toArray(): number[] {
-        let size = this.size();
-        // Elements enqueue
-        const arr = new Array(size);
-        for (let i = 0; i < size; i++) {
-            arr[i] = this.get(i);
-        }
-        return arr;
-    }
-}
+    def to_array(self) -> list[int]:
+        """Return the portion of the list that contains elements"""
+        return self._arr[: self._size]
 ```
 
 </div>

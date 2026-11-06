@@ -33,57 +33,24 @@ lang: ar
 والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* البحث الثنائي (مجال مغلق من الطرفين) */
-func binarySearch(nums []int, target int) int {
-	// هيّئ المجال المغلق [0, n-1]، أي أن i وj يشيران إلى العنصرين الأول والأخير من المصفوفة
-	i, j := 0, len(nums)-1
-	// كرر، واخرج عندما يصبح مجال البحث فارغاً (يكون فارغاً عندما i > j)
-	for i <= j {
-		m := i + (j-i)/2      // احسب فهرس المنتصف m
-		if nums[m] < target { // هذا يعني أن target يقع في الفترة [m+1, j]
-			i = m + 1
-		} else if nums[m] > target { // هذا يعني أن target يقع في الفترة [i, m-1]
-			j = m - 1
-		} else { // وُجد العنصر المستهدف، أعد فهرسه
-			return m
-		}
-	}
-	// لم يُعثر على العنصر المستهدف، أعد -1
-	return -1
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* البحث الثنائي (مجال مغلق من الطرفين) */
-function binarySearch(nums: number[], target: number): number {
-    // هيّئ المجال المغلق [0, n-1]، أي أن i وj يشيران إلى العنصرين الأول والأخير من المصفوفة
-    let i = 0,
-        j = nums.length - 1;
-    // كرر، واخرج عندما يصبح مجال البحث فارغاً (يكون فارغاً عندما i > j)
-    while (i <= j) {
-        // احسب فهرس المنتصف m
-        const m = Math.floor(i + (j - i) / 2);
-        if (nums[m] < target) {
-            // هذا يعني أن target يقع في الفترة [m+1, j]
-            i = m + 1;
-        } else if (nums[m] > target) {
-            // هذا يعني أن target يقع في الفترة [i, m-1]
-            j = m - 1;
-        } else {
-            // وُجد العنصر المستهدف، أعد فهرسه
-            return m;
-        }
-    }
-    return -1; // لم يُعثر على العنصر المستهدف، أعد -1
-}
+```py
+def binary_search(nums: list[int], target: int) -> int:
+    """Binary search (closed interval)"""
+    # Initialize the closed interval [0, n-1], with i and j pointing to the first and last elements
+    i, j = 0, len(nums) - 1
+    # Loop until the search interval is empty (when i > j)
+    while i <= j:
+        # Python integers can grow arbitrarily large, subject to available memory, so integer overflow is not a concern
+        m = (i + j) // 2  # Calculate the midpoint index m
+        if nums[m] < target:
+            i = m + 1  # In this case, target must be in [m+1, j] if it exists
+        elif nums[m] > target:
+            j = m - 1  # In this case, target must be in [i, m-1] if it exists
+        else:
+            return m  # The target element was found; return its index
+    return -1  # The target element was not found; return -1
 ```
 
 </div>
@@ -97,6 +64,28 @@ function binarySearch(nums: number[], target: number): number {
 بالإضافة إلى المجال المغلق المذكور أعلاه، ثمة تمثيل شائع آخر للمجال هو «مغلق من اليسار، مفتوح من اليمين»، ويُعرّف بـ $[0, n)$، أي أن الحد الأيسر مغلق بينما الحد الأيمن مفتوح. وفي ظل هذا التمثيل، يكون المجال $[i, j)$ فارغاً عندما $i = j$.
 
 ويمكننا تنفيذ خوارزمية بحث ثنائي بالوظيفة نفسها استناداً إلى هذا التمثيل:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def binary_search_lcro(nums: list[int], target: int) -> int:
+    """Binary search (left-closed, right-open interval)"""
+    # Initialize the left-closed, right-open interval [0, n), with i at the first element and j one past the last
+    i, j = 0, len(nums)
+    # Loop until the search interval is empty (when i = j)
+    while i < j:
+        m = (i + j) // 2  # Calculate the midpoint index m
+        if nums[m] < target:
+            i = m + 1  # In this case, target must be in [m+1, j) if it exists
+        elif nums[m] > target:
+            j = m  # In this case, target must be in [i, m) if it exists
+        else:
+            return m  # The target element was found; return its index
+    return -1  # The target element was not found; return -1
+```
+
+</div>
 
 وكما يوضح الشكل أدناه، تختلف تهيئة خوارزمية البحث الثنائي وشرط الحلقة وعمليات تقليص المجال في ظل تمثيلي المجال كليهما.
 

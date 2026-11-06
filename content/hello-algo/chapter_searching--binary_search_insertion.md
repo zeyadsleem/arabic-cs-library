@@ -31,62 +31,25 @@ lang: ar
 لذلك، عند انتهاء البحث الثنائي، لا بد أن يشير $i$ إلى أول عنصر أكبر من `target`، وأن يشير $j$ إلى العنصر الأقصى يميناً الأصغر من `target`. **ومن ثمّ، عندما لا تحتوي المصفوفة على `target`، يكون فهرس الإدراج $i$**. والشيفرة كما يلي:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* البحث الثنائي عن نقطة الإدراج (دون عناصر مكررة) */
-func binarySearchInsertionSimple(nums []int, target int) int {
-	// تهيئة المجال المغلق [0, n-1]
-	i, j := 0, len(nums)-1
-	for i <= j {
-		// حساب فهرس المنتصف m
-		m := i + (j-i)/2
-		if nums[m] < target {
-			// يقع target في الفترة [m+1, j]
-			i = m + 1
-		} else if nums[m] > target {
-			// يقع target في الفترة [i, m-1]
-			j = m - 1
-		} else {
-			// العثور على target، إعادة نقطة الإدراج m
-			return m
-		}
-	}
-	// لم يُعثر على target، إعادة نقطة الإدراج i
-	return i
-}
+```py
+def binary_search_insertion_simple(nums: list[int], target: int) -> int:
+    """Find an insertion point using binary search (no duplicates)"""
+    i, j = 0, len(nums) - 1  # Initialize the closed interval [0, n-1]
+    while i <= j:
+        m = (i + j) // 2  # Calculate the midpoint index m
+        if nums[m] < target:
+            i = m + 1  # Target must be in [m+1, j] if it exists
+        elif nums[m] > target:
+            j = m - 1  # Target must be in [i, m-1] if it exists
+        else:
+            return m  # Target was found; return insertion point m
+    # Target was not found; return insertion point i
+    return i
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* البحث الثنائي عن نقطة الإدراج (دون عناصر مكررة) */
-function binarySearchInsertionSimple(
-    nums: Array<number>,
-    target: number
-): number {
-    let i = 0,
-        j = nums.length - 1; // تهيئة المجال المغلق [0, n-1]
-    while (i <= j) {
-        const m = Math.floor(i + (j - i) / 2); // حساب فهرس المنتصف m، واستخدام Math.floor() للتقريب نحو الأسفل
-        if (nums[m] < target) {
-            i = m + 1; // يقع target في الفترة [m+1, j]
-        } else if (nums[m] > target) {
-            j = m - 1; // يقع target في الفترة [i, m-1]
-        } else {
-            return m; // العثور على target، إعادة نقطة الإدراج m
-        }
-    }
-    // لم يُعثر على target، إعادة نقطة الإدراج i
-    return i;
-}
-```
-
-</div>
-
 ## حالة وجود عناصر مكررة
 
 <div class="note">
@@ -118,59 +81,25 @@ function binarySearchInsertionSimple(
 ومع ذلك، يمكننا إبقاء الشروط متفرعة كما هي، لأن المنطق أوضح وأكثر قابلية للقراءة.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* البحث الثنائي عن نقطة الإدراج (مع عناصر مكررة) */
-func binarySearchInsertion(nums []int, target int) int {
-	// تهيئة المجال المغلق [0, n-1]
-	i, j := 0, len(nums)-1
-	for i <= j {
-		// حساب فهرس المنتصف m
-		m := i + (j-i)/2
-		if nums[m] < target {
-			// يقع target في الفترة [m+1, j]
-			i = m + 1
-		} else if nums[m] > target {
-			// يقع target في الفترة [i, m-1]
-			j = m - 1
-		} else {
-			// العنصر الأقصى يميناً الأصغر من target يقع في الفترة [i, m-1]
-			j = m - 1
-		}
-	}
-	// إعادة نقطة الإدراج i
-	return i
-}
+```py
+def binary_search_insertion(nums: list[int], target: int) -> int:
+    """Find an insertion point using binary search (with duplicates)"""
+    i, j = 0, len(nums) - 1  # Initialize the closed interval [0, n-1]
+    while i <= j:
+        m = (i + j) // 2  # Calculate the midpoint index m
+        if nums[m] < target:
+            i = m + 1  # Target must be in [m+1, j] if it exists
+        elif nums[m] > target:
+            j = m - 1  # Target must be in [i, m-1] if it exists
+        else:
+            j = m - 1  # Continue in [i, m-1] to find the rightmost element smaller than target
+    # Return insertion point i
+    return i
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* البحث الثنائي عن نقطة الإدراج (مع عناصر مكررة) */
-function binarySearchInsertion(nums: Array<number>, target: number): number {
-    let i = 0,
-        j = nums.length - 1; // تهيئة المجال المغلق [0, n-1]
-    while (i <= j) {
-        const m = Math.floor(i + (j - i) / 2); // حساب فهرس المنتصف m، واستخدام Math.floor() للتقريب نحو الأسفل
-        if (nums[m] < target) {
-            i = m + 1; // يقع target في الفترة [m+1, j]
-        } else if (nums[m] > target) {
-            j = m - 1; // يقع target في الفترة [i, m-1]
-        } else {
-            j = m - 1; // العنصر الأقصى يميناً الأصغر من target يقع في الفترة [i, m-1]
-        }
-    }
-    // إعادة نقطة الإدراج i
-    return i;
-}
-```
-
-</div>
-
 <div class="note">
 
 تستخدم شيفرة هذا القسم نهج «المجال المغلق» في كل مواضعها. ويمكن للقارئ المهتم تنفيذ نهج «مغلق من اليسار، مفتوح من اليمين» بنفسه.

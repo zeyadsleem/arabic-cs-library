@@ -32,6 +32,35 @@ A hash set can be viewed as a hash table that stores only `key` without storing 
 
 </div>
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def graph_bfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
+    """Breadth-first traversal"""
+    # Represent the graph with an adjacency list to access all neighbors of a given vertex
+    # Vertex traversal sequence
+    res = []
+    # Hash set recording visited vertices
+    visited = set[Vertex]([start_vet])
+    # Use a queue to implement BFS
+    que = deque[Vertex]([start_vet])
+    # Starting from start_vet, loop until all reachable vertices have been visited
+    while len(que) > 0:
+        vet = que.popleft()  # Dequeue the front vertex
+        res.append(vet)  # Record the visited vertex
+        # Traverse all neighbors of this vertex
+        for adj_vet in graph.adj_list[vet]:
+            if adj_vet in visited:
+                continue  # Skip vertices that have already been visited
+            que.append(adj_vet)  # Enqueue only unvisited vertices
+            visited.add(adj_vet)  # Mark this vertex as visited
+    # Return the vertex traversal sequence
+    return res
+```
+
+</div>
+
 The code is relatively abstract; it is recommended to refer to the figure below to deepen understanding.
 
 <div class="note">
@@ -56,6 +85,23 @@ Not unique. Breadth-first search only requires traversing in a "near to far" ord
 ### Algorithm Implementation
 
 This "go as far as possible then return" algorithm paradigm is typically implemented using recursion. Similar to breadth-first search, in depth-first search we also need a hash set `visited` to record visited vertices and avoid revisiting.
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def graph_dfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
+    """Depth-first traversal"""
+    # Represent the graph with an adjacency list to access all neighbors of a given vertex
+    # Vertex traversal sequence
+    res = []
+    # Hash set recording visited vertices
+    visited = set[Vertex]()
+    dfs(graph, visited, res, start_vet)
+    return res
+```
+
+</div>
 
 The algorithm flow of depth-first search is shown in the figure below.
 

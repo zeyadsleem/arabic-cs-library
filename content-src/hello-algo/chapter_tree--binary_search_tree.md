@@ -28,28 +28,24 @@ Given a target node value `num`, we can search according to the properties of th
 The search operation in a binary search tree follows the same principle as binary search: each round rules out half of the remaining cases. The number of loop iterations is at most the height of the tree. When the tree is balanced, the search takes $O(\log n)$ time. The example code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Search node */
-func (bst *binarySearchTree) search(num int) *TreeNode {
-	node := bst.root
-	// Loop search, exit after passing leaf node
-	for node != nil {
-		if node.Val.(int) < num {
-			// Target node is in cur's right subtree
-			node = node.Right
-		} else if node.Val.(int) > num {
-			// Target node is in cur's left subtree
-			node = node.Left
-		} else {
-			// Found target node, exit loop
-			break
-		}
-	}
-	// Return target node
-	return node
-}
+```py
+    def search(self, num: int) -> TreeNode | None:
+        """Find a node"""
+        cur = self._root
+        # Search in a loop, stopping if cur becomes None
+        while cur is not None:
+            # If present, the target node is in the right subtree of cur
+            if cur.val < num:
+                cur = cur.right
+            # If present, the target node is in the left subtree of cur
+            elif cur.val > num:
+                cur = cur.left
+            # The target node was found; exit the loop
+            else:
+                break
+        return cur
 ```
 
 </div>
@@ -69,39 +65,34 @@ In the code implementation, note the following two points:
 - To implement the node insertion, we need to use node `pre` to save the node from the previous loop iteration. This way, when traversing to `None`, we can obtain its parent node, thereby completing the node insertion operation.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Insert node */
-func (bst *binarySearchTree) insert(num int) {
-	cur := bst.root
-	// If tree is empty, initialize root node
-	if cur == nil {
-		bst.root = NewTreeNode(num)
-		return
-	}
-	// Node position before the node to be inserted
-	var pre *TreeNode = nil
-	// Loop search, exit after passing leaf node
-	for cur != nil {
-		if cur.Val == num {
-			return
-		}
-		pre = cur
-		if cur.Val.(int) < num {
-			cur = cur.Right
-		} else {
-			cur = cur.Left
-		}
-	}
-	// Insert node
-	node := NewTreeNode(num)
-	if pre.Val.(int) < num {
-		pre.Right = node
-	} else {
-		pre.Left = node
-	}
-}
+```py
+    def insert(self, num: int):
+        """Insert a node"""
+        # If the tree is empty, initialize the root node
+        if self._root is None:
+            self._root = TreeNode(num)
+            return
+        # Search in a loop, stopping if cur becomes None
+        cur, pre = self._root, None
+        while cur is not None:
+            # Return immediately if a duplicate node is found
+            if cur.val == num:
+                return
+            pre = cur
+            # The insertion position lies in the right subtree of cur
+            if cur.val < num:
+                cur = cur.right
+            # The insertion position lies in the left subtree of cur
+            else:
+                cur = cur.left
+        # Insert a node
+        node = TreeNode(num)
+        if pre.val < num:
+            pre.right = node
+        else:
+            pre.left = node
 ```
 
 </div>
@@ -130,69 +121,54 @@ Assuming we choose the smallest node in the right subtree, that is, the inorder 
 The node removal operation also uses $O(\log n)$ time, where finding the node to be removed requires $O(\log n)$ time, and obtaining the inorder successor node requires $O(\log n)$ time. Example code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Remove node */
-func (bst *binarySearchTree) remove(num int) {
-	cur := bst.root
-	// If tree is empty, return directly
-	if cur == nil {
-		return
-	}
-	// Node position before the node to be removed
-	var pre *TreeNode = nil
-	// Loop search, exit after passing leaf node
-	for cur != nil {
-		if cur.Val == num {
-			break
-		}
-		pre = cur
-		if cur.Val.(int) < num {
-			// Node to be removed is in right subtree
-			cur = cur.Right
-		} else {
-			// Node to be removed is in left subtree
-			cur = cur.Left
-		}
-	}
-	// If no node to delete, return directly
-	if cur == nil {
-		return
-	}
-	// Number of child nodes is 0 or 1
-	if cur.Left == nil || cur.Right == nil {
-		var child *TreeNode = nil
-		// Get child node of node to be removed
-		if cur.Left != nil {
-			child = cur.Left
-		} else {
-			child = cur.Right
-		}
-		// Delete node cur
-		if cur != bst.root {
-			if pre.Left == cur {
-				pre.Left = child
-			} else {
-				pre.Right = child
-			}
-		} else {
-			// If deleted node is root node, reassign root node
-			bst.root = child
-		}
-		// Number of child nodes is 2
-	} else {
-		// Get next node of node cur to be removed in in-order traversal
-		tmp := cur.Right
-		for tmp.Left != nil {
-			tmp = tmp.Left
-		}
-		// Recursively delete node tmp
-		bst.remove(tmp.Val.(int))
-		// Replace cur with tmp
-		cur.Val = tmp.Val
-	}
-}
+```py
+    def remove(self, num: int):
+        """Remove a node"""
+        # Return immediately if the tree is empty
+        if self._root is None:
+            return
+        # Search in a loop, stopping if cur becomes None
+        cur, pre = self._root, None
+        while cur is not None:
+            # The node to remove was found; exit the loop
+            if cur.val == num:
+                break
+            pre = cur
+            # If present, the node to remove is in the right subtree of cur
+            if cur.val < num:
+                cur = cur.right
+            # If present, the node to remove is in the left subtree of cur
+            else:
+                cur = cur.left
+        # Return immediately if the node to remove does not exist
+        if cur is None:
+            return
+
+        # Number of children = 0 or 1
+        if cur.left is None or cur.right is None:
+            # With 0 or 1 child, child is None or that child, respectively
+            child = cur.left or cur.right
+            # Remove node cur
+            if cur != self._root:
+                if pre.left == cur:
+                    pre.left = child
+                else:
+                    pre.right = child
+            else:
+                # If the removed node is the root, assign the new root
+                self._root = child
+        # Number of children = 2
+        else:
+            # Get the inorder successor of cur
+            tmp: TreeNode = cur.right
+            while tmp.left is not None:
+                tmp = tmp.left
+            # Recursively remove node tmp
+            self.remove(tmp.val)
+            # Replace the value of cur with the value of tmp
+            cur.val = tmp.val
 ```
 
 </div>

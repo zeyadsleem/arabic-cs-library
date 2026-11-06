@@ -15,37 +15,17 @@ Runtime can intuitively and accurately reflect the efficiency of an algorithm. I
 For example, in the following code, the input data size is $n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-// On a certain running platform
-func algorithm(n int) {
-    a := 2     // 1 ns
-    a = a + 1  // 1 ns
-    a = a * 2  // 10 ns
-    // Loop n times
-    for i := 0; i < n; i++ {  // 1 ns
-        fmt.Println(a)        // 5 ns
-    }
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-// On a certain running platform
-function algorithm(n: number): void {
-    var a: number = 2; // 1 ns
-    a = a + 1; // 1 ns
-    a = a * 2; // 10 ns
-    // Loop n times
-    for(let i = 0; i < n; i++) { // 1 ns
-        console.log(0); // 5 ns
-    }
-}
+```python title=""
+# On a certain running platform
+def algorithm(n: int):
+    a = 2      # 1 ns
+    a = a + 1  # 1 ns
+    a = a * 2  # 10 ns
+    # Loop n times
+    for _ in range(n):  # 1 ns
+        print(0)        # 5 ns
 ```
 
 </div>
@@ -65,49 +45,20 @@ Time complexity analysis does not count the algorithm's runtime, **but rather co
 The concept of "time growth trend" is rather abstract; let us understand it through an example. Suppose the input data size is $n$, and given three algorithms `A`, `B`, and `C`:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-// Time complexity of algorithm A: constant order
-func algorithm_A(n int) {
-    fmt.Println(0)
-}
-// Time complexity of algorithm B: linear order
-func algorithm_B(n int) {
-    for i := 0; i < n; i++ {
-        fmt.Println(0)
-    }
-}
-// Time complexity of algorithm C: constant order
-func algorithm_C(n int) {
-    for i := 0; i < 1000000; i++ {
-        fmt.Println(0)
-    }
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-// Time complexity of algorithm A: constant order
-function algorithm_A(n: number): void {
-    console.log(0);
-}
-// Time complexity of algorithm B: linear order
-function algorithm_B(n: number): void {
-    for (let i = 0; i < n; i++) {
-        console.log(0);
-    }
-}
-// Time complexity of algorithm C: constant order
-function algorithm_C(n: number): void {
-    for (let i = 0; i < 1000000; i++) {
-        console.log(0);
-    }
-}
+```python title=""
+# Time complexity of algorithm A: constant order
+def algorithm_A(n: int):
+    print(0)
+# Time complexity of algorithm B: linear order
+def algorithm_B(n: int):
+    for _ in range(n):
+        print(0)
+# Time complexity of algorithm C: constant order
+def algorithm_C(n: int):
+    for _ in range(1000000):
+        print(0)
 ```
 
 </div>
@@ -131,35 +82,16 @@ Compared to directly counting the algorithm's runtime, what are the characterist
 Given a function with input size $n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-func algorithm(n int) {
-    a := 1      // +1
-    a = a + 1   // +1
-    a = a * 2   // +1
-    // Loop n times
-    for i := 0; i < n; i++ {   // +1
-        fmt.Println(a)         // +1
-    }
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-function algorithm(n: number): void{
-    var a: number = 1; // +1
-    a += 1; // +1
-    a *= 2; // +1
-    // Loop n times
-    for(let i = 0; i < n; i++){ // +1 (i++ is executed each round)
-        console.log(0); // +1
-    }
-}
+```python title=""
+def algorithm(n: int):
+    a = 1      # +1
+    a = a + 1  # +1
+    a = a * 2  # +1
+    # Loop n times
+    for i in range(n):  # +1
+        print(0)        # +1
 ```
 
 </div>
@@ -204,45 +136,19 @@ For code, count from top to bottom line by line. However, since the constant coe
 Given a function, we can use the above techniques to count the number of operations:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-func algorithm(n int) {
-    a := 1     // +0 (Technique 1)
-    a = a + n  // +0 (Technique 1)
-    // +n (Technique 2)
-    for i := 0; i < 5 * n + 1; i++ {
-        fmt.Println(0)
-    }
-    // +n*n (Technique 3)
-    for i := 0; i < 2 * n; i++ {
-        for j := 0; j < n + 1; j++ {
-            fmt.Println(0)
-        }
-    }
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-function algorithm(n: number): void {
-    let a = 1;  // +0 (Technique 1)
-    a = a + n;  // +0 (Technique 1)
-    // +n (Technique 2)
-    for (let i = 0; i < 5 * n + 1; i++) {
-        console.log(0);
-    }
-    // +n*n (Technique 3)
-    for (let i = 0; i < 2 * n; i++) {
-        for (let j = 0; j < n + 1; j++) {
-            console.log(0);
-        }
-    }
-}
+```python title=""
+def algorithm(n: int):
+    a = 1      # +0 (Technique 1)
+    a = a + n  # +0 (Technique 1)
+    # +n (Technique 2)
+    for i in range(5 * n + 1):
+        print(0)
+    # +n*n (Technique 3)
+    for i in range(2 * n):
+        for j in range(n + 1):
+            print(0)
 ```
 
 </div>
@@ -293,33 +199,16 @@ The number of operations in constant order is independent of the input data size
 In the following function, although the value of `size` may be large, it is independent of the input data size $n$, so the time complexity remains $O(1)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Constant order */
-func constant(n int) int {
-	count := 0
-	size := 100000
-	for i := 0; i < size; i++ {
-		count++
-	}
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Constant order */
-function constant(n: number): number {
-    let count = 0;
-    const size = 100000;
-    for (let i = 0; i < size; i++) count++;
-    return count;
-}
+```py
+def constant(n: int) -> int:
+    """Constant complexity"""
+    count = 0
+    size = 100000
+    for _ in range(size):
+        count += 1
+    return count
 ```
 
 </div>
@@ -329,31 +218,15 @@ function constant(n: number): number {
 The number of operations in linear order grows linearly relative to the input data size $n$. Linear order typically appears in single-layer loops:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Linear order */
-func linear(n int) int {
-	count := 0
-	for i := 0; i < n; i++ {
-		count++
-	}
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Linear order */
-function linear(n: number): number {
-    let count = 0;
-    for (let i = 0; i < n; i++) count++;
-    return count;
-}
+```py
+def linear(n: int) -> int:
+    """Linear complexity"""
+    count = 0
+    for _ in range(n):
+        count += 1
+    return count
 ```
 
 </div>
@@ -361,35 +234,16 @@ function linear(n: number): number {
 Operations such as traversing arrays and traversing linked lists have a time complexity of $O(n)$, where $n$ is the length of the array or linked list:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Linear order (traversing array) */
-func arrayTraversal(nums []int) int {
-	count := 0
-	// Number of iterations is proportional to the array length
-	for range nums {
-		count++
-	}
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Linear order (traversing array) */
-function arrayTraversal(nums: number[]): number {
-    let count = 0;
-    // Number of iterations is proportional to the array length
-    for (let i = 0; i < nums.length; i++) {
-        count++;
-    }
-    return count;
-}
+```py
+def array_traversal(nums: list[int]) -> int:
+    """Linear complexity (array traversal)"""
+    count = 0
+    # The number of iterations is proportional to the array length
+    for num in nums:
+        count += 1
+    return count
 ```
 
 </div>
@@ -401,39 +255,17 @@ It is worth noting that **the input data size $n$ should be determined according
 The number of operations in quadratic order grows quadratically relative to the input data size $n$. Quadratic order typically appears in nested loops, where both the outer and inner loops have a time complexity of $O(n)$, resulting in an overall time complexity of $O(n^2)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Exponential order */
-func quadratic(n int) int {
-	count := 0
-	// Number of iterations is quadratically related to the data size n
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			count++
-		}
-	}
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Exponential order */
-function quadratic(n: number): number {
-    let count = 0;
-    // Number of iterations is quadratically related to the data size n
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
-            count++;
-        }
-    }
-    return count;
-}
+```py
+def quadratic(n: int) -> int:
+    """Quadratic complexity"""
+    count = 0
+    # The number of iterations is proportional to the square of the input size n
+    for i in range(n):
+        for j in range(n):
+            count += 1
+    return count
 ```
 
 </div>
@@ -445,53 +277,23 @@ The figure below compares constant order, linear order, and quadratic order time
 Taking bubble sort as an example, the outer loop executes $n - 1$ times, and the inner loop executes $n-1$, $n-2$, $\dots$, $2$, $1$ times, averaging $n / 2$ times, resulting in a time complexity of $O((n - 1) n / 2) = O(n^2)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Quadratic order (bubble sort) */
-func bubbleSort(nums []int) int {
-	count := 0 // Counter
-	// Outer loop: unsorted range is [0, i]
-	for i := len(nums) - 1; i > 0; i-- {
-		// Inner loop: swap the largest element in the unsorted range [0, i] to the rightmost end of that range
-		for j := 0; j < i; j++ {
-			if nums[j] > nums[j+1] {
-				// Swap nums[j] and nums[j + 1]
-				tmp := nums[j]
-				nums[j] = nums[j+1]
-				nums[j+1] = tmp
-				count += 3 // Element swap includes 3 unit operations
-			}
-		}
-	}
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Quadratic order (bubble sort) */
-function bubbleSort(nums: number[]): number {
-    let count = 0; // Counter
-    // Outer loop: unsorted range is [0, i]
-    for (let i = nums.length - 1; i > 0; i--) {
-        // Inner loop: swap the largest element in the unsorted range [0, i] to the rightmost end of that range
-        for (let j = 0; j < i; j++) {
-            if (nums[j] > nums[j + 1]) {
-                // Swap nums[j] and nums[j + 1]
-                let tmp = nums[j];
-                nums[j] = nums[j + 1];
-                nums[j + 1] = tmp;
-                count += 3; // Element swap includes 3 unit operations
-            }
-        }
-    }
-    return count;
-}
+```py
+def bubble_sort(nums: list[int]) -> int:
+    """Quadratic complexity (bubble sort)"""
+    count = 0  # Counter
+    # Outer loop: the unsorted range is [0, i]
+    for i in range(len(nums) - 1, 0, -1):
+        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        for j in range(i):
+            if nums[j] > nums[j + 1]:
+                # Swap nums[j] and nums[j + 1]
+                tmp: int = nums[j]
+                nums[j] = nums[j + 1]
+                nums[j + 1] = tmp
+                count += 3  # Swapping two elements takes 3 elementary operations
+    return count
 ```
 
 </div>
@@ -503,44 +305,20 @@ Biological "cell division" is a typical example of exponential order growth: the
 The figure below and the following code simulate the cell division process, with a time complexity of $O(2^n)$. Note that the input $n$ represents the number of division rounds, and the return value `count` represents the total number of divisions.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Exponential order (loop implementation) */
-func exponential(n int) int {
-	count, base := 0, 1
-	// Cells divide into two every round, forming sequence 1, 2, 4, 8, ..., 2^(n-1)
-	for i := 0; i < n; i++ {
-		for j := 0; j < base; j++ {
-			count++
-		}
-		base *= 2
-	}
-	// count = 1 + 2 + 4 + 8 + .. + 2^(n-1) = 2^n - 1
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Exponential order (loop implementation) */
-function exponential(n: number): number {
-    let count = 0,
-        base = 1;
-    // Cells divide into two every round, forming sequence 1, 2, 4, 8, ..., 2^(n-1)
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < base; j++) {
-            count++;
-        }
-        base *= 2;
-    }
-    // count = 1 + 2 + 4 + 8 + .. + 2^(n-1) = 2^n - 1
-    return count;
-}
+```py
+def exponential(n: int) -> int:
+    """Exponential complexity (iterative implementation)"""
+    count = 0
+    base = 1
+    # Each cell divides into two per round, giving the sequence 1, 2, 4, 8, ..., 2^(n-1)
+    for _ in range(n):
+        for _ in range(base):
+            count += 1
+        base *= 2
+    # count = 1 + 2 + 4 + 8 + .. + 2^(n-1) = 2^n - 1
+    return count
 ```
 
 </div>
@@ -550,29 +328,14 @@ function exponential(n: number): number {
 In actual algorithms, exponential order often appears in recursive functions. For example, in the following code, it recursively splits in two, stopping after $n$ splits:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Exponential order (recursive implementation) */
-func expRecur(n int) int {
-	if n == 1 {
-		return 1
-	}
-	return expRecur(n-1) + expRecur(n-1) + 1
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Exponential order (recursive implementation) */
-function expRecur(n: number): number {
-    if (n === 1) return 1;
-    return expRecur(n - 1) + expRecur(n - 1) + 1;
-}
+```py
+def exp_recur(n: int) -> int:
+    """Exponential complexity (recursive implementation)"""
+    if n == 1:
+        return 1
+    return exp_recur(n - 1) + exp_recur(n - 1) + 1
 ```
 
 </div>
@@ -586,35 +349,16 @@ In contrast to exponential order, logarithmic order reflects the situation of "r
 The figure below and the following code simulate the process of "reducing to half each round", with a time complexity of $O(\log_2 n)$, abbreviated as $O(\log n)$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Logarithmic order (loop implementation) */
-func logarithmic(n int) int {
-	count := 0
-	for n > 1 {
-		n = n / 2
-		count++
-	}
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Logarithmic order (loop implementation) */
-function logarithmic(n: number): number {
-    let count = 0;
-    while (n > 1) {
-        n = n / 2;
-        count++;
-    }
-    return count;
-}
+```py
+def logarithmic(n: int) -> int:
+    """Logarithmic complexity (iterative implementation)"""
+    count = 0
+    while n > 1:
+        n = n / 2
+        count += 1
+    return count
 ```
 
 </div>
@@ -624,29 +368,14 @@ function logarithmic(n: number): number {
 Like exponential order, logarithmic order also commonly appears in recursive functions. The following code forms a recursion tree of height $\log_2 n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Logarithmic order (recursive implementation) */
-func logRecur(n int) int {
-	if n <= 1 {
-		return 0
-	}
-	return logRecur(n/2) + 1
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Logarithmic order (recursive implementation) */
-function logRecur(n: number): number {
-    if (n <= 1) return 0;
-    return logRecur(n / 2) + 1;
-}
+```py
+def log_recur(n: int) -> int:
+    """Logarithmic complexity (recursive implementation)"""
+    if n <= 1:
+        return 0
+    return log_recur(n / 2) + 1
 ```
 
 </div>
@@ -671,37 +400,19 @@ That is to say, the base $m$ can be converted without affecting the complexity. 
 Linearithmic order commonly appears in nested loops, where the time complexities of the two layers of loops are $O(\log n)$ and $O(n)$ respectively. The relevant code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Linearithmic order */
-func linearLogRecur(n int) int {
-	if n <= 1 {
-		return 1
-	}
-	count := linearLogRecur(n/2) + linearLogRecur(n/2)
-	for i := 0; i < n; i++ {
-		count++
-	}
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Linearithmic order */
-function linearLogRecur(n: number): number {
-    if (n <= 1) return 1;
-    let count = linearLogRecur(n / 2) + linearLogRecur(n / 2);
-    for (let i = 0; i < n; i++) {
-        count++;
-    }
-    return count;
-}
+```py
+def linear_log_recur(n: int) -> int:
+    """Linearithmic complexity"""
+    if n <= 1:
+        return 1
+    # Split into two subproblems, each half the original size
+    count = linear_log_recur(n // 2) + linear_log_recur(n // 2)
+    # The current subproblem includes n operations
+    for _ in range(n):
+        count += 1
+    return count
 ```
 
 </div>
@@ -723,39 +434,18 @@ $$
 Factorials are typically implemented using recursion. As shown in the figure below and the following code, the first level splits into $n$ branches, the second level splits into $n - 1$ branches, and so on, until the $n$-th level when splitting stops:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Factorial order (recursive implementation) */
-func factorialRecur(n int) int {
-	if n == 0 {
-		return 1
-	}
-	count := 0
-	// Split from 1 into n
-	for i := 0; i < n; i++ {
-		count += factorialRecur(n - 1)
-	}
-	return count
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Factorial order (recursive implementation) */
-function factorialRecur(n: number): number {
-    if (n === 0) return 1;
-    let count = 0;
-    // Split from 1 into n
-    for (let i = 0; i < n; i++) {
-        count += factorialRecur(n - 1);
-    }
-    return count;
-}
+```py
+def factorial_recur(n: int) -> int:
+    """Factorial complexity (recursive implementation)"""
+    if n == 0:
+        return 1
+    count = 0
+    # Split one problem into n subproblems
+    for _ in range(n):
+        count += factorial_recur(n - 1)
+    return count
 ```
 
 </div>
@@ -774,39 +464,17 @@ Note that because when $n \geq 4$ we always have $n! > 2^n$, factorial order gro
 The "worst-case time complexity" corresponds to the function's asymptotic upper bound, denoted using big-$O$ notation. Correspondingly, the "best-case time complexity" corresponds to the function's asymptotic lower bound, denoted using $\Omega$ notation:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Find the index of number 1 in array nums */
-func findOne(nums []int) int {
-	for i := 0; i < len(nums); i++ {
-		// When element 1 is at the head of the array, best time complexity O(1) is achieved
-		// When element 1 is at the tail of the array, worst time complexity O(n) is achieved
-		if nums[i] == 1 {
-			return i
-		}
-	}
-	return -1
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Find the index of number 1 in array nums */
-function findOne(nums: number[]): number {
-    for (let i = 0; i < nums.length; i++) {
-        // When element 1 is at the head of the array, best time complexity O(1) is achieved
-        // When element 1 is at the tail of the array, worst time complexity O(n) is achieved
-        if (nums[i] === 1) {
-            return i;
-        }
-    }
-    return -1;
-}
+```py
+def find_one(nums: list[int]) -> int:
+    """Find the index of the number 1 in array nums"""
+    for i in range(len(nums)):
+        # When 1 is at the start of the array, the best-case time complexity is O(1)
+        # When 1 is at the end of the array, the worst-case time complexity is O(n)
+        if nums[i] == 1:
+            return i
+    return -1
 ```
 
 </div>

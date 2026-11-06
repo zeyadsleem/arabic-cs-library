@@ -24,45 +24,19 @@ Assume the array has length $n$. The steps of bubble sort are shown in the figur
 Example code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Bubble sort */
-func bubbleSort(nums []int) {
-	// Outer loop: unsorted range is [0, i]
-	for i := len(nums) - 1; i > 0; i-- {
-		// Inner loop: swap the largest element in the unsorted range [0, i] to the rightmost end of that range
-		for j := 0; j < i; j++ {
-			if nums[j] > nums[j+1] {
-				// Swap nums[j] and nums[j + 1]
-				nums[j], nums[j+1] = nums[j+1], nums[j]
-			}
-		}
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Bubble sort */
-function bubbleSort(nums: number[]): void {
-    // Outer loop: unsorted range is [0, i]
-    for (let i = nums.length - 1; i > 0; i--) {
-        // Inner loop: swap the largest element in the unsorted range [0, i] to the rightmost end of that range
-        for (let j = 0; j < i; j++) {
-            if (nums[j] > nums[j + 1]) {
-                // Swap nums[j] and nums[j + 1]
-                let tmp = nums[j];
-                nums[j] = nums[j + 1];
-                nums[j + 1] = tmp;
-            }
-        }
-    }
-}
+```py
+def bubble_sort(nums: list[int]):
+    """Bubble sort"""
+    n = len(nums)
+    # Outer loop: the unsorted range is [0, i]
+    for i in range(n - 1, 0, -1):
+        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        for j in range(i):
+            if nums[j] > nums[j + 1]:
+                # Swap nums[j] and nums[j + 1]
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
 ```
 
 </div>
@@ -74,53 +48,23 @@ We can observe that if no swaps occur during a round of "bubbling", the array is
 After this optimization, the worst-case and average-case time complexities of bubble sort remain $O(n^2)$; however, when the input array is already sorted, the best-case time complexity becomes $O(n)$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Bubble sort (flag optimization) */
-func bubbleSortWithFlag(nums []int) {
-	// Outer loop: unsorted range is [0, i]
-	for i := len(nums) - 1; i > 0; i-- {
-		flag := false // Initialize flag
-		// Inner loop: swap the largest element in the unsorted range [0, i] to the rightmost end of that range
-		for j := 0; j < i; j++ {
-			if nums[j] > nums[j+1] {
-				// Swap nums[j] and nums[j + 1]
-				nums[j], nums[j+1] = nums[j+1], nums[j]
-				flag = true // Record element swap
-			}
-		}
-		if flag == false { // No elements were swapped in this round of "bubbling", exit directly
-			break
-		}
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Bubble sort (flag optimization) */
-function bubbleSortWithFlag(nums: number[]): void {
-    // Outer loop: unsorted range is [0, i]
-    for (let i = nums.length - 1; i > 0; i--) {
-        let flag = false; // Initialize flag
-        // Inner loop: swap the largest element in the unsorted range [0, i] to the rightmost end of that range
-        for (let j = 0; j < i; j++) {
-            if (nums[j] > nums[j + 1]) {
-                // Swap nums[j] and nums[j + 1]
-                let tmp = nums[j];
-                nums[j] = nums[j + 1];
-                nums[j + 1] = tmp;
-                flag = true; // Record element swap
-            }
-        }
-        if (!flag) break; // No elements were swapped in this round of "bubbling", exit directly
-    }
-}
+```py
+def bubble_sort_with_flag(nums: list[int]):
+    """Bubble sort (flag optimization)"""
+    n = len(nums)
+    # Outer loop: the unsorted range is [0, i]
+    for i in range(n - 1, 0, -1):
+        flag = False  # Initialize the flag
+        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        for j in range(i):
+            if nums[j] > nums[j + 1]:
+                # Swap nums[j] and nums[j + 1]
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
+                flag = True  # Record that a swap occurred
+        if not flag:
+            break  # Exit immediately if this pass made no swaps
 ```
 
 </div>

@@ -23,43 +23,17 @@ Consider directly traversing all possible combinations. As shown in the figure b
 The code is shown below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Method 1: Brute force enumeration */
-func twoSumBruteForce(nums []int, target int) []int {
-	size := len(nums)
-	// Two nested loops, time complexity is O(n^2)
-	for i := 0; i < size-1; i++ {
-		for j := i + 1; j < size; j++ {
-			if nums[i]+nums[j] == target {
-				return []int{i, j}
-			}
-		}
-	}
-	return nil
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Method 1: Brute force enumeration */
-function twoSumBruteForce(nums: number[], target: number): number[] {
-    const n = nums.length;
-    // Two nested loops, time complexity is O(n^2)
-    for (let i = 0; i < n; i++) {
-        for (let j = i + 1; j < n; j++) {
-            if (nums[i] + nums[j] === target) {
-                return [i, j];
-            }
-        }
-    }
-    return [];
-}
+```py
+def two_sum_brute_force(nums: list[int], target: int) -> list[int]:
+    """Method 1: brute-force enumeration"""
+    # Two nested loops give a time complexity of O(n^2)
+    for i in range(len(nums) - 1):
+        for j in range(i + 1, len(nums)):
+            if nums[i] + nums[j] == target:
+                return [i, j]
+    return []
 ```
 
 </div>
@@ -76,45 +50,19 @@ Consider using a hash table whose keys are array elements and whose values are t
 The implementation is shown below and requires only a single loop:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Method 2: Auxiliary hash table */
-func twoSumHashTable(nums []int, target int) []int {
-	// Auxiliary hash table, space complexity is O(n)
-	hashTable := map[int]int{}
-	// Single loop, time complexity is O(n)
-	for idx, val := range nums {
-		if preIdx, ok := hashTable[target-val]; ok {
-			return []int{preIdx, idx}
-		}
-		hashTable[val] = idx
-	}
-	return nil
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Method 2: Auxiliary hash table */
-function twoSumHashTable(nums: number[], target: number): number[] {
-    // Auxiliary hash table, space complexity is O(n)
-    let m: Map<number, number> = new Map();
-    // Single loop, time complexity is O(n)
-    for (let i = 0; i < nums.length; i++) {
-        let index = m.get(target - nums[i]);
-        if (index !== undefined) {
-            return [index, i];
-        } else {
-            m.set(nums[i], i);
-        }
-    }
-    return [];
-}
+```py
+def two_sum_hash_table(nums: list[int], target: int) -> list[int]:
+    """Method 2: auxiliary hash table"""
+    # The auxiliary hash table uses O(n) space
+    dic = {}
+    # A single loop with average O(1) hash operations gives an average time complexity of O(n)
+    for i in range(len(nums)):
+        if target - nums[i] in dic:
+            return [dic[target - nums[i]], i]
+        dic[nums[i]] = i
+    return []
 ```
 
 </div>

@@ -55,52 +55,23 @@ lang: ar
 يرجى ملاحظة أنه في مصفوفة مربعة $n \times n$، يكون نطاق $row - col$ هو $[-n + 1, n - 1]$، ونطاق $row + col$ هو $[0, 2n - 2]$. لذلك يكون عدد الأقطار الرئيسية والأقطار المضادة $2n - 1$، أي أن طول المصفوفتين `diags1` و`diags2` هو $2n - 1$.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* حل مسألة الملكات n */
-func nQueens(n int) [][][]string {
-	// هيّئ رقعة شطرنج بحجم n*n، حيث تمثّل 'Q' ملكة و'#' خلية فارغة
-	state := make([][]string, n)
-	for i := 0; i < n; i++ {
-		row := make([]string, n)
-		for i := 0; i < n; i++ {
-			row[i] = "#"
-		}
-		state[i] = row
-	}
-	// سجّل ما إذا كانت هناك ملكة في العمود
-	cols := make([]bool, n)
-	diags1 := make([]bool, 2*n-1)
-	diags2 := make([]bool, 2*n-1)
-	res := make([][][]string, 0)
-	backtrack(0, n, &state, &res, &cols, &diags1, &diags2)
-	return res
-}
+```py
+def n_queens(n: int) -> list[list[list[str]]]:
+    """Solve the n-queens problem"""
+    # Initialize an n*n board, where 'Q' represents a queen and '#' represents an empty square
+    state = [["#" for _ in range(n)] for _ in range(n)]
+    cols = [False] * n  # Track whether a column contains a queen
+    diags1 = [False] * (2 * n - 1)  # Track whether a main diagonal contains a queen
+    diags2 = [False] * (2 * n - 1)  # Track whether an anti-diagonal contains a queen
+    res = []
+    backtrack(0, n, state, res, cols, diags1, diags2)
+
+    return res
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* حل مسألة الملكات n */
-function nQueens(n: number): string[][][] {
-    // هيّئ رقعة شطرنج بحجم n*n، حيث تمثّل 'Q' ملكة و'#' خلية فارغة
-    const state = Array.from({ length: n }, () => Array(n).fill('#'));
-    const cols = Array(n).fill(false); // سجّل ما إذا كانت هناك ملكة في العمود
-    const diags1 = Array(2 * n - 1).fill(false); // سجّل ما إذا كانت هناك ملكة على القطر الرئيسي
-    const diags2 = Array(2 * n - 1).fill(false); // سجّل ما إذا كانت هناك ملكة على القطر المضاد
-    const res: string[][][] = [];
-
-    backtrack(0, n, state, res, cols, diags1, diags2);
-    return res;
-}
-```
-
-</div>
-
 بوضع $n$ ملكة صفاً بصف، ومع مراعاة قيد العمود، يكون لدينا من الصف الأول إلى الصف الأخير $n$ و$n-1$ و$\dots$ و$2$ و$1$ خياراً، مستخدمين زمن $O(n!)$. وعند تسجيل حل، من الضروري نسخ المصفوفة `state` وإضافتها إلى `res`، وتستخدم عملية النسخ زمن $O(n^2)$. لذلك **يكون التعقيد الزمني الكلي $O(n! \cdot n^2)$**. وعملياً، يمكن للتشذيب استناداً إلى قيود الأقطار أيضاً أن يقلّص فضاء البحث تقليصاً كبيراً، لذا تكون كفاءة البحث غالباً أفضل من التعقيد الزمني المذكور أعلاه.
 
 تستخدم المصفوفة `state` مساحة $O(n^2)$، وتستخدم المصفوفات `cols` و`diags1` و`diags2` مساحة $O(n)$ لكل منها. ويبلغ أقصى عمق للتعاود $n$، مستخدماً مساحة إطار مكدس $O(n)$. لذلك **يكون التعقيد المكاني $O(n^2)$**.

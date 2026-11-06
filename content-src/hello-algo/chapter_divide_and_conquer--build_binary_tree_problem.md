@@ -66,38 +66,15 @@ Please note that $(m-l)$ in the right subtree root node index means "the number 
 To improve the efficiency of querying $m$, we use a hash table `hmap` to store the mapping from elements in the `inorder` array to their indices:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Build binary tree */
-func buildTree(preorder, inorder []int) *TreeNode {
-	// Initialize hash map, storing the mapping from inorder elements to indices
-	inorderMap := make(map[int]int, len(inorder))
-	for i := 0; i < len(inorder); i++ {
-		inorderMap[inorder[i]] = i
-	}
-
-	root := dfsBuildTree(preorder, inorderMap, 0, 0, len(inorder)-1)
-	return root
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Build binary tree */
-function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
-    // Initialize hash map, storing the mapping from inorder elements to indices
-    let inorderMap = new Map<number, number>();
-    for (let i = 0; i < inorder.length; i++) {
-        inorderMap.set(inorder[i], i);
-    }
-    const root = dfs(preorder, inorderMap, 0, 0, inorder.length - 1);
-    return root;
-}
+```py
+def build_tree(preorder: list[int], inorder: list[int]) -> TreeNode | None:
+    """Build a binary tree"""
+    # Initialize a hash table mapping each element in inorder to its index
+    inorder_map = {val: i for i, val in enumerate(inorder)}
+    root = dfs(preorder, inorder_map, 0, 0, len(inorder) - 1)
+    return root
 ```
 
 </div>

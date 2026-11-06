@@ -53,37 +53,16 @@ The design of hash algorithms is a complex issue that requires consideration of 
 - **Rotating hash**: Accumulate the ASCII code of each character into a hash value, performing a rotation operation on the hash value before each accumulation.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Rotational hash */
-func rotHash(key string) int {
-	var hash int64
-	var modulus int64
-
-	modulus = 1000000007
-	for _, b := range []byte(key) {
-		hash = ((hash << 4) ^ (hash >> 28) ^ int64(b)) % modulus
-	}
-	return int(hash)
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Rotational hash */
-function rotHash(key: string): number {
-    let hash = 0;
-    const MODULUS = 1000000007;
-    for (const c of key) {
-        hash = ((hash << 4) ^ (hash >> 28) ^ c.charCodeAt(0)) % MODULUS;
-    }
-    return hash;
-}
+```py
+def rot_hash(key: str) -> int:
+    """Rotating hash"""
+    hash = 0
+    modulus = 1000000007
+    for c in key:
+        hash = (hash << 4) ^ (hash >> 28) ^ ord(c)
+    return hash % modulus
 ```
 
 </div>
@@ -154,19 +133,32 @@ Be aware that the definition and methods of the built-in hash value calculation 
 </div>
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="built_in_hash.go"
-// Go does not provide built-in hash code functions
-```
+```python title="built_in_hash.py"
+num = 3
+hash_num = hash(num)
+# Hash value of integer 3 is 3
 
-</div>
+bol = True
+hash_bol = hash(bol)
+# Hash value of boolean True is 1
 
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+dec = 3.14159
+hash_dec = hash(dec)
+# Hash value of decimal 3.14159 is 326484311674566659
 
-```typescript title="built_in_hash.ts"
-// TypeScript does not provide built-in hash code functions
+str = "Hello 算法"
+hash_str = hash(str)
+# Hash value of string "Hello 算法" is 4617003410720528961
+
+tup = (12836, "小哈")
+hash_tup = hash(tup)
+# Hash value of tuple (12836, '小哈') is 1029005403108185979
+
+obj = ListNode(0)
+hash_obj = hash(obj)
+# Hash value of ListNode object at 0x1058fd810 is 274267521
 ```
 
 </div>

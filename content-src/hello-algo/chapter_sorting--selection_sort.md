@@ -19,51 +19,21 @@ Assume the array has length $n$. The procedure of selection sort is shown in the
 In the code, we use $k$ to track the smallest element within the unsorted interval:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Selection sort */
-func selectionSort(nums []int) {
-	n := len(nums)
-	// Outer loop: unsorted interval is [i, n-1]
-	for i := 0; i < n-1; i++ {
-		// Inner loop: find the smallest element within the unsorted interval
-		k := i
-		for j := i + 1; j < n; j++ {
-			if nums[j] < nums[k] {
-				// Record the index of the smallest element
-				k = j
-			}
-		}
-		// Swap the smallest element with the first element of the unsorted interval
-		nums[i], nums[k] = nums[k], nums[i]
-
-	}
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Selection sort */
-function selectionSort(nums: number[]): void {
-    let n = nums.length;
-    // Outer loop: unsorted interval is [i, n-1]
-    for (let i = 0; i < n - 1; i++) {
-        // Inner loop: find the smallest element within the unsorted interval
-        let k = i;
-        for (let j = i + 1; j < n; j++) {
-            if (nums[j] < nums[k]) {
-                k = j; // Record the index of the smallest element
-            }
-        }
-        // Swap the smallest element with the first element of the unsorted interval
-        [nums[i], nums[k]] = [nums[k], nums[i]];
-    }
-}
+```py
+def selection_sort(nums: list[int]):
+    """Selection sort"""
+    n = len(nums)
+    # Outer loop: the unsorted range is [i, n-1]
+    for i in range(n - 1):
+        # Inner loop: find the smallest element in the unsorted range
+        k = i
+        for j in range(i + 1, n):
+            if nums[j] < nums[k]:
+                k = j  # Record the index of the smallest element
+        # Swap the smallest element with the first element of the unsorted range
+        nums[i], nums[k] = nums[k], nums[i]
 ```
 
 </div>

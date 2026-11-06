@@ -6,6 +6,10 @@ slug: index
 order: 117
 lang: en
 ---
+---
+icon: material/bookshelf
+---
+
 [1] Thomas H. Cormen, et al. Introduction to Algorithms (3rd Edition).
 
 [2] Aditya Bhargava. Grokking Algorithms: An Illustrated Guide for Programmers and Other Curious People (1st Edition).

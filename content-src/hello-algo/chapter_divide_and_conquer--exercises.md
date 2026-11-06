@@ -35,39 +35,17 @@ Classify each task as "suitable for divide and conquer," "can use divide and con
 The recursive function below uses divide and conquer to calculate $x^n$:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Exponentiation by squaring */
-func fastPow(x, n int) int {
-	if n == 0 {
-		return 1
-	}
-	half := fastPow(x, n/2)
-	if n%2 == 0 {
-		return half * half
-	}
-	return half * half * x
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Exponentiation by squaring */
-function fastPow(x: number, n: number): number {
-    if (n === 0) {
-        return 1;
-    }
-    const half = fastPow(x, Math.floor(n / 2));
-    if (n % 2 === 0) {
-        return half * half;
-    }
-    return half * half * x;
-}
+```py
+def fast_pow(x: int, n: int) -> int:
+    """Fast exponentiation"""
+    if n == 0:
+        return 1
+    half = fast_pow(x, n // 2)
+    if n % 2 == 0:
+        return half * half
+    return half * half * x
 ```
 
 </div>

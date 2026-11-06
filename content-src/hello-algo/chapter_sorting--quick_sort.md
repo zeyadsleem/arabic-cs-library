@@ -24,27 +24,23 @@ The essence of sentinel partitioning is to simplify the sorting problem of a lon
 </div>
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Sentinel partition */
-func (q *quickSort) partition(nums []int, left, right int) int {
-	// Use nums[left] as the pivot
-	i, j := left, right
-	for i < j {
-		for i < j && nums[j] >= nums[left] {
-			j-- // Search from right to left for the first element smaller than the pivot
-		}
-		for i < j && nums[i] <= nums[left] {
-			i++ // Search from left to right for the first element greater than the pivot
-		}
-		// Swap elements
-		nums[i], nums[j] = nums[j], nums[i]
-	}
-	// Swap the pivot to the boundary between the two subarrays
-	nums[i], nums[left] = nums[left], nums[i]
-	return i // Return the index of the pivot
-}
+```py
+    def partition(self, nums: list[int], left: int, right: int) -> int:
+        """Two-pointer partitioning"""
+        # Use nums[left] as the pivot
+        i, j = left, right
+        while i < j:
+            while i < j and nums[j] >= nums[left]:
+                j -= 1  # Scan from right to left for the first element smaller than the pivot
+            while i < j and nums[i] <= nums[left]:
+                i += 1  # Scan from left to right for the first element larger than the pivot
+            # Swap the elements
+            nums[i], nums[j] = nums[j], nums[i]
+        # Swap the pivot into the boundary position between the two subarrays
+        nums[i], nums[left] = nums[left], nums[i]
+        return i  # Return the pivot index
 ```
 
 </div>
@@ -60,21 +56,19 @@ The overall flow of quick sort is shown in the figure below.
 ![Quick sort flow](/images/hello-algo/chapter_sorting--quick_sort_overview.png)
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Quick sort */
-func (q *quickSort) quickSort(nums []int, left, right int) {
-	// Terminate recursion when subarray length is 1
-	if left >= right {
-		return
-	}
-	// Sentinel partition
-	pivot := q.partition(nums, left, right)
-	// Recursively process the left subarray and right subarray
-	q.quickSort(nums, left, pivot-1)
-	q.quickSort(nums, pivot+1, right)
-}
+```py
+    def quick_sort(self, nums: list[int], left: int, right: int):
+        """Quick sort"""
+        # Stop recursing when the subarray has at most one element
+        if left >= right:
+            return
+        # Two-pointer partitioning
+        pivot = self.partition(nums, left, right)
+        # Recurse on the left and right subarrays
+        self.quick_sort(nums, left, pivot - 1)
+        self.quick_sort(nums, pivot + 1, right)
 ```
 
 </div>
@@ -106,27 +100,23 @@ To improve further, we can choose three candidate elements from the array, usual
 Example code is as follows:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Sentinel partition */
-func (q *quickSort) partition(nums []int, left, right int) int {
-	// Use nums[left] as the pivot
-	i, j := left, right
-	for i < j {
-		for i < j && nums[j] >= nums[left] {
-			j-- // Search from right to left for the first element smaller than the pivot
-		}
-		for i < j && nums[i] <= nums[left] {
-			i++ // Search from left to right for the first element greater than the pivot
-		}
-		// Swap elements
-		nums[i], nums[j] = nums[j], nums[i]
-	}
-	// Swap the pivot to the boundary between the two subarrays
-	nums[i], nums[left] = nums[left], nums[i]
-	return i // Return the index of the pivot
-}
+```py
+    def partition(self, nums: list[int], left: int, right: int) -> int:
+        """Two-pointer partitioning"""
+        # Use nums[left] as the pivot
+        i, j = left, right
+        while i < j:
+            while i < j and nums[j] >= nums[left]:
+                j -= 1  # Scan from right to left for the first element smaller than the pivot
+            while i < j and nums[i] <= nums[left]:
+                i += 1  # Scan from left to right for the first element larger than the pivot
+            # Swap the elements
+            nums[i], nums[j] = nums[j], nums[i]
+        # Swap the pivot into the boundary position between the two subarrays
+        nums[i], nums[left] = nums[left], nums[i]
+        return i  # Return the pivot index
 ```
 
 </div>
@@ -138,21 +128,19 @@ func (q *quickSort) partition(nums []int, left, right int) int {
 To prevent stack frames from accumulating, we can compare the lengths of the two sub-arrays after each round of sentinel partitioning, **and recurse only on the shorter one**. Because the shorter sub-array has length at most $n / 2$, this method ensures that the recursion depth does not exceed $\log n$, reducing the worst-case space complexity to $O(\log n)$. The code is shown below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Quick sort */
-func (q *quickSort) quickSort(nums []int, left, right int) {
-	// Terminate recursion when subarray length is 1
-	if left >= right {
-		return
-	}
-	// Sentinel partition
-	pivot := q.partition(nums, left, right)
-	// Recursively process the left subarray and right subarray
-	q.quickSort(nums, left, pivot-1)
-	q.quickSort(nums, pivot+1, right)
-}
+```py
+    def quick_sort(self, nums: list[int], left: int, right: int):
+        """Quick sort"""
+        # Stop recursing when the subarray has at most one element
+        if left >= right:
+            return
+        # Two-pointer partitioning
+        pivot = self.partition(nums, left, right)
+        # Recurse on the left and right subarrays
+        self.quick_sort(nums, left, pivot - 1)
+        self.quick_sort(nums, pivot + 1, right)
 ```
 
 </div>

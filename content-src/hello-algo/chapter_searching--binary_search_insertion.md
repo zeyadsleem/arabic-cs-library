@@ -31,58 +31,22 @@ To analyze this further, consider the binary search process: when `nums[m] < tar
 Therefore, when the binary search ends, $i$ must point to the first element greater than `target`, and $j$ must point to the rightmost element less than `target`. **It follows that when the array does not contain `target`, the insertion index is $i$**. The code is shown below:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Binary search for insertion point (no duplicate elements) */
-func binarySearchInsertionSimple(nums []int, target int) int {
-	// Initialize closed interval [0, n-1]
-	i, j := 0, len(nums)-1
-	for i <= j {
-		// Calculate the midpoint index m
-		m := i + (j-i)/2
-		if nums[m] < target {
-			// target is in the interval [m+1, j]
-			i = m + 1
-		} else if nums[m] > target {
-			// target is in the interval [i, m-1]
-			j = m - 1
-		} else {
-			// Found target, return insertion point m
-			return m
-		}
-	}
-	// Target not found, return insertion point i
-	return i
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Binary search for insertion point (no duplicate elements) */
-function binarySearchInsertionSimple(
-    nums: Array<number>,
-    target: number
-): number {
-    let i = 0,
-        j = nums.length - 1; // Initialize closed interval [0, n-1]
-    while (i <= j) {
-        const m = Math.floor(i + (j - i) / 2); // Calculate midpoint index m, use Math.floor() to round down
-        if (nums[m] < target) {
-            i = m + 1; // target is in the interval [m+1, j]
-        } else if (nums[m] > target) {
-            j = m - 1; // target is in the interval [i, m-1]
-        } else {
-            return m; // Found target, return insertion point m
-        }
-    }
-    // Target not found, return insertion point i
-    return i;
-}
+```py
+def binary_search_insertion_simple(nums: list[int], target: int) -> int:
+    """Find an insertion point using binary search (no duplicates)"""
+    i, j = 0, len(nums) - 1  # Initialize the closed interval [0, n-1]
+    while i <= j:
+        m = (i + j) // 2  # Calculate the midpoint index m
+        if nums[m] < target:
+            i = m + 1  # Target must be in [m+1, j] if it exists
+        elif nums[m] > target:
+            j = m - 1  # Target must be in [i, m-1] if it exists
+        else:
+            return m  # Target was found; return insertion point m
+    # Target was not found; return insertion point i
+    return i
 ```
 
 </div>
@@ -118,55 +82,22 @@ Observe the following code: the branches `nums[m] > target` and `nums[m] == targ
 Even so, we can still keep the conditional branches expanded, as the logic is clearer and more readable.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Binary search for insertion point (with duplicate elements) */
-func binarySearchInsertion(nums []int, target int) int {
-	// Initialize closed interval [0, n-1]
-	i, j := 0, len(nums)-1
-	for i <= j {
-		// Calculate the midpoint index m
-		m := i + (j-i)/2
-		if nums[m] < target {
-			// target is in the interval [m+1, j]
-			i = m + 1
-		} else if nums[m] > target {
-			// target is in the interval [i, m-1]
-			j = m - 1
-		} else {
-			// The rightmost element less than target is in the interval [i, m-1]
-			j = m - 1
-		}
-	}
-	// Return insertion point i
-	return i
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Binary search for insertion point (with duplicate elements) */
-function binarySearchInsertion(nums: Array<number>, target: number): number {
-    let i = 0,
-        j = nums.length - 1; // Initialize closed interval [0, n-1]
-    while (i <= j) {
-        const m = Math.floor(i + (j - i) / 2); // Calculate midpoint index m, use Math.floor() to round down
-        if (nums[m] < target) {
-            i = m + 1; // target is in the interval [m+1, j]
-        } else if (nums[m] > target) {
-            j = m - 1; // target is in the interval [i, m-1]
-        } else {
-            j = m - 1; // The rightmost element less than target is in the interval [i, m-1]
-        }
-    }
-    // Return insertion point i
-    return i;
-}
+```py
+def binary_search_insertion(nums: list[int], target: int) -> int:
+    """Find an insertion point using binary search (with duplicates)"""
+    i, j = 0, len(nums) - 1  # Initialize the closed interval [0, n-1]
+    while i <= j:
+        m = (i + j) // 2  # Calculate the midpoint index m
+        if nums[m] < target:
+            i = m + 1  # Target must be in [m+1, j] if it exists
+        elif nums[m] > target:
+            j = m - 1  # Target must be in [i, m-1] if it exists
+        else:
+            j = m - 1  # Continue in [i, m-1] to find the rightmost element smaller than target
+    # Return insertion point i
+    return i
 ```
 
 </div>

@@ -9,47 +9,18 @@ lang: ar
 <u>الشجرة الثنائية</u> (binary tree) بنية بيانات غير خطية تصوّر العلاقة الهرمية بين «الأسلاف» و«الأحفاد»، وتتجسد فيها فكرة التقسيم والتغلب التي يتفرع فيها كل انقسام إلى اثنين. وعلى غرار القائمة المترابطة، فإن الوحدة الأساسية في الشجرة الثنائية هي العقدة، وتحتوي كل عقدة على قيمة، ومرجع إلى عقدة ابنها الأيسر، ومرجع إلى عقدة ابنها الأيمن.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title=""
-/* عقدة الشجرة الثنائية */
-type TreeNode struct {
-    Val   int
-    Left  *TreeNode
-    Right *TreeNode
-}
-/* دالة البناء */
-func NewTreeNode(v int) *TreeNode {
-    return &TreeNode{
-        Left:  nil, // مؤشر إلى عقدة الابن الأيسر
-        Right: nil, // مؤشر إلى عقدة الابن الأيمن
-        Val:   v,   // قيمة العقدة
-    }
-}
+```python title=""
+class TreeNode:
+    """Binary tree node"""
+    def __init__(self, val: int):
+        self.val: int = val                # Node value
+        self.left: TreeNode | None = None  # Reference to left child node
+        self.right: TreeNode | None = None # Reference to right child node
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title=""
-/* عقدة الشجرة الثنائية */
-class TreeNode {
-    val: number;
-    left: TreeNode | null;
-    right: TreeNode | null;
-
-    constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
-        this.val = val === undefined ? 0 : val; // قيمة العقدة
-        this.left = left === undefined ? null : left; // مرجع إلى عقدة الابن الأيسر
-        this.right = right === undefined ? null : right; // مرجع إلى عقدة الابن الأيمن
-    }
-}
-```
-
-</div>
-
 تحتوي كل عقدة على مرجعين (مؤشرين) يشيران على التوالي إلى <u>عقدة الابن الأيسر</u> و<u>عقدة الابن الأيمن</u>. وتُسمى هذه العقدة <u>العقدة الأب</u> لهاتين العقدتين الابنتين. وعند إعطائنا عقدة من شجرة ثنائية، نسمي الشجرة المكوَّنة من ابن هذه العقدة الأيسر وجميع العقد الواقعة تحته <u>الشجرة الفرعية اليسرى</u> لهذه العقدة. وبالمثل، يمكن تعريف <u>الشجرة الفرعية اليمنى</u>.
 
 **في الشجرة الثنائية، تمتلك كل عقدة غير ورقية عقداً ابنة، ومن ثم أشجاراً فرعية غير فارغة.** وكما يوضح الشكل أدناه، إذا اعتُبرت «العقدة 2» عقدة أب، فإن عقدتي ابنيها الأيسر والأيمن هما «العقدة 4» و«العقدة 5» على التوالي. وتتكون الشجرة الفرعية اليسرى من «العقدة 4» وجميع العقد الواقعة تحتها، بينما تتكون الشجرة الفرعية اليمنى من «العقدة 5» وجميع العقد الواقعة تحتها.
@@ -84,45 +55,24 @@ class TreeNode {
 على غرار القائمة المترابطة، تتضمن تهيئة الشجرة الثنائية أولاً إنشاء العقد ثم إقامة المراجع (المؤشرات) بينها.
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="binary_tree.go"
-/* تهيئة شجرة ثنائية */
-// تهيئة العقد
-n1 := NewTreeNode(1)
-n2 := NewTreeNode(2)
-n3 := NewTreeNode(3)
-n4 := NewTreeNode(4)
-n5 := NewTreeNode(5)
-// ربط المراجع (المؤشرات) بين العقد
-n1.Left = n2
-n1.Right = n3
-n2.Left = n4
-n2.Right = n5
+```python title="binary_tree.py"
+# Initializing a binary tree
+# Initializing nodes
+n1 = TreeNode(val=1)
+n2 = TreeNode(val=2)
+n3 = TreeNode(val=3)
+n4 = TreeNode(val=4)
+n5 = TreeNode(val=5)
+# Linking references (pointers) between nodes
+n1.left = n2
+n1.right = n3
+n2.left = n4
+n2.right = n5
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="binary_tree.ts"
-/* تهيئة شجرة ثنائية */
-// تهيئة العقد
-let n1 = new TreeNode(1),
-    n2 = new TreeNode(2),
-    n3 = new TreeNode(3),
-    n4 = new TreeNode(4),
-    n5 = new TreeNode(5);
-// ربط المراجع (المؤشرات) بين العقد
-n1.left = n2;
-n1.right = n3;
-n2.left = n4;
-n2.right = n5;
-```
-
-</div>
-
 ### إدراج العقد وحذفها
 
 على غرار القائمة المترابطة، يمكن تحقيق إدراج العقد وحذفها في الشجرة الثنائية بتعديل المؤشرات. ويقدم الشكل أدناه مثالاً على ذلك.
@@ -130,35 +80,19 @@ n2.right = n5;
 ![إدراج العقد وحذفها في شجرة ثنائية](/images/hello-algo/chapter_tree--binary_tree_add_remove.png)
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go title="binary_tree.go"
-/* إدراج العقد وحذفها */
-// إدراج العقدة P بين n1 وn2
-p := NewTreeNode(0)
-n1.Left = p
-p.Left = n2
-// حذف العقدة P
-n1.Left = n2
+```python title="binary_tree.py"
+# Inserting and removing nodes
+p = TreeNode(0)
+# Inserting node P between n1 -> n2
+n1.left = p
+p.left = n2
+# Removing node P
+n1.left = n2
 ```
 
 </div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```typescript title="binary_tree.ts"
-/* إدراج العقد وحذفها */
-const P = new TreeNode(0);
-// إدراج العقدة P بين n1 وn2
-n1.left = P;
-P.left = n2;
-// حذف العقدة P
-n1.left = n2;
-```
-
-</div>
-
 <div class="note">
 
 ضع في ذهنك أن إدراج عقدة قد يغيّر البنية المنطقية الأصلية للشجرة الثنائية، بينما يستلزم حذف عقدة عادةً إزالتها مع شجرتها الفرعية بأكملها. لذلك يُنفَّذ الإدراج والحذف في الأشجار الثنائية عملياً عادةً كسلسلة منسقة من العمليات لتحقيق نتيجة ذات معنى.

@@ -40,6 +40,29 @@ $$
 
 Comparing the code for the two problems, there is one change in state transition from $i-1$ to $i$, with everything else identical:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
+    """Unbounded knapsack: dynamic programming"""
+    n = len(wgt)
+    # Initialize the dp table
+    dp = [[0] * (cap + 1) for _ in range(n + 1)]
+    # State transitions
+    for i in range(1, n + 1):
+        for c in range(1, cap + 1):
+            if wgt[i - 1] > c:
+                # If item i exceeds the remaining capacity, do not choose it
+                dp[i][c] = dp[i - 1][c]
+            else:
+                # Take the larger value obtained by excluding and including item i
+                dp[i][c] = max(dp[i - 1][c], dp[i][c - wgt[i - 1]] + val[i - 1])
+    return dp[n][cap]
+```
+
+</div>
+
 ### Space Optimization
 
 Since the current state is transferred from states on the left and above, **after space optimization, each row in the $dp$ table should be traversed in forward order**.
@@ -47,6 +70,30 @@ Since the current state is transferred from states on the left and above, **afte
 This traversal order is exactly opposite to the 0-1 knapsack. Please refer to the figure below to understand the difference between the two.
 
 The code implementation is relatively simple, just delete the first dimension of the array `dp`:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def unbounded_knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
+    """Unbounded knapsack: space-optimized dynamic programming"""
+    n = len(wgt)
+    # Initialize the dp table
+    dp = [0] * (cap + 1)
+    # State transitions
+    for i in range(1, n + 1):
+        # Traverse in increasing order
+        for c in range(1, cap + 1):
+            if wgt[i - 1] > c:
+                # If item i exceeds the remaining capacity, do not choose it
+                dp[c] = dp[c]
+            else:
+                # Take the larger value obtained by excluding and including item i
+                dp[c] = max(dp[c], dp[c - wgt[i - 1]] + val[i - 1])
+    return dp[cap]
+```
+
+</div>
 
 ## Coin Change Problem
 
@@ -97,11 +144,64 @@ Most programming languages do not provide a $+ \infty$ variable, and can only us
 
 For this reason, we use the number $amt + 1$ to represent invalid solutions, because the maximum number of coins needed to make up $amt$ is at most $amt$. Before returning, check whether $dp[n, amt]$ equals $amt + 1$; if so, return $-1$, indicating that the target amount cannot be made up. The code is as follows:
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def coin_change_dp(coins: list[int], amt: int) -> int:
+    """Coin change: dynamic programming"""
+    n = len(coins)
+    MAX = amt + 1
+    # Initialize the dp table
+    dp = [[0] * (amt + 1) for _ in range(n + 1)]
+    # State transitions: first row and first column
+    for a in range(1, amt + 1):
+        dp[0][a] = MAX
+    # State transitions: remaining rows and columns
+    for i in range(1, n + 1):
+        for a in range(1, amt + 1):
+            if coins[i - 1] > a:
+                # If the coin value exceeds the current amount a, do not choose coin i
+                dp[i][a] = dp[i - 1][a]
+            else:
+                # Take the smaller result of not choosing and choosing coin i
+                dp[i][a] = min(dp[i - 1][a], dp[i][a - coins[i - 1]] + 1)
+    return dp[n][amt] if dp[n][amt] != MAX else -1
+```
+
+</div>
+
 The figure below shows the dynamic programming process for coin change, which is very similar to the unbounded knapsack problem.
 
 ### Space Optimization
 
 The space optimization for the coin change problem is handled in the same way as the unbounded knapsack problem:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def coin_change_dp_comp(coins: list[int], amt: int) -> int:
+    """Coin change: space-optimized dynamic programming"""
+    n = len(coins)
+    MAX = amt + 1
+    # Initialize the dp table
+    dp = [MAX] * (amt + 1)
+    dp[0] = 0
+    # State transitions
+    for i in range(1, n + 1):
+        # Traverse in increasing order
+        for a in range(1, amt + 1):
+            if coins[i - 1] > a:
+                # If the coin value exceeds the current amount a, do not choose coin i
+                dp[a] = dp[a]
+            else:
+                # Take the smaller result of not choosing and choosing coin i
+                dp[a] = min(dp[a], dp[a - coins[i - 1]] + 1)
+    return dp[amt] if dp[amt] != MAX else -1
+```
+
+</div>
 
 ## Coin Change Problem II
 
@@ -127,6 +227,57 @@ When the target amount is $0$, no coins need to be selected to make up the targe
 
 ### Code Implementation
 
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def coin_change_ii_dp(coins: list[int], amt: int) -> int:
+    """Coin change II: dynamic programming"""
+    n = len(coins)
+    # Initialize the dp table
+    dp = [[0] * (amt + 1) for _ in range(n + 1)]
+    # Initialize the first column
+    for i in range(n + 1):
+        dp[i][0] = 1
+    # State transitions
+    for i in range(1, n + 1):
+        for a in range(1, amt + 1):
+            if coins[i - 1] > a:
+                # If the coin value exceeds the current amount a, do not choose coin i
+                dp[i][a] = dp[i - 1][a]
+            else:
+                # Add the numbers of ways without and with coin i
+                dp[i][a] = dp[i - 1][a] + dp[i][a - coins[i - 1]]
+    return dp[n][amt]
+```
+
+</div>
+
 ### Space Optimization
 
 The space optimization is handled in the same way, just delete the coin dimension:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def coin_change_ii_dp_comp(coins: list[int], amt: int) -> int:
+    """Coin change II: space-optimized dynamic programming"""
+    n = len(coins)
+    # Initialize the dp table
+    dp = [0] * (amt + 1)
+    dp[0] = 1
+    # State transitions
+    for i in range(1, n + 1):
+        # Traverse in increasing order
+        for a in range(1, amt + 1):
+            if coins[i - 1] > a:
+                # If the coin value exceeds the current amount a, do not choose coin i
+                dp[a] = dp[a]
+            else:
+                # Add the numbers of ways without and with coin i
+                dp[a] = dp[a] + dp[a - coins[i - 1]]
+    return dp[amt]
+```
+
+</div>

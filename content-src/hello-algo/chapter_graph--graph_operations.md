@@ -20,96 +20,78 @@ Given an undirected graph with $n$ vertices, the various operations are implemen
 The following is the implementation code for graphs represented using an adjacency matrix:
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Undirected graph class based on adjacency matrix */
-class GraphAdjMat {
-    vertices: number[]; // Vertex list, where the element represents the "vertex value" and the index represents the "vertex index"
-    adjMat: number[][]; // Adjacency matrix, where the row and column indices correspond to the "vertex index"
+```py
+class GraphAdjMat:
+    """Undirected graph class implemented with an adjacency matrix"""
 
-    /* Constructor */
-    constructor(vertices: number[], edges: number[][]) {
-        this.vertices = [];
-        this.adjMat = [];
-        // Add vertex
-        for (const val of vertices) {
-            this.addVertex(val);
-        }
-        // Add edge
-        // Note that the edges elements represent vertex indices, i.e., corresponding to the vertices element indices
-        for (const e of edges) {
-            this.addEdge(e[0], e[1]);
-        }
-    }
+    def __init__(self, vertices: list[int], edges: list[list[int]]):
+        """Constructor"""
+        # Vertex list: elements are vertex values, and indices are vertex indices
+        self.vertices: list[int] = []
+        # Adjacency matrix: row and column indices correspond to vertex indices
+        self.adj_mat: list[list[int]] = []
+        # Add a vertex
+        for val in vertices:
+            self.add_vertex(val)
+        # Add an edge
+        # Note that the entries in edges are vertex indices, corresponding to element indices in vertices
+        for e in edges:
+            self.add_edge(e[0], e[1])
 
-    /* Get the number of vertices */
-    size(): number {
-        return this.vertices.length;
-    }
+    def size(self) -> int:
+        """Get the number of vertices"""
+        return len(self.vertices)
 
-    /* Add vertex */
-    addVertex(val: number): void {
-        const n: number = this.size();
-        // Add the value of the new vertex to the vertex list
-        this.vertices.push(val);
-        // Add a row to the adjacency matrix
-        const newRow: number[] = [];
-        for (let j: number = 0; j < n; j++) {
-            newRow.push(0);
-        }
-        this.adjMat.push(newRow);
-        // Add a column to the adjacency matrix
-        for (const row of this.adjMat) {
-            row.push(0);
-        }
-    }
+    def add_vertex(self, val: int):
+        """Add a vertex"""
+        n = self.size()
+        # Append the new vertex value to the vertex list
+        self.vertices.append(val)
+        # Add a row to the adjacency matrix
+        new_row = [0] * n
+        self.adj_mat.append(new_row)
+        # Add a column to the adjacency matrix
+        for row in self.adj_mat:
+            row.append(0)
 
-    /* Remove vertex */
-    removeVertex(index: number): void {
-        if (index >= this.size()) {
-            throw new RangeError('Index Out Of Bounds Exception');
-        }
-        // Remove the vertex at index from the vertex list
-        this.vertices.splice(index, 1);
+    def remove_vertex(self, index: int):
+        """Remove a vertex"""
+        if index >= self.size():
+            raise IndexError()
+        # Remove the vertex at index `index` from the vertex list
+        self.vertices.pop(index)
+        # Remove row `index` from the adjacency matrix
+        self.adj_mat.pop(index)
+        # Remove column `index` from the adjacency matrix
+        for row in self.adj_mat:
+            row.pop(index)
 
-        // Remove the row at index from the adjacency matrix
-        this.adjMat.splice(index, 1);
-        // Remove the column at index from the adjacency matrix
-        for (const row of this.adjMat) {
-            row.splice(index, 1);
-        }
-    }
+    def add_edge(self, i: int, j: int):
+        """Add an edge"""
+        # Parameters i and j are element indices in vertices
+        # Handle out-of-bounds or equal indices
+        if i < 0 or j < 0 or i >= self.size() or j >= self.size() or i == j:
+            raise IndexError()
+        # For an undirected graph, the adjacency matrix is symmetric about its main diagonal: entries (i, j) and (j, i) are equal
+        self.adj_mat[i][j] = 1
+        self.adj_mat[j][i] = 1
 
-    /* Add edge */
-    // Parameters i, j correspond to the vertices element indices
-    addEdge(i: number, j: number): void {
-        // Handle index out of bounds and equality
-        if (i < 0 || j < 0 || i >= this.size() || j >= this.size() || i === j) {
-            throw new RangeError('Index Out Of Bounds Exception');
-        }
-        // In undirected graph, adjacency matrix is symmetric about main diagonal, i.e., satisfies (i, j) === (j, i)
-        this.adjMat[i][j] = 1;
-        this.adjMat[j][i] = 1;
-    }
+    def remove_edge(self, i: int, j: int):
+        """Remove an edge"""
+        # Parameters i and j are element indices in vertices
+        # Handle out-of-bounds or equal indices
+        if i < 0 or j < 0 or i >= self.size() or j >= self.size() or i == j:
+            raise IndexError()
+        self.adj_mat[i][j] = 0
+        self.adj_mat[j][i] = 0
 
-    /* Remove edge */
-    // Parameters i, j correspond to the vertices element indices
-    removeEdge(i: number, j: number): void {
-        // Handle index out of bounds and equality
-        if (i < 0 || j < 0 || i >= this.size() || j >= this.size() || i === j) {
-            throw new RangeError('Index Out Of Bounds Exception');
-        }
-        this.adjMat[i][j] = 0;
-        this.adjMat[j][i] = 0;
-    }
-
-    /* Print adjacency matrix */
-    print(): void {
-        console.log('Vertex list = ', this.vertices);
-        console.log('Adjacency matrix =', this.adjMat);
-    }
-}
+    def print(self):
+        """Print the adjacency matrix"""
+        print("Vertex list =", self.vertices)
+        print("Adjacency matrix =")
+        print_matrix(self.adj_mat)
 ```
 
 </div>
@@ -132,94 +114,66 @@ The following code shows the adjacency list implementation. Compared with the fi
 Additionally, we use the `Vertex` class to represent vertices in the adjacency list for the following reason: if we used list indices to distinguish different vertices, as with adjacency matrices, then to delete the vertex at index $i$, we would need to traverse the entire adjacency list and decrement all indices greater than $i$ by $1$, which is very inefficient. However, if each vertex is a unique `Vertex` instance, deleting one vertex does not require modifying the others.
 
 <div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
+<p class="lang-tab__label">Python</p>
 
-```ts
-/* Undirected graph class based on adjacency list */
-class GraphAdjList {
-    // Adjacency list, key: vertex, value: all adjacent vertices of that vertex
-    adjList: Map<Vertex, Vertex[]>;
+```py
+class GraphAdjList:
+    """Undirected graph class implemented with an adjacency list"""
 
-    /* Constructor */
-    constructor(edges: Vertex[][]) {
-        this.adjList = new Map();
-        // Add all vertices and edges
-        for (const edge of edges) {
-            this.addVertex(edge[0]);
-            this.addVertex(edge[1]);
-            this.addEdge(edge[0], edge[1]);
-        }
-    }
+    def __init__(self, edges: list[list[Vertex]]):
+        """Constructor"""
+        # Adjacency list: key is a vertex, value is the list of all its neighbors
+        self.adj_list = dict[Vertex, list[Vertex]]()
+        # Add all vertices and edges
+        for edge in edges:
+            self.add_vertex(edge[0])
+            self.add_vertex(edge[1])
+            self.add_edge(edge[0], edge[1])
 
-    /* Get the number of vertices */
-    size(): number {
-        return this.adjList.size;
-    }
+    def size(self) -> int:
+        """Get the number of vertices"""
+        return len(self.adj_list)
 
-    /* Add edge */
-    addEdge(vet1: Vertex, vet2: Vertex): void {
-        if (
-            !this.adjList.has(vet1) ||
-            !this.adjList.has(vet2) ||
-            vet1 === vet2
-        ) {
-            throw new Error('Illegal Argument Exception');
-        }
-        // Add edge vet1 - vet2
-        this.adjList.get(vet1).push(vet2);
-        this.adjList.get(vet2).push(vet1);
-    }
+    def add_edge(self, vet1: Vertex, vet2: Vertex):
+        """Add an edge"""
+        if vet1 not in self.adj_list or vet2 not in self.adj_list or vet1 == vet2:
+            raise ValueError()
+        # Add edge vet1 - vet2
+        self.adj_list[vet1].append(vet2)
+        self.adj_list[vet2].append(vet1)
 
-    /* Remove edge */
-    removeEdge(vet1: Vertex, vet2: Vertex): void {
-        if (
-            !this.adjList.has(vet1) ||
-            !this.adjList.has(vet2) ||
-            vet1 === vet2 ||
-            this.adjList.get(vet1).indexOf(vet2) === -1
-        ) {
-            throw new Error('Illegal Argument Exception');
-        }
-        // Remove edge vet1 - vet2
-        this.adjList.get(vet1).splice(this.adjList.get(vet1).indexOf(vet2), 1);
-        this.adjList.get(vet2).splice(this.adjList.get(vet2).indexOf(vet1), 1);
-    }
+    def remove_edge(self, vet1: Vertex, vet2: Vertex):
+        """Remove an edge"""
+        if vet1 not in self.adj_list or vet2 not in self.adj_list or vet1 == vet2:
+            raise ValueError()
+        # Remove edge vet1 - vet2
+        self.adj_list[vet1].remove(vet2)
+        self.adj_list[vet2].remove(vet1)
 
-    /* Add vertex */
-    addVertex(vet: Vertex): void {
-        if (this.adjList.has(vet)) return;
-        // Add a new linked list in the adjacency list
-        this.adjList.set(vet, []);
-    }
+    def add_vertex(self, vet: Vertex):
+        """Add a vertex"""
+        if vet in self.adj_list:
+            return
+        # Add a new list to the adjacency list
+        self.adj_list[vet] = []
 
-    /* Remove vertex */
-    removeVertex(vet: Vertex): void {
-        if (!this.adjList.has(vet)) {
-            throw new Error('Illegal Argument Exception');
-        }
-        // Remove the linked list corresponding to vertex vet in the adjacency list
-        this.adjList.delete(vet);
-        // Traverse the linked lists of other vertices and remove all edges containing vet
-        for (const set of this.adjList.values()) {
-            const index: number = set.indexOf(vet);
-            if (index > -1) {
-                set.splice(index, 1);
-            }
-        }
-    }
+    def remove_vertex(self, vet: Vertex):
+        """Remove a vertex"""
+        if vet not in self.adj_list:
+            raise ValueError()
+        # Remove the list corresponding to vertex vet from the adjacency list
+        self.adj_list.pop(vet)
+        # Traverse the lists of the other vertices and remove all edges incident to vet
+        for vertex in self.adj_list:
+            if vet in self.adj_list[vertex]:
+                self.adj_list[vertex].remove(vet)
 
-    /* Print adjacency list */
-    print(): void {
-        console.log('Adjacency list =');
-        for (const [key, value] of this.adjList.entries()) {
-            const tmp = [];
-            for (const vertex of value) {
-                tmp.push(vertex.val);
-            }
-            console.log(key.val + ': ' + tmp.join());
-        }
-    }
-}
+    def print(self):
+        """Print the adjacency list"""
+        print("Adjacency list =")
+        for vertex in self.adj_list:
+            tmp = [v.val for v in self.adj_list[vertex]]
+            print(f"{vertex.val}: {tmp},")
 ```
 
 </div>

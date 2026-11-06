@@ -52,31 +52,14 @@ Observing the above figure, we find that this pruning operation reduces the sear
 After understanding the above information, we can fill in the blanks in the template code. To shorten the overall code, we do not implement each function in the template separately, but instead unfold them in the `backtrack()` function:
 
 <div class="lang-tab">
-<p class="lang-tab__label">Go</p>
+<p class="lang-tab__label">Python</p>
 
-```go
-/* Permutations I */
-func permutationsI(nums []int) [][]int {
-	res := make([][]int, 0)
-	state := make([]int, 0)
-	selected := make([]bool, len(nums))
-	backtrackI(&state, &nums, &selected, &res)
-	return res
-}
-```
-
-</div>
-
-<div class="lang-tab">
-<p class="lang-tab__label">TypeScript</p>
-
-```ts
-/* Permutations I */
-function permutationsI(nums: number[]): number[][] {
-    const res: number[][] = [];
-    backtrack([], nums, Array(nums.length).fill(false), res);
-    return res;
-}
+```py
+def permutations_i(nums: list[int]) -> list[list[int]]:
+    """Permutations I"""
+    res = []
+    backtrack(state=[], choices=nums, selected=[False] * len(nums), res=res)
+    return res
 ```
 
 </div>
@@ -110,6 +93,19 @@ Essentially, **our goal is to ensure that multiple equal elements are chosen onl
 ### Code Implementation
 
 Building on the code from the previous problem, we initialize a hash set `duplicated` in each round of choices to record which elements have already been tried in that round, and prune equal elements:
+
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+
+```py
+def permutations_ii(nums: list[int]) -> list[list[int]]:
+    """Permutations II"""
+    res = []
+    backtrack(state=[], choices=nums, selected=[False] * len(nums), res=res)
+    return res
+```
+
+</div>
 
 Assuming elements are pairwise distinct, there are $n!$ (factorial) permutations of $n$ elements. When recording results, we need to copy a list of length $n$, using $O(n)$ time. **Therefore, the time complexity is $O(n! \cdot n)$**.
 
