@@ -107,7 +107,7 @@ We can encapsulate the index mapping formula into functions for convenient subse
 ```py
     def parent(self, i: int) -> int:
         """Get the parent index"""
-        return (i - 1) // 2  # Floor division
+        return (i - 1) // 2  # قسمة مقربة نزولًا
 ```
 
 </div>
@@ -142,14 +142,14 @@ Given a total of $n$ nodes, the tree height is $O(\log n)$. Thus, the number of 
     def sift_up(self, i: int):
         """Sift up starting from node i"""
         while True:
-            # Get the parent of node i
+            # احصل على أصل العقدة i
             p = self.parent(i)
-            # Stop sifting when the root has been passed or the node needs no repair
+            # توقف عن الرشّ عند تجاوز الجذر أو عدم حاجة العقدة إلى إصلاح
             if p < 0 or self.max_heap[i] <= self.max_heap[p]:
                 break
-            # Swap the two nodes
+            # بدّل العقدتين
             self.swap(i, p)
-            # Continue sifting up
+            # واصل الرشّ صعودًا
             i = p
 ```
 
@@ -174,18 +174,18 @@ Similar to the element insertion operation, the time complexity of the heap top 
     def sift_down(self, i: int):
         """Sift down starting from node i"""
         while True:
-            # Find the node with the largest value among i, l, and r, and store its index in ma
+            # أوجد العقدة ذات القيمة الأكبر بين i و l و r، وخزّن فهرسها في ma
             l, r, ma = self.left(i), self.right(i), i
             if l < self.size() and self.max_heap[l] > self.max_heap[ma]:
                 ma = l
             if r < self.size() and self.max_heap[r] > self.max_heap[ma]:
                 ma = r
-            # Stop if node i is largest or both child indices l and r are out of bounds
+            # توقف إذا كانت العقدة i هي الأكبر أو خرج فهرسا الابنين l و r كلاهما عن الحدود
             if ma == i:
                 break
-            # Swap the two nodes
+            # بدّل العقدتين
             self.swap(i, ma)
-            # Continue sifting down
+            # واصل الرشّ نزولًا
             i = ma
 ```
 

@@ -16,7 +16,7 @@ def pre_order(root: TreeNode):
     if root is None:
         return
     if root.val == 7:
-        # Record the solution
+        # سجّل الحل
         res.append(root)
     pre_order(root.left)
     pre_order(root.right)
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     print("\nInitialize the binary tree")
     print_tree(root)
 
-    # Preorder traversal
+    # اجتياز الطلب المسبق
     res = list[TreeNode]()
     pre_order(root)
 

@@ -11,8 +11,8 @@ class ListNode:
     def __init__(self, val: int):
         """Constructor"""
         self.val: int = val
-        self.next: ListNode | None = None  # Reference to the next node
-        self.prev: ListNode | None = None  # Reference to the previous node
+        self.next: ListNode | None = None  # إشارة إلى العقدة التالية
+        self.prev: ListNode | None = None  # إشارة إلى العقدة السابقة
 
 
 class LinkedListDeque:
@@ -20,9 +20,9 @@ class LinkedListDeque:
 
     def __init__(self):
         """Constructor"""
-        self._front: ListNode | None = None  # Head node front
-        self._rear: ListNode | None = None  # Tail node rear
-        self._size: int = 0  # Deque size
+        self._front: ListNode | None = None  # عقدة الرأس front
+        self._rear: ListNode | None = None  # عقدة الذيل rear
+        self._size: int = 0  # حجم الطابور المزدوج
 
     def size(self) -> int:
         """Get the deque size"""
@@ -35,22 +35,22 @@ class LinkedListDeque:
     def push(self, num: int, is_front: bool):
         """Enqueue operation"""
         node = ListNode(num)
-        # If the linked list is empty, make both front and rear point to node
+        # إذا كانت القائمة المترابطة فارغة، اجعل front و rear يشيران إلى العقدة معًا
         if self.is_empty():
             self._front = self._rear = node
-        # Enqueue at the front
+        # إدخال من المقدمة
         elif is_front:
-            # Add node to the head of the linked list
+            # أضف العقدة إلى رأس القائمة المترابطة
             self._front.prev = node
             node.next = self._front
-            self._front = node  # Update the head node
-        # Enqueue at the rear
+            self._front = node  # حدّث عقدة الرأس
+        # إدخال من المؤخرة
         else:
-            # Add node to the tail of the linked list
+            # أضف العقدة إلى ذيل القائمة المترابطة
             self._rear.next = node
             node.prev = self._rear
-            self._rear = node  # Update the tail node
-        self._size += 1  # Update the deque size
+            self._rear = node  # حدّث عقدة الذيل
+        self._size += 1  # حدّث حجم الطابور المزدوج
 
     def push_first(self, num: int):
         """Enqueue at the front"""
@@ -64,28 +64,28 @@ class LinkedListDeque:
         """Dequeue operation"""
         if self.is_empty():
             raise IndexError("Deque is empty")
-        # When the deque size is 1, the head and tail point to the same node
+        # عندما يكون حجم الطابور المزدوج 1، يشير الرأس والذيل إلى العقدة نفسها
         if self._size == 1:
             val: int = self._front.val
             self._front = None
             self._rear = None
-        # Dequeue from the front
+        # إخراج من المقدمة
         elif is_front:
-            val: int = self._front.val  # Save the head node value
-            # Remove the head node
+            val: int = self._front.val  # احفظ قيمة عقدة الرأس
+            # احذف العقدة الرأس
             fnext: ListNode | None = self._front.next
             fnext.prev = None
             self._front.next = None
-            self._front = fnext  # Update the head node
-        # Dequeue from the rear
+            self._front = fnext  # حدّث عقدة الرأس
+        # إخراج من المؤخرة
         else:
-            val: int = self._rear.val  # Save the tail node value
-            # Remove the tail node
+            val: int = self._rear.val  # احفظ قيمة عقدة الذيل
+            # احذف عقدة الذيل
             rprev: ListNode | None = self._rear.prev
             rprev.next = None
             self._rear.prev = None
-            self._rear = rprev  # Update the tail node
-        self._size -= 1  # Update the deque size
+            self._rear = rprev  # حدّث عقدة الذيل
+        self._size -= 1  # حدّث حجم الطابور المزدوج
         return val
 
     def pop_first(self) -> int:
@@ -120,35 +120,35 @@ class LinkedListDeque:
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the deque
+    # مهّد الطابور المزدوج
     deque = LinkedListDeque()
     deque.push_last(3)
     deque.push_last(2)
     deque.push_last(5)
     print("Deque deque =", deque.to_array())
 
-    # Access an element
+    # وصول إلى عنصر
     peek_first: int = deque.peek_first()
     print("Front element peek_first =", peek_first)
     peek_last: int = deque.peek_last()
     print("Rear element peek_last =", peek_last)
 
-    # Enqueue elements
+    # ادخل العناصر
     deque.push_last(4)
     print("After enqueuing element 4 at the rear, deque =", deque.to_array())
     deque.push_first(1)
     print("After enqueuing element 1 at the front, deque =", deque.to_array())
 
-    # Dequeue an element
+    # أخرج عنصرًا
     pop_last: int = deque.pop_last()
     print("Element dequeued from the rear =", pop_last, ", after dequeuing from the rear, deque =", deque.to_array())
     pop_first: int = deque.pop_first()
     print("Element dequeued from the front =", pop_first, ", after dequeuing from the front, deque =", deque.to_array())
 
-    # Get the deque size
+    # احصل على حجم الطابور المزدوج
     size: int = deque.size()
     print("Deque size =", size)
 
-    # Check whether the deque is empty
+    # تحقق مما إذا كان الطابور المزدوج فارغًا
     is_empty: bool = deque.is_empty()
     print("Is the deque empty =", is_empty)

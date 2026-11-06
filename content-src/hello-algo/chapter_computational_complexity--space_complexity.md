@@ -133,14 +133,14 @@ It should be noted that memory occupied by initializing variables or calling fun
 ```py
 def constant(n: int):
     """Constant complexity"""
-    # Constants, variables, and objects occupy O(1) space
+    # الثوابت والمتغيرات والكائنات تشغل مساحة O(1)
     a = 0
     nums = [0] * 10000
     node = ListNode(0)
-    # Variables in the loop occupy O(1) space
+    # المتغيرات في الحلقة تشغل مساحة O(1)
     for _ in range(n):
         c = 0
-    # Function calls in the loop occupy O(1) space
+    # استدعاءات الدوال في الحلقة تشغل مساحة O(1)
     for _ in range(n):
         function()
 ```
@@ -157,9 +157,9 @@ Linear order is common in arrays, linked lists, stacks, queues, etc., where the 
 ```py
 def linear(n: int):
     """Linear complexity"""
-    # A list of length n occupies O(n) space
+    # قائمة بطول n تشغل مساحة O(n)
     nums = [0] * n
-    # A hash table with n entries occupies O(n) space
+    # جدول تجزئة فيه n إدخالًا يشغل مساحة O(n)
     hmap = dict[int, str]()
     for i in range(n):
         hmap[i] = str(i)
@@ -195,7 +195,7 @@ Quadratic order is common in matrices and graphs, where the number of elements i
 ```py
 def quadratic(n: int):
     """Quadratic complexity"""
-    # The two-dimensional list occupies O(n^2) space
+    # القائمة ثنائية الأبعاد تشغل مساحة O(n^2)
     num_matrix = [[0] * n for _ in range(n)]
 ```
 
@@ -211,7 +211,7 @@ def quadratic_recur(n: int) -> int:
     """Quadratic complexity (recursive implementation)"""
     if n <= 0:
         return 0
-    # The lengths of array nums are n, n-1, ..., 2, 1
+    # أطوال المصفوفة nums هي n، n-1، ...، 2، 1
     nums = [0] * n
     return quadratic_recur(n - 1)
 ```

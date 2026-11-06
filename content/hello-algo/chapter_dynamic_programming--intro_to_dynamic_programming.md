@@ -27,19 +27,18 @@ lang: ar
 <p class="lang-tab__label">Python</p>
 
 ```py
-        # Backtrack
+        # تراجع
 
 def climbing_stairs_backtrack(n: int) -> int:
     """Climbing stairs: backtracking"""
-    choices = [1, 2]  # Choose to climb 1 or 2 steps
-    state = 0  # Start climbing from step 0
-    res = [0]  # Use res[0] to record the number of ways
+    choices = [1, 2]  # اختر صعود درج أو درجين
+    state = 0  # ابدأ الصعود من الدرج 0
+    res = [0]  # استخدم res[0] لتسجيل عدد الطرق
     backtrack(choices, state, n, res)
     return res[0]
 ```
 
 </div>
-
 ## الطريقة الأولى: البحث بالقوة الغاشمة
 
 لا تحلّل خوارزميات التتبّع الرجعي المسائل عادةً تحليلاً صريحاً، بل تعالج حل المسألة كسلسلة من خطوات القرار، وتبحث عن جميع الحلول الممكنة بالتجربة والتشذيب.
@@ -77,8 +76,7 @@ def climbing_stairs_dfs(n: int) -> int:
     return dfs(n)
 ```
 
-</div>
-![الشجرة التعاودية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_tree.png)
+</div>![الشجرة التعاودية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_tree.png)
 
 وبمراقبة الشكل أعلاه، نجد أن **التعقيد الزمني الأسي ناتج عن «المسائل الفرعية المتداخلة»**. على سبيل المثال، تُحلَّل $dp[9]$ إلى $dp[8]$ و$dp[7]$، وتُحلَّل $dp[8]$ إلى $dp[7]$ و$dp[6]$، وكلتاهما تحتويان المسألة الفرعية $dp[7]$.
 
@@ -101,13 +99,12 @@ def climbing_stairs_dfs(n: int) -> int:
 ```py
 def climbing_stairs_dfs_mem(n: int) -> int:
     """Climbing stairs: memoized search"""
-    # mem[i] stores the number of ways to reach step i; -1 means no result has been recorded
+    # يخزّن mem[i] عدد الطرق للوصول إلى الدرج i؛ ويعني -1 أنه لم تُسجل نتيجة
     mem = [-1] * (n + 1)
     return dfs(n, mem)
 ```
 
-</div>
-![الشجرة التعاودية مع الحفظ](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_memo_tree.png)
+</div>![الشجرة التعاودية مع الحفظ](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_memo_tree.png)
 
 ## الطريقة الثالثة: البرمجة الديناميكية
 
@@ -127,18 +124,17 @@ def climbing_stairs_dp(n: int) -> int:
     """Climbing stairs: dynamic programming"""
     if n == 1 or n == 2:
         return n
-    # Initialize the dp table to store subproblem solutions
+    # مهّد جدول dp لتخزين حلول المسائل الجزئية
     dp = [0] * (n + 1)
-    # Initial states: set the solutions to the smallest subproblems
+    # الحالات الابتدائية: حدّد حلول أصغر المسائل الجزئية
     dp[1], dp[2] = 1, 2
-    # State transitions: solve progressively larger subproblems using smaller ones
+    # انتقالات الحالة: حُلّ المسائل الجزئية الأكبر تدرّجيًا باستخدام الأصغر منها
     for i in range(3, n + 1):
         dp[i] = dp[i - 1] + dp[i - 2]
     return dp[n]
 ```
 
-</div>
-![عملية البرمجة الديناميكية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dp.png)
+</div>![عملية البرمجة الديناميكية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dp.png)
 
 ومثل خوارزميات التتبّع الرجعي، تستخدم البرمجة الديناميكية أيضاً مفهوم «الحالة» لتمثيل مراحل محددة من حل المسألة، حيث تقابل كل حالة مسألة فرعية والحل الأمثل المحلي المقابل لها. على سبيل المثال، تُعرَّف الحالة في مسألة صعود الدرج بأنها رقم الدرجة الحالية $i$.
 
@@ -166,7 +162,6 @@ def climbing_stairs_dp_comp(n: int) -> int:
 ```
 
 </div>
-
 وكما توضح الشيفرة أعلاه، بإلغاء المساحة التي تشغلها المصفوفة `dp`، ينخفض التعقيد المكاني من $O(n)$ إلى $O(1)$.
 
 في مسائل البرمجة الديناميكية، غالباً ما تعتمد الحالة الحالية على عدد محدود فقط من الحالات السابقة، مما يسمح لنا بالاحتفاظ بالحالات الضرورية فقط وتوفير مساحة الذاكرة عبر «تقليل الأبعاد». **وتسمى تقنية تحسين المساحة هذه «المتغير المتدحرج» أو «المصفوفة المتدحرجة»**.

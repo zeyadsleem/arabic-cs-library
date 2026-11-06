@@ -34,22 +34,21 @@ lang: ar
     def search(self, num: int) -> TreeNode | None:
         """Find a node"""
         cur = self._root
-        # Search in a loop, stopping if cur becomes None
+        # ابحث في حلقة، متوقفًا إذا صارت cur هي None
         while cur is not None:
-            # If present, the target node is in the right subtree of cur
+            # إن وُجد، فالعقدة الهدف في الشجرة الجزئية اليمنى لـ cur
             if cur.val < num:
                 cur = cur.right
-            # If present, the target node is in the left subtree of cur
+            # إن وُجد، فالعقدة الهدف في الشجرة الجزئية اليسرى لـ cur
             elif cur.val > num:
                 cur = cur.left
-            # The target node was found; exit the loop
+            # وُجدت العقدة الهدف؛ اخرج من الحلقة
             else:
                 break
         return cur
 ```
 
-</div>
-### إدراج عقدة
+</div>### إدراج عقدة
 
 بمعطى عنصر `num` مطلوب إدراجه، ومن أجل الحفاظ على خاصية شجرة البحث الثنائية «الشجرة الفرعية اليسرى < العقدة الجذرية < الشجرة الفرعية اليمنى»، تكون عملية الإدراج كما يوضح الشكل أدناه.
 
@@ -69,24 +68,24 @@ lang: ar
 ```py
     def insert(self, num: int):
         """Insert a node"""
-        # If the tree is empty, initialize the root node
+        # إذا كانت الشجرة فارغة، مهّد عقدة الجذر
         if self._root is None:
             self._root = TreeNode(num)
             return
-        # Search in a loop, stopping if cur becomes None
+        # ابحث في حلقة، متوقفًا إذا صارت cur هي None
         cur, pre = self._root, None
         while cur is not None:
-            # Return immediately if a duplicate node is found
+            # أعد فورًا إذا وُجدت عقدة مكررة
             if cur.val == num:
                 return
             pre = cur
-            # The insertion position lies in the right subtree of cur
+            # يقع موضع الإدراج في الشجرة الجزئية اليمنى لـ cur
             if cur.val < num:
                 cur = cur.right
-            # The insertion position lies in the left subtree of cur
+            # يقع موضع الإدراج في الشجرة الجزئية اليسرى لـ cur
             else:
                 cur = cur.left
-        # Insert a node
+        # أدخل عقدة
         node = TreeNode(num)
         if pre.val < num:
             pre.right = node
@@ -94,8 +93,7 @@ lang: ar
             pre.left = node
 ```
 
-</div>
-وعلى غرار البحث عن عقدة، يستغرق إدراج عقدة زمن $O(\log n)$.
+</div>وعلى غرار البحث عن عقدة، يستغرق إدراج عقدة زمن $O(\log n)$.
 
 ### حذف عقدة
 
@@ -124,53 +122,52 @@ lang: ar
 ```py
     def remove(self, num: int):
         """Remove a node"""
-        # Return immediately if the tree is empty
+        # أعد فورًا إذا كانت الشجرة فارغة
         if self._root is None:
             return
-        # Search in a loop, stopping if cur becomes None
+        # ابحث في حلقة، متوقفًا إذا صارت cur هي None
         cur, pre = self._root, None
         while cur is not None:
-            # The node to remove was found; exit the loop
+            # وُجدت العقدة المراد حذفها؛ اخرج من الحلقة
             if cur.val == num:
                 break
             pre = cur
-            # If present, the node to remove is in the right subtree of cur
+            # إن وُجدت، فالعقدة المراد حذفها في الشجرة الجزئية اليمنى لـ cur
             if cur.val < num:
                 cur = cur.right
-            # If present, the node to remove is in the left subtree of cur
+            # إن وُجدت، فالعقدة المراد حذفها في الشجرة الجزئية اليسرى لـ cur
             else:
                 cur = cur.left
-        # Return immediately if the node to remove does not exist
+        # أعد فورًا إذا لم تكن العقدة المراد حذفها موجودة
         if cur is None:
             return
 
-        # Number of children = 0 or 1
+        # عدد الأبناء = 0 أو 1
         if cur.left is None or cur.right is None:
-            # With 0 or 1 child, child is None or that child, respectively
+            # عند 0 أو 1 ابن، يكون child هي None أو ذلك الابن بالترتيب
             child = cur.left or cur.right
-            # Remove node cur
+            # احذف العقدة cur
             if cur != self._root:
                 if pre.left == cur:
                     pre.left = child
                 else:
                     pre.right = child
             else:
-                # If the removed node is the root, assign the new root
+                # إذا كانت العقدة المحذوفة هي الجذر، أسند الجذر الجديد
                 self._root = child
-        # Number of children = 2
+        # عدد الأبناء = 2
         else:
-            # Get the inorder successor of cur
+            # احصل على خلف cur في الاجتياز الداخلي
             tmp: TreeNode = cur.right
             while tmp.left is not None:
                 tmp = tmp.left
-            # Recursively remove node tmp
+            # احذف العقدة tmp تعاوديًا
             self.remove(tmp.val)
-            # Replace the value of cur with the value of tmp
+            # استبدل قيمة cur بقيمة tmp
             cur.val = tmp.val
 ```
 
-</div>
-### الاجتياز الوسطي مرتّب
+</div>### الاجتياز الوسطي مرتّب
 
 كما يوضح الشكل أدناه، يتبع الاجتياز الوسطي للشجرة الثنائية ترتيب الاجتياز «يسار $\rightarrow$ جذر $\rightarrow$ يمين»، بينما تستوفي شجرة البحث الثنائية علاقة الحجم «العقدة الابنة اليسرى $<$ العقدة الجذرية $<$ العقدة الابنة اليمنى».
 

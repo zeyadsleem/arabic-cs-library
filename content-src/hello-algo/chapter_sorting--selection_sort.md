@@ -25,14 +25,14 @@ In the code, we use $k$ to track the smallest element within the unsorted interv
 def selection_sort(nums: list[int]):
     """Selection sort"""
     n = len(nums)
-    # Outer loop: the unsorted range is [i, n-1]
+    # الحلقة الخارجية: النطاق غير المرتب هو [i, n-1]
     for i in range(n - 1):
-        # Inner loop: find the smallest element in the unsorted range
+        # الحلقة الداخلية: أوجد أصغر عنصر في النطاق غير المرتب
         k = i
         for j in range(i + 1, n):
             if nums[j] < nums[k]:
-                k = j  # Record the index of the smallest element
-        # Swap the smallest element with the first element of the unsorted range
+                k = j  # سجّل فهرس أصغر عنصر
+        # بدّل أصغر عنصر مع أول عنصر في النطاق غير المرتب
         nums[i], nums[k] = nums[k], nums[i]
 ```
 

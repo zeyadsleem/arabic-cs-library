@@ -39,8 +39,7 @@ class TreeNode:
         self.right: TreeNode | None = None  # Right child reference
 ```
 
-</div>
-يشير "ارتفاع العقدة" إلى المسافة من تلك العقدة إلى أبعد عقدة ورقة عنها، أي عدد الأضلاع على المسار. ومن المهم ملاحظة أن ارتفاع عقدة الورقة هو $0$، وارتفاع العقدة الفارغة هو $-1$. سننشئ دالتين مساعدتين للحصول على ارتفاع العقدة وتحديثه:
+</div>يشير "ارتفاع العقدة" إلى المسافة من تلك العقدة إلى أبعد عقدة ورقة عنها، أي عدد الأضلاع على المسار. ومن المهم ملاحظة أن ارتفاع عقدة الورقة هو $0$، وارتفاع العقدة الفارغة هو $-1$. سننشئ دالتين مساعدتين للحصول على ارتفاع العقدة وتحديثه:
 
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -48,12 +47,11 @@ class TreeNode:
 ```py
     def update_height(self, node: TreeNode | None):
         """Update the node height"""
-        # The node height equals the height of its taller subtree + 1
+        # ارتفاع العقدة يساوي ارتفاع أطول شجرتها الجزئية + 1
         node.height = max([self.height(node.left), self.height(node.right)]) + 1
 ```
 
-</div>
-### معامل توازن العقدة
+</div>### معامل توازن العقدة
 
 يُعرَّف <u>معامل التوازن</u> للعقدة بأنه ارتفاع الشجرة الفرعية اليسرى للعقدة مطروحاً منه ارتفاع شجرتها الفرعية اليمنى، ويُعرَّف معامل توازن العقدة الفارغة بأنه $0$. كما نغلّف دالة الحصول على معامل توازن العقدة لتسهيل استخدامها لاحقاً:
 
@@ -63,15 +61,14 @@ class TreeNode:
 ```py
     def balance_factor(self, node: TreeNode | None) -> int:
         """Get the balance factor"""
-        # An empty subtree has balance factor 0
+        # عامل التوازن للشجرة الجزئية الفارغة هو 0
         if node is None:
             return 0
-        # Node balance factor = left subtree height - right subtree height
+        # عامل توازن العقدة = ارتفاع الشجرة الجزئية اليسرى - ارتفاع اليمنى
         return self.height(node.left) - self.height(node.right)
 ```
 
-</div>
-<div class="note">
+</div><div class="note">
 
 ليكن معامل التوازن $f$، فيستوفي معامل توازن أي عقدة في شجرة AVL الشرط $-1 \le f \le 1$.
 
@@ -101,18 +98,17 @@ class TreeNode:
         """Right rotation"""
         child = node.left
         grand_child = child.right
-        # Rotate node to the right around child
+        # أدر node حول child إلى اليمين
         child.right = node
         node.left = grand_child
-        # Update the node height
+        # حدّث ارتفاع العقدة
         self.update_height(node)
         self.update_height(child)
-        # Return the root of the rotated subtree
+        # أعد جذر الشجرة الجزئية بعد الإدارة
         return child
 ```
 
-</div>
-### الدوران الأيسر
+</div>### الدوران الأيسر
 
 وبالمقابل، إذا نظرنا إلى "المرآة" المقابلة للشجرة الثنائية غير المتوازنة السابقة، فيلزم تنفيذ عملية "الدوران الأيسر" الموضحة في الشكل أدناه.
 
@@ -132,18 +128,17 @@ class TreeNode:
         """Left rotation"""
         child = node.right
         grand_child = child.left
-        # Rotate node to the left around child
+        # أدر node حول child إلى اليسار
         child.left = node
         node.right = grand_child
-        # Update the node height
+        # حدّث ارتفاع العقدة
         self.update_height(node)
         self.update_height(child)
-        # Return the root of the rotated subtree
+        # أعد جذر الشجرة الجزئية بعد الإدارة
         return child
 ```
 
-</div>
-### الدوران الأيسر ثم الدوران الأيمن
+</div>### الدوران الأيسر ثم الدوران الأيمن
 
 بالنسبة إلى العقدة غير المتوازنة 3 في الشكل أدناه، لا يمكن باستخدام الدوران الأيسر أو الدوران الأيمن وحده إعادة الشجرة الفرعية إلى التوازن. وفي هذه الحالة، يجب تنفيذ "دوران أيسر" على `child` أولاً، ثم "دوران أيمن" على `node`.
 
@@ -180,32 +175,31 @@ class TreeNode:
 ```py
     def rotate(self, node: TreeNode | None) -> TreeNode | None:
         """Perform rotations to restore balance in this subtree"""
-        # Get the balance factor of node
+        # احصل على عامل توازن العقدة
         balance_factor = self.balance_factor(node)
-        # Left-heavy tree
+        # شجرة مائلة لليسار
         if balance_factor > 1:
             if self.balance_factor(node.left) >= 0:
-                # Rotate right
+                # أدر إلى اليمين
                 return self.right_rotate(node)
             else:
-                # Rotate left, then right
+                # أدر إلى اليسار ثم اليمين
                 node.left = self.left_rotate(node.left)
                 return self.right_rotate(node)
-        # Right-heavy tree
+        # شجرة مائلة لليمين
         elif balance_factor < -1:
             if self.balance_factor(node.right) <= 0:
-                # Rotate left
+                # أدر إلى اليسار
                 return self.left_rotate(node)
             else:
-                # Rotate right, then left
+                # أدر إلى اليمين ثم اليسار
                 node.right = self.right_rotate(node.right)
                 return self.left_rotate(node)
-        # The tree is balanced; return without rotating
+        # الشجرة متوازنة؛ أعد دون إدارة
         return node
 ```
 
-</div>
-## العمليات الشائعة في أشجار AVL
+</div>## العمليات الشائعة في أشجار AVL
 
 ### إدراج عقدة
 
@@ -219,22 +213,21 @@ class TreeNode:
         """Insert a node recursively (helper method)"""
         if node is None:
             return TreeNode(val)
-        # 1. Find the insertion position and insert the node
+        # 1. أوجد موضع الإدراج وأدخل العقدة
         if val < node.val:
             node.left = self.insert_helper(node.left, val)
         elif val > node.val:
             node.right = self.insert_helper(node.right, val)
         else:
-            # Return without inserting a duplicate node
+            # أعد دون إدراج عقدة مكررة
             return node
-        # Update the node height
+        # حدّث ارتفاع العقدة
         self.update_height(node)
-        # 2. Perform rotations to restore balance in this subtree
+        # 2. أجرِ الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية
         return self.rotate(node)
 ```
 
-</div>
-### حذف العقدة
+</div>### حذف العقدة
 
 وبالمثل، واستناداً إلى طريقة حذف العقد في شجرة البحث الثنائية، يجب تنفيذ عمليات الدوران من الأسفل إلى الأعلى لإعادة التوازن إلى جميع العقد غير المتوازنة. والشيفرة كما يلي:
 
@@ -246,7 +239,7 @@ class TreeNode:
         """Remove a node recursively (helper method)"""
         if node is None:
             return None
-        # 1. Find and remove the node
+        # 1. أوجد العقدة واحذفها
         if val < node.val:
             node.left = self.remove_helper(node.left, val)
         elif val > node.val:
@@ -254,27 +247,26 @@ class TreeNode:
         else:
             if node.left is None or node.right is None:
                 child = node.left or node.right
-                # Number of children = 0: remove node and return
+                # عدد الأبناء = 0: احذف العقدة وأعد
                 if child is None:
                     return None
-                # Number of children = 1: remove node directly
+                # عدد الأبناء = 1: احذف العقدة مباشرةً
                 else:
                     node = child
             else:
-                # Number of children = 2: remove the inorder successor and use its value to replace the current node value
+                # عدد الأبناء = 2: احذف خلف الاجتياز الداخلي واستخدم قيمته بإحلالها مكان قيمة العقدة الحالية
                 temp = node.right
                 while temp.left is not None:
                     temp = temp.left
                 node.right = self.remove_helper(node.right, temp.val)
                 node.val = temp.val
-        # Update the node height
+        # حدّث ارتفاع العقدة
         self.update_height(node)
-        # 2. Perform rotations to restore balance in this subtree
+        # 2. أجرِ الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية
         return self.rotate(node)
 ```
 
-</div>
-### البحث عن عقدة
+</div>### البحث عن عقدة
 
 تتوافق عملية البحث عن عقدة في أشجار AVL مع نظيرتها في أشجار البحث الثنائية، ولن نتوسع فيها هنا.
 

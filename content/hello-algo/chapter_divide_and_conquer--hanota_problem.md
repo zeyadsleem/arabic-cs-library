@@ -67,12 +67,11 @@ lang: ar
 def solve_hanota(A: list[int], B: list[int], C: list[int]):
     """Solve the Tower of Hanoi problem"""
     n = len(A)
-    # Move the top n disks from A to C using B
+    # انقل أعلى n من الأقراص من A إلى C باستخدام B
     dfs(n, A, B, C)
 ```
 
-</div>
-وكما يوضح الشكل أدناه، تشكّل مسألة أبراج هانوي شجرة تعاود بارتفاع $n$، حيث تمثّل كل عقدة مسألة فرعية تقابل استدعاءً للدالة `dfs()`، **لذا يكون التعقيد الزمني $O(2^n)$ والتعقيد المكاني $O(n)$**.
+</div>وكما يوضح الشكل أدناه، تشكّل مسألة أبراج هانوي شجرة تعاود بارتفاع $n$، حيث تمثّل كل عقدة مسألة فرعية تقابل استدعاءً للدالة `dfs()`، **لذا يكون التعقيد الزمني $O(2^n)$ والتعقيد المكاني $O(n)$**.
 
 ![شجرة التعاود لمسألة أبراج هانوي](/images/hello-algo/chapter_divide_and_conquer--hanota_recursive_tree.png)
 

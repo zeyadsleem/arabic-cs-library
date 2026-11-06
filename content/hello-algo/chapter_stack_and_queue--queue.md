@@ -57,8 +57,7 @@ size: int = len(que)
 is_empty: bool = len(que) == 0
 ```
 
-</div>
-## تنفيذ الطابور
+</div>## تنفيذ الطابور
 
 لتنفيذ طابور، نحتاج إلى بنية بيانات تتيح إضافة العناصر من أحد الطرفين وإزالة العناصر من الطرف الآخر. وتلبي كل من القوائم المترابطة والمصفوفات هذا المطلب.
 
@@ -77,8 +76,8 @@ class LinkedListQueue:
 
     def __init__(self):
         """Constructor"""
-        self._front: ListNode | None = None  # Head node front
-        self._rear: ListNode | None = None  # Tail node rear
+        self._front: ListNode | None = None  # عقدة الرأس front
+        self._rear: ListNode | None = None  # عقدة الذيل rear
         self._size: int = 0
 
     def size(self) -> int:
@@ -91,13 +90,13 @@ class LinkedListQueue:
 
     def push(self, num: int):
         """Enqueue"""
-        # Add num after the tail node
+        # أضف num بعد عقدة الذيل
         node = ListNode(num)
-        # If the queue is empty, make both the head and tail point to this node
+        # إذا كان الطابور فارغًا، اجعل الرأس والذيل يشيران إلى هذه العقدة معًا
         if self._front is None:
             self._front = node
             self._rear = node
-        # If the queue is not empty, add this node after the tail node
+        # إذا لم يكن الطابور فارغًا، أضف هذه العقدة بعد عقدة الذيل
         else:
             self._rear.next = node
             self._rear = node
@@ -106,7 +105,7 @@ class LinkedListQueue:
     def pop(self) -> int:
         """Dequeue"""
         num = self.peek()
-        # Remove the head node
+        # احذف العقدة الرأس
         self._front = self._front.next
         self._size -= 1
         return num
@@ -127,8 +126,7 @@ class LinkedListQueue:
         return queue
 ```
 
-</div>
-### التنفيذ بالمصفوفة
+</div>### التنفيذ بالمصفوفة
 
 حذف العنصر الأول في مصفوفة له تعقيد زمني $O(n)$، وهو ما يجعل عملية الإخراج من الطابور غير فعّالة. غير أننا يمكننا استخدام الطريقة الذكية التالية لتجنب هذه المشكلة.
 
@@ -154,9 +152,9 @@ class ArrayQueue:
 
     def __init__(self, size: int):
         """Constructor"""
-        self._nums: list[int] = [0] * size  # Array that stores the queue elements
-        self._front: int = 0  # Front pointer, pointing to the first element
-        self._size: int = 0  # Queue size
+        self._nums: list[int] = [0] * size  # المصفوفة التي تخزن عناصر الطابور
+        self._front: int = 0  # مؤشر المقدمة، يشير إلى أول عنصر
+        self._size: int = 0  # حجم الطابور
 
     def capacity(self) -> int:
         """Get the queue capacity"""
@@ -174,17 +172,17 @@ class ArrayQueue:
         """Enqueue"""
         if self._size == self.capacity():
             raise IndexError("Queue is full")
-        # Calculate the rear pointer, which points one position past the last element
-        # Use modulo to wrap rear to the beginning when it passes the end of the array
+        # احسب مؤشر المؤخرة، وهو يشير إلى موضع واحد بعد آخر عنصر
+        # استخدم باقي القسمة لالتفاف rear إلى البداية عندما يتجاوز نهاية المصفوفة
         rear: int = (self._front + self._size) % self.capacity()
-        # Add num to the rear
+        # أضف num إلى المؤخرة
         self._nums[rear] = num
         self._size += 1
 
     def pop(self) -> int:
         """Dequeue"""
         num: int = self.peek()
-        # Advance the front pointer by one position, wrapping to the beginning if it passes the end
+        # ورّر مؤشر المقدمة موضعًا واحدًا، مع الالتفاف إلى البداية إن تجاوز النهاية
         self._front = (self._front + 1) % self.capacity()
         self._size -= 1
         return num
@@ -205,8 +203,7 @@ class ArrayQueue:
         return res
 ```
 
-</div>
-لا يزال الطابور المنفّذ أعلاه محدوداً: فطوله غير قابل للتغيير. غير أن هذه المشكلة ليست صعبة الحل، إذ يمكننا استبدال المصفوفة بمصفوفة ديناميكية لإدخال آلية توسّع. ويمكن للقرّاء المهتمين محاولة تنفيذ ذلك بأنفسهم.
+</div>لا يزال الطابور المنفّذ أعلاه محدوداً: فطوله غير قابل للتغيير. غير أن هذه المشكلة ليست صعبة الحل، إذ يمكننا استبدال المصفوفة بمصفوفة ديناميكية لإدخال آلية توسّع. ويمكن للقرّاء المهتمين محاولة تنفيذ ذلك بأنفسهم.
 
 وتتفق استنتاجات المقارنة بين التنفيذين مع نظيراتها الخاصة بالمكدسات، ولن نعيدها هنا.
 

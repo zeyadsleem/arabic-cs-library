@@ -8,7 +8,7 @@ Author: krahets (krahets@163.com)
 def sift_down(nums: list[int], n: int, i: int):
     """Sift down from node i in a heap of size n"""
     while True:
-        # Find the node with the largest value among i, l, and r, and store its index in ma
+        # أوجد العقدة ذات القيمة الأكبر بين i و l و r، وخزّن فهرسها في ma
         l = 2 * i + 1
         r = 2 * i + 2
         ma = i
@@ -16,25 +16,25 @@ def sift_down(nums: list[int], n: int, i: int):
             ma = l
         if r < n and nums[r] > nums[ma]:
             ma = r
-        # Stop if node i is largest or both child indices l and r are out of bounds
+        # توقف إذا كانت العقدة i هي الأكبر أو خرج فهرسا الابنين l و r كلاهما عن الحدود
         if ma == i:
             break
-        # Swap the two nodes
+        # بدّل العقدتين
         nums[i], nums[ma] = nums[ma], nums[i]
-        # Continue sifting down
+        # واصل الرشّ نزولًا
         i = ma
 
 
 def heap_sort(nums: list[int]):
     """Heap sort"""
-    # Build the heap by sifting down from every non-leaf node
+    # ابنِ الكومة بالرشّ النازل من كل عقدة غير ورقية
     for i in range(len(nums) // 2 - 1, -1, -1):
         sift_down(nums, len(nums), i)
-    # Extract the largest element from the heap, repeating for n-1 rounds
+    # استخرج أكبر عنصر من الكومة، متكررًا لمدة n-1 جولة
     for i in range(len(nums) - 1, 0, -1):
-        # Swap the root with the rightmost leaf on the last level (the first and last elements of the current heap)
+        # بدّل الجذر مع الورقة الأقصى يمينًا في آخر مستوى (أول عنصر وآخر عنصر في الكومة الحالية)
         nums[0], nums[i] = nums[i], nums[0]
-        # Sift down starting at the root
+        # رشّ نازلًا بدءًا من الجذر
         sift_down(nums, i, 0)
 
 

@@ -33,19 +33,18 @@ lang: ar
 ```py
 def insertion_sort(nums: list[int]):
     """Insertion sort"""
-    # Outer loop: the sorted range is [0, i-1]
+    # الحلقة الخارجية: النطاق المرتب هو [0, i-1]
     for i in range(1, len(nums)):
         base = nums[i]
         j = i - 1
-        # Inner loop: insert base at the correct position in the sorted range [0, i-1]
+        # الحلقة الداخلية: أدخل base في الموضع الصحيح في النطاق المرتب [0, i-1]
         while j >= 0 and nums[j] > base:
-            nums[j + 1] = nums[j]  # Shift nums[j] one position to the right
+            nums[j + 1] = nums[j]  # أزح nums[j] موضعًا واحدًا إلى اليمين
             j -= 1
-        nums[j + 1] = base  # Place base at the correct position
+        nums[j + 1] = base  # ضع base في الموضع الصحيح
 ```
 
-</div>
-## خصائص الخوارزمية
+</div>## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n^2)$؛ ترتيب تكيّفي (adaptive)**: في أسوأ حالة تتطلب عمليات الإدراج $n - 1$ و$n-2$ و$\dots$ و$2$ و$1$ تكرار على التوالي، ومجموعها $(n - 1) n / 2$، لذا يكون التعقيد الزمني $O(n^2)$. وعندما تكون البيانات مرتبة بالفعل، تنتهي كل عملية إدراج مبكراً. وعندما تكون مصفوفة الإدخال مرتبة تماماً، يحقق ترتيب الإدراج أفضل تعقيد زمني له $O(n)$.
 - **التعقيد المكاني $O(1)$؛ ترتيب في المكان (in-place)**: يستخدم المؤشران $i$ و$j$ مقداراً ثابتاً من المساحة الإضافية.

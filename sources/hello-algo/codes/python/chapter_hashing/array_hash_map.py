@@ -18,7 +18,7 @@ class ArrayHashMap:
 
     def __init__(self):
         """Constructor"""
-        # Initialize an array containing 100 buckets
+        # مهّد مصفوفة تحوي 100 سلة
         self.buckets: list[Pair | None] = [None] * 100
 
     def hash_func(self, key: int) -> int:
@@ -43,7 +43,7 @@ class ArrayHashMap:
     def remove(self, key: int):
         """Remove operation"""
         index: int = self.hash_func(key)
-        # Set to None to mark removal
+        # اجعلها None لتمييز الحذف
         self.buckets[index] = None
 
     def entry_set(self) -> list[Pair]:
@@ -79,11 +79,11 @@ class ArrayHashMap:
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the hash table
+    # مهّد جدول التجزئة
     hmap = ArrayHashMap()
 
-    # Insert operation
-    # Insert the key-value pair (key, value) into the hash table
+    # عملية الإدراج
+    # أدخل الثنائية (key, value) إلى جدول التجزئة
     hmap.put(12836, "小哈")
     hmap.put(15937, "小啰")
     hmap.put(16750, "小算")
@@ -92,18 +92,18 @@ if __name__ == "__main__":
     print("\nHash table after insertion:\nKey -> Value")
     hmap.print()
 
-    # Lookup operation
-    # Look up key in the hash table to obtain value
+    # عملية البحث
+    # ابحث عن key في جدول التجزئة لتحصل على value
     name = hmap.get(15937)
     print("\nLook up student ID 15937 to obtain the name " + name)
 
-    # Remove operation
-    # Remove the key-value pair (key, value) from the hash table
+    # عملية الحذف
+    # احذف الثنائية (key, value) من جدول التجزئة
     hmap.remove(10583)
     print("\nHash table after removing 10583:\nKey -> Value")
     hmap.print()
 
-    # Traverse the hash table
+    # اجتز جدول التجزئة
     print("\nTraverse key-value pairs: Key->Value")
     for pair in hmap.entry_set():
         print(pair.key, "->", pair.val)

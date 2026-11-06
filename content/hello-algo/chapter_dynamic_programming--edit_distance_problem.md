@@ -85,25 +85,24 @@ def edit_distance_dp(s: str, t: str) -> int:
     """Edit distance: dynamic programming"""
     n, m = len(s), len(t)
     dp = [[0] * (m + 1) for _ in range(n + 1)]
-    # State transitions: first row and first column
+    # انتقالات الحالة: الصف الأول والعمود الأول
     for i in range(1, n + 1):
         dp[i][0] = i
     for j in range(1, m + 1):
         dp[0][j] = j
-    # State transitions: remaining rows and columns
+    # انتقالات الحالة: بقية الصفوف والأعمدة
     for i in range(1, n + 1):
         for j in range(1, m + 1):
             if s[i - 1] == t[j - 1]:
-                # If the two characters are equal, skip both of them
+                # إذا كان الحرفان متساويين، تخطَّ كليهما
                 dp[i][j] = dp[i - 1][j - 1]
             else:
-                # Minimum edits = the minimum among the insertion, deletion, and replacement subproblems + 1
+                # الحد الأدنى من التعديلات = الأصغر بين المسائل الجزئية للإدراج والحذف والاستبدال + 1
                 dp[i][j] = min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]) + 1
     return dp[n][m]
 ```
 
-</div>
-### تحسين المساحة
+</div>### تحسين المساحة
 
 بما أن $dp[i, j]$ تعتمد على الحالة أعلاه $dp[i-1, j]$، وعلى الحالة على اليسار $dp[i, j-1]$، وعلى الحالة في أعلى اليسار $dp[i-1, j-1]$، فإن الاجتياز الأمامي سيفقد حالة أعلى اليسار $dp[i-1, j-1]$، بينما لا يستطيع الاجتياز العكسي بناء $dp[i, j-1]$ مسبقاً، لذا لا يصلح أي من ترتيبي الاجتياز.
 
@@ -116,24 +115,24 @@ def edit_distance_dp_comp(s: str, t: str) -> int:
     """Edit distance: space-optimized dynamic programming"""
     n, m = len(s), len(t)
     dp = [0] * (m + 1)
-    # State transitions: first row
+    # انتقالات الحالة: الصف الأول
     for j in range(1, m + 1):
         dp[j] = j
-    # State transitions: remaining rows
+    # انتقالات الحالة: بقية الصفوف
     for i in range(1, n + 1):
-        # State transitions: first column
-        leftup = dp[0]  # Temporarily store dp[i-1, j-1]
+        # انتقالات الحالة: العمود الأول
+        leftup = dp[0]  # خزّن dp[i-1, j-1] مؤقتًا
         dp[0] += 1
-        # State transitions: remaining columns
+        # انتقالات الحالة: بقية الأعمدة
         for j in range(1, m + 1):
             temp = dp[j]
             if s[i - 1] == t[j - 1]:
-                # If the two characters are equal, skip both of them
+                # إذا كان الحرفان متساويين، تخطَّ كليهما
                 dp[j] = leftup
             else:
-                # Minimum edits = the minimum among the insertion, deletion, and replacement subproblems + 1
+                # الحد الأدنى من التعديلات = الأصغر بين المسائل الجزئية للإدراج والحذف والاستبدال + 1
                 dp[j] = min(dp[j - 1], dp[j], leftup) + 1
-            leftup = temp  # Update to dp[i-1, j-1] for the next iteration
+            leftup = temp  # حدّث إلى dp[i-1, j-1] للتكرار التالي
     return dp[m]
 ```
 

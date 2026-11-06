@@ -40,19 +40,19 @@ def backtrack(
     state: list[TreeNode], choices: list[TreeNode], res: list[list[TreeNode]]
 ):
     """Backtracking: example 3"""
-    # Check whether this is a solution
+    # تحقق مما إذا كان هذا حلًا
     if is_solution(state):
-        # Record the solution
+        # سجّل الحل
         record_solution(state, res)
-    # Iterate over all choices
+    # تكرّر على كل الاختيارات
     for choice in choices:
-        # Prune: check whether the choice is valid
+        # تشذيب: تحقق مما إذا كان الاختيار صحيحًا
         if is_valid(state, choice):
-            # Try: make a choice and update the state
+            # تجربة: اختر وحدّث الحالة
             make_choice(state, choice)
-            # Proceed to the next choice
+            # تابع إلى الاختيار التالي
             backtrack(state, [choice.left, choice.right], res)
-            # Backtrack: undo the choice and restore the previous state
+            # تراجع: ألغِ الاختيار وأعِد الحالة السابقة
             undo_choice(state, choice)
 
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     print("\nInitialize the binary tree")
     print_tree(root)
 
-    # Backtracking algorithm
+    # خوارزمية التتبّع الرجعي
     res = []
     backtrack(state=[], choices=[root], res=res)
 

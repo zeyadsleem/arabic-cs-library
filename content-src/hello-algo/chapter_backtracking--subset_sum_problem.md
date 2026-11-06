@@ -31,9 +31,9 @@ Unlike the permutation problem, **elements in this problem can be selected any n
 ```py
 def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
     """Solve subset sum I (with duplicate subsets)"""
-    state = []  # State (subset)
-    total = 0  # Subset sum
-    res = []  # Result list (list of subsets)
+    state = []  # الحالة (المجموعة الجزئية)
+    total = 0  # مجموع المجموعة الجزئية
+    res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
     backtrack(state, target, total, nums, res)
     return res
 ```
@@ -83,10 +83,10 @@ In addition, we have made the following two optimizations to the code:
 ```py
 def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
     """Solve subset sum I"""
-    state = []  # State (subset)
-    nums.sort()  # Sort nums
-    start = 0  # Starting index for iteration
-    res = []  # Result list (list of subsets)
+    state = []  # الحالة (المجموعة الجزئية)
+    nums.sort()  # رتّب nums
+    start = 0  # فهرس البدء للتكرار
+    res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
     backtrack(state, target, nums, start, res)
     return res
 ```
@@ -125,10 +125,10 @@ At the same time, **this problem specifies that each array element can only be s
 ```py
 def subset_sum_ii(nums: list[int], target: int) -> list[list[int]]:
     """Solve subset sum II"""
-    state = []  # State (subset)
-    nums.sort()  # Sort nums
-    start = 0  # Starting index for iteration
-    res = []  # Result list (list of subsets)
+    state = []  # الحالة (المجموعة الجزئية)
+    nums.sort()  # رتّب nums
+    start = 0  # فهرس البدء للتكرار
+    res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
     backtrack(state, target, nums, start, res)
     return res
 ```

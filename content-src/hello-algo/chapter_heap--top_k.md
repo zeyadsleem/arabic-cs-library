@@ -53,14 +53,14 @@ Example code is as follows:
 ```py
 def top_k_heap(nums: list[int], k: int) -> list[int]:
     """Use a heap to find the k largest elements in an array"""
-    # Initialize a min heap
+    # مهّد كومة صغرى
     heap = []
-    # Push the first k array elements onto the heap
+    # ادفع أول k عنصر من المصفوفة إلى الكومة
     for i in range(k):
         heapq.heappush(heap, nums[i])
-    # Starting with element k+1, keep the heap size at k
+    # بدءًا من العنصر k+1، أبقِ حجم الكومة عند k
     for i in range(k, len(nums)):
-        # If the current element is larger than the heap top, pop the top element and push the current element
+        # إذا كان العنصر الحالي أكبر من قمة الكومة، اسحب قمة الكومة وادفع العنصر الحالي
         if nums[i] > heap[0]:
             heapq.heappop(heap)
             heapq.heappush(heap, nums[i])

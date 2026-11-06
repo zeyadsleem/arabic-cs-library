@@ -16,8 +16,8 @@ class LinkedListQueue:
 
     def __init__(self):
         """Constructor"""
-        self._front: ListNode | None = None  # Head node front
-        self._rear: ListNode | None = None  # Tail node rear
+        self._front: ListNode | None = None  # عقدة الرأس front
+        self._rear: ListNode | None = None  # عقدة الذيل rear
         self._size: int = 0
 
     def size(self) -> int:
@@ -30,13 +30,13 @@ class LinkedListQueue:
 
     def push(self, num: int):
         """Enqueue"""
-        # Add num after the tail node
+        # أضف num بعد عقدة الذيل
         node = ListNode(num)
-        # If the queue is empty, make both the head and tail point to this node
+        # إذا كان الطابور فارغًا، اجعل الرأس والذيل يشيران إلى هذه العقدة معًا
         if self._front is None:
             self._front = node
             self._rear = node
-        # If the queue is not empty, add this node after the tail node
+        # إذا لم يكن الطابور فارغًا، أضف هذه العقدة بعد عقدة الذيل
         else:
             self._rear.next = node
             self._rear = node
@@ -45,7 +45,7 @@ class LinkedListQueue:
     def pop(self) -> int:
         """Dequeue"""
         num = self.peek()
-        # Remove the head node
+        # احذف العقدة الرأس
         self._front = self._front.next
         self._size -= 1
         return num
@@ -68,10 +68,10 @@ class LinkedListQueue:
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the queue
+    # مهّد الطابور
     queue = LinkedListQueue()
 
-    # Enqueue elements
+    # ادخل العناصر
     queue.push(1)
     queue.push(3)
     queue.push(2)
@@ -79,19 +79,19 @@ if __name__ == "__main__":
     queue.push(4)
     print("Queue queue =", queue.to_list())
 
-    # Access the front element
+    # وصول إلى عنصر المقدمة
     peek: int = queue.peek()
     print("Front element peek =", peek)
 
-    # Dequeue an element
+    # أخرج عنصرًا
     pop_front: int = queue.pop()
     print("Dequeued element pop_front =", pop_front)
     print("After dequeuing, queue =", queue.to_list())
 
-    # Get the queue size
+    # احصل على حجم الطابور
     size: int = queue.size()
     print("Queue size =", size)
 
-    # Check whether the queue is empty
+    # تحقق مما إذا كان الطابور فارغًا
     is_empty: bool = queue.is_empty()
     print("Is the queue empty =", is_empty)

@@ -27,13 +27,13 @@ The goal of this problem is to determine the number of ways, so **we can conside
 <p class="lang-tab__label">Python</p>
 
 ```py
-        # Backtrack
+        # تراجع
 
 def climbing_stairs_backtrack(n: int) -> int:
     """Climbing stairs: backtracking"""
-    choices = [1, 2]  # Choose to climb 1 or 2 steps
-    state = 0  # Start climbing from step 0
-    res = [0]  # Use res[0] to record the number of ways
+    choices = [1, 2]  # اختر صعود درج أو درجين
+    state = 0  # ابدأ الصعود من الدرج 0
+    res = [0]  # استخدم res[0] لتسجيل عدد الطرق
     backtrack(choices, state, n, res)
     return res[0]
 ```
@@ -100,7 +100,7 @@ The code is as follows:
 ```py
 def climbing_stairs_dfs_mem(n: int) -> int:
     """Climbing stairs: memoized search"""
-    # mem[i] stores the number of ways to reach step i; -1 means no result has been recorded
+    # يخزّن mem[i] عدد الطرق للوصول إلى الدرج i؛ ويعني -1 أنه لم تُسجل نتيجة
     mem = [-1] * (n + 1)
     return dfs(n, mem)
 ```
@@ -127,11 +127,11 @@ def climbing_stairs_dp(n: int) -> int:
     """Climbing stairs: dynamic programming"""
     if n == 1 or n == 2:
         return n
-    # Initialize the dp table to store subproblem solutions
+    # مهّد جدول dp لتخزين حلول المسائل الجزئية
     dp = [0] * (n + 1)
-    # Initial states: set the solutions to the smallest subproblems
+    # الحالات الابتدائية: حدّد حلول أصغر المسائل الجزئية
     dp[1], dp[2] = 1, 2
-    # State transitions: solve progressively larger subproblems using smaller ones
+    # انتقالات الحالة: حُلّ المسائل الجزئية الأكبر تدرّجيًا باستخدام الأصغر منها
     for i in range(3, n + 1):
         dp[i] = dp[i - 1] + dp[i - 2]
     return dp[n]

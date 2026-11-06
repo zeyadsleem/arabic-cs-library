@@ -8,35 +8,35 @@ from collections import deque
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the deque
+    # مهّد الطابور المزدوج
     deq: deque[int] = deque()
 
-    # Enqueue elements
-    deq.append(2)  # Add to the rear
+    # ادخل العناصر
+    deq.append(2)  # إضافة إلى المؤخرة
     deq.append(5)
     deq.append(4)
-    deq.appendleft(3)  # Add to the front
+    deq.appendleft(3)  # إضافة إلى المقدمة
     deq.appendleft(1)
     print("Deque deq =", deq)
 
-    # Access an element
-    front: int = deq[0]  # Front element
+    # وصول إلى عنصر
+    front: int = deq[0]  # عنصر المقدمة
     print("Front element front =", front)
-    rear: int = deq[-1]  # Rear element
+    rear: int = deq[-1]  # عنصر المؤخرة
     print("Rear element rear =", rear)
 
-    # Dequeue an element
-    pop_front: int = deq.popleft()  # Dequeue the front element
+    # أخرج عنصرًا
+    pop_front: int = deq.popleft()  # أخرج عنصر المقدمة
     print("Element dequeued from the front, pop_front =", pop_front)
     print("After dequeuing from the front, deq =", deq)
-    pop_rear: int = deq.pop()  # Dequeue the rear element
+    pop_rear: int = deq.pop()  # أخرج عنصر المؤخرة
     print("Element dequeued from the rear, pop_rear =", pop_rear)
     print("After dequeuing from the rear, deq =", deq)
 
-    # Get the deque size
+    # احصل على حجم الطابور المزدوج
     size: int = len(deq)
     print("Deque size =", size)
 
-    # Check whether the deque is empty
+    # تحقق مما إذا كان الطابور المزدوج فارغًا
     is_empty: bool = len(deq) == 0
     print("Is the deque empty =", is_empty)

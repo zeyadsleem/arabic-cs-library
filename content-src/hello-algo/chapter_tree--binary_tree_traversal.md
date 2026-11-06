@@ -28,18 +28,18 @@ Breadth-first traversal is typically implemented with the help of a "queue". The
 ```py
 def level_order(root: TreeNode | None) -> list[int]:
     """Level-order traversal"""
-    # Initialize a queue and enqueue the root
+    # مهّد طابورًا وأدخل الجذر إليه
     queue: deque[TreeNode] = deque()
     queue.append(root)
-    # Initialize a list to store the traversal sequence
+    # مهّد قائمة لتخزين تتابع الاجتياز
     res = []
     while queue:
-        node: TreeNode = queue.popleft()  # Dequeue from the queue
-        res.append(node.val)  # Store the node value
+        node: TreeNode = queue.popleft()  # أخرج من الطابور
+        res.append(node.val)  # خزّن قيمة العقدة
         if node.left is not None:
-            queue.append(node.left)  # Enqueue the left child
+            queue.append(node.left)  # أدخل الابن الأيسر إلى الطابور
         if node.right is not None:
-            queue.append(node.right)  # Enqueue the right child
+            queue.append(node.right)  # أدخل الابن الأيمن إلى الطابور
     return res
 ```
 
@@ -70,7 +70,7 @@ def post_order(root: TreeNode | None):
     """Postorder traversal"""
     if root is None:
         return
-    # Visit order: left subtree -> right subtree -> root
+    # ترتيب الزيارة: الشجرة الجزئية اليسرى -> اليمنى -> الجذر
     post_order(root=root.left)
     post_order(root=root.right)
     res.append(root.val)

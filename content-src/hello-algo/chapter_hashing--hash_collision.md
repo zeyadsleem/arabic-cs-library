@@ -46,11 +46,11 @@ class HashMapChaining:
 
     def __init__(self):
         """Constructor"""
-        self.size = 0  # Number of key-value pairs
-        self.capacity = 4  # Hash table capacity
-        self.load_thres = 2.0 / 3.0  # Load factor threshold that triggers capacity growth
-        self.extend_ratio = 2  # Capacity growth factor
-        self.buckets = [[] for _ in range(self.capacity)]  # Bucket array
+        self.size = 0  # عدد ثنائيات المفتاح-القيمة
+        self.capacity = 4  # سعة جدول التجزئة
+        self.load_thres = 2.0 / 3.0  # عتبة عامل التحميل التي تطلق نموّ السعة
+        self.extend_ratio = 2  # معامل نموّ السعة
+        self.buckets = [[] for _ in range(self.capacity)]  # مصفوفة السلال
 
     def hash_func(self, key: int) -> int:
         """Hash function"""
@@ -64,26 +64,26 @@ class HashMapChaining:
         """Lookup operation"""
         index = self.hash_func(key)
         bucket = self.buckets[index]
-        # Traverse the bucket; if key is found, return its corresponding val
+        # اجتز السلة؛ إذا وُجد key فأعد val المقابل له
         for pair in bucket:
             if pair.key == key:
                 return pair.val
-        # Return None if key is not found
+        # أعد None إذا لم يُوجد key
         return None
 
     def put(self, key: int, val: str):
         """Insert operation"""
-        # Grow the capacity when the load factor exceeds the threshold
+        # زِد السعة عندما يتجاوز عامل التحميل العتبة
         if self.load_factor() > self.load_thres:
             self.extend()
         index = self.hash_func(key)
         bucket = self.buckets[index]
-        # Traverse the bucket; if the specified key is found, update its val and return
+        # اجتز السلة؛ إذا وُجد المفتاح المحدد فحدّث val وأعد
         for pair in bucket:
             if pair.key == key:
                 pair.val = val
                 return
-        # If key is absent, append the key-value pair at the end
+        # إذا كان key غائبًا فألحق الثنائية في النهاية
         pair = Pair(key, val)
         bucket.append(pair)
         self.size += 1
@@ -92,7 +92,7 @@ class HashMapChaining:
         """Remove operation"""
         index = self.hash_func(key)
         bucket = self.buckets[index]
-        # Traverse the bucket and remove the key-value pair
+        # اجتز السلة واحذف الثنائية
         for pair in bucket:
             if pair.key == key:
                 bucket.remove(pair)
@@ -101,13 +101,13 @@ class HashMapChaining:
 
     def extend(self):
         """Grow the hash table capacity"""
-        # Keep a reference to the original hash table
+        # احتفظ بإشارة إلى جدول التجزئة الأصلي
         buckets = self.buckets
-        # Initialize a new hash table with the expanded capacity
+        # مهّد جدول تجزئة جديدًا بالسعة الموسعة
         self.capacity *= self.extend_ratio
         self.buckets = [[] for _ in range(self.capacity)]
         self.size = 0
-        # Move the key-value pairs from the original hash table to the new one
+        # انقل الثنائيات من جدول التجزئة الأصلي إلى الجديد
         for bucket in buckets:
             for pair in bucket:
                 self.put(pair.key, pair.val)
@@ -165,12 +165,12 @@ class HashMapOpenAddressing:
 
     def __init__(self):
         """Constructor"""
-        self.size = 0  # Number of key-value pairs
-        self.capacity = 4  # Hash table capacity
-        self.load_thres = 2.0 / 3.0  # Load factor threshold that triggers capacity growth
-        self.extend_ratio = 2  # Capacity growth factor
-        self.buckets: list[Pair | None] = [None] * self.capacity  # Bucket array
-        self.TOMBSTONE = Pair(-1, "-1")  # Tombstone marker
+        self.size = 0  # عدد ثنائيات المفتاح-القيمة
+        self.capacity = 4  # سعة جدول التجزئة
+        self.load_thres = 2.0 / 3.0  # عتبة عامل التحميل التي تطلق نموّ السعة
+        self.extend_ratio = 2  # معامل نموّ السعة
+        self.buckets: list[Pair | None] = [None] * self.capacity  # مصفوفة السلال
+        self.TOMBSTONE = Pair(-1, "-1")  # علامة شاهد القبر
 
     def hash_func(self, key: int) -> int:
         """Hash function"""
@@ -184,67 +184,67 @@ class HashMapOpenAddressing:
         """Find the bucket index for key"""
         index = self.hash_func(key)
         first_tombstone = -1
-        # Probe linearly until an empty bucket is reached
+        # تتبّع خطيًا حتى تصل إلى سلة فارغة
         while self.buckets[index] is not None:
-            # If key is found, return its bucket index
+            # إذا وُجد key فأعد فهرس سلته
             if self.buckets[index].key == key:
-                # If a tombstone was encountered earlier, move the key-value pair to that index
+                # إذا وُقفت في السابق على شاهد قبر، فانقل الثنائية إلى ذلك الفهرس
                 if first_tombstone != -1:
                     self.buckets[first_tombstone] = self.buckets[index]
                     self.buckets[index] = self.TOMBSTONE
-                    return first_tombstone  # Return the bucket index after the move
-                return index  # Return the bucket index
-            # Record the first tombstone encountered
+                    return first_tombstone  # أعد فهرس السلة بعد النقل
+                return index  # أعد فهرس السلة
+            # سجّل أول شاهد قبر تقابله
             if first_tombstone == -1 and self.buckets[index] is self.TOMBSTONE:
                 first_tombstone = index
-            # Calculate the bucket index, wrapping to the beginning after the end
+            # احسب فهرس السلة مع الالتفاف إلى البداية بعد النهاية
             index = (index + 1) % self.capacity
-        # If key is absent, return the index for insertion
+        # إذا كان key غائبًا فأعد الفهرس المخصصة للإدراج
         return index if first_tombstone == -1 else first_tombstone
 
     def get(self, key: int) -> str:
         """Lookup operation"""
-        # Find the bucket index for key
+        # أوجد فهرس سلة key
         index = self.find_bucket(key)
-        # If the key-value pair is found, return its val
+        # إذا وُجدت الثنائية فأعد val الخاص بها
         if self.buckets[index] not in [None, self.TOMBSTONE]:
             return self.buckets[index].val
-        # Return None if the key-value pair is absent
+        # أعد None إذا كانت الثنائية غائبة
         return None
 
     def put(self, key: int, val: str):
         """Insert operation"""
-        # Grow the capacity when the load factor exceeds the threshold
+        # زِد السعة عندما يتجاوز عامل التحميل العتبة
         if self.load_factor() > self.load_thres:
             self.extend()
-        # Find the bucket index for key
+        # أوجد فهرس سلة key
         index = self.find_bucket(key)
-        # If the key-value pair is found, overwrite val and return
+        # إذا وُجدت الثنائية فاكتب val فوقها وأعد
         if self.buckets[index] not in [None, self.TOMBSTONE]:
             self.buckets[index].val = val
             return
-        # If the key-value pair is absent, insert it
+        # إذا كانت الثنائية غائبة فأدخلها
         self.buckets[index] = Pair(key, val)
         self.size += 1
 
     def remove(self, key: int):
         """Remove operation"""
-        # Find the bucket index for key
+        # أوجد فهرس سلة key
         index = self.find_bucket(key)
-        # If the key-value pair is found, replace it with a tombstone
+        # إذا وُجدت الثنائية فاستبدلها بشاهد قبر
         if self.buckets[index] not in [None, self.TOMBSTONE]:
             self.buckets[index] = self.TOMBSTONE
             self.size -= 1
 
     def extend(self):
         """Grow the hash table capacity"""
-        # Keep a reference to the original hash table
+        # احتفظ بإشارة إلى جدول التجزئة الأصلي
         buckets_tmp = self.buckets
-        # Initialize a new hash table with the expanded capacity
+        # مهّد جدول تجزئة جديدًا بالسعة الموسعة
         self.capacity *= self.extend_ratio
         self.buckets = [None] * self.capacity
         self.size = 0
-        # Move the key-value pairs from the original hash table to the new one
+        # انقل الثنائيات من جدول التجزئة الأصلي إلى الجديد
         for pair in buckets_tmp:
             if pair not in [None, self.TOMBSTONE]:
                 self.put(pair.key, pair.val)

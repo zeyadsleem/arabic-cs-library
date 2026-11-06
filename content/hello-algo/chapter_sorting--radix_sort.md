@@ -36,21 +36,20 @@ $$
 ```py
 def radix_sort(nums: list[int]):
     """Radix sort"""
-    # Get the largest array element to determine the maximum number of digits
+    # احصل على أكبر عنصر في المصفوفة لتحديد العدد الأقصى من الأرقام
     m = max(nums)
-    # Process digits from least significant to most significant
+    # عالج الأرقام من الأقل أهمية إلى الأهم
     exp = 1
     while exp <= m:
-        # Apply counting sort to the k-th digit of the array elements
+        # طبّق الترتيب بالعدّ على الرقم k في عناصر المصفوفة
         # k = 1 -> exp = 1
         # k = 2 -> exp = 10
-        # That is, exp = 10^(k-1)
+        # أي أن exp = 10^(k-1)
         counting_sort_digit(nums, exp)
         exp *= 10
 ```
 
-</div>
-<div class="note">
+</div><div class="note">
 <p class="note__title">لماذا نبدأ الترتيب من أقل خانة؟</p>
 
 في جولات الترتيب المتعاقبة، تتجاوز الجولة اللاحقة نتيجة الجولة السابقة. فمثلاً، إذا أسفرت الجولة الأولى عن $a < b$ لكن أسفرت الجولة الثانية عن $a > b$، فإن نتيجة الجولة الثانية هي التي تسود. ولأن الخانات العليا ذات أولوية أعلى من الخانات الدنيا، ينبغي أن نرتّب الخانات الدنيا أولاً ثم الخانات العليا.

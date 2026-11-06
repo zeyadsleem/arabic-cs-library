@@ -25,19 +25,18 @@ lang: ar
 def selection_sort(nums: list[int]):
     """Selection sort"""
     n = len(nums)
-    # Outer loop: the unsorted range is [i, n-1]
+    # الحلقة الخارجية: النطاق غير المرتب هو [i, n-1]
     for i in range(n - 1):
-        # Inner loop: find the smallest element in the unsorted range
+        # الحلقة الداخلية: أوجد أصغر عنصر في النطاق غير المرتب
         k = i
         for j in range(i + 1, n):
             if nums[j] < nums[k]:
-                k = j  # Record the index of the smallest element
-        # Swap the smallest element with the first element of the unsorted range
+                k = j  # سجّل فهرس أصغر عنصر
+        # بدّل أصغر عنصر مع أول عنصر في النطاق غير المرتب
         nums[i], nums[k] = nums[k], nums[i]
 ```
 
-</div>
-## خصائص الخوارزمية
+</div>## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n^2)$؛ ترتيب غير تكيّفي (non-adaptive)**: تضم الحلقة الخارجية $n - 1$ جولة إجمالاً. وتُنفَّذ الحلقة الداخلية $n - 1$ مرة في الجولة الأولى ومرة واحدة في الجولة الأخيرة. وبذلك تُنفَّذ $n - 1$ و$n - 2$ و$\dots$ و$2$ و$1$ مرة على التوالي، ومجموعها $\frac{n(n - 1)}{2}$.
 - **التعقيد المكاني $O(1)$؛ ترتيب في المكان (in-place)**: يستخدم المؤشران $i$ و$j$ مقداراً ثابتاً من المساحة الإضافية.

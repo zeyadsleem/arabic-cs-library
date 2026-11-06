@@ -12,11 +12,11 @@ from modules import print_dict
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the hash table
+    # مهّد جدول التجزئة
     hmap = dict[int, str]()
 
-    # Insert operation
-    # Insert the key-value pair (key, value) into the hash table
+    # عملية الإدراج
+    # أدخل الثنائية (key, value) إلى جدول التجزئة
     hmap[12836] = "小哈"
     hmap[15937] = "小啰"
     hmap[16750] = "小算"
@@ -25,18 +25,18 @@ if __name__ == "__main__":
     print("\nHash table after insertion:\nKey -> Value")
     print_dict(hmap)
 
-    # Lookup operation
-    # Look up key in the hash table to obtain value
+    # عملية البحث
+    # ابحث عن key في جدول التجزئة لتحصل على value
     name: str = hmap[15937]
     print("\nLook up student ID 15937 to obtain the name " + name)
 
-    # Remove operation
-    # Remove the key-value pair (key, value) from the hash table
+    # عملية الحذف
+    # احذف الثنائية (key, value) من جدول التجزئة
     hmap.pop(10583)
     print("\nHash table after removing 10583:\nKey -> Value")
     print_dict(hmap)
 
-    # Traverse the hash table
+    # اجتز جدول التجزئة
     print("\nTraverse key-value pairs: Key->Value")
     for key, value in hmap.items():
         print(key, "->", value)

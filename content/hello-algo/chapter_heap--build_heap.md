@@ -35,15 +35,14 @@ lang: ar
 ```py
     def __init__(self, nums: list[int]):
         """Constructor: build a heap from the input list"""
-        # Place the list elements in the heap without changing their order
+        # ضع عناصر القائمة في الكومة دون تغيير ترتيبها
         self.max_heap = nums
-        # Sift down from every non-leaf node
+        # رشّ من كل عقدة غير ورقية نزولًا
         for i in range(self.parent(self.size() - 1), -1, -1):
             self.sift_down(i)
 ```
 
-</div>
-## تحليل التعقيد
+</div>## تحليل التعقيد
 
 لنحاول الآن اشتقاق التعقيد الزمني لطريقة بناء الكومة الثانية هذه.
 

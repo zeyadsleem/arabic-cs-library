@@ -9,20 +9,20 @@ def backtrack(
     state: list[int], choices: list[int], selected: list[bool], res: list[list[int]]
 ):
     """Backtracking: permutations I"""
-    # Record a solution when the state length equals the number of elements
+    # سجّل حلًا حين يساوي طول الحالة عدد العناصر
     if len(state) == len(choices):
         res.append(list(state))
         return
-    # Iterate over all choices
+    # تكرّر على كل الاختيارات
     for i, choice in enumerate(choices):
-        # Prune: do not choose an element more than once
+        # تشذيب: لا تختر عنصرًا أكثر من مرة
         if not selected[i]:
-            # Try: make a choice and update the state
+            # تجربة: اختر وحدّث الحالة
             selected[i] = True
             state.append(choice)
-            # Proceed to the next choice
+            # تابع إلى الاختيار التالي
             backtrack(state, choices, selected, res)
-            # Backtrack: undo the choice and restore the previous state
+            # تراجع: ألغِ الاختيار وأعِد الحالة السابقة
             selected[i] = False
             state.pop()
 

@@ -10,11 +10,11 @@ def min_cost_climbing_stairs_dp(cost: list[int]) -> int:
     n = len(cost) - 1
     if n == 1 or n == 2:
         return cost[n]
-    # Initialize the dp table to store subproblem solutions
+    # مهّد جدول dp لتخزين حلول المسائل الجزئية
     dp = [0] * (n + 1)
-    # Initial states: set the solutions to the smallest subproblems
+    # الحالات الابتدائية: حدّد حلول أصغر المسائل الجزئية
     dp[1], dp[2] = cost[1], cost[2]
-    # State transitions: solve progressively larger subproblems using smaller ones
+    # انتقالات الحالة: حُلّ المسائل الجزئية الأكبر تدرّجيًا باستخدام الأصغر منها
     for i in range(3, n + 1):
         dp[i] = min(dp[i - 1], dp[i - 2]) + cost[i]
     return dp[n]

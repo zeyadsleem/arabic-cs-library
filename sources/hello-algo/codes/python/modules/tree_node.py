@@ -11,16 +11,16 @@ class TreeNode:
     """Binary tree node class"""
 
     def __init__(self, val: int = 0):
-        self.val: int = val  # Node value
-        self.height: int = 0  # Node height
-        self.left: TreeNode | None = None  # Reference to the left child
-        self.right: TreeNode | None = None  # Reference to the right child
+        self.val: int = val  # قيمة العقدة
+        self.height: int = 0  # ارتفاع العقدة
+        self.left: TreeNode | None = None  # إشارة إلى الابن الأيسر
+        self.right: TreeNode | None = None  # إشارة إلى الابن الأيمن
 
-    # For the serialization rules, see:
+    # للاطلاع على قواعد التسلسل، انظر:
     # https://www.hello-algo.com/en/chapter_tree/array_representation_of_tree/
-    # Array representation of the binary tree:
+    # التمثيل المصفوفي للشجرة الثنائية:
     # [1, 2, 3, 4, None, 6, 7, 8, 9, None, None, 12, None, None, 15]
-    # Linked representation of the binary tree:
+    # التمثيل المترابط للشجرة الثنائية:
     #             /——— 15
     #         /——— 7
     #     /——— 3
@@ -35,12 +35,12 @@ class TreeNode:
 
 def list_to_tree_dfs(arr: list[int], i: int) -> TreeNode | None:
     """Deserialize a list into a binary tree: recursion"""
-    # Return None if the index is out of bounds or the corresponding element is None
+    # أعد None إذا خرج الفهرس عن الحدود أو كان العنصر المقابل None
     if i < 0 or i >= len(arr) or arr[i] is None:
         return None
-    # Create the current node
+    # أنشئ العقدة الحالية
     root = TreeNode(arr[i])
-    # Recursively build the left and right subtrees
+    # ابنِ الشجرتين الجزئيتين اليسرى واليمنى تعاوديًا
     root.left = list_to_tree_dfs(arr, 2 * i + 1)
     root.right = list_to_tree_dfs(arr, 2 * i + 2)
     return root

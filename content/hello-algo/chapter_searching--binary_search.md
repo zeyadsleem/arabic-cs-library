@@ -38,23 +38,22 @@ lang: ar
 ```py
 def binary_search(nums: list[int], target: int) -> int:
     """Binary search (closed interval)"""
-    # Initialize the closed interval [0, n-1], with i and j pointing to the first and last elements
+    # مهّد المجال المغلق [0, n-1]، حيث يشير i و j إلى أول عنصر وآخر عنصر
     i, j = 0, len(nums) - 1
-    # Loop until the search interval is empty (when i > j)
+    # حلّق حتى يصير مجال البحث فارغًا (عندما i > j)
     while i <= j:
-        # Python integers can grow arbitrarily large, subject to available memory, so integer overflow is not a concern
-        m = (i + j) // 2  # Calculate the midpoint index m
+        # يمكن للأعداد الصحيحة في Python النمو بحرية بقدر الذاكرة المتاحة، فلا شأن بفيض العدد الصحيح
+        m = (i + j) // 2  # احسب فهرس نقطة المنتصف m
         if nums[m] < target:
-            i = m + 1  # In this case, target must be in [m+1, j] if it exists
+            i = m + 1  # في هذه الحالة، لا بد أن يكون الهدف في [m+1, j] إن وُجد
         elif nums[m] > target:
-            j = m - 1  # In this case, target must be in [i, m-1] if it exists
+            j = m - 1  # في هذه الحالة، لا بد أن يكون الهدف في [i, m-1] إن وُجد
         else:
-            return m  # The target element was found; return its index
-    return -1  # The target element was not found; return -1
+            return m  # وُجد العنصر الهدف؛ أعد فهرسه
+    return -1  # لم يُوجد العنصر الهدف؛ أعد -1
 ```
 
 </div>
-
 **التعقيد الزمني $O(\log n)$**: في حلقة البحث الثنائي، يُقلَّص المجال إلى النصف في كل جولة، لذا يكون عدد التكرارات $\log_2 n$.
 
 **التعقيد المكاني $O(1)$**: يستخدم المؤشران $i$ و$j$ مساحة ثابتة الحجم.
@@ -71,22 +70,21 @@ def binary_search(nums: list[int], target: int) -> int:
 ```py
 def binary_search_lcro(nums: list[int], target: int) -> int:
     """Binary search (left-closed, right-open interval)"""
-    # Initialize the left-closed, right-open interval [0, n), with i at the first element and j one past the last
+    # مهّد المجال المغلق يسارًا المفتوح يمينًا [0, n)، حيث i عند أول عنصر و j بعد الأخير
     i, j = 0, len(nums)
-    # Loop until the search interval is empty (when i = j)
+    # حلّق حتى يصير مجال البحث فارغًا (عندما i = j)
     while i < j:
-        m = (i + j) // 2  # Calculate the midpoint index m
+        m = (i + j) // 2  # احسب فهرس نقطة المنتصف m
         if nums[m] < target:
-            i = m + 1  # In this case, target must be in [m+1, j) if it exists
+            i = m + 1  # في هذه الحالة، لا بد أن يكون الهدف في [m+1, j) إن وُجد
         elif nums[m] > target:
-            j = m  # In this case, target must be in [i, m) if it exists
+            j = m  # في هذه الحالة، لا بد أن يكون الهدف في [i, m) إن وُجد
         else:
-            return m  # The target element was found; return its index
-    return -1  # The target element was not found; return -1
+            return m  # وُجد العنصر الهدف؛ أعد فهرسه
+    return -1  # لم يُوجد العنصر الهدف؛ أعد -1
 ```
 
 </div>
-
 وكما يوضح الشكل أدناه، تختلف تهيئة خوارزمية البحث الثنائي وشرط الحلقة وعمليات تقليص المجال في ظل تمثيلي المجال كليهما.
 
 وبما أن الحدين الأيسر والأيمن في تمثيل «المجال المغلق» معرّفان كليهما كمغلقين، فإن عمليتي تقليص المجال عبر المؤشرين $i$ و$j$ متماثلتان أيضاً. وهذا يجعل الأخطاء أقل احتمالاً، **لذا يُوصى عموماً بنهج «المجال المغلق»**.

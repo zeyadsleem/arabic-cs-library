@@ -28,20 +28,20 @@ The code is as follows:
 ```py
 def bucket_sort(nums: list[float]):
     """Bucket sort"""
-    # Initialize k = n/2 buckets, expecting 2 elements per bucket
+    # مهّد k = n/2 سلة، متوقعًا 2 عنصر لكل سلة
     k = len(nums) // 2
     buckets = [[] for _ in range(k)]
-    # 1. Distribute the array elements among the buckets
+    # 1. وزّع عناصر المصفوفة على السلال
     for num in nums:
-        # The input range is [0, 1); use num * k to map each value to an index in [0, k-1]
+        # نطاق المُدخل هو [0, 1)؛ استخدم num * k لربط كل قيمة بفهرس في [0, k-1]
         i = int(num * k)
-        # Add num to bucket i
+        # أضف num إلى السلة i
         buckets[i].append(num)
-    # 2. Sort each bucket
+    # 2. رتّب كل سلة
     for bucket in buckets:
-        # Use the built-in sorting function, or replace it with another sorting algorithm
+        # استخدم دالة الترتيب المدمجة، أو استبدلها بخوارزمية ترتيب أخرى
         bucket.sort()
-    # 3. Traverse the buckets to combine the results
+    # 3. اجتز السلال لدمج النتائج
     i = 0
     for bucket in buckets:
         for num in bucket:

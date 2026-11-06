@@ -47,22 +47,21 @@ $$
 def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
     """Unbounded knapsack: dynamic programming"""
     n = len(wgt)
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [[0] * (cap + 1) for _ in range(n + 1)]
-    # State transitions
+    # انتقالات الحالة
     for i in range(1, n + 1):
         for c in range(1, cap + 1):
             if wgt[i - 1] > c:
-                # If item i exceeds the remaining capacity, do not choose it
+                # إذا تجاوز العنصر i السعة المتبقية فلا تختره
                 dp[i][c] = dp[i - 1][c]
             else:
-                # Take the larger value obtained by excluding and including item i
+                # خذ القيمة الأكبر الناتجة عن استبعاد العنصر i وتضمينه
                 dp[i][c] = max(dp[i - 1][c], dp[i][c - wgt[i - 1]] + val[i - 1])
     return dp[n][cap]
 ```
 
-</div>
-### تحسين المساحة
+</div>### تحسين المساحة
 
 بما أن الحالة الحالية تنتقل من حالات على اليسار وفوق، **فبعد تحسين المساحة ينبغي اجتياز كل صف في جدول $dp$ بالترتيب الأمامي**.
 
@@ -77,23 +76,22 @@ def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
 def unbounded_knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
     """Unbounded knapsack: space-optimized dynamic programming"""
     n = len(wgt)
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [0] * (cap + 1)
-    # State transitions
+    # انتقالات الحالة
     for i in range(1, n + 1):
-        # Traverse in increasing order
+        # اجتز بترتيب تصاعدي
         for c in range(1, cap + 1):
             if wgt[i - 1] > c:
-                # If item i exceeds the remaining capacity, do not choose it
+                # إذا تجاوز العنصر i السعة المتبقية فلا تختره
                 dp[c] = dp[c]
             else:
-                # Take the larger value obtained by excluding and including item i
+                # خذ القيمة الأكبر الناتجة عن استبعاد العنصر i وتضمينه
                 dp[c] = max(dp[c], dp[c - wgt[i - 1]] + val[i - 1])
     return dp[cap]
 ```
 
-</div>
-## مشكلة تغيير العملات
+</div>## مشكلة تغيير العملات
 
 تمثل مشكلة الحقيبة صنفاً واسعاً من مسائل البرمجة الديناميكية، ولها متغيّرات كثيرة، مثل مشكلة تغيير العملات.
 
@@ -152,25 +150,24 @@ def coin_change_dp(coins: list[int], amt: int) -> int:
     """Coin change: dynamic programming"""
     n = len(coins)
     MAX = amt + 1
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [[0] * (amt + 1) for _ in range(n + 1)]
-    # State transitions: first row and first column
+    # انتقالات الحالة: الصف الأول والعمود الأول
     for a in range(1, amt + 1):
         dp[0][a] = MAX
-    # State transitions: remaining rows and columns
+    # انتقالات الحالة: بقية الصفوف والأعمدة
     for i in range(1, n + 1):
         for a in range(1, amt + 1):
             if coins[i - 1] > a:
-                # If the coin value exceeds the current amount a, do not choose coin i
+                # إذا تجاوزت قيمة العملة المبلغ الحالي a، فلا تختر العملة i
                 dp[i][a] = dp[i - 1][a]
             else:
-                # Take the smaller result of not choosing and choosing coin i
+                # خذ النتيجة الأصغر بين عدم اختيار العملة i واختيارها
                 dp[i][a] = min(dp[i - 1][a], dp[i][a - coins[i - 1]] + 1)
     return dp[n][amt] if dp[n][amt] != MAX else -1
 ```
 
-</div>
-### تحسين المساحة
+</div>### تحسين المساحة
 
 يُعالَج تحسين المساحة لمشكلة تغيير العملات بالطريقة نفسها المتبعة في مشكلة الحقيبة غير المحدودة:
 
@@ -182,24 +179,23 @@ def coin_change_dp_comp(coins: list[int], amt: int) -> int:
     """Coin change: space-optimized dynamic programming"""
     n = len(coins)
     MAX = amt + 1
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [MAX] * (amt + 1)
     dp[0] = 0
-    # State transitions
+    # انتقالات الحالة
     for i in range(1, n + 1):
-        # Traverse in increasing order
+        # اجتز بترتيب تصاعدي
         for a in range(1, amt + 1):
             if coins[i - 1] > a:
-                # If the coin value exceeds the current amount a, do not choose coin i
+                # إذا تجاوزت قيمة العملة المبلغ الحالي a، فلا تختر العملة i
                 dp[a] = dp[a]
             else:
-                # Take the smaller result of not choosing and choosing coin i
+                # خذ النتيجة الأصغر بين عدم اختيار العملة i واختيارها
                 dp[a] = min(dp[a], dp[a - coins[i - 1]] + 1)
     return dp[amt] if dp[amt] != MAX else -1
 ```
 
-</div>
-## مشكلة تغيير العملات II
+</div>## مشكلة تغيير العملات II
 
 <div class="note">
 
@@ -230,25 +226,24 @@ $$
 def coin_change_ii_dp(coins: list[int], amt: int) -> int:
     """Coin change II: dynamic programming"""
     n = len(coins)
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [[0] * (amt + 1) for _ in range(n + 1)]
-    # Initialize the first column
+    # مهّد العمود الأول
     for i in range(n + 1):
         dp[i][0] = 1
-    # State transitions
+    # انتقالات الحالة
     for i in range(1, n + 1):
         for a in range(1, amt + 1):
             if coins[i - 1] > a:
-                # If the coin value exceeds the current amount a, do not choose coin i
+                # إذا تجاوزت قيمة العملة المبلغ الحالي a، فلا تختر العملة i
                 dp[i][a] = dp[i - 1][a]
             else:
-                # Add the numbers of ways without and with coin i
+                # اجمع عدد الطرق بدون العملة i ومعها
                 dp[i][a] = dp[i - 1][a] + dp[i][a - coins[i - 1]]
     return dp[n][amt]
 ```
 
-</div>
-### تحسين المساحة
+</div>### تحسين المساحة
 
 يُعالَج تحسين المساحة بالطريقة نفسها، إذ يكفي حذف بُعد العملات:
 <div class="lang-tab">
@@ -258,18 +253,18 @@ def coin_change_ii_dp(coins: list[int], amt: int) -> int:
 def coin_change_ii_dp_comp(coins: list[int], amt: int) -> int:
     """Coin change II: space-optimized dynamic programming"""
     n = len(coins)
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [0] * (amt + 1)
     dp[0] = 1
-    # State transitions
+    # انتقالات الحالة
     for i in range(1, n + 1):
-        # Traverse in increasing order
+        # اجتز بترتيب تصاعدي
         for a in range(1, amt + 1):
             if coins[i - 1] > a:
-                # If the coin value exceeds the current amount a, do not choose coin i
+                # إذا تجاوزت قيمة العملة المبلغ الحالي a، فلا تختر العملة i
                 dp[a] = dp[a]
             else:
-                # Add the numbers of ways without and with coin i
+                # اجمع عدد الطرق بدون العملة i ومعها
                 dp[a] = dp[a] + dp[a - coins[i - 1]]
     return dp[amt]
 ```

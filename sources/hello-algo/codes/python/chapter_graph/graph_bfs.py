@@ -15,30 +15,30 @@ from graph_adjacency_list import GraphAdjList
 
 def graph_bfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
     """Breadth-first traversal"""
-    # Represent the graph with an adjacency list to access all neighbors of a given vertex
-    # Vertex traversal sequence
+    # مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين
+    # تتابع اجتياز الرؤوس
     res = []
-    # Hash set recording visited vertices
+    # مجموعة تجزئة تسجل الرؤوس المزارة
     visited = set[Vertex]([start_vet])
-    # Use a queue to implement BFS
+    # استخدم طابورًا لتنفيذ BFS
     que = deque[Vertex]([start_vet])
-    # Starting from start_vet, loop until all reachable vertices have been visited
+    # بدءًا من start_vet، حلّق حتى تُزار جميع الرؤوس القابلة للوصول
     while len(que) > 0:
-        vet = que.popleft()  # Dequeue the front vertex
-        res.append(vet)  # Record the visited vertex
-        # Traverse all neighbors of this vertex
+        vet = que.popleft()  # أخرج الرأس الموجود في مقدمة الطابور
+        res.append(vet)  # سجّل الرأس المزار
+        # اجتز كل أجوار هذا الرأس
         for adj_vet in graph.adj_list[vet]:
             if adj_vet in visited:
-                continue  # Skip vertices that have already been visited
-            que.append(adj_vet)  # Enqueue only unvisited vertices
-            visited.add(adj_vet)  # Mark this vertex as visited
-    # Return the vertex traversal sequence
+                continue  # تخطَّ الرؤوس التي زُرت سابقًا
+            que.append(adj_vet)  # أدخل إلى الطابور الرؤوس غير المزارة فقط
+            visited.add(adj_vet)  # علّم هذا الرأس بوصفه مزارًا
+    # أعد تتابع اجتياز الرؤوس
     return res
 
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the undirected graph
+    # مهّد الرسم البياني غير الموجّه
     v = vals_to_vets([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     edges = [
         [v[0], v[1]],
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     print("\nGraph after initialization:")
     graph.print()
 
-    # Breadth-first traversal
+    # الاجتياز بالعرض أولًا
     res = graph_bfs(graph, v[0])
     print("\nVertex sequence from breadth-first traversal (BFS):")
     print(vets_to_vals(res))

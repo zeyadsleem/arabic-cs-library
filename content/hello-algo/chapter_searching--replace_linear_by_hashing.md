@@ -28,7 +28,7 @@ lang: ar
 ```py
 def two_sum_brute_force(nums: list[int], target: int) -> list[int]:
     """Method 1: brute-force enumeration"""
-    # Two nested loops give a time complexity of O(n^2)
+    # حلقتان متداخلتان تعطيان تعقيدًا زمنيًا O(n^2)
     for i in range(len(nums) - 1):
         for j in range(i + 1, len(nums)):
             if nums[i] + nums[j] == target:
@@ -36,8 +36,7 @@ def two_sum_brute_force(nums: list[int], target: int) -> list[int]:
     return []
 ```
 
-</div>
-التعقيد الزمني لهذه الطريقة هو $O(n^2)$ والتعقيد المكاني هو $O(1)$، مما يجعلها مستهلكة للوقت للغاية عند المدخلات الكبيرة.
+</div>التعقيد الزمني لهذه الطريقة هو $O(n^2)$ والتعقيد المكاني هو $O(1)$، مما يجعلها مستهلكة للوقت للغاية عند المدخلات الكبيرة.
 
 ## البحث القائم على التجزئة: مقايضة المكان بالزمن
 
@@ -54,9 +53,9 @@ def two_sum_brute_force(nums: list[int], target: int) -> list[int]:
 ```py
 def two_sum_hash_table(nums: list[int], target: int) -> list[int]:
     """Method 2: auxiliary hash table"""
-    # The auxiliary hash table uses O(n) space
+    # جدول التجزئة المساعد يستخدم مساحة O(n)
     dic = {}
-    # A single loop with average O(1) hash operations gives an average time complexity of O(n)
+    # حلقة واحدة بعمليات تجزئة متوسطة O(1) تعطي تعقيدًا زمنيًا متوسطًا O(n)
     for i in range(len(nums)):
         if target - nums[i] in dic:
             return [dic[target - nums[i]], i]
@@ -64,7 +63,6 @@ def two_sum_hash_table(nums: list[int], target: int) -> list[int]:
     return []
 ```
 
-</div>
-تقلل هذه الطريقة التعقيد الزمني من $O(n^2)$ إلى $O(n)$ عبر البحث القائم على التجزئة، مما يحسّن كفاءة زمن التشغيل تحسيناً كبيراً.
+</div>تقلل هذه الطريقة التعقيد الزمني من $O(n^2)$ إلى $O(n)$ عبر البحث القائم على التجزئة، مما يحسّن كفاءة زمن التشغيل تحسيناً كبيراً.
 
 وبما أنه يلزم الاحتفاظ بجدول تجزئة إضافي، فإن التعقيد المكاني هو $O(n)$. **ومع ذلك، تقدم هذه الطريقة مقايضة زمنية-مكانية إجمالية أكثر توازناً، مما يجعلها الحل الأمثل لهذه المسألة**.

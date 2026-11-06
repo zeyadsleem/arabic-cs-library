@@ -16,9 +16,9 @@ class MaxHeap:
 
     def __init__(self, nums: list[int]):
         """Constructor: build a heap from the input list"""
-        # Place the list elements in the heap without changing their order
+        # ضع عناصر القائمة في الكومة دون تغيير ترتيبها
         self.max_heap = nums
-        # Sift down from every non-leaf node
+        # رشّ من كل عقدة غير ورقية نزولًا
         for i in range(self.parent(self.size() - 1), -1, -1):
             self.sift_down(i)
 
@@ -32,7 +32,7 @@ class MaxHeap:
 
     def parent(self, i: int) -> int:
         """Get the parent index"""
-        return (i - 1) // 2  # Floor division
+        return (i - 1) // 2  # قسمة مقربة نزولًا
 
     def swap(self, i: int, j: int):
         """Swap elements"""
@@ -52,53 +52,53 @@ class MaxHeap:
 
     def push(self, val: int):
         """Push an element onto the heap"""
-        # Add a node
+        # أضف عقدة
         self.max_heap.append(val)
-        # Sift up
+        # رشّ صاعدًا
         self.sift_up(self.size() - 1)
 
     def sift_up(self, i: int):
         """Sift up starting from node i"""
         while True:
-            # Get the parent of node i
+            # احصل على أصل العقدة i
             p = self.parent(i)
-            # Stop sifting when the root has been passed or the node needs no repair
+            # توقف عن الرشّ عند تجاوز الجذر أو عدم حاجة العقدة إلى إصلاح
             if p < 0 or self.max_heap[i] <= self.max_heap[p]:
                 break
-            # Swap the two nodes
+            # بدّل العقدتين
             self.swap(i, p)
-            # Continue sifting up
+            # واصل الرشّ صعودًا
             i = p
 
     def pop(self) -> int:
         """Pop an element from the heap"""
-        # Handle an empty heap
+        # عالِج الكومة الفارغة
         if self.is_empty():
             raise IndexError("Heap is empty")
-        # Swap the root with the rightmost leaf on the last level (swap the first and last elements)
+        # بدّل الجذر مع الورقة الأقصى يمينًا في آخر مستوى (بدّل أول عنصر وآخر عنصر)
         self.swap(0, self.size() - 1)
-        # Remove a node
+        # احذف عقدة
         val = self.max_heap.pop()
-        # Sift down
+        # رشّ نازلًا
         self.sift_down(0)
-        # Return the top element of the heap
+        # أعد عنصر قمة الكومة
         return val
 
     def sift_down(self, i: int):
         """Sift down starting from node i"""
         while True:
-            # Find the node with the largest value among i, l, and r, and store its index in ma
+            # أوجد العقدة ذات القيمة الأكبر بين i و l و r، وخزّن فهرسها في ma
             l, r, ma = self.left(i), self.right(i), i
             if l < self.size() and self.max_heap[l] > self.max_heap[ma]:
                 ma = l
             if r < self.size() and self.max_heap[r] > self.max_heap[ma]:
                 ma = r
-            # Stop if node i is largest or both child indices l and r are out of bounds
+            # توقف إذا كانت العقدة i هي الأكبر أو خرج فهرسا الابنين l و r كلاهما عن الحدود
             if ma == i:
                 break
-            # Swap the two nodes
+            # بدّل العقدتين
             self.swap(i, ma)
-            # Continue sifting down
+            # واصل الرشّ نزولًا
             i = ma
 
     def print(self):
@@ -108,30 +108,30 @@ class MaxHeap:
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize a max heap
+    # مهّد كومة كبرى
     max_heap = MaxHeap([9, 8, 6, 6, 7, 5, 2, 1, 4, 3, 6, 2])
     print("\nAfter building a heap from the input list:")
     max_heap.print()
 
-    # Get the top element of the heap
+    # احصل على عنصر قمة الكومة
     peek = max_heap.peek()
     print(f"\nTop element of the heap: {peek}")
 
-    # Push an element onto the heap
+    # ادفع عنصرًا إلى الكومة
     val = 7
     max_heap.push(val)
     print(f"\nAfter pushing element {val} onto the heap:")
     max_heap.print()
 
-    # Pop the top element from the heap
+    # اسحب عنصر القمة من الكومة
     peek = max_heap.pop()
     print(f"\nAfter popping top element {peek} from the heap:")
     max_heap.print()
 
-    # Get the heap size
+    # احصل على حجم الكومة
     size = max_heap.size()
     print(f"\nNumber of elements in the heap: {size}")
 
-    # Check whether the heap is empty
+    # تحقق مما إذا كانت الكومة فارغة
     is_empty = max_heap.is_empty()
     print(f"\nIs the heap empty: {is_empty}")

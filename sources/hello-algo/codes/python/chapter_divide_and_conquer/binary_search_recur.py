@@ -7,26 +7,26 @@ Author: krahets (krahets@163.com)
 
 def dfs(nums: list[int], target: int, i: int, j: int) -> int:
     """Binary search: problem f(i, j)"""
-    # If the interval is empty, the target is absent; return -1
+    # إذا كان المجال فارغًا فالهدف غائب؛ أعد -1
     if i > j:
         return -1
-    # Calculate the midpoint index m
+    # احسب فهرس نقطة المنتصف m
     m = (i + j) // 2
     if nums[m] < target:
-        # Recurse on subproblem f(m+1, j)
+        # تعاود على المسألة الجزئية f(m+1, j)
         return dfs(nums, target, m + 1, j)
     elif nums[m] > target:
-        # Recurse on subproblem f(i, m-1)
+        # تعاود على المسألة الجزئية f(i, m-1)
         return dfs(nums, target, i, m - 1)
     else:
-        # The target element was found; return its index
+        # وُجد العنصر الهدف؛ أعد فهرسه
         return m
 
 
 def binary_search(nums: list[int], target: int) -> int:
     """Binary search"""
     n = len(nums)
-    # Solve problem f(0, n-1)
+    # حُلّ المسألة f(0, n-1)
     return dfs(nums, target, 0, n - 1)
 
 
@@ -35,6 +35,6 @@ if __name__ == "__main__":
     target = 6
     nums = [1, 3, 6, 8, 12, 15, 23, 26, 31, 35]
 
-    # Binary search (closed interval)
+    # البحث الثنائي (مجال مغلق)
     index = binary_search(nums, target)
     print("Index of target element 6 = ", index)

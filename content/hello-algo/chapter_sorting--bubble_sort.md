@@ -30,17 +30,16 @@ lang: ar
 def bubble_sort(nums: list[int]):
     """Bubble sort"""
     n = len(nums)
-    # Outer loop: the unsorted range is [0, i]
+    # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(n - 1, 0, -1):
-        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        # الحلقة الداخلية: انقل أكبر عنصر في النطاق غير المرتب [0, i] إلى نهايته اليمنى بالتبديل
         for j in range(i):
             if nums[j] > nums[j + 1]:
-                # Swap nums[j] and nums[j + 1]
+                # بدّل nums[j] و nums[j + 1]
                 nums[j], nums[j + 1] = nums[j + 1], nums[j]
 ```
 
-</div>
-## تحسين الكفاءة
+</div>## تحسين الكفاءة
 
 يمكننا أن نلاحظ أنه إذا لم يحدث أي تبديل خلال جولة "تفقيع"، فالمصفوفة مرتبة بالفعل ويمكن للخوارزمية أن تعود فوراً. لذلك يمكننا إضافة علامة `flag` لكشف هذا الوضع والإنهاء بمجرد حدوثه.
 
@@ -53,21 +52,20 @@ def bubble_sort(nums: list[int]):
 def bubble_sort_with_flag(nums: list[int]):
     """Bubble sort (flag optimization)"""
     n = len(nums)
-    # Outer loop: the unsorted range is [0, i]
+    # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(n - 1, 0, -1):
-        flag = False  # Initialize the flag
-        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        flag = False  # مهّد العلم
+        # الحلقة الداخلية: انقل أكبر عنصر في النطاق غير المرتب [0, i] إلى نهايته اليمنى بالتبديل
         for j in range(i):
             if nums[j] > nums[j + 1]:
-                # Swap nums[j] and nums[j + 1]
+                # بدّل nums[j] و nums[j + 1]
                 nums[j], nums[j + 1] = nums[j + 1], nums[j]
-                flag = True  # Record that a swap occurred
+                flag = True  # سجّل حدوث تبديل
         if not flag:
-            break  # Exit immediately if this pass made no swaps
+            break  # اخرج فورًا إذا لم تجري هذه الجولة أي تبديل
 ```
 
-</div>
-## خصائص الخوارزمية
+</div>## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n^2)$؛ ترتيب تكيّفي (adaptive)**: في الجولات المتتالية من "التفقيع"، تبلغ أطوال الجزء المجتاز من المصفوفة $n - 1$ و$n - 2$ و$\dots$ و$2$ و$1$، أي مجموع $(n - 1) n / 2$. وبعد إدخال تحسين `flag`، يمكن أن يصل التعقيد الزمني في أفضل الحالات إلى $O(n)$.
 - **التعقيد المكاني $O(1)$، ترتيب في المكان (in-place)**: يستخدم المؤشران $i$ و$j$ مقداراً ثابتاً من المساحة الإضافية.

@@ -7,24 +7,24 @@ Author: krahets (krahets@163.com)
 
 def backtrack(choices: list[int], state: int, n: int, res: list[int]) -> int:
     """Backtracking"""
-    # When step n is reached, increase the number of ways by 1
+    # عند بلوغ الدرج n، زِد عدد الطرق بمقدار 1
     if state == n:
         res[0] += 1
-    # Iterate over all choices
+    # تكرّر على كل الاختيارات
     for choice in choices:
-        # Prune: do not go beyond step n
+        # تشذيب: لا تتجاوز الدرج n
         if state + choice > n:
             continue
-        # Try: make a choice and update the state
+        # تجربة: اختر وحدّث الحالة
         backtrack(choices, state + choice, n, res)
-        # Backtrack
+        # تراجع
 
 
 def climbing_stairs_backtrack(n: int) -> int:
     """Climbing stairs: backtracking"""
-    choices = [1, 2]  # Choose to climb 1 or 2 steps
-    state = 0  # Start climbing from step 0
-    res = [0]  # Use res[0] to record the number of ways
+    choices = [1, 2]  # اختر صعود درج أو درجين
+    state = 0  # ابدأ الصعود من الدرج 0
+    res = [0]  # استخدم res[0] لتسجيل عدد الطرق
     backtrack(choices, state, n, res)
     return res[0]
 

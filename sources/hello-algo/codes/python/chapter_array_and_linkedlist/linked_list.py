@@ -50,14 +50,14 @@ def find(head: ListNode, target: int) -> int:
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the linked list
-    # Initialize the individual nodes
+    # مهّد القائمة المترابطة
+    # مهّد العقد كلًا على حدة
     n0 = ListNode(1)
     n1 = ListNode(3)
     n2 = ListNode(2)
     n3 = ListNode(5)
     n4 = ListNode(4)
-    # Set up references between the nodes
+    # أوجد الإشارات بين العقد
     n0.next = n1
     n1.next = n2
     n2.next = n3
@@ -65,21 +65,21 @@ if __name__ == "__main__":
     print("The initialized linked list is")
     print_linked_list(n0)
 
-    # Insert a node
+    # أدخل عقدة
     p = ListNode(0)
     insert(n0, p)
     print("The linked list after inserting a node is")
     print_linked_list(n0)
 
-    # Remove a node
+    # احذف عقدة
     remove(n0)
     print("The linked list after removing a node is")
     print_linked_list(n0)
 
-    # Access a node
+    # وصول إلى عقدة
     node: ListNode = access(n0, 3)
     print("Value of the node at index 3 in the linked list = {}".format(node.val))
 
-    # Find a node
+    # ابحث عن عقدة
     index: int = find(n0, 2)
     print("Index of the node with value 2 in the linked list = {}".format(index))

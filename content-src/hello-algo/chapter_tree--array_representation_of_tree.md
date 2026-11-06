@@ -71,7 +71,7 @@ class ArrayBinaryTree:
 
     def val(self, i: int) -> int | None:
         """Get the value of the node at index i"""
-        # If the index is out of bounds, return None to represent an empty position
+        # إذا خرج الفهرس عن الحدود، أعد None لتمثيل موضع فارغ
         if i < 0 or i >= self.size():
             return None
         return self._tree[i]
@@ -91,7 +91,7 @@ class ArrayBinaryTree:
     def level_order(self) -> list[int]:
         """Level-order traversal"""
         self.res = []
-        # Traverse the array directly
+        # اجتز المصفوفة مباشرةً
         for i in range(self.size()):
             if self.val(i) is not None:
                 self.res.append(self.val(i))
@@ -101,15 +101,15 @@ class ArrayBinaryTree:
         """Depth-first traversal"""
         if self.val(i) is None:
             return
-        # Preorder traversal
+        # اجتياز الطلب المسبق
         if order == "pre":
             self.res.append(self.val(i))
         self.dfs(self.left(i), order)
-        # Inorder traversal
+        # الاجتياز الداخلي
         if order == "in":
             self.res.append(self.val(i))
         self.dfs(self.right(i), order)
-        # Postorder traversal
+        # اجتياز الطلب اللاحق
         if order == "post":
             self.res.append(self.val(i))
 

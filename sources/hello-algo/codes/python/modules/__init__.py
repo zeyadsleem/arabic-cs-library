@@ -1,8 +1,8 @@
-# Follow PEP 585: Type Hinting Generics in Standard Collections
+# اتبع PEP 585: تلميحات الأنواع العامة في المجموعات القياسية
 # https://peps.python.org/pep-0585/
 from __future__ import annotations
 
-# Import common utilities here to simplify code with `from modules import *`
+# استورد هنا الأدوات المشتركة لتبسيط الشيفرة بـ `from modules import *`
 from .list_node import (
     ListNode,
     list_to_linked_list,

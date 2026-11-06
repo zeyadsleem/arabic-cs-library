@@ -13,35 +13,35 @@ from binary_search_insertion import binary_search_insertion
 
 def binary_search_left_edge(nums: list[int], target: int) -> int:
     """Find the leftmost occurrence of target using binary search"""
-    # This is equivalent to finding the insertion point of target
+    # هذا يعادل إيجاد نقطة إدراج target
     i = binary_search_insertion(nums, target)
-    # If target was not found, return -1
+    # إذا لم يُوجد target فأعد -1
     if i == len(nums) or nums[i] != target:
         return -1
-    # Target was found; return index i
+    # وُجد الهدف؛ أعد الفهرس i
     return i
 
 
 def binary_search_right_edge(nums: list[int], target: int) -> int:
     """Find the rightmost occurrence of target using binary search"""
-    # Reduce the problem to finding the leftmost insertion point of target + 1
+    # اختزل المسألة إلى إيجاد أقصى يسار نقطة إدراج لـ target + 1
     i = binary_search_insertion(nums, target + 1)
-    # j is the candidate rightmost target index; i is the index of the first element greater than target, or len(nums)
+    # j هو الفهرس المرشح الأقصى يمينًا للهدف؛ و i هو فهرس أول عنصر أكبر من target أو len(nums)
     j = i - 1
-    # If target was not found, return -1
+    # إذا لم يُوجد target فأعد -1
     if j == -1 or nums[j] != target:
         return -1
-    # Target was found; return index j
+    # وُجد الهدف؛ أعد الفهرس j
     return j
 
 
 """Driver code"""
 if __name__ == "__main__":
-    # Array containing duplicate elements
+    # مصفوفة تحوي عناصر مكررة
     nums = [1, 3, 6, 6, 6, 6, 6, 10, 12, 15]
     print(f"\nArray nums = {nums}")
 
-    # Find the left and right boundaries using binary search
+    # أوجد الحدّين الأيسر والأيمن بالبحث الثنائي
     for target in [6, 7]:
         index = binary_search_left_edge(nums, target)
         print(f"Index of the leftmost occurrence of {target}: {index}")

@@ -120,16 +120,16 @@ The implementation code is as follows:
 ```py
 def min_path_sum_dfs(grid: list[list[int]], i: int, j: int) -> int:
     """Minimum path sum: brute-force search"""
-    # Stop searching at the top-left cell
+    # توقف عن البحث عند الخلية أعلى اليسار
     if i == 0 and j == 0:
         return grid[0][0]
-    # If a row or column index is out of bounds, return a cost of +∞
+    # إذا خرج فهرس الصف أو العمود عن الحدود، أعد كلفة +∞
     if i < 0 or j < 0:
         return inf
-    # Calculate the minimum path costs from the top-left corner to (i-1, j) and (i, j-1)
+    # احسب أدنى كلف مسار من الزاوية أعلى اليسار إلى (i-1, j) و(i, j-1)
     up = min_path_sum_dfs(grid, i - 1, j)
     left = min_path_sum_dfs(grid, i, j - 1)
-    # Return the minimum path cost from the top-left corner to (i, j)
+    # أعد أدنى كلفة مسار من الزاوية أعلى اليسار إلى (i, j)
     return min(left, up) + grid[i][j]
 ```
 
@@ -172,16 +172,16 @@ Implement the dynamic programming solution based on iteration, as shown in the c
 def min_path_sum_dp(grid: list[list[int]]) -> int:
     """Minimum path sum: dynamic programming"""
     n, m = len(grid), len(grid[0])
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [[0] * m for _ in range(n)]
     dp[0][0] = grid[0][0]
-    # State transitions: first row
+    # انتقالات الحالة: الصف الأول
     for j in range(1, m):
         dp[0][j] = dp[0][j - 1] + grid[0][j]
-    # State transitions: first column
+    # انتقالات الحالة: العمود الأول
     for i in range(1, n):
         dp[i][0] = dp[i - 1][0] + grid[i][0]
-    # State transitions: remaining rows and columns
+    # انتقالات الحالة: بقية الصفوف والأعمدة
     for i in range(1, n):
         for j in range(1, m):
             dp[i][j] = min(dp[i][j - 1], dp[i - 1][j]) + grid[i][j]
@@ -207,17 +207,17 @@ Note that since the array `dp` can only represent the state of one row, we canno
 def min_path_sum_dp_comp(grid: list[list[int]]) -> int:
     """Minimum path sum: space-optimized dynamic programming"""
     n, m = len(grid), len(grid[0])
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [0] * m
-    # State transitions: first row
+    # انتقالات الحالة: الصف الأول
     dp[0] = grid[0][0]
     for j in range(1, m):
         dp[j] = dp[j - 1] + grid[0][j]
-    # State transitions: remaining rows
+    # انتقالات الحالة: بقية الصفوف
     for i in range(1, n):
-        # State transitions: first column
+        # انتقالات الحالة: العمود الأول
         dp[0] = dp[0] + grid[i][0]
-        # State transitions: remaining columns
+        # انتقالات الحالة: بقية الأعمدة
         for j in range(1, m):
             dp[j] = min(dp[j - 1], dp[j]) + grid[i][j]
     return dp[m - 1]

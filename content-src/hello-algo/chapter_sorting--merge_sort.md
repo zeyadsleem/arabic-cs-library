@@ -35,14 +35,14 @@ The implementation of merge sort is shown in the code below. Note that the inter
 ```py
 def merge_sort(nums: list[int], left: int, right: int):
     """Merge sort"""
-    # Base case
+    # الحالة الأساس
     if left >= right:
-        return  # Stop recursing when the subarray has at most one element
-    # Divide phase
-    mid = (left + right) // 2 # Calculate the midpoint
-    merge_sort(nums, left, mid)  # Recurse on the left subarray
-    merge_sort(nums, mid + 1, right)  # Recurse on the right subarray
-    # Merge phase
+        return  # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
+    # مرحلة التقسيم
+    mid = (left + right) // 2 # احسب نقطة المنتصف
+    merge_sort(nums, left, mid)  # تعاود على المصفوفة الجزئية اليسرى
+    merge_sort(nums, mid + 1, right)  # تعاود على المصفوفة الجزئية اليمنى
+    # مرحلة الدمج
     merge(nums, left, mid, right)
 ```
 

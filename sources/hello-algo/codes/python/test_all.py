@@ -6,11 +6,11 @@ env = os.environ.copy()
 env["PYTHONIOENCODING"] = "utf-8"
 
 if __name__ == "__main__":
-    # Find source code files
+    # أوجد ملفات الشيفرة المصدرية
     src_paths = sorted(glob.glob("chapter_*/*.py"))
     errors = []
 
-    # Run Python code
+    # شغّل شيفرة Python
     for src_path in src_paths:
         process = subprocess.Popen(
             ["python", src_path],
@@ -20,9 +20,9 @@ if __name__ == "__main__":
             env=env,
             encoding='utf-8'
         )
-        # Wait for the process to finish and collect its output and error messages
+        # انتظر انتهاء العملية واجمع رسائل مخارجها وأخطائها
         stdout, stderr = process.communicate()
-        # Check the exit status
+        # تحقق من حالة الخروج
         exit_status = process.returncode
         if exit_status != 0:
             errors.append(stderr)

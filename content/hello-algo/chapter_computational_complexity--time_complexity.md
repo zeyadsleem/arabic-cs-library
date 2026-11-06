@@ -28,8 +28,7 @@ def algorithm(n: int):
         print(0)        # 5 ns
 ```
 
-</div>
-وبحسب الطريقة أعلاه، يمكن الحصول على زمن تشغيل الخوارزمية وهو $(6n + 12)$ ns:
+</div>وبحسب الطريقة أعلاه، يمكن الحصول على زمن تشغيل الخوارزمية وهو $(6n + 12)$ ns:
 
 $$
 1 + 1 + 10 + (1 + 5) \times n = 6n + 12
@@ -60,8 +59,7 @@ def algorithm_C(n: int):
         print(0)
 ```
 
-</div>
-يوضح الشكل أدناه التعقيد الزمني لدوال الخوارزميات الثلاث أعلاه.
+</div>يوضح الشكل أدناه التعقيد الزمني لدوال الخوارزميات الثلاث أعلاه.
 
 - تحتوي الخوارزمية `A` على عملية طباعة واحدة فقط، ولا ينمو زمن تشغيل الخوارزمية مع زيادة $n$. ونسمّي التعقيد الزمني لهذه الخوارزمية «الرتبة الثابتة».
 - في الخوارزمية `B`، تحتاج عملية الطباعة إلى تكرار $n$ مرة، وينمو زمن تشغيل الخوارزمية خطياً مع زيادة $n$. ويُسمى التعقيد الزمني لهذه الخوارزمية «الرتبة الخطية».
@@ -92,8 +90,7 @@ def algorithm(n: int):
         print(0)        # +1
 ```
 
-</div>
-ولتكن عدد عمليات الخوارزمية دالةً في حجم بيانات الإدخال $n$، ويرمز إليها بـ$T(n)$. عندئذٍ يكون عدد عمليات الدالة أعلاه:
+</div>ولتكن عدد عمليات الخوارزمية دالةً في حجم بيانات الإدخال $n$، ويرمز إليها بـ$T(n)$. عندئذٍ يكون عدد عمليات الدالة أعلاه:
 
 $$
 T(n) = 3 + 2n
@@ -148,8 +145,7 @@ def algorithm(n: int):
             print(0)
 ```
 
-</div>
-تعرض الصيغة التالية نتائج الإحصاء قبل استخدام التقنيات أعلاه وبعدها؛ وكلاهما يؤدي إلى تعقيد زمني $O(n^2)$.
+</div>تعرض الصيغة التالية نتائج الإحصاء قبل استخدام التقنيات أعلاه وبعدها؛ وكلاهما يؤدي إلى تعقيد زمني $O(n^2)$.
 
 $$
 \begin{aligned}
@@ -207,8 +203,7 @@ def constant(n: int) -> int:
     return count
 ```
 
-</div>
-### الرتبة الخطية $O(n)$
+</div>### الرتبة الخطية $O(n)$
 
 ينمو عدد العمليات في الرتبة الخطية خطياً مع حجم بيانات الإدخال $n$. وتظهر الرتبة الخطية عادةً في الحلقات أحادية الطبقة:
 
@@ -224,8 +219,7 @@ def linear(n: int) -> int:
     return count
 ```
 
-</div>
-عمليات مثل اجتياز المصفوفات واجتياز القوائم المترابطة لها تعقيد زمني $O(n)$، حيث $n$ طول المصفوفة أو القائمة المترابطة:
+</div>عمليات مثل اجتياز المصفوفات واجتياز القوائم المترابطة لها تعقيد زمني $O(n)$، حيث $n$ طول المصفوفة أو القائمة المترابطة:
 
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -234,14 +228,13 @@ def linear(n: int) -> int:
 def array_traversal(nums: list[int]) -> int:
     """Linear complexity (array traversal)"""
     count = 0
-    # The number of iterations is proportional to the array length
+    # عدد التكرارات يتناسب مع طول المصفوفة
     for num in nums:
         count += 1
     return count
 ```
 
-</div>
-ومن الجدير بالذكر أن **حجم بيانات الإدخال $n$ ينبغي أن يُحدَّد وفق نوع بيانات الإدخال**. فمثلاً، في المثال الأول يكون المتغير $n$ هو حجم بيانات الإدخال؛ وفي المثال الثاني يكون طول المصفوفة $n$ هو حجم البيانات.
+</div>ومن الجدير بالذكر أن **حجم بيانات الإدخال $n$ ينبغي أن يُحدَّد وفق نوع بيانات الإدخال**. فمثلاً، في المثال الأول يكون المتغير $n$ هو حجم بيانات الإدخال؛ وفي المثال الثاني يكون طول المصفوفة $n$ هو حجم البيانات.
 
 ### الرتبة التربيعية $O(n^2)$
 
@@ -254,15 +247,14 @@ def array_traversal(nums: list[int]) -> int:
 def quadratic(n: int) -> int:
     """Quadratic complexity"""
     count = 0
-    # The number of iterations is proportional to the square of the input size n
+    # عدد التكرارات يتناسب مع مربع حجم المُدخل n
     for i in range(n):
         for j in range(n):
             count += 1
     return count
 ```
 
-</div>
-يقارن الشكل أدناه التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية.
+</div>يقارن الشكل أدناه التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية.
 
 ![التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية](/images/hello-algo/chapter_computational_complexity--time_complexity_constant_linear_quadratic.png)
 
@@ -274,22 +266,21 @@ def quadratic(n: int) -> int:
 ```py
 def bubble_sort(nums: list[int]) -> int:
     """Quadratic complexity (bubble sort)"""
-    count = 0  # Counter
-    # Outer loop: the unsorted range is [0, i]
+    count = 0  # العدّاد
+    # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(len(nums) - 1, 0, -1):
-        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        # الحلقة الداخلية: انقل أكبر عنصر في النطاق غير المرتب [0, i] إلى نهايته اليمنى بالتبديل
         for j in range(i):
             if nums[j] > nums[j + 1]:
-                # Swap nums[j] and nums[j + 1]
+                # بدّل nums[j] و nums[j + 1]
                 tmp: int = nums[j]
                 nums[j] = nums[j + 1]
                 nums[j + 1] = tmp
-                count += 3  # Swapping two elements takes 3 elementary operations
+                count += 3  # تستغرق مبادلة عنصرين 3 عمليات ابتدائية
     return count
 ```
 
-</div>
-### الرتبة الأسية $O(2^n)$
+</div>### الرتبة الأسية $O(2^n)$
 
 يُعدّ «انقسام الخلايا» البيولوجي مثالاً نموذجياً على النمو بالرتبة الأسية: فالحالة الابتدائية خلية واحدة، وبعد جولة انقسام واحدة تصبح $2$، وبعد جولتين تصبح $4$، وهكذا؛ وبعد $n$ جولة من الانقسام توجد $2^n$ خلية.
 
@@ -303,7 +294,7 @@ def exponential(n: int) -> int:
     """Exponential complexity (iterative implementation)"""
     count = 0
     base = 1
-    # Each cell divides into two per round, giving the sequence 1, 2, 4, 8, ..., 2^(n-1)
+    # تنقسم كل خلية إلى اثنتين في كل جولة، فينتج التتابع 1، 2، 4، 8، ...، 2^(n-1)
     for _ in range(n):
         for _ in range(base):
             count += 1
@@ -312,8 +303,7 @@ def exponential(n: int) -> int:
     return count
 ```
 
-</div>
-![التعقيد الزمني للرتبة الأسية](/images/hello-algo/chapter_computational_complexity--time_complexity_exponential.png)
+</div>![التعقيد الزمني للرتبة الأسية](/images/hello-algo/chapter_computational_complexity--time_complexity_exponential.png)
 
 وفي الخوارزميات الفعلية، تظهر الرتبة الأسية غالباً في الدوال التعاودية. فمثلاً، في الشيفرة التالية، تنقسم الدالة تعاودياً إلى قسمين، وتتوقف بعد $n$ انقسام:
 
@@ -328,8 +318,7 @@ def exp_recur(n: int) -> int:
     return exp_recur(n - 1) + exp_recur(n - 1) + 1
 ```
 
-</div>
-نمو الرتبة الأسية سريع جداً، وهو شائع في الطرق الاستنفادية (البحث الشامل، والتتبّع الرجعي، وغيرها). وبالنسبة إلى المسائل ذات أحجام البيانات الكبيرة، لا تُقبل الرتبة الأسية، وتتطلب عادةً حلولاً بالبرمجة الديناميكية أو الخوارزميات الجشعة.
+</div>نمو الرتبة الأسية سريع جداً، وهو شائع في الطرق الاستنفادية (البحث الشامل، والتتبّع الرجعي، وغيرها). وبالنسبة إلى المسائل ذات أحجام البيانات الكبيرة، لا تُقبل الرتبة الأسية، وتتطلب عادةً حلولاً بالبرمجة الديناميكية أو الخوارزميات الجشعة.
 
 ### الرتبة اللوغاريتمية $O(\log n)$
 
@@ -350,8 +339,7 @@ def logarithmic(n: int) -> int:
     return count
 ```
 
-</div>
-![التعقيد الزمني للرتبة اللوغاريتمية](/images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic.png)
+</div>![التعقيد الزمني للرتبة اللوغاريتمية](/images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic.png)
 
 وعلى غرار الرتبة الأسية، تظهر الرتبة اللوغاريتمية أيضاً في الدوال التعاودية. وتشكّل الشيفرة التالية شجرة تعاود ارتفاعها $\log_2 n$:
 
@@ -366,8 +354,7 @@ def log_recur(n: int) -> int:
     return log_recur(n / 2) + 1
 ```
 
-</div>
-تظهر الرتبة اللوغاريتمية عادةً في الخوارزميات القائمة على استراتيجية التقسيم والتغلب، وتعكس فكرة تقسيم المسألة وتبسيطها مراراً. وهي تنمو ببطء، وهي التعقيد الزمني المثالي بعد الرتبة الثابتة.
+</div>تظهر الرتبة اللوغاريتمية عادةً في الخوارزميات القائمة على استراتيجية التقسيم والتغلب، وتعكس فكرة تقسيم المسألة وتبسيطها مراراً. وهي تنمو ببطء، وهي التعقيد الزمني المثالي بعد الرتبة الثابتة.
 
 <div class="note">
 <p class="note__title">ما أساس $O(\log n)$؟</p>
@@ -394,16 +381,15 @@ def linear_log_recur(n: int) -> int:
     """Linearithmic complexity"""
     if n <= 1:
         return 1
-    # Split into two subproblems, each half the original size
+    # قسّم إلى مسألتين جزئيتين كل واحدة نصف الحجم الأصلي
     count = linear_log_recur(n // 2) + linear_log_recur(n // 2)
-    # The current subproblem includes n operations
+    # تشمل المسألة الجزئية الحالية n عملية
     for _ in range(n):
         count += 1
     return count
 ```
 
-</div>
-يوضح الشكل أدناه كيف تنشأ الرتبة الخطية اللوغاريتمية. فكل مستوى من الشجرة الثنائية يحتوي في المجموع على $n$ عملية، وللشجرة $\log_2 n + 1$ مستوى، فيكون التعقيد الزمني $O(n \log n)$.
+</div>يوضح الشكل أدناه كيف تنشأ الرتبة الخطية اللوغاريتمية. فكل مستوى من الشجرة الثنائية يحتوي في المجموع على $n$ عملية، وللشجرة $\log_2 n + 1$ مستوى، فيكون التعقيد الزمني $O(n \log n)$.
 
 ![التعقيد الزمني للرتبة الخطية اللوغاريتمية](/images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic_linear.png)
 
@@ -428,14 +414,13 @@ def factorial_recur(n: int) -> int:
     if n == 0:
         return 1
     count = 0
-    # Split one problem into n subproblems
+    # قسّم مسألة واحدة إلى n مسألة جزئية
     for _ in range(n):
         count += factorial_recur(n - 1)
     return count
 ```
 
-</div>
-![التعقيد الزمني للرتبة العاملية](/images/hello-algo/chapter_computational_complexity--time_complexity_factorial.png)
+</div>![التعقيد الزمني للرتبة العاملية](/images/hello-algo/chapter_computational_complexity--time_complexity_factorial.png)
 
 لاحظ أنه بما أن $n! > 2^n$ دائماً عندما $n \geq 4$، فإن الرتبة العاملية تنمو أسرع من الرتبة الأسية، وهي أيضاً غير مقبولة لأجل $n$ الكبيرة.
 
@@ -455,15 +440,14 @@ def factorial_recur(n: int) -> int:
 def find_one(nums: list[int]) -> int:
     """Find the index of the number 1 in array nums"""
     for i in range(len(nums)):
-        # When 1 is at the start of the array, the best-case time complexity is O(1)
-        # When 1 is at the end of the array, the worst-case time complexity is O(n)
+        # عندما يكون 1 في بداية المصفوفة، يكون التعقيد الزمني في أفضل الحالات O(1)
+        # عندما يكون 1 في نهاية المصفوفة، يكون التعقيد الزمني في أسوأ الحالات O(n)
         if nums[i] == 1:
             return i
     return -1
 ```
 
-</div>
-ومن الجدير بالذكر أننا نادراً ما نستخدم التعقيد الزمني في أفضل حالة عملياً، لأنه لا يتحقق عادةً إلا باحتمال ضئيل جداً وقد يكون مضللاً بعض الشيء. **أما التعقيد الزمني في أسوأ حالة فهو أكثر عملية لأنه يعطي قيمة أمان للكفاءة**، مما يتيح لنا استخدام الخوارزمية بثقة.
+</div>ومن الجدير بالذكر أننا نادراً ما نستخدم التعقيد الزمني في أفضل حالة عملياً، لأنه لا يتحقق عادةً إلا باحتمال ضئيل جداً وقد يكون مضللاً بعض الشيء. **أما التعقيد الزمني في أسوأ حالة فهو أكثر عملية لأنه يعطي قيمة أمان للكفاءة**، مما يتيح لنا استخدام الخوارزمية بثقة.
 
 ومن المثال أعلاه نرى أن التعقيد الزمني في أسوأ حالة وفي أفضل حالة ينشأ كلاهما فقط في ظل توزيعات إدخال معينة، قد تحدث باحتمال منخفض جداً وقد لا تعكس كفاءة تشغيل الخوارزمية انعكاساً حقيقياً. وفي المقابل، **يستطيع التعقيد الزمني المتوسط أن يعكس كفاءة تشغيل الخوارزمية في ظل بيانات إدخال عشوائية**، ويُرمز إليه بترميز $\Theta$.
 

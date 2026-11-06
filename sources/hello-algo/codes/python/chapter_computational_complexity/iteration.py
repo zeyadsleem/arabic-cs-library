@@ -8,7 +8,7 @@ Author: krahets (krahets@163.com)
 def for_loop(n: int) -> int:
     """for loop"""
     res = 0
-    # Sum 1, 2, ..., n-1, n in a loop
+    # اجمع 1، 2، ...، n-1، n في حلقة
     for i in range(1, n + 1):
         res += i
     return res
@@ -17,22 +17,22 @@ def for_loop(n: int) -> int:
 def while_loop(n: int) -> int:
     """while loop"""
     res = 0
-    i = 1  # Initialize the loop control variable
-    # Sum 1, 2, ..., n-1, n in a loop
+    i = 1  # مهّد متغير التحكم في الحلقة
+    # اجمع 1، 2، ...، n-1، n في حلقة
     while i <= n:
         res += i
-        i += 1  # Update the loop control variable
+        i += 1  # حدّث متغير التحكم في الحلقة
     return res
 
 
 def while_loop_ii(n: int) -> int:
     """while loop (two updates)"""
     res = 0
-    i = 1  # Initialize the loop control variable
-    # Sum 1, 4, 10, ... in a loop
+    i = 1  # مهّد متغير التحكم في الحلقة
+    # اجمع 1، 4، 10، ... في حلقة
     while i <= n:
         res += i
-        # Update the loop control variable
+        # حدّث متغير التحكم في الحلقة
         i += 1
         i *= 2
     return res
@@ -41,9 +41,9 @@ def while_loop_ii(n: int) -> int:
 def nested_for_loop(n: int) -> str:
     """Nested for loops"""
     res = ""
-    # Loop over i = 1, 2, ..., n-1, n
+    # حلقة على i = 1، 2، ...، n-1، n
     for i in range(1, n + 1):
-        # Loop over j = 1, 2, ..., n-1, n
+        # حلقة على j = 1، 2، ...، n-1، n
         for j in range(1, n + 1):
             res += f"({i}, {j}), "
     return res

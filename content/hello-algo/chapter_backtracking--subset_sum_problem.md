@@ -31,15 +31,14 @@ lang: ar
 ```py
 def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
     """Solve subset sum I (with duplicate subsets)"""
-    state = []  # State (subset)
-    total = 0  # Subset sum
-    res = []  # Result list (list of subsets)
+    state = []  # الحالة (المجموعة الجزئية)
+    total = 0  # مجموع المجموعة الجزئية
+    res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
     backtrack(state, target, total, nums, res)
     return res
 ```
 
 </div>
-
 وبتشغيل الشيفرة أعلاه على المصفوفة $[3, 4, 5]$ بالقيمة المستهدفة $9$ نحصل على $[3, 3, 3], [4, 5], [5, 4]$. **ورغم أننا نجحنا في العثور على جميع المجموعات الجزئية التي يساوي مجموعها $9$، فإن هناك مجموعتين جزئيتين مكررتين $[4, 5]$ و$[5, 4]$**.
 
 والسبب أن عملية البحث تميّز ترتيب الاختيارات، بينما لا تميّز المجموعات الجزئية ترتيب الاختيار. وكما يوضح الشكل أدناه، فاختيار 4 أولاً ثم 5 يختلف عن اختيار 5 أولاً ثم 4، وهما فرعان مختلفان لكنهما يقابلان المجموعة الجزئية نفسها.
@@ -83,16 +82,15 @@ def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
 ```py
 def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
     """Solve subset sum I"""
-    state = []  # State (subset)
-    nums.sort()  # Sort nums
-    start = 0  # Starting index for iteration
-    res = []  # Result list (list of subsets)
+    state = []  # الحالة (المجموعة الجزئية)
+    nums.sort()  # رتّب nums
+    start = 0  # فهرس البدء للتكرار
+    res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
     backtrack(state, target, nums, start, res)
     return res
 ```
 
 </div>
-
 ويوضح الشكل أدناه عملية التتبّع الرجعي الكاملة الناتجة عن تشغيل الشيفرة أعلاه على المصفوفة $[3, 4, 5]$ بالقيمة المستهدفة $9$.
 
 ![عملية التتبّع الرجعي لمجموع المجموعات الجزئية I](/images/hello-algo/chapter_backtracking--subset_sum_i.png)
@@ -127,13 +125,12 @@ def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
 ```py
 def subset_sum_ii(nums: list[int], target: int) -> list[list[int]]:
     """Solve subset sum II"""
-    state = []  # State (subset)
-    nums.sort()  # Sort nums
-    start = 0  # Starting index for iteration
-    res = []  # Result list (list of subsets)
+    state = []  # الحالة (المجموعة الجزئية)
+    nums.sort()  # رتّب nums
+    start = 0  # فهرس البدء للتكرار
+    res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
     backtrack(state, target, nums, start, res)
     return res
 ```
 
-</div>
-![عملية التتبّع الرجعي لمجموع المجموعات الجزئية II](/images/hello-algo/chapter_backtracking--subset_sum_ii.png)
+</div>![عملية التتبّع الرجعي لمجموع المجموعات الجزئية II](/images/hello-algo/chapter_backtracking--subset_sum_ii.png)

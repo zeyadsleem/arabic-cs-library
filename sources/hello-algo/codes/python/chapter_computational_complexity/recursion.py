@@ -7,27 +7,27 @@ Author: krahets (krahets@163.com)
 
 def recur(n: int) -> int:
     """Recursion"""
-    # Base case
+    # الحالة الأساس
     if n == 1:
         return 1
-    # Recurse: make a recursive call
+    # تعاود: أجرِ استدعاءً تعاوديًا
     res = recur(n - 1)
-    # Unwind: return the result
+    # التراجع: أعد النتيجة
     return n + res
 
 
 def for_loop_recur(n: int) -> int:
     """Simulate recursion using iteration"""
-    # Use an explicit stack to simulate the system call stack
+    # استخدم مكدسًا صريحًا لمحاكاة مكدس الاستدعاءات في النظام
     stack = []
     res = 0
-    # Simulate the recursive-call phase
+    # حاكِ مرحلة الاستدعاء التعاودي
     for i in range(n, 0, -1):
-        # Simulate recursive calls by pushing onto the stack
+        # حاكِ الاستدعاءات التعاودية بالدفع إلى المكدس
         stack.append(i)
-    # Simulate unwinding and accumulating the result
+    # حاكِ التراجع وتجميع النتيجة
     while stack:
-        # Simulate unwinding by popping from the stack
+        # حاكِ التراجع بالسحب من المكدس
         res += stack.pop()
     # res = 1+2+3+...+n
     return res
@@ -35,21 +35,21 @@ def for_loop_recur(n: int) -> int:
 
 def tail_recur(n, res):
     """Tail recursion"""
-    # Base case
+    # الحالة الأساس
     if n == 0:
         return res
-    # Tail-recursive call
+    # استدعاء تعاودي ذيلي
     return tail_recur(n - 1, res + n)
 
 
 def fib(n: int) -> int:
     """Fibonacci sequence: recursion"""
-    # Base cases: f(1) = 0, f(2) = 1
+    # حالات الأساس: f(1) = 0، f(2) = 1
     if n == 1 or n == 2:
         return n - 1
-    # Recursive calls: f(n) = f(n-1) + f(n-2)
+    # استدعاءات تعاودية: f(n) = f(n-1) + f(n-2)
     res = fib(n - 1) + fib(n - 2)
-    # Return the result f(n)
+    # أعد النتيجة f(n)
     return res
 
 

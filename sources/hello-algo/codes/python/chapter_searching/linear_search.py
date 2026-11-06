@@ -13,33 +13,33 @@ from modules import ListNode, list_to_linked_list
 
 def linear_search_array(nums: list[int], target: int) -> int:
     """Linear search (array)"""
-    # Traverse the array
+    # اجتز المصفوفة
     for i in range(len(nums)):
-        if nums[i] == target:  # The target element was found; return its index
+        if nums[i] == target:  # وُجد العنصر الهدف؛ أعد فهرسه
             return i
-    return -1  # The target element was not found; return -1
+    return -1  # لم يُوجد العنصر الهدف؛ أعد -1
 
 
 def linear_search_linkedlist(head: ListNode, target: int) -> ListNode | None:
     """Linear search (linked list)"""
-    # Traverse the linked list
+    # اجتز القائمة المترابطة
     while head:
-        if head.val == target:  # The target node was found; return it
+        if head.val == target:  # وُجدت العقدة الهدف؛ أعدّها
             return head
         head = head.next
-    return None  # The target node was not found; return None
+    return None  # لم تُوجد العقدة الهدف؛ أعد None
 
 
 """Driver code"""
 if __name__ == "__main__":
     target = 3
 
-    # Perform linear search on the array
+    # أجرِ بحثًا خطيًا على المصفوفة
     nums = [1, 5, 3, 2, 4, 7, 5, 9, 10, 8]
     index: int = linear_search_array(nums, target)
     print("Index of target element 3 =", index)
 
-    # Perform linear search on the linked list
+    # أجرِ بحثًا خطيًا على القائمة المترابطة
     head: ListNode = list_to_linked_list(nums)
     node: ListNode | None = linear_search_linkedlist(head, target)
     print("The node object corresponding to target value 3 is", node)

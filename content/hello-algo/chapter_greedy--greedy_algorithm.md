@@ -33,23 +33,22 @@ lang: ar
 ```py
 def coin_change_greedy(coins: list[int], amt: int) -> int:
     """Coin change: greedy algorithm"""
-    # Assume the coins list is sorted
+    # افترض أن قائمة العملات مرتبة
     i = len(coins) - 1
     count = 0
-    # Repeatedly make greedy choices until no amount remains
+    # كرّر الاختيارات الجشعة حتى لا يبقى مبلغ
     while amt > 0:
-        # Find the largest coin no greater than the remaining amount
+        # أوجد أكبر عملة لا تزيد عن المبلغ المتبقي
         while i > 0 and coins[i] > amt:
             i -= 1
-        # Choose coins[i]
+        # اختر coins[i]
         amt -= coins[i]
         count += 1
-    # Return -1 if no feasible solution was found
+    # أعد -1 إذا لم يُوجد حل ممكن
     return count if amt == 0 else -1
 ```
 
-</div>
-قد تجد نفسك تهتف: «ما أنظف هذا!». فخوارزمية الجشع تحل مسألة تغيير العملات بنحو عشرة أسطر من الشيفرة فقط.
+</div>قد تجد نفسك تهتف: «ما أنظف هذا!». فخوارزمية الجشع تحل مسألة تغيير العملات بنحو عشرة أسطر من الشيفرة فقط.
 
 ## مزايا الخوارزميات الجشعة وقيودها
 

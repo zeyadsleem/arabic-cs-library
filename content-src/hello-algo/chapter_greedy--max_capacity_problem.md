@@ -65,16 +65,16 @@ Variables $i$, $j$, and $res$ use only a constant amount of extra space, **so th
 ```py
 def max_capacity(ht: list[int]) -> int:
     """Maximum container capacity: greedy algorithm"""
-    # Initialize i and j at opposite ends of the array
+    # مهّد i و j عند طرفي المصفوفة المتقابلين
     i, j = 0, len(ht) - 1
-    # The initial maximum capacity is 0
+    # السعة القصوى الابتدائية هي 0
     res = 0
-    # Repeatedly make greedy choices until the two sides meet
+    # كرّر الاختيارات الجشعة حتى يلتقي الجانبان
     while i < j:
-        # Update the maximum capacity
+        # حدّث السعة القصوى
         cap = min(ht[i], ht[j]) * (j - i)
         res = max(res, cap)
-        # Move the shorter side inward
+        # حرّك الجانب الأقصر إلى الداخل
         if ht[i] < ht[j]:
             i += 1
         else:

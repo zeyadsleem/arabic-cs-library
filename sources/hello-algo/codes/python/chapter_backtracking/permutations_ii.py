@@ -9,22 +9,22 @@ def backtrack(
     state: list[int], choices: list[int], selected: list[bool], res: list[list[int]]
 ):
     """Backtracking: permutations II"""
-    # Record a solution when the state length equals the number of elements
+    # سجّل حلًا حين يساوي طول الحالة عدد العناصر
     if len(state) == len(choices):
         res.append(list(state))
         return
-    # Iterate over all choices
+    # تكرّر على كل الاختيارات
     duplicated = set[int]()
     for i, choice in enumerate(choices):
-        # Prune: do not reuse an element or choose the same value again at this depth
+        # تشذيب: لا تعِد استخدام عنصر ولا تختر القيمة نفسها مجددًا في هذا العمق
         if not selected[i] and choice not in duplicated:
-            # Try: make a choice and update the state
-            duplicated.add(choice)  # Record the chosen value
+            # تجربة: اختر وحدّث الحالة
+            duplicated.add(choice)  # سجّل القيمة المختارة
             selected[i] = True
             state.append(choice)
-            # Proceed to the next choice
+            # تابع إلى الاختيار التالي
             backtrack(state, choices, selected, res)
-            # Backtrack: undo the choice and restore the previous state
+            # تراجع: ألغِ الاختيار وأعِد الحالة السابقة
             selected[i] = False
             state.pop()
 

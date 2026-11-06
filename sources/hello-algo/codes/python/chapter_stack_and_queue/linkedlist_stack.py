@@ -60,10 +60,10 @@ class LinkedListStack:
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the stack
+    # مهّد المكدس
     stack = LinkedListStack()
 
-    # Push elements onto the stack
+    # ادفع العناصر إلى المكدس
     stack.push(1)
     stack.push(3)
     stack.push(2)
@@ -71,19 +71,19 @@ if __name__ == "__main__":
     stack.push(4)
     print("Stack stack =", stack.to_list())
 
-    # Access the top element
+    # وصول إلى عنصر القمة
     peek: int = stack.peek()
     print("Top element peek =", peek)
 
-    # Pop an element from the stack
+    # اسحب عنصرًا من المكدس
     pop: int = stack.pop()
     print("Popped element pop =", pop)
     print("After popping, stack =", stack.to_list())
 
-    # Get the stack size
+    # احصل على حجم المكدس
     size: int = stack.size()
     print("Stack size =", size)
 
-    # Check whether it is empty
+    # تحقق مما إذا كان فارغًا
     is_empty: bool = stack.is_empty()
     print("Is the stack empty =", is_empty)

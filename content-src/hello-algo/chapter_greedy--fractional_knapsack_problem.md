@@ -43,21 +43,21 @@ We define an `Item` class so that items can be sorted by unit value. We then ite
 ```py
 def fractional_knapsack(wgt: list[int], val: list[int], cap: int) -> int:
     """Fractional knapsack: greedy algorithm"""
-    # Create a list of items, each with two attributes: weight and value
+    # أنشئ قائمة عناصر، لكل منها خاصيتان: وزن وقيمة
     items = [Item(w, v) for w, v in zip(wgt, val)]
-    # Sort by value per unit weight, item.v / item.w, in descending order
+    # رتّب بالقيمة لكل وحدة وزن item.v / item.w بترتيب تنازلي
     items.sort(key=lambda item: item.v / item.w, reverse=True)
-    # Repeatedly make greedy choices
+    # كرّر الاختيارات الجشعة
     res = 0
     for item in items:
         if item.w <= cap:
-            # If enough capacity remains, put the entire current item in the knapsack
+            # إذا بقيت سعة كافية، ضع العنصر الحالي كله في الحقيبة
             res += item.v
             cap -= item.w
         else:
-            # If the remaining capacity is insufficient, put part of the current item in the knapsack
+            # إذا لم تكفِ السعة المتبقية، ضع جزءًا من العنصر الحالي في الحقيبة
             res += (item.v / item.w) * cap
-            # No capacity remains, so exit the loop
+            # لم تبق سعة، فاخرج من الحلقة
             break
     return res
 ```

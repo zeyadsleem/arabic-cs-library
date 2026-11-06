@@ -28,9 +28,9 @@ class ArrayDeque:
 
     def index(self, i: int) -> int:
         """Calculate an index in the circular array"""
-        # Use modulo to connect the end of the array to its beginning
-        # When i passes the end of the array, wrap around to the beginning
-        # When i passes the beginning of the array, wrap around to the end
+        # استخدم باقي القسمة لربط نهاية المصفوفة ببدايتها
+        # عندما يتجاوز i نهاية المصفوفة، التفّ إلى البداية
+        # عندما يتجاوز i بداية المصفوفة، التفّ إلى النهاية
         return (i + self.capacity()) % self.capacity()
 
     def push_first(self, num: int):
@@ -38,10 +38,10 @@ class ArrayDeque:
         if self._size == self.capacity():
             print("Deque is full")
             return
-        # Move the front pointer one position to the left
-        # Use modulo to wrap front to the end when it passes the beginning of the array
+        # حرّك مؤشر المقدمة موضعًا واحدًا إلى اليسار
+        # استخدم باقي القسمة لالتفاف front إلى النهاية عندما يتجاوز بداية المصفوفة
         self._front = self.index(self._front - 1)
-        # Add num to the front
+        # أضف num إلى المقدمة
         self._nums[self._front] = num
         self._size += 1
 
@@ -50,16 +50,16 @@ class ArrayDeque:
         if self._size == self.capacity():
             print("Deque is full")
             return
-        # Calculate the rear pointer, which points one position past the last element
+        # احسب مؤشر المؤخرة، وهو يشير إلى موضع واحد بعد آخر عنصر
         rear = self.index(self._front + self._size)
-        # Add num to the rear
+        # أضف num إلى المؤخرة
         self._nums[rear] = num
         self._size += 1
 
     def pop_first(self) -> int:
         """Dequeue from the front"""
         num = self.peek_first()
-        # Advance the front pointer by one position
+        # ورّر مؤشر المقدمة موضعًا واحدًا
         self._front = self.index(self._front + 1)
         self._size -= 1
         return num
@@ -80,13 +80,13 @@ class ArrayDeque:
         """Access the rear element"""
         if self.is_empty():
             raise IndexError("Deque is empty")
-        # Calculate the index of the last element
+        # احسب فهرس آخر عنصر
         last = self.index(self._front + self._size - 1)
         return self._nums[last]
 
     def to_array(self) -> list[int]:
         """Return an array for printing"""
-        # Convert only the list elements within the occupied range
+        # حوّل عناصر القائمة في النطاق المشغول فقط
         res = []
         for i in range(self._size):
             res.append(self._nums[self.index(self._front + i)])
@@ -95,35 +95,35 @@ class ArrayDeque:
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the deque
+    # مهّد الطابور المزدوج
     deque = ArrayDeque(10)
     deque.push_last(3)
     deque.push_last(2)
     deque.push_last(5)
     print("Deque deque =", deque.to_array())
 
-    # Access an element
+    # وصول إلى عنصر
     peek_first: int = deque.peek_first()
     print("Front element peek_first =", peek_first)
     peek_last: int = deque.peek_last()
     print("Rear element peek_last =", peek_last)
 
-    # Enqueue elements
+    # ادخل العناصر
     deque.push_last(4)
     print("After enqueuing element 4 at the rear, deque =", deque.to_array())
     deque.push_first(1)
     print("After enqueuing element 1 at the front, deque =", deque.to_array())
 
-    # Dequeue an element
+    # أخرج عنصرًا
     pop_last: int = deque.pop_last()
     print("Element dequeued from the rear =", pop_last, ", after dequeuing from the rear, deque =", deque.to_array())
     pop_first: int = deque.pop_first()
     print("Element dequeued from the front =", pop_first, ", after dequeuing from the front, deque =", deque.to_array())
 
-    # Get the deque size
+    # احصل على حجم الطابور المزدوج
     size: int = deque.size()
     print("Deque size =", size)
 
-    # Check whether the deque is empty
+    # تحقق مما إذا كان الطابور المزدوج فارغًا
     is_empty: bool = deque.is_empty()
     print("Is the deque empty =", is_empty)

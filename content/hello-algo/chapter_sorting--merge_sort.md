@@ -35,19 +35,18 @@ lang: ar
 ```py
 def merge_sort(nums: list[int], left: int, right: int):
     """Merge sort"""
-    # Base case
+    # الحالة الأساس
     if left >= right:
-        return  # Stop recursing when the subarray has at most one element
-    # Divide phase
-    mid = (left + right) // 2 # Calculate the midpoint
-    merge_sort(nums, left, mid)  # Recurse on the left subarray
-    merge_sort(nums, mid + 1, right)  # Recurse on the right subarray
-    # Merge phase
+        return  # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
+    # مرحلة التقسيم
+    mid = (left + right) // 2 # احسب نقطة المنتصف
+    merge_sort(nums, left, mid)  # تعاود على المصفوفة الجزئية اليسرى
+    merge_sort(nums, mid + 1, right)  # تعاود على المصفوفة الجزئية اليمنى
+    # مرحلة الدمج
     merge(nums, left, mid, right)
 ```
 
-</div>
-## خصائص الخوارزمية
+</div>## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n \log n)$؛ ترتيب الدمج غير تكيّفي (non-adaptive)**: تنتج مرحلة التقسيم شجرة تعاود بارتفاع $\log n$، ويبلغ إجمالي عدد العمليات المنفذة أثناء الدمج في كل مستوى $n$، لذا فإن التعقيد الزمني الكلي هو $O(n \log n)$.
 - **التعقيد المكاني $O(n)$؛ ترتيب الدمج ليس في المكان (in-place)**: عمق التعاود $\log n$، وهو ما يستهلك مساحة إطارات المكدس $O(\log n)$. وتتطلب عملية الدمج مصفوفة مساعدة تستهلك مساحة إضافية $O(n)$.

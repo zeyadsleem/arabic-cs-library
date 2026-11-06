@@ -28,23 +28,22 @@ lang: ar
 ```py
 def level_order(root: TreeNode | None) -> list[int]:
     """Level-order traversal"""
-    # Initialize a queue and enqueue the root
+    # مهّد طابورًا وأدخل الجذر إليه
     queue: deque[TreeNode] = deque()
     queue.append(root)
-    # Initialize a list to store the traversal sequence
+    # مهّد قائمة لتخزين تتابع الاجتياز
     res = []
     while queue:
-        node: TreeNode = queue.popleft()  # Dequeue from the queue
-        res.append(node.val)  # Store the node value
+        node: TreeNode = queue.popleft()  # أخرج من الطابور
+        res.append(node.val)  # خزّن قيمة العقدة
         if node.left is not None:
-            queue.append(node.left)  # Enqueue the left child
+            queue.append(node.left)  # أدخل الابن الأيسر إلى الطابور
         if node.right is not None:
-            queue.append(node.right)  # Enqueue the right child
+            queue.append(node.right)  # أدخل الابن الأيمن إلى الطابور
     return res
 ```
 
-</div>
-### تحليل التعقيد
+</div>### تحليل التعقيد
 
 - **التعقيد الزمني هو $O(n)$**: تُزار جميع العقد مرة واحدة، مستخدماً زمن $O(n)$، حيث $n$ هو عدد العقد.
 - **التعقيد المكاني هو $O(n)$**: في أسوأ الحالات، أي في شجرة ثنائية تامة، وقبل الاجتياز إلى المستوى السفلي، يحتوي الطابور في الوقت نفسه على $(n + 1) / 2$ عقدة على الأكثر، شاغلاً مساحة $O(n)$.
@@ -69,14 +68,13 @@ def post_order(root: TreeNode | None):
     """Postorder traversal"""
     if root is None:
         return
-    # Visit order: left subtree -> right subtree -> root
+    # ترتيب الزيارة: الشجرة الجزئية اليسرى -> اليمنى -> الجذر
     post_order(root=root.left)
     post_order(root=root.right)
     res.append(root.val)
 ```
 
-</div>
-<div class="note">
+</div><div class="note">
 
 يمكن أيضاً تنفيذ البحث بالعمق أولاً تكرارياً، ويمكن للقارئ المهتم أن يستكشف ذلك بنفسه.
 

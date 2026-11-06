@@ -9,8 +9,8 @@ class ListNode:
     """Linked list node class"""
 
     def __init__(self, val: int):
-        self.val: int = val  # Node value
-        self.next: ListNode | None = None  # Reference to the next node
+        self.val: int = val  # قيمة العقدة
+        self.next: ListNode | None = None  # إشارة إلى العقدة التالية
 
 
 def list_to_linked_list(arr: list[int]) -> ListNode | None:

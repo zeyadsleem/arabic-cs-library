@@ -60,11 +60,11 @@ Please note that in an $n \times n$ square matrix, the range of $row - col$ is $
 ```py
 def n_queens(n: int) -> list[list[list[str]]]:
     """Solve the n-queens problem"""
-    # Initialize an n*n board, where 'Q' represents a queen and '#' represents an empty square
+    # مهّد لوحة n*n، حيث تمثل 'Q' ملكة و'#' مربعًا فارغًا
     state = [["#" for _ in range(n)] for _ in range(n)]
-    cols = [False] * n  # Track whether a column contains a queen
-    diags1 = [False] * (2 * n - 1)  # Track whether a main diagonal contains a queen
-    diags2 = [False] * (2 * n - 1)  # Track whether an anti-diagonal contains a queen
+    cols = [False] * n  # تتبع ما إذا كان في العمود ملكة
+    diags1 = [False] * (2 * n - 1)  # تتبع ما إذا كان في القطر الرئيسي ملكة
+    diags2 = [False] * (2 * n - 1)  # تتبع ما إذا كان في القطر المعاكس ملكة
     res = []
     backtrack(0, n, state, res, cols, diags1, diags2)
 

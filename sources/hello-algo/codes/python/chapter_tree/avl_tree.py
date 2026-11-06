@@ -24,73 +24,73 @@ class AVLTree:
 
     def height(self, node: TreeNode | None) -> int:
         """Get the node height"""
-        # An empty subtree has height -1; a leaf has height 0
+        # الشجرة الجزئية الفارغة ارتفاعها -1؛ والورقة ارتفاعها 0
         if node is not None:
             return node.height
         return -1
 
     def update_height(self, node: TreeNode | None):
         """Update the node height"""
-        # The node height equals the height of its taller subtree + 1
+        # ارتفاع العقدة يساوي ارتفاع أطول شجرتها الجزئية + 1
         node.height = max([self.height(node.left), self.height(node.right)]) + 1
 
     def balance_factor(self, node: TreeNode | None) -> int:
         """Get the balance factor"""
-        # An empty subtree has balance factor 0
+        # عامل التوازن للشجرة الجزئية الفارغة هو 0
         if node is None:
             return 0
-        # Node balance factor = left subtree height - right subtree height
+        # عامل توازن العقدة = ارتفاع الشجرة الجزئية اليسرى - ارتفاع اليمنى
         return self.height(node.left) - self.height(node.right)
 
     def right_rotate(self, node: TreeNode | None) -> TreeNode | None:
         """Right rotation"""
         child = node.left
         grand_child = child.right
-        # Rotate node to the right around child
+        # أدر node حول child إلى اليمين
         child.right = node
         node.left = grand_child
-        # Update the node height
+        # حدّث ارتفاع العقدة
         self.update_height(node)
         self.update_height(child)
-        # Return the root of the rotated subtree
+        # أعد جذر الشجرة الجزئية بعد الإدارة
         return child
 
     def left_rotate(self, node: TreeNode | None) -> TreeNode | None:
         """Left rotation"""
         child = node.right
         grand_child = child.left
-        # Rotate node to the left around child
+        # أدر node حول child إلى اليسار
         child.left = node
         node.right = grand_child
-        # Update the node height
+        # حدّث ارتفاع العقدة
         self.update_height(node)
         self.update_height(child)
-        # Return the root of the rotated subtree
+        # أعد جذر الشجرة الجزئية بعد الإدارة
         return child
 
     def rotate(self, node: TreeNode | None) -> TreeNode | None:
         """Perform rotations to restore balance in this subtree"""
-        # Get the balance factor of node
+        # احصل على عامل توازن العقدة
         balance_factor = self.balance_factor(node)
-        # Left-heavy tree
+        # شجرة مائلة لليسار
         if balance_factor > 1:
             if self.balance_factor(node.left) >= 0:
-                # Rotate right
+                # أدر إلى اليمين
                 return self.right_rotate(node)
             else:
-                # Rotate left, then right
+                # أدر إلى اليسار ثم اليمين
                 node.left = self.left_rotate(node.left)
                 return self.right_rotate(node)
-        # Right-heavy tree
+        # شجرة مائلة لليمين
         elif balance_factor < -1:
             if self.balance_factor(node.right) <= 0:
-                # Rotate left
+                # أدر إلى اليسار
                 return self.left_rotate(node)
             else:
-                # Rotate right, then left
+                # أدر إلى اليمين ثم اليسار
                 node.right = self.right_rotate(node.right)
                 return self.left_rotate(node)
-        # The tree is balanced; return without rotating
+        # الشجرة متوازنة؛ أعد دون إدارة
         return node
 
     def insert(self, val):
@@ -101,17 +101,17 @@ class AVLTree:
         """Insert a node recursively (helper method)"""
         if node is None:
             return TreeNode(val)
-        # 1. Find the insertion position and insert the node
+        # 1. أوجد موضع الإدراج وأدخل العقدة
         if val < node.val:
             node.left = self.insert_helper(node.left, val)
         elif val > node.val:
             node.right = self.insert_helper(node.right, val)
         else:
-            # Return without inserting a duplicate node
+            # أعد دون إدراج عقدة مكررة
             return node
-        # Update the node height
+        # حدّث ارتفاع العقدة
         self.update_height(node)
-        # 2. Perform rotations to restore balance in this subtree
+        # 2. أجرِ الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية
         return self.rotate(node)
 
     def remove(self, val: int):
@@ -122,7 +122,7 @@ class AVLTree:
         """Remove a node recursively (helper method)"""
         if node is None:
             return None
-        # 1. Find and remove the node
+        # 1. أوجد العقدة واحذفها
         if val < node.val:
             node.left = self.remove_helper(node.left, val)
         elif val > node.val:
@@ -130,39 +130,39 @@ class AVLTree:
         else:
             if node.left is None or node.right is None:
                 child = node.left or node.right
-                # Number of children = 0: remove node and return
+                # عدد الأبناء = 0: احذف العقدة وأعد
                 if child is None:
                     return None
-                # Number of children = 1: remove node directly
+                # عدد الأبناء = 1: احذف العقدة مباشرةً
                 else:
                     node = child
             else:
-                # Number of children = 2: remove the inorder successor and use its value to replace the current node value
+                # عدد الأبناء = 2: احذف خلف الاجتياز الداخلي واستخدم قيمته بإحلالها مكان قيمة العقدة الحالية
                 temp = node.right
                 while temp.left is not None:
                     temp = temp.left
                 node.right = self.remove_helper(node.right, temp.val)
                 node.val = temp.val
-        # Update the node height
+        # حدّث ارتفاع العقدة
         self.update_height(node)
-        # 2. Perform rotations to restore balance in this subtree
+        # 2. أجرِ الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية
         return self.rotate(node)
 
     def search(self, val: int) -> TreeNode | None:
         """Find a node"""
         cur = self._root
-        # Search in a loop, stopping if cur becomes None
+        # ابحث في حلقة، متوقفًا إذا صارت cur هي None
         while cur is not None:
-            # If present, the target node lies in the right subtree of cur
+            # إن وُجدت، فالعقدة الهدف في الشجرة الجزئية اليمنى لـ cur
             if cur.val < val:
                 cur = cur.right
-            # If present, the target node lies in the left subtree of cur
+            # إن وُجدت، فالعقدة الهدف في الشجرة الجزئية اليسرى لـ cur
             elif cur.val > val:
                 cur = cur.left
-            # The target node was found; exit the loop
+            # وُجدت العقدة الهدف؛ اخرج من الحلقة
             else:
                 break
-        # Return the target node, or None if it was not found
+        # أعد العقدة الهدف، أو None إذا لم تُوجد
         return cur
 
 
@@ -179,22 +179,22 @@ if __name__ == "__main__":
         print("\nAVL tree after removing node {}:".format(val))
         print_tree(tree.get_root())
 
-    # Initialize an empty AVL tree
+    # مهّد شجرة AVL فارغة
     avl_tree = AVLTree()
 
-    # Insert a node
-    # Observe how the AVL tree maintains balance after a node is inserted
+    # أدخل عقدة
+    # راقب كيف تحافظ شجرة AVL على التوازن بعد إدراج عقدة
     for val in [1, 2, 3, 4, 5, 8, 7, 9, 10, 6]:
         test_insert(avl_tree, val)
 
-    # Insert a duplicate node
+    # أدخل عقدة مكررة
     test_insert(avl_tree, 7)
 
-    # Remove a node
-    # Observe how the AVL tree maintains balance after a node is removed
-    test_remove(avl_tree, 8)  # Remove a node with 0 children
-    test_remove(avl_tree, 5)  # Remove a node with 1 child
-    test_remove(avl_tree, 4)  # Remove a node with 2 children
+    # احذف عقدة
+    # راقب كيف تحافظ شجرة AVL على التوازن بعد حذف عقدة
+    test_remove(avl_tree, 8)  # احذف عقدة بلا أبناء
+    test_remove(avl_tree, 5)  # احذف عقدة ذات ابن واحد
+    test_remove(avl_tree, 4)  # احذف عقدة ذات ابنين
 
     result_node = avl_tree.search(7)
     print("\nFound node object: {}, node value = {}".format(result_node, result_node.val))

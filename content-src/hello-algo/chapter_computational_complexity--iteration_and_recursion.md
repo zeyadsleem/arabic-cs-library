@@ -25,7 +25,7 @@ The following function implements the summation $1 + 2 + \dots + n$ using a `for
 def for_loop(n: int) -> int:
     """for loop"""
     res = 0
-    # Sum 1, 2, ..., n-1, n in a loop
+    # اجمع 1، 2، ...، n-1، n في حلقة
     for i in range(1, n + 1):
         res += i
     return res
@@ -52,11 +52,11 @@ Below we use a `while` loop to implement the summation $1 + 2 + \dots + n$:
 def while_loop(n: int) -> int:
     """while loop"""
     res = 0
-    i = 1  # Initialize the loop control variable
-    # Sum 1, 2, ..., n-1, n in a loop
+    i = 1  # مهّد متغير التحكم في الحلقة
+    # اجمع 1، 2، ...، n-1، n في حلقة
     while i <= n:
         res += i
-        i += 1  # Update the loop control variable
+        i += 1  # حدّث متغير التحكم في الحلقة
     return res
 ```
 
@@ -73,11 +73,11 @@ For example, in the following code, the condition variable $i$ is updated twice 
 def while_loop_ii(n: int) -> int:
     """while loop (two updates)"""
     res = 0
-    i = 1  # Initialize the loop control variable
-    # Sum 1, 4, 10, ... in a loop
+    i = 1  # مهّد متغير التحكم في الحلقة
+    # اجمع 1، 4، 10، ... في حلقة
     while i <= n:
         res += i
-        # Update the loop control variable
+        # حدّث متغير التحكم في الحلقة
         i += 1
         i *= 2
     return res
@@ -98,9 +98,9 @@ We can nest one loop structure inside another. Below is an example using `for` l
 def nested_for_loop(n: int) -> str:
     """Nested for loops"""
     res = ""
-    # Loop over i = 1, 2, ..., n-1, n
+    # حلقة على i = 1، 2، ...، n-1، n
     for i in range(1, n + 1):
-        # Loop over j = 1, 2, ..., n-1, n
+        # حلقة على j = 1، 2، ...، n-1، n
         for j in range(1, n + 1):
             res += f"({i}, {j}), "
     return res
@@ -137,12 +137,12 @@ Observe the following code. We only need to call the function `recur(n)` to comp
 ```py
 def recur(n: int) -> int:
     """Recursion"""
-    # Base case
+    # الحالة الأساس
     if n == 1:
         return 1
-    # Recurse: make a recursive call
+    # تعاود: أجرِ استدعاءً تعاوديًا
     res = recur(n - 1)
-    # Unwind: return the result
+    # التراجع: أعد النتيجة
     return n + res
 ```
 
@@ -190,10 +190,10 @@ Taking the calculation of $1 + 2 + \dots + n$ as an example, we can set the resu
 ```py
 def tail_recur(n, res):
     """Tail recursion"""
-    # Base case
+    # الحالة الأساس
     if n == 0:
         return res
-    # Tail-recursive call
+    # استدعاء تعاودي ذيلي
     return tail_recur(n - 1, res + n)
 ```
 
@@ -235,12 +235,12 @@ Following the recurrence relation to make recursive calls, with the first two nu
 ```py
 def fib(n: int) -> int:
     """Fibonacci sequence: recursion"""
-    # Base cases: f(1) = 0, f(2) = 1
+    # حالات الأساس: f(1) = 0، f(2) = 1
     if n == 1 or n == 2:
         return n - 1
-    # Recursive calls: f(n) = f(n-1) + f(n-2)
+    # استدعاءات تعاودية: f(n) = f(n-1) + f(n-2)
     res = fib(n - 1) + fib(n - 2)
-    # Return the result f(n)
+    # أعد النتيجة f(n)
     return res
 ```
 
@@ -289,16 +289,16 @@ Therefore, **we can use an explicit stack to simulate the behavior of the call s
 ```py
 def for_loop_recur(n: int) -> int:
     """Simulate recursion using iteration"""
-    # Use an explicit stack to simulate the system call stack
+    # استخدم مكدسًا صريحًا لمحاكاة مكدس الاستدعاءات في النظام
     stack = []
     res = 0
-    # Simulate the recursive-call phase
+    # حاكِ مرحلة الاستدعاء التعاودي
     for i in range(n, 0, -1):
-        # Simulate recursive calls by pushing onto the stack
+        # حاكِ الاستدعاءات التعاودية بالدفع إلى المكدس
         stack.append(i)
-    # Simulate unwinding and accumulating the result
+    # حاكِ التراجع وتجميع النتيجة
     while stack:
-        # Simulate unwinding by popping from the stack
+        # حاكِ التراجع بالسحب من المكدس
         res += stack.pop()
     # res = 1+2+3+...+n
     return res

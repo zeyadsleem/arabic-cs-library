@@ -29,22 +29,21 @@ lang: ar
 ```py
     def partition(self, nums: list[int], left: int, right: int) -> int:
         """Two-pointer partitioning"""
-        # Use nums[left] as the pivot
+        # استخدم nums[left] بوصفه محورًا
         i, j = left, right
         while i < j:
             while i < j and nums[j] >= nums[left]:
-                j -= 1  # Scan from right to left for the first element smaller than the pivot
+                j -= 1  # امسح من اليمين إلى اليسار لأول عنصر أصغر من المحور
             while i < j and nums[i] <= nums[left]:
-                i += 1  # Scan from left to right for the first element larger than the pivot
-            # Swap the elements
+                i += 1  # امسح من اليسار إلى اليمين لأول عنصر أكبر من المحور
+            # بدّل العنصرين
             nums[i], nums[j] = nums[j], nums[i]
-        # Swap the pivot into the boundary position between the two subarrays
+        # بدّل المحور إلى موضع الحد بين المصفوفتين الجزئيتين
         nums[i], nums[left] = nums[left], nums[i]
-        return i  # Return the pivot index
+        return i  # أعد فهرس المحور
 ```
 
-</div>
-## سير الخوارزمية
+</div>## سير الخوارزمية
 
 يوضح الشكل أدناه السير الكامل للترتيب السريع.
 
@@ -60,18 +59,17 @@ lang: ar
 ```py
     def quick_sort(self, nums: list[int], left: int, right: int):
         """Quick sort"""
-        # Stop recursing when the subarray has at most one element
+        # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
         if left >= right:
             return
-        # Two-pointer partitioning
+        # التقسيم بمؤشرين
         pivot = self.partition(nums, left, right)
-        # Recurse on the left and right subarrays
+        # تعاود على المصفوفتين الجزئيتين اليسرى واليمنى
         self.quick_sort(nums, left, pivot - 1)
         self.quick_sort(nums, pivot + 1, right)
 ```
 
-</div>
-## خصائص الخوارزمية
+</div>## خصائص الخوارزمية
 
 - **تعقيد زمني $O(n \log n)$؛ ترتيب غير تكيّفي**: في المتوسط، ينتج التقسيم بالمحمّي $\log n$ مستوى تعاودياً، ويكون العدد الإجمالي لتكرارات الحلقة في كل مستوى $n$، لذا يكون التعقيد الزمني الكلي $O(n \log n)$. وفي أسوأ حالة، يقسّم كل جولة من التقسيم بالمحمّي مصفوفة طولها $n$ إلى مصفوفتين فرعيتين طولاهما $0$ و$n - 1$. ويبلغ عمق التعاود حينئذٍ $n$، مع $n$ تكرار حلقة في كل مستوى، فيكون التعقيد الزمني الكلي $O(n^2)$.
 - **تعقيد مكاني $O(n)$؛ ترتيب في المكان**: في حالة كون مصفوفة الإدخال معكوسة تماماً، يبلغ أسوأ عمق تعاود $n$، مستخدماً مساحة إطار مكدس $O(n)$. وتُجرى عملية الترتيب على المصفوفة الأصلية دون الاستعانة بمصفوفة إضافية.
@@ -103,22 +101,21 @@ lang: ar
 ```py
     def partition(self, nums: list[int], left: int, right: int) -> int:
         """Two-pointer partitioning"""
-        # Use nums[left] as the pivot
+        # استخدم nums[left] بوصفه محورًا
         i, j = left, right
         while i < j:
             while i < j and nums[j] >= nums[left]:
-                j -= 1  # Scan from right to left for the first element smaller than the pivot
+                j -= 1  # امسح من اليمين إلى اليسار لأول عنصر أصغر من المحور
             while i < j and nums[i] <= nums[left]:
-                i += 1  # Scan from left to right for the first element larger than the pivot
-            # Swap the elements
+                i += 1  # امسح من اليسار إلى اليمين لأول عنصر أكبر من المحور
+            # بدّل العنصرين
             nums[i], nums[j] = nums[j], nums[i]
-        # Swap the pivot into the boundary position between the two subarrays
+        # بدّل المحور إلى موضع الحد بين المصفوفتين الجزئيتين
         nums[i], nums[left] = nums[left], nums[i]
-        return i  # Return the pivot index
+        return i  # أعد فهرس المحور
 ```
 
-</div>
-## تحسين عمق التعاود
+</div>## تحسين عمق التعاود
 
 **قد يستهلك الترتيب السريع أيضاً مساحة أكبر في بعض المدخلات**. تأمّل مصفوفة إدخال مرتبة بالكامل. وليكن طول المصفوفة الفرعية الحالية في التعاود $m$. ينتج عن كل جولة من التقسيم بالمحمّي مصفوفة فرعية يسرى طولها $0$ ومصفوفة فرعية يمنى طولها $m - 1$، مما يعني أن كل استدعاء تعاودي يقلّص حجم المسألة بمقدار عنصر واحد فقط. وبذلك يمكن أن تبلغ شجرة التعاود ارتفاعاً قدره $n - 1$، مستهلكة مساحة إطار مكدس $O(n)$.
 
@@ -130,12 +127,12 @@ lang: ar
 ```py
     def quick_sort(self, nums: list[int], left: int, right: int):
         """Quick sort"""
-        # Stop recursing when the subarray has at most one element
+        # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
         if left >= right:
             return
-        # Two-pointer partitioning
+        # التقسيم بمؤشرين
         pivot = self.partition(nums, left, right)
-        # Recurse on the left and right subarrays
+        # تعاود على المصفوفتين الجزئيتين اليسرى واليمنى
         self.quick_sort(nums, left, pivot - 1)
         self.quick_sort(nums, pivot + 1, right)
 ```

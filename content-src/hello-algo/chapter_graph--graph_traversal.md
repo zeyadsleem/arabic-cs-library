@@ -38,24 +38,24 @@ A hash set can be viewed as a hash table that stores only `key` without storing 
 ```py
 def graph_bfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
     """Breadth-first traversal"""
-    # Represent the graph with an adjacency list to access all neighbors of a given vertex
-    # Vertex traversal sequence
+    # مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين
+    # تتابع اجتياز الرؤوس
     res = []
-    # Hash set recording visited vertices
+    # مجموعة تجزئة تسجل الرؤوس المزارة
     visited = set[Vertex]([start_vet])
-    # Use a queue to implement BFS
+    # استخدم طابورًا لتنفيذ BFS
     que = deque[Vertex]([start_vet])
-    # Starting from start_vet, loop until all reachable vertices have been visited
+    # بدءًا من start_vet، حلّق حتى تُزار جميع الرؤوس القابلة للوصول
     while len(que) > 0:
-        vet = que.popleft()  # Dequeue the front vertex
-        res.append(vet)  # Record the visited vertex
-        # Traverse all neighbors of this vertex
+        vet = que.popleft()  # أخرج الرأس الموجود في مقدمة الطابور
+        res.append(vet)  # سجّل الرأس المزار
+        # اجتز كل أجوار هذا الرأس
         for adj_vet in graph.adj_list[vet]:
             if adj_vet in visited:
-                continue  # Skip vertices that have already been visited
-            que.append(adj_vet)  # Enqueue only unvisited vertices
-            visited.add(adj_vet)  # Mark this vertex as visited
-    # Return the vertex traversal sequence
+                continue  # تخطَّ الرؤوس التي زُرت سابقًا
+            que.append(adj_vet)  # أدخل إلى الطابور الرؤوس غير المزارة فقط
+            visited.add(adj_vet)  # علّم هذا الرأس بوصفه مزارًا
+    # أعد تتابع اجتياز الرؤوس
     return res
 ```
 
@@ -92,10 +92,10 @@ This "go as far as possible then return" algorithm paradigm is typically impleme
 ```py
 def graph_dfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
     """Depth-first traversal"""
-    # Represent the graph with an adjacency list to access all neighbors of a given vertex
-    # Vertex traversal sequence
+    # مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين
+    # تتابع اجتياز الرؤوس
     res = []
-    # Hash set recording visited vertices
+    # مجموعة تجزئة تسجل الرؤوس المزارة
     visited = set[Vertex]()
     dfs(graph, visited, res, start_vet)
     return res

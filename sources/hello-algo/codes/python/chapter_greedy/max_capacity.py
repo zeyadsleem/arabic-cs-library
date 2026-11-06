@@ -7,16 +7,16 @@ Author: krahets (krahets@163.com)
 
 def max_capacity(ht: list[int]) -> int:
     """Maximum container capacity: greedy algorithm"""
-    # Initialize i and j at opposite ends of the array
+    # مهّد i و j عند طرفي المصفوفة المتقابلين
     i, j = 0, len(ht) - 1
-    # The initial maximum capacity is 0
+    # السعة القصوى الابتدائية هي 0
     res = 0
-    # Repeatedly make greedy choices until the two sides meet
+    # كرّر الاختيارات الجشعة حتى يلتقي الجانبان
     while i < j:
-        # Update the maximum capacity
+        # حدّث السعة القصوى
         cap = min(ht[i], ht[j]) * (j - i)
         res = max(res, cap)
-        # Move the shorter side inward
+        # حرّك الجانب الأقصر إلى الداخل
         if ht[i] < ht[j]:
             i += 1
         else:
@@ -28,6 +28,6 @@ def max_capacity(ht: list[int]) -> int:
 if __name__ == "__main__":
     ht = [3, 8, 5, 2, 7, 7, 3, 4]
 
-    # Greedy algorithm
+    # خوارزمية جشعة
     res = max_capacity(ht)
     print(f"Maximum capacity: {res}")

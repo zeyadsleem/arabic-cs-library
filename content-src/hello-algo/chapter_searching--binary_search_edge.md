@@ -29,12 +29,12 @@ When either of these situations occurs, simply return $-1$. The code is shown be
 ```py
 def binary_search_left_edge(nums: list[int], target: int) -> int:
     """Find the leftmost occurrence of target using binary search"""
-    # This is equivalent to finding the insertion point of target
+    # هذا يعادل إيجاد نقطة إدراج target
     i = binary_search_insertion(nums, target)
-    # If target was not found, return -1
+    # إذا لم يُوجد target فأعد -1
     if i == len(nums) or nums[i] != target:
         return -1
-    # Target was found; return index i
+    # وُجد الهدف؛ أعد الفهرس i
     return i
 ```
 
@@ -62,14 +62,14 @@ Note that the returned insertion point is $i$, so we need to subtract $1$ from i
 ```py
 def binary_search_right_edge(nums: list[int], target: int) -> int:
     """Find the rightmost occurrence of target using binary search"""
-    # Reduce the problem to finding the leftmost insertion point of target + 1
+    # اختزل المسألة إلى إيجاد أقصى يسار نقطة إدراج لـ target + 1
     i = binary_search_insertion(nums, target + 1)
-    # j is the candidate rightmost target index; i is the index of the first element greater than target, or len(nums)
+    # j هو الفهرس المرشح الأقصى يمينًا للهدف؛ و i هو فهرس أول عنصر أكبر من target أو len(nums)
     j = i - 1
-    # If target was not found, return -1
+    # إذا لم يُوجد target فأعد -1
     if j == -1 or nums[j] != target:
         return -1
-    # Target was found; return index j
+    # وُجد الهدف؛ أعد الفهرس j
     return j
 ```
 

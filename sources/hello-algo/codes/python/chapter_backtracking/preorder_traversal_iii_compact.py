@@ -13,17 +13,17 @@ from modules import TreeNode, print_tree, list_to_tree
 
 def pre_order(root: TreeNode):
     """Preorder traversal: example 3"""
-    # Prune
+    # تشذيب
     if root is None or root.val == 3:
         return
-    # Try
+    # تجربة
     path.append(root)
     if root.val == 7:
-        # Record the solution
+        # سجّل الحل
         res.append(list(path))
     pre_order(root.left)
     pre_order(root.right)
-    # Backtrack
+    # تراجع
     path.pop()
 
 
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     print("\nInitialize the binary tree")
     print_tree(root)
 
-    # Preorder traversal
+    # اجتياز الطلب المسبق
     path = list[TreeNode]()
     res = list[list[TreeNode]]()
     pre_order(root)

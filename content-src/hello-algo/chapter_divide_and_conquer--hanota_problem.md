@@ -67,7 +67,7 @@ In the code, we declare a recursive function `dfs(i, src, buf, tar)`, whose purp
 def solve_hanota(A: list[int], B: list[int], C: list[int]):
     """Solve the Tower of Hanoi problem"""
     n = len(A)
-    # Move the top n disks from A to C using B
+    # انقل أعلى n من الأقراص من A إلى C باستخدام B
     dfs(n, A, B, C)
 ```
 

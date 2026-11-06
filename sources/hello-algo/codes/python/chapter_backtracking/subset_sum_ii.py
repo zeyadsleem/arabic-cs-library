@@ -9,35 +9,35 @@ def backtrack(
     state: list[int], target: int, choices: list[int], start: int, res: list[list[int]]
 ):
     """Backtracking: subset sum II"""
-    # Record a solution when the remaining target is zero
+    # سجّل حلًا حين يصير الهدف المتبقي صفرًا
     if target == 0:
         res.append(list(state))
         return
-    # Iterate over all choices
-    # Pruning 2: iterate from start to avoid generating duplicate subsets
-    # Pruning 3: start after the previously chosen index to avoid choosing the same element again
+    # تكرّر على كل الاختيارات
+    # تشذيب 2: تكرّر من start تفاديًا لتوليد المجموعات الجزئية المكررة
+    # تشذيب 3: ابدأ من بعد الفهرس الذي اختير سابقًا تفاديًا لاختيار العنصر نفسه مجددًا
     for i in range(start, len(choices)):
-        # Pruning 1: exit the loop if this choice exceeds the remaining target
-        # The array is sorted, so later elements are at least as large and also exceed the remaining target
+        # تشذيب 1: اخرج من الحلقة إذا تجاوز هذا الاختيار الهدف المتبقي
+        # المصفوفة مرتبة، فالعناصر اللاحقة على الأقل بالقدر نفسه وستتجاوز الهدف المتبقي كذلك
         if target - choices[i] < 0:
             break
-        # Pruning 4: if this element equals its left neighbor at the same search depth, the branch is a duplicate; skip it
+        # تشذيب 4: إذا كان هذا العنصر مساويًا لجاره الأيسر في عمق البحث نفسه، فالفرع مكرر؛ تخطَّه
         if i > start and choices[i] == choices[i - 1]:
             continue
-        # Try: make a choice and update target and start
+        # تجربة: اختر وحدّث الهدف وstart
         state.append(choices[i])
-        # Proceed to the next choice
+        # تابع إلى الاختيار التالي
         backtrack(state, target - choices[i], choices, i + 1, res)
-        # Backtrack: undo the choice and restore the previous state
+        # تراجع: ألغِ الاختيار وأعِد الحالة السابقة
         state.pop()
 
 
 def subset_sum_ii(nums: list[int], target: int) -> list[list[int]]:
     """Solve subset sum II"""
-    state = []  # State (subset)
-    nums.sort()  # Sort nums
-    start = 0  # Starting index for iteration
-    res = []  # Result list (list of subsets)
+    state = []  # الحالة (المجموعة الجزئية)
+    nums.sort()  # رتّب nums
+    start = 0  # فهرس البدء للتكرار
+    res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
     backtrack(state, target, nums, start, res)
     return res
 

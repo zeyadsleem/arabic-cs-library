@@ -6,11 +6,11 @@ Author: Peng Chen (pengchzn@gmail.com)
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the stack
-    # Python has no built-in stack class; a list can be used as a stack
+    # مهّد المكدس
+    # لا يوجد في Python صنف مكدس مدمج؛ يمكن استخدام القائمة بوصفها مكدسًا
     stack: list[int] = []
 
-    # Push elements onto the stack
+    # ادفع العناصر إلى المكدس
     stack.append(1)
     stack.append(3)
     stack.append(2)
@@ -18,19 +18,19 @@ if __name__ == "__main__":
     stack.append(4)
     print("Stack stack =", stack)
 
-    # Access the top element
+    # وصول إلى عنصر القمة
     peek: int = stack[-1]
     print("Top element peek =", peek)
 
-    # Pop an element from the stack
+    # اسحب عنصرًا من المكدس
     pop: int = stack.pop()
     print("Popped element pop =", pop)
     print("After popping, stack =", stack)
 
-    # Get the stack size
+    # احصل على حجم المكدس
     size: int = len(stack)
     print("Stack size =", size)
 
-    # Check whether it is empty
+    # تحقق مما إذا كان فارغًا
     is_empty: bool = len(stack) == 0
     print("Is the stack empty =", is_empty)

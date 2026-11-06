@@ -36,15 +36,15 @@ Additionally, we need to slightly modify the counting sort code to make it sort 
 ```py
 def radix_sort(nums: list[int]):
     """Radix sort"""
-    # Get the largest array element to determine the maximum number of digits
+    # احصل على أكبر عنصر في المصفوفة لتحديد العدد الأقصى من الأرقام
     m = max(nums)
-    # Process digits from least significant to most significant
+    # عالج الأرقام من الأقل أهمية إلى الأهم
     exp = 1
     while exp <= m:
-        # Apply counting sort to the k-th digit of the array elements
+        # طبّق الترتيب بالعدّ على الرقم k في عناصر المصفوفة
         # k = 1 -> exp = 1
         # k = 2 -> exp = 10
-        # That is, exp = 10^(k-1)
+        # أي أن exp = 10^(k-1)
         counting_sort_digit(nums, exp)
         exp *= 10
 ```

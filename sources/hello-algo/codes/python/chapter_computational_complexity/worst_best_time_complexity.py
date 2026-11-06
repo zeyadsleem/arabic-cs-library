@@ -9,9 +9,9 @@ import random
 
 def random_numbers(n: int) -> list[int]:
     """Generate an array containing 1, 2, ..., n in shuffled order"""
-    # Generate the array nums = 1, 2, 3, ..., n
+    # ولّد المصفوفة nums = 1، 2، 3، ...، n
     nums = [i for i in range(1, n + 1)]
-    # Randomly shuffle the array elements
+    # خلط عناصر المصفوفة عشوائيًا
     random.shuffle(nums)
     return nums
 
@@ -19,8 +19,8 @@ def random_numbers(n: int) -> list[int]:
 def find_one(nums: list[int]) -> int:
     """Find the index of the number 1 in array nums"""
     for i in range(len(nums)):
-        # When 1 is at the start of the array, the best-case time complexity is O(1)
-        # When 1 is at the end of the array, the worst-case time complexity is O(n)
+        # عندما يكون 1 في بداية المصفوفة، يكون التعقيد الزمني في أفضل الحالات O(1)
+        # عندما يكون 1 في نهاية المصفوفة، يكون التعقيد الزمني في أسوأ الحالات O(n)
         if nums[i] == 1:
             return i
     return -1

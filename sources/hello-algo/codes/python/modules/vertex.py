@@ -1,6 +1,6 @@
-# File: vertex.py
-# Created Time: 2023-02-23
-# Author: krahets (krahets@163.com)
+# الملف: vertex.py
+# تاريخ الإنشاء: 2023-02-23
+# المؤلف: krahets (krahets@163.com)
 
 
 class Vertex:

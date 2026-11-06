@@ -53,8 +53,7 @@ def algorithm(n) -> int:  # Input data
     return A + b + c      # Output data
 ```
 
-</div>
-## طريقة الحساب
+</div>## طريقة الحساب
 
 طريقة حساب التعقيد المكاني مماثلة تقريباً لطريقة حساب التعقيد الزمني، إلا أن ما نقيسه يتغير من «عدد العمليات» إلى «مقدار المساحة المستخدمة».
 
@@ -76,8 +75,7 @@ def algorithm(n: int):
         nums = [0] * n  # O(n)
 ```
 
-</div>
-**وفي الدوال التعاودية، يلزم إحصاء مساحة إطار المكدس**. تأمل الشيفرة التالية:
+</div>**وفي الدوال التعاودية، يلزم إحصاء مساحة إطار المكدس**. تأمل الشيفرة التالية:
 
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -99,8 +97,7 @@ def recur(n: int):
     return recur(n - 1)
 ```
 
-</div>
-التعقيد الزمني لكل من الدالتين `loop()` و`recur()` هو $O(n)$، لكن التعقيد المكاني لكل منهما مختلف.
+</div>التعقيد الزمني لكل من الدالتين `loop()` و`recur()` هو $O(n)$، لكن التعقيد المكاني لكل منهما مختلف.
 
 - تستدعي الدالة `loop()` الدالة `function()` عدد $n$ من المرات في حلقة. وفي كل تكرار، تعود `function()` وتحرّر مساحة إطار مكدسها، لذا يبقى التعقيد المكاني $O(1)$.
 - في الدالة التعاودية `recur()`، توجد $n$ من نسخ `recur()` غير العائدة في الوقت نفسه أثناء التنفيذ، لذا تشغل مساحة إطارات مكدس $O(n)$.
@@ -130,20 +127,19 @@ $$
 ```py
 def constant(n: int):
     """Constant complexity"""
-    # Constants, variables, and objects occupy O(1) space
+    # الثوابت والمتغيرات والكائنات تشغل مساحة O(1)
     a = 0
     nums = [0] * 10000
     node = ListNode(0)
-    # Variables in the loop occupy O(1) space
+    # المتغيرات في الحلقة تشغل مساحة O(1)
     for _ in range(n):
         c = 0
-    # Function calls in the loop occupy O(1) space
+    # استدعاءات الدوال في الحلقة تشغل مساحة O(1)
     for _ in range(n):
         function()
 ```
 
-</div>
-### الترتيب الخطي $O(n)$
+</div>### الترتيب الخطي $O(n)$
 
 الترتيب الخطي شائع في المصفوفات والقوائم المترابطة والمكدسات والطوابير وغيرها، حيث يتناسب عدد العناصر مع $n$:
 
@@ -153,16 +149,15 @@ def constant(n: int):
 ```py
 def linear(n: int):
     """Linear complexity"""
-    # A list of length n occupies O(n) space
+    # قائمة بطول n تشغل مساحة O(n)
     nums = [0] * n
-    # A hash table with n entries occupies O(n) space
+    # جدول تجزئة فيه n إدخالًا يشغل مساحة O(n)
     hmap = dict[int, str]()
     for i in range(n):
         hmap[i] = str(i)
 ```
 
-</div>
-وكما يوضح الشكل التالي، فإن عمق التعاود لهذه الدالة هو $n$، أي أن هناك $n$ من دوال `linear_recur()` غير العائدة موجودة في الوقت نفسه، وتستخدم مساحة إطارات مكدس $O(n)$:
+</div>وكما يوضح الشكل التالي، فإن عمق التعاود لهذه الدالة هو $n$، أي أن هناك $n$ من دوال `linear_recur()` غير العائدة موجودة في الوقت نفسه، وتستخدم مساحة إطارات مكدس $O(n)$:
 
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -176,8 +171,7 @@ def linear_recur(n: int):
     linear_recur(n - 1)
 ```
 
-</div>
-![تعقيد مكاني من الترتيب الخطي ناتج عن دالة تعاودية](/images/hello-algo/chapter_computational_complexity--space_complexity_recursive_linear.png)
+</div>![تعقيد مكاني من الترتيب الخطي ناتج عن دالة تعاودية](/images/hello-algo/chapter_computational_complexity--space_complexity_recursive_linear.png)
 
 ### الترتيب التربيعي $O(n^2)$
 
@@ -189,12 +183,11 @@ def linear_recur(n: int):
 ```py
 def quadratic(n: int):
     """Quadratic complexity"""
-    # The two-dimensional list occupies O(n^2) space
+    # القائمة ثنائية الأبعاد تشغل مساحة O(n^2)
     num_matrix = [[0] * n for _ in range(n)]
 ```
 
-</div>
-وكما يوضح الشكل التالي، فإن عمق التعاود لهذه الدالة هو $n$، وتُهيَّأ مصفوفة في كل دالة تعاودية بأطوال $n$ و$n-1$ و$\dots$ و$2$ و$1$، بمتوسط طول $n / 2$، وبذلك تشغل في الإجمال مساحة $O(n^2)$:
+</div>وكما يوضح الشكل التالي، فإن عمق التعاود لهذه الدالة هو $n$، وتُهيَّأ مصفوفة في كل دالة تعاودية بأطوال $n$ و$n-1$ و$\dots$ و$2$ و$1$، بمتوسط طول $n / 2$، وبذلك تشغل في الإجمال مساحة $O(n^2)$:
 
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -204,13 +197,12 @@ def quadratic_recur(n: int) -> int:
     """Quadratic complexity (recursive implementation)"""
     if n <= 0:
         return 0
-    # The lengths of array nums are n, n-1, ..., 2, 1
+    # أطوال المصفوفة nums هي n، n-1، ...، 2، 1
     nums = [0] * n
     return quadratic_recur(n - 1)
 ```
 
-</div>
-![تعقيد مكاني من الترتيب التربيعي ناتج عن دالة تعاودية](/images/hello-algo/chapter_computational_complexity--space_complexity_recursive_quadratic.png)
+</div>![تعقيد مكاني من الترتيب التربيعي ناتج عن دالة تعاودية](/images/hello-algo/chapter_computational_complexity--space_complexity_recursive_quadratic.png)
 
 ### الترتيب الأسي $O(2^n)$
 
@@ -230,8 +222,7 @@ def build_tree(n: int) -> TreeNode | None:
     return root
 ```
 
-</div>
-![تعقيد مكاني من الترتيب الأسي ناتج عن شجرة ثنائية كاملة](/images/hello-algo/chapter_computational_complexity--space_complexity_exponential.png)
+</div>![تعقيد مكاني من الترتيب الأسي ناتج عن شجرة ثنائية كاملة](/images/hello-algo/chapter_computational_complexity--space_complexity_exponential.png)
 
 ### الترتيب اللوغاريتمي $O(\log n)$
 

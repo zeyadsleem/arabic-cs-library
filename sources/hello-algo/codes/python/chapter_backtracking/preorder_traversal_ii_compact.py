@@ -15,14 +15,14 @@ def pre_order(root: TreeNode):
     """Preorder traversal: example 2"""
     if root is None:
         return
-    # Try
+    # تجربة
     path.append(root)
     if root.val == 7:
-        # Record the solution
+        # سجّل الحل
         res.append(list(path))
     pre_order(root.left)
     pre_order(root.right)
-    # Backtrack
+    # تراجع
     path.pop()
 
 
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     print("\nInitialize the binary tree")
     print_tree(root)
 
-    # Preorder traversal
+    # اجتياز الطلب المسبق
     path = list[TreeNode]()
     res = list[list[TreeNode]]()
     pre_order(root)

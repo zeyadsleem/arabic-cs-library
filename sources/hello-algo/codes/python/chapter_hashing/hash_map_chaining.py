@@ -16,11 +16,11 @@ class HashMapChaining:
 
     def __init__(self):
         """Constructor"""
-        self.size = 0  # Number of key-value pairs
-        self.capacity = 4  # Hash table capacity
-        self.load_thres = 2.0 / 3.0  # Load factor threshold that triggers capacity growth
-        self.extend_ratio = 2  # Capacity growth factor
-        self.buckets = [[] for _ in range(self.capacity)]  # Bucket array
+        self.size = 0  # عدد ثنائيات المفتاح-القيمة
+        self.capacity = 4  # سعة جدول التجزئة
+        self.load_thres = 2.0 / 3.0  # عتبة عامل التحميل التي تطلق نموّ السعة
+        self.extend_ratio = 2  # معامل نموّ السعة
+        self.buckets = [[] for _ in range(self.capacity)]  # مصفوفة السلال
 
     def hash_func(self, key: int) -> int:
         """Hash function"""
@@ -34,26 +34,26 @@ class HashMapChaining:
         """Lookup operation"""
         index = self.hash_func(key)
         bucket = self.buckets[index]
-        # Traverse the bucket; if key is found, return its corresponding val
+        # اجتز السلة؛ إذا وُجد key فأعد val المقابل له
         for pair in bucket:
             if pair.key == key:
                 return pair.val
-        # Return None if key is not found
+        # أعد None إذا لم يُوجد key
         return None
 
     def put(self, key: int, val: str):
         """Insert operation"""
-        # Grow the capacity when the load factor exceeds the threshold
+        # زِد السعة عندما يتجاوز عامل التحميل العتبة
         if self.load_factor() > self.load_thres:
             self.extend()
         index = self.hash_func(key)
         bucket = self.buckets[index]
-        # Traverse the bucket; if the specified key is found, update its val and return
+        # اجتز السلة؛ إذا وُجد المفتاح المحدد فحدّث val وأعد
         for pair in bucket:
             if pair.key == key:
                 pair.val = val
                 return
-        # If key is absent, append the key-value pair at the end
+        # إذا كان key غائبًا فألحق الثنائية في النهاية
         pair = Pair(key, val)
         bucket.append(pair)
         self.size += 1
@@ -62,7 +62,7 @@ class HashMapChaining:
         """Remove operation"""
         index = self.hash_func(key)
         bucket = self.buckets[index]
-        # Traverse the bucket and remove the key-value pair
+        # اجتز السلة واحذف الثنائية
         for pair in bucket:
             if pair.key == key:
                 bucket.remove(pair)
@@ -71,13 +71,13 @@ class HashMapChaining:
 
     def extend(self):
         """Grow the hash table capacity"""
-        # Keep a reference to the original hash table
+        # احتفظ بإشارة إلى جدول التجزئة الأصلي
         buckets = self.buckets
-        # Initialize a new hash table with the expanded capacity
+        # مهّد جدول تجزئة جديدًا بالسعة الموسعة
         self.capacity *= self.extend_ratio
         self.buckets = [[] for _ in range(self.capacity)]
         self.size = 0
-        # Move the key-value pairs from the original hash table to the new one
+        # انقل الثنائيات من جدول التجزئة الأصلي إلى الجديد
         for bucket in buckets:
             for pair in bucket:
                 self.put(pair.key, pair.val)
@@ -93,11 +93,11 @@ class HashMapChaining:
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the hash table
+    # مهّد جدول التجزئة
     hashmap = HashMapChaining()
 
-    # Insert operation
-    # Insert the key-value pair (key, value) into the hash table
+    # عملية الإدراج
+    # أدخل الثنائية (key, value) إلى جدول التجزئة
     hashmap.put(12836, "小哈")
     hashmap.put(15937, "小啰")
     hashmap.put(16750, "小算")
@@ -106,13 +106,13 @@ if __name__ == "__main__":
     print("\nHash table after insertion:\n[Key1 -> Value1, Key2 -> Value2, ...]")
     hashmap.print()
 
-    # Lookup operation
-    # Look up key in the hash table to obtain value
+    # عملية البحث
+    # ابحث عن key في جدول التجزئة لتحصل على value
     name = hashmap.get(13276)
     print("\nLook up student ID 13276 to obtain the name " + name)
 
-    # Remove operation
-    # Remove the key-value pair (key, value) from the hash table
+    # عملية الحذف
+    # احذف الثنائية (key, value) من جدول التجزئة
     hashmap.remove(12836)
     print("\nHash table after removing 12836:\n[Key1 -> Value1, Key2 -> Value2, ...]")
     hashmap.print()

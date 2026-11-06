@@ -124,21 +124,20 @@ $$
 ```py
 def min_path_sum_dfs(grid: list[list[int]], i: int, j: int) -> int:
     """Minimum path sum: brute-force search"""
-    # Stop searching at the top-left cell
+    # توقف عن البحث عند الخلية أعلى اليسار
     if i == 0 and j == 0:
         return grid[0][0]
-    # If a row or column index is out of bounds, return a cost of +∞
+    # إذا خرج فهرس الصف أو العمود عن الحدود، أعد كلفة +∞
     if i < 0 or j < 0:
         return inf
-    # Calculate the minimum path costs from the top-left corner to (i-1, j) and (i, j-1)
+    # احسب أدنى كلف مسار من الزاوية أعلى اليسار إلى (i-1, j) و(i, j-1)
     up = min_path_sum_dfs(grid, i - 1, j)
     left = min_path_sum_dfs(grid, i, j - 1)
-    # Return the minimum path cost from the top-left corner to (i, j)
+    # أعد أدنى كلفة مسار من الزاوية أعلى اليسار إلى (i, j)
     return min(left, up) + grid[i][j]
 ```
 
-</div>
-![شجرة تعاود البحث بالقوة الغاشمة](/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs.png)
+</div>![شجرة تعاود البحث بالقوة الغاشمة](/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs.png)
 
 لكل حالة خياران: الأسفل واليمين، لذا فإن إجمالي عدد الخطوات من الزاوية العلوية اليسرى إلى الزاوية السفلية اليمنى هو $m + n - 2$، مما يعطي تعقيداً زمنياً في أسوأ حالة $O(2^{m + n})$، حيث $n$ و$m$ هما عدد صفوف الشبكة وأعمدتها على الترتيب. لاحظ أن هذا الحساب لا يراعي الحالات القريبة من حدود الشبكة، حيث يبقى خيار واحد فقط عند الوصول إلى حدود الشبكة، لذا سيكون العدد الفعلي للمسارات أقل بقليل.
 
@@ -156,8 +155,7 @@ def min_path_sum_dfs_mem(
     grid: list[list[int]], mem: list[list[int]], i: int, j: int
 ```
 
-</div>
-![شجرة تعاود الحفظ](/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs_mem.png)
+</div>![شجرة تعاود الحفظ](/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs_mem.png)
 
 ### الطريقة 3: البرمجة الديناميكية
 
@@ -174,24 +172,23 @@ def min_path_sum_dfs_mem(
 def min_path_sum_dp(grid: list[list[int]]) -> int:
     """Minimum path sum: dynamic programming"""
     n, m = len(grid), len(grid[0])
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [[0] * m for _ in range(n)]
     dp[0][0] = grid[0][0]
-    # State transitions: first row
+    # انتقالات الحالة: الصف الأول
     for j in range(1, m):
         dp[0][j] = dp[0][j - 1] + grid[0][j]
-    # State transitions: first column
+    # انتقالات الحالة: العمود الأول
     for i in range(1, n):
         dp[i][0] = dp[i - 1][0] + grid[i][0]
-    # State transitions: remaining rows and columns
+    # انتقالات الحالة: بقية الصفوف والأعمدة
     for i in range(1, n):
         for j in range(1, m):
             dp[i][j] = min(dp[i][j - 1], dp[i - 1][j]) + grid[i][j]
     return dp[n - 1][m - 1]
 ```
 
-</div>
-### تحسين المساحة
+</div>### تحسين المساحة
 
 بما أن كل خلية مرتبطة فقط بالخلية الواقعة على يسارها والخلية الواقعة فوقها، يمكننا استخدام مصفوفة من صف واحد لتنفيذ جدول $dp$.
 
@@ -203,17 +200,17 @@ def min_path_sum_dp(grid: list[list[int]]) -> int:
 def min_path_sum_dp_comp(grid: list[list[int]]) -> int:
     """Minimum path sum: space-optimized dynamic programming"""
     n, m = len(grid), len(grid[0])
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [0] * m
-    # State transitions: first row
+    # انتقالات الحالة: الصف الأول
     dp[0] = grid[0][0]
     for j in range(1, m):
         dp[j] = dp[j - 1] + grid[0][j]
-    # State transitions: remaining rows
+    # انتقالات الحالة: بقية الصفوف
     for i in range(1, n):
-        # State transitions: first column
+        # انتقالات الحالة: العمود الأول
         dp[0] = dp[0] + grid[i][0]
-        # State transitions: remaining columns
+        # انتقالات الحالة: بقية الأعمدة
         for j in range(1, m):
             dp[j] = min(dp[j - 1], dp[j]) + grid[i][j]
     return dp[m - 1]

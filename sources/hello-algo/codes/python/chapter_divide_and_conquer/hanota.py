@@ -7,36 +7,36 @@ Author: krahets (krahets@163.com)
 
 def move(src: list[int], tar: list[int]):
     """Move one disk"""
-    # Take a disk from the top of src
+    # خذ قرصًا من أعلى src
     pan = src.pop()
-    # Place the disk on top of tar
+    # ضع القرص على أعلى tar
     tar.append(pan)
 
 
 def dfs(i: int, src: list[int], buf: list[int], tar: list[int]):
     """Solve the Tower of Hanoi problem f(i)"""
-    # If this subproblem has only one disk to move, move it directly from src to tar
+    # إذا كانت هذه المسألة الجزئية فيها قرص واحد فقط لنقله، انقله مباشرةً من src إلى tar
     if i == 1:
         move(src, tar)
         return
-    # Subproblem f(i-1): move the top i-1 disks from src to buf using tar
+    # المسألة الجزئية f(i-1): انقل أعلى i-1 قرصًا من src إلى buf باستخدام tar
     dfs(i - 1, src, tar, buf)
-    # Subproblem f(1): move the remaining disk of this subproblem from src to tar
+    # المسألة الجزئية f(1): انقل القرص المتبقي في هذه المسألة الجزئية من src إلى tar
     move(src, tar)
-    # Subproblem f(i-1): move the top i-1 disks from buf to tar using src
+    # المسألة الجزئية f(i-1): انقل أعلى i-1 قرصًا من buf إلى tar باستخدام src
     dfs(i - 1, buf, src, tar)
 
 
 def solve_hanota(A: list[int], B: list[int], C: list[int]):
     """Solve the Tower of Hanoi problem"""
     n = len(A)
-    # Move the top n disks from A to C using B
+    # انقل أعلى n من الأقراص من A إلى C باستخدام B
     dfs(n, A, B, C)
 
 
 """Driver code"""
 if __name__ == "__main__":
-    # The end of each list represents the top of the peg
+    # تمثل نهاية كل قائمة أعلى الخازوق
     A = [5, 4, 3, 2, 1]
     B = []
     C = []

@@ -70,16 +70,16 @@ The search code includes the following elements.
 ```py
 def knapsack_dfs(wgt: list[int], val: list[int], i: int, c: int) -> int:
     """0-1 knapsack: brute-force search"""
-    # If all items have been considered or no capacity remains, return value 0
+    # إذا اعتُبرت كل العناصر أولم تبق سعة، أعد قيمة 0
     if i == 0 or c == 0:
         return 0
-    # If the item exceeds the remaining capacity, it must be excluded
+    # إذا تجاوز العنصر السعة المتبقية وجب استبعاده
     if wgt[i - 1] > c:
         return knapsack_dfs(wgt, val, i - 1, c)
-    # Calculate the maximum values obtained by excluding and including item i
+    # احسب القيم العظمى الناتجة عن استبعاد العنصر i وتضمينه
     no = knapsack_dfs(wgt, val, i - 1, c)
     yes = knapsack_dfs(wgt, val, i - 1, c - wgt[i - 1]) + val[i - 1]
-    # Return the larger value from the two choices
+    # أعد القيمة الأكبر من بين الاختيارين
     return max(no, yes)
 ```
 
@@ -122,16 +122,16 @@ Dynamic programming is essentially the process of filling the $dp$ table during 
 def knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
     """0-1 knapsack: dynamic programming"""
     n = len(wgt)
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [[0] * (cap + 1) for _ in range(n + 1)]
-    # State transitions
+    # انتقالات الحالة
     for i in range(1, n + 1):
         for c in range(1, cap + 1):
             if wgt[i - 1] > c:
-                # If item i exceeds the remaining capacity, do not choose it
+                # إذا تجاوز العنصر i السعة المتبقية فلا تختره
                 dp[i][c] = dp[i - 1][c]
             else:
-                # Take the larger value obtained by excluding and including item i
+                # خذ القيمة الأكبر الناتجة عن استبعاد العنصر i وتضمينه
                 dp[i][c] = max(dp[i - 1][c], dp[i - 1][c - wgt[i - 1]] + val[i - 1])
     return dp[n][cap]
 ```
@@ -160,17 +160,17 @@ In the code implementation, we simply need to delete the first dimension $i$ of 
 def knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
     """0-1 knapsack: space-optimized dynamic programming"""
     n = len(wgt)
-    # Initialize the dp table
+    # مهّد جدول dp
     dp = [0] * (cap + 1)
-    # State transitions
+    # انتقالات الحالة
     for i in range(1, n + 1):
-        # Traverse in decreasing order
+        # اجتز بترتيب تنازلي
         for c in range(cap, 0, -1):
             if wgt[i - 1] > c:
-                # If item i exceeds the remaining capacity, do not choose it
+                # إذا تجاوز العنصر i السعة المتبقية فلا تختره
                 dp[c] = dp[c]
             else:
-                # Take the larger value obtained by excluding and including item i
+                # خذ القيمة الأكبر الناتجة عن استبعاد العنصر i وتضمينه
                 dp[c] = max(dp[c], dp[c - wgt[i - 1]] + val[i - 1])
     return dp[cap]
 ```

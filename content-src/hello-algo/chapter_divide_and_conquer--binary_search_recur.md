@@ -55,7 +55,7 @@ In the implementation code, we declare a recursive function `dfs()` to solve the
 def binary_search(nums: list[int], target: int) -> int:
     """Binary search"""
     n = len(nums)
-    # Solve problem f(0, n-1)
+    # حُلّ المسألة f(0, n-1)
     return dfs(nums, target, 0, n - 1)
 ```
 

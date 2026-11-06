@@ -13,28 +13,28 @@ def backtrack(
     res: list[list[int]],
 ):
     """Backtracking: subset sum I"""
-    # Record a solution when the subset sum equals target
+    # سجّل حلًا حين يساوي مجموع المجموعة الجزئية الهدف
     if total == target:
         res.append(list(state))
         return
-    # Iterate over all choices
+    # تكرّر على كل الاختيارات
     for i in range(len(choices)):
-        # Prune: skip this choice if the subset sum would exceed target
+        # تشذيب: تخطَّ هذا الاختيار إذا كان سيجعل مجموع المجموعة الجزئية يتجاوز الهدف
         if total + choices[i] > target:
             continue
-        # Try: make a choice and update the sum total
+        # تجربة: اختر وحدّث حاصل الجمع
         state.append(choices[i])
-        # Proceed to the next choice
+        # تابع إلى الاختيار التالي
         backtrack(state, target, total + choices[i], choices, res)
-        # Backtrack: undo the choice and restore the previous state
+        # تراجع: ألغِ الاختيار وأعِد الحالة السابقة
         state.pop()
 
 
 def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
     """Solve subset sum I (with duplicate subsets)"""
-    state = []  # State (subset)
-    total = 0  # Subset sum
-    res = []  # Result list (list of subsets)
+    state = []  # الحالة (المجموعة الجزئية)
+    total = 0  # مجموع المجموعة الجزئية
+    res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
     backtrack(state, target, total, nums, res)
     return res
 

@@ -240,7 +240,7 @@ Operations such as traversing arrays and traversing linked lists have a time com
 def array_traversal(nums: list[int]) -> int:
     """Linear complexity (array traversal)"""
     count = 0
-    # The number of iterations is proportional to the array length
+    # عدد التكرارات يتناسب مع طول المصفوفة
     for num in nums:
         count += 1
     return count
@@ -261,7 +261,7 @@ The number of operations in quadratic order grows quadratically relative to the 
 def quadratic(n: int) -> int:
     """Quadratic complexity"""
     count = 0
-    # The number of iterations is proportional to the square of the input size n
+    # عدد التكرارات يتناسب مع مربع حجم المُدخل n
     for i in range(n):
         for j in range(n):
             count += 1
@@ -282,17 +282,17 @@ Taking bubble sort as an example, the outer loop executes $n - 1$ times, and the
 ```py
 def bubble_sort(nums: list[int]) -> int:
     """Quadratic complexity (bubble sort)"""
-    count = 0  # Counter
-    # Outer loop: the unsorted range is [0, i]
+    count = 0  # العدّاد
+    # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(len(nums) - 1, 0, -1):
-        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        # الحلقة الداخلية: انقل أكبر عنصر في النطاق غير المرتب [0, i] إلى نهايته اليمنى بالتبديل
         for j in range(i):
             if nums[j] > nums[j + 1]:
-                # Swap nums[j] and nums[j + 1]
+                # بدّل nums[j] و nums[j + 1]
                 tmp: int = nums[j]
                 nums[j] = nums[j + 1]
                 nums[j + 1] = tmp
-                count += 3  # Swapping two elements takes 3 elementary operations
+                count += 3  # تستغرق مبادلة عنصرين 3 عمليات ابتدائية
     return count
 ```
 
@@ -312,7 +312,7 @@ def exponential(n: int) -> int:
     """Exponential complexity (iterative implementation)"""
     count = 0
     base = 1
-    # Each cell divides into two per round, giving the sequence 1, 2, 4, 8, ..., 2^(n-1)
+    # تنقسم كل خلية إلى اثنتين في كل جولة، فينتج التتابع 1، 2، 4، 8، ...، 2^(n-1)
     for _ in range(n):
         for _ in range(base):
             count += 1
@@ -407,9 +407,9 @@ def linear_log_recur(n: int) -> int:
     """Linearithmic complexity"""
     if n <= 1:
         return 1
-    # Split into two subproblems, each half the original size
+    # قسّم إلى مسألتين جزئيتين كل واحدة نصف الحجم الأصلي
     count = linear_log_recur(n // 2) + linear_log_recur(n // 2)
-    # The current subproblem includes n operations
+    # تشمل المسألة الجزئية الحالية n عملية
     for _ in range(n):
         count += 1
     return count
@@ -442,7 +442,7 @@ def factorial_recur(n: int) -> int:
     if n == 0:
         return 1
     count = 0
-    # Split one problem into n subproblems
+    # قسّم مسألة واحدة إلى n مسألة جزئية
     for _ in range(n):
         count += factorial_recur(n - 1)
     return count
@@ -470,8 +470,8 @@ The "worst-case time complexity" corresponds to the function's asymptotic upper 
 def find_one(nums: list[int]) -> int:
     """Find the index of the number 1 in array nums"""
     for i in range(len(nums)):
-        # When 1 is at the start of the array, the best-case time complexity is O(1)
-        # When 1 is at the end of the array, the worst-case time complexity is O(n)
+        # عندما يكون 1 في بداية المصفوفة، يكون التعقيد الزمني في أفضل الحالات O(1)
+        # عندما يكون 1 في نهاية المصفوفة، يكون التعقيد الزمني في أسوأ الحالات O(n)
         if nums[i] == 1:
             return i
     return -1

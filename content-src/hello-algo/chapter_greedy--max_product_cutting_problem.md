@@ -77,18 +77,18 @@ Please note that for the edge case of $n \leq 3$, a $1$ must be split out, with 
 ```py
 def max_product_cutting(n: int) -> int:
     """Maximum product after splitting: greedy algorithm"""
-    # When n <= 3, one part must be 1
+    # عندما يكون n <= 3، فلا بد أن يكون أحد الأجزاء 1
     if n <= 3:
         return 1 * (n - 1)
-    # Greedily split off parts of size 3; a is the number of 3s and b is the remainder
+    # قسّم جشعًا أجزاءً مقدارها 3؛ حيث a عدد الثلاثات و b الباقي
     a, b = n // 3, n % 3
     if b == 1:
-        # When the remainder is 1, replace one pair 1 * 3 with 2 * 2
+        # عندما يكون الباقي 1، استبدل زوجًا 1 * 3 بـ 2 * 2
         return int(math.pow(3, a - 1)) * 2 * 2
     if b == 2:
-        # When the remainder is 2, no adjustment is needed
+        # عندما يكون الباقي 2، لا حاجة لأي تعديل
         return int(math.pow(3, a)) * 2
-    # When the remainder is 0, no adjustment is needed
+    # عندما يكون الباقي 0، لا حاجة لأي تعديل
     return int(math.pow(3, a))
 ```
 

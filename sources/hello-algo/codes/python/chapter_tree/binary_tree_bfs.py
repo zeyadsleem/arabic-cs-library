@@ -14,29 +14,29 @@ from collections import deque
 
 def level_order(root: TreeNode | None) -> list[int]:
     """Level-order traversal"""
-    # Initialize a queue and enqueue the root
+    # مهّد طابورًا وأدخل الجذر إليه
     queue: deque[TreeNode] = deque()
     queue.append(root)
-    # Initialize a list to store the traversal sequence
+    # مهّد قائمة لتخزين تتابع الاجتياز
     res = []
     while queue:
-        node: TreeNode = queue.popleft()  # Dequeue from the queue
-        res.append(node.val)  # Store the node value
+        node: TreeNode = queue.popleft()  # أخرج من الطابور
+        res.append(node.val)  # خزّن قيمة العقدة
         if node.left is not None:
-            queue.append(node.left)  # Enqueue the left child
+            queue.append(node.left)  # أدخل الابن الأيسر إلى الطابور
         if node.right is not None:
-            queue.append(node.right)  # Enqueue the right child
+            queue.append(node.right)  # أدخل الابن الأيمن إلى الطابور
     return res
 
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the binary tree
-    # Use a helper function that builds a binary tree directly from an array
+    # مهّد الشجرة الثنائية
+    # استخدم دالة مساعدة تبني شجرة ثنائية مباشرةً من مصفوفة
     root: TreeNode = list_to_tree(arr=[1, 2, 3, 4, 5, 6, 7])
     print("\nInitialize the binary tree\n")
     print_tree(root)
 
-    # Level-order traversal
+    # اجتياز بالمستويات
     res: list[int] = level_order(root)
     print("\nNode sequence from level-order traversal = ", res)

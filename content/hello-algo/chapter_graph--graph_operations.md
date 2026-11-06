@@ -28,15 +28,15 @@ class GraphAdjMat:
 
     def __init__(self, vertices: list[int], edges: list[list[int]]):
         """Constructor"""
-        # Vertex list: elements are vertex values, and indices are vertex indices
+        # قائمة الرؤوس: العناصر قيم الرؤوس، والفهارس فهارس الرؤوس
         self.vertices: list[int] = []
-        # Adjacency matrix: row and column indices correspond to vertex indices
+        # مصفوفة التجاور: فهارس الصفوف والأعمدة تقابل فهارس الرؤوس
         self.adj_mat: list[list[int]] = []
-        # Add a vertex
+        # أضف رأسًا
         for val in vertices:
             self.add_vertex(val)
-        # Add an edge
-        # Note that the entries in edges are vertex indices, corresponding to element indices in vertices
+        # أضف ضلعًا
+        # لاحظ أن مدخلات edges فهارس رؤوس، تقابل فهارس العناصر في vertices
         for e in edges:
             self.add_edge(e[0], e[1])
 
@@ -47,12 +47,12 @@ class GraphAdjMat:
     def add_vertex(self, val: int):
         """Add a vertex"""
         n = self.size()
-        # Append the new vertex value to the vertex list
+        # ألحق قيمة الرأس الجديد إلى قائمة الرؤوس
         self.vertices.append(val)
-        # Add a row to the adjacency matrix
+        # أضف صفًا إلى مصفوفة التجاور
         new_row = [0] * n
         self.adj_mat.append(new_row)
-        # Add a column to the adjacency matrix
+        # أضف عمودًا إلى مصفوفة التجاور
         for row in self.adj_mat:
             row.append(0)
 
@@ -60,28 +60,28 @@ class GraphAdjMat:
         """Remove a vertex"""
         if index >= self.size():
             raise IndexError()
-        # Remove the vertex at index `index` from the vertex list
+        # احذف الرأس عند الفهرس `index` من قائمة الرؤوس
         self.vertices.pop(index)
-        # Remove row `index` from the adjacency matrix
+        # احذف الصف `index` من مصفوفة التجاور
         self.adj_mat.pop(index)
-        # Remove column `index` from the adjacency matrix
+        # احذف العمود `index` من مصفوفة التجاور
         for row in self.adj_mat:
             row.pop(index)
 
     def add_edge(self, i: int, j: int):
         """Add an edge"""
-        # Parameters i and j are element indices in vertices
-        # Handle out-of-bounds or equal indices
+        # المعاملان i و j مفهرسا عناصر في vertices
+        # عالِج الفهارس الخارجة عن الحدود أو المتساوية
         if i < 0 or j < 0 or i >= self.size() or j >= self.size() or i == j:
             raise IndexError()
-        # For an undirected graph, the adjacency matrix is symmetric about its main diagonal: entries (i, j) and (j, i) are equal
+        # في الرسم غير الموجّه تكون مصفوفة التجاور متناظرة حول قطرها الرئيسي: تساوي المدخلات (i, j) و(j, i)
         self.adj_mat[i][j] = 1
         self.adj_mat[j][i] = 1
 
     def remove_edge(self, i: int, j: int):
         """Remove an edge"""
-        # Parameters i and j are element indices in vertices
-        # Handle out-of-bounds or equal indices
+        # المعاملان i و j مفهرسا عناصر في vertices
+        # عالِج الفهارس الخارجة عن الحدود أو المتساوية
         if i < 0 or j < 0 or i >= self.size() or j >= self.size() or i == j:
             raise IndexError()
         self.adj_mat[i][j] = 0
@@ -94,8 +94,7 @@ class GraphAdjMat:
         print_matrix(self.adj_mat)
 ```
 
-</div>
-## التنفيذ باستخدام قائمة التجاور
+</div>## التنفيذ باستخدام قائمة التجاور
 
 بمعطى رسم بياني غير موجّه فيه $n$ من الرؤوس إجمالاً و$m$ من الأضلاع، يمكن تنفيذ العمليات المختلفة كما يوضح الشكل أدناه.
 
@@ -121,9 +120,9 @@ class GraphAdjList:
 
     def __init__(self, edges: list[list[Vertex]]):
         """Constructor"""
-        # Adjacency list: key is a vertex, value is the list of all its neighbors
+        # قائمة التجاور: المفتاح رأس، والقيمة قائمة جميع أجواره
         self.adj_list = dict[Vertex, list[Vertex]]()
-        # Add all vertices and edges
+        # أضف كل الرؤوس والأضلاع
         for edge in edges:
             self.add_vertex(edge[0])
             self.add_vertex(edge[1])
@@ -137,7 +136,7 @@ class GraphAdjList:
         """Add an edge"""
         if vet1 not in self.adj_list or vet2 not in self.adj_list or vet1 == vet2:
             raise ValueError()
-        # Add edge vet1 - vet2
+        # أضف الضلع vet1 - vet2
         self.adj_list[vet1].append(vet2)
         self.adj_list[vet2].append(vet1)
 
@@ -145,7 +144,7 @@ class GraphAdjList:
         """Remove an edge"""
         if vet1 not in self.adj_list or vet2 not in self.adj_list or vet1 == vet2:
             raise ValueError()
-        # Remove edge vet1 - vet2
+        # احذف الضلع vet1 - vet2
         self.adj_list[vet1].remove(vet2)
         self.adj_list[vet2].remove(vet1)
 
@@ -153,16 +152,16 @@ class GraphAdjList:
         """Add a vertex"""
         if vet in self.adj_list:
             return
-        # Add a new list to the adjacency list
+        # أضف قائمة جديدة إلى قائمة التجاور
         self.adj_list[vet] = []
 
     def remove_vertex(self, vet: Vertex):
         """Remove a vertex"""
         if vet not in self.adj_list:
             raise ValueError()
-        # Remove the list corresponding to vertex vet from the adjacency list
+        # احذف من قائمة التجاور القائمة المقابلة للرأس vet
         self.adj_list.pop(vet)
-        # Traverse the lists of the other vertices and remove all edges incident to vet
+        # اجتز قوائم باقي الرؤوس واحذف كل الأضلاع الواقعة على vet
         for vertex in self.adj_list:
             if vet in self.adj_list[vertex]:
                 self.adj_list[vertex].remove(vet)
@@ -175,8 +174,7 @@ class GraphAdjList:
             print(f"{vertex.val}: {tmp},")
 ```
 
-</div>
-## مقارنة الكفاءة
+</div>## مقارنة الكفاءة
 
 بافتراض أن الرسم البياني فيه $n$ من الرؤوس و$m$ من الأضلاع، يقارن الجدول أدناه الكفاءة الزمنية والكفاءة المكانية لمصفوفات التجاور وقوائم التجاور. لاحظ أن قائمة التجاور (القائمة المترابطة) تقابل التنفيذ المستخدم في هذا القسم، بينما تشير قائمة التجاور (جدول التجزئة) تحديداً إلى التنفيذ الذي تُستبدل فيه جميع القوائم المترابطة بجداول تجزئة.
 

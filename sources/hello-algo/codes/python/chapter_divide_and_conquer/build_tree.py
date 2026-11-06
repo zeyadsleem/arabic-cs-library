@@ -19,24 +19,24 @@ def dfs(
     r: int,
 ) -> TreeNode | None:
     """Build a binary tree: divide and conquer"""
-    # Stop when the subtree interval is empty
+    # توقف حين يصير مجال الشجرة الجزئية فارغًا
     if r - l < 0:
         return None
-    # Initialize the root node
+    # مهّد عقدة الجذر
     root = TreeNode(preorder[i])
-    # Look up m to separate the left and right subtrees
+    # حدّد m للفصل بين الشجرة الجزئية اليسرى واليمنى
     m = inorder_map[preorder[i]]
-    # Subproblem: build the left subtree
+    # مسألة جزئية: ابنِ الشجرة الجزئية اليسرى
     root.left = dfs(preorder, inorder_map, i + 1, l, m - 1)
-    # Subproblem: build the right subtree
+    # مسألة جزئية: ابنِ الشجرة الجزئية اليمنى
     root.right = dfs(preorder, inorder_map, i + 1 + m - l, m + 1, r)
-    # Return the root node
+    # أعد عقدة الجذر
     return root
 
 
 def build_tree(preorder: list[int], inorder: list[int]) -> TreeNode | None:
     """Build a binary tree"""
-    # Initialize a hash table mapping each element in inorder to its index
+    # مهّد جدول تجزئة يربط كل عنصر في الاجتياز الداخلي بفهرسه
     inorder_map = {val: i for i, val in enumerate(inorder)}
     root = dfs(preorder, inorder_map, 0, 0, len(inorder) - 1)
     return root

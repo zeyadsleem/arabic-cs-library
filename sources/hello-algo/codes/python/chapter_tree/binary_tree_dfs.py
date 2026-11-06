@@ -15,7 +15,7 @@ def pre_order(root: TreeNode | None):
     """Preorder traversal"""
     if root is None:
         return
-    # Visit order: root -> left subtree -> right subtree
+    # ترتيب الزيارة: الجذر -> الشجرة الجزئية اليسرى -> اليمنى
     res.append(root.val)
     pre_order(root=root.left)
     pre_order(root=root.right)
@@ -25,7 +25,7 @@ def in_order(root: TreeNode | None):
     """Inorder traversal"""
     if root is None:
         return
-    # Visit order: left subtree -> root -> right subtree
+    # ترتيب الزيارة: الشجرة الجزئية اليسرى -> الجذر -> اليمنى
     in_order(root=root.left)
     res.append(root.val)
     in_order(root=root.right)
@@ -35,7 +35,7 @@ def post_order(root: TreeNode | None):
     """Postorder traversal"""
     if root is None:
         return
-    # Visit order: left subtree -> right subtree -> root
+    # ترتيب الزيارة: الشجرة الجزئية اليسرى -> اليمنى -> الجذر
     post_order(root=root.left)
     post_order(root=root.right)
     res.append(root.val)
@@ -43,23 +43,23 @@ def post_order(root: TreeNode | None):
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the binary tree
-    # Use a helper function that builds a binary tree directly from an array
+    # مهّد الشجرة الثنائية
+    # استخدم دالة مساعدة تبني شجرة ثنائية مباشرةً من مصفوفة
     root = list_to_tree(arr=[1, 2, 3, 4, 5, 6, 7])
     print("\nInitialize the binary tree\n")
     print_tree(root)
 
-    # Preorder traversal
+    # اجتياز الطلب المسبق
     res = []
     pre_order(root)
     print("\nNode sequence from preorder traversal = ", res)
 
-    # Inorder traversal
+    # الاجتياز الداخلي
     res.clear()
     in_order(root)
     print("\nNode sequence from inorder traversal = ", res)
 
-    # Postorder traversal
+    # اجتياز الطلب اللاحق
     res.clear()
     post_order(root)
     print("\nNode sequence from postorder traversal = ", res)

@@ -110,7 +110,7 @@ class ArrayHashMap:
 
     def __init__(self):
         """Constructor"""
-        # Initialize an array containing 100 buckets
+        # مهّد مصفوفة تحوي 100 سلة
         self.buckets: list[Pair | None] = [None] * 100
 
     def hash_func(self, key: int) -> int:
@@ -135,7 +135,7 @@ class ArrayHashMap:
     def remove(self, key: int):
         """Remove operation"""
         index: int = self.hash_func(key)
-        # Set to None to mark removal
+        # اجعلها None لتمييز الحذف
         self.buckets[index] = None
 
     def entry_set(self) -> list[Pair]:

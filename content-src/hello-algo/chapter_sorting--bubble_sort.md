@@ -30,12 +30,12 @@ Example code is as follows:
 def bubble_sort(nums: list[int]):
     """Bubble sort"""
     n = len(nums)
-    # Outer loop: the unsorted range is [0, i]
+    # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(n - 1, 0, -1):
-        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        # الحلقة الداخلية: انقل أكبر عنصر في النطاق غير المرتب [0, i] إلى نهايته اليمنى بالتبديل
         for j in range(i):
             if nums[j] > nums[j + 1]:
-                # Swap nums[j] and nums[j + 1]
+                # بدّل nums[j] و nums[j + 1]
                 nums[j], nums[j + 1] = nums[j + 1], nums[j]
 ```
 
@@ -54,17 +54,17 @@ After this optimization, the worst-case and average-case time complexities of bu
 def bubble_sort_with_flag(nums: list[int]):
     """Bubble sort (flag optimization)"""
     n = len(nums)
-    # Outer loop: the unsorted range is [0, i]
+    # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(n - 1, 0, -1):
-        flag = False  # Initialize the flag
-        # Inner loop: move the largest element in the unsorted range [0, i] to its right end through swaps
+        flag = False  # مهّد العلم
+        # الحلقة الداخلية: انقل أكبر عنصر في النطاق غير المرتب [0, i] إلى نهايته اليمنى بالتبديل
         for j in range(i):
             if nums[j] > nums[j + 1]:
-                # Swap nums[j] and nums[j + 1]
+                # بدّل nums[j] و nums[j + 1]
                 nums[j], nums[j + 1] = nums[j + 1], nums[j]
-                flag = True  # Record that a swap occurred
+                flag = True  # سجّل حدوث تبديل
         if not flag:
-            break  # Exit immediately if this pass made no swaps
+            break  # اخرج فورًا إذا لم تجري هذه الجولة أي تبديل
 ```
 
 </div>

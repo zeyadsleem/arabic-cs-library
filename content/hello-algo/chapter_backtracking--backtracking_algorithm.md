@@ -28,14 +28,13 @@ def pre_order(root: TreeNode):
     if root is None:
         return
     if root.val == 7:
-        # Record the solution
+        # سجّل الحل
         res.append(root)
     pre_order(root.left)
     pre_order(root.right)
 ```
 
-</div>
-![البحث عن العقد في الاجتياز المسبق](/images/hello-algo/chapter_backtracking--preorder_find_nodes.png)
+</div>![البحث عن العقد في الاجتياز المسبق](/images/hello-algo/chapter_backtracking--preorder_find_nodes.png)
 
 ## المحاولة والتتبّع الرجعي
 
@@ -62,19 +61,18 @@ def pre_order(root: TreeNode):
     """Preorder traversal: example 2"""
     if root is None:
         return
-    # Try
+    # تجربة
     path.append(root)
     if root.val == 7:
-        # Record the solution
+        # سجّل الحل
         res.append(list(path))
     pre_order(root.left)
     pre_order(root.right)
-    # Backtrack
+    # تراجع
     path.pop()
 ```
 
-</div>
-في كل «محاولة»، نسجّل المسار بإضافة العقدة الحالية إلى `path`؛ وقبل «التتبّع الرجعي»، نحتاج إلى إزالة العقدة من `path`، **لاستعادة الحالة قبل هذه المحاولة**.
+</div>في كل «محاولة»، نسجّل المسار بإضافة العقدة الحالية إلى `path`؛ وقبل «التتبّع الرجعي»، نحتاج إلى إزالة العقدة من `path`، **لاستعادة الحالة قبل هذه المحاولة**.
 
 وبمراقبة العملية الموضحة في الشكل التالي، **يمكننا فهم المحاولة والتتبّع الرجعي على أنهما «التقدم» و«الإلغاء»**، وهما عمليتان متعاكستان.
 
@@ -97,22 +95,21 @@ def pre_order(root: TreeNode):
 ```py
 def pre_order(root: TreeNode):
     """Preorder traversal: example 3"""
-    # Prune
+    # تشذيب
     if root is None or root.val == 3:
         return
-    # Try
+    # تجربة
     path.append(root)
     if root.val == 7:
-        # Record the solution
+        # سجّل الحل
         res.append(list(path))
     pre_order(root.left)
     pre_order(root.right)
-    # Backtrack
+    # تراجع
     path.pop()
 ```
 
-</div>
-«التشذيب» مصطلح معبّر. وكما يوضح الشكل التالي، أثناء عملية البحث، **نقوم «بتشذيب» فروع البحث التي لا تحقق القيود**، متجنبين بذلك كثيراً من المحاولات بلا معنى، وبالتالي نحسّن كفاءة البحث.
+</div>«التشذيب» مصطلح معبّر. وكما يوضح الشكل التالي، أثناء عملية البحث، **نقوم «بتشذيب» فروع البحث التي لا تحقق القيود**، متجنبين بذلك كثيراً من المحاولات بلا معنى، وبالتالي نحسّن كفاءة البحث.
 
 ![التشذيب وفق القيود](/images/hello-algo/chapter_backtracking--preorder_find_constrained_paths.png)
 
@@ -145,8 +142,7 @@ def backtrack(state: State, choices: list[choice], res: list[state]):
             undo_choice(state, choice)
 ```
 
-</div>
-بعد ذلك، نحل المثال 3 استناداً إلى شيفرة الإطار. فالحالة `state` هي مسار اجتياز العقد، والخيارات `choices` هي عقدتا الابن اليسرى واليمنى للعقدة الحالية، والنتيجة `res` هي قائمة مسارات:
+</div>بعد ذلك، نحل المثال 3 استناداً إلى شيفرة الإطار. فالحالة `state` هي مسار اجتياز العقد، والخيارات `choices` هي عقدتا الابن اليسرى واليمنى للعقدة الحالية، والنتيجة `res` هي قائمة مسارات:
 
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -156,8 +152,7 @@ def backtrack(
     state: list[TreeNode], choices: list[TreeNode], res: list[list[TreeNode]]
 ```
 
-</div>
-وفق نص المسألة، ينبغي أن نواصل البحث بعد العثور على عقدة قيمتها $7$. **لذلك نحتاج إلى إزالة عبارة `return` بعد تسجيل الحل**. ويقارن الشكل التالي عملية البحث مع وجود عبارة `return` وبدونها.
+</div>وفق نص المسألة، ينبغي أن نواصل البحث بعد العثور على عقدة قيمتها $7$. **لذلك نحتاج إلى إزالة عبارة `return` بعد تسجيل الحل**. ويقارن الشكل التالي عملية البحث مع وجود عبارة `return` وبدونها.
 
 ![مقارنة عملية البحث مع عبارة return وبدونها](/images/hello-algo/chapter_backtracking--backtrack_remove_return_or_not.png)
 

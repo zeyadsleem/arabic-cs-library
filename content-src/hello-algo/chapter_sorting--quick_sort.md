@@ -29,18 +29,18 @@ The essence of sentinel partitioning is to simplify the sorting problem of a lon
 ```py
     def partition(self, nums: list[int], left: int, right: int) -> int:
         """Two-pointer partitioning"""
-        # Use nums[left] as the pivot
+        # استخدم nums[left] بوصفه محورًا
         i, j = left, right
         while i < j:
             while i < j and nums[j] >= nums[left]:
-                j -= 1  # Scan from right to left for the first element smaller than the pivot
+                j -= 1  # امسح من اليمين إلى اليسار لأول عنصر أصغر من المحور
             while i < j and nums[i] <= nums[left]:
-                i += 1  # Scan from left to right for the first element larger than the pivot
-            # Swap the elements
+                i += 1  # امسح من اليسار إلى اليمين لأول عنصر أكبر من المحور
+            # بدّل العنصرين
             nums[i], nums[j] = nums[j], nums[i]
-        # Swap the pivot into the boundary position between the two subarrays
+        # بدّل المحور إلى موضع الحد بين المصفوفتين الجزئيتين
         nums[i], nums[left] = nums[left], nums[i]
-        return i  # Return the pivot index
+        return i  # أعد فهرس المحور
 ```
 
 </div>
@@ -61,12 +61,12 @@ The overall flow of quick sort is shown in the figure below.
 ```py
     def quick_sort(self, nums: list[int], left: int, right: int):
         """Quick sort"""
-        # Stop recursing when the subarray has at most one element
+        # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
         if left >= right:
             return
-        # Two-pointer partitioning
+        # التقسيم بمؤشرين
         pivot = self.partition(nums, left, right)
-        # Recurse on the left and right subarrays
+        # تعاود على المصفوفتين الجزئيتين اليسرى واليمنى
         self.quick_sort(nums, left, pivot - 1)
         self.quick_sort(nums, pivot + 1, right)
 ```
@@ -105,18 +105,18 @@ Example code is as follows:
 ```py
     def partition(self, nums: list[int], left: int, right: int) -> int:
         """Two-pointer partitioning"""
-        # Use nums[left] as the pivot
+        # استخدم nums[left] بوصفه محورًا
         i, j = left, right
         while i < j:
             while i < j and nums[j] >= nums[left]:
-                j -= 1  # Scan from right to left for the first element smaller than the pivot
+                j -= 1  # امسح من اليمين إلى اليسار لأول عنصر أصغر من المحور
             while i < j and nums[i] <= nums[left]:
-                i += 1  # Scan from left to right for the first element larger than the pivot
-            # Swap the elements
+                i += 1  # امسح من اليسار إلى اليمين لأول عنصر أكبر من المحور
+            # بدّل العنصرين
             nums[i], nums[j] = nums[j], nums[i]
-        # Swap the pivot into the boundary position between the two subarrays
+        # بدّل المحور إلى موضع الحد بين المصفوفتين الجزئيتين
         nums[i], nums[left] = nums[left], nums[i]
-        return i  # Return the pivot index
+        return i  # أعد فهرس المحور
 ```
 
 </div>
@@ -133,12 +133,12 @@ To prevent stack frames from accumulating, we can compare the lengths of the two
 ```py
     def quick_sort(self, nums: list[int], left: int, right: int):
         """Quick sort"""
-        # Stop recursing when the subarray has at most one element
+        # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
         if left >= right:
             return
-        # Two-pointer partitioning
+        # التقسيم بمؤشرين
         pivot = self.partition(nums, left, right)
-        # Recurse on the left and right subarrays
+        # تعاود على المصفوفتين الجزئيتين اليسرى واليمنى
         self.quick_sort(nums, left, pivot - 1)
         self.quick_sort(nums, pivot + 1, right)
 ```

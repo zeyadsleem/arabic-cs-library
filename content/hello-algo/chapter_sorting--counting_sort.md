@@ -26,15 +26,15 @@ lang: ar
 ```py
 def counting_sort_naive(nums: list[int]):
     """Counting sort"""
-    # Simple implementation; cannot be used to sort objects
-    # 1. Find the maximum array element m
+    # تنفيذ بسيط؛ لا يمكن استخدامه لترتيب الكائنات
+    # 1. أوجد أكبر عنصر في المصفوفة m
     m = max(nums)
-    # 2. Count the occurrences of each number
-    # counter[num] is the number of occurrences of num
+    # 2. عُد تكرارات كل عدد
+    # يمثل counter[num] عدد تكرارات num
     counter = [0] * (m + 1)
     for num in nums:
         counter[num] += 1
-    # 3. Traverse counter and fill the original array nums with the elements
+    # 3. اجتز counter واملأ المصفوفة الأصلية nums بالعناصر
     i = 0
     for num in range(m + 1):
         for _ in range(counter[num]):
@@ -42,8 +42,7 @@ def counting_sort_naive(nums: list[int]):
             i += 1
 ```
 
-</div>
-<div class="note">
+</div><div class="note">
 <p class="note__title">الصلة بين الترتيب بالعد وترتيب الدلاء</p>
 
 من منظور ترتيب الدلاء، يمكن النظر إلى كل فهرس في مصفوفة العدّ `counter` باعتباره دلو، ويمكن اعتبار عملية العدّ توزيعاً للعناصر على الدلاء المقابلة لها. وفي جوهر الأمر، الترتيب بالعد حالة خاصة من ترتيب الدلاء لبيانات الأعداد الصحيحة.
@@ -75,33 +74,32 @@ $$
 ```py
 def counting_sort(nums: list[int]):
     """Counting sort"""
-    # Full implementation; stable and adaptable to sorting objects
-    # 1. Find the maximum array element m
+    # تنفيذ كامل؛ مستقر وقابل للتكيف لترتيب الكائنات
+    # 1. أوجد أكبر عنصر في المصفوفة m
     m = max(nums)
-    # 2. Count the occurrences of each number
-    # counter[num] is the number of occurrences of num
+    # 2. عُد تكرارات كل عدد
+    # يمثل counter[num] عدد تكرارات num
     counter = [0] * (m + 1)
     for num in nums:
         counter[num] += 1
-    # 3. Compute prefix sums of counter to convert occurrence counts into end positions
-    # That is, counter[num]-1 is the index of the last occurrence of num in res
+    # 3. احسب مجاميع البادئة لـ counter لتحوّل أعداد التكرارات إلى مواضع نهاية
+    # أي أن counter[num]-1 هو فهرس آخر تكرار لـ num في res
     for i in range(m):
         counter[i + 1] += counter[i]
-    # 4. Traverse nums in reverse and place each element in the result array res
-    # Initialize array res to store the result
+    # 4. اجتز nums بالعكس وضع كل عنصر في مصفوفة النتيجة res
+    # مهّد المصفوفة res لتخزين النتيجة
     n = len(nums)
     res = [0] * n
     for i in range(n - 1, -1, -1):
         num = nums[i]
-        res[counter[num] - 1] = num  # Place num at the corresponding index
-        counter[num] -= 1  # Decrement the prefix sum by 1 to determine where to place the next occurrence of num
-    # Overwrite the original array nums with the result array res
+        res[counter[num] - 1] = num  # ضع num في الفهرس المقابل
+        counter[num] -= 1  # أنقص مجموع البادئة بمقدار 1 لتحديد موضع وضع التكرار التالي لـ num
+    # اكتب مصفوفة النتيجة res فوق المصفوفة الأصلية nums
     for i in range(n):
         nums[i] = res[i]
 ```
 
-</div>
-## خصائص الخوارزمية
+</div>## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n + m)$، والترتيب بالعد غير تكيّفي (non-adaptive)**: يستغرق اجتياز `nums` و`counter` زمناً خطياً. وبشكل عام، عندما $n \gg m$، يقترب التعقيد الزمني من $O(n)$.
 - **التعقيد المكاني $O(n + m)$، وترتيب ليس في المكان (non-in-place)**: يستخدم المصفوفتين `res` و`counter` بطولين $n$ و$m$ على التوالي.

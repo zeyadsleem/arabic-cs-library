@@ -43,9 +43,9 @@ Accessing elements in an array is highly efficient; we can randomly access any e
 ```py
 def random_access(nums: list[int]) -> int:
     """Access an element at a random index"""
-    # Choose a random number in the range [0, len(nums)-1]
+    # اختر عددًا عشوائيًا في النطاق [0, len(nums)-1]
     random_index = random.randint(0, len(nums) - 1)
-    # Get and return the randomly selected element
+    # احصل على العنصر المختار عشوائيًا وأعده
     random_num = nums[random_index]
     return random_num
 ```
@@ -66,10 +66,10 @@ It is worth noting that since the length of an array is fixed, inserting an elem
 ```py
 def insert(nums: list[int], num: int, index: int):
     """Insert element num at index `index` in the array"""
-    # Shift all elements at and after index `index` one position to the right
+    # أزح كل العناصر من الفهرس `index` وما بعده موضعًا واحدًا إلى اليمين
     for i in range(len(nums) - 1, index, -1):
         nums[i] = nums[i - 1]
-    # Assign num to the element at index `index`
+    # أسند num إلى العنصر عند الفهرس `index`
     nums[index] = num
 ```
 
@@ -89,7 +89,7 @@ Note that after the deletion is complete, the original last element is no longer
 ```py
 def remove(nums: list[int], index: int):
     """Remove the element at index `index`"""
-    # Shift all elements after index `index` one position to the left
+    # أزح كل العناصر بعد الفهرس `index` موضعًا واحدًا إلى اليسار
     for i in range(index, len(nums) - 1):
         nums[i] = nums[i + 1]
 ```
@@ -113,13 +113,13 @@ In most programming languages, we can traverse an array either by index or by di
 def traverse(nums: list[int]):
     """Traverse the array"""
     count = 0
-    # Traverse the array by index
+    # اجتز المصفوفة بالفهرس
     for i in range(len(nums)):
         count += nums[i]
-    # Iterate directly over the array elements
+    # تكرّر مباشرةً على عناصر المصفوفة
     for num in nums:
         count += num
-    # Iterate over both the indices and the elements
+    # تكرّر على الفهارس والعناصر معًا
     for i, num in enumerate(nums):
         count += nums[i]
         count += num
@@ -157,16 +157,16 @@ If we want to expand an array, we need to create a new, larger array and then co
 <p class="lang-tab__label">Python</p>
 
 ```py
-# Note that a Python list is a dynamic array and can be extended directly
-# For learning purposes, this function treats a list as a fixed-length array
+# لاحظ أن قائمة Python مصفوفة ديناميكية يمكن مدّها مباشرةً
+# لأغراض التعلم، تعامل هذه الدالة مع القائمة بوصفها مصفوفة ثابتة الطول
 def extend(nums: list[int], enlarge: int) -> list[int]:
     """Extend the array length"""
-    # Initialize an array with the extended length
+    # مهّد مصفوفة بالطول الممدود
     res = [0] * (len(nums) + enlarge)
-    # Copy all elements from the original array to the new array
+    # انسخ كل العناصر من المصفوفة الأصلية إلى المصفوفة الجديدة
     for i in range(len(nums)):
         res[i] = nums[i]
-    # Return the new, extended array
+    # أعد المصفوفة الجديدة الممدودة
     return res
 ```
 

@@ -28,7 +28,7 @@ The code is shown below:
 ```py
 def two_sum_brute_force(nums: list[int], target: int) -> list[int]:
     """Method 1: brute-force enumeration"""
-    # Two nested loops give a time complexity of O(n^2)
+    # حلقتان متداخلتان تعطيان تعقيدًا زمنيًا O(n^2)
     for i in range(len(nums) - 1):
         for j in range(i + 1, len(nums)):
             if nums[i] + nums[j] == target:
@@ -55,9 +55,9 @@ The implementation is shown below and requires only a single loop:
 ```py
 def two_sum_hash_table(nums: list[int], target: int) -> list[int]:
     """Method 2: auxiliary hash table"""
-    # The auxiliary hash table uses O(n) space
+    # جدول التجزئة المساعد يستخدم مساحة O(n)
     dic = {}
-    # A single loop with average O(1) hash operations gives an average time complexity of O(n)
+    # حلقة واحدة بعمليات تجزئة متوسطة O(1) تعطي تعقيدًا زمنيًا متوسطًا O(n)
     for i in range(len(nums)):
         if target - nums[i] in dic:
             return [dic[target - nums[i]], i]

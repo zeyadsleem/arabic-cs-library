@@ -42,19 +42,18 @@ lang: ar
 ```py
 def heap_sort(nums: list[int]):
     """Heap sort"""
-    # Build the heap by sifting down from every non-leaf node
+    # ابنِ الكومة بالرشّ النازل من كل عقدة غير ورقية
     for i in range(len(nums) // 2 - 1, -1, -1):
         sift_down(nums, len(nums), i)
-    # Extract the largest element from the heap, repeating for n-1 rounds
+    # استخرج أكبر عنصر من الكومة، متكررًا لمدة n-1 جولة
     for i in range(len(nums) - 1, 0, -1):
-        # Swap the root with the rightmost leaf on the last level (the first and last elements of the current heap)
+        # بدّل الجذر مع الورقة الأقصى يمينًا في آخر مستوى (أول عنصر وآخر عنصر في الكومة الحالية)
         nums[0], nums[i] = nums[i], nums[0]
-        # Sift down starting at the root
+        # رشّ نازلًا بدءًا من الجذر
         sift_down(nums, i, 0)
 ```
 
-</div>
-## خصائص الخوارزمية
+</div>## خصائص الخوارزمية
 
 - **التعقيد الزمني $O(n \log n)$؛ الترتيب بالكومة غير تكيّفي (non-adaptive)**: يستغرق بناء الكومة زمن $O(n)$. ويستغرق استخراج أكبر عنصر من الكومة زمن $O(\log n)$، ويتكرر ذلك $n - 1$ من الجولات.
 - **التعقيد المكاني $O(1)$؛ الترتيب بالكومة في المكان (in-place)**: تستهلك بضع متغيرات من نوع المؤشر مساحة $O(1)$. وتُنفَّذ مبادلة العناصر وإعادة بناء الكومة على المصفوفة الأصلية.

@@ -83,9 +83,9 @@ class LinkedListDeque:
 
     def __init__(self):
         """Constructor"""
-        self._front: ListNode | None = None  # Head node front
-        self._rear: ListNode | None = None  # Tail node rear
-        self._size: int = 0  # Deque size
+        self._front: ListNode | None = None  # عقدة الرأس front
+        self._rear: ListNode | None = None  # عقدة الذيل rear
+        self._size: int = 0  # حجم الطابور المزدوج
 
     def size(self) -> int:
         """Get the deque size"""
@@ -98,22 +98,22 @@ class LinkedListDeque:
     def push(self, num: int, is_front: bool):
         """Enqueue operation"""
         node = ListNode(num)
-        # If the linked list is empty, make both front and rear point to node
+        # إذا كانت القائمة المترابطة فارغة، اجعل front و rear يشيران إلى العقدة معًا
         if self.is_empty():
             self._front = self._rear = node
-        # Enqueue at the front
+        # إدخال من المقدمة
         elif is_front:
-            # Add node to the head of the linked list
+            # أضف العقدة إلى رأس القائمة المترابطة
             self._front.prev = node
             node.next = self._front
-            self._front = node  # Update the head node
-        # Enqueue at the rear
+            self._front = node  # حدّث عقدة الرأس
+        # إدخال من المؤخرة
         else:
-            # Add node to the tail of the linked list
+            # أضف العقدة إلى ذيل القائمة المترابطة
             self._rear.next = node
             node.prev = self._rear
-            self._rear = node  # Update the tail node
-        self._size += 1  # Update the deque size
+            self._rear = node  # حدّث عقدة الذيل
+        self._size += 1  # حدّث حجم الطابور المزدوج
 
     def push_first(self, num: int):
         """Enqueue at the front"""
@@ -127,28 +127,28 @@ class LinkedListDeque:
         """Dequeue operation"""
         if self.is_empty():
             raise IndexError("Deque is empty")
-        # When the deque size is 1, the head and tail point to the same node
+        # عندما يكون حجم الطابور المزدوج 1، يشير الرأس والذيل إلى العقدة نفسها
         if self._size == 1:
             val: int = self._front.val
             self._front = None
             self._rear = None
-        # Dequeue from the front
+        # إخراج من المقدمة
         elif is_front:
-            val: int = self._front.val  # Save the head node value
-            # Remove the head node
+            val: int = self._front.val  # احفظ قيمة عقدة الرأس
+            # احذف العقدة الرأس
             fnext: ListNode | None = self._front.next
             fnext.prev = None
             self._front.next = None
-            self._front = fnext  # Update the head node
-        # Dequeue from the rear
+            self._front = fnext  # حدّث عقدة الرأس
+        # إخراج من المؤخرة
         else:
-            val: int = self._rear.val  # Save the tail node value
-            # Remove the tail node
+            val: int = self._rear.val  # احفظ قيمة عقدة الذيل
+            # احذف عقدة الذيل
             rprev: ListNode | None = self._rear.prev
             rprev.next = None
             self._rear.prev = None
-            self._rear = rprev  # Update the tail node
-        self._size -= 1  # Update the deque size
+            self._rear = rprev  # حدّث عقدة الذيل
+        self._size -= 1  # حدّث حجم الطابور المزدوج
         return val
 
     def pop_first(self) -> int:
@@ -216,9 +216,9 @@ class ArrayDeque:
 
     def index(self, i: int) -> int:
         """Calculate an index in the circular array"""
-        # Use modulo to connect the end of the array to its beginning
-        # When i passes the end of the array, wrap around to the beginning
-        # When i passes the beginning of the array, wrap around to the end
+        # استخدم باقي القسمة لربط نهاية المصفوفة ببدايتها
+        # عندما يتجاوز i نهاية المصفوفة، التفّ إلى البداية
+        # عندما يتجاوز i بداية المصفوفة، التفّ إلى النهاية
         return (i + self.capacity()) % self.capacity()
 
     def push_first(self, num: int):
@@ -226,10 +226,10 @@ class ArrayDeque:
         if self._size == self.capacity():
             print("Deque is full")
             return
-        # Move the front pointer one position to the left
-        # Use modulo to wrap front to the end when it passes the beginning of the array
+        # حرّك مؤشر المقدمة موضعًا واحدًا إلى اليسار
+        # استخدم باقي القسمة لالتفاف front إلى النهاية عندما يتجاوز بداية المصفوفة
         self._front = self.index(self._front - 1)
-        # Add num to the front
+        # أضف num إلى المقدمة
         self._nums[self._front] = num
         self._size += 1
 
@@ -238,16 +238,16 @@ class ArrayDeque:
         if self._size == self.capacity():
             print("Deque is full")
             return
-        # Calculate the rear pointer, which points one position past the last element
+        # احسب مؤشر المؤخرة، وهو يشير إلى موضع واحد بعد آخر عنصر
         rear = self.index(self._front + self._size)
-        # Add num to the rear
+        # أضف num إلى المؤخرة
         self._nums[rear] = num
         self._size += 1
 
     def pop_first(self) -> int:
         """Dequeue from the front"""
         num = self.peek_first()
-        # Advance the front pointer by one position
+        # ورّر مؤشر المقدمة موضعًا واحدًا
         self._front = self.index(self._front + 1)
         self._size -= 1
         return num
@@ -268,13 +268,13 @@ class ArrayDeque:
         """Access the rear element"""
         if self.is_empty():
             raise IndexError("Deque is empty")
-        # Calculate the index of the last element
+        # احسب فهرس آخر عنصر
         last = self.index(self._front + self._size - 1)
         return self._nums[last]
 
     def to_array(self) -> list[int]:
         """Return an array for printing"""
-        # Convert only the list elements within the occupied range
+        # حوّل عناصر القائمة في النطاق المشغول فقط
         res = []
         for i in range(self._size):
             res.append(self._nums[self.index(self._front + i)])

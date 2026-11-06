@@ -7,12 +7,12 @@ Author: timi (xisunyy@163.com), krahets (krahets@163.com)
 
 def merge(nums: list[int], left: int, mid: int, right: int):
     """Merge the left and right subarrays"""
-    # The left subarray spans [left, mid], and the right subarray spans [mid+1, right]
-    # Create a temporary array tmp to store the merged result
+    # يشمل المصفوفة الجزئية اليسرى [left, mid]، واليمنى [mid+1, right]
+    # أنشئ مصفوفة مؤقتة tmp لتخزين نتيجة الدمج
     tmp = [0] * (right - left + 1)
-    # Initialize the starting indices of the left and right subarrays
+    # مهّد فهرسي البداية للمصفوفتين الجزئيتين اليسرى واليمنى
     i, j, k = left, mid + 1, 0
-    # While both subarrays have elements remaining, compare them and copy the smaller element into the temporary array
+    # طالما بقيت عناصر في المصفوفتين الجزئيتين، قارنهما وانسخ الأصغر إلى المصفوفة المؤقتة
     while i <= mid and j <= right:
         if nums[i] <= nums[j]:
             tmp[k] = nums[i]
@@ -21,7 +21,7 @@ def merge(nums: list[int], left: int, mid: int, right: int):
             tmp[k] = nums[j]
             j += 1
         k += 1
-    # Copy the remaining elements of the left and right subarrays into the temporary array
+    # انسخ عناصر المصفوفتين الجزئيتين اليسرى واليمنى الباقية إلى المصفوفة المؤقتة
     while i <= mid:
         tmp[k] = nums[i]
         i += 1
@@ -30,21 +30,21 @@ def merge(nums: list[int], left: int, mid: int, right: int):
         tmp[k] = nums[j]
         j += 1
         k += 1
-    # Copy the elements of temporary array tmp back into the corresponding range of the original array nums
+    # انسخ عناصر المصفوفة المؤقتة tmp عودةً إلى المجال المقابل في المصفوفة الأصلية nums
     for k in range(0, len(tmp)):
         nums[left + k] = tmp[k]
 
 
 def merge_sort(nums: list[int], left: int, right: int):
     """Merge sort"""
-    # Base case
+    # الحالة الأساس
     if left >= right:
-        return  # Stop recursing when the subarray has at most one element
-    # Divide phase
-    mid = (left + right) // 2 # Calculate the midpoint
-    merge_sort(nums, left, mid)  # Recurse on the left subarray
-    merge_sort(nums, mid + 1, right)  # Recurse on the right subarray
-    # Merge phase
+        return  # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
+    # مرحلة التقسيم
+    mid = (left + right) // 2 # احسب نقطة المنتصف
+    merge_sort(nums, left, mid)  # تعاود على المصفوفة الجزئية اليسرى
+    merge_sort(nums, mid + 1, right)  # تعاود على المصفوفة الجزئية اليمنى
+    # مرحلة الدمج
     merge(nums, left, mid, right)
 
 

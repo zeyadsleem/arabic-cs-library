@@ -35,9 +35,9 @@ It's worth noting that **since leaf nodes have no children, they are naturally v
 ```py
     def __init__(self, nums: list[int]):
         """Constructor: build a heap from the input list"""
-        # Place the list elements in the heap without changing their order
+        # ضع عناصر القائمة في الكومة دون تغيير ترتيبها
         self.max_heap = nums
-        # Sift down from every non-leaf node
+        # رشّ من كل عقدة غير ورقية نزولًا
         for i in range(self.parent(self.size() - 1), -1, -1):
             self.sift_down(i)
 ```

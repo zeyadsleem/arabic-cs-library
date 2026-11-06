@@ -8,12 +8,12 @@ from collections import deque
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the queue
-    # In Python, we generally use the deque class as a queue
-    # Although queue.Queue() is a dedicated queue class, deque is more convenient for this example
+    # مهّد الطابور
+    # في Python نستخدم غالبًا الصنف deque بوصفه طابورًا
+    # ورغم أن queue.Queue() صنف طابور مخصص، فإن deque أيسر استخدامًا في هذا المثال
     que: deque[int] = deque()
 
-    # Enqueue elements
+    # ادخل العناصر
     que.append(1)
     que.append(3)
     que.append(2)
@@ -21,19 +21,19 @@ if __name__ == "__main__":
     que.append(4)
     print("Queue que =", que)
 
-    # Access the front element
+    # وصول إلى عنصر المقدمة
     front: int = que[0]
     print("Front element front =", front)
 
-    # Dequeue an element
+    # أخرج عنصرًا
     pop: int = que.popleft()
     print("Dequeued element pop =", pop)
     print("After dequeuing, que =", que)
 
-    # Get the queue size
+    # احصل على حجم الطابور
     size: int = len(que)
     print("Queue size =", size)
 
-    # Check whether the queue is empty
+    # تحقق مما إذا كان الطابور فارغًا
     is_empty: bool = len(que) == 0
     print("Is the queue empty =", is_empty)

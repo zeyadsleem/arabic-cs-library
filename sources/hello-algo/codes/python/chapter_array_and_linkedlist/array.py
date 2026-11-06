@@ -9,38 +9,38 @@ import random
 
 def random_access(nums: list[int]) -> int:
     """Access an element at a random index"""
-    # Choose a random number in the range [0, len(nums)-1]
+    # اختر عددًا عشوائيًا في النطاق [0, len(nums)-1]
     random_index = random.randint(0, len(nums) - 1)
-    # Get and return the randomly selected element
+    # احصل على العنصر المختار عشوائيًا وأعده
     random_num = nums[random_index]
     return random_num
 
 
-# Note that a Python list is a dynamic array and can be extended directly
-# For learning purposes, this function treats a list as a fixed-length array
+# لاحظ أن قائمة Python مصفوفة ديناميكية يمكن مدّها مباشرةً
+# لأغراض التعلم، تعامل هذه الدالة مع القائمة بوصفها مصفوفة ثابتة الطول
 def extend(nums: list[int], enlarge: int) -> list[int]:
     """Extend the array length"""
-    # Initialize an array with the extended length
+    # مهّد مصفوفة بالطول الممدود
     res = [0] * (len(nums) + enlarge)
-    # Copy all elements from the original array to the new array
+    # انسخ كل العناصر من المصفوفة الأصلية إلى المصفوفة الجديدة
     for i in range(len(nums)):
         res[i] = nums[i]
-    # Return the new, extended array
+    # أعد المصفوفة الجديدة الممدودة
     return res
 
 
 def insert(nums: list[int], num: int, index: int):
     """Insert element num at index `index` in the array"""
-    # Shift all elements at and after index `index` one position to the right
+    # أزح كل العناصر من الفهرس `index` وما بعده موضعًا واحدًا إلى اليمين
     for i in range(len(nums) - 1, index, -1):
         nums[i] = nums[i - 1]
-    # Assign num to the element at index `index`
+    # أسند num إلى العنصر عند الفهرس `index`
     nums[index] = num
 
 
 def remove(nums: list[int], index: int):
     """Remove the element at index `index`"""
-    # Shift all elements after index `index` one position to the left
+    # أزح كل العناصر بعد الفهرس `index` موضعًا واحدًا إلى اليسار
     for i in range(index, len(nums) - 1):
         nums[i] = nums[i + 1]
 
@@ -48,13 +48,13 @@ def remove(nums: list[int], index: int):
 def traverse(nums: list[int]):
     """Traverse the array"""
     count = 0
-    # Traverse the array by index
+    # اجتز المصفوفة بالفهرس
     for i in range(len(nums)):
         count += nums[i]
-    # Iterate directly over the array elements
+    # تكرّر مباشرةً على عناصر المصفوفة
     for num in nums:
         count += num
-    # Iterate over both the indices and the elements
+    # تكرّر على الفهارس والعناصر معًا
     for i, num in enumerate(nums):
         count += nums[i]
         count += num
@@ -70,31 +70,31 @@ def find(nums: list[int], target: int) -> int:
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize the array
+    # مهّد المصفوفة
     arr = [0] * 5
     print("Array arr =", arr)
     nums = [1, 3, 2, 5, 4]
     print("Array nums =", nums)
 
-    # Random access
+    # وصول عشوائي
     random_num: int = random_access(nums)
     print("Randomly selected element from nums:", random_num)
 
-    # Extend the length
+    # مدّد الطول
     nums: list[int] = extend(nums, 3)
     print("Extend the array length to 8, giving nums =", nums)
 
-    # Insert an element
+    # أدخل عنصرًا
     insert(nums, 6, 3)
     print("Insert the number 6 at index 3, giving nums =", nums)
 
-    # Remove an element
+    # احذف عنصرًا
     remove(nums, 2)
     print("Remove the element at index 2, giving nums =", nums)
 
-    # Traverse the array
+    # اجتز المصفوفة
     traverse(nums)
 
-    # Find an element
+    # ابحث عن عنصر
     index: int = find(nums, 3)
     print("Find element 3 in nums, giving index =", index)

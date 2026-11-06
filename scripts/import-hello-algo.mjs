@@ -618,13 +618,18 @@ const updateArabicContent = () => {
     if (arabicGroups.length === 0 && englishGroups.length === 0) continue;
 
     const isPurePython = (group) => group.labels.every((l) => l === 'Python');
+    const groupText = (lines, g) => lines.slice(g.bg, g.end + 1).join('\n');
     if (arabicGroups.length === englishGroups.length) {
       if (
-        arabicGroups.every(isPurePython)
+        arabicGroups.every(isPurePython) &&
+        arabicGroups.every(
+          (g, i) => groupText(arabicLines, g) === groupText(englishLines, englishGroups[i])
+        )
       ) {
         continue;
       }
       if (
+        arabicGroups.every(isPurePython) ||
         arabicGroups.every((g) =>
           g.labels.every((l) => ['Go', 'TypeScript'].includes(l))
         )

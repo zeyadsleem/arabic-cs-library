@@ -83,8 +83,7 @@ min_heap: list[int] = [1, 3, 2, 5, 4]
 heapq.heapify(min_heap)
 ```
 
-</div>
-## تنفيذ الكومة
+</div>## تنفيذ الكومة
 
 التنفيذ التالي خاص بالكومة العظمى. ولتحويله إلى كومة صغرى، ما عليك سوى عكس كل منطق المقارنة المتعلق بالترتيب (على سبيل المثال، استبدال $\geq$ بـ $\leq$). ونشجّع القرّاء المهتمين على تنفيذ ذلك بأنفسهم.
 
@@ -106,11 +105,10 @@ heapq.heapify(min_heap)
 ```py
     def parent(self, i: int) -> int:
         """Get the parent index"""
-        return (i - 1) // 2  # Floor division
+        return (i - 1) // 2  # قسمة مقربة نزولًا
 ```
 
-</div>
-### الوصول إلى العنصر الأعلى في الكومة
+</div>### الوصول إلى العنصر الأعلى في الكومة
 
 العنصر الأعلى في الكومة هو العقدة الجذرية للشجرة الثنائية، وهو أيضاً العنصر الأول في القائمة:
 
@@ -123,8 +121,7 @@ heapq.heapify(min_heap)
         return self.max_heap[0]
 ```
 
-</div>
-### إدراج عنصر في الكومة
+</div>### إدراج عنصر في الكومة
 
 بمعطى عنصر `val`، نضيفه أولاً إلى قاع الكومة. وبعد الإدراج، قد تُنتهك خاصية الكومة لأن `val` قد يكون أكبر من عناصر أخرى في الكومة. **لذلك نحتاج إلى استعادة خاصية الكومة على طول المسار من العقدة المُدرجة إلى الجذر**. وتسمى هذه العملية <u>تعديل الكومة (heapify)</u>.
 
@@ -139,19 +136,18 @@ heapq.heapify(min_heap)
     def sift_up(self, i: int):
         """Sift up starting from node i"""
         while True:
-            # Get the parent of node i
+            # احصل على أصل العقدة i
             p = self.parent(i)
-            # Stop sifting when the root has been passed or the node needs no repair
+            # توقف عن الرشّ عند تجاوز الجذر أو عدم حاجة العقدة إلى إصلاح
             if p < 0 or self.max_heap[i] <= self.max_heap[p]:
                 break
-            # Swap the two nodes
+            # بدّل العقدتين
             self.swap(i, p)
-            # Continue sifting up
+            # واصل الرشّ صعودًا
             i = p
 ```
 
-</div>
-### حذف العنصر الأعلى في الكومة
+</div>### حذف العنصر الأعلى في الكومة
 
 العنصر الأعلى في الكومة هو العقدة الجذرية للشجرة الثنائية، وهو العنصر الأول في القائمة. وإذا حذفنا العنصر الأول من القائمة مباشرةً، فستتغير جميع فهارس العقد في الشجرة الثنائية، مما يصعّب الإصلاح اللاحق بتعديل الكومة. ولتقليل تغيّرات فهارس العناصر إلى أدنى حد، نتبع الخطوات التالية.
 
@@ -170,23 +166,22 @@ heapq.heapify(min_heap)
     def sift_down(self, i: int):
         """Sift down starting from node i"""
         while True:
-            # Find the node with the largest value among i, l, and r, and store its index in ma
+            # أوجد العقدة ذات القيمة الأكبر بين i و l و r، وخزّن فهرسها في ma
             l, r, ma = self.left(i), self.right(i), i
             if l < self.size() and self.max_heap[l] > self.max_heap[ma]:
                 ma = l
             if r < self.size() and self.max_heap[r] > self.max_heap[ma]:
                 ma = r
-            # Stop if node i is largest or both child indices l and r are out of bounds
+            # توقف إذا كانت العقدة i هي الأكبر أو خرج فهرسا الابنين l و r كلاهما عن الحدود
             if ma == i:
                 break
-            # Swap the two nodes
+            # بدّل العقدتين
             self.swap(i, ma)
-            # Continue sifting down
+            # واصل الرشّ نزولًا
             i = ma
 ```
 
-</div>
-## التطبيقات الشائعة للأكوام
+</div>## التطبيقات الشائعة للأكوام
 
 - **طابور الأولوية**: الأكوام عادةً هي بنية البيانات المفضلة لتنفيذ طوابير الأولوية. فالتعقيد الزمني لكل من عمليتي الإدخال والإخراج هو $O(\log n)$، وبناء الكومة له تعقيد زمني $O(n)$، مما يجعل هذه العمليات عالية الكفاءة.
 - **ترتيب الكومة**: بمعطى مجموعة من البيانات، يمكننا بناء كومة منها ثم تنفيذ عمليات حذف العناصر باستمرار للحصول على بيانات مرتبة. غير أننا نستخدم عادةً أسلوباً أكثر أناقة لتنفيذ ترتيب الكومة، كما هو مفصل في فصل «ترتيب الكومة».

@@ -14,57 +14,57 @@ import heapq
 
 
 def test_push(heap: list, val: int, flag: int = 1):
-    heapq.heappush(heap, flag * val)  # Push an element onto the heap
+    heapq.heappush(heap, flag * val)  # ادفع عنصرًا إلى الكومة
     print(f"\nAfter pushing element {val} onto the heap:")
     print_heap([flag * val for val in heap])
 
 
 def test_pop(heap: list, flag: int = 1):
-    val = flag * heapq.heappop(heap)  # Pop the top element from the heap
+    val = flag * heapq.heappop(heap)  # اسحب عنصر القمة من الكومة
     print(f"\nAfter popping top element {val} from the heap:")
     print_heap([flag * val for val in heap])
 
 
 """Driver code"""
 if __name__ == "__main__":
-    # Initialize a min heap
+    # مهّد كومة صغرى
     min_heap, flag = [], 1
-    # Initialize a max heap
+    # مهّد كومة كبرى
     max_heap, flag = [], -1
 
     print("\nThe following example uses a max heap")
-    # Python's heapq module implements a min heap by default
-    # Negate each element before pushing it onto the heap to reverse the ordering and implement a max heap
-    # In this example, flag = 1 represents a min heap and flag = -1 represents a max heap
+    # الوحدة heapq في Python تنفذ كومة صغرى افتراضيًا
+    # اعكس إشارة كل عنصر قبل دفعه إلى الكومة لعكس الترتيب وتنفيذ كومة كبرى
+    # في هذا المثال، flag = 1 يمثل كومة صغرى و flag = -1 يمثل كومة كبرى
 
-    # Push an element onto the heap
+    # ادفع عنصرًا إلى الكومة
     test_push(max_heap, 1, flag)
     test_push(max_heap, 3, flag)
     test_push(max_heap, 2, flag)
     test_push(max_heap, 5, flag)
     test_push(max_heap, 4, flag)
 
-    # Get the top element of the heap
+    # احصل على عنصر قمة الكومة
     peek: int = flag * max_heap[0]
     print(f"\nTop element of the heap: {peek}")
 
-    # Pop the top element from the heap
+    # اسحب عنصر القمة من الكومة
     test_pop(max_heap, flag)
     test_pop(max_heap, flag)
     test_pop(max_heap, flag)
     test_pop(max_heap, flag)
     test_pop(max_heap, flag)
 
-    # Get the heap size
+    # احصل على حجم الكومة
     size: int = len(max_heap)
     print(f"\nNumber of elements in the heap: {size}")
 
-    # Check whether the heap is empty
+    # تحقق مما إذا كانت الكومة فارغة
     is_empty: bool = not max_heap
     print(f"\nIs the heap empty: {is_empty}")
 
-    # Build a heap from an input list
-    # The time complexity is O(n), not O(nlogn)
+    # ابنِ كومة من القائمة المُدخلة
+    # التعقيد الزمني O(n) لا O(nlogn)
     min_heap = [1, 3, 2, 5, 4]
     heapq.heapify(min_heap)
     print("\nAfter building a min heap from the input list:")

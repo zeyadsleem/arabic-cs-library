@@ -7,7 +7,7 @@ Author: krahets (krahets@163.com)
 
 def dfs(i: int) -> int:
     """Search"""
-    # The values of dp[1] and dp[2] are known; return the corresponding value
+    # قيم dp[1] و dp[2] معلومة؛ أعد القيمة المقابلة
     if i == 1 or i == 2:
         return i
     # dp[i] = dp[i-1] + dp[i-2]
