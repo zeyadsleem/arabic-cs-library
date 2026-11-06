@@ -1,4 +1,4 @@
-const n="learn-ocaml",t="preface",e="مقدمة",a="index",o="مقدمة",d=[{depth:2,id:"مقدمة",text:"مقدمة"},{depth:2,id:"مقدمة-1",text:"مقدمة"},{depth:3,id:"من-يجب-أن-يقرأ-هذا-الكتاب",text:"من يجب أن يقرأ هذا الكتاب"},{depth:3,id:"الموقع-المرافق-للكتاب",text:"الموقع المرافق للكتاب"},{depth:3,id:"شكر-وتقدير",text:"شكر وتقدير"}],p=`<h2 id="مقدمة">مقدمة</h2>
+const n="learn-ocaml",t="preface",e="مقدمة",a="index",o="مقدمة",d=[{depth:2,id:"مقدمة",text:"مقدمة"},{depth:3,id:"من-يجب-أن-يقرأ-هذا-الكتاب",text:"من يجب أن يقرأ هذا الكتاب"},{depth:3,id:"الموقع-المرافق-للكتاب",text:"الموقع المرافق للكتاب"},{depth:3,id:"شكر-وتقدير",text:"شكر وتقدير"}],p=`<h2 id="مقدمة">مقدمة</h2>
 <h2 id="مقدمة-1">مقدمة</h2>
 <p>التعلم لبرمجة حاسوب أمرٌ صعب. والبرمجةُ الجيدة تتطلب معرفةً بالخوارزميات،
 والخيال، والبصيرة، وإتقان لغة برمجة. والشيءُ الأهم من ذلك كله، هي تتطلب خبرة،
@@ -34,4 +34,4 @@ Martin Clochard، David Declerck، Léon Gondelman، Louis Mandel، Simão Melo 
 Sousa، Mattias Roux. أخيراً، نشكر فريق Eyrolles التحريري على مساعدته القيّمة
 في تجميع الكتاب.
 &quot;</p>
-`,i={book:n,chapter:t,chapterTitle:e,slug:a,title:o,headings:d,html:p};export{n as book,t as chapter,e as chapterTitle,i as default,d as headings,p as html,a as slug,o as title};
+`,l={book:n,chapter:t,chapterTitle:e,slug:a,title:o,headings:d,html:p};export{n as book,t as chapter,e as chapterTitle,l as default,d as headings,p as html,a as slug,o as title};
