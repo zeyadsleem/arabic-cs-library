@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="DTXMNE+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="DTXMNE+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="CSVMKE+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="DFFNRJ+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="13" family="EQRKCQ+URWPalladioL-Roma" color="#000000"/>
+<text top="201" left="540" width="17" height="29" font="0">1</text>
+<text top="272" left="293" width="226" height="20" font="1">A Dialogue on the Book</text>
+<text top="360" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="359" left="152" width="170" height="14" font="3"><i>Welcome to this book! It’s called</i></text>
+<text top="360" left="324" width="195" height="13" font="4"><b>Operating Systems in Three Easy</b></text>
+<text top="375" left="87" width="37" height="13" font="4"><b>Pieces</b></text>
+<text top="374" left="124" width="395" height="14" font="3"><i>, and I am here to teach you the things you need to know about operating</i></text>
+<text top="389" left="87" width="255" height="14" font="3"><i>systems. I am called “Professor”; who are you?</i></text>
+<text top="412" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="411" left="143" width="376" height="14" font="3"><i>Hi Professor! I am called “Student”, as you might have guessed. And</i></text>
+<text top="426" left="87" width="156" height="14" font="3"><i>I am here and ready to learn!</i></text>
+<text top="449" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="448" left="152" width="162" height="14" font="3"><i>Sounds good. Any questions?</i></text>
+<text top="471" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="470" left="143" width="238" height="14" font="3"><i>Sure! Why is it called “Three Easy Pieces”?</i></text>
+<text top="493" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="492" left="154" width="365" height="14" font="3"><i>That’s an easy one. Well, you see, there are these great lectures on</i></text>
+<text top="507" left="87" width="168" height="14" font="3"><i>Physics by Richard Feynman...</i></text>
+<text top="530" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="529" left="143" width="376" height="14" font="3"><i>Oh! The guy who wrote “Surely You’re Joking, Mr. Feynman”, right?</i></text>
+<text top="544" left="87" width="319" height="14" font="3"><i>Great book! Is this going to be hilarious like that book was?</i></text>
+<text top="567" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="566" left="154" width="365" height="14" font="3"><i>Um... well, no. That book was great, and I’m glad you’ve read it.</i></text>
+<text top="581" left="87" width="432" height="14" font="3"><i>Hopefully this book is more like his notes on Physics. Some of the basics were</i></text>
+<text top="596" left="87" width="432" height="14" font="3"><i>summed up in a book called “Six Easy Pieces”. He was talking about Physics;</i></text>
+<text top="611" left="87" width="432" height="14" font="3"><i>we’re going to do Three Easy Pieces on the fine topic of Operating Systems. This</i></text>
+<text top="626" left="87" width="381" height="14" font="3"><i>is appropriate, as Operating Systems are about half as hard as Physics.</i></text>
+<text top="648" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="648" left="143" width="372" height="14" font="3"><i>Well, I liked physics, so that is probably good. What are those pieces?</i></text>
+<text top="670" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="670" left="152" width="297" height="14" font="3"><i>They are the three key ideas we’re going to learn about:</i></text>
+<text top="670" left="453" width="66" height="13" font="4"><b>virtualiza-</b></text>
+<text top="685" left="87" width="25" height="13" font="4"><b>tion</b></text>
+<text top="685" left="112" width="3" height="14" font="3"><i>,</i></text>
+<text top="685" left="119" width="71" height="13" font="4"><b>concurrency</b></text>
+<text top="685" left="191" width="28" height="14" font="3"><i>, and</i></text>
+<text top="685" left="222" width="66" height="13" font="4"><b>persistence</b></text>
+<text top="685" left="288" width="231" height="14" font="3"><i>. In learning about these ideas, we’ll learn</i></text>
+<text top="700" left="87" width="432" height="14" font="3"><i>all about how an operating system works, including how it decides what program</i></text>
+<text top="715" left="87" width="432" height="14" font="3"><i>to run next on a CPU, how it handles memory overload in a virtual memory sys-</i></text>
+<text top="730" left="87" width="432" height="14" font="3"><i>tem, how virtual machine monitors work, how to manage information on disks,</i></text>
+<text top="745" left="87" width="432" height="14" font="3"><i>and even a little about how to build a distributed system that works when parts</i></text>
+<text top="760" left="87" width="159" height="14" font="3"><i>have failed. That sort of stuff.</i></text>
+<text top="782" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="782" left="143" width="257" height="14" font="3"><i>I have no idea what you’re talking about, really.</i></text>
+<text top="804" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="804" left="152" width="240" height="14" font="3"><i>Good! That means you are in the right class.</i></text>
+<text top="826" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="826" left="143" width="342" height="14" font="3"><i>I have another question: what’s the best way to learn this stuff?</i></text>
+<text top="862" left="300" width="7" height="14" font="5">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="11" family="EQRKCQ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="9" family="EQRKCQ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="7" family="EQRKCQ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="EQRKCQ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="ZEZKUH+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="11" size="12" family="EQRKCQ+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="5">2</text>
+<text top="96" left="392" width="25" height="14" font="5">A D</text>
+<text top="98" left="418" width="104" height="11" font="6">IALOGUE ON THE</text>
+<text top="96" left="526" width="8" height="14" font="5">B</text>
+<text top="98" left="534" width="26" height="11" font="6">OOK</text>
+<text top="139" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="139" left="195" width="366" height="14" font="3"><i>Excellent query! Well, each person needs to figure this out on their</i></text>
+<text top="154" left="129" width="432" height="14" font="3"><i>own, of course, but here is what I would do: go to class, to hear the professor</i></text>
+<text top="168" left="129" width="432" height="14" font="3"><i>introduce the material. Then, at the end of every week, read these notes, to help</i></text>
+<text top="183" left="129" width="432" height="14" font="3"><i>the ideas sink into your head a bit better. Of course, some time later (hint: before</i></text>
+<text top="198" left="129" width="432" height="14" font="3"><i>the exam!), read the notes again to firm up your knowledge. Of course, your pro-</i></text>
+<text top="213" left="129" width="432" height="14" font="3"><i>fessor will no doubt assign some homeworks and projects, so you should do those;</i></text>
+<text top="228" left="129" width="432" height="14" font="3"><i>in particular, doing projects where you write real code to solve real problems is</i></text>
+<text top="243" left="129" width="432" height="14" font="3"><i>the best way to put the ideas within these notes into action. As Confucius said...</i></text>
+<text top="264" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="264" left="187" width="373" height="14" font="3"><i>Oh, I know! ’I hear and I forget. I see and I remember. I do and I</i></text>
+<text top="278" left="129" width="199" height="14" font="3"><i>understand.’ Or something like that.</i></text>
+<text top="299" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="299" left="194" width="309" height="14" font="3"><i>(surprised) How did you know what I was going to say?!</i></text>
+<text top="319" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="319" left="187" width="374" height="14" font="3"><i>It seemed to follow. Also, I am a big fan of Confucius, and an even</i></text>
+<text top="336" left="129" width="350" height="14" font="3"><i>bigger fan of Xunzi, who actually is a better source for this quote</i></text>
+<text top="334" left="478" width="4" height="9" font="7">1</text>
+<text top="336" left="484" width="3" height="14" font="3"><i>.</i></text>
+<text top="357" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="357" left="194" width="367" height="14" font="3"><i>(stunned) Well, I think we are going to get along just fine! Just fine</i></text>
+<text top="372" left="129" width="39" height="14" font="3"><i>indeed.</i></text>
+<text top="392" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="392" left="185" width="376" height="14" font="3"><i>Professor – just one more question, if I may. What are these dialogues</i></text>
+<text top="407" left="129" width="432" height="14" font="3"><i>for? I mean, isn’t this just supposed to be a book? Why not present the material</i></text>
+<text top="422" left="129" width="48" height="14" font="3"><i>directly?</i></text>
+<text top="442" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="442" left="198" width="363" height="14" font="3"><i>Ah, good question, good question! Well, I think it is sometimes</i></text>
+<text top="457" left="129" width="432" height="14" font="3"><i>useful to pull yourself outside of a narrative and think a bit; these dialogues are</i></text>
+<text top="472" left="129" width="432" height="14" font="3"><i>those times. So you and I are going to work together to make sense of all of these</i></text>
+<text top="487" left="129" width="216" height="14" font="3"><i>pretty complex ideas. Are you up for it?</i></text>
+<text top="508" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="507" left="185" width="376" height="14" font="3"><i>So we have to think? Well, I’m up for that. I mean, what else do I have</i></text>
+<text top="522" left="129" width="365" height="14" font="3"><i>to do anyhow? It’s not like I have much of a life outside of this book.</i></text>
+<text top="543" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="543" left="194" width="207" height="14" font="3"><i>Me neither, sadly. So let’s get to work!</i></text>
+<text top="766" left="149" width="4" height="8" font="8">1</text>
+<text top="768" left="154" width="62" height="11" font="9">According to</text>
+<text top="769" left="220" width="157" height="9" font="10">http://www.barrypopik.com</text>
+<text top="768" left="381" width="180" height="11" font="9">(on, December 19, 2012, entitled “Tell</text>
+<text top="780" left="129" width="432" height="11" font="9">me and I forget; teach me and I may remember; involve me and I will learn”) Confucian</text>
+<text top="792" left="129" width="432" height="11" font="9">philosopher Xunzi said “Not having heard something is not as good as having heard it; having</text>
+<text top="804" left="129" width="432" height="11" font="9">heard it is not as good as having seen it; having seen it is not as good as knowing it; knowing</text>
+<text top="816" left="129" width="432" height="11" font="9">it is not as good as putting it into practice.” Later on, the wisdom got attached to Confucius</text>
+<text top="828" left="129" width="283" height="11" font="9">for some reason. Thanks to Jiao Dong (Rutgers) for telling us!</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+</pdf2xml>

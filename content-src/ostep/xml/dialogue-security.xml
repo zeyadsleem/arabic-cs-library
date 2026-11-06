@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="UNVWSX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="UNVWSX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="15" family="NRBPPZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="15" family="NEIODA+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="NEIODA+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="13" family="FRZBWW+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="6" size="13" family="NRBPPZ+URWPalladioL-Roma" color="#000000"/>
+<text top="195" left="523" width="34" height="30" font="0">52</text>
+<text top="265" left="300" width="219" height="21" font="1">A Dialogue on Security</text>
+<text top="304" left="300" width="74" height="15" font="2">Chapter by</text>
+<text top="304" left="378" width="141" height="12" font="3"><b>Peter Reiher (UCLA)</b></text>
+<text top="340" left="87" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="340" left="152" width="115" height="14" font="5">Hello again, student!</text>
+<text top="360" left="87" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="360" left="147" width="372" height="14" font="5">I thought we were done with all this. We’ve already had three pillars,</text>
+<text top="375" left="87" width="432" height="14" font="5">and I even stuck around for a few appendices. Will I never be done with this</text>
+<text top="390" left="87" width="32" height="14" font="5">class?</text>
+<text top="411" left="87" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="411" left="162" width="357" height="14" font="5">That depends on who I am. Some professors want to talk about</text>
+<text top="426" left="87" width="432" height="14" font="5">security and some don’t. Unfortunately for you, given that you’re here, I’m one</text>
+<text top="441" left="87" width="115" height="14" font="5">of those who want to.</text>
+<text top="461" left="87" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="461" left="147" width="243" height="14" font="5">OK, I suppose we’d better just get on with it.</text>
+<text top="482" left="87" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="482" left="161" width="358" height="14" font="5">That’s the spirit! Soonest begun, soonest done. So, let’s say you</text>
+<text top="497" left="87" width="78" height="14" font="5">have a peach...</text>
+<text top="517" left="87" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="517" left="147" width="258" height="14" font="5">You told me we were at least done with peaches!</text>
+<text top="538" left="87" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="538" left="160" width="359" height="14" font="5">When one is discussing security, lies will always be a part of the</text>
+<text top="553" left="87" width="432" height="14" font="5">discussion. Anyway, you’ve got a peach. You certainly wouldn’t want to turn</text>
+<text top="568" left="87" width="327" height="14" font="5">around and ﬁnd someone had stolen your peach, would you?</text>
+<text top="589" left="87" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="588" left="147" width="371" height="14" font="5">Well, if it isn’t as rotten as the one you ended up with, I suppose not.</text>
+<text top="609" left="87" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="609" left="161" width="358" height="14" font="5">And you probably wouldn’t be any happier if you turned around</text>
+<text top="624" left="87" width="432" height="14" font="5">and discovered someone had swapped out your peach for a turnip, either, would</text>
+<text top="639" left="87" width="27" height="14" font="5">you?</text>
+<text top="660" left="87" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="660" left="147" width="355" height="14" font="5">I guess not, though I do know a couple of good recipes for turnips.</text>
+<text top="680" left="87" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="680" left="155" width="364" height="14" font="5">And you also wouldn’t want somebody slapping your hand away</text>
+<text top="695" left="87" width="245" height="14" font="5">every time you reached for your peach, right?</text>
+<text top="716" left="87" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="716" left="147" width="164" height="14" font="5">No, that would be pretty rude.</text>
+<text top="736" left="87" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="736" left="156" width="363" height="14" font="5">You wouldn’t want that happening to any of the resources your com-</text>
+<text top="751" left="87" width="432" height="14" font="5">puter controls, either. You might be even unhappier, if they’re really important</text>
+<text top="766" left="87" width="432" height="14" font="5">resources. You wouldn’t want the love letter you’re in the middle of composing</text>
+<text top="781" left="87" width="432" height="14" font="5">to leak out, you wouldn’t want someone to reset the saved state in your favorite</text>
+<text top="796" left="87" width="432" height="14" font="5">game to take you back to the very beginning, and you would be mighty upset if,</text>
+<text top="811" left="87" width="432" height="14" font="5">at midnight the evening before your project was due, you weren’t allowed to log</text>
+<text top="826" left="87" width="107" height="14" font="5">into your computer.</text>
+<text top="862" left="300" width="7" height="14" font="6">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="11" family="NRBPPZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="12" family="NRBPPZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="NRBPPZ+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="6">2</text>
+<text top="96" left="396" width="25" height="14" font="6">A D</text>
+<text top="98" left="421" width="76" height="11" font="7">IALOGUE ON</text>
+<text top="96" left="502" width="7" height="14" font="6">S</text>
+<text top="98" left="509" width="51" height="11" font="7">ECURITY</text>
+<text top="139" left="129" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="139" left="185" width="213" height="14" font="5">True, those would all pretty much suck.</text>
+<text top="159" left="129" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="159" left="201" width="360" height="14" font="5">Let’s try to keep a professional tone here. After all, this is a class-</text>
+<text top="174" left="129" width="432" height="14" font="5">room. Kind of. That’s what operating system security is all about, and that’s</text>
+<text top="189" left="129" width="432" height="14" font="5">what I’m here to tell you about. How can you ensure that secrets remain con-</text>
+<text top="204" left="129" width="432" height="14" font="5">ﬁdential? How can you guarantee the integrity of your important data? How</text>
+<text top="219" left="129" width="432" height="14" font="5">can you ensure that you can use your computer resources when you want to?</text>
+<text top="234" left="129" width="432" height="14" font="5">And these questions apply to all of the resources in your computer, all the time,</text>
+<text top="249" left="129" width="40" height="14" font="5">forever.</text>
+<text top="269" left="129" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="269" left="189" width="358" height="14" font="5">All this sounds a little like reliability stuff we talked about before...</text>
+<text top="289" left="129" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="289" left="204" width="357" height="14" font="5">Yes and no. Bad things can happen more or less by accident or</text>
+<text top="304" left="129" width="432" height="14" font="5">through poor planning, and reliability is about those sorts of things. But we’re</text>
+<text top="319" left="129" width="350" height="14" font="5">going a step further. SOMEBODY WANTS YOUR PEACH!!!!</text>
+<text top="340" left="129" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="340" left="189" width="339" height="14" font="5">Stop shouting! You were the one asking for a professional tone.</text>
+<text top="360" left="129" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="360" left="197" width="364" height="14" font="5">My apologies, I get excited about this stuff sometimes. The point</text>
+<text top="375" left="129" width="432" height="14" font="5">I was trying to make is that when we talk about security, we’re talking about</text>
+<text top="390" left="129" width="432" height="14" font="5">genuine adversaries, human adversaries who are trying to make things go wrong</text>
+<text top="405" left="129" width="432" height="14" font="5">for you. That has some big implications. They’re likely to be clever, malevolent,</text>
+<text top="420" left="129" width="432" height="14" font="5">persistent, ﬂexible, and sneaky. You may already feel like the universe has it in</text>
+<text top="435" left="129" width="432" height="14" font="5">for you (most students feel that way, at any rate), but these folks really, truly are</text>
+<text top="450" left="129" width="432" height="14" font="5">out to get you. You’re going to have to protect your assets despite anything they</text>
+<text top="464" left="129" width="19" height="14" font="5">try.</text>
+<text top="485" left="129" width="52" height="11" font="4"><b>Student:</b></text>
+<text top="485" left="189" width="135" height="14" font="5">This sounds challenging.</text>
+<text top="505" left="129" width="61" height="11" font="4"><b>Professor:</b></text>
+<text top="505" left="198" width="363" height="14" font="5">You have no idea... But you will! YOU WILL!! (maniacal laughter)</text>
+<text top="881" left="129" width="11" height="14" font="6">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="6">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="6">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="6">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+</pdf2xml>

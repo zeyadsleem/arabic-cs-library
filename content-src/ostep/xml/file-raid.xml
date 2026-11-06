@@ -1,0 +1,1863 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="RKJNLX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="RKJNLX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="VZNRZE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="11" family="VZNRZE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="13" family="WUKSFJ+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="13" family="HJOFCJ+URWPalladioL-Ital" color="#000000"/>
+<text top="197" left="523" width="34" height="29" font="0">38</text>
+<text top="267" left="144" width="375" height="20" font="1">Redundant Arrays of Inexpensive Disks</text>
+<text top="289" left="442" width="77" height="20" font="1">(RAIDs)</text>
+<text top="371" left="87" width="432" height="14" font="2">When we use a disk, we sometimes wish it to be faster; I/O operations</text>
+<text top="386" left="87" width="432" height="14" font="2">are slow and thus can be the bottleneck for the entire system. When we</text>
+<text top="401" left="87" width="432" height="14" font="2">use a disk, we sometimes wish it to be larger; more and more data is being</text>
+<text top="415" left="87" width="432" height="14" font="2">put online and thus our disks are getting fuller and fuller. When we use</text>
+<text top="430" left="87" width="432" height="14" font="2">a disk, we sometimes wish for it to be more reliable; when a disk fails, if</text>
+<text top="445" left="87" width="325" height="14" font="2">our data isn’t backed up, all that valuable data is gone.</text>
+<text top="476" left="136" width="10" height="14" font="2">C</text>
+<text top="478" left="146" width="24" height="11" font="3">RUX</text>
+<text top="476" left="171" width="19" height="14" font="2">: H</text>
+<text top="478" left="191" width="20" height="11" font="3">OW</text>
+<text top="476" left="215" width="8" height="14" font="2">T</text>
+<text top="478" left="224" width="8" height="11" font="3">O</text>
+<text top="476" left="236" width="13" height="14" font="2">M</text>
+<text top="478" left="250" width="24" height="11" font="3">AKE</text>
+<text top="476" left="278" width="23" height="14" font="2">A L</text>
+<text top="478" left="301" width="32" height="11" font="3">ARGE</text>
+<text top="476" left="334" width="15" height="14" font="2">, F</text>
+<text top="478" left="349" width="22" height="11" font="3">AST</text>
+<text top="476" left="371" width="16" height="14" font="2">, R</text>
+<text top="478" left="388" width="49" height="11" font="3">ELIABLE</text>
+<text top="476" left="440" width="10" height="14" font="2">D</text>
+<text top="478" left="452" width="18" height="11" font="3">ISK</text>
+<text top="491" left="105" width="414" height="14" font="2">How can we make a large, fast, and reliable storage system? What are</text>
+<text top="506" left="87" width="421" height="14" font="2">the key techniques? What are trade-offs between different approaches?</text>
+<text top="541" left="105" width="202" height="14" font="2">In this chapter, we introduce the</text>
+<text top="541" left="312" width="207" height="13" font="4"><b>Redundant Array of Inexpensive</b></text>
+<text top="556" left="87" width="36" height="13" font="4"><b>Disks</b></text>
+<text top="556" left="126" width="95" height="14" font="2">better known as</text>
+<text top="556" left="224" width="37" height="13" font="4"><b>RAID</b></text>
+<text top="556" left="264" width="255" height="14" font="2">[P+88], a technique to use multiple disks in</text>
+<text top="570" left="87" width="432" height="14" font="2">concert to build a faster, bigger, and more reliable disk system. The term</text>
+<text top="585" left="87" width="432" height="14" font="2">was introduced in the late 1980s by a group of researchers at U.C. Berke-</text>
+<text top="600" left="87" width="432" height="14" font="2">ley (led by Professors David Patterson and Randy Katz and then student</text>
+<text top="615" left="87" width="432" height="14" font="2">Garth Gibson); it was around this time that many different researchers si-</text>
+<text top="630" left="87" width="432" height="14" font="2">multaneously arrived upon the basic idea of using multiple disks to build</text>
+<text top="645" left="87" width="308" height="14" font="2">a better storage system [BG88, K86,K88,PB86,SG86].</text>
+<text top="661" left="105" width="414" height="14" font="2">Externally, a RAID looks like a disk: a group of blocks one can read</text>
+<text top="676" left="87" width="432" height="14" font="2">or write. Internally, the RAID is a complex beast, consisting of multiple</text>
+<text top="691" left="87" width="432" height="14" font="2">disks, memory (both volatile and non-), and one or more processors to</text>
+<text top="706" left="87" width="432" height="14" font="2">manage the system. A hardware RAID is very much like a computer</text>
+<text top="721" left="87" width="365" height="14" font="2">system, specialized for the task of managing a group of disks.</text>
+<text top="736" left="105" width="414" height="14" font="2">RAIDs offer a number of advantages over a single disk. One advan-</text>
+<text top="751" left="87" width="40" height="14" font="2">tage is</text>
+<text top="751" left="132" width="67" height="14" font="5">performance</text>
+<text top="751" left="199" width="320" height="14" font="2">. Using multiple disks in parallel can greatly speed</text>
+<text top="766" left="87" width="197" height="14" font="2">up I/O times. Another benefit is</text>
+<text top="766" left="288" width="45" height="14" font="5">capacity</text>
+<text top="766" left="333" width="186" height="14" font="2">. Large data sets demand large</text>
+<text top="781" left="87" width="206" height="14" font="2">disks. Finally, RAIDs can improve</text>
+<text top="781" left="297" width="52" height="14" font="5">reliability</text>
+<text top="781" left="349" width="170" height="14" font="2">; spreading data across mul-</text>
+<text top="796" left="87" width="432" height="14" font="2">tiple disks (without RAID techniques) makes the data vulnerable to the</text>
+<text top="811" left="87" width="235" height="14" font="2">loss of a single disk; with some form of</text>
+<text top="811" left="326" width="73" height="13" font="4"><b>redundancy</b></text>
+<text top="811" left="399" width="120" height="14" font="2">, RAIDs can tolerate</text>
+<text top="826" left="87" width="373" height="14" font="2">the loss of a disk and keep operating as if nothing were wrong.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="16" family="VZNRZE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="12" family="VZNRZE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="VZNRZE+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="230" width="9" height="14" font="2">R</text>
+<text top="98" left="240" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="313" width="10" height="14" font="2">A</text>
+<text top="98" left="324" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="384" width="5" height="14" font="2">I</text>
+<text top="98" left="389" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="468" width="10" height="14" font="2">D</text>
+<text top="98" left="479" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="507" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="550" width="6" height="11" font="3">S</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="148" left="209" width="8" height="14" font="2">T</text>
+<text top="150" left="217" width="11" height="11" font="3">IP</text>
+<text top="148" left="229" width="16" height="14" font="2">: T</text>
+<text top="150" left="246" width="88" height="11" font="3">RANSPARENCY</text>
+<text top="148" left="338" width="8" height="14" font="2">E</text>
+<text top="150" left="347" width="46" height="11" font="3">NABLES</text>
+<text top="148" left="397" width="10" height="14" font="2">D</text>
+<text top="150" left="408" width="73" height="11" font="3">EPLOYMENT</text>
+<text top="163" left="129" width="432" height="14" font="2">When considering how to add new functionality to a system, one should</text>
+<text top="178" left="129" width="343" height="14" font="2">always consider whether such functionality can be added</text>
+<text top="178" left="475" width="82" height="13" font="4"><b>transparently</b></text>
+<text top="178" left="557" width="3" height="14" font="2">,</text>
+<text top="193" left="129" width="432" height="14" font="2">in a way that demands no changes to the rest of the system. Requiring a</text>
+<text top="208" left="129" width="432" height="14" font="2">complete rewrite of the existing software (or radical hardware changes)</text>
+<text top="223" left="129" width="432" height="14" font="2">lessens the chance of impact of an idea. RAID is a perfect example, and</text>
+<text top="238" left="129" width="432" height="14" font="2">certainly its transparency contributed to its success; administrators could</text>
+<text top="253" left="129" width="432" height="14" font="2">install a SCSI-based RAID storage array instead of a SCSI disk, and the</text>
+<text top="267" left="129" width="432" height="14" font="2">rest of the system (host computer, OS, etc.) did not have to change one bit</text>
+<text top="282" left="129" width="251" height="14" font="2">to start using it. By solving this problem of</text>
+<text top="282" left="383" width="74" height="13" font="4"><b>deployment</b></text>
+<text top="282" left="457" width="104" height="14" font="2">, RAID was made</text>
+<text top="297" left="129" width="180" height="14" font="2">more successful from day one.</text>
+<text top="333" left="147" width="265" height="14" font="2">Amazingly, RAIDs provide these advantages</text>
+<text top="333" left="414" width="82" height="13" font="4"><b>transparently</b></text>
+<text top="333" left="499" width="62" height="14" font="2">to systems</text>
+<text top="348" left="129" width="432" height="14" font="2">that use them, i.e., a RAID just looks like a big disk to the host system. The</text>
+<text top="363" left="129" width="432" height="14" font="2">beauty of transparency, of course, is that it enables one to simply replace</text>
+<text top="378" left="129" width="432" height="14" font="2">a disk with a RAID and not change a single line of software; the operat-</text>
+<text top="393" left="129" width="432" height="14" font="2">ing system and client applications continue to operate without modifica-</text>
+<text top="408" left="129" width="330" height="14" font="2">tion. In this manner, transparency greatly improves the</text>
+<text top="408" left="462" width="83" height="13" font="4"><b>deployability</b></text>
+<text top="408" left="549" width="12" height="14" font="2">of</text>
+<text top="423" left="129" width="432" height="14" font="2">RAID, enabling users and administrators to put a RAID to use without</text>
+<text top="438" left="129" width="200" height="14" font="2">worries of software compatibility.</text>
+<text top="454" left="147" width="414" height="14" font="2">We now discuss some of the important aspects of RAIDs. We begin</text>
+<text top="469" left="129" width="432" height="14" font="2">with the interface, fault model, and then discuss how one can evaluate a</text>
+<text top="484" left="129" width="432" height="14" font="2">RAID design along three important axes: capacity, reliability, and perfor-</text>
+<text top="499" left="129" width="432" height="14" font="2">mance. We then discuss a number of other issues that are important to</text>
+<text top="514" left="129" width="205" height="14" font="2">RAID design and implementation.</text>
+<text top="553" left="97" width="248" height="17" font="6">38.1 Interface And RAID Internals</text>
+<text top="584" left="147" width="414" height="14" font="2">To a file system above, a RAID looks like a big, (hopefully) fast, and</text>
+<text top="599" left="129" width="432" height="14" font="2">(hopefully) reliable disk. Just as with a single disk, it presents itself as</text>
+<text top="614" left="129" width="432" height="14" font="2">a linear array of blocks, each of which can be read or written by the file</text>
+<text top="629" left="129" width="140" height="14" font="2">system (or other client).</text>
+<text top="645" left="147" width="164" height="14" font="2">When a file system issues a</text>
+<text top="645" left="315" width="58" height="14" font="5">logical I/O</text>
+<text top="645" left="377" width="184" height="14" font="2">request to the RAID, the RAID</text>
+<text top="660" left="129" width="432" height="14" font="2">internally must calculate which disk (or disks) to access in order to com-</text>
+<text top="675" left="129" width="271" height="14" font="2">plete the request, and then issue one or more</text>
+<text top="675" left="404" width="72" height="14" font="5">physical I/Os</text>
+<text top="675" left="481" width="80" height="14" font="2">to do so. The</text>
+<text top="690" left="129" width="432" height="14" font="2">exact nature of these physical I/Os depends on the RAID level, as we will</text>
+<text top="705" left="129" width="432" height="14" font="2">discuss in detail below. However, as a simple example, consider a RAID</text>
+<text top="720" left="129" width="432" height="14" font="2">that keeps two copies of each block (each one on a separate disk); when</text>
+<text top="735" left="129" width="101" height="14" font="2">writing to such a</text>
+<text top="735" left="233" width="55" height="13" font="4"><b>mirrored</b></text>
+<text top="735" left="291" width="269" height="14" font="2">RAID system, the RAID will have to perform</text>
+<text top="750" left="129" width="329" height="14" font="2">two physical I/Os for every one logical I/O it is issued.</text>
+<text top="766" left="147" width="414" height="14" font="2">A RAID system is often built as a separate hardware box, with a stan-</text>
+<text top="781" left="129" width="432" height="14" font="2">dard connection (e.g., SCSI, or SATA) to a host. Internally, however,</text>
+<text top="796" left="129" width="445" height="14" font="2">RAIDs are fairly complex, consisting of a microcontroller that runs firmware</text>
+<text top="811" left="129" width="432" height="14" font="2">to direct the operation of the RAID, volatile memory such as DRAM</text>
+<text top="826" left="129" width="432" height="14" font="2">to buffer data blocks as they are read and written, and in some cases,</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="13" family="KSWEVF+CMMI9" color="#000000"/>
+	<fontspec id="10" size="13" family="OWAPLH+CMSY9" color="#000000"/>
+	<fontspec id="11" size="13" family="GRLYWX+CMR9" color="#000000"/>
+<text top="96" left="87" width="9" height="14" font="2">R</text>
+<text top="98" left="97" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="170" width="10" height="14" font="2">A</text>
+<text top="98" left="181" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="242" width="5" height="14" font="2">I</text>
+<text top="98" left="247" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="325" width="10" height="14" font="2">D</text>
+<text top="98" left="336" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="365" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="407" width="6" height="11" font="3">S</text>
+<text top="96" left="413" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="87" width="432" height="14" font="2">non-volatile memory to buffer writes safely and perhaps even special-</text>
+<text top="154" left="87" width="432" height="14" font="2">ized logic to perform parity calculations (useful in some RAID levels, as</text>
+<text top="169" left="87" width="432" height="14" font="2">we will also see below). At a high level, a RAID is very much a special-</text>
+<text top="183" left="87" width="432" height="14" font="2">ized computer system: it has a processor, memory, and disks; however,</text>
+<text top="198" left="87" width="432" height="14" font="2">instead of running applications, it runs specialized software designed to</text>
+<text top="213" left="87" width="108" height="14" font="2">operate the RAID.</text>
+<text top="252" left="55" width="122" height="17" font="6">38.2 Fault Model</text>
+<text top="284" left="105" width="414" height="14" font="2">To understand RAID and compare different approaches, we must have</text>
+<text top="299" left="87" width="432" height="14" font="2">a fault model in mind. RAIDs are designed to detect and recover from</text>
+<text top="314" left="87" width="432" height="14" font="2">certain kinds of disk faults; thus, knowing exactly which faults to expect</text>
+<text top="329" left="87" width="265" height="14" font="2">is critical in arriving upon a working design.</text>
+<text top="345" left="105" width="414" height="14" font="2">The first fault model we will assume is quite simple, and has been</text>
+<text top="360" left="87" width="59" height="14" font="2">called the</text>
+<text top="360" left="152" width="52" height="13" font="4"><b>fail-stop</b></text>
+<text top="360" left="208" width="310" height="14" font="2">fault model [S84]. In this model, a disk can be in</text>
+<text top="375" left="87" width="432" height="14" font="2">exactly one of two states: working or failed. With a working disk, all</text>
+<text top="390" left="87" width="432" height="14" font="2">blocks can be read or written. In contrast, when a disk has failed, we</text>
+<text top="405" left="87" width="177" height="14" font="2">assume it is permanently lost.</text>
+<text top="422" left="105" width="414" height="14" font="2">One critical aspect of the fail-stop model is what it assumes about fault</text>
+<text top="437" left="87" width="432" height="14" font="2">detection. Specifically, when a disk has failed, we assume that this is</text>
+<text top="452" left="87" width="432" height="14" font="2">easily detected. For example, in a RAID array, we would assume that the</text>
+<text top="467" left="87" width="432" height="14" font="2">RAID controller hardware (or software) can immediately observe when a</text>
+<text top="481" left="87" width="89" height="14" font="2">disk has failed.</text>
+<text top="498" left="105" width="414" height="14" font="2">Thus, for now, we do not have to worry about more complex “silent”</text>
+<text top="513" left="87" width="432" height="14" font="2">failures such as disk corruption. We also do not have to worry about a sin-</text>
+<text top="528" left="87" width="432" height="14" font="2">gle block becoming inaccessible upon an otherwise working disk (some-</text>
+<text top="543" left="87" width="432" height="14" font="2">times called a latent sector error). We will consider these more complex</text>
+<text top="558" left="87" width="301" height="14" font="2">(and unfortunately, more realistic) disk faults later.</text>
+<text top="597" left="55" width="222" height="17" font="6">38.3 How To Evaluate A RAID</text>
+<text top="628" left="105" width="414" height="14" font="2">As we will soon see, there are a number of different approaches to</text>
+<text top="643" left="87" width="432" height="14" font="2">building a RAID. Each of these approaches has different characteristics</text>
+<text top="658" left="87" width="432" height="14" font="2">which are worth evaluating, in order to understand their strengths and</text>
+<text top="673" left="87" width="73" height="14" font="2">weaknesses.</text>
+<text top="690" left="105" width="414" height="14" font="2">Specifically, we will evaluate each RAID design along three axes. The</text>
+<text top="705" left="87" width="62" height="14" font="2">first axis is</text>
+<text top="705" left="152" width="50" height="13" font="4"><b>capacity</b></text>
+<text top="705" left="202" width="83" height="14" font="2">; given a set of</text>
+<text top="704" left="288" width="11" height="13" font="9">N</text>
+<text top="705" left="304" width="91" height="14" font="2">disks each with</text>
+<text top="704" left="398" width="10" height="13" font="9">B</text>
+<text top="705" left="412" width="107" height="14" font="2">blocks, how much</text>
+<text top="720" left="87" width="432" height="14" font="2">useful capacity is available to clients of the RAID? Without redundancy,</text>
+<text top="735" left="87" width="78" height="14" font="2">the answer is</text>
+<text top="734" left="168" width="11" height="13" font="9">N</text>
+<text top="736" left="182" width="4" height="9" font="10">·</text>
+<text top="734" left="188" width="10" height="13" font="9">B</text>
+<text top="735" left="199" width="320" height="14" font="2">; in contrast, if we have a system that keeps two copies</text>
+<text top="750" left="87" width="119" height="14" font="2">of each block (called</text>
+<text top="750" left="209" width="60" height="13" font="4"><b>mirroring</b></text>
+<text top="750" left="269" width="185" height="14" font="2">), we obtain a useful capacity of</text>
+<text top="749" left="456" width="5" height="13" font="11">(</text>
+<text top="749" left="461" width="11" height="13" font="9">N</text>
+<text top="751" left="478" width="4" height="9" font="10">·</text>
+<text top="749" left="485" width="10" height="13" font="9">B</text>
+<text top="749" left="496" width="5" height="13" font="11">)</text>
+<text top="749" left="502" width="7" height="13" font="9">/</text>
+<text top="749" left="509" width="7" height="13" font="11">2</text>
+<text top="750" left="516" width="3" height="14" font="2">.</text>
+<text top="765" left="87" width="392" height="14" font="2">Different schemes (e.g., parity-based ones) tend to fall in between.</text>
+<text top="781" left="105" width="187" height="14" font="2">The second axis of evaluation is</text>
+<text top="781" left="295" width="61" height="13" font="4"><b>reliability</b></text>
+<text top="781" left="356" width="162" height="14" font="2">. How many disk faults can</text>
+<text top="796" left="87" width="432" height="14" font="2">the given design tolerate? In alignment with our fault model, we assume</text>
+<text top="811" left="87" width="432" height="14" font="2">only that an entire disk can fail; in later chapters (i.e., on data integrity),</text>
+<text top="826" left="87" width="367" height="14" font="2">we’ll think about how to handle more complex failure modes.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="230" width="9" height="14" font="2">R</text>
+<text top="98" left="240" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="313" width="10" height="14" font="2">A</text>
+<text top="98" left="324" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="384" width="5" height="14" font="2">I</text>
+<text top="98" left="389" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="468" width="10" height="14" font="2">D</text>
+<text top="98" left="479" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="507" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="550" width="6" height="11" font="3">S</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="147" width="138" height="14" font="2">Finally, the third axis is</text>
+<text top="139" left="289" width="78" height="13" font="4"><b>performance</b></text>
+<text top="139" left="366" width="194" height="14" font="2">. Performance is somewhat chal-</text>
+<text top="154" left="129" width="432" height="14" font="2">lenging to evaluate, because it depends heavily on the workload pre-</text>
+<text top="169" left="129" width="432" height="14" font="2">sented to the disk array. Thus, before evaluating performance, we will</text>
+<text top="183" left="129" width="379" height="14" font="2">first present a set of typical workloads that one should consider.</text>
+<text top="200" left="147" width="414" height="14" font="2">We now consider three important RAID designs: RAID Level 0 (strip-</text>
+<text top="215" left="129" width="432" height="14" font="2">ing), RAID Level 1 (mirroring), and RAID Levels 4/5 (parity-based re-</text>
+<text top="230" left="129" width="432" height="14" font="2">dundancy). The naming of each of these designs as a “level” stems from</text>
+<text top="245" left="129" width="421" height="14" font="2">the pioneering work of Patterson, Gibson, and Katz at Berkeley [P+88].</text>
+<text top="283" left="97" width="199" height="17" font="6">38.4 RAID Level 0: Striping</text>
+<text top="314" left="147" width="414" height="14" font="2">The first RAID level is actually not a RAID level at all, in that there is</text>
+<text top="329" left="129" width="253" height="14" font="2">no redundancy. However, RAID level 0, or</text>
+<text top="329" left="386" width="49" height="13" font="4"><b>striping</b></text>
+<text top="329" left="438" width="123" height="14" font="2">as it is better known,</text>
+<text top="344" left="129" width="432" height="14" font="2">serves as an excellent upper-bound on performance and capacity and</text>
+<text top="359" left="129" width="173" height="14" font="2">thus is worth understanding.</text>
+<text top="375" left="147" width="200" height="14" font="2">The simplest form of striping will</text>
+<text top="375" left="350" width="35" height="13" font="4"><b>stripe</b></text>
+<text top="375" left="389" width="172" height="14" font="2">blocks across the disks of the</text>
+<text top="390" left="129" width="279" height="14" font="2">system as follows (assume here a 4-disk array):</text>
+<text top="409" left="243" width="38" height="14" font="2">Disk 0</text>
+<text top="409" left="298" width="38" height="14" font="2">Disk 1</text>
+<text top="409" left="354" width="38" height="14" font="2">Disk 2</text>
+<text top="409" left="409" width="38" height="14" font="2">Disk 3</text>
+<text top="424" left="258" width="7" height="14" font="2">0</text>
+<text top="424" left="314" width="7" height="14" font="2">1</text>
+<text top="424" left="369" width="7" height="14" font="2">2</text>
+<text top="424" left="425" width="7" height="14" font="2">3</text>
+<text top="439" left="258" width="7" height="14" font="2">4</text>
+<text top="439" left="314" width="7" height="14" font="2">5</text>
+<text top="439" left="369" width="7" height="14" font="2">6</text>
+<text top="439" left="425" width="7" height="14" font="2">7</text>
+<text top="454" left="258" width="7" height="14" font="2">8</text>
+<text top="454" left="314" width="7" height="14" font="2">9</text>
+<text top="454" left="366" width="13" height="14" font="2">10</text>
+<text top="454" left="421" width="13" height="14" font="2">11</text>
+<text top="469" left="255" width="13" height="14" font="2">12</text>
+<text top="469" left="310" width="13" height="14" font="2">13</text>
+<text top="469" left="366" width="13" height="14" font="2">14</text>
+<text top="469" left="421" width="13" height="14" font="2">15</text>
+<text top="494" left="232" width="69" height="14" font="2">Figure 38.1:</text>
+<text top="494" left="305" width="154" height="13" font="4"><b>RAID-0: Simple Striping</b></text>
+<text top="521" left="147" width="414" height="14" font="2">From Figure 38.1, you get the basic idea: spread the blocks of the array</text>
+<text top="536" left="129" width="432" height="14" font="2">across the disks in a round-robin fashion. This approach is designed to</text>
+<text top="551" left="129" width="432" height="14" font="2">extract the most parallelism from the array when requests are made for</text>
+<text top="566" left="129" width="432" height="14" font="2">contiguous chunks of the array (as in a large, sequential read, for exam-</text>
+<text top="581" left="129" width="247" height="14" font="2">ple). We call the blocks in the same row a</text>
+<text top="581" left="380" width="35" height="13" font="4"><b>stripe</b></text>
+<text top="581" left="415" width="146" height="14" font="2">; thus, blocks 0, 1, 2, and</text>
+<text top="596" left="129" width="179" height="14" font="2">3 are in the same stripe above.</text>
+<text top="612" left="147" width="414" height="14" font="2">In the example, we have made the simplifying assumption that only 1</text>
+<text top="627" left="129" width="432" height="14" font="2">block (each of say size 4KB) is placed on each disk before moving on to</text>
+<text top="642" left="129" width="432" height="14" font="2">the next. However, this arrangement need not be the case. For example,</text>
+<text top="657" left="129" width="344" height="14" font="2">we could arrange the blocks across disks as in Figure 38.2:</text>
+<text top="676" left="196" width="38" height="14" font="2">Disk 0</text>
+<text top="676" left="251" width="38" height="14" font="2">Disk 1</text>
+<text top="676" left="307" width="38" height="14" font="2">Disk 2</text>
+<text top="676" left="363" width="38" height="14" font="2">Disk 3</text>
+<text top="695" left="211" width="7" height="14" font="2">0</text>
+<text top="695" left="267" width="7" height="14" font="2">2</text>
+<text top="695" left="322" width="7" height="14" font="2">4</text>
+<text top="695" left="378" width="7" height="14" font="2">6</text>
+<text top="695" left="423" width="67" height="14" font="2">chunk size:</text>
+<text top="714" left="211" width="7" height="14" font="2">1</text>
+<text top="714" left="267" width="7" height="14" font="2">3</text>
+<text top="714" left="322" width="7" height="14" font="2">5</text>
+<text top="714" left="378" width="7" height="14" font="2">7</text>
+<text top="714" left="432" width="48" height="14" font="2">2 blocks</text>
+<text top="729" left="211" width="7" height="14" font="2">8</text>
+<text top="729" left="264" width="13" height="14" font="2">10</text>
+<text top="729" left="319" width="13" height="14" font="2">12</text>
+<text top="729" left="375" width="13" height="14" font="2">14</text>
+<text top="744" left="211" width="7" height="14" font="2">9</text>
+<text top="744" left="264" width="13" height="14" font="2">11</text>
+<text top="744" left="319" width="13" height="14" font="2">13</text>
+<text top="744" left="375" width="13" height="14" font="2">15</text>
+<text top="769" left="200" width="69" height="14" font="2">Figure 38.2:</text>
+<text top="769" left="273" width="217" height="13" font="4"><b>Striping With A Bigger Chunk Size</b></text>
+<text top="796" left="147" width="414" height="14" font="2">In this example, we place two 4KB blocks on each disk before moving</text>
+<text top="811" left="129" width="176" height="14" font="2">on to the next disk. Thus, the</text>
+<text top="811" left="308" width="66" height="13" font="4"><b>chunk size</b></text>
+<text top="811" left="378" width="182" height="14" font="2">of this RAID array is 8KB, and</text>
+<text top="826" left="129" width="294" height="14" font="2">a stripe thus consists of 4 chunks or 32KB of data.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="13" family="LZMXPE+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="13" size="15" family="WUKSFJ+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="9" height="14" font="2">R</text>
+<text top="98" left="97" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="170" width="10" height="14" font="2">A</text>
+<text top="98" left="181" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="242" width="5" height="14" font="2">I</text>
+<text top="98" left="247" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="325" width="10" height="14" font="2">D</text>
+<text top="98" left="336" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="365" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="407" width="6" height="11" font="3">S</text>
+<text top="96" left="413" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="148" left="185" width="10" height="14" font="2">A</text>
+<text top="150" left="196" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="223" width="16" height="14" font="2">: T</text>
+<text top="150" left="240" width="16" height="11" font="3">HE</text>
+<text top="148" left="260" width="53" height="14" font="2">RAID M</text>
+<text top="150" left="314" width="46" height="11" font="3">APPING</text>
+<text top="148" left="364" width="8" height="14" font="2">P</text>
+<text top="150" left="372" width="49" height="11" font="3">ROBLEM</text>
+<text top="163" left="87" width="432" height="14" font="2">Before studying the capacity, reliability, and performance characteristics</text>
+<text top="178" left="87" width="315" height="14" font="2">of the RAID, we first present an aside on what we call</text>
+<text top="178" left="405" width="114" height="13" font="4"><b>the mapping prob-</b></text>
+<text top="193" left="87" width="23" height="13" font="4"><b>lem</b></text>
+<text top="193" left="110" width="409" height="14" font="2">. This problem arises in all RAID arrays; simply put, given a logical</text>
+<text top="208" left="87" width="432" height="14" font="2">block to read or write, how does the RAID know exactly which physical</text>
+<text top="223" left="87" width="148" height="14" font="2">disk and offset to access?</text>
+<text top="239" left="87" width="432" height="14" font="2">For these simple RAID levels, we do not need much sophistication in</text>
+<text top="254" left="87" width="432" height="14" font="2">order to correctly map logical blocks onto their physical locations. Take</text>
+<text top="269" left="87" width="432" height="14" font="2">the first striping example above (chunk size = 1 block = 4KB). In this case,</text>
+<text top="284" left="87" width="432" height="14" font="2">given a logical block address A, the RAID can easily compute the desired</text>
+<text top="299" left="87" width="252" height="14" font="2">disk and offset with two simple equations:</text>
+<text top="327" left="135" width="32" height="11" font="12">Disk</text>
+<text top="327" left="192" width="170" height="11" font="12">= A % number_of_disks</text>
+<text top="342" left="135" width="226" height="11" font="12">Offset = A / number_of_disks</text>
+<text top="370" left="87" width="414" height="14" font="2">Note that these are all integer operations (e.g., 4 / 3 = 1 not 1.33333...).</text>
+<text top="386" left="87" width="432" height="14" font="2">Let’s see how these equations work for a simple example. Imagine in the</text>
+<text top="401" left="87" width="432" height="14" font="2">first RAID above that a request arrives for block 14. Given that there are</text>
+<text top="416" left="87" width="432" height="14" font="2">4 disks, this would mean that the disk we are interested in is (14 % 4 = 2):</text>
+<text top="431" left="87" width="432" height="14" font="2">disk 2. The exact block is calculated as (14 / 4 = 3): block 3. Thus, block</text>
+<text top="446" left="87" width="432" height="14" font="2">14 should be found on the fourth block (block 3, starting at 0) of the third</text>
+<text top="461" left="87" width="320" height="14" font="2">disk (disk 2, starting at 0), which is exactly where it is.</text>
+<text top="477" left="87" width="432" height="14" font="2">You can think about how these equations would be modified to support</text>
+<text top="492" left="87" width="269" height="14" font="2">different chunk sizes. Try it! It’s not too hard.</text>
+<text top="546" left="87" width="87" height="15" font="13"><b>Chunk Sizes</b></text>
+<text top="571" left="87" width="432" height="14" font="2">Chunk size mostly affects performance of the array. For example, a small</text>
+<text top="586" left="87" width="432" height="14" font="2">chunk size implies that many files will get striped across many disks, thus</text>
+<text top="601" left="87" width="432" height="14" font="2">increasing the parallelism of reads and writes to a single file; however, the</text>
+<text top="616" left="87" width="432" height="14" font="2">positioning time to access blocks across multiple disks increases, because</text>
+<text top="631" left="87" width="432" height="14" font="2">the positioning time for the entire request is determined by the maximum</text>
+<text top="646" left="87" width="332" height="14" font="2">of the positioning times of the requests across all drives.</text>
+<text top="661" left="105" width="414" height="14" font="2">A big chunk size, on the other hand, reduces such intra-file paral-</text>
+<text top="676" left="87" width="432" height="14" font="2">lelism, and thus relies on multiple concurrent requests to achieve high</text>
+<text top="691" left="87" width="432" height="14" font="2">throughput. However, large chunk sizes reduce positioning time; if, for</text>
+<text top="706" left="87" width="432" height="14" font="2">example, a single file fits within a chunk and thus is placed on a single</text>
+<text top="721" left="87" width="432" height="14" font="2">disk, the positioning time incurred while accessing it will just be the po-</text>
+<text top="736" left="87" width="178" height="14" font="2">sitioning time of a single disk.</text>
+<text top="751" left="105" width="414" height="14" font="2">Thus, determining the “best” chunk size is hard to do, as it requires a</text>
+<text top="766" left="87" width="432" height="14" font="2">great deal of knowledge about the workload presented to the disk system</text>
+<text top="781" left="87" width="432" height="14" font="2">[CL95]. For the rest of this discussion, we will assume that the array uses</text>
+<text top="796" left="87" width="432" height="14" font="2">a chunk size of a single block (4KB). Most arrays use larger chunk sizes</text>
+<text top="811" left="87" width="432" height="14" font="2">(e.g., 64 KB), but for the issues we discuss below, the exact chunk size</text>
+<text top="826" left="87" width="407" height="14" font="2">does not matter; thus we use a single block for the sake of simplicity.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="230" width="9" height="14" font="2">R</text>
+<text top="98" left="240" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="313" width="10" height="14" font="2">A</text>
+<text top="98" left="324" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="384" width="5" height="14" font="2">I</text>
+<text top="98" left="389" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="468" width="10" height="14" font="2">D</text>
+<text top="98" left="479" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="507" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="550" width="6" height="11" font="3">S</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="138" left="129" width="174" height="15" font="13"><b>Back To RAID-0 Analysis</b></text>
+<text top="163" left="129" width="432" height="14" font="2">Let us now evaluate the capacity, reliability, and performance of striping.</text>
+<text top="178" left="129" width="308" height="14" font="2">From the perspective of capacity, it is perfect: given</text>
+<text top="177" left="441" width="11" height="13" font="9">N</text>
+<text top="178" left="457" width="104" height="14" font="2">disks each of size</text>
+<text top="192" left="129" width="10" height="13" font="9">B</text>
+<text top="193" left="143" width="141" height="14" font="2">blocks, striping delivers</text>
+<text top="192" left="286" width="11" height="13" font="9">N</text>
+<text top="194" left="300" width="4" height="9" font="10">·</text>
+<text top="192" left="304" width="10" height="13" font="9">B</text>
+<text top="193" left="318" width="243" height="14" font="2">blocks of useful capacity. From the stand-</text>
+<text top="208" left="129" width="432" height="14" font="2">point of reliability, striping is also perfect, but in the bad way: any disk</text>
+<text top="222" left="129" width="432" height="14" font="2">failure will lead to data loss. Finally, performance is excellent: all disks</text>
+<text top="237" left="129" width="343" height="14" font="2">are utilized, often in parallel, to service user I/O requests.</text>
+<text top="276" left="129" width="208" height="15" font="13"><b>Evaluating RAID Performance</b></text>
+<text top="301" left="129" width="432" height="14" font="2">In analyzing RAID performance, one can consider two different perfor-</text>
+<text top="316" left="129" width="163" height="14" font="2">mance metrics. The first is</text>
+<text top="316" left="297" width="119" height="14" font="5">single-request latency</text>
+<text top="316" left="416" width="145" height="14" font="2">. Understanding the la-</text>
+<text top="331" left="129" width="432" height="14" font="2">tency of a single I/O request to a RAID is useful as it reveals how much</text>
+<text top="346" left="129" width="432" height="14" font="2">parallelism can exist during a single logical I/O operation. The second</text>
+<text top="361" left="129" width="10" height="14" font="2">is</text>
+<text top="361" left="143" width="131" height="14" font="5">steady-state throughput</text>
+<text top="361" left="278" width="283" height="14" font="2">of the RAID, i.e., the total bandwidth of many</text>
+<text top="376" left="129" width="432" height="14" font="2">concurrent requests. Because RAIDs are often used in high-performance</text>
+<text top="391" left="129" width="432" height="14" font="2">environments, the steady-state bandwidth is critical, and thus will be the</text>
+<text top="405" left="129" width="162" height="14" font="2">main focus of our analyses.</text>
+<text top="421" left="147" width="414" height="14" font="2">To understand throughput in more detail, we need to put forth some</text>
+<text top="436" left="129" width="432" height="14" font="2">workloads of interest. We will assume, for this discussion, that there</text>
+<text top="451" left="129" width="168" height="14" font="2">are two types of workloads:</text>
+<text top="451" left="303" width="64" height="13" font="4"><b>sequential</b></text>
+<text top="451" left="371" width="23" height="14" font="2">and</text>
+<text top="451" left="398" width="48" height="13" font="4"><b>random</b></text>
+<text top="451" left="446" width="115" height="14" font="2">. With a sequential</text>
+<text top="466" left="129" width="432" height="14" font="2">workload, we assume that requests to the array come in large contigu-</text>
+<text top="481" left="129" width="432" height="14" font="2">ous chunks; for example, a request (or series of requests) that accesses</text>
+<text top="496" left="129" width="176" height="14" font="2">1 MB of data, starting at block</text>
+<text top="495" left="308" width="8" height="13" font="9">x</text>
+<text top="496" left="319" width="117" height="14" font="2">and ending at block</text>
+<text top="495" left="439" width="5" height="13" font="11">(</text>
+<text top="495" left="444" width="8" height="13" font="9">x</text>
+<text top="495" left="452" width="11" height="13" font="11">+</text>
+<text top="496" left="463" width="31" height="14" font="2">1 MB</text>
+<text top="495" left="493" width="5" height="13" font="11">)</text>
+<text top="496" left="499" width="62" height="14" font="2">, would be</text>
+<text top="511" left="129" width="432" height="14" font="2">deemed sequential. Sequential workloads are common in many environ-</text>
+<text top="526" left="129" width="432" height="14" font="2">ments (think of searching through a large file for a keyword), and thus</text>
+<text top="541" left="129" width="153" height="14" font="2">are considered important.</text>
+<text top="556" left="147" width="414" height="14" font="2">For random workloads, we assume that each request is rather small,</text>
+<text top="571" left="129" width="432" height="14" font="2">and that each request is to a different random location on disk. For exam-</text>
+<text top="586" left="129" width="432" height="14" font="2">ple, a random stream of requests may first access 4KB at logical address</text>
+<text top="601" left="129" width="432" height="14" font="2">10, then at logical address 550,000, then at 20,100, and so forth. Some im-</text>
+<text top="616" left="129" width="432" height="14" font="2">portant workloads, such as transactional workloads on a database man-</text>
+<text top="631" left="129" width="432" height="14" font="2">agement system (DBMS), exhibit this type of access pattern, and thus it is</text>
+<text top="646" left="129" width="211" height="14" font="2">considered an important workload.</text>
+<text top="661" left="147" width="414" height="14" font="2">Of course, real workloads are not so simple, and often have a mix</text>
+<text top="676" left="129" width="432" height="14" font="2">of sequential and random-seeming components as well as behaviors in-</text>
+<text top="691" left="129" width="428" height="14" font="2">between the two. For simplicity, we just consider these two possibilities.</text>
+<text top="707" left="147" width="414" height="14" font="2">As you can tell, sequential and random workloads will result in widely</text>
+<text top="721" left="129" width="432" height="14" font="2">different performance characteristics from a disk. With sequential access,</text>
+<text top="736" left="129" width="432" height="14" font="2">a disk operates in its most efficient mode, spending little time seeking and</text>
+<text top="751" left="129" width="432" height="14" font="2">waiting for rotation and most of its time transferring data. With random</text>
+<text top="766" left="129" width="432" height="14" font="2">access, just the opposite is true: most time is spent seeking and waiting</text>
+<text top="781" left="129" width="432" height="14" font="2">for rotation and relatively little time is spent transferring data. To capture</text>
+<text top="796" left="129" width="432" height="14" font="2">this difference in our analysis, we will assume that a disk can transfer</text>
+<text top="811" left="129" width="40" height="14" font="2">data at</text>
+<text top="811" left="173" width="8" height="13" font="9">S</text>
+<text top="811" left="185" width="238" height="14" font="2">MB/s under a sequential workload, and</text>
+<text top="811" left="427" width="10" height="13" font="9">R</text>
+<text top="811" left="440" width="120" height="14" font="2">MB/s when under a</text>
+<text top="826" left="129" width="179" height="14" font="2">random workload. In general,</text>
+<text top="826" left="311" width="8" height="13" font="9">S</text>
+<text top="826" left="324" width="122" height="14" font="2">is much greater than</text>
+<text top="826" left="449" width="10" height="13" font="9">R</text>
+<text top="826" left="463" width="25" height="14" font="2">(i.e.,</text>
+<text top="826" left="491" width="8" height="13" font="9">S</text>
+<text top="828" left="505" width="14" height="9" font="10">≫</text>
+<text top="826" left="522" width="10" height="13" font="9">R</text>
+<text top="826" left="533" width="8" height="14" font="2">).</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="9" family="BRLTZN+CMMI6" color="#000000"/>
+	<fontspec id="15" size="9" family="TARTVK+CMR6" color="#000000"/>
+<text top="96" left="87" width="9" height="14" font="2">R</text>
+<text top="98" left="97" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="170" width="10" height="14" font="2">A</text>
+<text top="98" left="181" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="242" width="5" height="14" font="2">I</text>
+<text top="98" left="247" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="325" width="10" height="14" font="2">D</text>
+<text top="98" left="336" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="365" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="407" width="6" height="11" font="3">S</text>
+<text top="96" left="413" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="139" left="105" width="414" height="14" font="2">To make sure we understand this difference, let’s do a simple exercise.</text>
+<text top="154" left="87" width="154" height="14" font="2">Specifically, let’s calculate</text>
+<text top="153" left="245" width="8" height="13" font="9">S</text>
+<text top="154" left="258" width="23" height="14" font="2">and</text>
+<text top="153" left="285" width="10" height="13" font="9">R</text>
+<text top="154" left="300" width="219" height="14" font="2">given the following disk characteris-</text>
+<text top="169" left="87" width="432" height="14" font="2">tics. Assume a sequential transfer of size 10 MB on average, and a random</text>
+<text top="183" left="87" width="432" height="14" font="2">transfer of 10 KB on average. Also, assume the following disk character-</text>
+<text top="198" left="87" width="33" height="14" font="2">istics:</text>
+<text top="214" left="134" width="109" height="14" font="2">Average seek time</text>
+<text top="214" left="260" width="28" height="14" font="2">7 ms</text>
+<text top="229" left="96" width="146" height="14" font="2">Average rotational delay</text>
+<text top="229" left="260" width="28" height="14" font="2">3 ms</text>
+<text top="244" left="123" width="119" height="14" font="2">Transfer rate of disk</text>
+<text top="244" left="260" width="52" height="14" font="2">50 MB/s</text>
+<text top="262" left="105" width="69" height="14" font="2">To compute</text>
+<text top="262" left="177" width="8" height="13" font="9">S</text>
+<text top="262" left="187" width="332" height="14" font="2">, we need to first figure out how time is spent in a typical</text>
+<text top="277" left="87" width="432" height="14" font="2">10 MB transfer. First, we spend 7 ms seeking, and then 3 ms rotating.</text>
+<text top="292" left="87" width="432" height="14" font="2">Finally, transfer begins; 10 MB @ 50 MB/s leads to 1/5th of a second, or</text>
+<text top="307" left="87" width="432" height="14" font="2">200 ms, spent in transfer. Thus, for each 10 MB request, we spend 210 ms</text>
+<text top="322" left="87" width="214" height="14" font="2">completing the request. To compute</text>
+<text top="322" left="304" width="8" height="13" font="9">S</text>
+<text top="322" left="313" width="141" height="14" font="2">, we just need to divide:</text>
+<text top="350" left="105" width="8" height="13" font="9">S</text>
+<text top="350" left="118" width="11" height="13" font="11">=</text>
+<text top="348" left="134" width="85" height="8" font="14">Amount of Data</text>
+<text top="359" left="140" width="75" height="8" font="14">T ime to access</text>
+<text top="350" left="225" width="11" height="13" font="11">=</text>
+<text top="349" left="242" width="11" height="7" font="15">10</text>
+<text top="348" left="256" width="20" height="8" font="14">M B</text>
+<text top="359" left="242" width="16" height="7" font="15">210</text>
+<text top="359" left="261" width="15" height="8" font="14">ms</text>
+<text top="350" left="282" width="28" height="13" font="11">= 47</text>
+<text top="350" left="310" width="4" height="13" font="9">.</text>
+<text top="350" left="314" width="14" height="13" font="11">62</text>
+<text top="350" left="332" width="39" height="13" font="9">M B/s</text>
+<text top="376" left="105" width="387" height="14" font="2">As we can see, because of the large time spent transferring data,</text>
+<text top="376" left="496" width="8" height="13" font="9">S</text>
+<text top="376" left="509" width="10" height="14" font="2">is</text>
+<text top="391" left="87" width="432" height="14" font="2">very near the peak bandwidth of the disk (the seek and rotational costs</text>
+<text top="406" left="87" width="132" height="14" font="2">have been amortized).</text>
+<text top="421" left="105" width="99" height="14" font="2">We can compute</text>
+<text top="421" left="207" width="10" height="13" font="9">R</text>
+<text top="421" left="221" width="297" height="14" font="2">similarly. Seek and rotation are the same; we then</text>
+<text top="436" left="87" width="432" height="14" font="2">compute the time spent in transfer, which is 10 KB @ 50 MB/s, or 0.195</text>
+<text top="451" left="87" width="21" height="14" font="2">ms.</text>
+<text top="477" left="105" width="10" height="13" font="9">R</text>
+<text top="477" left="119" width="11" height="13" font="11">=</text>
+<text top="475" left="136" width="85" height="8" font="14">Amount of Data</text>
+<text top="485" left="141" width="75" height="8" font="14">T ime to access</text>
+<text top="477" left="227" width="11" height="13" font="11">=</text>
+<text top="476" left="251" width="11" height="7" font="15">10</text>
+<text top="475" left="265" width="18" height="8" font="14">KB</text>
+<text top="486" left="243" width="11" height="7" font="15">10</text>
+<text top="485" left="254" width="3" height="8" font="14">.</text>
+<text top="486" left="257" width="16" height="7" font="15">195</text>
+<text top="485" left="277" width="15" height="8" font="14">ms</text>
+<text top="477" left="298" width="21" height="13" font="11">= 0</text>
+<text top="477" left="319" width="4" height="13" font="9">.</text>
+<text top="477" left="323" width="21" height="13" font="11">981</text>
+<text top="477" left="348" width="39" height="13" font="9">M B/s</text>
+<text top="503" left="105" width="86" height="14" font="2">As we can see,</text>
+<text top="503" left="195" width="10" height="13" font="9">R</text>
+<text top="503" left="209" width="143" height="14" font="2">is less than 1 MB/s, and</text>
+<text top="503" left="355" width="26" height="13" font="9">S/R</text>
+<text top="503" left="384" width="73" height="14" font="2">is almost 50.</text>
+<text top="540" left="87" width="223" height="15" font="13"><b>Back To RAID-0 Analysis, Again</b></text>
+<text top="565" left="87" width="432" height="14" font="2">Let’s now evaluate the performance of striping. As we said above, it is</text>
+<text top="579" left="87" width="432" height="14" font="2">generally good. From a latency perspective, for example, the latency of a</text>
+<text top="594" left="87" width="432" height="14" font="2">single-block request should be just about identical to that of a single disk;</text>
+<text top="609" left="87" width="401" height="14" font="2">after all, RAID-0 will simply redirect that request to one of its disks.</text>
+<text top="624" left="105" width="414" height="14" font="2">From the perspective of steady-state sequential throughput, we’d ex-</text>
+<text top="639" left="87" width="432" height="14" font="2">pect to get the full bandwidth of the system. Thus, throughput equals</text>
+<text top="654" left="87" width="11" height="13" font="9">N</text>
+<text top="654" left="103" width="215" height="14" font="2">(the number of disks) multiplied by</text>
+<text top="654" left="322" width="8" height="13" font="9">S</text>
+<text top="654" left="335" width="184" height="14" font="2">(the sequential bandwidth of a</text>
+<text top="669" left="87" width="432" height="14" font="2">single disk). For a large number of random I/Os, we can again use all of</text>
+<text top="684" left="87" width="155" height="14" font="2">the disks, and thus obtain</text>
+<text top="684" left="246" width="11" height="13" font="9">N</text>
+<text top="686" left="262" width="4" height="9" font="10">·</text>
+<text top="684" left="270" width="10" height="13" font="9">R</text>
+<text top="684" left="284" width="235" height="14" font="2">MB/s. As we will see below, these val-</text>
+<text top="699" left="87" width="432" height="14" font="2">ues are both the simplest to calculate and will serve as an upper bound in</text>
+<text top="714" left="87" width="214" height="14" font="2">comparison with other RAID levels.</text>
+<text top="751" left="55" width="213" height="17" font="6">38.5 RAID Level 1: Mirroring</text>
+<text top="781" left="105" width="414" height="14" font="2">Our first RAID level beyond striping is known as RAID level 1, or</text>
+<text top="796" left="87" width="432" height="14" font="2">mirroring. With a mirrored system, we simply make more than one copy</text>
+<text top="811" left="87" width="432" height="14" font="2">of each block in the system; each copy should be placed on a separate</text>
+<text top="826" left="87" width="340" height="14" font="2">disk, of course. By doing so, we can tolerate disk failures.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="230" width="9" height="14" font="2">R</text>
+<text top="98" left="240" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="313" width="10" height="14" font="2">A</text>
+<text top="98" left="324" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="384" width="5" height="14" font="2">I</text>
+<text top="98" left="389" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="468" width="10" height="14" font="2">D</text>
+<text top="98" left="479" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="507" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="550" width="6" height="11" font="3">S</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="147" width="414" height="14" font="2">In a typical mirrored system, we will assume that for each logical</text>
+<text top="154" left="129" width="404" height="14" font="2">block, the RAID keeps two physical copies of it. Here is an example:</text>
+<text top="177" left="243" width="38" height="14" font="2">Disk 0</text>
+<text top="177" left="298" width="38" height="14" font="2">Disk 1</text>
+<text top="177" left="354" width="38" height="14" font="2">Disk 2</text>
+<text top="177" left="409" width="38" height="14" font="2">Disk 3</text>
+<text top="193" left="258" width="7" height="14" font="2">0</text>
+<text top="193" left="314" width="7" height="14" font="2">0</text>
+<text top="193" left="369" width="7" height="14" font="2">1</text>
+<text top="193" left="425" width="7" height="14" font="2">1</text>
+<text top="208" left="258" width="7" height="14" font="2">2</text>
+<text top="208" left="314" width="7" height="14" font="2">2</text>
+<text top="208" left="369" width="7" height="14" font="2">3</text>
+<text top="208" left="425" width="7" height="14" font="2">3</text>
+<text top="223" left="258" width="7" height="14" font="2">4</text>
+<text top="223" left="314" width="7" height="14" font="2">4</text>
+<text top="223" left="369" width="7" height="14" font="2">5</text>
+<text top="223" left="425" width="7" height="14" font="2">5</text>
+<text top="238" left="258" width="7" height="14" font="2">6</text>
+<text top="238" left="314" width="7" height="14" font="2">6</text>
+<text top="238" left="369" width="7" height="14" font="2">7</text>
+<text top="238" left="425" width="7" height="14" font="2">7</text>
+<text top="263" left="226" width="69" height="14" font="2">Figure 38.3:</text>
+<text top="263" left="299" width="164" height="13" font="4"><b>Simple RAID-1: Mirroring</b></text>
+<text top="284" left="147" width="414" height="14" font="2">In the example, disk 0 and disk 1 have identical contents, and disk 2</text>
+<text top="299" left="129" width="432" height="14" font="2">and disk 3 do as well; the data is striped across these mirror pairs. In</text>
+<text top="314" left="129" width="432" height="14" font="2">fact, you may have noticed that there are a number of different ways to</text>
+<text top="329" left="129" width="432" height="14" font="2">place block copies across the disks. The arrangement above is a common</text>
+<text top="344" left="129" width="170" height="14" font="2">one and is sometimes called</text>
+<text top="344" left="303" width="55" height="13" font="4"><b>RAID-10</b></text>
+<text top="344" left="362" width="17" height="14" font="2">(or</text>
+<text top="344" left="384" width="63" height="13" font="4"><b>RAID 1+0</b></text>
+<text top="344" left="446" width="3" height="14" font="2">,</text>
+<text top="344" left="454" width="102" height="13" font="4"><b>stripe of mirrors</b></text>
+<text top="344" left="556" width="4" height="14" font="2">)</text>
+<text top="359" left="129" width="432" height="14" font="2">because it uses mirrored pairs (RAID-1) and then stripes (RAID-0) on top</text>
+<text top="374" left="129" width="251" height="14" font="2">of them; another common arrangement is</text>
+<text top="374" left="385" width="55" height="13" font="4"><b>RAID-01</b></text>
+<text top="374" left="443" width="17" height="14" font="2">(or</text>
+<text top="374" left="465" width="62" height="13" font="4"><b>RAID 0+1</b></text>
+<text top="374" left="527" width="3" height="14" font="2">,</text>
+<text top="374" left="535" width="26" height="13" font="4"><b>mir-</b></text>
+<text top="389" left="129" width="81" height="13" font="4"><b>ror of stripes</b></text>
+<text top="389" left="210" width="351" height="14" font="2">), which contains two large striping (RAID-0) arrays, and</text>
+<text top="404" left="129" width="432" height="14" font="2">then mirrors (RAID-1) on top of them. For now, we will just talk about</text>
+<text top="419" left="129" width="224" height="14" font="2">mirroring assuming the above layout.</text>
+<text top="435" left="147" width="414" height="14" font="2">When reading a block from a mirrored array, the RAID has a choice: it</text>
+<text top="450" left="129" width="432" height="14" font="2">can read either copy. For example, if a read to logical block 5 is issued to</text>
+<text top="465" left="129" width="432" height="14" font="2">the RAID, it is free to read it from either disk 2 or disk 3. When writing</text>
+<text top="479" left="129" width="364" height="14" font="2">a block, though, no such choice exists: the RAID must update</text>
+<text top="479" left="497" width="23" height="14" font="5">both</text>
+<text top="479" left="523" width="37" height="14" font="2">copies</text>
+<text top="494" left="129" width="432" height="14" font="2">of the data, in order to preserve reliability. Do note, though, that these</text>
+<text top="509" left="129" width="432" height="14" font="2">writes can take place in parallel; for example, a write to logical block 5</text>
+<text top="524" left="129" width="284" height="14" font="2">could proceed to disks 2 and 3 at the same time.</text>
+<text top="550" left="129" width="117" height="15" font="13"><b>RAID-1 Analysis</b></text>
+<text top="570" left="129" width="432" height="14" font="2">Let us assess RAID-1. From a capacity standpoint, RAID-1 is expensive;</text>
+<text top="585" left="129" width="432" height="14" font="2">with the mirroring level = 2, we only obtain half of our peak useful ca-</text>
+<text top="600" left="129" width="71" height="14" font="2">pacity. With</text>
+<text top="599" left="204" width="11" height="13" font="9">N</text>
+<text top="600" left="220" width="46" height="14" font="2">disks of</text>
+<text top="599" left="269" width="10" height="13" font="9">B</text>
+<text top="600" left="284" width="196" height="14" font="2">blocks, RAID-1 useful capacity is</text>
+<text top="599" left="483" width="5" height="13" font="11">(</text>
+<text top="599" left="488" width="11" height="13" font="9">N</text>
+<text top="601" left="504" width="4" height="9" font="10">·</text>
+<text top="599" left="511" width="10" height="13" font="9">B</text>
+<text top="599" left="522" width="5" height="13" font="11">)</text>
+<text top="599" left="527" width="7" height="13" font="9">/</text>
+<text top="599" left="534" width="7" height="13" font="11">2</text>
+<text top="600" left="541" width="3" height="14" font="2">.</text>
+<text top="616" left="147" width="414" height="14" font="2">From a reliability standpoint, RAID-1 does well. It can tolerate the fail-</text>
+<text top="631" left="129" width="432" height="14" font="2">ure of any one disk. You may also notice RAID-1 can actually do better</text>
+<text top="646" left="129" width="432" height="14" font="2">than this, with a little luck. Imagine, in the figure above, that disk 0 and</text>
+<text top="661" left="129" width="432" height="14" font="2">disk 2 both failed. In such a situation, there is no data loss! More gen-</text>
+<text top="675" left="129" width="432" height="14" font="2">erally, a mirrored system (with mirroring level of 2) can tolerate 1 disk</text>
+<text top="690" left="129" width="432" height="14" font="2">failure for certain, and up to N/2 failures depending on which disks fail.</text>
+<text top="705" left="129" width="432" height="14" font="2">In practice, we generally don’t like to leave things like this to chance; thus</text>
+<text top="720" left="129" width="426" height="14" font="2">most people consider mirroring to be good for handling a single failure.</text>
+<text top="736" left="147" width="414" height="14" font="2">Finally, we analyze performance. From the perspective of the latency</text>
+<text top="751" left="129" width="432" height="14" font="2">of a single read request, we can see it is the same as the latency on a single</text>
+<text top="766" left="129" width="432" height="14" font="2">disk; all the RAID-1 does is direct the read to one of its copies. A write</text>
+<text top="781" left="129" width="432" height="14" font="2">is a little different: it requires two physical writes to complete before it</text>
+<text top="796" left="129" width="432" height="14" font="2">is done. These two writes happen in parallel, and thus the time will be</text>
+<text top="811" left="129" width="432" height="14" font="2">roughly equivalent to the time of a single write; however, because the</text>
+<text top="826" left="129" width="432" height="14" font="2">logical write must wait for both physical writes to complete, it suffers the</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="9" height="14" font="2">R</text>
+<text top="98" left="97" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="170" width="10" height="14" font="2">A</text>
+<text top="98" left="181" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="242" width="5" height="14" font="2">I</text>
+<text top="98" left="247" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="325" width="10" height="14" font="2">D</text>
+<text top="98" left="336" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="365" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="407" width="6" height="11" font="3">S</text>
+<text top="96" left="413" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="149" width="10" height="14" font="2">A</text>
+<text top="150" left="160" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="187" width="16" height="14" font="2">: T</text>
+<text top="150" left="204" width="16" height="11" font="3">HE</text>
+<text top="148" left="224" width="50" height="14" font="2">RAID C</text>
+<text top="150" left="275" width="66" height="11" font="3">ONSISTENT</text>
+<text top="148" left="341" width="16" height="14" font="2">-U</text>
+<text top="150" left="357" width="38" height="11" font="3">PDATE</text>
+<text top="148" left="400" width="8" height="14" font="2">P</text>
+<text top="150" left="408" width="49" height="11" font="3">ROBLEM</text>
+<text top="163" left="87" width="432" height="14" font="2">Before analyzing RAID-1, let us first discuss a problem that arises in</text>
+<text top="178" left="87" width="262" height="14" font="2">any multi-disk RAID system, known as the</text>
+<text top="178" left="353" width="166" height="13" font="4"><b>consistent-update problem</b></text>
+<text top="193" left="87" width="432" height="14" font="2">[DAA05]. The problem occurs on a write to any RAID that has to up-</text>
+<text top="208" left="87" width="432" height="14" font="2">date multiple disks during a single logical operation. In this case, let us</text>
+<text top="223" left="87" width="293" height="14" font="2">assume we are considering a mirrored disk array.</text>
+<text top="239" left="87" width="432" height="14" font="2">Imagine the write is issued to the RAID, and then the RAID decides that</text>
+<text top="254" left="87" width="432" height="14" font="2">it must be written to two disks, disk 0 and disk 1. The RAID then issues</text>
+<text top="269" left="87" width="432" height="14" font="2">the write to disk 0, but just before the RAID can issue the request to disk</text>
+<text top="284" left="87" width="432" height="14" font="2">1, a power loss (or system crash) occurs. In this unfortunate case, let us</text>
+<text top="299" left="87" width="432" height="14" font="2">assume that the request to disk 0 completed (but clearly the request to</text>
+<text top="314" left="87" width="226" height="14" font="2">disk 1 did not, as it was never issued).</text>
+<text top="330" left="87" width="432" height="14" font="2">The result of this untimely power loss is that the two copies of the block</text>
+<text top="345" left="87" width="48" height="14" font="2">are now</text>
+<text top="345" left="138" width="75" height="13" font="4"><b>inconsistent</b></text>
+<text top="345" left="213" width="306" height="14" font="2">; the copy on disk 0 is the new version, and the copy</text>
+<text top="360" left="87" width="432" height="14" font="2">on disk 1 is the old. What we would like to happen is for the state of both</text>
+<text top="374" left="87" width="95" height="14" font="2">disks to change</text>
+<text top="375" left="187" width="64" height="13" font="4"><b>atomically</b></text>
+<text top="374" left="251" width="268" height="14" font="2">, i.e., either both should end up as the new</text>
+<text top="389" left="87" width="108" height="14" font="2">version or neither.</text>
+<text top="405" left="87" width="284" height="14" font="2">The general way to solve this problem is to use a</text>
+<text top="405" left="374" width="96" height="13" font="4"><b>write-ahead log</b></text>
+<text top="405" left="473" width="46" height="14" font="2">of some</text>
+<text top="420" left="87" width="432" height="14" font="2">kind to first record what the RAID is about to do (i.e., update two disks</text>
+<text top="435" left="87" width="432" height="14" font="2">with a certain piece of data) before doing it. By taking this approach, we</text>
+<text top="450" left="87" width="432" height="14" font="2">can ensure that in the presence of a crash, the right thing will happen; by</text>
+<text top="465" left="87" width="58" height="14" font="2">running a</text>
+<text top="465" left="148" width="52" height="13" font="4"><b>recovery</b></text>
+<text top="465" left="203" width="315" height="14" font="2">procedure that replays all pending transactions to the</text>
+<text top="480" left="87" width="432" height="14" font="2">RAID, we can ensure that no two mirrored copies (in the RAID-1 case)</text>
+<text top="495" left="87" width="90" height="14" font="2">are out of sync.</text>
+<text top="511" left="87" width="432" height="14" font="2">One last note: because logging to disk on every write is prohibitively</text>
+<text top="526" left="87" width="432" height="14" font="2">expensive, most RAID hardware includes a small amount of non-volatile</text>
+<text top="541" left="87" width="432" height="14" font="2">RAM (e.g., battery-backed) where it performs this type of logging. Thus,</text>
+<text top="556" left="87" width="417" height="14" font="2">consistent update is provided without the high cost of logging to disk.</text>
+<text top="595" left="87" width="432" height="14" font="2">worst-case seek and rotational delay of the two requests, and thus (on</text>
+<text top="610" left="87" width="356" height="14" font="2">average) will be slightly higher than a write to a single disk.</text>
+<text top="629" left="105" width="414" height="14" font="2">To analyze steady-state throughput, let us start with the sequential</text>
+<text top="643" left="87" width="432" height="14" font="2">workload. When writing out to disk sequentially, each logical write must</text>
+<text top="658" left="87" width="432" height="14" font="2">result in two physical writes; for example, when we write logical block</text>
+<text top="673" left="87" width="432" height="14" font="2">0 (in the figure above), the RAID internally would write it to both disk</text>
+<text top="688" left="87" width="432" height="14" font="2">0 and disk 1. Thus, we can conclude that the maximum bandwidth ob-</text>
+<text top="703" left="87" width="329" height="14" font="2">tained during sequential writing to a mirrored array is (</text>
+<text top="701" left="418" width="9" height="8" font="14">N</text>
+<text top="712" left="420" width="5" height="7" font="15">2</text>
+<text top="705" left="432" width="4" height="9" font="10">·</text>
+<text top="703" left="438" width="8" height="13" font="9">S</text>
+<text top="703" left="447" width="72" height="14" font="2">), or half the</text>
+<text top="718" left="87" width="101" height="14" font="2">peak bandwidth.</text>
+<text top="736" left="105" width="414" height="14" font="2">Unfortunately, we obtain the exact same performance during a se-</text>
+<text top="751" left="87" width="432" height="14" font="2">quential read. One might think that a sequential read could do better,</text>
+<text top="766" left="87" width="432" height="14" font="2">because it only needs to read one copy of the data, not both. However,</text>
+<text top="781" left="87" width="432" height="14" font="2">let’s use an example to illustrate why this doesn’t help much. Imagine we</text>
+<text top="796" left="87" width="432" height="14" font="2">need to read blocks 0, 1, 2, 3, 4, 5, 6, and 7. Let’s say we issue the read of</text>
+<text top="811" left="87" width="432" height="14" font="2">0 to disk 0, the read of 1 to disk 2, the read of 2 to disk 1, and the read of</text>
+<text top="826" left="87" width="432" height="14" font="2">3 to disk 3. We continue by issuing reads to 4, 5, 6, and 7 to disks 0, 2, 1,</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="230" width="9" height="14" font="2">R</text>
+<text top="98" left="240" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="313" width="10" height="14" font="2">A</text>
+<text top="98" left="324" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="384" width="5" height="14" font="2">I</text>
+<text top="98" left="389" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="468" width="10" height="14" font="2">D</text>
+<text top="98" left="479" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="507" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="550" width="6" height="11" font="3">S</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="129" width="432" height="14" font="2">and 3, respectively. One might naively think that because we are utilizing</text>
+<text top="154" left="129" width="345" height="14" font="2">all disks, we are achieving the full bandwidth of the array.</text>
+<text top="169" left="147" width="414" height="14" font="2">To see that this is not (necessarily) the case, however, consider the</text>
+<text top="184" left="129" width="432" height="14" font="2">requests a single disk receives (say disk 0). First, it gets a request for</text>
+<text top="199" left="129" width="432" height="14" font="2">block 0; then, it gets a request for block 4 (skipping block 2). In fact, each</text>
+<text top="214" left="129" width="432" height="14" font="2">disk receives a request for every other block. While it is rotating over the</text>
+<text top="229" left="129" width="432" height="14" font="2">skipped block, it is not delivering useful bandwidth to the client. Thus,</text>
+<text top="244" left="129" width="432" height="14" font="2">each disk will only deliver half its peak bandwidth. And thus, the se-</text>
+<text top="261" left="129" width="278" height="14" font="2">quential read will only obtain a bandwidth of (</text>
+<text top="258" left="409" width="9" height="8" font="14">N</text>
+<text top="269" left="411" width="5" height="7" font="15">2</text>
+<text top="262" left="423" width="4" height="9" font="10">·</text>
+<text top="260" left="430" width="8" height="13" font="9">S</text>
+<text top="261" left="439" width="46" height="14" font="2">) MB/s.</text>
+<text top="276" left="147" width="414" height="14" font="2">Random reads are the best case for a mirrored RAID. In this case, we</text>
+<text top="291" left="129" width="432" height="14" font="2">can distribute the reads across all the disks, and thus obtain the full pos-</text>
+<text top="306" left="129" width="347" height="14" font="2">sible bandwidth. Thus, for random reads, RAID-1 delivers</text>
+<text top="306" left="480" width="11" height="13" font="9">N</text>
+<text top="308" left="495" width="4" height="9" font="10">·</text>
+<text top="306" left="502" width="10" height="13" font="9">R</text>
+<text top="306" left="516" width="38" height="14" font="2">MB/s.</text>
+<text top="321" left="147" width="308" height="14" font="2">Finally, random writes perform as you might expect:</text>
+<text top="319" left="460" width="9" height="8" font="14">N</text>
+<text top="330" left="462" width="5" height="7" font="15">2</text>
+<text top="323" left="472" width="4" height="9" font="10">·</text>
+<text top="321" left="477" width="10" height="13" font="9">R</text>
+<text top="321" left="490" width="71" height="14" font="2">MB/s. Each</text>
+<text top="336" left="129" width="432" height="14" font="2">logical write must turn into two physical writes, and thus while all the</text>
+<text top="351" left="129" width="432" height="14" font="2">disks will be in use, the client will only perceive this as half the available</text>
+<text top="366" left="129" width="286" height="14" font="2">bandwidth. Even though a write to logical block</text>
+<text top="366" left="418" width="8" height="13" font="9">x</text>
+<text top="366" left="429" width="132" height="14" font="2">turns into two parallel</text>
+<text top="381" left="129" width="432" height="14" font="2">writes to two different physical disks, the bandwidth of many small re-</text>
+<text top="396" left="129" width="432" height="14" font="2">quests only achieves half of what we saw with striping. As we will soon</text>
+<text top="411" left="129" width="382" height="14" font="2">see, getting half the available bandwidth is actually pretty good!</text>
+<text top="448" left="97" width="323" height="17" font="6">38.6 RAID Level 4: Saving Space With Parity</text>
+<text top="479" left="147" width="414" height="14" font="2">We now present a different method of adding redundancy to a disk ar-</text>
+<text top="493" left="129" width="81" height="14" font="2">ray known as</text>
+<text top="494" left="213" width="37" height="13" font="4"><b>parity</b></text>
+<text top="493" left="250" width="311" height="14" font="2">. Parity-based approaches attempt to use less capac-</text>
+<text top="508" left="129" width="432" height="14" font="2">ity and thus overcome the huge space penalty paid by mirrored systems.</text>
+<text top="523" left="129" width="262" height="14" font="2">They do so at a cost, however: performance.</text>
+<text top="551" left="215" width="38" height="14" font="2">Disk 0</text>
+<text top="551" left="271" width="38" height="14" font="2">Disk 1</text>
+<text top="551" left="326" width="38" height="14" font="2">Disk 2</text>
+<text top="551" left="382" width="38" height="14" font="2">Disk 3</text>
+<text top="551" left="437" width="38" height="14" font="2">Disk 4</text>
+<text top="570" left="230" width="7" height="14" font="2">0</text>
+<text top="570" left="286" width="7" height="14" font="2">1</text>
+<text top="570" left="341" width="7" height="14" font="2">2</text>
+<text top="570" left="397" width="7" height="14" font="2">3</text>
+<text top="570" left="448" width="15" height="14" font="2">P0</text>
+<text top="588" left="230" width="7" height="14" font="2">4</text>
+<text top="588" left="286" width="7" height="14" font="2">5</text>
+<text top="588" left="341" width="7" height="14" font="2">6</text>
+<text top="588" left="397" width="7" height="14" font="2">7</text>
+<text top="588" left="448" width="15" height="14" font="2">P1</text>
+<text top="607" left="230" width="7" height="14" font="2">8</text>
+<text top="607" left="286" width="7" height="14" font="2">9</text>
+<text top="607" left="338" width="13" height="14" font="2">10</text>
+<text top="607" left="394" width="13" height="14" font="2">11</text>
+<text top="607" left="448" width="15" height="14" font="2">P2</text>
+<text top="625" left="227" width="13" height="14" font="2">12</text>
+<text top="625" left="283" width="13" height="14" font="2">13</text>
+<text top="625" left="338" width="13" height="14" font="2">14</text>
+<text top="625" left="394" width="13" height="14" font="2">15</text>
+<text top="625" left="448" width="15" height="14" font="2">P3</text>
+<text top="651" left="248" width="69" height="14" font="2">Figure 38.4:</text>
+<text top="651" left="321" width="121" height="13" font="4"><b>RAID-4 With Parity</b></text>
+<text top="676" left="147" width="414" height="14" font="2">Here is an example five-disk RAID-4 system (Figure 38.4). For each</text>
+<text top="691" left="129" width="226" height="14" font="2">stripe of data, we have added a single</text>
+<text top="691" left="358" width="37" height="13" font="4"><b>parity</b></text>
+<text top="691" left="398" width="163" height="14" font="2">block that stores the redun-</text>
+<text top="706" left="129" width="432" height="14" font="2">dant information for that stripe of blocks. For example, parity block P1</text>
+<text top="721" left="129" width="416" height="14" font="2">has redundant information that it calculated from blocks 4, 5, 6, and 7.</text>
+<text top="736" left="147" width="414" height="14" font="2">To compute parity, we need to use a mathematical function that en-</text>
+<text top="751" left="129" width="432" height="14" font="2">ables us to withstand the loss of any one block from our stripe. It turns</text>
+<text top="766" left="129" width="138" height="14" font="2">out the simple function</text>
+<text top="766" left="269" width="30" height="13" font="4"><b>XOR</b></text>
+<text top="766" left="302" width="258" height="14" font="2">does the trick quite nicely. For a given set of</text>
+<text top="781" left="129" width="432" height="14" font="2">bits, the XOR of all of those bits returns a 0 if there are an even number of</text>
+<text top="796" left="129" width="410" height="14" font="2">1’s in the bits, and a 1 if there are an odd number of 1’s. For example:</text>
+<text top="811" left="147" width="414" height="14" font="2">In the first row (0,0,1,1), there are two 1’s (C2, C3), and thus XOR of</text>
+<text top="826" left="129" width="432" height="14" font="2">all of those values will be 0 (P); similarly, in the second row there is only</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="9" height="14" font="2">R</text>
+<text top="98" left="97" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="170" width="10" height="14" font="2">A</text>
+<text top="98" left="181" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="242" width="5" height="14" font="2">I</text>
+<text top="98" left="247" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="325" width="10" height="14" font="2">D</text>
+<text top="98" left="336" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="365" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="407" width="6" height="11" font="3">S</text>
+<text top="96" left="413" width="4" height="14" font="2">)</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="136" left="196" width="14" height="12" font="7">C0</text>
+<text top="136" left="228" width="14" height="12" font="7">C1</text>
+<text top="136" left="260" width="14" height="12" font="7">C2</text>
+<text top="136" left="293" width="14" height="12" font="7">C3</text>
+<text top="136" left="364" width="7" height="12" font="7">P</text>
+<text top="151" left="200" width="6" height="12" font="7">0</text>
+<text top="151" left="232" width="6" height="12" font="7">0</text>
+<text top="151" left="265" width="6" height="12" font="7">1</text>
+<text top="151" left="297" width="6" height="12" font="7">1</text>
+<text top="151" left="325" width="85" height="12" font="7">XOR(0,0,1,1) = 0</text>
+<text top="165" left="200" width="6" height="12" font="7">0</text>
+<text top="165" left="232" width="6" height="12" font="7">1</text>
+<text top="165" left="265" width="6" height="12" font="7">0</text>
+<text top="165" left="297" width="6" height="12" font="7">0</text>
+<text top="165" left="325" width="85" height="12" font="7">XOR(0,1,0,0) = 1</text>
+<text top="211" left="87" width="432" height="14" font="2">one 1 (C1), and thus the XOR must be 1 (P). You can remember this in a</text>
+<text top="226" left="87" width="432" height="14" font="2">simple way: that the number of 1s in any row, including the parity bit,</text>
+<text top="241" left="87" width="282" height="14" font="2">must be an even (not odd) number; that is the</text>
+<text top="241" left="373" width="56" height="13" font="4"><b>invariant</b></text>
+<text top="241" left="434" width="85" height="14" font="2">that the RAID</text>
+<text top="256" left="87" width="277" height="14" font="2">must maintain in order for parity to be correct.</text>
+<text top="273" left="105" width="414" height="14" font="2">From the example above, you might also be able to guess how parity</text>
+<text top="288" left="87" width="432" height="14" font="2">information can be used to recover from a failure. Imagine the column la-</text>
+<text top="303" left="87" width="432" height="14" font="2">beled C2 is lost. To figure out what values must have been in the column,</text>
+<text top="317" left="87" width="432" height="14" font="2">we simply have to read in all the other values in that row (including the</text>
+<text top="332" left="87" width="131" height="14" font="2">XOR’d parity bit) and</text>
+<text top="332" left="222" width="68" height="13" font="4"><b>reconstruct</b></text>
+<text top="332" left="294" width="225" height="14" font="2">the right answer. Specifically, assume</text>
+<text top="347" left="87" width="432" height="14" font="2">the first row’s value in column C2 is lost (it is a 1); by reading the other</text>
+<text top="362" left="87" width="432" height="14" font="2">values in that row (0 from C0, 0 from C1, 1 from C3, and 0 from the parity</text>
+<text top="377" left="87" width="432" height="14" font="2">column P), we get the values 0, 0, 1, and 0. Because we know that XOR</text>
+<text top="392" left="87" width="432" height="14" font="2">keeps an even number of 1’s in each row, we know what the missing data</text>
+<text top="407" left="87" width="432" height="14" font="2">must be: a 1. And that is how reconstruction works in a XOR-based par-</text>
+<text top="422" left="87" width="432" height="14" font="2">ity scheme! Note also how we compute the reconstructed value: we just</text>
+<text top="437" left="87" width="432" height="14" font="2">XOR the data bits and the parity bits together, in the same way that we</text>
+<text top="452" left="87" width="224" height="14" font="2">calculated the parity in the first place.</text>
+<text top="468" left="105" width="414" height="14" font="2">Now you might be wondering: we are talking about XORing all of</text>
+<text top="483" left="87" width="432" height="14" font="2">these bits, and yet from above we know that the RAID places 4KB (or</text>
+<text top="498" left="87" width="432" height="14" font="2">larger) blocks on each disk; how do we apply XOR to a bunch of blocks</text>
+<text top="513" left="87" width="432" height="14" font="2">to compute the parity? It turns out this is easy as well. Simply perform a</text>
+<text top="528" left="87" width="432" height="14" font="2">bitwise XOR across each bit of the data blocks; put the result of each bit-</text>
+<text top="543" left="87" width="432" height="14" font="2">wise XOR into the corresponding bit slot in the parity block. For example,</text>
+<text top="558" left="87" width="432" height="14" font="2">if we had blocks of size 4 bits (yes, this is still quite a bit smaller than a</text>
+<text top="573" left="87" width="428" height="14" font="2">4KB block, but you get the picture), they might look something like this:</text>
+<text top="603" left="170" width="40" height="14" font="2">Block0</text>
+<text top="603" left="227" width="40" height="14" font="2">Block1</text>
+<text top="603" left="285" width="40" height="14" font="2">Block2</text>
+<text top="603" left="343" width="40" height="14" font="2">Block3</text>
+<text top="603" left="400" width="36" height="14" font="2">Parity</text>
+<text top="618" left="183" width="13" height="14" font="2">00</text>
+<text top="618" left="241" width="13" height="14" font="2">10</text>
+<text top="618" left="298" width="13" height="14" font="2">11</text>
+<text top="618" left="356" width="13" height="14" font="2">10</text>
+<text top="618" left="411" width="13" height="14" font="2">11</text>
+<text top="633" left="183" width="13" height="14" font="2">10</text>
+<text top="633" left="241" width="13" height="14" font="2">01</text>
+<text top="633" left="298" width="13" height="14" font="2">00</text>
+<text top="633" left="356" width="13" height="14" font="2">01</text>
+<text top="633" left="411" width="13" height="14" font="2">10</text>
+<text top="666" left="105" width="414" height="14" font="2">As you can see from the figure, the parity is computed for each bit of</text>
+<text top="681" left="87" width="306" height="14" font="2">each block and the result placed in the parity block.</text>
+<text top="724" left="87" width="117" height="15" font="13"><b>RAID-4 Analysis</b></text>
+<text top="750" left="87" width="432" height="14" font="2">Let us now analyze RAID-4. From a capacity standpoint, RAID-4 uses 1</text>
+<text top="765" left="87" width="432" height="14" font="2">disk for parity information for every group of disks it is protecting. Thus,</text>
+<text top="780" left="87" width="234" height="14" font="2">our useful capacity for a RAID group is</text>
+<text top="780" left="325" width="5" height="13" font="11">(</text>
+<text top="780" left="330" width="11" height="13" font="9">N</text>
+<text top="782" left="346" width="11" height="9" font="10">−</text>
+<text top="780" left="359" width="12" height="13" font="11">1)</text>
+<text top="782" left="375" width="4" height="9" font="10">·</text>
+<text top="780" left="382" width="10" height="13" font="9">B</text>
+<text top="780" left="393" width="3" height="14" font="2">.</text>
+<text top="796" left="105" width="414" height="14" font="2">Reliability is also quite easy to understand: RAID-4 tolerates 1 disk</text>
+<text top="811" left="87" width="432" height="14" font="2">failure and no more. If more than one disk is lost, there is simply no way</text>
+<text top="826" left="87" width="161" height="14" font="2">to reconstruct the lost data.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="230" width="9" height="14" font="2">R</text>
+<text top="98" left="240" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="313" width="10" height="14" font="2">A</text>
+<text top="98" left="324" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="384" width="5" height="14" font="2">I</text>
+<text top="98" left="389" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="468" width="10" height="14" font="2">D</text>
+<text top="98" left="479" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="507" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="550" width="6" height="11" font="3">S</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="136" left="215" width="38" height="14" font="2">Disk 0</text>
+<text top="136" left="271" width="38" height="14" font="2">Disk 1</text>
+<text top="136" left="326" width="38" height="14" font="2">Disk 2</text>
+<text top="136" left="382" width="38" height="14" font="2">Disk 3</text>
+<text top="136" left="437" width="38" height="14" font="2">Disk 4</text>
+<text top="155" left="230" width="7" height="14" font="2">0</text>
+<text top="155" left="286" width="7" height="14" font="2">1</text>
+<text top="155" left="341" width="7" height="14" font="2">2</text>
+<text top="155" left="397" width="7" height="14" font="2">3</text>
+<text top="155" left="448" width="15" height="14" font="2">P0</text>
+<text top="170" left="230" width="7" height="14" font="2">4</text>
+<text top="170" left="286" width="7" height="14" font="2">5</text>
+<text top="170" left="341" width="7" height="14" font="2">6</text>
+<text top="170" left="397" width="7" height="14" font="2">7</text>
+<text top="170" left="448" width="15" height="14" font="2">P1</text>
+<text top="185" left="230" width="7" height="14" font="2">8</text>
+<text top="185" left="286" width="7" height="14" font="2">9</text>
+<text top="185" left="338" width="13" height="14" font="2">10</text>
+<text top="185" left="394" width="13" height="14" font="2">11</text>
+<text top="185" left="448" width="15" height="14" font="2">P2</text>
+<text top="200" left="227" width="13" height="14" font="2">12</text>
+<text top="200" left="283" width="13" height="14" font="2">13</text>
+<text top="200" left="338" width="13" height="14" font="2">14</text>
+<text top="200" left="394" width="13" height="14" font="2">15</text>
+<text top="200" left="448" width="15" height="14" font="2">P3</text>
+<text top="225" left="221" width="69" height="14" font="2">Figure 38.5:</text>
+<text top="225" left="294" width="175" height="13" font="4"><b>Full-stripe Writes In RAID-4</b></text>
+<text top="249" left="147" width="420" height="14" font="2">Finally, there is performance. This time, let us start by analyzing steady-</text>
+<text top="264" left="129" width="432" height="14" font="2">state throughput. Sequential read performance can utilize all of the disks</text>
+<text top="279" left="129" width="432" height="14" font="2">except for the parity disk, and thus deliver a peak effective bandwidth of</text>
+<text top="294" left="129" width="5" height="13" font="11">(</text>
+<text top="294" left="134" width="11" height="13" font="9">N</text>
+<text top="296" left="150" width="11" height="9" font="10">−</text>
+<text top="294" left="164" width="12" height="13" font="11">1)</text>
+<text top="296" left="179" width="4" height="9" font="10">·</text>
+<text top="294" left="186" width="8" height="13" font="9">S</text>
+<text top="294" left="199" width="123" height="14" font="2">MB/s (an easy case).</text>
+<text top="310" left="147" width="414" height="14" font="2">To understand the performance of sequential writes, we must first un-</text>
+<text top="325" left="129" width="432" height="14" font="2">derstand how they are done. When writing a big chunk of data to disk,</text>
+<text top="340" left="129" width="327" height="14" font="2">RAID-4 can perform a simple optimization known as a</text>
+<text top="340" left="460" width="98" height="13" font="4"><b>full-stripe write</b></text>
+<text top="340" left="557" width="3" height="14" font="2">.</text>
+<text top="355" left="129" width="432" height="14" font="2">For example, imagine the case where the blocks 0, 1, 2, and 3 have been</text>
+<text top="370" left="129" width="331" height="14" font="2">sent to the RAID as part of a write request (Figure 38.5).</text>
+<text top="386" left="147" width="414" height="14" font="2">In this case, the RAID can simply calculate the new value of P0 (by</text>
+<text top="401" left="129" width="432" height="14" font="2">performing an XOR across the blocks 0, 1, 2, and 3) and then write all of</text>
+<text top="416" left="129" width="432" height="14" font="2">the blocks (including the parity block) to the five disks above in parallel</text>
+<text top="431" left="129" width="432" height="14" font="2">(highlighted in gray in the figure). Thus, full-stripe writes are the most</text>
+<text top="446" left="129" width="242" height="14" font="2">efficient way for RAID-4 to write to disk.</text>
+<text top="462" left="147" width="414" height="14" font="2">Once we understand the full-stripe write, calculating the performance</text>
+<text top="477" left="129" width="432" height="14" font="2">of sequential writes on RAID-4 is easy; the effective bandwidth is also</text>
+<text top="492" left="129" width="5" height="13" font="11">(</text>
+<text top="492" left="134" width="11" height="13" font="9">N</text>
+<text top="494" left="149" width="11" height="9" font="10">−</text>
+<text top="492" left="162" width="12" height="13" font="11">1)</text>
+<text top="494" left="176" width="4" height="9" font="10">·</text>
+<text top="492" left="182" width="8" height="13" font="9">S</text>
+<text top="492" left="194" width="367" height="14" font="2">MB/s. Even though the parity disk is constantly in use during</text>
+<text top="507" left="129" width="416" height="14" font="2">the operation, the client does not gain performance advantage from it.</text>
+<text top="523" left="147" width="414" height="14" font="2">Now let us analyze the performance of random reads. As you can also</text>
+<text top="538" left="129" width="432" height="14" font="2">see from the figure above, a set of 1-block random reads will be spread</text>
+<text top="553" left="129" width="432" height="14" font="2">across the data disks of the system but not the parity disk. Thus, the</text>
+<text top="568" left="129" width="145" height="14" font="2">effective performance is:</text>
+<text top="568" left="279" width="5" height="13" font="11">(</text>
+<text top="568" left="284" width="11" height="13" font="9">N</text>
+<text top="570" left="299" width="11" height="9" font="10">−</text>
+<text top="568" left="313" width="12" height="13" font="11">1)</text>
+<text top="570" left="329" width="4" height="9" font="10">·</text>
+<text top="568" left="336" width="10" height="13" font="9">R</text>
+<text top="568" left="349" width="38" height="14" font="2">MB/s.</text>
+<text top="584" left="147" width="414" height="14" font="2">Random writes, which we have saved for last, present the most in-</text>
+<text top="599" left="129" width="432" height="14" font="2">teresting case for RAID-4. Imagine we wish to overwrite block 1 in the</text>
+<text top="614" left="129" width="432" height="14" font="2">example above. We could just go ahead and overwrite it, but that would</text>
+<text top="629" left="129" width="432" height="14" font="2">leave us with a problem: the parity block P0 would no longer accurately</text>
+<text top="644" left="129" width="432" height="14" font="2">reflect the correct parity value of the stripe; in this example, P0 must also</text>
+<text top="659" left="129" width="386" height="14" font="2">be updated. How can we update it both correctly and efficiently?</text>
+<text top="675" left="147" width="318" height="14" font="2">It turns out there are two methods. The first, known as</text>
+<text top="675" left="467" width="90" height="13" font="4"><b>additive parity</b></text>
+<text top="675" left="557" width="3" height="14" font="2">,</text>
+<text top="690" left="129" width="432" height="14" font="2">requires us to do the following. To compute the value of the new parity</text>
+<text top="705" left="129" width="432" height="14" font="2">block, read in all of the other data blocks in the stripe in parallel (in the</text>
+<text top="720" left="129" width="432" height="14" font="2">example, blocks 0, 2, and 3) and XOR those with the new block (1). The</text>
+<text top="734" left="129" width="432" height="14" font="2">result is your new parity block. To complete the write, you can then write</text>
+<text top="749" left="129" width="413" height="14" font="2">the new data and new parity to their respective disks, also in parallel.</text>
+<text top="766" left="147" width="414" height="14" font="2">The problem with this technique is that it scales with the number of</text>
+<text top="780" left="129" width="432" height="14" font="2">disks, and thus in larger RAIDs requires a high number of reads to com-</text>
+<text top="795" left="129" width="128" height="14" font="2">pute parity. Thus, the</text>
+<text top="795" left="260" width="108" height="13" font="4"><b>subtractive parity</b></text>
+<text top="795" left="371" width="49" height="14" font="2">method.</text>
+<text top="811" left="147" width="376" height="14" font="2">For example, imagine this string of bits (4 data bits, one parity):</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="9" family="LHEAZV+CMSY6" color="#000000"/>
+<text top="96" left="87" width="9" height="14" font="2">R</text>
+<text top="98" left="97" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="170" width="10" height="14" font="2">A</text>
+<text top="98" left="181" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="242" width="5" height="14" font="2">I</text>
+<text top="98" left="247" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="325" width="10" height="14" font="2">D</text>
+<text top="98" left="336" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="365" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="407" width="6" height="11" font="3">S</text>
+<text top="96" left="413" width="4" height="14" font="2">)</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="136" left="187" width="16" height="14" font="2">C0</text>
+<text top="136" left="221" width="16" height="14" font="2">C1</text>
+<text top="136" left="255" width="16" height="14" font="2">C2</text>
+<text top="136" left="289" width="16" height="14" font="2">C3</text>
+<text top="136" left="367" width="8" height="14" font="2">P</text>
+<text top="151" left="191" width="7" height="14" font="2">0</text>
+<text top="151" left="226" width="7" height="14" font="2">0</text>
+<text top="151" left="260" width="7" height="14" font="2">1</text>
+<text top="151" left="294" width="7" height="14" font="2">1</text>
+<text top="151" left="323" width="96" height="14" font="2">XOR(0,0,1,1) = 0</text>
+<text top="194" left="105" width="414" height="14" font="2">Let’s imagine that we wish to overwrite bit C2 with a new value which</text>
+<text top="209" left="87" width="90" height="14" font="2">we will call C2</text>
+<text top="214" left="177" width="20" height="8" font="14">new</text>
+<text top="209" left="199" width="320" height="14" font="2">. The subtractive method works in three steps. First,</text>
+<text top="224" left="87" width="206" height="14" font="2">we read in the old data at C2 (C2</text>
+<text top="229" left="293" width="15" height="8" font="14">old</text>
+<text top="224" left="314" width="157" height="14" font="2">= 1) and the old parity (P</text>
+<text top="229" left="471" width="15" height="8" font="14">old</text>
+<text top="224" left="491" width="27" height="14" font="2">= 0).</text>
+<text top="239" left="87" width="432" height="14" font="2">Then, we compare the old data and the new data; if they are the same</text>
+<text top="253" left="87" width="50" height="14" font="2">(e.g., C2</text>
+<text top="258" left="137" width="20" height="8" font="14">new</text>
+<text top="253" left="163" width="29" height="14" font="2">= C2</text>
+<text top="258" left="192" width="15" height="8" font="14">old</text>
+<text top="253" left="208" width="311" height="14" font="2">), then we know the parity bit will also remain the</text>
+<text top="268" left="87" width="71" height="14" font="2">same (i.e., P</text>
+<text top="273" left="158" width="20" height="8" font="14">new</text>
+<text top="268" left="183" width="20" height="14" font="2">= P</text>
+<text top="273" left="202" width="15" height="8" font="14">old</text>
+<text top="268" left="218" width="301" height="14" font="2">). If, however, they are different, then we must flip</text>
+<text top="283" left="87" width="378" height="14" font="2">the old parity bit to the opposite of its current state, that is, if (P</text>
+<text top="288" left="465" width="15" height="8" font="14">old</text>
+<text top="283" left="485" width="34" height="14" font="2">== 1),</text>
+<text top="298" left="87" width="8" height="14" font="2">P</text>
+<text top="303" left="95" width="20" height="8" font="14">new</text>
+<text top="298" left="120" width="120" height="14" font="2">will be set to 0; if (P</text>
+<text top="303" left="240" width="15" height="8" font="14">old</text>
+<text top="298" left="259" width="47" height="14" font="2">== 0), P</text>
+<text top="303" left="306" width="20" height="8" font="14">new</text>
+<text top="298" left="331" width="188" height="14" font="2">will be set to 1. We can express</text>
+<text top="313" left="87" width="243" height="14" font="2">this whole mess neatly with XOR (where</text>
+<text top="315" left="333" width="11" height="9" font="10">⊕</text>
+<text top="313" left="347" width="126" height="14" font="2">is the XOR operator):</text>
+<text top="343" left="205" width="9" height="13" font="9">P</text>
+<text top="348" left="213" width="20" height="8" font="14">new</text>
+<text top="343" left="242" width="24" height="13" font="11">= (</text>
+<text top="343" left="266" width="10" height="13" font="9">C</text>
+<text top="348" left="276" width="15" height="8" font="14">old</text>
+<text top="345" left="298" width="11" height="9" font="10">⊕</text>
+<text top="343" left="316" width="10" height="13" font="9">C</text>
+<text top="348" left="326" width="20" height="8" font="14">new</text>
+<text top="343" left="347" width="5" height="13" font="11">)</text>
+<text top="345" left="359" width="11" height="9" font="10">⊕</text>
+<text top="343" left="377" width="9" height="13" font="9">P</text>
+<text top="348" left="386" width="15" height="8" font="14">old</text>
+<text top="343" left="486" width="32" height="14" font="2">(38.1)</text>
+<text top="365" left="105" width="414" height="14" font="2">Because we are dealing with blocks, not bits, we perform this calcula-</text>
+<text top="380" left="87" width="432" height="14" font="2">tion over all the bits in the block (e.g., 4096 bytes in each block multiplied</text>
+<text top="395" left="87" width="432" height="14" font="2">by 8 bits per byte). Thus, in most cases, the new block will be different</text>
+<text top="410" left="87" width="340" height="14" font="2">than the old block and thus the new parity block will too.</text>
+<text top="425" left="105" width="414" height="14" font="2">You should now be able to figure out when we would use the additive</text>
+<text top="439" left="87" width="432" height="14" font="2">parity calculation and when we would use the subtractive method. Think</text>
+<text top="454" left="87" width="432" height="14" font="2">about how many disks would need to be in the system so that the additive</text>
+<text top="469" left="87" width="432" height="14" font="2">method performs fewer I/Os than the subtractive method; what is the</text>
+<text top="484" left="87" width="102" height="14" font="2">cross-over point?</text>
+<text top="499" left="105" width="414" height="14" font="2">For this performance analysis, let us assume we are using the subtrac-</text>
+<text top="514" left="87" width="432" height="14" font="2">tive method. Thus, for each write, the RAID has to perform 4 physical</text>
+<text top="529" left="87" width="432" height="14" font="2">I/Os (two reads and two writes). Now imagine there are lots of writes</text>
+<text top="544" left="87" width="432" height="14" font="2">submitted to the RAID; how many can RAID-4 perform in parallel? To</text>
+<text top="559" left="87" width="381" height="14" font="2">understand, let us again look at the RAID-4 layout (Figure 38.6).</text>
+<text top="585" left="173" width="38" height="14" font="2">Disk 0</text>
+<text top="585" left="229" width="38" height="14" font="2">Disk 1</text>
+<text top="585" left="284" width="38" height="14" font="2">Disk 2</text>
+<text top="585" left="340" width="38" height="14" font="2">Disk 3</text>
+<text top="585" left="395" width="38" height="14" font="2">Disk 4</text>
+<text top="600" left="189" width="7" height="14" font="2">0</text>
+<text top="600" left="244" width="7" height="14" font="2">1</text>
+<text top="600" left="300" width="7" height="14" font="2">2</text>
+<text top="600" left="355" width="7" height="14" font="2">3</text>
+<text top="600" left="407" width="15" height="14" font="2">P0</text>
+<text top="621" left="185" width="6" height="7" font="16">∗</text>
+<text top="621" left="192" width="7" height="14" font="2">4</text>
+<text top="621" left="244" width="7" height="14" font="2">5</text>
+<text top="621" left="300" width="7" height="14" font="2">6</text>
+<text top="621" left="355" width="7" height="14" font="2">7</text>
+<text top="619" left="402" width="8" height="7" font="15">+</text>
+<text top="621" left="411" width="15" height="14" font="2">P1</text>
+<text top="636" left="189" width="7" height="14" font="2">8</text>
+<text top="636" left="244" width="7" height="14" font="2">9</text>
+<text top="636" left="296" width="13" height="14" font="2">10</text>
+<text top="636" left="352" width="13" height="14" font="2">11</text>
+<text top="636" left="407" width="15" height="14" font="2">P2</text>
+<text top="656" left="185" width="13" height="14" font="2">12</text>
+<text top="656" left="238" width="6" height="7" font="16">∗</text>
+<text top="656" left="244" width="13" height="14" font="2">13</text>
+<text top="656" left="296" width="13" height="14" font="2">14</text>
+<text top="656" left="352" width="13" height="14" font="2">15</text>
+<text top="654" left="402" width="8" height="7" font="15">+</text>
+<text top="656" left="411" width="15" height="14" font="2">P3</text>
+<text top="682" left="98" width="69" height="14" font="2">Figure 38.6:</text>
+<text top="682" left="171" width="336" height="13" font="4"><b>Example: Writes To 4, 13, And Respective Parity Blocks</b></text>
+<text top="705" left="105" width="414" height="14" font="2">Now imagine there were 2 small writes submitted to the RAID-4 at</text>
+<text top="720" left="87" width="322" height="14" font="2">about the same time, to blocks 4 and 13 (marked with</text>
+<text top="720" left="413" width="6" height="7" font="16">∗</text>
+<text top="720" left="423" width="96" height="14" font="2">in the diagram).</text>
+<text top="735" left="87" width="432" height="14" font="2">The data for those disks is on disks 0 and 1, and thus the read and write</text>
+<text top="750" left="87" width="432" height="14" font="2">to data could happen in parallel, which is good. The problem that arises</text>
+<text top="765" left="87" width="432" height="14" font="2">is with the parity disk; both the requests have to read the related parity</text>
+<text top="781" left="87" width="323" height="14" font="2">blocks for 4 and 13, parity blocks 1 and 3 (marked with</text>
+<text top="779" left="413" width="8" height="7" font="15">+</text>
+<text top="781" left="422" width="97" height="14" font="2">). Hopefully, the</text>
+<text top="796" left="87" width="432" height="14" font="2">issue is now clear: the parity disk is a bottleneck under this type of work-</text>
+<text top="811" left="87" width="231" height="14" font="2">load; we sometimes thus call this the</text>
+<text top="811" left="323" width="128" height="13" font="4"><b>small-write problem</b></text>
+<text top="811" left="456" width="63" height="14" font="2">for parity-</text>
+<text top="826" left="87" width="432" height="14" font="2">based RAIDs. Thus, even though the data disks could be accessed in</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="230" width="9" height="14" font="2">R</text>
+<text top="98" left="240" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="313" width="10" height="14" font="2">A</text>
+<text top="98" left="324" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="384" width="5" height="14" font="2">I</text>
+<text top="98" left="389" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="468" width="10" height="14" font="2">D</text>
+<text top="98" left="479" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="507" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="550" width="6" height="11" font="3">S</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="129" width="432" height="14" font="2">parallel, the parity disk prevents any parallelism from materializing; all</text>
+<text top="154" left="129" width="432" height="14" font="2">writes to the system will be serialized because of the parity disk. Because</text>
+<text top="169" left="129" width="432" height="14" font="2">the parity disk has to perform two I/Os (one read, one write) per logical</text>
+<text top="183" left="129" width="432" height="14" font="2">I/O, we can compute the performance of small random writes in RAID-4</text>
+<text top="198" left="129" width="432" height="14" font="2">by computing the parity disk’s performance on those two I/Os, and thus</text>
+<text top="213" left="129" width="66" height="14" font="2">we achieve</text>
+<text top="213" left="198" width="5" height="13" font="11">(</text>
+<text top="213" left="203" width="17" height="13" font="9">R/</text>
+<text top="213" left="221" width="12" height="13" font="11">2)</text>
+<text top="213" left="236" width="325" height="14" font="2">MB/s. RAID-4 throughput under random small writes</text>
+<text top="228" left="129" width="367" height="14" font="2">is terrible; it does not improve as you add disks to the system.</text>
+<text top="243" left="147" width="414" height="14" font="2">We conclude by analyzing I/O latency in RAID-4. As you now know,</text>
+<text top="258" left="129" width="432" height="14" font="2">a single read (assuming no failure) is just mapped to a single disk, and</text>
+<text top="273" left="129" width="432" height="14" font="2">thus its latency is equivalent to the latency of a single disk request. The</text>
+<text top="288" left="129" width="432" height="14" font="2">latency of a single write requires two reads and then two writes; the reads</text>
+<text top="303" left="129" width="432" height="14" font="2">can happen in parallel, as can the writes, and thus total latency is about</text>
+<text top="318" left="129" width="432" height="14" font="2">twice that of a single disk (with some differences because we have to wait</text>
+<text top="333" left="129" width="432" height="14" font="2">for both reads to complete and thus get the worst-case positioning time,</text>
+<text top="348" left="129" width="432" height="14" font="2">but then the updates don’t incur seek cost and thus may be a better-than-</text>
+<text top="363" left="129" width="152" height="14" font="2">average positioning cost).</text>
+<text top="400" left="97" width="251" height="17" font="6">38.7 RAID Level 5: Rotating Parity</text>
+<text top="430" left="147" width="414" height="14" font="2">To address the small-write problem (at least, partially), Patterson, Gib-</text>
+<text top="445" left="129" width="432" height="14" font="2">son, and Katz introduced RAID-5. RAID-5 works almost identically to</text>
+<text top="460" left="129" width="129" height="14" font="2">RAID-4, except that it</text>
+<text top="460" left="261" width="41" height="13" font="4"><b>rotates</b></text>
+<text top="460" left="306" width="255" height="14" font="2">the parity block across drives (Figure 38.7).</text>
+<text top="487" left="215" width="38" height="14" font="2">Disk 0</text>
+<text top="487" left="271" width="38" height="14" font="2">Disk 1</text>
+<text top="487" left="326" width="38" height="14" font="2">Disk 2</text>
+<text top="487" left="382" width="38" height="14" font="2">Disk 3</text>
+<text top="487" left="437" width="38" height="14" font="2">Disk 4</text>
+<text top="506" left="230" width="7" height="14" font="2">0</text>
+<text top="506" left="286" width="7" height="14" font="2">1</text>
+<text top="506" left="341" width="7" height="14" font="2">2</text>
+<text top="506" left="397" width="7" height="14" font="2">3</text>
+<text top="506" left="448" width="15" height="14" font="2">P0</text>
+<text top="525" left="230" width="7" height="14" font="2">5</text>
+<text top="525" left="286" width="7" height="14" font="2">6</text>
+<text top="525" left="341" width="7" height="14" font="2">7</text>
+<text top="525" left="393" width="15" height="14" font="2">P1</text>
+<text top="525" left="453" width="7" height="14" font="2">4</text>
+<text top="543" left="227" width="13" height="14" font="2">10</text>
+<text top="543" left="283" width="13" height="14" font="2">11</text>
+<text top="543" left="337" width="15" height="14" font="2">P2</text>
+<text top="543" left="397" width="7" height="14" font="2">8</text>
+<text top="543" left="453" width="7" height="14" font="2">9</text>
+<text top="562" left="227" width="13" height="14" font="2">15</text>
+<text top="562" left="282" width="15" height="14" font="2">P3</text>
+<text top="562" left="338" width="13" height="14" font="2">12</text>
+<text top="562" left="394" width="13" height="14" font="2">13</text>
+<text top="562" left="449" width="13" height="14" font="2">14</text>
+<text top="580" left="226" width="15" height="14" font="2">P4</text>
+<text top="580" left="283" width="13" height="14" font="2">16</text>
+<text top="580" left="338" width="13" height="14" font="2">17</text>
+<text top="580" left="394" width="13" height="14" font="2">18</text>
+<text top="580" left="449" width="13" height="14" font="2">19</text>
+<text top="605" left="222" width="69" height="14" font="2">Figure 38.7:</text>
+<text top="606" left="295" width="172" height="13" font="4"><b>RAID-5 With Rotated Parity</b></text>
+<text top="630" left="147" width="414" height="14" font="2">As you can see, the parity block for each stripe is now rotated across</text>
+<text top="645" left="129" width="399" height="14" font="2">the disks, in order to remove the parity-disk bottleneck for RAID-4.</text>
+<text top="682" left="129" width="117" height="15" font="13"><b>RAID-5 Analysis</b></text>
+<text top="706" left="129" width="432" height="14" font="2">Much of the analysis for RAID-5 is identical to RAID-4. For example, the</text>
+<text top="721" left="129" width="432" height="14" font="2">effective capacity and failure tolerance of the two levels are identical. So</text>
+<text top="736" left="129" width="432" height="14" font="2">are sequential read and write performance. The latency of a single request</text>
+<text top="751" left="129" width="323" height="14" font="2">(whether a read or a write) is also the same as RAID-4.</text>
+<text top="766" left="147" width="414" height="14" font="2">Random read performance is a little better, because we can now utilize</text>
+<text top="781" left="129" width="432" height="14" font="2">all disks. Finally, random write performance improves noticeably over</text>
+<text top="796" left="129" width="432" height="14" font="2">RAID-4, as it allows for parallelism across requests. Imagine a write to</text>
+<text top="811" left="129" width="432" height="14" font="2">block 1 and a write to block 10; this will turn into requests to disk 1 and</text>
+<text top="826" left="129" width="432" height="14" font="2">disk 4 (for block 1 and its parity) and requests to disk 0 and disk 2 (for</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="9" family="VZNRZE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="18" size="7" family="VZNRZE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="19" size="10" family="JDRCGD+CMR7" color="#000000"/>
+	<fontspec id="20" size="10" family="NICWDD+CMMI7" color="#000000"/>
+<text top="96" left="87" width="9" height="14" font="2">R</text>
+<text top="98" left="97" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="170" width="10" height="14" font="2">A</text>
+<text top="98" left="181" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="242" width="5" height="14" font="2">I</text>
+<text top="98" left="247" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="325" width="10" height="14" font="2">D</text>
+<text top="98" left="336" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="365" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="407" width="6" height="11" font="3">S</text>
+<text top="96" left="413" width="4" height="14" font="2">)</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="137" left="208" width="46" height="14" font="2">RAID-0</text>
+<text top="137" left="284" width="46" height="14" font="2">RAID-1</text>
+<text top="137" left="371" width="46" height="14" font="2">RAID-4</text>
+<text top="137" left="458" width="46" height="14" font="2">RAID-5</text>
+<text top="153" left="96" width="53" height="14" font="2">Capacity</text>
+<text top="152" left="214" width="11" height="13" font="9">N</text>
+<text top="155" left="230" width="4" height="9" font="10">·</text>
+<text top="152" left="237" width="10" height="13" font="9">B</text>
+<text top="152" left="278" width="5" height="13" font="11">(</text>
+<text top="152" left="283" width="11" height="13" font="9">N</text>
+<text top="155" left="299" width="4" height="9" font="10">·</text>
+<text top="152" left="306" width="10" height="13" font="9">B</text>
+<text top="152" left="317" width="5" height="13" font="11">)</text>
+<text top="152" left="322" width="7" height="13" font="9">/</text>
+<text top="152" left="329" width="7" height="13" font="11">2</text>
+<text top="152" left="360" width="5" height="13" font="11">(</text>
+<text top="152" left="366" width="11" height="13" font="9">N</text>
+<text top="155" left="381" width="11" height="9" font="10">−</text>
+<text top="152" left="395" width="12" height="13" font="11">1)</text>
+<text top="155" left="410" width="4" height="9" font="10">·</text>
+<text top="152" left="417" width="10" height="13" font="9">B</text>
+<text top="152" left="446" width="5" height="13" font="11">(</text>
+<text top="152" left="452" width="11" height="13" font="9">N</text>
+<text top="155" left="467" width="11" height="9" font="10">−</text>
+<text top="152" left="481" width="12" height="13" font="11">1)</text>
+<text top="155" left="496" width="4" height="9" font="10">·</text>
+<text top="152" left="503" width="10" height="13" font="9">B</text>
+<text top="168" left="96" width="61" height="14" font="2">Reliability</text>
+<text top="168" left="228" width="7" height="13" font="11">0</text>
+<text top="168" left="275" width="7" height="13" font="11">1</text>
+<text top="168" left="285" width="55" height="14" font="2">(for sure)</text>
+<text top="168" left="391" width="7" height="13" font="11">1</text>
+<text top="168" left="477" width="7" height="13" font="11">1</text>
+<text top="182" left="274" width="9" height="8" font="14">N</text>
+<text top="193" left="276" width="5" height="7" font="15">2</text>
+<text top="184" left="289" width="54" height="14" font="2">(if lucky)</text>
+<text top="200" left="96" width="73" height="14" font="2">Throughput</text>
+<text top="217" left="103" width="85" height="12" font="7">Sequential Read</text>
+<text top="216" left="215" width="11" height="13" font="9">N</text>
+<text top="218" left="231" width="4" height="9" font="10">·</text>
+<text top="216" left="238" width="8" height="13" font="9">S</text>
+<text top="216" left="276" width="5" height="13" font="11">(</text>
+<text top="216" left="282" width="18" height="13" font="9">N/</text>
+<text top="216" left="300" width="12" height="13" font="11">2)</text>
+<text top="218" left="315" width="4" height="9" font="10">·</text>
+<text top="216" left="322" width="8" height="13" font="9">S</text>
+<text top="214" left="332" width="5" height="7" font="15">1</text>
+<text top="216" left="361" width="5" height="13" font="11">(</text>
+<text top="216" left="367" width="11" height="13" font="9">N</text>
+<text top="218" left="382" width="11" height="9" font="10">−</text>
+<text top="216" left="396" width="12" height="13" font="11">1)</text>
+<text top="218" left="411" width="4" height="9" font="10">·</text>
+<text top="216" left="418" width="8" height="13" font="9">S</text>
+<text top="216" left="447" width="5" height="13" font="11">(</text>
+<text top="216" left="453" width="11" height="13" font="9">N</text>
+<text top="218" left="468" width="11" height="9" font="10">−</text>
+<text top="216" left="482" width="12" height="13" font="11">1)</text>
+<text top="218" left="497" width="4" height="9" font="10">·</text>
+<text top="216" left="504" width="8" height="13" font="9">S</text>
+<text top="233" left="103" width="87" height="12" font="7">Sequential Write</text>
+<text top="232" left="215" width="11" height="13" font="9">N</text>
+<text top="234" left="231" width="4" height="9" font="10">·</text>
+<text top="232" left="238" width="8" height="13" font="9">S</text>
+<text top="232" left="276" width="5" height="13" font="11">(</text>
+<text top="232" left="282" width="18" height="13" font="9">N/</text>
+<text top="232" left="300" width="12" height="13" font="11">2)</text>
+<text top="234" left="315" width="4" height="9" font="10">·</text>
+<text top="232" left="322" width="8" height="13" font="9">S</text>
+<text top="230" left="332" width="5" height="7" font="15">1</text>
+<text top="232" left="361" width="5" height="13" font="11">(</text>
+<text top="232" left="367" width="11" height="13" font="9">N</text>
+<text top="234" left="382" width="11" height="9" font="10">−</text>
+<text top="232" left="396" width="12" height="13" font="11">1)</text>
+<text top="234" left="411" width="4" height="9" font="10">·</text>
+<text top="232" left="418" width="8" height="13" font="9">S</text>
+<text top="232" left="447" width="5" height="13" font="11">(</text>
+<text top="232" left="453" width="11" height="13" font="9">N</text>
+<text top="234" left="468" width="11" height="9" font="10">−</text>
+<text top="232" left="482" width="12" height="13" font="11">1)</text>
+<text top="234" left="497" width="4" height="9" font="10">·</text>
+<text top="232" left="504" width="8" height="13" font="9">S</text>
+<text top="247" left="103" width="85" height="14" font="2">Random Read</text>
+<text top="247" left="215" width="11" height="13" font="9">N</text>
+<text top="249" left="230" width="4" height="9" font="10">·</text>
+<text top="247" left="237" width="10" height="13" font="9">R</text>
+<text top="247" left="291" width="11" height="13" font="9">N</text>
+<text top="249" left="306" width="4" height="9" font="10">·</text>
+<text top="247" left="313" width="10" height="13" font="9">R</text>
+<text top="247" left="360" width="5" height="13" font="11">(</text>
+<text top="247" left="366" width="11" height="13" font="9">N</text>
+<text top="249" left="381" width="11" height="9" font="10">−</text>
+<text top="247" left="395" width="12" height="13" font="11">1)</text>
+<text top="249" left="411" width="4" height="9" font="10">·</text>
+<text top="247" left="418" width="10" height="13" font="9">R</text>
+<text top="247" left="464" width="11" height="13" font="9">N</text>
+<text top="249" left="479" width="4" height="9" font="10">·</text>
+<text top="247" left="486" width="10" height="13" font="9">R</text>
+<text top="263" left="103" width="87" height="14" font="2">Random Write</text>
+<text top="263" left="215" width="11" height="13" font="9">N</text>
+<text top="265" left="230" width="4" height="9" font="10">·</text>
+<text top="263" left="237" width="10" height="13" font="9">R</text>
+<text top="263" left="279" width="5" height="13" font="11">(</text>
+<text top="263" left="284" width="18" height="13" font="9">N/</text>
+<text top="263" left="303" width="12" height="13" font="11">2)</text>
+<text top="265" left="318" width="4" height="9" font="10">·</text>
+<text top="263" left="325" width="10" height="13" font="9">R</text>
+<text top="261" left="381" width="5" height="7" font="15">1</text>
+<text top="271" left="381" width="5" height="7" font="15">2</text>
+<text top="265" left="392" width="4" height="9" font="10">·</text>
+<text top="263" left="399" width="10" height="13" font="9">R</text>
+<text top="261" left="470" width="9" height="8" font="14">N</text>
+<text top="271" left="472" width="5" height="7" font="15">4</text>
+<text top="263" left="482" width="10" height="13" font="9">R</text>
+<text top="278" left="96" width="47" height="14" font="2">Latency</text>
+<text top="293" left="103" width="30" height="14" font="2">Read</text>
+<text top="293" left="226" width="8" height="13" font="9">T</text>
+<text top="293" left="302" width="8" height="13" font="9">T</text>
+<text top="293" left="389" width="8" height="13" font="9">T</text>
+<text top="293" left="475" width="8" height="13" font="9">T</text>
+<text top="308" left="103" width="33" height="14" font="2">Write</text>
+<text top="308" left="226" width="8" height="13" font="9">T</text>
+<text top="308" left="302" width="8" height="13" font="9">T</text>
+<text top="308" left="386" width="7" height="13" font="11">2</text>
+<text top="308" left="393" width="8" height="13" font="9">T</text>
+<text top="308" left="472" width="7" height="13" font="11">2</text>
+<text top="308" left="479" width="8" height="13" font="9">T</text>
+<text top="344" left="129" width="69" height="14" font="2">Figure 38.8:</text>
+<text top="344" left="202" width="275" height="13" font="4"><b>RAID Capacity, Reliability, and Performance</b></text>
+<text top="376" left="87" width="432" height="14" font="2">block 10 and its parity). Thus, they can proceed in parallel. In fact, we</text>
+<text top="391" left="87" width="432" height="14" font="2">can generally assume that given a large number of random requests, we</text>
+<text top="405" left="87" width="432" height="14" font="2">will be able to keep all the disks about evenly busy. If that is the case,</text>
+<text top="422" left="87" width="289" height="14" font="2">then our total bandwidth for small writes will be</text>
+<text top="420" left="382" width="9" height="8" font="14">N</text>
+<text top="431" left="384" width="5" height="7" font="15">4</text>
+<text top="424" left="396" width="4" height="9" font="10">·</text>
+<text top="422" left="403" width="10" height="13" font="9">R</text>
+<text top="422" left="417" width="102" height="14" font="2">MB/s. The factor</text>
+<text top="437" left="87" width="432" height="14" font="2">of four loss is due to the fact that each RAID-5 write still generates 4 total</text>
+<text top="452" left="87" width="410" height="14" font="2">I/O operations, which is simply the cost of using parity-based RAID.</text>
+<text top="469" left="105" width="414" height="14" font="2">Because RAID-5 is basically identical to RAID-4 except in the few cases</text>
+<text top="484" left="87" width="432" height="14" font="2">where it is better, it has almost completely replaced RAID-4 in the market-</text>
+<text top="499" left="87" width="432" height="14" font="2">place. The only place where it has not is in systems that know they will</text>
+<text top="514" left="87" width="432" height="14" font="2">never perform anything other than a large write, thus avoiding the small-</text>
+<text top="529" left="87" width="432" height="14" font="2">write problem altogether [HLM94]; in those cases, RAID-4 is sometimes</text>
+<text top="544" left="87" width="219" height="14" font="2">used as it is slightly simpler to build.</text>
+<text top="583" left="55" width="267" height="17" font="6">38.8 RAID Comparison: A Summary</text>
+<text top="615" left="105" width="414" height="14" font="2">We now summarize our simplified comparison of RAID levels in Fig-</text>
+<text top="630" left="87" width="432" height="14" font="2">ure 38.8. Note that we have omitted a number of details to simplify our</text>
+<text top="645" left="87" width="432" height="14" font="2">analysis. For example, when writing in a mirrored system, the average</text>
+<text top="660" left="87" width="432" height="14" font="2">seek time is a little higher than when writing to just a single disk, because</text>
+<text top="675" left="87" width="432" height="14" font="2">the seek time is the max of two seeks (one on each disk). Thus, random</text>
+<text top="689" left="87" width="432" height="14" font="2">write performance to two disks will generally be a little less than random</text>
+<text top="704" left="87" width="432" height="14" font="2">write performance of a single disk. Also, when updating the parity disk</text>
+<text top="719" left="87" width="432" height="14" font="2">in RAID-4/5, the first read of the old parity will likely cause a full seek</text>
+<text top="734" left="87" width="432" height="14" font="2">and rotation, but the second write of the parity will only result in rotation.</text>
+<text top="749" left="87" width="284" height="14" font="2">Finally, sequential I/O to mirrored RAIDs pay a</text>
+<text top="749" left="374" width="7" height="13" font="11">2</text>
+<text top="751" left="381" width="11" height="9" font="10">×</text>
+<text top="749" left="395" width="124" height="14" font="2">performance penalty</text>
+<text top="767" left="87" width="197" height="14" font="2">as compared to other approaches</text>
+<text top="764" left="284" width="4" height="9" font="17">1</text>
+<text top="767" left="289" width="3" height="14" font="2">.</text>
+<text top="802" left="107" width="4" height="8" font="18">1</text>
+<text top="804" left="112" width="18" height="11" font="8">The</text>
+<text top="805" left="132" width="6" height="11" font="19">1</text>
+<text top="804" left="138" width="6" height="10" font="20">/</text>
+<text top="805" left="144" width="6" height="11" font="19">2</text>
+<text top="804" left="153" width="366" height="11" font="8">penalty assumes a naive read/write pattern for mirroring; a more sophisticated</text>
+<text top="816" left="87" width="432" height="11" font="8">approach that issued large I/O requests to differing parts of each mirror could potentially</text>
+<text top="828" left="87" width="339" height="11" font="8">achieve full bandwidth. Think about this to see if you can figure out why.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="230" width="9" height="14" font="2">R</text>
+<text top="98" left="240" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="313" width="10" height="14" font="2">A</text>
+<text top="98" left="324" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="384" width="5" height="14" font="2">I</text>
+<text top="98" left="389" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="468" width="10" height="14" font="2">D</text>
+<text top="98" left="479" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="507" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="550" width="6" height="11" font="3">S</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="147" width="414" height="14" font="2">However, the comparison in Figure 38.8 does capture the essential dif-</text>
+<text top="154" left="129" width="432" height="14" font="2">ferences, and is useful for understanding tradeoffs across RAID levels.</text>
+<text top="169" left="129" width="243" height="14" font="2">For the latency analysis, we simply use</text>
+<text top="168" left="377" width="8" height="13" font="9">T</text>
+<text top="169" left="392" width="168" height="14" font="2">to represent the time that a</text>
+<text top="183" left="129" width="210" height="14" font="2">request to a single disk would take.</text>
+<text top="198" left="147" width="414" height="14" font="2">To conclude, if you strictly want performance and do not care about</text>
+<text top="213" left="129" width="432" height="14" font="2">reliability, striping is obviously best. If, however, you want random I/O</text>
+<text top="228" left="129" width="432" height="14" font="2">performance and reliability, mirroring is the best; the cost you pay is in</text>
+<text top="243" left="129" width="432" height="14" font="2">lost capacity. If capacity and reliability are your main goals, then RAID-</text>
+<text top="258" left="129" width="432" height="14" font="2">5 is the winner; the cost you pay is in small-write performance. Finally,</text>
+<text top="273" left="129" width="432" height="14" font="2">if you are always doing sequential I/O and want to maximize capacity,</text>
+<text top="288" left="129" width="208" height="14" font="2">RAID-5 also makes the most sense.</text>
+<text top="325" left="97" width="252" height="17" font="6">38.9 Other Interesting RAID Issues</text>
+<text top="355" left="147" width="414" height="14" font="2">There are a number of other interesting ideas that one could (and per-</text>
+<text top="370" left="129" width="432" height="14" font="2">haps should) discuss when thinking about RAID. Here are some things</text>
+<text top="385" left="129" width="198" height="14" font="2">we might eventually write about.</text>
+<text top="400" left="147" width="414" height="14" font="2">For example, there are many other RAID designs, including Levels 2</text>
+<text top="415" left="129" width="432" height="14" font="2">and 3 from the original taxonomy, and Level 6 to tolerate multiple disk</text>
+<text top="430" left="129" width="432" height="14" font="2">faults [C+04]. There is also what the RAID does when a disk fails; some-</text>
+<text top="445" left="129" width="79" height="14" font="2">times it has a</text>
+<text top="445" left="212" width="57" height="13" font="4"><b>hot spare</b></text>
+<text top="445" left="273" width="288" height="14" font="2">sitting around to fill in for the failed disk. What</text>
+<text top="460" left="129" width="432" height="14" font="2">happens to performance under failure, and performance during recon-</text>
+<text top="474" left="129" width="432" height="14" font="2">struction of the failed disk? There are also more realistic fault models,</text>
+<text top="489" left="129" width="118" height="14" font="2">to take into account</text>
+<text top="489" left="251" width="114" height="13" font="4"><b>latent sector errors</b></text>
+<text top="489" left="369" width="13" height="14" font="2">or</text>
+<text top="489" left="385" width="103" height="13" font="4"><b>block corruption</b></text>
+<text top="489" left="492" width="69" height="14" font="2">[B+08], and</text>
+<text top="504" left="129" width="432" height="14" font="2">lots of techniques to handle such faults (see the data integrity chapter for</text>
+<text top="519" left="129" width="401" height="14" font="2">details). Finally, you can even build RAID as a software layer: such</text>
+<text top="519" left="533" width="28" height="13" font="4"><b>soft-</b></text>
+<text top="534" left="129" width="70" height="13" font="4"><b>ware RAID</b></text>
+<text top="534" left="203" width="358" height="14" font="2">systems are cheaper but have other problems, including the</text>
+<text top="549" left="129" width="220" height="14" font="2">consistent-update problem [DAA05].</text>
+<text top="586" left="97" width="113" height="17" font="6">38.10 Summary</text>
+<text top="616" left="147" width="414" height="14" font="2">We have discussed RAID. RAID transforms a number of independent</text>
+<text top="631" left="129" width="432" height="14" font="2">disks into a large, more capacious, and more reliable single entity; impor-</text>
+<text top="646" left="129" width="432" height="14" font="2">tantly, it does so transparently, and thus hardware and software above is</text>
+<text top="661" left="129" width="201" height="14" font="2">relatively oblivious to the change.</text>
+<text top="676" left="147" width="414" height="14" font="2">There are many possible RAID levels to choose from, and the exact</text>
+<text top="691" left="129" width="432" height="14" font="2">RAID level to use depends heavily on what is important to the end-user.</text>
+<text top="706" left="129" width="432" height="14" font="2">For example, mirrored RAID is simple, reliable, and generally provides</text>
+<text top="721" left="129" width="432" height="14" font="2">good performance but at a high capacity cost. RAID-5, in contrast, is</text>
+<text top="736" left="129" width="432" height="14" font="2">reliable and better from a capacity standpoint, but performs quite poorly</text>
+<text top="750" left="129" width="432" height="14" font="2">when there are small writes in the workload. Picking a RAID and setting</text>
+<text top="765" left="129" width="432" height="14" font="2">its parameters (chunk size, number of disks, etc.) properly for a particular</text>
+<text top="780" left="129" width="400" height="14" font="2">workload is challenging, and remains more of an art than a science.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="16" family="WUKSFJ+URWPalladioL" color="#000000"/>
+	<fontspec id="22" size="10" family="HJOFCJ+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="23" size="10" family="HELBOR+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="9" height="14" font="2">R</text>
+<text top="98" left="97" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="170" width="10" height="14" font="2">A</text>
+<text top="98" left="181" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="242" width="5" height="14" font="2">I</text>
+<text top="98" left="247" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="325" width="10" height="14" font="2">D</text>
+<text top="98" left="336" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="365" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="407" width="6" height="11" font="3">S</text>
+<text top="96" left="413" width="4" height="14" font="2">)</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="137" left="87" width="82" height="16" font="21"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="8">[B+08] “An Analysis of Data Corruption in the Storage Stack” by Lakshmi N. Bairavasun-</text>
+<text top="177" left="87" width="432" height="11" font="8">daram, Garth R. Goodson, Bianca Schroeder, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-</text>
+<text top="189" left="87" width="227" height="11" font="8">Dusseau. FAST ’08, San Jose, CA, February 2008.</text>
+<text top="189" left="319" width="200" height="11" font="22">Our own work analyzing how often disks actu-</text>
+<text top="201" left="87" width="432" height="11" font="22">ally corrupt your data. Not often, but sometimes! And thus something a reliable storage system must</text>
+<text top="213" left="87" width="37" height="11" font="22">consider.</text>
+<text top="229" left="87" width="291" height="11" font="8">[BJ88] “Disk Shadowing” by D. Bitton and J. Gray. VLDB 1988.</text>
+<text top="229" left="381" width="138" height="11" font="22">One of the first papers to discuss</text>
+<text top="241" left="87" width="164" height="11" font="22">mirroring, therein called “shadowing”.</text>
+<text top="258" left="87" width="432" height="11" font="8">[CL95] “Striping in a RAID level 5 disk array” by Peter M. Chen and Edward K. Lee. SIGMET-</text>
+<text top="270" left="87" width="50" height="11" font="8">RICS 1995.</text>
+<text top="270" left="140" width="321" height="11" font="22">A nice analysis of some of the important parameters in a RAID-5 disk array.</text>
+<text top="286" left="87" width="432" height="11" font="8">[C+04] “Row-Diagonal Parity for Double Disk Failure Correction” by P. Corbett, B. English, A.</text>
+<text top="298" left="87" width="344" height="11" font="8">Goel, T. Grcanac, S. Kleiman, J. Leong, S. Sankar. FAST ’04, February 2004.</text>
+<text top="298" left="434" width="85" height="11" font="22">Though not the first</text>
+<text top="310" left="87" width="432" height="11" font="22">paper on a RAID system with two disks for parity, it is a recent and highly-understandable version of</text>
+<text top="322" left="87" width="133" height="11" font="22">said idea. Read it to learn more.</text>
+<text top="338" left="87" width="432" height="11" font="8">[DAA05] “Journal-guided Resynchronization for Software RAID” by Timothy E. Denehy, A.</text>
+<text top="350" left="87" width="223" height="11" font="8">Arpaci-Dusseau, R. Arpaci-Dusseau. FAST 2005.</text>
+<text top="350" left="314" width="205" height="11" font="22">Our own work on the consistent-update problem.</text>
+<text top="362" left="87" width="432" height="11" font="22">Here we solve it for Software RAID by integrating the journaling machinery of the file system above</text>
+<text top="374" left="87" width="148" height="11" font="22">with the software RAID beneath it.</text>
+<text top="390" left="87" width="432" height="11" font="8">[HLM94] “File System Design for an NFS File Server Appliance” by Dave Hitz, James Lau,</text>
+<text top="402" left="87" width="332" height="11" font="8">Michael Malcolm. USENIX Winter 1994, San Francisco, California, 1994.</text>
+<text top="402" left="422" width="97" height="11" font="22">The sparse paper intro-</text>
+<text top="414" left="87" width="432" height="11" font="22">ducing a landmark product in storage, the write-anywhere file layout or WAFL file system that underlies</text>
+<text top="426" left="87" width="94" height="11" font="22">the NetApp file server.</text>
+<text top="442" left="87" width="432" height="11" font="8">[K86] “Synchronized Disk Interleaving” by M.Y. Kim. IEEE Transactions on Computers, Vol-</text>
+<text top="454" left="87" width="142" height="11" font="8">ume C-35: 11, November 1986.</text>
+<text top="454" left="232" width="206" height="11" font="22">Some of the earliest work on RAID is found here.</text>
+<text top="471" left="87" width="432" height="11" font="8">[K88] “Small Disk Arrays – The Emerging Approach to High Performance” by F. Kurzweil.</text>
+<text top="483" left="87" width="370" height="11" font="8">Presentation at Spring COMPCON ’88, March 1, 1988, San Francisco, California.</text>
+<text top="483" left="460" width="58" height="11" font="22">Another early</text>
+<text top="494" left="87" width="68" height="11" font="22">RAID reference.</text>
+<text top="511" left="87" width="432" height="11" font="8">[P+88] “Redundant Arrays of Inexpensive Disks” by D. Patterson, G. Gibson, R. Katz. SIG-</text>
+<text top="523" left="87" width="53" height="11" font="8">MOD 1988.</text>
+<text top="523" left="146" width="77" height="11" font="22">This is considered</text>
+<text top="523" left="226" width="15" height="8" font="23"><b>the</b></text>
+<text top="523" left="244" width="275" height="11" font="22">RAID paper, written by famous authors Patterson, Gibson, and</text>
+<text top="535" left="87" width="432" height="11" font="22">Katz. The paper has since won many test-of-time awards and ushered in the RAID era, including the</text>
+<text top="547" left="87" width="78" height="11" font="22">name RAID itself!</text>
+<text top="563" left="87" width="432" height="11" font="8">[PB86] “Providing Fault Tolerance in Parallel Secondary Storage Systems” by A. Park, K. Bal-</text>
+<text top="575" left="87" width="432" height="11" font="8">asubramaniam. Department of Computer Science, Princeton, CS-TR-O57-86, November 1986.</text>
+<text top="587" left="87" width="126" height="11" font="22">Another early work on RAID.</text>
+<text top="603" left="87" width="432" height="11" font="8">[SG86] “Disk Striping” by K. Salem, H. Garcia-Molina. IEEE International Conference on Data</text>
+<text top="615" left="87" width="86" height="11" font="8">Engineering, 1986.</text>
+<text top="615" left="178" width="341" height="11" font="22">And yes, another early RAID work. There are a lot of these, which kind of came</text>
+<text top="627" left="87" width="302" height="11" font="22">out of the woodwork when the RAID paper was published in SIGMOD.</text>
+<text top="643" left="87" width="432" height="11" font="8">[S84] “Byzantine Generals in Action: Implementing Fail-Stop Processors” by F.B. Schneider.</text>
+<text top="655" left="87" width="311" height="11" font="8">ACM Transactions on Computer Systems, 2(2):145–154, May 1984.</text>
+<text top="655" left="404" width="115" height="11" font="22">Finally, a paper that is not</text>
+<text top="667" left="87" width="432" height="11" font="22">about RAID! This paper is actually about how systems fail, and how to make something behave in a</text>
+<text top="679" left="87" width="71" height="11" font="22">fail-stop manner.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">18</text>
+<text top="96" left="230" width="9" height="14" font="2">R</text>
+<text top="98" left="240" width="69" height="11" font="3">EDUNDANT</text>
+<text top="96" left="313" width="10" height="14" font="2">A</text>
+<text top="98" left="324" width="56" height="11" font="3">RRAYS OF</text>
+<text top="96" left="384" width="5" height="14" font="2">I</text>
+<text top="98" left="389" width="74" height="11" font="3">NEXPENSIVE</text>
+<text top="96" left="468" width="10" height="14" font="2">D</text>
+<text top="98" left="479" width="25" height="11" font="3">ISKS</text>
+<text top="96" left="507" width="42" height="14" font="2">(RAID</text>
+<text top="98" left="550" width="6" height="11" font="3">S</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="137" left="129" width="183" height="16" font="21"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="140" height="14" font="2">This section introduces</text>
+<text top="167" left="291" width="57" height="11" font="12">raid.py</text>
+<text top="166" left="348" width="213" height="14" font="2">, a simple RAID simulator you can</text>
+<text top="181" left="129" width="432" height="14" font="2">use to shore up your knowledge of how RAID systems work. See the</text>
+<text top="196" left="129" width="126" height="14" font="2">README for details.</text>
+<text top="232" left="129" width="70" height="15" font="13"><b>Questions</b></text>
+<text top="256" left="146" width="414" height="14" font="2">1. Use the simulator to perform some basic RAID mapping tests. Run</text>
+<text top="271" left="163" width="397" height="14" font="2">with different levels (0, 1, 4, 5) and see if you can figure out the</text>
+<text top="286" left="163" width="397" height="14" font="2">mappings of a set of requests. For RAID-5, see if you can figure out</text>
+<text top="301" left="163" width="397" height="14" font="2">the difference between left-symmetric and left-asymmetric layouts.</text>
+<text top="316" left="163" width="397" height="14" font="2">Use some different random seeds to generate different problems</text>
+<text top="331" left="163" width="69" height="14" font="2">than above.</text>
+<text top="346" left="146" width="414" height="14" font="2">2. Do the same as the first problem, but this time vary the chunk size</text>
+<text top="361" left="163" width="27" height="14" font="2">with</text>
+<text top="362" left="194" width="16" height="11" font="12">-C</text>
+<text top="361" left="210" width="271" height="14" font="2">. How does chunk size change the mappings?</text>
+<text top="376" left="146" width="223" height="14" font="2">3. Do the same as above, but use the</text>
+<text top="377" left="374" width="16" height="11" font="12">-r</text>
+<text top="376" left="394" width="167" height="14" font="2">flag to reverse the nature of</text>
+<text top="391" left="163" width="84" height="14" font="2">each problem.</text>
+<text top="406" left="146" width="414" height="14" font="2">4. Now use the reverse flag but increase the size of each request with</text>
+<text top="421" left="163" width="19" height="14" font="2">the</text>
+<text top="422" left="186" width="16" height="11" font="12">-S</text>
+<text top="421" left="206" width="355" height="14" font="2">flag. Try specifying sizes of 8k, 12k, and 16k, while varying</text>
+<text top="436" left="163" width="397" height="14" font="2">the RAID level. What happens to the underlying I/O pattern when</text>
+<text top="451" left="163" width="397" height="14" font="2">the size of the request increases? Make sure to try this with the</text>
+<text top="466" left="163" width="152" height="14" font="2">sequential workload too (</text>
+<text top="467" left="315" width="105" height="11" font="12">-W sequential</text>
+<text top="466" left="420" width="140" height="14" font="2">); for what request sizes</text>
+<text top="481" left="163" width="297" height="14" font="2">are RAID-4 and RAID-5 much more I/O efficient?</text>
+<text top="496" left="146" width="255" height="14" font="2">5. Use the timing mode of the simulator (</text>
+<text top="496" left="401" width="16" height="11" font="12">-t</text>
+<text top="496" left="417" width="144" height="14" font="2">) to estimate the perfor-</text>
+<text top="511" left="163" width="397" height="14" font="2">mance of 100 random reads to the RAID, while varying the RAID</text>
+<text top="525" left="163" width="122" height="14" font="2">levels, using 4 disks.</text>
+<text top="540" left="146" width="414" height="14" font="2">6. Do the same as above, but increase the number of disks. How does</text>
+<text top="555" left="163" width="397" height="14" font="2">the performance of each RAID level scale as the number of disks</text>
+<text top="570" left="163" width="60" height="14" font="2">increases?</text>
+<text top="585" left="146" width="261" height="14" font="2">7. Do the same as above, but use all writes (</text>
+<text top="586" left="408" width="48" height="11" font="12">-w 100</text>
+<text top="585" left="456" width="105" height="14" font="2">) instead of reads.</text>
+<text top="600" left="163" width="397" height="14" font="2">How does the performance of each RAID level scale now? Can you</text>
+<text top="615" left="163" width="397" height="14" font="2">do a rough estimate of the time it will take to complete the workload</text>
+<text top="630" left="163" width="132" height="14" font="2">of 100 random writes?</text>
+<text top="645" left="146" width="414" height="14" font="2">8. Run the timing mode one last time, but this time with a sequen-</text>
+<text top="660" left="163" width="88" height="14" font="2">tial workload (</text>
+<text top="661" left="251" width="105" height="11" font="12">-W sequential</text>
+<text top="660" left="356" width="205" height="14" font="2">). How does the performance vary</text>
+<text top="675" left="163" width="397" height="14" font="2">with RAID level, and when doing reads versus writes? How about</text>
+<text top="690" left="163" width="397" height="14" font="2">when varying the size of each request? What size should you write</text>
+<text top="705" left="163" width="253" height="14" font="2">to a RAID when using RAID-4 or RAID-5?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+</pdf2xml>

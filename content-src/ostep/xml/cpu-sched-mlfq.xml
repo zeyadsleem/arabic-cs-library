@@ -1,0 +1,1015 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="COHNYG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="COHNYG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="SAGXBW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="HOCGZE+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="JCVUIG+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="5" size="11" family="SAGXBW+URWPalladioL-Roma" color="#000000"/>
+<text top="191" left="540" width="17" height="30" font="0">8</text>
+<text top="269" left="407" width="112" height="21" font="1">Scheduling:</text>
+<text top="291" left="203" width="316" height="21" font="1">The Multi-Level Feedback Queue</text>
+<text top="372" left="87" width="432" height="14" font="2">In this chapter, we’ll tackle the problem of developing one of the most</text>
+<text top="387" left="87" width="320" height="14" font="2">well-known approaches to scheduling, known as the</text>
+<text top="387" left="411" width="108" height="13" font="3"><b>Multi-level Feed-</b></text>
+<text top="402" left="87" width="129" height="13" font="3"><b>back Queue (MLFQ)</b></text>
+<text top="402" left="216" width="303" height="14" font="2">. The Multi-level Feedback Queue (MLFQ) sched-</text>
+<text top="417" left="87" width="432" height="14" font="2">uler was first described by Corbato et al. in 1962 [C+62] in a system</text>
+<text top="432" left="87" width="432" height="14" font="2">known as the Compatible Time-Sharing System (CTSS), and this work,</text>
+<text top="447" left="87" width="432" height="14" font="2">along with later work on Multics, led the ACM to award Corbato its</text>
+<text top="462" left="87" width="108" height="14" font="2">highest honor, the</text>
+<text top="462" left="200" width="86" height="13" font="3"><b>Turing Award</b></text>
+<text top="462" left="285" width="234" height="14" font="2">. The scheduler has subsequently been</text>
+<text top="477" left="87" width="432" height="14" font="2">refined throughout the years to the implementations you will encounter</text>
+<text top="492" left="87" width="151" height="14" font="2">in some modern systems.</text>
+<text top="507" left="105" width="414" height="14" font="2">The fundamental problem MLFQ tries to address is two-fold. First, it</text>
+<text top="522" left="87" width="135" height="14" font="2">would like to optimize</text>
+<text top="522" left="225" width="91" height="14" font="4">turnaround time</text>
+<text top="522" left="316" width="203" height="14" font="2">, which, as we saw in the previous</text>
+<text top="537" left="87" width="432" height="14" font="2">note, is done by running shorter jobs first; unfortunately, the OS doesn’t</text>
+<text top="552" left="87" width="432" height="14" font="2">generally know how long a job will run for, exactly the knowledge that</text>
+<text top="567" left="87" width="432" height="14" font="2">algorithms like SJF (or STCF) require. Second, MLFQ would like to make</text>
+<text top="582" left="87" width="432" height="14" font="2">a system feel responsive to interactive users (i.e., users sitting and staring</text>
+<text top="597" left="87" width="382" height="14" font="2">at the screen, waiting for a process to finish), and thus minimize</text>
+<text top="596" left="473" width="46" height="14" font="4">response</text>
+<text top="611" left="87" width="24" height="14" font="4">time</text>
+<text top="611" left="111" width="408" height="14" font="2">; unfortunately, algorithms like Round Robin reduce response time</text>
+<text top="626" left="87" width="432" height="14" font="2">but are terrible for turnaround time. Thus, our problem: given that we</text>
+<text top="641" left="87" width="432" height="14" font="2">in general do not know anything about a process, how can we build a</text>
+<text top="656" left="87" width="432" height="14" font="2">scheduler to achieve these goals? How can the scheduler learn, as the</text>
+<text top="671" left="87" width="432" height="14" font="2">system runs, the characteristics of the jobs it is running, and thus make</text>
+<text top="686" left="87" width="168" height="14" font="2">better scheduling decisions?</text>
+<text top="723" left="269" width="8" height="14" font="2">T</text>
+<text top="725" left="278" width="16" height="11" font="5">HE</text>
+<text top="723" left="298" width="10" height="14" font="2">C</text>
+<text top="725" left="309" width="24" height="11" font="5">RUX</text>
+<text top="723" left="333" width="3" height="14" font="2">:</text>
+<text top="738" left="137" width="11" height="14" font="2">H</text>
+<text top="740" left="149" width="20" height="11" font="5">OW</text>
+<text top="738" left="172" width="8" height="14" font="2">T</text>
+<text top="740" left="181" width="8" height="11" font="5">O</text>
+<text top="738" left="194" width="7" height="14" font="2">S</text>
+<text top="740" left="201" width="57" height="11" font="5">CHEDULE</text>
+<text top="738" left="262" width="13" height="14" font="2">W</text>
+<text top="740" left="277" width="46" height="11" font="5">ITHOUT</text>
+<text top="738" left="326" width="8" height="14" font="2">P</text>
+<text top="740" left="335" width="44" height="11" font="5">ERFECT</text>
+<text top="738" left="383" width="10" height="14" font="2">K</text>
+<text top="740" left="394" width="69" height="11" font="5">NOWLEDGE</text>
+<text top="738" left="463" width="6" height="14" font="2">?</text>
+<text top="752" left="105" width="414" height="14" font="2">How can we design a scheduler that both minimizes response time for</text>
+<text top="767" left="87" width="386" height="14" font="2">interactive jobs while also minimizing turnaround time without</text>
+<text top="767" left="478" width="41" height="14" font="4">a priori</text>
+<text top="782" left="87" width="150" height="14" font="2">knowledge of job length?</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="16" family="SAGXBW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="13" family="FIQLBW+CMMI9" color="#000000"/>
+	<fontspec id="8" size="13" family="VPJYGL+CMR9" color="#000000"/>
+	<fontspec id="9" size="12" family="SAGXBW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="SAGXBW+URWPalladioL-Roma" color="#000000"/>
+<text top="110" left="129" width="7" height="14" font="2">2</text>
+<text top="95" left="476" width="7" height="14" font="2">S</text>
+<text top="97" left="484" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="557" width="3" height="14" font="2">:</text>
+<text top="110" left="332" width="8" height="14" font="2">T</text>
+<text top="112" left="341" width="16" height="11" font="5">HE</text>
+<text top="110" left="361" width="13" height="14" font="2">M</text>
+<text top="112" left="375" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="402" width="13" height="14" font="2">-L</text>
+<text top="112" left="416" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="449" width="7" height="14" font="2">F</text>
+<text top="112" left="457" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="517" width="11" height="14" font="2">Q</text>
+<text top="112" left="529" width="32" height="11" font="5">UEUE</text>
+<text top="148" left="261" width="8" height="14" font="2">T</text>
+<text top="150" left="270" width="11" height="11" font="5">IP</text>
+<text top="148" left="282" width="16" height="14" font="2">: L</text>
+<text top="150" left="299" width="33" height="11" font="5">EARN</text>
+<text top="148" left="336" width="7" height="14" font="2">F</text>
+<text top="150" left="344" width="27" height="11" font="5">ROM</text>
+<text top="148" left="375" width="11" height="14" font="2">H</text>
+<text top="150" left="387" width="41" height="11" font="5">ISTORY</text>
+<text top="163" left="129" width="432" height="14" font="2">The multi-level feedback queue is an excellent example of a system that</text>
+<text top="178" left="129" width="432" height="14" font="2">learns from the past to predict the future. Such approaches are com-</text>
+<text top="193" left="129" width="432" height="14" font="2">mon in operating systems (and many other places in Computer Science,</text>
+<text top="208" left="129" width="432" height="14" font="2">including hardware branch predictors and caching algorithms). Such</text>
+<text top="223" left="129" width="432" height="14" font="2">approaches work when jobs have phases of behavior and are thus pre-</text>
+<text top="238" left="129" width="432" height="14" font="2">dictable; of course, one must be careful with such techniques, as they can</text>
+<text top="253" left="129" width="432" height="14" font="2">easily be wrong and drive a system to make worse decisions than they</text>
+<text top="267" left="129" width="225" height="14" font="2">would have with no knowledge at all.</text>
+<text top="319" left="97" width="163" height="17" font="6">8.1 MLFQ: Basic Rules</text>
+<text top="349" left="147" width="414" height="14" font="2">To build such a scheduler, in this chapter we will describe the basic</text>
+<text top="364" left="129" width="432" height="14" font="2">algorithms behind a multi-level feedback queue; although the specifics of</text>
+<text top="379" left="129" width="411" height="14" font="2">many implemented MLFQs differ [E95], most approaches are similar.</text>
+<text top="394" left="147" width="329" height="14" font="2">In our treatment, the MLFQ has a number of distinct</text>
+<text top="394" left="481" width="44" height="13" font="3"><b>queues</b></text>
+<text top="394" left="525" width="36" height="14" font="2">, each</text>
+<text top="409" left="129" width="117" height="14" font="2">assigned a different</text>
+<text top="409" left="250" width="81" height="13" font="3"><b>priority level</b></text>
+<text top="409" left="331" width="230" height="14" font="2">. At any given time, a job that is ready</text>
+<text top="424" left="129" width="432" height="14" font="2">to run is on a single queue. MLFQ uses priorities to decide which job</text>
+<text top="439" left="129" width="432" height="14" font="2">should run at a given time: a job with higher priority (i.e., a job on a</text>
+<text top="453" left="129" width="184" height="14" font="2">higher queue) is chosen to run.</text>
+<text top="468" left="147" width="414" height="14" font="2">Of course, more than one job may be on a given queue, and thus have</text>
+<text top="483" left="129" width="19" height="14" font="2">the</text>
+<text top="483" left="152" width="27" height="14" font="4">same</text>
+<text top="483" left="184" width="377" height="14" font="2">priority. In this case, we will just use round-robin scheduling</text>
+<text top="498" left="129" width="107" height="14" font="2">among those jobs.</text>
+<text top="513" left="147" width="315" height="14" font="2">Thus, we arrive at the first two basic rules for MLFQ:</text>
+<text top="532" left="148" width="8" height="14" font="2">•</text>
+<text top="533" left="163" width="43" height="13" font="3"><b>Rule 1:</b></text>
+<text top="532" left="210" width="78" height="14" font="2">If Priority(A)</text>
+<text top="533" left="291" width="11" height="10" font="7">&gt;</text>
+<text top="532" left="305" width="181" height="14" font="2">Priority(B), A runs (B doesn’t).</text>
+<text top="547" left="148" width="8" height="14" font="2">•</text>
+<text top="547" left="163" width="43" height="13" font="3"><b>Rule 2:</b></text>
+<text top="547" left="210" width="78" height="14" font="2">If Priority(A)</text>
+<text top="548" left="291" width="11" height="9" font="8">=</text>
+<text top="547" left="305" width="170" height="14" font="2">Priority(B), A &amp; B run in RR.</text>
+<text top="572" left="147" width="414" height="14" font="2">The key to MLFQ scheduling therefore lies in how the scheduler sets</text>
+<text top="587" left="129" width="395" height="14" font="2">priorities. Rather than giving a fixed priority to each job, MLFQ</text>
+<text top="587" left="529" width="32" height="14" font="4">varies</text>
+<text top="602" left="129" width="195" height="14" font="2">the priority of a job based on its</text>
+<text top="602" left="328" width="97" height="14" font="4">observed behavior</text>
+<text top="602" left="425" width="136" height="14" font="2">. If, for example, a job</text>
+<text top="617" left="129" width="432" height="14" font="2">repeatedly relinquishes the CPU while waiting for input from the key-</text>
+<text top="632" left="129" width="432" height="14" font="2">board, MLFQ will keep its priority high, as this is how an interactive</text>
+<text top="647" left="129" width="432" height="14" font="2">process might behave. If, instead, a job uses the CPU intensively for long</text>
+<text top="662" left="129" width="432" height="14" font="2">periods of time, MLFQ will reduce its priority. In this way, MLFQ will try</text>
+<text top="677" left="129" width="12" height="14" font="2">to</text>
+<text top="677" left="144" width="28" height="14" font="4">learn</text>
+<text top="677" left="175" width="270" height="14" font="2">about processes as they run, and thus use the</text>
+<text top="677" left="448" width="38" height="14" font="4">history</text>
+<text top="677" left="490" width="71" height="14" font="2">of the job to</text>
+<text top="692" left="129" width="59" height="14" font="2">predict its</text>
+<text top="692" left="192" width="33" height="14" font="4">future</text>
+<text top="692" left="228" width="55" height="14" font="2">behavior.</text>
+<text top="707" left="147" width="414" height="14" font="2">If we were to put forth a picture of what the queues might look like at a</text>
+<text top="721" left="129" width="432" height="14" font="2">given instant, we might see something like the following (Figure 8.1, page</text>
+<text top="736" left="129" width="432" height="14" font="2">3). In the figure, two jobs (A and B) are at the highest priority level, while</text>
+<text top="751" left="129" width="432" height="14" font="2">job C is in the middle and Job D is at the lowest priority. Given our current</text>
+<text top="766" left="129" width="432" height="14" font="2">knowledge of how MLFQ works, the scheduler would just alternate time</text>
+<text top="781" left="129" width="432" height="14" font="2">slices between A and B because they are the highest priority jobs in the</text>
+<text top="796" left="129" width="416" height="14" font="2">system; poor jobs C and D would never even get to run — an outrage!</text>
+<text top="811" left="147" width="414" height="14" font="2">Of course, just showing a static snapshot of some queues does not re-</text>
+<text top="826" left="129" width="432" height="14" font="2">ally give you an idea of how MLFQ works. What we need is to under-</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="COHNYG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="12" size="11" family="COHNYG+NimbusSanL-Regu" color="#000000"/>
+<text top="95" left="87" width="7" height="14" font="2">S</text>
+<text top="97" left="95" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="168" width="3" height="14" font="2">:</text>
+<text top="110" left="87" width="8" height="14" font="2">T</text>
+<text top="112" left="96" width="16" height="11" font="5">HE</text>
+<text top="110" left="117" width="13" height="14" font="2">M</text>
+<text top="112" left="130" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="157" width="13" height="14" font="2">-L</text>
+<text top="112" left="171" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="205" width="7" height="14" font="2">F</text>
+<text top="112" left="213" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="273" width="11" height="14" font="2">Q</text>
+<text top="112" left="284" width="32" height="11" font="5">UEUE</text>
+<text top="110" left="512" width="7" height="14" font="2">3</text>
+<text top="352" left="263" width="18" height="13" font="11">Q1</text>
+<text top="325" left="263" width="18" height="13" font="11">Q2</text>
+<text top="299" left="263" width="18" height="13" font="11">Q3</text>
+<text top="272" left="263" width="18" height="13" font="11">Q4</text>
+<text top="246" left="263" width="18" height="13" font="11">Q5</text>
+<text top="219" left="263" width="18" height="13" font="11">Q6</text>
+<text top="193" left="263" width="18" height="13" font="11">Q7</text>
+<text top="166" left="263" width="18" height="13" font="11">Q8</text>
+<text top="353" left="190" width="61" height="10" font="12">[Low Priority]</text>
+<text top="167" left="188" width="64" height="10" font="12">[High Priority]</text>
+<text top="352" left="320" width="10" height="13" font="11">D</text>
+<text top="272" left="320" width="10" height="13" font="11">C</text>
+<text top="166" left="320" width="9" height="13" font="11">A</text>
+<text top="166" left="373" width="9" height="13" font="11">B</text>
+<text top="380" left="222" width="62" height="14" font="2">Figure 8.1:</text>
+<text top="380" left="288" width="97" height="13" font="3"><b>MLFQ Example</b></text>
+<text top="433" left="87" width="138" height="14" font="2">stand how job priority</text>
+<text top="433" left="229" width="43" height="14" font="4">changes</text>
+<text top="433" left="277" width="242" height="14" font="2">over time. And that, in a surprise only</text>
+<text top="448" left="87" width="432" height="14" font="2">to those who are reading a chapter from this book for the first time, is</text>
+<text top="463" left="87" width="174" height="14" font="2">exactly what we will do next.</text>
+<text top="501" left="55" width="294" height="17" font="6">8.2 Attempt #1: How To Change Priority</text>
+<text top="532" left="105" width="414" height="14" font="2">We now must decide how MLFQ is going to change the priority level</text>
+<text top="547" left="87" width="432" height="14" font="2">of a job (and thus which queue it is on) over the lifetime of a job. To do</text>
+<text top="562" left="87" width="432" height="14" font="2">this, we must keep in mind our workload: a mix of interactive jobs that</text>
+<text top="577" left="87" width="432" height="14" font="2">are short-running (and may frequently relinquish the CPU), and some</text>
+<text top="592" left="87" width="432" height="14" font="2">longer-running “CPU-bound” jobs that need a lot of CPU time but where</text>
+<text top="607" left="87" width="178" height="14" font="2">response time isn’t important.</text>
+<text top="622" left="105" width="349" height="14" font="2">For this, we need a new concept, which we will call the job’s</text>
+<text top="622" left="457" width="59" height="13" font="3"><b>allotment</b></text>
+<text top="622" left="516" width="3" height="14" font="2">.</text>
+<text top="637" left="87" width="432" height="14" font="2">The allotment is the amount of time a job can spend at a given priority</text>
+<text top="652" left="87" width="432" height="14" font="2">level before the scheduler reduces its priority. For simplicity, at first, we</text>
+<text top="667" left="87" width="329" height="14" font="2">will assume the allotment is equal to a single time slice.</text>
+<text top="683" left="105" width="353" height="14" font="2">Here is our first attempt at a priority-adjustment algorithm:</text>
+<text top="716" left="107" width="8" height="14" font="2">•</text>
+<text top="716" left="122" width="44" height="13" font="3"><b>Rule 3:</b></text>
+<text top="716" left="173" width="346" height="14" font="2">When a job enters the system, it is placed at the highest</text>
+<text top="731" left="122" width="173" height="14" font="2">priority (the topmost queue).</text>
+<text top="746" left="107" width="8" height="14" font="2">•</text>
+<text top="746" left="122" width="50" height="13" font="3"><b>Rule 4a:</b></text>
+<text top="746" left="176" width="343" height="14" font="2">If a job uses up its allotment while running, its priority is</text>
+<text top="761" left="122" width="42" height="14" font="4">reduced</text>
+<text top="761" left="167" width="190" height="14" font="2">(i.e., it moves down one queue).</text>
+<text top="776" left="107" width="8" height="14" font="2">•</text>
+<text top="776" left="122" width="53" height="13" font="3"><b>Rule 4b:</b></text>
+<text top="776" left="182" width="337" height="14" font="2">If a job gives up the CPU (for example, by performing</text>
+<text top="790" left="122" width="365" height="14" font="2">an I/O operation) before the allotment is up, it stays at the</text>
+<text top="790" left="492" width="27" height="14" font="4">same</text>
+<text top="805" left="122" width="235" height="14" font="2">priority level (i.e., its allotment is reset).</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="12" family="COHNYG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="14" size="15" family="HOCGZE+URWPalladioL" color="#000000"/>
+<text top="110" left="129" width="7" height="14" font="2">4</text>
+<text top="95" left="476" width="7" height="14" font="2">S</text>
+<text top="97" left="484" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="557" width="3" height="14" font="2">:</text>
+<text top="110" left="332" width="8" height="14" font="2">T</text>
+<text top="112" left="341" width="16" height="11" font="5">HE</text>
+<text top="110" left="361" width="13" height="14" font="2">M</text>
+<text top="112" left="375" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="402" width="13" height="14" font="2">-L</text>
+<text top="112" left="416" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="449" width="7" height="14" font="2">F</text>
+<text top="112" left="457" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="517" width="11" height="14" font="2">Q</text>
+<text top="112" left="529" width="32" height="11" font="5">UEUE</text>
+<text top="158" left="249" width="16" height="12" font="13">Q2</text>
+<text top="214" left="249" width="16" height="12" font="13">Q1</text>
+<text top="269" left="249" width="16" height="12" font="13">Q0</text>
+<text top="308" left="266" width="7" height="12" font="13">0</text>
+<text top="308" left="305" width="14" height="12" font="13">50</text>
+<text top="308" left="343" width="20" height="12" font="13">100</text>
+<text top="308" left="385" width="20" height="12" font="13">150</text>
+<text top="308" left="426" width="20" height="12" font="13">200</text>
+<text top="331" left="222" width="62" height="14" font="2">Figure 8.2:</text>
+<text top="331" left="288" width="179" height="13" font="3"><b>Long-running Job Over Time</b></text>
+<text top="375" left="129" width="269" height="15" font="14"><b>Example 1: A Single Long-Running Job</b></text>
+<text top="401" left="129" width="432" height="14" font="2">Let’s look at some examples. First, we’ll look at what happens when there</text>
+<text top="415" left="129" width="432" height="14" font="2">has been a long running job in the system, with a time slice of 10 ms (and</text>
+<text top="430" left="129" width="432" height="14" font="2">with the allotment set equal to the time slice). Figure 8.2 shows what</text>
+<text top="445" left="129" width="336" height="14" font="2">happens to this job over time in a three-queue scheduler.</text>
+<text top="462" left="147" width="414" height="14" font="2">As you can see in the example, the job enters at the highest priority</text>
+<text top="477" left="129" width="432" height="14" font="2">(Q2). After a single time slice of 10 ms, the scheduler reduces the job’s</text>
+<text top="492" left="129" width="432" height="14" font="2">priority by one, and thus the job is on Q1. After running at Q1 for a time</text>
+<text top="507" left="129" width="432" height="14" font="2">slice, the job is finally lowered to the lowest priority in the system (Q0),</text>
+<text top="522" left="129" width="214" height="14" font="2">where it remains. Pretty simple, no?</text>
+<text top="550" left="129" width="247" height="15" font="14"><b>Example 2: Along Came A Short Job</b></text>
+<text top="576" left="129" width="432" height="14" font="2">Now let’s look at a more complicated example, and hopefully see how</text>
+<text top="591" left="129" width="432" height="14" font="2">MLFQ tries to approximate SJF. In this example, there are two jobs: A,</text>
+<text top="606" left="129" width="439" height="14" font="2">which is a long-running CPU-intensive job, and B, which is a short-running</text>
+<text top="620" left="129" width="432" height="14" font="2">interactive job. Assume A has been running for some time, and then B ar-</text>
+<text top="635" left="129" width="360" height="14" font="2">rives. What will happen? Will MLFQ approximate SJF for B?</text>
+<text top="652" left="147" width="414" height="14" font="2">Figure 8.3 on page 5 (left) plots the results of this scenario. Job A</text>
+<text top="667" left="129" width="432" height="14" font="2">(shown in black) is running along in the lowest-priority queue (as would</text>
+<text top="682" left="129" width="432" height="14" font="2">any long-running CPU-intensive jobs); B (shown in gray) arrives at time</text>
+<text top="697" left="129" width="8" height="10" font="7">T</text>
+<text top="698" left="145" width="37" height="9" font="8">= 100</text>
+<text top="697" left="182" width="379" height="14" font="2">, and thus is inserted into the highest queue; as its run-time is</text>
+<text top="712" left="129" width="432" height="14" font="2">short (only 20 ms), B completes before reaching the bottom queue, in two</text>
+<text top="727" left="129" width="315" height="14" font="2">time slices; then A resumes running (at low priority).</text>
+<text top="743" left="147" width="414" height="14" font="2">From this example, you can hopefully understand one of the major</text>
+<text top="758" left="129" width="253" height="14" font="2">goals of the algorithm: because it doesn’t</text>
+<text top="758" left="386" width="29" height="14" font="4">know</text>
+<text top="758" left="420" width="141" height="14" font="2">whether a job will be a</text>
+<text top="773" left="129" width="221" height="14" font="2">short job or a long-running job, it first</text>
+<text top="773" left="353" width="45" height="14" font="4">assumes</text>
+<text top="773" left="401" width="160" height="14" font="2">it might be a short job, thus</text>
+<text top="788" left="129" width="432" height="14" font="2">giving the job high priority. If it actually is a short job, it will run quickly</text>
+<text top="803" left="129" width="432" height="14" font="2">and complete; if it is not a short job, it will slowly move down the queues,</text>
+<text top="818" left="129" width="432" height="14" font="2">and thus soon prove itself to be a long-running more batch-like process.</text>
+<text top="833" left="129" width="241" height="14" font="2">In this manner, MLFQ approximates SJF.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="95" left="87" width="7" height="14" font="2">S</text>
+<text top="97" left="95" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="168" width="3" height="14" font="2">:</text>
+<text top="110" left="87" width="8" height="14" font="2">T</text>
+<text top="112" left="96" width="16" height="11" font="5">HE</text>
+<text top="110" left="117" width="13" height="14" font="2">M</text>
+<text top="112" left="130" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="157" width="13" height="14" font="2">-L</text>
+<text top="112" left="171" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="205" width="7" height="14" font="2">F</text>
+<text top="112" left="213" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="273" width="11" height="14" font="2">Q</text>
+<text top="112" left="284" width="32" height="11" font="5">UEUE</text>
+<text top="110" left="512" width="7" height="14" font="2">5</text>
+<text top="269" left="110" width="15" height="11" font="12">Q0</text>
+<text top="213" left="110" width="15" height="11" font="12">Q1</text>
+<text top="158" left="110" width="15" height="11" font="12">Q2</text>
+<text top="305" left="126" width="6" height="11" font="12">0</text>
+<text top="305" left="165" width="12" height="11" font="12">50</text>
+<text top="305" left="204" width="18" height="11" font="12">100</text>
+<text top="305" left="245" width="18" height="11" font="12">150</text>
+<text top="305" left="287" width="18" height="11" font="12">200</text>
+<text top="269" left="311" width="15" height="11" font="12">Q0</text>
+<text top="213" left="311" width="15" height="11" font="12">Q1</text>
+<text top="158" left="311" width="15" height="11" font="12">Q2</text>
+<text top="305" left="328" width="6" height="11" font="12">0</text>
+<text top="305" left="366" width="12" height="11" font="12">50</text>
+<text top="305" left="405" width="18" height="11" font="12">100</text>
+<text top="305" left="446" width="18" height="11" font="12">150</text>
+<text top="305" left="488" width="18" height="11" font="12">200</text>
+<text top="331" left="126" width="62" height="14" font="2">Figure 8.3:</text>
+<text top="331" left="192" width="288" height="13" font="3"><b>Along Came An Interactive Job: Two Examples</b></text>
+<text top="362" left="87" width="195" height="15" font="14"><b>Example 3: What About I/O?</b></text>
+<text top="387" left="87" width="432" height="14" font="2">Let’s now look at an example with some I/O. As Rule 4b states above, if a</text>
+<text top="402" left="87" width="432" height="14" font="2">process gives up the processor before using up its allotment, we keep it at</text>
+<text top="417" left="87" width="432" height="14" font="2">the same priority level. The intent of this rule is simple: if an interactive</text>
+<text top="432" left="87" width="432" height="14" font="2">job, for example, is doing a lot of I/O (say by waiting for user input from</text>
+<text top="447" left="87" width="432" height="14" font="2">the keyboard or mouse), it will relinquish the CPU before its allotment is</text>
+<text top="462" left="87" width="432" height="14" font="2">complete; in such case, we don’t wish to penalize the job and thus simply</text>
+<text top="477" left="87" width="146" height="14" font="2">keep it at the same level.</text>
+<text top="493" left="105" width="414" height="14" font="2">Figure 8.3 (right) shows an example of how this works, with an in-</text>
+<text top="508" left="87" width="432" height="14" font="2">teractive job B (shown in gray) that needs the CPU only for 1 ms before</text>
+<text top="523" left="87" width="432" height="14" font="2">performing an I/O competing for the CPU with a long-running batch job</text>
+<text top="538" left="87" width="432" height="14" font="2">A (shown in black). The MLFQ approach keeps B at the highest prior-</text>
+<text top="553" left="87" width="432" height="14" font="2">ity because B keeps releasing the CPU; if B is an interactive job, MLFQ</text>
+<text top="567" left="87" width="352" height="14" font="2">further achieves its goal of running interactive jobs quickly.</text>
+<text top="597" left="87" width="239" height="15" font="14"><b>Problems With Our Current MLFQ</b></text>
+<text top="622" left="87" width="432" height="14" font="2">We thus have a basic MLFQ. It seems to do a fairly good job, sharing the</text>
+<text top="637" left="87" width="432" height="14" font="2">CPU fairly between long-running jobs, and letting short or I/O-intensive</text>
+<text top="652" left="87" width="432" height="14" font="2">interactive jobs run quickly. Unfortunately, the approach we have devel-</text>
+<text top="667" left="87" width="353" height="14" font="2">oped thus far contains serious flaws. Can you think of any?</text>
+<text top="694" left="105" width="323" height="14" font="4">(This is where you pause and think as deviously as you can)</text>
+<text top="721" left="105" width="175" height="14" font="2">First, there is the problem of</text>
+<text top="721" left="284" width="61" height="13" font="3"><b>starvation</b></text>
+<text top="721" left="346" width="173" height="14" font="2">: if there are “too many” in-</text>
+<text top="735" left="87" width="349" height="14" font="2">teractive jobs in the system, they will combine to consume</text>
+<text top="735" left="440" width="13" height="14" font="4">all</text>
+<text top="735" left="457" width="62" height="14" font="2">CPU time,</text>
+<text top="750" left="87" width="187" height="14" font="2">and thus long-running jobs will</text>
+<text top="750" left="277" width="30" height="14" font="4">never</text>
+<text top="750" left="310" width="162" height="14" font="2">receive any CPU time (they</text>
+<text top="750" left="475" width="37" height="13" font="3"><b>starve</b></text>
+<text top="750" left="511" width="8" height="14" font="2">).</text>
+<text top="765" left="87" width="403" height="14" font="2">We’d like to make some progress on these jobs even in this scenario.</text>
+<text top="781" left="105" width="311" height="14" font="2">Second, a smart user could rewrite their program to</text>
+<text top="781" left="420" width="99" height="13" font="3"><b>game the sched-</b></text>
+<text top="796" left="87" width="25" height="13" font="3"><b>uler</b></text>
+<text top="796" left="112" width="407" height="14" font="2">. Gaming the scheduler generally refers to the idea of doing some-</text>
+<text top="811" left="87" width="432" height="14" font="2">thing sneaky to trick the scheduler into giving you more than your fair</text>
+<text top="826" left="87" width="432" height="14" font="2">share of the resource. The algorithm we have described is susceptible to</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="110" left="129" width="7" height="14" font="2">6</text>
+<text top="95" left="476" width="7" height="14" font="2">S</text>
+<text top="97" left="484" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="557" width="3" height="14" font="2">:</text>
+<text top="110" left="332" width="8" height="14" font="2">T</text>
+<text top="112" left="341" width="16" height="11" font="5">HE</text>
+<text top="110" left="361" width="13" height="14" font="2">M</text>
+<text top="112" left="375" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="402" width="13" height="14" font="2">-L</text>
+<text top="112" left="416" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="449" width="7" height="14" font="2">F</text>
+<text top="112" left="457" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="517" width="11" height="14" font="2">Q</text>
+<text top="112" left="529" width="32" height="11" font="5">UEUE</text>
+<text top="148" left="189" width="8" height="14" font="2">T</text>
+<text top="150" left="198" width="11" height="11" font="5">IP</text>
+<text top="148" left="210" width="15" height="14" font="2">: S</text>
+<text top="150" left="226" width="73" height="11" font="5">CHEDULING</text>
+<text top="148" left="302" width="13" height="14" font="2">M</text>
+<text top="150" left="316" width="22" height="11" font="5">UST</text>
+<text top="148" left="342" width="8" height="14" font="2">B</text>
+<text top="150" left="351" width="7" height="11" font="5">E</text>
+<text top="148" left="361" width="7" height="14" font="2">S</text>
+<text top="150" left="369" width="39" height="11" font="5">ECURE</text>
+<text top="148" left="412" width="7" height="14" font="2">F</text>
+<text top="150" left="420" width="27" height="11" font="5">ROM</text>
+<text top="148" left="451" width="10" height="14" font="2">A</text>
+<text top="150" left="461" width="39" height="11" font="5">TTACK</text>
+<text top="163" left="129" width="432" height="14" font="2">You might think that a scheduling policy, whether inside the OS itself</text>
+<text top="178" left="129" width="432" height="14" font="2">(as discussed herein), or in a broader context (e.g., in a distributed stor-</text>
+<text top="193" left="129" width="303" height="14" font="2">age system’s I/O request handling [Y+18]), is not a</text>
+<text top="193" left="435" width="49" height="13" font="3"><b>security</b></text>
+<text top="193" left="487" width="73" height="14" font="2">concern, but</text>
+<text top="208" left="129" width="432" height="14" font="2">in increasingly many cases, it is exactly that. Consider the modern dat-</text>
+<text top="223" left="129" width="432" height="14" font="2">acenter, in which users from around the world share CPUs, memories,</text>
+<text top="238" left="129" width="432" height="14" font="2">networks, and storage systems; without care in policy design and en-</text>
+<text top="253" left="129" width="432" height="14" font="2">forcement, a single user may be able to adversely harm others and gain</text>
+<text top="268" left="129" width="432" height="14" font="2">advantage for itself. Thus, scheduling policy forms an important part of</text>
+<text top="283" left="129" width="363" height="14" font="2">the security of a system, and should be carefully constructed.</text>
+<text top="338" left="129" width="432" height="14" font="2">the following attack: before the allotment is used, issue an I/O operation</text>
+<text top="353" left="129" width="432" height="14" font="2">(e.g., to a file) and thus relinquish the CPU; doing so allows you to remain</text>
+<text top="368" left="129" width="432" height="14" font="2">in the same queue, and thus gain a higher percentage of CPU time. When</text>
+<text top="383" left="129" width="432" height="14" font="2">done right (e.g., by running for 99% of the allotment before relinquishing</text>
+<text top="398" left="129" width="298" height="14" font="2">the CPU), a job could nearly monopolize the CPU.</text>
+<text top="413" left="147" width="140" height="14" font="2">Finally, a program may</text>
+<text top="413" left="291" width="105" height="14" font="4">change its behavior</text>
+<text top="413" left="401" width="160" height="14" font="2">over time; what was CPU-</text>
+<text top="428" left="129" width="432" height="14" font="2">bound may transition to a phase of interactivity. With our current ap-</text>
+<text top="443" left="129" width="432" height="14" font="2">proach, such a job would be out of luck and not be treated like the other</text>
+<text top="458" left="129" width="175" height="14" font="2">interactive jobs in the system.</text>
+<text top="495" left="97" width="248" height="17" font="6">8.3 Attempt #2: The Priority Boost</text>
+<text top="526" left="147" width="414" height="14" font="2">Let’s try to change the rules and see if we can avoid the problem of</text>
+<text top="540" left="129" width="432" height="14" font="2">starvation. What could we do in order to guarantee that CPU-bound jobs</text>
+<text top="555" left="129" width="294" height="14" font="2">will make some progress (even if it is not much?).</text>
+<text top="571" left="147" width="225" height="14" font="2">The simple idea here is to periodically</text>
+<text top="571" left="375" width="34" height="13" font="3"><b>boost</b></text>
+<text top="571" left="412" width="149" height="14" font="2">the priority of all the jobs</text>
+<text top="586" left="129" width="432" height="14" font="2">in the system. There are many ways to achieve this, but let’s just do some-</text>
+<text top="601" left="129" width="413" height="14" font="2">thing simple: throw them all in the topmost queue; hence, a new rule:</text>
+<text top="631" left="148" width="8" height="14" font="2">•</text>
+<text top="631" left="163" width="43" height="13" font="3"><b>Rule 5:</b></text>
+<text top="631" left="212" width="141" height="14" font="2">After some time period</text>
+<text top="631" left="357" width="8" height="10" font="7">S</text>
+<text top="631" left="366" width="194" height="14" font="2">, move all the jobs in the system</text>
+<text top="646" left="163" width="130" height="14" font="2">to the topmost queue.</text>
+<text top="676" left="147" width="414" height="14" font="2">Our new rule solves two problems at once. First, processes are guar-</text>
+<text top="691" left="129" width="432" height="14" font="2">anteed not to starve: by sitting in the top queue, a job will share the CPU</text>
+<text top="706" left="129" width="432" height="14" font="2">with other high-priority jobs in a round-robin fashion, and thus eventu-</text>
+<text top="721" left="129" width="432" height="14" font="2">ally receive service. Second, if a CPU-bound job has become interactive,</text>
+<text top="736" left="129" width="413" height="14" font="2">the scheduler treats it properly once it has received the priority boost.</text>
+<text top="751" left="147" width="414" height="14" font="2">Let’s see an example. In this scenario, we just show the behavior of</text>
+<text top="766" left="129" width="432" height="14" font="2">a long-running job when competing for the CPU with two short-running</text>
+<text top="781" left="129" width="432" height="14" font="2">interactive jobs. Two graphs are shown in Figure 8.4 (page 7). On the left,</text>
+<text top="796" left="129" width="432" height="14" font="2">there is no priority boost, and thus the long-running job gets starved once</text>
+<text top="811" left="129" width="432" height="14" font="2">the two short jobs arrive; on the right, there is a priority boost every 100</text>
+<text top="826" left="129" width="432" height="14" font="2">ms (which is likely too small of a value, but used here for the example),</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="95" left="87" width="7" height="14" font="2">S</text>
+<text top="97" left="95" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="168" width="3" height="14" font="2">:</text>
+<text top="110" left="87" width="8" height="14" font="2">T</text>
+<text top="112" left="96" width="16" height="11" font="5">HE</text>
+<text top="110" left="117" width="13" height="14" font="2">M</text>
+<text top="112" left="130" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="157" width="13" height="14" font="2">-L</text>
+<text top="112" left="171" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="205" width="7" height="14" font="2">F</text>
+<text top="112" left="213" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="273" width="11" height="14" font="2">Q</text>
+<text top="112" left="284" width="32" height="11" font="5">UEUE</text>
+<text top="110" left="512" width="7" height="14" font="2">7</text>
+<text top="158" left="107" width="16" height="12" font="13">Q2</text>
+<text top="214" left="107" width="16" height="12" font="13">Q1</text>
+<text top="269" left="107" width="16" height="12" font="13">Q0</text>
+<text top="308" left="124" width="7" height="12" font="13">0</text>
+<text top="308" left="162" width="14" height="12" font="13">50</text>
+<text top="308" left="201" width="20" height="12" font="13">100</text>
+<text top="308" left="242" width="20" height="12" font="13">150</text>
+<text top="308" left="284" width="20" height="12" font="13">200</text>
+<text top="158" left="308" width="16" height="12" font="13">Q2</text>
+<text top="214" left="308" width="16" height="12" font="13">Q1</text>
+<text top="269" left="308" width="16" height="12" font="13">Q0</text>
+<text top="308" left="325" width="7" height="12" font="13">0</text>
+<text top="308" left="363" width="14" height="12" font="13">50</text>
+<text top="308" left="402" width="20" height="12" font="13">100</text>
+<text top="308" left="443" width="20" height="12" font="13">150</text>
+<text top="308" left="485" width="20" height="12" font="13">200</text>
+<text top="331" left="129" width="62" height="14" font="2">Figure 8.4:</text>
+<text top="331" left="195" width="282" height="13" font="3"><b>Without (Left) and With (Right) Priority Boost</b></text>
+<text top="364" left="87" width="432" height="14" font="2">and thus we at least guarantee that the long-running job will make some</text>
+<text top="379" left="87" width="432" height="14" font="2">progress, getting boosted to the highest priority every 100 ms and thus</text>
+<text top="394" left="87" width="158" height="14" font="2">getting to run periodically.</text>
+<text top="411" left="105" width="245" height="14" font="2">Of course, the addition of the time period</text>
+<text top="411" left="353" width="8" height="10" font="7">S</text>
+<text top="411" left="365" width="154" height="14" font="2">leads to the obvious ques-</text>
+<text top="426" left="87" width="106" height="14" font="2">tion: what should</text>
+<text top="426" left="196" width="8" height="10" font="7">S</text>
+<text top="426" left="209" width="310" height="14" font="2">be set to? John Ousterhout, a well-regarded systems</text>
+<text top="441" left="87" width="313" height="14" font="2">researcher [O11], used to call such values in systems</text>
+<text top="441" left="404" width="111" height="13" font="3"><b>voo-doo constants</b></text>
+<text top="441" left="516" width="3" height="14" font="2">,</text>
+<text top="456" left="87" width="432" height="14" font="2">because they seemed to require some form of black magic to set them cor-</text>
+<text top="471" left="87" width="127" height="14" font="2">rectly. Unfortunately,</text>
+<text top="471" left="218" width="8" height="10" font="7">S</text>
+<text top="471" left="231" width="288" height="14" font="2">has that flavor. If it is set too high, long-running</text>
+<text top="486" left="87" width="432" height="14" font="2">jobs could starve; too low, and interactive jobs may not get a proper share</text>
+<text top="501" left="87" width="432" height="14" font="2">of the CPU. As such, it is often left to the system administrator to find the</text>
+<text top="515" left="87" width="432" height="14" font="2">right value – or in the modern world, increasingly, to automatic methods</text>
+<text top="530" left="87" width="208" height="14" font="2">based on machine learning [A+17].</text>
+<text top="569" left="55" width="248" height="17" font="6">8.4 Attempt #3: Better Accounting</text>
+<text top="601" left="105" width="414" height="14" font="2">We now have one more problem to solve: how to prevent gaming of</text>
+<text top="616" left="87" width="432" height="14" font="2">our scheduler? The real culprit here, as you might have guessed, are</text>
+<text top="631" left="87" width="432" height="14" font="2">Rules 4a and 4b, which let a job retain its priority by relinquishing the</text>
+<text top="645" left="87" width="338" height="14" font="2">CPU before its allotment expires. So what should we do?</text>
+<text top="690" left="128" width="8" height="14" font="2">T</text>
+<text top="691" left="137" width="11" height="11" font="5">IP</text>
+<text top="690" left="148" width="19" height="14" font="2">: A</text>
+<text top="691" left="166" width="30" height="11" font="5">VOID</text>
+<text top="690" left="200" width="10" height="14" font="2">V</text>
+<text top="691" left="211" width="18" height="11" font="5">OO</text>
+<text top="690" left="229" width="4" height="14" font="2">-</text>
+<text top="691" left="234" width="27" height="11" font="5">DOO</text>
+<text top="690" left="265" width="10" height="14" font="2">C</text>
+<text top="691" left="275" width="63" height="11" font="5">ONSTANTS</text>
+<text top="690" left="342" width="16" height="14" font="2">(O</text>
+<text top="691" left="358" width="72" height="11" font="5">USTERHOUT</text>
+<text top="690" left="431" width="4" height="14" font="2">’</text>
+<text top="691" left="436" width="6" height="11" font="5">S</text>
+<text top="690" left="445" width="8" height="14" font="2">L</text>
+<text top="691" left="454" width="19" height="11" font="5">AW</text>
+<text top="690" left="474" width="4" height="14" font="2">)</text>
+<text top="704" left="87" width="432" height="14" font="2">Avoiding voo-doo constants is a good idea whenever possible. Unfor-</text>
+<text top="719" left="87" width="432" height="14" font="2">tunately, as in the example above, it is often difficult. One could try to</text>
+<text top="734" left="87" width="432" height="14" font="2">make the system learn a good value, but that too is not straightforward.</text>
+<text top="749" left="87" width="432" height="14" font="2">The frequent result: a configuration file filled with default parameter val-</text>
+<text top="764" left="87" width="432" height="14" font="2">ues that a seasoned administrator can tweak when something isn’t quite</text>
+<text top="779" left="87" width="432" height="14" font="2">working correctly. As you can imagine, these are often left unmodified,</text>
+<text top="794" left="87" width="432" height="14" font="2">and thus we are left to hope that the defaults work well in the field. This</text>
+<text top="809" left="87" width="432" height="14" font="2">tip brought to you by our old OS professor, John Ousterhout, and hence</text>
+<text top="824" left="87" width="53" height="14" font="2">we call it</text>
+<text top="824" left="144" width="109" height="13" font="3"><b>Ousterhout’s Law</b></text>
+<text top="824" left="252" width="3" height="14" font="2">.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="9" family="COHNYG+NimbusSanL-Regu" color="#000000"/>
+<text top="110" left="129" width="7" height="14" font="2">8</text>
+<text top="95" left="476" width="7" height="14" font="2">S</text>
+<text top="97" left="484" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="557" width="3" height="14" font="2">:</text>
+<text top="110" left="332" width="8" height="14" font="2">T</text>
+<text top="112" left="341" width="16" height="11" font="5">HE</text>
+<text top="110" left="361" width="13" height="14" font="2">M</text>
+<text top="112" left="375" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="402" width="13" height="14" font="2">-L</text>
+<text top="112" left="416" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="449" width="7" height="14" font="2">F</text>
+<text top="112" left="457" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="517" width="11" height="14" font="2">Q</text>
+<text top="112" left="529" width="32" height="11" font="5">UEUE</text>
+<text top="269" left="153" width="15" height="11" font="12">Q0</text>
+<text top="213" left="153" width="15" height="11" font="12">Q1</text>
+<text top="158" left="153" width="15" height="11" font="12">Q2</text>
+<text top="306" left="168" width="5" height="9" font="15">0</text>
+<text top="306" left="193" width="10" height="9" font="15">50</text>
+<text top="306" left="218" width="15" height="9" font="15">100</text>
+<text top="306" left="246" width="15" height="9" font="15">150</text>
+<text top="306" left="273" width="15" height="9" font="15">200</text>
+<text top="306" left="301" width="15" height="9" font="15">250</text>
+<text top="306" left="328" width="15" height="9" font="15">300</text>
+<text top="269" left="355" width="15" height="11" font="12">Q0</text>
+<text top="213" left="355" width="15" height="11" font="12">Q1</text>
+<text top="158" left="355" width="15" height="11" font="12">Q2</text>
+<text top="306" left="369" width="5" height="9" font="15">0</text>
+<text top="306" left="394" width="10" height="9" font="15">50</text>
+<text top="306" left="419" width="15" height="9" font="15">100</text>
+<text top="306" left="447" width="15" height="9" font="15">150</text>
+<text top="306" left="474" width="15" height="9" font="15">200</text>
+<text top="306" left="502" width="15" height="9" font="15">250</text>
+<text top="306" left="530" width="15" height="9" font="15">300</text>
+<text top="331" left="157" width="62" height="14" font="2">Figure 8.5:</text>
+<text top="331" left="223" width="310" height="13" font="3"><b>Without (Left) and With (Right) Gaming Tolerance</b></text>
+<text top="362" left="147" width="222" height="14" font="2">The solution here is to perform better</text>
+<text top="362" left="372" width="67" height="13" font="3"><b>accounting</b></text>
+<text top="362" left="443" width="118" height="14" font="2">of CPU time at each</text>
+<text top="377" left="129" width="432" height="14" font="2">level of the MLFQ. Instead of forgetting how much of its allotment a pro-</text>
+<text top="392" left="129" width="432" height="14" font="2">cess used at a given level when it performs I/O, the scheduler should</text>
+<text top="407" left="129" width="432" height="14" font="2">keep track; once a process has used its allotment, it is demoted to the next</text>
+<text top="422" left="129" width="432" height="14" font="2">priority queue. Whether it uses its allotment in one long burst or many</text>
+<text top="437" left="129" width="432" height="14" font="2">small ones should not matter. We thus rewrite Rules 4a and 4b to the</text>
+<text top="452" left="129" width="126" height="14" font="2">following single rule:</text>
+<text top="478" left="148" width="8" height="14" font="2">•</text>
+<text top="478" left="163" width="44" height="13" font="3"><b>Rule 4:</b></text>
+<text top="478" left="213" width="348" height="14" font="2">Once a job uses up its time allotment at a given level (re-</text>
+<text top="493" left="163" width="397" height="14" font="2">gardless of how many times it has given up the CPU), its priority is</text>
+<text top="508" left="163" width="242" height="14" font="2">reduced (i.e., it moves down one queue).</text>
+<text top="534" left="147" width="414" height="14" font="2">Let’s look at an example. Figure 8.5 shows what happens when a</text>
+<text top="549" left="129" width="432" height="14" font="2">workload tries to game the scheduler with the old Rules 4a and 4b (on</text>
+<text top="564" left="129" width="432" height="14" font="2">the left) as well the new anti-gaming Rule 4. Without any protection from</text>
+<text top="579" left="129" width="432" height="14" font="2">gaming, a process can issue an I/O before its allotment ends, thus stay-</text>
+<text top="594" left="129" width="432" height="14" font="2">ing at the same priority level, and dominating CPU time. With better</text>
+<text top="609" left="129" width="432" height="14" font="2">accounting in place (right), regardless of the I/O behavior of the process,</text>
+<text top="624" left="129" width="432" height="14" font="2">it slowly moves down the queues, and thus cannot gain an unfair share</text>
+<text top="639" left="129" width="69" height="14" font="2">of the CPU.</text>
+<text top="666" left="97" width="259" height="17" font="6">8.5 Tuning MLFQ And Other Issues</text>
+<text top="691" left="147" width="414" height="14" font="2">A few other issues arise with MLFQ scheduling. One big question is</text>
+<text top="706" left="129" width="42" height="14" font="2">how to</text>
+<text top="706" left="175" width="80" height="13" font="3"><b>parameterize</b></text>
+<text top="706" left="259" width="302" height="14" font="2">such a scheduler. For example, how many queues</text>
+<text top="721" left="129" width="432" height="14" font="2">should there be? How big should the time slice be per queue? The al-</text>
+<text top="736" left="129" width="432" height="14" font="2">lotment? How often should priority be boosted in order to avoid star-</text>
+<text top="751" left="129" width="432" height="14" font="2">vation and account for changes in behavior? There are no easy answers</text>
+<text top="766" left="129" width="432" height="14" font="2">to these questions, and thus only some experience with workloads and</text>
+<text top="781" left="129" width="412" height="14" font="2">subsequent tuning of the scheduler will lead to a satisfactory balance.</text>
+<text top="796" left="147" width="414" height="14" font="2">For example, most MLFQ variants allow for varying time-slice length</text>
+<text top="811" left="129" width="432" height="14" font="2">across different queues. The high-priority queues are usually given short</text>
+<text top="826" left="129" width="432" height="14" font="2">time slices; they are comprised of interactive jobs, after all, and thus</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="13" family="TCNDMC+NimbusMonL-Regu" color="#000000"/>
+<text top="95" left="87" width="7" height="14" font="2">S</text>
+<text top="97" left="95" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="168" width="3" height="14" font="2">:</text>
+<text top="110" left="87" width="8" height="14" font="2">T</text>
+<text top="112" left="96" width="16" height="11" font="5">HE</text>
+<text top="110" left="117" width="13" height="14" font="2">M</text>
+<text top="112" left="130" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="157" width="13" height="14" font="2">-L</text>
+<text top="112" left="171" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="205" width="7" height="14" font="2">F</text>
+<text top="112" left="213" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="273" width="11" height="14" font="2">Q</text>
+<text top="112" left="284" width="32" height="11" font="5">UEUE</text>
+<text top="110" left="512" width="7" height="14" font="2">9</text>
+<text top="158" left="171" width="16" height="12" font="13">Q2</text>
+<text top="214" left="171" width="16" height="12" font="13">Q1</text>
+<text top="269" left="171" width="16" height="12" font="13">Q0</text>
+<text top="308" left="188" width="7" height="12" font="13">0</text>
+<text top="308" left="228" width="14" height="12" font="13">50</text>
+<text top="308" left="267" width="20" height="12" font="13">100</text>
+<text top="308" left="310" width="20" height="12" font="13">150</text>
+<text top="308" left="353" width="20" height="12" font="13">200</text>
+<text top="308" left="396" width="20" height="12" font="13">250</text>
+<text top="308" left="438" width="20" height="12" font="13">300</text>
+<text top="331" left="176" width="62" height="14" font="2">Figure 8.6:</text>
+<text top="331" left="243" width="187" height="13" font="3"><b>Lower Priority, Longer Quanta</b></text>
+<text top="374" left="87" width="432" height="14" font="2">quickly alternating between them makes sense (e.g., 10 or fewer millisec-</text>
+<text top="389" left="87" width="432" height="14" font="2">onds). The low-priority queues, in contrast, contain long-running jobs</text>
+<text top="404" left="87" width="432" height="14" font="2">that are CPU-bound; hence, longer time slices work well (e.g., 100s of</text>
+<text top="419" left="87" width="432" height="14" font="2">ms). Figure 8.6 shows an example in which two jobs run for 20 ms at the</text>
+<text top="434" left="87" width="432" height="14" font="2">highest queue (with a 10-ms time slice), 40 ms in the middle (20-ms time</text>
+<text top="449" left="87" width="281" height="14" font="2">slice), and with a 40-ms time slice at the lowest.</text>
+<text top="465" left="105" width="414" height="14" font="2">The Solaris MLFQ implementation — the Time-Sharing scheduling</text>
+<text top="480" left="87" width="432" height="14" font="2">class, or TS — is particularly easy to configure; it provides a set of tables</text>
+<text top="495" left="87" width="432" height="14" font="2">that determine exactly how the priority of a process is altered through-</text>
+<text top="510" left="87" width="432" height="14" font="2">out its lifetime, how long each time slice is, and how often to boost the</text>
+<text top="525" left="87" width="432" height="14" font="2">priority of a job [AD00]; an administrator can muck with this table in or-</text>
+<text top="540" left="87" width="432" height="14" font="2">der to make the scheduler behave in different ways. Default values for</text>
+<text top="555" left="87" width="432" height="14" font="2">the table are 60 queues, with slowly increasing time-slice lengths from</text>
+<text top="570" left="87" width="432" height="14" font="2">20 milliseconds (highest priority) to a few hundred milliseconds (lowest),</text>
+<text top="585" left="87" width="305" height="14" font="2">and priorities boosted around every 1 second or so.</text>
+<text top="601" left="105" width="414" height="14" font="2">Other MLFQ schedulers don’t use a table or the exact rules described</text>
+<text top="616" left="87" width="432" height="14" font="2">in this chapter; rather they adjust priorities using mathematical formu-</text>
+<text top="631" left="87" width="432" height="14" font="2">lae. For example, the FreeBSD scheduler (version 4.3) uses a formula to</text>
+<text top="646" left="87" width="432" height="14" font="2">calculate the current priority level of a job, basing it on how much CPU</text>
+<text top="661" left="87" width="432" height="14" font="2">the process has used [LM+89]; in addition, usage is decayed over time,</text>
+<text top="676" left="87" width="432" height="14" font="2">providing the desired priority boost in a different manner than described</text>
+<text top="690" left="87" width="354" height="14" font="2">herein. See Epema’s paper for an excellent overview of such</text>
+<text top="691" left="444" width="75" height="13" font="3"><b>decay-usage</b></text>
+<text top="705" left="87" width="223" height="14" font="2">algorithms and their properties [E95].</text>
+<text top="721" left="105" width="414" height="14" font="2">Finally, many schedulers have a few other features that you might en-</text>
+<text top="736" left="87" width="432" height="14" font="2">counter. For example, some schedulers reserve the highest priority levels</text>
+<text top="751" left="87" width="432" height="14" font="2">for operating system work; thus typical user jobs can never obtain the</text>
+<text top="766" left="87" width="432" height="14" font="2">highest levels of priority in the system. Some systems also allow some</text>
+<text top="781" left="87" width="26" height="14" font="2">user</text>
+<text top="781" left="115" width="40" height="13" font="3"><b>advice</b></text>
+<text top="781" left="158" width="361" height="14" font="2">to help set priorities; for example, by using the command-line</text>
+<text top="796" left="87" width="36" height="14" font="2">utility</text>
+<text top="797" left="126" width="32" height="11" font="16">nice</text>
+<text top="796" left="162" width="357" height="14" font="2">you can increase or decrease the priority of a job (somewhat)</text>
+<text top="811" left="87" width="432" height="14" font="2">and thus increase or decrease its chances of running at any given time.</text>
+<text top="826" left="87" width="162" height="14" font="2">See the man page for more.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="110" left="129" width="13" height="14" font="2">10</text>
+<text top="95" left="476" width="7" height="14" font="2">S</text>
+<text top="97" left="484" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="557" width="3" height="14" font="2">:</text>
+<text top="110" left="332" width="8" height="14" font="2">T</text>
+<text top="112" left="341" width="16" height="11" font="5">HE</text>
+<text top="110" left="361" width="13" height="14" font="2">M</text>
+<text top="112" left="375" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="402" width="13" height="14" font="2">-L</text>
+<text top="112" left="416" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="449" width="7" height="14" font="2">F</text>
+<text top="112" left="457" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="517" width="11" height="14" font="2">Q</text>
+<text top="112" left="529" width="32" height="11" font="5">UEUE</text>
+<text top="148" left="238" width="8" height="14" font="2">T</text>
+<text top="150" left="247" width="11" height="11" font="5">IP</text>
+<text top="148" left="258" width="19" height="14" font="2">: U</text>
+<text top="150" left="278" width="13" height="11" font="5">SE</text>
+<text top="148" left="295" width="10" height="14" font="2">A</text>
+<text top="150" left="306" width="37" height="11" font="5">DVICE</text>
+<text top="148" left="346" width="13" height="14" font="2">W</text>
+<text top="150" left="361" width="31" height="11" font="5">HERE</text>
+<text top="148" left="396" width="8" height="14" font="2">P</text>
+<text top="150" left="405" width="47" height="11" font="5">OSSIBLE</text>
+<text top="163" left="129" width="432" height="14" font="2">As the operating system rarely knows what is best for each and every</text>
+<text top="178" left="129" width="432" height="14" font="2">process of the system, it is often useful to provide interfaces to allow users</text>
+<text top="193" left="129" width="210" height="14" font="2">or administrators to provide some</text>
+<text top="193" left="345" width="31" height="13" font="3"><b>hints</b></text>
+<text top="193" left="381" width="180" height="14" font="2">to the OS. We often call such</text>
+<text top="208" left="129" width="30" height="14" font="2">hints</text>
+<text top="208" left="162" width="40" height="13" font="3"><b>advice</b></text>
+<text top="208" left="201" width="359" height="14" font="2">, as the OS need not necessarily pay attention to it, but rather</text>
+<text top="223" left="129" width="432" height="14" font="2">might take the advice into account in order to make a better decision.</text>
+<text top="238" left="129" width="432" height="14" font="2">Such hints are useful in many parts of the OS, including the scheduler</text>
+<text top="253" left="129" width="59" height="14" font="2">(e.g., with</text>
+<text top="254" left="191" width="32" height="11" font="16">nice</text>
+<text top="253" left="223" width="148" height="14" font="2">), memory manager (e.g.,</text>
+<text top="254" left="374" width="57" height="11" font="16">madvise</text>
+<text top="253" left="430" width="131" height="14" font="2">), and file system (e.g.,</text>
+<text top="268" left="129" width="252" height="14" font="2">informed prefetching and caching [P+95]).</text>
+<text top="320" left="97" width="153" height="17" font="6">8.6 MLFQ: Summary</text>
+<text top="350" left="147" width="414" height="14" font="2">We have described a scheduling approach known as the Multi-Level</text>
+<text top="365" left="129" width="432" height="14" font="2">Feedback Queue (MLFQ). Hopefully you can now see why it is called</text>
+<text top="379" left="129" width="67" height="14" font="2">that: it has</text>
+<text top="379" left="200" width="80" height="14" font="4">multiple levels</text>
+<text top="379" left="285" width="121" height="14" font="2">of queues, and uses</text>
+<text top="379" left="411" width="45" height="14" font="4">feedback</text>
+<text top="379" left="460" width="101" height="14" font="2">to determine the</text>
+<text top="394" left="129" width="432" height="14" font="2">priority of a given job. History is its guide: pay attention to how jobs</text>
+<text top="409" left="129" width="268" height="14" font="2">behave over time and treat them accordingly.</text>
+<text top="424" left="147" width="414" height="14" font="2">The refined set of MLFQ rules, spread throughout the chapter, are re-</text>
+<text top="439" left="129" width="248" height="14" font="2">produced here for your viewing pleasure:</text>
+<text top="467" left="148" width="8" height="14" font="2">•</text>
+<text top="467" left="163" width="43" height="13" font="3"><b>Rule 1:</b></text>
+<text top="467" left="210" width="78" height="14" font="2">If Priority(A)</text>
+<text top="467" left="291" width="11" height="10" font="7">&gt;</text>
+<text top="467" left="305" width="181" height="14" font="2">Priority(B), A runs (B doesn’t).</text>
+<text top="482" left="148" width="8" height="14" font="2">•</text>
+<text top="482" left="163" width="43" height="13" font="3"><b>Rule 2:</b></text>
+<text top="482" left="211" width="78" height="14" font="2">If Priority(A)</text>
+<text top="483" left="292" width="11" height="9" font="8">=</text>
+<text top="482" left="306" width="255" height="14" font="2">Priority(B), A &amp; B run in round-robin fash-</text>
+<text top="497" left="163" width="362" height="14" font="2">ion using the time slice (quantum length) of the given queue.</text>
+<text top="512" left="148" width="8" height="14" font="2">•</text>
+<text top="512" left="163" width="44" height="13" font="3"><b>Rule 3:</b></text>
+<text top="512" left="215" width="346" height="14" font="2">When a job enters the system, it is placed at the highest</text>
+<text top="527" left="163" width="173" height="14" font="2">priority (the topmost queue).</text>
+<text top="542" left="148" width="8" height="14" font="2">•</text>
+<text top="542" left="163" width="44" height="13" font="3"><b>Rule 4:</b></text>
+<text top="542" left="213" width="348" height="14" font="2">Once a job uses up its time allotment at a given level (re-</text>
+<text top="557" left="163" width="397" height="14" font="2">gardless of how many times it has given up the CPU), its priority is</text>
+<text top="572" left="163" width="242" height="14" font="2">reduced (i.e., it moves down one queue).</text>
+<text top="587" left="148" width="8" height="14" font="2">•</text>
+<text top="587" left="163" width="43" height="13" font="3"><b>Rule 5:</b></text>
+<text top="587" left="212" width="141" height="14" font="2">After some time period</text>
+<text top="587" left="357" width="8" height="10" font="7">S</text>
+<text top="587" left="366" width="194" height="14" font="2">, move all the jobs in the system</text>
+<text top="602" left="163" width="130" height="14" font="2">to the topmost queue.</text>
+<text top="630" left="147" width="414" height="14" font="2">MLFQ is interesting for the following reason: instead of demanding</text>
+<text top="644" left="129" width="41" height="14" font="4">a priori</text>
+<text top="644" left="175" width="386" height="14" font="2">knowledge of the nature of a job, it observes the execution of a</text>
+<text top="659" left="129" width="432" height="14" font="2">job and prioritizes it accordingly. In this way, it manages to achieve the</text>
+<text top="674" left="129" width="432" height="14" font="2">best of both worlds: it can deliver excellent overall performance (similar</text>
+<text top="689" left="129" width="432" height="14" font="2">to SJF/STCF) for short-running interactive jobs, and is fair and makes</text>
+<text top="704" left="129" width="432" height="14" font="2">progress for long-running CPU-intensive workloads. For this reason,</text>
+<text top="719" left="129" width="201" height="14" font="2">many systems, including BSD U</text>
+<text top="721" left="330" width="21" height="11" font="5">NIX</text>
+<text top="719" left="357" width="204" height="14" font="2">derivatives [LM+89, B86], Solaris</text>
+<text top="734" left="129" width="432" height="14" font="2">[M06], and Windows NT and subsequent Windows operating systems</text>
+<text top="749" left="129" width="303" height="14" font="2">[CS97] use a form of MLFQ as their base scheduler.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="16" family="HOCGZE+URWPalladioL" color="#000000"/>
+	<fontspec id="18" size="10" family="JCVUIG+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="19" size="8" family="SAGXBW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="20" size="10" family="TCNDMC+NimbusMonL-Regu" color="#000000"/>
+<text top="95" left="87" width="7" height="14" font="2">S</text>
+<text top="97" left="95" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="168" width="3" height="14" font="2">:</text>
+<text top="110" left="87" width="8" height="14" font="2">T</text>
+<text top="112" left="96" width="16" height="11" font="5">HE</text>
+<text top="110" left="117" width="13" height="14" font="2">M</text>
+<text top="112" left="130" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="157" width="13" height="14" font="2">-L</text>
+<text top="112" left="171" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="205" width="7" height="14" font="2">F</text>
+<text top="112" left="213" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="273" width="11" height="14" font="2">Q</text>
+<text top="112" left="284" width="32" height="11" font="5">UEUE</text>
+<text top="110" left="506" width="13" height="14" font="2">11</text>
+<text top="137" left="87" width="82" height="16" font="17"><b>References</b></text>
+<text top="165" left="87" width="437" height="11" font="10">[A+17] “Automatic Database Management System Tuning Through Large-scale Machine Learn-</text>
+<text top="177" left="87" width="410" height="11" font="10">ing” by Dana Van Aken, Andrew Pavlo, Geoffrey J. Gordon, Bohan Zhang. SIGMOD ’17.</text>
+<text top="177" left="500" width="19" height="11" font="18">This</text>
+<text top="189" left="87" width="432" height="11" font="18">isn’t about the application of machine learning to CPU scheduling in the OS, but rather a cool early</text>
+<text top="201" left="87" width="432" height="11" font="18">example of automatically tuning parameters of a database via ML techniques. Worth a read, if you like</text>
+<text top="213" left="87" width="202" height="11" font="18">ML... which, alas, everyone seems to these days.</text>
+<text top="229" left="87" width="432" height="11" font="10">[AD00] “Multilevel Feedback Queue Scheduling in Solaris” by Andrea Arpaci-Dusseau. Avail-</text>
+<text top="241" left="87" width="265" height="11" font="10">able: http://www.ostep.org/Citations/notes-solaris.pdf.</text>
+<text top="241" left="356" width="163" height="11" font="18">A great short set of notes by one of the</text>
+<text top="253" left="87" width="432" height="11" font="18">authors on the details of the Solaris scheduler. OK, we are probably biased in this description, but the</text>
+<text top="265" left="87" width="113" height="11" font="18">notes are pretty darn good.</text>
+<text top="282" left="87" width="123" height="11" font="10">[B86] “The Design of the U</text>
+<text top="283" left="211" width="16" height="8" font="19">NIX</text>
+<text top="282" left="230" width="243" height="11" font="10">Operating System” by M.J. Bach. Prentice-Hall, 1986.</text>
+<text top="282" left="476" width="43" height="11" font="18">One of the</text>
+<text top="294" left="87" width="126" height="11" font="18">classic old books on how a real</text>
+<text top="294" left="216" width="8" height="11" font="10">U</text>
+<text top="295" left="225" width="16" height="8" font="19">NIX</text>
+<text top="294" left="244" width="272" height="11" font="18">operating system is built; a definite must-read for kernel hackers.</text>
+<text top="310" left="87" width="432" height="11" font="10">[C+62] “An Experimental Time-Sharing System” by F. J. Corbato, M. M. Daggett, R. C. Daley.</text>
+<text top="322" left="87" width="51" height="11" font="10">IFIPS 1962.</text>
+<text top="322" left="141" width="378" height="11" font="18">A bit hard to read, but the source of many of the first ideas in multi-level feedback schedul-</text>
+<text top="334" left="87" width="432" height="11" font="18">ing. Much of this later went into Multics, which one could argue was the most influential operating</text>
+<text top="346" left="87" width="76" height="11" font="18">system of all time.</text>
+<text top="362" left="87" width="432" height="11" font="10">[CS97] “Inside Windows NT” by Helen Custer and David A. Solomon. Microsoft Press, 1997.</text>
+<text top="374" left="87" width="261" height="11" font="18">The NT book, if you want to learn about something other than</text>
+<text top="374" left="351" width="8" height="11" font="10">U</text>
+<text top="375" left="359" width="16" height="8" font="19">NIX</text>
+<text top="374" left="376" width="143" height="11" font="18">. Of course, why would you? OK,</text>
+<text top="386" left="87" width="310" height="11" font="18">we’re kidding; you might actually work for Microsoft some day you know.</text>
+<text top="402" left="87" width="432" height="11" font="10">[E95] “An Analysis of Decay-Usage Scheduling in Multiprocessors” by D.H.J. Epema. SIG-</text>
+<text top="414" left="87" width="65" height="11" font="10">METRICS ’95.</text>
+<text top="414" left="158" width="361" height="11" font="18">A nice paper on the state of the art of scheduling back in the mid 1990s, including a</text>
+<text top="426" left="87" width="282" height="11" font="18">good overview of the basic approach behind decay-usage schedulers.</text>
+<text top="442" left="87" width="272" height="11" font="10">[LM+89] “The Design and Implementation of the 4.3BSD U</text>
+<text top="444" left="360" width="16" height="8" font="19">NIX</text>
+<text top="442" left="379" width="140" height="11" font="10">Operating System” by S.J. Lef-</text>
+<text top="454" left="87" width="342" height="11" font="10">fler, M.K. McKusick, M.J. Karels, J.S. Quarterman. Addison-Wesley, 1989.</text>
+<text top="454" left="434" width="85" height="11" font="18">Another OS classic,</text>
+<text top="466" left="87" width="432" height="11" font="18">written by four of the main people behind BSD. The later versions of this book, while more up to date,</text>
+<text top="478" left="87" width="168" height="11" font="18">don’t quite match the beauty of this one.</text>
+<text top="495" left="87" width="432" height="11" font="10">[M06] “Solaris Internals: Solaris 10 and OpenSolaris Kernel Architecture” by Richard Mc-</text>
+<text top="506" left="87" width="133" height="11" font="10">Dougall. Prentice-Hall, 2006.</text>
+<text top="506" left="223" width="187" height="11" font="18">A good book about Solaris and how it works.</text>
+<text top="523" left="87" width="271" height="11" font="10">[O11] “John Ousterhout’s Home Page” by John Ousterhout.</text>
+<text top="523" left="361" width="157" height="9" font="20">www.stanford.edu/˜ouster/</text>
+<text top="523" left="518" width="3" height="11" font="10">.</text>
+<text top="535" left="87" width="432" height="11" font="18">The home page of the famous Professor Ousterhout. The two co-authors of this book had the pleasure of</text>
+<text top="547" left="87" width="432" height="11" font="18">taking graduate operating systems from Ousterhout while in graduate school; indeed, this is where the</text>
+<text top="559" left="87" width="432" height="11" font="18">two co-authors got to know each other, eventually leading to marriage, kids, and even this book. Thus,</text>
+<text top="570" left="87" width="263" height="11" font="18">you really can blame Ousterhout for this entire mess you’re in.</text>
+<text top="587" left="87" width="432" height="11" font="10">[P+95] “Informed Prefetching and Caching” by R.H. Patterson, G.A. Gibson, E. Ginting, D.</text>
+<text top="599" left="87" width="351" height="11" font="10">Stodolsky, J. Zelenka. SOSP ’95, Copper Mountain, Colorado, October 1995.</text>
+<text top="599" left="442" width="77" height="11" font="18">A fun paper about</text>
+<text top="611" left="87" width="432" height="11" font="18">some very cool ideas in file systems, including how applications can give the OS advice about what files</text>
+<text top="623" left="87" width="195" height="11" font="18">it is accessing and how it plans to access them.</text>
+<text top="639" left="87" width="432" height="11" font="10">[Y+18] “Principled Schedulability Analysis for Distributed Storage Systems using Thread Ar-</text>
+<text top="651" left="87" width="432" height="11" font="10">chitecture Models” by Suli Yang, Jing Liu, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-</text>
+<text top="663" left="87" width="205" height="11" font="10">Dusseau. OSDI ’18, San Diego, California.</text>
+<text top="663" left="300" width="219" height="11" font="18">A recent work of our group that demonstrates the</text>
+<text top="675" left="87" width="432" height="11" font="18">difficulty of scheduling I/O requests within modern distributed storage systems such as Hive/HDFS,</text>
+<text top="687" left="87" width="432" height="11" font="18">Cassandra, MongoDB, and Riak. Without care, a single user might be able to monopolize system re-</text>
+<text top="699" left="87" width="33" height="11" font="18">sources.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="110" left="129" width="13" height="14" font="2">12</text>
+<text top="95" left="476" width="7" height="14" font="2">S</text>
+<text top="97" left="484" width="73" height="11" font="5">CHEDULING</text>
+<text top="95" left="557" width="3" height="14" font="2">:</text>
+<text top="110" left="332" width="8" height="14" font="2">T</text>
+<text top="112" left="341" width="16" height="11" font="5">HE</text>
+<text top="110" left="361" width="13" height="14" font="2">M</text>
+<text top="112" left="375" width="26" height="11" font="5">ULTI</text>
+<text top="110" left="402" width="13" height="14" font="2">-L</text>
+<text top="112" left="416" width="30" height="11" font="5">EVEL</text>
+<text top="110" left="449" width="7" height="14" font="2">F</text>
+<text top="112" left="457" width="56" height="11" font="5">EEDBACK</text>
+<text top="110" left="517" width="11" height="14" font="2">Q</text>
+<text top="112" left="529" width="32" height="11" font="5">UEUE</text>
+<text top="137" left="129" width="183" height="16" font="17"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="85" height="14" font="2">This program,</text>
+<text top="167" left="236" width="57" height="11" font="16">mlfq.py</text>
+<text top="166" left="292" width="269" height="14" font="2">, allows you to see how the MLFQ scheduler</text>
+<text top="181" left="129" width="377" height="14" font="2">presented in this chapter behaves. See the README for details.</text>
+<text top="217" left="129" width="70" height="15" font="14"><b>Questions</b></text>
+<text top="242" left="146" width="414" height="14" font="2">1. Run a few randomly-generated problems with just two jobs and</text>
+<text top="256" left="163" width="397" height="14" font="2">two queues; compute the MLFQ execution trace for each. Make</text>
+<text top="271" left="163" width="397" height="14" font="2">your life easier by limiting the length of each job and turning off</text>
+<text top="286" left="163" width="32" height="14" font="2">I/Os.</text>
+<text top="301" left="146" width="414" height="14" font="2">2. How would you run the scheduler to reproduce each of the exam-</text>
+<text top="316" left="163" width="115" height="14" font="2">ples in the chapter?</text>
+<text top="331" left="146" width="414" height="14" font="2">3. How would you configure the scheduler parameters to behave just</text>
+<text top="346" left="163" width="175" height="14" font="2">like a round-robin scheduler?</text>
+<text top="361" left="146" width="414" height="14" font="2">4. Craft a workload with two jobs and scheduler parameters so that</text>
+<text top="376" left="163" width="397" height="14" font="2">one job takes advantage of the older Rules 4a and 4b (turned on</text>
+<text top="391" left="163" width="49" height="14" font="2">with the</text>
+<text top="392" left="216" width="16" height="11" font="16">-S</text>
+<text top="391" left="236" width="325" height="14" font="2">flag) to game the scheduler and obtain 99% of the CPU</text>
+<text top="406" left="163" width="181" height="14" font="2">over a particular time interval.</text>
+<text top="421" left="146" width="414" height="14" font="2">5. Given a system with a quantum length of 10 ms in its highest queue,</text>
+<text top="436" left="163" width="397" height="14" font="2">how often would you have to boost jobs back to the highest priority</text>
+<text top="451" left="163" width="89" height="14" font="2">level (with the</text>
+<text top="452" left="258" width="16" height="11" font="16">-B</text>
+<text top="451" left="280" width="281" height="14" font="2">flag) in order to guarantee that a single long-</text>
+<text top="466" left="163" width="394" height="14" font="2">running (and potentially-starving) job gets at least 5% of the CPU?</text>
+<text top="481" left="146" width="414" height="14" font="2">6. One question that arises in scheduling is which end of a queue to</text>
+<text top="496" left="163" width="215" height="14" font="2">add a job that just finished I/O; the</text>
+<text top="496" left="383" width="16" height="11" font="16">-I</text>
+<text top="496" left="403" width="157" height="14" font="2">flag changes this behavior</text>
+<text top="511" left="163" width="397" height="14" font="2">for this scheduling simulator. Play around with some workloads</text>
+<text top="525" left="163" width="255" height="14" font="2">and see if you can see the effect of this flag.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+</pdf2xml>

@@ -1,0 +1,1196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="BOGWQX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="BOGWQX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="GGFPJT+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="DTJQDG+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="GGFPJT+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="16" family="GGFPJT+URWPalladioL-Roma" color="#000000"/>
+<text top="198" left="523" width="34" height="30" font="0">45</text>
+<text top="269" left="246" width="273" height="21" font="1">Data Integrity and Protection</text>
+<text top="351" left="87" width="432" height="14" font="2">Beyond the basic advances found in the file systems we have studied thus</text>
+<text top="366" left="87" width="432" height="14" font="2">far, a number of features are worth studying. In this chapter, we focus on</text>
+<text top="381" left="87" width="432" height="14" font="2">reliability once again (having previously studied storage system reliabil-</text>
+<text top="396" left="87" width="432" height="14" font="2">ity in the RAID chapter). Specifically, how should a file system or storage</text>
+<text top="411" left="87" width="432" height="14" font="2">system ensure that data is safe, given the unreliable nature of modern</text>
+<text top="426" left="87" width="97" height="14" font="2">storage devices?</text>
+<text top="442" left="105" width="205" height="14" font="2">This general area is referred to as</text>
+<text top="442" left="315" width="84" height="13" font="3"><b>data integrity</b></text>
+<text top="442" left="404" width="13" height="14" font="2">or</text>
+<text top="442" left="422" width="94" height="13" font="3"><b>data protection</b></text>
+<text top="442" left="516" width="3" height="14" font="2">.</text>
+<text top="457" left="87" width="432" height="14" font="2">Thus, we will now investigate techniques used to ensure that the data</text>
+<text top="472" left="87" width="432" height="14" font="2">you put into your storage system is the same when the storage system</text>
+<text top="487" left="87" width="99" height="14" font="2">returns it to you.</text>
+<text top="529" left="175" width="10" height="14" font="2">C</text>
+<text top="531" left="186" width="24" height="11" font="4">RUX</text>
+<text top="529" left="210" width="19" height="14" font="2">: H</text>
+<text top="531" left="230" width="20" height="11" font="4">OW</text>
+<text top="529" left="254" width="8" height="14" font="2">T</text>
+<text top="531" left="263" width="8" height="11" font="4">O</text>
+<text top="529" left="275" width="8" height="14" font="2">E</text>
+<text top="531" left="284" width="39" height="11" font="4">NSURE</text>
+<text top="529" left="328" width="10" height="14" font="2">D</text>
+<text top="531" left="339" width="23" height="11" font="4">ATA</text>
+<text top="529" left="366" width="5" height="14" font="2">I</text>
+<text top="531" left="371" width="60" height="11" font="4">NTEGRITY</text>
+<text top="544" left="105" width="414" height="14" font="2">How should systems ensure that the data written to storage is pro-</text>
+<text top="559" left="87" width="432" height="14" font="2">tected? What techniques are required? How can such techniques be made</text>
+<text top="574" left="87" width="301" height="14" font="2">efficient, with both low space and time overheads?</text>
+<text top="630" left="55" width="176" height="17" font="5">45.1 Disk Failure Modes</text>
+<text top="661" left="105" width="414" height="14" font="2">As you learned in the chapter about RAID, disks are not perfect, and</text>
+<text top="675" left="87" width="432" height="14" font="2">can fail (on occasion). In early RAID systems, the model of failure was</text>
+<text top="690" left="87" width="432" height="14" font="2">quite simple: either the entire disk is working, or it fails completely, and</text>
+<text top="705" left="87" width="320" height="14" font="2">the detection of such a failure is straightforward. This</text>
+<text top="705" left="411" width="52" height="13" font="3"><b>fail-stop</b></text>
+<text top="705" left="466" width="53" height="14" font="2">model of</text>
+<text top="720" left="87" width="340" height="14" font="2">disk failure makes building RAID relatively simple [S90].</text>
+<text top="736" left="105" width="414" height="14" font="2">What you didn’t learn is about all of the other types of failure modes</text>
+<text top="751" left="87" width="432" height="14" font="2">modern disks exhibit. Specifically, as Bairavasundaram et al. studied</text>
+<text top="766" left="87" width="432" height="14" font="2">in great detail [B+07, B+08], modern disks will occasionally seem to be</text>
+<text top="781" left="87" width="441" height="14" font="2">mostly working but have trouble successfully accessing one or more blocks.</text>
+<text top="796" left="87" width="432" height="14" font="2">Specifically, two types of single-block failures are common and worthy of</text>
+<text top="811" left="87" width="84" height="14" font="2">consideration:</text>
+<text top="811" left="179" width="117" height="13" font="3"><b>latent sector errors</b></text>
+<text top="811" left="300" width="4" height="14" font="2">(</text>
+<text top="811" left="305" width="31" height="13" font="3"><b>LSEs</b></text>
+<text top="811" left="335" width="32" height="14" font="2">) and</text>
+<text top="811" left="372" width="104" height="13" font="3"><b>block corruption</b></text>
+<text top="811" left="477" width="42" height="14" font="2">. We’ll</text>
+<text top="826" left="87" width="193" height="14" font="2">now discuss each in more detail.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="12" family="GGFPJT+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="10" family="GGFPJT+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="344" width="10" height="14" font="2">D</text>
+<text top="98" left="355" width="23" height="11" font="4">ATA</text>
+<text top="96" left="383" width="5" height="14" font="2">I</text>
+<text top="98" left="388" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="482" width="8" height="14" font="2">P</text>
+<text top="98" left="491" width="69" height="11" font="4">ROTECTION</text>
+<text top="136" left="340" width="39" height="14" font="2">Cheap</text>
+<text top="136" left="396" width="38" height="14" font="2">Costly</text>
+<text top="151" left="255" width="29" height="14" font="2">LSEs</text>
+<text top="151" left="344" width="35" height="14" font="2">9.40%</text>
+<text top="151" left="400" width="35" height="14" font="2">1.40%</text>
+<text top="166" left="255" width="67" height="14" font="2">Corruption</text>
+<text top="166" left="344" width="35" height="14" font="2">0.50%</text>
+<text top="166" left="400" width="35" height="14" font="2">0.05%</text>
+<text top="191" left="179" width="69" height="14" font="2">Figure 45.1:</text>
+<text top="191" left="252" width="259" height="13" font="3"><b>Frequency Of LSEs And Block Corruption</b></text>
+<text top="219" left="147" width="414" height="14" font="2">LSEs arise when a disk sector (or group of sectors) has been damaged</text>
+<text top="234" left="129" width="432" height="14" font="2">in some way. For example, if the disk head touches the surface for some</text>
+<text top="249" left="129" width="56" height="14" font="2">reason (a</text>
+<text top="249" left="190" width="67" height="13" font="3"><b>head crash</b></text>
+<text top="249" left="257" width="303" height="14" font="2">, something which shouldn’t happen during nor-</text>
+<text top="264" left="129" width="432" height="14" font="2">mal operation), it may damage the surface, making the bits unreadable.</text>
+<text top="279" left="129" width="432" height="14" font="2">Cosmic rays can also flip bits, leading to incorrect contents. Fortunately,</text>
+<text top="294" left="129" width="42" height="14" font="2">in-disk</text>
+<text top="294" left="174" width="133" height="13" font="3"><b>error correcting codes</b></text>
+<text top="294" left="312" width="4" height="14" font="2">(</text>
+<text top="294" left="316" width="28" height="13" font="3"><b>ECC</b></text>
+<text top="294" left="344" width="217" height="14" font="2">) are used by the drive to determine</text>
+<text top="309" left="129" width="432" height="14" font="2">whether the on-disk bits in a block are good, and in some cases, to fix</text>
+<text top="324" left="129" width="432" height="14" font="2">them; if they are not good, and the drive does not have enough informa-</text>
+<text top="339" left="129" width="432" height="14" font="2">tion to fix the error, the disk will return an error when a request is issued</text>
+<text top="354" left="129" width="79" height="14" font="2">to read them.</text>
+<text top="368" left="147" width="288" height="14" font="2">There are also cases where a disk block becomes</text>
+<text top="369" left="438" width="45" height="13" font="3"><b>corrupt</b></text>
+<text top="368" left="487" width="74" height="14" font="2">in a way not</text>
+<text top="383" left="129" width="432" height="14" font="2">detectable by the disk itself. For example, buggy disk firmware may write</text>
+<text top="398" left="129" width="432" height="14" font="2">a block to the wrong location; in such a case, the disk ECC indicates the</text>
+<text top="413" left="129" width="432" height="14" font="2">block contents are fine, but from the client’s perspective the wrong block</text>
+<text top="428" left="129" width="432" height="14" font="2">is returned when subsequently accessed. Similarly, a block may get cor-</text>
+<text top="443" left="129" width="432" height="14" font="2">rupted when it is transferred from the host to the disk across a faulty bus;</text>
+<text top="458" left="129" width="432" height="14" font="2">the resulting corrupt data is stored by the disk, but it is not what the client</text>
+<text top="473" left="129" width="432" height="14" font="2">desires. These types of faults are particularly insidious because they are</text>
+<text top="488" left="129" width="73" height="13" font="3"><b>silent faults</b></text>
+<text top="488" left="202" width="359" height="14" font="2">; the disk gives no indication of the problem when returning</text>
+<text top="503" left="129" width="90" height="14" font="2">the faulty data.</text>
+<text top="518" left="147" width="414" height="14" font="2">Prabhakaran et al. describes this more modern view of disk failure as</text>
+<text top="533" left="129" width="19" height="14" font="2">the</text>
+<text top="533" left="151" width="66" height="13" font="3"><b>fail-partial</b></text>
+<text top="533" left="221" width="340" height="14" font="2">disk failure model [P+05]. In this view, disks can still fail</text>
+<text top="548" left="129" width="432" height="14" font="2">in their entirety (as was the case in the traditional fail-stop model); how-</text>
+<text top="563" left="129" width="432" height="14" font="2">ever, disks can also seemingly be working and have one or more blocks</text>
+<text top="578" left="129" width="432" height="14" font="2">become inaccessible (i.e., LSEs) or hold the wrong contents (i.e., corrup-</text>
+<text top="593" left="129" width="432" height="14" font="2">tion). Thus, when accessing a seemingly-working disk, once in a while</text>
+<text top="608" left="129" width="432" height="14" font="2">it may either return an error when trying to read or write a given block</text>
+<text top="623" left="129" width="432" height="14" font="2">(a non-silent partial fault), and once in a while it may simply return the</text>
+<text top="637" left="129" width="200" height="14" font="2">wrong data (a silent partial fault).</text>
+<text top="652" left="147" width="414" height="14" font="2">Both of these types of faults are somewhat rare, but just how rare? Fig-</text>
+<text top="667" left="129" width="432" height="14" font="2">ure 45.1 summarizes some of the findings from the two Bairavasundaram</text>
+<text top="682" left="129" width="121" height="14" font="2">studies [B+07,B+08].</text>
+<text top="697" left="147" width="414" height="14" font="2">The figure shows the percent of drives that exhibited at least one LSE</text>
+<text top="712" left="129" width="432" height="14" font="2">or block corruption over the course of the study (about 3 years, over</text>
+<text top="727" left="129" width="432" height="14" font="2">1.5 million disk drives). The figure further sub-divides the results into</text>
+<text top="742" left="129" width="432" height="14" font="2">“cheap” drives (usually SATA drives) and “costly” drives (usually SCSI</text>
+<text top="757" left="129" width="432" height="14" font="2">or Fibre Channel). As you can see, while buying better drives reduces</text>
+<text top="772" left="129" width="432" height="14" font="2">the frequency of both types of problem (by about an order of magnitude),</text>
+<text top="787" left="129" width="432" height="14" font="2">they still happen often enough that you need to think carefully about how</text>
+<text top="802" left="129" width="232" height="14" font="2">to handle them in your storage system.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="23" height="11" font="4">ATA</text>
+<text top="96" left="126" width="5" height="14" font="2">I</text>
+<text top="98" left="131" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="225" width="8" height="14" font="2">P</text>
+<text top="98" left="234" width="69" height="11" font="4">ROTECTION</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="87" width="245" height="14" font="2">Some additional findings about LSEs are:</text>
+<text top="166" left="107" width="412" height="14" font="2">• Costly drives with more than one LSE are as likely to develop ad-</text>
+<text top="180" left="122" width="191" height="14" font="2">ditional errors as cheaper drives</text>
+<text top="195" left="107" width="343" height="14" font="2">• For most drives, annual error rate increases in year two</text>
+<text top="210" left="107" width="273" height="14" font="2">• The number of LSEs increase with disk size</text>
+<text top="225" left="107" width="247" height="14" font="2">• Most disks with LSEs have less than 50</text>
+<text top="240" left="107" width="367" height="14" font="2">• Disks with LSEs are more likely to develop additional LSEs</text>
+<text top="255" left="107" width="399" height="14" font="2">• There exists a significant amount of spatial and temporal locality</text>
+<text top="270" left="107" width="358" height="14" font="2">• Disk scrubbing is useful (most LSEs were found this way)</text>
+<text top="297" left="87" width="193" height="14" font="2">Some findings about corruption:</text>
+<text top="324" left="107" width="412" height="14" font="2">• Chance of corruption varies greatly across different drive models</text>
+<text top="339" left="122" width="161" height="14" font="2">within the same drive class</text>
+<text top="354" left="107" width="243" height="14" font="2">• Age effects are different across models</text>
+<text top="369" left="107" width="347" height="14" font="2">• Workload and disk size have little impact on corruption</text>
+<text top="384" left="107" width="347" height="14" font="2">• Most disks with corruption only have a few corruptions</text>
+<text top="399" left="107" width="412" height="14" font="2">• Corruption is not independent within a disk or across disks in RAID</text>
+<text top="414" left="107" width="343" height="14" font="2">• There exists spatial locality, and some temporal locality</text>
+<text top="429" left="107" width="238" height="14" font="2">• There is a weak correlation with LSEs</text>
+<text top="455" left="105" width="414" height="14" font="2">To learn more about these failures, you should likely read the original</text>
+<text top="470" left="87" width="432" height="14" font="2">papers [B+07,B+08]. But hopefully the main point should be clear: if you</text>
+<text top="485" left="87" width="432" height="14" font="2">really wish to build a reliable storage system, you must include machin-</text>
+<text top="500" left="87" width="374" height="14" font="2">ery to detect and recover from both LSEs and block corruption.</text>
+<text top="537" left="55" width="251" height="17" font="5">45.2 Handling Latent Sector Errors</text>
+<text top="567" left="105" width="414" height="14" font="2">Given these two new modes of partial disk failure, we should now try</text>
+<text top="582" left="87" width="432" height="14" font="2">to see what we can do about them. Let’s first tackle the easier of the two,</text>
+<text top="597" left="87" width="162" height="14" font="2">namely latent sector errors.</text>
+<text top="635" left="149" width="10" height="14" font="2">C</text>
+<text top="637" left="160" width="24" height="11" font="4">RUX</text>
+<text top="635" left="184" width="19" height="14" font="2">: H</text>
+<text top="637" left="204" width="20" height="11" font="4">OW</text>
+<text top="635" left="228" width="8" height="14" font="2">T</text>
+<text top="637" left="237" width="8" height="11" font="4">O</text>
+<text top="635" left="250" width="11" height="14" font="2">H</text>
+<text top="637" left="261" width="41" height="11" font="4">ANDLE</text>
+<text top="635" left="307" width="8" height="14" font="2">L</text>
+<text top="637" left="316" width="39" height="11" font="4">ATENT</text>
+<text top="635" left="359" width="7" height="14" font="2">S</text>
+<text top="637" left="366" width="39" height="11" font="4">ECTOR</text>
+<text top="635" left="409" width="8" height="14" font="2">E</text>
+<text top="637" left="418" width="38" height="11" font="4">RRORS</text>
+<text top="650" left="105" width="414" height="14" font="2">How should a storage system handle latent sector errors? How much</text>
+<text top="665" left="87" width="379" height="14" font="2">extra machinery is needed to handle this form of partial failure?</text>
+<text top="707" left="105" width="414" height="14" font="2">As it turns out, latent sector errors are rather straightforward to han-</text>
+<text top="721" left="87" width="432" height="14" font="2">dle, as they are (by definition) easily detected. When a storage system</text>
+<text top="736" left="87" width="432" height="14" font="2">tries to access a block, and the disk returns an error, the storage system</text>
+<text top="751" left="87" width="432" height="14" font="2">should simply use whatever redundancy mechanism it has to return the</text>
+<text top="766" left="87" width="432" height="14" font="2">correct data. In a mirrored RAID, for example, the system should access</text>
+<text top="781" left="87" width="432" height="14" font="2">the alternate copy; in a RAID-4 or RAID-5 system based on parity, the</text>
+<text top="796" left="87" width="432" height="14" font="2">system should reconstruct the block from the other blocks in the parity</text>
+<text top="811" left="87" width="432" height="14" font="2">group. Thus, easily detected problems such as LSEs are readily recovered</text>
+<text top="826" left="87" width="260" height="14" font="2">through standard redundancy mechanisms.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="8" size="13" family="DYNYOD+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="344" width="10" height="14" font="2">D</text>
+<text top="98" left="355" width="23" height="11" font="4">ATA</text>
+<text top="96" left="383" width="5" height="14" font="2">I</text>
+<text top="98" left="388" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="482" width="8" height="14" font="2">P</text>
+<text top="98" left="491" width="69" height="11" font="4">ROTECTION</text>
+<text top="139" left="147" width="414" height="14" font="2">The growing prevalence of LSEs has influenced RAID designs over the</text>
+<text top="154" left="129" width="432" height="14" font="2">years. One particularly interesting problem arises in RAID-4/5 systems</text>
+<text top="169" left="129" width="432" height="14" font="2">when both full-disk faults and LSEs occur in tandem. Specifically, when</text>
+<text top="183" left="129" width="229" height="14" font="2">an entire disk fails, the RAID tries to</text>
+<text top="184" left="363" width="68" height="13" font="3"><b>reconstruct</b></text>
+<text top="183" left="436" width="125" height="14" font="2">the disk (say, onto a</text>
+<text top="198" left="129" width="432" height="14" font="2">hot spare) by reading through all of the other disks in the parity group</text>
+<text top="213" left="129" width="432" height="14" font="2">and recomputing the missing values. If, during reconstruction, an LSE</text>
+<text top="228" left="129" width="432" height="14" font="2">is encountered on any one of the other disks, we have a problem: the</text>
+<text top="243" left="129" width="265" height="14" font="2">reconstruction cannot successfully complete.</text>
+<text top="262" left="147" width="414" height="14" font="2">To combat this issue, some systems add an extra degree of redundancy.</text>
+<text top="277" left="129" width="139" height="14" font="2">For example, NetApp’s</text>
+<text top="277" left="272" width="61" height="13" font="3"><b>RAID-DP</b></text>
+<text top="277" left="336" width="225" height="14" font="2">has the equivalent of two parity disks</text>
+<text top="292" left="129" width="432" height="14" font="2">instead of one [C+04]. When an LSE is discovered during reconstruction,</text>
+<text top="307" left="129" width="432" height="14" font="2">the extra parity helps to reconstruct the missing block. As always, there is</text>
+<text top="322" left="129" width="432" height="14" font="2">a cost, in that maintaining two parity blocks for each stripe is more costly;</text>
+<text top="337" left="129" width="296" height="14" font="2">however, the log-structured nature of the NetApp</text>
+<text top="337" left="428" width="38" height="13" font="3"><b>WAFL</b></text>
+<text top="337" left="469" width="91" height="14" font="2">file system mit-</text>
+<text top="352" left="129" width="432" height="14" font="2">igates that cost in many cases [HLM94]. The remaining cost is space, in</text>
+<text top="367" left="129" width="311" height="14" font="2">the form of an extra disk for the second parity block.</text>
+<text top="408" left="97" width="307" height="17" font="5">45.3 Detecting Corruption: The Checksum</text>
+<text top="442" left="147" width="414" height="14" font="2">Let’s now tackle the more challenging problem, that of silent failures</text>
+<text top="457" left="129" width="432" height="14" font="2">via data corruption. How can we prevent users from getting bad data</text>
+<text top="471" left="129" width="401" height="14" font="2">when corruption arises, and thus leads to disks returning bad data?</text>
+<text top="524" left="142" width="10" height="14" font="2">C</text>
+<text top="526" left="152" width="24" height="11" font="4">RUX</text>
+<text top="524" left="177" width="19" height="14" font="2">: H</text>
+<text top="526" left="197" width="20" height="11" font="4">OW</text>
+<text top="524" left="221" width="8" height="14" font="2">T</text>
+<text top="526" left="230" width="8" height="11" font="4">O</text>
+<text top="524" left="242" width="8" height="14" font="2">P</text>
+<text top="526" left="251" width="51" height="11" font="4">RESERVE</text>
+<text top="524" left="306" width="10" height="14" font="2">D</text>
+<text top="526" left="317" width="23" height="11" font="4">ATA</text>
+<text top="524" left="344" width="5" height="14" font="2">I</text>
+<text top="526" left="349" width="60" height="11" font="4">NTEGRITY</text>
+<text top="524" left="413" width="10" height="14" font="2">D</text>
+<text top="526" left="424" width="39" height="11" font="4">ESPITE</text>
+<text top="524" left="467" width="10" height="14" font="2">C</text>
+<text top="526" left="477" width="71" height="11" font="4">ORRUPTION</text>
+<text top="539" left="147" width="414" height="14" font="2">Given the silent nature of such failures, what can a storage system do</text>
+<text top="553" left="129" width="432" height="14" font="2">to detect when corruption arises? What techniques are needed? How can</text>
+<text top="568" left="129" width="192" height="14" font="2">one implement them efficiently?</text>
+<text top="628" left="147" width="163" height="14" font="2">Unlike latent sector errors,</text>
+<text top="628" left="315" width="49" height="14" font="8">detection</text>
+<text top="628" left="369" width="192" height="14" font="2">of corruption is a key problem.</text>
+<text top="643" left="129" width="432" height="14" font="2">How can a client tell that a block has gone bad? Once it is known that a</text>
+<text top="658" left="129" width="138" height="14" font="2">particular block is bad,</text>
+<text top="658" left="272" width="46" height="14" font="8">recovery</text>
+<text top="658" left="322" width="239" height="14" font="2">is the same as before: you need to have</text>
+<text top="673" left="129" width="432" height="14" font="2">some other copy of the block around (and hopefully, one that is not cor-</text>
+<text top="688" left="129" width="308" height="14" font="2">rupt!). Thus, we focus here on detection techniques.</text>
+<text top="707" left="147" width="414" height="14" font="2">The primary mechanism used by modern storage systems to preserve</text>
+<text top="721" left="129" width="159" height="14" font="2">data integrity is called the</text>
+<text top="722" left="293" width="61" height="13" font="3"><b>checksum</b></text>
+<text top="721" left="354" width="207" height="14" font="2">. A checksum is simply the result</text>
+<text top="736" left="129" width="432" height="14" font="2">of a function that takes a chunk of data (say a 4KB block) as input and</text>
+<text top="751" left="129" width="432" height="14" font="2">computes a function over said data, producing a small summary of the</text>
+<text top="766" left="129" width="432" height="14" font="2">contents of the data (say 4 or 8 bytes). This summary is referred to as the</text>
+<text top="781" left="129" width="432" height="14" font="2">checksum. The goal of such a computation is to enable a system to detect</text>
+<text top="796" left="129" width="432" height="14" font="2">if data has somehow been corrupted or altered by storing the checksum</text>
+<text top="811" left="129" width="432" height="14" font="2">with the data and then confirming upon later access that the data’s cur-</text>
+<text top="826" left="129" width="297" height="14" font="2">rent checksum matches the original storage value.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="15" family="DTJQDG+URWPalladioL" color="#000000"/>
+	<fontspec id="10" size="13" family="ZAVTMA+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="23" height="11" font="4">ATA</text>
+<text top="96" left="126" width="5" height="14" font="2">I</text>
+<text top="98" left="131" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="225" width="8" height="14" font="2">P</text>
+<text top="98" left="234" width="69" height="11" font="4">ROTECTION</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="153" left="210" width="8" height="14" font="2">T</text>
+<text top="155" left="219" width="11" height="11" font="4">IP</text>
+<text top="153" left="230" width="16" height="14" font="2">: T</text>
+<text top="155" left="247" width="31" height="11" font="4">HERE</text>
+<text top="153" left="279" width="4" height="14" font="2">’</text>
+<text top="155" left="284" width="6" height="11" font="4">S</text>
+<text top="153" left="293" width="11" height="14" font="2">N</text>
+<text top="155" left="305" width="8" height="11" font="4">O</text>
+<text top="153" left="318" width="7" height="14" font="2">F</text>
+<text top="155" left="326" width="22" height="11" font="4">REE</text>
+<text top="153" left="351" width="8" height="14" font="2">L</text>
+<text top="155" left="360" width="36" height="11" font="4">UNCH</text>
+<text top="168" left="105" width="414" height="14" font="2">There’s No Such Thing As A Free Lunch, or TNSTAAFL for short, is</text>
+<text top="183" left="87" width="432" height="14" font="2">an old American idiom that implies that when you are seemingly get-</text>
+<text top="197" left="87" width="432" height="14" font="2">ting something for free, in actuality you are likely paying some cost for</text>
+<text top="212" left="87" width="432" height="14" font="2">it. It comes from the old days when diners would advertise a free lunch</text>
+<text top="227" left="87" width="432" height="14" font="2">for customers, hoping to draw them in; only when you went in, did you</text>
+<text top="242" left="87" width="432" height="14" font="2">realize that to acquire the “free” lunch, you had to purchase one or more</text>
+<text top="257" left="87" width="432" height="14" font="2">alcoholic beverages. Of course, this may not actually be a problem, partic-</text>
+<text top="272" left="87" width="432" height="14" font="2">ularly if you are an aspiring alcoholic (or typical undergraduate student).</text>
+<text top="325" left="87" width="210" height="15" font="9"><b>Common Checksum Functions</b></text>
+<text top="350" left="87" width="432" height="14" font="2">A number of different functions are used to compute checksums, and</text>
+<text top="365" left="87" width="432" height="14" font="2">vary in strength (i.e., how good they are at protecting data integrity) and</text>
+<text top="379" left="87" width="432" height="14" font="2">speed (i.e., how quickly can they be computed). A trade-off that is com-</text>
+<text top="394" left="87" width="432" height="14" font="2">mon in systems arises here: usually, the more protection you get, the</text>
+<text top="409" left="87" width="299" height="14" font="2">costlier it is. There is no such thing as a free lunch.</text>
+<text top="424" left="105" width="414" height="14" font="2">One simple checksum function that some use is based on exclusive</text>
+<text top="439" left="87" width="432" height="14" font="2">or (XOR). With XOR-based checksums, the checksum is computed by</text>
+<text top="454" left="87" width="432" height="14" font="2">XOR’ing each chunk of the data block being checksummed, thus produc-</text>
+<text top="469" left="87" width="363" height="14" font="2">ing a single value that represents the XOR of the entire block.</text>
+<text top="484" left="105" width="414" height="14" font="2">To make this more concrete, imagine we are computing a 4-byte check-</text>
+<text top="499" left="87" width="432" height="14" font="2">sum over a block of 16 bytes (this block is of course too small to really be a</text>
+<text top="514" left="87" width="432" height="14" font="2">disk sector or block, but it will serve for the example). The 16 data bytes,</text>
+<text top="529" left="87" width="123" height="14" font="2">in hex, look like this:</text>
+<text top="557" left="87" width="315" height="11" font="10">365e c4cd ba14 8a92 ecef 2c3a 40be f666</text>
+<text top="583" left="105" width="284" height="14" font="2">If we view them in binary, we get the following:</text>
+<text top="611" left="87" width="153" height="11" font="10">0011 0110 0101 1110</text>
+<text top="611" left="273" width="153" height="11" font="10">1100 0100 1100 1101</text>
+<text top="626" left="87" width="153" height="11" font="10">1011 1010 0001 0100</text>
+<text top="626" left="273" width="153" height="11" font="10">1000 1010 1001 0010</text>
+<text top="641" left="87" width="153" height="11" font="10">1110 1100 1110 1111</text>
+<text top="641" left="273" width="153" height="11" font="10">0010 1100 0011 1010</text>
+<text top="656" left="87" width="153" height="11" font="10">0100 0000 1011 1110</text>
+<text top="656" left="273" width="153" height="11" font="10">1111 0110 0110 0110</text>
+<text top="682" left="105" width="414" height="14" font="2">Because we’ve lined up the data in groups of 4 bytes per row, it is easy</text>
+<text top="697" left="87" width="432" height="14" font="2">to see what the resulting checksum will be: perform an XOR over each</text>
+<text top="712" left="87" width="236" height="14" font="2">column to get the final checksum value:</text>
+<text top="740" left="87" width="153" height="11" font="10">0010 0000 0001 1011</text>
+<text top="740" left="273" width="153" height="11" font="10">1001 0100 0000 0011</text>
+<text top="766" left="105" width="194" height="14" font="2">The result, in hex, is 0x201b9403.</text>
+<text top="781" left="105" width="414" height="14" font="2">XOR is a reasonable checksum but has its limitations. If, for example,</text>
+<text top="796" left="87" width="432" height="14" font="2">two bits in the same position within each checksummed unit change, the</text>
+<text top="811" left="87" width="432" height="14" font="2">checksum will not detect the corruption. For this reason, people have</text>
+<text top="826" left="87" width="233" height="14" font="2">investigated other checksum functions.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="URXEIB+CMMI9" color="#000000"/>
+	<fontspec id="12" size="13" family="JYYMNA+CMR9" color="#000000"/>
+	<fontspec id="13" size="9" family="YGUJGQ+CMMI6" color="#000000"/>
+	<fontspec id="14" size="14" family="BOGWQX+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="344" width="10" height="14" font="2">D</text>
+<text top="98" left="355" width="23" height="11" font="4">ATA</text>
+<text top="96" left="383" width="5" height="14" font="2">I</text>
+<text top="98" left="388" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="482" width="8" height="14" font="2">P</text>
+<text top="98" left="491" width="69" height="11" font="4">ROTECTION</text>
+<text top="139" left="147" width="414" height="14" font="2">Another basic checksum function is addition. This approach has the</text>
+<text top="154" left="129" width="461" height="14" font="2">advantage of being fast; computing it just requires performing 2’s-complement</text>
+<text top="169" left="129" width="432" height="14" font="2">addition over each chunk of the data, ignoring overflow. It can detect</text>
+<text top="183" left="129" width="431" height="14" font="2">many changes in data, but is not good if the data, for example, is shifted.</text>
+<text top="199" left="147" width="316" height="14" font="2">A slightly more complex algorithm is known as the</text>
+<text top="199" left="467" width="94" height="13" font="3"><b>Fletcher check-</b></text>
+<text top="214" left="129" width="26" height="13" font="3"><b>sum</b></text>
+<text top="213" left="155" width="406" height="14" font="2">, named (as you might guess) for the inventor, John G. Fletcher [F82].</text>
+<text top="228" left="129" width="432" height="14" font="2">It is quite simple to compute and involves the computation of two check</text>
+<text top="243" left="129" width="35" height="14" font="2">bytes,</text>
+<text top="244" left="169" width="6" height="12" font="11">s</text>
+<text top="243" left="175" width="7" height="13" font="12">1</text>
+<text top="243" left="187" width="23" height="14" font="2">and</text>
+<text top="244" left="214" width="6" height="12" font="11">s</text>
+<text top="243" left="221" width="7" height="13" font="12">2</text>
+<text top="243" left="228" width="179" height="14" font="2">. Specifically, assume a block</text>
+<text top="244" left="411" width="11" height="12" font="11">D</text>
+<text top="243" left="428" width="99" height="14" font="2">consists of bytes</text>
+<text top="244" left="532" width="7" height="12" font="11">d</text>
+<text top="243" left="539" width="7" height="13" font="12">1</text>
+<text top="243" left="551" width="10" height="14" font="2">...</text>
+<text top="259" left="129" width="15" height="12" font="11">dn</text>
+<text top="258" left="144" width="3" height="14" font="2">;</text>
+<text top="259" left="152" width="6" height="12" font="11">s</text>
+<text top="258" left="158" width="7" height="13" font="12">1</text>
+<text top="258" left="169" width="126" height="14" font="2">is defined as follows:</text>
+<text top="259" left="300" width="6" height="12" font="11">s</text>
+<text top="258" left="306" width="32" height="13" font="12">1 = (</text>
+<text top="259" left="339" width="6" height="12" font="11">s</text>
+<text top="258" left="345" width="21" height="13" font="12">1 +</text>
+<text top="259" left="370" width="7" height="12" font="11">d</text>
+<text top="264" left="377" width="4" height="8" font="13">i</text>
+<text top="258" left="382" width="5" height="13" font="12">)</text>
+<text top="259" left="392" width="26" height="12" font="11">mod</text>
+<text top="258" left="422" width="21" height="13" font="12">255</text>
+<text top="258" left="447" width="114" height="14" font="2">(computed over all</text>
+<text top="274" left="129" width="7" height="12" font="11">d</text>
+<text top="279" left="136" width="4" height="8" font="13">i</text>
+<text top="273" left="141" width="8" height="14" font="2">);</text>
+<text top="274" left="153" width="6" height="12" font="11">s</text>
+<text top="273" left="160" width="7" height="13" font="12">2</text>
+<text top="273" left="171" width="59" height="14" font="2">in turn is:</text>
+<text top="274" left="235" width="6" height="12" font="11">s</text>
+<text top="273" left="242" width="34" height="13" font="12">2 = (</text>
+<text top="274" left="275" width="6" height="12" font="11">s</text>
+<text top="273" left="282" width="21" height="13" font="12">2 +</text>
+<text top="274" left="307" width="6" height="12" font="11">s</text>
+<text top="273" left="313" width="12" height="13" font="12">1)</text>
+<text top="274" left="331" width="26" height="12" font="11">mod</text>
+<text top="273" left="362" width="21" height="13" font="12">255</text>
+<text top="273" left="387" width="87" height="14" font="2">(again over all</text>
+<text top="274" left="478" width="7" height="12" font="11">d</text>
+<text top="279" left="485" width="4" height="8" font="13">i</text>
+<text top="273" left="490" width="71" height="14" font="2">) [F04]. The</text>
+<text top="288" left="129" width="432" height="14" font="2">Fletcher checksum is almost as strong as the CRC (see below), detecting</text>
+<text top="303" left="129" width="357" height="14" font="2">all single-bit, double-bit errors, and many burst errors [F04].</text>
+<text top="318" left="147" width="300" height="14" font="2">One final commonly-used checksum is known as a</text>
+<text top="318" left="450" width="111" height="13" font="3"><b>cyclic redundancy</b></text>
+<text top="333" left="129" width="35" height="13" font="3"><b>check</b></text>
+<text top="333" left="169" width="4" height="14" font="2">(</text>
+<text top="333" left="173" width="29" height="13" font="3"><b>CRC</b></text>
+<text top="333" left="203" width="358" height="14" font="2">). Assume you wish to compute the checksum over a data</text>
+<text top="348" left="129" width="32" height="14" font="2">block</text>
+<text top="348" left="165" width="11" height="12" font="11">D</text>
+<text top="348" left="177" width="119" height="14" font="2">. All you do is treat</text>
+<text top="348" left="300" width="11" height="12" font="11">D</text>
+<text top="348" left="316" width="245" height="14" font="2">as if it is a large binary number (it is just</text>
+<text top="363" left="129" width="387" height="14" font="2">a string of bits after all) and divide it by an agreed upon value (</text>
+<text top="363" left="516" width="7" height="12" font="11">k</text>
+<text top="363" left="524" width="37" height="14" font="2">). The</text>
+<text top="378" left="129" width="432" height="14" font="2">remainder of this division is the value of the CRC. As it turns out, one</text>
+<text top="393" left="129" width="432" height="14" font="2">can implement this binary modulo operation rather efficiently, and hence</text>
+<text top="408" left="129" width="432" height="14" font="2">the popularity of the CRC in networking as well. See elsewhere for more</text>
+<text top="423" left="129" width="81" height="14" font="2">details [M13].</text>
+<text top="438" left="147" width="414" height="14" font="2">Whatever the method used, it should be obvious that there is no per-</text>
+<text top="453" left="129" width="432" height="14" font="2">fect checksum: it is possible two data blocks with non-identical contents</text>
+<text top="468" left="129" width="341" height="14" font="2">will have identical checksums, something referred to as a</text>
+<text top="468" left="474" width="53" height="13" font="3"><b>collision</b></text>
+<text top="468" left="527" width="34" height="14" font="2">. This</text>
+<text top="483" left="129" width="432" height="14" font="2">fact should be intuitive: after all, computing a checksum is taking some-</text>
+<text top="498" left="129" width="432" height="14" font="2">thing large (e.g., 4KB) and producing a summary that is much smaller</text>
+<text top="513" left="129" width="432" height="14" font="2">(e.g., 4 or 8 bytes). In choosing a good checksum function, we are thus</text>
+<text top="527" left="129" width="432" height="14" font="2">trying to find one that minimizes the chance of collisions while remain-</text>
+<text top="542" left="129" width="123" height="14" font="2">ing easy to compute.</text>
+<text top="579" left="129" width="123" height="15" font="9"><b>Checksum Layout</b></text>
+<text top="603" left="129" width="432" height="14" font="2">Now that you understand a bit about how to compute a checksum, let’s</text>
+<text top="618" left="129" width="432" height="14" font="2">next analyze how to use checksums in a storage system. The first question</text>
+<text top="633" left="129" width="432" height="14" font="2">we must address is the layout of the checksum, i.e., how should check-</text>
+<text top="648" left="129" width="142" height="14" font="2">sums be stored on disk?</text>
+<text top="663" left="147" width="414" height="14" font="2">The most basic approach simply stores a checksum with each disk sec-</text>
+<text top="678" left="129" width="204" height="14" font="2">tor (or block). Given a data block</text>
+<text top="678" left="338" width="11" height="12" font="11">D</text>
+<text top="678" left="349" width="211" height="14" font="2">, let us call the checksum over that</text>
+<text top="693" left="129" width="26" height="14" font="2">data</text>
+<text top="693" left="158" width="10" height="12" font="11">C</text>
+<text top="693" left="169" width="5" height="13" font="12">(</text>
+<text top="693" left="175" width="11" height="12" font="11">D</text>
+<text top="693" left="186" width="5" height="13" font="12">)</text>
+<text top="693" left="192" width="344" height="14" font="2">. Thus, without checksums, the disk layout looks like this:</text>
+<text top="746" left="163" width="18" height="14" font="14">D0</text>
+<text top="746" left="220" width="18" height="14" font="14">D1</text>
+<text top="746" left="278" width="18" height="14" font="14">D2</text>
+<text top="746" left="336" width="18" height="14" font="14">D3</text>
+<text top="746" left="393" width="18" height="14" font="14">D4</text>
+<text top="746" left="451" width="18" height="14" font="14">D5</text>
+<text top="746" left="508" width="18" height="14" font="14">D6</text>
+<text top="826" left="129" width="404" height="14" font="2">With checksums, the layout adds a single checksum for every block:</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="12" family="BOGWQX+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="23" height="11" font="4">ATA</text>
+<text top="96" left="126" width="5" height="14" font="2">I</text>
+<text top="98" left="131" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="225" width="8" height="14" font="2">P</text>
+<text top="98" left="234" width="69" height="11" font="4">ROTECTION</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="184" left="114" width="0" height="11" font="15">C[D0]</text>
+<text top="173" left="138" width="18" height="14" font="14">D0</text>
+<text top="184" left="189" width="0" height="11" font="15">C[D1]</text>
+<text top="173" left="213" width="18" height="14" font="14">D1</text>
+<text top="184" left="264" width="0" height="11" font="15">C[D2]</text>
+<text top="173" left="288" width="18" height="14" font="14">D2</text>
+<text top="184" left="339" width="0" height="11" font="15">C[D3]</text>
+<text top="173" left="363" width="18" height="14" font="14">D3</text>
+<text top="184" left="414" width="0" height="11" font="15">C[D4]</text>
+<text top="173" left="438" width="18" height="14" font="14">D4</text>
+<text top="236" left="105" width="414" height="14" font="2">Because checksums are usually small (e.g., 8 bytes), and disks only can</text>
+<text top="250" left="87" width="432" height="14" font="2">write in sector-sized chunks (512 bytes) or multiples thereof, one problem</text>
+<text top="265" left="87" width="432" height="14" font="2">that arises is how to achieve the above layout. One solution employed by</text>
+<text top="280" left="87" width="432" height="14" font="2">drive manufacturers is to format the drive with 520-byte sectors; an extra</text>
+<text top="295" left="87" width="312" height="14" font="2">8 bytes per sector can be used to store the checksum.</text>
+<text top="311" left="105" width="414" height="14" font="2">In disks that don’t have such functionality, the file system must figure</text>
+<text top="326" left="87" width="432" height="14" font="2">out a way to store the checksums packed into 512-byte blocks. One such</text>
+<text top="341" left="87" width="141" height="14" font="2">possibility is as follows:</text>
+<text top="407" left="113" width="0" height="11" font="15">C[D0]</text>
+<text top="407" left="127" width="0" height="11" font="15">C[D1]</text>
+<text top="407" left="142" width="0" height="11" font="15">C[D2]</text>
+<text top="407" left="156" width="0" height="11" font="15">C[D3]</text>
+<text top="407" left="170" width="0" height="11" font="15">C[D4]</text>
+<text top="395" left="193" width="18" height="14" font="14">D0</text>
+<text top="395" left="251" width="18" height="14" font="14">D1</text>
+<text top="395" left="308" width="18" height="14" font="14">D2</text>
+<text top="395" left="366" width="18" height="14" font="14">D3</text>
+<text top="395" left="423" width="18" height="14" font="14">D4</text>
+<text top="444" left="105" width="115" height="14" font="2">In this scheme, the</text>
+<text top="444" left="225" width="8" height="12" font="11">n</text>
+<text top="444" left="238" width="281" height="14" font="2">checksums are stored together in a sector, fol-</text>
+<text top="459" left="87" width="57" height="14" font="2">lowed by</text>
+<text top="459" left="150" width="8" height="12" font="11">n</text>
+<text top="459" left="164" width="355" height="14" font="2">data blocks, followed by another checksum sector for the</text>
+<text top="473" left="87" width="26" height="14" font="2">next</text>
+<text top="474" left="118" width="8" height="12" font="11">n</text>
+<text top="473" left="131" width="388" height="14" font="2">blocks, and so forth. This approach has the benefit of working</text>
+<text top="488" left="87" width="432" height="14" font="2">on all disks, but can be less efficient; if the file system, for example, wants</text>
+<text top="503" left="87" width="111" height="14" font="2">to overwrite block</text>
+<text top="504" left="202" width="11" height="12" font="11">D</text>
+<text top="503" left="214" width="7" height="13" font="12">1</text>
+<text top="503" left="221" width="298" height="14" font="2">, it has to read in the checksum sector containing</text>
+<text top="519" left="87" width="10" height="12" font="11">C</text>
+<text top="518" left="98" width="5" height="13" font="12">(</text>
+<text top="519" left="103" width="11" height="12" font="11">D</text>
+<text top="518" left="115" width="12" height="13" font="12">1)</text>
+<text top="518" left="127" width="49" height="14" font="2">, update</text>
+<text top="519" left="180" width="10" height="12" font="11">C</text>
+<text top="518" left="191" width="5" height="13" font="12">(</text>
+<text top="519" left="197" width="11" height="12" font="11">D</text>
+<text top="518" left="208" width="12" height="13" font="12">1)</text>
+<text top="518" left="225" width="294" height="14" font="2">in it, and then write out the checksum sector and</text>
+<text top="533" left="87" width="90" height="14" font="2">new data block</text>
+<text top="534" left="181" width="11" height="12" font="11">D</text>
+<text top="533" left="192" width="7" height="13" font="12">1</text>
+<text top="533" left="203" width="316" height="14" font="2">(thus, one read and two writes). The earlier approach</text>
+<text top="548" left="87" width="340" height="14" font="2">(of one checksum per sector) just performs a single write.</text>
+<text top="586" left="55" width="165" height="17" font="5">45.4 Using Checksums</text>
+<text top="616" left="105" width="414" height="14" font="2">With a checksum layout decided upon, we can now proceed to actu-</text>
+<text top="631" left="87" width="140" height="14" font="2">ally understand how to</text>
+<text top="631" left="230" width="18" height="14" font="8">use</text>
+<text top="631" left="252" width="226" height="14" font="2">the checksums. When reading a block</text>
+<text top="631" left="482" width="11" height="12" font="11">D</text>
+<text top="631" left="493" width="26" height="14" font="2">, the</text>
+<text top="646" left="87" width="432" height="14" font="2">client (i.e., file system or storage controller) also reads its checksum from</text>
+<text top="661" left="87" width="25" height="14" font="2">disk</text>
+<text top="661" left="116" width="10" height="12" font="11">C</text>
+<text top="666" left="126" width="5" height="8" font="13">s</text>
+<text top="661" left="132" width="5" height="13" font="12">(</text>
+<text top="661" left="137" width="11" height="12" font="11">D</text>
+<text top="661" left="149" width="5" height="13" font="12">)</text>
+<text top="661" left="154" width="110" height="14" font="2">, which we call the</text>
+<text top="661" left="267" width="103" height="13" font="3"><b>stored checksum</b></text>
+<text top="661" left="373" width="119" height="14" font="2">(hence the subscript</text>
+<text top="661" left="495" width="10" height="12" font="11">C</text>
+<text top="666" left="505" width="5" height="8" font="13">s</text>
+<text top="661" left="511" width="8" height="14" font="2">).</text>
+<text top="676" left="87" width="88" height="14" font="2">The client then</text>
+<text top="676" left="179" width="51" height="14" font="8">computes</text>
+<text top="676" left="233" width="227" height="14" font="2">the checksum over the retrieved block</text>
+<text top="676" left="464" width="11" height="12" font="11">D</text>
+<text top="676" left="475" width="44" height="14" font="2">, which</text>
+<text top="691" left="87" width="67" height="14" font="2">we call the</text>
+<text top="691" left="159" width="127" height="13" font="3"><b>computed checksum</b></text>
+<text top="691" left="291" width="10" height="12" font="11">C</text>
+<text top="696" left="301" width="5" height="8" font="13">c</text>
+<text top="691" left="307" width="5" height="13" font="12">(</text>
+<text top="691" left="312" width="11" height="12" font="11">D</text>
+<text top="691" left="324" width="5" height="13" font="12">)</text>
+<text top="691" left="329" width="190" height="14" font="2">. At this point, the client com-</text>
+<text top="706" left="87" width="389" height="14" font="2">pares the stored and computed checksums; if they are equal (i.e.,</text>
+<text top="706" left="481" width="10" height="12" font="11">C</text>
+<text top="711" left="490" width="5" height="8" font="13">s</text>
+<text top="706" left="496" width="5" height="13" font="12">(</text>
+<text top="706" left="502" width="11" height="12" font="11">D</text>
+<text top="706" left="514" width="5" height="13" font="12">)</text>
+<text top="721" left="87" width="16" height="14" font="2">==</text>
+<text top="721" left="107" width="10" height="12" font="11">C</text>
+<text top="726" left="117" width="5" height="8" font="13">c</text>
+<text top="721" left="123" width="5" height="13" font="12">(</text>
+<text top="721" left="128" width="11" height="12" font="11">D</text>
+<text top="721" left="140" width="5" height="13" font="12">)</text>
+<text top="721" left="145" width="374" height="14" font="2">, the data has likely not been corrupted, and thus can be safely</text>
+<text top="736" left="87" width="184" height="14" font="2">returned to the user. If they do</text>
+<text top="736" left="275" width="18" height="14" font="8">not</text>
+<text top="736" left="297" width="65" height="14" font="2">match (i.e.,</text>
+<text top="736" left="366" width="10" height="12" font="11">C</text>
+<text top="741" left="376" width="5" height="8" font="13">s</text>
+<text top="735" left="382" width="5" height="13" font="12">(</text>
+<text top="736" left="387" width="11" height="12" font="11">D</text>
+<text top="735" left="399" width="5" height="13" font="12">)</text>
+<text top="736" left="408" width="12" height="14" font="2">!=</text>
+<text top="736" left="423" width="10" height="12" font="11">C</text>
+<text top="741" left="433" width="5" height="8" font="13">c</text>
+<text top="735" left="439" width="5" height="13" font="12">(</text>
+<text top="736" left="444" width="11" height="12" font="11">D</text>
+<text top="735" left="456" width="5" height="13" font="12">)</text>
+<text top="736" left="462" width="57" height="14" font="2">), this im-</text>
+<text top="751" left="87" width="432" height="14" font="2">plies the data has changed since the time it was stored (since the stored</text>
+<text top="766" left="87" width="432" height="14" font="2">checksum reflects the value of the data at that time). In this case, we have</text>
+<text top="781" left="87" width="347" height="14" font="2">a corruption, which our checksum has helped us to detect.</text>
+<text top="796" left="105" width="414" height="14" font="2">Given a corruption, the natural question is what should we do about</text>
+<text top="811" left="87" width="432" height="14" font="2">it? If the storage system has a redundant copy, the answer is easy: try to</text>
+<text top="826" left="87" width="432" height="14" font="2">use it instead. If the storage system has no such copy, the likely answer is</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="9" family="DWAJJK+CMR6" color="#000000"/>
+	<fontspec id="17" size="15" family="BOGWQX+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="344" width="10" height="14" font="2">D</text>
+<text top="98" left="355" width="23" height="11" font="4">ATA</text>
+<text top="96" left="383" width="5" height="14" font="2">I</text>
+<text top="98" left="388" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="482" width="8" height="14" font="2">P</text>
+<text top="98" left="491" width="69" height="11" font="4">ROTECTION</text>
+<text top="139" left="129" width="432" height="14" font="2">to return an error. In either case, realize that corruption detection is not a</text>
+<text top="154" left="129" width="432" height="14" font="2">magic bullet; if there is no other way to get the non-corrupted data, you</text>
+<text top="169" left="129" width="133" height="14" font="2">are simply out of luck.</text>
+<text top="194" left="97" width="297" height="17" font="5">45.5 A New Problem: Misdirected Writes</text>
+<text top="215" left="147" width="414" height="14" font="2">The basic scheme described above works well in the general case of</text>
+<text top="230" left="129" width="432" height="14" font="2">corrupted blocks. However, modern disks have a couple of unusual fail-</text>
+<text top="245" left="129" width="251" height="14" font="2">ure modes that require different solutions.</text>
+<text top="260" left="147" width="263" height="14" font="2">The first failure mode of interest is called a</text>
+<text top="260" left="415" width="109" height="13" font="3"><b>misdirected write</b></text>
+<text top="260" left="524" width="37" height="14" font="2">. This</text>
+<text top="275" left="129" width="432" height="14" font="2">arises in disk and RAID controllers which write the data to disk correctly,</text>
+<text top="290" left="129" width="76" height="14" font="2">except in the</text>
+<text top="290" left="209" width="35" height="14" font="8">wrong</text>
+<text top="290" left="247" width="314" height="14" font="2">location. In a single-disk system, this means that the</text>
+<text top="305" left="129" width="101" height="14" font="2">disk wrote block</text>
+<text top="305" left="234" width="11" height="12" font="11">D</text>
+<text top="310" left="245" width="6" height="8" font="13">x</text>
+<text top="305" left="257" width="86" height="14" font="2">not to address</text>
+<text top="305" left="347" width="8" height="12" font="11">x</text>
+<text top="305" left="360" width="201" height="14" font="2">(as desired) but rather to address</text>
+<text top="320" left="129" width="7" height="12" font="11">y</text>
+<text top="320" left="141" width="113" height="14" font="2">(thus “corrupting”</text>
+<text top="320" left="259" width="11" height="12" font="11">D</text>
+<text top="325" left="271" width="6" height="8" font="13">y</text>
+<text top="320" left="278" width="283" height="14" font="2">); in addition, within a multi-disk system, the</text>
+<text top="335" left="129" width="154" height="14" font="2">controller may also write</text>
+<text top="335" left="288" width="11" height="12" font="11">D</text>
+<text top="340" left="300" width="14" height="8" font="13">i,x</text>
+<text top="335" left="319" width="88" height="14" font="2">not to address</text>
+<text top="335" left="412" width="8" height="12" font="11">x</text>
+<text top="335" left="425" width="42" height="14" font="2">of disk</text>
+<text top="335" left="473" width="5" height="12" font="11">i</text>
+<text top="335" left="483" width="78" height="14" font="2">but rather to</text>
+<text top="350" left="129" width="95" height="14" font="2">some other disk</text>
+<text top="350" left="227" width="6" height="12" font="11">j</text>
+<text top="350" left="233" width="120" height="14" font="2">. Thus our question:</text>
+<text top="386" left="199" width="10" height="14" font="2">C</text>
+<text top="388" left="209" width="24" height="11" font="4">RUX</text>
+<text top="386" left="234" width="19" height="14" font="2">: H</text>
+<text top="388" left="254" width="20" height="11" font="4">OW</text>
+<text top="386" left="278" width="8" height="14" font="2">T</text>
+<text top="388" left="287" width="8" height="11" font="4">O</text>
+<text top="386" left="299" width="11" height="14" font="2">H</text>
+<text top="388" left="311" width="41" height="11" font="4">ANDLE</text>
+<text top="386" left="357" width="13" height="14" font="2">M</text>
+<text top="388" left="370" width="70" height="11" font="4">ISDIRECTED</text>
+<text top="386" left="444" width="13" height="14" font="2">W</text>
+<text top="388" left="458" width="32" height="11" font="4">RITES</text>
+<text top="401" left="147" width="414" height="14" font="2">How should a storage system or disk controller detect misdirected</text>
+<text top="416" left="129" width="393" height="14" font="2">writes? What additional features are required from the checksum?</text>
+<text top="457" left="147" width="414" height="14" font="2">The answer, not surprisingly, is simple: add a little more information</text>
+<text top="472" left="129" width="235" height="14" font="2">to each checksum. In this case, adding a</text>
+<text top="472" left="367" width="111" height="13" font="3"><b>physical identifier</b></text>
+<text top="472" left="481" width="4" height="14" font="2">(</text>
+<text top="472" left="485" width="71" height="13" font="3"><b>physical ID</b></text>
+<text top="472" left="556" width="4" height="14" font="2">)</text>
+<text top="486" left="129" width="432" height="14" font="2">is quite helpful. For example, if the stored information now contains the</text>
+<text top="501" left="129" width="59" height="14" font="2">checksum</text>
+<text top="502" left="192" width="10" height="12" font="11">C</text>
+<text top="501" left="203" width="5" height="13" font="12">(</text>
+<text top="502" left="208" width="11" height="12" font="11">D</text>
+<text top="501" left="220" width="5" height="13" font="12">)</text>
+<text top="501" left="229" width="331" height="14" font="2">and both the disk and sector numbers of the block, it is</text>
+<text top="516" left="129" width="432" height="14" font="2">easy for the client to determine whether the correct information resides</text>
+<text top="531" left="129" width="432" height="14" font="2">within a particular locale. Specifically, if the client is reading block 4 on</text>
+<text top="546" left="129" width="51" height="14" font="2">disk 10 (</text>
+<text top="547" left="180" width="11" height="12" font="11">D</text>
+<text top="551" left="192" width="11" height="6" font="16">10</text>
+<text top="552" left="203" width="3" height="8" font="13">,</text>
+<text top="551" left="206" width="5" height="6" font="16">4</text>
+<text top="546" left="212" width="349" height="14" font="2">), the stored information should include that disk number</text>
+<text top="561" left="129" width="432" height="14" font="2">and sector offset, as shown below. If the information does not match, a</text>
+<text top="576" left="129" width="432" height="14" font="2">misdirected write has taken place, and a corruption is now detected. Here</text>
+<text top="591" left="129" width="432" height="14" font="2">is an example of what this added information would look like on a two-</text>
+<text top="606" left="129" width="432" height="14" font="2">disk system. Note that this figure, like the others before it, is not to scale,</text>
+<text top="621" left="129" width="432" height="14" font="2">as the checksums are usually small (e.g., 8 bytes) whereas the blocks are</text>
+<text top="636" left="129" width="201" height="14" font="2">much larger (e.g., 4 KB or bigger):</text>
+<text top="758" left="132" width="41" height="14" font="17">Disk 0</text>
+<text top="690" left="132" width="41" height="14" font="17">Disk 1</text>
+<text top="770" left="194" width="0" height="11" font="15">C[D0]</text>
+<text top="772" left="212" width="0" height="11" font="15">disk=0</text>
+<text top="775" left="230" width="0" height="11" font="15">block=0</text>
+<text top="758" left="255" width="19" height="14" font="17">D0</text>
+<text top="770" left="307" width="0" height="11" font="15">C[D1]</text>
+<text top="772" left="325" width="0" height="11" font="15">disk=0</text>
+<text top="775" left="343" width="0" height="11" font="15">block=1</text>
+<text top="758" left="368" width="19" height="14" font="17">D1</text>
+<text top="770" left="421" width="0" height="11" font="15">C[D2]</text>
+<text top="772" left="439" width="0" height="11" font="15">disk=0</text>
+<text top="775" left="457" width="0" height="11" font="15">block=2</text>
+<text top="758" left="481" width="19" height="14" font="17">D2</text>
+<text top="703" left="194" width="0" height="11" font="15">C[D0]</text>
+<text top="705" left="212" width="0" height="11" font="15">disk=1</text>
+<text top="708" left="230" width="0" height="11" font="15">block=0</text>
+<text top="690" left="255" width="19" height="14" font="17">D0</text>
+<text top="703" left="307" width="0" height="11" font="15">C[D1]</text>
+<text top="705" left="325" width="0" height="11" font="15">disk=1</text>
+<text top="708" left="343" width="0" height="11" font="15">block=1</text>
+<text top="690" left="368" width="19" height="14" font="17">D1</text>
+<text top="703" left="421" width="0" height="11" font="15">C[D2]</text>
+<text top="705" left="439" width="0" height="11" font="15">disk=1</text>
+<text top="708" left="457" width="0" height="11" font="15">block=2</text>
+<text top="690" left="481" width="19" height="14" font="17">D2</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="23" height="11" font="4">ATA</text>
+<text top="96" left="126" width="5" height="14" font="2">I</text>
+<text top="98" left="131" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="225" width="8" height="14" font="2">P</text>
+<text top="98" left="234" width="69" height="11" font="4">ROTECTION</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="139" left="105" width="414" height="14" font="2">You can see from the on-disk format that there is now a fair amount of</text>
+<text top="154" left="87" width="432" height="14" font="2">redundancy on disk: for each block, the disk number is repeated within</text>
+<text top="169" left="87" width="432" height="14" font="2">each block, and the offset of the block in question is also kept next to the</text>
+<text top="183" left="87" width="432" height="14" font="2">block itself. The presence of redundant information should be no sur-</text>
+<text top="198" left="87" width="432" height="14" font="2">prise, though; redundancy is the key to error detection (in this case) and</text>
+<text top="213" left="87" width="432" height="14" font="2">recovery (in others). A little extra information, while not strictly needed</text>
+<text top="228" left="87" width="432" height="14" font="2">with perfect disks, can go a long ways in helping detect problematic situ-</text>
+<text top="243" left="87" width="145" height="14" font="2">ations should they arise.</text>
+<text top="281" left="55" width="255" height="17" font="5">45.6 One Last Problem: Lost Writes</text>
+<text top="311" left="105" width="414" height="14" font="2">Unfortunately, misdirected writes are not the last problem we will</text>
+<text top="326" left="87" width="432" height="14" font="2">address. Specifically, some modern storage devices also have an issue</text>
+<text top="341" left="87" width="71" height="14" font="2">known as a</text>
+<text top="341" left="163" width="60" height="13" font="3"><b>lost write</b></text>
+<text top="341" left="223" width="296" height="14" font="2">, which occurs when the device informs the up-</text>
+<text top="356" left="87" width="432" height="14" font="2">per layer that a write has completed but in fact it never is persisted; thus,</text>
+<text top="371" left="87" width="432" height="14" font="2">what remains is the old contents of the block rather than the updated new</text>
+<text top="386" left="87" width="53" height="14" font="2">contents.</text>
+<text top="402" left="105" width="414" height="14" font="2">The obvious question here is: do any of our checksumming strategies</text>
+<text top="417" left="87" width="432" height="14" font="2">from above (e.g., basic checksums, or physical identity) help to detect</text>
+<text top="432" left="87" width="432" height="14" font="2">lost writes? Unfortunately, the answer is no: the old block likely has a</text>
+<text top="447" left="87" width="432" height="14" font="2">matching checksum, and the physical ID used above (disk number and</text>
+<text top="462" left="87" width="335" height="14" font="2">block offset) will also be correct. Thus our final problem:</text>
+<text top="503" left="184" width="10" height="14" font="2">C</text>
+<text top="505" left="194" width="24" height="11" font="4">RUX</text>
+<text top="503" left="219" width="19" height="14" font="2">: H</text>
+<text top="505" left="239" width="20" height="11" font="4">OW</text>
+<text top="503" left="263" width="8" height="14" font="2">T</text>
+<text top="505" left="271" width="8" height="11" font="4">O</text>
+<text top="503" left="284" width="11" height="14" font="2">H</text>
+<text top="505" left="296" width="41" height="11" font="4">ANDLE</text>
+<text top="503" left="341" width="8" height="14" font="2">L</text>
+<text top="505" left="350" width="22" height="11" font="4">OST</text>
+<text top="503" left="376" width="13" height="14" font="2">W</text>
+<text top="505" left="390" width="32" height="11" font="4">RITES</text>
+<text top="518" left="105" width="414" height="14" font="2">How should a storage system or disk controller detect lost writes?</text>
+<text top="533" left="87" width="346" height="14" font="2">What additional features are required from the checksum?</text>
+<text top="578" left="105" width="414" height="14" font="2">There are a number of possible solutions that can help [K+08]. One</text>
+<text top="593" left="87" width="234" height="14" font="2">classic approach [BS04] is to perform a</text>
+<text top="593" left="325" width="73" height="13" font="3"><b>write verify</b></text>
+<text top="593" left="403" width="13" height="14" font="2">or</text>
+<text top="593" left="419" width="96" height="13" font="3"><b>read-after-write</b></text>
+<text top="593" left="516" width="3" height="14" font="2">;</text>
+<text top="608" left="87" width="432" height="14" font="2">by immediately reading back the data after a write, a system can ensure</text>
+<text top="623" left="87" width="432" height="14" font="2">that the data indeed reached the disk surface. This approach, however, is</text>
+<text top="638" left="87" width="409" height="14" font="2">quite slow, doubling the number of I/Os needed to complete a write.</text>
+<text top="653" left="105" width="414" height="14" font="2">Some systems add a checksum elsewhere in the system to detect lost</text>
+<text top="668" left="87" width="157" height="14" font="2">writes. For example, Sun’s</text>
+<text top="668" left="247" width="132" height="13" font="3"><b>Zettabyte File System</b></text>
+<text top="668" left="382" width="4" height="14" font="2">(</text>
+<text top="668" left="386" width="25" height="13" font="3"><b>ZFS</b></text>
+<text top="668" left="411" width="108" height="14" font="2">) includes a check-</text>
+<text top="683" left="87" width="432" height="14" font="2">sum in each file system inode and indirect block for every block included</text>
+<text top="698" left="87" width="432" height="14" font="2">within a file. Thus, even if the write to a data block itself is lost, the check-</text>
+<text top="713" left="87" width="432" height="14" font="2">sum within the inode will not match the old data. Only if the writes to</text>
+<text top="728" left="87" width="432" height="14" font="2">both the inode and the data are lost simultaneously will such a scheme</text>
+<text top="743" left="87" width="328" height="14" font="2">fail, an unlikely (but unfortunately, possible!) situation.</text>
+<text top="781" left="55" width="108" height="17" font="5">45.7 Scrubbing</text>
+<text top="811" left="105" width="414" height="14" font="2">Given all of this discussion, you might be wondering: when do these</text>
+<text top="826" left="87" width="432" height="14" font="2">checksums actually get checked? Of course, some amount of checking</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="344" width="10" height="14" font="2">D</text>
+<text top="98" left="355" width="23" height="11" font="4">ATA</text>
+<text top="96" left="383" width="5" height="14" font="2">I</text>
+<text top="98" left="388" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="482" width="8" height="14" font="2">P</text>
+<text top="98" left="491" width="69" height="11" font="4">ROTECTION</text>
+<text top="139" left="129" width="432" height="14" font="2">occurs when data is accessed by applications, but most data is rarely</text>
+<text top="154" left="129" width="432" height="14" font="2">accessed, and thus would remain unchecked. Unchecked data is prob-</text>
+<text top="169" left="129" width="432" height="14" font="2">lematic for a reliable storage system, as bit rot could eventually affect all</text>
+<text top="183" left="129" width="207" height="14" font="2">copies of a particular piece of data.</text>
+<text top="200" left="147" width="275" height="14" font="2">To remedy this problem, many systems utilize</text>
+<text top="200" left="426" width="92" height="13" font="3"><b>disk scrubbing</b></text>
+<text top="200" left="522" width="39" height="14" font="2">of var-</text>
+<text top="215" left="129" width="319" height="14" font="2">ious forms [K+08]. By periodically reading through</text>
+<text top="215" left="454" width="29" height="14" font="8">every</text>
+<text top="215" left="488" width="73" height="14" font="2">block of the</text>
+<text top="230" left="129" width="432" height="14" font="2">system, and checking whether checksums are still valid, the disk system</text>
+<text top="245" left="129" width="432" height="14" font="2">can reduce the chances that all copies of a certain data item become cor-</text>
+<text top="259" left="129" width="406" height="14" font="2">rupted. Typical systems schedule scans on a nightly or weekly basis.</text>
+<text top="298" left="97" width="254" height="17" font="5">45.8 Overheads Of Checksumming</text>
+<text top="324" left="147" width="414" height="14" font="2">Before closing, we now discuss some of the overheads of using check-</text>
+<text top="339" left="129" width="432" height="14" font="2">sums for data protection. There are two distinct kinds of overheads, as is</text>
+<text top="354" left="129" width="279" height="14" font="2">common in computer systems: space and time.</text>
+<text top="371" left="147" width="414" height="14" font="2">Space overheads come in two forms. The first is on the disk (or other</text>
+<text top="385" left="129" width="432" height="14" font="2">storage medium) itself; each stored checksum takes up room on the disk,</text>
+<text top="400" left="129" width="432" height="14" font="2">which can no longer be used for user data. A typical ratio might be an 8-</text>
+<text top="415" left="129" width="427" height="14" font="2">byte checksum per 4 KB data block, for a 0.19% on-disk space overhead.</text>
+<text top="432" left="147" width="414" height="14" font="2">The second type of space overhead comes in the memory of the sys-</text>
+<text top="447" left="129" width="432" height="14" font="2">tem. When accessing data, there must now be room in memory for the</text>
+<text top="461" left="129" width="432" height="14" font="2">checksums as well as the data itself. However, if the system simply checks</text>
+<text top="476" left="129" width="432" height="14" font="2">the checksum and then discards it once done, this overhead is short-lived</text>
+<text top="491" left="129" width="432" height="14" font="2">and not much of a concern. Only if checksums are kept in memory (for</text>
+<text top="506" left="129" width="432" height="14" font="2">an added level of protection against memory corruption [Z+13]) will this</text>
+<text top="521" left="129" width="179" height="14" font="2">small overhead be observable.</text>
+<text top="537" left="147" width="418" height="14" font="2">While space overheads are small, the time overheads induced by check-</text>
+<text top="552" left="129" width="432" height="14" font="2">summing can be quite noticeable. Minimally, the CPU must compute the</text>
+<text top="567" left="129" width="432" height="14" font="2">checksum over each block, both when the data is stored (to determine the</text>
+<text top="582" left="129" width="432" height="14" font="2">value of the stored checksum) and when it is accessed (to compute the</text>
+<text top="597" left="129" width="432" height="14" font="2">checksum again and compare it against the stored checksum). One ap-</text>
+<text top="612" left="129" width="432" height="14" font="2">proach to reducing CPU overheads, employed by many systems that use</text>
+<text top="627" left="129" width="432" height="14" font="2">checksums (including network stacks), is to combine data copying and</text>
+<text top="642" left="129" width="432" height="14" font="2">checksumming into one streamlined activity; because the copy is needed</text>
+<text top="657" left="129" width="432" height="14" font="2">anyhow (e.g., to copy the data from the kernel page cache into a user</text>
+<text top="672" left="129" width="388" height="14" font="2">buffer), combined copying/checksumming can be quite effective.</text>
+<text top="688" left="147" width="414" height="14" font="2">Beyond CPU overheads, some checksumming schemes can induce ex-</text>
+<text top="703" left="129" width="436" height="14" font="2">tra I/O overheads, particularly when checksums are stored distinctly from</text>
+<text top="718" left="129" width="432" height="14" font="2">the data (thus requiring extra I/Os to access them), and for any extra I/O</text>
+<text top="733" left="129" width="432" height="14" font="2">needed for background scrubbing. The former can be reduced by design;</text>
+<text top="748" left="129" width="432" height="14" font="2">the latter can be tuned and thus its impact limited, perhaps by control-</text>
+<text top="763" left="129" width="432" height="14" font="2">ling when such scrubbing activity takes place. The middle of the night,</text>
+<text top="778" left="129" width="432" height="14" font="2">when most (not all!) productive workers have gone to bed, may be a</text>
+<text top="793" left="129" width="432" height="14" font="2">good time to perform such scrubbing activity and increase the robustness</text>
+<text top="808" left="129" width="129" height="14" font="2">of the storage system.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="23" height="11" font="4">ATA</text>
+<text top="96" left="126" width="5" height="14" font="2">I</text>
+<text top="98" left="131" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="225" width="8" height="14" font="2">P</text>
+<text top="98" left="234" width="69" height="11" font="4">ROTECTION</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="137" left="55" width="105" height="17" font="5">45.9 Summary</text>
+<text top="162" left="105" width="414" height="14" font="2">We have discussed data protection in modern storage systems, focus-</text>
+<text top="177" left="87" width="432" height="14" font="2">ing on checksum implementation and usage. Different checksums protect</text>
+<text top="192" left="87" width="432" height="14" font="2">against different types of faults; as storage devices evolve, new failure</text>
+<text top="207" left="87" width="432" height="14" font="2">modes will undoubtedly arise. Perhaps such change will force the re-</text>
+<text top="222" left="87" width="432" height="14" font="2">search community and industry to revisit some of these basic approaches,</text>
+<text top="237" left="87" width="432" height="14" font="2">or invent entirely new approaches altogether. Time will tell. Or it won’t.</text>
+<text top="252" left="87" width="139" height="14" font="2">Time is funny that way.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="16" family="DTJQDG+URWPalladioL" color="#000000"/>
+	<fontspec id="19" size="10" family="DYNYOD+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="20" size="10" family="ZAVTMA+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="21" size="10" family="FMAHCA+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="344" width="10" height="14" font="2">D</text>
+<text top="98" left="355" width="23" height="11" font="4">ATA</text>
+<text top="96" left="383" width="5" height="14" font="2">I</text>
+<text top="98" left="388" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="482" width="8" height="14" font="2">P</text>
+<text top="98" left="491" width="69" height="11" font="4">ROTECTION</text>
+<text top="137" left="129" width="82" height="16" font="18"><b>References</b></text>
+<text top="159" left="129" width="432" height="11" font="7">[B+07] “An Analysis of Latent Sector Errors in Disk Drives” by L. Bairavasundaram, G. Good-</text>
+<text top="171" left="129" width="302" height="11" font="7">son, S. Pasupathy, J. Schindler. SIGMETRICS ’07, San Diego, CA.</text>
+<text top="171" left="434" width="127" height="11" font="19">The first paper to study latent</text>
+<text top="183" left="129" width="432" height="11" font="19">sector errors in detail. The paper also won the Kenneth C. Sevcik Outstanding Student Paper award,</text>
+<text top="195" left="129" width="432" height="11" font="19">named after a brilliant researcher and wonderful guy who passed away too soon. To show the OSTEP</text>
+<text top="207" left="129" width="432" height="11" font="19">authors it was possible to move from the U.S. to Canada, Ken once sang us the Canadian national</text>
+<text top="219" left="129" width="418" height="11" font="19">anthem, standing up in the middle of a restaurant to do so. We chose the U.S., but got this memory.</text>
+<text top="235" left="129" width="432" height="11" font="7">[B+08] “An Analysis of Data Corruption in the Storage Stack” by Lakshmi N. Bairavasun-</text>
+<text top="247" left="129" width="432" height="11" font="7">daram, Garth R. Goodson, Bianca Schroeder, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-</text>
+<text top="259" left="129" width="226" height="11" font="7">Dusseau. FAST ’08, San Jose, CA, February 2008.</text>
+<text top="259" left="359" width="202" height="11" font="19">The first paper to truly study disk corruption in</text>
+<text top="271" left="129" width="427" height="11" font="19">great detail, focusing on how often such corruption occurs over three years for over 1.5 million drives.</text>
+<text top="287" left="129" width="446" height="11" font="7">[BS04] “Commercial Fault Tolerance: A Tale of Two Systems” by Wendy Bartlett, Lisa Spainhower.</text>
+<text top="299" left="129" width="378" height="11" font="7">IEEE Transactions on Dependable and Secure Computing, Vol. 1:1, January 2004.</text>
+<text top="299" left="512" width="49" height="11" font="19">This classic</text>
+<text top="311" left="129" width="432" height="11" font="19">in building fault tolerant systems is an excellent overview of the state of the art from both IBM and</text>
+<text top="323" left="129" width="250" height="11" font="19">Tandem. Another must read for those interested in the area.</text>
+<text top="339" left="129" width="432" height="11" font="7">[C+04] “Row-Diagonal Parity for Double Disk Failure Correction” by P. Corbett, B. English, A.</text>
+<text top="351" left="129" width="414" height="11" font="7">Goel, T. Grcanac, S. Kleiman, J. Leong, S. Sankar. FAST ’04, San Jose, CA, February 2004.</text>
+<text top="351" left="547" width="13" height="11" font="19">An</text>
+<text top="363" left="129" width="432" height="11" font="19">early paper on how extra redundancy helps to solve the combined full-disk-failure/partial-disk-failure</text>
+<text top="375" left="129" width="339" height="11" font="19">problem. Also a nice example of how to mix more theoretical work with practical.</text>
+<text top="391" left="129" width="432" height="11" font="7">[F04] “Checksums and Error Control” by Peter M. Fenwick. Copy available online here:</text>
+<text top="404" left="129" width="295" height="9" font="20">http://www.ostep.org/Citations/checksums-03.pdf</text>
+<text top="403" left="424" width="3" height="11" font="7">.</text>
+<text top="403" left="430" width="134" height="11" font="19">A great simple tutorial on check-</text>
+<text top="415" left="129" width="211" height="11" font="19">sums, available to you for the amazing cost of free.</text>
+<text top="432" left="129" width="432" height="11" font="7">[F82] “An Arithmetic Checksum for Serial Transmissions” by John G. Fletcher. IEEE Trans-</text>
+<text top="444" left="129" width="244" height="11" font="7">actions on Communication, Vol. 30:1, January 1982.</text>
+<text top="443" left="379" width="182" height="11" font="19">Fletcher’s original work on his eponymous</text>
+<text top="455" left="129" width="432" height="11" font="19">checksum. He didn’t call it the Fletcher checksum, rather he just didn’t call it anything; later, others</text>
+<text top="467" left="129" width="432" height="11" font="19">named it after him. So don’t blame old Fletch for this seeming act of braggadocio. This anecdote might</text>
+<text top="479" left="129" width="186" height="11" font="19">remind you of Rubik; Rubik never called it “</text>
+<text top="480" left="315" width="59" height="8" font="21"><b>Rubik’s cube</b></text>
+<text top="479" left="374" width="155" height="11" font="19">”; rather, he just called it “my cube.”</text>
+<text top="496" left="129" width="432" height="11" font="7">[HLM94] “File System Design for an NFS File Server Appliance” by Dave Hitz, James Lau,</text>
+<text top="508" left="129" width="177" height="11" font="7">Michael Malcolm. USENIX Spring ’94.</text>
+<text top="508" left="310" width="251" height="11" font="19">The pioneering paper that describes the ideas and product at</text>
+<text top="520" left="129" width="432" height="11" font="19">the heart of NetApp’s core. Based on this system, NetApp has grown into a multi-billion dollar storage</text>
+<text top="531" left="129" width="432" height="11" font="19">company. To learn more about NetApp, read Hitz’s autobiography “How to Castrate a Bull” (which is</text>
+<text top="543" left="129" width="396" height="11" font="19">the actual title, no joking). And you thought you could avoid bull castration by going into CS.</text>
+<text top="560" left="129" width="432" height="11" font="7">[K+08] “Parity Lost and Parity Regained” by Andrew Krioukov, Lakshmi N. Bairavasun-</text>
+<text top="572" left="129" width="432" height="11" font="7">daram, Garth R. Goodson, Kiran Srinivasan, Randy Thelen, Andrea C. Arpaci-Dusseau, Remzi</text>
+<text top="584" left="129" width="284" height="11" font="7">H. Arpaci-Dusseau. FAST ’08, San Jose, CA, February 2008.</text>
+<text top="584" left="420" width="141" height="11" font="19">This work explores how different</text>
+<text top="596" left="129" width="432" height="11" font="19">checksum schemes work (or don’t work) in protecting data. We reveal a number of interesting flaws in</text>
+<text top="608" left="129" width="122" height="11" font="19">current protection strategies.</text>
+<text top="624" left="129" width="277" height="11" font="7">[M13] “Cyclic Redundancy Checks” by unknown. Available:</text>
+<text top="624" left="409" width="157" height="9" font="20">http://www.mathpages.com/</text>
+<text top="636" left="129" width="107" height="9" font="20">home/kmath458.htm</text>
+<text top="636" left="236" width="3" height="11" font="7">.</text>
+<text top="636" left="242" width="319" height="11" font="19">A super clear and concise description of CRCs. The internet is full of infor-</text>
+<text top="648" left="129" width="98" height="11" font="19">mation, as it turns out.</text>
+<text top="664" left="129" width="432" height="11" font="7">[P+05] “IRON File Systems” by V. Prabhakaran, L. Bairavasundaram, N. Agrawal, H. Gunawi,</text>
+<text top="676" left="129" width="325" height="11" font="7">A. Arpaci-Dusseau, R. Arpaci-Dusseau. SOSP ’05, Brighton, England.</text>
+<text top="676" left="458" width="102" height="11" font="19">Our paper on how disks</text>
+<text top="688" left="129" width="432" height="11" font="19">have partial failure modes, and a detailed study of how modern file systems react to such failures. As it</text>
+<text top="700" left="129" width="432" height="11" font="19">turns out, rather poorly! We found numerous bugs, design flaws, and other oddities in this work. Some</text>
+<text top="712" left="129" width="427" height="11" font="19">of this has fed back into the Linux community, thus improving file system reliability. You’re welcome!</text>
+<text top="728" left="129" width="432" height="11" font="7">[RO91] “Design and Implementation of the Log-structured File System” by Mendel Rosen-</text>
+<text top="740" left="129" width="327" height="11" font="7">blum and John Ousterhout. SOSP ’91, Pacific Grove, CA, October 1991.</text>
+<text top="740" left="459" width="99" height="11" font="19">So cool we cite it again.</text>
+<text top="756" left="129" width="432" height="11" font="7">[S90] “Implementing Fault-Tolerant Services Using The State Machine Approach: A Tutorial”</text>
+<text top="768" left="129" width="314" height="11" font="7">by Fred B. Schneider. ACM Surveys, Vol. 22, No. 4, December 1990.</text>
+<text top="768" left="447" width="114" height="11" font="19">How to build fault tolerant</text>
+<text top="780" left="129" width="254" height="11" font="19">services. A must read for those building distributed systems.</text>
+<text top="797" left="129" width="432" height="11" font="7">[Z+13] “Zettabyte Reliability with Flexible End-to-end Data Integrity” by Y. Zhang, D. Myers,</text>
+<text top="809" left="129" width="396" height="11" font="7">A. Arpaci-Dusseau, R. Arpaci-Dusseau. MSST ’13, Long Beach, California, May 2013.</text>
+<text top="808" left="529" width="31" height="11" font="19">How to</text>
+<text top="820" left="129" width="428" height="11" font="19">add data protection to the page cache of a system. Out of space, otherwise we would write something...</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="23" height="11" font="4">ATA</text>
+<text top="96" left="126" width="5" height="14" font="2">I</text>
+<text top="98" left="131" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="225" width="8" height="14" font="2">P</text>
+<text top="98" left="234" width="69" height="11" font="4">ROTECTION</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="137" left="87" width="183" height="16" font="18"><b>Homework (Simulation)</b></text>
+<text top="166" left="105" width="170" height="14" font="2">In this homework, you’ll use</text>
+<text top="167" left="279" width="89" height="11" font="10">checksum.py</text>
+<text top="166" left="371" width="148" height="14" font="2">to investigate various as-</text>
+<text top="181" left="87" width="118" height="14" font="2">pects of checksums.</text>
+<text top="217" left="87" width="70" height="15" font="9"><b>Questions</b></text>
+<text top="242" left="105" width="94" height="14" font="2">1. First just run</text>
+<text top="242" left="202" width="89" height="11" font="10">checksum.py</text>
+<text top="242" left="295" width="224" height="14" font="2">with no arguments. Compute the ad-</text>
+<text top="256" left="122" width="292" height="14" font="2">ditive, XOR-based, and Fletcher checksums. Use</text>
+<text top="257" left="417" width="16" height="11" font="10">-c</text>
+<text top="256" left="438" width="81" height="14" font="2">to check your</text>
+<text top="271" left="122" width="52" height="14" font="2">answers.</text>
+<text top="286" left="105" width="239" height="14" font="2">2. Now do the same, but vary the seed (</text>
+<text top="287" left="344" width="16" height="11" font="10">-s</text>
+<text top="286" left="360" width="119" height="14" font="2">) to different values.</text>
+<text top="301" left="105" width="414" height="14" font="2">3. Sometimes the additive and XOR-based checksums produce the</text>
+<text top="316" left="122" width="397" height="14" font="2">same checksum (e.g., if the data value is all zeroes). Can you pass</text>
+<text top="331" left="122" width="199" height="14" font="2">in a 4-byte data value (using the</text>
+<text top="332" left="325" width="16" height="11" font="10">-D</text>
+<text top="331" left="346" width="55" height="14" font="2">flag, e.g.,</text>
+<text top="332" left="406" width="81" height="11" font="10">-D a,b,c,d</text>
+<text top="331" left="486" width="32" height="14" font="2">) that</text>
+<text top="346" left="122" width="397" height="14" font="2">does not contain only zeroes and leads the additive and XOR-based</text>
+<text top="361" left="122" width="397" height="14" font="2">checksum having the same value? In general, when does this oc-</text>
+<text top="376" left="122" width="238" height="14" font="2">cur? Check that you are correct with the</text>
+<text top="377" left="363" width="16" height="11" font="10">-c</text>
+<text top="376" left="382" width="26" height="14" font="2">flag.</text>
+<text top="391" left="105" width="414" height="14" font="2">4. Now pass in a 4-byte value that you know will produce a different</text>
+<text top="406" left="122" width="397" height="14" font="2">checksum values for additive and XOR. In general, when does this</text>
+<text top="421" left="122" width="39" height="14" font="2">occur?</text>
+<text top="436" left="105" width="414" height="14" font="2">5. Use the simulator to compute checksums twice (once each for a dif-</text>
+<text top="451" left="122" width="397" height="14" font="2">ferent set of numbers). The two number strings should be different</text>
+<text top="466" left="122" width="28" height="14" font="2">(e.g.,</text>
+<text top="467" left="155" width="113" height="11" font="10">-D a1,b1,c1,d1</text>
+<text top="466" left="273" width="105" height="14" font="2">the first time and</text>
+<text top="467" left="383" width="113" height="11" font="10">-D a2,b2,c2,d2</text>
+<text top="466" left="500" width="19" height="14" font="2">the</text>
+<text top="481" left="122" width="397" height="14" font="2">second) but should produce the same additive checksum. In gen-</text>
+<text top="496" left="122" width="397" height="14" font="2">eral, when will the additive checksum be the same, even though the</text>
+<text top="511" left="122" width="377" height="14" font="2">data values are different? Check your specific answer with the</text>
+<text top="511" left="503" width="16" height="11" font="10">-c</text>
+<text top="525" left="122" width="26" height="14" font="2">flag.</text>
+<text top="540" left="105" width="262" height="14" font="2">6. Now do the same for the XOR checksum.</text>
+<text top="555" left="105" width="389" height="14" font="2">7. Now let’s look at a specific set of data values. The first is:</text>
+<text top="556" left="503" width="16" height="11" font="10">-D</text>
+<text top="571" left="122" width="57" height="11" font="10">1,2,3,4</text>
+<text top="570" left="178" width="357" height="14" font="2">. What will the different checksums (additive, XOR, Fletcher)</text>
+<text top="585" left="122" width="397" height="14" font="2">be for this data? Now compare it to computing these checksums</text>
+<text top="600" left="122" width="27" height="14" font="2">over</text>
+<text top="601" left="153" width="81" height="11" font="10">-D 4,3,2,1</text>
+<text top="600" left="234" width="285" height="14" font="2">. What do you notice about these three check-</text>
+<text top="615" left="122" width="403" height="14" font="2">sums? How does Fletcher compare to the other two? How is Fletcher</text>
+<text top="630" left="122" width="397" height="14" font="2">generally “better” than something like the simple additive check-</text>
+<text top="645" left="122" width="32" height="14" font="2">sum?</text>
+<text top="660" left="105" width="414" height="14" font="2">8. No checksum is perfect. Given a particular input of your choosing,</text>
+<text top="675" left="122" width="397" height="14" font="2">can you find other data values that lead to the same Fletcher check-</text>
+<text top="690" left="122" width="397" height="14" font="2">sum? When, in general, does this occur? Start with a simple data</text>
+<text top="705" left="122" width="67" height="14" font="2">string (e.g.,</text>
+<text top="706" left="194" width="81" height="11" font="10">-D 0,1,2,3</text>
+<text top="705" left="274" width="245" height="14" font="2">) and see if you can replace one of those</text>
+<text top="720" left="122" width="397" height="14" font="2">numbers but end up with the same Fletcher checksum. As always,</text>
+<text top="735" left="122" width="20" height="14" font="2">use</text>
+<text top="736" left="145" width="16" height="11" font="10">-c</text>
+<text top="735" left="165" width="136" height="14" font="2">to check your answers.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="344" width="10" height="14" font="2">D</text>
+<text top="98" left="355" width="23" height="11" font="4">ATA</text>
+<text top="96" left="383" width="5" height="14" font="2">I</text>
+<text top="98" left="388" width="91" height="11" font="4">NTEGRITY AND</text>
+<text top="96" left="482" width="8" height="14" font="2">P</text>
+<text top="98" left="491" width="69" height="11" font="4">ROTECTION</text>
+<text top="137" left="129" width="139" height="16" font="18"><b>Homework (Code)</b></text>
+<text top="166" left="147" width="414" height="14" font="2">In this part of the homework, you’ll write some of your own code to</text>
+<text top="181" left="129" width="185" height="14" font="2">implement various checksums.</text>
+<text top="217" left="129" width="70" height="15" font="9"><b>Questions</b></text>
+<text top="242" left="146" width="209" height="14" font="2">1. Write a short C program (called</text>
+<text top="242" left="359" width="89" height="11" font="10">check-xor.c</text>
+<text top="242" left="448" width="113" height="14" font="2">) that computes an</text>
+<text top="256" left="163" width="397" height="14" font="2">XOR-based checksum over an input file, and prints the checksum as</text>
+<text top="271" left="163" width="397" height="14" font="2">output. Use a 8-bit unsigned char to store the (one byte) checksum.</text>
+<text top="286" left="163" width="296" height="14" font="2">Make some test files to see if it works as expected.</text>
+<text top="301" left="146" width="247" height="14" font="2">2. Now write a short C program (called</text>
+<text top="302" left="399" width="129" height="11" font="10">check-fletcher.c</text>
+<text top="301" left="528" width="33" height="14" font="2">) that</text>
+<text top="316" left="163" width="397" height="14" font="2">computes the Fletcher checksum over an input file. Once again,</text>
+<text top="331" left="163" width="212" height="14" font="2">test your program to see if it works.</text>
+<text top="346" left="146" width="414" height="14" font="2">3. Now compare the performance of both: is one faster than the other?</text>
+<text top="361" left="163" width="397" height="14" font="2">How does performance change as the size of the input file changes?</text>
+<text top="376" left="163" width="119" height="14" font="2">Use internal calls to</text>
+<text top="377" left="286" width="97" height="11" font="10">gettimeofday</text>
+<text top="376" left="387" width="174" height="14" font="2">to time the programs. Which</text>
+<text top="391" left="163" width="397" height="14" font="2">should you use if you care about performance? About checking</text>
+<text top="406" left="163" width="44" height="14" font="2">ability?</text>
+<text top="421" left="146" width="414" height="14" font="2">4. Read about the 16-bit CRC and then implement it. Test it on a num-</text>
+<text top="436" left="163" width="397" height="14" font="2">ber of different inputs to ensure that it works. How is its perfor-</text>
+<text top="451" left="163" width="397" height="14" font="2">mance as compared to the simple XOR and Fletcher? How about</text>
+<text top="466" left="163" width="117" height="14" font="2">its checking ability?</text>
+<text top="481" left="146" width="132" height="14" font="2">5. Now build a tool (</text>
+<text top="481" left="278" width="105" height="11" font="10">create-csum.c</text>
+<text top="481" left="383" width="177" height="14" font="2">) that computes a single-byte</text>
+<text top="496" left="163" width="397" height="14" font="2">checksum for every 4KB block of a file, and records the results in</text>
+<text top="511" left="163" width="397" height="14" font="2">an output file (specified on the command line). Build a related tool</text>
+<text top="525" left="163" width="4" height="14" font="2">(</text>
+<text top="526" left="168" width="97" height="11" font="10">check-csum.c</text>
+<text top="525" left="265" width="296" height="14" font="2">) that reads a file, computes the checksums over</text>
+<text top="540" left="163" width="397" height="14" font="2">each block, and compares the results to the stored checksums stored</text>
+<text top="555" left="163" width="397" height="14" font="2">in another file. If there is a problem, the program should print that</text>
+<text top="570" left="163" width="397" height="14" font="2">the file has been corrupted. Test the program by manually corrupt-</text>
+<text top="585" left="163" width="66" height="14" font="2">ing the file.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+</pdf2xml>

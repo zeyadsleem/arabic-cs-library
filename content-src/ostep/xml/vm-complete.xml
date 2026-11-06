@@ -1,0 +1,1533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="WVELZC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="WVELZC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="11" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="13" family="IXMJIQ+URWPalladioL" color="#000000"/>
+<text top="199" left="523" width="34" height="30" font="0">23</text>
+<text top="270" left="186" width="333" height="21" font="1">Complete Virtual Memory Systems</text>
+<text top="352" left="87" width="432" height="14" font="2">Before we end our study of virtualizing memory, let us take a closer look</text>
+<text top="367" left="87" width="432" height="14" font="2">at how entire virtual memory systems are put together. We’ve seen key</text>
+<text top="382" left="87" width="432" height="14" font="2">elements of such systems, including numerous page-table designs, inter-</text>
+<text top="397" left="87" width="432" height="14" font="2">actions with the TLB (sometimes, even handled by the OS itself), and</text>
+<text top="412" left="87" width="432" height="14" font="2">strategies for deciding which pages to keep in memory and which to kick</text>
+<text top="427" left="87" width="432" height="14" font="2">out. However, there are many other features that comprise a complete</text>
+<text top="442" left="87" width="432" height="14" font="2">virtual memory system, including numerous features for performance,</text>
+<text top="457" left="87" width="277" height="14" font="2">functionality, and security. And thus, our crux:</text>
+<text top="500" left="139" width="8" height="14" font="2">T</text>
+<text top="502" left="147" width="16" height="11" font="3">HE</text>
+<text top="500" left="168" width="10" height="14" font="2">C</text>
+<text top="502" left="178" width="24" height="11" font="3">RUX</text>
+<text top="500" left="203" width="19" height="14" font="2">: H</text>
+<text top="502" left="223" width="20" height="11" font="3">OW</text>
+<text top="500" left="247" width="8" height="14" font="2">T</text>
+<text top="502" left="255" width="8" height="11" font="3">O</text>
+<text top="500" left="268" width="8" height="14" font="2">B</text>
+<text top="502" left="277" width="29" height="11" font="3">UILD</text>
+<text top="500" left="310" width="24" height="14" font="2">A C</text>
+<text top="502" left="334" width="55" height="11" font="3">OMPLETE</text>
+<text top="500" left="394" width="34" height="14" font="2">VM S</text>
+<text top="502" left="429" width="39" height="11" font="3">YSTEM</text>
+<text top="515" left="105" width="414" height="14" font="2">What features are needed to realize a complete virtual memory sys-</text>
+<text top="530" left="87" width="432" height="14" font="2">tem? How do they improve performance, increase security, or otherwise</text>
+<text top="545" left="87" width="123" height="14" font="2">improve the system?</text>
+<text top="593" left="105" width="414" height="14" font="2">We’ll do this by covering two systems. The first is one of the earli-</text>
+<text top="608" left="87" width="432" height="14" font="2">est examples of a “modern” virtual memory manager, that found in the</text>
+<text top="623" left="87" width="64" height="13" font="4"><b>VAX/VMS</b></text>
+<text top="623" left="155" width="364" height="14" font="2">operating system [LL82], as developed in the 1970’s and early</text>
+<text top="638" left="87" width="432" height="14" font="2">1980’s; a surprising number of techniques and approaches from this sys-</text>
+<text top="653" left="87" width="432" height="14" font="2">tem survive to this day, and thus it is well worth studying. Some ideas,</text>
+<text top="668" left="87" width="432" height="14" font="2">even those that are 50 years old, are still worth knowing, a thought that</text>
+<text top="682" left="87" width="432" height="14" font="2">is well known to those in most other fields (e.g., Physics), but has to be</text>
+<text top="697" left="87" width="382" height="14" font="2">stated in technology-driven disciplines (e.g., Computer Science).</text>
+<text top="714" left="105" width="122" height="14" font="2">The second is that of</text>
+<text top="714" left="230" width="36" height="13" font="4"><b>Linux</b></text>
+<text top="714" left="266" width="253" height="14" font="2">, for reasons that should be obvious. Linux</text>
+<text top="729" left="87" width="432" height="14" font="2">is a widely used system, and runs effectively on systems as small and</text>
+<text top="744" left="87" width="432" height="14" font="2">underpowered as phones to the most scalable multicore systems found</text>
+<text top="759" left="87" width="432" height="14" font="2">in modern datacenters. Thus, its VM system must be flexible enough to</text>
+<text top="773" left="87" width="432" height="14" font="2">run successfully in all of those scenarios. We will discuss each system to</text>
+<text top="788" left="87" width="432" height="14" font="2">illustrate how concepts brought forth in earlier chapters come together in</text>
+<text top="803" left="87" width="176" height="14" font="2">a complete memory manager.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="16" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="15" family="IXMJIQ+URWPalladioL" color="#000000"/>
+	<fontspec id="7" size="13" family="PJTUEC+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="8" size="12" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="321" width="10" height="14" font="2">C</text>
+<text top="98" left="331" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="390" width="10" height="14" font="2">V</text>
+<text top="98" left="401" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="448" width="13" height="14" font="2">M</text>
+<text top="98" left="462" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="3">YSTEMS</text>
+<text top="137" left="97" width="234" height="17" font="5">23.1 VAX/VMS Virtual Memory</text>
+<text top="166" left="147" width="424" height="14" font="2">The VAX-11 minicomputer architecture was introduced in the late 1970’s</text>
+<text top="181" left="129" width="15" height="14" font="2">by</text>
+<text top="181" left="149" width="197" height="13" font="4"><b>Digital Equipment Corporation</b></text>
+<text top="181" left="350" width="4" height="14" font="2">(</text>
+<text top="181" left="355" width="29" height="13" font="4"><b>DEC</b></text>
+<text top="181" left="384" width="177" height="14" font="2">). DEC was a massive player</text>
+<text top="196" left="129" width="432" height="14" font="2">in the computer industry during the era of the mini-computer; unfortu-</text>
+<text top="211" left="129" width="432" height="14" font="2">nately, a series of bad decisions and the advent of the PC slowly (but</text>
+<text top="226" left="129" width="432" height="14" font="2">surely) led to their demise [C03]. The architecture was realized in a num-</text>
+<text top="241" left="129" width="432" height="14" font="2">ber of implementations, including the VAX-11/780 and the less powerful</text>
+<text top="256" left="129" width="77" height="14" font="2">VAX-11/750.</text>
+<text top="271" left="147" width="414" height="14" font="2">The OS for the system was known as VAX/VMS (or just plain VMS),</text>
+<text top="286" left="129" width="432" height="14" font="2">one of whose primary architects was Dave Cutler, who later led the effort</text>
+<text top="301" left="129" width="432" height="14" font="2">to develop Microsoft’s Windows NT [C93]. VMS had the general prob-</text>
+<text top="316" left="129" width="432" height="14" font="2">lem that it would be run on a broad range of machines, including very</text>
+<text top="331" left="129" width="432" height="14" font="2">inexpensive VAXen (yes, that is the proper plural) to extremely high-end</text>
+<text top="346" left="129" width="432" height="14" font="2">and powerful machines in the same architecture family. Thus, the OS had</text>
+<text top="361" left="129" width="432" height="14" font="2">to have mechanisms and policies that worked (and worked well) across</text>
+<text top="376" left="129" width="161" height="14" font="2">this huge range of systems.</text>
+<text top="391" left="147" width="414" height="14" font="2">As an additional issue, VMS is an excellent example of software inno-</text>
+<text top="406" left="129" width="432" height="14" font="2">vations used to hide some of the inherent flaws of the architecture. Al-</text>
+<text top="421" left="129" width="432" height="14" font="2">though the OS often relies on the hardware to build efficient abstractions</text>
+<text top="436" left="129" width="432" height="14" font="2">and illusions, sometimes the hardware designers don’t quite get every-</text>
+<text top="451" left="129" width="432" height="14" font="2">thing right; in the VAX hardware, we’ll see a few examples of this, and</text>
+<text top="466" left="129" width="432" height="14" font="2">what the VMS operating system does to build an effective, working sys-</text>
+<text top="480" left="129" width="203" height="14" font="2">tem despite these hardware flaws.</text>
+<text top="517" left="129" width="223" height="15" font="6"><b>Memory Management Hardware</b></text>
+<text top="542" left="129" width="432" height="14" font="2">The VAX-11 provided a 32-bit virtual address space per process, divided</text>
+<text top="557" left="129" width="432" height="14" font="2">into 512-byte pages. Thus, a virtual address consisted of a 23-bit VPN</text>
+<text top="572" left="129" width="432" height="14" font="2">and a 9-bit offset. Further, the upper two bits of the VPN were used to</text>
+<text top="587" left="129" width="432" height="14" font="2">differentiate which segment the page resided within; thus, the system</text>
+<text top="601" left="129" width="383" height="14" font="2">was a hybrid of paging and segmentation, as we saw previously.</text>
+<text top="617" left="147" width="414" height="14" font="2">The lower-half of the address space was known as “process space” and</text>
+<text top="632" left="129" width="405" height="14" font="2">is unique to each process. In the first half of process space (known as</text>
+<text top="632" left="537" width="16" height="11" font="7">P0</text>
+<text top="632" left="553" width="8" height="14" font="2">),</text>
+<text top="646" left="129" width="432" height="14" font="2">the user program is found, as well as a heap which grows downward.</text>
+<text top="661" left="129" width="216" height="14" font="2">In the second half of process space (</text>
+<text top="662" left="345" width="16" height="11" font="7">P1</text>
+<text top="661" left="362" width="199" height="14" font="2">), we find the stack, which grows</text>
+<text top="676" left="129" width="432" height="14" font="2">upwards. The upper-half of the address space is known as system space</text>
+<text top="691" left="129" width="4" height="14" font="2">(</text>
+<text top="692" left="133" width="8" height="11" font="7">S</text>
+<text top="691" left="141" width="419" height="14" font="2">), although only half of it is used. Protected OS code and data reside</text>
+<text top="706" left="129" width="327" height="14" font="2">here, and the OS is in this way shared across processes.</text>
+<text top="721" left="147" width="414" height="14" font="2">One major concern of the VMS designers was the incredibly small size</text>
+<text top="736" left="129" width="432" height="14" font="2">of pages in the VAX hardware (512 bytes). This size, chosen for historical</text>
+<text top="751" left="129" width="432" height="14" font="2">reasons, has the fundamental problem of making simple linear page ta-</text>
+<text top="766" left="129" width="432" height="14" font="2">bles excessively large. Thus, one of the first goals of the VMS designers</text>
+<text top="781" left="129" width="432" height="14" font="2">was to ensure that VMS would not overwhelm memory with page tables.</text>
+<text top="796" left="147" width="414" height="14" font="2">The system reduced the pressure page tables place on memory in two</text>
+<text top="811" left="129" width="432" height="14" font="2">ways. First, by segmenting the user address space into two, the VAX-11</text>
+<text top="826" left="129" width="288" height="14" font="2">provides a page table for each of these regions (</text>
+<text top="827" left="417" width="16" height="11" font="7">P0</text>
+<text top="826" left="438" width="23" height="14" font="2">and</text>
+<text top="827" left="464" width="16" height="11" font="7">P1</text>
+<text top="826" left="481" width="80" height="14" font="2">) per process;</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="157" width="10" height="14" font="2">V</text>
+<text top="98" left="167" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="215" width="13" height="14" font="2">M</text>
+<text top="98" left="229" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="274" width="7" height="14" font="2">S</text>
+<text top="98" left="282" width="45" height="11" font="3">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="148" left="194" width="10" height="14" font="2">A</text>
+<text top="150" left="205" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="232" width="16" height="14" font="2">: T</text>
+<text top="150" left="249" width="16" height="11" font="3">HE</text>
+<text top="148" left="269" width="10" height="14" font="2">C</text>
+<text top="150" left="279" width="30" height="11" font="3">URSE</text>
+<text top="148" left="313" width="11" height="14" font="2">O</text>
+<text top="150" left="324" width="6" height="11" font="3">F</text>
+<text top="148" left="334" width="10" height="14" font="2">G</text>
+<text top="150" left="345" width="67" height="11" font="3">ENERALITY</text>
+<text top="163" left="87" width="311" height="14" font="2">Operating systems often have a problem known as</text>
+<text top="163" left="402" width="117" height="13" font="4"><b>the curse of gener-</b></text>
+<text top="178" left="87" width="28" height="13" font="4"><b>ality</b></text>
+<text top="178" left="115" width="404" height="14" font="2">, where they are tasked with general support for a broad class of</text>
+<text top="193" left="87" width="432" height="14" font="2">applications and systems. The fundamental result of the curse is that the</text>
+<text top="208" left="87" width="432" height="14" font="2">OS is not likely to support any one installation very well. In the case of</text>
+<text top="223" left="87" width="432" height="14" font="2">VMS, the curse was very real, as the VAX-11 architecture was realized</text>
+<text top="238" left="87" width="432" height="14" font="2">in a number of different implementations. It is no less real today, where</text>
+<text top="253" left="87" width="432" height="14" font="2">Linux is expected to run well on your phone, a TV set-top box, a laptop</text>
+<text top="268" left="87" width="432" height="14" font="2">computer, desktop computer, and a high-end server running thousands</text>
+<text top="283" left="87" width="241" height="14" font="2">of processes in a cloud-based datacenter.</text>
+<text top="318" left="87" width="432" height="14" font="2">thus, no page-table space is needed for the unused portion of the address</text>
+<text top="333" left="87" width="432" height="14" font="2">space between the stack and the heap. The base and bounds registers</text>
+<text top="347" left="87" width="432" height="14" font="2">are used as you would expect; a base register holds the address of the</text>
+<text top="362" left="87" width="432" height="14" font="2">page table for that segment, and the bounds holds its size (i.e., number of</text>
+<text top="377" left="87" width="113" height="14" font="2">page-table entries).</text>
+<text top="393" left="105" width="414" height="14" font="2">Second, the OS reduces memory pressure even further by placing user</text>
+<text top="408" left="87" width="92" height="14" font="2">page tables (for</text>
+<text top="409" left="183" width="16" height="11" font="7">P0</text>
+<text top="408" left="203" width="23" height="14" font="2">and</text>
+<text top="409" left="229" width="16" height="11" font="7">P1</text>
+<text top="408" left="245" width="274" height="14" font="2">, thus two per process) in kernel virtual mem-</text>
+<text top="423" left="87" width="432" height="14" font="2">ory. Thus, when allocating or growing a page table, the kernel allocates</text>
+<text top="438" left="87" width="286" height="14" font="2">space out of its own virtual memory, in segment</text>
+<text top="439" left="377" width="8" height="11" font="7">S</text>
+<text top="438" left="385" width="134" height="14" font="2">. If memory comes un-</text>
+<text top="453" left="87" width="432" height="14" font="2">der severe pressure, the kernel can swap pages of these page tables out to</text>
+<text top="468" left="87" width="358" height="14" font="2">disk, thus making physical memory available for other uses.</text>
+<text top="484" left="105" width="415" height="14" font="2">Putting page tables in kernel virtual memory means that address trans-</text>
+<text top="499" left="87" width="432" height="14" font="2">lation is even further complicated. For example, to translate a virtual ad-</text>
+<text top="514" left="87" width="47" height="14" font="2">dress in</text>
+<text top="515" left="138" width="16" height="11" font="7">P0</text>
+<text top="514" left="158" width="13" height="14" font="2">or</text>
+<text top="515" left="174" width="16" height="11" font="7">P1</text>
+<text top="514" left="190" width="329" height="14" font="2">, the hardware has to first try to look up the page-table</text>
+<text top="529" left="87" width="236" height="14" font="2">entry for that page in its page table (the</text>
+<text top="530" left="326" width="16" height="11" font="7">P0</text>
+<text top="529" left="346" width="13" height="14" font="2">or</text>
+<text top="530" left="362" width="16" height="11" font="7">P1</text>
+<text top="529" left="382" width="137" height="14" font="2">page table for that pro-</text>
+<text top="544" left="87" width="432" height="14" font="2">cess); in doing so, however, the hardware may first have to consult the</text>
+<text top="559" left="87" width="432" height="14" font="2">system page table (which lives in physical memory); with that transla-</text>
+<text top="574" left="87" width="432" height="14" font="2">tion complete, the hardware can learn the address of the page of the page</text>
+<text top="589" left="87" width="432" height="14" font="2">table, and then finally learn the address of the desired memory access.</text>
+<text top="604" left="87" width="432" height="14" font="2">All of this, fortunately, is made faster by the VAX’s hardware-managed</text>
+<text top="619" left="87" width="395" height="14" font="2">TLBs, which usually (hopefully) circumvent this laborious lookup.</text>
+<text top="649" left="87" width="150" height="15" font="6"><b>A Real Address Space</b></text>
+<text top="674" left="87" width="432" height="14" font="2">One neat aspect of studying VMS is that we can see how a real address</text>
+<text top="689" left="87" width="432" height="14" font="2">space is constructed (Figure 23.1). Thus far, we have assumed a simple</text>
+<text top="704" left="87" width="432" height="14" font="2">address space of just user code, user data, and user heap, but as we can</text>
+<text top="719" left="87" width="335" height="14" font="2">see above, a real address space is notably more complex.</text>
+<text top="735" left="105" width="414" height="14" font="2">For example, the code segment never begins at page 0. This page,</text>
+<text top="750" left="87" width="432" height="14" font="2">instead, is marked inaccessible, in order to provide some support for de-</text>
+<text top="765" left="87" width="40" height="14" font="2">tecting</text>
+<text top="765" left="131" width="75" height="13" font="4"><b>null-pointer</b></text>
+<text top="765" left="210" width="309" height="14" font="2">accesses. Thus, one concern when designing an ad-</text>
+<text top="780" left="87" width="432" height="14" font="2">dress space is support for debugging, which the inaccessible zero page</text>
+<text top="795" left="87" width="167" height="14" font="2">provides here in some form.</text>
+<text top="811" left="105" width="414" height="14" font="2">Perhaps more importantly, the kernel virtual address space (i.e., its</text>
+<text top="826" left="87" width="432" height="14" font="2">data structures and code) is a part of each user address space. On a con-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="11" family="WVELZC+NimbusSanL-Regu" color="#ffffff"/>
+	<fontspec id="11" size="11" family="WVELZC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="12" size="13" family="WVELZC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="13" size="8" family="WVELZC+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="321" width="10" height="14" font="2">C</text>
+<text top="98" left="331" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="390" width="10" height="14" font="2">V</text>
+<text top="98" left="401" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="448" width="13" height="14" font="2">M</text>
+<text top="98" left="462" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="3">YSTEMS</text>
+<text top="151" left="316" width="71" height="10" font="10">Page 0: Invalid</text>
+<text top="178" left="326" width="51" height="10" font="11">User Code</text>
+<text top="211" left="326" width="51" height="10" font="11">User Heap</text>
+<text top="399" left="325" width="52" height="10" font="11">User Stack</text>
+<text top="419" left="323" width="57" height="10" font="11">Trap Tables</text>
+<text top="432" left="323" width="57" height="10" font="11">Kernel Data</text>
+<text top="459" left="322" width="60" height="10" font="11">Kernel Code</text>
+<text top="493" left="322" width="60" height="10" font="11">Kernel Heap</text>
+<text top="613" left="333" width="37" height="10" font="11">Unused</text>
+<text top="478" left="445" width="66" height="13" font="12">System (S)</text>
+<text top="344" left="445" width="57" height="13" font="12">User (P1)</text>
+<text top="210" left="445" width="57" height="13" font="12">User (P0)</text>
+<text top="143" left="261" width="7" height="13" font="12">0</text>
+<text top="277" left="261" width="7" height="13" font="12">2</text>
+<text top="277" left="269" width="9" height="8" font="13">30</text>
+<text top="411" left="261" width="7" height="13" font="12">2</text>
+<text top="410" left="269" width="9" height="8" font="13">31</text>
+<text top="679" left="261" width="7" height="13" font="12">2</text>
+<text top="678" left="269" width="9" height="8" font="13">32</text>
+<text top="706" left="216" width="69" height="14" font="2">Figure 23.1:</text>
+<text top="706" left="289" width="185" height="13" font="4"><b>The VAX/VMS Address Space</b></text>
+<text top="732" left="129" width="191" height="14" font="2">text switch, the OS changes the</text>
+<text top="733" left="325" width="16" height="11" font="7">P0</text>
+<text top="732" left="346" width="23" height="14" font="2">and</text>
+<text top="733" left="373" width="16" height="11" font="7">P1</text>
+<text top="732" left="394" width="167" height="14" font="2">registers to point to the ap-</text>
+<text top="747" left="129" width="432" height="14" font="2">propriate page tables of the soon-to-be-run process; however, it does not</text>
+<text top="762" left="129" width="64" height="14" font="2">change the</text>
+<text top="762" left="197" width="8" height="11" font="7">S</text>
+<text top="762" left="208" width="352" height="14" font="2">base and bound registers, and as a result the “same” kernel</text>
+<text top="777" left="129" width="309" height="14" font="2">structures are mapped into each user address space.</text>
+<text top="796" left="147" width="414" height="14" font="2">The kernel is mapped into each address space for a number of reasons.</text>
+<text top="811" left="129" width="432" height="14" font="2">This construction makes life easier for the kernel; when, for example, the</text>
+<text top="826" left="129" width="326" height="14" font="2">OS is handed a pointer from a user program (e.g., on a</text>
+<text top="827" left="459" width="57" height="11" font="7">write()</text>
+<text top="826" left="519" width="42" height="14" font="2">system</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="13" family="UBDTZD+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="157" width="10" height="14" font="2">V</text>
+<text top="98" left="167" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="215" width="13" height="14" font="2">M</text>
+<text top="98" left="229" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="274" width="7" height="14" font="2">S</text>
+<text top="98" left="282" width="45" height="11" font="3">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="148" left="124" width="10" height="14" font="2">A</text>
+<text top="150" left="135" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="162" width="22" height="14" font="2">: W</text>
+<text top="150" left="184" width="17" height="11" font="3">HY</text>
+<text top="148" left="205" width="11" height="14" font="2">N</text>
+<text top="150" left="216" width="23" height="11" font="3">ULL</text>
+<text top="148" left="243" width="8" height="14" font="2">P</text>
+<text top="150" left="252" width="45" height="11" font="3">OINTER</text>
+<text top="148" left="301" width="10" height="14" font="2">A</text>
+<text top="150" left="312" width="49" height="11" font="3">CCESSES</text>
+<text top="148" left="365" width="10" height="14" font="2">C</text>
+<text top="150" left="376" width="31" height="11" font="3">AUSE</text>
+<text top="148" left="411" width="7" height="14" font="2">S</text>
+<text top="150" left="418" width="15" height="11" font="3">EG</text>
+<text top="148" left="438" width="7" height="14" font="2">F</text>
+<text top="150" left="445" width="37" height="11" font="3">AULTS</text>
+<text top="163" left="87" width="432" height="14" font="2">You should now have a good understanding of exactly what happens on</text>
+<text top="178" left="87" width="432" height="14" font="2">a null-pointer dereference. A process generates a virtual address of 0, by</text>
+<text top="193" left="87" width="155" height="14" font="2">doing something like this:</text>
+<text top="222" left="87" width="218" height="14" font="7">int *p = NULL; // set p = 0</text>
+<text top="239" left="87" width="65" height="11" font="7">*p = 10;</text>
+<text top="237" left="208" width="291" height="11" font="7">// try to store 10 to virtual addr 0</text>
+<text top="264" left="87" width="432" height="14" font="2">The hardware tries to look up the VPN (also 0 here) in the TLB, and suf-</text>
+<text top="279" left="87" width="432" height="14" font="2">fers a TLB miss. The page table is consulted, and the entry for VPN 0</text>
+<text top="294" left="87" width="432" height="14" font="2">is found to be marked invalid. Thus, we have an invalid access, which</text>
+<text top="309" left="87" width="410" height="14" font="2">transfers control to the OS, which likely terminates the process (on U</text>
+<text top="310" left="498" width="21" height="11" font="3">NIX</text>
+<text top="323" left="87" width="432" height="14" font="2">systems, processes are sent a signal which allows them to react to such a</text>
+<text top="338" left="87" width="292" height="14" font="2">fault; if uncaught, however, the process is killed).</text>
+<text top="376" left="87" width="432" height="14" font="2">call), it is easy to copy data from that pointer to its own structures. The</text>
+<text top="391" left="87" width="432" height="14" font="2">OS is naturally written and compiled, without worry of where the data</text>
+<text top="406" left="87" width="432" height="14" font="2">it is accessing comes from. If in contrast the kernel were located entirely</text>
+<text top="421" left="87" width="432" height="14" font="2">in physical memory, it would be quite hard to do things like swap pages</text>
+<text top="436" left="87" width="432" height="14" font="2">of the page table to disk; if the kernel were given its own address space,</text>
+<text top="451" left="87" width="432" height="14" font="2">moving data between user applications and the kernel would again be</text>
+<text top="465" left="87" width="432" height="14" font="2">complicated and painful. With this construction (now used widely), the</text>
+<text top="480" left="87" width="429" height="14" font="2">kernel appears almost as a library to applications, albeit a protected one.</text>
+<text top="496" left="105" width="414" height="14" font="2">One last point about this address space relates to protection. Clearly,</text>
+<text top="510" left="87" width="432" height="14" font="2">the OS does not want user applications reading or writing OS data or</text>
+<text top="525" left="87" width="432" height="14" font="2">code. Thus, the hardware must support different protection levels for</text>
+<text top="540" left="87" width="432" height="14" font="2">pages to enable this. The VAX did so by specifying, in protection bits</text>
+<text top="555" left="87" width="432" height="14" font="2">in the page table, what privilege level the CPU must be at in order to</text>
+<text top="570" left="87" width="432" height="14" font="2">access a particular page. Thus, system data and code are set to a higher</text>
+<text top="585" left="87" width="432" height="14" font="2">level of protection than user data and code; an attempted access to such</text>
+<text top="600" left="87" width="432" height="14" font="2">information from user code will generate a trap into the OS, and (you</text>
+<text top="615" left="87" width="345" height="14" font="2">guessed it) the likely termination of the offending process.</text>
+<text top="652" left="87" width="125" height="15" font="6"><b>Page Replacement</b></text>
+<text top="676" left="87" width="432" height="14" font="2">The page table entry (PTE) in VAX contains the following bits: a valid</text>
+<text top="691" left="87" width="432" height="14" font="2">bit, a protection field (4 bits), a modify (or dirty) bit, a field reserved for</text>
+<text top="706" left="87" width="432" height="14" font="2">OS use (5 bits), and finally a physical frame number (PFN) to store the</text>
+<text top="721" left="87" width="432" height="14" font="2">location of the page in physical memory. The astute reader might note:</text>
+<text top="736" left="87" width="15" height="14" font="2">no</text>
+<text top="736" left="107" width="78" height="13" font="4"><b>reference bit</b></text>
+<text top="736" left="185" width="334" height="14" font="2">! Thus, the VMS replacement algorithm must make do</text>
+<text top="751" left="87" width="397" height="14" font="2">without hardware support for determining which pages are active.</text>
+<text top="766" left="105" width="259" height="14" font="2">The developers were also concerned about</text>
+<text top="766" left="369" width="85" height="13" font="4"><b>memory hogs</b></text>
+<text top="766" left="453" width="66" height="14" font="2">, programs</text>
+<text top="781" left="87" width="432" height="14" font="2">that use a lot of memory and make it hard for other programs to run.</text>
+<text top="796" left="87" width="432" height="14" font="2">Most of the policies we have looked at thus far are susceptible to such</text>
+<text top="811" left="87" width="189" height="14" font="2">hogging; for example, LRU is a</text>
+<text top="811" left="280" width="32" height="14" font="14"><i>global</i></text>
+<text top="811" left="317" width="202" height="14" font="2">policy that doesn’t share memory</text>
+<text top="826" left="87" width="140" height="14" font="2">fairly among processes.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="13" family="VGLTEQ+CMMI9" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="321" width="10" height="14" font="2">C</text>
+<text top="98" left="331" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="390" width="10" height="14" font="2">V</text>
+<text top="98" left="401" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="448" width="13" height="14" font="2">M</text>
+<text top="98" left="462" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="3">YSTEMS</text>
+<text top="148" left="233" width="10" height="14" font="2">A</text>
+<text top="150" left="244" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="271" width="16" height="14" font="2">: E</text>
+<text top="150" left="288" width="65" height="11" font="3">MULATING</text>
+<text top="148" left="357" width="9" height="14" font="2">R</text>
+<text top="150" left="366" width="61" height="11" font="3">EFERENCE</text>
+<text top="148" left="431" width="8" height="14" font="2">B</text>
+<text top="150" left="440" width="17" height="11" font="3">ITS</text>
+<text top="163" left="129" width="432" height="14" font="2">As it turns out, you don’t need a hardware reference bit in order to get</text>
+<text top="178" left="129" width="432" height="14" font="2">some notion of which pages are in use in a system. In fact, in the early</text>
+<text top="193" left="129" width="432" height="14" font="2">1980’s, Babaoglu and Joy showed that protection bits on the VAX can be</text>
+<text top="208" left="129" width="432" height="14" font="2">used to emulate reference bits [BJ81]. The basic idea: if you want to gain</text>
+<text top="223" left="129" width="432" height="14" font="2">some understanding of which pages are actively being used in a system,</text>
+<text top="238" left="129" width="432" height="14" font="2">mark all of the pages in the page table as inaccessible (but keep around</text>
+<text top="253" left="129" width="432" height="14" font="2">the information as to which pages are really accessible by the process,</text>
+<text top="268" left="129" width="432" height="14" font="2">perhaps in the “reserved OS field” portion of the page table entry). When</text>
+<text top="283" left="129" width="432" height="14" font="2">a process accesses a page, it will generate a trap into the OS; the OS will</text>
+<text top="298" left="129" width="432" height="14" font="2">then check if the page really should be accessible, and if so, revert the</text>
+<text top="313" left="129" width="432" height="14" font="2">page to its normal protections (e.g., read-only, or read-write). At the time</text>
+<text top="327" left="129" width="432" height="14" font="2">of a replacement, the OS can check which pages remain marked inacces-</text>
+<text top="342" left="129" width="420" height="14" font="2">sible, and thus get an idea of which pages have not been recently used.</text>
+<text top="361" left="129" width="432" height="14" font="2">The key to this “emulation” of reference bits is reducing overhead while</text>
+<text top="376" left="129" width="432" height="14" font="2">still obtaining a good idea of page usage. The OS must not be too aggres-</text>
+<text top="390" left="129" width="432" height="14" font="2">sive in marking pages inaccessible, or overhead would be too high. The</text>
+<text top="405" left="129" width="432" height="14" font="2">OS also must not be too passive in such marking, or all pages will end up</text>
+<text top="420" left="129" width="406" height="14" font="2">referenced; the OS will again have no good idea which page to evict.</text>
+<text top="478" left="147" width="386" height="14" font="2">To address these two problems, the developers came up with the</text>
+<text top="478" left="536" width="25" height="13" font="4"><b>seg-</b></text>
+<text top="493" left="129" width="80" height="13" font="4"><b>mented FIFO</b></text>
+<text top="493" left="212" width="349" height="14" font="2">replacement policy [RL81]. The idea is simple: each process</text>
+<text top="508" left="129" width="407" height="14" font="2">has a maximum number of pages it can keep in memory, known as its</text>
+<text top="508" left="538" width="22" height="13" font="4"><b>res-</b></text>
+<text top="523" left="129" width="82" height="13" font="4"><b>ident set size</b></text>
+<text top="523" left="215" width="4" height="14" font="2">(</text>
+<text top="523" left="220" width="26" height="13" font="4"><b>RSS</b></text>
+<text top="523" left="246" width="315" height="14" font="2">). Each of these pages is kept on a FIFO list; when a</text>
+<text top="538" left="129" width="432" height="14" font="2">process exceeds its RSS, the “first-in” page is evicted. FIFO clearly does</text>
+<text top="552" left="129" width="431" height="14" font="2">not need any support from the hardware, and is thus easy to implement.</text>
+<text top="569" left="147" width="414" height="14" font="2">Of course, pure FIFO does not perform particularly well, as we saw</text>
+<text top="584" left="129" width="380" height="14" font="2">earlier. To improve FIFO’s performance, VMS introduced two</text>
+<text top="584" left="514" width="47" height="13" font="4"><b>second-</b></text>
+<text top="599" left="129" width="70" height="13" font="4"><b>chance lists</b></text>
+<text top="599" left="203" width="358" height="14" font="2">where pages are placed before getting evicted from memory,</text>
+<text top="614" left="129" width="117" height="14" font="2">specifically a global</text>
+<text top="614" left="250" width="101" height="14" font="14"><i>clean-page free list</i></text>
+<text top="614" left="355" width="23" height="14" font="2">and</text>
+<text top="614" left="381" width="77" height="14" font="14"><i>dirty-page list</i></text>
+<text top="614" left="458" width="103" height="14" font="2">. When a process</text>
+<text top="629" left="129" width="9" height="12" font="15">P</text>
+<text top="629" left="144" width="417" height="14" font="2">exceeds its RSS, a page is removed from its per-process FIFO; if clean</text>
+<text top="644" left="129" width="432" height="14" font="2">(not modified), it is placed on the end of the clean-page list; if dirty (mod-</text>
+<text top="659" left="129" width="296" height="14" font="2">ified), it is placed on the end of the dirty-page list.</text>
+<text top="675" left="147" width="108" height="14" font="2">If another process</text>
+<text top="675" left="259" width="11" height="12" font="15">Q</text>
+<text top="675" left="274" width="287" height="14" font="2">needs a free page, it takes the first free page off</text>
+<text top="690" left="129" width="333" height="14" font="2">of the global clean list. However, if the original process</text>
+<text top="690" left="466" width="9" height="12" font="15">P</text>
+<text top="690" left="481" width="80" height="14" font="2">faults on that</text>
+<text top="705" left="129" width="29" height="14" font="2">page</text>
+<text top="705" left="162" width="31" height="14" font="14"><i>before</i></text>
+<text top="705" left="197" width="88" height="14" font="2">it is reclaimed,</text>
+<text top="705" left="289" width="9" height="12" font="15">P</text>
+<text top="705" left="303" width="258" height="14" font="2">reclaims it from the free (or dirty) list, thus</text>
+<text top="720" left="129" width="432" height="14" font="2">avoiding a costly disk access. The bigger these global second-chance lists</text>
+<text top="735" left="129" width="418" height="14" font="2">are, the closer the segmented FIFO algorithm performs to LRU [RL81].</text>
+<text top="751" left="147" width="415" height="14" font="2">Another optimization used in VMS also helps overcome the small page</text>
+<text top="766" left="129" width="432" height="14" font="2">size in VMS. Specifically, with such small pages, disk I/O during swap-</text>
+<text top="781" left="129" width="432" height="14" font="2">ping could be highly inefficient, as disks do better with large transfers.</text>
+<text top="796" left="129" width="432" height="14" font="2">To make swapping I/O more efficient, VMS adds a number of optimiza-</text>
+<text top="811" left="129" width="173" height="14" font="2">tions, but most important is</text>
+<text top="811" left="307" width="61" height="13" font="4"><b>clustering</b></text>
+<text top="811" left="368" width="192" height="14" font="2">. With clustering, VMS groups</text>
+<text top="826" left="129" width="432" height="14" font="2">large batches of pages together from the global dirty list, and writes them</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="157" width="10" height="14" font="2">V</text>
+<text top="98" left="167" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="215" width="13" height="14" font="2">M</text>
+<text top="98" left="229" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="274" width="7" height="14" font="2">S</text>
+<text top="98" left="282" width="45" height="11" font="3">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="139" left="87" width="432" height="14" font="2">to disk in one fell swoop (thus making them clean). Clustering is used</text>
+<text top="154" left="87" width="432" height="14" font="2">in most modern systems, as the freedom to place pages anywhere within</text>
+<text top="169" left="87" width="432" height="14" font="2">swap space lets the OS group pages, perform fewer and bigger writes,</text>
+<text top="183" left="87" width="188" height="14" font="2">and thus improve performance.</text>
+<text top="219" left="87" width="121" height="15" font="6"><b>Other Neat Tricks</b></text>
+<text top="243" left="87" width="432" height="14" font="2">VMS had two other now-standard tricks: demand zeroing and copy-on-</text>
+<text top="258" left="87" width="180" height="14" font="2">write. We now describe these</text>
+<text top="258" left="271" width="25" height="13" font="4"><b>lazy</b></text>
+<text top="258" left="301" width="218" height="14" font="2">optimizations. One form of laziness</text>
+<text top="273" left="87" width="228" height="14" font="2">in VMS (and most modern systems) is</text>
+<text top="273" left="319" width="100" height="13" font="4"><b>demand zeroing</b></text>
+<text top="273" left="422" width="97" height="14" font="2">of pages. To un-</text>
+<text top="288" left="87" width="432" height="14" font="2">derstand this better, let’s consider the example of adding a page to your</text>
+<text top="303" left="87" width="432" height="14" font="2">address space, say in your heap. In a naive implementation, the OS re-</text>
+<text top="318" left="87" width="432" height="14" font="2">sponds to a request to add a page to your heap by finding a page in phys-</text>
+<text top="333" left="87" width="432" height="14" font="2">ical memory, zeroing it (required for security; otherwise you’d be able to</text>
+<text top="348" left="87" width="432" height="14" font="2">see what was on the page from when some other process used it!), and</text>
+<text top="363" left="87" width="432" height="14" font="2">then mapping it into your address space (i.e., setting up the page table to</text>
+<text top="378" left="87" width="432" height="14" font="2">refer to that physical page as desired). But the naive implementation can</text>
+<text top="393" left="87" width="392" height="14" font="2">be costly, particularly if the page does not get used by the process.</text>
+<text top="408" left="105" width="414" height="14" font="2">With demand zeroing, the OS instead does very little work when the</text>
+<text top="423" left="87" width="432" height="14" font="2">page is added to your address space; it puts an entry in the page table that</text>
+<text top="438" left="87" width="432" height="14" font="2">marks the page inaccessible. If the process then reads or writes the page,</text>
+<text top="452" left="87" width="432" height="14" font="2">a trap into the OS takes place. When handling the trap, the OS notices</text>
+<text top="467" left="87" width="432" height="14" font="2">(usually through some bits marked in the “reserved for OS” portion of the</text>
+<text top="482" left="87" width="432" height="14" font="2">page table entry) that this is actually a demand-zero page; at this point,</text>
+<text top="497" left="87" width="432" height="14" font="2">the OS does the needed work of finding a physical page, zeroing it, and</text>
+<text top="512" left="87" width="432" height="14" font="2">mapping it into the process’s address space. If the process never accesses</text>
+<text top="527" left="87" width="432" height="14" font="2">the page, all such work is avoided, and thus the virtue of demand zeroing.</text>
+<text top="542" left="105" width="414" height="14" font="2">Another cool optimization found in VMS (and again, in virtually every</text>
+<text top="557" left="87" width="87" height="14" font="2">modern OS) is</text>
+<text top="557" left="178" width="86" height="13" font="4"><b>copy-on-write</b></text>
+<text top="557" left="268" width="4" height="14" font="2">(</text>
+<text top="557" left="272" width="34" height="13" font="4"><b>COW</b></text>
+<text top="557" left="311" width="208" height="14" font="2">for short). The idea, which goes at</text>
+<text top="572" left="87" width="432" height="14" font="2">least back to the TENEX operating system [BB+72], is simple: when the</text>
+<text top="587" left="87" width="432" height="14" font="2">OS needs to copy a page from one address space to another, instead of</text>
+<text top="602" left="87" width="432" height="14" font="2">copying it, it can map it into the target address space and mark it read-</text>
+<text top="617" left="87" width="432" height="14" font="2">only in both address spaces. If both address spaces only read the page, no</text>
+<text top="632" left="87" width="432" height="14" font="2">further action is taken, and thus the OS has realized a fast copy without</text>
+<text top="647" left="87" width="155" height="14" font="2">actually moving any data.</text>
+<text top="662" left="105" width="414" height="14" font="2">If, however, one of the address spaces does indeed try to write to the</text>
+<text top="677" left="87" width="432" height="14" font="2">page, it will trap into the OS. The OS will then notice that the page is a</text>
+<text top="692" left="87" width="432" height="14" font="2">COW page, and thus (lazily) allocate a new page, fill it with the data, and</text>
+<text top="707" left="87" width="432" height="14" font="2">map this new page into the address space of the faulting process. The</text>
+<text top="721" left="87" width="412" height="14" font="2">process then continues and now has its own private copy of the page.</text>
+<text top="736" left="105" width="414" height="14" font="2">COW is useful for a number of reasons. Certainly any sort of shared</text>
+<text top="751" left="87" width="432" height="14" font="2">library can be mapped copy-on-write into the address spaces of many</text>
+<text top="766" left="87" width="299" height="14" font="2">processes, saving valuable memory space. In U</text>
+<text top="768" left="387" width="21" height="11" font="3">NIX</text>
+<text top="766" left="413" width="105" height="14" font="2">systems, COW is</text>
+<text top="781" left="87" width="265" height="14" font="2">even more critical, due to the semantics of</text>
+<text top="782" left="358" width="48" height="11" font="7">fork()</text>
+<text top="781" left="412" width="23" height="14" font="2">and</text>
+<text top="782" left="440" width="48" height="11" font="7">exec()</text>
+<text top="781" left="489" width="30" height="14" font="2">. As</text>
+<text top="796" left="87" width="103" height="14" font="2">you might recall,</text>
+<text top="797" left="195" width="48" height="11" font="7">fork()</text>
+<text top="796" left="247" width="272" height="14" font="2">creates an exact copy of the address space of</text>
+<text top="811" left="87" width="432" height="14" font="2">the caller; with a large address space, making such a copy is slow and</text>
+<text top="826" left="87" width="432" height="14" font="2">data intensive. Even worse, most of the address space is immediately</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="9" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="17" size="7" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="321" width="10" height="14" font="2">C</text>
+<text top="98" left="331" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="390" width="10" height="14" font="2">V</text>
+<text top="98" left="401" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="448" width="13" height="14" font="2">M</text>
+<text top="98" left="462" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="3">YSTEMS</text>
+<text top="148" left="304" width="8" height="14" font="2">T</text>
+<text top="150" left="313" width="11" height="11" font="3">IP</text>
+<text top="148" left="325" width="16" height="14" font="2">: B</text>
+<text top="150" left="342" width="7" height="11" font="3">E</text>
+<text top="148" left="352" width="8" height="14" font="2">L</text>
+<text top="150" left="361" width="24" height="11" font="3">AZY</text>
+<text top="163" left="129" width="432" height="14" font="2">Being lazy can be a virtue in both life as well as in operating systems.</text>
+<text top="178" left="129" width="432" height="14" font="2">Laziness can put off work until later, which is beneficial within an OS for</text>
+<text top="193" left="129" width="432" height="14" font="2">a number of reasons. First, putting off work might reduce the latency of</text>
+<text top="208" left="129" width="432" height="14" font="2">the current operation, thus improving responsiveness; for example, op-</text>
+<text top="223" left="129" width="432" height="14" font="2">erating systems often report that writes to a file succeeded immediately,</text>
+<text top="238" left="129" width="432" height="14" font="2">and only write them to disk later in the background. Second, and more</text>
+<text top="253" left="129" width="432" height="14" font="2">importantly, laziness sometimes obviates the need to do the work at all;</text>
+<text top="267" left="129" width="432" height="14" font="2">for example, delaying a write until the file is deleted removes the need to</text>
+<text top="282" left="129" width="432" height="14" font="2">do the write at all. Laziness is also good in life: for example, by putting</text>
+<text top="297" left="129" width="432" height="14" font="2">off your OS project, you may find that the project specification bugs are</text>
+<text top="312" left="129" width="432" height="14" font="2">worked out by your fellow classmates; however, the class project is un-</text>
+<text top="327" left="129" width="432" height="14" font="2">likely to get canceled, so being too lazy may be problematic, leading to a</text>
+<text top="342" left="129" width="423" height="14" font="2">late project, bad grade, and a sad professor. Don’t make professors sad!</text>
+<text top="397" left="129" width="215" height="14" font="2">over-written by a subsequent call to</text>
+<text top="398" left="348" width="48" height="11" font="7">exec()</text>
+<text top="397" left="396" width="164" height="14" font="2">, which overlays the calling</text>
+<text top="412" left="129" width="432" height="14" font="2">process’s address space with that of the soon-to-be-exec’d program. By</text>
+<text top="427" left="129" width="214" height="14" font="2">instead performing a copy-on-write</text>
+<text top="428" left="346" width="48" height="11" font="7">fork()</text>
+<text top="427" left="395" width="166" height="14" font="2">, the OS avoids much of the</text>
+<text top="442" left="129" width="432" height="14" font="2">needless copying and thus retains the correct semantics while improving</text>
+<text top="457" left="129" width="79" height="14" font="2">performance.</text>
+<text top="495" left="97" width="285" height="17" font="5">23.2 The Linux Virtual Memory System</text>
+<text top="525" left="147" width="414" height="14" font="2">We’ll now discuss some of the more interesting aspects of the Linux</text>
+<text top="540" left="129" width="432" height="14" font="2">VM system. Linux development has been driven forward by real engi-</text>
+<text top="555" left="129" width="432" height="14" font="2">neers solving real problems encountered in production, and thus a large</text>
+<text top="570" left="129" width="432" height="14" font="2">number of features have slowly been incorporated into what is now a</text>
+<text top="585" left="129" width="321" height="14" font="2">fully functional, feature-filled virtual memory system.</text>
+<text top="600" left="147" width="213" height="14" font="2">While we won’t be able to discuss</text>
+<text top="600" left="366" width="29" height="14" font="14"><i>every</i></text>
+<text top="600" left="400" width="161" height="14" font="2">aspect of Linux VM, we’ll</text>
+<text top="615" left="129" width="432" height="14" font="2">touch on the most important ones, especially where it has gone beyond</text>
+<text top="630" left="129" width="432" height="14" font="2">what is found in classic VM systems such as VAX/VMS. We’ll also try to</text>
+<text top="645" left="129" width="352" height="14" font="2">highlight commonalities between Linux and older systems.</text>
+<text top="660" left="147" width="414" height="14" font="2">For this discussion, we’ll focus on Linux for Intel x86. While Linux can</text>
+<text top="675" left="129" width="432" height="14" font="2">and does run on many different processor architectures, Linux on x86 is</text>
+<text top="690" left="129" width="432" height="14" font="2">its most dominant and important deployment, and thus the focus of our</text>
+<text top="705" left="129" width="57" height="14" font="2">attention.</text>
+<text top="743" left="129" width="174" height="15" font="6"><b>The Linux Address Space</b></text>
+<text top="768" left="129" width="432" height="14" font="2">Much like other modern operating systems, and also like VAX/VMS,</text>
+<text top="785" left="129" width="184" height="14" font="2">a Linux virtual address space</text>
+<text top="782" left="313" width="4" height="9" font="16">1</text>
+<text top="785" left="324" width="237" height="14" font="2">consists of a user portion (where user</text>
+<text top="814" left="149" width="4" height="8" font="17">1</text>
+<text top="816" left="154" width="407" height="11" font="9">Until recent changes, due to security threats, that is. Read the subsections below about</text>
+<text top="828" left="129" width="214" height="11" font="9">Linux security for details on this modification.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="13" family="NLBGKZ+NimbusMonL" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="157" width="10" height="14" font="2">V</text>
+<text top="98" left="167" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="215" width="13" height="14" font="2">M</text>
+<text top="98" left="229" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="274" width="7" height="14" font="2">S</text>
+<text top="98" left="282" width="45" height="11" font="3">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="151" left="274" width="71" height="10" font="10">Page 0: Invalid</text>
+<text top="178" left="284" width="51" height="10" font="11">User Code</text>
+<text top="205" left="284" width="51" height="10" font="11">User Heap</text>
+<text top="325" left="284" width="52" height="10" font="11">User Stack</text>
+<text top="365" left="272" width="75" height="10" font="11">Kernel (Logical)</text>
+<text top="392" left="274" width="71" height="10" font="11">Kernel (Virtual)</text>
+<text top="244" left="403" width="28" height="13" font="12">User</text>
+<text top="378" left="403" width="39" height="13" font="12">Kernel</text>
+<text top="144" left="170" width="59" height="10" font="11">0x00000000</text>
+<text top="345" left="169" width="61" height="10" font="11">0xC0000000</text>
+<text top="427" left="188" width="69" height="14" font="2">Figure 23.2:</text>
+<text top="427" left="261" width="157" height="13" font="4"><b>The Linux Address Space</b></text>
+<text top="449" left="87" width="432" height="14" font="2">program code, stack, heap, and other parts reside) and a kernel portion</text>
+<text top="463" left="87" width="432" height="14" font="2">(where kernel code, stacks, heap, and other parts reside). Like those other</text>
+<text top="478" left="87" width="432" height="14" font="2">systems, upon a context switch, the user portion of the currently-running</text>
+<text top="493" left="87" width="432" height="14" font="2">address space changes; the kernel portion is the same across processes.</text>
+<text top="508" left="87" width="432" height="14" font="2">Like those other systems, a program running in user mode cannot access</text>
+<text top="523" left="87" width="432" height="14" font="2">kernel virtual pages; only by trapping into the kernel and transitioning to</text>
+<text top="538" left="87" width="282" height="14" font="2">privileged mode can such memory be accessed.</text>
+<text top="554" left="105" width="414" height="14" font="2">In classic 32-bit Linux (i.e., Linux with a 32-bit virtual address space),</text>
+<text top="569" left="87" width="432" height="14" font="2">the split between user and kernel portions of the address space takes</text>
+<text top="584" left="87" width="96" height="14" font="2">place at address</text>
+<text top="585" left="187" width="81" height="11" font="7">0xC0000000</text>
+<text top="584" left="268" width="251" height="14" font="2">, or three-quarters of the way through the</text>
+<text top="599" left="87" width="232" height="14" font="2">address space. Thus, virtual addresses</text>
+<text top="600" left="323" width="8" height="11" font="7">0</text>
+<text top="599" left="335" width="48" height="14" font="2">through</text>
+<text top="600" left="387" width="81" height="11" font="7">0xBFFFFFFF</text>
+<text top="599" left="471" width="48" height="14" font="2">are user</text>
+<text top="614" left="87" width="300" height="14" font="2">virtual addresses; the remaining virtual addresses (</text>
+<text top="615" left="388" width="81" height="11" font="7">0xC0000000</text>
+<text top="614" left="471" width="48" height="14" font="2">through</text>
+<text top="630" left="87" width="81" height="11" font="7">0xFFFFFFFF</text>
+<text top="629" left="168" width="351" height="14" font="2">) are in the kernel’s virtual address space. 64-bit Linux has a</text>
+<text top="644" left="87" width="432" height="14" font="2">similar split but at slightly different points. Figure 23.2 shows a depiction</text>
+<text top="659" left="87" width="227" height="14" font="2">of a typical (simplified) address space.</text>
+<text top="675" left="105" width="414" height="14" font="2">One slightly interesting aspect of Linux is that it contains two types of</text>
+<text top="690" left="87" width="281" height="14" font="2">kernel virtual addresses. The first are known as</text>
+<text top="690" left="372" width="147" height="13" font="4"><b>kernel logical addresses</b></text>
+<text top="705" left="87" width="432" height="14" font="2">[O16]. This is what you would consider the normal virtual address space</text>
+<text top="720" left="87" width="432" height="14" font="2">of the kernel; to get more memory of this type, kernel code merely needs</text>
+<text top="735" left="87" width="36" height="14" font="2">to call</text>
+<text top="736" left="128" width="57" height="11" font="18"><b>kmalloc</b></text>
+<text top="735" left="184" width="335" height="14" font="2">. Most kernel data structures live here, such as page ta-</text>
+<text top="750" left="87" width="432" height="14" font="2">bles, per-process kernel stacks, and so forth. Unlike most other memory</text>
+<text top="765" left="87" width="219" height="14" font="2">in the system, kernel logical memory</text>
+<text top="765" left="310" width="37" height="14" font="14"><i>cannot</i></text>
+<text top="765" left="350" width="119" height="14" font="2">be swapped to disk.</text>
+<text top="781" left="105" width="414" height="14" font="2">The most interesting aspect of kernel logical addresses is their con-</text>
+<text top="796" left="87" width="432" height="14" font="2">nection to physical memory. Specifically, there is a direct mapping be-</text>
+<text top="811" left="87" width="432" height="14" font="2">tween kernel logical addresses and the first portion of physical memory.</text>
+<text top="826" left="87" width="168" height="14" font="2">Thus, kernel logical address</text>
+<text top="827" left="258" width="81" height="11" font="7">0xC0000000</text>
+<text top="826" left="343" width="176" height="14" font="2">translates to physical address</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="321" width="10" height="14" font="2">C</text>
+<text top="98" left="331" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="390" width="10" height="14" font="2">V</text>
+<text top="98" left="401" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="448" width="13" height="14" font="2">M</text>
+<text top="98" left="462" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="3">YSTEMS</text>
+<text top="139" left="129" width="81" height="11" font="7">0x00000000</text>
+<text top="139" left="210" width="3" height="14" font="2">,</text>
+<text top="139" left="218" width="81" height="11" font="7">0xC0000FFF</text>
+<text top="139" left="304" width="12" height="14" font="2">to</text>
+<text top="139" left="320" width="81" height="11" font="7">0x00000FFF</text>
+<text top="139" left="401" width="160" height="14" font="2">, and so forth. This direct</text>
+<text top="154" left="129" width="432" height="14" font="2">mapping has two implications. The first is that it is simple to translate</text>
+<text top="169" left="129" width="432" height="14" font="2">back and forth between kernel logical addresses and physical addresses;</text>
+<text top="183" left="129" width="432" height="14" font="2">as a result, these addresses are often treated as if they are indeed physical.</text>
+<text top="198" left="129" width="432" height="14" font="2">The second is that if a chunk of memory is contiguous in kernel logical ad-</text>
+<text top="213" left="129" width="432" height="14" font="2">dress space, it is also contiguous in physical memory. This makes mem-</text>
+<text top="228" left="129" width="432" height="14" font="2">ory allocated in this part of the kernel’s address space suitable for oper-</text>
+<text top="243" left="129" width="432" height="14" font="2">ations which need contiguous physical memory to work correctly, such</text>
+<text top="258" left="129" width="246" height="14" font="2">as I/O transfers to and from devices via</text>
+<text top="258" left="380" width="133" height="13" font="4"><b>direct memory access</b></text>
+<text top="258" left="517" width="4" height="14" font="2">(</text>
+<text top="258" left="521" width="35" height="13" font="4"><b>DMA</b></text>
+<text top="258" left="556" width="4" height="14" font="2">)</text>
+<text top="273" left="129" width="350" height="14" font="2">(something we’ll learn about in the third part of this book).</text>
+<text top="290" left="147" width="224" height="14" font="2">The other type of kernel address is a</text>
+<text top="290" left="375" width="137" height="13" font="4"><b>kernel virtual address</b></text>
+<text top="290" left="512" width="48" height="14" font="2">. To get</text>
+<text top="305" left="129" width="366" height="14" font="2">memory of this type, kernel code calls a different allocator,</text>
+<text top="306" left="501" width="57" height="11" font="18"><b>vmalloc</b></text>
+<text top="305" left="557" width="3" height="14" font="2">,</text>
+<text top="320" left="129" width="432" height="14" font="2">which returns a pointer to a virtually contiguous region of the desired</text>
+<text top="335" left="129" width="432" height="14" font="2">size. Unlike kernel logical memory, kernel virtual memory is usually not</text>
+<text top="350" left="129" width="432" height="14" font="2">contiguous; each kernel virtual page may map to non-contiguous physi-</text>
+<text top="364" left="129" width="432" height="14" font="2">cal pages (and is thus not suitable for DMA). However, such memory is</text>
+<text top="379" left="129" width="432" height="14" font="2">easier to allocate as a result, and thus used for large buffers where finding</text>
+<text top="394" left="129" width="407" height="14" font="2">a contiguous large chunk of physical memory would be challenging.</text>
+<text top="411" left="147" width="414" height="14" font="2">In 32-bit Linux, one other reason for the existence of kernel virtual</text>
+<text top="426" left="129" width="432" height="14" font="2">addresses is that they enable the kernel to address more than (roughly) 1</text>
+<text top="441" left="129" width="432" height="14" font="2">GB of memory. Years ago, machines had much less memory than this, and</text>
+<text top="456" left="129" width="432" height="14" font="2">enabling access to more than 1 GB was not an issue. However, technology</text>
+<text top="471" left="129" width="432" height="14" font="2">progressed, and soon there was a need to enable the kernel to use larger</text>
+<text top="486" left="129" width="432" height="14" font="2">amounts of memory. Kernel virtual addresses, and their disconnection</text>
+<text top="501" left="129" width="432" height="14" font="2">from a strict one-to-one mapping to physical memory, make this possible.</text>
+<text top="516" left="129" width="432" height="14" font="2">However, with the move to 64-bit Linux, the need is less urgent, because</text>
+<text top="531" left="129" width="432" height="14" font="2">the kernel is not confined to only the last 1 GB of the virtual address space.</text>
+<text top="574" left="129" width="140" height="15" font="6"><b>Page Table Structure</b></text>
+<text top="600" left="129" width="432" height="14" font="2">Because we are focused on Linux for x86, our discussion will center on</text>
+<text top="615" left="129" width="432" height="14" font="2">the type of page-table structure provided by x86, as it determines what</text>
+<text top="630" left="129" width="432" height="14" font="2">Linux can and cannot do. As mentioned before, x86 provides a hardware-</text>
+<text top="645" left="129" width="432" height="14" font="2">managed, multi-level page table structure, with one page table per pro-</text>
+<text top="660" left="129" width="432" height="14" font="2">cess; the OS simply sets up mappings in its memory, points a privileged</text>
+<text top="675" left="129" width="432" height="14" font="2">register at the start of the page directory, and the hardware handles the</text>
+<text top="690" left="129" width="432" height="14" font="2">rest. The OS gets involved, as expected, at process creation, deletion, and</text>
+<text top="705" left="129" width="432" height="14" font="2">upon context switches, making sure in each case that the correct page</text>
+<text top="720" left="129" width="394" height="14" font="2">table is being used by the hardware MMU to perform translations.</text>
+<text top="736" left="147" width="414" height="14" font="2">Probably the biggest change in recent years is the move from 32-bit</text>
+<text top="751" left="129" width="432" height="14" font="2">x86 to 64-bit x86, as briefly mentioned above. As seen in the VAX/VMS</text>
+<text top="766" left="129" width="432" height="14" font="2">system, 32-bit address spaces have been around for a long time, and as</text>
+<text top="781" left="129" width="432" height="14" font="2">technology changed, they were finally starting to become a real limit for</text>
+<text top="796" left="129" width="432" height="14" font="2">programs. Virtual memory makes it easy to program systems, but with</text>
+<text top="811" left="129" width="432" height="14" font="2">modern systems containing many GB of memory, 32 bits were no longer</text>
+<text top="826" left="129" width="417" height="14" font="2">enough to refer to each of them. Thus, the next leap became necessary.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="10" family="WVELZC+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="157" width="10" height="14" font="2">V</text>
+<text top="98" left="167" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="215" width="13" height="14" font="2">M</text>
+<text top="98" left="229" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="274" width="7" height="14" font="2">S</text>
+<text top="98" left="282" width="45" height="11" font="3">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="139" left="105" width="414" height="14" font="2">Moving to a 64-bit address affects page table structure in x86 in the</text>
+<text top="154" left="87" width="432" height="14" font="2">expected manner. Because x86 uses a multi-level page table, current 64-</text>
+<text top="169" left="87" width="432" height="14" font="2">bit systems use a four-level table. The full 64-bit nature of the virtual</text>
+<text top="183" left="87" width="432" height="14" font="2">address space is not yet in use, however, rather only the bottom 48 bits.</text>
+<text top="198" left="87" width="291" height="14" font="2">Thus, a virtual address can be viewed as follows:</text>
+<text top="226" left="136" width="11" height="10" font="19">63</text>
+<text top="226" left="217" width="11" height="10" font="19">47</text>
+<text top="226" left="297" width="11" height="10" font="19">31</text>
+<text top="226" left="378" width="11" height="10" font="19">15</text>
+<text top="226" left="456" width="6" height="10" font="19">0</text>
+<text top="281" left="160" width="39" height="11" font="11">Unused</text>
+<text top="281" left="236" width="14" height="11" font="11">P1</text>
+<text top="281" left="281" width="14" height="11" font="11">P2</text>
+<text top="281" left="326" width="14" height="11" font="11">P3</text>
+<text top="281" left="372" width="14" height="11" font="11">P4</text>
+<text top="281" left="416" width="30" height="11" font="11">Offset</text>
+<text top="303" left="105" width="414" height="14" font="2">As you can see in the picture, the top 16 bits of a virtual address are</text>
+<text top="318" left="87" width="432" height="14" font="2">unused (and thus play no role in translation), the bottom 12 bits (due to</text>
+<text top="333" left="87" width="432" height="14" font="2">the 4-KB page size) are used as the offset (and hence just used directly,</text>
+<text top="348" left="87" width="432" height="14" font="2">and not translated), leaving the middle 36 bits of virtual address to take</text>
+<text top="363" left="87" width="432" height="14" font="2">part in the translation. The P1 portion of the address is used to index into</text>
+<text top="378" left="87" width="432" height="14" font="2">the topmost page directory, and the translation proceeds from there, one</text>
+<text top="393" left="87" width="432" height="14" font="2">level at a time, until the actual page of the page table is indexed by P4,</text>
+<text top="407" left="87" width="220" height="14" font="2">yielding the desired page table entry.</text>
+<text top="422" left="105" width="414" height="14" font="2">As system memories grow even larger, more parts of this voluminous</text>
+<text top="437" left="87" width="432" height="14" font="2">address space will become enabled, leading to five-level and eventually</text>
+<text top="452" left="87" width="432" height="14" font="2">six-level page-table tree structures. Imagine that: a simple page table</text>
+<text top="467" left="87" width="432" height="14" font="2">lookup requiring six levels of translation, just to figure out where in mem-</text>
+<text top="482" left="87" width="201" height="14" font="2">ory a certain piece of data resides.</text>
+<text top="518" left="87" width="134" height="15" font="6"><b>Large Page Support</b></text>
+<text top="542" left="87" width="432" height="14" font="2">Intel x86 allows for the use of multiple page sizes, not just the standard 4-</text>
+<text top="557" left="87" width="432" height="14" font="2">KB page. Specifically, recent designs support 2-MB and even 1-GB pages</text>
+<text top="572" left="87" width="432" height="14" font="2">in hardware. Thus, over time, Linux has evolved to allow applications to</text>
+<text top="587" left="87" width="72" height="14" font="2">utilize these</text>
+<text top="587" left="162" width="69" height="13" font="4"><b>huge pages</b></text>
+<text top="587" left="234" width="244" height="14" font="2">(as they are called in the world of Linux).</text>
+<text top="602" left="105" width="414" height="14" font="2">Using huge pages, as hinted at earlier, leads to numerous benefits. As</text>
+<text top="617" left="87" width="432" height="14" font="2">seen in VAX/VMS, doing so reduces the number of mappings that are</text>
+<text top="632" left="87" width="432" height="14" font="2">needed in the page table; the larger the pages, the fewer the mappings.</text>
+<text top="647" left="87" width="432" height="14" font="2">However, fewer page-table entries is not the driving force behind huge</text>
+<text top="662" left="87" width="411" height="14" font="2">pages; rather, it’s better TLB behavior and related performance gains.</text>
+<text top="677" left="105" width="414" height="14" font="2">When a process actively uses a large amount of memory, it quickly</text>
+<text top="692" left="87" width="432" height="14" font="2">fills up the TLB with translations. If those translations are for 4-KB pages,</text>
+<text top="707" left="87" width="432" height="14" font="2">only a small amount of total memory can be accessed without inducing</text>
+<text top="721" left="87" width="432" height="14" font="2">TLB misses. The result, for modern “big memory” workloads running on</text>
+<text top="736" left="87" width="432" height="14" font="2">machines with many GBs of memory, is a noticeable performance cost;</text>
+<text top="751" left="87" width="432" height="14" font="2">recent research shows that some applications spend 10% of their cycles</text>
+<text top="766" left="87" width="170" height="14" font="2">servicing TLB misses [B+13].</text>
+<text top="781" left="105" width="414" height="14" font="2">Huge pages allow a process to access a large tract of memory with-</text>
+<text top="796" left="87" width="432" height="14" font="2">out TLB misses, by using fewer slots in the TLB, and thus is the main</text>
+<text top="811" left="87" width="432" height="14" font="2">advantage. However, there are other benefits to huge pages: there is a</text>
+<text top="826" left="87" width="432" height="14" font="2">shorter TLB-miss path, meaning that when a TLB miss does occur, it is</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="321" width="10" height="14" font="2">C</text>
+<text top="98" left="331" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="390" width="10" height="14" font="2">V</text>
+<text top="98" left="401" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="448" width="13" height="14" font="2">M</text>
+<text top="98" left="462" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="3">YSTEMS</text>
+<text top="148" left="242" width="8" height="14" font="2">T</text>
+<text top="150" left="251" width="11" height="11" font="3">IP</text>
+<text top="148" left="263" width="18" height="14" font="2">: C</text>
+<text top="150" left="281" width="53" height="11" font="3">ONSIDER</text>
+<text top="148" left="338" width="5" height="14" font="2">I</text>
+<text top="150" left="343" width="104" height="11" font="3">NCREMENTALISM</text>
+<text top="163" left="129" width="432" height="14" font="2">Many times in life, you are encouraged to be a revolutionary. “Think</text>
+<text top="178" left="129" width="432" height="14" font="2">big!”, they say. “Change the world!”, they scream. And you can see why</text>
+<text top="193" left="129" width="432" height="14" font="2">it is appealing; in some cases, big changes are needed, and thus pushing</text>
+<text top="208" left="129" width="432" height="14" font="2">hard for them makes a lot of sense. And, if you try it this way, at least</text>
+<text top="223" left="129" width="182" height="14" font="2">they might stop yelling at you.</text>
+<text top="241" left="129" width="432" height="14" font="2">However, in many cases, a slower, more incremental approach might be</text>
+<text top="256" left="129" width="432" height="14" font="2">the right thing to do. The Linux huge page example in this chapter is</text>
+<text top="271" left="129" width="432" height="14" font="2">an example of engineering incrementalism; instead of taking the stance</text>
+<text top="286" left="129" width="432" height="14" font="2">of a fundamentalist and insisting large pages were the way of the future,</text>
+<text top="301" left="129" width="432" height="14" font="2">developers took the measured approach of first introducing specialized</text>
+<text top="316" left="129" width="432" height="14" font="2">support for it, learning more about its upsides and downsides, and, only</text>
+<text top="331" left="129" width="432" height="14" font="2">when there was real reason for it, adding more generic support for all</text>
+<text top="346" left="129" width="76" height="14" font="2">applications.</text>
+<text top="364" left="129" width="432" height="14" font="2">Incrementalism, while sometimes scorned, often leads to slow, thought-</text>
+<text top="379" left="129" width="432" height="14" font="2">ful, and sensible progress. When building systems, such an approach</text>
+<text top="394" left="129" width="430" height="14" font="2">might just be the thing you need. Indeed, this may be true in life as well.</text>
+<text top="431" left="129" width="432" height="14" font="2">serviced more quickly. In addition, allocation can be quite fast (in certain</text>
+<text top="446" left="129" width="309" height="14" font="2">scenarios), a small but sometimes important benefit.</text>
+<text top="463" left="147" width="414" height="14" font="2">One interesting aspect of Linux support for huge pages is how it was</text>
+<text top="478" left="129" width="432" height="14" font="2">done incrementally. At first, Linux developers knew such support was</text>
+<text top="493" left="129" width="432" height="14" font="2">only important for a few applications, such as large databases with strin-</text>
+<text top="508" left="129" width="432" height="14" font="2">gent performance demands. Thus, the decision was made to allow appli-</text>
+<text top="523" left="129" width="432" height="14" font="2">cations to explicitly request memory allocations with large pages (either</text>
+<text top="538" left="129" width="71" height="14" font="2">through the</text>
+<text top="539" left="204" width="48" height="11" font="7">mmap()</text>
+<text top="538" left="256" width="13" height="14" font="2">or</text>
+<text top="539" left="273" width="65" height="11" font="7">shmget()</text>
+<text top="538" left="341" width="220" height="14" font="2">calls). In this way, most applications</text>
+<text top="553" left="129" width="432" height="14" font="2">would be unaffected (and continue to use only 4-KB pages); a few de-</text>
+<text top="568" left="129" width="432" height="14" font="2">manding applications would have to be changed to use these interfaces,</text>
+<text top="583" left="129" width="240" height="14" font="2">but for them it would be worth the pain.</text>
+<text top="600" left="147" width="414" height="14" font="2">More recently, as the need for better TLB behavior is more common</text>
+<text top="615" left="129" width="334" height="14" font="2">among many applications, Linux developers have added</text>
+<text top="615" left="465" width="70" height="13" font="4"><b>transparent</b></text>
+<text top="615" left="538" width="30" height="14" font="2">huge</text>
+<text top="630" left="129" width="432" height="14" font="2">page support. When this feature is enabled, the operating system auto-</text>
+<text top="645" left="129" width="432" height="14" font="2">matically looks for opportunities to allocate huge pages (usually 2 MB,</text>
+<text top="659" left="129" width="426" height="14" font="2">but on some systems, 1 GB) without requiring application modification.</text>
+<text top="677" left="147" width="414" height="14" font="2">Huge pages are not without their costs. The biggest potential cost is</text>
+<text top="692" left="129" width="140" height="13" font="4"><b>internal fragmentation</b></text>
+<text top="692" left="269" width="292" height="14" font="2">, i.e., a page that is large but sparsely used. This</text>
+<text top="707" left="129" width="432" height="14" font="2">form of waste can fill memory with large but little used pages. Swapping,</text>
+<text top="721" left="129" width="432" height="14" font="2">if enabled, also does not work well with huge pages, sometimes greatly</text>
+<text top="736" left="129" width="432" height="14" font="2">amplifying the amount of I/O a system does. Overhead of allocation</text>
+<text top="751" left="129" width="432" height="14" font="2">can also be bad (in some other cases). Overall, one thing is clear: the 4-</text>
+<text top="766" left="129" width="432" height="14" font="2">KB page size which served systems so well for so many years is not the</text>
+<text top="781" left="129" width="432" height="14" font="2">universal solution it once was; growing memory sizes demand that we</text>
+<text top="796" left="129" width="432" height="14" font="2">consider large pages and other solutions as part of a necessary evolution</text>
+<text top="811" left="129" width="432" height="14" font="2">of VM systems. Linux’s slow adoption of this hardware-based technology</text>
+<text top="826" left="129" width="200" height="14" font="2">is evidence of the coming change.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="157" width="10" height="14" font="2">V</text>
+<text top="98" left="167" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="215" width="13" height="14" font="2">M</text>
+<text top="98" left="229" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="274" width="7" height="14" font="2">S</text>
+<text top="98" left="282" width="45" height="11" font="3">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="138" left="87" width="108" height="15" font="6"><b>The Page Cache</b></text>
+<text top="164" left="87" width="432" height="14" font="2">To reduce costs of accessing persistent storage (the focus of the third part</text>
+<text top="179" left="87" width="258" height="14" font="2">of this book), most systems use aggressive</text>
+<text top="179" left="350" width="47" height="13" font="4"><b>caching</b></text>
+<text top="179" left="401" width="118" height="14" font="2">subsystems to keep</text>
+<text top="194" left="87" width="432" height="14" font="2">popular data items in memory. Linux, in this regard, is no different than</text>
+<text top="209" left="87" width="178" height="14" font="2">traditional operating systems.</text>
+<text top="227" left="105" width="61" height="14" font="2">The Linux</text>
+<text top="227" left="169" width="66" height="13" font="4"><b>page cache</b></text>
+<text top="227" left="238" width="281" height="14" font="2">is unified, keeping pages in memory from three</text>
+<text top="242" left="87" width="100" height="14" font="2">primary sources:</text>
+<text top="242" left="191" width="134" height="13" font="4"><b>memory-mapped files</b></text>
+<text top="242" left="325" width="194" height="14" font="2">, file data and metadata from de-</text>
+<text top="257" left="87" width="209" height="14" font="2">vices (usually accessed by directing</text>
+<text top="258" left="299" width="48" height="11" font="7">read()</text>
+<text top="257" left="350" width="23" height="14" font="2">and</text>
+<text top="258" left="376" width="57" height="11" font="7">write()</text>
+<text top="257" left="435" width="84" height="14" font="2">calls to the file</text>
+<text top="272" left="87" width="432" height="14" font="2">system), and heap and stack pages that comprise each process (sometimes</text>
+<text top="287" left="87" width="35" height="14" font="2">called</text>
+<text top="287" left="125" width="125" height="13" font="4"><b>anonymous memory</b></text>
+<text top="287" left="251" width="268" height="14" font="2">, because there is no named file underneath of</text>
+<text top="302" left="87" width="327" height="14" font="2">it, but rather swap space). These entities are kept in a</text>
+<text top="302" left="418" width="101" height="13" font="4"><b>page cache hash</b></text>
+<text top="317" left="87" width="31" height="13" font="4"><b>table</b></text>
+<text top="317" left="118" width="319" height="14" font="2">, allowing for quick lookup when said data is needed.</text>
+<text top="334" left="105" width="215" height="14" font="2">The page cache tracks if entries are</text>
+<text top="334" left="325" width="32" height="13" font="4"><b>clean</b></text>
+<text top="334" left="362" width="157" height="14" font="2">(read but not updated) or</text>
+<text top="349" left="87" width="30" height="13" font="4"><b>dirty</b></text>
+<text top="349" left="122" width="39" height="14" font="2">(a.k.a.,</text>
+<text top="349" left="166" width="55" height="13" font="4"><b>modified</b></text>
+<text top="349" left="222" width="297" height="14" font="2">). Dirty data is periodically written to the back-</text>
+<text top="364" left="87" width="432" height="14" font="2">ing store (i.e., to a specific file for file data, or to swap space for anony-</text>
+<text top="379" left="87" width="275" height="14" font="2">mous regions) by background threads (called</text>
+<text top="380" left="367" width="57" height="11" font="7">pdflush</text>
+<text top="379" left="423" width="96" height="14" font="2">), thus ensuring</text>
+<text top="394" left="87" width="432" height="14" font="2">that modified data eventually is written back to persistent storage. This</text>
+<text top="409" left="87" width="432" height="14" font="2">background activity either takes place after a certain time period or if too</text>
+<text top="424" left="87" width="386" height="14" font="2">many pages are considered dirty (both configurable parameters).</text>
+<text top="442" left="105" width="414" height="14" font="2">In some cases, a system runs low on memory, and Linux has to decide</text>
+<text top="457" left="87" width="432" height="14" font="2">which pages to kick out of memory to free up space. To do so, Linux uses</text>
+<text top="471" left="87" width="112" height="14" font="2">a modified form of</text>
+<text top="472" left="202" width="18" height="13" font="4"><b>2Q</b></text>
+<text top="471" left="224" width="260" height="14" font="2">replacement [JS94], which we describe here.</text>
+<text top="489" left="105" width="414" height="14" font="2">The basic idea is simple: standard LRU replacement is effective, but</text>
+<text top="504" left="87" width="432" height="14" font="2">can be subverted by certain common access patterns. For example, if a</text>
+<text top="519" left="87" width="432" height="14" font="2">process repeatedly accesses a large file (especially one that is nearly the</text>
+<text top="534" left="87" width="432" height="14" font="2">size of memory, or larger), LRU will kick every other file out of memory.</text>
+<text top="549" left="87" width="432" height="14" font="2">Even worse: retaining portions of this file in memory isn’t useful, as they</text>
+<text top="564" left="87" width="360" height="14" font="2">are never re-referenced before getting kicked out of memory.</text>
+<text top="582" left="105" width="414" height="14" font="2">The Linux version of the 2Q replacement algorithm solves this prob-</text>
+<text top="596" left="87" width="432" height="14" font="2">lem by keeping two lists, and dividing memory between them. When</text>
+<text top="611" left="87" width="376" height="14" font="2">accessed for the first time, a page is placed on one queue (called</text>
+<text top="612" left="466" width="16" height="11" font="7">A1</text>
+<text top="611" left="485" width="34" height="14" font="2">in the</text>
+<text top="626" left="87" width="131" height="14" font="2">original paper, but the</text>
+<text top="626" left="221" width="71" height="13" font="4"><b>inactive list</b></text>
+<text top="626" left="295" width="224" height="14" font="2">in Linux); when it is re-referenced, the</text>
+<text top="641" left="87" width="257" height="14" font="2">page is promoted to the other queue (called</text>
+<text top="642" left="348" width="16" height="11" font="7">Aq</text>
+<text top="641" left="367" width="132" height="14" font="2">in the original, but the</text>
+<text top="641" left="502" width="17" height="13" font="4"><b>ac-</b></text>
+<text top="656" left="87" width="46" height="13" font="4"><b>tive list</b></text>
+<text top="656" left="137" width="382" height="14" font="2">in Linux). When replacement needs to take place, the candidate</text>
+<text top="671" left="87" width="432" height="14" font="2">for replacement is taken from the inactive list. Linux also periodically</text>
+<text top="686" left="87" width="432" height="14" font="2">moves pages from the bottom of the active list to the inactive list, keeping</text>
+<text top="701" left="87" width="398" height="14" font="2">the active list to about two-thirds of the total page cache size [G04].</text>
+<text top="719" left="105" width="414" height="14" font="2">Linux would ideally manage these lists in perfect LRU order, but, as</text>
+<text top="734" left="87" width="432" height="14" font="2">discussed in earlier chapters, doing so is costly. Thus, as with many OSes,</text>
+<text top="749" left="87" width="217" height="14" font="2">an approximation of LRU (similar to</text>
+<text top="749" left="307" width="32" height="13" font="4"><b>clock</b></text>
+<text top="749" left="343" width="126" height="14" font="2">replacement) is used.</text>
+<text top="766" left="105" width="414" height="14" font="2">This 2Q approach generally behaves quite a bit like LRU, but notably</text>
+<text top="781" left="87" width="432" height="14" font="2">handles the case where a cyclic large-file access occurs by confining the</text>
+<text top="796" left="87" width="432" height="14" font="2">pages of that cyclic access to the inactive list. Because said pages are never</text>
+<text top="811" left="87" width="432" height="14" font="2">re-referenced before getting kicked out of memory, they do not flush out</text>
+<text top="826" left="87" width="249" height="14" font="2">other useful pages found in the active list.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="321" width="10" height="14" font="2">C</text>
+<text top="98" left="331" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="390" width="10" height="14" font="2">V</text>
+<text top="98" left="401" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="448" width="13" height="14" font="2">M</text>
+<text top="98" left="462" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="3">YSTEMS</text>
+<text top="148" left="205" width="10" height="14" font="2">A</text>
+<text top="150" left="217" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="243" width="16" height="14" font="2">: T</text>
+<text top="150" left="260" width="16" height="11" font="3">HE</text>
+<text top="148" left="281" width="10" height="14" font="2">U</text>
+<text top="150" left="292" width="48" height="11" font="3">BIQUITY</text>
+<text top="148" left="344" width="11" height="14" font="2">O</text>
+<text top="150" left="356" width="6" height="11" font="3">F</text>
+<text top="148" left="366" width="13" height="14" font="2">M</text>
+<text top="150" left="379" width="42" height="11" font="3">EMORY</text>
+<text top="148" left="420" width="18" height="14" font="2">-M</text>
+<text top="150" left="439" width="46" height="11" font="3">APPING</text>
+<text top="163" left="129" width="432" height="14" font="2">Memory mapping predates Linux by some years, and is used in many</text>
+<text top="178" left="129" width="432" height="14" font="2">places within Linux and other modern systems. The idea is simple: by</text>
+<text top="193" left="129" width="40" height="14" font="2">calling</text>
+<text top="194" left="171" width="48" height="11" font="7">mmap()</text>
+<text top="193" left="223" width="338" height="14" font="2">on an already opened file descriptor, a process is returned</text>
+<text top="208" left="129" width="432" height="14" font="2">a pointer to the beginning of a region of virtual memory where the con-</text>
+<text top="223" left="129" width="432" height="14" font="2">tents of the file seem to be located. By then using that pointer, a process</text>
+<text top="238" left="129" width="379" height="14" font="2">can access any part of the file with a simple pointer dereference.</text>
+<text top="256" left="129" width="432" height="14" font="2">Accesses to parts of a memory-mapped file that have not yet been brought</text>
+<text top="271" left="129" width="122" height="14" font="2">into memory trigger</text>
+<text top="271" left="255" width="68" height="13" font="4"><b>page faults</b></text>
+<text top="271" left="323" width="237" height="14" font="2">, at which point the OS will page in the</text>
+<text top="286" left="129" width="432" height="14" font="2">relevant data and make it accessible by updating the page table of the</text>
+<text top="301" left="129" width="146" height="14" font="2">process accordingly (i.e.,</text>
+<text top="301" left="278" width="96" height="13" font="4"><b>demand paging</b></text>
+<text top="301" left="374" width="8" height="14" font="2">).</text>
+<text top="319" left="129" width="432" height="14" font="2">Every regular Linux process uses memory-mapped files, even though the</text>
+<text top="334" left="129" width="45" height="14" font="2">code in</text>
+<text top="335" left="179" width="48" height="11" font="7">main()</text>
+<text top="334" left="233" width="79" height="14" font="2">does not call</text>
+<text top="335" left="317" width="48" height="11" font="7">mmap()</text>
+<text top="334" left="371" width="190" height="14" font="2">directly, because of how Linux</text>
+<text top="349" left="129" width="432" height="14" font="2">loads code from the executable and shared library code into memory. Be-</text>
+<text top="364" left="129" width="272" height="14" font="2">low is the (highly abbreviated) output of the</text>
+<text top="365" left="406" width="32" height="11" font="7">pmap</text>
+<text top="364" left="443" width="118" height="14" font="2">command line tool,</text>
+<text top="379" left="129" width="432" height="14" font="2">which shows what different mapping comprise the virtual address space</text>
+<text top="394" left="129" width="306" height="14" font="2">of a running program (the shell, in this example,</text>
+<text top="395" left="441" width="32" height="11" font="7">tcsh</text>
+<text top="394" left="473" width="87" height="14" font="2">). The output</text>
+<text top="409" left="129" width="432" height="14" font="2">shows four columns: the virtual address of the mapping, its size, the pro-</text>
+<text top="424" left="129" width="335" height="14" font="2">tection bits of the region, and the source of the mapping:</text>
+<text top="452" left="129" width="129" height="11" font="7">0000000000400000</text>
+<text top="452" left="290" width="121" height="11" font="7">372K r-x-- tcsh</text>
+<text top="467" left="129" width="129" height="11" font="7">00000000019d5000</text>
+<text top="467" left="282" width="89" height="11" font="7">1780K rw---</text>
+<text top="467" left="395" width="56" height="11" font="7">[anon ]</text>
+<text top="482" left="129" width="129" height="11" font="7">00007f4e7cf06000</text>
+<text top="482" left="282" width="194" height="11" font="7">1792K r-x-- libc-2.23.so</text>
+<text top="497" left="129" width="129" height="11" font="7">00007f4e7d2d0000</text>
+<text top="497" left="298" width="210" height="11" font="7">36K r-x-- libcrypt-2.23.so</text>
+<text top="512" left="129" width="129" height="11" font="7">00007f4e7d508000</text>
+<text top="512" left="290" width="210" height="11" font="7">148K r-x-- libtinfo.so.5.9</text>
+<text top="527" left="129" width="129" height="11" font="7">00007f4e7d731000</text>
+<text top="527" left="290" width="169" height="11" font="7">152K r-x-- ld-2.23.so</text>
+<text top="542" left="129" width="129" height="11" font="7">00007f4e7d932000</text>
+<text top="542" left="298" width="73" height="11" font="7">16K rw---</text>
+<text top="542" left="395" width="65" height="11" font="7">[stack ]</text>
+<text top="569" left="129" width="306" height="14" font="2">As you can see from this output, the code from the</text>
+<text top="570" left="438" width="32" height="11" font="7">tcsh</text>
+<text top="569" left="474" width="86" height="14" font="2">binary, as well</text>
+<text top="584" left="129" width="77" height="14" font="2">as code from</text>
+<text top="585" left="210" width="32" height="11" font="7">libc</text>
+<text top="584" left="243" width="3" height="14" font="2">,</text>
+<text top="585" left="250" width="65" height="11" font="7">libcrypt</text>
+<text top="584" left="315" width="3" height="14" font="2">,</text>
+<text top="585" left="322" width="65" height="11" font="7">libtinfo</text>
+<text top="584" left="387" width="174" height="14" font="2">, and code from the dynamic</text>
+<text top="599" left="129" width="75" height="14" font="2">linker itself (</text>
+<text top="600" left="204" width="40" height="11" font="7">ld.so</text>
+<text top="599" left="245" width="316" height="14" font="2">) are all mapped into the address space. Also present</text>
+<text top="614" left="129" width="390" height="14" font="2">are two anonymous regions, the heap (the second entry, labeled</text>
+<text top="615" left="524" width="32" height="11" font="7">anon</text>
+<text top="614" left="556" width="4" height="14" font="2">)</text>
+<text top="629" left="129" width="129" height="14" font="2">and the stack (labeled</text>
+<text top="630" left="262" width="40" height="11" font="7">stack</text>
+<text top="629" left="302" width="259" height="14" font="2">). Memory-mapped files provide a straight-</text>
+<text top="644" left="129" width="432" height="14" font="2">forward and efficient way for the OS to construct a modern address space.</text>
+<text top="705" left="129" width="212" height="15" font="6"><b>Security And Buffer Overflows</b></text>
+<text top="736" left="129" width="432" height="14" font="2">Probably the biggest difference between modern VM systems (Linux, So-</text>
+<text top="751" left="129" width="432" height="14" font="2">laris, or one of the BSD variants) and ancient ones (VAX/VMS) is the</text>
+<text top="766" left="129" width="432" height="14" font="2">emphasis on security in the modern era. Protection has always been</text>
+<text top="781" left="129" width="432" height="14" font="2">a serious concern for operating systems, but with machines more inter-</text>
+<text top="796" left="129" width="432" height="14" font="2">connected than ever, it is no surprise that developers have implemented</text>
+<text top="811" left="129" width="432" height="14" font="2">a variety of defensive countermeasures to halt those wily hackers from</text>
+<text top="826" left="129" width="160" height="14" font="2">gaining control of systems.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="20" size="10" family="PJTUEC+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="157" width="10" height="14" font="2">V</text>
+<text top="98" left="167" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="215" width="13" height="14" font="2">M</text>
+<text top="98" left="229" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="274" width="7" height="14" font="2">S</text>
+<text top="98" left="282" width="45" height="11" font="3">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="139" left="105" width="174" height="14" font="2">One major threat is found in</text>
+<text top="139" left="283" width="97" height="13" font="4"><b>buffer overflow</b></text>
+<text top="139" left="384" width="41" height="14" font="2">attacks</text>
+<text top="136" left="426" width="4" height="9" font="16">2</text>
+<text top="139" left="431" width="88" height="14" font="2">, which can be</text>
+<text top="154" left="87" width="432" height="14" font="2">used against normal user programs and even the kernel itself. The idea</text>
+<text top="169" left="87" width="432" height="14" font="2">of these attacks is to find a bug in the target system which lets the attacker</text>
+<text top="183" left="87" width="432" height="14" font="2">inject arbitrary data into the target’s address space. Such vulnerabilities</text>
+<text top="198" left="87" width="432" height="14" font="2">sometime arise because the developer assumes (erroneously) that an in-</text>
+<text top="213" left="87" width="432" height="14" font="2">put will not be overly long, and thus (trustingly) copies the input into a</text>
+<text top="228" left="87" width="432" height="14" font="2">buffer; because the input is in fact too long, it overflows the buffer, thus</text>
+<text top="243" left="87" width="432" height="14" font="2">overwriting memory of the target. Code as innocent as the below can be</text>
+<text top="258" left="87" width="155" height="14" font="2">the source of the problem:</text>
+<text top="291" left="87" width="258" height="14" font="7">int some_function(char *input) {</text>
+<text top="306" left="103" width="178" height="11" font="7">char dest_buffer[100];</text>
+<text top="321" left="103" width="420" height="11" font="7">strcpy(dest_buffer, input); // oops, unbounded copy!</text>
+<text top="336" left="87" width="8" height="11" font="7">}</text>
+<text top="367" left="105" width="414" height="14" font="2">In many cases, such an overflow is not catastrophic, e.g., bad input</text>
+<text top="382" left="87" width="432" height="14" font="2">innocently given to a user program or even the OS will probably cause it</text>
+<text top="397" left="87" width="432" height="14" font="2">to crash, but no worse. However, malicious programmers can carefully</text>
+<text top="412" left="87" width="432" height="14" font="2">craft the input that overflows the buffer so as to inject their own code</text>
+<text top="427" left="87" width="432" height="14" font="2">into the targeted system, essentially allowing them to take it over and</text>
+<text top="442" left="87" width="432" height="14" font="2">do their own bidding. If successful upon a network-connected user pro-</text>
+<text top="457" left="87" width="432" height="14" font="2">gram, attackers can run arbitrary computations or even rent out cycles on</text>
+<text top="472" left="87" width="432" height="14" font="2">the compromised system; if successful upon the operating system itself,</text>
+<text top="487" left="87" width="432" height="14" font="2">the attack can access even more resources, and is a form of what is called</text>
+<text top="502" left="87" width="121" height="13" font="4"><b>privilege escalation</b></text>
+<text top="501" left="212" width="307" height="14" font="2">(i.e., user code gaining kernel access rights). If you</text>
+<text top="516" left="87" width="217" height="14" font="2">can’t guess, these are all Bad Things.</text>
+<text top="532" left="105" width="414" height="14" font="2">The first and most simple defense against buffer overflow is to prevent</text>
+<text top="547" left="87" width="432" height="14" font="2">execution of any code found within certain regions of an address space</text>
+<text top="562" left="87" width="160" height="14" font="2">(e.g., within the stack). The</text>
+<text top="562" left="250" width="40" height="13" font="4"><b>NX bit</b></text>
+<text top="562" left="294" width="225" height="14" font="2">(for No-eXecute), introduced by AMD</text>
+<text top="577" left="87" width="432" height="14" font="2">into their version of x86 (a similar XD bit is now available on Intel’s), is</text>
+<text top="592" left="87" width="432" height="14" font="2">one such defense; it just prevents execution from any page which has this</text>
+<text top="607" left="87" width="432" height="14" font="2">bit set in its corresponding page table entry. The approach prevents code,</text>
+<text top="622" left="87" width="432" height="14" font="2">injected by an attacker into the target’s stack, from being executed, and</text>
+<text top="637" left="87" width="163" height="14" font="2">thus mitigates the problem.</text>
+<text top="652" left="105" width="414" height="14" font="2">However, clever attackers are ... clever, and even when injected code</text>
+<text top="667" left="87" width="432" height="14" font="2">cannot be added explicitly by the attacker, arbitrary code sequences can</text>
+<text top="682" left="87" width="432" height="14" font="2">be executed by malicious code. The idea is known, in its most general</text>
+<text top="697" left="87" width="48" height="14" font="2">form, as</text>
+<text top="697" left="138" width="182" height="13" font="4"><b>return-oriented programming</b></text>
+<text top="697" left="324" width="4" height="14" font="2">(</text>
+<text top="697" left="328" width="29" height="13" font="4"><b>ROP</b></text>
+<text top="697" left="357" width="162" height="14" font="2">) [S07], and really it is quite</text>
+<text top="712" left="87" width="432" height="14" font="2">brilliant. The observation behind ROP is that there are lots of bits of code</text>
+<text top="727" left="87" width="4" height="14" font="2">(</text>
+<text top="727" left="92" width="47" height="13" font="4"><b>gadgets</b></text>
+<text top="727" left="139" width="380" height="14" font="2">, in ROP terminology) within any program’s address space, es-</text>
+<text top="742" left="87" width="432" height="14" font="2">pecially C programs that link with the voluminous C library. Thus, an</text>
+<text top="757" left="87" width="432" height="14" font="2">attacker can overwrite the stack such that the return address in the cur-</text>
+<text top="772" left="87" width="432" height="14" font="2">rently executing function points to a desired malicious instruction (or se-</text>
+<text top="802" left="107" width="4" height="8" font="17">2</text>
+<text top="804" left="112" width="16" height="11" font="9">See</text>
+<text top="805" left="132" width="282" height="9" font="20">https://en.wikipedia.org/wiki/Buffer_overflow</text>
+<text top="804" left="419" width="100" height="11" font="9">for some details and</text>
+<text top="816" left="87" width="432" height="11" font="9">links about this topic, including a reference to the famous article by the security hacker Elias</text>
+<text top="828" left="87" width="159" height="11" font="9">Levy, also known as “Aleph One”.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="321" width="10" height="14" font="2">C</text>
+<text top="98" left="331" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="390" width="10" height="14" font="2">V</text>
+<text top="98" left="401" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="448" width="13" height="14" font="2">M</text>
+<text top="98" left="462" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="3">YSTEMS</text>
+<text top="139" left="129" width="432" height="14" font="2">ries of instructions), followed by a return instruction. By stringing to-</text>
+<text top="154" left="129" width="432" height="14" font="2">gether a large number of gadgets (i.e., ensuring each return jumps to the</text>
+<text top="169" left="129" width="376" height="14" font="2">next gadget), the attacker can execute arbitrary code. Amazing!</text>
+<text top="184" left="147" width="327" height="14" font="2">To defend against ROP (including its earlier form, the</text>
+<text top="184" left="479" width="82" height="13" font="4"><b>return-to-libc</b></text>
+<text top="199" left="129" width="37" height="13" font="4"><b>attack</b></text>
+<text top="199" left="170" width="390" height="14" font="2">[S+04]), Linux (and other systems) add another defense, known</text>
+<text top="214" left="129" width="12" height="14" font="2">as</text>
+<text top="214" left="145" width="220" height="13" font="4"><b>address space layout randomization</b></text>
+<text top="214" left="368" width="4" height="14" font="2">(</text>
+<text top="214" left="372" width="37" height="13" font="4"><b>ASLR</b></text>
+<text top="214" left="409" width="152" height="14" font="2">). Instead of placing code,</text>
+<text top="229" left="129" width="432" height="14" font="2">stack, and the heap at fixed locations within the virtual address space, the</text>
+<text top="244" left="129" width="432" height="14" font="2">OS randomizes their placement, thus making it quite challenging to craft</text>
+<text top="259" left="129" width="432" height="14" font="2">the intricate code sequence required to implement this class of attacks.</text>
+<text top="274" left="129" width="432" height="14" font="2">Most attacks on vulnerable user programs will thus cause crashes, but</text>
+<text top="289" left="129" width="302" height="14" font="2">not be able to gain control of the running program.</text>
+<text top="304" left="147" width="414" height="14" font="2">Interestingly, you can observe this randomness in practice rather eas-</text>
+<text top="319" left="129" width="432" height="14" font="2">ily. Here’s a piece of code that demonstrates it on a modern Linux system:</text>
+<text top="353" left="129" width="274" height="14" font="7">int main(int argc, char *argv[]) {</text>
+<text top="368" left="161" width="113" height="11" font="7">int stack = 0;</text>
+<text top="383" left="161" width="186" height="11" font="7">printf(&#34;%p\n&#34;, &amp;stack);</text>
+<text top="398" left="161" width="73" height="11" font="7">return 0;</text>
+<text top="412" left="129" width="8" height="11" font="7">}</text>
+<text top="443" left="147" width="414" height="14" font="2">This code just prints out the (virtual) address of a variable on the stack.</text>
+<text top="458" left="129" width="432" height="14" font="2">In older non-ASLR systems, this value would be the same each time. But,</text>
+<text top="473" left="129" width="325" height="14" font="2">as you can see below, the value changes with each run:</text>
+<text top="507" left="129" width="129" height="11" font="7">prompt&gt; ./random</text>
+<text top="521" left="129" width="113" height="11" font="7">0x7ffd3e55d2b4</text>
+<text top="536" left="129" width="129" height="11" font="7">prompt&gt; ./random</text>
+<text top="551" left="129" width="113" height="11" font="7">0x7ffe1033b8f4</text>
+<text top="566" left="129" width="129" height="11" font="7">prompt&gt; ./random</text>
+<text top="581" left="129" width="113" height="11" font="7">0x7ffe45522e94</text>
+<text top="612" left="147" width="414" height="14" font="2">ASLR is such a useful defense for user-level programs that it has also</text>
+<text top="627" left="129" width="405" height="14" font="2">been incorporated into the kernel, in a feature unimaginatively called</text>
+<text top="627" left="536" width="24" height="13" font="4"><b>ker-</b></text>
+<text top="642" left="129" width="241" height="13" font="4"><b>nel address space layout randomization</b></text>
+<text top="642" left="373" width="4" height="14" font="2">(</text>
+<text top="642" left="377" width="47" height="13" font="4"><b>KASLR</b></text>
+<text top="642" left="424" width="137" height="14" font="2">). However, it turns out</text>
+<text top="657" left="129" width="432" height="14" font="2">the kernel may have even bigger problems to handle, as we discuss next.</text>
+<text top="696" left="129" width="336" height="15" font="6"><b>Other Security Problems: Meltdown And Spectre</b></text>
+<text top="721" left="129" width="432" height="14" font="2">As we write these words (August, 2018), the world of systems security</text>
+<text top="736" left="129" width="432" height="14" font="2">has been turned upside down by two new and related attacks. The first</text>
+<text top="751" left="129" width="50" height="14" font="2">is called</text>
+<text top="751" left="183" width="64" height="13" font="4"><b>Meltdown</b></text>
+<text top="751" left="248" width="101" height="14" font="2">, and the second</text>
+<text top="751" left="354" width="46" height="13" font="4"><b>Spectre</b></text>
+<text top="751" left="399" width="162" height="14" font="2">. They were discovered at</text>
+<text top="766" left="129" width="432" height="14" font="2">about the same time by four different groups of researchers/engineers,</text>
+<text top="781" left="129" width="432" height="14" font="2">and have led to deep questioning of the fundamental protections offered</text>
+<text top="796" left="129" width="271" height="14" font="2">by computer hardware and the OS above. See</text>
+<text top="797" left="403" width="137" height="11" font="7">spectreattack.com</text>
+<text top="796" left="544" width="17" height="14" font="2">for</text>
+<text top="811" left="129" width="432" height="14" font="2">papers describing each attack in detail; Spectre is considered the more</text>
+<text top="826" left="129" width="138" height="14" font="2">problematic of the two.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="157" width="10" height="14" font="2">V</text>
+<text top="98" left="167" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="215" width="13" height="14" font="2">M</text>
+<text top="98" left="229" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="274" width="7" height="14" font="2">S</text>
+<text top="98" left="282" width="45" height="11" font="3">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="139" left="105" width="414" height="14" font="2">The general weakness exploited in each of these attacks is that the</text>
+<text top="154" left="87" width="432" height="14" font="2">CPUs found in modern systems perform all sorts of crazy behind-the-</text>
+<text top="169" left="87" width="432" height="14" font="2">scenes tricks to improve performance. One class of technique that lies</text>
+<text top="183" left="87" width="211" height="14" font="2">at the core of the problem is called</text>
+<text top="184" left="302" width="133" height="13" font="4"><b>speculative execution</b></text>
+<text top="183" left="435" width="84" height="14" font="2">, in which the</text>
+<text top="198" left="87" width="432" height="14" font="2">CPU guesses which instructions will soon be executed in the future, and</text>
+<text top="213" left="87" width="432" height="14" font="2">starts executing them ahead of time. If the guesses are correct, the pro-</text>
+<text top="228" left="87" width="432" height="14" font="2">gram runs faster; if not, the CPU undoes their effects on architectural state</text>
+<text top="243" left="87" width="400" height="14" font="2">(e.g., registers) and tries again, this time going down the right path.</text>
+<text top="259" left="105" width="414" height="14" font="2">The problem with speculation is that it tends to leave traces of its ex-</text>
+<text top="274" left="87" width="432" height="14" font="2">ecution in various parts of the system, such as processor caches, branch</text>
+<text top="289" left="87" width="432" height="14" font="2">predictors, etc. And thus the problem: as the authors of the attacks show,</text>
+<text top="304" left="87" width="432" height="14" font="2">such state can make vulnerable the contents of memory, even memory</text>
+<text top="319" left="87" width="265" height="14" font="2">that we thought was protected by the MMU.</text>
+<text top="335" left="105" width="414" height="14" font="2">One avenue to increasing kernel protection was thus to remove as</text>
+<text top="350" left="87" width="432" height="14" font="2">much of the kernel address space from each user process and instead have</text>
+<text top="365" left="87" width="348" height="14" font="2">a separate kernel page table for most kernel data (called</text>
+<text top="365" left="441" width="78" height="13" font="4"><b>kernel page-</b></text>
+<text top="380" left="87" width="88" height="13" font="4"><b>table isolation</b></text>
+<text top="380" left="175" width="20" height="14" font="2">, or</text>
+<text top="380" left="200" width="33" height="13" font="4"><b>KPTI</b></text>
+<text top="380" left="232" width="286" height="14" font="2">) [G+17]. Thus, instead of mapping the kernel’s</text>
+<text top="395" left="87" width="432" height="14" font="2">code and data structures into each process, only the barest minimum is</text>
+<text top="410" left="87" width="432" height="14" font="2">kept therein; when switching into the kernel, then, a switch to the kernel</text>
+<text top="425" left="87" width="432" height="14" font="2">page table is now needed. Doing so improves security and avoids some</text>
+<text top="440" left="87" width="432" height="14" font="2">attack vectors, but at a cost: performance. Switching page tables is costly.</text>
+<text top="455" left="87" width="223" height="14" font="2">Ah, the costs of security: convenience</text>
+<text top="455" left="314" width="20" height="14" font="14"><i>and</i></text>
+<text top="455" left="337" width="79" height="14" font="2">performance.</text>
+<text top="471" left="105" width="414" height="14" font="2">Unfortunately, KPTI doesn’t solve all of the security problems laid out</text>
+<text top="486" left="87" width="432" height="14" font="2">above, just some of them. And simple solutions, such as turning off spec-</text>
+<text top="501" left="87" width="432" height="14" font="2">ulation, would make little sense, because systems would run thousands</text>
+<text top="516" left="87" width="432" height="14" font="2">of times slower. Thus, it is an interesting time to be alive, if systems secu-</text>
+<text top="531" left="87" width="104" height="14" font="2">rity is your thing.</text>
+<text top="547" left="105" width="414" height="14" font="2">To truly understand these attacks, you’ll (likely) have to learn a lot</text>
+<text top="562" left="87" width="432" height="14" font="2">more first. Begin by understanding modern computer architecture, as</text>
+<text top="577" left="87" width="432" height="14" font="2">found in advanced books on the topic, focusing on speculation and all the</text>
+<text top="591" left="87" width="432" height="14" font="2">mechanisms needed to implement it. Definitely read about the Meltdown</text>
+<text top="606" left="87" width="432" height="14" font="2">and Spectre attacks, at the websites mentioned above; they actually also</text>
+<text top="621" left="87" width="432" height="14" font="2">include a useful primer on speculation, so perhaps are not a bad place to</text>
+<text top="636" left="87" width="432" height="14" font="2">start. And study the operating system for further vulnerabilities. Who</text>
+<text top="651" left="87" width="184" height="14" font="2">knows what problems remain?</text>
+<text top="690" left="55" width="105" height="17" font="5">23.3 Summary</text>
+<text top="720" left="105" width="414" height="14" font="2">You have now seen a top-to-bottom review of two virtual memory sys-</text>
+<text top="735" left="87" width="432" height="14" font="2">tems. Hopefully, most of the details were easy to follow, as you should</text>
+<text top="750" left="87" width="432" height="14" font="2">have already had a good understanding of the basic mechanisms and</text>
+<text top="765" left="87" width="432" height="14" font="2">policies. More detail on VAX/VMS is available in the excellent (and short)</text>
+<text top="780" left="87" width="432" height="14" font="2">paper by Levy and Lipman [LL82]. We encourage you to read it, as it is a</text>
+<text top="795" left="87" width="421" height="14" font="2">great way to see what the source material behind these chapters is like.</text>
+<text top="811" left="105" width="414" height="14" font="2">You have also learned a bit about Linux. While a large and complex</text>
+<text top="826" left="87" width="432" height="14" font="2">system, it inherits many good ideas from the past, many of which we</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">18</text>
+<text top="96" left="321" width="10" height="14" font="2">C</text>
+<text top="98" left="331" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="390" width="10" height="14" font="2">V</text>
+<text top="98" left="401" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="448" width="13" height="14" font="2">M</text>
+<text top="98" left="462" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="3">YSTEMS</text>
+<text top="139" left="129" width="432" height="14" font="2">have not had room to discuss in detail. For example, Linux performs lazy</text>
+<text top="154" left="129" width="225" height="14" font="2">copy-on-write copying of pages upon</text>
+<text top="154" left="357" width="48" height="11" font="7">fork()</text>
+<text top="154" left="406" width="155" height="14" font="2">, thus lowering overheads</text>
+<text top="169" left="129" width="432" height="14" font="2">by avoiding unnecessary copying. Linux also demand zeroes pages (us-</text>
+<text top="183" left="129" width="169" height="14" font="2">ing memory-mapping of the</text>
+<text top="184" left="302" width="73" height="11" font="7">/dev/zero</text>
+<text top="183" left="378" width="183" height="14" font="2">device), and has a background</text>
+<text top="198" left="129" width="92" height="14" font="2">swap daemon (</text>
+<text top="200" left="220" width="40" height="11" font="18"><b>swapd</b></text>
+<text top="198" left="261" width="300" height="14" font="2">) that swaps pages to disk to reduce memory pres-</text>
+<text top="213" left="129" width="432" height="14" font="2">sure. Indeed, the VM is filled with good ideas taken from the past, and</text>
+<text top="228" left="129" width="254" height="14" font="2">also includes many of its own innovations.</text>
+<text top="243" left="147" width="414" height="14" font="2">To learn more, check out these reasonable (but, alas, outdated) books</text>
+<text top="258" left="129" width="432" height="14" font="2">[BC05,G04]. We encourage you to read them on your own, as we can</text>
+<text top="273" left="129" width="432" height="14" font="2">only provide the merest drop from what is an ocean of complexity. But,</text>
+<text top="288" left="129" width="432" height="14" font="2">you’ve got to start somewhere. What is any ocean, but a multitude of</text>
+<text top="303" left="129" width="80" height="14" font="2">drops? [M04]</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="19" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="16" family="IXMJIQ+URWPalladioL" color="#000000"/>
+	<fontspec id="22" size="10" family="UBDTZD+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="23" size="8" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="24" size="10" family="EPUPJD+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="55" height="11" font="3">OMPLETE</text>
+<text top="96" left="157" width="10" height="14" font="2">V</text>
+<text top="98" left="167" width="44" height="11" font="3">IRTUAL</text>
+<text top="96" left="215" width="13" height="14" font="2">M</text>
+<text top="98" left="229" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="274" width="7" height="14" font="2">S</text>
+<text top="98" left="282" width="45" height="11" font="3">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">19</text>
+<text top="137" left="87" width="82" height="16" font="21"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="9">[B+13] “Efficient Virtual Memory for Big Memory Servers” by A. Basu, J. Gandhi, J. Chang,</text>
+<text top="177" left="87" width="284" height="11" font="9">M. D. Hill, M. M. Swift. ISCA ’13, June 2013, Tel-Aviv, Israel.</text>
+<text top="177" left="375" width="144" height="11" font="22"><i>A recent work showing that TLBs</i></text>
+<text top="189" left="87" width="432" height="11" font="22"><i>matter, consuming 10% of cycles for large-memory workloads. The solution: one massive segment to</i></text>
+<text top="201" left="87" width="272" height="11" font="22"><i>hold large data sets. We go backward, so that we can go forward!</i></text>
+<text top="218" left="87" width="432" height="11" font="9">[BB+72] “TENEX, A Paged Time Sharing System for the PDP-10” by D. G. Bobrow, J. D. Burch-</text>
+<text top="229" left="87" width="317" height="11" font="9">fiel, D. L. Murphy, R. S. Tomlinson. CACM, Volume 15, March 1972.</text>
+<text top="229" left="408" width="111" height="11" font="22"><i>An early time-sharing OS</i></text>
+<text top="241" left="87" width="432" height="11" font="22"><i>where a number of good ideas came from. Copy-on-write was just one of those; also an inspiration for</i></text>
+<text top="253" left="87" width="415" height="11" font="22"><i>other aspects of modern systems, including process management, virtual memory, and file systems.</i></text>
+<text top="270" left="87" width="444" height="11" font="9">[BJ81] “Converting a Swap-Based System to do Paging in an Architecture Lacking Page-Reference</text>
+<text top="282" left="87" width="396" height="11" font="9">Bits” by O. Babaoglu, W. N. Joy. SOSP ’81, Pacific Grove, California, December 1981.</text>
+<text top="282" left="487" width="32" height="11" font="22"><i>How to</i></text>
+<text top="294" left="87" width="432" height="11" font="22"><i>exploit existing protection machinery to emulate reference bits, from a group at Berkeley working on</i></text>
+<text top="305" left="87" width="84" height="11" font="22"><i>their own version of</i></text>
+<text top="306" left="175" width="8" height="11" font="9">U</text>
+<text top="307" left="184" width="16" height="8" font="23">NIX</text>
+<text top="305" left="200" width="19" height="11" font="22"><i>: the</i></text>
+<text top="306" left="222" width="142" height="10" font="24"><b>Berkeley Systems Distribution</b></text>
+<text top="305" left="366" width="3" height="11" font="22"><i>(</i></text>
+<text top="306" left="370" width="21" height="10" font="24"><b>BSD</b></text>
+<text top="305" left="391" width="128" height="11" font="22"><i>). The group was influential in</i></text>
+<text top="317" left="87" width="274" height="11" font="22"><i>the development of virtual memory, file systems, and networking.</i></text>
+<text top="334" left="87" width="432" height="11" font="9">[BC05] “Understanding the Linux Kernel” by D. P. Bovet, M. Cesati. O’Reilly Media, Novem-</text>
+<text top="346" left="87" width="41" height="11" font="9">ber 2005.</text>
+<text top="346" left="131" width="375" height="11" font="22"><i>One of the many books you can find on Linux, which are out of date, but still worthwhile.</i></text>
+<text top="362" left="87" width="432" height="11" font="9">[C03] “The Innovator’s Dilemma” by Clayton M. Christenson. Harper Paperbacks, January</text>
+<text top="374" left="87" width="24" height="11" font="9">2003.</text>
+<text top="374" left="115" width="404" height="11" font="22"><i>A fantastic book about the disk-drive industry and how new innovations disrupt existing ones.</i></text>
+<text top="386" left="87" width="432" height="11" font="22"><i>A good read for business majors and computer scientists alike. Provides insight on how large and</i></text>
+<text top="398" left="87" width="155" height="11" font="22"><i>successful companies completely fail.</i></text>
+<text top="414" left="87" width="363" height="11" font="9">[C93] “Inside Windows NT” by H. Custer, D. Solomon. Microsoft Press, 1993.</text>
+<text top="414" left="455" width="64" height="11" font="22"><i>The book about</i></text>
+<text top="426" left="87" width="432" height="11" font="22"><i>Windows NT that explains the system top to bottom, in more detail than you might like. But seriously,</i></text>
+<text top="438" left="87" width="79" height="11" font="22"><i>a pretty good book.</i></text>
+<text top="454" left="87" width="432" height="11" font="9">[G04] “Understanding the Linux Virtual Memory Manager” by M. Gorman. Prentice Hall,</text>
+<text top="466" left="87" width="24" height="11" font="9">2004.</text>
+<text top="466" left="114" width="247" height="11" font="22"><i>An in-depth look at Linux VM, but alas a little out of date.</i></text>
+<text top="483" left="87" width="432" height="11" font="9">[G+17] “KASLR is Dead: Long Live KASLR” by D. Gruss, M. Lipp, M. Schwarz, R. Fell-</text>
+<text top="495" left="87" width="432" height="11" font="9">ner, C. Maurice, S. Mangard. Engineering Secure Software and Systems, 2017. Available:</text>
+<text top="507" left="87" width="207" height="9" font="20">https://gruss.cc/files/kaiser.pdf</text>
+<text top="506" left="297" width="191" height="11" font="22"><i>Excellent info on KASLR, KPTI, and beyond.</i></text>
+<text top="523" left="87" width="432" height="11" font="9">[JS94] “2Q: A Low Overhead High Performance Buffer Management Replacement Algorithm”</text>
+<text top="535" left="87" width="245" height="11" font="9">by T. Johnson, D. Shasha. VLDB ’94, Santiago, Chile.</text>
+<text top="535" left="337" width="182" height="11" font="22"><i>A simple but effective approach to building</i></text>
+<text top="547" left="87" width="75" height="11" font="22"><i>page replacement.</i></text>
+<text top="563" left="87" width="432" height="11" font="9">[LL82] “Virtual Memory Management in the VAX/VMS Operating System” by H. Levy, P.</text>
+<text top="575" left="87" width="250" height="11" font="9">Lipman. IEEE Computer, Volume 15:3, March 1982.</text>
+<text top="575" left="345" width="174" height="11" font="22"><i>Read the original source of most of this</i></text>
+<text top="587" left="87" width="432" height="11" font="22"><i>material. Particularly important if you wish to go to graduate school, where all you do is read papers,</i></text>
+<text top="599" left="87" width="392" height="11" font="22"><i>work, read some more papers, work more, eventually write a paper, and then work some more.</i></text>
+<text top="615" left="87" width="271" height="11" font="9">[M04] “Cloud Atlas” by D. Mitchell. Random House, 2004.</text>
+<text top="615" left="361" width="158" height="11" font="22"><i>It’s hard to pick a favorite book. There</i></text>
+<text top="627" left="87" width="432" height="11" font="22"><i>are too many! Each is great in its own unique way. But it’d be hard for these authors not to pick “Cloud</i></text>
+<text top="639" left="87" width="432" height="11" font="22"><i>Atlas”, a fantastic, sprawling epic about the human condition, from where the the last quote of this</i></text>
+<text top="651" left="87" width="432" height="11" font="22"><i>chapter is lifted. If you are smart – and we think you are – you should stop reading obscure commentary</i></text>
+<text top="663" left="87" width="296" height="11" font="22"><i>in the references and instead read “Cloud Atlas”; you’ll thank us later.</i></text>
+<text top="679" left="87" width="432" height="11" font="9">[O16] “Virtual Memory and Linux” by A. Ott. Embedded Linux Conference, April 2016.</text>
+<text top="691" left="87" width="386" height="11" font="9">https://events.static.linuxfound.org/sites/events/files/slides/elc 2016 mem.pdf .</text>
+<text top="691" left="481" width="38" height="11" font="22"><i>A useful</i></text>
+<text top="703" left="87" width="229" height="11" font="22"><i>set of slides which gives an overview of the Linux VM.</i></text>
+<text top="719" left="87" width="432" height="11" font="9">[RL81] “Segmented FIFO Page Replacement” by R. Turner, H. Levy. SIGMETRICS ’81, Las</text>
+<text top="731" left="87" width="149" height="11" font="9">Vegas, Nevada, September 1981.</text>
+<text top="731" left="239" width="280" height="11" font="22"><i>A short paper that shows for some workloads, segmented FIFO can</i></text>
+<text top="743" left="87" width="144" height="11" font="22"><i>approach the performance of LRU.</i></text>
+<text top="760" left="87" width="432" height="11" font="9">[S07] “The Geometry of Innocent Flesh on the Bone: Return-into-libc without Function Calls</text>
+<text top="771" left="87" width="245" height="11" font="9">(on the x86)” by H. Shacham. CCS ’07, October 2007.</text>
+<text top="771" left="335" width="184" height="11" font="22"><i>A generalization of return-to-libc. Dr. Beth</i></text>
+<text top="783" left="87" width="405" height="11" font="22"><i>Garner said in Basic Instinct, “She’s crazy! She’s brilliant!” We might say the same about ROP.</i></text>
+<text top="800" left="87" width="432" height="11" font="9">[S+04] “On the Effectiveness of Address-space Randomization” by H. Shacham, M. Page, B.</text>
+<text top="812" left="87" width="300" height="11" font="9">Pfaff, E. J. Goh, N. Modadugu, D. Boneh. CCS ’04, October 2004.</text>
+<text top="812" left="391" width="128" height="11" font="22"><i>A description of the return-to-</i></text>
+<text top="824" left="87" width="404" height="11" font="22"><i>libc attack and its limits. Start reading, but be wary: the rabbit hole of systems security is deep...</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+</pdf2xml>

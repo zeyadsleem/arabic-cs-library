@@ -1,0 +1,1247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="KCFJEA+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="KCFJEA+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JGMTLW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="XHLBMD+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="JGMTLW+URWPalladioL-Roma" color="#000000"/>
+<text top="195" left="523" width="34" height="30" font="0">48</text>
+<text top="265" left="328" width="191" height="21" font="1">Distributed Systems</text>
+<text top="347" left="87" width="432" height="14" font="2">Distributed systems have changed the face of the world. When your web</text>
+<text top="362" left="87" width="432" height="14" font="2">browser connects to a web server somewhere else on the planet, it is par-</text>
+<text top="377" left="87" width="284" height="14" font="2">ticipating in what seems to be a simple form of a</text>
+<text top="377" left="374" width="76" height="13" font="3"><b>client/server</b></text>
+<text top="377" left="453" width="66" height="14" font="2">distributed</text>
+<text top="392" left="87" width="432" height="14" font="2">system. When you contact a modern web service such as Google or Face-</text>
+<text top="406" left="87" width="432" height="14" font="2">book, you are not just interacting with a single machine, however; be-</text>
+<text top="421" left="87" width="432" height="14" font="2">hind the scenes, these complex services are built from a large collection</text>
+<text top="436" left="87" width="432" height="14" font="2">(i.e., thousands) of machines, each of which cooperate to provide the par-</text>
+<text top="451" left="87" width="432" height="14" font="2">ticular service of the site. Thus, it should be clear what makes studying</text>
+<text top="466" left="87" width="432" height="14" font="2">distributed systems interesting. Indeed, it is worthy of an entire class;</text>
+<text top="481" left="87" width="288" height="14" font="2">here, we just introduce a few of the major topics.</text>
+<text top="497" left="105" width="414" height="14" font="2">A number of new challenges arise when building a distributed system.</text>
+<text top="511" left="87" width="184" height="14" font="2">The major one we focus on is</text>
+<text top="512" left="276" width="41" height="13" font="3"><b>failure</b></text>
+<text top="511" left="317" width="202" height="14" font="2">; machines, disks, networks, and</text>
+<text top="526" left="87" width="432" height="14" font="2">software all fail from time to time, as we do not (and likely, will never)</text>
+<text top="541" left="87" width="432" height="14" font="2">know how to build “perfect” components and systems. However, when</text>
+<text top="556" left="87" width="432" height="14" font="2">we build a modern web service, we’d like it to appear to clients as if it</text>
+<text top="571" left="87" width="269" height="14" font="2">never fails; how can we accomplish this task?</text>
+<text top="606" left="269" width="8" height="14" font="2">T</text>
+<text top="608" left="278" width="16" height="11" font="4">HE</text>
+<text top="606" left="298" width="10" height="14" font="2">C</text>
+<text top="608" left="309" width="24" height="11" font="4">RUX</text>
+<text top="606" left="333" width="3" height="14" font="2">:</text>
+<text top="621" left="105" width="11" height="14" font="2">H</text>
+<text top="623" left="116" width="20" height="11" font="4">OW</text>
+<text top="621" left="140" width="8" height="14" font="2">T</text>
+<text top="623" left="149" width="8" height="11" font="4">O</text>
+<text top="621" left="162" width="8" height="14" font="2">B</text>
+<text top="623" left="170" width="29" height="11" font="4">UILD</text>
+<text top="621" left="203" width="7" height="14" font="2">S</text>
+<text top="623" left="211" width="45" height="11" font="4">YSTEMS</text>
+<text top="621" left="260" width="8" height="14" font="2">T</text>
+<text top="623" left="269" width="24" height="11" font="4">HAT</text>
+<text top="621" left="298" width="13" height="14" font="2">W</text>
+<text top="623" left="312" width="25" height="11" font="4">ORK</text>
+<text top="621" left="341" width="13" height="14" font="2">W</text>
+<text top="623" left="355" width="26" height="11" font="4">HEN</text>
+<text top="621" left="385" width="10" height="14" font="2">C</text>
+<text top="623" left="395" width="76" height="11" font="4">OMPONENTS</text>
+<text top="621" left="474" width="7" height="14" font="2">F</text>
+<text top="623" left="482" width="20" height="11" font="4">AIL</text>
+<text top="636" left="87" width="432" height="14" font="2">How can we build a working system out of parts that don’t work correctly</text>
+<text top="651" left="87" width="432" height="14" font="2">all the time? The basic question should remind you of some of the topics</text>
+<text top="666" left="87" width="432" height="14" font="2">we discussed in RAID storage arrays; however, the problems here tend</text>
+<text top="681" left="87" width="241" height="14" font="2">to be more complex, as are the solutions.</text>
+<text top="721" left="105" width="414" height="14" font="2">Interestingly, while failure is a central challenge in constructing dis-</text>
+<text top="736" left="87" width="432" height="14" font="2">tributed systems, it also represents an opportunity. Yes, machines fail;</text>
+<text top="751" left="87" width="432" height="14" font="2">but the mere fact that a machine fails does not imply the entire system</text>
+<text top="766" left="87" width="432" height="14" font="2">must fail. By collecting together a set of machines, we can build a system</text>
+<text top="781" left="87" width="432" height="14" font="2">that appears to rarely fail, despite the fact that its components fail regu-</text>
+<text top="796" left="87" width="432" height="14" font="2">larly. This reality is the central beauty and value of distributed systems,</text>
+<text top="811" left="87" width="432" height="14" font="2">and why they underlie virtually every modern web service you use, in-</text>
+<text top="826" left="87" width="181" height="14" font="2">cluding Google, Facebook, etc.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="16" family="JGMTLW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="12" family="JGMTLW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="10" family="JGMTLW+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="423" width="10" height="14" font="2">D</text>
+<text top="98" left="434" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="4">YSTEMS</text>
+<text top="153" left="187" width="8" height="14" font="2">T</text>
+<text top="155" left="196" width="11" height="11" font="4">IP</text>
+<text top="153" left="207" width="18" height="14" font="2">: C</text>
+<text top="155" left="226" width="100" height="11" font="4">OMMUNICATION</text>
+<text top="153" left="330" width="5" height="14" font="2">I</text>
+<text top="155" left="335" width="6" height="11" font="4">S</text>
+<text top="153" left="344" width="5" height="14" font="2">I</text>
+<text top="155" left="350" width="72" height="11" font="4">NHERENTLY</text>
+<text top="153" left="425" width="10" height="14" font="2">U</text>
+<text top="155" left="437" width="66" height="11" font="4">NRELIABLE</text>
+<text top="168" left="147" width="414" height="14" font="2">In virtually all circumstances, it is good to view communication as a</text>
+<text top="183" left="129" width="432" height="14" font="2">fundamentally unreliable activity. Bit corruption, down or non-working</text>
+<text top="197" left="129" width="432" height="14" font="2">links and machines, and lack of buffer space for incoming packets all lead</text>
+<text top="212" left="129" width="432" height="14" font="2">to the same result: packets sometimes do not reach their destination. To</text>
+<text top="227" left="129" width="432" height="14" font="2">build reliable services atop such unreliable networks, we must consider</text>
+<text top="242" left="129" width="248" height="14" font="2">techniques that can cope with packet loss.</text>
+<text top="289" left="147" width="260" height="14" font="2">Other important issues exist as well. System</text>
+<text top="289" left="410" width="78" height="13" font="3"><b>performance</b></text>
+<text top="289" left="491" width="70" height="14" font="2">is often crit-</text>
+<text top="304" left="129" width="432" height="14" font="2">ical; with a network connecting our distributed system together, system</text>
+<text top="319" left="129" width="432" height="14" font="2">designers must often think carefully about how to accomplish their given</text>
+<text top="334" left="129" width="432" height="14" font="2">tasks, trying to reduce the number of messages sent and further make</text>
+<text top="349" left="129" width="413" height="14" font="2">communication as efficient (low latency, high bandwidth) as possible.</text>
+<text top="365" left="147" width="43" height="14" font="2">Finally,</text>
+<text top="365" left="195" width="49" height="13" font="3"><b>security</b></text>
+<text top="365" left="248" width="313" height="14" font="2">is also a necessary consideration. When connecting</text>
+<text top="380" left="129" width="432" height="14" font="2">to a remote site, having some assurance that the remote party is who</text>
+<text top="395" left="129" width="432" height="14" font="2">they say they are becomes a central problem. Further, ensuring that third</text>
+<text top="410" left="129" width="432" height="14" font="2">parties cannot monitor or alter an on-going communication between two</text>
+<text top="425" left="129" width="150" height="14" font="2">others is also a challenge.</text>
+<text top="441" left="147" width="414" height="14" font="2">In this introduction, we’ll cover the most basic aspect that is new in</text>
+<text top="456" left="129" width="128" height="14" font="2">a distributed system:</text>
+<text top="456" left="264" width="96" height="13" font="3"><b>communication</b></text>
+<text top="456" left="360" width="201" height="14" font="2">. Namely, how should machines</text>
+<text top="471" left="129" width="432" height="14" font="2">within a distributed system communicate with one another? We’ll start</text>
+<text top="486" left="129" width="437" height="14" font="2">with the most basic primitives available, messages, and build a few higher-</text>
+<text top="501" left="129" width="432" height="14" font="2">level primitives on top of them. As we said above, failure will be a central</text>
+<text top="516" left="129" width="343" height="14" font="2">focus: how should communication layers handle failures?</text>
+<text top="554" left="97" width="200" height="17" font="5">48.1 Communication Basics</text>
+<text top="585" left="147" width="414" height="14" font="2">The central tenet of modern networking is that communication is fun-</text>
+<text top="600" left="129" width="432" height="14" font="2">damentally unreliable. Whether in the wide-area Internet, or a local-area</text>
+<text top="615" left="129" width="432" height="14" font="2">high-speed network such as Infiniband, packets are regularly lost, cor-</text>
+<text top="630" left="129" width="304" height="14" font="2">rupted, or otherwise do not reach their destination.</text>
+<text top="646" left="147" width="414" height="14" font="2">There are a multitude of causes for packet loss or corruption. Some-</text>
+<text top="661" left="129" width="432" height="14" font="2">times, during transmission, some bits get flipped due to electrical or other</text>
+<text top="676" left="129" width="432" height="14" font="2">similar problems. Sometimes, an element in the system, such as a net-</text>
+<text top="690" left="129" width="432" height="14" font="2">work link or packet router or even the remote host, are somehow dam-</text>
+<text top="705" left="129" width="432" height="14" font="2">aged or otherwise not working correctly; network cables do accidentally</text>
+<text top="720" left="129" width="186" height="14" font="2">get severed, at least sometimes.</text>
+<text top="736" left="147" width="414" height="14" font="2">More fundamental however is packet loss due to lack of buffering</text>
+<text top="751" left="129" width="432" height="14" font="2">within a network switch, router, or endpoint. Specifically, even if we</text>
+<text top="766" left="129" width="432" height="14" font="2">could guarantee that all links worked correctly, and that all the compo-</text>
+<text top="781" left="129" width="432" height="14" font="2">nents in the system (switches, routers, end hosts) were up and running as</text>
+<text top="796" left="129" width="432" height="14" font="2">expected, loss is still possible, for the following reason. Imagine a packet</text>
+<text top="811" left="129" width="432" height="14" font="2">arrives at a router; for the packet to be processed, it must be placed in</text>
+<text top="826" left="129" width="432" height="14" font="2">memory somewhere within the router. If many such packets arrive at</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="8" size="13" family="JZDVNG+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="9" size="13" family="ANYWJG+NimbusMonL" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="2">S</text>
+<text top="98" left="179" width="45" height="11" font="4">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="135" left="87" width="113" height="11" font="8">// client code</text>
+<text top="150" left="87" width="274" height="14" font="8">int main(int argc, char *argv[]) {</text>
+<text top="165" left="103" width="202" height="11" font="8">int sd = UDP_Open(20000);</text>
+<text top="180" left="103" width="291" height="11" font="8">struct sockaddr_in addrSnd, addrRcv;</text>
+<text top="195" left="103" width="468" height="11" font="8">int rc = UDP_FillSockAddr(&amp;addrSnd, &#34;cs.wisc.edu&#34;, 10000);</text>
+<text top="210" left="103" width="210" height="11" font="8">char message[BUFFER_SIZE];</text>
+<text top="225" left="103" width="258" height="11" font="8">sprintf(message, &#34;hello world&#34;);</text>
+<text top="240" left="103" width="412" height="11" font="8">rc = UDP_Write(sd, &amp;addrSnd, message, BUFFER_SIZE);</text>
+<text top="254" left="103" width="89" height="11" font="8">if (rc &gt; 0)</text>
+<text top="269" left="119" width="436" height="11" font="8">int rc = UDP_Read(sd, &amp;addrRcv, message, BUFFER_SIZE);</text>
+<text top="284" left="103" width="73" height="11" font="8">return 0;</text>
+<text top="299" left="87" width="8" height="11" font="8">}</text>
+<text top="329" left="87" width="113" height="11" font="8">// server code</text>
+<text top="344" left="87" width="274" height="14" font="8">int main(int argc, char *argv[]) {</text>
+<text top="359" left="103" width="202" height="11" font="8">int sd = UDP_Open(10000);</text>
+<text top="374" left="103" width="129" height="11" font="8">assert(sd &gt; -1);</text>
+<text top="389" left="103" width="89" height="11" font="8">while (1) {</text>
+<text top="404" left="119" width="194" height="11" font="8">struct sockaddr_in addr;</text>
+<text top="419" left="119" width="210" height="11" font="8">char message[BUFFER_SIZE];</text>
+<text top="434" left="119" width="412" height="11" font="8">int rc = UDP_Read(sd, &amp;addr, message, BUFFER_SIZE);</text>
+<text top="449" left="119" width="105" height="11" font="8">if (rc &gt; 0) {</text>
+<text top="464" left="135" width="194" height="11" font="8">char reply[BUFFER_SIZE];</text>
+<text top="479" left="135" width="258" height="11" font="8">sprintf(reply, &#34;goodbye world&#34;);</text>
+<text top="494" left="135" width="371" height="11" font="8">rc = UDP_Write(sd, &amp;addr, reply, BUFFER_SIZE);</text>
+<text top="509" left="119" width="8" height="11" font="8">}</text>
+<text top="523" left="103" width="8" height="11" font="8">}</text>
+<text top="538" left="103" width="73" height="11" font="8">return 0;</text>
+<text top="553" left="87" width="8" height="11" font="8">}</text>
+<text top="566" left="132" width="69" height="14" font="2">Figure 48.1:</text>
+<text top="566" left="205" width="130" height="13" font="3"><b>Example UDP Code (</b></text>
+<text top="568" left="334" width="65" height="11" font="9"><b>client.c</b></text>
+<text top="566" left="399" width="3" height="13" font="3"><b>,</b></text>
+<text top="568" left="405" width="65" height="11" font="9"><b>server.c</b></text>
+<text top="566" left="470" width="4" height="13" font="3"><b>)</b></text>
+<text top="588" left="87" width="432" height="14" font="2">once, it is possible that the memory within the router cannot accommo-</text>
+<text top="603" left="87" width="432" height="14" font="2">date all of the packets. The only choice the router has at that point is</text>
+<text top="618" left="87" width="12" height="14" font="2">to</text>
+<text top="618" left="104" width="29" height="13" font="3"><b>drop</b></text>
+<text top="618" left="138" width="381" height="14" font="2">one or more of the packets. This same behavior occurs at end</text>
+<text top="633" left="87" width="432" height="14" font="2">hosts as well; when you send a large number of messages to a single ma-</text>
+<text top="648" left="87" width="432" height="14" font="2">chine, the machine’s resources can easily become overwhelmed, and thus</text>
+<text top="663" left="87" width="142" height="14" font="2">packet loss again arises.</text>
+<text top="680" left="105" width="414" height="14" font="2">Thus, packet loss is fundamental in networking. The question thus</text>
+<text top="695" left="87" width="228" height="14" font="2">becomes: how should we deal with it?</text>
+<text top="734" left="55" width="284" height="17" font="5">48.2 Unreliable Communication Layers</text>
+<text top="766" left="105" width="414" height="14" font="2">One simple way is this: we don’t deal with it. Because some appli-</text>
+<text top="781" left="87" width="432" height="14" font="2">cations know how to deal with packet loss, it is sometimes useful to let</text>
+<text top="796" left="87" width="432" height="14" font="2">them communicate with a basic unreliable messaging layer, an example</text>
+<text top="811" left="87" width="34" height="14" font="2">of the</text>
+<text top="811" left="125" width="130" height="13" font="3"><b>end-to-end argument</b></text>
+<text top="811" left="259" width="179" height="14" font="2">one often hears about (see the</text>
+<text top="811" left="442" width="36" height="13" font="3"><b>Aside</b></text>
+<text top="811" left="482" width="37" height="14" font="2">at end</text>
+<text top="826" left="87" width="432" height="14" font="2">of chapter). One excellent example of such an unreliable layer is found</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="423" width="10" height="14" font="2">D</text>
+<text top="98" left="434" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="4">YSTEMS</text>
+<text top="135" left="129" width="194" height="11" font="8">int UDP_Open(int port) {</text>
+<text top="150" left="145" width="56" height="11" font="8">int sd;</text>
+<text top="165" left="145" width="387" height="11" font="8">if ((sd = socket(AF_INET, SOCK_DGRAM, 0)) == -1)</text>
+<text top="180" left="161" width="81" height="11" font="8">return -1;</text>
+<text top="195" left="145" width="210" height="11" font="8">struct sockaddr_in myaddr;</text>
+<text top="210" left="145" width="250" height="11" font="8">bzero(&amp;myaddr, sizeof(myaddr));</text>
+<text top="225" left="145" width="137" height="11" font="8">myaddr.sin_family</text>
+<text top="225" left="331" width="81" height="11" font="8">= AF_INET;</text>
+<text top="240" left="145" width="121" height="11" font="8">myaddr.sin_port</text>
+<text top="240" left="331" width="113" height="11" font="8">= htons(port);</text>
+<text top="254" left="145" width="291" height="11" font="8">myaddr.sin_addr.s_addr = INADDR_ANY;</text>
+<text top="269" left="145" width="331" height="14" font="8">if (bind(sd, (struct sockaddr *) &amp;myaddr,</text>
+<text top="284" left="177" width="194" height="11" font="8">sizeof(myaddr)) == -1) {</text>
+<text top="299" left="161" width="81" height="11" font="8">close(sd);</text>
+<text top="314" left="161" width="81" height="11" font="8">return -1;</text>
+<text top="329" left="145" width="8" height="11" font="8">}</text>
+<text top="344" left="145" width="81" height="11" font="8">return sd;</text>
+<text top="359" left="129" width="8" height="11" font="8">}</text>
+<text top="389" left="129" width="371" height="14" font="8">int UDP_FillSockAddr(struct sockaddr_in *addr,</text>
+<text top="404" left="145" width="218" height="14" font="8">char *hostname, int port) {</text>
+<text top="419" left="145" width="323" height="11" font="8">bzero(addr, sizeof(struct sockaddr_in));</text>
+<text top="434" left="145" width="218" height="11" font="8">addr-&gt;sin_family = AF_INET;</text>
+<text top="434" left="403" width="145" height="11" font="8">// host byte order</text>
+<text top="449" left="145" width="113" height="11" font="8">addr-&gt;sin_port</text>
+<text top="449" left="282" width="291" height="11" font="8">= htons(port); // network byte order</text>
+<text top="464" left="145" width="194" height="14" font="8">struct in_addr *in_addr;</text>
+<text top="479" left="145" width="218" height="14" font="8">struct hostent *host_entry;</text>
+<text top="494" left="145" width="412" height="11" font="8">if ((host_entry = gethostbyname(hostname)) == NULL)</text>
+<text top="509" left="161" width="81" height="11" font="8">return -1;</text>
+<text top="523" left="145" width="387" height="14" font="8">in_addr = (struct in_addr *) host_entry-&gt;h_addr;</text>
+<text top="538" left="145" width="210" height="14" font="8">addr-&gt;sin_addr = *in_addr;</text>
+<text top="553" left="145" width="73" height="11" font="8">return 0;</text>
+<text top="568" left="129" width="8" height="11" font="8">}</text>
+<text top="598" left="129" width="379" height="14" font="8">int UDP_Write(int sd, struct sockaddr_in *addr,</text>
+<text top="613" left="145" width="178" height="14" font="8">char *buffer, int n) {</text>
+<text top="628" left="145" width="339" height="11" font="8">int addr_len = sizeof(struct sockaddr_in);</text>
+<text top="643" left="145" width="412" height="14" font="8">return sendto(sd, buffer, n, 0, (struct sockaddr *)</text>
+<text top="658" left="258" width="129" height="11" font="8">addr, addr_len);</text>
+<text top="673" left="129" width="8" height="11" font="8">}</text>
+<text top="703" left="129" width="371" height="14" font="8">int UDP_Read(int sd, struct sockaddr_in *addr,</text>
+<text top="718" left="234" width="178" height="14" font="8">char *buffer, int n) {</text>
+<text top="733" left="145" width="299" height="11" font="8">int len = sizeof(struct sockaddr_in);</text>
+<text top="748" left="145" width="428" height="14" font="8">return recvfrom(sd, buffer, n, 0, (struct sockaddr *)</text>
+<text top="763" left="274" width="210" height="14" font="8">addr, (socklen_t *) &amp;len);</text>
+<text top="778" left="129" width="8" height="11" font="8">}</text>
+<text top="790" left="212" width="69" height="14" font="2">Figure 48.2:</text>
+<text top="791" left="285" width="148" height="13" font="3"><b>A Simple UDP Library (</b></text>
+<text top="792" left="433" width="40" height="11" font="9"><b>udp.c</b></text>
+<text top="791" left="473" width="4" height="13" font="3"><b>)</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="2">S</text>
+<text top="98" left="179" width="45" height="11" font="4">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="148" left="188" width="8" height="14" font="2">T</text>
+<text top="150" left="197" width="11" height="11" font="4">IP</text>
+<text top="148" left="209" width="19" height="14" font="2">: U</text>
+<text top="150" left="228" width="13" height="11" font="4">SE</text>
+<text top="148" left="245" width="10" height="14" font="2">C</text>
+<text top="150" left="255" width="66" height="11" font="4">HECKSUMS</text>
+<text top="148" left="325" width="7" height="14" font="2">F</text>
+<text top="150" left="333" width="16" height="11" font="4">OR</text>
+<text top="148" left="353" width="5" height="14" font="2">I</text>
+<text top="150" left="358" width="60" height="11" font="4">NTEGRITY</text>
+<text top="163" left="87" width="432" height="14" font="2">Checksums are a commonly-used method to detect corruption quickly</text>
+<text top="178" left="87" width="432" height="14" font="2">and effectively in modern systems. A simple checksum is addition: just</text>
+<text top="193" left="87" width="432" height="14" font="2">sum up the bytes of a chunk of data; of course, many other more sophis-</text>
+<text top="208" left="87" width="432" height="14" font="2">ticated checksums have been created, including basic cyclic redundancy</text>
+<text top="223" left="87" width="378" height="14" font="2">codes (CRCs), the Fletcher checksum, and many others [MK09].</text>
+<text top="240" left="87" width="432" height="14" font="2">In networking, checksums are used as follows. Before sending a message</text>
+<text top="255" left="87" width="432" height="14" font="2">from one machine to another, compute a checksum over the bytes of the</text>
+<text top="270" left="87" width="432" height="14" font="2">message. Then send both the message and the checksum to the desti-</text>
+<text top="285" left="87" width="432" height="14" font="2">nation. At the destination, the receiver computes a checksum over the</text>
+<text top="300" left="87" width="432" height="14" font="2">incoming message as well; if this computed checksum matches the sent</text>
+<text top="315" left="87" width="432" height="14" font="2">checksum, the receiver can feel some assurance that the data likely did</text>
+<text top="330" left="87" width="231" height="14" font="2">not get corrupted during transmission.</text>
+<text top="347" left="87" width="432" height="14" font="2">Checksums can be evaluated along a number of different axes. Effective-</text>
+<text top="362" left="87" width="432" height="14" font="2">ness is one primary consideration: does a change in the data lead to a</text>
+<text top="377" left="87" width="432" height="14" font="2">change in the checksum? The stronger the checksum, the harder it is for</text>
+<text top="392" left="87" width="432" height="14" font="2">changes in the data to go unnoticed. Performance is the other important</text>
+<text top="407" left="87" width="432" height="14" font="2">criterion: how costly is the checksum to compute? Unfortunately, effec-</text>
+<text top="421" left="87" width="432" height="14" font="2">tiveness and performance are often at odds, meaning that checksums of</text>
+<text top="436" left="87" width="411" height="14" font="2">high quality are often expensive to compute. Life, again, isn’t perfect.</text>
+<text top="483" left="87" width="34" height="14" font="2">in the</text>
+<text top="483" left="125" width="47" height="13" font="3"><b>UDP/IP</b></text>
+<text top="483" left="176" width="342" height="14" font="2">networking stack available today on virtually all modern</text>
+<text top="498" left="87" width="240" height="14" font="2">systems. To use UDP, a process uses the</text>
+<text top="498" left="331" width="45" height="13" font="3"><b>sockets</b></text>
+<text top="498" left="379" width="140" height="14" font="2">API in order to create a</text>
+<text top="513" left="87" width="156" height="13" font="3"><b>communication endpoint</b></text>
+<text top="513" left="243" width="276" height="14" font="2">; processes on other machines (or on the same</text>
+<text top="528" left="87" width="121" height="14" font="2">machine) send UDP</text>
+<text top="528" left="213" width="64" height="13" font="3"><b>datagrams</b></text>
+<text top="528" left="281" width="238" height="14" font="2">to the original process (a datagram is a</text>
+<text top="543" left="87" width="251" height="14" font="2">fixed-sized message up to some max size).</text>
+<text top="559" left="105" width="414" height="14" font="2">Figures 48.1 and 48.2 show a simple client and server built on top of</text>
+<text top="574" left="87" width="432" height="14" font="2">UDP/IP. The client can send a message to the server, which then responds</text>
+<text top="589" left="87" width="432" height="14" font="2">with a reply. With this small amount of code, you have all you need to</text>
+<text top="604" left="87" width="211" height="14" font="2">begin building distributed systems!</text>
+<text top="620" left="105" width="414" height="14" font="2">UDP is a great example of an unreliable communication layer. If you</text>
+<text top="635" left="87" width="432" height="14" font="2">use it, you will encounter situations where packets get lost (dropped) and</text>
+<text top="650" left="87" width="432" height="14" font="2">thus do not reach their destination; the sender is never thus informed of</text>
+<text top="665" left="87" width="432" height="14" font="2">the loss. However, that does not mean that UDP does not guard against</text>
+<text top="680" left="87" width="280" height="14" font="2">any failures at all. For example, UDP includes a</text>
+<text top="680" left="370" width="61" height="13" font="3"><b>checksum</b></text>
+<text top="680" left="434" width="85" height="14" font="2">to detect some</text>
+<text top="695" left="87" width="163" height="14" font="2">forms of packet corruption.</text>
+<text top="711" left="105" width="414" height="14" font="2">However, because many applications simply want to send data to a</text>
+<text top="726" left="87" width="432" height="14" font="2">destination and not worry about packet loss, we need more. Specifically,</text>
+<text top="741" left="87" width="388" height="14" font="2">we need reliable communication on top of an unreliable network.</text>
+<text top="780" left="55" width="266" height="17" font="5">48.3 Reliable Communication Layers</text>
+<text top="811" left="105" width="414" height="14" font="2">To build a reliable communication layer, we need some new mech-</text>
+<text top="826" left="87" width="432" height="14" font="2">anisms and techniques to handle packet loss. Let us consider a simple</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="14" family="KCFJEA+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="11" size="11" family="KCFJEA+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="12" size="13" family="YUKZNX+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="423" width="10" height="14" font="2">D</text>
+<text top="98" left="434" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="4">YSTEMS</text>
+<text top="158" left="167" width="45" height="13" font="10">Sender</text>
+<text top="173" left="148" width="79" height="11" font="11">[send message]</text>
+<text top="158" left="461" width="55" height="13" font="10">Receiver</text>
+<text top="187" left="443" width="91" height="11" font="11">[receive message]</text>
+<text top="201" left="443" width="51" height="11" font="11">[send ack]</text>
+<text top="222" left="148" width="63" height="11" font="11">[receive ack]</text>
+<text top="255" left="210" width="69" height="14" font="2">Figure 48.3:</text>
+<text top="256" left="283" width="197" height="13" font="3"><b>Message Plus Acknowledgment</b></text>
+<text top="288" left="167" width="45" height="13" font="10">Sender</text>
+<text top="303" left="148" width="79" height="11" font="11">[send message;</text>
+<text top="317" left="148" width="57" height="11" font="11"> keep copy;</text>
+<text top="331" left="148" width="49" height="11" font="11"> set timer]</text>
+<text top="288" left="461" width="55" height="13" font="10">Receiver</text>
+<text top="352" left="148" width="9" height="11" font="11">...</text>
+<text top="366" left="148" width="82" height="11" font="11"> (waiting for ack)</text>
+<text top="380" left="148" width="9" height="11" font="11">...</text>
+<text top="401" left="148" width="74" height="11" font="11">[timer goes off;</text>
+<text top="415" left="148" width="75" height="11" font="11"> set timer/retry]</text>
+<text top="429" left="443" width="91" height="11" font="11">[receive message]</text>
+<text top="443" left="443" width="51" height="11" font="11">[send ack]</text>
+<text top="461" left="148" width="63" height="11" font="11">[receive ack;</text>
+<text top="475" left="148" width="107" height="11" font="11"> delete copy/timer off]</text>
+<text top="498" left="152" width="69" height="14" font="2">Figure 48.4:</text>
+<text top="498" left="225" width="313" height="13" font="3"><b>Message Plus Acknowledgment: Dropped Request</b></text>
+<text top="526" left="129" width="432" height="14" font="2">example in which a client is sending a message to a server over an unreli-</text>
+<text top="541" left="129" width="432" height="14" font="2">able connection. The first question we must answer: how does the sender</text>
+<text top="556" left="129" width="342" height="14" font="2">know that the receiver has actually received the message?</text>
+<text top="571" left="147" width="283" height="14" font="2">The technique that we will use is known as an</text>
+<text top="571" left="434" width="106" height="13" font="3"><b>acknowledgment</b></text>
+<text top="571" left="540" width="21" height="14" font="2">, or</text>
+<text top="586" left="129" width="21" height="13" font="3"><b>ack</b></text>
+<text top="586" left="154" width="407" height="14" font="2">for short. The idea is simple: the sender sends a message to the re-</text>
+<text top="601" left="129" width="339" height="14" font="2">ceiver; the receiver then sends a short message back to</text>
+<text top="601" left="473" width="68" height="14" font="12">acknowledge</text>
+<text top="601" left="547" width="14" height="14" font="2">its</text>
+<text top="616" left="129" width="232" height="14" font="2">receipt. Figure 48.3 depicts the process.</text>
+<text top="631" left="147" width="414" height="14" font="2">When the sender receives an acknowledgment of the message, it can</text>
+<text top="646" left="129" width="432" height="14" font="2">then rest assured that the receiver did indeed receive the original mes-</text>
+<text top="661" left="129" width="432" height="14" font="2">sage. However, what should the sender do if it does not receive an ac-</text>
+<text top="676" left="129" width="96" height="14" font="2">knowledgment?</text>
+<text top="692" left="147" width="414" height="14" font="2">To handle this case, we need an additional mechanism, known as a</text>
+<text top="707" left="129" width="48" height="13" font="3"><b>timeout</b></text>
+<text top="707" left="177" width="384" height="14" font="2">. When the sender sends a message, the sender now sets a timer</text>
+<text top="721" left="129" width="432" height="14" font="2">to go off after some period of time. If, in that time, no acknowledgment</text>
+<text top="736" left="129" width="432" height="14" font="2">has been received, the sender concludes that the message has been lost.</text>
+<text top="751" left="129" width="213" height="14" font="2">The sender then simply performs a</text>
+<text top="751" left="346" width="29" height="13" font="3"><b>retry</b></text>
+<text top="751" left="380" width="181" height="14" font="2">of the send, sending the same</text>
+<text top="766" left="129" width="432" height="14" font="2">message again with hopes that this time, it will get through. For this</text>
+<text top="781" left="129" width="432" height="14" font="2">approach to work, the sender must keep a copy of the message around,</text>
+<text top="796" left="129" width="432" height="14" font="2">in case it needs to send it again. The combination of the timeout and</text>
+<text top="811" left="129" width="264" height="14" font="2">the retry have led some to call the approach</text>
+<text top="811" left="397" width="81" height="13" font="3"><b>timeout/retry</b></text>
+<text top="811" left="478" width="83" height="14" font="2">; pretty clever</text>
+<text top="826" left="129" width="398" height="14" font="2">crowd, those networking types, no? Figure 48.4 shows an example.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="13" family="YDXRMG+CMMI9" color="#000000"/>
+	<fontspec id="14" size="13" family="CCCVKP+CMR9" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="2">S</text>
+<text top="98" left="179" width="45" height="11" font="4">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="144" left="125" width="45" height="13" font="10">Sender</text>
+<text top="159" left="106" width="79" height="11" font="11">[send message;</text>
+<text top="173" left="106" width="57" height="11" font="11"> keep copy;</text>
+<text top="187" left="106" width="49" height="11" font="11"> set timer]</text>
+<text top="144" left="420" width="55" height="13" font="10">Receiver</text>
+<text top="166" left="401" width="91" height="11" font="11">[receive message]</text>
+<text top="180" left="401" width="51" height="11" font="11">[send ack]</text>
+<text top="222" left="106" width="9" height="11" font="11">...</text>
+<text top="236" left="106" width="82" height="11" font="11"> (waiting for ack)</text>
+<text top="250" left="106" width="9" height="11" font="11">...</text>
+<text top="285" left="106" width="74" height="11" font="11">[timer goes off;</text>
+<text top="299" left="106" width="75" height="11" font="11"> set timer/retry]</text>
+<text top="313" left="401" width="91" height="11" font="11">[receive message]</text>
+<text top="327" left="401" width="51" height="11" font="11">[send ack]</text>
+<text top="346" left="106" width="63" height="11" font="11">[receive ack;</text>
+<text top="360" left="106" width="107" height="11" font="11"> delete copy/timer off]</text>
+<text top="382" left="117" width="69" height="14" font="2">Figure 48.5:</text>
+<text top="382" left="190" width="299" height="13" font="3"><b>Message Plus Acknowledgment: Dropped Reply</b></text>
+<text top="402" left="105" width="414" height="14" font="2">Unfortunately, timeout/retry in this form is not quite enough. Figure</text>
+<text top="417" left="87" width="432" height="14" font="2">48.5 shows an example of packet loss which could lead to trouble. In this</text>
+<text top="432" left="87" width="432" height="14" font="2">example, it is not the original message that gets lost, but the acknowledg-</text>
+<text top="447" left="87" width="432" height="14" font="2">ment. From the perspective of the sender, the situation seems the same:</text>
+<text top="462" left="87" width="432" height="14" font="2">no ack was received, and thus a timeout and retry are in order. But from</text>
+<text top="477" left="87" width="432" height="14" font="2">the perspective of the receiver, it is quite different: now the same message</text>
+<text top="492" left="87" width="432" height="14" font="2">has been received twice! While there may be cases where this is OK, in</text>
+<text top="507" left="87" width="432" height="14" font="2">general it is not; imagine what would happen when you are downloading</text>
+<text top="522" left="87" width="432" height="14" font="2">a file and extra packets are repeated inside the download. Thus, when we</text>
+<text top="537" left="87" width="432" height="14" font="2">are aiming for a reliable message layer, we also usually want to guarantee</text>
+<text top="552" left="87" width="174" height="14" font="2">that each message is received</text>
+<text top="552" left="264" width="74" height="13" font="3"><b>exactly once</b></text>
+<text top="552" left="342" width="90" height="14" font="2">by the receiver.</text>
+<text top="568" left="105" width="414" height="14" font="2">To enable the receiver to detect duplicate message transmission, the</text>
+<text top="583" left="87" width="432" height="14" font="2">sender has to identify each message in some unique way, and the receiver</text>
+<text top="598" left="87" width="432" height="14" font="2">needs some way to track whether it has already seen each message be-</text>
+<text top="613" left="87" width="432" height="14" font="2">fore. When the receiver sees a duplicate transmission, it simply acks the</text>
+<text top="628" left="87" width="172" height="14" font="2">message, but (critically) does</text>
+<text top="628" left="262" width="18" height="14" font="12">not</text>
+<text top="628" left="283" width="236" height="14" font="2">pass the message to the application that</text>
+<text top="643" left="87" width="432" height="14" font="2">receives the data. Thus, the sender receives the ack but the message is not</text>
+<text top="658" left="87" width="427" height="14" font="2">received twice, preserving the exactly-once semantics mentioned above.</text>
+<text top="675" left="105" width="414" height="14" font="2">There are myriad ways to detect duplicate messages. For example, the</text>
+<text top="690" left="87" width="432" height="14" font="2">sender could generate a unique ID for each message; the receiver could</text>
+<text top="705" left="87" width="432" height="14" font="2">track every ID it has ever seen. This approach could work, but it is pro-</text>
+<text top="720" left="87" width="376" height="14" font="2">hibitively costly, requiring unbounded memory to track all IDs.</text>
+<text top="736" left="105" width="414" height="14" font="2">A simpler approach, requiring little memory, solves this problem, and</text>
+<text top="751" left="87" width="170" height="14" font="2">the mechanism is known as a</text>
+<text top="751" left="260" width="106" height="13" font="3"><b>sequence counter</b></text>
+<text top="751" left="366" width="153" height="14" font="2">. With a sequence counter,</text>
+<text top="766" left="87" width="432" height="14" font="2">the sender and receiver agree upon a start value (e.g., 1) for a counter</text>
+<text top="781" left="87" width="432" height="14" font="2">that each side will maintain. Whenever a message is sent, the current</text>
+<text top="796" left="87" width="432" height="14" font="2">value of the counter is sent along with the message; this counter value</text>
+<text top="811" left="87" width="4" height="14" font="2">(</text>
+<text top="811" left="92" width="11" height="14" font="13">N</text>
+<text top="811" left="104" width="415" height="14" font="2">) serves as an ID for the message. After the message is sent, the sender</text>
+<text top="826" left="87" width="173" height="14" font="2">then increments the value (to</text>
+<text top="826" left="263" width="11" height="14" font="13">N</text>
+<text top="827" left="279" width="21" height="10" font="14">+ 1</text>
+<text top="826" left="300" width="8" height="14" font="2">).</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="423" width="10" height="14" font="2">D</text>
+<text top="98" left="434" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="4">YSTEMS</text>
+<text top="148" left="198" width="8" height="14" font="2">T</text>
+<text top="150" left="207" width="11" height="11" font="4">IP</text>
+<text top="148" left="218" width="16" height="14" font="2">: B</text>
+<text top="150" left="235" width="7" height="11" font="4">E</text>
+<text top="148" left="246" width="10" height="14" font="2">C</text>
+<text top="150" left="256" width="46" height="11" font="4">AREFUL</text>
+<text top="148" left="306" width="7" height="14" font="2">S</text>
+<text top="150" left="314" width="44" height="11" font="4">ETTING</text>
+<text top="148" left="362" width="8" height="14" font="2">T</text>
+<text top="150" left="371" width="16" height="11" font="4">HE</text>
+<text top="148" left="391" width="8" height="14" font="2">T</text>
+<text top="150" left="400" width="47" height="11" font="4">IMEOUT</text>
+<text top="148" left="451" width="10" height="14" font="2">V</text>
+<text top="150" left="460" width="32" height="11" font="4">ALUE</text>
+<text top="163" left="129" width="432" height="14" font="2">As you can probably guess from the discussion, setting the timeout value</text>
+<text top="178" left="129" width="432" height="14" font="2">correctly is an important aspect of using timeouts to retry message sends.</text>
+<text top="193" left="129" width="432" height="14" font="2">If the timeout is too small, the sender will re-send messages needlessly,</text>
+<text top="208" left="129" width="432" height="14" font="2">thus wasting CPU time on the sender and network resources. If the time-</text>
+<text top="223" left="129" width="432" height="14" font="2">out is too large, the sender waits too long to re-send and thus perceived</text>
+<text top="238" left="129" width="432" height="14" font="2">performance at the sender is reduced. The “right” value, from the per-</text>
+<text top="253" left="129" width="432" height="14" font="2">spective of a single client and server, is thus to wait just long enough to</text>
+<text top="268" left="129" width="190" height="14" font="2">detect packet loss but no longer.</text>
+<text top="286" left="129" width="432" height="14" font="2">However, there are often more than just a single client and server in a</text>
+<text top="301" left="129" width="432" height="14" font="2">distributed system, as we will see in future chapters. In a scenario with</text>
+<text top="316" left="129" width="432" height="14" font="2">many clients sending to a single server, packet loss at the server may be</text>
+<text top="331" left="129" width="432" height="14" font="2">an indicator that the server is overloaded. If true, clients might retry in</text>
+<text top="346" left="129" width="432" height="14" font="2">a different adaptive manner; for example, after the first timeout, a client</text>
+<text top="361" left="129" width="432" height="14" font="2">might increase its timeout value to a higher amount, perhaps twice as</text>
+<text top="376" left="129" width="217" height="14" font="2">high as the original value. Such an</text>
+<text top="376" left="351" width="129" height="13" font="3"><b>exponential back-off</b></text>
+<text top="376" left="484" width="77" height="14" font="2">scheme, pio-</text>
+<text top="390" left="129" width="432" height="14" font="2">neered in the early Aloha network and adopted in early Ethernet [A70],</text>
+<text top="405" left="129" width="432" height="14" font="2">avoids situations where resources are being overloaded by an excess of</text>
+<text top="420" left="129" width="381" height="14" font="2">re-sends. Robust systems strive to avoid overload of this nature.</text>
+<text top="455" left="147" width="414" height="14" font="2">The receiver uses its counter value as the expected value for the ID</text>
+<text top="470" left="129" width="432" height="14" font="2">of the incoming message from that sender. If the ID of a received mes-</text>
+<text top="485" left="129" width="34" height="14" font="2">sage (</text>
+<text top="485" left="163" width="11" height="14" font="13">N</text>
+<text top="485" left="176" width="219" height="14" font="2">) matches the receiver’s counter (also</text>
+<text top="485" left="398" width="11" height="14" font="13">N</text>
+<text top="485" left="411" width="150" height="14" font="2">), it acks the message and</text>
+<text top="500" left="129" width="432" height="14" font="2">passes it up to the application; in this case, the receiver concludes this</text>
+<text top="515" left="129" width="432" height="14" font="2">is the first time this message has been received. The receiver then incre-</text>
+<text top="530" left="129" width="122" height="14" font="2">ments its counter (to</text>
+<text top="530" left="254" width="11" height="14" font="13">N</text>
+<text top="531" left="270" width="21" height="10" font="14">+ 1</text>
+<text top="530" left="291" width="198" height="14" font="2">), and waits for the next message.</text>
+<text top="546" left="147" width="365" height="14" font="2">If the ack is lost, the sender will timeout and re-send message</text>
+<text top="546" left="515" width="11" height="14" font="13">N</text>
+<text top="546" left="528" width="33" height="14" font="2">. This</text>
+<text top="561" left="129" width="222" height="14" font="2">time, the receiver’s counter is higher (</text>
+<text top="561" left="351" width="11" height="14" font="13">N</text>
+<text top="562" left="365" width="19" height="10" font="14">+ 1</text>
+<text top="561" left="384" width="177" height="14" font="2">), and thus the receiver knows</text>
+<text top="576" left="129" width="432" height="14" font="2">it has already received this message. Thus it acks the message but does</text>
+<text top="591" left="129" width="18" height="14" font="12">not</text>
+<text top="591" left="150" width="411" height="14" font="2">pass it up to the application. In this simple manner, sequence counters</text>
+<text top="606" left="129" width="190" height="14" font="2">can be used to avoid duplicates.</text>
+<text top="622" left="147" width="414" height="14" font="2">The most commonly used reliable communication layer is known as</text>
+<text top="637" left="129" width="44" height="13" font="3"><b>TCP/IP</b></text>
+<text top="637" left="173" width="45" height="14" font="2">, or just</text>
+<text top="637" left="223" width="27" height="13" font="3"><b>TCP</b></text>
+<text top="637" left="254" width="307" height="14" font="2">for short. TCP has a great deal more sophistication</text>
+<text top="652" left="129" width="432" height="14" font="2">than we describe above, including machinery to handle congestion in the</text>
+<text top="666" left="129" width="432" height="14" font="2">network [VJ88], multiple outstanding requests, and hundreds of other</text>
+<text top="681" left="129" width="432" height="14" font="2">small tweaks and optimizations. Read more about it if you’re curious;</text>
+<text top="696" left="129" width="384" height="14" font="2">better yet, take a networking course and learn that material well.</text>
+<text top="735" left="97" width="247" height="17" font="5">48.4 Communication Abstractions</text>
+<text top="765" left="147" width="414" height="14" font="2">Given a basic messaging layer, we now approach the next question</text>
+<text top="780" left="129" width="432" height="14" font="2">in this chapter: what abstraction of communication should we use when</text>
+<text top="795" left="129" width="181" height="14" font="2">building a distributed system?</text>
+<text top="811" left="147" width="414" height="14" font="2">The systems community developed a number of approaches over the</text>
+<text top="826" left="129" width="432" height="14" font="2">years. One body of work took OS abstractions and extended them to</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="9" family="JGMTLW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="16" size="7" family="JGMTLW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="17" size="10" family="XHLBMD+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="2">S</text>
+<text top="98" left="179" width="45" height="11" font="4">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="139" left="87" width="313" height="14" font="2">operate in a distributed environment. For example,</text>
+<text top="139" left="405" width="114" height="13" font="3"><b>distributed shared</b></text>
+<text top="154" left="87" width="51" height="13" font="3"><b>memory</b></text>
+<text top="154" left="141" width="4" height="14" font="2">(</text>
+<text top="154" left="146" width="33" height="13" font="3"><b>DSM</b></text>
+<text top="154" left="179" width="340" height="14" font="2">) systems enable processes on different machines to share</text>
+<text top="169" left="87" width="432" height="14" font="2">a large, virtual address space [LH89]. This abstraction turns a distributed</text>
+<text top="183" left="87" width="432" height="14" font="2">computation into something that looks like a multi-threaded application;</text>
+<text top="198" left="87" width="432" height="14" font="2">the only difference is that these threads run on different machines instead</text>
+<text top="213" left="87" width="288" height="14" font="2">of different processors within the same machine.</text>
+<text top="228" left="105" width="414" height="14" font="2">The way most DSM systems work is through the virtual memory sys-</text>
+<text top="243" left="87" width="432" height="14" font="2">tem of the OS. When a page is accessed on one machine, two things can</text>
+<text top="258" left="87" width="432" height="14" font="2">happen. In the first (best) case, the page is already local on the machine,</text>
+<text top="273" left="87" width="432" height="14" font="2">and thus the data is fetched quickly. In the second case, the page is cur-</text>
+<text top="288" left="87" width="432" height="14" font="2">rently on some other machine. A page fault occurs, and the page fault</text>
+<text top="303" left="87" width="432" height="14" font="2">handler sends a message to some other machine to fetch the page, install</text>
+<text top="318" left="87" width="410" height="14" font="2">it in the page table of the requesting process, and continue execution.</text>
+<text top="333" left="105" width="414" height="14" font="2">This approach is not widely in use today for a number of reasons. The</text>
+<text top="348" left="87" width="432" height="14" font="2">largest problem for DSM is how it handles failure. Imagine, for example,</text>
+<text top="363" left="87" width="432" height="14" font="2">if a machine fails; what happens to the pages on that machine? What if</text>
+<text top="378" left="87" width="432" height="14" font="2">the data structures of the distributed computation are spread across the</text>
+<text top="393" left="87" width="432" height="14" font="2">entire address space? In this case, parts of these data structures would</text>
+<text top="408" left="87" width="432" height="14" font="2">suddenly become unavailable. Dealing with failure when parts of your</text>
+<text top="423" left="87" width="432" height="14" font="2">address space go missing is hard; imagine a linked list where a “next”</text>
+<text top="438" left="87" width="406" height="14" font="2">pointer points into a portion of the address space that is gone. Yikes!</text>
+<text top="452" left="105" width="414" height="14" font="2">A further problem is performance. One usually assumes, when writ-</text>
+<text top="467" left="87" width="432" height="14" font="2">ing code, that access to memory is cheap. In DSM systems, some accesses</text>
+<text top="482" left="87" width="432" height="14" font="2">are inexpensive, but others cause page faults and expensive fetches from</text>
+<text top="497" left="87" width="432" height="14" font="2">remote machines. Thus, programmers of such DSM systems had to be</text>
+<text top="512" left="87" width="432" height="14" font="2">very careful to organize computations such that almost no communica-</text>
+<text top="527" left="87" width="432" height="14" font="2">tion occurred at all, defeating much of the point of such an approach.</text>
+<text top="542" left="87" width="432" height="14" font="2">Though much research was performed in this space, there was little prac-</text>
+<text top="557" left="87" width="432" height="14" font="2">tical impact; nobody builds reliable distributed systems using DSM today.</text>
+<text top="594" left="55" width="248" height="17" font="5">48.5 Remote Procedure Call (RPC)</text>
+<text top="624" left="105" width="414" height="14" font="2">While OS abstractions turned out to be a poor choice for building dis-</text>
+<text top="639" left="87" width="432" height="14" font="2">tributed systems, programming language (PL) abstractions make much</text>
+<text top="654" left="87" width="412" height="14" font="2">more sense. The most dominant abstraction is based on the idea of a</text>
+<text top="654" left="503" width="16" height="13" font="3"><b>re-</b></text>
+<text top="669" left="87" width="121" height="13" font="3"><b>mote procedure call</b></text>
+<text top="669" left="208" width="19" height="14" font="2">, or</text>
+<text top="669" left="231" width="28" height="13" font="3"><b>RPC</b></text>
+<text top="669" left="262" width="96" height="14" font="2">for short [BN84]</text>
+<text top="666" left="358" width="4" height="9" font="15">1</text>
+<text top="669" left="363" width="3" height="14" font="2">.</text>
+<text top="684" left="105" width="414" height="14" font="2">Remote procedure call packages all have a simple goal: to make the</text>
+<text top="699" left="87" width="432" height="14" font="2">process of executing code on a remote machine as simple and straight-</text>
+<text top="714" left="87" width="432" height="14" font="2">forward as calling a local function. Thus, to a client, a procedure call is</text>
+<text top="729" left="87" width="432" height="14" font="2">made, and some time later, the results are returned. The server simply</text>
+<text top="743" left="87" width="432" height="14" font="2">defines some routines that it wishes to export. The rest of the magic is</text>
+<text top="758" left="87" width="372" height="14" font="2">handled by the RPC system, which in general has two pieces: a</text>
+<text top="758" left="462" width="57" height="13" font="3"><b>stub gen-</b></text>
+<text top="773" left="87" width="36" height="13" font="3"><b>erator</b></text>
+<text top="773" left="127" width="117" height="14" font="2">(sometimes called a</text>
+<text top="773" left="247" width="109" height="13" font="3"><b>protocol compiler</b></text>
+<text top="773" left="356" width="56" height="14" font="2">), and the</text>
+<text top="773" left="416" width="99" height="13" font="3"><b>run-time library</b></text>
+<text top="773" left="516" width="3" height="14" font="2">.</text>
+<text top="788" left="87" width="351" height="14" font="2">We’ll now take a look at each of these pieces in more detail.</text>
+<text top="814" left="107" width="4" height="8" font="16">1</text>
+<text top="816" left="112" width="276" height="11" font="7">In modern programming languages, we might instead say</text>
+<text top="816" left="392" width="127" height="10" font="17"><b>remote method invocation</b></text>
+<text top="828" left="87" width="3" height="11" font="7">(</text>
+<text top="828" left="91" width="22" height="10" font="17"><b>RMI</b></text>
+<text top="828" left="113" width="330" height="11" font="7">), but who likes these languages anyhow, with all of their fancy objects?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="15" family="XHLBMD+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="423" width="10" height="14" font="2">D</text>
+<text top="98" left="434" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="4">YSTEMS</text>
+<text top="138" left="129" width="105" height="15" font="18"><b>Stub Generator</b></text>
+<text top="163" left="129" width="432" height="14" font="2">The stub generator’s job is simple: to remove some of the pain of packing</text>
+<text top="178" left="129" width="432" height="14" font="2">function arguments and results into messages by automating it. Numer-</text>
+<text top="193" left="129" width="432" height="14" font="2">ous benefits arise: one avoids, by design, the simple mistakes that occur</text>
+<text top="208" left="129" width="432" height="14" font="2">in writing such code by hand; further, a stub compiler can perhaps opti-</text>
+<text top="223" left="129" width="283" height="14" font="2">mize such code and thus improve performance.</text>
+<text top="238" left="147" width="414" height="14" font="2">The input to such a compiler is simply the set of calls a server wishes</text>
+<text top="253" left="129" width="432" height="14" font="2">to export to clients. Conceptually, it could be something as simple as this:</text>
+<text top="286" left="129" width="89" height="11" font="8">interface {</text>
+<text top="301" left="145" width="161" height="11" font="8">int func1(int arg1);</text>
+<text top="316" left="145" width="242" height="11" font="8">int func2(int arg1, int arg2);</text>
+<text top="331" left="129" width="16" height="11" font="8">};</text>
+<text top="361" left="147" width="414" height="14" font="2">The stub generator takes an interface like this and generates a few dif-</text>
+<text top="376" left="129" width="236" height="14" font="2">ferent pieces of code. For the client, a</text>
+<text top="376" left="370" width="66" height="13" font="3"><b>client stub</b></text>
+<text top="376" left="441" width="120" height="14" font="2">is generated, which</text>
+<text top="391" left="129" width="432" height="14" font="2">contains each of the functions specified in the interface; a client program</text>
+<text top="406" left="129" width="432" height="14" font="2">wishing to use this RPC service would link with this client stub and call</text>
+<text top="421" left="129" width="176" height="14" font="2">into it in order to make RPCs.</text>
+<text top="436" left="147" width="414" height="14" font="2">Internally, each of these functions in the client stub do all of the work</text>
+<text top="451" left="129" width="432" height="14" font="2">needed to perform the remote procedure call. To the client, the code just</text>
+<text top="466" left="129" width="271" height="14" font="2">appears as a function call (e.g., the client calls</text>
+<text top="467" left="403" width="65" height="11" font="8">func1(x)</text>
+<text top="466" left="468" width="93" height="14" font="2">); internally, the</text>
+<text top="481" left="129" width="150" height="14" font="2">code in the client stub for</text>
+<text top="482" left="283" width="57" height="11" font="8">func1()</text>
+<text top="481" left="343" width="56" height="14" font="2">does this:</text>
+<text top="512" left="148" width="8" height="14" font="2">•</text>
+<text top="512" left="163" width="153" height="13" font="3"><b>Create a message buffer.</b></text>
+<text top="512" left="324" width="236" height="14" font="2">A message buffer is usually just a con-</text>
+<text top="527" left="163" width="209" height="14" font="2">tiguous array of bytes of some size.</text>
+<text top="542" left="148" width="8" height="14" font="2">•</text>
+<text top="542" left="163" width="330" height="13" font="3"><b>Pack the needed information into the message buffer.</b></text>
+<text top="542" left="498" width="62" height="14" font="2">This infor-</text>
+<text top="557" left="163" width="397" height="14" font="2">mation includes some kind of identifier for the function to be called,</text>
+<text top="572" left="163" width="397" height="14" font="2">as well as all of the arguments that the function needs (e.g., in our</text>
+<text top="587" left="163" width="186" height="14" font="2">example above, one integer for</text>
+<text top="588" left="353" width="40" height="11" font="8">func1</text>
+<text top="587" left="394" width="167" height="14" font="2">). The process of putting all</text>
+<text top="602" left="163" width="397" height="14" font="2">of this information into a single contiguous buffer is sometimes re-</text>
+<text top="617" left="163" width="88" height="14" font="2">ferred to as the</text>
+<text top="617" left="255" width="69" height="13" font="3"><b>marshaling</b></text>
+<text top="617" left="328" width="116" height="14" font="2">of arguments or the</text>
+<text top="617" left="448" width="76" height="13" font="3"><b>serialization</b></text>
+<text top="617" left="527" width="34" height="14" font="2">of the</text>
+<text top="632" left="163" width="54" height="14" font="2">message.</text>
+<text top="647" left="148" width="8" height="14" font="2">•</text>
+<text top="647" left="163" width="302" height="13" font="3"><b>Send the message to the destination RPC server.</b></text>
+<text top="647" left="472" width="88" height="14" font="2">The communi-</text>
+<text top="662" left="163" width="397" height="14" font="2">cation with the RPC server, and all of the details required to make</text>
+<text top="677" left="163" width="397" height="14" font="2">it operate correctly, are handled by the RPC run-time library, de-</text>
+<text top="692" left="163" width="130" height="14" font="2">scribed further below.</text>
+<text top="707" left="148" width="8" height="14" font="2">•</text>
+<text top="707" left="163" width="109" height="13" font="3"><b>Wait for the reply.</b></text>
+<text top="707" left="277" width="199" height="14" font="2">Because function calls are usually</text>
+<text top="707" left="479" width="78" height="13" font="3"><b>synchronous</b></text>
+<text top="707" left="557" width="3" height="14" font="2">,</text>
+<text top="721" left="163" width="210" height="14" font="2">the call will wait for its completion.</text>
+<text top="736" left="148" width="8" height="14" font="2">•</text>
+<text top="736" left="163" width="259" height="13" font="3"><b>Unpack return code and other arguments.</b></text>
+<text top="736" left="429" width="132" height="14" font="2">If the function just re-</text>
+<text top="751" left="163" width="397" height="14" font="2">turns a single return code, this process is straightforward; however,</text>
+<text top="766" left="163" width="397" height="14" font="2">more complex functions might return more complex results (e.g., a</text>
+<text top="781" left="163" width="397" height="14" font="2">list), and thus the stub might need to unpack those as well. This</text>
+<text top="796" left="163" width="125" height="14" font="2">step is also known as</text>
+<text top="796" left="292" width="86" height="13" font="3"><b>unmarshaling</b></text>
+<text top="796" left="382" width="13" height="14" font="2">or</text>
+<text top="796" left="398" width="91" height="13" font="3"><b>deserialization</b></text>
+<text top="796" left="489" width="3" height="14" font="2">.</text>
+<text top="811" left="148" width="8" height="14" font="2">•</text>
+<text top="811" left="163" width="124" height="13" font="3"><b>Return to the caller.</b></text>
+<text top="811" left="295" width="266" height="14" font="2">Finally, just return from the client stub back</text>
+<text top="826" left="163" width="116" height="14" font="2">into the client code.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="2">S</text>
+<text top="98" left="179" width="45" height="11" font="4">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="139" left="105" width="414" height="14" font="2">For the server, code is also generated. The steps taken on the server</text>
+<text top="154" left="87" width="85" height="14" font="2">are as follows:</text>
+<text top="183" left="107" width="8" height="14" font="2">•</text>
+<text top="183" left="122" width="130" height="13" font="3"><b>Unpack the message.</b></text>
+<text top="183" left="258" width="97" height="14" font="2">This step, called</text>
+<text top="183" left="359" width="86" height="13" font="3"><b>unmarshaling</b></text>
+<text top="183" left="449" width="13" height="14" font="2">or</text>
+<text top="183" left="466" width="53" height="13" font="3"><b>deserial-</b></text>
+<text top="198" left="122" width="43" height="13" font="3"><b>ization</b></text>
+<text top="197" left="164" width="355" height="14" font="2">, takes the information out of the incoming message. The</text>
+<text top="212" left="122" width="284" height="14" font="2">function identifier and arguments are extracted.</text>
+<text top="227" left="107" width="8" height="14" font="2">•</text>
+<text top="227" left="122" width="178" height="13" font="3"><b>Call into the actual function.</b></text>
+<text top="227" left="307" width="212" height="14" font="2">Finally! We have reached the point</text>
+<text top="242" left="122" width="397" height="14" font="2">where the remote function is actually executed. The RPC runtime</text>
+<text top="257" left="122" width="397" height="14" font="2">calls into the function specified by the ID and passes in the desired</text>
+<text top="272" left="122" width="67" height="14" font="2">arguments.</text>
+<text top="287" left="107" width="8" height="14" font="2">•</text>
+<text top="287" left="122" width="124" height="13" font="3"><b>Package the results.</b></text>
+<text top="287" left="254" width="265" height="14" font="2">The return argument(s) are marshaled back</text>
+<text top="302" left="122" width="148" height="14" font="2">into a single reply buffer.</text>
+<text top="317" left="107" width="8" height="14" font="2">•</text>
+<text top="317" left="122" width="92" height="13" font="3"><b>Send the reply.</b></text>
+<text top="317" left="218" width="214" height="14" font="2">The reply is finally sent to the caller.</text>
+<text top="346" left="105" width="414" height="14" font="2">There are a few other important issues to consider in a stub compiler.</text>
+<text top="361" left="87" width="432" height="14" font="2">The first is complex arguments, i.e., how does one package and send</text>
+<text top="376" left="87" width="370" height="14" font="2">a complex data structure? For example, when one calls the</text>
+<text top="377" left="462" width="57" height="11" font="8">write()</text>
+<text top="391" left="87" width="432" height="14" font="2">system call, one passes in three arguments: an integer file descriptor, a</text>
+<text top="406" left="87" width="432" height="14" font="2">pointer to a buffer, and a size indicating how many bytes (starting at the</text>
+<text top="421" left="87" width="432" height="14" font="2">pointer) are to be written. If an RPC package is passed a pointer, it needs</text>
+<text top="436" left="87" width="432" height="14" font="2">to be able to figure out how to interpret that pointer, and perform the</text>
+<text top="451" left="87" width="432" height="14" font="2">correct action. Usually this is accomplished through either well-known</text>
+<text top="466" left="87" width="76" height="14" font="2">types (e.g., a</text>
+<text top="466" left="167" width="61" height="11" font="8">buffer t</text>
+<text top="466" left="232" width="287" height="14" font="2">that is used to pass chunks of data given a size,</text>
+<text top="480" left="87" width="432" height="14" font="2">which the RPC compiler understands), or by annotating the data struc-</text>
+<text top="495" left="87" width="432" height="14" font="2">tures with more information, enabling the compiler to know which bytes</text>
+<text top="510" left="87" width="125" height="14" font="2">need to be serialized.</text>
+<text top="525" left="105" width="414" height="14" font="2">Another important issue is the organization of the server with regards</text>
+<text top="540" left="87" width="432" height="14" font="2">to concurrency. A simple server just waits for requests in a simple loop,</text>
+<text top="555" left="87" width="432" height="14" font="2">and handles each request one at a time. However, as you might have</text>
+<text top="570" left="87" width="432" height="14" font="2">guessed, this can be grossly inefficient; if one RPC call blocks (e.g., on</text>
+<text top="585" left="87" width="432" height="14" font="2">I/O), server resources are wasted. Thus, most servers are constructed in</text>
+<text top="600" left="87" width="356" height="14" font="2">some sort of concurrent fashion. A common organization is a</text>
+<text top="600" left="446" width="70" height="13" font="3"><b>thread pool</b></text>
+<text top="600" left="516" width="3" height="14" font="2">.</text>
+<text top="615" left="87" width="432" height="14" font="2">In this organization, a finite set of threads are created when the server</text>
+<text top="630" left="87" width="432" height="14" font="2">starts; when a message arrives, it is dispatched to one of these worker</text>
+<text top="645" left="87" width="432" height="14" font="2">threads, which then does the work of the RPC call, eventually replying;</text>
+<text top="660" left="87" width="432" height="14" font="2">during this time, a main thread keeps receiving other requests, and per-</text>
+<text top="675" left="87" width="432" height="14" font="2">haps dispatching them to other workers. Such an organization enables</text>
+<text top="690" left="87" width="432" height="14" font="2">concurrent execution within the server, thus increasing its utilization; the</text>
+<text top="705" left="87" width="432" height="14" font="2">standard costs arise as well, mostly in programming complexity, as the</text>
+<text top="720" left="87" width="432" height="14" font="2">RPC calls may now need to use locks and other synchronization primi-</text>
+<text top="735" left="87" width="276" height="14" font="2">tives in order to ensure their correct operation.</text>
+<text top="771" left="87" width="123" height="15" font="18"><b>Run-Time Library</b></text>
+<text top="796" left="87" width="432" height="14" font="2">The run-time library handles much of the heavy lifting in an RPC system;</text>
+<text top="811" left="87" width="432" height="14" font="2">most performance and reliability issues are handled herein. We’ll now</text>
+<text top="826" left="87" width="420" height="14" font="2">discuss some of the major challenges in building such a run-time layer.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="423" width="10" height="14" font="2">D</text>
+<text top="98" left="434" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="4">YSTEMS</text>
+<text top="139" left="147" width="414" height="14" font="2">One of the first challenges we must overcome is how to locate a re-</text>
+<text top="154" left="129" width="185" height="14" font="2">mote service. This problem, of</text>
+<text top="154" left="318" width="47" height="13" font="3"><b>naming</b></text>
+<text top="154" left="365" width="196" height="14" font="2">, is a common one in distributed</text>
+<text top="169" left="129" width="432" height="14" font="2">systems, and in some sense goes beyond the scope of our current discus-</text>
+<text top="183" left="129" width="432" height="14" font="2">sion. The simplest of approaches build on existing naming systems, e.g.,</text>
+<text top="198" left="129" width="432" height="14" font="2">hostnames and port numbers provided by current internet protocols. In</text>
+<text top="213" left="129" width="432" height="14" font="2">such a system, the client must know the hostname or IP address of the</text>
+<text top="228" left="129" width="432" height="14" font="2">machine running the desired RPC service, as well as the port number it is</text>
+<text top="243" left="129" width="432" height="14" font="2">using (a port number is just a way of identifying a particular communica-</text>
+<text top="258" left="129" width="432" height="14" font="2">tion activity taking place on a machine, allowing multiple communication</text>
+<text top="273" left="129" width="432" height="14" font="2">channels at once). The protocol suite must then provide a mechanism to</text>
+<text top="288" left="129" width="432" height="14" font="2">route packets to a particular address from any other machine in the sys-</text>
+<text top="303" left="129" width="432" height="14" font="2">tem. For a good discussion of naming, you’ll have to look elsewhere, e.g.,</text>
+<text top="318" left="129" width="432" height="14" font="2">read about DNS and name resolution on the Internet, or better yet just</text>
+<text top="333" left="129" width="387" height="14" font="2">read the excellent chapter in Saltzer and Kaashoek’s book [SK09].</text>
+<text top="348" left="147" width="414" height="14" font="2">Once a client knows which server it should talk to for a particular re-</text>
+<text top="363" left="129" width="432" height="14" font="2">mote service, the next question is which transport-level protocol should</text>
+<text top="378" left="129" width="432" height="14" font="2">RPC be built upon. Specifically, should the RPC system use a reliable pro-</text>
+<text top="393" left="129" width="432" height="14" font="2">tocol such as TCP/IP, or be built upon an unreliable communication layer</text>
+<text top="408" left="129" width="103" height="14" font="2">such as UDP/IP?</text>
+<text top="423" left="147" width="414" height="14" font="2">Naively the choice would seem easy: clearly we would like for a re-</text>
+<text top="438" left="129" width="432" height="14" font="2">quest to be reliably delivered to the remote server, and clearly we would</text>
+<text top="453" left="129" width="432" height="14" font="2">like to reliably receive a reply. Thus we should choose the reliable trans-</text>
+<text top="468" left="129" width="194" height="14" font="2">port protocol such as TCP, right?</text>
+<text top="483" left="147" width="414" height="14" font="2">Unfortunately, building RPC on top of a reliable communication layer</text>
+<text top="498" left="129" width="432" height="14" font="2">can lead to a major inefficiency in performance. Recall from the discus-</text>
+<text top="512" left="129" width="432" height="14" font="2">sion above how reliable communication layers work: with acknowledg-</text>
+<text top="527" left="129" width="432" height="14" font="2">ments plus timeout/retry. Thus, when the client sends an RPC request</text>
+<text top="542" left="129" width="432" height="14" font="2">to the server, the server responds with an acknowledgment so that the</text>
+<text top="557" left="129" width="432" height="14" font="2">caller knows the request was received. Similarly, when the server sends</text>
+<text top="572" left="129" width="432" height="14" font="2">the reply to the client, the client acks it so that the server knows it was</text>
+<text top="587" left="129" width="432" height="14" font="2">received. By building a request/response protocol (such as RPC) on top</text>
+<text top="602" left="129" width="386" height="14" font="2">of a reliable communication layer, two “extra” messages are sent.</text>
+<text top="617" left="147" width="414" height="14" font="2">For this reason, many RPC packages are built on top of unreliable com-</text>
+<text top="632" left="129" width="432" height="14" font="2">munication layers, such as UDP. Doing so enables a more efficient RPC</text>
+<text top="647" left="129" width="432" height="14" font="2">layer, but does add the responsibility of providing reliability to the RPC</text>
+<text top="662" left="129" width="432" height="14" font="2">system. The RPC layer achieves the desired level of responsibility by us-</text>
+<text top="677" left="129" width="432" height="14" font="2">ing timeout/retry and acknowledgments much like we described above.</text>
+<text top="692" left="129" width="432" height="14" font="2">By using some form of sequence numbering, the communication layer</text>
+<text top="707" left="129" width="432" height="14" font="2">can guarantee that each RPC takes place exactly once (in the case of no</text>
+<text top="722" left="129" width="338" height="14" font="2">failure), or at most once (in the case where failure arises).</text>
+<text top="747" left="129" width="86" height="15" font="18"><b>Other Issues</b></text>
+<text top="766" left="129" width="432" height="14" font="2">There are some other issues an RPC run-time must handle as well. For</text>
+<text top="781" left="129" width="432" height="14" font="2">example, what happens when a remote call takes a long time to com-</text>
+<text top="796" left="129" width="432" height="14" font="2">plete? Given our timeout machinery, a long-running remote call might</text>
+<text top="811" left="129" width="432" height="14" font="2">appear as a failure to a client, thus triggering a retry, and thus the need</text>
+<text top="826" left="129" width="432" height="14" font="2">for some care here. One solution is to use an explicit acknowledgment</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="2">S</text>
+<text top="98" left="179" width="45" height="11" font="4">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="148" left="189" width="51" height="14" font="2">Aside: T</text>
+<text top="150" left="241" width="16" height="11" font="4">HE</text>
+<text top="148" left="261" width="8" height="14" font="2">E</text>
+<text top="150" left="270" width="18" height="11" font="4">ND</text>
+<text top="148" left="288" width="4" height="14" font="2">-</text>
+<text top="150" left="293" width="16" height="11" font="4">TO</text>
+<text top="148" left="310" width="13" height="14" font="2">-E</text>
+<text top="150" left="324" width="18" height="11" font="4">ND</text>
+<text top="148" left="346" width="10" height="14" font="2">A</text>
+<text top="150" left="357" width="60" height="11" font="4">RGUMENT</text>
+<text top="163" left="87" width="23" height="14" font="2">The</text>
+<text top="163" left="113" width="130" height="13" font="3"><b>end-to-end argument</b></text>
+<text top="163" left="247" width="272" height="14" font="2">makes the case that the highest level in a sys-</text>
+<text top="178" left="87" width="432" height="14" font="2">tem, i.e., usually the application at “the end”, is ultimately the only lo-</text>
+<text top="193" left="87" width="432" height="14" font="2">cale within a layered system where certain functionality can truly be im-</text>
+<text top="208" left="87" width="432" height="14" font="2">plemented. In their landmark paper [SRC84], Saltzer et al. argue this</text>
+<text top="223" left="87" width="432" height="14" font="2">through an excellent example: reliable file transfer between two ma-</text>
+<text top="238" left="87" width="302" height="14" font="2">chines. If you want to transfer a file from machine</text>
+<text top="238" left="393" width="10" height="14" font="13">A</text>
+<text top="238" left="408" width="66" height="14" font="2">to machine</text>
+<text top="238" left="478" width="10" height="14" font="13">B</text>
+<text top="238" left="489" width="30" height="14" font="2">, and</text>
+<text top="253" left="87" width="240" height="14" font="2">make sure that the bytes that end up on</text>
+<text top="253" left="331" width="10" height="14" font="13">B</text>
+<text top="253" left="346" width="173" height="14" font="2">are exactly the same as those</text>
+<text top="268" left="87" width="84" height="14" font="2">that began on</text>
+<text top="268" left="176" width="10" height="14" font="13">A</text>
+<text top="268" left="186" width="333" height="14" font="2">, you must have an “end-to-end” check of this; lower-</text>
+<text top="283" left="87" width="432" height="14" font="2">level reliable machinery, e.g., in the network or disk, provides no such</text>
+<text top="298" left="87" width="63" height="14" font="2">guarantee.</text>
+<text top="315" left="87" width="432" height="14" font="2">The contrast is an approach which tries to solve the reliable-file-transfer</text>
+<text top="330" left="87" width="432" height="14" font="2">problem by adding reliability to lower layers of the system. For example,</text>
+<text top="345" left="87" width="432" height="14" font="2">say we build a reliable communication protocol and use it to build our</text>
+<text top="360" left="87" width="432" height="14" font="2">reliable file transfer. The communication protocol guarantees that every</text>
+<text top="375" left="87" width="432" height="14" font="2">byte sent by a sender will be received in order by the receiver, say us-</text>
+<text top="390" left="87" width="432" height="14" font="2">ing timeout/retry, acknowledgments, and sequence numbers. Unfortu-</text>
+<text top="405" left="87" width="432" height="14" font="2">nately, using such a protocol does not a reliable file transfer make; imag-</text>
+<text top="420" left="87" width="432" height="14" font="2">ine the bytes getting corrupted in sender memory before the communi-</text>
+<text top="435" left="87" width="432" height="14" font="2">cation even takes place, or something bad happening when the receiver</text>
+<text top="449" left="87" width="432" height="14" font="2">writes the data to disk. In those cases, even though the bytes were deliv-</text>
+<text top="464" left="87" width="432" height="14" font="2">ered reliably across the network, our file transfer was ultimately not reli-</text>
+<text top="479" left="87" width="432" height="14" font="2">able. To build a reliable file transfer, one must include end-to-end checks</text>
+<text top="494" left="87" width="432" height="14" font="2">of reliability, e.g., after the entire transfer is complete, read back the file</text>
+<text top="509" left="87" width="432" height="14" font="2">on the receiver disk, compute a checksum, and compare that checksum</text>
+<text top="524" left="87" width="184" height="14" font="2">to that of the file on the sender.</text>
+<text top="541" left="87" width="432" height="14" font="2">The corollary to this maxim is that sometimes having lower layers pro-</text>
+<text top="556" left="87" width="432" height="14" font="2">vide extra functionality can indeed improve system performance or oth-</text>
+<text top="571" left="87" width="432" height="14" font="2">erwise optimize a system. Thus, you should not rule out having such</text>
+<text top="586" left="87" width="432" height="14" font="2">machinery at a lower-level in a system; rather, you should carefully con-</text>
+<text top="601" left="87" width="432" height="14" font="2">sider the utility of such machinery, given its eventual usage in an overall</text>
+<text top="616" left="87" width="131" height="14" font="2">system or application.</text>
+<text top="657" left="87" width="432" height="14" font="2">(from the receiver to sender) when the reply isn’t immediately generated;</text>
+<text top="672" left="87" width="432" height="14" font="2">this lets the client know the server received the request. Then, after some</text>
+<text top="687" left="87" width="432" height="14" font="2">time has passed, the client can periodically ask whether the server is still</text>
+<text top="702" left="87" width="432" height="14" font="2">working on the request; if the server keeps saying “yes”, the client should</text>
+<text top="717" left="87" width="432" height="14" font="2">be happy and continue to wait (after all, sometimes a procedure call can</text>
+<text top="732" left="87" width="216" height="14" font="2">take a long time to finish executing).</text>
+<text top="751" left="105" width="414" height="14" font="2">The run-time must also handle procedure calls with large arguments,</text>
+<text top="766" left="87" width="432" height="14" font="2">larger than what can fit into a single packet. Some lower-level network</text>
+<text top="781" left="87" width="208" height="14" font="2">protocols provide such sender-side</text>
+<text top="781" left="299" width="87" height="13" font="3"><b>fragmentation</b></text>
+<text top="781" left="389" width="130" height="14" font="2">(of larger packets into</text>
+<text top="796" left="87" width="231" height="14" font="2">a set of smaller ones) and receiver-side</text>
+<text top="796" left="321" width="69" height="13" font="3"><b>reassembly</b></text>
+<text top="796" left="394" width="125" height="14" font="2">(of smaller parts into</text>
+<text top="811" left="87" width="432" height="14" font="2">one larger logical whole); if not, the RPC run-time may have to implement</text>
+<text top="826" left="87" width="432" height="14" font="2">such functionality itself. See Birrell and Nelson’s paper for details [BN84].</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="423" width="10" height="14" font="2">D</text>
+<text top="98" left="434" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="4">YSTEMS</text>
+<text top="139" left="147" width="275" height="14" font="2">One issue that many systems handle is that of</text>
+<text top="139" left="426" width="84" height="13" font="3"><b>byte ordering</b></text>
+<text top="139" left="509" width="52" height="14" font="2">. As you</text>
+<text top="154" left="129" width="361" height="14" font="2">may know, some machines store values in what is known as</text>
+<text top="154" left="494" width="67" height="13" font="3"><b>big endian</b></text>
+<text top="169" left="129" width="177" height="14" font="2">ordering, whereas others use</text>
+<text top="169" left="311" width="77" height="13" font="3"><b>little endian</b></text>
+<text top="169" left="392" width="169" height="14" font="2">ordering. Big endian stores</text>
+<text top="183" left="129" width="432" height="14" font="2">bytes (say, of an integer) from most significant to least significant bits,</text>
+<text top="198" left="129" width="432" height="14" font="2">much like Arabic numerals; little endian does the opposite. Both are</text>
+<text top="213" left="129" width="432" height="14" font="2">equally valid ways of storing numeric information; the question here is</text>
+<text top="228" left="129" width="254" height="14" font="2">how to communicate between machines of</text>
+<text top="228" left="386" width="45" height="14" font="12">different</text>
+<text top="228" left="435" width="70" height="14" font="2">endianness.</text>
+<text top="243" left="147" width="414" height="14" font="2">RPC packages often handle this by providing a well-defined endi-</text>
+<text top="258" left="129" width="397" height="14" font="2">anness within their message formats. In Sun’s RPC package, the</text>
+<text top="258" left="531" width="30" height="13" font="3"><b>XDR</b></text>
+<text top="273" left="129" width="4" height="14" font="2">(</text>
+<text top="273" left="133" width="183" height="13" font="3"><b>eXternal Data Representation</b></text>
+<text top="273" left="316" width="244" height="14" font="2">) layer provides this functionality. If the</text>
+<text top="288" left="129" width="432" height="14" font="2">machine sending or receiving a message matches the endianness of XDR,</text>
+<text top="303" left="129" width="432" height="14" font="2">messages are just sent and received as expected. If, however, the machine</text>
+<text top="318" left="129" width="432" height="14" font="2">communicating has a different endianness, each piece of information in</text>
+<text top="333" left="129" width="432" height="14" font="2">the message must be converted. Thus, the difference in endianness can</text>
+<text top="348" left="129" width="183" height="14" font="2">have a small performance cost.</text>
+<text top="363" left="147" width="414" height="14" font="2">A final issue is whether to expose the asynchronous nature of com-</text>
+<text top="378" left="129" width="432" height="14" font="2">munication to clients, thus enabling some performance optimizations.</text>
+<text top="393" left="129" width="216" height="14" font="2">Specifically, typical RPCs are made</text>
+<text top="393" left="351" width="90" height="13" font="3"><b>synchronously</b></text>
+<text top="393" left="441" width="119" height="14" font="2">, i.e., when a client</text>
+<text top="408" left="129" width="432" height="14" font="2">issues the procedure call, it must wait for the procedure call to return</text>
+<text top="423" left="129" width="432" height="14" font="2">before continuing. Because this wait can be long, and because the client</text>
+<text top="438" left="129" width="432" height="14" font="2">may have other work it could be doing, some RPC packages enable you</text>
+<text top="452" left="129" width="109" height="14" font="2">to invoke an RPC</text>
+<text top="453" left="243" width="97" height="13" font="3"><b>asynchronously</b></text>
+<text top="452" left="340" width="221" height="14" font="2">. When an asynchronous RPC is is-</text>
+<text top="467" left="129" width="432" height="14" font="2">sued, the RPC package sends the request and returns immediately; the</text>
+<text top="482" left="129" width="432" height="14" font="2">client is then free to do other work, such as call other RPCs or other use-</text>
+<text top="497" left="129" width="432" height="14" font="2">ful computation. The client at some point will want to see the results of</text>
+<text top="512" left="129" width="432" height="14" font="2">the asynchronous RPC; it thus calls back into the RPC layer, telling it to</text>
+<text top="527" left="129" width="432" height="14" font="2">wait for outstanding RPCs to complete, at which point return arguments</text>
+<text top="542" left="129" width="96" height="14" font="2">can be accessed.</text>
+<text top="574" left="97" width="105" height="17" font="5">48.6 Summary</text>
+<text top="598" left="147" width="414" height="14" font="2">We have seen the introduction of a new topic, distributed systems, and</text>
+<text top="613" left="129" width="432" height="14" font="2">its major issue: how to handle failure which is now a commonplace event.</text>
+<text top="628" left="129" width="432" height="14" font="2">As they say inside of Google, when you have just your desktop machine,</text>
+<text top="643" left="129" width="432" height="14" font="2">failure is rare; when you’re in a data center with thousands of machines,</text>
+<text top="658" left="129" width="432" height="14" font="2">failure is happening all the time. The key to any distributed system is</text>
+<text top="673" left="129" width="184" height="14" font="2">how you deal with that failure.</text>
+<text top="688" left="147" width="414" height="14" font="2">We have also seen that communication forms the heart of any dis-</text>
+<text top="703" left="129" width="432" height="14" font="2">tributed system. A common abstraction of that communication is found</text>
+<text top="718" left="129" width="432" height="14" font="2">in remote procedure call (RPC), which enables clients to make remote</text>
+<text top="733" left="129" width="432" height="14" font="2">calls on servers; the RPC package handles all of the gory details, includ-</text>
+<text top="748" left="129" width="432" height="14" font="2">ing timeout/retry and acknowledgment, in order to deliver a service that</text>
+<text top="763" left="129" width="221" height="14" font="2">closely mirrors a local procedure call.</text>
+<text top="777" left="147" width="414" height="14" font="2">The best way to really understand an RPC package is of course to use</text>
+<text top="792" left="129" width="343" height="14" font="2">one yourself. Sun’s RPC system, using the stub compiler</text>
+<text top="793" left="476" width="48" height="11" font="8">rpcgen</text>
+<text top="792" left="525" width="36" height="14" font="2">, is an</text>
+<text top="807" left="129" width="432" height="14" font="2">older one; Google’s gRPC and Apache Thrift are modern takes on the</text>
+<text top="822" left="129" width="312" height="14" font="2">same. Try one out, and see what all the fuss is about.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="16" family="XHLBMD+URWPalladioL" color="#000000"/>
+	<fontspec id="20" size="10" family="YUKZNX+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="2">S</text>
+<text top="98" left="179" width="45" height="11" font="4">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="137" left="87" width="82" height="16" font="19"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="7">[A70] “The ALOHA System — Another Alternative for Computer Communications” by Nor-</text>
+<text top="177" left="87" width="270" height="11" font="7">man Abramson. The 1970 Fall Joint Computer Conference.</text>
+<text top="177" left="361" width="158" height="11" font="20">The ALOHA network pioneered some</text>
+<text top="189" left="87" width="432" height="11" font="20">basic concepts in networking, including exponential back-off and retransmit, which formed the basis for</text>
+<text top="201" left="87" width="246" height="11" font="20">communication in shared-bus Ethernet networks for years.</text>
+<text top="218" left="87" width="432" height="11" font="7">[BN84] “Implementing Remote Procedure Calls” by Andrew D. Birrell, Bruce Jay Nelson.</text>
+<text top="229" left="87" width="184" height="11" font="7">ACM TOCS, Volume 2:1, February 1984.</text>
+<text top="229" left="275" width="244" height="11" font="20">The foundational RPC system upon which all others build.</text>
+<text top="241" left="87" width="265" height="11" font="20">Yes, another pioneering effort from our friends at Xerox PARC.</text>
+<text top="258" left="87" width="432" height="11" font="7">[MK09] “The Effectiveness of Checksums for Embedded Control Networks” by Theresa C.</text>
+<text top="270" left="87" width="432" height="11" font="7">Maxino and Philip J. Koopman. IEEE Transactions on Dependable and Secure Computing,</text>
+<text top="282" left="87" width="73" height="11" font="7">6:1, January ’09.</text>
+<text top="282" left="164" width="355" height="11" font="20">A nice overview of basic checksum machinery and some performance and robustness</text>
+<text top="294" left="87" width="115" height="11" font="20">comparisons between them.</text>
+<text top="310" left="87" width="432" height="11" font="7">[LH89] “Memory Coherence in Shared Virtual Memory Systems” by Kai Li and Paul Hudak.</text>
+<text top="322" left="87" width="159" height="11" font="7">ACM TOCS, 7:4, November 1989.</text>
+<text top="322" left="252" width="267" height="11" font="20">The introduction of software-based shared memory via virtual</text>
+<text top="334" left="87" width="327" height="11" font="20">memory. An intriguing idea for sure, but not a lasting or good one in the end.</text>
+<text top="350" left="87" width="432" height="11" font="7">[SK09] “Principles of Computer System Design” by Jerome H. Saltzer and M. Frans Kaashoek.</text>
+<text top="362" left="87" width="119" height="11" font="7">Morgan-Kaufmann, 2009.</text>
+<text top="362" left="210" width="309" height="11" font="20">An excellent book on systems, and a must for every bookshelf. One of the</text>
+<text top="374" left="87" width="194" height="11" font="20">few terrific discussions on naming we’ve seen.</text>
+<text top="390" left="87" width="432" height="11" font="7">[SRC84] “End-To-End Arguments in System Design” by Jerome H. Saltzer, David P. Reed,</text>
+<text top="402" left="87" width="232" height="11" font="7">David D. Clark. ACM TOCS, 2:4, November 1984.</text>
+<text top="402" left="322" width="197" height="11" font="20">A beautiful discussion of layering, abstraction,</text>
+<text top="414" left="87" width="290" height="11" font="20">and where functionality must ultimately reside in computer systems.</text>
+<text top="430" left="87" width="371" height="11" font="7">[VJ88] “Congestion Avoidance and Control” by Van Jacobson. SIGCOMM ’88 .</text>
+<text top="430" left="463" width="56" height="11" font="20">A pioneering</text>
+<text top="442" left="87" width="432" height="11" font="20">paper on how clients should adjust to perceived network congestion; definitely one of the key pieces of</text>
+<text top="454" left="87" width="432" height="11" font="20">technology underlying the Internet, and a must read for anyone serious about systems, and for Van</text>
+<text top="466" left="87" width="302" height="11" font="20">Jacobson’s relatives because well relatives should read all of your papers.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="423" width="10" height="14" font="2">D</text>
+<text top="98" left="434" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="4">YSTEMS</text>
+<text top="137" left="129" width="139" height="16" font="19"><b>Homework (Code)</b></text>
+<text top="168" left="147" width="414" height="14" font="2">In this section, we’ll write some simple communication code to get</text>
+<text top="183" left="129" width="290" height="14" font="2">you familiar with the task of doing so. Have fun!</text>
+<text top="217" left="129" width="70" height="15" font="18"><b>Questions</b></text>
+<text top="243" left="146" width="414" height="14" font="2">1. Using the code provided in the chapter, build a simple UDP-based</text>
+<text top="258" left="163" width="397" height="14" font="2">server and client. The server should receive messages from the</text>
+<text top="273" left="163" width="397" height="14" font="2">client, and reply with an acknowledgment. In this first attempt,</text>
+<text top="288" left="163" width="397" height="14" font="2">do not add any retransmission or robustness (assume that commu-</text>
+<text top="303" left="163" width="397" height="14" font="2">nication works perfectly). Run this on a single machine for testing;</text>
+<text top="318" left="163" width="228" height="14" font="2">later, run it on two different machines.</text>
+<text top="333" left="146" width="150" height="14" font="2">2. Turn your code into a</text>
+<text top="333" left="301" width="142" height="13" font="3"><b>communication library</b></text>
+<text top="333" left="443" width="118" height="14" font="2">. Specifically, make</text>
+<text top="348" left="163" width="397" height="14" font="2">your own API, with send and receive calls, as well as other API</text>
+<text top="363" left="163" width="397" height="14" font="2">calls as needed. Rewrite your client and server to use your library</text>
+<text top="378" left="163" width="159" height="14" font="2">instead of raw socket calls.</text>
+<text top="393" left="146" width="414" height="14" font="2">3. Add reliable communication to your burgeoning communication li-</text>
+<text top="408" left="163" width="118" height="14" font="2">brary, in the form of</text>
+<text top="408" left="284" width="81" height="13" font="3"><b>timeout/retry</b></text>
+<text top="408" left="365" width="196" height="14" font="2">. Specifically, your library should</text>
+<text top="423" left="163" width="397" height="14" font="2">make a copy of any message that it is going to send. When sending</text>
+<text top="438" left="163" width="397" height="14" font="2">it, it should start a timer, so it can track how long it has been since</text>
+<text top="452" left="163" width="337" height="14" font="2">the message was sent. On the receiver, the library should</text>
+<text top="453" left="504" width="57" height="13" font="3"><b>acknowl-</b></text>
+<text top="467" left="163" width="29" height="13" font="3"><b>edge</b></text>
+<text top="467" left="196" width="253" height="14" font="2">received messages. The client send should</text>
+<text top="467" left="453" width="34" height="13" font="3"><b>block</b></text>
+<text top="467" left="491" width="70" height="14" font="2">when send-</text>
+<text top="482" left="163" width="397" height="14" font="2">ing, i.e., it should wait until the message has been acknowledged</text>
+<text top="497" left="163" width="397" height="14" font="2">before returning. It should also be willing to retry sending indef-</text>
+<text top="512" left="163" width="397" height="14" font="2">initely. The maximum message size should be that of the largest</text>
+<text top="527" left="163" width="397" height="14" font="2">single message you can send with UDP. Finally, be sure to perform</text>
+<text top="542" left="163" width="397" height="14" font="2">timeout/retry efficiently by putting the caller to sleep until either</text>
+<text top="557" left="163" width="283" height="14" font="2">an ack arrives or the transmission times out; do</text>
+<text top="557" left="450" width="18" height="14" font="12">not</text>
+<text top="557" left="471" width="90" height="14" font="2">spin and waste</text>
+<text top="572" left="163" width="54" height="14" font="2">the CPU!</text>
+<text top="587" left="146" width="414" height="14" font="2">4. Make your library more efficient and feature-filled. First, add very-</text>
+<text top="602" left="163" width="400" height="14" font="2">large message transfer. Specifically, although the network limit max-</text>
+<text top="617" left="163" width="397" height="14" font="2">imum message size, your library should take a message of arbitrar-</text>
+<text top="632" left="163" width="397" height="14" font="2">ily large size and transfer it from client to server. The client should</text>
+<text top="647" left="163" width="397" height="14" font="2">transmit these large messages in pieces to the server; the server-side</text>
+<text top="662" left="163" width="397" height="14" font="2">library code should assemble received fragments into the contigu-</text>
+<text top="677" left="163" width="397" height="14" font="2">ous whole, and pass the single large buffer to the waiting server</text>
+<text top="692" left="163" width="31" height="14" font="2">code.</text>
+<text top="707" left="146" width="414" height="14" font="2">5. Do the above again, but with high performance. Instead of sending</text>
+<text top="721" left="163" width="397" height="14" font="2">each fragment one at a time, you should rapidly send many pieces,</text>
+<text top="736" left="163" width="397" height="14" font="2">thus allowing the network to be much more highly utilized. To do</text>
+<text top="751" left="163" width="397" height="14" font="2">so, carefully mark each piece of the transfer so that the re-assembly</text>
+<text top="766" left="163" width="305" height="14" font="2">on the receiver side does not scramble the message.</text>
+<text top="781" left="146" width="417" height="14" font="2">6. A final implementation challenge: asynchronous message send with</text>
+<text top="796" left="163" width="397" height="14" font="2">in-order delivery. That is, the client should be able to repeatedly call</text>
+<text top="811" left="163" width="397" height="14" font="2">send to send one message after the other; the receiver should call re-</text>
+<text top="826" left="163" width="397" height="14" font="2">ceive and get each message in order, reliably; many messages from</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">D</text>
+<text top="98" left="98" width="69" height="11" font="4">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="2">S</text>
+<text top="98" left="179" width="45" height="11" font="4">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="139" left="122" width="397" height="14" font="2">the sender should be able to be in flight concurrently. Also add a</text>
+<text top="154" left="122" width="397" height="14" font="2">sender-side call that enables a client to wait for all outstanding mes-</text>
+<text top="169" left="122" width="158" height="14" font="2">sages to be acknowledged.</text>
+<text top="183" left="105" width="414" height="14" font="2">7. Now, one more pain point: measurement. Measure the bandwidth</text>
+<text top="198" left="122" width="397" height="14" font="2">of each of your approaches; how much data can you transfer be-</text>
+<text top="213" left="122" width="397" height="14" font="2">tween two different machines, at what rate? Also measure latency:</text>
+<text top="228" left="122" width="397" height="14" font="2">for single packet send and acknowledgment, how quickly does it</text>
+<text top="243" left="122" width="397" height="14" font="2">finish? Finally, do your numbers look reasonable? What did you</text>
+<text top="258" left="122" width="397" height="14" font="2">expect? How can you better set your expectations so as to know if</text>
+<text top="273" left="122" width="317" height="14" font="2">there is a problem, or that your code is working well?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+</pdf2xml>

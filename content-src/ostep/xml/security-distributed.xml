@@ -1,0 +1,1403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="HMNUIU+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="HMNUIU+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="15" family="WHQVOB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="15" family="BQCYYY+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="16" family="WHQVOB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="13" family="WHQVOB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="11" family="WHQVOB+URWPalladioL-Roma" color="#000000"/>
+<text top="203" left="523" width="34" height="30" font="0">57</text>
+<text top="275" left="254" width="264" height="21" font="1">Distributed System Security</text>
+<text top="316" left="300" width="74" height="15" font="2">Chapter by</text>
+<text top="316" left="378" width="141" height="15" font="3"><b>Peter Reiher (UCLA)</b></text>
+<text top="356" left="55" width="125" height="17" font="4">57.1 Introduction</text>
+<text top="388" left="105" width="414" height="14" font="5">An operating system can only control its own machine’s resources.</text>
+<text top="403" left="87" width="432" height="14" font="5">Thus, operating systems will have challenges in providing security in dis-</text>
+<text top="418" left="87" width="432" height="14" font="5">tributed systems, where more than one machine must cooperate. There</text>
+<text top="433" left="87" width="140" height="14" font="5">are two large problems:</text>
+<text top="468" left="107" width="412" height="14" font="5">• The other machines in the distributed system might not properly</text>
+<text top="483" left="122" width="397" height="14" font="5">implement the security policies you want, or they might be adver-</text>
+<text top="498" left="122" width="397" height="14" font="5">saries impersonating trusted partners. We cannot control remote</text>
+<text top="513" left="122" width="397" height="14" font="5">systems, but we still have to be able to trust validity of the creden-</text>
+<text top="528" left="122" width="200" height="14" font="5">tials and capabilities they give us.</text>
+<text top="544" left="107" width="412" height="14" font="5">• Machines in a distributed system communicate across a network</text>
+<text top="559" left="122" width="400" height="14" font="5">that none of them fully control and that, generally, cannot be trusted.</text>
+<text top="574" left="122" width="397" height="14" font="5">Adversaries often have equal access to that network and can forge,</text>
+<text top="589" left="122" width="397" height="14" font="5">copy, replay, alter, destroy, and delay our messages, and generally</text>
+<text top="604" left="122" width="278" height="14" font="5">interfere with our attempts to use the network.</text>
+<text top="639" left="105" width="414" height="14" font="5">As suggested earlier, cryptography will be the major tool we use here,</text>
+<text top="654" left="87" width="432" height="14" font="5">but we also said cryptography was hard to get right. That makes it sound</text>
+<text top="669" left="87" width="432" height="14" font="5">like the perfect place to use carefully designed standard tools, rather than</text>
+<text top="684" left="87" width="425" height="14" font="5">to expect everyone to build their own. That’s precisely correct. As such:</text>
+<text top="730" left="103" width="8" height="14" font="5">T</text>
+<text top="732" left="111" width="16" height="11" font="6">HE</text>
+<text top="730" left="132" width="10" height="14" font="5">C</text>
+<text top="732" left="142" width="24" height="11" font="6">RUX</text>
+<text top="730" left="167" width="19" height="14" font="5">: H</text>
+<text top="732" left="187" width="20" height="11" font="6">OW</text>
+<text top="730" left="211" width="8" height="14" font="5">T</text>
+<text top="732" left="219" width="8" height="11" font="6">O</text>
+<text top="730" left="232" width="8" height="14" font="5">P</text>
+<text top="732" left="241" width="46" height="11" font="6">ROTECT</text>
+<text top="730" left="291" width="10" height="14" font="5">D</text>
+<text top="732" left="302" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="730" left="375" width="7" height="14" font="5">S</text>
+<text top="732" left="383" width="39" height="11" font="6">YSTEM</text>
+<text top="730" left="426" width="11" height="14" font="5">O</text>
+<text top="732" left="437" width="66" height="11" font="6">PERATIONS</text>
+<text top="745" left="105" width="414" height="14" font="5">How can we secure a system spanning more than one machine? What</text>
+<text top="760" left="87" width="432" height="14" font="5">tools are available to help us protect such systems? How do we use them</text>
+<text top="775" left="87" width="432" height="14" font="5">properly? What are the areas in using the tools that require us to be care-</text>
+<text top="790" left="87" width="116" height="14" font="5">ful and thoughtful?</text>
+<text top="862" left="300" width="7" height="14" font="5">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="13" family="DDOWVZ+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="8" size="9" family="WHQVOB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="7" family="WHQVOB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="WHQVOB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="11" size="12" family="WHQVOB+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="5">2</text>
+<text top="96" left="367" width="10" height="14" font="5">D</text>
+<text top="98" left="378" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="137" left="97" width="229" height="17" font="4">57.2 The Role of Authentication</text>
+<text top="168" left="147" width="414" height="14" font="5">How can we handle our uncertainty about whether our partners in</text>
+<text top="183" left="129" width="432" height="14" font="5">a distributed system are going to enforce our security policies? In most</text>
+<text top="198" left="129" width="432" height="14" font="5">cases, we can’t do much. At best, we can try to arrange to agree on poli-</text>
+<text top="213" left="129" width="432" height="14" font="5">cies and hope everyone follows through on those agreements. There are</text>
+<text top="228" left="129" width="432" height="14" font="5">some special cases where we can get high-quality evidence that our part-</text>
+<text top="243" left="129" width="432" height="14" font="5">ners have behaved properly, but that’s not easy, in general. For example,</text>
+<text top="258" left="129" width="432" height="14" font="5">how can we know that they are using full disk encryption, or that they</text>
+<text top="273" left="129" width="432" height="14" font="5">have carefully wiped an encryption key we are finished using, or that</text>
+<text top="288" left="129" width="432" height="14" font="5">they have set access controls on the local copies of their files properly?</text>
+<text top="302" left="129" width="232" height="14" font="5">They can say they did, but how can we</text>
+<text top="302" left="364" width="29" height="14" font="7">know</text>
+<text top="302" left="393" width="6" height="14" font="5">?</text>
+<text top="319" left="147" width="414" height="14" font="5">Generally, we can’t. But you’re used to that. In the real world, your</text>
+<text top="334" left="129" width="432" height="14" font="5">friends and relatives know some secrets about you, and they might have</text>
+<text top="349" left="129" width="432" height="14" font="5">keys to get into your home, and if you loan them your car you’re fairly</text>
+<text top="364" left="129" width="432" height="14" font="5">sure you’ll get it back. That’s not so much because you have perfect mech-</text>
+<text top="379" left="129" width="432" height="14" font="5">anisms to prevent those trusted parties from behaving badly, but because</text>
+<text top="394" left="129" width="432" height="14" font="5">you are pretty sure they won’t. If you’re wrong, perhaps you can de-</text>
+<text top="409" left="129" width="432" height="14" font="5">tect that they haven’t behaved well and take compensating actions (like</text>
+<text top="424" left="129" width="432" height="14" font="5">changing your locks or calling the police to report your car stolen). We’ll</text>
+<text top="439" left="129" width="432" height="14" font="5">need to rely on similar approaches in distributed computer systems. We</text>
+<text top="454" left="129" width="432" height="14" font="5">will simply have to trust that some parties will behave well. In some</text>
+<text top="469" left="129" width="432" height="14" font="5">cases, we can detect when they don’t and adjust our trust in the parties</text>
+<text top="484" left="129" width="340" height="14" font="5">accordingly, and maybe take other compensating actions.</text>
+<text top="500" left="147" width="414" height="14" font="5">Of course, in the cyber world, our actions are at a distance over a net-</text>
+<text top="515" left="129" width="432" height="14" font="5">work, and all we see are bits going out and coming in on the network.</text>
+<text top="530" left="129" width="432" height="14" font="5">For a trust-based solution to work, we have to be quite sure that the bits</text>
+<text top="545" left="129" width="432" height="14" font="5">we send out can be verified by our buddies as truly coming from us, and</text>
+<text top="560" left="129" width="432" height="14" font="5">we have to be sure that the bits coming in really were created by them.</text>
+<text top="575" left="129" width="432" height="14" font="5">That’s a job for authentication. As suggested in the earlier authentication</text>
+<text top="590" left="129" width="432" height="14" font="5">chapter, when working over a network, we need to authenticate based on</text>
+<text top="605" left="129" width="432" height="14" font="5">a bundle of bits. Most commonly, we use a form of authentication based</text>
+<text top="620" left="129" width="432" height="14" font="5">on what you know. Now, think back to the earlier chapters. What might</text>
+<text top="635" left="129" width="432" height="14" font="5">someone running on a remote operating system know that no one else</text>
+<text top="650" left="129" width="352" height="14" font="5">knows? How about a password? How about a private key?</text>
+<text top="666" left="147" width="414" height="14" font="5">Most of our distributed system authentication will rely on one of these</text>
+<text top="681" left="129" width="432" height="14" font="5">two elements. Either you require the remote machine to provide you</text>
+<text top="696" left="129" width="432" height="14" font="5">with a password, or you require it to provide evidence using a private</text>
+<text top="714" left="129" width="192" height="14" font="5">key stored only on that machine</text>
+<text top="711" left="321" width="4" height="9" font="8">1</text>
+<text top="714" left="326" width="234" height="14" font="5">. In each case, you need to know some-</text>
+<text top="729" left="129" width="432" height="14" font="5">thing to check the authentication: either the password (or, better, a cryp-</text>
+<text top="744" left="129" width="360" height="14" font="5">tographic hash of the password plus a salt) or the public key.</text>
+<text top="778" left="149" width="4" height="8" font="9">1</text>
+<text top="780" left="154" width="407" height="11" font="10">We occasionally use other methods, such as smart cards or remote biometric readers.</text>
+<text top="792" left="129" width="432" height="11" font="10">They are less common in today’s systems, though. If you understand how we use passwords</text>
+<text top="804" left="129" width="432" height="11" font="10">and public key cryptography for distributed system authentication, you can probably figure</text>
+<text top="816" left="129" width="432" height="11" font="10">out how to make proper use of these other techniques, too. If you don’t, you’ll be better off</text>
+<text top="828" left="129" width="357" height="11" font="10">figuring out the common techniques before moving to the less common ones.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">D</text>
+<text top="98" left="98" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="5">S</text>
+<text top="98" left="179" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="222" width="7" height="14" font="5">S</text>
+<text top="98" left="230" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="512" width="7" height="14" font="5">3</text>
+<text top="139" left="105" width="414" height="14" font="5">When is each appropriate? Passwords tend to be useful if there are a</text>
+<text top="154" left="87" width="432" height="14" font="5">vast number of parties who need to authenticate themselves to one party.</text>
+<text top="169" left="87" width="432" height="14" font="5">Public keys tend to be useful if there’s one party who needs to authen-</text>
+<text top="183" left="87" width="432" height="14" font="5">ticate himself to a vast number of parties. Why? With a password, the</text>
+<text top="198" left="87" width="432" height="14" font="5">authentication provides evidence that somebody knows a password. If</text>
+<text top="213" left="87" width="432" height="14" font="5">you want to know exactly who that is (which is usually important), only</text>
+<text top="228" left="87" width="432" height="14" font="5">the party authenticating and the party checking can know it. With a pub-</text>
+<text top="243" left="87" width="432" height="14" font="5">lic key, many parties can know the key, but only one party who knows</text>
+<text top="258" left="87" width="432" height="14" font="5">the matching private key can authenticate himself. So we tend to use</text>
+<text top="273" left="87" width="432" height="14" font="5">both mechanisms, but for different cases. When a web site authenticates</text>
+<text top="288" left="87" width="432" height="14" font="5">itself to a user, it’s done with PK cryptography. By distributing one single</text>
+<text top="303" left="87" width="432" height="14" font="5">public key (to vast numbers of users), the web site can be authenticated</text>
+<text top="318" left="87" width="432" height="14" font="5">by all its users. The web site need not bother keeping separate authen-</text>
+<text top="333" left="87" width="432" height="14" font="5">tication information to authenticate itself to each user. When that user</text>
+<text top="348" left="87" width="432" height="14" font="5">authenticates itself to the web site, it’s done with a password. Each user</text>
+<text top="363" left="87" width="432" height="14" font="5">must be separately authenticated to the web site, so we require a unique</text>
+<text top="378" left="87" width="432" height="14" font="5">piece of identifying information for that user, preferably something that’s</text>
+<text top="393" left="87" width="432" height="14" font="5">easy for a person to use. Setting up and distributing public keys is hard,</text>
+<text top="408" left="87" width="333" height="14" font="5">while setting up individual passwords is relatively easy.</text>
+<text top="424" left="105" width="414" height="14" font="5">How, practically, do we use each of these authentication mechanisms</text>
+<text top="439" left="87" width="432" height="14" font="5">in a distributed system? If we want a remote partner to authenticate it-</text>
+<text top="453" left="87" width="432" height="14" font="5">self via passwords, we will require it to provide us with that password,</text>
+<text top="468" left="87" width="432" height="14" font="5">which we will check. We’ll need to encrypt the transport of the password</text>
+<text top="483" left="87" width="432" height="14" font="5">across the network if we do that; otherwise anyone eavesdropping on the</text>
+<text top="498" left="87" width="432" height="14" font="5">network (which is easy for many wireless networks) will readily learn</text>
+<text top="513" left="87" width="432" height="14" font="5">passwords sent unencrypted. Encrypting the password will require that</text>
+<text top="528" left="87" width="432" height="14" font="5">we already have either a shared symmetric key or our partner’s public</text>
+<text top="543" left="87" width="432" height="14" font="5">key. Let’s concentrate now on how we get that public key, either to use it</text>
+<text top="558" left="87" width="411" height="14" font="5">directly or set up the cryptography to protect the password in transit.</text>
+<text top="574" left="105" width="414" height="14" font="5">We’ll spend the rest of the chapter on securing the network connec-</text>
+<text top="589" left="87" width="432" height="14" font="5">tion, but please don’t forget that even if you secure the network perfectly,</text>
+<text top="604" left="87" width="432" height="14" font="5">you still face the major security challenge of the uncontrolled site you’re</text>
+<text top="619" left="87" width="432" height="14" font="5">interacting with on the other side of the network. If your compromised</text>
+<text top="634" left="87" width="432" height="14" font="5">partner attacks you, it will offer little consolation that the attack was au-</text>
+<text top="649" left="87" width="160" height="14" font="5">thenticated and encrypted.</text>
+<text top="683" left="55" width="405" height="17" font="4">57.3 Public Key Authentication For Distributed Systems</text>
+<text top="706" left="105" width="414" height="14" font="5">The public key doesn’t need to be secret, but we need to be sure it re-</text>
+<text top="721" left="87" width="432" height="14" font="5">ally belongs to our partner. If we have a face-to-face meeting, our partner</text>
+<text top="736" left="87" width="432" height="14" font="5">can directly give us a public key in some form or another, in which case</text>
+<text top="751" left="87" width="432" height="14" font="5">we can be pretty sure it’s the right one. That’s limiting, though, since</text>
+<text top="765" left="87" width="432" height="14" font="5">we often interact with partners whom we never see face to face. For that</text>
+<text top="783" left="87" width="243" height="14" font="5">matter, whose “face” belongs to Amazon</text>
+<text top="780" left="330" width="4" height="9" font="8">2</text>
+<text top="783" left="338" width="65" height="14" font="5">or Google?</text>
+<text top="814" left="107" width="4" height="8" font="9">2</text>
+<text top="816" left="112" width="407" height="11" font="10">How successful would Amazon be if Jeff Bezos had to make an in-person visit to every</text>
+<text top="828" left="87" width="349" height="11" font="10">customer to deliver them Amazon’s public key? Answer: Not as successful.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="13" family="BQCYYY+URWPalladioL" color="#000000"/>
+	<fontspec id="13" size="13" family="AAXSLA+CMMI9" color="#000000"/>
+	<fontspec id="14" size="9" family="SBCRBP+CMSY6" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="5">4</text>
+<text top="96" left="367" width="10" height="14" font="5">D</text>
+<text top="98" left="378" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="139" left="147" width="414" height="14" font="5">Fortunately, we can use the fact that secrecy isn’t required to simply</text>
+<text top="154" left="129" width="432" height="14" font="5">create a bunch of bits containing the public key. Anyone who gets a copy</text>
+<text top="169" left="129" width="432" height="14" font="5">of the bits has the key. But how do they know for sure whose key it</text>
+<text top="183" left="129" width="432" height="14" font="5">is? What if some other trusted party known to everyone who needs to</text>
+<text top="198" left="129" width="432" height="14" font="5">authenticate our partner used their own public key to cryptographically</text>
+<text top="213" left="129" width="432" height="14" font="5">sign that bunch of bits, verifying that they do indeed belong to our part-</text>
+<text top="228" left="129" width="432" height="14" font="5">ner? If we could check that signature, we could then be sure that bunch</text>
+<text top="243" left="129" width="432" height="14" font="5">of bits really does represent our partner’s public key, at least to the extent</text>
+<text top="258" left="129" width="308" height="14" font="5">that we trust that third party who did the signature.</text>
+<text top="273" left="147" width="414" height="14" font="5">This technique is how we actually authenticate web sites and many</text>
+<text top="288" left="129" width="432" height="14" font="5">other entities on the Internet. Every time you browse the web or perform</text>
+<text top="303" left="129" width="432" height="14" font="5">any other web-based activity, you use it. The signed bundle of bits is</text>
+<text top="318" left="129" width="47" height="14" font="5">called a</text>
+<text top="318" left="181" width="59" height="13" font="12"><b>certificate</b></text>
+<text top="318" left="240" width="321" height="14" font="5">. Essentially, it contains information about the party</text>
+<text top="333" left="129" width="432" height="14" font="5">that owns the public key, the public key itself, and other information, such</text>
+<text top="348" left="129" width="432" height="14" font="5">as an expiration date. The entire set of information, including the public</text>
+<text top="363" left="129" width="432" height="14" font="5">key, is run through a cryptographic hash, and the result is encrypted with</text>
+<text top="378" left="129" width="432" height="14" font="5">the trusted third party’s private key, digitally signing the certificate. If</text>
+<text top="393" left="129" width="432" height="14" font="5">you obtain a copy of the certificate, and can check the signature, you can</text>
+<text top="408" left="129" width="432" height="14" font="5">learn someone else’s public key, even if you have never met or had any</text>
+<text top="423" left="129" width="432" height="14" font="5">direct interaction with them. In certain ways, it’s a beautiful technology</text>
+<text top="438" left="129" width="205" height="14" font="5">that empowers the whole Internet.</text>
+<text top="452" left="147" width="414" height="14" font="5">Let’s briefly go through an example, to solidify the concepts. Let’s</text>
+<text top="467" left="129" width="432" height="14" font="5">say Frobazz Inc. wants to obtain a certificate for its public key, which</text>
+<text top="482" left="129" width="10" height="14" font="5">is</text>
+<text top="483" left="143" width="21" height="12" font="13">KF</text>
+<text top="482" left="166" width="394" height="14" font="5">. Frobazz Inc. pays big bucks to Acmesign Co., a widely trusted</text>
+<text top="497" left="129" width="432" height="14" font="5">company whose business it is to sell certificates, to obtain a certificate</text>
+<text top="512" left="129" width="365" height="14" font="5">signed by AcmeSign. Such companies are commonly called</text>
+<text top="512" left="498" width="63" height="13" font="12"><b>Certificate</b></text>
+<text top="527" left="129" width="70" height="13" font="12"><b>Authorities</b></text>
+<text top="527" left="199" width="19" height="14" font="5">, or</text>
+<text top="527" left="221" width="26" height="13" font="12"><b>CAs</b></text>
+<text top="527" left="247" width="313" height="14" font="5">, since they create authoritative certificates trusted by</text>
+<text top="542" left="129" width="432" height="14" font="5">many parties. Acmesign checks up on Frobazz Inc. to ensure that the</text>
+<text top="557" left="129" width="432" height="14" font="5">people asking for the certificate actually are legitimate representatives of</text>
+<text top="572" left="129" width="432" height="14" font="5">Frobazz. Acmesign then makes very, very sure that the public key it’s</text>
+<text top="587" left="129" width="432" height="14" font="5">about to embed in a certificate actually is the one that Frobazz wants to</text>
+<text top="602" left="129" width="432" height="14" font="5">use. Assuming it is, Acmesign runs a cryptographic hashing algorithm</text>
+<text top="617" left="129" width="432" height="14" font="5">(perhaps SHA-3 which, unlike SHA-1, has not been cracked, as of 2020)</text>
+<text top="632" left="129" width="188" height="14" font="5">on Frobazz’s name, public key</text>
+<text top="632" left="322" width="21" height="12" font="13">KF</text>
+<text top="632" left="346" width="215" height="14" font="5">, and other information, producing</text>
+<text top="647" left="129" width="28" height="14" font="5">hash</text>
+<text top="647" left="162" width="21" height="12" font="13">HF</text>
+<text top="647" left="185" width="159" height="14" font="5">. Acmesign then encrypts</text>
+<text top="647" left="350" width="21" height="12" font="13">HF</text>
+<text top="647" left="378" width="153" height="14" font="5">with its own private key,</text>
+<text top="647" left="536" width="21" height="12" font="13">P A</text>
+<text top="647" left="557" width="3" height="14" font="5">,</text>
+<text top="662" left="129" width="165" height="14" font="5">producing digital signature</text>
+<text top="662" left="299" width="18" height="12" font="13">SF</text>
+<text top="662" left="319" width="242" height="14" font="5">. Finally, Acmesign combines all the in-</text>
+<text top="677" left="129" width="163" height="14" font="5">formation used to produce</text>
+<text top="677" left="296" width="21" height="12" font="13">HF</text>
+<text top="677" left="320" width="241" height="14" font="5">, plus Acmesign’s own identity and the</text>
+<text top="692" left="129" width="56" height="14" font="5">signature</text>
+<text top="692" left="190" width="18" height="12" font="13">SF</text>
+<text top="692" left="210" width="119" height="14" font="5">, into the certificate</text>
+<text top="692" left="334" width="20" height="12" font="13">CF</text>
+<text top="692" left="355" width="205" height="14" font="5">, which it hands over to Frobazz,</text>
+<text top="707" left="129" width="283" height="14" font="5">presumably in exchange for money. Remember,</text>
+<text top="707" left="415" width="20" height="12" font="13">CF</text>
+<text top="707" left="440" width="97" height="14" font="5">is just some bits.</text>
+<text top="721" left="147" width="414" height="14" font="5">Now Frobazz Inc. wants to authenticate itself over the Internet to one</text>
+<text top="736" left="129" width="432" height="14" font="5">of its customers. If the customer already has Frobazz’s public key, we</text>
+<text top="751" left="129" width="432" height="14" font="5">can use public key authentication mechanisms directly. If the customer</text>
+<text top="766" left="129" width="271" height="14" font="5">does not have the public key, Frobazz sends</text>
+<text top="766" left="405" width="20" height="12" font="13">CF</text>
+<text top="766" left="432" width="129" height="14" font="5">to the customer. The</text>
+<text top="781" left="129" width="432" height="14" font="5">customer examines the certificate, sees that it was generated by Acmesign</text>
+<text top="796" left="129" width="432" height="14" font="5">using, say, SHA-3, and runs the same information that Acmesign hashed</text>
+<text top="811" left="129" width="397" height="14" font="5">(all of which is in the certificate itself) through SHA-3, producing</text>
+<text top="811" left="530" width="21" height="12" font="13">HF</text>
+<text top="810" left="553" width="3" height="8" font="14">′</text>
+<text top="811" left="557" width="3" height="14" font="5">.</text>
+<text top="826" left="129" width="341" height="14" font="5">Then the customer uses Acmesign’s public key to decrypt</text>
+<text top="826" left="473" width="18" height="12" font="13">SF</text>
+<text top="826" left="496" width="65" height="14" font="5">(also in the</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">D</text>
+<text top="98" left="98" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="5">S</text>
+<text top="98" left="179" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="222" width="7" height="14" font="5">S</text>
+<text top="98" left="230" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="512" width="7" height="14" font="5">5</text>
+<text top="139" left="87" width="127" height="14" font="5">certificate), obtaining</text>
+<text top="139" left="219" width="21" height="12" font="13">HF</text>
+<text top="139" left="242" width="88" height="14" font="5">. If all is well,</text>
+<text top="139" left="335" width="21" height="12" font="13">HF</text>
+<text top="139" left="363" width="38" height="14" font="5">equals</text>
+<text top="139" left="406" width="21" height="12" font="13">HF</text>
+<text top="138" left="429" width="3" height="8" font="14">′</text>
+<text top="139" left="433" width="86" height="14" font="5">, and now the</text>
+<text top="154" left="87" width="432" height="14" font="5">customer knows that the public key in the certificate is indeed Frobazz’s.</text>
+<text top="171" left="87" width="271" height="14" font="5">Public key-based authentication can proceed</text>
+<text top="168" left="358" width="4" height="9" font="8">3</text>
+<text top="171" left="363" width="156" height="14" font="5">. If the two hashes aren’t</text>
+<text top="186" left="87" width="432" height="14" font="5">exactly the same, the customer knows that something fishy is going on</text>
+<text top="201" left="87" width="199" height="14" font="5">and will not accept the certificate.</text>
+<text top="217" left="105" width="414" height="14" font="5">There are some wonderful properties about this approach to learning</text>
+<text top="232" left="87" width="432" height="14" font="5">public keys. First, note that the signing authority (Acmesign, in our ex-</text>
+<text top="247" left="87" width="432" height="14" font="5">ample) did not need to participate in the process of the customer checking</text>
+<text top="262" left="87" width="432" height="14" font="5">the certificate. In fact, Frobazz didn’t really, either. The customer can get</text>
+<text top="277" left="87" width="432" height="14" font="5">the certificate from literally anywhere and obtain the same degree of as-</text>
+<text top="291" left="87" width="432" height="14" font="5">surance of its validity. Second, it only needs to be done once per customer.</text>
+<text top="306" left="87" width="432" height="14" font="5">After obtaining the certificate and checking it, the customer has the pub-</text>
+<text top="321" left="87" width="432" height="14" font="5">lic key that is needed. From that point onward, the customer can simply</text>
+<text top="336" left="87" width="432" height="14" font="5">store it and use it. If, for whatever reason, it gets lost, the customer can</text>
+<text top="351" left="87" width="432" height="14" font="5">either extract it again from the certificate (if that has been saved), or go</text>
+<text top="366" left="87" width="432" height="14" font="5">through the process of obtaining the certificate again. Third, the customer</text>
+<text top="381" left="87" width="432" height="14" font="5">had no need to trust the party claiming to be Frobazz until that identity</text>
+<text top="396" left="87" width="432" height="14" font="5">had been proven by checking the certificate. The customer can proceed</text>
+<text top="411" left="87" width="259" height="14" font="5">with caution until the certificate checks out.</text>
+<text top="427" left="105" width="414" height="14" font="5">Assuming you’ve been paying attention for the last few chapters, you</text>
+<text top="442" left="87" width="432" height="14" font="5">should be saying to yourself, “now, wait a minute, isn’t there a chicken-</text>
+<text top="457" left="87" width="432" height="14" font="5">and-egg problem here?” We’ll learn Frobazz’s public key by getting a</text>
+<text top="472" left="87" width="432" height="14" font="5">certificate for it. The certificate will be signed by Acmesign. We’ll check</text>
+<text top="487" left="87" width="432" height="14" font="5">the signature by knowing Acmesign’s public key. But where did we get</text>
+<text top="502" left="87" width="432" height="14" font="5">Acmesign’s key? We really hope you did have that head-scratching mo-</text>
+<text top="517" left="87" width="432" height="14" font="5">ment and asked yourself that question, because if you did, you under-</text>
+<text top="532" left="87" width="432" height="14" font="5">stand the true nature of the Internet authentication problem. Ultimately,</text>
+<text top="547" left="87" width="432" height="14" font="5">we’ve got to bootstrap it. You’ve got to somehow or other obtain a public</text>
+<text top="562" left="87" width="432" height="14" font="5">key for somebody that you trust. Once you do, if it’s the right public key</text>
+<text top="577" left="87" width="432" height="14" font="5">for the right kind of party, you can then obtain a lot of other public keys.</text>
+<text top="592" left="87" width="408" height="14" font="5">But without something to start from, you can’t do much of anything.</text>
+<text top="608" left="105" width="414" height="14" font="5">Where do you get that primal public key? Most commonly, it comes</text>
+<text top="623" left="87" width="432" height="14" font="5">in a piece of software you obtain and install. The one you use most of-</text>
+<text top="638" left="87" width="432" height="14" font="5">ten is probably your browser, which typically comes with the public keys</text>
+<text top="655" left="87" width="231" height="14" font="5">for several hundred trusted authorities</text>
+<text top="652" left="318" width="4" height="9" font="8">4</text>
+<text top="655" left="323" width="196" height="14" font="5">. Whenever you go to a new web</text>
+<text top="670" left="87" width="432" height="14" font="5">site that cares about security, it provides you with a certificate containing</text>
+<text top="685" left="87" width="432" height="14" font="5">that site’s public key, and signed by one of those trusted authorities pre-</text>
+<text top="700" left="87" width="432" height="14" font="5">configured into your browser. You use the pre-configured public key of</text>
+<text top="715" left="87" width="432" height="14" font="5">that authority to verify that the certificate is indeed proper, after which</text>
+<text top="730" left="87" width="432" height="14" font="5">you know the public key of that web site. From that point onward, you</text>
+<text top="745" left="87" width="432" height="14" font="5">can use the web site’s public key to authenticate it. There are some se-</text>
+<text top="777" left="107" width="4" height="8" font="9">3</text>
+<text top="779" left="112" width="407" height="11" font="10">And, indeed, must, since all this business with checking the certificate merely told the</text>
+<text top="791" left="87" width="432" height="11" font="10">customer what Frobazz’s public key was. It did nothing to assure the customer that whoever</text>
+<text top="803" left="87" width="327" height="11" font="10">sent the certificate actually was Frobazz or knew Frobazz’s private key.</text>
+<text top="814" left="107" width="4" height="8" font="9">4</text>
+<text top="816" left="112" width="407" height="11" font="10">You do know of several hundred companies out there that you trust with everything you</text>
+<text top="828" left="87" width="432" height="11" font="10">do on the web, don’t you? Well, know of them or not, you effectively trust them to that extent.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="5">6</text>
+<text top="96" left="367" width="10" height="14" font="5">D</text>
+<text top="98" left="378" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="139" left="129" width="432" height="14" font="5">rious caveats here (and some interesting approaches to addressing those</text>
+<text top="154" left="129" width="295" height="14" font="5">caveats), but let’s put those aside for the moment.</text>
+<text top="169" left="147" width="414" height="14" font="5">Anyone can create a certificate, not just those trusted CAs, either by</text>
+<text top="183" left="129" width="432" height="14" font="5">getting one from someone whose business it is to issue certificates or sim-</text>
+<text top="198" left="129" width="432" height="14" font="5">ply by creating one from scratch, following a certificate standard (X.509</text>
+<text top="213" left="129" width="432" height="14" font="5">is the most commonly used certificate standard [I12]). The necessary re-</text>
+<text top="228" left="129" width="432" height="14" font="5">quirement: the party being authenticated and the parties performing the</text>
+<text top="243" left="129" width="432" height="14" font="5">authentication must all trust whoever created the certificate. If they don’t</text>
+<text top="258" left="129" width="385" height="14" font="5">trust that party, why would they believe the certificate is correct?</text>
+<text top="273" left="147" width="414" height="14" font="5">If you are building your own distributed system, you can create your</text>
+<text top="288" left="129" width="432" height="14" font="5">own certificates from a machine you (and other participants in the sys-</text>
+<text top="303" left="129" width="432" height="14" font="5">tem) trust and can handle the bootstrapping issue by carefully hand-</text>
+<text top="318" left="129" width="432" height="14" font="5">installing the certificate signing machine’s public key wherever it needs</text>
+<text top="333" left="129" width="432" height="14" font="5">to be. There are a number of existing software packages for creating cer-</text>
+<text top="348" left="129" width="432" height="14" font="5">tificates, and, as usual with critical cryptographic software, you’re better</text>
+<text top="363" left="129" width="432" height="14" font="5">off using an existing, trusted implementation rather than coding up one</text>
+<text top="378" left="129" width="432" height="14" font="5">of your own. One example you might want to look at is PGP (available in</text>
+<text top="393" left="129" width="432" height="14" font="5">both supported commercial versions and compatible but less supported</text>
+<text top="408" left="129" width="432" height="14" font="5">free versions) [P16], but there are others. If you are working with a fixed</text>
+<text top="423" left="129" width="432" height="14" font="5">number of machines and you can distribute the public key by hand in</text>
+<text top="438" left="129" width="432" height="14" font="5">some reasonable way, you can dispense entirely with certificates. Re-</text>
+<text top="452" left="129" width="432" height="14" font="5">member, the only point of a PK certificate is to distribute the public key,</text>
+<text top="467" left="129" width="432" height="14" font="5">so if your public keys are already where they need to be, you don’t need</text>
+<text top="482" left="129" width="67" height="14" font="5">certificates.</text>
+<text top="497" left="147" width="414" height="14" font="5">OK, one way or another you’ve obtained the public key you need to</text>
+<text top="512" left="129" width="432" height="14" font="5">authenticate some remote machine. Now what? Well, anything they send</text>
+<text top="527" left="129" width="432" height="14" font="5">you encrypted with their private key will only decrypt with their public</text>
+<text top="542" left="129" width="432" height="14" font="5">key, so anything that decrypts properly with the public key must have</text>
+<text top="557" left="129" width="432" height="14" font="5">come from them, right? Yes, it must have come from them at some point,</text>
+<text top="572" left="129" width="432" height="14" font="5">but it’s possible for an adversary to have made a copy of a legitimate</text>
+<text top="587" left="129" width="432" height="14" font="5">message the site sent at some point in the past and then send it again it</text>
+<text top="602" left="129" width="432" height="14" font="5">at some future date. Depending on exactly what’s going on, that could</text>
+<text top="617" left="129" width="432" height="14" font="5">cause trouble, since you may take actions based on that message that the</text>
+<text top="632" left="129" width="432" height="14" font="5">legitimate site did not ask for. So usually we take measures to ensure that</text>
+<text top="647" left="129" width="184" height="14" font="5">we’re not being subjected to a</text>
+<text top="647" left="318" width="80" height="13" font="12"><b>replay attack</b></text>
+<text top="647" left="398" width="162" height="14" font="5">. Such measures generally</text>
+<text top="662" left="129" width="432" height="14" font="5">involve ensuring that each encrypted message contains unique informa-</text>
+<text top="677" left="129" width="432" height="14" font="5">tion not in any other message. This feature is built in properly to standard</text>
+<text top="692" left="129" width="432" height="14" font="5">cryptographic protocols, so if you follow our advice and use one of those,</text>
+<text top="707" left="129" width="432" height="14" font="5">you will get protection from such replay attacks. If you insist on building</text>
+<text top="721" left="129" width="432" height="14" font="5">your own cryptography, you’ll need to learn a good deal more about this</text>
+<text top="736" left="129" width="432" height="14" font="5">issue and will have to apply that knowledge very carefully. Also, public</text>
+<text top="751" left="129" width="432" height="14" font="5">key cryptography is expensive. We want to stop using it as soon as possi-</text>
+<text top="766" left="129" width="432" height="14" font="5">ble, but we also want to continue to get authentication guarantees. We’ll</text>
+<text top="781" left="129" width="296" height="14" font="5">see how to do that when we discuss SSL and TLS.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">D</text>
+<text top="98" left="98" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="5">S</text>
+<text top="98" left="179" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="222" width="7" height="14" font="5">S</text>
+<text top="98" left="230" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="512" width="7" height="14" font="5">7</text>
+<text top="137" left="55" width="397" height="17" font="4">57.4 Password Authentication For Distributed Systems</text>
+<text top="167" left="105" width="414" height="14" font="5">The other common option to authenticate in distributed systems is to</text>
+<text top="182" left="87" width="432" height="14" font="5">use a password. As noted above, that will work best in situations where</text>
+<text top="197" left="87" width="432" height="14" font="5">only two parties need to deal with any particular password: the party be-</text>
+<text top="212" left="87" width="432" height="14" font="5">ing authenticated and the authenticating party. They make sense when an</text>
+<text top="227" left="87" width="432" height="14" font="5">individual user is authenticating himself to a site that hosts many users,</text>
+<text top="242" left="87" width="432" height="14" font="5">such as when you log in to Amazon. They don’t make sense when that</text>
+<text top="256" left="87" width="432" height="14" font="5">site is trying to authenticate itself to an individual user, such as when a</text>
+<text top="271" left="87" width="432" height="14" font="5">web site claiming to be Amazon wants to do business with you. Public</text>
+<text top="286" left="87" width="226" height="14" font="5">key authentication works better there.</text>
+<text top="302" left="105" width="414" height="14" font="5">How do we properly handle password authentication over the net-</text>
+<text top="317" left="87" width="432" height="14" font="5">work, when it is a reasonable choice? The password is usually associated</text>
+<text top="332" left="87" width="432" height="14" font="5">with a particular user ID, so the user provides that ID and password to</text>
+<text top="347" left="87" width="432" height="14" font="5">the site requiring authentication. That typically happens over a network,</text>
+<text top="362" left="87" width="432" height="14" font="5">and typically we cannot guarantee that networks provide confidentiality.</text>
+<text top="377" left="87" width="432" height="14" font="5">If our password is divulged to someone else, they’ll be able to pose as</text>
+<text top="392" left="87" width="432" height="14" font="5">us, so we must add confidentiality to this cross-network authentication,</text>
+<text top="406" left="87" width="432" height="14" font="5">generally by encrypting at least the password itself (though encrypting</text>
+<text top="421" left="87" width="432" height="14" font="5">everything involved is better). So a typical interchange with Alice try-</text>
+<text top="436" left="87" width="432" height="14" font="5">ing to authenticate herself to Frobazz Inc.’s web site would involve the</text>
+<text top="451" left="87" width="432" height="14" font="5">site requesting a user ID and password and Alice providing both, but</text>
+<text top="466" left="87" width="333" height="14" font="5">encrypting them before sending them over the network.</text>
+<text top="482" left="105" width="414" height="14" font="5">The obvious question you should ask is, encrypting them with what</text>
+<text top="497" left="87" width="432" height="14" font="5">key? Well, if Frobazz authenticated itself to Alice using PK, as discussed</text>
+<text top="512" left="87" width="432" height="14" font="5">above, Alice can encrypt her user ID and password with Frobazz’s pub-</text>
+<text top="527" left="87" width="432" height="14" font="5">lic key. Frobazz Inc., having the matching private key, will be able to</text>
+<text top="542" left="87" width="432" height="14" font="5">check them, but nobody else can read them. In actuality, there are vari-</text>
+<text top="557" left="87" width="432" height="14" font="5">ous reasons why this alone would not suffice, including replay attacks, as</text>
+<text top="571" left="87" width="432" height="14" font="5">mentioned above. But we can and do use Frobazz’s private key to set up</text>
+<text top="586" left="87" width="432" height="14" font="5">cryptography that will protect Alice’s password in transit. We’ll discuss</text>
+<text top="601" left="87" width="223" height="14" font="5">the details in the section on SSL/TLS.</text>
+<text top="617" left="105" width="414" height="14" font="5">We discussed issues of password choice and management in the chap-</text>
+<text top="632" left="87" width="432" height="14" font="5">ter on authentication, and those all apply in the networking context. Oth-</text>
+<text top="647" left="87" width="432" height="14" font="5">erwise, there’s not that much more to say about how we’ll use passwords,</text>
+<text top="662" left="87" width="432" height="14" font="5">other than to note that after the remote site has verified the password,</text>
+<text top="677" left="87" width="432" height="14" font="5">what does it actually know? That the site or user who sent the password</text>
+<text top="692" left="87" width="432" height="14" font="5">knows it, and, to the strength of the password, that site or user is who it</text>
+<text top="707" left="87" width="432" height="14" font="5">claims to be. But what about future messages that come in, supposedly</text>
+<text top="721" left="87" width="432" height="14" font="5">from that site? Remember, anyone can create any message they want, so</text>
+<text top="736" left="87" width="432" height="14" font="5">if all we do is verify that the remote site sent us the right password, all we</text>
+<text top="751" left="87" width="432" height="14" font="5">know is that particular message is authentic. We don’t want to have to</text>
+<text top="766" left="87" width="432" height="14" font="5">include the password on every message we send, just as we don’t want</text>
+<text top="781" left="87" width="432" height="14" font="5">to use PK to encrypt every message we send. We will use both authenti-</text>
+<text top="796" left="87" width="432" height="14" font="5">cation techniques to establish initial authenticity, then use something else</text>
+<text top="811" left="87" width="432" height="14" font="5">to tie that initial authenticity to subsequent interactions. Let’s move right</text>
+<text top="826" left="87" width="284" height="14" font="5">along to SSL/TLS to talk about how we do that.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="5">8</text>
+<text top="96" left="367" width="10" height="14" font="5">D</text>
+<text top="98" left="378" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="137" left="97" width="100" height="17" font="4">57.5 SSL/TLS</text>
+<text top="166" left="147" width="414" height="14" font="5">We saw in an earlier chapter that a standard method of communicating</text>
+<text top="181" left="129" width="432" height="14" font="5">between processes in modern systems is the socket. That’s equally true</text>
+<text top="196" left="129" width="432" height="14" font="5">when the processes are on different machines. So a natural way to add</text>
+<text top="211" left="129" width="432" height="14" font="5">cryptographic protection to communications crossing unprotected net-</text>
+<text top="226" left="129" width="432" height="14" font="5">works is to add cryptographic features to sockets. That’s precisely what</text>
+<text top="241" left="129" width="25" height="13" font="12"><b>SSL</b></text>
+<text top="241" left="157" width="23" height="14" font="5">(the</text>
+<text top="241" left="183" width="123" height="13" font="12"><b>Secure Socket Layer</b></text>
+<text top="241" left="307" width="254" height="14" font="5">) was designed to do, many years ago. Un-</text>
+<text top="256" left="129" width="432" height="14" font="5">fortunately, SSL did not get it quite right. That’s because it’s pretty darn</text>
+<text top="271" left="129" width="432" height="14" font="5">hard to get it right, not because the people who designed and built it were</text>
+<text top="286" left="129" width="432" height="14" font="5">careless. They learned from their mistakes and created a new version of</text>
+<text top="303" left="129" width="147" height="14" font="5">encrypted sockets called</text>
+<text top="303" left="281" width="153" height="13" font="12"><b>Transport Layer Security</b></text>
+<text top="303" left="438" width="4" height="14" font="5">(</text>
+<text top="303" left="442" width="25" height="13" font="12"><b>TLS</b></text>
+<text top="303" left="468" width="4" height="14" font="5">)</text>
+<text top="300" left="472" width="4" height="9" font="8">5</text>
+<text top="303" left="478" width="83" height="14" font="5">. You will fre-</text>
+<text top="318" left="129" width="432" height="14" font="5">quently hear people talk about using SSL. They are usually treating it as</text>
+<text top="333" left="129" width="432" height="14" font="5">a shorthand for SSL/TLS. SSL, formally, is insecure and should never be</text>
+<text top="348" left="129" width="432" height="14" font="5">used for anything. Use TLS. The only exception is that some very old de-</text>
+<text top="363" left="129" width="432" height="14" font="5">vices might run software that doesn’t support TLS. In that case, it’s better</text>
+<text top="378" left="129" width="432" height="14" font="5">to use SSL than nothing. We’ll adopt the same shorthand as others from</text>
+<text top="393" left="129" width="173" height="14" font="5">here on, since it’s ubiquitous.</text>
+<text top="408" left="147" width="414" height="14" font="5">The concept behind SSL is simple: move encrypted data through an</text>
+<text top="422" left="129" width="432" height="14" font="5">ordinary socket. You set up a socket, set up a special structure to perform</text>
+<text top="437" left="129" width="432" height="14" font="5">whatever cryptography you want, and hook the output of that structure</text>
+<text top="452" left="129" width="432" height="14" font="5">to the input of the socket. You reverse the process on the other end.</text>
+<text top="467" left="129" width="432" height="14" font="5">What’s simple in concept is rather laborious in execution, with a number</text>
+<text top="482" left="129" width="432" height="14" font="5">of steps required to achieve the desired result. There are further com-</text>
+<text top="497" left="129" width="432" height="14" font="5">plications due to the general nature of SSL. The technology is designed to</text>
+<text top="512" left="129" width="432" height="14" font="5">support a variety of cryptographic operations and many different ciphers,</text>
+<text top="527" left="129" width="432" height="14" font="5">as well as multiple methods to perform key exchange and authentication</text>
+<text top="542" left="129" width="195" height="14" font="5">between the sender and receiver.</text>
+<text top="557" left="147" width="414" height="14" font="5">The process of adding SSL to your program is intricate, requiring the</text>
+<text top="572" left="129" width="432" height="14" font="5">use of particular libraries and a sequence of calls into those libraries to</text>
+<text top="587" left="129" width="432" height="14" font="5">set up a correct SSL connection. We will not go through those operations</text>
+<text top="602" left="129" width="432" height="14" font="5">step by step here, but you will need to learn about them to make proper</text>
+<text top="617" left="129" width="432" height="14" font="5">use of SSL. Their purpose is, for the most part, to allow a wide range of</text>
+<text top="632" left="129" width="432" height="14" font="5">generality both in the cryptographic options SSL supports and the ways</text>
+<text top="647" left="129" width="432" height="14" font="5">you use those options in your program. For example, these setup calls</text>
+<text top="662" left="129" width="432" height="14" font="5">would allow you to create one set of SSL connections using AES-128 and</text>
+<text top="676" left="129" width="331" height="14" font="5">another using AES-256, if that’s what you needed to do.</text>
+<text top="691" left="147" width="414" height="14" font="5">One common requirement for setting up an SSL connection that we</text>
+<text top="706" left="129" width="432" height="14" font="5">will go through in a bit more detail is how to securely distribute what-</text>
+<text top="721" left="129" width="432" height="14" font="5">ever cryptographic key you will use for the connection you are setting</text>
+<text top="736" left="129" width="432" height="14" font="5">up. Best cryptographic practice calls for you to use a brand new key to</text>
+<text top="751" left="129" width="432" height="14" font="5">encrypt the bulk of your data for each connection you set up. You will use</text>
+<text top="778" left="149" width="4" height="8" font="9">5</text>
+<text top="780" left="154" width="407" height="11" font="10">Actually, even the first couple of versions of TLS didn’t get it quite right. As of 2020,</text>
+<text top="792" left="129" width="432" height="11" font="10">the current version of TLS is 1.3, and that’s probably what you should use. TLS 1.3 closed</text>
+<text top="804" left="129" width="432" height="11" font="10">some vulnerabilities that TLS 1.2 is subject to, The history of required changes to SSL/TLS</text>
+<text top="816" left="129" width="432" height="11" font="10">should further reinforce the lesson of how hard it is to use cryptography properly, which in</text>
+<text top="828" left="129" width="345" height="11" font="10">turn should motivate you to foreswear ever trying to roll your own crypto.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">D</text>
+<text top="98" left="98" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="5">S</text>
+<text top="98" left="179" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="222" width="7" height="14" font="5">S</text>
+<text top="98" left="230" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="512" width="7" height="14" font="5">9</text>
+<text top="139" left="87" width="432" height="14" font="5">public/private keys for authentication many times, but as we discussed</text>
+<text top="154" left="87" width="432" height="14" font="5">earlier, you need to use symmetric cryptography to encrypt the data once</text>
+<text top="169" left="87" width="432" height="14" font="5">you have authenticated your partner, and you want a fresh key for that.</text>
+<text top="183" left="87" width="432" height="14" font="5">Even if you are running multiple simultaneous SSL connections with the</text>
+<text top="198" left="87" width="418" height="14" font="5">same partner, you want a different symmetric key for each connection.</text>
+<text top="213" left="105" width="414" height="14" font="5">So what do you need to do to set up a new SSL connection? We won’t</text>
+<text top="228" left="87" width="432" height="14" font="5">go through all of the gory details, but, in essence, SSL needs to bootstrap</text>
+<text top="243" left="87" width="432" height="14" font="5">a secure connection based (usually) on asymmetric cryptography when</text>
+<text top="258" left="87" width="432" height="14" font="5">no usable symmetric key exists. (You’ll hear “usually” and “normally”</text>
+<text top="273" left="87" width="432" height="14" font="5">and “by default” a lot in SSL discussions, because of SSL’s ability to sup-</text>
+<text top="288" left="87" width="432" height="14" font="5">port a very wide range of options, most of which are ordinarily not what</text>
+<text top="303" left="87" width="432" height="14" font="5">you want to do.) The very first step is to start a negotiation between the</text>
+<text top="318" left="87" width="432" height="14" font="5">client and the server. Each party might only be able to handle particu-</text>
+<text top="333" left="87" width="432" height="14" font="5">lar ciphers, secure hashes, key distribution strategies, or authentication</text>
+<text top="348" left="87" width="432" height="14" font="5">schemes, based on what version of SSL they have installed, how it’s con-</text>
+<text top="363" left="87" width="432" height="14" font="5">figured, and how the programs that set up the SSL connection on each</text>
+<text top="378" left="87" width="432" height="14" font="5">side were written. In the most common cases, the negotiation will end in</text>
+<text top="393" left="87" width="432" height="14" font="5">both sides finding some acceptable set of ciphers and techniques that hit</text>
+<text top="408" left="87" width="432" height="14" font="5">a balance between security and performance. For example, they might</text>
+<text top="423" left="87" width="432" height="14" font="5">use RSA with 2048 bit keys for asymmetric cryptography, some form of</text>
+<text top="438" left="87" width="432" height="14" font="5">a Diffie-Hellman key exchange mechanism (see the Aside on this mecha-</text>
+<text top="452" left="87" width="432" height="14" font="5">nism) to establish a new symmetric key, SHA-3 to generate secure hashes</text>
+<text top="467" left="87" width="432" height="14" font="5">for integrity, and AES with 256 bit keys for bulk encryption. A modern</text>
+<text top="482" left="87" width="432" height="14" font="5">installation of SSL might support 50 or more different combinations of</text>
+<text top="497" left="87" width="82" height="14" font="5">these options.</text>
+<text top="512" left="105" width="414" height="14" font="5">In some cases, it may be important for you to specify which of these</text>
+<text top="527" left="87" width="432" height="14" font="5">many combinations are acceptable for your system, but often most of</text>
+<text top="542" left="87" width="432" height="14" font="5">them will do, in which case you can let SSL figure out which to use for</text>
+<text top="557" left="87" width="432" height="14" font="5">each connection without worrying about it yourself. The negotiation will</text>
+<text top="572" left="87" width="432" height="14" font="5">happen invisibly and SSL will get on with its main business: authenticat-</text>
+<text top="587" left="87" width="432" height="14" font="5">ing at least the server (optionally the client), creating and distributing a</text>
+<text top="602" left="87" width="432" height="14" font="5">new symmetric key, and running the communication through the chosen</text>
+<text top="617" left="87" width="127" height="14" font="5">cipher using that key.</text>
+<text top="632" left="105" width="414" height="14" font="5">We can use Diffie-Hellman key exchange to create the key (and SSL</text>
+<text top="647" left="87" width="432" height="14" font="5">frequently does), but we need to be sure who we are sharing that key</text>
+<text top="662" left="87" width="432" height="14" font="5">with. SSL offers a number of possibilities for doing so. The most com-</text>
+<text top="677" left="87" width="432" height="14" font="5">mon method is for the client to obtain a certificate containing the server’s</text>
+<text top="692" left="87" width="432" height="14" font="5">public key (typically by having the server send it to the client) and to use</text>
+<text top="707" left="87" width="432" height="14" font="5">the public key in that certificate to verify the authenticity of the server’s</text>
+<text top="721" left="87" width="432" height="14" font="5">messages. It is possible for the client to obtain the certificate through some</text>
+<text top="736" left="87" width="432" height="14" font="5">other means, though less common. Note that having the server send the</text>
+<text top="751" left="87" width="432" height="14" font="5">certificate is every bit as secure (or insecure) as having the client obtain</text>
+<text top="766" left="87" width="432" height="14" font="5">the certificate through other means. Certificate security is not based on</text>
+<text top="781" left="87" width="432" height="14" font="5">the method used to transport it, but on the cryptography embedded in</text>
+<text top="796" left="87" width="83" height="14" font="5">the certificate.</text>
+<text top="811" left="105" width="427" height="14" font="5">With the certificate in hand (however the client got it), the Diffie-Hellman</text>
+<text top="826" left="87" width="432" height="14" font="5">key exchange can now proceed in an authenticated fashion. The server</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="13" family="LANGYW+CMR9" color="#000000"/>
+	<fontspec id="16" size="9" family="NDAIWV+CMMI6" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">10</text>
+<text top="96" left="367" width="10" height="14" font="5">D</text>
+<text top="98" left="378" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="148" left="218" width="10" height="14" font="5">A</text>
+<text top="150" left="229" width="26" height="11" font="6">SIDE</text>
+<text top="148" left="256" width="19" height="14" font="5">: D</text>
+<text top="150" left="275" width="27" height="11" font="6">IFFIE</text>
+<text top="148" left="303" width="16" height="14" font="5">-H</text>
+<text top="150" left="320" width="51" height="11" font="6">ELLMAN</text>
+<text top="148" left="374" width="10" height="14" font="5">K</text>
+<text top="150" left="385" width="14" height="11" font="6">EY</text>
+<text top="148" left="403" width="8" height="14" font="5">E</text>
+<text top="150" left="412" width="60" height="11" font="6">XCHANGE</text>
+<text top="163" left="129" width="432" height="14" font="5">What if you want to share a secret key between two parties, but they can</text>
+<text top="178" left="129" width="432" height="14" font="5">only communicate over an insecure channel, where eavesdroppers can</text>
+<text top="193" left="129" width="432" height="14" font="5">hear anything they say? You might think this is an impossible problem to</text>
+<text top="208" left="129" width="432" height="14" font="5">solve, but you’d be wrong. Two extremely smart cryptographers named</text>
+<text top="223" left="129" width="432" height="14" font="5">Whitfield Diffie and Martin Hellman solved this problem years ago, and</text>
+<text top="238" left="129" width="247" height="14" font="5">their solution is in common use. It’s called</text>
+<text top="238" left="379" width="178" height="13" font="12"><b>Diffie-Hellman key exchange</b></text>
+<text top="238" left="557" width="3" height="14" font="5">.</text>
+<text top="256" left="129" width="432" height="14" font="5">Here’s how it works. Let’s say Alice and Bob want to share a secret key,</text>
+<text top="271" left="129" width="432" height="14" font="5">but currently don’t share anything, other than the ability to send each</text>
+<text top="286" left="129" width="298" height="14" font="5">other messages. First, they agree on two numbers,</text>
+<text top="286" left="430" width="8" height="12" font="13">n</text>
+<text top="286" left="442" width="119" height="14" font="5">(a large prime num-</text>
+<text top="301" left="129" width="51" height="14" font="5">ber) and</text>
+<text top="301" left="184" width="7" height="12" font="13">g</text>
+<text top="301" left="195" width="146" height="14" font="5">(which is primitive mod</text>
+<text top="301" left="345" width="8" height="12" font="13">n</text>
+<text top="301" left="354" width="207" height="14" font="5">). They can use the insecure chan-</text>
+<text top="316" left="129" width="123" height="14" font="5">nel to do this, since</text>
+<text top="316" left="257" width="8" height="12" font="13">n</text>
+<text top="316" left="271" width="23" height="14" font="5">and</text>
+<text top="316" left="299" width="7" height="12" font="13">g</text>
+<text top="316" left="311" width="250" height="14" font="5">don’t need to be secret. Alice chooses a</text>
+<text top="331" left="129" width="155" height="14" font="5">large random integer, say</text>
+<text top="331" left="289" width="8" height="12" font="13">x</text>
+<text top="331" left="297" width="66" height="14" font="5">, calculates</text>
+<text top="331" left="367" width="11" height="12" font="13">X</text>
+<text top="330" left="386" width="11" height="13" font="15">=</text>
+<text top="331" left="403" width="7" height="12" font="13">g</text>
+<text top="331" left="410" width="6" height="6" font="16">x</text>
+<text top="331" left="417" width="41" height="12" font="13">mod n</text>
+<text top="331" left="458" width="70" height="14" font="5">, and sends</text>
+<text top="331" left="532" width="11" height="12" font="13">X</text>
+<text top="331" left="549" width="12" height="14" font="5">to</text>
+<text top="346" left="129" width="357" height="14" font="5">Bob. Bob independently chooses a large random integer, say</text>
+<text top="346" left="489" width="7" height="12" font="13">y</text>
+<text top="346" left="496" width="64" height="14" font="5">, calculates</text>
+<text top="361" left="129" width="8" height="12" font="13">Y</text>
+<text top="360" left="144" width="11" height="13" font="15">=</text>
+<text top="361" left="159" width="7" height="12" font="13">g</text>
+<text top="361" left="166" width="6" height="6" font="16">y</text>
+<text top="361" left="173" width="39" height="12" font="13">mod n</text>
+<text top="361" left="212" width="67" height="14" font="5">, and sends</text>
+<text top="361" left="282" width="8" height="12" font="13">Y</text>
+<text top="361" left="297" width="221" height="14" font="5">to Alice. The eavesdroppers can hear</text>
+<text top="361" left="522" width="11" height="12" font="13">X</text>
+<text top="361" left="538" width="23" height="14" font="5">and</text>
+<text top="376" left="129" width="8" height="12" font="13">Y</text>
+<text top="376" left="140" width="225" height="14" font="5">, but since Alice and Bob didn’t send</text>
+<text top="376" left="370" width="8" height="12" font="13">x</text>
+<text top="376" left="382" width="13" height="14" font="5">or</text>
+<text top="376" left="399" width="7" height="12" font="13">y</text>
+<text top="376" left="407" width="154" height="14" font="5">, the eavesdroppers don’t</text>
+<text top="390" left="129" width="344" height="14" font="5">know those values. It’s important that Alice and Bob keep</text>
+<text top="391" left="476" width="8" height="12" font="13">x</text>
+<text top="390" left="487" width="23" height="14" font="5">and</text>
+<text top="391" left="513" width="7" height="12" font="13">y</text>
+<text top="390" left="523" width="37" height="14" font="5">secret.</text>
+<text top="409" left="129" width="124" height="14" font="5">Alice now computes</text>
+<text top="409" left="257" width="7" height="12" font="13">k</text>
+<text top="408" left="270" width="11" height="13" font="15">=</text>
+<text top="409" left="286" width="8" height="12" font="13">Y</text>
+<text top="409" left="297" width="6" height="6" font="16">x</text>
+<text top="409" left="304" width="40" height="12" font="13">mod n</text>
+<text top="409" left="344" width="120" height="14" font="5">, and Bob computes</text>
+<text top="409" left="469" width="7" height="12" font="13">k</text>
+<text top="408" left="482" width="11" height="13" font="15">=</text>
+<text top="409" left="498" width="11" height="12" font="13">X</text>
+<text top="409" left="511" width="6" height="6" font="16">y</text>
+<text top="409" left="517" width="40" height="12" font="13">mod n</text>
+<text top="409" left="557" width="3" height="14" font="5">.</text>
+<text top="424" left="129" width="195" height="14" font="5">Alice and Bob get the same value</text>
+<text top="424" left="327" width="7" height="12" font="13">k</text>
+<text top="424" left="338" width="223" height="14" font="5">from these computations. Why? Well,</text>
+<text top="439" left="129" width="8" height="12" font="13">Y</text>
+<text top="439" left="140" width="6" height="6" font="16">x</text>
+<text top="439" left="147" width="42" height="12" font="13">mod n</text>
+<text top="438" left="196" width="24" height="13" font="15">= (</text>
+<text top="439" left="220" width="7" height="12" font="13">g</text>
+<text top="439" left="227" width="6" height="6" font="16">y</text>
+<text top="439" left="241" width="42" height="12" font="13">mod n</text>
+<text top="438" left="283" width="5" height="13" font="15">)</text>
+<text top="439" left="289" width="6" height="6" font="16">x</text>
+<text top="439" left="303" width="42" height="12" font="13">mod n</text>
+<text top="439" left="345" width="138" height="14" font="5">, which in turn equals</text>
+<text top="439" left="488" width="7" height="12" font="13">g</text>
+<text top="439" left="495" width="12" height="6" font="16">yx</text>
+<text top="439" left="516" width="42" height="12" font="13">mod n</text>
+<text top="439" left="557" width="3" height="14" font="5">.</text>
+<text top="454" left="129" width="11" height="12" font="13">X</text>
+<text top="454" left="141" width="6" height="6" font="16">y</text>
+<text top="454" left="155" width="41" height="12" font="13">mod n</text>
+<text top="453" left="203" width="23" height="13" font="15">= (</text>
+<text top="454" left="226" width="7" height="12" font="13">g</text>
+<text top="454" left="233" width="6" height="6" font="16">x</text>
+<text top="454" left="247" width="41" height="12" font="13">mod n</text>
+<text top="453" left="288" width="5" height="13" font="15">)</text>
+<text top="454" left="294" width="6" height="6" font="16">y</text>
+<text top="454" left="307" width="41" height="12" font="13">mod n</text>
+<text top="453" left="356" width="11" height="13" font="15">=</text>
+<text top="454" left="373" width="7" height="12" font="13">g</text>
+<text top="454" left="380" width="12" height="6" font="16">xy</text>
+<text top="454" left="400" width="41" height="12" font="13">mod n</text>
+<text top="453" left="441" width="119" height="14" font="5">, which is the same</text>
+<text top="468" left="129" width="432" height="14" font="5">thing Alice got. Nothing magic there, that’s just how exponentiation and</text>
+<text top="483" left="129" width="353" height="14" font="5">modulus arithmetic work. Ah, the glory of mathematics! So</text>
+<text top="484" left="485" width="7" height="12" font="13">k</text>
+<text top="483" left="496" width="65" height="14" font="5">is the same</text>
+<text top="498" left="129" width="335" height="14" font="5">in both calculations and is known to both Alice and Bob.</text>
+<text top="517" left="129" width="271" height="14" font="5">What about those eavesdroppers? They know</text>
+<text top="517" left="402" width="7" height="12" font="13">g</text>
+<text top="517" left="409" width="3" height="14" font="5">,</text>
+<text top="517" left="416" width="8" height="12" font="13">n</text>
+<text top="517" left="424" width="3" height="14" font="5">,</text>
+<text top="517" left="430" width="11" height="12" font="13">X</text>
+<text top="517" left="443" width="29" height="14" font="5">, and</text>
+<text top="517" left="475" width="8" height="12" font="13">Y</text>
+<text top="517" left="486" width="49" height="14" font="5">, but not</text>
+<text top="517" left="537" width="8" height="12" font="13">x</text>
+<text top="517" left="548" width="13" height="14" font="5">or</text>
+<text top="532" left="129" width="7" height="12" font="13">y</text>
+<text top="531" left="136" width="117" height="14" font="5">. They can compute</text>
+<text top="532" left="257" width="7" height="12" font="13">k</text>
+<text top="531" left="264" width="3" height="8" font="14">′</text>
+<text top="531" left="272" width="11" height="13" font="15">=</text>
+<text top="532" left="287" width="66" height="12" font="13">XY mod n</text>
+<text top="531" left="353" width="163" height="14" font="5">, but that is not equal to the</text>
+<text top="532" left="519" width="7" height="12" font="13">k</text>
+<text top="531" left="530" width="31" height="14" font="5">Alice</text>
+<text top="546" left="129" width="344" height="14" font="5">and Bob calculated. They do have approaches to derive</text>
+<text top="547" left="478" width="8" height="12" font="13">x</text>
+<text top="546" left="491" width="13" height="14" font="5">or</text>
+<text top="547" left="508" width="7" height="12" font="13">y</text>
+<text top="546" left="515" width="45" height="14" font="5">, which</text>
+<text top="561" left="129" width="285" height="14" font="5">would give them enough information to obtain</text>
+<text top="562" left="418" width="7" height="12" font="13">k</text>
+<text top="561" left="425" width="135" height="14" font="5">, but those approaches</text>
+<text top="576" left="129" width="432" height="14" font="5">require them either to perform a calculation for every possible value of</text>
+<text top="591" left="129" width="8" height="12" font="13">n</text>
+<text top="591" left="142" width="149" height="14" font="5">(which is why you want</text>
+<text top="591" left="295" width="8" height="12" font="13">n</text>
+<text top="591" left="308" width="253" height="14" font="5">to be very large) or to compute a discrete</text>
+<text top="606" left="129" width="432" height="14" font="5">logarithm. Computing a discrete logarithm is a solvable problem, but it’s</text>
+<text top="621" left="129" width="371" height="14" font="5">computationally infeasible for large numbers. So if the prime</text>
+<text top="621" left="505" width="8" height="12" font="13">n</text>
+<text top="621" left="517" width="44" height="14" font="5">is large</text>
+<text top="636" left="129" width="432" height="14" font="5">(and meets other properties), the eavesdroppers are out of luck. How</text>
+<text top="651" left="129" width="283" height="14" font="5">large? 600 digit primes should be good enough.</text>
+<text top="669" left="129" width="432" height="14" font="5">Neat, no? But there is a fly in the ointment, when one considers using</text>
+<text top="684" left="129" width="432" height="14" font="5">Diffie-Hellman over a network. It ensures that you securely share a key</text>
+<text top="699" left="129" width="432" height="14" font="5">with someone, but gives you no assurance of who you’re sharing the key</text>
+<text top="714" left="129" width="432" height="14" font="5">with. Maybe Alice is sharing the key with Bob, as she thinks and hopes,</text>
+<text top="729" left="129" width="432" height="14" font="5">but maybe she’s sharing it with Mallory, who posed as Bob and injected</text>
+<text top="744" left="129" width="48" height="14" font="5">his own</text>
+<text top="744" left="182" width="8" height="12" font="13">Y</text>
+<text top="744" left="193" width="368" height="14" font="5">. Since we usually care who we’re in secure communication</text>
+<text top="759" left="129" width="432" height="14" font="5">with, we typically augment Diffie-Hellman with an authentication mech-</text>
+<text top="774" left="129" width="334" height="14" font="5">anism to provide the assurance of our partner’s identity.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">D</text>
+<text top="98" left="98" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="5">S</text>
+<text top="98" left="179" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="222" width="7" height="14" font="5">S</text>
+<text top="98" left="230" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="506" width="13" height="14" font="5">11</text>
+<text top="139" left="87" width="432" height="14" font="5">will sign its Diffie-Hellman messages with its private key, which will al-</text>
+<text top="154" left="87" width="432" height="14" font="5">low the client to determine that its partner in this key exchange is the</text>
+<text top="169" left="87" width="432" height="14" font="5">correct server. Typically, the client does not provide (or even have) its</text>
+<text top="183" left="87" width="432" height="14" font="5">own certificate, so it cannot sign its Diffie-Hellman messages. This im-</text>
+<text top="198" left="87" width="432" height="14" font="5">plies that when SSL’s Diffie-Hellman key exchange completes, typically</text>
+<text top="213" left="87" width="432" height="14" font="5">the client is pretty sure who the server is, but the server has no clue about</text>
+<text top="228" left="87" width="432" height="14" font="5">the client’s identity. (Again, this need not be the case for all uses of SSL.</text>
+<text top="243" left="87" width="432" height="14" font="5">SSL includes connection creation options where both parties know each</text>
+<text top="258" left="87" width="432" height="14" font="5">other’s public key and the key exchange is authenticated on both sides.</text>
+<text top="273" left="87" width="432" height="14" font="5">Those options are simply not the most commonly used ones, and partic-</text>
+<text top="288" left="87" width="372" height="14" font="5">ularly are not the ones typically used to secure web browsing.)</text>
+<text top="303" left="105" width="414" height="14" font="5">Recalling our discussion earlier in this chapter, it actually isn’t a prob-</text>
+<text top="318" left="87" width="432" height="14" font="5">lem for the server to be unsure about the client’s identity at this point, in</text>
+<text top="333" left="87" width="432" height="14" font="5">many cases. As we stated earlier, the client will probably want to use a</text>
+<text top="348" left="87" width="432" height="14" font="5">password to authenticate itself, not a public key extracted from a certifi-</text>
+<text top="363" left="87" width="432" height="14" font="5">cate. As long as the server doesn’t permit the client to do anything re-</text>
+<text top="378" left="87" width="432" height="14" font="5">quiring trust before the server obtains and checks the client’s password,</text>
+<text top="393" left="87" width="432" height="14" font="5">the server probably doesn’t care who the client is, anyway. Many servers</text>
+<text top="408" left="87" width="432" height="14" font="5">offer some services to anonymous clients (such as providing them with</text>
+<text top="423" left="87" width="432" height="14" font="5">publicly available information), so as long as they can get a password</text>
+<text top="438" left="87" width="432" height="14" font="5">from the client before proceeding to more sensitive subjects, there is no</text>
+<text top="453" left="87" width="432" height="14" font="5">security problem. The server can ask the client for a user ID and pass-</text>
+<text top="468" left="87" width="432" height="14" font="5">word later, at any point after the SSL connection is established. Since</text>
+<text top="483" left="87" width="432" height="14" font="5">creating the SSL connection sets up a symmetric key, the exchange of ID</text>
+<text top="498" left="87" width="269" height="14" font="5">and password can be protected with that key.</text>
+<text top="513" left="105" width="414" height="14" font="5">A final word about SSL/TLS: it’s a protocol, not a software package.</text>
+<text top="528" left="87" width="432" height="14" font="5">There are multiple different software packages that implement this pro-</text>
+<text top="543" left="87" width="432" height="14" font="5">tocol. Ideally, if they all implement the protocol properly, they all interact</text>
+<text top="558" left="87" width="432" height="14" font="5">correctly. However, they use different code to implement the protocol.</text>
+<text top="573" left="87" width="432" height="14" font="5">As a result, software flaws in one implementation of SSL/TLS might not</text>
+<text top="588" left="87" width="432" height="14" font="5">be present in other implementations. For example, the Heartbleed at-</text>
+<text top="603" left="87" width="432" height="14" font="5">tack was based on implementation details of OpenSSL [H14], but was not</text>
+<text top="618" left="87" width="432" height="14" font="5">present in other implementations, such as the version of SSL/TLS found</text>
+<text top="633" left="87" width="432" height="14" font="5">in Microsoft’s Windows operating system. It is also possible that the cur-</text>
+<text top="648" left="87" width="432" height="14" font="5">rent protocol definition of SSL/TLS contains protocol flaws that would</text>
+<text top="662" left="87" width="432" height="14" font="5">be present in any compliant implementation. If you hear of a security</text>
+<text top="677" left="87" width="432" height="14" font="5">problem involving SSL, determine whether it is a protocol flaw or an im-</text>
+<text top="692" left="87" width="432" height="14" font="5">plementation flaw before taking further action. If it’s an implementation</text>
+<text top="707" left="87" width="432" height="14" font="5">flaw, and you use a different implementation, you might not need to take</text>
+<text top="722" left="87" width="136" height="14" font="5">any action in response.</text>
+<text top="755" left="55" width="280" height="17" font="4">57.6 Other Authentication Approaches</text>
+<text top="781" left="105" width="414" height="14" font="5">While passwords and public keys are the most common ways to au-</text>
+<text top="796" left="87" width="432" height="14" font="5">thenticate a remote user or machines, there are other options. One such</text>
+<text top="811" left="87" width="432" height="14" font="5">option is used all the time. After you have authenticated yourself to a</text>
+<text top="826" left="87" width="432" height="14" font="5">web site by providing a password, as we described above, the web site</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="5">12</text>
+<text top="96" left="367" width="10" height="14" font="5">D</text>
+<text top="98" left="378" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="139" left="129" width="432" height="14" font="5">will continue to assume that the authentication is valid. It won’t ask for</text>
+<text top="154" left="129" width="432" height="14" font="5">your password every time you click a link or perform some other inter-</text>
+<text top="169" left="129" width="432" height="14" font="5">action with it. (And a good thing, too. Imagine how much of a pain it</text>
+<text top="183" left="129" width="432" height="14" font="5">would be if you had to provide your password every time you wanted</text>
+<text top="198" left="129" width="432" height="14" font="5">to do anything.) If your session is encrypted at this point, it could regard</text>
+<text top="213" left="129" width="432" height="14" font="5">your proper use of the cryptography as a form of authentication; but you</text>
+<text top="228" left="129" width="432" height="14" font="5">might even be able to quit your web browser, start it up again, navigate</text>
+<text top="243" left="129" width="432" height="14" font="5">back to that web site, and still be treated as an authenticated user, with-</text>
+<text top="258" left="129" width="432" height="14" font="5">out a new request for your password. At that point, you’re no longer</text>
+<text top="273" left="129" width="432" height="14" font="5">using the same cryptography you used before, since you would have es-</text>
+<text top="288" left="129" width="432" height="14" font="5">tablished a new session and set up a new cryptographic key. How did</text>
+<text top="303" left="129" width="424" height="14" font="5">your partner authenticate that you were the one receiving the new key?</text>
+<text top="321" left="147" width="414" height="14" font="5">In such cases, the site you are working with has chosen to make a se-</text>
+<text top="336" left="129" width="432" height="14" font="5">curity tradeoff. It verified your identity at some time in the past using</text>
+<text top="351" left="129" width="432" height="14" font="5">your password and then relies on another method to authenticate you in</text>
+<text top="366" left="129" width="243" height="14" font="5">the future. A common method is to use</text>
+<text top="366" left="376" width="77" height="13" font="12"><b>web cookies</b></text>
+<text top="366" left="453" width="108" height="14" font="5">. Web cookies are</text>
+<text top="381" left="129" width="432" height="14" font="5">pieces of data that a web site sends to a client with the intention that the</text>
+<text top="396" left="129" width="432" height="14" font="5">client stores that data and send it back again whenever the client next</text>
+<text top="411" left="129" width="432" height="14" font="5">communicates with the server. Web cookies are built into most browsers</text>
+<text top="426" left="129" width="432" height="14" font="5">and are handled invisibly, without any user intervention. With proper</text>
+<text top="441" left="129" width="432" height="14" font="5">use of cryptography, a server that has verified the password of a client</text>
+<text top="455" left="129" width="432" height="14" font="5">can create a web cookie that securely stores the client’s identity. When</text>
+<text top="470" left="129" width="432" height="14" font="5">the client communicates with the server again, the web browser auto-</text>
+<text top="485" left="129" width="432" height="14" font="5">matically includes the cookie in the request, which allows the server to</text>
+<text top="503" left="129" width="373" height="14" font="5">verify the client’s identity without asking for a password again</text>
+<text top="500" left="502" width="4" height="9" font="8">6</text>
+<text top="503" left="508" width="3" height="14" font="5">.</text>
+<text top="520" left="147" width="414" height="14" font="5">If you spend a few minutes thinking about this authentication ap-</text>
+<text top="535" left="129" width="432" height="14" font="5">proach, you might come up with some possible security problems associ-</text>
+<text top="550" left="129" width="432" height="14" font="5">ated with it. The people designing this technology have dealt with some</text>
+<text top="565" left="129" width="432" height="14" font="5">of these problems, like preventing an eavesdropper from simply using</text>
+<text top="580" left="129" width="432" height="14" font="5">a cookie that was copied as it went across the network. However, there</text>
+<text top="595" left="129" width="432" height="14" font="5">are other security problems (like someone other than the legitimate user</text>
+<text top="610" left="129" width="432" height="14" font="5">using the computer that was running the web browser and storing the</text>
+<text top="625" left="129" width="432" height="14" font="5">cookie) that can’t be solved with these kinds of cookies, but could have</text>
+<text top="640" left="129" width="432" height="14" font="5">been solved if you required the user to provide the password every time.</text>
+<text top="655" left="129" width="432" height="14" font="5">When you build your own system, you will need to think about these</text>
+<text top="670" left="129" width="432" height="14" font="5">sorts of security tradeoffs yourself. Is it better to make life simpler for</text>
+<text top="685" left="129" width="432" height="14" font="5">your user by not asking for a password except when absolutely necessary,</text>
+<text top="700" left="129" width="432" height="14" font="5">or is it better to provide your user with improved security by frequently</text>
+<text top="715" left="129" width="432" height="14" font="5">requiring proof of identity? The point isn’t that there is one correct an-</text>
+<text top="754" left="149" width="4" height="8" font="9">6</text>
+<text top="757" left="154" width="407" height="11" font="10">You might remember from the chapter on access control that we promised to discuss</text>
+<text top="768" left="129" width="432" height="11" font="10">protecting capabilities in a network context using cryptography. That, in essence, is what</text>
+<text top="780" left="129" width="432" height="11" font="10">these web cookies are. After a user authenticates itself with another mechanism, the remote</text>
+<text top="792" left="129" width="432" height="11" font="10">system creates a cryptographic capability for that user that no one else could create, generally</text>
+<text top="804" left="129" width="432" height="11" font="10">using a key known only to that system. That capability/cookie can now be passed back to the</text>
+<text top="816" left="129" width="432" height="11" font="10">other party and used for future authorization operations. The same basic approach is used in</text>
+<text top="828" left="129" width="155" height="11" font="10">a lot of other distributed systems.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">D</text>
+<text top="98" left="98" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="5">S</text>
+<text top="98" left="179" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="222" width="7" height="14" font="5">S</text>
+<text top="98" left="230" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="506" width="13" height="14" font="5">13</text>
+<text top="139" left="87" width="432" height="14" font="5">swer to this question, but that you need to think about such questions in</text>
+<text top="154" left="87" width="157" height="14" font="5">the design of your system.</text>
+<text top="169" left="105" width="414" height="14" font="5">There are other authentication options. One example is what is called</text>
+<text top="184" left="87" width="7" height="14" font="5">a</text>
+<text top="184" left="99" width="173" height="13" font="12"><b>challenge/response protocol</b></text>
+<text top="184" left="272" width="247" height="14" font="5">. The remote machine sends you a chal-</text>
+<text top="199" left="87" width="432" height="14" font="5">lenge, typically in the form of a number. To authenticate yourself, you</text>
+<text top="214" left="87" width="432" height="14" font="5">must perform some operation on the challenge that produces a response.</text>
+<text top="229" left="87" width="432" height="14" font="5">This should be an operation that only the authentic party can perform,</text>
+<text top="244" left="87" width="432" height="14" font="5">so it probably relies on the use of a secret that party knows, but no one</text>
+<text top="259" left="87" width="432" height="14" font="5">else does. The secret is applied to the challenge, producing the response,</text>
+<text top="274" left="87" width="432" height="14" font="5">which is sent to the server. The server must be able to verify that the</text>
+<text top="289" left="87" width="432" height="14" font="5">proper response has been provided. A different challenge is sent every</text>
+<text top="303" left="87" width="432" height="14" font="5">time, requiring a different response, so attackers gain no advantage by</text>
+<text top="318" left="87" width="432" height="14" font="5">listening to and copying down old challenges and responses. Thus, the</text>
+<text top="333" left="87" width="432" height="14" font="5">challenges and responses need not be encrypted. Challenge/response</text>
+<text top="348" left="87" width="432" height="14" font="5">systems usually perform some kind of cryptographic operation, perhaps</text>
+<text top="363" left="87" width="432" height="14" font="5">a hashing operation, on the challenge plus the secret to produce the re-</text>
+<text top="378" left="87" width="432" height="14" font="5">sponse. Such operations are better performed by machines than people,</text>
+<text top="393" left="87" width="432" height="14" font="5">so either your computer calculates the response for you or you have a spe-</text>
+<text top="408" left="87" width="432" height="14" font="5">cial hardware token that takes care of it. Either way, a challenge/response</text>
+<text top="423" left="87" width="432" height="14" font="5">system requires pre-arrangement between the challenging machine and</text>
+<text top="438" left="87" width="432" height="14" font="5">the machine trying to authenticate itself. The hardware token or data se-</text>
+<text top="453" left="87" width="432" height="14" font="5">cret must have been set up and distributed before the challenge is issued.</text>
+<text top="468" left="105" width="414" height="14" font="5">Another authentication option is to use an authentication server. In</text>
+<text top="483" left="87" width="432" height="14" font="5">essence, you talk to a server that you trust and that trusts you. The party</text>
+<text top="498" left="87" width="432" height="14" font="5">you wish to authenticate to must also trust the server. The authentication</text>
+<text top="513" left="87" width="432" height="14" font="5">server vouches for your identity in some secure form, usually involving</text>
+<text top="528" left="87" width="432" height="14" font="5">cryptography. The party who needs to authenticate you is able to check</text>
+<text top="543" left="87" width="432" height="14" font="5">the secure information provided by the authentication server and thus</text>
+<text top="558" left="87" width="432" height="14" font="5">determine that the server verified your identity. Since the party you wish</text>
+<text top="573" left="87" width="432" height="14" font="5">to communicate with trusts the authentication server, it now trusts that</text>
+<text top="588" left="87" width="432" height="14" font="5">you are who you claim to be. In a vague sense, certificates and CAs are an</text>
+<text top="603" left="87" width="432" height="14" font="5">offline version of such authentication servers. There are more active on-</text>
+<text top="618" left="87" width="432" height="14" font="5">line versions that involve network interactions of various sorts between</text>
+<text top="633" left="87" width="432" height="14" font="5">the two machines wishing to communicate and one or more authentica-</text>
+<text top="648" left="87" width="432" height="14" font="5">tion servers. Online versions are more responsive to changes in security</text>
+<text top="663" left="87" width="432" height="14" font="5">conditions than offline versions like CAs. An old certificate that should</text>
+<text top="678" left="87" width="432" height="14" font="5">not be honored is hard to get rid of, but an online authentication server</text>
+<text top="692" left="87" width="432" height="14" font="5">can invalidate authentication for a compromised party instantly and ap-</text>
+<text top="707" left="87" width="432" height="14" font="5">ply the changes immediately. The details of such systems can be quite</text>
+<text top="722" left="87" width="432" height="14" font="5">complex, so we will not discuss them in depth. Kerberos is one example</text>
+<text top="737" left="87" width="279" height="14" font="5">of such an online authentication server [NT94].</text>
+<text top="763" left="55" width="215" height="17" font="4">57.7 Some Higher Level Tools</text>
+<text top="781" left="105" width="414" height="14" font="5">In some cases, we can achieve desirable security effects by working</text>
+<text top="796" left="87" width="99" height="14" font="5">at a higher level.</text>
+<text top="796" left="191" width="46" height="13" font="12"><b>HTTPS</b></text>
+<text top="796" left="241" width="278" height="14" font="5">(the cryptographically protected version of the</text>
+<text top="811" left="87" width="120" height="14" font="5">HTTP protocol) and</text>
+<text top="811" left="211" width="28" height="13" font="12"><b>SSH</b></text>
+<text top="811" left="242" width="277" height="14" font="5">(a competitor to SSL most often used to set up</text>
+<text top="826" left="87" width="381" height="14" font="5">secure sessions with remote computers) are two good examples.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="5">14</text>
+<text top="96" left="367" width="10" height="14" font="5">D</text>
+<text top="98" left="378" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="138" left="129" width="51" height="15" font="3"><b>HTTPS</b></text>
+<text top="164" left="129" width="432" height="14" font="5">HTTP, the protocol that supports the World Wide Web, does not have its</text>
+<text top="179" left="129" width="432" height="14" font="5">own security features. Nowadays, though, much sensitive and valuable</text>
+<text top="193" left="129" width="432" height="14" font="5">information is moved over the web, so sending it all unprotected over</text>
+<text top="208" left="129" width="432" height="14" font="5">the network is clearly a bad idea. Rather than come up with a fresh im-</text>
+<text top="223" left="129" width="432" height="14" font="5">plementation of security for HTTP, however, HTTPS takes the existing</text>
+<text top="238" left="129" width="432" height="14" font="5">HTTP definition and connects it to SSL/TLS. SSL takes care of establish-</text>
+<text top="253" left="129" width="432" height="14" font="5">ing a secure connection, including authenticating the web server using</text>
+<text top="268" left="129" width="432" height="14" font="5">the certificate approach discussed earlier and establishing a new sym-</text>
+<text top="283" left="129" width="432" height="14" font="5">metric encryption key known only to the client and server. Once the SSL</text>
+<text top="298" left="129" width="432" height="14" font="5">connection is established, all subsequent interactions between the client</text>
+<text top="313" left="129" width="432" height="14" font="5">and server use the secured connection. To a large extent, HTTPS is simply</text>
+<text top="328" left="129" width="247" height="14" font="5">HTTP passed through an SSL connection.</text>
+<text top="345" left="147" width="414" height="14" font="5">That does not devalue the importance of HTTPS, however. In fact, it is</text>
+<text top="360" left="129" width="432" height="14" font="5">a useful object lesson. Rather than spend years in development and face</text>
+<text top="374" left="129" width="432" height="14" font="5">the possibility of the same kinds of security flaws that other developers</text>
+<text top="389" left="129" width="432" height="14" font="5">of security protocols inevitably find, HTTPS makes direct use of a high</text>
+<text top="404" left="129" width="432" height="14" font="5">quality transport security tool, thus replacing an insecure transport with</text>
+<text top="419" left="129" width="335" height="14" font="5">a highly secure transport at very little development cost.</text>
+<text top="436" left="147" width="414" height="14" font="5">HTTPS obviously depends heavily on authentication, since we want to</text>
+<text top="451" left="129" width="432" height="14" font="5">be sure we aren’t communicating with malicious web sites. HTTPS uses</text>
+<text top="466" left="129" width="432" height="14" font="5">certificates for that purpose. Since HTTPS is intended primarily for use</text>
+<text top="481" left="129" width="432" height="14" font="5">in web browsers, the certificates in question are gathered and managed</text>
+<text top="496" left="129" width="432" height="14" font="5">by the browser. Modern browsers come configured with the public keys</text>
+<text top="511" left="129" width="432" height="14" font="5">of many certificate signing authorities (CAs, as we mentioned earlier).</text>
+<text top="526" left="129" width="432" height="14" font="5">Certificates for web sites are checked against these signing authorities to</text>
+<text top="540" left="129" width="432" height="14" font="5">determine if the certificate is real or bogus. Remember, however, what a</text>
+<text top="555" left="129" width="432" height="14" font="5">certificate actually tells you, assuming it checks out: that at some moment</text>
+<text top="570" left="129" width="432" height="14" font="5">in time the signing authority thoughts it was a good idea to vouch that</text>
+<text top="585" left="129" width="432" height="14" font="5">a particular public key belongs to a particular party. There is no impli-</text>
+<text top="600" left="129" width="432" height="14" font="5">cation that the party is good or evil, that the matching private key is still</text>
+<text top="615" left="129" width="432" height="14" font="5">secret, or even that the certificate signing authority itself is secure and un-</text>
+<text top="630" left="129" width="432" height="14" font="5">compromised, either when it created the certificate or at the moment you</text>
+<text top="645" left="129" width="432" height="14" font="5">check it. There have been real world problems with web certificates for all</text>
+<text top="660" left="129" width="432" height="14" font="5">these reasons. Remember also that HTTPS only vouches for authenticity.</text>
+<text top="675" left="129" width="432" height="14" font="5">An authenticated web site using HTTPS can still launch an attack on your</text>
+<text top="690" left="129" width="432" height="14" font="5">client. An authenticated attack, true, but that won’t be much consolation</text>
+<text top="705" left="129" width="79" height="14" font="5">if it succeeds.</text>
+<text top="721" left="147" width="414" height="14" font="5">Not all web browsers always supported HTTPS, typically because they</text>
+<text top="736" left="129" width="432" height="14" font="5">didn’t have SSL installed or configured. In those cases, a web site using</text>
+<text top="751" left="129" width="432" height="14" font="5">HTTPS only would not be able to interact with the client, since the client</text>
+<text top="766" left="129" width="432" height="14" font="5">couldn’t set up its end of the SSL socket. The standard solution for web</text>
+<text top="781" left="129" width="432" height="14" font="5">servers was to fall back on HTTP when a client claimed it was unable to</text>
+<text top="796" left="129" width="432" height="14" font="5">use HTTPS. When the server did so, no security would be applied, just as</text>
+<text top="811" left="129" width="432" height="14" font="5">if the server wasn’t running HTTPS at all. As ability to support HTTPS in</text>
+<text top="826" left="129" width="432" height="14" font="5">browsers and client machines has become more common, there has been</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="13" family="ZFPXBF+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="5">D</text>
+<text top="98" left="98" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="5">S</text>
+<text top="98" left="179" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="222" width="7" height="14" font="5">S</text>
+<text top="98" left="230" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="506" width="13" height="14" font="5">15</text>
+<text top="139" left="87" width="432" height="14" font="5">a push towards servers insisting on HTTPS, and refusing to talk to clients</text>
+<text top="154" left="87" width="432" height="14" font="5">who can’t or won’t speak HTTPS. This approach is called HSTS (HTTP</text>
+<text top="169" left="87" width="432" height="14" font="5">Strict Transport Security). HSTS is an option for a web site. If the web site</text>
+<text top="183" left="87" width="432" height="14" font="5">decides it will support HSTS, all interactions with it will be cryptographi-</text>
+<text top="198" left="87" width="432" height="14" font="5">cally secured for any client. Clients who can’t or won’t accept HTTPS will</text>
+<text top="213" left="87" width="432" height="14" font="5">not be allowed to interact with such a web site. HSTS is used by a num-</text>
+<text top="228" left="87" width="255" height="14" font="5">ber of major web sites, including Google’s</text>
+<text top="229" left="346" width="81" height="11" font="17">google.com</text>
+<text top="228" left="431" width="88" height="14" font="5">domain, but is</text>
+<text top="243" left="87" width="181" height="14" font="5">far from ubiquitous as of 2020.</text>
+<text top="258" left="105" width="414" height="14" font="5">While HTTPS is primarily intended to help secure web browsing, it is</text>
+<text top="273" left="87" width="432" height="14" font="5">sometimes used to secure other kinds of communications. Some develop-</text>
+<text top="288" left="87" width="432" height="14" font="5">ers have leveraged HTTP for purposes rather different than standard web</text>
+<text top="303" left="87" width="432" height="14" font="5">browsing, and, for them, using HTTPS to secure their communications is</text>
+<text top="318" left="87" width="432" height="14" font="5">both natural and cheap. However, you can only use HTTPS to secure</text>
+<text top="333" left="87" width="432" height="14" font="5">your system if you commit to using HTTP as your application protocol,</text>
+<text top="348" left="87" width="432" height="14" font="5">and HTTP was intended primarily to support a human-based activity.</text>
+<text top="363" left="87" width="432" height="14" font="5">HTTP messages, for example, are typically encoded in ASCII and include</text>
+<text top="378" left="87" width="432" height="14" font="5">substantial headers designed to support web browsing needs. You may</text>
+<text top="393" left="87" width="432" height="14" font="5">be able to achieve far greater efficiency of your application by using SSL,</text>
+<text top="408" left="87" width="241" height="14" font="5">rather than HTTPS. Or you can use SSH.</text>
+<text top="443" left="87" width="31" height="15" font="3"><b>SSH</b></text>
+<text top="467" left="87" width="28" height="13" font="12"><b>SSH</b></text>
+<text top="467" left="118" width="59" height="14" font="5">stands for</text>
+<text top="467" left="180" width="76" height="13" font="12"><b>Secure Shell</b></text>
+<text top="467" left="259" width="260" height="14" font="5">which accurately describes the original pur-</text>
+<text top="482" left="87" width="432" height="14" font="5">pose of the program. SSH is available on Linux and other Unix systems,</text>
+<text top="497" left="87" width="432" height="14" font="5">and to some extent on Windows systems. SSH was envisioned as a secure</text>
+<text top="512" left="87" width="432" height="14" font="5">remote shell, but it has been developed into a more general tool for allow-</text>
+<text top="527" left="87" width="432" height="14" font="5">ing secure interactions between computers. Most commonly this shell</text>
+<text top="542" left="87" width="432" height="14" font="5">is used for command line interfaces, but SSH can support many other</text>
+<text top="557" left="87" width="432" height="14" font="5">forms of secure remote interactions. For example, it can be used to pro-</text>
+<text top="572" left="87" width="432" height="14" font="5">tect remote X Windows sessions. Generally, TCP ports can be forwarded</text>
+<text top="587" left="87" width="432" height="14" font="5">through SSH, providing a powerful method to protect interactions be-</text>
+<text top="602" left="87" width="135" height="14" font="5">tween remote systems.</text>
+<text top="617" left="105" width="414" height="14" font="5">SSH addresses many of the same problems seen by SSL, often in sim-</text>
+<text top="632" left="87" width="432" height="14" font="5">ilar ways. Remote users must be authenticated, shared encryption keys</text>
+<text top="647" left="87" width="432" height="14" font="5">must be established, integrity must be checked, and so on. SSH typically</text>
+<text top="662" left="87" width="432" height="14" font="5">relies on public key cryptography and certificates to authenticate remote</text>
+<text top="677" left="87" width="432" height="14" font="5">servers. Clients frequently do not have their own certificates and pri-</text>
+<text top="692" left="87" width="432" height="14" font="5">vate keys, in which case providing a user ID and password is permitted.</text>
+<text top="707" left="87" width="432" height="14" font="5">SSH supports other options for authentication not based on certificates or</text>
+<text top="721" left="87" width="432" height="14" font="5">passwords, such as the use of authentication servers (such as Kerberos).</text>
+<text top="736" left="87" width="432" height="14" font="5">Various ciphers (both for authentication and for symmetric encryption)</text>
+<text top="751" left="87" width="432" height="14" font="5">are supported, and some form of negotiation is required between the</text>
+<text top="766" left="87" width="263" height="14" font="5">client and the server to choose a suitable set.</text>
+<text top="781" left="105" width="414" height="14" font="5">A typical use of SSH provides a good example of a common general</text>
+<text top="796" left="87" width="271" height="14" font="5">kind of network security vulnerability called a</text>
+<text top="796" left="361" width="117" height="13" font="12"><b>man-in-the-middle</b></text>
+<text top="796" left="480" width="39" height="14" font="5">attack.</text>
+<text top="811" left="87" width="432" height="14" font="5">This kind of attack occurs when two parties think they are communicat-</text>
+<text top="826" left="87" width="432" height="14" font="5">ing directly, but actually are communicating through a malicious third</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="5">16</text>
+<text top="96" left="367" width="10" height="14" font="5">D</text>
+<text top="98" left="378" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="139" left="129" width="432" height="14" font="5">party without knowing it. That third party sees all of the messages passed</text>
+<text top="154" left="129" width="432" height="14" font="5">between them, and can alter such messages or inject new messages with-</text>
+<text top="171" left="129" width="121" height="14" font="5">out their knowledge</text>
+<text top="168" left="250" width="4" height="9" font="8">7</text>
+<text top="171" left="255" width="3" height="14" font="5">.</text>
+<text top="186" left="147" width="422" height="14" font="5">Well-designed network security tools are immune to man-in-the-middle</text>
+<text top="201" left="129" width="432" height="14" font="5">attacks of many types, but even a good tool like SSH can sometimes be</text>
+<text top="216" left="129" width="432" height="14" font="5">subject to them. If you use SSH much, you might have encountered an</text>
+<text top="231" left="129" width="432" height="14" font="5">example yourself. When you first use SSH to log into a remote machine</text>
+<text top="246" left="129" width="432" height="14" font="5">you’ve never logged into before, you probably don’t have the public key</text>
+<text top="261" left="129" width="432" height="14" font="5">associated with that remote machine. How do you get it? Often, not</text>
+<text top="276" left="129" width="432" height="14" font="5">through a certificate or any other secure means, but simply by asking the</text>
+<text top="291" left="129" width="432" height="14" font="5">remote site to send it to you. Then you have its public key and away</text>
+<text top="305" left="129" width="432" height="14" font="5">you go, securely authenticating that machine and setting up encrypted</text>
+<text top="320" left="129" width="432" height="14" font="5">communications. But what if there’s a man in the middle when you first</text>
+<text top="335" left="129" width="432" height="14" font="5">attempt to log into the remote machine? In that case, when the remote</text>
+<text top="350" left="129" width="432" height="14" font="5">machine sends you its public key, the man in the middle can discard the</text>
+<text top="365" left="129" width="432" height="14" font="5">message containing the correct public key and substitute one containing</text>
+<text top="380" left="129" width="432" height="14" font="5">his own public key. Now you think you have the public key for the re-</text>
+<text top="395" left="129" width="432" height="14" font="5">mote server, but you actually have the public key of the man in the mid-</text>
+<text top="410" left="129" width="432" height="14" font="5">dle. That means the man in the middle can pose as the remote server and</text>
+<text top="425" left="129" width="432" height="14" font="5">you’ll never be the wiser. The folks who designed SSH were well aware of</text>
+<text top="440" left="129" width="432" height="14" font="5">this problem, and if you ever do use SSH this way, up will pop a message</text>
+<text top="455" left="129" width="432" height="14" font="5">warning you of the danger and asking if you want to go ahead despite the</text>
+<text top="470" left="129" width="432" height="14" font="5">risk. Folk wisdom suggests that everyone always says “yes, go ahead”</text>
+<text top="485" left="129" width="432" height="14" font="5">when they get this message, including network security professionals.</text>
+<text top="500" left="129" width="432" height="14" font="5">For that matter, folk wisdom suggests that all messages warning a user of</text>
+<text top="515" left="129" width="432" height="14" font="5">the possibility of insecure actions are always ignored, which should sug-</text>
+<text top="530" left="129" width="432" height="14" font="5">gest to you just how much security benefit will arise from adding such</text>
+<text top="545" left="129" width="231" height="14" font="5">confirmation messages to your system.</text>
+<text top="560" left="147" width="414" height="14" font="5">SSH is not built on SSL, but is a separate implementation. As a result,</text>
+<text top="575" left="129" width="432" height="14" font="5">the two approaches each have their own bugs, features, and uses. A secu-</text>
+<text top="590" left="129" width="432" height="14" font="5">rity flaw found in SSH will not necessarily have any impact on SSL, and</text>
+<text top="605" left="129" width="62" height="14" font="5">vice versa.</text>
+<text top="642" left="97" width="105" height="17" font="4">57.8 Summary</text>
+<text top="672" left="147" width="414" height="14" font="5">Distributed systems are critical to modern computing, but are diffi-</text>
+<text top="687" left="129" width="432" height="14" font="5">cult to secure. The cornerstone of providing distributed system security</text>
+<text top="702" left="129" width="432" height="14" font="5">tends to be ensuring that the insecure network connecting system com-</text>
+<text top="717" left="129" width="432" height="14" font="5">ponents does not introduce new security problems. Messages sent be-</text>
+<text top="732" left="129" width="432" height="14" font="5">tween the components are encrypted and authenticated, protecting their</text>
+<text top="747" left="129" width="432" height="14" font="5">privacy and integrity, and offering exclusive access to the distributed ser-</text>
+<text top="762" left="129" width="432" height="14" font="5">vice to the intended users. Standard tools like SSL/TLS and public keys</text>
+<text top="790" left="149" width="4" height="8" font="9">7</text>
+<text top="792" left="154" width="407" height="11" font="10">Think back to our aside on Diffie-Hellman key exchange and the fly in the ointment.</text>
+<text top="804" left="129" width="432" height="11" font="10">That’s a perfect case for a man-in-the-middle attack, since an attacker can perhaps exchange a</text>
+<text top="816" left="129" width="432" height="11" font="10">key with one correct party, rather than the two correct parties exchanging a key, without being</text>
+<text top="828" left="129" width="42" height="11" font="10">detected.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">D</text>
+<text top="98" left="98" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="172" width="7" height="14" font="5">S</text>
+<text top="98" left="179" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="222" width="7" height="14" font="5">S</text>
+<text top="98" left="230" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="506" width="13" height="14" font="5">17</text>
+<text top="139" left="87" width="432" height="14" font="5">distributed through X.509 certificates are used to provide these security</text>
+<text top="154" left="87" width="426" height="14" font="5">services. Passwords are often used to authenticate remote human users.</text>
+<text top="169" left="105" width="414" height="14" font="5">Symmetric cryptography is used for transport of most data, since it is</text>
+<text top="183" left="87" width="432" height="14" font="5">cheaper than asymmetric cryptography. Often, symmetric keys are not</text>
+<text top="198" left="87" width="432" height="14" font="5">shared by system participants before the communication starts, so the</text>
+<text top="213" left="87" width="432" height="14" font="5">first step in the protocol is typically exchanging a symmetric key. As</text>
+<text top="228" left="87" width="432" height="14" font="5">discussed in previous chapters, key secrecy is critical in proper use of</text>
+<text top="243" left="87" width="432" height="14" font="5">cryptography, so care is required in the key distribution process. Diffie-</text>
+<text top="258" left="87" width="432" height="14" font="5">Hellman key exchange is commonly used, but it still requires authentica-</text>
+<text top="273" left="87" width="377" height="14" font="5">tion to ensure that only the intended participants know the key.</text>
+<text top="288" left="105" width="414" height="14" font="5">As mentioned in earlier chapters, building your own cryptographic</text>
+<text top="303" left="87" width="432" height="14" font="5">solutions is challenging and often leads to security failures. A variety of</text>
+<text top="318" left="87" width="432" height="14" font="5">tools, including SSL/TLS, SSH, and HTTPS, have already tackled many</text>
+<text top="333" left="87" width="435" height="14" font="5">of the challenging problems and made good progress in overcoming them.</text>
+<text top="348" left="87" width="432" height="14" font="5">These tools can be used to build other systems, avoiding many of the pit-</text>
+<text top="363" left="87" width="432" height="14" font="5">falls of building cryptography from scratch. However, proper use of even</text>
+<text top="378" left="87" width="432" height="14" font="5">the best security tools depends on an understanding of the tool’s purpose</text>
+<text top="393" left="87" width="432" height="14" font="5">and limitations, so developing deeper knowledge of the way such tools</text>
+<text top="408" left="87" width="432" height="14" font="5">can be integrated into one’s system is vital to using them to their best</text>
+<text top="423" left="87" width="65" height="14" font="5">advantage.</text>
+<text top="438" left="105" width="420" height="14" font="5">Remember that these tools only make limited security guarantees. They</text>
+<text top="452" left="87" width="432" height="14" font="5">do not provide the same assurance that an operating system gets when</text>
+<text top="467" left="87" width="432" height="14" font="5">it performs actions locally on hardware under its direct control. Thus,</text>
+<text top="482" left="87" width="432" height="14" font="5">even when using good authentication and encryption tools properly, a</text>
+<text top="497" left="87" width="432" height="14" font="5">system designer is well advised to think carefully about the implications</text>
+<text top="512" left="87" width="432" height="14" font="5">of performing actions requested by a remote site, or providing sensitive</text>
+<text top="527" left="87" width="432" height="14" font="5">information to that site. What happens beyond the boundary of the ma-</text>
+<text top="542" left="87" width="335" height="14" font="5">chine the OS controls is always uncertain and thus risky.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="16" family="BQCYYY+URWPalladioL" color="#000000"/>
+	<fontspec id="19" size="10" family="ZFPXBF+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="20" size="10" family="DDOWVZ+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">18</text>
+<text top="96" left="367" width="10" height="14" font="5">D</text>
+<text top="98" left="378" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="137" left="129" width="82" height="16" font="18"><b>References</b></text>
+<text top="165" left="129" width="146" height="11" font="10">[H14] “The Heartbleed Bug” by</text>
+<text top="166" left="277" width="138" height="9" font="19">http://heartbleed.com/</text>
+<text top="165" left="416" width="3" height="11" font="10">.</text>
+<text top="165" left="421" width="139" height="11" font="20">A web page providing a wealth of</text>
+<text top="177" left="129" width="401" height="11" font="20">detail on this particular vulnerability in the OpenSSL implementation of the SSL/TLS protocol.</text>
+<text top="194" left="129" width="432" height="11" font="10">[I12] “Information technology – Open Systems Interconnection – The Directory: Public-key</text>
+<text top="206" left="129" width="241" height="11" font="10">and Attribute Certificate Frameworks” ITU-T, 2012.</text>
+<text top="206" left="375" width="185" height="11" font="20">The ITU-T document describing the format</text>
+<text top="217" left="129" width="432" height="11" font="20">and use of an X.509 certificate. Not recommended for light bedtime reading, but here’s where it’s all</text>
+<text top="229" left="129" width="33" height="11" font="20">defined.</text>
+<text top="246" left="129" width="432" height="11" font="10">[NT94] “Kerberos: An authentication service for computer networks” by B. Clifford Neuman</text>
+<text top="258" left="129" width="354" height="11" font="10">and Theodore Ts’o. IEEE Communications Magazine, Volume 32, No. 9, 1994.</text>
+<text top="258" left="486" width="74" height="11" font="20">An early paper on</text>
+<text top="270" left="129" width="432" height="11" font="20">Kerberos by its main developers. There have been new versions of the system and many enhancements</text>
+<text top="282" left="129" width="355" height="11" font="20">and bug fixes, but this paper is still a good discussion of the intricacies of the system.</text>
+<text top="298" left="129" width="196" height="11" font="10">[P16] “The International PGP Home Page”</text>
+<text top="299" left="327" width="119" height="9" font="19">http://www.pgpi.org</text>
+<text top="298" left="447" width="29" height="11" font="10">, 2016.</text>
+<text top="298" left="479" width="82" height="11" font="20">A page that links to</text>
+<text top="310" left="129" width="432" height="11" font="20">lots of useful stuff related to PGP, including downloads of free versions of the software, documentation,</text>
+<text top="322" left="129" width="153" height="11" font="20">and discussion of issues related to it.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+</pdf2xml>

@@ -1,0 +1,1122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="WJLWGL+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="WJLWGL+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="QDPWNY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="11" family="QDPWNY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="13" family="RUDYTV+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="16" family="QDPWNY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="13" family="FOSOOC+NimbusMonL-Regu" color="#000000"/>
+<text top="192" left="538" width="19" height="29" font="0">F</text>
+<text top="260" left="333" width="186" height="20" font="1">Laboratory: Tutorial</text>
+<text top="341" left="87" width="432" height="14" font="2">This is a very brief document to familiarize you with the basics of the C</text>
+<text top="356" left="87" width="196" height="14" font="2">programming environment on U</text>
+<text top="358" left="284" width="21" height="11" font="3">NIX</text>
+<text top="356" left="309" width="210" height="14" font="2">systems. It is not comprehensive or</text>
+<text top="371" left="87" width="425" height="14" font="2">particularly detailed, but should just give you enough to get you going.</text>
+<text top="386" left="105" width="414" height="14" font="2">A couple of general points of advice about programming: if you want</text>
+<text top="401" left="87" width="432" height="14" font="2">to become an expert programmer, you need to master more than just the</text>
+<text top="416" left="87" width="281" height="14" font="2">syntax of a language. Specifically, you should</text>
+<text top="416" left="373" width="103" height="13" font="4"><b>know your tools</b></text>
+<text top="416" left="475" width="3" height="14" font="2">,</text>
+<text top="416" left="484" width="35" height="13" font="4"><b>know</b></text>
+<text top="431" left="87" width="85" height="13" font="4"><b>your libraries</b></text>
+<text top="431" left="172" width="31" height="14" font="2">, and</text>
+<text top="431" left="208" width="166" height="13" font="4"><b>know your documentation</b></text>
+<text top="431" left="374" width="145" height="14" font="2">. The tools that are rel-</text>
+<text top="445" left="87" width="164" height="14" font="2">evant to C compilation are</text>
+<text top="446" left="256" width="19" height="13" font="4"><b>gcc</b></text>
+<text top="445" left="275" width="3" height="14" font="2">,</text>
+<text top="446" left="284" width="24" height="13" font="4"><b>gdb</b></text>
+<text top="445" left="308" width="76" height="14" font="2">, and maybe</text>
+<text top="446" left="389" width="13" height="13" font="4"><b>ld</b></text>
+<text top="445" left="402" width="117" height="14" font="2">. There are tons of</text>
+<text top="460" left="87" width="432" height="14" font="2">library routines that are also available to you, but fortunately a lot of</text>
+<text top="475" left="87" width="162" height="14" font="2">functionality is included in</text>
+<text top="475" left="253" width="23" height="13" font="4"><b>libc</b></text>
+<text top="475" left="276" width="243" height="14" font="2">, which is linked with all C programs by</text>
+<text top="490" left="87" width="432" height="14" font="2">default — all you need to do is include the right header files. Finally,</text>
+<text top="505" left="87" width="432" height="14" font="2">knowing how to find the library routines you need (e.g., learning to find</text>
+<text top="520" left="87" width="432" height="14" font="2">and read man pages) is a skill worth acquiring. We’ll talk about each of</text>
+<text top="535" left="87" width="169" height="14" font="2">these in more detail later on.</text>
+<text top="550" left="105" width="414" height="14" font="2">Like (almost) everything worth doing in life, becoming an expert in</text>
+<text top="565" left="87" width="432" height="14" font="2">these domains takes time. Spending the time up-front to learn more about</text>
+<text top="580" left="87" width="359" height="14" font="2">the tools and environment is definitely well worth the effort.</text>
+<text top="617" left="55" width="175" height="17" font="5">F.1 A Simple C Program</text>
+<text top="647" left="105" width="414" height="14" font="2">We’ll start with a simple C program, perhaps saved in the file “hw.c”.</text>
+<text top="662" left="87" width="432" height="14" font="2">Unlike Java, there is not necessarily a connection between the file name</text>
+<text top="677" left="87" width="432" height="14" font="2">and the contents of the file; thus, use your common sense in naming files</text>
+<text top="692" left="87" width="188" height="14" font="2">in a manner that is appropriate.</text>
+<text top="707" left="105" width="308" height="14" font="2">The first line specifies a file to include, in this case</text>
+<text top="707" left="417" width="57" height="11" font="6">stdio.h</text>
+<text top="707" left="474" width="45" height="14" font="2">, which</text>
+<text top="721" left="87" width="432" height="14" font="2">“prototypes” many of the commonly used input/output routines; the</text>
+<text top="736" left="87" width="157" height="14" font="2">one we are interested in is</text>
+<text top="737" left="248" width="65" height="11" font="6">printf()</text>
+<text top="736" left="312" width="118" height="14" font="2">. When you use the</text>
+<text top="737" left="434" width="65" height="11" font="6">#include</text>
+<text top="736" left="502" width="17" height="14" font="2">di-</text>
+<text top="751" left="87" width="262" height="14" font="2">rective, you are telling the C preprocessor (</text>
+<text top="752" left="349" width="24" height="11" font="6">cpp</text>
+<text top="751" left="373" width="146" height="14" font="2">) to find a particular file</text>
+<text top="766" left="87" width="28" height="14" font="2">(e.g.,</text>
+<text top="767" left="120" width="57" height="11" font="6">stdio.h</text>
+<text top="766" left="176" width="343" height="14" font="2">) and to insert it directly into your code at the spot of the</text>
+<text top="782" left="87" width="65" height="11" font="6">#include</text>
+<text top="781" left="152" width="75" height="14" font="2">. By default,</text>
+<text top="782" left="231" width="24" height="11" font="6">cpp</text>
+<text top="781" left="260" width="150" height="14" font="2">will look in the directory</text>
+<text top="782" left="414" width="105" height="11" font="6">/usr/include/</text>
+<text top="796" left="87" width="122" height="14" font="2">to try to find the file.</text>
+<text top="811" left="105" width="260" height="14" font="2">The next part specifies the signature of the</text>
+<text top="812" left="370" width="48" height="11" font="6">main()</text>
+<text top="811" left="423" width="96" height="14" font="2">routine, namely</text>
+<text top="826" left="87" width="157" height="14" font="2">that it returns an integer (</text>
+<text top="827" left="244" width="24" height="11" font="6">int</text>
+<text top="826" left="268" width="251" height="14" font="2">), and will be called with two arguments,</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="12" family="QDPWNY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="QDPWNY+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="409" width="8" height="14" font="2">L</text>
+<text top="98" left="418" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="490" width="16" height="14" font="2">: T</text>
+<text top="98" left="507" width="53" height="11" font="3">UTORIAL</text>
+<text top="135" left="129" width="234" height="14" font="6">/* header files go up here */</text>
+<text top="150" left="129" width="444" height="14" font="6">/* note that C comments are enclosed within a slash and</text>
+<text top="165" left="153" width="274" height="14" font="6">a star, and may wrap over lines */</text>
+<text top="180" left="129" width="371" height="11" font="6">// two slashes work too (and may be preferred)</text>
+<text top="195" left="129" width="145" height="11" font="6">#include &lt;stdio.h&gt;</text>
+<text top="225" left="129" width="210" height="11" font="6">// main returns an integer</text>
+<text top="240" left="129" width="274" height="14" font="6">int main(int argc, char *argv[]) {</text>
+<text top="254" left="161" width="266" height="14" font="6">/* printf is our output function;</text>
+<text top="269" left="185" width="299" height="14" font="6">by default, writes to standard out */</text>
+<text top="284" left="161" width="412" height="14" font="6">/* printf returns an integer, but we ignore that */</text>
+<text top="299" left="161" width="202" height="11" font="6">printf(&#34;hello, world\n&#34;);</text>
+<text top="329" left="161" width="323" height="14" font="6">/* return 0 to indicate all went well */</text>
+<text top="344" left="161" width="81" height="11" font="6">return(0);</text>
+<text top="359" left="129" width="8" height="11" font="6">}</text>
+<text top="390" left="129" width="59" height="14" font="2">an integer</text>
+<text top="391" left="190" width="32" height="11" font="6">argc</text>
+<text top="390" left="223" width="338" height="14" font="2">, which is a count of the number of arguments on the com-</text>
+<text top="405" left="129" width="304" height="14" font="2">mand line, and an array of pointers to characters (</text>
+<text top="406" left="433" width="32" height="11" font="6">argv</text>
+<text top="405" left="465" width="96" height="14" font="2">), each of which</text>
+<text top="420" left="129" width="432" height="14" font="2">contain a word from the command line, and the last of which is null.</text>
+<text top="435" left="129" width="291" height="14" font="2">There will be more on pointers and arrays below.</text>
+<text top="450" left="147" width="414" height="14" font="2">The program then simply prints the string “hello, world” and ad-</text>
+<text top="465" left="129" width="432" height="14" font="2">vances the output stream to the next line, courtesy of the backslash fol-</text>
+<text top="480" left="129" width="235" height="14" font="2">lowed by an “n” at the end of the call to</text>
+<text top="481" left="367" width="65" height="11" font="6">printf()</text>
+<text top="480" left="432" width="129" height="14" font="2">. Afterwards, the pro-</text>
+<text top="495" left="129" width="432" height="14" font="2">gram completes by returning a value, which is passed back to the shell</text>
+<text top="510" left="129" width="432" height="14" font="2">that executed the program. A script or the user at the terminal could</text>
+<text top="525" left="129" width="347" height="14" font="2">check this value (in csh and tcsh shells, it is stored in the</text>
+<text top="526" left="480" width="48" height="11" font="6">status</text>
+<text top="525" left="533" width="28" height="14" font="2">vari-</text>
+<text top="540" left="129" width="385" height="14" font="2">able), to see whether the program exited cleanly or with an error.</text>
+<text top="577" left="97" width="224" height="17" font="5">F.2 Compilation and Execution</text>
+<text top="607" left="147" width="414" height="14" font="2">We’ll now learn how to compile the program. Note that we will use</text>
+<text top="623" left="129" width="24" height="11" font="6">gcc</text>
+<text top="622" left="157" width="404" height="14" font="2">as our example, though on some platforms you may be able to use a</text>
+<text top="637" left="129" width="159" height="14" font="2">different (native) compiler,</text>
+<text top="638" left="291" width="16" height="11" font="6">cc</text>
+<text top="637" left="307" width="3" height="14" font="2">.</text>
+<text top="653" left="147" width="204" height="14" font="2">At the shell prompt, you just type:</text>
+<text top="681" left="129" width="129" height="11" font="6">prompt&gt; gcc hw.c</text>
+<text top="707" left="147" width="24" height="11" font="6">gcc</text>
+<text top="707" left="175" width="386" height="14" font="2">is not really the compiler, but rather the program called a “com-</text>
+<text top="721" left="129" width="432" height="14" font="2">piler driver”; thus it coordinates the many steps of the compilation. Usu-</text>
+<text top="736" left="129" width="228" height="14" font="2">ally there are four to five steps. First,</text>
+<text top="737" left="362" width="24" height="11" font="6">gcc</text>
+<text top="736" left="390" width="72" height="14" font="2">will execute</text>
+<text top="737" left="467" width="24" height="11" font="6">cpp</text>
+<text top="736" left="491" width="69" height="14" font="2">, the C pre-</text>
+<text top="751" left="129" width="274" height="14" font="2">processor, to process certain directives (such as</text>
+<text top="752" left="405" width="57" height="11" font="6">#define</text>
+<text top="751" left="464" width="23" height="14" font="2">and</text>
+<text top="752" left="489" width="65" height="11" font="6">#include</text>
+<text top="751" left="554" width="8" height="14" font="2">).</text>
+<text top="766" left="129" width="78" height="14" font="2">The program</text>
+<text top="767" left="211" width="24" height="11" font="6">cpp</text>
+<text top="766" left="238" width="322" height="14" font="2">is just a source-to-source translator, so its end-product</text>
+<text top="781" left="129" width="432" height="14" font="2">is still just source code (i.e., a C file). Then the real compilation will begin,</text>
+<text top="796" left="129" width="158" height="14" font="2">usually a command called</text>
+<text top="797" left="291" width="24" height="11" font="6">cc1</text>
+<text top="796" left="315" width="246" height="14" font="2">. This will transform source-level C code</text>
+<text top="811" left="129" width="432" height="14" font="2">into low-level assembly code, specific to the host machine. The assem-</text>
+<text top="826" left="129" width="23" height="14" font="2">bler</text>
+<text top="827" left="155" width="16" height="11" font="6">as</text>
+<text top="826" left="174" width="386" height="14" font="2">will then be executed, generating object code (bits and things that</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="9" family="QDPWNY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="7" family="QDPWNY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="11" size="10" family="FOSOOC+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="168" width="16" height="14" font="2">: T</text>
+<text top="98" left="186" width="53" height="11" font="3">UTORIAL</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="87" width="413" height="14" font="2">machines can really understand), and finally the link-editor (or linker)</text>
+<text top="139" left="503" width="16" height="11" font="6">ld</text>
+<text top="154" left="87" width="432" height="14" font="2">will put it all together into a final executable program. Fortunately(!), for</text>
+<text top="169" left="87" width="309" height="14" font="2">most purposes, you can blithely be unaware of how</text>
+<text top="169" left="400" width="24" height="11" font="6">gcc</text>
+<text top="169" left="427" width="92" height="14" font="2">works, and just</text>
+<text top="183" left="87" width="163" height="14" font="2">use it with the proper flags.</text>
+<text top="199" left="105" width="414" height="14" font="2">The result of your compilation above is an executable, named (by de-</text>
+<text top="214" left="87" width="32" height="14" font="2">fault)</text>
+<text top="214" left="123" width="40" height="11" font="6">a.out</text>
+<text top="214" left="163" width="255" height="14" font="2">. To then run the program, we simply type:</text>
+<text top="240" left="87" width="121" height="11" font="6">prompt&gt; ./a.out</text>
+<text top="265" left="105" width="414" height="14" font="2">When we run this program, the OS will set argc and argv properly</text>
+<text top="280" left="87" width="432" height="14" font="2">so that the program can process the command-line arguments as need be.</text>
+<text top="295" left="87" width="69" height="14" font="2">Specifically,</text>
+<text top="296" left="159" width="32" height="11" font="6">argc</text>
+<text top="295" left="194" width="89" height="14" font="2">will be equal to</text>
+<text top="296" left="286" width="8" height="11" font="6">1</text>
+<text top="295" left="294" width="3" height="14" font="2">,</text>
+<text top="296" left="301" width="57" height="11" font="6">argv[0]</text>
+<text top="295" left="360" width="159" height="14" font="2">will be the string “./a.out”,</text>
+<text top="310" left="87" width="23" height="14" font="2">and</text>
+<text top="311" left="113" width="57" height="11" font="6">argv[1]</text>
+<text top="310" left="173" width="256" height="14" font="2">will be null, indicating the end of the array.</text>
+<text top="347" left="55" width="115" height="17" font="5">F.3 Useful Flags</text>
+<text top="377" left="105" width="414" height="14" font="2">Before moving on to the C language, we’ll first point out some useful</text>
+<text top="392" left="87" width="123" height="14" font="2">compilation flags for</text>
+<text top="393" left="214" width="32" height="11" font="6">gcc.</text>
+<text top="422" left="87" width="178" height="11" font="6">prompt&gt; gcc -o hw hw.c</text>
+<text top="422" left="281" width="291" height="11" font="6"># -o: to specify the executable name</text>
+<text top="437" left="87" width="178" height="11" font="6">prompt&gt; gcc -Wall hw.c</text>
+<text top="437" left="281" width="282" height="11" font="6"># -Wall: gives much better warnings</text>
+<text top="452" left="87" width="153" height="11" font="6">prompt&gt; gcc -g hw.c</text>
+<text top="452" left="281" width="274" height="11" font="6"># -g: to enable debugging with gdb</text>
+<text top="467" left="87" width="153" height="11" font="6">prompt&gt; gcc -O hw.c</text>
+<text top="467" left="281" width="234" height="11" font="6"># -O: to turn on optimization</text>
+<text top="495" left="105" width="361" height="14" font="2">Of course, you may combine these flags as you see fit (e.g.,</text>
+<text top="496" left="471" width="48" height="11" font="6">gcc -o</text>
+<text top="511" left="87" width="129" height="11" font="6">hw -g -Wall hw.c</text>
+<text top="510" left="216" width="254" height="14" font="2">). Of these flags, you should always use</text>
+<text top="511" left="475" width="40" height="11" font="6">-Wall</text>
+<text top="510" left="516" width="3" height="14" font="2">,</text>
+<text top="525" left="87" width="389" height="14" font="2">which gives you lots of extra warnings about possible mistakes.</text>
+<text top="525" left="484" width="35" height="13" font="4"><b>Don’t</b></text>
+<text top="540" left="87" width="130" height="13" font="4"><b>ignore the warnings!</b></text>
+<text top="540" left="226" width="293" height="14" font="2">Instead, fix them and thus make them blissfully</text>
+<text top="555" left="87" width="62" height="14" font="2">disappear.</text>
+<text top="592" left="55" width="188" height="17" font="5">F.4 Linking with Libraries</text>
+<text top="622" left="105" width="414" height="14" font="2">Sometimes, you may want to use a library routine in your program.</text>
+<text top="637" left="87" width="432" height="14" font="2">Because so many routines are available in the C library (which is auto-</text>
+<text top="652" left="87" width="432" height="14" font="2">matically linked with every program), all you usually have to do is find</text>
+<text top="667" left="87" width="51" height="14" font="2">the right</text>
+<text top="667" left="141" width="65" height="11" font="6">#include</text>
+<text top="667" left="208" width="220" height="14" font="2">file. The best way to do that is via the</text>
+<text top="667" left="431" width="85" height="13" font="4"><b>manual pages</b></text>
+<text top="667" left="516" width="3" height="14" font="2">,</text>
+<text top="682" left="87" width="129" height="14" font="2">usually just called the</text>
+<text top="682" left="220" width="65" height="13" font="4"><b>man pages</b></text>
+<text top="682" left="285" width="3" height="14" font="2">.</text>
+<text top="699" left="105" width="258" height="14" font="2">For example, let’s say you want to use the</text>
+<text top="700" left="368" width="48" height="11" font="6">fork()</text>
+<text top="699" left="420" width="67" height="14" font="2">system call</text>
+<text top="697" left="487" width="4" height="9" font="9">1</text>
+<text top="699" left="492" width="27" height="14" font="2">. By</text>
+<text top="714" left="87" width="39" height="14" font="2">typing</text>
+<text top="715" left="129" width="65" height="11" font="6">man fork</text>
+<text top="714" left="197" width="322" height="14" font="2">at the shell prompt, you will get back a text description</text>
+<text top="729" left="87" width="42" height="14" font="2">of how</text>
+<text top="730" left="133" width="48" height="11" font="6">fork()</text>
+<text top="729" left="185" width="334" height="14" font="2">works. At the very top will be a short code snippet, and</text>
+<text top="744" left="87" width="244" height="14" font="2">that will tell you which files you need to</text>
+<text top="745" left="335" width="65" height="11" font="6">#include</text>
+<text top="744" left="404" width="115" height="14" font="2">in your program in</text>
+<text top="759" left="87" width="234" height="14" font="2">order to get it to compile. In the case of</text>
+<text top="760" left="325" width="48" height="11" font="6">fork()</text>
+<text top="759" left="373" width="78" height="14" font="2">, you need to</text>
+<text top="760" left="454" width="65" height="11" font="6">#include</text>
+<text top="774" left="87" width="41" height="14" font="2">the file</text>
+<text top="775" left="131" width="65" height="11" font="6">unistd.h</text>
+<text top="774" left="196" width="255" height="14" font="2">, which would be accomplished as follows:</text>
+<text top="802" left="107" width="4" height="8" font="10">1</text>
+<text top="804" left="112" width="44" height="11" font="8">Note that</text>
+<text top="805" left="158" width="38" height="9" font="11">fork()</text>
+<text top="804" left="199" width="320" height="11" font="8">is a system call, and not just a library routine. However, the C library</text>
+<text top="816" left="87" width="432" height="11" font="8">provides C wrappers for all the system calls, each of which simply trap into the operating</text>
+<text top="828" left="87" width="35" height="11" font="8">system.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="409" width="8" height="14" font="2">L</text>
+<text top="98" left="418" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="490" width="16" height="14" font="2">: T</text>
+<text top="98" left="507" width="53" height="11" font="3">UTORIAL</text>
+<text top="139" left="129" width="153" height="11" font="6">#include &lt;unistd.h&gt;</text>
+<text top="166" left="147" width="414" height="14" font="2">However, some library routines do not reside in the C library, and</text>
+<text top="181" left="129" width="432" height="14" font="2">therefore you will have to do a little more work. For example, the math</text>
+<text top="195" left="129" width="432" height="14" font="2">library has many useful routines, such as sines, cosines, tangents, and the</text>
+<text top="210" left="129" width="238" height="14" font="2">like. If you want to include the routine</text>
+<text top="211" left="371" width="40" height="11" font="6">tan()</text>
+<text top="210" left="416" width="145" height="14" font="2">in our code, you should</text>
+<text top="225" left="129" width="432" height="14" font="2">again first check the man page. At the top of the Linux man page for tan,</text>
+<text top="240" left="129" width="215" height="14" font="2">you will see the following two lines:</text>
+<text top="268" left="185" width="137" height="11" font="6">#include &lt;math.h&gt;</text>
+<text top="283" left="185" width="24" height="11" font="6">...</text>
+<text top="298" left="185" width="113" height="11" font="6">Link with -lm.</text>
+<text top="324" left="147" width="348" height="14" font="2">The first line you already should understand — you need to</text>
+<text top="325" left="498" width="65" height="11" font="6">#include</text>
+<text top="339" left="129" width="432" height="14" font="2">the math library, which is found in the standard location in the file system</text>
+<text top="354" left="129" width="25" height="14" font="2">(i.e.,</text>
+<text top="355" left="159" width="153" height="11" font="6">/usr/include/math.h</text>
+<text top="354" left="313" width="248" height="14" font="2">). However, what the next line is telling</text>
+<text top="369" left="129" width="432" height="14" font="2">you is how to “link” your program with the math library. A number</text>
+<text top="384" left="129" width="432" height="14" font="2">of useful libraries exist and can be linked with; many of those reside in</text>
+<text top="399" left="129" width="65" height="11" font="6">/usr/lib</text>
+<text top="399" left="194" width="268" height="14" font="2">; it is indeed where the math library is found.</text>
+<text top="414" left="147" width="414" height="14" font="2">There are two types of libraries: statically-linked libraries (which end</text>
+<text top="429" left="129" width="12" height="14" font="2">in</text>
+<text top="429" left="143" width="16" height="11" font="6">.a</text>
+<text top="429" left="159" width="266" height="14" font="2">), and dynamically-linked ones (which end in</text>
+<text top="429" left="428" width="24" height="11" font="6">.so</text>
+<text top="429" left="452" width="109" height="14" font="2">). Statically-linked</text>
+<text top="444" left="129" width="432" height="14" font="2">libraries are combined directly into your executable; that is, the low-level</text>
+<text top="458" left="129" width="432" height="14" font="2">code for the library is inserted into your executable by the linker, and re-</text>
+<text top="473" left="129" width="432" height="14" font="2">sults in a much larger binary object. Dynamic linking improves on this</text>
+<text top="488" left="129" width="432" height="14" font="2">by just including the reference to a library in your program executable;</text>
+<text top="503" left="129" width="432" height="14" font="2">when the program is run, the operating system loader dynamically links</text>
+<text top="518" left="129" width="432" height="14" font="2">in the library. This method is preferred over the static approach because</text>
+<text top="533" left="129" width="432" height="14" font="2">it saves disk space (no unnecessarily large executables are made) and al-</text>
+<text top="548" left="129" width="432" height="14" font="2">lows applications to share library code and static data in memory. In the</text>
+<text top="563" left="129" width="432" height="14" font="2">case of the math library, both static and dynamic versions are available,</text>
+<text top="578" left="129" width="174" height="14" font="2">with the static version called</text>
+<text top="579" left="307" width="121" height="11" font="6">/usr/lib/libm.a</text>
+<text top="578" left="433" width="128" height="14" font="2">and the dynamic one</text>
+<text top="594" left="129" width="129" height="11" font="6">/usr/lib/libm.so</text>
+<text top="593" left="258" width="3" height="14" font="2">.</text>
+<text top="608" left="147" width="414" height="14" font="2">In any case, to link with the math library, you need to specify the li-</text>
+<text top="623" left="129" width="348" height="14" font="2">brary to the link-editor; this can be achieved by invoking</text>
+<text top="624" left="482" width="24" height="11" font="6">gcc</text>
+<text top="623" left="510" width="51" height="14" font="2">with the</text>
+<text top="638" left="129" width="64" height="14" font="2">right flags.</text>
+<text top="665" left="129" width="258" height="11" font="6">prompt&gt; gcc -o hw hw.c -Wall -lm</text>
+<text top="692" left="147" width="23" height="14" font="2">The</text>
+<text top="692" left="173" width="40" height="11" font="6">-lXXX</text>
+<text top="692" left="217" width="178" height="14" font="2">flag tells the linker to look for</text>
+<text top="692" left="400" width="73" height="11" font="6">libXXX.so</text>
+<text top="692" left="476" width="13" height="14" font="2">or</text>
+<text top="692" left="493" width="65" height="11" font="6">libXXX.a</text>
+<text top="692" left="557" width="3" height="14" font="2">,</text>
+<text top="707" left="129" width="432" height="14" font="2">probably in that order. If for some reason you insist on the static library</text>
+<text top="721" left="129" width="432" height="14" font="2">over the dynamic one, there is another flag you can use — see if you can</text>
+<text top="736" left="129" width="432" height="14" font="2">find out what it is. People sometimes prefer the static version of a library</text>
+<text top="751" left="129" width="432" height="14" font="2">because of the slight performance cost associated with using dynamic li-</text>
+<text top="766" left="129" width="44" height="14" font="2">braries.</text>
+<text top="781" left="147" width="414" height="14" font="2">One final note: if you want the compiler to search for headers in a dif-</text>
+<text top="796" left="129" width="432" height="14" font="2">ferent path than the usual places, or want it to link with libraries that you</text>
+<text top="811" left="129" width="220" height="14" font="2">specify, you can use the compiler flag</text>
+<text top="812" left="352" width="81" height="11" font="6">-I/foo/bar</text>
+<text top="811" left="435" width="125" height="14" font="2">to look for headers in</text>
+<text top="826" left="129" width="76" height="14" font="2">the directory</text>
+<text top="827" left="207" width="65" height="11" font="6">/foo/bar</text>
+<text top="826" left="272" width="51" height="14" font="2">, and the</text>
+<text top="827" left="325" width="81" height="11" font="6">-L/foo/bar</text>
+<text top="826" left="409" width="152" height="14" font="2">flag to look for libraries in</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="168" width="16" height="14" font="2">: T</text>
+<text top="98" left="186" width="53" height="11" font="3">UTORIAL</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="139" left="87" width="19" height="14" font="2">the</text>
+<text top="139" left="108" width="65" height="11" font="6">/foo/bar</text>
+<text top="139" left="176" width="343" height="14" font="2">directory. One common directory to specify in this manner</text>
+<text top="154" left="87" width="20" height="14" font="2">is “</text>
+<text top="154" left="107" width="8" height="11" font="6">.</text>
+<text top="154" left="115" width="166" height="14" font="2">” (called “dot”), which is U</text>
+<text top="156" left="282" width="21" height="11" font="3">NIX</text>
+<text top="154" left="307" width="212" height="14" font="2">shorthand for the current directory.</text>
+<text top="169" left="87" width="79" height="14" font="2">Note that the</text>
+<text top="169" left="169" width="16" height="11" font="6">-I</text>
+<text top="169" left="189" width="243" height="14" font="2">flag should go on a compile line, and the</text>
+<text top="169" left="436" width="16" height="11" font="6">-L</text>
+<text top="169" left="456" width="63" height="14" font="2">flag on the</text>
+<text top="183" left="87" width="52" height="14" font="2">link line.</text>
+<text top="221" left="55" width="183" height="17" font="5">F.5 Separate Compilation</text>
+<text top="251" left="105" width="414" height="14" font="2">Once a program starts to get large enough, you may want to split</text>
+<text top="266" left="87" width="432" height="14" font="2">it into separate files, compiling each separately, and then link them to-</text>
+<text top="281" left="87" width="269" height="14" font="2">gether. For example, say you have two files,</text>
+<text top="282" left="360" width="32" height="11" font="6">hw.c</text>
+<text top="281" left="397" width="23" height="14" font="2">and</text>
+<text top="282" left="424" width="65" height="11" font="6">helper.c</text>
+<text top="281" left="488" width="31" height="14" font="2">, and</text>
+<text top="296" left="87" width="406" height="14" font="2">you wish to compile them individually, and then link them together.</text>
+<text top="326" left="87" width="436" height="11" font="6"># we are using -Wall for warnings, -O for optimization</text>
+<text top="341" left="87" width="226" height="11" font="6">prompt&gt; gcc -Wall -O -c hw.c</text>
+<text top="356" left="87" width="258" height="11" font="6">prompt&gt; gcc -Wall -O -c helper.c</text>
+<text top="371" left="87" width="282" height="11" font="6">prompt&gt; gcc -o hw hw.o helper.o -lm</text>
+<text top="400" left="105" width="23" height="14" font="2">The</text>
+<text top="400" left="132" width="16" height="11" font="6">-c</text>
+<text top="400" left="152" width="367" height="14" font="2">flag tells the compiler just to produce an object file — in this</text>
+<text top="414" left="87" width="98" height="14" font="2">case, files called</text>
+<text top="415" left="190" width="32" height="11" font="6">hw.o</text>
+<text top="414" left="227" width="23" height="14" font="2">and</text>
+<text top="415" left="254" width="65" height="11" font="6">helper.o</text>
+<text top="414" left="319" width="200" height="14" font="2">. These files are not executables,</text>
+<text top="429" left="87" width="432" height="14" font="2">but just machine-level representations of the code within each source</text>
+<text top="444" left="87" width="432" height="14" font="2">file. To combine the object files into an executable, you have to “link”</text>
+<text top="459" left="87" width="316" height="14" font="2">them together; this is accomplished with the third line</text>
+<text top="460" left="406" width="113" height="11" font="6">gcc -o hw hw.o</text>
+<text top="475" left="87" width="65" height="11" font="6">helper.o</text>
+<text top="474" left="152" width="87" height="14" font="2">). In this case,</text>
+<text top="475" left="244" width="24" height="11" font="6">gcc</text>
+<text top="474" left="273" width="246" height="14" font="2">sees that the input files specified are not</text>
+<text top="489" left="87" width="73" height="14" font="2">source files (</text>
+<text top="490" left="160" width="16" height="11" font="6">.c</text>
+<text top="489" left="176" width="170" height="14" font="2">), but instead are object files (</text>
+<text top="490" left="347" width="16" height="11" font="6">.o</text>
+<text top="489" left="363" width="156" height="14" font="2">), and therefore skips right</text>
+<text top="504" left="87" width="250" height="14" font="2">to the last step and invoked the link-editor</text>
+<text top="505" left="340" width="16" height="11" font="6">ld</text>
+<text top="504" left="359" width="160" height="14" font="2">to link them together into a</text>
+<text top="519" left="87" width="432" height="14" font="2">single executable. Because of its function, this line is often called the “link</text>
+<text top="534" left="87" width="432" height="14" font="2">line”, and would be where you specify link-specific commands such as</text>
+<text top="550" left="87" width="24" height="11" font="6">-lm</text>
+<text top="549" left="111" width="172" height="14" font="2">. Analogously, flags such as</text>
+<text top="550" left="288" width="40" height="11" font="6">-Wall</text>
+<text top="549" left="333" width="23" height="14" font="2">and</text>
+<text top="550" left="361" width="16" height="11" font="6">-O</text>
+<text top="549" left="381" width="138" height="14" font="2">are only needed in the</text>
+<text top="564" left="87" width="432" height="14" font="2">compile phase, and therefore need not be included on the link line but</text>
+<text top="579" left="87" width="170" height="14" font="2">rather only on compile lines.</text>
+<text top="594" left="105" width="414" height="14" font="2">Of course, you could just specify all the C source files on a single line</text>
+<text top="609" left="87" width="12" height="14" font="2">to</text>
+<text top="610" left="102" width="24" height="11" font="6">gcc</text>
+<text top="609" left="129" width="4" height="14" font="2">(</text>
+<text top="610" left="133" width="258" height="11" font="6">gcc -Wall -O -o hw hw.c helper.c</text>
+<text top="609" left="391" width="128" height="14" font="2">), but this requires the</text>
+<text top="624" left="87" width="439" height="14" font="2">system to recompile every source-code file, which can be a time-consuming</text>
+<text top="639" left="87" width="432" height="14" font="2">process. By compiling each individually, you can save time by only re-</text>
+<text top="654" left="87" width="432" height="14" font="2">compiling those files that have changed during your editing, and thus</text>
+<text top="669" left="87" width="432" height="14" font="2">increase your productivity. This process is best managed by another pro-</text>
+<text top="684" left="87" width="35" height="14" font="2">gram,</text>
+<text top="685" left="125" width="32" height="11" font="6">make</text>
+<text top="684" left="157" width="150" height="14" font="2">, which we now describe.</text>
+<text top="721" left="55" width="95" height="17" font="5">F.6 Makefiles</text>
+<text top="751" left="105" width="80" height="14" font="2">The program</text>
+<text top="752" left="190" width="32" height="11" font="6">make</text>
+<text top="751" left="228" width="291" height="14" font="2">lets you automate much of your build process,</text>
+<text top="766" left="87" width="432" height="14" font="2">and is thus a crucially important tool for any serious program (and pro-</text>
+<text top="781" left="87" width="432" height="14" font="2">grammer). Let’s take a look at a simple example, saved in a file called</text>
+<text top="797" left="87" width="65" height="11" font="6">Makefile</text>
+<text top="796" left="152" width="3" height="14" font="2">.</text>
+<text top="811" left="105" width="338" height="14" font="2">To build your program, now all you have to do is type</text>
+<text top="812" left="447" width="32" height="11" font="6">make</text>
+<text top="811" left="484" width="35" height="14" font="2">at the</text>
+<text top="826" left="87" width="89" height="14" font="2">command line.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="409" width="8" height="14" font="2">L</text>
+<text top="98" left="418" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="490" width="16" height="14" font="2">: T</text>
+<text top="98" left="507" width="53" height="11" font="3">UTORIAL</text>
+<text top="135" left="129" width="137" height="11" font="6">hw: hw.o helper.o</text>
+<text top="149" left="161" width="218" height="11" font="6">gcc -o hw hw.o helper.o -lm</text>
+<text top="179" left="129" width="81" height="11" font="6">hw.o: hw.c</text>
+<text top="194" left="161" width="161" height="11" font="6">gcc -O -Wall -c hw.c</text>
+<text top="224" left="129" width="145" height="11" font="6">helper.o: helper.c</text>
+<text top="239" left="161" width="194" height="11" font="6">gcc -O -Wall -c helper.c</text>
+<text top="269" left="129" width="48" height="11" font="6">clean:</text>
+<text top="284" left="161" width="178" height="11" font="6">rm -f hw.o helper.o hw</text>
+<text top="304" left="147" width="178" height="14" font="2">This will (by default) look for</text>
+<text top="305" left="329" width="65" height="11" font="6">Makefile</text>
+<text top="304" left="398" width="13" height="14" font="2">or</text>
+<text top="305" left="414" width="65" height="11" font="6">makefile</text>
+<text top="304" left="479" width="82" height="14" font="2">, and use that</text>
+<text top="319" left="129" width="432" height="14" font="2">as its input (you can specify a different makefile with a flag; read the</text>
+<text top="334" left="129" width="297" height="14" font="2">man pages to find out which). The gnu version of</text>
+<text top="335" left="430" width="32" height="11" font="6">make</text>
+<text top="334" left="462" width="3" height="14" font="2">,</text>
+<text top="335" left="469" width="40" height="11" font="6">gmake</text>
+<text top="334" left="510" width="51" height="14" font="2">, is more</text>
+<text top="349" left="129" width="432" height="14" font="2">fully featured than traditional make, so we will focus upon it for the rest</text>
+<text top="364" left="129" width="432" height="14" font="2">of this discussion (though we will use the two terms interchangeably).</text>
+<text top="379" left="129" width="215" height="14" font="2">Most of these notes are based on the</text>
+<text top="380" left="348" width="40" height="11" font="6">gmake</text>
+<text top="379" left="392" width="169" height="14" font="2">info page; to see how to find</text>
+<text top="394" left="129" width="432" height="14" font="2">those pages, see the Documentation section below. Also note: on Linux</text>
+<text top="409" left="129" width="51" height="14" font="2">systems,</text>
+<text top="410" left="183" width="40" height="11" font="6">gmake</text>
+<text top="409" left="227" width="23" height="14" font="2">and</text>
+<text top="410" left="253" width="32" height="11" font="6">make</text>
+<text top="409" left="288" width="129" height="14" font="2">are one and the same.</text>
+<text top="424" left="147" width="414" height="14" font="2">Makefiles are based on rules, which are used to decide what needs to</text>
+<text top="439" left="129" width="211" height="14" font="2">happen. The general form of a rule:</text>
+<text top="469" left="129" width="315" height="11" font="6">target: prerequisite1 prerequisite2 ...</text>
+<text top="484" left="161" width="65" height="11" font="6">command1</text>
+<text top="498" left="161" width="65" height="11" font="6">command2</text>
+<text top="513" left="161" width="24" height="11" font="6">...</text>
+<text top="541" left="147" width="10" height="14" font="2">A</text>
+<text top="542" left="161" width="35" height="13" font="4"><b>target</b></text>
+<text top="541" left="199" width="361" height="14" font="2">is usually the name of a file that is generated by a command;</text>
+<text top="556" left="129" width="432" height="14" font="2">examples of targets are executable or object files. A target can also be the</text>
+<text top="571" left="129" width="372" height="14" font="2">name of an action to carry out, such as “clean” in our example.</text>
+<text top="586" left="147" width="10" height="14" font="2">A</text>
+<text top="587" left="162" width="75" height="13" font="4"><b>prerequisite</b></text>
+<text top="586" left="242" width="319" height="14" font="2">is a file that is used as input to create the target. A</text>
+<text top="601" left="129" width="432" height="14" font="2">target often depends on several files. For example, to build the executable</text>
+<text top="617" left="129" width="16" height="11" font="6">hw</text>
+<text top="616" left="145" width="242" height="14" font="2">, we need two object files to be built first:</text>
+<text top="617" left="392" width="32" height="11" font="6">hw.o</text>
+<text top="616" left="427" width="23" height="14" font="2">and</text>
+<text top="617" left="453" width="65" height="11" font="6">helper.o</text>
+<text top="616" left="518" width="3" height="14" font="2">.</text>
+<text top="631" left="147" width="53" height="14" font="2">Finally, a</text>
+<text top="632" left="202" width="61" height="13" font="4"><b>command</b></text>
+<text top="631" left="265" width="92" height="14" font="2">is an action that</text>
+<text top="632" left="360" width="32" height="11" font="6">make</text>
+<text top="631" left="395" width="166" height="14" font="2">carries out. A rule may have</text>
+<text top="646" left="129" width="283" height="14" font="2">more than one command, each on its own line.</text>
+<text top="647" left="418" width="65" height="13" font="4"><b>Important:</b></text>
+<text top="646" left="489" width="72" height="14" font="2">You have to</text>
+<text top="661" left="129" width="432" height="14" font="2">put a single tab character at the beginning of every command line! If you</text>
+<text top="676" left="129" width="90" height="14" font="2">just put spaces,</text>
+<text top="677" left="222" width="32" height="11" font="6">make</text>
+<text top="676" left="258" width="303" height="14" font="2">will print out some obscure error message and exit.</text>
+<text top="691" left="147" width="414" height="14" font="2">Usually a command is in a rule with prerequisites and serves to cre-</text>
+<text top="706" left="129" width="432" height="14" font="2">ate a target file if any of the prerequisites change. However, the rule that</text>
+<text top="721" left="129" width="432" height="14" font="2">specifies commands for the target need not have prerequisites. For ex-</text>
+<text top="736" left="129" width="432" height="14" font="2">ample, the rule containing the delete command associated with the target</text>
+<text top="751" left="129" width="214" height="14" font="2">“clean” does not have prerequisites.</text>
+<text top="766" left="147" width="414" height="14" font="2">Going back to our example, when make is executed, it roughly works</text>
+<text top="781" left="129" width="215" height="14" font="2">like this: First, it comes to the target</text>
+<text top="782" left="348" width="16" height="11" font="6">hw</text>
+<text top="781" left="364" width="196" height="14" font="2">, and it realizes that to build it, it</text>
+<text top="796" left="129" width="171" height="14" font="2">must have two prerequisites,</text>
+<text top="797" left="303" width="32" height="11" font="6">hw.o</text>
+<text top="796" left="338" width="23" height="14" font="2">and</text>
+<text top="797" left="364" width="65" height="11" font="6">helper.o</text>
+<text top="796" left="429" width="41" height="14" font="2">. Thus,</text>
+<text top="797" left="472" width="16" height="11" font="6">hw</text>
+<text top="796" left="492" width="69" height="14" font="2">depends on</text>
+<text top="811" left="129" width="432" height="14" font="2">those two object files. Make then will examine each of those targets. In</text>
+<text top="826" left="129" width="63" height="14" font="2">examining</text>
+<text top="827" left="196" width="32" height="11" font="6">hw.o</text>
+<text top="826" left="228" width="179" height="14" font="2">, it will see that it depends on</text>
+<text top="827" left="411" width="32" height="11" font="6">hw.c</text>
+<text top="826" left="443" width="117" height="14" font="2">. Here is the key: if</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="168" width="16" height="14" font="2">: T</text>
+<text top="98" left="186" width="53" height="11" font="3">UTORIAL</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="139" left="87" width="32" height="11" font="6">hw.c</text>
+<text top="139" left="122" width="222" height="14" font="2">has been modified more recently than</text>
+<text top="139" left="348" width="32" height="11" font="6">hw.o</text>
+<text top="139" left="383" width="101" height="14" font="2">has been created,</text>
+<text top="139" left="487" width="32" height="11" font="6">make</text>
+<text top="154" left="87" width="87" height="14" font="2">will know that</text>
+<text top="154" left="177" width="32" height="11" font="6">hw.o</text>
+<text top="154" left="212" width="307" height="14" font="2">is out of date and should be generated anew; in that</text>
+<text top="169" left="87" width="225" height="14" font="2">case, it will execute the command line,</text>
+<text top="169" left="315" width="161" height="11" font="6">gcc -O -Wall -c hw.c</text>
+<text top="169" left="476" width="43" height="14" font="2">, which</text>
+<text top="183" left="87" width="57" height="14" font="2">generates</text>
+<text top="184" left="148" width="32" height="11" font="6">hw.o</text>
+<text top="183" left="180" width="275" height="14" font="2">. Thus, if you are compiling a large program,</text>
+<text top="184" left="459" width="32" height="11" font="6">make</text>
+<text top="183" left="496" width="23" height="14" font="2">will</text>
+<text top="198" left="87" width="432" height="14" font="2">know which object files need to be re-generated based on their depen-</text>
+<text top="213" left="87" width="432" height="14" font="2">dencies, and will only do the necessary amount of work to recreate the</text>
+<text top="228" left="87" width="160" height="14" font="2">executable. Also note that</text>
+<text top="229" left="251" width="32" height="11" font="6">hw.o</text>
+<text top="228" left="288" width="231" height="14" font="2">will be created in the case that it does</text>
+<text top="243" left="87" width="86" height="14" font="2">not exist at all.</text>
+<text top="258" left="105" width="107" height="14" font="2">Continuing along,</text>
+<text top="259" left="215" width="65" height="11" font="6">helper.o</text>
+<text top="258" left="282" width="244" height="14" font="2">may also be regenerated or created, based</text>
+<text top="273" left="87" width="432" height="14" font="2">on the same criteria as defined above. When both of the object files</text>
+<text top="288" left="87" width="432" height="14" font="2">have been created, make is now ready to execute the command to cre-</text>
+<text top="303" left="87" width="313" height="14" font="2">ate the final executable, and goes back and does so:</text>
+<text top="304" left="406" width="113" height="11" font="6">gcc -o hw hw.o</text>
+<text top="319" left="87" width="97" height="11" font="6">helper.o -lm</text>
+<text top="318" left="184" width="3" height="14" font="2">.</text>
+<text top="334" left="105" width="234" height="14" font="2">Up until now, we’ve been ignoring the</text>
+<text top="334" left="343" width="40" height="11" font="6">clean</text>
+<text top="334" left="387" width="132" height="14" font="2">target in the makefile.</text>
+<text top="348" left="87" width="275" height="14" font="2">To use it, you have to ask for it explicitly. Type</text>
+<text top="379" left="87" width="145" height="11" font="6">prompt&gt; make clean</text>
+<text top="408" left="105" width="414" height="14" font="2">This will execute the command on the command line. Because there</text>
+<text top="422" left="87" width="166" height="14" font="2">are no prerequisites for the</text>
+<text top="423" left="258" width="40" height="11" font="6">clean</text>
+<text top="422" left="303" width="82" height="14" font="2">target, typing</text>
+<text top="423" left="390" width="81" height="11" font="6">make clean</text>
+<text top="422" left="476" width="43" height="14" font="2">will al-</text>
+<text top="437" left="87" width="387" height="14" font="2">ways result in the command(s) being executed. In this case, the</text>
+<text top="438" left="479" width="40" height="11" font="6">clean</text>
+<text top="452" left="87" width="432" height="14" font="2">target is used to remove the object files and executable, quite handy if</text>
+<text top="467" left="87" width="312" height="14" font="2">you wish to rebuild the entire program from scratch.</text>
+<text top="483" left="105" width="414" height="14" font="2">Now you might be thinking, “well, this seems OK, but these makefiles</text>
+<text top="497" left="87" width="432" height="14" font="2">sure are cumbersome!” And you’d be right — if they always had to be</text>
+<text top="512" left="87" width="396" height="14" font="2">written like this. Fortunately, there are a lot of shortcuts that make</text>
+<text top="513" left="487" width="32" height="11" font="6">make</text>
+<text top="527" left="87" width="432" height="14" font="2">even easier to use. For example, this makefile has the same functionality</text>
+<text top="542" left="87" width="148" height="14" font="2">but is a little nicer to use:</text>
+<text top="573" left="87" width="250" height="11" font="6"># specify all source files here</text>
+<text top="588" left="87" width="161" height="11" font="6">SRCS = hw.c helper.c</text>
+<text top="603" left="87" width="339" height="11" font="6"># specify target here (name of executable)</text>
+<text top="618" left="87" width="73" height="11" font="6">TARG = hw</text>
+<text top="633" left="87" width="403" height="11" font="6"># specify compiler, compile flags, and needed libs</text>
+<text top="648" left="87" width="16" height="11" font="6">CC</text>
+<text top="648" left="127" width="40" height="11" font="6">= gcc</text>
+<text top="663" left="87" width="121" height="11" font="6">OPTS = -Wall -O</text>
+<text top="677" left="87" width="81" height="11" font="6">LIBS = -lm</text>
+<text top="707" left="87" width="371" height="11" font="6"># this translates .c files in src list to .o’s</text>
+<text top="722" left="87" width="161" height="11" font="6">OBJS = $(SRCS:.c=.o)</text>
+<text top="752" left="87" width="500" height="11" font="6"># all is not really needed, but is used to generate the target</text>
+<text top="767" left="87" width="97" height="11" font="6">all: $(TARG)</text>
+<text top="797" left="87" width="307" height="11" font="6"># this generates the target executable</text>
+<text top="812" left="87" width="129" height="11" font="6">$(TARG): $(OBJS)</text>
+<text top="827" left="119" width="258" height="11" font="6">$(CC) -o $(TARG) $(OBJS) $(LIBS)</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="13" family="FWWOQN+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="409" width="8" height="14" font="2">L</text>
+<text top="98" left="418" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="490" width="16" height="14" font="2">: T</text>
+<text top="98" left="507" width="53" height="11" font="3">UTORIAL</text>
+<text top="154" left="129" width="299" height="11" font="6"># this is a generic rule for .o files</text>
+<text top="169" left="129" width="65" height="11" font="6">%.o: %.c</text>
+<text top="184" left="161" width="202" height="11" font="6">$(CC) $(OPTS) -c $&lt; -o $@</text>
+<text top="214" left="129" width="218" height="11" font="6"># and finally, a clean line</text>
+<text top="229" left="129" width="48" height="11" font="6">clean:</text>
+<text top="244" left="161" width="169" height="11" font="6">rm -f $(OBJS) $(TARG)</text>
+<text top="271" left="147" width="414" height="14" font="2">Though we won’t go into the details of make syntax, as you can see,</text>
+<text top="286" left="129" width="432" height="14" font="2">this makefile can make your life somewhat easier. For example, it allows</text>
+<text top="301" left="129" width="432" height="14" font="2">you to easily add new source files into your build, simply by adding them</text>
+<text top="316" left="129" width="33" height="14" font="2">to the</text>
+<text top="316" left="165" width="32" height="11" font="6">SRCS</text>
+<text top="316" left="201" width="360" height="14" font="2">variable at the top of the makefile. You can also easily change</text>
+<text top="331" left="129" width="259" height="14" font="2">the name of the executable by changing the</text>
+<text top="331" left="392" width="32" height="11" font="6">TARG</text>
+<text top="331" left="428" width="133" height="14" font="2">line, and the compiler,</text>
+<text top="346" left="129" width="322" height="14" font="2">flags, and library specifications are all easily modified.</text>
+<text top="360" left="147" width="127" height="14" font="2">One final word about</text>
+<text top="361" left="277" width="32" height="11" font="6">make</text>
+<text top="360" left="309" width="251" height="14" font="2">: figuring out a target’s prerequisites is not</text>
+<text top="375" left="129" width="432" height="14" font="2">always trivial, especially in large and complex programs. Not surpris-</text>
+<text top="390" left="129" width="311" height="14" font="2">ingly, there is another tool that helps with this, called</text>
+<text top="391" left="442" width="81" height="11" font="6">makedepend</text>
+<text top="390" left="523" width="38" height="14" font="2">. Read</text>
+<text top="405" left="129" width="414" height="14" font="2">about it on your own and see if you can incorporate it into a makefile.</text>
+<text top="442" left="97" width="106" height="17" font="5">F.7 Debugging</text>
+<text top="472" left="147" width="414" height="14" font="2">Finally, after you have created a good build environment, and a cor-</text>
+<text top="487" left="129" width="432" height="14" font="2">rectly compiled program, you may find that your program is buggy. One</text>
+<text top="502" left="129" width="432" height="14" font="2">way to fix the problem(s) is to think really hard — this method is some-</text>
+<text top="517" left="129" width="334" height="14" font="2">times successful, but often not. The problem is a lack of</text>
+<text top="517" left="466" width="64" height="14" font="12">information</text>
+<text top="517" left="531" width="30" height="14" font="2">; you</text>
+<text top="532" left="129" width="432" height="14" font="2">just don’t know exactly what is going on within the program, and there-</text>
+<text top="547" left="129" width="432" height="14" font="2">fore cannot figure out why it is not behaving as expected. Fortunately,</text>
+<text top="562" left="129" width="111" height="14" font="2">there is some help:</text>
+<text top="563" left="244" width="24" height="11" font="6">gdb</text>
+<text top="562" left="268" width="123" height="14" font="2">, the GNU debugger.</text>
+<text top="577" left="147" width="322" height="14" font="2">Let’s take the following buggy code, saved in the file</text>
+<text top="578" left="474" width="57" height="11" font="6">buggy.c</text>
+<text top="577" left="530" width="31" height="14" font="2">, and</text>
+<text top="592" left="129" width="171" height="14" font="2">compiled into the executable</text>
+<text top="592" left="303" width="48" height="11" font="6">buggy.</text>
+<text top="620" left="129" width="145" height="11" font="6">#include &lt;stdio.h&gt;</text>
+<text top="650" left="129" width="105" height="11" font="6">struct Data {</text>
+<text top="665" left="161" width="48" height="11" font="6">int x;</text>
+<text top="680" left="129" width="16" height="11" font="6">};</text>
+<text top="710" left="129" width="24" height="11" font="6">int</text>
+<text top="725" left="129" width="226" height="14" font="6">main(int argc, char *argv[])</text>
+<text top="740" left="129" width="8" height="11" font="6">{</text>
+<text top="755" left="161" width="178" height="14" font="6">struct Data *p = NULL;</text>
+<text top="769" left="161" width="169" height="11" font="6">printf(&#34;%d\n&#34;, p-&gt;x);</text>
+<text top="784" left="129" width="8" height="11" font="6">}</text>
+<text top="811" left="147" width="364" height="14" font="2">In this example, the main program dereferences the variable</text>
+<text top="812" left="515" width="8" height="11" font="6">p</text>
+<text top="811" left="527" width="33" height="14" font="2">when</text>
+<text top="826" left="129" width="432" height="14" font="2">it is NULL, which will lead to a segmentation fault. Of course, this prob-</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="168" width="16" height="14" font="2">: T</text>
+<text top="98" left="186" width="53" height="11" font="3">UTORIAL</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="139" left="87" width="432" height="14" font="2">lem should be easy to fix by inspection, but in a more complex program,</text>
+<text top="154" left="87" width="251" height="14" font="2">finding such a problem is not always easy.</text>
+<text top="170" left="105" width="414" height="14" font="2">To prepare yourself for a debugging session, recompile your program</text>
+<text top="185" left="87" width="151" height="14" font="2">and make sure to pass the</text>
+<text top="185" left="240" width="16" height="11" font="6">-g</text>
+<text top="185" left="259" width="260" height="14" font="2">flag to each compile line. This includes extra</text>
+<text top="199" left="87" width="432" height="14" font="2">debugging information in your executable that will be useful during your</text>
+<text top="214" left="87" width="333" height="14" font="2">debugging session. Also, don’t turn on optimization (</text>
+<text top="215" left="420" width="16" height="11" font="6">-O</text>
+<text top="214" left="436" width="82" height="14" font="2">); though this</text>
+<text top="229" left="87" width="353" height="14" font="2">may work, it may also lead to confusion during debugging.</text>
+<text top="245" left="105" width="144" height="14" font="2">After re-compiling with</text>
+<text top="246" left="253" width="16" height="11" font="6">-g</text>
+<text top="245" left="269" width="250" height="14" font="2">, you are ready to use the debugger. Fire</text>
+<text top="260" left="87" width="16" height="14" font="2">up</text>
+<text top="261" left="107" width="24" height="11" font="6">gdb</text>
+<text top="260" left="134" width="211" height="14" font="2">at the command prompt as follows:</text>
+<text top="291" left="87" width="137" height="11" font="6">prompt&gt; gdb buggy</text>
+<text top="320" left="105" width="414" height="14" font="2">This puts you inside an interactive session with the debugger. Note</text>
+<text top="335" left="87" width="432" height="14" font="2">that you can also use the debugger to examine “core” files that were pro-</text>
+<text top="350" left="87" width="432" height="14" font="2">duced during bad runs, or to attach to an already-running program; read</text>
+<text top="365" left="87" width="261" height="14" font="2">the documentation to learn more about this.</text>
+<text top="381" left="105" width="271" height="14" font="2">Once inside, you may see something like this:</text>
+<text top="412" left="87" width="137" height="11" font="6">prompt&gt; gdb buggy</text>
+<text top="427" left="87" width="89" height="11" font="6">GNU gdb ...</text>
+<text top="442" left="87" width="363" height="11" font="6">Copyright 2008 Free Software Foundation, Inc.</text>
+<text top="457" left="87" width="40" height="11" font="6">(gdb)</text>
+<text top="485" left="105" width="414" height="14" font="2">The first thing you might want to do is to go ahead and run the pro-</text>
+<text top="500" left="87" width="175" height="14" font="2">gram. To do this, simply type</text>
+<text top="501" left="265" width="24" height="11" font="6">run</text>
+<text top="500" left="293" width="226" height="14" font="2">at gdb command prompt. In this case,</text>
+<text top="515" left="87" width="159" height="14" font="2">this is what you might see:</text>
+<text top="545" left="87" width="73" height="11" font="6">(gdb) run</text>
+<text top="560" left="87" width="186" height="11" font="6">Starting program: buggy</text>
+<text top="590" left="87" width="420" height="11" font="6">Program received signal SIGSEGV, Segmentation fault.</text>
+<text top="605" left="87" width="460" height="11" font="6">0x8048433 in main (argc=1, argv=0xbffff844) at buggy.c:19</text>
+<text top="620" left="87" width="16" height="11" font="6">19</text>
+<text top="620" left="184" width="169" height="11" font="6">printf(&#34;%d\n&#34;, p-&gt;x);</text>
+<text top="647" left="105" width="278" height="14" font="2">As you can see from the example, in this case,</text>
+<text top="647" left="387" width="24" height="11" font="6">gdb</text>
+<text top="647" left="415" width="104" height="14" font="2">immediately pin-</text>
+<text top="662" left="87" width="432" height="14" font="2">points where the problem occurred; a “segmentation fault” was gener-</text>
+<text top="677" left="87" width="270" height="14" font="2">ated at the line where we tried to dereference</text>
+<text top="677" left="361" width="8" height="11" font="6">p</text>
+<text top="677" left="369" width="150" height="14" font="2">. This just means that we</text>
+<text top="692" left="87" width="432" height="14" font="2">accessed some memory that we weren’t supposed to access. At this point,</text>
+<text top="706" left="87" width="432" height="14" font="2">the astute programmer can examine the code, and say “aha! it must be</text>
+<text top="721" left="87" width="23" height="14" font="2">that</text>
+<text top="722" left="114" width="8" height="11" font="6">p</text>
+<text top="721" left="127" width="392" height="14" font="2">does not point to anything valid, and thus should not be derefer-</text>
+<text top="736" left="87" width="286" height="14" font="2">enced!”, and then go ahead and fix the problem.</text>
+<text top="752" left="105" width="414" height="14" font="2">However, if you didn’t know what was going on, you might want to</text>
+<text top="767" left="87" width="142" height="14" font="2">examine some variable.</text>
+<text top="768" left="237" width="24" height="11" font="6">gdb</text>
+<text top="767" left="266" width="253" height="14" font="2">allows you to do this interactively during</text>
+<text top="782" left="87" width="109" height="14" font="2">the debug session.</text>
+<text top="812" left="87" width="105" height="11" font="6">(gdb) print p</text>
+<text top="827" left="87" width="129" height="14" font="6">1 = (Data *) 0x0</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="409" width="8" height="14" font="2">L</text>
+<text top="98" left="418" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="490" width="16" height="14" font="2">: T</text>
+<text top="98" left="507" width="53" height="11" font="3">UTORIAL</text>
+<text top="139" left="147" width="268" height="14" font="2">By using the print primitive, we can examine</text>
+<text top="139" left="419" width="8" height="11" font="6">p</text>
+<text top="139" left="427" width="134" height="14" font="2">, and see both that it is</text>
+<text top="154" left="129" width="432" height="14" font="2">a pointer to a struct of type Data, and that it is currently set to NULL (or</text>
+<text top="169" left="129" width="285" height="14" font="2">zero, or hex zero which is shown here as “0x0”).</text>
+<text top="184" left="147" width="414" height="14" font="2">Finally, you can also set breakpoints within your program to have the</text>
+<text top="199" left="129" width="432" height="14" font="2">debugger stop the program at a certain routine. After doing this, it is</text>
+<text top="213" left="129" width="432" height="14" font="2">often useful to step through the execution (one line at a time), and see</text>
+<text top="228" left="129" width="114" height="14" font="2">what is happening.</text>
+<text top="253" left="129" width="129" height="11" font="6">(gdb) break main</text>
+<text top="267" left="129" width="395" height="11" font="6">Breakpoint 1 at 0x8048426: file buggy.c, line 17.</text>
+<text top="282" left="129" width="73" height="11" font="6">(gdb) run</text>
+<text top="297" left="129" width="299" height="11" font="6">Starting program: /homes/hacker/buggy</text>
+<text top="327" left="129" width="468" height="11" font="6">Breakpoint 1, main (argc=1, argv=0xbffff844) at buggy.c:17</text>
+<text top="342" left="129" width="16" height="11" font="6">17</text>
+<text top="342" left="226" width="178" height="14" font="6">struct Data *p = NULL;</text>
+<text top="357" left="129" width="81" height="11" font="6">(gdb) next</text>
+<text top="372" left="129" width="16" height="11" font="6">19</text>
+<text top="372" left="226" width="169" height="11" font="6">printf(&#34;%d\n&#34;, p-&gt;x);</text>
+<text top="387" left="129" width="81" height="11" font="6">(gdb) next</text>
+<text top="417" left="129" width="420" height="11" font="6">Program received signal SIGSEGV, Segmentation fault.</text>
+<text top="432" left="129" width="460" height="11" font="6">0x8048433 in main (argc=1, argv=0xbffff844) at buggy.c:19</text>
+<text top="447" left="129" width="16" height="11" font="6">19</text>
+<text top="447" left="226" width="169" height="11" font="6">printf(&#34;%d\n&#34;, p-&gt;x);</text>
+<text top="475" left="147" width="279" height="14" font="2">In the example above, a breakpoint is set at the</text>
+<text top="475" left="429" width="48" height="11" font="6">main()</text>
+<text top="475" left="481" width="79" height="14" font="2">routine; thus,</text>
+<text top="489" left="129" width="432" height="14" font="2">when we run the program, the debugger almost immediately stops exe-</text>
+<text top="504" left="129" width="432" height="14" font="2">cution at main. At that point in the example, a “next” command is issued,</text>
+<text top="519" left="129" width="432" height="14" font="2">which executes the next source-level command. Both “next” and “step”</text>
+<text top="534" left="129" width="432" height="14" font="2">are useful ways to advance through a program — read about them in the</text>
+<text top="551" left="129" width="188" height="14" font="2">documentation for more details</text>
+<text top="549" left="320" width="4" height="9" font="9">2</text>
+<text top="551" left="325" width="3" height="14" font="2">.</text>
+<text top="566" left="147" width="209" height="14" font="2">This discussion really does not do</text>
+<text top="567" left="360" width="24" height="11" font="6">gdb</text>
+<text top="566" left="390" width="171" height="14" font="2">justice; it is a rich and flexi-</text>
+<text top="581" left="129" width="432" height="14" font="2">ble debugging tool, with many more features than can be described in</text>
+<text top="596" left="129" width="432" height="14" font="2">the limited space here. Read more about it on your own and become an</text>
+<text top="611" left="129" width="203" height="14" font="2">expert in your copious spare time.</text>
+<text top="649" left="97" width="138" height="17" font="5">F.8 Documentation</text>
+<text top="678" left="147" width="414" height="14" font="2">To learn a lot more about all of these things, you have to do two things:</text>
+<text top="693" left="129" width="432" height="14" font="2">the first is to use these tools, and the second is to read more about them</text>
+<text top="708" left="129" width="273" height="14" font="2">on your own. One way to find out more about</text>
+<text top="709" left="405" width="24" height="11" font="6">gcc</text>
+<text top="708" left="430" width="3" height="14" font="2">,</text>
+<text top="709" left="436" width="40" height="11" font="6">gmake</text>
+<text top="708" left="476" width="29" height="14" font="2">, and</text>
+<text top="709" left="509" width="24" height="11" font="6">gdb</text>
+<text top="708" left="536" width="25" height="14" font="2">is to</text>
+<text top="723" left="129" width="162" height="14" font="2">read their man pages; type</text>
+<text top="724" left="295" width="56" height="11" font="6">man gcc</text>
+<text top="723" left="352" width="3" height="14" font="2">,</text>
+<text top="724" left="359" width="73" height="11" font="6">man gmake</text>
+<text top="723" left="432" width="20" height="14" font="2">, or</text>
+<text top="724" left="457" width="56" height="11" font="6">man gdb</text>
+<text top="723" left="517" width="44" height="14" font="2">at your</text>
+<text top="738" left="129" width="214" height="14" font="2">command prompt. You can also use</text>
+<text top="739" left="346" width="48" height="11" font="6">man -k</text>
+<text top="738" left="398" width="163" height="14" font="2">to search the man pages for</text>
+<text top="753" left="129" width="432" height="14" font="2">keywords, though that doesn’t always work as well as it might; googling</text>
+<text top="768" left="129" width="206" height="14" font="2">is probably a better approach here.</text>
+<text top="783" left="147" width="259" height="14" font="2">One tricky thing about man pages: typing</text>
+<text top="784" left="411" width="56" height="11" font="6">man XXX</text>
+<text top="783" left="472" width="89" height="14" font="2">may not result</text>
+<text top="798" left="129" width="374" height="14" font="2">in the thing you want, if there is more than one thing called</text>
+<text top="799" left="508" width="24" height="11" font="6">XXX</text>
+<text top="798" left="532" width="29" height="14" font="2">. For</text>
+<text top="826" left="149" width="4" height="8" font="10">2</text>
+<text top="828" left="154" width="373" height="11" font="8">In particular, you can use the interactive “help” command while debugging with</text>
+<text top="829" left="530" width="19" height="9" font="11">gdb</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="168" width="16" height="14" font="2">: T</text>
+<text top="98" left="186" width="53" height="11" font="3">UTORIAL</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="139" left="87" width="212" height="14" font="2">example, if you are looking for the</text>
+<text top="139" left="304" width="48" height="11" font="6">kill()</text>
+<text top="139" left="357" width="162" height="14" font="2">system call man page, and</text>
+<text top="154" left="87" width="93" height="14" font="2">if you just type</text>
+<text top="154" left="185" width="65" height="11" font="6">man kill</text>
+<text top="154" left="254" width="265" height="14" font="2">at the prompt, you will get the wrong man</text>
+<text top="169" left="87" width="323" height="14" font="2">page, because there is a command-line program called</text>
+<text top="169" left="414" width="32" height="11" font="6">kill</text>
+<text top="169" left="446" width="73" height="14" font="2">. Man pages</text>
+<text top="183" left="87" width="96" height="14" font="2">are divided into</text>
+<text top="184" left="187" width="49" height="13" font="4"><b>sections</b></text>
+<text top="183" left="236" width="283" height="14" font="2">, and by default, man will return the man page</text>
+<text top="198" left="87" width="432" height="14" font="2">in the lowest section that it finds, which in this case is section 1. Note that</text>
+<text top="213" left="87" width="432" height="14" font="2">you can tell which man page you got by looking at the top of the page:</text>
+<text top="228" left="87" width="58" height="14" font="2">if you see</text>
+<text top="229" left="149" width="57" height="11" font="6">kill(2)</text>
+<text top="228" left="205" width="314" height="14" font="2">, you know you are in the right man page in Section</text>
+<text top="243" left="87" width="196" height="14" font="2">2, where system calls live. Type</text>
+<text top="244" left="288" width="56" height="11" font="6">man man</text>
+<text top="243" left="349" width="170" height="14" font="2">to learn more about what is</text>
+<text top="258" left="87" width="432" height="14" font="2">stored in each of the different sections of the man pages. Also note that</text>
+<text top="274" left="87" width="89" height="11" font="6">man -a kill</text>
+<text top="273" left="179" width="340" height="14" font="2">can be used to cycle through all of the different man pages</text>
+<text top="288" left="87" width="80" height="14" font="2">named “kill”.</text>
+<text top="303" left="105" width="414" height="14" font="2">Man pages are useful for finding out a number of things. In particular,</text>
+<text top="318" left="87" width="432" height="14" font="2">you will often want to look up what arguments to pass to a library call,</text>
+<text top="333" left="87" width="432" height="14" font="2">or what header files need to be included to use a library call. All of this</text>
+<text top="348" left="87" width="432" height="14" font="2">should be available in the man page. For example, if you look up the</text>
+<text top="364" left="87" width="48" height="11" font="6">open()</text>
+<text top="363" left="139" width="147" height="14" font="2">system call, you will see:</text>
+<text top="394" left="87" width="65" height="11" font="6">SYNOPSIS</text>
+<text top="409" left="127" width="178" height="11" font="6">#include &lt;sys/types.h&gt;</text>
+<text top="424" left="127" width="170" height="11" font="6">#include &lt;sys/stat.h&gt;</text>
+<text top="439" left="127" width="145" height="11" font="6">#include &lt;fcntl.h&gt;</text>
+<text top="468" left="127" width="484" height="14" font="6">int open(const char *path, int oflag, /* mode_t mode */...);</text>
+<text top="497" left="105" width="227" height="14" font="2">That tells you to include the headers</text>
+<text top="498" left="337" width="89" height="11" font="6">sys/types.h</text>
+<text top="497" left="426" width="3" height="14" font="2">,</text>
+<text top="498" left="435" width="81" height="11" font="6">sys/stat.h</text>
+<text top="497" left="516" width="3" height="14" font="2">,</text>
+<text top="512" left="87" width="23" height="14" font="2">and</text>
+<text top="513" left="115" width="57" height="11" font="6">fcntl.h</text>
+<text top="512" left="176" width="343" height="14" font="2">in order to use the open call. It also tells you about the</text>
+<text top="527" left="87" width="296" height="14" font="2">parameters to pass to open, namely a string called</text>
+<text top="528" left="387" width="32" height="11" font="6">path</text>
+<text top="527" left="419" width="100" height="14" font="2">, and integer flag</text>
+<text top="543" left="87" width="40" height="11" font="6">oflag</text>
+<text top="542" left="127" width="245" height="14" font="2">, and an optional argument to specify the</text>
+<text top="543" left="376" width="32" height="11" font="6">mode</text>
+<text top="542" left="412" width="107" height="14" font="2">of the file. If there</text>
+<text top="557" left="87" width="432" height="14" font="2">were any libraries you needed to link with to use the call, it would tell</text>
+<text top="572" left="87" width="105" height="14" font="2">you that here too.</text>
+<text top="587" left="105" width="414" height="14" font="2">Man pages require some effort to use effectively. They are often di-</text>
+<text top="602" left="87" width="432" height="14" font="2">vided into a number of standard sections. The main body will describe</text>
+<text top="617" left="87" width="432" height="14" font="2">how you can pass different parameters in order to have the function be-</text>
+<text top="632" left="87" width="96" height="14" font="2">have differently.</text>
+<text top="647" left="105" width="261" height="14" font="2">One particularly useful section is called the</text>
+<text top="648" left="370" width="105" height="11" font="6">RETURN VALUES</text>
+<text top="647" left="479" width="40" height="14" font="2">part of</text>
+<text top="662" left="87" width="432" height="14" font="2">the man page, and it tells you what the function will return under success</text>
+<text top="677" left="87" width="116" height="14" font="2">or failure. From the</text>
+<text top="678" left="206" width="48" height="11" font="6">open()</text>
+<text top="677" left="258" width="98" height="14" font="2">man page again:</text>
+<text top="708" left="87" width="105" height="11" font="6">RETURN VALUES</text>
+<text top="723" left="127" width="460" height="11" font="6">Upon successful completion, the open() function opens the</text>
+<text top="738" left="127" width="444" height="11" font="6">file and return a non-negative integer representing the</text>
+<text top="753" left="127" width="452" height="11" font="6">lowest numbered unused file descriptor. Otherwise, -1 is</text>
+<text top="767" left="127" width="468" height="11" font="6">returned, errno is set to indicate the error, and no files</text>
+<text top="782" left="127" width="194" height="11" font="6">are created or modified.</text>
+<text top="811" left="105" width="414" height="14" font="2">Thus, by checking what open returns, you can see if the open suc-</text>
+<text top="826" left="87" width="432" height="14" font="2">ceeded or not. If it didn’t, open (and many standard library routines) will</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="15" family="RUDYTV+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="409" width="8" height="14" font="2">L</text>
+<text top="98" left="418" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="490" width="16" height="14" font="2">: T</text>
+<text top="98" left="507" width="53" height="11" font="3">UTORIAL</text>
+<text top="139" left="129" width="160" height="14" font="2">set a global variable called</text>
+<text top="139" left="293" width="40" height="11" font="6">errno</text>
+<text top="139" left="338" width="223" height="14" font="2">to a value to tell you about the error.</text>
+<text top="154" left="129" width="42" height="14" font="2">See the</text>
+<text top="154" left="174" width="48" height="11" font="6">ERRORS</text>
+<text top="154" left="226" width="241" height="14" font="2">section of the man page for more details.</text>
+<text top="169" left="147" width="414" height="14" font="2">Another thing you might want to do is to look for the definition of a</text>
+<text top="184" left="129" width="432" height="14" font="2">structure that is not specified in the man page itself. For example, the</text>
+<text top="199" left="129" width="79" height="14" font="2">man page for</text>
+<text top="200" left="211" width="113" height="11" font="6">gettimeofday()</text>
+<text top="199" left="328" width="162" height="14" font="2">has the following synopsis:</text>
+<text top="230" left="129" width="65" height="11" font="6">SYNOPSIS</text>
+<text top="244" left="169" width="169" height="11" font="6">#include &lt;sys/time.h&gt;</text>
+<text top="259" left="169" width="363" height="14" font="6">int gettimeofday(struct timeval *restrict tp,</text>
+<text top="274" left="306" width="161" height="14" font="6">void *restrict tzp);</text>
+<text top="303" left="147" width="414" height="14" font="2">From this page, you can see that the time is put into a structure of</text>
+<text top="318" left="129" width="26" height="14" font="2">type</text>
+<text top="319" left="159" width="57" height="11" font="6">timeval</text>
+<text top="318" left="215" width="346" height="14" font="2">, but the man page may not tell you what fields that struct</text>
+<text top="333" left="129" width="432" height="14" font="2">has! (in this case, it does, but you may not always be so lucky) Thus, you</text>
+<text top="348" left="129" width="432" height="14" font="2">may have to hunt for it. All include files are found under the directory</text>
+<text top="364" left="129" width="97" height="11" font="6">/usr/include</text>
+<text top="363" left="226" width="195" height="14" font="2">, and thus you can use a tool like</text>
+<text top="364" left="424" width="32" height="11" font="6">grep</text>
+<text top="363" left="459" width="101" height="14" font="2">to look for it. For</text>
+<text top="378" left="129" width="152" height="14" font="2">example, you might type:</text>
+<text top="403" left="129" width="404" height="14" font="6">prompt&gt; grep ’struct timeval’ /usr/include/sys/*.h</text>
+<text top="427" left="147" width="414" height="14" font="2">This lets you look for the definition of the structure in all files that</text>
+<text top="442" left="129" width="53" height="14" font="2">end with</text>
+<text top="442" left="184" width="16" height="11" font="6">.h</text>
+<text top="442" left="203" width="12" height="14" font="2">in</text>
+<text top="442" left="218" width="129" height="11" font="6">/usr/include/sys</text>
+<text top="442" left="347" width="214" height="14" font="2">. Unfortunately, this may not always</text>
+<text top="457" left="129" width="432" height="14" font="2">work, as that include file may include others which are found elsewhere.</text>
+<text top="472" left="147" width="414" height="14" font="2">A better way to do this is to use a tool at your disposal, the com-</text>
+<text top="487" left="129" width="285" height="14" font="2">piler. Write a program that includes the header</text>
+<text top="488" left="418" width="48" height="11" font="6">time.h</text>
+<text top="487" left="466" width="95" height="14" font="2">, let’s say called</text>
+<text top="503" left="129" width="48" height="11" font="6">main.c</text>
+<text top="502" left="177" width="383" height="14" font="2">. Then, instead of compiling it, use the compiler to invoke the</text>
+<text top="517" left="129" width="432" height="14" font="2">preprocessor. The preprocessor processes all the directives in your file,</text>
+<text top="532" left="129" width="43" height="14" font="2">such as</text>
+<text top="532" left="175" width="57" height="11" font="6">#define</text>
+<text top="532" left="235" width="91" height="14" font="2">commands and</text>
+<text top="532" left="329" width="65" height="11" font="6">#include</text>
+<text top="532" left="397" width="164" height="14" font="2">commands. To do this, type</text>
+<text top="547" left="129" width="105" height="11" font="6">gcc -E main.c</text>
+<text top="547" left="234" width="327" height="14" font="2">. The result of this is a C file that has all of the needed</text>
+<text top="561" left="129" width="432" height="14" font="2">structures and prototypes in it, including the definition of the timeval</text>
+<text top="576" left="129" width="37" height="14" font="2">struct.</text>
+<text top="592" left="147" width="414" height="14" font="2">Probably an even better way to find these things out: google. You</text>
+<text top="607" left="129" width="432" height="14" font="2">should always google things you don’t know about — it’s amazing how</text>
+<text top="622" left="129" width="264" height="14" font="2">much you can learn simply by looking it up!</text>
+<text top="659" left="129" width="72" height="15" font="13"><b>Info Pages</b></text>
+<text top="684" left="129" width="323" height="14" font="2">Also quite useful in the hunt for documentation are the</text>
+<text top="684" left="454" width="63" height="13" font="4"><b>info pages</b></text>
+<text top="684" left="518" width="43" height="14" font="2">, which</text>
+<text top="699" left="129" width="432" height="14" font="2">provide much more detailed documentation on many GNU tools. You</text>
+<text top="714" left="129" width="303" height="14" font="2">can access the info pages by running the program</text>
+<text top="715" left="437" width="32" height="11" font="6">info</text>
+<text top="714" left="469" width="44" height="14" font="2">, or via</text>
+<text top="715" left="517" width="40" height="11" font="6">emacs</text>
+<text top="714" left="557" width="3" height="14" font="2">,</text>
+<text top="729" left="129" width="265" height="14" font="2">the preferred editor of hackers, by executing</text>
+<text top="729" left="398" width="89" height="11" font="6">Meta-x info</text>
+<text top="729" left="486" width="74" height="14" font="2">. A program</text>
+<text top="744" left="129" width="22" height="14" font="2">like</text>
+<text top="744" left="154" width="24" height="11" font="6">gcc</text>
+<text top="744" left="182" width="379" height="14" font="2">has hundreds of flags, and some of them are surprisingly useful</text>
+<text top="759" left="129" width="92" height="14" font="2">to know about.</text>
+<text top="759" left="228" width="40" height="11" font="6">gmake</text>
+<text top="759" left="273" width="288" height="14" font="2">has many more features that will improve your</text>
+<text top="773" left="129" width="164" height="14" font="2">build environment. Finally,</text>
+<text top="774" left="297" width="24" height="11" font="6">gdb</text>
+<text top="773" left="325" width="236" height="14" font="2">is quite a sophisticated debugger. Read</text>
+<text top="788" left="129" width="432" height="14" font="2">the man and info pages, try out features that you hadn’t tried before, and</text>
+<text top="803" left="129" width="295" height="14" font="2">become a power user of your programming tools.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="72" height="11" font="3">ABORATORY</text>
+<text top="96" left="168" width="16" height="14" font="2">: T</text>
+<text top="98" left="186" width="53" height="11" font="3">UTORIAL</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="137" left="55" width="171" height="17" font="5">F.9 Suggested Readings</text>
+<text top="166" left="105" width="414" height="14" font="2">Other than the man and info pages, there are a number of useful books</text>
+<text top="181" left="87" width="432" height="14" font="2">out there. Note that a lot of this information is available for free on-line;</text>
+<text top="196" left="87" width="432" height="14" font="2">however, sometimes having something in book form seems to make it</text>
+<text top="211" left="87" width="432" height="14" font="2">easier to learn. Also, always look for O’Reilly books on topics you are</text>
+<text top="226" left="87" width="310" height="14" font="2">interested in; they are almost always of high quality.</text>
+<text top="254" left="107" width="412" height="14" font="2">• “The C Programming Language”, by Brian Kernighan and Dennis</text>
+<text top="269" left="122" width="88" height="14" font="2">Ritchie. This is</text>
+<text top="269" left="213" width="16" height="14" font="12">the</text>
+<text top="269" left="232" width="153" height="14" font="2">definitive C book to have.</text>
+<text top="294" left="107" width="412" height="14" font="2">• “Managing Projects with make”, by Andrew Oram and Steve Tal-</text>
+<text top="309" left="122" width="259" height="14" font="2">bott. A reasonable and short book on make.</text>
+<text top="334" left="107" width="432" height="14" font="2">• “Debugging with GDB: The GNU Source-Level Debugger”, by Richard</text>
+<text top="349" left="122" width="349" height="14" font="2">M. Stallman, Roland H. Pesch. A little book on using GDB.</text>
+<text top="373" left="107" width="418" height="14" font="2">• “Advanced Programming in the UNIX Environment”, by W. Richard</text>
+<text top="388" left="122" width="397" height="14" font="2">Stevens and Steve Rago. Stevens wrote some excellent books, and</text>
+<text top="403" left="122" width="109" height="14" font="2">this is a must for U</text>
+<text top="405" left="232" width="21" height="11" font="3">NIX</text>
+<text top="403" left="256" width="263" height="14" font="2">hackers. He also has an excellent set of books</text>
+<text top="418" left="122" width="229" height="14" font="2">on TCP/IP and Sockets programming.</text>
+<text top="443" left="107" width="412" height="14" font="2">• “Expert C Programming”, by Peter Van der Linden. A lot of the</text>
+<text top="458" left="122" width="397" height="14" font="2">useful tips about compilers, etc., above are stolen directly from here.</text>
+<text top="473" left="122" width="397" height="14" font="2">Read this! It is a great and eye-opening book, even though a little</text>
+<text top="488" left="122" width="68" height="14" font="2">out of date.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+</pdf2xml>

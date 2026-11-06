@@ -1,0 +1,1139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="NIYPCJ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="NIYPCJ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="HQJHGF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="RTOBIE+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="QRILMF+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="5" size="11" family="HQJHGF+URWPalladioL-Roma" color="#000000"/>
+<text top="196" left="523" width="34" height="30" font="0">15</text>
+<text top="267" left="207" width="312" height="21" font="1">Mechanism: Address Translation</text>
+<text top="348" left="87" width="432" height="14" font="2">In developing the virtualization of the CPU, we focused on a general</text>
+<text top="363" left="87" width="133" height="14" font="2">mechanism known as</text>
+<text top="363" left="225" width="149" height="13" font="3"><b>limited direct execution</b></text>
+<text top="363" left="379" width="17" height="14" font="2">(or</text>
+<text top="363" left="402" width="28" height="13" font="3"><b>LDE</b></text>
+<text top="363" left="429" width="90" height="14" font="2">). The idea be-</text>
+<text top="378" left="87" width="432" height="14" font="2">hind LDE is simple: for the most part, let the program run directly on the</text>
+<text top="393" left="87" width="432" height="14" font="2">hardware; however, at certain key points in time (such as when a process</text>
+<text top="408" left="87" width="432" height="14" font="2">issues a system call, or a timer interrupt occurs), arrange so that the OS</text>
+<text top="423" left="87" width="432" height="14" font="2">gets involved and makes sure the “right” thing happens. Thus, the OS,</text>
+<text top="438" left="87" width="432" height="14" font="2">with a little hardware support, tries its best to get out of the way of the</text>
+<text top="453" left="87" width="185" height="14" font="2">running program, to deliver an</text>
+<text top="453" left="276" width="42" height="14" font="4"><i>efficient</i></text>
+<text top="453" left="322" width="160" height="14" font="2">virtualization; however, by</text>
+<text top="453" left="486" width="33" height="13" font="3"><b>inter-</b></text>
+<text top="468" left="87" width="42" height="13" font="3"><b>posing</b></text>
+<text top="468" left="134" width="385" height="14" font="2">at those critical points in time, the OS ensures that it maintains</text>
+<text top="483" left="87" width="38" height="14" font="4"><i>control</i></text>
+<text top="483" left="129" width="390" height="14" font="2">over the hardware. Efficiency and control together are two of the</text>
+<text top="498" left="87" width="265" height="14" font="2">main goals of any modern operating system.</text>
+<text top="513" left="105" width="414" height="14" font="2">In virtualizing memory, we will pursue a similar strategy, attaining</text>
+<text top="528" left="87" width="432" height="14" font="2">both efficiency and control while providing the desired virtualization. Ef-</text>
+<text top="543" left="87" width="432" height="14" font="2">ficiency dictates that we make use of hardware support, which at first</text>
+<text top="558" left="87" width="432" height="14" font="2">will be quite rudimentary (e.g., just a few registers) but will grow to be</text>
+<text top="573" left="87" width="432" height="14" font="2">fairly complex (e.g., TLBs, page-table support, and so forth, as you will</text>
+<text top="588" left="87" width="432" height="14" font="2">see). Control implies that the OS ensures that no application is allowed</text>
+<text top="603" left="87" width="432" height="14" font="2">to access any memory but its own; thus, to protect applications from one</text>
+<text top="618" left="87" width="432" height="14" font="2">another, and the OS from applications, we will need help from the hard-</text>
+<text top="633" left="87" width="432" height="14" font="2">ware here too. Finally, we will need a little more from the VM system, in</text>
+<text top="648" left="87" width="50" height="14" font="2">terms of</text>
+<text top="648" left="142" width="52" height="14" font="4"><i>flexibility</i></text>
+<text top="648" left="193" width="326" height="14" font="2">; specifically, we’d like for programs to be able to use</text>
+<text top="663" left="87" width="432" height="14" font="2">their address spaces in whatever way they would like, thus making the</text>
+<text top="678" left="87" width="388" height="14" font="2">system easier to program. And thus we arrive at the refined crux:</text>
+<text top="719" left="269" width="8" height="14" font="2">T</text>
+<text top="721" left="278" width="16" height="11" font="5">HE</text>
+<text top="719" left="298" width="10" height="14" font="2">C</text>
+<text top="721" left="309" width="24" height="11" font="5">RUX</text>
+<text top="719" left="333" width="3" height="14" font="2">:</text>
+<text top="734" left="122" width="11" height="14" font="2">H</text>
+<text top="736" left="134" width="20" height="11" font="5">OW</text>
+<text top="734" left="158" width="8" height="14" font="2">T</text>
+<text top="736" left="167" width="8" height="11" font="5">O</text>
+<text top="734" left="179" width="8" height="14" font="2">E</text>
+<text top="736" left="188" width="66" height="11" font="5">FFICIENTLY</text>
+<text top="734" left="259" width="10" height="14" font="2">A</text>
+<text top="736" left="270" width="18" height="11" font="5">ND</text>
+<text top="734" left="292" width="7" height="14" font="2">F</text>
+<text top="736" left="300" width="47" height="11" font="5">LEXIBLY</text>
+<text top="734" left="351" width="10" height="14" font="2">V</text>
+<text top="736" left="361" width="63" height="11" font="5">IRTUALIZE</text>
+<text top="734" left="429" width="13" height="14" font="2">M</text>
+<text top="736" left="442" width="42" height="11" font="5">EMORY</text>
+<text top="749" left="105" width="414" height="14" font="2">How can we build an efficient virtualization of memory? How do</text>
+<text top="764" left="87" width="432" height="14" font="2">we provide the flexibility needed by applications? How do we maintain</text>
+<text top="779" left="87" width="432" height="14" font="2">control over which memory locations an application can access, and thus</text>
+<text top="794" left="87" width="432" height="14" font="2">ensure that application memory accesses are properly restricted? How</text>
+<text top="809" left="87" width="182" height="14" font="2">do we do all of this efficiently?</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="16" family="HQJHGF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="12" family="HQJHGF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="HQJHGF+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="327" width="13" height="14" font="2">M</text>
+<text top="98" left="340" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="405" width="19" height="14" font="2">: A</text>
+<text top="98" left="425" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="474" width="8" height="14" font="2">T</text>
+<text top="98" left="483" width="78" height="11" font="5">RANSLATION</text>
+<text top="139" left="147" width="414" height="14" font="2">The generic technique we will use, which you can consider an addition</text>
+<text top="154" left="129" width="432" height="14" font="2">to our general approach of limited direct execution, is something that is</text>
+<text top="169" left="129" width="78" height="14" font="2">referred to as</text>
+<text top="169" left="210" width="219" height="13" font="3"><b>hardware-based address translation</b></text>
+<text top="169" left="429" width="44" height="14" font="2">, or just</text>
+<text top="169" left="475" width="85" height="13" font="3"><b>address trans-</b></text>
+<text top="184" left="129" width="36" height="13" font="3"><b>lation</b></text>
+<text top="183" left="168" width="392" height="14" font="2">for short. With address translation, the hardware transforms each</text>
+<text top="198" left="129" width="408" height="14" font="2">memory access (e.g., an instruction fetch, load, or store), changing the</text>
+<text top="198" left="539" width="21" height="13" font="3"><b>vir-</b></text>
+<text top="213" left="129" width="24" height="13" font="3"><b>tual</b></text>
+<text top="213" left="156" width="238" height="14" font="2">address provided by the instruction to a</text>
+<text top="213" left="397" width="52" height="13" font="3"><b>physical</b></text>
+<text top="213" left="452" width="108" height="14" font="2">address where the</text>
+<text top="228" left="129" width="432" height="14" font="2">desired information is actually located. Thus, on each and every memory</text>
+<text top="243" left="129" width="432" height="14" font="2">reference, an address translation is performed by the hardware to redirect</text>
+<text top="258" left="129" width="397" height="14" font="2">application memory references to their actual locations in memory.</text>
+<text top="274" left="147" width="414" height="14" font="2">Of course, the hardware alone cannot virtualize memory, as it just pro-</text>
+<text top="289" left="129" width="432" height="14" font="2">vides the low-level mechanism for doing so efficiently. The OS must get</text>
+<text top="304" left="129" width="432" height="14" font="2">involved at key points to set up the hardware so that the correct trans-</text>
+<text top="319" left="129" width="182" height="14" font="2">lations take place; it must thus</text>
+<text top="319" left="315" width="102" height="13" font="3"><b>manage memory</b></text>
+<text top="319" left="417" width="144" height="14" font="2">, keeping track of which</text>
+<text top="334" left="129" width="432" height="14" font="2">locations are free and which are in use, and judiciously intervening to</text>
+<text top="349" left="129" width="260" height="14" font="2">maintain control over how memory is used.</text>
+<text top="365" left="147" width="383" height="14" font="2">Once again the goal of all of this work is to create a beautiful</text>
+<text top="365" left="535" width="26" height="13" font="3"><b>illu-</b></text>
+<text top="380" left="129" width="26" height="13" font="3"><b>sion</b></text>
+<text top="380" left="155" width="406" height="14" font="2">: that the program has its own private memory, where its own code</text>
+<text top="395" left="129" width="432" height="14" font="2">and data reside. Behind that virtual reality lies the ugly physical truth:</text>
+<text top="410" left="129" width="432" height="14" font="2">that many programs are actually sharing memory at the same time, as</text>
+<text top="425" left="129" width="432" height="14" font="2">the CPU (or CPUs) switches between running one program and the next.</text>
+<text top="440" left="129" width="432" height="14" font="2">Through virtualization, the OS (with the hardware’s help) turns the ugly</text>
+<text top="455" left="129" width="401" height="14" font="2">machine reality into a useful, powerful, and easy to use abstraction.</text>
+<text top="484" left="97" width="130" height="17" font="6">15.1 Assumptions</text>
+<text top="506" left="147" width="414" height="14" font="2">Our first attempts at virtualizing memory will be very simple, almost</text>
+<text top="521" left="129" width="432" height="14" font="2">laughably so. Go ahead, laugh all you want; pretty soon it will be the OS</text>
+<text top="536" left="129" width="432" height="14" font="2">laughing at you, when you try to understand the ins and outs of TLBs,</text>
+<text top="551" left="129" width="432" height="14" font="2">multi-level page tables, and other technical wonders. Don’t like the idea</text>
+<text top="566" left="129" width="432" height="14" font="2">of the OS laughing at you? Well, you may be out of luck then; that’s just</text>
+<text top="581" left="129" width="102" height="14" font="2">how the OS rolls.</text>
+<text top="597" left="147" width="414" height="14" font="2">Specifically, we will assume for now that the user’s address space must</text>
+<text top="612" left="129" width="57" height="14" font="2">be placed</text>
+<text top="612" left="189" width="70" height="14" font="4"><i>contiguously</i></text>
+<text top="612" left="263" width="298" height="14" font="2">in physical memory. We will also assume, for sim-</text>
+<text top="627" left="129" width="432" height="14" font="2">plicity, that the size of the address space is not too big; specifically, that</text>
+<text top="642" left="129" width="22" height="14" font="2">it is</text>
+<text top="642" left="155" width="202" height="14" font="4"><i>less than the size of physical memory</i></text>
+<text top="642" left="357" width="204" height="14" font="2">. Finally, we will also assume that</text>
+<text top="657" left="129" width="194" height="14" font="2">each address space is exactly the</text>
+<text top="656" left="327" width="51" height="14" font="4"><i>same size</i></text>
+<text top="657" left="378" width="183" height="14" font="2">. Don’t worry if these assump-</text>
+<text top="672" left="129" width="432" height="14" font="2">tions sound unrealistic; we will relax them as we go, thus achieving a</text>
+<text top="686" left="129" width="201" height="14" font="2">realistic virtualization of memory.</text>
+<text top="716" left="97" width="124" height="17" font="6">15.2 An Example</text>
+<text top="738" left="147" width="414" height="14" font="2">To understand better what we need to do to implement address trans-</text>
+<text top="753" left="129" width="432" height="14" font="2">lation, and why we need such a mechanism, let’s look at a simple exam-</text>
+<text top="768" left="129" width="432" height="14" font="2">ple. Imagine there is a process whose address space is as indicated in</text>
+<text top="783" left="129" width="432" height="14" font="2">Figure 15.1. What we are going to examine here is a short code sequence</text>
+<text top="798" left="129" width="432" height="14" font="2">that loads a value from memory, increments it by three, and then stores</text>
+<text top="813" left="129" width="432" height="14" font="2">the value back into memory. You can imagine the C-language represen-</text>
+<text top="828" left="129" width="228" height="14" font="2">tation of this code might look like this:</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="13" family="XQQHHS+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="19" height="14" font="2">: A</text>
+<text top="98" left="185" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="234" width="8" height="14" font="2">T</text>
+<text top="98" left="243" width="78" height="11" font="5">RANSLATION</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="148" left="199" width="8" height="14" font="2">T</text>
+<text top="150" left="208" width="11" height="11" font="5">IP</text>
+<text top="148" left="219" width="13" height="14" font="2">: I</text>
+<text top="150" left="233" width="89" height="11" font="5">NTERPOSITION</text>
+<text top="148" left="325" width="5" height="14" font="2">I</text>
+<text top="150" left="331" width="6" height="11" font="5">S</text>
+<text top="148" left="340" width="8" height="14" font="2">P</text>
+<text top="150" left="349" width="58" height="11" font="5">OWERFUL</text>
+<text top="163" left="87" width="432" height="14" font="2">Interposition is a generic and powerful technique that is often used to</text>
+<text top="178" left="87" width="432" height="14" font="2">great effect in computer systems. In virtualizing memory, the hardware</text>
+<text top="193" left="87" width="432" height="14" font="2">will interpose on each memory access, and translate each virtual address</text>
+<text top="208" left="87" width="432" height="14" font="2">issued by the process to a physical address where the desired informa-</text>
+<text top="223" left="87" width="432" height="14" font="2">tion is actually stored. However, the general technique of interposition is</text>
+<text top="238" left="87" width="432" height="14" font="2">much more broadly applicable; indeed, almost any well-defined interface</text>
+<text top="253" left="87" width="432" height="14" font="2">can be interposed upon, to add new functionality or improve some other</text>
+<text top="267" left="87" width="432" height="14" font="2">aspect of the system. One of the usual benefits of such an approach is</text>
+<text top="282" left="87" width="79" height="13" font="3"><b>transparency</b></text>
+<text top="282" left="166" width="353" height="14" font="2">; the interposition often is done without changing the inter-</text>
+<text top="297" left="87" width="340" height="14" font="2">face of the client, thus requiring no changes to said client.</text>
+<text top="343" left="87" width="105" height="11" font="9">void func() {</text>
+<text top="358" left="119" width="250" height="11" font="9">int x = 3000; // thanks, Perry.</text>
+<text top="373" left="119" width="81" height="11" font="9">x = x + 3;</text>
+<text top="373" left="232" width="291" height="11" font="9">// line of code we are interested in</text>
+<text top="388" left="119" width="24" height="11" font="9">...</text>
+<text top="412" left="105" width="414" height="14" font="2">The compiler turns this line of code into assembly, which might look</text>
+<text top="427" left="87" width="253" height="14" font="2">something like this (in x86 assembly). Use</text>
+<text top="428" left="344" width="57" height="11" font="9">objdump</text>
+<text top="427" left="404" width="70" height="14" font="2">on Linux or</text>
+<text top="428" left="479" width="40" height="11" font="9">otool</text>
+<text top="442" left="87" width="160" height="14" font="2">on a Mac to disassemble it:</text>
+<text top="468" left="95" width="202" height="11" font="9">128: movl 0x0(%ebx), %eax</text>
+<text top="468" left="337" width="161" height="11" font="9">;load 0+ebx into eax</text>
+<text top="483" left="95" width="169" height="11" font="9">132: addl $0x03, %eax</text>
+<text top="483" left="337" width="178" height="11" font="9">;add 3 to eax register</text>
+<text top="498" left="95" width="202" height="11" font="9">135: movl %eax, 0x0(%ebx)</text>
+<text top="498" left="337" width="178" height="11" font="9">;store eax back to mem</text>
+<text top="522" left="105" width="414" height="14" font="2">This code snippet is relatively straightforward; it presumes that the</text>
+<text top="537" left="87" width="61" height="14" font="2">address of</text>
+<text top="538" left="151" width="8" height="11" font="9">x</text>
+<text top="537" left="162" width="178" height="14" font="2">has been placed in the register</text>
+<text top="538" left="343" width="24" height="11" font="9">ebx</text>
+<text top="537" left="368" width="151" height="14" font="2">, and then loads the value</text>
+<text top="552" left="87" width="288" height="14" font="2">at that address into the general-purpose register</text>
+<text top="553" left="379" width="24" height="11" font="9">eax</text>
+<text top="552" left="407" width="56" height="14" font="2">using the</text>
+<text top="553" left="467" width="32" height="11" font="9">movl</text>
+<text top="552" left="503" width="16" height="14" font="2">in-</text>
+<text top="567" left="87" width="399" height="14" font="2">struction (for “longword” move). The next instruction adds 3 to</text>
+<text top="568" left="491" width="24" height="11" font="9">eax</text>
+<text top="567" left="516" width="3" height="14" font="2">,</text>
+<text top="582" left="87" width="253" height="14" font="2">and the final instruction stores the value in</text>
+<text top="583" left="343" width="24" height="11" font="9">eax</text>
+<text top="582" left="370" width="149" height="14" font="2">back into memory at that</text>
+<text top="597" left="87" width="85" height="14" font="2">same location.</text>
+<text top="613" left="105" width="414" height="14" font="2">In Figure 15.1 (page 4), observe how both the code and data are laid</text>
+<text top="628" left="87" width="432" height="14" font="2">out in the process’s address space; the three-instruction code sequence is</text>
+<text top="643" left="87" width="432" height="14" font="2">located at address 128 (in the code section near the top), and the value</text>
+<text top="657" left="87" width="87" height="14" font="2">of the variable</text>
+<text top="658" left="178" width="8" height="11" font="9">x</text>
+<text top="657" left="190" width="329" height="14" font="2">at address 15 KB (in the stack near the bottom). In the</text>
+<text top="672" left="87" width="150" height="14" font="2">figure, the initial value of</text>
+<text top="673" left="240" width="8" height="11" font="9">x</text>
+<text top="672" left="252" width="263" height="14" font="2">is 3000, as shown in its location on the stack.</text>
+<text top="688" left="105" width="414" height="14" font="2">When these instructions run, from the perspective of the process, the</text>
+<text top="703" left="87" width="229" height="14" font="2">following memory accesses take place.</text>
+<text top="733" left="107" width="203" height="14" font="2">• Fetch instruction at address 128</text>
+<text top="748" left="107" width="313" height="14" font="2">• Execute this instruction (load from address 15 KB)</text>
+<text top="763" left="107" width="203" height="14" font="2">• Fetch instruction at address 132</text>
+<text top="778" left="107" width="293" height="14" font="2">• Execute this instruction (no memory reference)</text>
+<text top="793" left="107" width="225" height="14" font="2">• Fetch the instruction at address 135</text>
+<text top="808" left="107" width="299" height="14" font="2">• Execute this instruction (store to address 15 KB)</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="13" family="NIYPCJ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="11" size="12" family="NIYPCJ+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="327" width="13" height="14" font="2">M</text>
+<text top="98" left="340" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="405" width="19" height="14" font="2">: A</text>
+<text top="98" left="425" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="474" width="8" height="14" font="2">T</text>
+<text top="98" left="483" width="78" height="11" font="5">RANSLATION</text>
+<text top="781" left="253" width="33" height="13" font="10">16KB</text>
+<text top="742" left="253" width="33" height="13" font="10">15KB</text>
+<text top="702" left="253" width="33" height="13" font="10">14KB</text>
+<text top="303" left="253" width="25" height="13" font="10">4KB</text>
+<text top="263" left="253" width="25" height="13" font="10">3KB</text>
+<text top="223" left="253" width="25" height="13" font="10">2KB</text>
+<text top="183" left="253" width="25" height="13" font="10">1KB</text>
+<text top="143" left="253" width="25" height="13" font="10">0KB</text>
+<text top="762" left="356" width="33" height="13" font="10">Stack</text>
+<text top="502" left="357" width="32" height="13" font="10">(free)</text>
+<text top="263" left="357" width="32" height="13" font="10">Heap</text>
+<text top="196" left="329" width="86" height="13" font="10">Program Code</text>
+<text top="152" left="283" width="20" height="11" font="11">128</text>
+<text top="164" left="283" width="20" height="11" font="11">132</text>
+<text top="176" left="283" width="20" height="11" font="11">135</text>
+<text top="152" left="309" width="119" height="11" font="11">movl 0x0(%ebx),%eax</text>
+<text top="164" left="309" width="88" height="11" font="11">addl 0x03, %eax</text>
+<text top="176" left="309" width="119" height="11" font="11">movl %eax,0x0(%ebx)</text>
+<text top="742" left="309" width="27" height="11" font="11">3000</text>
+<text top="812" left="207" width="69" height="14" font="2">Figure 15.1:</text>
+<text top="813" left="280" width="202" height="13" font="3"><b>A Process And Its Address Space</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="11" family="NIYPCJ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="13" size="12" family="NIYPCJ+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="19" height="14" font="2">: A</text>
+<text top="98" left="185" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="234" width="8" height="14" font="2">T</text>
+<text top="98" left="243" width="78" height="11" font="5">RANSLATION</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="435" left="210" width="30" height="12" font="11">64KB</text>
+<text top="362" left="210" width="30" height="12" font="11">48KB</text>
+<text top="289" left="210" width="30" height="12" font="11">32KB</text>
+<text top="216" left="210" width="30" height="12" font="11">16KB</text>
+<text top="143" left="210" width="23" height="12" font="11">0KB</text>
+<text top="399" left="289" width="61" height="12" font="11">(not in use)</text>
+<text top="252" left="289" width="61" height="12" font="11">(not in use)</text>
+<text top="179" left="271" width="98" height="12" font="11">Operating System</text>
+<text top="358" left="306" width="27" height="11" font="12">Stack</text>
+<text top="294" left="306" width="26" height="11" font="12">Code</text>
+<text top="303" left="306" width="26" height="11" font="12">Heap</text>
+<text top="332" left="260" width="120" height="11" font="12">(allocated but not in use)</text>
+<text top="372" left="415" width="0" height="12" font="13">Relocated Process</text>
+<text top="454" left="114" width="69" height="14" font="2">Figure 15.2:</text>
+<text top="454" left="187" width="305" height="13" font="3"><b>Physical Memory with a Single Relocated Process</b></text>
+<text top="476" left="105" width="213" height="14" font="2">From the program’s perspective, its</text>
+<text top="476" left="322" width="85" height="13" font="3"><b>address space</b></text>
+<text top="476" left="411" width="108" height="14" font="2">starts at address 0</text>
+<text top="491" left="87" width="432" height="14" font="2">and grows to a maximum of 16 KB; all memory references it generates</text>
+<text top="506" left="87" width="432" height="14" font="2">should be within these bounds. However, to virtualize memory, the OS</text>
+<text top="521" left="87" width="432" height="14" font="2">wants to place the process somewhere else in physical memory, not nec-</text>
+<text top="536" left="87" width="380" height="14" font="2">essarily at address 0. Thus, we have the problem: how can we</text>
+<text top="536" left="471" width="48" height="13" font="3"><b>relocate</b></text>
+<text top="551" left="87" width="233" height="14" font="2">this process in memory in a way that is</text>
+<text top="551" left="323" width="70" height="13" font="3"><b>transparent</b></text>
+<text top="551" left="397" width="122" height="14" font="2">to the process? How</text>
+<text top="566" left="87" width="432" height="14" font="2">can we provide the illusion of a virtual address space starting at 0, when</text>
+<text top="581" left="87" width="412" height="14" font="2">in reality the address space is located at some other physical address?</text>
+<text top="596" left="105" width="414" height="14" font="2">An example of what physical memory might look like once this pro-</text>
+<text top="611" left="87" width="432" height="14" font="2">cess’s address space has been placed in memory is found in Figure 15.2.</text>
+<text top="626" left="87" width="432" height="14" font="2">In the figure, you can see the OS using the first slot of physical memory</text>
+<text top="641" left="87" width="432" height="14" font="2">for itself, and that it has relocated the process from the example above</text>
+<text top="656" left="87" width="432" height="14" font="2">into the slot starting at physical memory address 32 KB. The other two</text>
+<text top="671" left="87" width="268" height="14" font="2">slots are free (16 KB-32 KB and 48 KB-64 KB).</text>
+<text top="697" left="55" width="317" height="17" font="6">15.3 Dynamic (Hardware-based) Relocation</text>
+<text top="721" left="105" width="414" height="14" font="2">To gain some understanding of hardware-based address translation,</text>
+<text top="736" left="87" width="432" height="14" font="2">we’ll first discuss its first incarnation. Introduced in the first time-sharing</text>
+<text top="751" left="87" width="326" height="14" font="2">machines of the late 1950’s is a simple idea referred to as</text>
+<text top="751" left="416" width="102" height="13" font="3"><b>base and bounds</b></text>
+<text top="751" left="518" width="3" height="14" font="2">;</text>
+<text top="766" left="87" width="212" height="14" font="2">the technique is also referred to as</text>
+<text top="766" left="304" width="119" height="13" font="3"><b>dynamic relocation</b></text>
+<text top="766" left="423" width="96" height="14" font="2">; we’ll use both</text>
+<text top="781" left="87" width="176" height="14" font="2">terms interchangeably [SS74].</text>
+<text top="796" left="105" width="414" height="14" font="2">Specifically, we’ll need two hardware registers within each CPU: one</text>
+<text top="811" left="87" width="71" height="14" font="2">is called the</text>
+<text top="811" left="162" width="28" height="13" font="3"><b>base</b></text>
+<text top="811" left="193" width="154" height="14" font="2">register, and the other the</text>
+<text top="811" left="351" width="46" height="13" font="3"><b>bounds</b></text>
+<text top="811" left="401" width="118" height="14" font="2">(sometimes called a</text>
+<text top="826" left="87" width="30" height="13" font="3"><b>limit</b></text>
+<text top="826" left="120" width="399" height="14" font="2">register). This base-and-bounds pair is going to allow us to place the</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="327" width="13" height="14" font="2">M</text>
+<text top="98" left="340" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="405" width="19" height="14" font="2">: A</text>
+<text top="98" left="425" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="474" width="8" height="14" font="2">T</text>
+<text top="98" left="483" width="78" height="11" font="5">RANSLATION</text>
+<text top="148" left="226" width="10" height="14" font="2">A</text>
+<text top="150" left="237" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="264" width="15" height="14" font="2">: S</text>
+<text top="150" left="280" width="57" height="11" font="5">OFTWARE</text>
+<text top="148" left="337" width="4" height="14" font="2">-</text>
+<text top="150" left="342" width="38" height="11" font="5">BASED</text>
+<text top="148" left="385" width="9" height="14" font="2">R</text>
+<text top="150" left="394" width="70" height="11" font="5">ELOCATION</text>
+<text top="163" left="129" width="432" height="14" font="2">In the early days, before hardware support arose, some systems per-</text>
+<text top="178" left="129" width="432" height="14" font="2">formed a crude form of relocation purely via software methods. The</text>
+<text top="193" left="129" width="185" height="14" font="2">basic technique is referred to as</text>
+<text top="193" left="317" width="97" height="13" font="3"><b>static relocation</b></text>
+<text top="193" left="414" width="147" height="14" font="2">, in which a piece of soft-</text>
+<text top="208" left="129" width="112" height="14" font="2">ware known as the</text>
+<text top="208" left="244" width="39" height="13" font="3"><b>loader</b></text>
+<text top="208" left="287" width="274" height="14" font="2">takes an executable that is about to be run and</text>
+<text top="223" left="129" width="372" height="14" font="2">rewrites its addresses to the desired offset in physical memory.</text>
+<text top="241" left="129" width="432" height="14" font="2">For example, if an instruction was a load from address 1000 into a reg-</text>
+<text top="256" left="129" width="59" height="14" font="2">ister (e.g.,</text>
+<text top="257" left="194" width="121" height="11" font="9">movl 1000, %eax</text>
+<text top="256" left="315" width="246" height="14" font="2">), and the address space of the program</text>
+<text top="271" left="129" width="432" height="14" font="2">was loaded starting at address 3000 (and not 0, as the program thinks),</text>
+<text top="286" left="129" width="432" height="14" font="2">the loader would rewrite the instruction to offset each address by 3000</text>
+<text top="301" left="129" width="28" height="14" font="2">(e.g.,</text>
+<text top="302" left="162" width="121" height="11" font="9">movl 4000, %eax</text>
+<text top="301" left="283" width="278" height="14" font="2">). In this way, a simple static relocation of the</text>
+<text top="316" left="129" width="212" height="14" font="2">process’s address space is achieved.</text>
+<text top="334" left="129" width="432" height="14" font="2">However, static relocation has numerous problems. First and most im-</text>
+<text top="349" left="129" width="432" height="14" font="2">portantly, it does not provide protection, as processes can generate bad</text>
+<text top="364" left="129" width="432" height="14" font="2">addresses and thus illegally access other process’s or even OS memory; in</text>
+<text top="379" left="129" width="432" height="14" font="2">general, hardware support is likely needed for true protection [WL+93].</text>
+<text top="394" left="129" width="432" height="14" font="2">Another negative is that once placed, it is difficult to later relocate an ad-</text>
+<text top="409" left="129" width="224" height="14" font="2">dress space to another location [M65].</text>
+<text top="452" left="129" width="432" height="14" font="2">address space anywhere we’d like in physical memory, and do so while</text>
+<text top="467" left="129" width="379" height="14" font="2">ensuring that the process can only access its own address space.</text>
+<text top="482" left="147" width="414" height="14" font="2">In this setup, each program is written and compiled as if it is loaded at</text>
+<text top="497" left="129" width="432" height="14" font="2">address zero. However, when a program starts running, the OS decides</text>
+<text top="512" left="129" width="432" height="14" font="2">where in physical memory it should be loaded and sets the base register</text>
+<text top="527" left="129" width="432" height="14" font="2">to that value. In the example above, the OS decides to load the process at</text>
+<text top="542" left="129" width="398" height="14" font="2">physical address 32 KB and thus sets the base register to this value.</text>
+<text top="557" left="147" width="414" height="14" font="2">Interesting things start to happen when the process is running. Now,</text>
+<text top="572" left="129" width="367" height="14" font="2">when any memory reference is generated by the process, it is</text>
+<text top="572" left="500" width="61" height="13" font="3"><b>translated</b></text>
+<text top="587" left="129" width="248" height="14" font="2">by the processor in the following manner:</text>
+<text top="610" left="145" width="331" height="11" font="9">physical address = virtual address + base</text>
+<text top="632" left="147" width="315" height="14" font="2">Each memory reference generated by the process is a</text>
+<text top="632" left="466" width="92" height="13" font="3"><b>virtual address</b></text>
+<text top="632" left="557" width="3" height="14" font="2">;</text>
+<text top="647" left="129" width="432" height="14" font="2">the hardware in turn adds the contents of the base register to this address</text>
+<text top="662" left="129" width="111" height="14" font="2">and the result is a</text>
+<text top="662" left="245" width="104" height="13" font="3"><b>physical address</b></text>
+<text top="662" left="354" width="207" height="14" font="2">that can be issued to the memory</text>
+<text top="676" left="129" width="45" height="14" font="2">system.</text>
+<text top="691" left="147" width="414" height="14" font="2">To understand this better, let’s trace through what happens when a</text>
+<text top="706" left="129" width="432" height="14" font="2">single instruction is executed. Specifically, let’s look at one instruction</text>
+<text top="721" left="129" width="156" height="14" font="2">from our earlier sequence:</text>
+<text top="745" left="137" width="202" height="11" font="9">128: movl 0x0(%ebx), %eax</text>
+<text top="766" left="147" width="414" height="14" font="2">The program counter (PC) is set to 128; when the hardware needs to</text>
+<text top="781" left="129" width="432" height="14" font="2">fetch this instruction, it first adds the value to the base register value</text>
+<text top="796" left="129" width="432" height="14" font="2">of 32 KB (32768) to get a physical address of 32896; the hardware then</text>
+<text top="811" left="129" width="432" height="14" font="2">fetches the instruction from that physical address. Next, the processor</text>
+<text top="826" left="129" width="432" height="14" font="2">begins executing the instruction. At some point, the process then issues</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="15" family="RTOBIE+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="19" height="14" font="2">: A</text>
+<text top="98" left="185" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="234" width="8" height="14" font="2">T</text>
+<text top="98" left="243" width="78" height="11" font="5">RANSLATION</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="148" left="157" width="8" height="14" font="2">T</text>
+<text top="150" left="166" width="11" height="11" font="5">IP</text>
+<text top="148" left="177" width="19" height="14" font="2">: H</text>
+<text top="150" left="197" width="60" height="11" font="5">ARDWARE</text>
+<text top="148" left="258" width="4" height="14" font="2">-</text>
+<text top="150" left="263" width="38" height="11" font="5">BASED</text>
+<text top="148" left="305" width="10" height="14" font="2">D</text>
+<text top="150" left="316" width="49" height="11" font="5">YNAMIC</text>
+<text top="148" left="370" width="9" height="14" font="2">R</text>
+<text top="150" left="379" width="70" height="11" font="5">ELOCATION</text>
+<text top="163" left="87" width="432" height="14" font="2">With dynamic relocation, a little hardware goes a long way. Namely, a</text>
+<text top="178" left="87" width="28" height="13" font="3"><b>base</b></text>
+<text top="178" left="117" width="402" height="14" font="2">register is used to transform virtual addresses (generated by the pro-</text>
+<text top="193" left="87" width="198" height="14" font="2">gram) into physical addresses. A</text>
+<text top="193" left="289" width="46" height="13" font="3"><b>bounds</b></text>
+<text top="193" left="339" width="17" height="14" font="2">(or</text>
+<text top="193" left="360" width="30" height="13" font="3"><b>limit</b></text>
+<text top="193" left="390" width="129" height="14" font="2">) register ensures that</text>
+<text top="208" left="87" width="432" height="14" font="2">such addresses are within the confines of the address space. Together</text>
+<text top="223" left="87" width="361" height="14" font="2">they provide a simple and efficient virtualization of memory.</text>
+<text top="257" left="87" width="432" height="14" font="2">the load from virtual address 15 KB, which the processor takes and again</text>
+<text top="272" left="87" width="432" height="14" font="2">adds to the base register (32 KB), getting the final physical address of</text>
+<text top="287" left="87" width="216" height="14" font="2">47 KB and thus the desired contents.</text>
+<text top="302" left="105" width="414" height="14" font="2">Transforming a virtual address into a physical address is exactly the</text>
+<text top="317" left="87" width="140" height="14" font="2">technique we refer to as</text>
+<text top="317" left="231" width="117" height="13" font="3"><b>address translation</b></text>
+<text top="317" left="347" width="172" height="14" font="2">; that is, the hardware takes a</text>
+<text top="332" left="87" width="432" height="14" font="2">virtual address the process thinks it is referencing and transforms it into</text>
+<text top="347" left="87" width="432" height="14" font="2">a physical address which is where the data actually resides. Because this</text>
+<text top="361" left="87" width="432" height="14" font="2">relocation of the address happens at runtime, and because we can move</text>
+<text top="376" left="87" width="432" height="14" font="2">address spaces even after the process has started running, the technique</text>
+<text top="391" left="87" width="125" height="14" font="2">is often referred to as</text>
+<text top="391" left="216" width="118" height="13" font="3"><b>dynamic relocation</b></text>
+<text top="391" left="337" width="38" height="14" font="2">[M65].</text>
+<text top="406" left="105" width="414" height="14" font="2">Now you might be asking: what happened to that bounds (limit) reg-</text>
+<text top="421" left="87" width="196" height="14" font="2">ister? After all, isn’t this the base</text>
+<text top="421" left="286" width="20" height="14" font="4"><i>and</i></text>
+<text top="421" left="310" width="209" height="14" font="2">bounds approach? Indeed, it is. As</text>
+<text top="436" left="87" width="432" height="14" font="2">you might have guessed, the bounds register is there to help with protec-</text>
+<text top="451" left="87" width="432" height="14" font="2">tion. Specifically, the processor will first check that the memory reference</text>
+<text top="466" left="87" width="10" height="14" font="2">is</text>
+<text top="466" left="100" width="79" height="14" font="4"><i>within bounds</i></text>
+<text top="466" left="182" width="337" height="14" font="2">to make sure it is legal; in the simple example above, the</text>
+<text top="481" left="87" width="432" height="14" font="2">bounds register would always be set to 16 KB. If a process generates a</text>
+<text top="496" left="87" width="432" height="14" font="2">virtual address that is greater than (or equal to) the bounds, or one that</text>
+<text top="511" left="87" width="432" height="14" font="2">is negative, the CPU will raise an exception, and the process will likely</text>
+<text top="526" left="87" width="432" height="14" font="2">be terminated. The point of the bounds is thus to make sure that all ad-</text>
+<text top="541" left="87" width="432" height="14" font="2">dresses generated by the process are legal and within the “bounds” of the</text>
+<text top="556" left="87" width="215" height="14" font="2">process, as you might have guessed.</text>
+<text top="571" left="105" width="414" height="14" font="2">We should note that the base and bounds registers are hardware struc-</text>
+<text top="586" left="87" width="432" height="14" font="2">tures kept on the chip (one pair per CPU). Sometimes people call the</text>
+<text top="601" left="87" width="375" height="14" font="2">part of the processor that helps with address translation the</text>
+<text top="601" left="468" width="51" height="13" font="3"><b>memory</b></text>
+<text top="616" left="87" width="160" height="13" font="3"><b>management unit (MMU)</b></text>
+<text top="615" left="247" width="272" height="14" font="2">; as we develop more sophisticated memory-</text>
+<text top="630" left="87" width="426" height="14" font="2">management techniques, we will be adding more circuitry to the MMU.</text>
+<text top="645" left="105" width="414" height="14" font="2">A small aside about bound registers, which can be defined in one of</text>
+<text top="660" left="87" width="278" height="14" font="2">two ways. In one way (as above), it holds the</text>
+<text top="660" left="369" width="20" height="14" font="4"><i>size</i></text>
+<text top="660" left="393" width="125" height="14" font="2">of the address space,</text>
+<text top="675" left="87" width="432" height="14" font="2">and thus the hardware checks the virtual address against it first before</text>
+<text top="690" left="87" width="298" height="14" font="2">adding the base. In the second way, it holds the</text>
+<text top="690" left="390" width="89" height="14" font="4"><i>physical address</i></text>
+<text top="690" left="484" width="35" height="14" font="2">of the</text>
+<text top="705" left="87" width="432" height="14" font="2">end of the address space, and thus the hardware first adds the base and</text>
+<text top="720" left="87" width="432" height="14" font="2">then makes sure the address is within bounds. Both methods are logically</text>
+<text top="735" left="87" width="398" height="14" font="2">equivalent; for simplicity, we’ll usually assume the former method.</text>
+<text top="760" left="87" width="146" height="15" font="14"><b>Example Translations</b></text>
+<text top="781" left="87" width="432" height="14" font="2">To understand address translation via base-and-bounds in more detail,</text>
+<text top="796" left="87" width="432" height="14" font="2">let’s take a look at an example. Imagine a process with an address space of</text>
+<text top="811" left="87" width="432" height="14" font="2">size 4 KB (yes, unrealistically small) has been loaded at physical address</text>
+<text top="826" left="87" width="374" height="14" font="2">16 KB. Here are the results of a number of address translations:</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="13" family="KKWOPW+CMSY9" color="#000000"/>
+	<fontspec id="16" size="9" family="HQJHGF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="17" size="7" family="HQJHGF+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="327" width="13" height="14" font="2">M</text>
+<text top="98" left="340" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="405" width="19" height="14" font="2">: A</text>
+<text top="98" left="425" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="474" width="8" height="14" font="2">T</text>
+<text top="98" left="483" width="78" height="11" font="5">RANSLATION</text>
+<text top="136" left="214" width="98" height="13" font="3"><b>Virtual Address</b></text>
+<text top="136" left="370" width="106" height="13" font="3"><b>Physical Address</b></text>
+<text top="151" left="305" width="7" height="14" font="2">0</text>
+<text top="154" left="329" width="14" height="7" font="15">→</text>
+<text top="151" left="441" width="35" height="14" font="2">16 KB</text>
+<text top="166" left="283" width="28" height="14" font="2">1 KB</text>
+<text top="169" left="329" width="14" height="7" font="15">→</text>
+<text top="166" left="441" width="35" height="14" font="2">17 KB</text>
+<text top="181" left="284" width="27" height="14" font="2">3000</text>
+<text top="184" left="329" width="14" height="7" font="15">→</text>
+<text top="181" left="442" width="34" height="14" font="2">19384</text>
+<text top="196" left="284" width="27" height="14" font="2">4400</text>
+<text top="199" left="329" width="14" height="7" font="15">→</text>
+<text top="196" left="361" width="115" height="14" font="4"><i>Fault (out of bounds)</i></text>
+<text top="226" left="147" width="414" height="14" font="2">As you can see from the example, it is easy for you to simply add the</text>
+<text top="241" left="129" width="432" height="14" font="2">base address to the virtual address (which can rightly be viewed as an</text>
+<text top="256" left="129" width="28" height="14" font="4"><i>offset</i></text>
+<text top="256" left="161" width="399" height="14" font="2">into the address space) to get the resulting physical address. Only</text>
+<text top="271" left="129" width="432" height="14" font="2">if the virtual address is “too big” or negative will the result be a fault,</text>
+<text top="286" left="129" width="200" height="14" font="2">causing an exception to be raised.</text>
+<text top="324" left="97" width="268" height="17" font="6">15.4 Hardware Support: A Summary</text>
+<text top="355" left="147" width="414" height="14" font="2">Let us now summarize the support we need from the hardware (also</text>
+<text top="370" left="129" width="432" height="14" font="2">see Figure 15.3, page 9). First, as discussed in the chapter on CPU virtual-</text>
+<text top="385" left="129" width="365" height="14" font="2">ization, we require two different CPU modes. The OS runs in</text>
+<text top="385" left="497" width="64" height="13" font="3"><b>privileged</b></text>
+<text top="400" left="129" width="34" height="13" font="3"><b>mode</b></text>
+<text top="400" left="167" width="17" height="14" font="2">(or</text>
+<text top="400" left="188" width="78" height="13" font="3"><b>kernel mode</b></text>
+<text top="400" left="265" width="296" height="14" font="2">), where it has access to the entire machine; appli-</text>
+<text top="415" left="129" width="82" height="14" font="2">cations run in</text>
+<text top="415" left="214" width="64" height="13" font="3"><b>user mode</b></text>
+<text top="415" left="278" width="282" height="14" font="2">, where they are limited in what they can do. A</text>
+<text top="429" left="129" width="255" height="14" font="2">single bit, perhaps stored in some kind of</text>
+<text top="430" left="388" width="136" height="13" font="3"><b>processor status word</b></text>
+<text top="429" left="524" width="37" height="14" font="2">, indi-</text>
+<text top="444" left="129" width="432" height="14" font="2">cates which mode the CPU is currently running in; upon certain special</text>
+<text top="459" left="129" width="432" height="14" font="2">occasions (e.g., a system call or some other kind of exception or interrupt),</text>
+<text top="474" left="129" width="151" height="14" font="2">the CPU switches modes.</text>
+<text top="490" left="147" width="214" height="14" font="2">The hardware must also provide the</text>
+<text top="490" left="364" width="159" height="13" font="3"><b>base and bounds registers</b></text>
+<text top="490" left="526" width="35" height="14" font="2">them-</text>
+<text top="505" left="129" width="394" height="14" font="2">selves; each CPU thus has an additional pair of registers, part of the</text>
+<text top="505" left="526" width="35" height="13" font="3"><b>mem-</b></text>
+<text top="520" left="129" width="132" height="13" font="3"><b>ory management unit</b></text>
+<text top="520" left="265" width="4" height="14" font="2">(</text>
+<text top="520" left="269" width="37" height="13" font="3"><b>MMU</b></text>
+<text top="520" left="307" width="254" height="14" font="2">) of the CPU. When a user program is run-</text>
+<text top="535" left="129" width="432" height="14" font="2">ning, the hardware will translate each address, by adding the base value</text>
+<text top="550" left="129" width="432" height="14" font="2">to the virtual address generated by the user program. The hardware must</text>
+<text top="565" left="129" width="432" height="14" font="2">also be able to check whether the address is valid, which is accomplished</text>
+<text top="580" left="129" width="383" height="14" font="2">by using the bounds register and some circuitry within the CPU.</text>
+<text top="596" left="147" width="414" height="14" font="2">The hardware should provide special instructions to modify the base</text>
+<text top="611" left="129" width="432" height="14" font="2">and bounds registers, allowing the OS to change them when different</text>
+<text top="626" left="129" width="220" height="14" font="2">processes run. These instructions are</text>
+<text top="626" left="353" width="64" height="13" font="3"><b>privileged</b></text>
+<text top="626" left="417" width="144" height="14" font="2">; only in kernel (or priv-</text>
+<text top="641" left="129" width="432" height="14" font="2">ileged) mode can the registers be modified. Imagine the havoc a user</text>
+<text top="658" left="129" width="121" height="14" font="2">process could wreak</text>
+<text top="655" left="250" width="4" height="9" font="16">1</text>
+<text top="658" left="259" width="302" height="14" font="2">if it could arbitrarily change the base register while</text>
+<text top="693" left="149" width="4" height="8" font="17">1</text>
+<text top="695" left="154" width="311" height="11" font="8">Is there anything other than “havoc” that can be “wreaked”? [W17]</text>
+<text top="735" left="212" width="10" height="14" font="2">A</text>
+<text top="737" left="223" width="26" height="11" font="5">SIDE</text>
+<text top="735" left="250" width="19" height="14" font="2">: D</text>
+<text top="737" left="269" width="23" height="11" font="5">ATA</text>
+<text top="735" left="296" width="7" height="14" font="2">S</text>
+<text top="737" left="304" width="63" height="11" font="5">TRUCTURE</text>
+<text top="735" left="371" width="26" height="14" font="2">— T</text>
+<text top="737" left="398" width="16" height="11" font="5">HE</text>
+<text top="735" left="418" width="7" height="14" font="2">F</text>
+<text top="737" left="426" width="22" height="11" font="5">REE</text>
+<text top="735" left="452" width="8" height="14" font="2">L</text>
+<text top="737" left="461" width="17" height="11" font="5">IST</text>
+<text top="750" left="129" width="432" height="14" font="2">The OS must track which parts of free memory are not in use, so as to</text>
+<text top="765" left="129" width="432" height="14" font="2">be able to allocate memory to processes. Many different data structures</text>
+<text top="780" left="129" width="432" height="14" font="2">can of course be used for such a task; the simplest (which we will assume</text>
+<text top="795" left="129" width="57" height="14" font="2">here) is a</text>
+<text top="795" left="191" width="48" height="13" font="3"><b>free list</b></text>
+<text top="795" left="239" width="322" height="14" font="2">, which simply is a list of the ranges of the physical</text>
+<text top="810" left="129" width="235" height="14" font="2">memory which are not currently in use.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="12" family="RTOBIE+URWPalladioL" color="#000000"/>
+	<fontspec id="19" size="12" family="QRILMF+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="19" height="14" font="2">: A</text>
+<text top="98" left="185" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="234" width="8" height="14" font="2">T</text>
+<text top="98" left="243" width="78" height="11" font="5">RANSLATION</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="136" left="98" width="134" height="12" font="18"><b>Hardware Requirements</b></text>
+<text top="136" left="308" width="32" height="12" font="18"><b>Notes</b></text>
+<text top="151" left="98" width="88" height="12" font="7">Privileged mode</text>
+<text top="151" left="308" width="186" height="12" font="19"><i>Needed to prevent user-mode processes</i></text>
+<text top="165" left="308" width="176" height="12" font="19"><i>from executing privileged operations</i></text>
+<text top="180" left="98" width="119" height="12" font="7">Base/bounds registers</text>
+<text top="180" left="308" width="201" height="12" font="19"><i>Need pair of registers per CPU to support</i></text>
+<text top="194" left="308" width="184" height="12" font="19"><i>address translation and bounds checks</i></text>
+<text top="209" left="98" width="192" height="12" font="7">Ability to translate virtual addresses</text>
+<text top="209" left="308" width="182" height="12" font="19"><i>Circuitry to do translations and check</i></text>
+<text top="223" left="111" width="144" height="12" font="7">and check if within bounds</text>
+<text top="223" left="308" width="152" height="12" font="19"><i>limits; in this case, quite simple</i></text>
+<text top="238" left="98" width="141" height="12" font="7">Privileged instruction(s) to</text>
+<text top="238" left="308" width="167" height="12" font="19"><i>OS must be able to set these values</i></text>
+<text top="252" left="111" width="111" height="12" font="7">update base/bounds</text>
+<text top="252" left="308" width="160" height="12" font="19"><i>before letting a user program run</i></text>
+<text top="267" left="98" width="184" height="12" font="7">Privileged instruction(s) to register</text>
+<text top="267" left="308" width="184" height="12" font="19"><i>OS must be able to tell hardware what</i></text>
+<text top="281" left="111" width="100" height="12" font="7">exception handlers</text>
+<text top="281" left="308" width="146" height="12" font="19"><i>code to run if exception occurs</i></text>
+<text top="296" left="98" width="137" height="12" font="7">Ability to raise exceptions</text>
+<text top="296" left="308" width="188" height="12" font="19"><i>When processes try to access privileged</i></text>
+<text top="310" left="308" width="184" height="12" font="19"><i>instructions or out-of-bounds memory</i></text>
+<text top="335" left="125" width="69" height="14" font="2">Figure 15.3:</text>
+<text top="335" left="198" width="284" height="13" font="3"><b>Dynamic Relocation: Hardware Requirements</b></text>
+<text top="365" left="87" width="432" height="14" font="2">running. Imagine it! And then quickly flush such dark thoughts from</text>
+<text top="380" left="87" width="420" height="14" font="2">your mind, as they are the ghastly stuff of which nightmares are made.</text>
+<text top="396" left="105" width="262" height="14" font="2">Finally, the CPU must be able to generate</text>
+<text top="396" left="373" width="65" height="13" font="3"><b>exceptions</b></text>
+<text top="396" left="443" width="76" height="14" font="2">in situations</text>
+<text top="411" left="87" width="432" height="14" font="2">where a user program tries to access memory illegally (with an address</text>
+<text top="426" left="87" width="432" height="14" font="2">that is “out of bounds”); in this case, the CPU should stop executing the</text>
+<text top="441" left="87" width="319" height="14" font="2">user program and arrange for the OS “out-of-bounds”</text>
+<text top="441" left="409" width="110" height="13" font="3"><b>exception handler</b></text>
+<text top="456" left="87" width="432" height="14" font="2">to run. The OS handler can then figure out how to react, in this case likely</text>
+<text top="471" left="87" width="432" height="14" font="2">terminating the process. Similarly, if a user program tries to change the</text>
+<text top="486" left="87" width="432" height="14" font="2">values of the (privileged) base and bounds registers, the CPU should raise</text>
+<text top="501" left="87" width="432" height="14" font="2">an exception and run the “tried to execute a privileged operation while</text>
+<text top="516" left="87" width="432" height="14" font="2">in user mode” handler. The CPU also must provide a method to inform</text>
+<text top="531" left="87" width="432" height="14" font="2">it of the location of these handlers; a few more privileged instructions are</text>
+<text top="546" left="87" width="76" height="14" font="2">thus needed.</text>
+<text top="584" left="55" width="212" height="17" font="6">15.5 Operating System Issues</text>
+<text top="615" left="105" width="414" height="14" font="2">Just as the hardware provides new features to support dynamic relo-</text>
+<text top="630" left="87" width="432" height="14" font="2">cation, the OS now has new issues it must handle; the combination of</text>
+<text top="645" left="87" width="432" height="14" font="2">hardware support and OS management leads to the implementation of</text>
+<text top="660" left="87" width="432" height="14" font="2">a simple virtual memory. Specifically, there are a few critical junctures</text>
+<text top="675" left="87" width="432" height="14" font="2">where the OS must get involved to implement our base-and-bounds ver-</text>
+<text top="690" left="87" width="139" height="14" font="2">sion of virtual memory.</text>
+<text top="707" left="105" width="414" height="14" font="2">First, the OS must take action when a process is created, finding space</text>
+<text top="721" left="87" width="432" height="14" font="2">for its address space in memory. Fortunately, given our assumptions that</text>
+<text top="736" left="87" width="432" height="14" font="2">each address space is (a) smaller than the size of physical memory and</text>
+<text top="751" left="87" width="432" height="14" font="2">(b) the same size, this is quite easy for the OS; it can simply view physical</text>
+<text top="766" left="87" width="432" height="14" font="2">memory as an array of slots, and track whether each one is free or in</text>
+<text top="781" left="87" width="432" height="14" font="2">use. When a new process is created, the OS will have to search a data</text>
+<text top="796" left="87" width="141" height="14" font="2">structure (often called a</text>
+<text top="796" left="231" width="47" height="13" font="3"><b>free list</b></text>
+<text top="796" left="278" width="241" height="14" font="2">) to find room for the new address space</text>
+<text top="811" left="87" width="432" height="14" font="2">and then mark it used. With variable-sized address spaces, life is more</text>
+<text top="826" left="87" width="376" height="14" font="2">complicated, but we will leave that concern for future chapters.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="20" size="12" family="DQDXRT+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="327" width="13" height="14" font="2">M</text>
+<text top="98" left="340" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="405" width="19" height="14" font="2">: A</text>
+<text top="98" left="425" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="474" width="8" height="14" font="2">T</text>
+<text top="98" left="483" width="78" height="11" font="5">RANSLATION</text>
+<text top="136" left="140" width="97" height="12" font="18"><b>OS Requirements</b></text>
+<text top="136" left="301" width="32" height="12" font="18"><b>Notes</b></text>
+<text top="151" left="140" width="117" height="12" font="7">Memory management</text>
+<text top="151" left="301" width="207" height="12" font="19"><i>Need to allocate memory for new processes;</i></text>
+<text top="165" left="301" width="212" height="12" font="19"><i>Reclaim memory from terminated processes;</i></text>
+<text top="179" left="301" width="147" height="12" font="19"><i>Generally manage memory via</i></text>
+<text top="179" left="451" width="40" height="12" font="20"><b>free list</b></text>
+<text top="194" left="140" width="143" height="12" font="7">Base/bounds management</text>
+<text top="194" left="301" width="248" height="12" font="19"><i>Must set base/bounds properly upon context switch</i></text>
+<text top="209" left="140" width="103" height="12" font="7">Exception handling</text>
+<text top="209" left="301" width="168" height="12" font="19"><i>Code to run when exceptions arise;</i></text>
+<text top="223" left="301" width="217" height="12" font="19"><i>likely action is to terminate offending process</i></text>
+<text top="248" left="135" width="69" height="14" font="2">Figure 15.4:</text>
+<text top="248" left="208" width="347" height="13" font="3"><b>Dynamic Relocation: Operating System Responsibilities</b></text>
+<text top="270" left="147" width="414" height="14" font="2">Let’s look at an example. In Figure 15.2 (page 5), you can see the OS</text>
+<text top="285" left="129" width="432" height="14" font="2">using the first slot of physical memory for itself, and that it has relocated</text>
+<text top="299" left="129" width="432" height="14" font="2">the process from the example above into the slot starting at physical mem-</text>
+<text top="314" left="129" width="432" height="14" font="2">ory address 32 KB. The other two slots are free (16 KB-32 KB and 48 KB-</text>
+<text top="329" left="129" width="97" height="14" font="2">64 KB); thus, the</text>
+<text top="329" left="230" width="47" height="13" font="3"><b>free list</b></text>
+<text top="329" left="280" width="208" height="14" font="2">should consist of these two entries.</text>
+<text top="345" left="147" width="414" height="14" font="2">Second, the OS must do some work when a process is terminated (i.e.,</text>
+<text top="360" left="129" width="432" height="14" font="2">when it exits gracefully, or is forcefully killed because it misbehaved),</text>
+<text top="375" left="129" width="432" height="14" font="2">reclaiming all of its memory for use in other processes or the OS. Upon</text>
+<text top="390" left="129" width="432" height="14" font="2">termination of a process, the OS thus puts its memory back on the free</text>
+<text top="405" left="129" width="357" height="14" font="2">list, and cleans up any associated data structures as need be.</text>
+<text top="421" left="147" width="414" height="14" font="2">Third, the OS must also perform a few additional steps when a context</text>
+<text top="436" left="129" width="432" height="14" font="2">switch occurs. There is only one base and bounds register pair on each</text>
+<text top="451" left="129" width="432" height="14" font="2">CPU, after all, and their values differ for each running program, as each</text>
+<text top="466" left="129" width="432" height="14" font="2">program is loaded at a different physical address in memory. Thus, the</text>
+<text top="481" left="129" width="52" height="14" font="2">OS must</text>
+<text top="481" left="185" width="88" height="14" font="4"><i>save and restore</i></text>
+<text top="481" left="278" width="283" height="14" font="2">the base-and-bounds pair when it switches be-</text>
+<text top="496" left="129" width="432" height="14" font="2">tween processes. Specifically, when the OS decides to stop running a pro-</text>
+<text top="510" left="129" width="432" height="14" font="2">cess, it must save the values of the base and bounds registers to memory,</text>
+<text top="525" left="129" width="254" height="14" font="2">in some per-process structure such as the</text>
+<text top="525" left="387" width="105" height="13" font="3"><b>process structure</b></text>
+<text top="525" left="498" width="13" height="14" font="2">or</text>
+<text top="525" left="515" width="46" height="13" font="3"><b>process</b></text>
+<text top="540" left="129" width="82" height="13" font="3"><b>control block</b></text>
+<text top="540" left="215" width="346" height="14" font="2">(PCB). Similarly, when the OS resumes a running process</text>
+<text top="555" left="129" width="432" height="14" font="2">(or runs it the first time), it must set the values of the base and bounds on</text>
+<text top="570" left="129" width="270" height="14" font="2">the CPU to the correct values for this process.</text>
+<text top="586" left="147" width="414" height="14" font="2">We should note that when a process is stopped (i.e., not running), it is</text>
+<text top="601" left="129" width="432" height="14" font="2">possible for the OS to move an address space from one location in mem-</text>
+<text top="616" left="129" width="432" height="14" font="2">ory to another rather easily. To move a process’s address space, the OS</text>
+<text top="631" left="129" width="432" height="14" font="2">first deschedules the process; then, the OS copies the address space from</text>
+<text top="646" left="129" width="432" height="14" font="2">the current location to the new location; finally, the OS updates the saved</text>
+<text top="661" left="129" width="432" height="14" font="2">base register (in the process structure) to point to the new location. When</text>
+<text top="676" left="129" width="432" height="14" font="2">the process is resumed, its (new) base register is restored, and it begins</text>
+<text top="691" left="129" width="432" height="14" font="2">running again, oblivious that its instructions and data are now in a com-</text>
+<text top="706" left="129" width="169" height="14" font="2">pletely new spot in memory.</text>
+<text top="721" left="147" width="176" height="14" font="2">Fourth, the OS must provide</text>
+<text top="722" left="327" width="117" height="13" font="3"><b>exception handlers</b></text>
+<text top="721" left="445" width="116" height="14" font="2">, or functions to be</text>
+<text top="736" left="129" width="432" height="14" font="2">called, as discussed above; the OS installs these handlers at boot time (via</text>
+<text top="751" left="129" width="432" height="14" font="2">privileged instructions). For example, if a process tries to access mem-</text>
+<text top="766" left="129" width="432" height="14" font="2">ory outside its bounds, the CPU will raise an exception; the OS must be</text>
+<text top="781" left="129" width="432" height="14" font="2">prepared to take action when such an exception arises. The common reac-</text>
+<text top="796" left="129" width="432" height="14" font="2">tion of the OS will be one of hostility: it will likely terminate the offending</text>
+<text top="811" left="129" width="432" height="14" font="2">process. The OS should be highly protective of the machine it is running,</text>
+<text top="826" left="129" width="432" height="14" font="2">and thus it does not take kindly to a process trying to access memory or</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="19" height="14" font="2">: A</text>
+<text top="98" left="185" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="234" width="8" height="14" font="2">T</text>
+<text top="98" left="243" width="78" height="11" font="5">RANSLATION</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="138" left="96" width="57" height="12" font="18"><b>OS @ boot</b></text>
+<text top="138" left="237" width="54" height="12" font="18"><b>Hardware</b></text>
+<text top="138" left="420" width="94" height="12" font="18"><b>(No Program Yet)</b></text>
+<text top="152" left="96" width="77" height="12" font="18"><b>(kernel mode)</b></text>
+<text top="167" left="96" width="104" height="12" font="18"><b>initialize trap table</b></text>
+<text top="181" left="237" width="131" height="12" font="7">remember addresses of...</text>
+<text top="195" left="243" width="102" height="12" font="7">system call handler</text>
+<text top="209" left="243" width="72" height="12" font="7">timer handler</text>
+<text top="224" left="243" width="143" height="12" font="7">illegal mem-access handler</text>
+<text top="238" left="243" width="137" height="12" font="7">illegal instruction handler</text>
+<text top="252" left="96" width="108" height="12" font="18"><b>start interrupt timer</b></text>
+<text top="266" left="237" width="165" height="12" font="7">start timer; interrupt after X ms</text>
+<text top="280" left="96" width="123" height="12" font="18"><b>initialize process table</b></text>
+<text top="295" left="96" width="94" height="12" font="18"><b>initialize free list</b></text>
+<text top="322" left="98" width="69" height="14" font="2">Figure 15.5:</text>
+<text top="322" left="171" width="337" height="13" font="3"><b>Limited Direct Execution (Dynamic Relocation) @ Boot</b></text>
+<text top="352" left="87" width="432" height="14" font="2">execute instructions that it shouldn’t. Bye bye, misbehaving process; it’s</text>
+<text top="367" left="87" width="142" height="14" font="2">been nice knowing you.</text>
+<text top="383" left="105" width="414" height="14" font="2">Figures 15.5 and 15.6 (page 12) illustrate much of the hardware/OS</text>
+<text top="397" left="87" width="432" height="14" font="2">interaction in a timeline. The first figure shows what the OS does at boot</text>
+<text top="412" left="87" width="432" height="14" font="2">time to ready the machine for use, and the second shows what happens</text>
+<text top="427" left="87" width="432" height="14" font="2">when a process (Process A) starts running; note how its memory transla-</text>
+<text top="442" left="87" width="432" height="14" font="2">tions are handled by the hardware with no OS intervention. At some</text>
+<text top="457" left="87" width="432" height="14" font="2">point (middle of second figure), a timer interrupt occurs, and the OS</text>
+<text top="472" left="87" width="432" height="14" font="2">switches to Process B, which executes a “bad load” (to an illegal memory</text>
+<text top="487" left="87" width="432" height="14" font="2">address); at that point, the OS must get involved, terminating the process</text>
+<text top="502" left="87" width="432" height="14" font="2">and cleaning up by freeing B’s memory and removing its entry from the</text>
+<text top="517" left="87" width="432" height="14" font="2">process table. As you can see from the figures, we are still following the</text>
+<text top="532" left="87" width="107" height="14" font="2">basic approach of</text>
+<text top="532" left="199" width="149" height="13" font="3"><b>limited direct execution</b></text>
+<text top="532" left="348" width="171" height="14" font="2">. In most cases, the OS just</text>
+<text top="547" left="87" width="432" height="14" font="2">sets up the hardware appropriately and lets the process run directly on</text>
+<text top="562" left="87" width="432" height="14" font="2">the CPU; only when the process misbehaves does the OS have to become</text>
+<text top="577" left="87" width="56" height="14" font="2">involved.</text>
+<text top="615" left="55" width="105" height="17" font="6">15.6 Summary</text>
+<text top="646" left="105" width="414" height="14" font="2">In this chapter, we have extended the concept of limited direct exe-</text>
+<text top="661" left="87" width="409" height="14" font="2">cution with a specific mechanism used in virtual memory, known as</text>
+<text top="661" left="500" width="19" height="13" font="3"><b>ad-</b></text>
+<text top="676" left="87" width="102" height="13" font="3"><b>dress translation</b></text>
+<text top="676" left="189" width="330" height="14" font="2">. With address translation, the OS can control each and</text>
+<text top="691" left="87" width="432" height="14" font="2">every memory access from a process, ensuring the accesses stay within</text>
+<text top="705" left="87" width="432" height="14" font="2">the bounds of the address space. Key to the efficiency of this technique</text>
+<text top="720" left="87" width="432" height="14" font="2">is hardware support, which performs the translation quickly for each ac-</text>
+<text top="735" left="87" width="432" height="14" font="2">cess, turning virtual addresses (the process’s view of memory) into phys-</text>
+<text top="750" left="87" width="396" height="14" font="2">ical ones (the actual view). All of this is performed in a way that is</text>
+<text top="750" left="486" width="33" height="14" font="4"><i>trans-</i></text>
+<text top="765" left="87" width="35" height="14" font="4"><i>parent</i></text>
+<text top="765" left="126" width="393" height="14" font="2">to the process that has been relocated; the process has no idea its</text>
+<text top="780" left="87" width="432" height="14" font="2">memory references are being translated, making for a wonderful illusion.</text>
+<text top="796" left="105" width="414" height="14" font="2">We have also seen one particular form of virtualization, known as base</text>
+<text top="811" left="87" width="432" height="14" font="2">and bounds or dynamic relocation. Base-and-bounds virtualization is</text>
+<text top="826" left="87" width="30" height="14" font="2">quite</text>
+<text top="826" left="122" width="42" height="14" font="4"><i>efficient</i></text>
+<text top="826" left="165" width="354" height="14" font="2">, as only a little more hardware logic is required to add a</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="12" family="XQQHHS+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="327" width="13" height="14" font="2">M</text>
+<text top="98" left="340" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="405" width="19" height="14" font="2">: A</text>
+<text top="98" left="425" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="474" width="8" height="14" font="2">T</text>
+<text top="98" left="483" width="78" height="11" font="5">RANSLATION</text>
+<text top="136" left="138" width="51" height="12" font="18"><b>OS @ run</b></text>
+<text top="136" left="297" width="54" height="12" font="18"><b>Hardware</b></text>
+<text top="136" left="443" width="46" height="12" font="18"><b>Program</b></text>
+<text top="150" left="138" width="77" height="12" font="18"><b>(kernel mode)</b></text>
+<text top="150" left="443" width="65" height="12" font="18"><b>(user mode)</b></text>
+<text top="165" left="138" width="99" height="12" font="18"><b>To start process A:</b></text>
+<text top="179" left="145" width="71" height="12" font="7">allocate entry</text>
+<text top="194" left="151" width="82" height="12" font="7">in process table</text>
+<text top="208" left="145" width="133" height="12" font="7">alloc memory for process</text>
+<text top="222" left="145" width="131" height="12" font="7">set base/bound registers</text>
+<text top="236" left="145" width="90" height="12" font="18"><b>return-from-trap</b></text>
+<text top="236" left="238" width="41" height="12" font="7">(into A)</text>
+<text top="250" left="297" width="110" height="12" font="7">restore registers of A</text>
+<text top="265" left="297" width="43" height="12" font="7">move to</text>
+<text top="265" left="343" width="57" height="12" font="18"><b>user mode</b></text>
+<text top="279" left="297" width="121" height="12" font="7">jump to A’s (initial) PC</text>
+<text top="293" left="443" width="80" height="12" font="18"><b>Process A runs</b></text>
+<text top="307" left="450" width="89" height="12" font="7">Fetch instruction</text>
+<text top="321" left="297" width="128" height="12" font="7">translate virtual address</text>
+<text top="336" left="297" width="72" height="12" font="7">perform fetch</text>
+<text top="350" left="450" width="102" height="12" font="7">Execute instruction</text>
+<text top="364" left="297" width="111" height="12" font="7">if explicit load/store:</text>
+<text top="378" left="304" width="119" height="12" font="7">ensure address is legal</text>
+<text top="392" left="297" width="128" height="12" font="7">translate virtual address</text>
+<text top="407" left="297" width="103" height="12" font="7">perform load/store</text>
+<text top="421" left="443" width="53" height="12" font="7">(A runs...)</text>
+<text top="435" left="297" width="85" height="12" font="18"><b>Timer interrupt</b></text>
+<text top="449" left="297" width="43" height="12" font="7">move to</text>
+<text top="449" left="343" width="69" height="12" font="18"><b>kernel mode</b></text>
+<text top="463" left="297" width="85" height="12" font="7">jump to handler</text>
+<text top="478" left="138" width="73" height="12" font="18"><b>Handle timer</b></text>
+<text top="492" left="138" width="112" height="12" font="7">decide: stop A, run B</text>
+<text top="506" left="138" width="18" height="12" font="7">call</text>
+<text top="507" left="159" width="57" height="10" font="21">switch()</text>
+<text top="506" left="220" width="38" height="12" font="7">routine</text>
+<text top="520" left="145" width="66" height="12" font="7">save regs(A)</text>
+<text top="534" left="151" width="88" height="12" font="7">to proc-struct(A)</text>
+<text top="549" left="145" width="132" height="12" font="7">(including base/bounds)</text>
+<text top="563" left="145" width="76" height="12" font="7">restore regs(B)</text>
+<text top="577" left="151" width="101" height="12" font="7">from proc-struct(B)</text>
+<text top="591" left="145" width="132" height="12" font="7">(including base/bounds)</text>
+<text top="605" left="138" width="90" height="12" font="18"><b>return-from-trap</b></text>
+<text top="605" left="232" width="39" height="12" font="7">(into B)</text>
+<text top="620" left="297" width="108" height="12" font="7">restore registers of B</text>
+<text top="634" left="297" width="43" height="12" font="7">move to</text>
+<text top="634" left="343" width="57" height="12" font="18"><b>user mode</b></text>
+<text top="648" left="297" width="79" height="12" font="7">jump to B’s PC</text>
+<text top="662" left="443" width="79" height="12" font="18"><b>Process B runs</b></text>
+<text top="676" left="450" width="91" height="12" font="7">Execute bad load</text>
+<text top="691" left="297" width="120" height="12" font="7">Load is out-of-bounds;</text>
+<text top="705" left="297" width="43" height="12" font="7">move to</text>
+<text top="705" left="343" width="69" height="12" font="18"><b>kernel mode</b></text>
+<text top="719" left="297" width="110" height="12" font="7">jump to trap handler</text>
+<text top="733" left="138" width="86" height="12" font="18"><b>Handle the trap</b></text>
+<text top="747" left="145" width="121" height="12" font="7">decide to kill process B</text>
+<text top="761" left="145" width="120" height="12" font="7">deallocate B’s memory</text>
+<text top="776" left="145" width="70" height="12" font="7">free B’s entry</text>
+<text top="790" left="151" width="82" height="12" font="7">in process table</text>
+<text top="819" left="129" width="68" height="14" font="2">Figure 15.6:</text>
+<text top="819" left="201" width="360" height="13" font="3"><b>Limited Direct Execution (Dynamic Relocation) @ Runtime</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="19" height="14" font="2">: A</text>
+<text top="98" left="185" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="234" width="8" height="14" font="2">T</text>
+<text top="98" left="243" width="78" height="11" font="5">RANSLATION</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="139" left="87" width="432" height="14" font="2">base register to the virtual address and check that the address generated</text>
+<text top="154" left="87" width="346" height="14" font="2">by the process is in bounds. Base-and-bounds also offers</text>
+<text top="154" left="437" width="55" height="14" font="4"><i>protection</i></text>
+<text top="154" left="492" width="27" height="14" font="2">; the</text>
+<text top="169" left="87" width="432" height="14" font="2">OS and hardware combine to ensure no process can generate memory</text>
+<text top="183" left="87" width="432" height="14" font="2">references outside its own address space. Protection is certainly one of</text>
+<text top="198" left="87" width="432" height="14" font="2">the most important goals of the OS; without it, the OS could not control</text>
+<text top="213" left="87" width="432" height="14" font="2">the machine (if processes were free to overwrite memory, they could eas-</text>
+<text top="228" left="87" width="432" height="14" font="2">ily do nasty things like overwrite the trap table and take over the system).</text>
+<text top="243" left="105" width="414" height="14" font="2">Unfortunately, this simple technique of dynamic relocation does have</text>
+<text top="258" left="87" width="432" height="14" font="2">its inefficiencies. For example, as you can see in Figure 15.2 (page 5), the</text>
+<text top="273" left="87" width="432" height="14" font="2">relocated process is using physical memory from 32 KB to 48 KB; how-</text>
+<text top="288" left="87" width="432" height="14" font="2">ever, because the process stack and heap are not too big, all of the space</text>
+<text top="303" left="87" width="156" height="14" font="2">between the two is simply</text>
+<text top="303" left="246" width="37" height="14" font="4"><i>wasted</i></text>
+<text top="303" left="284" width="215" height="14" font="2">. This type of waste is usually called</text>
+<text top="303" left="502" width="17" height="13" font="3"><b>in-</b></text>
+<text top="318" left="87" width="127" height="13" font="3"><b>ternal fragmentation</b></text>
+<text top="318" left="214" width="77" height="14" font="2">, as the space</text>
+<text top="318" left="295" width="32" height="14" font="4"><i>inside</i></text>
+<text top="318" left="330" width="189" height="14" font="2">the allocated unit is not all used</text>
+<text top="333" left="87" width="432" height="14" font="2">(i.e., is fragmented) and thus wasted. In our current approach, although</text>
+<text top="348" left="87" width="432" height="14" font="2">there might be enough physical memory for more processes, we are cur-</text>
+<text top="363" left="87" width="432" height="14" font="2">rently restricted to placing an address space in a fixed-sized slot and thus</text>
+<text top="380" left="87" width="193" height="14" font="2">internal fragmentation can arise</text>
+<text top="377" left="280" width="4" height="9" font="16">2</text>
+<text top="380" left="285" width="234" height="14" font="2">. Thus, we are going to need more so-</text>
+<text top="395" left="87" width="432" height="14" font="2">phisticated machinery, to try to better utilize physical memory and avoid</text>
+<text top="410" left="87" width="432" height="14" font="2">internal fragmentation. Our first attempt will be a slight generalization</text>
+<text top="425" left="87" width="176" height="14" font="2">of base and bounds known as</text>
+<text top="425" left="267" width="83" height="13" font="3"><b>segmentation</b></text>
+<text top="425" left="349" width="169" height="14" font="2">, which we will discuss next.</text>
+<text top="790" left="107" width="4" height="8" font="17">2</text>
+<text top="792" left="112" width="407" height="11" font="8">A different solution might instead place a fixed-sized stack within the address space,</text>
+<text top="804" left="87" width="432" height="11" font="8">just below the code region, and a growing heap below that. However, this limits flexibility</text>
+<text top="816" left="87" width="432" height="11" font="8">by making recursion and deeply-nested function calls challenging, and thus is something we</text>
+<text top="828" left="87" width="66" height="11" font="8">hope to avoid.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="22" size="16" family="RTOBIE+URWPalladioL" color="#000000"/>
+	<fontspec id="23" size="10" family="QRILMF+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="24" size="10" family="XQQHHS+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="25" size="10" family="YBHVIT+NimbusMonL-ReguObli" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="327" width="13" height="14" font="2">M</text>
+<text top="98" left="340" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="405" width="19" height="14" font="2">: A</text>
+<text top="98" left="425" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="474" width="8" height="14" font="2">T</text>
+<text top="98" left="483" width="78" height="11" font="5">RANSLATION</text>
+<text top="137" left="129" width="82" height="16" font="22"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="8">[M65] “On Dynamic Program Relocation” by W.C. McGee. IBM Systems Journal, Volume 4:3,</text>
+<text top="177" left="129" width="96" height="11" font="8">1965, pages 184–199.</text>
+<text top="177" left="230" width="331" height="11" font="23"><i>This paper is a nice summary of early work on dynamic relocation, as well as</i></text>
+<text top="189" left="129" width="133" height="11" font="23"><i>some basics on static relocation.</i></text>
+<text top="206" left="129" width="432" height="11" font="8">[P90] “Relocating loader for MS-DOS .EXE executable files” by Kenneth D. A. Pillay. Micro-</text>
+<text top="218" left="129" width="313" height="11" font="8">processors &amp; Microsystems archive, Volume 14:7 (September 1990).</text>
+<text top="217" left="447" width="114" height="11" font="23"><i>An example of a relocating</i></text>
+<text top="229" left="129" width="432" height="11" font="23"><i>loader for MS-DOS. Not the first one, but just a relatively modern example of how such a system works.</i></text>
+<text top="246" left="129" width="432" height="11" font="8">[SS74] “The Protection of Information in Computer Systems” by J. Saltzer and M. Schroeder.</text>
+<text top="258" left="129" width="82" height="11" font="8">CACM, July 1974.</text>
+<text top="258" left="214" width="350" height="11" font="23"><i>From this paper: “The concepts of base-and-bound register and hardware-interpreted</i></text>
+<text top="270" left="129" width="432" height="11" font="23"><i>descriptors appeared, apparently independently, between 1957 and 1959 on three projects with diverse</i></text>
+<text top="282" left="129" width="432" height="11" font="23"><i>goals. At M.I.T., McCarthy suggested the base-and-bound idea as part of the memory protection system</i></text>
+<text top="294" left="129" width="432" height="11" font="23"><i>necessary to make time-sharing feasible. IBM independently developed the base-and-bound register as a</i></text>
+<text top="305" left="129" width="432" height="11" font="23"><i>mechanism to permit reliable multiprogramming of the Stretch (7030) computer system. At Burroughs,</i></text>
+<text top="317" left="129" width="432" height="11" font="23"><i>R. Barton suggested that hardware-interpreted descriptors would provide direct support for the naming</i></text>
+<text top="329" left="129" width="432" height="11" font="23"><i>scope rules of higher level languages in the B5000 computer system.” We found this quote on Mark</i></text>
+<text top="341" left="129" width="297" height="11" font="23"><i>Smotherman’s cool history pages [S04]; see them for more information.</i></text>
+<text top="358" left="129" width="290" height="11" font="8">[S04] “System Call Support” by Mark Smotherman. May 2004.</text>
+<text top="358" left="423" width="138" height="9" font="24">people.cs.clemson.edu/</text>
+<text top="370" left="129" width="113" height="9" font="24">˜mark/syscall.html</text>
+<text top="370" left="242" width="3" height="11" font="8">.</text>
+<text top="370" left="248" width="313" height="11" font="23"><i>A neat history of system call support. Smotherman has also collected some</i></text>
+<text top="382" left="129" width="432" height="11" font="23"><i>early history on items like interrupts and other fun aspects of computing history. See his web pages for</i></text>
+<text top="393" left="129" width="53" height="11" font="23"><i>more details.</i></text>
+<text top="410" left="129" width="432" height="11" font="8">[WL+93] “Efficient Software-based Fault Isolation” by Robert Wahbe, Steven Lucco, Thomas</text>
+<text top="422" left="129" width="192" height="11" font="8">E. Anderson, Susan L. Graham. SOSP ’93.</text>
+<text top="422" left="324" width="236" height="11" font="23"><i>A terrific paper about how you can use compiler support</i></text>
+<text top="434" left="129" width="432" height="11" font="23"><i>to bound memory references from a program, without hardware support. The paper sparked renewed</i></text>
+<text top="446" left="129" width="274" height="11" font="23"><i>interest in software techniques for isolation of memory references.</i></text>
+<text top="462" left="129" width="432" height="11" font="8">[W17] Answer to footnote: “Is there anything other than havoc that can be wreaked?” by</text>
+<text top="474" left="129" width="153" height="11" font="8">Waciuma Wanjohi. October 2017.</text>
+<text top="474" left="285" width="276" height="11" font="23"><i>Amazingly, this enterprising reader found the answer via google’s</i></text>
+<text top="486" left="129" width="233" height="11" font="23"><i>Ngram viewing tool (available at the following URL:</i></text>
+<text top="487" left="366" width="188" height="9" font="25"><i>http://books.google.com/ngrams</i></text>
+<text top="486" left="555" width="6" height="11" font="23"><i>).</i></text>
+<text top="498" left="129" width="432" height="11" font="23"><i>The answer, thanks to Mr. Wanjohi: “It’s only since about 1970 that ’wreak havoc’ has been more</i></text>
+<text top="510" left="129" width="432" height="11" font="23"><i>popular than ’wreak vengeance’. In the 1800s, the word wreak was almost always followed by ’his/their</i></text>
+<text top="522" left="129" width="432" height="11" font="23"><i>vengeance’.” Apparently, when you wreak, you are up to no good, but at least wreakers have some</i></text>
+<text top="534" left="129" width="53" height="11" font="23"><i>options now.</i></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="19" height="14" font="2">: A</text>
+<text top="98" left="185" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="234" width="8" height="14" font="2">T</text>
+<text top="98" left="243" width="78" height="11" font="5">RANSLATION</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="137" left="87" width="183" height="16" font="22"><b>Homework (Simulation)</b></text>
+<text top="166" left="105" width="78" height="14" font="2">The program</text>
+<text top="167" left="187" width="105" height="11" font="9">relocation.py</text>
+<text top="166" left="296" width="223" height="14" font="2">allows you to see how address trans-</text>
+<text top="181" left="87" width="432" height="14" font="2">lations are performed in a system with base and bounds registers. See the</text>
+<text top="196" left="87" width="126" height="14" font="2">README for details.</text>
+<text top="232" left="87" width="70" height="15" font="14"><b>Questions</b></text>
+<text top="256" left="105" width="414" height="14" font="2">1. Run with seeds 1, 2, and 3, and compute whether each virtual ad-</text>
+<text top="271" left="122" width="397" height="14" font="2">dress generated by the process is in or out of bounds. If in bounds,</text>
+<text top="286" left="122" width="145" height="14" font="2">compute the translation.</text>
+<text top="301" left="105" width="141" height="14" font="2">2. Run with these flags:</text>
+<text top="302" left="250" width="81" height="11" font="9">-s 0 -n 10</text>
+<text top="301" left="331" width="188" height="14" font="2">. What value do you have to set</text>
+<text top="317" left="122" width="16" height="11" font="9">-l</text>
+<text top="316" left="141" width="378" height="14" font="2">(the bounds register) to in order to ensure that all the generated</text>
+<text top="331" left="122" width="220" height="14" font="2">virtual addresses are within bounds?</text>
+<text top="346" left="105" width="147" height="14" font="2">3. Run with these flags:</text>
+<text top="347" left="259" width="137" height="11" font="9">-s 1 -n 10 -l 100</text>
+<text top="346" left="396" width="123" height="14" font="2">. What is the maxi-</text>
+<text top="361" left="122" width="397" height="14" font="2">mum value that base can be set to, such that the address space still</text>
+<text top="376" left="122" width="239" height="14" font="2">fits into physical memory in its entirety?</text>
+<text top="391" left="105" width="414" height="14" font="2">4. Run some of the same problems above, but with larger address</text>
+<text top="406" left="122" width="46" height="14" font="2">spaces (</text>
+<text top="407" left="168" width="16" height="11" font="9">-a</text>
+<text top="406" left="184" width="154" height="14" font="2">) and physical memories (</text>
+<text top="407" left="338" width="16" height="11" font="9">-p</text>
+<text top="406" left="354" width="8" height="14" font="2">).</text>
+<text top="421" left="105" width="414" height="14" font="2">5. What fraction of randomly-generated virtual addresses are valid,</text>
+<text top="436" left="122" width="397" height="14" font="2">as a function of the value of the bounds register? Make a graph</text>
+<text top="451" left="122" width="397" height="14" font="2">from running with different random seeds, with limit values rang-</text>
+<text top="466" left="122" width="335" height="14" font="2">ing from 0 up to the maximum size of the address space.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+</pdf2xml>

@@ -1,0 +1,1443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="LQOYTX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="LQOYTX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JHNLFU+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="GIOQSX+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="JHNLFU+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="16" family="JHNLFU+URWPalladioL-Roma" color="#000000"/>
+<text top="193" left="523" width="34" height="30" font="0">32</text>
+<text top="262" left="207" width="312" height="21" font="1">Common Concurrency Problems</text>
+<text top="332" left="105" width="414" height="14" font="2">Researchers have spent a great deal of time and effort looking into</text>
+<text top="347" left="87" width="432" height="14" font="2">concurrency bugs over many years. Much of the early work focused</text>
+<text top="362" left="87" width="15" height="14" font="2">on</text>
+<text top="362" left="107" width="56" height="13" font="3"><b>deadlock</b></text>
+<text top="362" left="163" width="356" height="14" font="2">, a topic which we’ve touched on in the past chapters but</text>
+<text top="377" left="87" width="432" height="14" font="2">will now dive into deeply [C+71]. More recent work focuses on studying</text>
+<text top="392" left="87" width="432" height="14" font="2">other types of common concurrency bugs (i.e., non-deadlock bugs). In</text>
+<text top="407" left="87" width="432" height="14" font="2">this chapter, we take a brief look at some example concurrency problems</text>
+<text top="422" left="87" width="432" height="14" font="2">found in real code bases, to better understand what problems to look out</text>
+<text top="437" left="87" width="278" height="14" font="2">for. And thus our central issue for this chapter:</text>
+<text top="475" left="127" width="10" height="14" font="2">C</text>
+<text top="477" left="138" width="24" height="11" font="4">RUX</text>
+<text top="475" left="162" width="19" height="14" font="2">: H</text>
+<text top="477" left="182" width="20" height="11" font="4">OW</text>
+<text top="475" left="206" width="8" height="14" font="2">T</text>
+<text top="477" left="215" width="8" height="11" font="4">O</text>
+<text top="475" left="227" width="11" height="14" font="2">H</text>
+<text top="477" left="239" width="41" height="11" font="4">ANDLE</text>
+<text top="475" left="285" width="10" height="14" font="2">C</text>
+<text top="477" left="295" width="49" height="11" font="4">OMMON</text>
+<text top="475" left="348" width="10" height="14" font="2">C</text>
+<text top="477" left="358" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="475" left="446" width="8" height="14" font="2">B</text>
+<text top="477" left="455" width="24" height="11" font="4">UGS</text>
+<text top="490" left="105" width="414" height="14" font="2">Concurrency bugs tend to come in a variety of common patterns.</text>
+<text top="505" left="87" width="432" height="14" font="2">Knowing which ones to look out for is the ﬁrst step to writing more ro-</text>
+<text top="520" left="87" width="175" height="14" font="2">bust, correct concurrent code.</text>
+<text top="572" left="55" width="229" height="17" font="5">32.1 What Types Of Bugs Exist?</text>
+<text top="602" left="105" width="414" height="14" font="2">The ﬁrst, and most obvious, question is this: what types of concur-</text>
+<text top="617" left="87" width="432" height="14" font="2">rency bugs manifest in complex, concurrent programs? This question is</text>
+<text top="632" left="87" width="432" height="14" font="2">difﬁcult to answer in general, but fortunately, some others have done the</text>
+<text top="647" left="87" width="432" height="14" font="2">work for us. Speciﬁcally, we rely upon a study by Lu et al. [L+08], which</text>
+<text top="662" left="87" width="432" height="14" font="2">analyzes a number of popular concurrent applications in great detail to</text>
+<text top="677" left="87" width="285" height="14" font="2">understand what types of bugs arise in practice.</text>
+<text top="692" left="105" width="414" height="14" font="2">The study focuses on four major and important open-source applica-</text>
+<text top="707" left="87" width="432" height="14" font="2">tions: MySQL (a popular database management system), Apache (a well-</text>
+<text top="721" left="87" width="432" height="14" font="2">known web server), Mozilla (the famous web browser), and OpenOfﬁce</text>
+<text top="736" left="87" width="432" height="14" font="2">(a free version of the MS Ofﬁce suite, which some people actually use).</text>
+<text top="751" left="87" width="432" height="14" font="2">In the study, the authors examine concurrency bugs that have been found</text>
+<text top="766" left="87" width="432" height="14" font="2">and ﬁxed in each of these code bases, turning the developers’ work into a</text>
+<text top="781" left="87" width="432" height="14" font="2">quantitative bug analysis; understanding these results can help you un-</text>
+<text top="796" left="87" width="414" height="14" font="2">derstand what types of problems actually occur in mature code bases.</text>
+<text top="811" left="105" width="414" height="14" font="2">Figure 32.1 shows a summary of the bugs Lu and colleagues studied.</text>
+<text top="826" left="87" width="432" height="14" font="2">From the ﬁgure, you can see that there were 105 total bugs, most of which</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="15" family="GIOQSX+URWPalladioL" color="#000000"/>
+	<fontspec id="7" size="7" family="JHNLFU+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="13" family="RCQVPT+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="9" size="13" family="DMDHFX+NimbusMonL" color="#000000"/>
+	<fontspec id="10" size="12" family="JHNLFU+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="11" size="10" family="JHNLFU+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="335" width="10" height="14" font="2">C</text>
+<text top="98" left="345" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="398" width="10" height="14" font="2">C</text>
+<text top="98" left="408" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="497" width="8" height="14" font="2">P</text>
+<text top="98" left="505" width="55" height="11" font="4">ROBLEMS</text>
+<text top="136" left="163" width="71" height="14" font="2">Application</text>
+<text top="136" left="251" width="75" height="14" font="2">What it does</text>
+<text top="136" left="365" width="87" height="14" font="2">Non-Deadlock</text>
+<text top="136" left="471" width="56" height="14" font="2">Deadlock</text>
+<text top="151" left="163" width="46" height="14" font="2">MySQL</text>
+<text top="151" left="251" width="96" height="14" font="2">Database Server</text>
+<text top="151" left="439" width="13" height="14" font="2">14</text>
+<text top="151" left="520" width="7" height="14" font="2">9</text>
+<text top="166" left="163" width="46" height="14" font="2">Apache</text>
+<text top="166" left="251" width="68" height="14" font="2">Web Server</text>
+<text top="166" left="439" width="13" height="14" font="2">13</text>
+<text top="166" left="520" width="7" height="14" font="2">4</text>
+<text top="181" left="163" width="45" height="14" font="2">Mozilla</text>
+<text top="181" left="251" width="79" height="14" font="2">Web Browser</text>
+<text top="181" left="439" width="13" height="14" font="2">41</text>
+<text top="181" left="514" width="13" height="14" font="2">16</text>
+<text top="196" left="163" width="68" height="14" font="2">OpenOfﬁce</text>
+<text top="196" left="251" width="69" height="14" font="2">Ofﬁce Suite</text>
+<text top="196" left="446" width="7" height="14" font="2">6</text>
+<text top="196" left="520" width="7" height="14" font="2">2</text>
+<text top="211" left="163" width="29" height="14" font="2">Total</text>
+<text top="211" left="439" width="13" height="14" font="2">74</text>
+<text top="211" left="514" width="13" height="14" font="2">31</text>
+<text top="225" left="217" width="69" height="14" font="2">Figure 32.1:</text>
+<text top="226" left="290" width="183" height="13" font="3"><b>Bugs In Modern Applications</b></text>
+<text top="253" left="129" width="432" height="14" font="2">were not deadlock (74); the remaining 31 were deadlock bugs. Further,</text>
+<text top="268" left="129" width="432" height="14" font="2">you can see the number of bugs studied from each application; while</text>
+<text top="283" left="129" width="413" height="14" font="2">OpenOfﬁce only had 8 total concurrency bugs, Mozilla had nearly 60.</text>
+<text top="298" left="147" width="414" height="14" font="2">We now dive into these different classes of bugs (non-deadlock, dead-</text>
+<text top="313" left="129" width="432" height="14" font="2">lock) a bit more deeply. For the ﬁrst class of non-deadlock bugs, we use</text>
+<text top="328" left="129" width="432" height="14" font="2">examples from the study to drive our discussion. For the second class of</text>
+<text top="343" left="129" width="432" height="14" font="2">deadlock bugs, we discuss the long line of work that has been done in</text>
+<text top="358" left="129" width="300" height="14" font="2">either preventing, avoiding, or handling deadlock.</text>
+<text top="395" left="97" width="180" height="17" font="5">32.2 Non-Deadlock Bugs</text>
+<text top="424" left="147" width="414" height="14" font="2">Non-deadlock bugs make up a majority of concurrency bugs, accord-</text>
+<text top="439" left="129" width="432" height="14" font="2">ing to Lu’s study. But what types of bugs are these? How do they arise?</text>
+<text top="454" left="129" width="432" height="14" font="2">How can we ﬁx them? We now discuss the two major types of non-</text>
+<text top="469" left="129" width="208" height="14" font="2">deadlock bugs found by Lu et al.:</text>
+<text top="469" left="344" width="118" height="13" font="3"><b>atomicity violation</b></text>
+<text top="469" left="467" width="56" height="14" font="2">bugs and</text>
+<text top="469" left="528" width="33" height="13" font="3"><b>order</b></text>
+<text top="484" left="129" width="55" height="13" font="3"><b>violation</b></text>
+<text top="484" left="188" width="32" height="14" font="2">bugs.</text>
+<text top="501" left="129" width="175" height="15" font="6"><b>Atomicity-Violation Bugs</b></text>
+<text top="526" left="129" width="349" height="14" font="2">The ﬁrst type of problem encountered is referred to as an</text>
+<text top="526" left="482" width="78" height="13" font="3"><b>atomicity vi-</b></text>
+<text top="541" left="129" width="43" height="13" font="3"><b>olation</b></text>
+<text top="541" left="172" width="389" height="14" font="2">. Here is a simple example, found in MySQL. Before reading the</text>
+<text top="556" left="129" width="304" height="14" font="2">explanation, try ﬁguring out what the bug is. Do it!</text>
+<text top="578" left="107" width="4" height="8" font="7">1</text>
+<text top="575" left="129" width="81" height="11" font="8">Thread 1::</text>
+<text top="593" left="107" width="4" height="8" font="7">2</text>
+<text top="590" left="129" width="169" height="11" font="8">if (thd-&gt;proc_info) {</text>
+<text top="608" left="107" width="4" height="8" font="7">3</text>
+<text top="605" left="145" width="218" height="11" font="8">fputs(thd-&gt;proc_info, ...);</text>
+<text top="623" left="107" width="4" height="8" font="7">4</text>
+<text top="620" left="129" width="8" height="11" font="8">}</text>
+<text top="638" left="107" width="4" height="8" font="7">5</text>
+<text top="653" left="107" width="4" height="8" font="7">6</text>
+<text top="650" left="129" width="81" height="11" font="8">Thread 2::</text>
+<text top="668" left="107" width="4" height="8" font="7">7</text>
+<text top="665" left="129" width="178" height="11" font="8">thd-&gt;proc_info = NULL;</text>
+<text top="683" left="197" width="69" height="14" font="2">Figure 32.2:</text>
+<text top="683" left="270" width="130" height="13" font="3"><b>Atomicity Violation (</b></text>
+<text top="684" left="400" width="89" height="11" font="9"><b>atomicity.c</b></text>
+<text top="683" left="489" width="4" height="13" font="3"><b>)</b></text>
+<text top="707" left="147" width="321" height="14" font="2">In the example, two different threads access the ﬁeld</text>
+<text top="708" left="472" width="73" height="11" font="8">proc_info</text>
+<text top="707" left="549" width="12" height="14" font="2">in</text>
+<text top="722" left="129" width="76" height="14" font="2">the structure</text>
+<text top="723" left="209" width="24" height="11" font="8">thd</text>
+<text top="722" left="233" width="328" height="14" font="2">. The ﬁrst thread checks if the value is non-NULL and</text>
+<text top="737" left="129" width="432" height="14" font="2">then prints its value; the second thread sets it to NULL. Clearly, if the</text>
+<text top="752" left="129" width="432" height="14" font="2">ﬁrst thread performs the check but then is interrupted before the call to</text>
+<text top="768" left="129" width="40" height="11" font="8">fputs</text>
+<text top="767" left="169" width="392" height="14" font="2">, the second thread could run in-between, thus setting the pointer</text>
+<text top="782" left="129" width="432" height="14" font="2">to NULL; when the ﬁrst thread resumes, it will crash, as a NULL pointer</text>
+<text top="797" left="129" width="139" height="14" font="2">will be dereferenced by</text>
+<text top="798" left="271" width="40" height="11" font="8">fputs</text>
+<text top="797" left="312" width="3" height="14" font="2">.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="13" family="QGZBZN+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="151" width="10" height="14" font="2">C</text>
+<text top="98" left="161" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="249" width="8" height="14" font="2">P</text>
+<text top="98" left="258" width="55" height="11" font="4">ROBLEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="105" width="414" height="14" font="2">The more formal deﬁnition of an atomicity violation, according to Lu</text>
+<text top="154" left="87" width="432" height="14" font="2">et al, is this: “The desired serializability among multiple memory accesses</text>
+<text top="169" left="87" width="432" height="14" font="2">is violated (i.e. a code region is intended to be atomic, but the atomicity</text>
+<text top="183" left="87" width="432" height="14" font="2">is not enforced during execution).” In our example above, the code has</text>
+<text top="198" left="87" width="15" height="14" font="2">an</text>
+<text top="198" left="105" width="117" height="14" font="12">atomicity assumption</text>
+<text top="198" left="226" width="293" height="14" font="2">(in Lu’s words) about the check for non-NULL of</text>
+<text top="214" left="87" width="73" height="11" font="8">proc_info</text>
+<text top="213" left="163" width="98" height="14" font="2">and the usage of</text>
+<text top="214" left="264" width="73" height="11" font="8">proc_info</text>
+<text top="213" left="340" width="34" height="14" font="2">in the</text>
+<text top="214" left="377" width="57" height="11" font="8">fputs()</text>
+<text top="213" left="437" width="82" height="14" font="2">call; when the</text>
+<text top="228" left="87" width="345" height="14" font="2">assumption is incorrect, the code will not work as desired.</text>
+<text top="244" left="105" width="414" height="14" font="2">Finding a ﬁx for this type of problem is often (but not always) straight-</text>
+<text top="259" left="87" width="318" height="14" font="2">forward. Can you think of how to ﬁx the code above?</text>
+<text top="275" left="105" width="414" height="14" font="2">In this solution (Figure 32.3), we simply add locks around the shared-</text>
+<text top="290" left="87" width="381" height="14" font="2">variable references, ensuring that when either thread accesses the</text>
+<text top="290" left="471" width="48" height="11" font="8">proc_-</text>
+<text top="305" left="87" width="32" height="11" font="8">info</text>
+<text top="305" left="123" width="143" height="14" font="2">ﬁeld, it has a lock held (</text>
+<text top="305" left="266" width="113" height="11" font="8">proc_info_lock</text>
+<text top="305" left="379" width="140" height="14" font="2">). Of course, other code</text>
+<text top="320" left="87" width="425" height="14" font="2">that accesses the structure should also acquire this lock before doing so.</text>
+<text top="351" left="65" width="4" height="8" font="7">1</text>
+<text top="347" left="87" width="258" height="11" font="8">pthread_mutex_t proc_info_lock =</text>
+<text top="366" left="65" width="4" height="8" font="7">2</text>
+<text top="362" left="103" width="210" height="11" font="8">PTHREAD_MUTEX_INITIALIZER;</text>
+<text top="381" left="65" width="4" height="8" font="7">3</text>
+<text top="396" left="65" width="4" height="8" font="7">4</text>
+<text top="392" left="87" width="81" height="11" font="8">Thread 1::</text>
+<text top="410" left="65" width="4" height="8" font="7">5</text>
+<text top="407" left="87" width="291" height="11" font="8">pthread_mutex_lock(&amp;proc_info_lock);</text>
+<text top="425" left="65" width="4" height="8" font="7">6</text>
+<text top="422" left="87" width="169" height="11" font="8">if (thd-&gt;proc_info) {</text>
+<text top="440" left="65" width="4" height="8" font="7">7</text>
+<text top="437" left="103" width="218" height="11" font="8">fputs(thd-&gt;proc_info, ...);</text>
+<text top="455" left="65" width="4" height="8" font="7">8</text>
+<text top="452" left="87" width="8" height="11" font="8">}</text>
+<text top="470" left="65" width="4" height="8" font="7">9</text>
+<text top="467" left="87" width="307" height="11" font="8">pthread_mutex_unlock(&amp;proc_info_lock);</text>
+<text top="485" left="62" width="7" height="8" font="7">10</text>
+<text top="500" left="62" width="7" height="8" font="7">11</text>
+<text top="497" left="87" width="81" height="11" font="8">Thread 2::</text>
+<text top="515" left="62" width="7" height="8" font="7">12</text>
+<text top="512" left="87" width="291" height="11" font="8">pthread_mutex_lock(&amp;proc_info_lock);</text>
+<text top="530" left="62" width="7" height="8" font="7">13</text>
+<text top="526" left="87" width="178" height="11" font="8">thd-&gt;proc_info = NULL;</text>
+<text top="545" left="62" width="7" height="8" font="7">14</text>
+<text top="541" left="87" width="307" height="11" font="8">pthread_mutex_unlock(&amp;proc_info_lock);</text>
+<text top="561" left="112" width="69" height="14" font="2">Figure 32.3:</text>
+<text top="561" left="185" width="167" height="13" font="3"><b>Atomicity Violation Fixed (</b></text>
+<text top="562" left="352" width="137" height="11" font="9"><b>atomicity_fixed.c</b></text>
+<text top="561" left="489" width="4" height="13" font="3"><b>)</b></text>
+<text top="595" left="87" width="147" height="15" font="6"><b>Order-Violation Bugs</b></text>
+<text top="621" left="87" width="432" height="14" font="2">Another common type of non-deadlock bug found by Lu et al. is known</text>
+<text top="635" left="87" width="31" height="14" font="2">as an</text>
+<text top="636" left="121" width="92" height="13" font="3"><b>order violation</b></text>
+<text top="635" left="213" width="306" height="14" font="2">. Here is another simple example; once again, see if</text>
+<text top="650" left="87" width="322" height="14" font="2">you can ﬁgure out why the code below has a bug in it.</text>
+<text top="677" left="65" width="4" height="8" font="7">1</text>
+<text top="673" left="87" width="81" height="11" font="8">Thread 1::</text>
+<text top="692" left="65" width="4" height="8" font="7">2</text>
+<text top="688" left="87" width="105" height="11" font="8">void init() {</text>
+<text top="707" left="65" width="4" height="8" font="7">3</text>
+<text top="703" left="111" width="307" height="11" font="8">mThread = PR_CreateThread(mMain, ...);</text>
+<text top="722" left="65" width="4" height="8" font="7">4</text>
+<text top="718" left="87" width="8" height="11" font="8">}</text>
+<text top="737" left="65" width="4" height="8" font="7">5</text>
+<text top="752" left="65" width="4" height="8" font="7">6</text>
+<text top="748" left="87" width="81" height="11" font="8">Thread 2::</text>
+<text top="767" left="65" width="4" height="8" font="7">7</text>
+<text top="763" left="87" width="137" height="11" font="8">void mMain(...) {</text>
+<text top="781" left="65" width="4" height="8" font="7">8</text>
+<text top="778" left="119" width="194" height="11" font="8">mState = mThread-&gt;State;</text>
+<text top="796" left="65" width="4" height="8" font="7">9</text>
+<text top="793" left="87" width="8" height="11" font="8">}</text>
+<text top="812" left="178" width="69" height="14" font="2">Figure 32.4:</text>
+<text top="812" left="251" width="93" height="13" font="3"><b>Ordering Bug (</b></text>
+<text top="814" left="343" width="81" height="11" font="9"><b>ordering.c</b></text>
+<text top="812" left="424" width="4" height="13" font="3"><b>)</b></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="13" family="HLIHCJ+CMMI9" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="335" width="10" height="14" font="2">C</text>
+<text top="98" left="345" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="398" width="10" height="14" font="2">C</text>
+<text top="98" left="408" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="497" width="8" height="14" font="2">P</text>
+<text top="98" left="505" width="55" height="11" font="4">ROBLEMS</text>
+<text top="138" left="107" width="4" height="8" font="7">1</text>
+<text top="135" left="129" width="412" height="11" font="8">pthread_mutex_t mtLock = PTHREAD_MUTEX_INITIALIZER;</text>
+<text top="153" left="107" width="4" height="8" font="7">2</text>
+<text top="149" left="129" width="113" height="11" font="8">pthread_cond_t</text>
+<text top="149" left="258" width="274" height="11" font="8">mtCond = PTHREAD_COND_INITIALIZER;</text>
+<text top="168" left="107" width="4" height="8" font="7">3</text>
+<text top="164" left="129" width="81" height="11" font="8">int mtInit</text>
+<text top="164" left="315" width="32" height="11" font="8">= 0;</text>
+<text top="183" left="107" width="4" height="8" font="7">4</text>
+<text top="198" left="107" width="4" height="8" font="7">5</text>
+<text top="194" left="129" width="81" height="11" font="8">Thread 1::</text>
+<text top="213" left="107" width="4" height="8" font="7">6</text>
+<text top="209" left="129" width="105" height="11" font="8">void init() {</text>
+<text top="228" left="107" width="4" height="8" font="7">7</text>
+<text top="224" left="153" width="24" height="11" font="8">...</text>
+<text top="243" left="107" width="4" height="8" font="7">8</text>
+<text top="239" left="153" width="307" height="11" font="8">mThread = PR_CreateThread(mMain, ...);</text>
+<text top="258" left="107" width="4" height="8" font="7">9</text>
+<text top="273" left="104" width="7" height="8" font="7">10</text>
+<text top="269" left="153" width="363" height="11" font="8">// signal that the thread has been created...</text>
+<text top="288" left="104" width="7" height="8" font="7">11</text>
+<text top="284" left="153" width="226" height="11" font="8">pthread_mutex_lock(&amp;mtLock);</text>
+<text top="302" left="104" width="7" height="8" font="7">12</text>
+<text top="299" left="153" width="89" height="11" font="8">mtInit = 1;</text>
+<text top="317" left="104" width="7" height="8" font="7">13</text>
+<text top="314" left="153" width="234" height="11" font="8">pthread_cond_signal(&amp;mtCond);</text>
+<text top="332" left="104" width="7" height="8" font="7">14</text>
+<text top="329" left="153" width="242" height="11" font="8">pthread_mutex_unlock(&amp;mtLock);</text>
+<text top="347" left="104" width="7" height="8" font="7">15</text>
+<text top="344" left="153" width="24" height="11" font="8">...</text>
+<text top="362" left="104" width="7" height="8" font="7">16</text>
+<text top="359" left="129" width="8" height="11" font="8">}</text>
+<text top="377" left="104" width="7" height="8" font="7">17</text>
+<text top="392" left="104" width="7" height="8" font="7">18</text>
+<text top="389" left="129" width="81" height="11" font="8">Thread 2::</text>
+<text top="407" left="104" width="7" height="8" font="7">19</text>
+<text top="404" left="129" width="137" height="11" font="8">void mMain(...) {</text>
+<text top="422" left="104" width="7" height="8" font="7">20</text>
+<text top="418" left="161" width="24" height="11" font="8">...</text>
+<text top="437" left="104" width="7" height="8" font="7">21</text>
+<text top="433" left="161" width="347" height="11" font="8">// wait for the thread to be initialized...</text>
+<text top="452" left="104" width="7" height="8" font="7">22</text>
+<text top="448" left="161" width="226" height="11" font="8">pthread_mutex_lock(&amp;mtLock);</text>
+<text top="467" left="104" width="7" height="8" font="7">23</text>
+<text top="463" left="161" width="153" height="11" font="8">while (mtInit == 0)</text>
+<text top="482" left="104" width="7" height="8" font="7">24</text>
+<text top="478" left="193" width="291" height="11" font="8">pthread_cond_wait(&amp;mtCond, &amp;mtLock);</text>
+<text top="497" left="104" width="7" height="8" font="7">25</text>
+<text top="493" left="161" width="242" height="11" font="8">pthread_mutex_unlock(&amp;mtLock);</text>
+<text top="512" left="104" width="7" height="8" font="7">26</text>
+<text top="527" left="104" width="7" height="8" font="7">27</text>
+<text top="523" left="161" width="194" height="11" font="8">mState = mThread-&gt;State;</text>
+<text top="542" left="104" width="7" height="8" font="7">28</text>
+<text top="538" left="161" width="24" height="11" font="8">...</text>
+<text top="557" left="104" width="7" height="8" font="7">29</text>
+<text top="553" left="129" width="8" height="11" font="8">}</text>
+<text top="577" left="144" width="69" height="14" font="2">Figure 32.5:</text>
+<text top="577" left="217" width="195" height="13" font="3"><b>Fixing The Ordering Violation (</b></text>
+<text top="578" left="412" width="129" height="11" font="9"><b>ordering_fixed.c</b></text>
+<text top="577" left="541" width="4" height="13" font="3"><b>)</b></text>
+<text top="598" left="147" width="414" height="14" font="2">As you probably ﬁgured out, the code in Thread 2 seems to assume</text>
+<text top="613" left="129" width="96" height="14" font="2">that the variable</text>
+<text top="613" left="227" width="57" height="11" font="8">mThread</text>
+<text top="613" left="286" width="274" height="14" font="2">has already been initialized (and is not NULL);</text>
+<text top="628" left="129" width="378" height="14" font="2">however, if Thread 2 runs immediately once created, the value of</text>
+<text top="628" left="509" width="57" height="11" font="8">mThread</text>
+<text top="643" left="129" width="243" height="14" font="2">will not be set when it is accessed within</text>
+<text top="643" left="376" width="57" height="11" font="8">mMain()</text>
+<text top="643" left="436" width="125" height="14" font="2">in Thread 2, and will</text>
+<text top="658" left="129" width="432" height="14" font="2">likely crash with a NULL-pointer dereference. Note that we assume the</text>
+<text top="672" left="129" width="50" height="14" font="2">value of</text>
+<text top="673" left="183" width="57" height="11" font="8">mThread</text>
+<text top="672" left="245" width="316" height="14" font="2">is initially NULL; if not, even stranger things could</text>
+<text top="687" left="129" width="432" height="14" font="2">happen as arbitrary memory locations are accessed through the derefer-</text>
+<text top="702" left="129" width="101" height="14" font="2">ence in Thread 2.</text>
+<text top="719" left="147" width="414" height="14" font="2">The more formal deﬁnition of an order violation is the following: “The</text>
+<text top="734" left="129" width="418" height="14" font="2">desired order between two (groups of) memory accesses is ﬂipped (i.e.,</text>
+<text top="734" left="550" width="10" height="14" font="13">A</text>
+<text top="749" left="129" width="199" height="14" font="2">should always be executed before</text>
+<text top="749" left="332" width="10" height="14" font="13">B</text>
+<text top="749" left="343" width="218" height="14" font="2">, but the order is not enforced during</text>
+<text top="764" left="129" width="114" height="14" font="2">execution)” [L+08].</text>
+<text top="781" left="147" width="414" height="14" font="2">The ﬁx to this type of bug is generally to enforce ordering. As dis-</text>
+<text top="796" left="129" width="147" height="14" font="2">cussed previously, using</text>
+<text top="796" left="280" width="119" height="13" font="3"><b>condition variables</b></text>
+<text top="796" left="403" width="157" height="14" font="2">is an easy and robust way</text>
+<text top="811" left="129" width="432" height="14" font="2">to add this style of synchronization into modern code bases. In the exam-</text>
+<text top="826" left="129" width="380" height="14" font="2">ple above, we could thus rewrite the code as seen in Figure 32.5.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="151" width="10" height="14" font="2">C</text>
+<text top="98" left="161" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="249" width="8" height="14" font="2">P</text>
+<text top="98" left="258" width="55" height="11" font="4">ROBLEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="139" left="105" width="414" height="14" font="2">In this ﬁxed-up code sequence, we have added a condition variable</text>
+<text top="154" left="87" width="4" height="14" font="2">(</text>
+<text top="154" left="92" width="48" height="11" font="8">mtCond</text>
+<text top="154" left="140" width="162" height="14" font="2">) and corresponding lock (</text>
+<text top="154" left="302" width="48" height="11" font="8">mtLock</text>
+<text top="154" left="350" width="169" height="14" font="2">), as well as a state variable</text>
+<text top="169" left="87" width="4" height="14" font="2">(</text>
+<text top="169" left="92" width="48" height="11" font="8">mtInit</text>
+<text top="169" left="140" width="327" height="14" font="2">). When the initialization code runs, it sets the state of</text>
+<text top="169" left="471" width="48" height="11" font="8">mtInit</text>
+<text top="183" left="87" width="432" height="14" font="2">to 1 and signals that it has done so. If Thread 2 had run before this point,</text>
+<text top="198" left="87" width="432" height="14" font="2">it will be waiting for this signal and corresponding state change; if it runs</text>
+<text top="213" left="87" width="432" height="14" font="2">later, it will check the state and see that the initialization has already oc-</text>
+<text top="228" left="87" width="67" height="14" font="2">curred (i.e.,</text>
+<text top="229" left="158" width="48" height="11" font="8">mtInit</text>
+<text top="228" left="210" width="309" height="14" font="2">is set to 1), and thus continue as is proper. Note that</text>
+<text top="243" left="87" width="115" height="14" font="2">we could likely use</text>
+<text top="244" left="205" width="57" height="11" font="8">mThread</text>
+<text top="243" left="265" width="254" height="14" font="2">as the state variable itself, but do not do so</text>
+<text top="258" left="87" width="432" height="14" font="2">for the sake of simplicity here. When ordering matters between threads,</text>
+<text top="273" left="87" width="354" height="14" font="2">condition variables (or semaphores) can come to the rescue.</text>
+<text top="318" left="87" width="213" height="15" font="6"><b>Non-Deadlock Bugs: Summary</b></text>
+<text top="344" left="87" width="432" height="14" font="2">A large fraction (97%) of non-deadlock bugs studied by Lu et al. are either</text>
+<text top="359" left="87" width="432" height="14" font="2">atomicity or order violations. Thus, by carefully thinking about these</text>
+<text top="374" left="87" width="432" height="14" font="2">types of bug patterns, programmers can likely do a better job of avoiding</text>
+<text top="389" left="87" width="432" height="14" font="2">them. Moreover, as more automated code-checking tools develop, they</text>
+<text top="404" left="87" width="432" height="14" font="2">should likely focus on these two types of bugs as they constitute such a</text>
+<text top="418" left="87" width="345" height="14" font="2">large fraction of non-deadlock bugs found in deployment.</text>
+<text top="435" left="105" width="414" height="14" font="2">Unfortunately, not all bugs are as easily ﬁxed as the examples we</text>
+<text top="450" left="87" width="432" height="14" font="2">looked at above. Some require a deeper understanding of what the pro-</text>
+<text top="465" left="87" width="432" height="14" font="2">gram is doing, or a larger amount of code or data structure reorganization</text>
+<text top="480" left="87" width="412" height="14" font="2">to ﬁx. Read Lu et al.’s excellent (and readable) paper for more details.</text>
+<text top="519" left="55" width="143" height="17" font="5">32.3 Deadlock Bugs</text>
+<text top="550" left="105" width="414" height="14" font="2">Beyond the concurrency bugs mentioned above, a classic problem that</text>
+<text top="565" left="87" width="445" height="14" font="2">arises in many concurrent systems with complex locking protocols is known</text>
+<text top="580" left="87" width="12" height="14" font="2">as</text>
+<text top="580" left="104" width="56" height="13" font="3"><b>deadlock</b></text>
+<text top="580" left="160" width="359" height="14" font="2">. Deadlock occurs, for example, when a thread (say Thread</text>
+<text top="595" left="87" width="121" height="14" font="2">1) is holding a lock (</text>
+<text top="596" left="208" width="16" height="11" font="8">L1</text>
+<text top="595" left="224" width="183" height="14" font="2">) and waiting for another one (</text>
+<text top="596" left="407" width="16" height="11" font="8">L2</text>
+<text top="595" left="423" width="96" height="14" font="2">); unfortunately,</text>
+<text top="610" left="87" width="219" height="14" font="2">the thread (Thread 2) that holds lock</text>
+<text top="611" left="310" width="16" height="11" font="8">L2</text>
+<text top="610" left="330" width="80" height="14" font="2">is waiting for</text>
+<text top="611" left="414" width="16" height="11" font="8">L1</text>
+<text top="610" left="433" width="85" height="14" font="2">to be released.</text>
+<text top="625" left="87" width="400" height="14" font="2">Here is a code snippet that demonstrates such a potential deadlock:</text>
+<text top="649" left="103" width="73" height="11" font="8">Thread 1:</text>
+<text top="649" left="329" width="73" height="11" font="8">Thread 2:</text>
+<text top="664" left="103" width="186" height="11" font="8">pthread_mutex_lock(L1);</text>
+<text top="664" left="329" width="186" height="11" font="8">pthread_mutex_lock(L2);</text>
+<text top="679" left="103" width="186" height="11" font="8">pthread_mutex_lock(L2);</text>
+<text top="679" left="329" width="186" height="11" font="8">pthread_mutex_lock(L1);</text>
+<text top="703" left="167" width="69" height="14" font="2">Figure 32.6:</text>
+<text top="703" left="240" width="114" height="13" font="3"><b>Simple Deadlock (</b></text>
+<text top="704" left="354" width="81" height="11" font="9"><b>deadlock.c</b></text>
+<text top="703" left="435" width="4" height="13" font="3"><b>)</b></text>
+<text top="720" left="105" width="414" height="14" font="2">Note that if this code runs, deadlock does not necessarily occur; rather,</text>
+<text top="735" left="87" width="296" height="14" font="2">it may occur, if, for example, Thread 1 grabs lock</text>
+<text top="735" left="387" width="16" height="11" font="8">L1</text>
+<text top="735" left="407" width="112" height="14" font="2">and then a context</text>
+<text top="750" left="87" width="337" height="14" font="2">switch occurs to Thread 2. At that point, Thread 2 grabs</text>
+<text top="750" left="428" width="16" height="11" font="8">L2</text>
+<text top="750" left="444" width="75" height="14" font="2">, and tries to</text>
+<text top="765" left="87" width="44" height="14" font="2">acquire</text>
+<text top="765" left="135" width="16" height="11" font="8">L1</text>
+<text top="765" left="151" width="368" height="14" font="2">. Thus we have a deadlock, as each thread is waiting for the</text>
+<text top="779" left="87" width="432" height="14" font="2">other and neither can run. See Figure 32.7 for a graphical depiction; the</text>
+<text top="794" left="87" width="77" height="14" font="2">presence of a</text>
+<text top="794" left="168" width="31" height="13" font="3"><b>cycle</b></text>
+<text top="794" left="202" width="246" height="14" font="2">in the graph is indicative of the deadlock.</text>
+<text top="811" left="105" width="414" height="14" font="2">The ﬁgure should make the problem clear. How should programmers</text>
+<text top="826" left="87" width="296" height="14" font="2">write code so as to handle deadlock in some way?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="11" family="LQOYTX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="15" size="11" family="LQOYTX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="16" size="11" family="LQOYTX+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="335" width="10" height="14" font="2">C</text>
+<text top="98" left="345" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="398" width="10" height="14" font="2">C</text>
+<text top="98" left="408" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="497" width="8" height="14" font="2">P</text>
+<text top="98" left="505" width="55" height="11" font="4">ROBLEMS</text>
+<text top="174" left="258" width="43" height="10" font="14">Thread 1</text>
+<text top="304" left="388" width="43" height="10" font="14">Thread 2</text>
+<text top="174" left="391" width="38" height="10" font="14">Lock L1</text>
+<text top="304" left="261" width="38" height="10" font="14">Lock L2</text>
+<text top="314" left="326" width="28" height="10" font="14">Holds</text>
+<text top="163" left="336" width="28" height="10" font="14">Holds</text>
+<text top="261" left="273" width="0" height="10" font="15">Wanted by</text>
+<text top="209" left="417" width="0" height="10" font="16">Wanted by</text>
+<text top="364" left="203" width="69" height="14" font="2">Figure 32.7:</text>
+<text top="364" left="276" width="210" height="13" font="3"><b>The Deadlock Dependency Graph</b></text>
+<text top="442" left="222" width="10" height="14" font="2">C</text>
+<text top="444" left="232" width="24" height="11" font="4">RUX</text>
+<text top="442" left="257" width="19" height="14" font="2">: H</text>
+<text top="444" left="277" width="20" height="11" font="4">OW</text>
+<text top="442" left="301" width="8" height="14" font="2">T</text>
+<text top="444" left="310" width="8" height="11" font="4">O</text>
+<text top="442" left="322" width="10" height="14" font="2">D</text>
+<text top="444" left="333" width="23" height="11" font="4">EAL</text>
+<text top="442" left="360" width="13" height="14" font="2">W</text>
+<text top="444" left="374" width="21" height="11" font="4">ITH</text>
+<text top="442" left="399" width="10" height="14" font="2">D</text>
+<text top="444" left="410" width="58" height="11" font="4">EADLOCK</text>
+<text top="457" left="147" width="414" height="14" font="2">How should we build systems to prevent, avoid, or at least detect and</text>
+<text top="472" left="129" width="378" height="14" font="2">recover from deadlock? Is this a real problem in systems today?</text>
+<text top="530" left="129" width="184" height="15" font="6"><b>Why Do Deadlocks Occur?</b></text>
+<text top="555" left="129" width="432" height="14" font="2">As you may be thinking, simple deadlocks such as the one above seem</text>
+<text top="570" left="129" width="432" height="14" font="2">readily avoidable. For example, if Thread 1 and 2 both made sure to grab</text>
+<text top="585" left="129" width="432" height="14" font="2">locks in the same order, the deadlock would never arise. So why do dead-</text>
+<text top="600" left="129" width="85" height="14" font="2">locks happen?</text>
+<text top="616" left="147" width="414" height="14" font="2">One reason is that in large code bases, complex dependencies arise</text>
+<text top="631" left="129" width="432" height="14" font="2">between components. Take the operating system, for example. The vir-</text>
+<text top="646" left="129" width="432" height="14" font="2">tual memory system might need to access the ﬁle system in order to page</text>
+<text top="661" left="129" width="432" height="14" font="2">in a block from disk; the ﬁle system might subsequently require a page</text>
+<text top="676" left="129" width="432" height="14" font="2">of memory to read the block into and thus contact the virtual memory</text>
+<text top="691" left="129" width="432" height="14" font="2">system. Thus, the design of locking strategies in large systems must be</text>
+<text top="706" left="129" width="432" height="14" font="2">carefully done to avoid deadlock in the case of circular dependencies that</text>
+<text top="720" left="129" width="192" height="14" font="2">may occur naturally in the code.</text>
+<text top="736" left="147" width="224" height="14" font="2">Another reason is due to the nature of</text>
+<text top="736" left="374" width="86" height="13" font="3"><b>encapsulation</b></text>
+<text top="736" left="460" width="101" height="14" font="2">. As software de-</text>
+<text top="751" left="129" width="432" height="14" font="2">velopers, we are taught to hide details of implementations and thus make</text>
+<text top="766" left="129" width="432" height="14" font="2">software easier to build in a modular way. Unfortunately, such modular-</text>
+<text top="781" left="129" width="432" height="14" font="2">ity does not mesh well with locking. As Jula et al. point out [J+08], some</text>
+<text top="796" left="129" width="432" height="14" font="2">seemingly innocuous interfaces almost invite you to deadlock. For exam-</text>
+<text top="811" left="129" width="279" height="14" font="2">ple, take the Java Vector class and the method</text>
+<text top="812" left="413" width="65" height="11" font="8">AddAll()</text>
+<text top="811" left="477" width="84" height="14" font="2">. This routine</text>
+<text top="826" left="129" width="161" height="14" font="2">would be called as follows:</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="151" width="10" height="14" font="2">C</text>
+<text top="98" left="161" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="249" width="8" height="14" font="2">P</text>
+<text top="98" left="258" width="55" height="11" font="4">ROBLEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="139" left="87" width="113" height="11" font="8">Vector v1, v2;</text>
+<text top="154" left="87" width="113" height="11" font="8">v1.AddAll(v2);</text>
+<text top="183" left="105" width="414" height="14" font="2">Internally, because the method needs to be multi-thread safe, locks for</text>
+<text top="197" left="87" width="432" height="14" font="2">both the vector being added to (v1) and the parameter (v2) need to be</text>
+<text top="212" left="87" width="432" height="14" font="2">acquired. The routine acquires said locks in some arbitrary order (say v1</text>
+<text top="227" left="87" width="432" height="14" font="2">then v2) in order to add the contents of v2 to v1. If some other thread</text>
+<text top="242" left="87" width="26" height="14" font="2">calls</text>
+<text top="243" left="117" width="105" height="11" font="8">v2.AddAll(v1)</text>
+<text top="242" left="225" width="294" height="14" font="2">at nearly the same time, we have the potential for</text>
+<text top="257" left="87" width="420" height="14" font="2">deadlock, all in a way that is quite hidden from the calling application.</text>
+<text top="291" left="87" width="169" height="15" font="6"><b>Conditions for Deadlock</b></text>
+<text top="316" left="87" width="358" height="14" font="2">Four conditions need to hold for a deadlock to occur [C+71]:</text>
+<text top="341" left="107" width="8" height="14" font="2">•</text>
+<text top="341" left="122" width="110" height="13" font="3"><b>Mutual exclusion:</b></text>
+<text top="341" left="235" width="284" height="14" font="2">Threads claim exclusive control of resources that</text>
+<text top="356" left="122" width="238" height="14" font="2">they require (e.g., a thread grabs a lock).</text>
+<text top="371" left="107" width="8" height="14" font="2">•</text>
+<text top="371" left="122" width="94" height="13" font="3"><b>Hold-and-wait:</b></text>
+<text top="371" left="219" width="304" height="14" font="2">Threads hold resources allocated to them (e.g., locks</text>
+<text top="386" left="122" width="397" height="14" font="2">that they have already acquired) while waiting for additional re-</text>
+<text top="401" left="122" width="268" height="14" font="2">sources (e.g., locks that they wish to acquire).</text>
+<text top="416" left="107" width="8" height="14" font="2">•</text>
+<text top="416" left="122" width="97" height="13" font="3"><b>No preemption:</b></text>
+<text top="416" left="223" width="296" height="14" font="2">Resources (e.g., locks) cannot be forcibly removed</text>
+<text top="431" left="122" width="212" height="14" font="2">from threads that are holding them.</text>
+<text top="446" left="107" width="8" height="14" font="2">•</text>
+<text top="446" left="122" width="83" height="13" font="3"><b>Circular wait:</b></text>
+<text top="446" left="209" width="310" height="14" font="2">There exists a circular chain of threads such that each</text>
+<text top="461" left="122" width="397" height="14" font="2">thread holds one or more resources (e.g., locks) that are being re-</text>
+<text top="476" left="122" width="234" height="14" font="2">quested by the next thread in the chain.</text>
+<text top="502" left="105" width="414" height="14" font="2">If any of these four conditions are not met, deadlock cannot occur.</text>
+<text top="516" left="87" width="209" height="14" font="2">Thus, we ﬁrst explore techniques to</text>
+<text top="516" left="299" width="41" height="14" font="12">prevent</text>
+<text top="516" left="343" width="176" height="14" font="2">deadlock; each of these strate-</text>
+<text top="531" left="87" width="432" height="14" font="2">gies seeks to prevent one of the above conditions from arising and thus is</text>
+<text top="546" left="87" width="290" height="14" font="2">one approach to handling the deadlock problem.</text>
+<text top="583" left="87" width="75" height="15" font="6"><b>Prevention</b></text>
+<text top="608" left="87" width="82" height="13" font="3"><b>Circular Wait</b></text>
+<text top="632" left="87" width="432" height="14" font="2">Probably the most practical prevention technique (and certainly one that</text>
+<text top="647" left="87" width="432" height="14" font="2">is frequently employed) is to write your locking code such that you never</text>
+<text top="661" left="87" width="432" height="14" font="2">induce a circular wait. The most straightforward way to do that is to pro-</text>
+<text top="676" left="87" width="37" height="14" font="2">vide a</text>
+<text top="677" left="128" width="85" height="13" font="3"><b>total ordering</b></text>
+<text top="676" left="217" width="302" height="14" font="2">on lock acquisition. For example, if there are only</text>
+<text top="691" left="87" width="145" height="14" font="2">two locks in the system (</text>
+<text top="692" left="232" width="16" height="11" font="8">L1</text>
+<text top="691" left="251" width="23" height="14" font="2">and</text>
+<text top="692" left="277" width="16" height="11" font="8">L2</text>
+<text top="691" left="293" width="226" height="14" font="2">), you can prevent deadlock by always</text>
+<text top="706" left="87" width="57" height="14" font="2">acquiring</text>
+<text top="707" left="147" width="16" height="11" font="8">L1</text>
+<text top="706" left="167" width="37" height="14" font="2">before</text>
+<text top="707" left="207" width="16" height="11" font="8">L2</text>
+<text top="706" left="224" width="295" height="14" font="2">. Such strict ordering ensures that no cyclical wait</text>
+<text top="721" left="87" width="158" height="14" font="2">arises; hence, no deadlock.</text>
+<text top="736" left="105" width="414" height="14" font="2">Of course, in more complex systems, more than two locks will exist,</text>
+<text top="751" left="87" width="432" height="14" font="2">and thus total lock ordering may be difﬁcult to achieve (and perhaps is</text>
+<text top="766" left="87" width="187" height="14" font="2">unnecessary anyhow). Thus, a</text>
+<text top="766" left="279" width="98" height="13" font="3"><b>partial ordering</b></text>
+<text top="766" left="381" width="138" height="14" font="2">can be a useful way to</text>
+<text top="781" left="87" width="432" height="14" font="2">structure lock acquisition so as to avoid deadlock. An excellent real exam-</text>
+<text top="796" left="87" width="432" height="14" font="2">ple of partial lock ordering can be seen in the memory mapping code in</text>
+<text top="811" left="87" width="432" height="14" font="2">Linux [T+94] (v5.2); the comment at the top of the source code reveals ten</text>
+<text top="826" left="87" width="432" height="14" font="2">different groups of lock acquisition orders, including simple ones such</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="9" family="JHNLFU+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="335" width="10" height="14" font="2">C</text>
+<text top="98" left="345" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="398" width="10" height="14" font="2">C</text>
+<text top="98" left="408" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="497" width="8" height="14" font="2">P</text>
+<text top="98" left="505" width="55" height="11" font="4">ROBLEMS</text>
+<text top="148" left="189" width="8" height="14" font="2">T</text>
+<text top="150" left="198" width="11" height="11" font="4">IP</text>
+<text top="148" left="210" width="16" height="14" font="2">: E</text>
+<text top="150" left="227" width="48" height="11" font="4">NFORCE</text>
+<text top="148" left="279" width="8" height="14" font="2">L</text>
+<text top="150" left="288" width="25" height="11" font="4">OCK</text>
+<text top="148" left="317" width="11" height="14" font="2">O</text>
+<text top="150" left="328" width="54" height="11" font="4">RDERING</text>
+<text top="148" left="386" width="8" height="14" font="2">B</text>
+<text top="150" left="395" width="7" height="11" font="4">Y</text>
+<text top="148" left="406" width="8" height="14" font="2">L</text>
+<text top="150" left="415" width="25" height="11" font="4">OCK</text>
+<text top="148" left="444" width="10" height="14" font="2">A</text>
+<text top="150" left="456" width="45" height="11" font="4">DDRESS</text>
+<text top="163" left="129" width="432" height="14" font="2">In some cases, a function must grab two (or more) locks; thus, we know</text>
+<text top="178" left="129" width="432" height="14" font="2">we must be careful or deadlock could arise. Imagine a function that is</text>
+<text top="193" left="129" width="102" height="14" font="2">called as follows:</text>
+<text top="194" left="236" width="307" height="14" font="8">do_something(mutex_t *m1, mutex_t *m2)</text>
+<text top="193" left="543" width="18" height="14" font="2">. If</text>
+<text top="208" left="129" width="136" height="14" font="2">the code always grabs</text>
+<text top="209" left="269" width="16" height="11" font="8">m1</text>
+<text top="208" left="290" width="37" height="14" font="2">before</text>
+<text top="209" left="332" width="16" height="11" font="8">m2</text>
+<text top="208" left="353" width="64" height="14" font="2">(or always</text>
+<text top="209" left="422" width="16" height="11" font="8">m2</text>
+<text top="208" left="443" width="37" height="14" font="2">before</text>
+<text top="209" left="485" width="16" height="11" font="8">m1</text>
+<text top="208" left="501" width="60" height="14" font="2">), it could</text>
+<text top="223" left="129" width="232" height="14" font="2">deadlock, because one thread could call</text>
+<text top="224" left="364" width="161" height="11" font="8">do_something(L1, L2)</text>
+<text top="223" left="527" width="33" height="14" font="2">while</text>
+<text top="238" left="129" width="149" height="14" font="2">another thread could call</text>
+<text top="239" left="281" width="161" height="11" font="8">do_something(L2, L1)</text>
+<text top="238" left="442" width="3" height="14" font="2">.</text>
+<text top="256" left="129" width="388" height="14" font="2">To avoid this particular issue, the clever programmer can use the</text>
+<text top="256" left="521" width="40" height="14" font="12">address</text>
+<text top="271" left="129" width="432" height="14" font="2">of each lock as a way of ordering lock acquisition. By acquiring locks in</text>
+<text top="286" left="129" width="290" height="14" font="2">either high-to-low or low-to-high address order,</text>
+<text top="287" left="423" width="113" height="11" font="8">do_something()</text>
+<text top="286" left="540" width="21" height="14" font="2">can</text>
+<text top="301" left="129" width="432" height="14" font="2">guarantee that it always acquires locks in the same order, regardless of</text>
+<text top="316" left="129" width="432" height="14" font="2">which order they are passed in. The code would look something like this:</text>
+<text top="341" left="145" width="412" height="11" font="8">if (m1 &gt; m2) { // grab in high-to-low address order</text>
+<text top="356" left="161" width="186" height="11" font="8">pthread_mutex_lock(m1);</text>
+<text top="371" left="161" width="186" height="11" font="8">pthread_mutex_lock(m2);</text>
+<text top="386" left="145" width="65" height="11" font="8">} else {</text>
+<text top="401" left="161" width="186" height="11" font="8">pthread_mutex_lock(m2);</text>
+<text top="416" left="161" width="186" height="11" font="8">pthread_mutex_lock(m1);</text>
+<text top="431" left="145" width="8" height="11" font="8">}</text>
+<text top="446" left="145" width="395" height="11" font="8">// Code assumes that m1 != m2 (not the same lock)</text>
+<text top="470" left="129" width="432" height="14" font="2">By using this simple technique, a programmer can ensure a simple and</text>
+<text top="485" left="129" width="382" height="14" font="2">efﬁcient deadlock-free implementation of multi-lock acquisition.</text>
+<text top="520" left="129" width="23" height="14" font="2">as “</text>
+<text top="520" left="152" width="57" height="11" font="8">i_mutex</text>
+<text top="520" left="212" width="37" height="14" font="2">before</text>
+<text top="520" left="253" width="97" height="11" font="8">i_mmap_rwsem</text>
+<text top="520" left="350" width="211" height="14" font="2">” and more complex orders such as</text>
+<text top="535" left="129" width="7" height="14" font="2">“</text>
+<text top="535" left="136" width="97" height="11" font="8">i_mmap_rwsem</text>
+<text top="535" left="236" width="37" height="14" font="2">before</text>
+<text top="535" left="277" width="97" height="11" font="8">private_lock</text>
+<text top="535" left="378" width="37" height="14" font="2">before</text>
+<text top="535" left="419" width="73" height="11" font="8">swap_lock</text>
+<text top="535" left="496" width="37" height="14" font="2">before</text>
+<text top="535" left="537" width="24" height="11" font="8">i_-</text>
+<text top="550" left="129" width="81" height="11" font="8">pages lock</text>
+<text top="549" left="210" width="10" height="14" font="2">”.</text>
+<text top="564" left="147" width="414" height="14" font="2">As you can imagine, both total and partial ordering require careful</text>
+<text top="579" left="129" width="432" height="14" font="2">design of locking strategies and must be constructed with great care. Fur-</text>
+<text top="594" left="129" width="432" height="14" font="2">ther, ordering is just a convention, and a sloppy programmer can easily</text>
+<text top="609" left="129" width="432" height="14" font="2">ignore the locking protocol and potentially cause deadlock. Finally, lock</text>
+<text top="624" left="129" width="432" height="14" font="2">ordering requires a deep understanding of the code base, and how vari-</text>
+<text top="641" left="129" width="410" height="14" font="2">ous routines are called; just one mistake could result in the “D” word</text>
+<text top="639" left="539" width="4" height="9" font="17">1</text>
+<text top="641" left="544" width="3" height="14" font="2">.</text>
+<text top="675" left="129" width="90" height="13" font="3"><b>Hold-and-wait</b></text>
+<text top="699" left="129" width="432" height="14" font="2">The hold-and-wait requirement for deadlock can be avoided by acquiring</text>
+<text top="713" left="129" width="432" height="14" font="2">all locks at once, atomically. In practice, this could be achieved as follows:</text>
+<text top="745" left="107" width="4" height="8" font="7">1</text>
+<text top="741" left="145" width="250" height="11" font="8">pthread_mutex_lock(prevention);</text>
+<text top="741" left="419" width="161" height="11" font="8">// begin acquisition</text>
+<text top="759" left="107" width="4" height="8" font="7">2</text>
+<text top="756" left="145" width="186" height="11" font="8">pthread_mutex_lock(L1);</text>
+<text top="774" left="107" width="4" height="8" font="7">3</text>
+<text top="771" left="145" width="186" height="11" font="8">pthread_mutex_lock(L2);</text>
+<text top="789" left="107" width="4" height="8" font="7">4</text>
+<text top="786" left="145" width="24" height="11" font="8">...</text>
+<text top="804" left="107" width="4" height="8" font="7">5</text>
+<text top="801" left="145" width="323" height="11" font="8">pthread_mutex_unlock(prevention); // end</text>
+<text top="826" left="149" width="4" height="8" font="7">1</text>
+<text top="828" left="154" width="154" height="11" font="11">Hint: “D” stands for “Deadlock”.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="151" width="10" height="14" font="2">C</text>
+<text top="98" left="161" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="249" width="8" height="14" font="2">P</text>
+<text top="98" left="258" width="55" height="11" font="4">ROBLEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="139" left="105" width="152" height="14" font="2">By ﬁrst grabbing the lock</text>
+<text top="139" left="261" width="81" height="11" font="8">prevention</text>
+<text top="139" left="342" width="177" height="14" font="2">, this code guarantees that no</text>
+<text top="154" left="87" width="432" height="14" font="2">untimely thread switch can occur in the midst of lock acquisition and thus</text>
+<text top="169" left="87" width="432" height="14" font="2">deadlock can once again be avoided. Of course, it requires that any time</text>
+<text top="183" left="87" width="432" height="14" font="2">any thread grabs a lock, it ﬁrst acquires the global prevention lock. For</text>
+<text top="198" left="87" width="311" height="14" font="2">example, if another thread was trying to grab locks</text>
+<text top="199" left="403" width="16" height="11" font="8">L1</text>
+<text top="198" left="423" width="23" height="14" font="2">and</text>
+<text top="199" left="450" width="16" height="11" font="8">L2</text>
+<text top="198" left="471" width="48" height="14" font="2">in a dif-</text>
+<text top="213" left="87" width="432" height="14" font="2">ferent order, it would be OK, because it would be holding the prevention</text>
+<text top="228" left="87" width="119" height="14" font="2">lock while doing so.</text>
+<text top="243" left="105" width="414" height="14" font="2">Note that the solution is problematic for a number of reasons. As</text>
+<text top="258" left="87" width="432" height="14" font="2">before, encapsulation works against us: when calling a routine, this ap-</text>
+<text top="273" left="87" width="432" height="14" font="2">proach requires us to know exactly which locks must be held and to ac-</text>
+<text top="288" left="87" width="432" height="14" font="2">quire them ahead of time. This technique also is likely to decrease con-</text>
+<text top="303" left="87" width="432" height="14" font="2">currency as all locks must be acquired early on (at once) instead of when</text>
+<text top="318" left="87" width="131" height="14" font="2">they are truly needed.</text>
+<text top="352" left="87" width="94" height="13" font="3"><b>No Preemption</b></text>
+<text top="375" left="87" width="432" height="14" font="2">Because we generally view locks as held until unlock is called, multiple</text>
+<text top="390" left="87" width="432" height="14" font="2">lock acquisition often gets us into trouble because when waiting for one</text>
+<text top="405" left="87" width="432" height="14" font="2">lock we are holding another. Many thread libraries provide a more ﬂex-</text>
+<text top="420" left="87" width="432" height="14" font="2">ible set of interfaces to help avoid this situation. Speciﬁcally, the routine</text>
+<text top="436" left="87" width="186" height="11" font="8">pthread_mutex_trylock()</text>
+<text top="435" left="275" width="244" height="14" font="2">either grabs the lock (if it is available) and</text>
+<text top="450" left="87" width="432" height="14" font="2">returns success or returns an error code indicating the lock is held; in the</text>
+<text top="465" left="87" width="375" height="14" font="2">latter case, you can try again later if you want to grab that lock.</text>
+<text top="480" left="105" width="414" height="14" font="2">Such an interface could be used as follows to build a deadlock-free,</text>
+<text top="495" left="87" width="247" height="14" font="2">ordering-robust lock acquisition protocol:</text>
+<text top="515" left="65" width="4" height="8" font="7">1</text>
+<text top="512" left="87" width="32" height="11" font="8">top:</text>
+<text top="530" left="65" width="4" height="8" font="7">2</text>
+<text top="527" left="103" width="186" height="11" font="8">pthread_mutex_lock(L1);</text>
+<text top="545" left="65" width="4" height="8" font="7">3</text>
+<text top="542" left="103" width="299" height="11" font="8">if (pthread_mutex_trylock(L2) != 0) {</text>
+<text top="560" left="65" width="4" height="8" font="7">4</text>
+<text top="557" left="119" width="202" height="11" font="8">pthread_mutex_unlock(L1);</text>
+<text top="575" left="65" width="4" height="8" font="7">5</text>
+<text top="572" left="119" width="73" height="11" font="8">goto top;</text>
+<text top="590" left="65" width="4" height="8" font="7">6</text>
+<text top="586" left="103" width="8" height="11" font="8">}</text>
+<text top="602" left="105" width="414" height="14" font="2">Note that another thread could follow the same protocol but grab the</text>
+<text top="617" left="87" width="142" height="14" font="2">locks in the other order (</text>
+<text top="618" left="230" width="16" height="11" font="8">L2</text>
+<text top="617" left="248" width="26" height="14" font="2">then</text>
+<text top="618" left="278" width="16" height="11" font="8">L1</text>
+<text top="617" left="294" width="225" height="14" font="2">) and the program would still be dead-</text>
+<text top="632" left="87" width="294" height="14" font="2">lock free. One new problem does arise, however:</text>
+<text top="632" left="386" width="49" height="13" font="3"><b>livelock</b></text>
+<text top="632" left="435" width="83" height="14" font="2">. It is possible</text>
+<text top="647" left="87" width="432" height="14" font="2">(though perhaps unlikely) that two threads could both be repeatedly at-</text>
+<text top="662" left="87" width="432" height="14" font="2">tempting this sequence and repeatedly failing to acquire both locks. In</text>
+<text top="677" left="87" width="432" height="14" font="2">this case, both systems are running through this code sequence over and</text>
+<text top="692" left="87" width="432" height="14" font="2">over again (and thus it is not a deadlock), but progress is not being made,</text>
+<text top="707" left="87" width="432" height="14" font="2">hence the name livelock. There are solutions to the livelock problem, too:</text>
+<text top="721" left="87" width="432" height="14" font="2">for example, one could add a random delay before looping back and try-</text>
+<text top="736" left="87" width="432" height="14" font="2">ing the entire thing over again, thus decreasing the odds of repeated in-</text>
+<text top="751" left="87" width="221" height="14" font="2">terference among competing threads.</text>
+<text top="766" left="105" width="414" height="14" font="2">One point about this solution: it skirts around the hard parts of using</text>
+<text top="781" left="87" width="432" height="14" font="2">a trylock approach. The ﬁrst problem that would likely exist again arises</text>
+<text top="796" left="87" width="432" height="14" font="2">due to encapsulation: if one of these locks is buried in some routine that</text>
+<text top="811" left="87" width="432" height="14" font="2">is getting called, the jump back to the beginning becomes more complex</text>
+<text top="826" left="87" width="407" height="14" font="2">to implement. If the code had acquired some resources (other than</text>
+<text top="827" left="498" width="16" height="11" font="8">L1</text>
+<text top="826" left="514" width="4" height="14" font="2">)</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="335" width="10" height="14" font="2">C</text>
+<text top="98" left="345" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="398" width="10" height="14" font="2">C</text>
+<text top="98" left="408" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="497" width="8" height="14" font="2">P</text>
+<text top="98" left="505" width="55" height="11" font="4">ROBLEMS</text>
+<text top="139" left="129" width="432" height="14" font="2">along the way, it must make sure to carefully release them as well; for</text>
+<text top="154" left="129" width="160" height="14" font="2">example, if after acquiring</text>
+<text top="154" left="294" width="16" height="11" font="8">L1</text>
+<text top="154" left="310" width="251" height="14" font="2">, the code had allocated some memory, it</text>
+<text top="169" left="129" width="365" height="14" font="2">would have to release that memory upon failure to acquire</text>
+<text top="169" left="499" width="16" height="11" font="8">L2</text>
+<text top="169" left="515" width="46" height="14" font="2">, before</text>
+<text top="183" left="129" width="432" height="14" font="2">jumping back to the top to try the entire sequence again. However, in</text>
+<text top="198" left="129" width="432" height="14" font="2">limited circumstances (e.g., the Java vector method mentioned earlier),</text>
+<text top="213" left="129" width="230" height="14" font="2">this type of approach could work well.</text>
+<text top="229" left="147" width="319" height="14" font="2">You might also notice that this approach doesn’t really</text>
+<text top="228" left="469" width="19" height="14" font="12">add</text>
+<text top="229" left="491" width="69" height="14" font="2">preemption</text>
+<text top="243" left="129" width="432" height="14" font="2">(the forcible action of taking a lock away from a thread that owns it),</text>
+<text top="258" left="129" width="432" height="14" font="2">but rather uses the trylock approach to allow a developer to back out of</text>
+<text top="273" left="129" width="432" height="14" font="2">lock ownership (i.e., preempt their own ownership) in a graceful way.</text>
+<text top="288" left="129" width="432" height="14" font="2">However, it is a practical approach, and thus we include it here, despite</text>
+<text top="303" left="129" width="179" height="14" font="2">its imperfection in this regard.</text>
+<text top="327" left="129" width="109" height="13" font="3"><b>Mutual Exclusion</b></text>
+<text top="351" left="129" width="432" height="14" font="2">The ﬁnal prevention technique would be to avoid the need for mutual</text>
+<text top="366" left="129" width="432" height="14" font="2">exclusion at all. In general, we know this is difﬁcult, because the code we</text>
+<text top="381" left="129" width="395" height="14" font="2">wish to run does indeed have critical sections. So what can we do?</text>
+<text top="396" left="147" width="414" height="14" font="2">Herlihy had the idea that one could design various data structures</text>
+<text top="411" left="129" width="340" height="14" font="2">without locks at all [H91, H93]. The idea behind these</text>
+<text top="411" left="474" width="55" height="13" font="3"><b>lock-free</b></text>
+<text top="411" left="534" width="27" height="14" font="2">(and</text>
+<text top="426" left="129" width="41" height="14" font="2">related</text>
+<text top="426" left="175" width="55" height="13" font="3"><b>wait-free</b></text>
+<text top="426" left="230" width="331" height="14" font="2">) approaches here is simple: using powerful hardware</text>
+<text top="441" left="129" width="432" height="14" font="2">instructions, you can build data structures in a manner that does not re-</text>
+<text top="456" left="129" width="129" height="14" font="2">quire explicit locking.</text>
+<text top="471" left="147" width="414" height="14" font="2">As a simple example, let us assume we have a compare-and-swap in-</text>
+<text top="486" left="129" width="432" height="14" font="2">struction, which as you may recall is an atomic instruction provided by</text>
+<text top="501" left="129" width="223" height="14" font="2">the hardware that does the following:</text>
+<text top="534" left="107" width="4" height="8" font="7">1</text>
+<text top="531" left="129" width="460" height="14" font="8">int CompareAndSwap(int *address, int expected, int new) {</text>
+<text top="549" left="107" width="4" height="8" font="7">2</text>
+<text top="546" left="145" width="218" height="14" font="8">if (*address == expected) {</text>
+<text top="564" left="107" width="4" height="8" font="7">3</text>
+<text top="563" left="161" width="121" height="11" font="8">*address = new;</text>
+<text top="579" left="107" width="4" height="8" font="7">4</text>
+<text top="575" left="161" width="161" height="11" font="8">return 1; // success</text>
+<text top="594" left="107" width="4" height="8" font="7">5</text>
+<text top="590" left="145" width="8" height="11" font="8">}</text>
+<text top="609" left="107" width="4" height="8" font="7">6</text>
+<text top="605" left="145" width="161" height="11" font="8">return 0; // failure</text>
+<text top="624" left="107" width="4" height="8" font="7">7</text>
+<text top="620" left="129" width="8" height="11" font="8">}</text>
+<text top="649" left="147" width="414" height="14" font="2">Imagine we now wanted to atomically increment a value by a certain</text>
+<text top="663" left="129" width="432" height="14" font="2">amount, using compare-and-swap. We could do so with the following</text>
+<text top="678" left="129" width="97" height="14" font="2">simple function:</text>
+<text top="712" left="107" width="4" height="8" font="7">1</text>
+<text top="708" left="129" width="371" height="14" font="8">void AtomicIncrement(int *value, int amount) {</text>
+<text top="727" left="107" width="4" height="8" font="7">2</text>
+<text top="723" left="145" width="32" height="11" font="8">do {</text>
+<text top="742" left="107" width="4" height="8" font="7">3</text>
+<text top="738" left="161" width="137" height="14" font="8">int old = *value;</text>
+<text top="757" left="107" width="4" height="8" font="7">4</text>
+<text top="753" left="145" width="452" height="11" font="8">} while (CompareAndSwap(value, old, old + amount) == 0);</text>
+<text top="772" left="107" width="4" height="8" font="7">5</text>
+<text top="768" left="129" width="8" height="11" font="8">}</text>
+<text top="796" left="147" width="414" height="14" font="2">Instead of acquiring a lock, doing the update, and then releasing it, we</text>
+<text top="811" left="129" width="432" height="14" font="2">have instead built an approach that repeatedly tries to update the value to</text>
+<text top="826" left="129" width="432" height="14" font="2">the new amount and uses the compare-and-swap to do so. In this manner,</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="10" family="RCQVPT+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="151" width="10" height="14" font="2">C</text>
+<text top="98" left="161" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="249" width="8" height="14" font="2">P</text>
+<text top="98" left="258" width="55" height="11" font="4">ROBLEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="139" left="87" width="432" height="14" font="2">no lock is acquired, and no deadlock can arise (though livelock is still</text>
+<text top="154" left="87" width="432" height="14" font="2">a possibility, and thus a robust solution will be more complex than the</text>
+<text top="169" left="87" width="166" height="14" font="2">simple code snippet above).</text>
+<text top="184" left="105" width="414" height="14" font="2">Let us consider a slightly more complex example: list insertion. Here</text>
+<text top="199" left="87" width="229" height="14" font="2">is code that inserts at the head of a list:</text>
+<text top="234" left="65" width="4" height="8" font="7">1</text>
+<text top="231" left="87" width="194" height="11" font="8">void insert(int value) {</text>
+<text top="249" left="65" width="4" height="8" font="7">2</text>
+<text top="246" left="103" width="283" height="14" font="8">node_t *n = malloc(sizeof(node_t));</text>
+<text top="264" left="65" width="4" height="8" font="7">3</text>
+<text top="261" left="103" width="145" height="11" font="8">assert(n != NULL);</text>
+<text top="279" left="65" width="4" height="8" font="7">4</text>
+<text top="276" left="103" width="137" height="11" font="8">n-&gt;value = value;</text>
+<text top="294" left="65" width="4" height="8" font="7">5</text>
+<text top="291" left="103" width="57" height="11" font="8">n-&gt;next</text>
+<text top="291" left="176" width="56" height="11" font="8">= head;</text>
+<text top="309" left="65" width="4" height="8" font="7">6</text>
+<text top="306" left="103" width="32" height="11" font="8">head</text>
+<text top="306" left="176" width="32" height="11" font="8">= n;</text>
+<text top="324" left="65" width="4" height="8" font="7">7</text>
+<text top="320" left="87" width="8" height="11" font="8">}</text>
+<text top="351" left="105" width="414" height="14" font="2">This code performs a simple insertion, but if called by multiple threads</text>
+<text top="366" left="87" width="432" height="14" font="2">at the “same time”, has a race condition. Can you ﬁgure out why? (draw</text>
+<text top="381" left="87" width="432" height="14" font="2">a picture of what could happen to a list if two concurrent insertions take</text>
+<text top="395" left="87" width="432" height="14" font="2">place, assuming, as always, a malicious scheduling interleaving). Of</text>
+<text top="410" left="87" width="432" height="14" font="2">course, we could solve this by surrounding this code with a lock acquire</text>
+<text top="425" left="87" width="70" height="14" font="2">and release:</text>
+<text top="461" left="65" width="4" height="8" font="7">1</text>
+<text top="457" left="87" width="194" height="11" font="8">void insert(int value) {</text>
+<text top="476" left="65" width="4" height="8" font="7">2</text>
+<text top="472" left="103" width="283" height="14" font="8">node_t *n = malloc(sizeof(node_t));</text>
+<text top="491" left="65" width="4" height="8" font="7">3</text>
+<text top="487" left="103" width="145" height="11" font="8">assert(n != NULL);</text>
+<text top="506" left="65" width="4" height="8" font="7">4</text>
+<text top="502" left="103" width="137" height="11" font="8">n-&gt;value = value;</text>
+<text top="520" left="65" width="4" height="8" font="7">5</text>
+<text top="517" left="103" width="234" height="11" font="8">pthread_mutex_lock(listlock);</text>
+<text top="517" left="361" width="202" height="11" font="8">// begin critical section</text>
+<text top="535" left="65" width="4" height="8" font="7">6</text>
+<text top="532" left="103" width="57" height="11" font="8">n-&gt;next</text>
+<text top="532" left="176" width="56" height="11" font="8">= head;</text>
+<text top="550" left="65" width="4" height="8" font="7">7</text>
+<text top="547" left="103" width="32" height="11" font="8">head</text>
+<text top="547" left="176" width="32" height="11" font="8">= n;</text>
+<text top="565" left="65" width="4" height="8" font="7">8</text>
+<text top="562" left="103" width="444" height="11" font="8">pthread_mutex_unlock(listlock); // end critical section</text>
+<text top="580" left="65" width="4" height="8" font="7">9</text>
+<text top="577" left="87" width="8" height="11" font="8">}</text>
+<text top="607" left="105" width="354" height="14" font="2">In this solution, we are using locks in the traditional manner</text>
+<text top="604" left="459" width="4" height="9" font="17">2</text>
+<text top="607" left="464" width="55" height="14" font="2">. Instead,</text>
+<text top="622" left="87" width="432" height="14" font="2">let us try to perform this insertion in a lock-free manner simply using the</text>
+<text top="637" left="87" width="372" height="14" font="2">compare-and-swap instruction. Here is one possible approach:</text>
+<text top="672" left="65" width="4" height="8" font="7">1</text>
+<text top="669" left="87" width="194" height="11" font="8">void insert(int value) {</text>
+<text top="687" left="65" width="4" height="8" font="7">2</text>
+<text top="683" left="103" width="283" height="14" font="8">node_t *n = malloc(sizeof(node_t));</text>
+<text top="702" left="65" width="4" height="8" font="7">3</text>
+<text top="698" left="103" width="145" height="11" font="8">assert(n != NULL);</text>
+<text top="717" left="65" width="4" height="8" font="7">4</text>
+<text top="713" left="103" width="137" height="11" font="8">n-&gt;value = value;</text>
+<text top="732" left="65" width="4" height="8" font="7">5</text>
+<text top="728" left="103" width="32" height="11" font="8">do {</text>
+<text top="747" left="65" width="4" height="8" font="7">6</text>
+<text top="743" left="119" width="121" height="11" font="8">n-&gt;next = head;</text>
+<text top="762" left="65" width="4" height="8" font="7">7</text>
+<text top="758" left="103" width="395" height="11" font="8">} while (CompareAndSwap(&amp;head, n-&gt;next, n) == 0);</text>
+<text top="777" left="65" width="4" height="8" font="7">8</text>
+<text top="773" left="87" width="8" height="11" font="8">}</text>
+<text top="802" left="107" width="4" height="8" font="7">2</text>
+<text top="804" left="112" width="407" height="11" font="11">The astute reader might be asking why we grabbed the lock so late, instead of right</text>
+<text top="816" left="87" width="67" height="11" font="11">when entering</text>
+<text top="817" left="157" width="50" height="9" font="18">insert()</text>
+<text top="816" left="208" width="311" height="11" font="11">; can you, astute reader, ﬁgure out why that is likely correct? What</text>
+<text top="828" left="87" width="292" height="11" font="11">assumptions does the code make, for example, about the call to</text>
+<text top="829" left="381" width="50" height="9" font="18">malloc()</text>
+<text top="828" left="432" width="5" height="11" font="11">?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="14" family="LQOYTX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="20" size="14" family="LQOYTX+NimbusSanL-Regu" color="#ffffff"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="335" width="10" height="14" font="2">C</text>
+<text top="98" left="345" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="398" width="10" height="14" font="2">C</text>
+<text top="98" left="408" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="497" width="8" height="14" font="2">P</text>
+<text top="98" left="505" width="55" height="11" font="4">ROBLEMS</text>
+<text top="139" left="147" width="414" height="14" font="2">The code here updates the next pointer to point to the current head,</text>
+<text top="154" left="129" width="432" height="14" font="2">and then tries to swap the newly-created node into position as the new</text>
+<text top="169" left="129" width="432" height="14" font="2">head of the list. However, this will fail if some other thread successfully</text>
+<text top="183" left="129" width="432" height="14" font="2">swapped in a new head in the meanwhile, causing this thread to retry</text>
+<text top="198" left="129" width="150" height="14" font="2">again with the new head.</text>
+<text top="214" left="147" width="414" height="14" font="2">Of course, building a useful list requires more than just a list insert,</text>
+<text top="228" left="129" width="432" height="14" font="2">and not surprisingly building a list that you can insert into, delete from,</text>
+<text top="243" left="129" width="432" height="14" font="2">and perform lookups on in a lock-free manner is non-trivial. Read the</text>
+<text top="258" left="129" width="432" height="14" font="2">rich literature on lock-free and wait-free synchronization to learn more</text>
+<text top="273" left="129" width="100" height="14" font="2">[H01, H91, H93].</text>
+<text top="310" left="129" width="248" height="15" font="6"><b>Deadlock Avoidance via Scheduling</b></text>
+<text top="334" left="129" width="365" height="14" font="2">Instead of deadlock prevention, in some scenarios deadlock</text>
+<text top="335" left="499" width="62" height="13" font="3"><b>avoidance</b></text>
+<text top="349" left="129" width="432" height="14" font="2">is preferable. Avoidance requires some global knowledge of which locks</text>
+<text top="364" left="129" width="445" height="14" font="2">various threads might grab during their execution, and subsequently sched-</text>
+<text top="379" left="129" width="386" height="14" font="2">ules said threads in a way as to guarantee no deadlock can occur.</text>
+<text top="394" left="147" width="414" height="14" font="2">For example, assume we have two processors and four threads which</text>
+<text top="409" left="129" width="432" height="14" font="2">must be scheduled upon them. Assume further we know that Thread</text>
+<text top="424" left="129" width="109" height="14" font="2">1 (T1) grabs locks</text>
+<text top="425" left="243" width="16" height="11" font="8">L1</text>
+<text top="424" left="264" width="23" height="14" font="2">and</text>
+<text top="425" left="292" width="16" height="11" font="8">L2</text>
+<text top="424" left="313" width="247" height="14" font="2">(in some order, at some point during its</text>
+<text top="439" left="129" width="119" height="14" font="2">execution), T2 grabs</text>
+<text top="440" left="252" width="16" height="11" font="8">L1</text>
+<text top="439" left="271" width="23" height="14" font="2">and</text>
+<text top="440" left="297" width="16" height="11" font="8">L2</text>
+<text top="439" left="316" width="123" height="14" font="2">as well, T3 grabs just</text>
+<text top="440" left="443" width="16" height="11" font="8">L2</text>
+<text top="439" left="459" width="102" height="14" font="2">, and T4 grabs no</text>
+<text top="454" left="129" width="432" height="14" font="2">locks at all. We can show these lock acquisition demands of the threads</text>
+<text top="469" left="129" width="93" height="14" font="2">in tabular form:</text>
+<text top="499" left="298" width="16" height="11" font="8">T1</text>
+<text top="499" left="339" width="16" height="11" font="8">T2</text>
+<text top="499" left="379" width="16" height="11" font="8">T3</text>
+<text top="499" left="419" width="16" height="11" font="8">T4</text>
+<text top="514" left="242" width="16" height="11" font="8">L1</text>
+<text top="514" left="290" width="24" height="11" font="8">yes</text>
+<text top="514" left="331" width="24" height="11" font="8">yes</text>
+<text top="514" left="379" width="16" height="11" font="8">no</text>
+<text top="514" left="419" width="16" height="11" font="8">no</text>
+<text top="529" left="242" width="16" height="11" font="8">L2</text>
+<text top="529" left="290" width="24" height="11" font="8">yes</text>
+<text top="529" left="331" width="24" height="11" font="8">yes</text>
+<text top="529" left="371" width="24" height="11" font="8">yes</text>
+<text top="529" left="419" width="16" height="11" font="8">no</text>
+<text top="556" left="147" width="414" height="14" font="2">A smart scheduler could thus compute that as long as T1 and T2 are</text>
+<text top="571" left="129" width="432" height="14" font="2">not run at the same time, no deadlock could ever arise. Here is one such</text>
+<text top="586" left="129" width="56" height="14" font="2">schedule:</text>
+<text top="620" left="224" width="40" height="13" font="19">CPU 1</text>
+<text top="647" left="224" width="40" height="13" font="19">CPU 2</text>
+<text top="647" left="303" width="16" height="13" font="19">T1</text>
+<text top="647" left="371" width="16" height="13" font="19">T2</text>
+<text top="619" left="290" width="16" height="13" font="20">T3</text>
+<text top="619" left="350" width="16" height="13" font="19">T4</text>
+<text top="693" left="147" width="414" height="14" font="2">Note that it is OK for (T3 and T1) or (T3 and T2) to overlap. Even</text>
+<text top="708" left="129" width="127" height="14" font="2">though T3 grabs lock</text>
+<text top="708" left="260" width="16" height="11" font="8">L2</text>
+<text top="708" left="276" width="285" height="14" font="2">, it can never cause a deadlock by running con-</text>
+<text top="722" left="129" width="352" height="14" font="2">currently with other threads because it only grabs one lock.</text>
+<text top="738" left="147" width="414" height="14" font="2">Let’s look at one more example. In this one, there is more contention</text>
+<text top="752" left="129" width="214" height="14" font="2">for the same resources (again, locks</text>
+<text top="753" left="347" width="16" height="11" font="8">L1</text>
+<text top="752" left="367" width="23" height="14" font="2">and</text>
+<text top="753" left="394" width="16" height="11" font="8">L2</text>
+<text top="752" left="410" width="150" height="14" font="2">), as indicated by the fol-</text>
+<text top="767" left="129" width="144" height="14" font="2">lowing contention table:</text>
+<text top="797" left="298" width="16" height="11" font="8">T1</text>
+<text top="797" left="339" width="16" height="11" font="8">T2</text>
+<text top="797" left="379" width="16" height="11" font="8">T3</text>
+<text top="797" left="419" width="16" height="11" font="8">T4</text>
+<text top="812" left="242" width="16" height="11" font="8">L1</text>
+<text top="812" left="290" width="24" height="11" font="8">yes</text>
+<text top="812" left="331" width="24" height="11" font="8">yes</text>
+<text top="812" left="371" width="24" height="11" font="8">yes</text>
+<text top="812" left="419" width="16" height="11" font="8">no</text>
+<text top="827" left="242" width="16" height="11" font="8">L2</text>
+<text top="827" left="290" width="24" height="11" font="8">yes</text>
+<text top="827" left="331" width="24" height="11" font="8">yes</text>
+<text top="827" left="371" width="24" height="11" font="8">yes</text>
+<text top="827" left="419" width="16" height="11" font="8">no</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="151" width="10" height="14" font="2">C</text>
+<text top="98" left="161" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="249" width="8" height="14" font="2">P</text>
+<text top="98" left="258" width="55" height="11" font="4">ROBLEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="148" left="125" width="8" height="14" font="2">T</text>
+<text top="150" left="134" width="11" height="11" font="4">IP</text>
+<text top="148" left="145" width="19" height="14" font="2">: D</text>
+<text top="150" left="165" width="18" height="11" font="4">ON</text>
+<text top="148" left="183" width="4" height="14" font="2">’</text>
+<text top="150" left="188" width="7" height="11" font="4">T</text>
+<text top="148" left="198" width="10" height="14" font="2">A</text>
+<text top="150" left="209" width="38" height="11" font="4">LWAYS</text>
+<text top="148" left="252" width="10" height="14" font="2">D</text>
+<text top="150" left="263" width="8" height="11" font="4">O</text>
+<text top="148" left="275" width="5" height="14" font="2">I</text>
+<text top="150" left="280" width="7" height="11" font="4">T</text>
+<text top="148" left="291" width="8" height="14" font="2">P</text>
+<text top="150" left="300" width="58" height="11" font="4">ERFECTLY</text>
+<text top="148" left="362" width="13" height="14" font="2">(T</text>
+<text top="150" left="376" width="19" height="11" font="4">OM</text>
+<text top="148" left="399" width="13" height="14" font="2">W</text>
+<text top="150" left="413" width="20" height="11" font="4">EST</text>
+<text top="148" left="434" width="4" height="14" font="2">’</text>
+<text top="150" left="438" width="6" height="11" font="4">S</text>
+<text top="148" left="448" width="8" height="14" font="2">L</text>
+<text top="150" left="457" width="19" height="11" font="4">AW</text>
+<text top="148" left="477" width="4" height="14" font="2">)</text>
+<text top="163" left="87" width="432" height="14" font="2">Tom West, famous as the subject of the classic computer-industry book</text>
+<text top="178" left="87" width="125" height="14" font="12">Soul of a New Machine</text>
+<text top="178" left="215" width="304" height="14" font="2">[K81], says famously: “Not everything worth doing</text>
+<text top="193" left="87" width="432" height="14" font="2">is worth doing well”, which is a terriﬁc engineering maxim. If a bad</text>
+<text top="208" left="87" width="432" height="14" font="2">thing happens rarely, certainly one should not spend a great deal of effort</text>
+<text top="223" left="87" width="432" height="14" font="2">to prevent it, particularly if the cost of the bad thing occurring is small.</text>
+<text top="238" left="87" width="432" height="14" font="2">If, on the other hand, you are building a space shuttle, and the cost of</text>
+<text top="253" left="87" width="432" height="14" font="2">something going wrong is the space shuttle blowing up, well, perhaps</text>
+<text top="268" left="87" width="229" height="14" font="2">you should ignore this piece of advice.</text>
+<text top="286" left="87" width="432" height="14" font="2">Some readers object: “This sounds like you are suggesting mediocrity</text>
+<text top="301" left="87" width="432" height="14" font="2">as a solution!” Perhaps they are right, that we should be careful with</text>
+<text top="316" left="87" width="432" height="14" font="2">advice such as this. However, our experience tells us that in the world of</text>
+<text top="331" left="87" width="432" height="14" font="2">engineering, with pressing deadlines and other real-world concerns, one</text>
+<text top="346" left="87" width="432" height="14" font="2">will always have to decide which aspects of a system to build well and</text>
+<text top="361" left="87" width="432" height="14" font="2">which to put aside for another day. The hard part is knowing which to</text>
+<text top="376" left="87" width="432" height="14" font="2">do when, a bit of insight only gained through experience and dedication</text>
+<text top="391" left="87" width="113" height="14" font="2">to the task at hand.</text>
+<text top="439" left="105" width="369" height="14" font="2">In particular, threads T1, T2, and T3 all need to grab both locks</text>
+<text top="440" left="477" width="16" height="11" font="8">L1</text>
+<text top="439" left="496" width="23" height="14" font="2">and</text>
+<text top="455" left="87" width="16" height="11" font="8">L2</text>
+<text top="454" left="107" width="412" height="14" font="2">at some point during their execution. Here is a possible schedule that</text>
+<text top="469" left="87" width="274" height="14" font="2">guarantees that no deadlock could ever occur:</text>
+<text top="505" left="182" width="40" height="13" font="19">CPU 1</text>
+<text top="532" left="182" width="40" height="13" font="19">CPU 2</text>
+<text top="532" left="261" width="16" height="13" font="19">T1</text>
+<text top="532" left="329" width="16" height="13" font="19">T2</text>
+<text top="532" left="383" width="16" height="13" font="20">T3</text>
+<text top="503" left="255" width="16" height="13" font="19">T4</text>
+<text top="572" left="105" width="414" height="14" font="2">As you can see, static scheduling leads to a conservative approach</text>
+<text top="587" left="87" width="432" height="14" font="2">where T1, T2, and T3 are all run on the same processor, and thus the</text>
+<text top="602" left="87" width="432" height="14" font="2">total time to complete the jobs is lengthened considerably. Though it may</text>
+<text top="617" left="87" width="432" height="14" font="2">have been possible to run these tasks concurrently, the fear of deadlock</text>
+<text top="632" left="87" width="329" height="14" font="2">prevents us from doing so, and the cost is performance.</text>
+<text top="647" left="105" width="414" height="14" font="2">One famous example of an approach like this is Dijkstra’s Banker’s Al-</text>
+<text top="662" left="87" width="432" height="14" font="2">gorithm [D64], and many similar approaches have been described in the</text>
+<text top="677" left="87" width="432" height="14" font="2">literature. Unfortunately, they are only useful in very limited environ-</text>
+<text top="691" left="87" width="432" height="14" font="2">ments, for example, in an embedded system where one has full knowl-</text>
+<text top="706" left="87" width="432" height="14" font="2">edge of the entire set of tasks that must be run and the locks that they</text>
+<text top="721" left="87" width="432" height="14" font="2">need. Further, such approaches can limit concurrency, as we saw in the</text>
+<text top="736" left="87" width="432" height="14" font="2">second example above. Thus, avoidance of deadlock via scheduling is</text>
+<text top="751" left="87" width="263" height="14" font="2">not a widely-used general-purpose solution.</text>
+<text top="786" left="87" width="132" height="15" font="6"><b>Detect and Recover</b></text>
+<text top="811" left="87" width="432" height="14" font="2">One ﬁnal general strategy is to allow deadlocks to occasionally occur, and</text>
+<text top="826" left="87" width="432" height="14" font="2">then take some action once such a deadlock has been detected. For exam-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="335" width="10" height="14" font="2">C</text>
+<text top="98" left="345" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="398" width="10" height="14" font="2">C</text>
+<text top="98" left="408" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="497" width="8" height="14" font="2">P</text>
+<text top="98" left="505" width="55" height="11" font="4">ROBLEMS</text>
+<text top="139" left="129" width="432" height="14" font="2">ple, if an OS froze once a year, you would just reboot it and get happily (or</text>
+<text top="154" left="129" width="432" height="14" font="2">grumpily) on with your work. If deadlocks are rare, such a non-solution</text>
+<text top="169" left="129" width="155" height="14" font="2">is indeed quite pragmatic.</text>
+<text top="183" left="147" width="414" height="14" font="2">Many database systems employ deadlock detection and recovery tech-</text>
+<text top="198" left="129" width="432" height="14" font="2">niques. A deadlock detector runs periodically, building a resource graph</text>
+<text top="213" left="129" width="432" height="14" font="2">and checking it for cycles. In the event of a cycle (deadlock), the system</text>
+<text top="228" left="129" width="432" height="14" font="2">needs to be restarted. If more intricate repair of data structures is ﬁrst</text>
+<text top="243" left="129" width="366" height="14" font="2">required, a human being may be involved to ease the process.</text>
+<text top="258" left="147" width="414" height="14" font="2">More detail on database concurrency, deadlock, and related issues can</text>
+<text top="273" left="129" width="432" height="14" font="2">be found elsewhere [B+87, K87]. Read these works, or better yet, take a</text>
+<text top="288" left="129" width="420" height="14" font="2">course on databases to learn more about this rich and interesting topic.</text>
+<text top="325" left="97" width="105" height="17" font="5">32.4 Summary</text>
+<text top="355" left="147" width="414" height="14" font="2">In this chapter, we have studied the types of bugs that occur in con-</text>
+<text top="370" left="129" width="432" height="14" font="2">current programs. The ﬁrst type, non-deadlock bugs, are surprisingly</text>
+<text top="385" left="129" width="432" height="14" font="2">common, but often are easier to ﬁx. They include atomicity violations,</text>
+<text top="400" left="129" width="432" height="14" font="2">in which a sequence of instructions that should have been executed to-</text>
+<text top="415" left="129" width="432" height="14" font="2">gether was not, and order violations, in which the needed order between</text>
+<text top="430" left="129" width="179" height="14" font="2">two threads was not enforced.</text>
+<text top="445" left="147" width="414" height="14" font="2">We have also brieﬂy discussed deadlock: why it occurs, and what can</text>
+<text top="460" left="129" width="432" height="14" font="2">be done about it. The problem is as old as concurrency itself, and many</text>
+<text top="474" left="129" width="432" height="14" font="2">hundreds of papers have been written about the topic. The best solu-</text>
+<text top="489" left="129" width="432" height="14" font="2">tion in practice is to be careful, develop a lock acquisition order, and</text>
+<text top="504" left="129" width="432" height="14" font="2">thus prevent deadlock from occurring in the ﬁrst place. Wait-free ap-</text>
+<text top="519" left="129" width="432" height="14" font="2">proaches also have promise, as some wait-free data structures are now</text>
+<text top="534" left="129" width="432" height="14" font="2">ﬁnding their way into commonly-used libraries and critical systems, in-</text>
+<text top="549" left="129" width="432" height="14" font="2">cluding Linux. However, their lack of generality and the complexity to</text>
+<text top="564" left="129" width="432" height="14" font="2">develop a new wait-free data structure will likely limit the overall util-</text>
+<text top="579" left="129" width="432" height="14" font="2">ity of this approach. Perhaps the best solution is to develop new concur-</text>
+<text top="594" left="129" width="432" height="14" font="2">rent programming models: in systems such as MapReduce (from Google)</text>
+<text top="609" left="129" width="432" height="14" font="2">[GD02], programmers can describe certain types of parallel computations</text>
+<text top="624" left="129" width="432" height="14" font="2">without any locks whatsoever. Locks are problematic by their very na-</text>
+<text top="639" left="129" width="427" height="14" font="2">ture; perhaps we should seek to avoid using them unless we truly must.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="16" family="GIOQSX+URWPalladioL" color="#000000"/>
+	<fontspec id="22" size="10" family="QGZBZN+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="151" width="10" height="14" font="2">C</text>
+<text top="98" left="161" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="249" width="8" height="14" font="2">P</text>
+<text top="98" left="258" width="55" height="11" font="4">ROBLEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="137" left="87" width="82" height="16" font="21"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="11">[B+87] “Concurrency Control and Recovery in Database Systems” by Philip A. Bernstein, Vas-</text>
+<text top="177" left="87" width="276" height="11" font="11">sos Hadzilacos, Nathan Goodman. Addison-Wesley, 1987.</text>
+<text top="177" left="370" width="149" height="11" font="22">The classic text on concurrency in</text>
+<text top="189" left="87" width="432" height="11" font="22">database management systems. As you can tell, understanding concurrency, deadlock, and other topics</text>
+<text top="201" left="87" width="340" height="11" font="22">in the world of databases is a world unto itself. Study it and ﬁnd out for yourself.</text>
+<text top="218" left="87" width="432" height="11" font="11">[C+71] “System Deadlocks” by E.G. Coffman, M.J. Elphick, A. Shoshani. ACM Computing</text>
+<text top="229" left="87" width="109" height="11" font="11">Surveys, 3:2, June 1971.</text>
+<text top="229" left="201" width="318" height="11" font="22">The classic paper outlining the conditions for deadlock and how you might</text>
+<text top="241" left="87" width="432" height="11" font="22">go about dealing with it. There are certainly some earlier papers on this topic; see the references within</text>
+<text top="253" left="87" width="88" height="11" font="22">this paper for details.</text>
+<text top="270" left="87" width="432" height="11" font="11">[D64] “Een algorithme ter voorkoming van de dodelijke omarming” by Edsger Dijkstra. 1964.</text>
+<text top="282" left="87" width="357" height="11" font="11">Available: http://www.cs.utexas.edu/users/EWD/ewd01xx/EWD108.PDF.</text>
+<text top="282" left="448" width="71" height="11" font="22">Indeed, not only</text>
+<text top="294" left="87" width="432" height="11" font="22">did Dijkstra come up with a number of solutions to the deadlock problem, he was the ﬁrst to note its</text>
+<text top="305" left="87" width="432" height="11" font="22">existence, at least in written form. However, he called it the “deadly embrace”, which (thankfully) did</text>
+<text top="317" left="87" width="54" height="11" font="22">not catch on.</text>
+<text top="334" left="87" width="432" height="11" font="11">[GD02] “MapReduce: Simpliﬁed Data Processing on Large Clusters” by Sanjay Ghemawhat,</text>
+<text top="346" left="87" width="247" height="11" font="11">Jeff Dean. OSDI ’04, San Francisco, CA, October 2004.</text>
+<text top="346" left="337" width="182" height="11" font="22">The MapReduce paper ushered in the era of</text>
+<text top="358" left="87" width="432" height="11" font="22">large-scale data processing, and proposes a framework for performing such computations on clusters of</text>
+<text top="370" left="87" width="128" height="11" font="22">generally unreliable machines.</text>
+<text top="386" left="87" width="432" height="11" font="11">[H01] “A Pragmatic Implementation of Non-blocking Linked-lists” by Tim Harris. Interna-</text>
+<text top="398" left="87" width="275" height="11" font="11">tional Conference on Distributed Computing (DISC), 2001.</text>
+<text top="398" left="368" width="151" height="11" font="22">A relatively modern example of the</text>
+<text top="410" left="87" width="353" height="11" font="22">difﬁculties of building something as simple as a concurrent linked list without locks.</text>
+<text top="426" left="87" width="432" height="11" font="11">[H91] “Wait-free Synchronization” by Maurice Herlihy . ACM TOPLAS, 13:1, January 1991.</text>
+<text top="438" left="87" width="432" height="11" font="22">Herlihy’s work pioneers the ideas behind wait-free approaches to writing concurrent programs. These</text>
+<text top="450" left="87" width="432" height="11" font="22">approaches tend to be complex and hard, often more difﬁcult than using locks correctly, probably limiting</text>
+<text top="462" left="87" width="127" height="11" font="22">their success in the real world.</text>
+<text top="478" left="87" width="432" height="11" font="11">[H93] “A Methodology for Implementing Highly Concurrent Data Objects” by Maurice Her-</text>
+<text top="490" left="87" width="201" height="11" font="11">lihy. ACM TOPLAS, 15:5, November 1993.</text>
+<text top="490" left="293" width="226" height="11" font="22">A nice overview of lock-free and wait-free structures.</text>
+<text top="502" left="87" width="432" height="11" font="22">Both approaches eschew locks, but wait-free approaches are harder to realize, as they try to ensure that</text>
+<text top="514" left="87" width="432" height="11" font="22">any operation on a concurrent structure will terminate in a ﬁnite number of steps (e.g., no unbounded</text>
+<text top="526" left="87" width="37" height="11" font="22">looping).</text>
+<text top="542" left="87" width="432" height="11" font="11">[J+08] “Deadlock Immunity: Enabling Systems To Defend Against Deadlocks” by Horatiu</text>
+<text top="554" left="87" width="432" height="11" font="11">Jula, Daniel Tralamazza, Cristian Zamﬁr, George Candea. OSDI ’08, San Diego, CA, December</text>
+<text top="566" left="87" width="24" height="11" font="11">2008.</text>
+<text top="566" left="116" width="403" height="11" font="22">An excellent recent paper on deadlocks and how to avoid getting caught in the same ones over</text>
+<text top="578" left="87" width="160" height="11" font="22">and over again in a particular system.</text>
+<text top="590" left="90" width="429" height="11" font="11">[K81] “Soul of a New Machine” by Tracy Kidder. Backbay Books, 2000 (reprint of 1980 ver-</text>
+<text top="606" left="87" width="25" height="11" font="11">sion).</text>
+<text top="606" left="117" width="402" height="11" font="22">A must-read for any systems builder or engineer, detailing the early days of how a team inside</text>
+<text top="618" left="87" width="432" height="11" font="22">Data General (DG), led by Tom West, worked to produce a “new machine.” Kidder’s other books are</text>
+<text top="630" left="87" width="432" height="11" font="22">also excellent, including “Mountains beyond Mountains.” Or maybe you don’t agree with us, comma?</text>
+<text top="647" left="87" width="432" height="11" font="11">[K87] “Deadlock Detection in Distributed Databases” by Edgar Knapp. ACM Computing Sur-</text>
+<text top="659" left="87" width="124" height="11" font="11">veys, 19:4, December 1987.</text>
+<text top="659" left="216" width="303" height="11" font="22">An excellent overview of deadlock detection in distributed database sys-</text>
+<text top="670" left="87" width="417" height="11" font="22">tems. Also points to a number of other related works, and thus is a good place to start your reading.</text>
+<text top="687" left="87" width="432" height="11" font="11">[L+08] “Learning from Mistakes — A Comprehensive Study on Real World Concurrency Bug</text>
+<text top="699" left="87" width="432" height="11" font="11">Characteristics” by Shan Lu, Soyeon Park, Eunsoo Seo, Yuanyuan Zhou. ASPLOS ’08, March</text>
+<text top="711" left="87" width="119" height="11" font="11">2008, Seattle, Washington.</text>
+<text top="711" left="210" width="309" height="11" font="22">The ﬁrst in-depth study of concurrency bugs in real software, and the basis</text>
+<text top="723" left="87" width="432" height="11" font="22">for this chapter. Look at Y.Y. Zhou’s or Shan Lu’s web pages for many more interesting papers on bugs.</text>
+<text top="739" left="87" width="432" height="11" font="11">[T+94] “Linux File Memory Map Code” by Linus Torvalds and many others. Available online</text>
+<text top="751" left="87" width="11" height="11" font="11">at:</text>
+<text top="752" left="104" width="364" height="9" font="18">https://github.com/torvalds/linux/blob/master/mm/filemap.c</text>
+<text top="751" left="468" width="3" height="11" font="11">.</text>
+<text top="751" left="476" width="43" height="11" font="22">Thanks to</text>
+<text top="763" left="87" width="432" height="11" font="22">Michael Walﬁsh (NYU) for pointing out this precious example. The real world, as you can see in this</text>
+<text top="775" left="87" width="311" height="11" font="22">ﬁle, can be a bit more complex than the simple clarity found in textbooks...</text>
+<text top="787" left="105" width="3" height="11" font="11">.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="23" size="12" family="RCQVPT+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="335" width="10" height="14" font="2">C</text>
+<text top="98" left="345" width="49" height="11" font="4">OMMON</text>
+<text top="96" left="398" width="10" height="14" font="2">C</text>
+<text top="98" left="408" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="96" left="497" width="8" height="14" font="2">P</text>
+<text top="98" left="505" width="55" height="11" font="4">ROBLEMS</text>
+<text top="137" left="129" width="139" height="16" font="21"><b>Homework (Code)</b></text>
+<text top="163" left="147" width="414" height="11" font="11">This homework lets you explore some real code that deadlocks (or avoids deadlock). The</text>
+<text top="175" left="129" width="432" height="11" font="11">different versions of code correspond to different approaches to avoiding deadlock in a sim-</text>
+<text top="187" left="129" width="30" height="11" font="11">pliﬁed</text>
+<text top="187" left="163" width="75" height="9" font="18">vector_add()</text>
+<text top="187" left="242" width="319" height="11" font="11">routine. See the README for details on these programs and their</text>
+<text top="198" left="129" width="88" height="11" font="11">common substrate.</text>
+<text top="232" left="129" width="70" height="15" font="6"><b>Questions</b></text>
+<text top="257" left="148" width="413" height="12" font="10">1. First let’s make sure you understand how the programs generally work, and</text>
+<text top="271" left="163" width="228" height="12" font="10">some of the key options. Study the code in</text>
+<text top="272" left="395" width="122" height="10" font="23">vector-deadlock.c</text>
+<text top="271" left="517" width="44" height="12" font="10">, as well</text>
+<text top="285" left="163" width="25" height="12" font="10">as in</text>
+<text top="286" left="192" width="93" height="10" font="23">main-common.c</text>
+<text top="285" left="289" width="146" height="12" font="10">and related ﬁles. Now, run</text>
+<text top="286" left="439" width="122" height="10" font="23">./vector-deadlock</text>
+<text top="300" left="163" width="86" height="10" font="23">-n 2 -l 1 -v</text>
+<text top="300" left="250" width="173" height="12" font="10">, which instantiates two threads (</text>
+<text top="300" left="423" width="29" height="10" font="23">-n 2</text>
+<text top="300" left="451" width="109" height="12" font="10">), each of which does</text>
+<text top="314" left="163" width="88" height="12" font="10">one vector add (</text>
+<text top="315" left="251" width="29" height="10" font="23">-l 1</text>
+<text top="314" left="280" width="174" height="12" font="10">), and does so in verbose mode (</text>
+<text top="315" left="454" width="14" height="10" font="23">-v</text>
+<text top="314" left="469" width="92" height="12" font="10">). Make sure you</text>
+<text top="328" left="163" width="370" height="12" font="10">understand the output. How does the output change from run to run?</text>
+<text top="345" left="148" width="85" height="12" font="10">2. Now add the</text>
+<text top="346" left="236" width="14" height="10" font="23">-d</text>
+<text top="345" left="253" width="202" height="12" font="10">ﬂag, and change the number of loops (</text>
+<text top="346" left="455" width="14" height="10" font="23">-l</text>
+<text top="345" left="469" width="92" height="12" font="10">) from 1 to higher</text>
+<text top="359" left="163" width="318" height="12" font="10">numbers. What happens? Does the code (always) deadlock?</text>
+<text top="377" left="148" width="251" height="12" font="10">3. How does changing the number of threads (</text>
+<text top="377" left="399" width="14" height="10" font="23">-n</text>
+<text top="377" left="413" width="148" height="12" font="10">) change the outcome of the</text>
+<text top="391" left="163" width="178" height="12" font="10">program? Are there any values of</text>
+<text top="391" left="344" width="14" height="10" font="23">-n</text>
+<text top="391" left="362" width="169" height="12" font="10">that ensure no deadlock occurs?</text>
+<text top="408" left="148" width="148" height="12" font="10">4. Now examine the code in</text>
+<text top="409" left="298" width="151" height="10" font="23">vector-global-order.c</text>
+<text top="408" left="449" width="112" height="12" font="10">. First, make sure you</text>
+<text top="422" left="163" width="397" height="12" font="10">understand what the code is trying to do; do you understand why the code</text>
+<text top="436" left="163" width="308" height="12" font="10">avoids deadlock? Also, why is there a special case in this</text>
+<text top="437" left="475" width="86" height="10" font="23">vector_add()</text>
+<text top="451" left="163" width="329" height="12" font="10">routine when the source and destination vectors are the same?</text>
+<text top="468" left="148" width="259" height="12" font="10">5. Now run the code with the following ﬂags:</text>
+<text top="468" left="414" width="143" height="10" font="23">-t -n 2 -l 100000 -d</text>
+<text top="468" left="558" width="3" height="12" font="10">.</text>
+<text top="482" left="163" width="397" height="12" font="10">How long does the code take to complete? How does the total time change</text>
+<text top="496" left="163" width="351" height="12" font="10">when you increase the number of loops, or the number of threads?</text>
+<text top="513" left="148" width="286" height="12" font="10">6. What happens if you turn on the parallelism ﬂag (</text>
+<text top="514" left="433" width="14" height="10" font="23">-p</text>
+<text top="513" left="448" width="113" height="12" font="10">)? How much would</text>
+<text top="528" left="163" width="397" height="12" font="10">you expect performance to change when each thread is working on adding</text>
+<text top="542" left="163" width="173" height="12" font="10">different vectors (which is what</text>
+<text top="542" left="340" width="14" height="10" font="23">-p</text>
+<text top="542" left="359" width="202" height="12" font="10">enables) versus working on the same</text>
+<text top="556" left="163" width="30" height="12" font="10">ones?</text>
+<text top="573" left="148" width="103" height="12" font="10">7. Now let’s study</text>
+<text top="574" left="254" width="122" height="10" font="23">vector-try-wait.c</text>
+<text top="573" left="376" width="185" height="12" font="10">. First make sure you understand</text>
+<text top="587" left="163" width="146" height="12" font="10">the code. Is the ﬁrst call to</text>
+<text top="588" left="314" width="165" height="10" font="23">pthread_mutex_trylock()</text>
+<text top="587" left="483" width="78" height="12" font="10">really needed?</text>
+<text top="601" left="163" width="397" height="12" font="10">Now run the code. How fast does it run compared to the global order ap-</text>
+<text top="616" left="163" width="397" height="12" font="10">proach? How does the number of retries, as counted by the code, change as</text>
+<text top="630" left="163" width="173" height="12" font="10">the number of threads increases?</text>
+<text top="647" left="148" width="108" height="12" font="10">8. Now let’s look at</text>
+<text top="648" left="259" width="201" height="10" font="23">vector-avoid-hold-and-wait.c</text>
+<text top="647" left="460" width="101" height="12" font="10">. What is the main</text>
+<text top="661" left="163" width="397" height="12" font="10">problem with this approach? How does its performance compare to the</text>
+<text top="675" left="163" width="211" height="12" font="10">other versions, when running both with</text>
+<text top="676" left="377" width="14" height="10" font="23">-p</text>
+<text top="675" left="395" width="81" height="12" font="10">and without it?</text>
+<text top="693" left="148" width="120" height="12" font="10">9. Finally, let’s look at</text>
+<text top="693" left="271" width="108" height="10" font="23">vector-nolock.c</text>
+<text top="693" left="378" width="182" height="12" font="10">. This version doesn’t use locks at</text>
+<text top="707" left="163" width="397" height="12" font="10">all; does it provide the exact same semantics as the other versions? Why or</text>
+<text top="721" left="163" width="49" height="12" font="10">why not?</text>
+<text top="738" left="142" width="419" height="12" font="10">10. Now compare its performance to the other versions, both when threads are</text>
+<text top="752" left="163" width="196" height="12" font="10">working on the same two vectors (no</text>
+<text top="753" left="363" width="14" height="10" font="23">-p</text>
+<text top="752" left="377" width="184" height="12" font="10">) and when each thread is working</text>
+<text top="767" left="163" width="109" height="12" font="10">on separate vectors (</text>
+<text top="767" left="272" width="14" height="10" font="23">-p</text>
+<text top="767" left="287" width="224" height="12" font="10">). How does this no-lock version perform?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+</pdf2xml>

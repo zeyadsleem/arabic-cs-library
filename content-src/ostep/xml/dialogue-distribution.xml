@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="XZWPRS+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="XZWPRS+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="OOBBHV+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="IWTPCG+URWPalladioL-Roma" color="#000000"/>
+<text top="194" left="523" width="34" height="29" font="0">47</text>
+<text top="263" left="270" width="249" height="20" font="1">A Dialogue on Distribution</text>
+<text top="349" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="349" left="155" width="364" height="14" font="3"><i>And thus we reach our final little piece in the world of operating</i></text>
+<text top="364" left="87" width="432" height="14" font="3"><i>systems: distributed systems. Since we can’t cover much here, we’ll sneak in a</i></text>
+<text top="379" left="87" width="432" height="14" font="3"><i>little intro here in the section on persistence, and focus mostly on distributed file</i></text>
+<text top="394" left="87" width="143" height="14" font="3"><i>systems. Hope that is OK!</i></text>
+<text top="415" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="415" left="143" width="376" height="14" font="3"><i>Sounds OK. But what is a distributed system exactly, oh glorious and</i></text>
+<text top="429" left="87" width="123" height="14" font="3"><i>all-knowing professor?</i></text>
+<text top="450" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="450" left="152" width="247" height="14" font="3"><i>Well, I bet you know how this is going to go...</i></text>
+<text top="470" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="470" left="143" width="88" height="14" font="3"><i>There’s a peach?</i></text>
+<text top="491" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="490" left="154" width="365" height="14" font="3"><i>Exactly! But this time, it’s far away from you, and may take some</i></text>
+<text top="505" left="87" width="432" height="14" font="3"><i>time to get the peach. And there are a lot of them! Even worse, sometimes a</i></text>
+<text top="520" left="87" width="432" height="14" font="3"><i>peach becomes rotten. But you want to make sure that when anybody bites into</i></text>
+<text top="535" left="87" width="267" height="14" font="3"><i>a peach, they will get a mouthful of deliciousness.</i></text>
+<text top="556" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="556" left="143" width="274" height="14" font="3"><i>This peach analogy is working less and less for me.</i></text>
+<text top="576" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="576" left="152" width="225" height="14" font="3"><i>Come on! It’s the last one, just go with it.</i></text>
+<text top="597" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="596" left="143" width="27" height="14" font="3"><i>Fine.</i></text>
+<text top="617" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="617" left="154" width="365" height="14" font="3"><i>So anyhow, forget about the peaches. Building distributed systems</i></text>
+<text top="632" left="87" width="432" height="14" font="3"><i>is hard, because things fail all the time. Messages get lost, machines go down,</i></text>
+<text top="647" left="87" width="365" height="14" font="3"><i>disks corrupt data. It’s like the whole world is working against you!</i></text>
+<text top="667" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="667" left="143" width="262" height="14" font="3"><i>But I use distributed systems all the time, right?</i></text>
+<text top="687" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="687" left="152" width="116" height="14" font="3"><i>Yes! You do. And... ?</i></text>
+<text top="708" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="708" left="144" width="375" height="14" font="3"><i>Well, it seems like they mostly work. After all, when I send a search</i></text>
+<text top="723" left="87" width="432" height="14" font="3"><i>request to Google, it usually comes back in a snap, with some great results! Same</i></text>
+<text top="738" left="87" width="269" height="14" font="3"><i>thing when I use Facebook, Amazon, and so forth.</i></text>
+<text top="862" left="300" width="7" height="12" font="4">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="11" family="IWTPCG+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="12" family="IWTPCG+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="10" family="IWTPCG+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="12" font="4">2</text>
+<text top="96" left="368" width="25" height="12" font="4">A D</text>
+<text top="98" left="393" width="76" height="10" font="5">IALOGUE ON</text>
+<text top="96" left="473" width="10" height="12" font="4">D</text>
+<text top="98" left="485" width="76" height="10" font="5">ISTRIBUTION</text>
+<text top="139" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="139" left="197" width="364" height="14" font="3"><i>Yes, it is amazing. And that’s despite all of those failures taking</i></text>
+<text top="154" left="129" width="432" height="14" font="3"><i>place! Those companies build a huge amount of machinery into their systems so</i></text>
+<text top="168" left="129" width="432" height="14" font="3"><i>as to ensure that even though some machines have failed, the entire system stays</i></text>
+<text top="183" left="129" width="432" height="14" font="3"><i>up and running. They use a lot of techniques to do this: replication, retry, and</i></text>
+<text top="198" left="129" width="432" height="14" font="3"><i>various other tricks people have developed over time to detect and recover from</i></text>
+<text top="213" left="129" width="43" height="14" font="3"><i>failures.</i></text>
+<text top="234" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="234" left="185" width="290" height="14" font="3"><i>Sounds interesting. Time to learn something for real?</i></text>
+<text top="254" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="254" left="194" width="307" height="14" font="3"><i>It does seem so. Let’s get to work! But first things first ...</i></text>
+<text top="269" left="129" width="367" height="14" font="3"><i>(bites into peach he has been holding, which unfortunately is rotten)</i></text>
+<text top="881" left="129" width="11" height="12" font="4">O</text>
+<text top="883" left="141" width="60" height="10" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="12" font="4">S</text>
+<text top="898" left="137" width="45" height="10" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="11" font="6">[V</text>
+<text top="914" left="143" width="39" height="9" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="11" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="10" font="5">WWW</text>
+<text top="896" left="327" width="3" height="12" font="4">.</text>
+<text top="898" left="331" width="36" height="10" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="12" font="4">.</text>
+<text top="898" left="371" width="25" height="10" font="5">ORG</text>
+</page>
+</pdf2xml>

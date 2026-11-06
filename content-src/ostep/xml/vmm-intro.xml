@@ -1,0 +1,1028 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="LVKTGH+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="LVKTGH+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="16" family="WPGTGZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="WPGTGZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="13" family="XGUBJF+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="11" family="WPGTGZ+URWPalladioL-Roma" color="#000000"/>
+<text top="197" left="537" width="21" height="30" font="0">B</text>
+<text top="268" left="281" width="238" height="21" font="1">Virtual Machine Monitors</text>
+<text top="372" left="55" width="119" height="17" font="2">B.1 Introduction</text>
+<text top="402" left="105" width="414" height="14" font="3">Years ago, IBM sold expensive mainframes to large organizations, and</text>
+<text top="417" left="87" width="432" height="14" font="3">a problem arose: what if the organization wanted to run different oper-</text>
+<text top="432" left="87" width="432" height="14" font="3">ating systems on the machine at the same time? Some applications had</text>
+<text top="447" left="87" width="432" height="14" font="3">been developed on one OS, and some on others, and thus the problem.</text>
+<text top="462" left="87" width="432" height="14" font="3">As a solution, IBM introduced yet another level of indirection in the form</text>
+<text top="477" left="87" width="22" height="14" font="3">of a</text>
+<text top="477" left="112" width="149" height="13" font="4"><b>virtual machine monitor</b></text>
+<text top="477" left="265" width="4" height="14" font="3">(</text>
+<text top="477" left="270" width="37" height="13" font="4"><b>VMM</b></text>
+<text top="477" left="307" width="85" height="14" font="3">) (also called a</text>
+<text top="477" left="395" width="67" height="13" font="4"><b>hypervisor</b></text>
+<text top="477" left="462" width="44" height="14" font="3">) [G74].</text>
+<text top="493" left="105" width="414" height="14" font="3">Specifically, the monitor sits between one or more operating systems</text>
+<text top="508" left="87" width="432" height="14" font="3">and the hardware and gives the illusion to each running OS that it con-</text>
+<text top="523" left="87" width="432" height="14" font="3">trols the machine. Behind the scenes, however, the monitor actually is</text>
+<text top="538" left="87" width="432" height="14" font="3">in control of the hardware, and must multiplex running OSes across the</text>
+<text top="553" left="87" width="432" height="14" font="3">physical resources of the machine. Indeed, the VMM serves as an operat-</text>
+<text top="568" left="87" width="432" height="14" font="3">ing system for operating systems, but at a much lower level; the OS must</text>
+<text top="583" left="87" width="350" height="14" font="3">still think it is interacting with the physical hardware. Thus,</text>
+<text top="583" left="440" width="79" height="13" font="4"><b>transparency</b></text>
+<text top="598" left="87" width="149" height="14" font="3">is a major goal of VMMs.</text>
+<text top="613" left="105" width="414" height="14" font="3">Thus, we find ourselves in a funny position: the OS has thus far served</text>
+<text top="628" left="87" width="432" height="14" font="3">as the master illusionist, tricking unsuspecting applications into thinking</text>
+<text top="643" left="87" width="432" height="14" font="3">they have their own private CPU and a large virtual memory, while se-</text>
+<text top="658" left="87" width="432" height="14" font="3">cretly switching between applications and sharing memory as well. Now,</text>
+<text top="673" left="87" width="432" height="14" font="3">we have to do it again, but this time underneath the OS, who is used to</text>
+<text top="688" left="87" width="432" height="14" font="3">being in charge. How can the VMM create this illusion for each OS run-</text>
+<text top="703" left="87" width="102" height="14" font="3">ning on top of it?</text>
+<text top="745" left="269" width="8" height="14" font="3">T</text>
+<text top="747" left="278" width="16" height="11" font="5">HE</text>
+<text top="745" left="298" width="10" height="14" font="3">C</text>
+<text top="747" left="309" width="24" height="11" font="5">RUX</text>
+<text top="745" left="333" width="3" height="14" font="3">:</text>
+<text top="760" left="126" width="11" height="14" font="3">H</text>
+<text top="762" left="138" width="320" height="11" font="5">OW TO VIRTUALIZE THE MACHINE UNDERNEATH THE</text>
+<text top="760" left="462" width="18" height="14" font="3">OS</text>
+<text top="775" left="105" width="414" height="14" font="3">The virtual machine monitor must transparently virtualize the ma-</text>
+<text top="790" left="87" width="406" height="14" font="3">chine underneath the OS; what are the techniques required to do so?</text>
+<text top="862" left="300" width="7" height="14" font="3">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="12" family="WPGTGZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="10" family="WPGTGZ+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="3">2</text>
+<text top="96" left="371" width="10" height="14" font="3">V</text>
+<text top="98" left="382" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="430" width="13" height="14" font="3">M</text>
+<text top="98" left="443" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="494" width="13" height="14" font="3">M</text>
+<text top="98" left="508" width="53" height="11" font="5">ONITORS</text>
+<text top="137" left="97" width="213" height="17" font="2">B.2 Motivation: Why VMMs?</text>
+<text top="163" left="147" width="414" height="14" font="3">Today, VMMs have become popular again for a multitude of reasons.</text>
+<text top="178" left="129" width="432" height="14" font="3">Server consolidation is one such reason. In many settings, people run</text>
+<text top="193" left="129" width="432" height="14" font="3">services on different machines which run different operating systems (or</text>
+<text top="208" left="129" width="432" height="14" font="3">even OS versions), and yet each machine is lightly utilized. In this case,</text>
+<text top="223" left="129" width="244" height="14" font="3">virtualization enables an administrator to</text>
+<text top="223" left="375" width="70" height="13" font="4"><b>consolidate</b></text>
+<text top="223" left="448" width="113" height="14" font="3">multiple OSes onto</text>
+<text top="238" left="129" width="432" height="14" font="3">fewer hardware platforms, and thus lower costs and ease administration.</text>
+<text top="253" left="147" width="414" height="14" font="3">Virtualization has also become popular on desktops, as many users</text>
+<text top="268" left="129" width="432" height="14" font="3">wish to run one operating system (say Linux or Mac OS X) but still have</text>
+<text top="283" left="129" width="432" height="14" font="3">access to native applications on a different platform (say Windows). This</text>
+<text top="298" left="129" width="141" height="14" font="3">type of improvement in</text>
+<text top="298" left="273" width="80" height="13" font="4"><b>functionality</b></text>
+<text top="298" left="356" width="126" height="14" font="3">is also a good reason.</text>
+<text top="313" left="147" width="414" height="14" font="3">Another reason is testing and debugging. While developers write code</text>
+<text top="328" left="129" width="432" height="14" font="3">on one main platform, they often want to debug and test it on the many</text>
+<text top="343" left="129" width="432" height="14" font="3">different platforms that they deploy the software to in the field. Thus,</text>
+<text top="358" left="129" width="432" height="14" font="3">virtualization makes it easy to do so, by enabling a developer to run many</text>
+<text top="373" left="129" width="343" height="14" font="3">operating system types and versions on just one machine.</text>
+<text top="388" left="147" width="421" height="14" font="3">This resurgence in virtualization began in earnest the mid-to-late 1990’s,</text>
+<text top="403" left="129" width="432" height="14" font="3">and was led by a group of researchers at Stanford headed by Professor</text>
+<text top="418" left="129" width="432" height="14" font="3">Mendel Rosenblum. His group’s work on Disco [B+97], a virtual machine</text>
+<text top="433" left="129" width="432" height="14" font="3">monitor for the MIPS processor, was an early effort that revived VMMs</text>
+<text top="448" left="129" width="432" height="14" font="3">and eventually led that group to the founding of VMware [V98], now a</text>
+<text top="463" left="129" width="432" height="14" font="3">market leader in virtualization technology. In this chapter, we will dis-</text>
+<text top="478" left="129" width="432" height="14" font="3">cuss the primary technology underlying Disco and through that window</text>
+<text top="493" left="129" width="262" height="14" font="3">try to understand how virtualization works.</text>
+<text top="530" left="97" width="179" height="17" font="2">B.3 Virtualizing the CPU</text>
+<text top="557" left="147" width="49" height="14" font="3">To run a</text>
+<text top="557" left="200" width="97" height="13" font="4"><b>virtual machine</b></text>
+<text top="557" left="300" width="260" height="14" font="3">(e.g., an OS and its applications) on top of a</text>
+<text top="572" left="129" width="346" height="14" font="3">virtual machine monitor, the basic technique that is used is</text>
+<text top="572" left="478" width="83" height="13" font="4"><b>limited direct</b></text>
+<text top="587" left="129" width="59" height="13" font="4"><b>execution</b></text>
+<text top="587" left="188" width="373" height="14" font="3">, a technique we saw before when discussing how the OS vir-</text>
+<text top="602" left="129" width="432" height="14" font="3">tualizes the CPU. Thus, when we wish to “boot” a new OS on top of the</text>
+<text top="617" left="129" width="432" height="14" font="3">VMM, we simply jump to the address of the first instruction and let the</text>
+<text top="632" left="129" width="324" height="14" font="3">OS begin running. It is as simple as that (well, almost).</text>
+<text top="647" left="147" width="414" height="14" font="3">Assume we are running on a single processor, and that we wish to</text>
+<text top="662" left="129" width="432" height="14" font="3">multiplex between two virtual machines, that is, between two OSes and</text>
+<text top="677" left="129" width="432" height="14" font="3">their respective applications. In a manner quite similar to an operating</text>
+<text top="692" left="129" width="281" height="14" font="3">system switching between running processes (a</text>
+<text top="692" left="413" width="87" height="13" font="4"><b>context switch</b></text>
+<text top="692" left="500" width="61" height="14" font="3">), a virtual</text>
+<text top="707" left="129" width="200" height="14" font="3">machine monitor must perform a</text>
+<text top="707" left="333" width="97" height="13" font="4"><b>machine switch</b></text>
+<text top="707" left="433" width="127" height="14" font="3">between running vir-</text>
+<text top="721" left="129" width="432" height="14" font="3">tual machines. Thus, when performing such a switch, the VMM must</text>
+<text top="736" left="129" width="432" height="14" font="3">save the entire machine state of one OS (including registers, PC, and un-</text>
+<text top="751" left="129" width="432" height="14" font="3">like in a context switch, any privileged hardware state), restore the ma-</text>
+<text top="766" left="129" width="432" height="14" font="3">chine state of the to-be-run VM, and then jump to the PC of the to-be-run</text>
+<text top="781" left="129" width="432" height="14" font="3">VM and thus complete the switch. Note that the to-be-run VM’s PC may</text>
+<text top="796" left="129" width="432" height="14" font="3">be within the OS itself (i.e., the system was executing a system call) or it</text>
+<text top="811" left="129" width="432" height="14" font="3">may simply be within a process that is running on that OS (i.e., a user-</text>
+<text top="826" left="129" width="112" height="14" font="3">mode application).</text>
+<text top="881" left="129" width="11" height="14" font="3">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="3">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="3">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="3">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="8" size="13" family="WETJJW+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="9" size="9" family="WPGTGZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="7" family="WPGTGZ+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="3">V</text>
+<text top="98" left="98" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="145" width="13" height="14" font="3">M</text>
+<text top="98" left="159" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="210" width="13" height="14" font="3">M</text>
+<text top="98" left="224" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="512" width="7" height="14" font="3">3</text>
+<text top="139" left="105" width="414" height="14" font="3">We get into some slightly trickier issues when a running application</text>
+<text top="154" left="87" width="215" height="14" font="3">or OS tries to perform some kind of</text>
+<text top="154" left="306" width="126" height="13" font="4"><b>privileged operation</b></text>
+<text top="154" left="432" width="87" height="14" font="3">. For example,</text>
+<text top="169" left="87" width="432" height="14" font="3">on a system with a software-managed TLB, the OS will use special priv-</text>
+<text top="183" left="87" width="432" height="14" font="3">ileged instructions to update the TLB with a translation before restarting</text>
+<text top="198" left="87" width="432" height="14" font="3">an instruction that suffered a TLB miss. In a virtualized environment, the</text>
+<text top="213" left="87" width="432" height="14" font="3">OS cannot be allowed to perform privileged instructions, because then it</text>
+<text top="228" left="87" width="432" height="14" font="3">controls the machine rather than the VMM beneath it. Thus, the VMM</text>
+<text top="243" left="87" width="432" height="14" font="3">must somehow intercept attempts to perform privileged operations and</text>
+<text top="258" left="87" width="203" height="14" font="3">thus retain control of the machine.</text>
+<text top="274" left="105" width="414" height="14" font="3">A simple example of how a VMM must interpose on certain operations</text>
+<text top="289" left="87" width="432" height="14" font="3">arises when a running process on a given OS tries to make a system call.</text>
+<text top="304" left="87" width="268" height="14" font="3">For example, the process may be trying to call</text>
+<text top="304" left="358" width="48" height="11" font="8">open()</text>
+<text top="304" left="409" width="110" height="14" font="3">on a file, or may be</text>
+<text top="319" left="87" width="40" height="14" font="3">calling</text>
+<text top="319" left="131" width="48" height="11" font="8">read()</text>
+<text top="319" left="183" width="219" height="14" font="3">to get data from it, or may be calling</text>
+<text top="319" left="406" width="48" height="11" font="8">fork()</text>
+<text top="319" left="458" width="61" height="14" font="3">to create a</text>
+<text top="333" left="87" width="432" height="14" font="3">new process. In a system without virtualization, a system call is achieved</text>
+<text top="348" left="87" width="247" height="14" font="3">with a special instruction; on MIPS, it is a</text>
+<text top="349" left="338" width="25" height="13" font="4"><b>trap</b></text>
+<text top="348" left="366" width="153" height="14" font="3">instruction, and on x86, it</text>
+<text top="363" left="87" width="32" height="14" font="3">is the</text>
+<text top="364" left="122" width="24" height="11" font="8">int</text>
+<text top="363" left="150" width="262" height="14" font="3">(an interrupt) instruction with the argument</text>
+<text top="364" left="415" width="32" height="11" font="8">0x80</text>
+<text top="363" left="447" width="72" height="14" font="3">. Here is the</text>
+<text top="378" left="87" width="432" height="14" font="3">open library call on FreeBSD [B00] (recall that your C code first makes a</text>
+<text top="393" left="87" width="432" height="14" font="3">library call into the C library, which then executes the proper assembly</text>
+<text top="408" left="87" width="420" height="14" font="3">sequence to actually issue the trap instruction and make a system call):</text>
+<text top="432" left="87" width="40" height="11" font="8">open:</text>
+<text top="447" left="119" width="32" height="11" font="8">push</text>
+<text top="447" left="184" width="81" height="11" font="8">dword mode</text>
+<text top="462" left="119" width="32" height="11" font="8">push</text>
+<text top="462" left="184" width="89" height="11" font="8">dword flags</text>
+<text top="477" left="119" width="32" height="11" font="8">push</text>
+<text top="477" left="184" width="81" height="11" font="8">dword path</text>
+<text top="492" left="119" width="24" height="11" font="8">mov</text>
+<text top="492" left="184" width="48" height="11" font="8">eax, 5</text>
+<text top="507" left="119" width="32" height="11" font="8">push</text>
+<text top="507" left="184" width="24" height="11" font="8">eax</text>
+<text top="522" left="119" width="24" height="11" font="8">int</text>
+<text top="522" left="184" width="24" height="11" font="8">80h</text>
+<text top="548" left="105" width="35" height="14" font="3">On U</text>
+<text top="550" left="141" width="21" height="11" font="5">NIX</text>
+<text top="548" left="162" width="95" height="14" font="3">-based systems,</text>
+<text top="549" left="264" width="48" height="11" font="8">open()</text>
+<text top="548" left="319" width="167" height="14" font="3">takes just three arguments:</text>
+<text top="549" left="495" width="24" height="11" font="8">int</text>
+<text top="564" left="87" width="320" height="14" font="8">open(char *path, int flags, mode t mode)</text>
+<text top="563" left="407" width="112" height="14" font="3">. You can see in the</text>
+<text top="578" left="87" width="124" height="14" font="3">code above how the</text>
+<text top="579" left="216" width="48" height="11" font="8">open()</text>
+<text top="578" left="270" width="249" height="14" font="3">library call is implemented: first, the ar-</text>
+<text top="593" left="87" width="229" height="14" font="3">guments get pushed onto the stack (</text>
+<text top="594" left="316" width="137" height="11" font="8">mode, flags, path</text>
+<text top="593" left="453" width="66" height="14" font="3">), then a 5</text>
+<text top="608" left="87" width="229" height="14" font="3">gets pushed onto the stack, and then</text>
+<text top="609" left="321" width="56" height="11" font="8">int 80h</text>
+<text top="608" left="383" width="136" height="14" font="3">is called, which trans-</text>
+<text top="623" left="87" width="432" height="14" font="3">fers control to the kernel. The 5, if you were wondering, is the pre-agreed</text>
+<text top="638" left="87" width="432" height="14" font="3">upon convention between user-mode applications and the kernel for the</text>
+<text top="654" left="87" width="48" height="11" font="8">open()</text>
+<text top="653" left="138" width="381" height="14" font="3">system call in FreeBSD; different system calls would place differ-</text>
+<text top="668" left="87" width="432" height="14" font="3">ent numbers onto the stack (in the same position) before calling the trap</text>
+<text top="685" left="87" width="65" height="14" font="3">instruction</text>
+<text top="686" left="155" width="24" height="11" font="8">int</text>
+<text top="685" left="183" width="192" height="14" font="3">and thus making the system call</text>
+<text top="683" left="374" width="4" height="9" font="9">1</text>
+<text top="685" left="379" width="3" height="14" font="3">.</text>
+<text top="701" left="105" width="414" height="14" font="3">When a trap instruction is executed, as we’ve discussed before, it usu-</text>
+<text top="716" left="87" width="432" height="14" font="3">ally does a number of interesting things. Most important in our example</text>
+<text top="730" left="87" width="432" height="14" font="3">here is that it first transfers control (i.e., changes the PC) to a well-defined</text>
+<text top="746" left="87" width="76" height="13" font="4"><b>trap handler</b></text>
+<text top="745" left="168" width="351" height="14" font="3">within the operating system. The OS, when it is first start-</text>
+<text top="760" left="87" width="432" height="14" font="3">ing up, establishes the address of such a routine with the hardware (also</text>
+<text top="790" left="107" width="4" height="8" font="10">1</text>
+<text top="792" left="112" width="407" height="11" font="7">Just to make things confusing, the Intel folks use the term “interrupt” for what almost</text>
+<text top="804" left="87" width="432" height="11" font="7">any sane person would call a trap instruction. As Patterson said about the Intel instruction</text>
+<text top="816" left="87" width="432" height="11" font="7">set: “It’s an ISA only a mother could love.” But actually, we kind of like it, and we’re not its</text>
+<text top="828" left="87" width="35" height="11" font="7">mother.</text>
+<text top="896" left="212" width="83" height="14" font="3">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="3">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="3">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="3">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="3">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="3">4</text>
+<text top="96" left="371" width="10" height="14" font="3">V</text>
+<text top="98" left="382" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="430" width="13" height="14" font="3">M</text>
+<text top="98" left="443" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="494" width="13" height="14" font="3">M</text>
+<text top="98" left="508" width="53" height="11" font="5">ONITORS</text>
+<text top="136" left="138" width="46" height="13" font="4"><b>Process</b></text>
+<text top="136" left="290" width="61" height="13" font="4"><b>Hardware</b></text>
+<text top="136" left="459" width="111" height="13" font="4"><b>Operating System</b></text>
+<text top="151" left="138" width="10" height="13" font="4"><b>1.</b></text>
+<text top="151" left="152" width="120" height="14" font="3">Execute instructions</text>
+<text top="166" left="138" width="92" height="14" font="3">(add, load, etc.)</text>
+<text top="181" left="138" width="10" height="13" font="4"><b>2.</b></text>
+<text top="181" left="152" width="70" height="14" font="3">System call:</text>
+<text top="196" left="138" width="63" height="14" font="3">Trap to OS</text>
+<text top="211" left="290" width="10" height="13" font="4"><b>3.</b></text>
+<text top="211" left="304" width="137" height="14" font="3">Switch to kernel mode;</text>
+<text top="226" left="290" width="125" height="14" font="3">Jump to trap handler</text>
+<text top="241" left="459" width="10" height="13" font="4"><b>4.</b></text>
+<text top="241" left="474" width="94" height="14" font="3">In kernel mode;</text>
+<text top="256" left="459" width="117" height="14" font="3">Handle system call;</text>
+<text top="271" left="459" width="101" height="14" font="3">Return from trap</text>
+<text top="286" left="290" width="10" height="13" font="4"><b>5.</b></text>
+<text top="286" left="304" width="125" height="14" font="3">Switch to user mode;</text>
+<text top="301" left="290" width="116" height="14" font="3">Return to user code</text>
+<text top="316" left="138" width="10" height="13" font="4"><b>6.</b></text>
+<text top="316" left="152" width="108" height="14" font="3">Resume execution</text>
+<text top="331" left="138" width="95" height="14" font="3">(@PC after trap)</text>
+<text top="354" left="237" width="64" height="14" font="3">Figure B.1:</text>
+<text top="354" left="305" width="148" height="13" font="4"><b>Executing a System Call</b></text>
+<text top="374" left="129" width="432" height="14" font="3">a privileged operation) and thus upon subsequent traps, the hardware</text>
+<text top="389" left="129" width="432" height="14" font="3">knows where to start running code to handle the trap. At the same time</text>
+<text top="404" left="129" width="432" height="14" font="3">of the trap, the hardware also does one other crucial thing: it changes the</text>
+<text top="419" left="129" width="161" height="14" font="3">mode of the processor from</text>
+<text top="419" left="293" width="63" height="13" font="4"><b>user mode</b></text>
+<text top="419" left="359" width="12" height="14" font="3">to</text>
+<text top="419" left="373" width="77" height="13" font="4"><b>kernel mode</b></text>
+<text top="419" left="450" width="111" height="14" font="3">. In user mode, op-</text>
+<text top="434" left="129" width="432" height="14" font="3">erations are restricted, and attempts to perform privileged operations will</text>
+<text top="449" left="129" width="432" height="14" font="3">lead to a trap and likely the termination of the offending process; in ker-</text>
+<text top="464" left="129" width="432" height="14" font="3">nel mode, on the other hand, the full power of the machine is available,</text>
+<text top="479" left="129" width="432" height="14" font="3">and thus all privileged operations can be executed. Thus, in a traditional</text>
+<text top="494" left="129" width="432" height="14" font="3">setting (again, without virtualization), the flow of control would be like</text>
+<text top="509" left="129" width="160" height="14" font="3">what you see in Figure B.1.</text>
+<text top="525" left="147" width="414" height="14" font="3">On a virtualized platform, things are a little more interesting. When an</text>
+<text top="540" left="129" width="432" height="14" font="3">application running on an OS wishes to perform a system call, it does the</text>
+<text top="555" left="129" width="432" height="14" font="3">exact same thing: executes a trap instruction with the arguments carefully</text>
+<text top="570" left="129" width="432" height="14" font="3">placed on the stack (or in registers). However, it is the VMM that controls</text>
+<text top="585" left="129" width="432" height="14" font="3">the machine, and thus the VMM who has installed a trap handler that</text>
+<text top="600" left="129" width="224" height="14" font="3">will first get executed in kernel mode.</text>
+<text top="617" left="147" width="414" height="14" font="3">So what should the VMM do to handle this system call? The VMM</text>
+<text top="632" left="129" width="121" height="14" font="3">doesn’t really know</text>
+<text top="632" left="255" width="27" height="13" font="4"><b>how</b></text>
+<text top="632" left="286" width="275" height="14" font="3">to handle the call; after all, it does not know</text>
+<text top="647" left="129" width="432" height="14" font="3">the details of each OS that is running and therefore does not know what</text>
+<text top="662" left="129" width="367" height="14" font="3">each call should do. What the VMM does know, however, is</text>
+<text top="662" left="500" width="38" height="13" font="4"><b>where</b></text>
+<text top="662" left="542" width="19" height="14" font="3">the</text>
+<text top="677" left="129" width="432" height="14" font="3">OS’s trap handler is. It knows this because when the OS booted up, it</text>
+<text top="692" left="129" width="432" height="14" font="3">tried to install its own trap handlers; when the OS did so, it was trying</text>
+<text top="707" left="129" width="432" height="14" font="3">to do something privileged, and therefore trapped into the VMM; at that</text>
+<text top="721" left="129" width="432" height="14" font="3">time, the VMM recorded the necessary information (i.e., where this OS’s</text>
+<text top="736" left="129" width="432" height="14" font="3">trap handlers are in memory). Now, when the VMM receives a trap from</text>
+<text top="751" left="129" width="432" height="14" font="3">a user process running on the given OS, it knows exactly what to do: it</text>
+<text top="766" left="129" width="432" height="14" font="3">jumps to the OS’s trap handler and lets the OS handle the system call as</text>
+<text top="781" left="129" width="432" height="14" font="3">it should. When the OS is finished, it executes some kind of privileged</text>
+<text top="796" left="129" width="219" height="14" font="3">instruction to return from the trap (</text>
+<text top="796" left="347" width="21" height="13" font="4"><b>rett</b></text>
+<text top="796" left="373" width="56" height="14" font="3">on MIPS,</text>
+<text top="797" left="434" width="32" height="11" font="8">iret</text>
+<text top="796" left="471" width="90" height="14" font="3">on x86), which</text>
+<text top="811" left="129" width="432" height="14" font="3">again bounces into the VMM, which then realizes that the OS is trying to</text>
+<text top="826" left="129" width="432" height="14" font="3">return from the trap and thus performs a real return-from-trap and thus</text>
+<text top="881" left="129" width="11" height="14" font="3">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="3">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="3">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="3">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="3">V</text>
+<text top="98" left="98" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="145" width="13" height="14" font="3">M</text>
+<text top="98" left="159" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="210" width="13" height="14" font="3">M</text>
+<text top="98" left="224" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="512" width="7" height="14" font="3">5</text>
+<text top="136" left="96" width="46" height="13" font="4"><b>Process</b></text>
+<text top="136" left="237" width="111" height="13" font="4"><b>Operating System</b></text>
+<text top="151" left="96" width="10" height="13" font="4"><b>1.</b></text>
+<text top="151" left="110" width="70" height="14" font="3">System call:</text>
+<text top="166" left="96" width="63" height="14" font="3">Trap to OS</text>
+<text top="181" left="237" width="10" height="13" font="4"><b>2.</b></text>
+<text top="181" left="251" width="98" height="14" font="3">OS trap handler:</text>
+<text top="196" left="237" width="147" height="14" font="3">Decode trap and execute</text>
+<text top="211" left="237" width="163" height="14" font="3">appropriate syscall routine;</text>
+<text top="226" left="237" width="173" height="14" font="3">When done: return from trap</text>
+<text top="241" left="96" width="10" height="13" font="4"><b>3.</b></text>
+<text top="241" left="110" width="108" height="14" font="3">Resume execution</text>
+<text top="256" left="96" width="95" height="14" font="3">(@PC after trap)</text>
+<text top="279" left="144" width="64" height="14" font="3">Figure B.2:</text>
+<text top="279" left="212" width="251" height="13" font="4"><b>System Call Flow Without Virtualization</b></text>
+<text top="316" left="96" width="46" height="13" font="4"><b>Process</b></text>
+<text top="316" left="237" width="111" height="13" font="4"><b>Operating System</b></text>
+<text top="316" left="367" width="37" height="13" font="4"><b>VMM</b></text>
+<text top="331" left="96" width="10" height="13" font="4"><b>1.</b></text>
+<text top="331" left="110" width="70" height="14" font="3">System call:</text>
+<text top="346" left="96" width="63" height="14" font="3">Trap to OS</text>
+<text top="361" left="367" width="10" height="13" font="4"><b>2.</b></text>
+<text top="361" left="381" width="98" height="14" font="3">Process trapped:</text>
+<text top="376" left="367" width="123" height="14" font="3">Call OS trap handler</text>
+<text top="391" left="367" width="128" height="14" font="3">(at reduced privilege)</text>
+<text top="406" left="237" width="10" height="13" font="4"><b>3.</b></text>
+<text top="406" left="251" width="98" height="14" font="3">OS trap handler:</text>
+<text top="421" left="237" width="99" height="14" font="3">Decode trap and</text>
+<text top="436" left="237" width="91" height="14" font="3">execute syscall;</text>
+<text top="451" left="237" width="106" height="14" font="3">When done: issue</text>
+<text top="466" left="237" width="99" height="14" font="3">return-from-trap</text>
+<text top="481" left="367" width="10" height="13" font="4"><b>4.</b></text>
+<text top="481" left="381" width="153" height="14" font="3">OS tried return from trap:</text>
+<text top="496" left="367" width="144" height="14" font="3">Do real return from trap</text>
+<text top="511" left="96" width="10" height="13" font="4"><b>5.</b></text>
+<text top="511" left="110" width="108" height="14" font="3">Resume execution</text>
+<text top="526" left="96" width="95" height="14" font="3">(@PC after trap)</text>
+<text top="549" left="155" width="64" height="14" font="3">Figure B.3:</text>
+<text top="549" left="223" width="229" height="13" font="4"><b>System Call Flow with Virtualization</b></text>
+<text top="568" left="87" width="432" height="14" font="3">returns control to the user and puts the machine back in user mode. The</text>
+<text top="583" left="87" width="432" height="14" font="3">entire process is depicted in Figures B.2 and B.3, both for the normal case</text>
+<text top="598" left="87" width="432" height="14" font="3">without virtualization and the case with virtualization (we leave out the</text>
+<text top="613" left="87" width="318" height="14" font="3">exact hardware operations from above to save space).</text>
+<text top="629" left="105" width="414" height="14" font="3">As you can see from the figures, a lot more has to take place when</text>
+<text top="644" left="87" width="432" height="14" font="3">virtualization is going on. Certainly, because of the extra jumping around,</text>
+<text top="659" left="87" width="432" height="14" font="3">virtualization might indeed slow down system calls and thus could hurt</text>
+<text top="674" left="87" width="79" height="14" font="3">performance.</text>
+<text top="690" left="105" width="414" height="14" font="3">You might also notice that we have one remaining question: what</text>
+<text top="705" left="87" width="432" height="14" font="3">mode should the OS run in? It can’t run in kernel mode, because then</text>
+<text top="720" left="87" width="432" height="14" font="3">it would have unrestricted access to the hardware. Thus, it must run in</text>
+<text top="735" left="87" width="432" height="14" font="3">some less privileged mode than before, be able to access its own data</text>
+<text top="750" left="87" width="432" height="14" font="3">structures, and simultaneously prevent access to its data structures from</text>
+<text top="765" left="87" width="89" height="14" font="3">user processes.</text>
+<text top="781" left="105" width="414" height="14" font="3">In the Disco work, Rosenblum and colleagues handled this problem</text>
+<text top="796" left="87" width="432" height="14" font="3">quite neatly by taking advantage of a special mode provided by the MIPS</text>
+<text top="811" left="87" width="432" height="14" font="3">hardware known as supervisor mode. When running in this mode, one</text>
+<text top="826" left="87" width="432" height="14" font="3">still doesn’t have access to privileged instructions, but one can access a</text>
+<text top="896" left="212" width="83" height="14" font="3">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="3">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="3">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="3">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="3">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="LVKTGH+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="12" size="7" family="LVKTGH+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="13" size="11" family="LVKTGH+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="14" size="10" family="LVKTGH+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="3">6</text>
+<text top="96" left="371" width="10" height="14" font="3">V</text>
+<text top="98" left="382" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="430" width="13" height="14" font="3">M</text>
+<text top="98" left="443" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="494" width="13" height="14" font="3">M</text>
+<text top="98" left="508" width="53" height="11" font="5">ONITORS</text>
+<text top="211" left="124" width="127" height="12" font="11">Virtual Address Space</text>
+<text top="211" left="291" width="107" height="12" font="11">&#34;Physical Memory&#34;</text>
+<text top="211" left="453" width="99" height="12" font="11">Machine Memory</text>
+<text top="236" left="223" width="4" height="7" font="12">0</text>
+<text top="243" left="223" width="4" height="7" font="12">1</text>
+<text top="250" left="223" width="4" height="7" font="12">2</text>
+<text top="257" left="223" width="4" height="7" font="12">3</text>
+<text top="155" left="227" width="78" height="11" font="13">OS Page Table</text>
+<text top="174" left="228" width="77" height="10" font="14">VPN 0 to PFN 10</text>
+<text top="184" left="228" width="77" height="10" font="14">VPN 2 to PFN 03</text>
+<text top="194" left="228" width="77" height="10" font="14">VPN 3 to PFN 08</text>
+<text top="236" left="381" width="4" height="7" font="12">0</text>
+<text top="243" left="381" width="4" height="7" font="12">1</text>
+<text top="250" left="381" width="4" height="7" font="12">2</text>
+<text top="257" left="381" width="4" height="7" font="12">3</text>
+<text top="265" left="381" width="4" height="7" font="12">4</text>
+<text top="272" left="381" width="4" height="7" font="12">5</text>
+<text top="279" left="381" width="4" height="7" font="12">6</text>
+<text top="286" left="381" width="4" height="7" font="12">7</text>
+<text top="293" left="381" width="4" height="7" font="12">8</text>
+<text top="300" left="381" width="4" height="7" font="12">9</text>
+<text top="307" left="381" width="8" height="7" font="12">10</text>
+<text top="315" left="381" width="8" height="7" font="12">11</text>
+<text top="322" left="381" width="8" height="7" font="12">12</text>
+<text top="329" left="381" width="8" height="7" font="12">13</text>
+<text top="336" left="381" width="8" height="7" font="12">14</text>
+<text top="343" left="381" width="8" height="7" font="12">15</text>
+<text top="155" left="379" width="88" height="11" font="13">VMM Page Table</text>
+<text top="174" left="382" width="83" height="10" font="14">PFN 03 to MFN 06</text>
+<text top="184" left="382" width="83" height="10" font="14">PFN 08 to MFN 10</text>
+<text top="194" left="382" width="83" height="10" font="14">PFN 10 to MFN 05</text>
+<text top="236" left="538" width="4" height="7" font="12">0</text>
+<text top="243" left="538" width="4" height="7" font="12">1</text>
+<text top="250" left="538" width="4" height="7" font="12">2</text>
+<text top="257" left="538" width="4" height="7" font="12">3</text>
+<text top="265" left="538" width="4" height="7" font="12">4</text>
+<text top="272" left="538" width="4" height="7" font="12">5</text>
+<text top="279" left="538" width="4" height="7" font="12">6</text>
+<text top="286" left="538" width="4" height="7" font="12">7</text>
+<text top="293" left="538" width="4" height="7" font="12">8</text>
+<text top="300" left="538" width="4" height="7" font="12">9</text>
+<text top="307" left="538" width="8" height="7" font="12">10</text>
+<text top="315" left="538" width="8" height="7" font="12">11</text>
+<text top="322" left="538" width="8" height="7" font="12">12</text>
+<text top="329" left="538" width="8" height="7" font="12">13</text>
+<text top="336" left="538" width="8" height="7" font="12">14</text>
+<text top="343" left="538" width="8" height="7" font="12">15</text>
+<text top="350" left="538" width="8" height="7" font="12">16</text>
+<text top="357" left="538" width="8" height="7" font="12">17</text>
+<text top="365" left="538" width="8" height="7" font="12">18</text>
+<text top="372" left="538" width="8" height="7" font="12">19</text>
+<text top="379" left="538" width="8" height="7" font="12">20</text>
+<text top="386" left="538" width="8" height="7" font="12">21</text>
+<text top="393" left="538" width="8" height="7" font="12">22</text>
+<text top="400" left="538" width="8" height="7" font="12">23</text>
+<text top="434" left="220" width="64" height="14" font="3">Figure B.4:</text>
+<text top="434" left="288" width="182" height="13" font="4"><b>VMM Memory Virtualization</b></text>
+<text top="459" left="129" width="432" height="14" font="3">little more memory than when in user mode; the OS can use this extra</text>
+<text top="474" left="129" width="432" height="14" font="3">memory for its data structures and all is well. On hardware that doesn’t</text>
+<text top="489" left="129" width="432" height="14" font="3">have such a mode, one has to run the OS in user mode and use memory</text>
+<text top="504" left="129" width="432" height="14" font="3">protection (page tables and TLBs) to protect OS data structures appro-</text>
+<text top="519" left="129" width="432" height="14" font="3">priately. In other words, when switching into the OS, the monitor would</text>
+<text top="534" left="129" width="432" height="14" font="3">have to make the memory of the OS data structures available to the OS via</text>
+<text top="549" left="129" width="432" height="14" font="3">page-table protections; when switching back to the running application,</text>
+<text top="564" left="129" width="394" height="14" font="3">the ability to read and write the kernel would have to be removed.</text>
+<text top="601" left="97" width="181" height="17" font="2">B.4 Virtualizing Memory</text>
+<text top="631" left="147" width="414" height="14" font="3">You should now have a basic idea of how the processor is virtualized:</text>
+<text top="646" left="129" width="432" height="14" font="3">the VMM acts like an OS and schedules different virtual machines to run,</text>
+<text top="661" left="129" width="432" height="14" font="3">and some interesting interactions occur when privilege levels change. But</text>
+<text top="676" left="129" width="432" height="14" font="3">we have left out a big part of the equation: how does the VMM virtualize</text>
+<text top="691" left="129" width="56" height="14" font="3">memory?</text>
+<text top="706" left="147" width="415" height="14" font="3">Each OS normally thinks of physical memory as a linear array of pages,</text>
+<text top="721" left="129" width="432" height="14" font="3">and assigns each page to itself or user processes. The OS itself, of course,</text>
+<text top="736" left="129" width="432" height="14" font="3">already virtualizes memory for its running processes, such that each pro-</text>
+<text top="751" left="129" width="432" height="14" font="3">cess has the illusion of its own private address space. Now we must add</text>
+<text top="766" left="129" width="432" height="14" font="3">another layer of virtualization, so that multiple OSes can share the actual</text>
+<text top="781" left="129" width="399" height="14" font="3">physical memory of the machine, and we must do so transparently.</text>
+<text top="796" left="147" width="414" height="14" font="3">This extra layer of virtualization makes “physical” memory a virtual-</text>
+<text top="811" left="129" width="264" height="14" font="3">ization on top of what the VMM refers to as</text>
+<text top="811" left="396" width="107" height="13" font="4"><b>machine memory</b></text>
+<text top="811" left="503" width="57" height="14" font="3">, which is</text>
+<text top="826" left="129" width="432" height="14" font="3">the real physical memory of the system. Thus, we now have an additional</text>
+<text top="881" left="129" width="11" height="14" font="3">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="3">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="3">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="3">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="13" family="URPAET+CMMI9" color="#000000"/>
+	<fontspec id="16" size="9" family="HNLEBY+CMMI6" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="3">V</text>
+<text top="98" left="98" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="145" width="13" height="14" font="3">M</text>
+<text top="98" left="159" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="210" width="13" height="14" font="3">M</text>
+<text top="98" left="224" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="512" width="7" height="14" font="3">7</text>
+<text top="136" left="96" width="46" height="13" font="4"><b>Process</b></text>
+<text top="136" left="292" width="111" height="13" font="4"><b>Operating System</b></text>
+<text top="151" left="96" width="10" height="13" font="4"><b>1.</b></text>
+<text top="151" left="110" width="120" height="14" font="3">Load from memory:</text>
+<text top="166" left="96" width="90" height="14" font="3">TLB miss: Trap</text>
+<text top="181" left="292" width="10" height="13" font="4"><b>2.</b></text>
+<text top="181" left="307" width="129" height="14" font="3">OS TLB miss handler:</text>
+<text top="196" left="292" width="132" height="14" font="3">Extract VPN from VA;</text>
+<text top="211" left="292" width="131" height="14" font="3">Do page table lookup;</text>
+<text top="226" left="292" width="120" height="14" font="3">If present and valid:</text>
+<text top="241" left="292" width="129" height="14" font="3">get PFN, update TLB;</text>
+<text top="256" left="292" width="101" height="14" font="3">Return from trap</text>
+<text top="271" left="96" width="10" height="13" font="4"><b>3.</b></text>
+<text top="271" left="110" width="108" height="14" font="3">Resume execution</text>
+<text top="286" left="96" width="178" height="14" font="3">(@PC of trapping instruction);</text>
+<text top="301" left="96" width="125" height="14" font="3">Instruction is retried;</text>
+<text top="316" left="96" width="106" height="14" font="3">Results in TLB hit</text>
+<text top="339" left="152" width="64" height="14" font="3">Figure B.5:</text>
+<text top="339" left="220" width="235" height="13" font="4"><b>TLB Miss Flow without Virtualization</b></text>
+<text top="371" left="87" width="432" height="14" font="3">layer of indirection: each OS maps virtual-to-physical addresses via its</text>
+<text top="386" left="87" width="432" height="14" font="3">per-process page tables; the VMM maps the resulting physical mappings</text>
+<text top="401" left="87" width="432" height="14" font="3">to underlying machine addresses via its per-OS page tables. Figure B.4</text>
+<text top="416" left="87" width="219" height="14" font="3">depicts this extra level of indirection.</text>
+<text top="433" left="105" width="414" height="14" font="3">In the figure, there is just a single virtual address space with four</text>
+<text top="448" left="87" width="432" height="14" font="3">pages, three of which are valid (0, 2, and 3). The OS uses its page ta-</text>
+<text top="463" left="87" width="432" height="14" font="3">ble to map these pages to three underlying physical frames (10, 3, and</text>
+<text top="478" left="87" width="432" height="14" font="3">8, respectively). Underneath the OS, the VMM performs a further level</text>
+<text top="493" left="87" width="432" height="14" font="3">of indirection, mapping PFNs 3, 8, and 10 to machine frames 6, 10, and</text>
+<text top="508" left="87" width="432" height="14" font="3">5 respectively. Of course, this picture simplifies things quite a bit; on a</text>
+<text top="523" left="87" width="165" height="14" font="3">real system, there would be</text>
+<text top="523" left="256" width="8" height="9" font="15">V</text>
+<text top="523" left="271" width="196" height="14" font="3">operating systems running (with</text>
+<text top="523" left="471" width="8" height="9" font="15">V</text>
+<text top="523" left="486" width="33" height="14" font="3">likely</text>
+<text top="538" left="87" width="163" height="14" font="3">greater than one), and thus</text>
+<text top="538" left="255" width="8" height="9" font="15">V</text>
+<text top="538" left="270" width="249" height="14" font="3">VMM page tables; further, on top of each</text>
+<text top="553" left="87" width="176" height="14" font="3">running operating system OS</text>
+<text top="558" left="263" width="4" height="6" font="16">i</text>
+<text top="553" left="268" width="234" height="14" font="3">, there would be a number of processes</text>
+<text top="553" left="505" width="9" height="9" font="15">P</text>
+<text top="558" left="514" width="4" height="6" font="16">i</text>
+<text top="567" left="87" width="57" height="14" font="3">running (</text>
+<text top="568" left="144" width="9" height="9" font="15">P</text>
+<text top="573" left="153" width="4" height="6" font="16">i</text>
+<text top="567" left="163" width="256" height="14" font="3">likely in the tens or hundreds), and hence</text>
+<text top="568" left="423" width="9" height="9" font="15">P</text>
+<text top="573" left="432" width="4" height="6" font="16">i</text>
+<text top="567" left="442" width="77" height="14" font="3">(per-process)</text>
+<text top="582" left="87" width="130" height="14" font="3">page tables within OS</text>
+<text top="588" left="217" width="4" height="6" font="16">i</text>
+<text top="582" left="222" width="3" height="14" font="3">.</text>
+<text top="600" left="105" width="363" height="14" font="3">To understand how this works a little better, let’s recall how</text>
+<text top="600" left="472" width="47" height="13" font="4"><b>address</b></text>
+<text top="615" left="87" width="66" height="13" font="4"><b>translation</b></text>
+<text top="615" left="158" width="361" height="14" font="3">works in a modern paged system. Specifically, let’s discuss</text>
+<text top="630" left="87" width="432" height="14" font="3">what happens on a system with a software-managed TLB during address</text>
+<text top="644" left="87" width="432" height="14" font="3">translation. Assume a user process generates an address (for an instruc-</text>
+<text top="659" left="87" width="432" height="14" font="3">tion fetch or an explicit load or store); by definition, the process generates</text>
+<text top="674" left="87" width="7" height="14" font="3">a</text>
+<text top="674" left="97" width="92" height="13" font="4"><b>virtual address</b></text>
+<text top="674" left="189" width="330" height="14" font="3">, as its address space has been virtualized by the OS. As</text>
+<text top="689" left="87" width="432" height="14" font="3">you know by now, it is the role of the OS, with help from the hardware,</text>
+<text top="704" left="87" width="105" height="14" font="3">to turn this into a</text>
+<text top="704" left="195" width="102" height="13" font="4"><b>physical address</b></text>
+<text top="704" left="302" width="217" height="14" font="3">and thus be able to fetch the desired</text>
+<text top="719" left="87" width="191" height="14" font="3">contents from physical memory.</text>
+<text top="736" left="105" width="414" height="14" font="3">Assume we have a 32-bit virtual address space and a 4-KB page size.</text>
+<text top="751" left="87" width="432" height="14" font="3">Thus, our 32-bit address is chopped into two parts: a 20-bit virtual page</text>
+<text top="766" left="87" width="432" height="14" font="3">number (VPN), and a 12-bit offset. The role of the OS, with help from the</text>
+<text top="781" left="87" width="432" height="14" font="3">hardware TLB, is to translate the VPN into a valid physical page frame</text>
+<text top="796" left="87" width="432" height="14" font="3">number (PFN) and thus produce a fully-formed physical address which</text>
+<text top="811" left="87" width="432" height="14" font="3">can be sent to physical memory to fetch the proper data. In the common</text>
+<text top="826" left="87" width="432" height="14" font="3">case, we expect the TLB to handle the translation in hardware, thus mak-</text>
+<text top="896" left="212" width="83" height="14" font="3">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="3">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="3">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="3">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="3">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="3">8</text>
+<text top="96" left="371" width="10" height="14" font="3">V</text>
+<text top="98" left="382" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="430" width="13" height="14" font="3">M</text>
+<text top="98" left="443" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="494" width="13" height="14" font="3">M</text>
+<text top="98" left="508" width="53" height="11" font="5">ONITORS</text>
+<text top="136" left="138" width="46" height="13" font="4"><b>Process</b></text>
+<text top="136" left="281" width="111" height="13" font="4"><b>Operating System</b></text>
+<text top="136" left="442" width="155" height="13" font="4"><b>Virtual Machine Monitor</b></text>
+<text top="151" left="138" width="10" height="13" font="4"><b>1.</b></text>
+<text top="151" left="152" width="96" height="14" font="3">Load from mem</text>
+<text top="166" left="138" width="90" height="14" font="3">TLB miss: Trap</text>
+<text top="181" left="442" width="10" height="13" font="4"><b>2.</b></text>
+<text top="181" left="456" width="147" height="14" font="3">VMM TLB miss handler:</text>
+<text top="196" left="442" width="150" height="14" font="3">Call into OS TLB handler</text>
+<text top="211" left="442" width="118" height="14" font="3">(reducing privilege)</text>
+<text top="226" left="281" width="143" height="14" font="3">3. OS TLB miss handler:</text>
+<text top="241" left="281" width="132" height="14" font="3">Extract VPN from VA;</text>
+<text top="256" left="281" width="131" height="14" font="3">Do page table lookup;</text>
+<text top="271" left="281" width="120" height="14" font="3">If present and valid,</text>
+<text top="286" left="281" width="125" height="14" font="3">get PFN, update TLB</text>
+<text top="301" left="442" width="10" height="13" font="4"><b>4.</b></text>
+<text top="301" left="456" width="80" height="14" font="3">Trap handler:</text>
+<text top="316" left="442" width="151" height="14" font="3">Unprivileged code trying</text>
+<text top="331" left="442" width="110" height="14" font="3">to update the TLB;</text>
+<text top="345" left="442" width="125" height="14" font="3">OS is trying to install</text>
+<text top="360" left="442" width="137" height="14" font="3">VPN-to-PFN mapping;</text>
+<text top="375" left="442" width="150" height="14" font="3">Update TLB instead with</text>
+<text top="390" left="442" width="158" height="14" font="3">VPN-to-MFN (privileged);</text>
+<text top="405" left="442" width="100" height="14" font="3">Jump back to OS</text>
+<text top="420" left="442" width="118" height="14" font="3">(reducing privilege)</text>
+<text top="435" left="281" width="10" height="13" font="4"><b>5.</b></text>
+<text top="435" left="295" width="101" height="14" font="3">Return from trap</text>
+<text top="450" left="442" width="10" height="13" font="4"><b>6.</b></text>
+<text top="450" left="456" width="80" height="14" font="3">Trap handler:</text>
+<text top="465" left="442" width="151" height="14" font="3">Unprivileged code trying</text>
+<text top="480" left="442" width="126" height="14" font="3">to return from a trap;</text>
+<text top="495" left="442" width="101" height="14" font="3">Return from trap</text>
+<text top="510" left="138" width="10" height="13" font="4"><b>7.</b></text>
+<text top="510" left="152" width="108" height="14" font="3">Resume execution</text>
+<text top="525" left="138" width="123" height="14" font="3">(@PC of instruction);</text>
+<text top="540" left="138" width="125" height="14" font="3">Instruction is retried;</text>
+<text top="555" left="138" width="106" height="14" font="3">Results in TLB hit</text>
+<text top="578" left="204" width="64" height="14" font="3">Figure B.6:</text>
+<text top="578" left="271" width="214" height="13" font="4"><b>TLB Miss Flow with Virtualization</b></text>
+<text top="598" left="129" width="432" height="14" font="3">ing the translation fast. When a TLB miss occurs (at least, on a system</text>
+<text top="613" left="129" width="432" height="14" font="3">with a software-managed TLB), the OS must get involved to service the</text>
+<text top="628" left="129" width="213" height="14" font="3">miss, as depicted here in Figure B.5.</text>
+<text top="645" left="147" width="414" height="14" font="3">As you can see, a TLB miss causes a trap into the OS, which handles</text>
+<text top="660" left="129" width="432" height="14" font="3">the fault by looking up the VPN in the page table and installing the trans-</text>
+<text top="675" left="129" width="103" height="14" font="3">lation in the TLB.</text>
+<text top="692" left="147" width="414" height="14" font="3">With a virtual machine monitor underneath the OS, however, things</text>
+<text top="707" left="129" width="432" height="14" font="3">again get a little more interesting. Let’s examine the flow of a TLB miss</text>
+<text top="721" left="129" width="432" height="14" font="3">again (see Table B.6 for a summary). When a process makes a virtual</text>
+<text top="736" left="129" width="432" height="14" font="3">memory reference and misses in the TLB, it is not the OS TLB miss han-</text>
+<text top="751" left="129" width="432" height="14" font="3">dler that runs; rather, it is the VMM TLB miss handler, as the VMM is</text>
+<text top="766" left="129" width="432" height="14" font="3">the true privileged owner of the machine. However, in the normal case,</text>
+<text top="781" left="129" width="432" height="14" font="3">the VMM TLB handler doesn’t know how to handle the TLB miss, so it</text>
+<text top="796" left="129" width="432" height="14" font="3">immediately jumps into the OS TLB miss handler; the VMM knows the</text>
+<text top="811" left="129" width="432" height="14" font="3">location of this handler because the OS, during “boot”, tried to install its</text>
+<text top="826" left="129" width="432" height="14" font="3">own trap handlers. The OS TLB miss handler then runs, does a page ta-</text>
+<text top="881" left="129" width="11" height="14" font="3">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="3">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="3">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="3">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="3">V</text>
+<text top="98" left="98" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="145" width="13" height="14" font="3">M</text>
+<text top="98" left="159" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="210" width="13" height="14" font="3">M</text>
+<text top="98" left="224" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="512" width="7" height="14" font="3">9</text>
+<text top="148" left="130" width="10" height="14" font="3">A</text>
+<text top="150" left="141" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="168" width="19" height="14" font="3">: H</text>
+<text top="150" left="188" width="71" height="11" font="5">YPERVISORS</text>
+<text top="148" left="263" width="10" height="14" font="3">A</text>
+<text top="150" left="275" width="18" height="11" font="5">ND</text>
+<text top="148" left="297" width="11" height="14" font="3">H</text>
+<text top="150" left="308" width="60" height="11" font="5">ARDWARE</text>
+<text top="148" left="369" width="18" height="14" font="3">-M</text>
+<text top="150" left="387" width="52" height="11" font="5">ANAGED</text>
+<text top="148" left="444" width="26" height="14" font="3">TLB</text>
+<text top="150" left="470" width="6" height="11" font="5">S</text>
+<text top="163" left="87" width="432" height="14" font="3">Our discussion has centered around software-managed TLBs and the</text>
+<text top="178" left="87" width="432" height="14" font="3">work that needs to be done when a miss occurs. But you might be</text>
+<text top="193" left="87" width="432" height="14" font="3">wondering: how does the virtual machine monitor get involved with a</text>
+<text top="208" left="87" width="432" height="14" font="3">hardware-managed TLB? In those systems, the hardware walks the page</text>
+<text top="223" left="87" width="432" height="14" font="3">table on each TLB miss and updates the TLB as need be, and thus the</text>
+<text top="238" left="87" width="432" height="14" font="3">VMM doesn’t have a chance to run on each TLB miss to sneak its trans-</text>
+<text top="253" left="87" width="432" height="14" font="3">lation into the system. Instead, the VMM must closely monitor changes</text>
+<text top="268" left="87" width="432" height="14" font="3">the OS makes to each page table (which, in a hardware-managed sys-</text>
+<text top="283" left="87" width="432" height="14" font="3">tem, is pointed to by a page-table base register of some kind), and keep a</text>
+<text top="298" left="87" width="116" height="13" font="4"><b>shadow page table</b></text>
+<text top="298" left="207" width="312" height="14" font="3">that instead maps the virtual addresses of each pro-</text>
+<text top="313" left="87" width="432" height="14" font="3">cess to the VMM’s desired machine pages [AA06]. The VMM installs a</text>
+<text top="327" left="87" width="432" height="14" font="3">process’s shadow page table whenever the OS tries to install the process’s</text>
+<text top="342" left="87" width="432" height="14" font="3">OS-level page table, and thus the hardware chugs along, translating vir-</text>
+<text top="357" left="87" width="432" height="14" font="3">tual addresses to machine addresses using the shadow table, without the</text>
+<text top="372" left="87" width="105" height="14" font="3">OS even noticing.</text>
+<text top="419" left="87" width="432" height="14" font="3">ble lookup for the VPN in question, and tries to install the VPN-to-PFN</text>
+<text top="434" left="87" width="432" height="14" font="3">mapping in the TLB. However, doing so is a privileged operation, and</text>
+<text top="449" left="87" width="432" height="14" font="3">thus causes another trap into the VMM (the VMM gets notified when any</text>
+<text top="464" left="87" width="432" height="14" font="3">non-privileged code tries to do something that is privileged, of course).</text>
+<text top="479" left="87" width="432" height="14" font="3">At this point, the VMM plays its trick: instead of installing the OS’s VPN-</text>
+<text top="494" left="87" width="432" height="14" font="3">to-PFN mapping, the VMM installs its desired VPN-to-MFN mapping.</text>
+<text top="509" left="87" width="432" height="14" font="3">After doing so, the system eventually gets back to the user-level code,</text>
+<text top="524" left="87" width="432" height="14" font="3">which retries the instruction, and results in a TLB hit, fetching the data</text>
+<text top="539" left="87" width="283" height="14" font="3">from the machine frame where the data resides.</text>
+<text top="555" left="105" width="414" height="14" font="3">This set of actions also hints at how a VMM must manage the virtu-</text>
+<text top="570" left="87" width="432" height="14" font="3">alization of physical memory for each running OS; just like the OS has a</text>
+<text top="585" left="87" width="432" height="14" font="3">page table for each process, the VMM must track the physical-to-machine</text>
+<text top="600" left="87" width="432" height="14" font="3">mappings for each virtual machine it is running. These per-machine page</text>
+<text top="615" left="87" width="432" height="14" font="3">tables need to be consulted in the VMM TLB miss handler in order to de-</text>
+<text top="630" left="87" width="432" height="14" font="3">termine which machine page a particular “physical” page maps to, and</text>
+<text top="645" left="87" width="432" height="14" font="3">even, for example, if it is present in machine memory at the current time</text>
+<text top="660" left="87" width="275" height="14" font="3">(i.e., the VMM could have swapped it to disk).</text>
+<text top="677" left="105" width="414" height="14" font="3">Finally, as you might notice from this sequence of operations, TLB</text>
+<text top="692" left="87" width="432" height="14" font="3">misses on a virtualized system become quite a bit more expensive than</text>
+<text top="707" left="87" width="432" height="14" font="3">in a non-virtualized system. To reduce this cost, the designers of Disco</text>
+<text top="721" left="87" width="432" height="14" font="3">added a VMM-level “software TLB”. The idea behind this data structure</text>
+<text top="736" left="87" width="432" height="14" font="3">is simple. The VMM records every virtual-to-physical mapping that it</text>
+<text top="751" left="87" width="432" height="14" font="3">sees the OS try to install; then, on a TLB miss, the VMM first consults</text>
+<text top="766" left="87" width="432" height="14" font="3">its software TLB to see if it has seen this virtual-to-physical mapping be-</text>
+<text top="781" left="87" width="432" height="14" font="3">fore, and what the VMM’s desired virtual-to-machine mapping should</text>
+<text top="796" left="87" width="432" height="14" font="3">be. If the VMM finds the translation in its software TLB, it simply installs</text>
+<text top="811" left="87" width="432" height="14" font="3">the virtual-to-machine mapping directly into the hardware TLB, and thus</text>
+<text top="826" left="87" width="357" height="14" font="3">skips all the back and forth in the control flow above [B+97].</text>
+<text top="896" left="212" width="83" height="14" font="3">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="3">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="3">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="3">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="3">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="13" family="QGAFSY+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="3">10</text>
+<text top="96" left="371" width="10" height="14" font="3">V</text>
+<text top="98" left="382" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="430" width="13" height="14" font="3">M</text>
+<text top="98" left="443" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="494" width="13" height="14" font="3">M</text>
+<text top="98" left="508" width="53" height="11" font="5">ONITORS</text>
+<text top="148" left="251" width="10" height="14" font="3">A</text>
+<text top="150" left="262" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="289" width="16" height="14" font="3">: P</text>
+<text top="150" left="305" width="25" height="11" font="5">ARA</text>
+<text top="148" left="331" width="4" height="14" font="3">-</text>
+<text top="150" left="336" width="103" height="11" font="5">VIRTUALIZATION</text>
+<text top="163" left="129" width="432" height="14" font="3">In many situations, it is good to assume that the OS cannot be modified in</text>
+<text top="178" left="129" width="432" height="14" font="3">order to work better with virtual machine monitors (for example, because</text>
+<text top="193" left="129" width="432" height="14" font="3">you are running your VMM under an unfriendly competitor’s operating</text>
+<text top="208" left="129" width="432" height="14" font="3">system). However, this is not always the case, and when the OS can be</text>
+<text top="223" left="129" width="432" height="14" font="3">modified (as we saw in the example with demand-zeroing of pages), it</text>
+<text top="238" left="129" width="432" height="14" font="3">may run more efficiently on top of a VMM. Running a modified OS to</text>
+<text top="253" left="129" width="209" height="14" font="3">run on a VMM is generally called</text>
+<text top="253" left="343" width="115" height="13" font="4"><b>para-virtualization</b></text>
+<text top="253" left="463" width="98" height="14" font="3">[WSG02], as the</text>
+<text top="268" left="129" width="432" height="14" font="3">virtualization provided by the VMM isn’t a complete one, but rather a</text>
+<text top="283" left="129" width="432" height="14" font="3">partial one requiring OS changes to operate effectively. Research shows</text>
+<text top="298" left="129" width="432" height="14" font="3">that a properly-designed para-virtualized system, with just the right OS</text>
+<text top="313" left="129" width="432" height="14" font="3">changes, can be made to be nearly as efficient a system without a VMM</text>
+<text top="327" left="129" width="53" height="14" font="3">[BD+03].</text>
+<text top="376" left="97" width="181" height="17" font="2">B.5 The Information Gap</text>
+<text top="406" left="147" width="414" height="14" font="3">Just like the OS doesn’t know too much about what application pro-</text>
+<text top="421" left="129" width="432" height="14" font="3">grams really want, and thus must often make general policies that hope-</text>
+<text top="436" left="129" width="432" height="14" font="3">fully work for all programs, the VMM often doesn’t know too much about</text>
+<text top="451" left="129" width="432" height="14" font="3">what the OS is doing or wanting; this lack of knowledge, sometimes</text>
+<text top="466" left="129" width="59" height="14" font="3">called the</text>
+<text top="466" left="192" width="101" height="13" font="4"><b>information gap</b></text>
+<text top="466" left="298" width="262" height="14" font="3">between the VMM and the OS, can lead to</text>
+<text top="481" left="129" width="432" height="14" font="3">various inefficiencies [B+97]. For example, an OS, when it has nothing</text>
+<text top="496" left="129" width="220" height="14" font="3">else to run, will sometimes go into an</text>
+<text top="496" left="352" width="55" height="13" font="4"><b>idle loop</b></text>
+<text top="496" left="409" width="151" height="14" font="3">just spinning and waiting</text>
+<text top="511" left="129" width="180" height="14" font="3">for the next interrupt to occur:</text>
+<text top="542" left="153" width="73" height="11" font="8">while (1)</text>
+<text top="557" left="169" width="145" height="11" font="8">; // the idle loop</text>
+<text top="587" left="147" width="414" height="14" font="3">It makes sense to spin like this if the OS is in charge of the entire ma-</text>
+<text top="601" left="129" width="432" height="14" font="3">chine and thus knows there is nothing else that needs to run. However,</text>
+<text top="616" left="129" width="432" height="14" font="3">when a VMM is running underneath two different OSes, one in the idle</text>
+<text top="631" left="129" width="432" height="14" font="3">loop and one usefully running user processes, it would be useful for the</text>
+<text top="646" left="129" width="432" height="14" font="3">VMM to know that one OS is idle so it can give more CPU time to the OS</text>
+<text top="661" left="129" width="113" height="14" font="3">doing useful work.</text>
+<text top="677" left="147" width="414" height="14" font="3">Another example arises with demand zeroing of pages. Most oper-</text>
+<text top="692" left="129" width="432" height="14" font="3">ating systems zero a physical frame before mapping it into a process’s</text>
+<text top="707" left="129" width="432" height="14" font="3">address space. The reason for doing so is simple: security. If the OS</text>
+<text top="721" left="129" width="320" height="14" font="3">gave one process a page that another had been using</text>
+<text top="721" left="453" width="43" height="14" font="17"><i>without</i></text>
+<text top="721" left="500" width="61" height="14" font="3">zeroing it,</text>
+<text top="736" left="129" width="432" height="14" font="3">an information leak across processes could occur, thus potentially leak-</text>
+<text top="751" left="129" width="432" height="14" font="3">ing sensitive information. Unfortunately, the VMM must zero pages that</text>
+<text top="766" left="129" width="432" height="14" font="3">it gives to each OS, for the same reason, and thus many times a page will</text>
+<text top="781" left="129" width="432" height="14" font="3">be zeroed twice, once by the VMM when assigning it to an OS, and once</text>
+<text top="796" left="129" width="432" height="14" font="3">by the OS when assigning it to a process. The authors of Disco had no</text>
+<text top="811" left="129" width="432" height="14" font="3">great solution to this problem: they simply changed the OS (IRIX) to not</text>
+<text top="826" left="129" width="432" height="14" font="3">zero pages that it knew had been zeroed by the underlying VMM [B+97].</text>
+<text top="881" left="129" width="11" height="14" font="3">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="3">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="3">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="3">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="3">V</text>
+<text top="98" left="98" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="145" width="13" height="14" font="3">M</text>
+<text top="98" left="159" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="210" width="13" height="14" font="3">M</text>
+<text top="98" left="224" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="506" width="13" height="14" font="3">11</text>
+<text top="148" left="202" width="8" height="14" font="3">T</text>
+<text top="150" left="211" width="11" height="11" font="5">IP</text>
+<text top="148" left="223" width="19" height="14" font="3">: U</text>
+<text top="150" left="242" width="13" height="11" font="5">SE</text>
+<text top="148" left="259" width="5" height="14" font="3">I</text>
+<text top="150" left="264" width="49" height="11" font="5">MPLICIT</text>
+<text top="148" left="317" width="5" height="14" font="3">I</text>
+<text top="150" left="322" width="82" height="11" font="5">NFORMATION</text>
+<text top="163" left="87" width="432" height="14" font="3">Implicit information can be a powerful tool in layered systems where</text>
+<text top="178" left="87" width="432" height="14" font="3">it is hard to change the interfaces between systems, but more informa-</text>
+<text top="193" left="87" width="432" height="14" font="3">tion about a different layer of the system is needed. For example, a</text>
+<text top="208" left="87" width="432" height="14" font="3">block-based disk device might like to know more about how a file sys-</text>
+<text top="223" left="87" width="432" height="14" font="3">tem above it is using it; Similarly, an application might want to know</text>
+<text top="238" left="87" width="432" height="14" font="3">what pages are currently in the file-system page cache, but the OS pro-</text>
+<text top="253" left="87" width="432" height="14" font="3">vides no API to access this information. In both these cases, researchers</text>
+<text top="267" left="87" width="432" height="14" font="3">have developed powerful inferencing techniques to gather the needed in-</text>
+<text top="282" left="87" width="123" height="14" font="3">formation implicitly,</text>
+<text top="282" left="214" width="43" height="14" font="17"><i>without</i></text>
+<text top="282" left="261" width="258" height="14" font="3">requiring an explicit interface between lay-</text>
+<text top="297" left="87" width="432" height="14" font="3">ers [AD+01,S+03]. Such techniques are quite useful in a virtual machine</text>
+<text top="312" left="87" width="432" height="14" font="3">monitor, which would like to learn more about the OSes running above it</text>
+<text top="327" left="87" width="342" height="14" font="3">without requiring an explicit API between the two layers.</text>
+<text top="379" left="105" width="414" height="14" font="3">There are many other similar problems to these described here. One</text>
+<text top="394" left="87" width="299" height="14" font="3">solution is for the VMM to use inference (a form of</text>
+<text top="394" left="389" width="126" height="13" font="4"><b>implicit information</b></text>
+<text top="394" left="515" width="4" height="14" font="3">)</text>
+<text top="409" left="87" width="432" height="14" font="3">to overcome the problem. For example, a VMM can detect the idle loop by</text>
+<text top="424" left="87" width="432" height="14" font="3">noticing that the OS switched to low-power mode. A different approach,</text>
+<text top="439" left="87" width="43" height="14" font="3">seen in</text>
+<text top="439" left="135" width="99" height="13" font="4"><b>para-virtualized</b></text>
+<text top="439" left="239" width="280" height="14" font="3">systems, requires the OS to be changed. This</text>
+<text top="454" left="87" width="413" height="14" font="3">more explicit approach, while harder to deploy, can be quite effective.</text>
+<text top="493" left="55" width="99" height="17" font="2">B.6 Summary</text>
+<text top="524" left="105" width="414" height="14" font="3">Virtualization is in a renaissance. For a multitude of reasons, users</text>
+<text top="539" left="87" width="432" height="14" font="3">and administrators want to run multiple OSes on the same machine at</text>
+<text top="554" left="87" width="394" height="14" font="3">the same time. The key is that VMMs generally provide this service</text>
+<text top="554" left="484" width="35" height="13" font="4"><b>trans-</b></text>
+<text top="569" left="87" width="52" height="13" font="4"><b>parently</b></text>
+<text top="569" left="139" width="380" height="14" font="3">; the OS above has little clue that it is not actually controlling the</text>
+<text top="584" left="87" width="432" height="14" font="3">hardware of the machine. The key method that VMMs use to do so is</text>
+<text top="599" left="87" width="432" height="14" font="3">to extend the notion of limited direct execution; by setting up the hard-</text>
+<text top="614" left="87" width="432" height="14" font="3">ware to enable the VMM to interpose on key events (such as traps), the</text>
+<text top="629" left="87" width="432" height="14" font="3">VMM can completely control how machine resources are allocated while</text>
+<text top="644" left="87" width="259" height="14" font="3">preserving the illusion that the OS requires.</text>
+<text top="660" left="105" width="414" height="14" font="3">You might have noticed some similarities between what the OS does</text>
+<text top="675" left="87" width="432" height="14" font="3">for processes and what the VMM does for OSes. They both virtualize</text>
+<text top="690" left="87" width="432" height="14" font="3">the hardware after all, and hence do some of the same things. However,</text>
+<text top="705" left="87" width="432" height="14" font="3">there is one key difference: with the OS virtualization, a number of new</text>
+<text top="720" left="87" width="432" height="14" font="3">abstractions and nice interfaces are provided; with VMM-level virtual-</text>
+<text top="735" left="87" width="432" height="14" font="3">ization, the abstraction is identical to the hardware (and thus not very</text>
+<text top="750" left="87" width="432" height="14" font="3">nice). While both the OS and VMM virtualize hardware, they do so by</text>
+<text top="765" left="87" width="432" height="14" font="3">providing completely different interfaces; VMMs, unlike the OS, are not</text>
+<text top="780" left="87" width="324" height="14" font="3">particularly meant to make the hardware easier to use.</text>
+<text top="796" left="105" width="414" height="14" font="3">There are many other topics to study if you wish to learn more about</text>
+<text top="811" left="87" width="432" height="14" font="3">virtualization. For example, we didn’t even discuss what happens with</text>
+<text top="826" left="87" width="432" height="14" font="3">I/O, a topic that has its own new and interesting issues when it comes to</text>
+<text top="896" left="212" width="83" height="14" font="3">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="3">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="3">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="3">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="3">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="3">12</text>
+<text top="96" left="371" width="10" height="14" font="3">V</text>
+<text top="98" left="382" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="430" width="13" height="14" font="3">M</text>
+<text top="98" left="443" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="494" width="13" height="14" font="3">M</text>
+<text top="98" left="508" width="53" height="11" font="5">ONITORS</text>
+<text top="139" left="129" width="432" height="14" font="3">virtualized platforms. We also didn’t discuss how virtualization works</text>
+<text top="154" left="129" width="432" height="14" font="3">when running “on the side” with your OS in what is sometimes called a</text>
+<text top="169" left="129" width="432" height="14" font="3">“hosted” configuration. Read more about both of these topics if you’re in-</text>
+<text top="183" left="129" width="432" height="14" font="3">terested [SVL01]. We also didn’t discuss what happens when a collection</text>
+<text top="198" left="129" width="387" height="14" font="3">of operating systems running on a VMM uses too much memory.</text>
+<text top="213" left="147" width="414" height="14" font="3">Finally, hardware support has changed how platforms support virtu-</text>
+<text top="228" left="129" width="432" height="14" font="3">alization. Companies like Intel and AMD now include direct support for</text>
+<text top="243" left="129" width="432" height="14" font="3">an extra level of virtualization, thus obviating many of the software tech-</text>
+<text top="258" left="129" width="432" height="14" font="3">niques in this chapter. Perhaps, in a chapter yet-to-be-written, we will</text>
+<text top="273" left="129" width="244" height="14" font="3">discuss these mechanisms in more detail.</text>
+<text top="881" left="129" width="11" height="14" font="3">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="3">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="6">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="3">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="3">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="16" family="XGUBJF+URWPalladioL" color="#000000"/>
+	<fontspec id="19" size="10" family="QGAFSY+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="20" size="10" family="NTIKAW+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="3">V</text>
+<text top="98" left="98" width="44" height="11" font="5">IRTUAL</text>
+<text top="96" left="145" width="13" height="14" font="3">M</text>
+<text top="98" left="159" width="47" height="11" font="5">ACHINE</text>
+<text top="96" left="210" width="13" height="14" font="3">M</text>
+<text top="98" left="224" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="506" width="13" height="14" font="3">13</text>
+<text top="137" left="87" width="82" height="16" font="18"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="7">[AA06] “A Comparison of Software and Hardware Techniques for x86 Virtualization” by Keith</text>
+<text top="177" left="87" width="277" height="11" font="7">Adams and Ole Agesen. ASPLOS ’06, San Jose, California.</text>
+<text top="177" left="370" width="149" height="11" font="19"><i>A terrific paper from two VMware</i></text>
+<text top="189" left="87" width="432" height="11" font="19"><i>engineers about the surprisingly small benefits of having hardware support for virtualization. Also an</i></text>
+<text top="201" left="87" width="432" height="11" font="19"><i>excellent general discussion about virtualization in VMware, including the crazy binary-translation</i></text>
+<text top="213" left="87" width="354" height="11" font="19"><i>tricks they have to play in order to virtualize the difficult-to-virtualize x86 platform.</i></text>
+<text top="229" left="87" width="432" height="11" font="7">[AD+01] “Information and Control in Gray-box Systems” by Andrea C. Arpaci-Dusseau and</text>
+<text top="241" left="87" width="244" height="11" font="7">Remzi H. Arpaci-Dusseau. SOSP ’01, Banff, Canada.</text>
+<text top="241" left="336" width="183" height="11" font="19"><i>Our own work on how to infer information</i></text>
+<text top="253" left="87" width="432" height="11" font="19"><i>and even exert control over the OS from application level, without change to the OS. The best example</i></text>
+<text top="265" left="87" width="432" height="11" font="19"><i>therein: determining which file blocks are cached using a probabilistic probe-based technique; doing so</i></text>
+<text top="277" left="87" width="391" height="11" font="19"><i>allows applications to better utilize the cache, by first scheduling work that will result in hits.</i></text>
+<text top="294" left="87" width="432" height="11" font="7">[B00] “FreeBSD Developers’ Handbook: Chapter 11 x86 Assembly Language Programming”</text>
+<text top="306" left="87" width="305" height="11" font="7">http://www.freebsd.org/doc/en/books/developers-handbook/.</text>
+<text top="305" left="395" width="125" height="11" font="19"><i>A nice tutorial on system calls</i></text>
+<text top="317" left="87" width="179" height="11" font="19"><i>and such in the BSD developers handbook.</i></text>
+<text top="334" left="87" width="432" height="11" font="7">[BD+03] “Xen and the Art of Virtualization” by Paul Barham, Boris Dragovic, Keir Fraser,</text>
+<text top="346" left="87" width="432" height="11" font="7">Steven Hand, Tim Harris, Alex Ho, Rolf Neugebauer, Ian Pratt, Andrew Warfield. SOSP ’03,</text>
+<text top="358" left="87" width="127" height="11" font="7">Bolton Landing, New York.</text>
+<text top="358" left="218" width="301" height="11" font="19"><i>The paper that shows that with para-virtualized systems, the overheads</i></text>
+<text top="370" left="87" width="432" height="11" font="19"><i>of virtualized systems can be made to be incredibly low. So successful was this paper on the Xen virtual</i></text>
+<text top="382" left="87" width="190" height="11" font="19"><i>machine monitor that it launched a company.</i></text>
+<text top="398" left="87" width="447" height="11" font="7">[B+97] “Disco: Running Commodity Operating Systems on Scalable Multiprocessors” by Edouard</text>
+<text top="410" left="87" width="329" height="11" font="7">Bugnion, Scott Devine, Kinshuk Govil, Mendel Rosenblum. SOSP ’97.</text>
+<text top="410" left="421" width="98" height="11" font="19"><i>The paper that reintro-</i></text>
+<text top="422" left="87" width="432" height="11" font="19"><i>duced the systems community to virtual machine research; well, perhaps this is unfair as Bressoud and</i></text>
+<text top="434" left="87" width="432" height="11" font="19"><i>Schneider [BS95] also did, but here we began to understand why virtualization was going to come back.</i></text>
+<text top="446" left="87" width="432" height="11" font="19"><i>What made it even clearer, however, is when this group of excellent researchers started VMware and</i></text>
+<text top="458" left="87" width="123" height="11" font="19"><i>made some billions of dollars.</i></text>
+<text top="474" left="87" width="432" height="11" font="7">[B+17] “Hardware and Software Support for Virtualization” by Edouard Bugnion, Jason Nieh,</text>
+<text top="486" left="87" width="198" height="11" font="7">Dan Tsafrir. Morgan and Claypool, 2017.</text>
+<text top="486" left="293" width="226" height="11" font="19"><i>Undoubtedly the best place to get the latest on how</i></text>
+<text top="498" left="87" width="432" height="11" font="19"><i>virtualization works in modern systems. Unfortunately, you’ll have to read a short book to figure it out!</i></text>
+<text top="514" left="87" width="432" height="11" font="7">[BS95] “Hypervisor-based Fault-tolerance” by Thomas C. Bressoud, Fred B. Schneider. SOSP</text>
+<text top="526" left="87" width="16" height="11" font="7">’95.</text>
+<text top="526" left="110" width="177" height="11" font="19"><i>One the earliest papers to bring back the</i></text>
+<text top="526" left="290" width="50" height="10" font="20"><b>hypervisor</b></text>
+<text top="526" left="340" width="179" height="11" font="19"><i>, which is just another term for a virtual</i></text>
+<text top="538" left="87" width="432" height="11" font="19"><i>machine monitor. In this work, however, such hypervisors are used to improve system tolerance of</i></text>
+<text top="550" left="87" width="432" height="11" font="19"><i>hardware faults, which is perhaps less useful than some of the more practical scenarios discussed in this</i></text>
+<text top="562" left="87" width="272" height="11" font="19"><i>chapter; however, still quite an intriguing paper in its own right.</i></text>
+<text top="578" left="87" width="432" height="11" font="7">[G74] “Survey of Virtual Machine Research” by R.P. Goldberg. IEEE Computer, Volume 7,</text>
+<text top="590" left="87" width="50" height="11" font="7">Number 6.</text>
+<text top="590" left="140" width="235" height="11" font="19"><i>A terrific survey of a lot of old virtual machine research.</i></text>
+<text top="606" left="87" width="432" height="11" font="7">[SVL01] “Virtualizing I/O Devices on VMware Workstation’s Hosted Virtual Machine Moni-</text>
+<text top="618" left="87" width="432" height="11" font="7">tor” by Jeremy Sugerman, Ganesh Venkitachalam and Beng-Hong Lim. USENIX ’01, Boston,</text>
+<text top="630" left="87" width="70" height="11" font="7">Massachusetts.</text>
+<text top="630" left="162" width="357" height="11" font="19"><i>Provides a good overview of how I/O works in VMware using a hosted architecture</i></text>
+<text top="642" left="87" width="375" height="11" font="19"><i>which exploits many native OS features to avoid reimplementing them within the VMM.</i></text>
+<text top="659" left="87" width="333" height="11" font="7">[V98] by VMware corporation. Available: http://www.vmware.com/.</text>
+<text top="659" left="426" width="93" height="11" font="19"><i>This may be the most</i></text>
+<text top="670" left="87" width="432" height="11" font="19"><i>useless reference in this book, as you can clearly look this up yourself. Anyhow, the company was</i></text>
+<text top="682" left="87" width="252" height="11" font="19"><i>founded in 1998 and is a leader in the field of virtualization.</i></text>
+<text top="699" left="87" width="432" height="11" font="7">[S+03] “Semantically-Smart Disk Systems” by Muthian Sivathanu, Vijayan Prabhakaran, Flo-</text>
+<text top="711" left="87" width="432" height="11" font="7">rentina I. Popovici, Timothy E. Denehy, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-Dusseau.</text>
+<text top="723" left="87" width="224" height="11" font="7">FAST ’03, San Francisco, California, March 2003.</text>
+<text top="723" left="315" width="204" height="11" font="19"><i>Our work again, this time showing how a dumb</i></text>
+<text top="735" left="87" width="432" height="11" font="19"><i>block-based device can infer much about what the file system above it is doing, such as deleting a file.</i></text>
+<text top="747" left="87" width="432" height="11" font="19"><i>The technology used therein enables interesting new functionality within a block device, such as secure</i></text>
+<text top="758" left="87" width="129" height="11" font="19"><i>delete, or more reliable storage.</i></text>
+<text top="775" left="87" width="432" height="11" font="7">[WSG02] “Scale and Performance in the Denali Isolation Kernel” by Andrew Whitaker, Mari-</text>
+<text top="787" left="87" width="319" height="11" font="7">anne Shaw, and Steven D. Gribble. OSDI ’02, Boston, Massachusetts.</text>
+<text top="787" left="410" width="109" height="11" font="19"><i>The paper that introduces</i></text>
+<text top="799" left="87" width="432" height="11" font="19"><i>the term para-virtualization. Although one can argue that Bugnion et al. [B+97] introduce the idea of</i></text>
+<text top="811" left="87" width="432" height="11" font="19"><i>para-virtualization in the Disco paper, Whitaker et al. take it further and show how the idea can be more</i></text>
+<text top="823" left="87" width="160" height="11" font="19"><i>general than what was thought before.</i></text>
+<text top="896" left="212" width="83" height="14" font="3">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="3">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="3">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="3">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="3">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+</pdf2xml>

@@ -1,0 +1,1488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="WEGPSL+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="WEGPSL+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="GPBBOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="11" family="GPBBOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="13" family="QLJAPJ+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="5" size="16" family="GPBBOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="16" family="QLJAPJ+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="7" size="9" family="GPBBOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="7" family="GPBBOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="GPBBOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="QLJAPJ+NimbusMonL-Regu" color="#000000"/>
+<text top="194" left="540" width="17" height="23" font="0">5</text>
+<text top="263" left="303" width="216" height="16" font="1">Interlude: Process API</text>
+<text top="353" left="242" width="10" height="14" font="2">A</text>
+<text top="355" left="253" width="26" height="11" font="3">SIDE</text>
+<text top="353" left="280" width="13" height="14" font="2">: I</text>
+<text top="355" left="294" width="70" height="11" font="3">NTERLUDES</text>
+<text top="368" left="87" width="432" height="14" font="2">Interludes will cover more practical aspects of systems, including a par-</text>
+<text top="383" left="87" width="432" height="14" font="2">ticular focus on operating system APIs and how to use them. If you don’t</text>
+<text top="398" left="87" width="432" height="14" font="2">like practical things, you could skip these interludes. But you should like</text>
+<text top="413" left="87" width="432" height="14" font="2">practical things, because, well, they are generally useful in real life; com-</text>
+<text top="428" left="87" width="426" height="14" font="2">panies, for example, don’t usually hire you for your non-practical skills.</text>
+<text top="471" left="105" width="299" height="14" font="2">In this interlude, we discuss process creation in U</text>
+<text top="473" left="404" width="21" height="11" font="3">NIX</text>
+<text top="471" left="430" width="67" height="14" font="2">systems. U</text>
+<text top="473" left="498" width="21" height="11" font="3">NIX</text>
+<text top="486" left="87" width="432" height="14" font="2">presents one of the most intriguing ways to create a new process with</text>
+<text top="501" left="87" width="132" height="14" font="2">a pair of system calls:</text>
+<text top="502" left="226" width="48" height="11" font="4">fork()</text>
+<text top="501" left="279" width="23" height="14" font="2">and</text>
+<text top="502" left="307" width="48" height="11" font="4">exec()</text>
+<text top="501" left="355" width="107" height="14" font="2">. A third routine,</text>
+<text top="502" left="467" width="48" height="11" font="4">wait()</text>
+<text top="501" left="516" width="3" height="14" font="2">,</text>
+<text top="516" left="87" width="432" height="14" font="2">can be used by a process wishing to wait for a process it has created to</text>
+<text top="531" left="87" width="432" height="14" font="2">complete. We now present these interfaces in more detail, with a few</text>
+<text top="546" left="87" width="336" height="14" font="2">simple examples to motivate us. And thus, our problem:</text>
+<text top="584" left="145" width="10" height="14" font="2">C</text>
+<text top="586" left="156" width="24" height="11" font="3">RUX</text>
+<text top="584" left="180" width="19" height="14" font="2">: H</text>
+<text top="586" left="200" width="20" height="11" font="3">OW</text>
+<text top="584" left="224" width="8" height="14" font="2">T</text>
+<text top="586" left="233" width="8" height="11" font="3">O</text>
+<text top="584" left="246" width="10" height="14" font="2">C</text>
+<text top="586" left="256" width="37" height="11" font="3">REATE</text>
+<text top="584" left="297" width="10" height="14" font="2">A</text>
+<text top="586" left="308" width="18" height="11" font="3">ND</text>
+<text top="584" left="330" width="10" height="14" font="2">C</text>
+<text top="586" left="340" width="50" height="11" font="3">ONTROL</text>
+<text top="584" left="394" width="8" height="14" font="2">P</text>
+<text top="586" left="403" width="58" height="11" font="3">ROCESSES</text>
+<text top="599" left="105" width="414" height="14" font="2">What interfaces should the OS present for process creation and con-</text>
+<text top="614" left="87" width="432" height="14" font="2">trol? How should these interfaces be designed to enable powerful func-</text>
+<text top="629" left="87" width="264" height="14" font="2">tionality, ease of use, and high performance?</text>
+<text top="683" left="55" width="53" height="17" font="5">5.1 The</text>
+<text top="684" left="112" width="59" height="14" font="6">fork()</text>
+<text top="683" left="175" width="86" height="17" font="5">System Call</text>
+<text top="713" left="105" width="23" height="14" font="2">The</text>
+<text top="714" left="132" width="48" height="11" font="4">fork()</text>
+<text top="713" left="184" width="335" height="14" font="2">system call is used to create a new process [C63]. How-</text>
+<text top="728" left="87" width="432" height="14" font="2">ever, be forewarned: it is certainly the strangest routine you will ever</text>
+<text top="745" left="87" width="21" height="14" font="2">call</text>
+<text top="743" left="108" width="4" height="9" font="7">1</text>
+<text top="745" left="113" width="406" height="14" font="2">. More speciﬁcally, you have a running program whose code looks</text>
+<text top="760" left="87" width="432" height="14" font="2">like what you see in Figure 5.1; examine the code, or better yet, type it in</text>
+<text top="775" left="87" width="115" height="14" font="2">and run it yourself!</text>
+<text top="802" left="107" width="4" height="8" font="8">1</text>
+<text top="804" left="112" width="407" height="11" font="9">Well, OK, we admit that we don’t know that for sure; who knows what routines you</text>
+<text top="816" left="87" width="151" height="11" font="9">call when no one is looking? But</text>
+<text top="817" left="241" width="38" height="9" font="10">fork()</text>
+<text top="816" left="281" width="238" height="11" font="9">is pretty odd, no matter how unusual your routine-</text>
+<text top="828" left="87" width="91" height="11" font="9">calling patterns are.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="WDDTRY+URWPalladioL" color="#000000"/>
+	<fontspec id="12" size="13" family="OLUBHC+NimbusMonL" color="#000000"/>
+	<fontspec id="13" size="13" family="BTLIRJ+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="14" size="12" family="GPBBOH+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="401" width="5" height="14" font="2">I</text>
+<text top="98" left="406" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="471" width="16" height="14" font="2">: P</text>
+<text top="98" left="487" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="138" left="107" width="4" height="8" font="8">1</text>
+<text top="135" left="129" width="145" height="11" font="4">#include &lt;stdio.h&gt;</text>
+<text top="153" left="107" width="4" height="8" font="8">2</text>
+<text top="150" left="129" width="153" height="11" font="4">#include &lt;stdlib.h&gt;</text>
+<text top="168" left="107" width="4" height="8" font="8">3</text>
+<text top="165" left="129" width="153" height="11" font="4">#include &lt;unistd.h&gt;</text>
+<text top="183" left="107" width="4" height="8" font="8">4</text>
+<text top="198" left="107" width="4" height="8" font="8">5</text>
+<text top="195" left="129" width="274" height="14" font="4">int main(int argc, char *argv[]) {</text>
+<text top="213" left="107" width="4" height="8" font="8">6</text>
+<text top="210" left="145" width="347" height="11" font="4">printf(&#34;hello (pid:%d)\n&#34;, (int) getpid());</text>
+<text top="228" left="107" width="4" height="8" font="8">7</text>
+<text top="225" left="145" width="129" height="11" font="4">int rc = fork();</text>
+<text top="243" left="107" width="4" height="8" font="8">8</text>
+<text top="240" left="145" width="105" height="11" font="4">if (rc &lt; 0) {</text>
+<text top="258" left="107" width="4" height="8" font="8">9</text>
+<text top="254" left="161" width="113" height="11" font="4">// fork failed</text>
+<text top="273" left="104" width="7" height="8" font="8">10</text>
+<text top="269" left="161" width="266" height="11" font="4">fprintf(stderr, &#34;fork failed\n&#34;);</text>
+<text top="288" left="104" width="7" height="8" font="8">11</text>
+<text top="284" left="161" width="65" height="11" font="4">exit(1);</text>
+<text top="303" left="104" width="7" height="8" font="8">12</text>
+<text top="299" left="145" width="169" height="11" font="4">} else if (rc == 0) {</text>
+<text top="318" left="104" width="7" height="8" font="8">13</text>
+<text top="314" left="161" width="178" height="11" font="4">// child (new process)</text>
+<text top="333" left="104" width="7" height="8" font="8">14</text>
+<text top="329" left="161" width="347" height="11" font="4">printf(&#34;child (pid:%d)\n&#34;, (int) getpid());</text>
+<text top="348" left="104" width="7" height="8" font="8">15</text>
+<text top="344" left="145" width="65" height="11" font="4">} else {</text>
+<text top="363" left="104" width="7" height="8" font="8">16</text>
+<text top="359" left="161" width="291" height="11" font="4">// parent goes down this path (main)</text>
+<text top="378" left="104" width="7" height="8" font="8">17</text>
+<text top="374" left="161" width="266" height="11" font="4">printf(&#34;parent of %d (pid:%d)\n&#34;,</text>
+<text top="393" left="104" width="7" height="8" font="8">18</text>
+<text top="389" left="226" width="161" height="11" font="4">rc, (int) getpid());</text>
+<text top="407" left="104" width="7" height="8" font="8">19</text>
+<text top="404" left="145" width="8" height="11" font="4">}</text>
+<text top="422" left="104" width="7" height="8" font="8">20</text>
+<text top="419" left="145" width="73" height="11" font="4">return 0;</text>
+<text top="437" left="104" width="7" height="8" font="8">21</text>
+<text top="434" left="129" width="8" height="11" font="4">}</text>
+<text top="452" left="104" width="7" height="8" font="8">22</text>
+<text top="462" left="241" width="62" height="14" font="2">Figure 5.1:</text>
+<text top="462" left="307" width="46" height="13" font="11"><b>Calling</b></text>
+<text top="463" left="356" width="48" height="11" font="12"><b>fork()</b></text>
+<text top="462" left="408" width="4" height="13" font="11"><b>(</b></text>
+<text top="463" left="412" width="32" height="11" font="12"><b>p1.c</b></text>
+<text top="462" left="444" width="4" height="13" font="11"><b>)</b></text>
+<text top="488" left="147" width="210" height="14" font="2">When you run this program (called</text>
+<text top="489" left="360" width="32" height="11" font="4">p1.c</text>
+<text top="488" left="392" width="154" height="14" font="2">), you’ll see the following:</text>
+<text top="523" left="129" width="97" height="11" font="4">prompt&gt; ./p1</text>
+<text top="538" left="129" width="137" height="11" font="4">hello (pid:29146)</text>
+<text top="553" left="129" width="218" height="11" font="4">parent of 29147 (pid:29146)</text>
+<text top="568" left="129" width="137" height="11" font="4">child (pid:29147)</text>
+<text top="583" left="129" width="57" height="11" font="4">prompt&gt;</text>
+<text top="616" left="147" width="317" height="14" font="2">Let us understand what happened in more detail in</text>
+<text top="617" left="468" width="32" height="11" font="4">p1.c</text>
+<text top="616" left="501" width="60" height="14" font="2">. When it</text>
+<text top="631" left="129" width="432" height="14" font="2">ﬁrst started running, the process prints out a hello message; included in</text>
+<text top="646" left="129" width="110" height="14" font="2">that message is its</text>
+<text top="646" left="243" width="106" height="13" font="11"><b>process identiﬁer</b></text>
+<text top="646" left="349" width="104" height="14" font="2">, also known as a</text>
+<text top="646" left="458" width="25" height="13" font="11"><b>PID</b></text>
+<text top="646" left="482" width="78" height="14" font="2">. The process</text>
+<text top="661" left="129" width="142" height="14" font="2">has a PID of 29146; in U</text>
+<text top="663" left="271" width="21" height="11" font="3">NIX</text>
+<text top="661" left="296" width="265" height="14" font="2">systems, the PID is used to name the process</text>
+<text top="676" left="129" width="432" height="14" font="2">if one wants to do something with the process, such as (for example) stop</text>
+<text top="691" left="129" width="190" height="14" font="2">it from running. So far, so good.</text>
+<text top="707" left="147" width="317" height="14" font="2">Now the interesting part begins. The process calls the</text>
+<text top="707" left="468" width="48" height="11" font="4">fork()</text>
+<text top="707" left="519" width="42" height="14" font="2">system</text>
+<text top="721" left="129" width="432" height="14" font="2">call, which the OS provides as a way to create a new process. The odd</text>
+<text top="736" left="129" width="271" height="14" font="2">part: the process that is created is an (almost)</text>
+<text top="736" left="404" width="157" height="14" font="13"><i>exact copy of the calling pro-</i></text>
+<text top="751" left="129" width="21" height="14" font="13"><i>cess</i></text>
+<text top="751" left="150" width="411" height="14" font="2">. That means that to the OS, it now looks like there are two copies of</text>
+<text top="766" left="129" width="74" height="14" font="2">the program</text>
+<text top="767" left="207" width="16" height="11" font="4">p1</text>
+<text top="766" left="227" width="281" height="14" font="2">running, and both are about to return from the</text>
+<text top="767" left="512" width="48" height="11" font="4">fork()</text>
+<text top="781" left="129" width="293" height="14" font="2">system call. The newly-created process (called the</text>
+<text top="781" left="425" width="31" height="13" font="11"><b>child</b></text>
+<text top="781" left="456" width="104" height="14" font="2">, in contrast to the</text>
+<text top="796" left="129" width="48" height="14" font="2">creating</text>
+<text top="796" left="181" width="40" height="13" font="11"><b>parent</b></text>
+<text top="796" left="220" width="150" height="14" font="2">) doesn’t start running at</text>
+<text top="797" left="374" width="48" height="11" font="4">main()</text>
+<text top="796" left="423" width="138" height="14" font="2">, like you might expect</text>
+<text top="811" left="129" width="432" height="14" font="2">(note, the “hello” message only got printed out once); rather, it just comes</text>
+<text top="826" left="129" width="149" height="14" font="2">into life as if it had called</text>
+<text top="827" left="282" width="48" height="11" font="4">fork()</text>
+<text top="826" left="334" width="32" height="14" font="2">itself.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: P</text>
+<text top="98" left="174" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="223" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="138" left="65" width="4" height="8" font="8">1</text>
+<text top="135" left="87" width="145" height="11" font="4">#include &lt;stdio.h&gt;</text>
+<text top="153" left="65" width="4" height="8" font="8">2</text>
+<text top="150" left="87" width="153" height="11" font="4">#include &lt;stdlib.h&gt;</text>
+<text top="168" left="65" width="4" height="8" font="8">3</text>
+<text top="165" left="87" width="153" height="11" font="4">#include &lt;unistd.h&gt;</text>
+<text top="183" left="65" width="4" height="8" font="8">4</text>
+<text top="180" left="87" width="170" height="11" font="4">#include &lt;sys/wait.h&gt;</text>
+<text top="198" left="65" width="4" height="8" font="8">5</text>
+<text top="213" left="65" width="4" height="8" font="8">6</text>
+<text top="210" left="87" width="274" height="14" font="4">int main(int argc, char *argv[]) {</text>
+<text top="228" left="65" width="4" height="8" font="8">7</text>
+<text top="225" left="103" width="347" height="11" font="4">printf(&#34;hello (pid:%d)\n&#34;, (int) getpid());</text>
+<text top="243" left="65" width="4" height="8" font="8">8</text>
+<text top="240" left="103" width="129" height="11" font="4">int rc = fork();</text>
+<text top="258" left="65" width="4" height="8" font="8">9</text>
+<text top="254" left="103" width="105" height="11" font="4">if (rc &lt; 0) {</text>
+<text top="254" left="281" width="161" height="11" font="4">// fork failed; exit</text>
+<text top="273" left="62" width="7" height="8" font="8">10</text>
+<text top="269" left="119" width="266" height="11" font="4">fprintf(stderr, &#34;fork failed\n&#34;);</text>
+<text top="288" left="62" width="7" height="8" font="8">11</text>
+<text top="284" left="119" width="65" height="11" font="4">exit(1);</text>
+<text top="303" left="62" width="7" height="8" font="8">12</text>
+<text top="299" left="103" width="355" height="11" font="4">} else if (rc == 0) { // child (new process)</text>
+<text top="318" left="62" width="7" height="8" font="8">13</text>
+<text top="314" left="119" width="347" height="11" font="4">printf(&#34;child (pid:%d)\n&#34;, (int) getpid());</text>
+<text top="333" left="62" width="7" height="8" font="8">14</text>
+<text top="329" left="103" width="65" height="11" font="4">} else {</text>
+<text top="329" left="281" width="234" height="11" font="4">// parent goes down this path</text>
+<text top="348" left="62" width="7" height="8" font="8">15</text>
+<text top="344" left="119" width="202" height="11" font="4">int rc_wait = wait(NULL);</text>
+<text top="363" left="62" width="7" height="8" font="8">16</text>
+<text top="359" left="119" width="371" height="11" font="4">printf(&#34;parent of %d (rc_wait:%d) (pid:%d)\n&#34;,</text>
+<text top="378" left="62" width="7" height="8" font="8">17</text>
+<text top="374" left="184" width="234" height="11" font="4">rc, rc_wait, (int) getpid());</text>
+<text top="393" left="62" width="7" height="8" font="8">18</text>
+<text top="389" left="103" width="8" height="11" font="4">}</text>
+<text top="407" left="62" width="7" height="8" font="8">19</text>
+<text top="404" left="103" width="73" height="11" font="4">return 0;</text>
+<text top="422" left="62" width="7" height="8" font="8">20</text>
+<text top="419" left="87" width="8" height="11" font="4">}</text>
+<text top="437" left="62" width="7" height="8" font="8">21</text>
+<text top="447" left="158" width="62" height="14" font="2">Figure 5.2:</text>
+<text top="447" left="224" width="46" height="13" font="11"><b>Calling</b></text>
+<text top="448" left="273" width="48" height="11" font="12"><b>fork()</b></text>
+<text top="447" left="325" width="27" height="13" font="11"><b>And</b></text>
+<text top="448" left="355" width="48" height="11" font="12"><b>wait()</b></text>
+<text top="447" left="407" width="4" height="13" font="11"><b>(</b></text>
+<text top="448" left="411" width="32" height="11" font="12"><b>p2.c</b></text>
+<text top="447" left="444" width="4" height="13" font="11"><b>)</b></text>
+<text top="476" left="105" width="253" height="14" font="2">You might have noticed: the child isn’t an</text>
+<text top="476" left="362" width="28" height="14" font="13"><i>exact</i></text>
+<text top="476" left="393" width="125" height="14" font="2">copy. Speciﬁcally, al-</text>
+<text top="491" left="87" width="432" height="14" font="2">though it now has its own copy of the address space (i.e., its own private</text>
+<text top="506" left="87" width="432" height="14" font="2">memory), its own registers, its own PC, and so forth, the value it returns</text>
+<text top="521" left="87" width="88" height="14" font="2">to the caller of</text>
+<text top="521" left="179" width="35" height="13" font="11"><b>fork()</b></text>
+<text top="521" left="218" width="301" height="14" font="2">is different. Speciﬁcally, while the parent receives</text>
+<text top="536" left="87" width="432" height="14" font="2">the PID of the newly-created child, the child receives a return code of</text>
+<text top="551" left="87" width="432" height="14" font="2">zero. This differentiation is useful, because it is simple then to write the</text>
+<text top="566" left="87" width="308" height="14" font="2">code that handles the two different cases (as above).</text>
+<text top="581" left="105" width="253" height="14" font="2">You might also have noticed: the output (of</text>
+<text top="582" left="361" width="32" height="11" font="4">p1.c</text>
+<text top="581" left="393" width="39" height="14" font="2">) is not</text>
+<text top="581" left="434" width="81" height="13" font="11"><b>deterministic</b></text>
+<text top="581" left="516" width="3" height="14" font="2">.</text>
+<text top="596" left="87" width="432" height="14" font="2">When the child process is created, there are now two active processes in</text>
+<text top="611" left="87" width="432" height="14" font="2">the system that we care about: the parent and the child. Assuming we</text>
+<text top="626" left="87" width="432" height="14" font="2">are running on a system with a single CPU (for simplicity), then either</text>
+<text top="641" left="87" width="432" height="14" font="2">the child or the parent might run at that point. In our example (above),</text>
+<text top="656" left="87" width="432" height="14" font="2">the parent did and thus printed out its message ﬁrst. In other cases, the</text>
+<text top="671" left="87" width="334" height="14" font="2">opposite might happen, as we show in this output trace:</text>
+<text top="705" left="87" width="97" height="11" font="4">prompt&gt; ./p1</text>
+<text top="720" left="87" width="137" height="11" font="4">hello (pid:29146)</text>
+<text top="735" left="87" width="137" height="11" font="4">child (pid:29147)</text>
+<text top="750" left="87" width="218" height="11" font="4">parent of 29147 (pid:29146)</text>
+<text top="765" left="87" width="57" height="11" font="4">prompt&gt;</text>
+<text top="796" left="105" width="55" height="14" font="2">The CPU</text>
+<text top="796" left="164" width="60" height="13" font="11"><b>scheduler</b></text>
+<text top="796" left="224" width="295" height="14" font="2">, a topic we’ll discuss in great detail soon, deter-</text>
+<text top="811" left="87" width="432" height="14" font="2">mines which process runs at a given moment in time; because the sched-</text>
+<text top="826" left="87" width="432" height="14" font="2">uler is complex, we cannot usually make strong assumptions about what</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="8" family="GPBBOH+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="401" width="5" height="14" font="2">I</text>
+<text top="98" left="406" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="471" width="16" height="14" font="2">: P</text>
+<text top="98" left="487" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="139" left="129" width="399" height="14" font="2">it will choose to do, and hence which process will run ﬁrst. This</text>
+<text top="139" left="532" width="28" height="13" font="11"><b>non-</b></text>
+<text top="154" left="129" width="78" height="13" font="11"><b>determinism</b></text>
+<text top="154" left="207" width="353" height="14" font="2">, as it turns out, leads to some interesting problems, par-</text>
+<text top="169" left="129" width="66" height="14" font="2">ticularly in</text>
+<text top="169" left="200" width="156" height="13" font="11"><b>multi-threaded programs</b></text>
+<text top="169" left="356" width="205" height="14" font="2">; hence, we’ll see a lot more non-</text>
+<text top="183" left="129" width="171" height="14" font="2">determinism when we study</text>
+<text top="184" left="303" width="75" height="13" font="11"><b>concurrency</b></text>
+<text top="183" left="381" width="180" height="14" font="2">in the second part of the book.</text>
+<text top="221" left="97" width="53" height="17" font="5">5.2 The</text>
+<text top="222" left="154" width="59" height="14" font="6">wait()</text>
+<text top="221" left="217" width="86" height="17" font="5">System Call</text>
+<text top="251" left="147" width="414" height="14" font="2">So far, we haven’t done much: just created a child that prints out a</text>
+<text top="266" left="129" width="432" height="14" font="2">message and exits. Sometimes, as it turns out, it is quite useful for a</text>
+<text top="281" left="129" width="432" height="14" font="2">parent to wait for a child process to ﬁnish what it has been doing. This</text>
+<text top="296" left="129" width="178" height="14" font="2">task is accomplished with the</text>
+<text top="296" left="310" width="48" height="11" font="4">wait()</text>
+<text top="296" left="363" width="198" height="14" font="2">system call (or its more complete</text>
+<text top="311" left="129" width="40" height="14" font="2">sibling</text>
+<text top="311" left="172" width="73" height="11" font="4">waitpid()</text>
+<text top="311" left="245" width="158" height="14" font="2">); see Figure 5.2 for details.</text>
+<text top="326" left="147" width="100" height="14" font="2">In this example (</text>
+<text top="327" left="247" width="32" height="11" font="4">p2.c</text>
+<text top="326" left="279" width="150" height="14" font="2">), the parent process calls</text>
+<text top="327" left="433" width="48" height="11" font="4">wait()</text>
+<text top="326" left="485" width="76" height="14" font="2">to block (i.e.,</text>
+<text top="341" left="129" width="432" height="14" font="2">delay its execution) until the child ﬁnishes executing. When the child is</text>
+<text top="356" left="129" width="247" height="14" font="2">done, the parent becomes unblocked, and</text>
+<text top="356" left="380" width="48" height="11" font="4">wait()</text>
+<text top="356" left="431" width="125" height="14" font="2">returns in the parent.</text>
+<text top="371" left="147" width="57" height="14" font="2">Adding a</text>
+<text top="372" left="207" width="48" height="11" font="4">wait()</text>
+<text top="371" left="260" width="301" height="14" font="2">call to the code above makes the output determin-</text>
+<text top="386" left="129" width="291" height="14" font="2">istic. Can you see why? Go ahead, think about it.</text>
+<text top="406" left="147" width="208" height="14" font="13"><i>(waiting for you to think .... and done)</i></text>
+<text top="427" left="147" width="309" height="14" font="2">Now that you have thought a bit, here is the output:</text>
+<text top="457" left="129" width="97" height="11" font="4">prompt&gt; ./p2</text>
+<text top="472" left="129" width="137" height="11" font="4">hello (pid:29266)</text>
+<text top="487" left="129" width="137" height="11" font="4">child (pid:29267)</text>
+<text top="502" left="129" width="347" height="11" font="4">parent of 29267 (rc_wait:29267) (pid:29266)</text>
+<text top="517" left="129" width="57" height="11" font="4">prompt&gt;</text>
+<text top="545" left="147" width="414" height="14" font="2">With this code, we now know that the child will always print ﬁrst.</text>
+<text top="560" left="129" width="432" height="14" font="2">Why do we know that? Well, it might simply run ﬁrst, as before, and</text>
+<text top="575" left="129" width="432" height="14" font="2">thus print before the parent. However, if the parent does happen to run</text>
+<text top="590" left="129" width="169" height="14" font="2">ﬁrst, it will immediately call</text>
+<text top="591" left="302" width="48" height="11" font="4">wait()</text>
+<text top="590" left="350" width="210" height="14" font="2">; this system call won’t return until</text>
+<text top="607" left="129" width="171" height="14" font="2">the child has run and exited</text>
+<text top="605" left="300" width="4" height="9" font="7">2</text>
+<text top="607" left="305" width="256" height="14" font="2">. Thus, even when the parent runs ﬁrst, it</text>
+<text top="622" left="129" width="301" height="14" font="2">politely waits for the child to ﬁnish running, then</text>
+<text top="623" left="434" width="48" height="11" font="4">wait()</text>
+<text top="622" left="487" width="74" height="14" font="2">returns, and</text>
+<text top="637" left="129" width="203" height="14" font="2">then the parent prints its message.</text>
+<text top="675" left="97" width="110" height="17" font="5">5.3 Finally, The</text>
+<text top="676" left="210" width="59" height="14" font="6">exec()</text>
+<text top="675" left="273" width="86" height="17" font="5">System Call</text>
+<text top="704" left="147" width="362" height="14" font="2">A ﬁnal and important piece of the process creation API is the</text>
+<text top="705" left="512" width="48" height="11" font="4">exec()</text>
+<text top="722" left="129" width="66" height="14" font="2">system call</text>
+<text top="719" left="195" width="4" height="9" font="7">3</text>
+<text top="722" left="200" width="361" height="14" font="2">. This system call is useful when you want to run a program</text>
+<text top="737" left="129" width="379" height="14" font="2">that is different from the calling program. For example, calling</text>
+<text top="737" left="512" width="48" height="11" font="4">fork()</text>
+<text top="765" left="149" width="4" height="8" font="8">2</text>
+<text top="767" left="154" width="133" height="11" font="9">There are a few cases where</text>
+<text top="768" left="290" width="38" height="9" font="10">wait()</text>
+<text top="767" left="331" width="230" height="11" font="9">returns before the child exits; read the man page</text>
+<text top="779" left="129" width="432" height="11" font="9">for more details, as always. And beware of any absolute and unqualiﬁed statements this book</text>
+<text top="791" left="129" width="253" height="11" font="9">makes, such as “the child will always print ﬁrst” or “U</text>
+<text top="793" left="382" width="16" height="8" font="15">NIX</text>
+<text top="791" left="401" width="159" height="11" font="9">is the best thing in the world, even</text>
+<text top="803" left="129" width="104" height="11" font="9">better than ice cream.”</text>
+<text top="814" left="149" width="4" height="8" font="8">3</text>
+<text top="816" left="154" width="176" height="11" font="9">On Linux, there are six variants of</text>
+<text top="817" left="335" width="38" height="9" font="10">exec()</text>
+<text top="816" left="373" width="3" height="11" font="9">:</text>
+<text top="817" left="385" width="176" height="9" font="10">execl(), execlp(), execle(),</text>
+<text top="829" left="129" width="107" height="9" font="10">execv(), execvp()</text>
+<text top="828" left="236" width="23" height="11" font="9">, and</text>
+<text top="829" left="261" width="56" height="9" font="10">execvpe()</text>
+<text top="828" left="318" width="166" height="11" font="9">. Read the man pages to learn more.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: P</text>
+<text top="98" left="174" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="223" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="138" left="65" width="4" height="8" font="8">1</text>
+<text top="135" left="87" width="145" height="11" font="4">#include &lt;stdio.h&gt;</text>
+<text top="153" left="65" width="4" height="8" font="8">2</text>
+<text top="150" left="87" width="153" height="11" font="4">#include &lt;stdlib.h&gt;</text>
+<text top="168" left="65" width="4" height="8" font="8">3</text>
+<text top="165" left="87" width="153" height="11" font="4">#include &lt;unistd.h&gt;</text>
+<text top="183" left="65" width="4" height="8" font="8">4</text>
+<text top="180" left="87" width="153" height="11" font="4">#include &lt;string.h&gt;</text>
+<text top="198" left="65" width="4" height="8" font="8">5</text>
+<text top="195" left="87" width="170" height="11" font="4">#include &lt;sys/wait.h&gt;</text>
+<text top="213" left="65" width="4" height="8" font="8">6</text>
+<text top="228" left="65" width="4" height="8" font="8">7</text>
+<text top="225" left="87" width="274" height="14" font="4">int main(int argc, char *argv[]) {</text>
+<text top="243" left="65" width="4" height="8" font="8">8</text>
+<text top="240" left="103" width="347" height="11" font="4">printf(&#34;hello (pid:%d)\n&#34;, (int) getpid());</text>
+<text top="258" left="65" width="4" height="8" font="8">9</text>
+<text top="254" left="103" width="129" height="11" font="4">int rc = fork();</text>
+<text top="273" left="62" width="7" height="8" font="8">10</text>
+<text top="269" left="103" width="105" height="11" font="4">if (rc &lt; 0) {</text>
+<text top="269" left="281" width="161" height="11" font="4">// fork failed; exit</text>
+<text top="288" left="62" width="7" height="8" font="8">11</text>
+<text top="284" left="119" width="266" height="11" font="4">fprintf(stderr, &#34;fork failed\n&#34;);</text>
+<text top="303" left="62" width="7" height="8" font="8">12</text>
+<text top="299" left="119" width="65" height="11" font="4">exit(1);</text>
+<text top="318" left="62" width="7" height="8" font="8">13</text>
+<text top="314" left="103" width="355" height="11" font="4">} else if (rc == 0) { // child (new process)</text>
+<text top="333" left="62" width="7" height="8" font="8">14</text>
+<text top="329" left="119" width="347" height="11" font="4">printf(&#34;child (pid:%d)\n&#34;, (int) getpid());</text>
+<text top="348" left="62" width="7" height="8" font="8">15</text>
+<text top="344" left="119" width="129" height="14" font="4">char *myargs[3];</text>
+<text top="363" left="62" width="7" height="8" font="8">16</text>
+<text top="359" left="119" width="202" height="11" font="4">myargs[0] = strdup(&#34;wc&#34;);</text>
+<text top="359" left="345" width="129" height="11" font="4">// program: &#34;wc&#34;</text>
+<text top="378" left="62" width="7" height="8" font="8">17</text>
+<text top="374" left="119" width="371" height="11" font="4">myargs[1] = strdup(&#34;p3.c&#34;); // arg: input file</text>
+<text top="393" left="62" width="7" height="8" font="8">18</text>
+<text top="389" left="119" width="137" height="11" font="4">myargs[2] = NULL;</text>
+<text top="389" left="345" width="161" height="11" font="4">// mark end of array</text>
+<text top="407" left="62" width="7" height="8" font="8">19</text>
+<text top="404" left="119" width="210" height="11" font="4">execvp(myargs[0], myargs);</text>
+<text top="404" left="345" width="145" height="11" font="4">// runs word count</text>
+<text top="422" left="62" width="7" height="8" font="8">20</text>
+<text top="419" left="119" width="282" height="11" font="4">printf(&#34;this shouldn’t print out&#34;);</text>
+<text top="437" left="62" width="7" height="8" font="8">21</text>
+<text top="434" left="103" width="65" height="11" font="4">} else {</text>
+<text top="434" left="281" width="234" height="11" font="4">// parent goes down this path</text>
+<text top="452" left="62" width="7" height="8" font="8">22</text>
+<text top="449" left="119" width="202" height="11" font="4">int rc_wait = wait(NULL);</text>
+<text top="467" left="62" width="7" height="8" font="8">23</text>
+<text top="464" left="119" width="371" height="11" font="4">printf(&#34;parent of %d (rc_wait:%d) (pid:%d)\n&#34;,</text>
+<text top="482" left="62" width="7" height="8" font="8">24</text>
+<text top="479" left="184" width="234" height="11" font="4">rc, rc_wait, (int) getpid());</text>
+<text top="497" left="62" width="7" height="8" font="8">25</text>
+<text top="494" left="103" width="8" height="11" font="4">}</text>
+<text top="512" left="62" width="7" height="8" font="8">26</text>
+<text top="509" left="103" width="73" height="11" font="4">return 0;</text>
+<text top="527" left="62" width="7" height="8" font="8">27</text>
+<text top="523" left="87" width="8" height="11" font="4">}</text>
+<text top="542" left="62" width="7" height="8" font="8">28</text>
+<text top="551" left="129" width="62" height="14" font="2">Figure 5.3:</text>
+<text top="551" left="195" width="46" height="13" font="11"><b>Calling</b></text>
+<text top="553" left="244" width="48" height="11" font="12"><b>fork()</b></text>
+<text top="551" left="292" width="3" height="13" font="11"><b>,</b></text>
+<text top="553" left="299" width="48" height="11" font="12"><b>wait()</b></text>
+<text top="551" left="347" width="34" height="13" font="11"><b>, And</b></text>
+<text top="553" left="384" width="48" height="11" font="12"><b>exec()</b></text>
+<text top="551" left="436" width="4" height="13" font="11"><b>(</b></text>
+<text top="553" left="441" width="32" height="11" font="12"><b>p3.c</b></text>
+<text top="551" left="473" width="4" height="13" font="11"><b>)</b></text>
+<text top="578" left="87" width="12" height="14" font="2">in</text>
+<text top="579" left="104" width="32" height="11" font="4">p2.c</text>
+<text top="578" left="141" width="378" height="14" font="2">is only useful if you want to keep running copies of the same</text>
+<text top="593" left="87" width="269" height="14" font="2">program. However, often you want to run a</text>
+<text top="593" left="361" width="45" height="14" font="13"><i>different</i></text>
+<text top="593" left="411" width="55" height="14" font="2">program;</text>
+<text top="594" left="471" width="48" height="11" font="4">exec()</text>
+<text top="608" left="87" width="153" height="14" font="2">does just that (Figure 5.3).</text>
+<text top="623" left="105" width="230" height="14" font="2">In this example, the child process calls</text>
+<text top="623" left="339" width="65" height="11" font="4">execvp()</text>
+<text top="623" left="408" width="111" height="14" font="2">in order to run the</text>
+<text top="638" left="87" width="52" height="14" font="2">program</text>
+<text top="638" left="143" width="16" height="11" font="4">wc</text>
+<text top="638" left="159" width="321" height="14" font="2">, which is the word counting program. In fact, it runs</text>
+<text top="638" left="484" width="16" height="11" font="4">wc</text>
+<text top="638" left="504" width="15" height="14" font="2">on</text>
+<text top="653" left="87" width="82" height="14" font="2">the source ﬁle</text>
+<text top="653" left="172" width="32" height="11" font="4">p3.c</text>
+<text top="653" left="204" width="315" height="14" font="2">, thus telling us how many lines, words, and bytes are</text>
+<text top="667" left="87" width="98" height="14" font="2">found in the ﬁle:</text>
+<text top="695" left="87" width="97" height="11" font="4">prompt&gt; ./p3</text>
+<text top="710" left="87" width="137" height="11" font="4">hello (pid:29383)</text>
+<text top="725" left="87" width="137" height="11" font="4">child (pid:29384)</text>
+<text top="740" left="135" width="16" height="11" font="4">29</text>
+<text top="740" left="192" width="24" height="11" font="4">107</text>
+<text top="740" left="248" width="73" height="11" font="4">1030 p3.c</text>
+<text top="755" left="87" width="347" height="11" font="4">parent of 29384 (rc_wait:29384) (pid:29383)</text>
+<text top="770" left="87" width="57" height="11" font="4">prompt&gt;</text>
+<text top="796" left="105" width="23" height="14" font="2">The</text>
+<text top="797" left="131" width="48" height="11" font="4">fork()</text>
+<text top="796" left="182" width="247" height="14" font="2">system call is strange; its partner in crime,</text>
+<text top="797" left="432" width="48" height="11" font="4">exec()</text>
+<text top="796" left="480" width="39" height="14" font="2">, is not</text>
+<text top="811" left="87" width="405" height="14" font="2">so normal either. What it does: given the name of an executable (e.g.,</text>
+<text top="812" left="495" width="16" height="11" font="4">wc</text>
+<text top="811" left="511" width="8" height="14" font="2">),</text>
+<text top="826" left="87" width="155" height="14" font="2">and some arguments (e.g.,</text>
+<text top="827" left="245" width="32" height="11" font="4">p3.c</text>
+<text top="826" left="277" width="19" height="14" font="2">), it</text>
+<text top="826" left="300" width="33" height="13" font="11"><b>loads</b></text>
+<text top="826" left="335" width="184" height="14" font="2">code (and static data) from that</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="401" width="5" height="14" font="2">I</text>
+<text top="98" left="406" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="471" width="16" height="14" font="2">: P</text>
+<text top="98" left="487" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="148" left="215" width="8" height="14" font="2">T</text>
+<text top="150" left="224" width="11" height="11" font="3">IP</text>
+<text top="148" left="235" width="18" height="14" font="2">: G</text>
+<text top="150" left="255" width="44" height="11" font="3">ETTING</text>
+<text top="148" left="302" width="5" height="14" font="2">I</text>
+<text top="150" left="308" width="7" height="11" font="3">T</text>
+<text top="148" left="318" width="9" height="14" font="2">R</text>
+<text top="150" left="328" width="29" height="11" font="3">IGHT</text>
+<text top="148" left="361" width="13" height="14" font="2">(L</text>
+<text top="150" left="375" width="51" height="11" font="3">AMPSON</text>
+<text top="148" left="428" width="4" height="14" font="2">’</text>
+<text top="150" left="432" width="6" height="11" font="3">S</text>
+<text top="148" left="442" width="8" height="14" font="2">L</text>
+<text top="150" left="450" width="19" height="11" font="3">AW</text>
+<text top="148" left="470" width="4" height="14" font="2">)</text>
+<text top="163" left="129" width="432" height="14" font="2">As Lampson states in his well-regarded “Hints for Computer Systems</text>
+<text top="178" left="129" width="97" height="14" font="2">Design” [L83], “</text>
+<text top="178" left="226" width="69" height="13" font="11"><b>Get it right</b></text>
+<text top="178" left="295" width="266" height="14" font="2">. Neither abstraction nor simplicity is a sub-</text>
+<text top="193" left="129" width="432" height="14" font="2">stitute for getting it right.” Sometimes, you just have to do the right thing,</text>
+<text top="208" left="129" width="432" height="14" font="2">and when you do, it is way better than the alternatives. There are lots</text>
+<text top="223" left="129" width="432" height="14" font="2">of ways to design APIs for process creation; however, the combination</text>
+<text top="238" left="129" width="12" height="14" font="2">of</text>
+<text top="239" left="145" width="48" height="11" font="4">fork()</text>
+<text top="238" left="198" width="23" height="14" font="2">and</text>
+<text top="239" left="225" width="48" height="11" font="4">exec()</text>
+<text top="238" left="277" width="284" height="14" font="2">are simple and immensely powerful. Here, the</text>
+<text top="253" left="129" width="10" height="14" font="2">U</text>
+<text top="255" left="140" width="21" height="11" font="3">NIX</text>
+<text top="253" left="166" width="395" height="14" font="2">designers simply got it right. And because Lampson so often “got</text>
+<text top="268" left="129" width="232" height="14" font="2">it right”, we name the law in his honor.</text>
+<text top="315" left="129" width="432" height="14" font="2">executable and overwrites its current code segment (and current static</text>
+<text top="329" left="129" width="432" height="14" font="2">data) with it; the heap and stack and other parts of the memory space of</text>
+<text top="344" left="129" width="432" height="14" font="2">the program are re-initialized. Then the OS simply runs that program,</text>
+<text top="359" left="129" width="194" height="14" font="2">passing in any arguments as the</text>
+<text top="360" left="327" width="32" height="11" font="4">argv</text>
+<text top="359" left="364" width="175" height="14" font="2">of that process. Thus, it does</text>
+<text top="359" left="543" width="18" height="14" font="13"><i>not</i></text>
+<text top="374" left="129" width="432" height="14" font="2">create a new process; rather, it transforms the currently running program</text>
+<text top="389" left="129" width="57" height="14" font="2">(formerly</text>
+<text top="390" left="190" width="16" height="11" font="4">p3</text>
+<text top="389" left="206" width="217" height="14" font="2">) into a different running program (</text>
+<text top="390" left="423" width="16" height="11" font="4">wc</text>
+<text top="389" left="439" width="69" height="14" font="2">). After the</text>
+<text top="390" left="512" width="48" height="11" font="4">exec()</text>
+<text top="404" left="129" width="167" height="14" font="2">in the child, it is almost as if</text>
+<text top="405" left="299" width="32" height="11" font="4">p3.c</text>
+<text top="404" left="335" width="174" height="14" font="2">never ran; a successful call to</text>
+<text top="405" left="512" width="48" height="11" font="4">exec()</text>
+<text top="419" left="129" width="83" height="14" font="2">never returns.</text>
+<text top="458" left="97" width="218" height="17" font="5">5.4 Why? Motivating The API</text>
+<text top="489" left="147" width="414" height="14" font="2">Of course, one big question you might have: why would we build</text>
+<text top="504" left="129" width="432" height="14" font="2">such an odd interface to what should be the simple act of creating a new</text>
+<text top="519" left="129" width="286" height="14" font="2">process? Well, as it turns out, the separation of</text>
+<text top="520" left="419" width="48" height="11" font="4">fork()</text>
+<text top="519" left="471" width="23" height="14" font="2">and</text>
+<text top="520" left="499" width="48" height="11" font="4">exec()</text>
+<text top="519" left="551" width="10" height="14" font="2">is</text>
+<text top="534" left="129" width="147" height="14" font="2">essential in building a U</text>
+<text top="536" left="277" width="21" height="11" font="3">NIX</text>
+<text top="534" left="302" width="230" height="14" font="2">shell, because it lets the shell run code</text>
+<text top="534" left="536" width="25" height="14" font="13"><i>after</i></text>
+<text top="549" left="129" width="60" height="14" font="2">the call to</text>
+<text top="550" left="193" width="48" height="11" font="4">fork()</text>
+<text top="549" left="246" width="20" height="14" font="2">but</text>
+<text top="549" left="270" width="31" height="14" font="13"><i>before</i></text>
+<text top="549" left="306" width="60" height="14" font="2">the call to</text>
+<text top="550" left="370" width="48" height="11" font="4">exec()</text>
+<text top="549" left="419" width="142" height="14" font="2">; this code can alter the</text>
+<text top="564" left="129" width="432" height="14" font="2">environment of the about-to-be-run program, and thus enables a variety</text>
+<text top="579" left="129" width="241" height="14" font="2">of interesting features to be readily built.</text>
+<text top="597" left="147" width="195" height="14" font="2">The shell is just a user program</text>
+<text top="595" left="342" width="4" height="9" font="7">4</text>
+<text top="597" left="347" width="104" height="14" font="2">. It shows you a</text>
+<text top="597" left="456" width="46" height="13" font="11"><b>prompt</b></text>
+<text top="597" left="507" width="54" height="14" font="2">and then</text>
+<text top="612" left="129" width="432" height="14" font="2">waits for you to type something into it. You then type a command (i.e.,</text>
+<text top="627" left="129" width="432" height="14" font="2">the name of an executable program, plus any arguments) into it; in most</text>
+<text top="642" left="129" width="432" height="14" font="2">cases, the shell then ﬁgures out where in the ﬁle system the executable</text>
+<text top="657" left="129" width="75" height="14" font="2">resides, calls</text>
+<text top="658" left="207" width="48" height="11" font="4">fork()</text>
+<text top="657" left="260" width="301" height="14" font="2">to create a new child process to run the command,</text>
+<text top="672" left="129" width="121" height="14" font="2">calls some variant of</text>
+<text top="673" left="253" width="48" height="11" font="4">exec()</text>
+<text top="672" left="305" width="256" height="14" font="2">to run the command, and then waits for the</text>
+<text top="687" left="129" width="194" height="14" font="2">command to complete by calling</text>
+<text top="688" left="326" width="48" height="11" font="4">wait()</text>
+<text top="687" left="374" width="187" height="14" font="2">. When the child completes, the</text>
+<text top="702" left="129" width="106" height="14" font="2">shell returns from</text>
+<text top="703" left="238" width="48" height="11" font="4">wait()</text>
+<text top="702" left="290" width="271" height="14" font="2">and prints out a prompt again, ready for your</text>
+<text top="717" left="129" width="92" height="14" font="2">next command.</text>
+<text top="733" left="147" width="104" height="14" font="2">The separation of</text>
+<text top="734" left="254" width="48" height="11" font="4">fork()</text>
+<text top="733" left="306" width="23" height="14" font="2">and</text>
+<text top="734" left="332" width="48" height="11" font="4">exec()</text>
+<text top="733" left="384" width="177" height="14" font="2">allows the shell to do a whole</text>
+<text top="748" left="129" width="293" height="14" font="2">bunch of useful things rather easily. For example:</text>
+<text top="781" left="129" width="234" height="11" font="4">prompt&gt; wc p3.c &gt; newfile.txt</text>
+<text top="814" left="149" width="4" height="8" font="8">4</text>
+<text top="816" left="154" width="128" height="11" font="9">And there are lots of shells;</text>
+<text top="817" left="285" width="25" height="9" font="10">tcsh</text>
+<text top="816" left="310" width="3" height="11" font="9">,</text>
+<text top="817" left="316" width="25" height="9" font="10">bash</text>
+<text top="816" left="341" width="24" height="11" font="9">, and</text>
+<text top="817" left="368" width="19" height="9" font="10">zsh</text>
+<text top="816" left="390" width="171" height="11" font="9">to name a few. You should pick one,</text>
+<text top="828" left="129" width="228" height="11" font="9">read its man pages, and learn more about it; all U</text>
+<text top="830" left="357" width="16" height="8" font="15">NIX</text>
+<text top="828" left="377" width="51" height="11" font="9">experts do.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: P</text>
+<text top="98" left="174" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="223" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="139" left="105" width="289" height="14" font="2">In the example above, the output of the program</text>
+<text top="139" left="397" width="16" height="11" font="4">wc</text>
+<text top="139" left="417" width="10" height="14" font="2">is</text>
+<text top="139" left="430" width="62" height="13" font="11"><b>redirected</b></text>
+<text top="139" left="495" width="23" height="14" font="2">into</text>
+<text top="154" left="87" width="85" height="14" font="2">the output ﬁle</text>
+<text top="154" left="176" width="89" height="11" font="4">newfile.txt</text>
+<text top="154" left="269" width="250" height="14" font="2">(the greater-than sign is how said redirec-</text>
+<text top="169" left="87" width="432" height="14" font="2">tion is indicated). The way the shell accomplishes this task is quite sim-</text>
+<text top="183" left="87" width="269" height="14" font="2">ple: when the child is created, before calling</text>
+<text top="184" left="360" width="48" height="11" font="4">exec()</text>
+<text top="183" left="409" width="110" height="14" font="2">, the shell (speciﬁ-</text>
+<text top="198" left="87" width="303" height="14" font="2">cally, the code executed in the child process) closes</text>
+<text top="198" left="394" width="99" height="13" font="11"><b>standard output</b></text>
+<text top="198" left="496" width="23" height="14" font="2">and</text>
+<text top="213" left="87" width="82" height="14" font="2">opens the ﬁle</text>
+<text top="214" left="174" width="89" height="11" font="4">newfile.txt</text>
+<text top="213" left="263" width="256" height="14" font="2">. By doing so, any output from the soon-</text>
+<text top="228" left="87" width="139" height="14" font="2">to-be-running program</text>
+<text top="229" left="231" width="16" height="11" font="4">wc</text>
+<text top="228" left="251" width="268" height="14" font="2">is sent to the ﬁle instead of the screen (open</text>
+<text top="243" left="87" width="239" height="14" font="2">ﬁle descriptors are kept open across the</text>
+<text top="244" left="330" width="48" height="11" font="4">exec()</text>
+<text top="243" left="383" width="136" height="14" font="2">call, thus enabling this</text>
+<text top="258" left="87" width="102" height="14" font="2">behavior [SR05]).</text>
+<text top="273" left="105" width="414" height="14" font="2">Figure 5.4 (page 8) shows a program that does exactly this. The reason</text>
+<text top="288" left="87" width="432" height="14" font="2">this redirection works is due to an assumption about how the operating</text>
+<text top="303" left="87" width="281" height="14" font="2">system manages ﬁle descriptors. Speciﬁcally, U</text>
+<text top="305" left="368" width="21" height="11" font="3">NIX</text>
+<text top="303" left="393" width="126" height="14" font="2">systems start looking</text>
+<text top="318" left="87" width="432" height="14" font="2">for free ﬁle descriptors at zero. In this case, STDOUT FILENO will be the</text>
+<text top="333" left="87" width="278" height="14" font="2">ﬁrst available one and thus get assigned when</text>
+<text top="334" left="369" width="48" height="11" font="4">open()</text>
+<text top="333" left="422" width="97" height="14" font="2">is called. Subse-</text>
+<text top="348" left="87" width="432" height="14" font="2">quent writes by the child process to the standard output ﬁle descriptor,</text>
+<text top="363" left="87" width="187" height="14" font="2">for example by routines such as</text>
+<text top="364" left="278" width="65" height="11" font="4">printf()</text>
+<text top="363" left="342" width="177" height="14" font="2">, will then be routed transpar-</text>
+<text top="378" left="87" width="306" height="14" font="2">ently to the newly-opened ﬁle instead of the screen.</text>
+<text top="393" left="105" width="197" height="14" font="2">Here is the output of running the</text>
+<text top="394" left="305" width="32" height="11" font="4">p4.c</text>
+<text top="393" left="341" width="55" height="14" font="2">program:</text>
+<text top="424" left="87" width="97" height="11" font="4">prompt&gt; ./p4</text>
+<text top="438" left="87" width="169" height="11" font="4">prompt&gt; cat p4.output</text>
+<text top="453" left="135" width="16" height="11" font="4">32</text>
+<text top="453" left="192" width="24" height="11" font="4">109</text>
+<text top="453" left="257" width="65" height="11" font="4">846 p4.c</text>
+<text top="468" left="87" width="57" height="11" font="4">prompt&gt;</text>
+<text top="497" left="105" width="414" height="14" font="2">You’ll notice (at least) two interesting tidbits about this output. First,</text>
+<text top="512" left="87" width="33" height="14" font="2">when</text>
+<text top="513" left="124" width="16" height="11" font="4">p4</text>
+<text top="512" left="144" width="375" height="14" font="2">is run, it looks as if nothing has happened; the shell just prints</text>
+<text top="527" left="87" width="432" height="14" font="2">the command prompt and is immediately ready for your next command.</text>
+<text top="542" left="87" width="253" height="14" font="2">However, that is not the case; the program</text>
+<text top="542" left="343" width="16" height="11" font="4">p4</text>
+<text top="542" left="363" width="89" height="14" font="2">did indeed call</text>
+<text top="542" left="455" width="48" height="11" font="4">fork()</text>
+<text top="542" left="507" width="12" height="14" font="2">to</text>
+<text top="557" left="87" width="214" height="14" font="2">create a new child, and then run the</text>
+<text top="557" left="305" width="16" height="11" font="4">wc</text>
+<text top="557" left="324" width="123" height="14" font="2">program via a call to</text>
+<text top="557" left="451" width="65" height="11" font="4">execvp()</text>
+<text top="557" left="516" width="3" height="14" font="2">.</text>
+<text top="572" left="87" width="432" height="14" font="2">You don’t see any output printed to the screen because it has been redi-</text>
+<text top="586" left="87" width="96" height="14" font="2">rected to the ﬁle</text>
+<text top="587" left="186" width="73" height="11" font="4">p4.output</text>
+<text top="586" left="259" width="211" height="14" font="2">. Second, you can see that when we</text>
+<text top="587" left="473" width="24" height="11" font="4">cat</text>
+<text top="586" left="500" width="19" height="14" font="2">the</text>
+<text top="601" left="87" width="285" height="14" font="2">output ﬁle, all the expected output from running</text>
+<text top="602" left="375" width="16" height="11" font="4">wc</text>
+<text top="601" left="394" width="125" height="14" font="2">is found. Cool, right?</text>
+<text top="617" left="105" width="10" height="14" font="2">U</text>
+<text top="619" left="116" width="21" height="11" font="3">NIX</text>
+<text top="617" left="142" width="324" height="14" font="2">pipes are implemented in a similar way, but with the</text>
+<text top="617" left="471" width="48" height="11" font="4">pipe()</text>
+<text top="632" left="87" width="432" height="14" font="2">system call. In this case, the output of one process is connected to an in-</text>
+<text top="646" left="87" width="37" height="14" font="2">kernel</text>
+<text top="647" left="129" width="28" height="13" font="11"><b>pipe</b></text>
+<text top="646" left="161" width="358" height="14" font="2">(i.e., queue), and the input of another process is connected</text>
+<text top="661" left="87" width="432" height="14" font="2">to that same pipe; thus, the output of one process seamlessly is used as</text>
+<text top="676" left="87" width="432" height="14" font="2">input to the next, and long and useful chains of commands can be strung</text>
+<text top="691" left="87" width="432" height="14" font="2">together. As a simple example, consider looking for a word in a ﬁle, and</text>
+<text top="706" left="87" width="432" height="14" font="2">then counting how many times said word occurs; with pipes and the util-</text>
+<text top="721" left="87" width="24" height="14" font="2">ities</text>
+<text top="722" left="116" width="32" height="11" font="4">grep</text>
+<text top="721" left="153" width="23" height="14" font="2">and</text>
+<text top="722" left="181" width="16" height="11" font="4">wc</text>
+<text top="721" left="197" width="124" height="14" font="2">, it is easy; just type</text>
+<text top="722" left="325" width="194" height="11" font="4">grep -o foo file | wc -l</text>
+<text top="736" left="87" width="305" height="14" font="2">into the command prompt and marvel at the result.</text>
+<text top="751" left="105" width="414" height="14" font="2">Finally, while we just have sketched out the process API at a high level,</text>
+<text top="766" left="87" width="432" height="14" font="2">there is a lot more detail about these calls out there to be learned and</text>
+<text top="781" left="87" width="432" height="14" font="2">digested; we’ll learn more, for example, about ﬁle descriptors when we</text>
+<text top="796" left="87" width="432" height="14" font="2">talk about ﬁle systems in the third part of the book. For now, sufﬁce it</text>
+<text top="811" left="87" width="83" height="14" font="2">to say that the</text>
+<text top="812" left="174" width="105" height="11" font="4">fork()/exec()</text>
+<text top="811" left="282" width="237" height="14" font="2">combination is a powerful way to create</text>
+<text top="826" left="87" width="157" height="14" font="2">and manipulate processes.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="401" width="5" height="14" font="2">I</text>
+<text top="98" left="406" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="471" width="16" height="14" font="2">: P</text>
+<text top="98" left="487" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="138" left="107" width="4" height="8" font="8">1</text>
+<text top="135" left="129" width="145" height="11" font="4">#include &lt;stdio.h&gt;</text>
+<text top="153" left="107" width="4" height="8" font="8">2</text>
+<text top="150" left="129" width="153" height="11" font="4">#include &lt;stdlib.h&gt;</text>
+<text top="168" left="107" width="4" height="8" font="8">3</text>
+<text top="165" left="129" width="153" height="11" font="4">#include &lt;unistd.h&gt;</text>
+<text top="183" left="107" width="4" height="8" font="8">4</text>
+<text top="180" left="129" width="153" height="11" font="4">#include &lt;string.h&gt;</text>
+<text top="198" left="107" width="4" height="8" font="8">5</text>
+<text top="195" left="129" width="145" height="11" font="4">#include &lt;fcntl.h&gt;</text>
+<text top="213" left="107" width="4" height="8" font="8">6</text>
+<text top="210" left="129" width="170" height="11" font="4">#include &lt;sys/stat.h&gt;</text>
+<text top="228" left="107" width="4" height="8" font="8">7</text>
+<text top="225" left="129" width="170" height="11" font="4">#include &lt;sys/wait.h&gt;</text>
+<text top="243" left="107" width="4" height="8" font="8">8</text>
+<text top="258" left="107" width="4" height="8" font="8">9</text>
+<text top="254" left="129" width="274" height="14" font="4">int main(int argc, char *argv[]) {</text>
+<text top="273" left="104" width="7" height="8" font="8">10</text>
+<text top="269" left="145" width="129" height="11" font="4">int rc = fork();</text>
+<text top="288" left="104" width="7" height="8" font="8">11</text>
+<text top="284" left="145" width="105" height="11" font="4">if (rc &lt; 0) {</text>
+<text top="303" left="104" width="7" height="8" font="8">12</text>
+<text top="299" left="161" width="113" height="11" font="4">// fork failed</text>
+<text top="318" left="104" width="7" height="8" font="8">13</text>
+<text top="314" left="161" width="266" height="11" font="4">fprintf(stderr, &#34;fork failed\n&#34;);</text>
+<text top="333" left="104" width="7" height="8" font="8">14</text>
+<text top="329" left="161" width="65" height="11" font="4">exit(1);</text>
+<text top="348" left="104" width="7" height="8" font="8">15</text>
+<text top="344" left="145" width="169" height="11" font="4">} else if (rc == 0) {</text>
+<text top="363" left="104" width="7" height="8" font="8">16</text>
+<text top="359" left="161" width="355" height="11" font="4">// child: redirect standard output to a file</text>
+<text top="378" left="104" width="7" height="8" font="8">17</text>
+<text top="374" left="161" width="170" height="11" font="4">close(STDOUT_FILENO);</text>
+<text top="393" left="104" width="7" height="8" font="8">18</text>
+<text top="389" left="161" width="363" height="11" font="4">open(&#34;./p4.output&#34;, O_CREAT|O_WRONLY|O_TRUNC,</text>
+<text top="407" left="104" width="7" height="8" font="8">19</text>
+<text top="404" left="202" width="73" height="11" font="4">S_IRWXU);</text>
+<text top="422" left="104" width="7" height="8" font="8">20</text>
+<text top="419" left="161" width="153" height="11" font="4">// now exec &#34;wc&#34;...</text>
+<text top="437" left="104" width="7" height="8" font="8">21</text>
+<text top="434" left="161" width="129" height="14" font="4">char *myargs[3];</text>
+<text top="452" left="104" width="7" height="8" font="8">22</text>
+<text top="449" left="161" width="202" height="11" font="4">myargs[0] = strdup(&#34;wc&#34;);</text>
+<text top="449" left="387" width="113" height="11" font="4">// program: wc</text>
+<text top="467" left="104" width="7" height="8" font="8">23</text>
+<text top="464" left="161" width="395" height="11" font="4">myargs[1] = strdup(&#34;p4.c&#34;); // arg: file to count</text>
+<text top="482" left="104" width="7" height="8" font="8">24</text>
+<text top="479" left="161" width="137" height="11" font="4">myargs[2] = NULL;</text>
+<text top="479" left="387" width="161" height="11" font="4">// mark end of array</text>
+<text top="497" left="104" width="7" height="8" font="8">25</text>
+<text top="494" left="161" width="210" height="11" font="4">execvp(myargs[0], myargs);</text>
+<text top="494" left="387" width="145" height="11" font="4">// runs word count</text>
+<text top="512" left="104" width="7" height="8" font="8">26</text>
+<text top="509" left="145" width="65" height="11" font="4">} else {</text>
+<text top="527" left="104" width="7" height="8" font="8">27</text>
+<text top="523" left="161" width="291" height="11" font="4">// parent goes down this path (main)</text>
+<text top="542" left="104" width="7" height="8" font="8">28</text>
+<text top="538" left="161" width="202" height="11" font="4">int rc_wait = wait(NULL);</text>
+<text top="557" left="104" width="7" height="8" font="8">29</text>
+<text top="553" left="145" width="8" height="11" font="4">}</text>
+<text top="572" left="104" width="7" height="8" font="8">30</text>
+<text top="568" left="145" width="73" height="11" font="4">return 0;</text>
+<text top="587" left="104" width="7" height="8" font="8">31</text>
+<text top="583" left="129" width="8" height="11" font="4">}</text>
+<text top="596" left="180" width="62" height="14" font="2">Figure 5.4:</text>
+<text top="596" left="246" width="227" height="13" font="11"><b>All Of The Above With Redirection (</b></text>
+<text top="597" left="473" width="32" height="11" font="12"><b>p4.c</b></text>
+<text top="596" left="505" width="4" height="13" font="11"><b>)</b></text>
+<text top="624" left="97" width="221" height="17" font="5">5.5 Process Control And Users</text>
+<text top="646" left="147" width="46" height="14" font="2">Beyond</text>
+<text top="647" left="196" width="48" height="11" font="4">fork()</text>
+<text top="646" left="245" width="3" height="14" font="2">,</text>
+<text top="647" left="252" width="48" height="11" font="4">exec()</text>
+<text top="646" left="301" width="30" height="14" font="2">, and</text>
+<text top="647" left="335" width="48" height="11" font="4">wait()</text>
+<text top="646" left="383" width="177" height="14" font="2">, there are a lot of other inter-</text>
+<text top="661" left="129" width="245" height="14" font="2">faces for interacting with processes in U</text>
+<text top="663" left="374" width="21" height="11" font="3">NIX</text>
+<text top="661" left="400" width="161" height="14" font="2">systems. For example, the</text>
+<text top="676" left="129" width="48" height="11" font="4">kill()</text>
+<text top="676" left="182" width="165" height="14" font="2">system call is used to send</text>
+<text top="676" left="352" width="43" height="13" font="11"><b>signals</b></text>
+<text top="676" left="401" width="160" height="14" font="2">to a process, including di-</text>
+<text top="691" left="129" width="432" height="14" font="2">rectives to pause, die, and other useful imperatives. For convenience,</text>
+<text top="706" left="129" width="62" height="14" font="2">in most U</text>
+<text top="707" left="192" width="21" height="11" font="3">NIX</text>
+<text top="706" left="219" width="342" height="14" font="2">shells, certain keystroke combinations are conﬁgured to</text>
+<text top="720" left="129" width="432" height="14" font="2">deliver a speciﬁc signal to the currently running process; for example,</text>
+<text top="735" left="129" width="98" height="14" font="2">control-c sends a</text>
+<text top="736" left="230" width="48" height="11" font="4">SIGINT</text>
+<text top="735" left="281" width="280" height="14" font="2">(interrupt) to the process (normally terminating</text>
+<text top="750" left="129" width="144" height="14" font="2">it) and control-z sends a</text>
+<text top="751" left="276" width="57" height="11" font="4">SIGTSTP</text>
+<text top="750" left="336" width="225" height="14" font="2">(stop) signal thus pausing the process</text>
+<text top="765" left="129" width="411" height="14" font="2">in mid-execution (you can resume it later with a command, e.g., the</text>
+<text top="766" left="545" width="16" height="11" font="4">fg</text>
+<text top="780" left="129" width="244" height="14" font="2">built-in command found in many shells).</text>
+<text top="796" left="147" width="414" height="14" font="2">The entire signals subsystem provides a rich infrastructure to deliver</text>
+<text top="811" left="129" width="432" height="14" font="2">external events to processes, including ways to receive and process those</text>
+<text top="826" left="129" width="432" height="14" font="2">signals within individual processes, and ways to send signals to individ-</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: P</text>
+<text top="98" left="174" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="223" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="179" width="10" height="14" font="2">A</text>
+<text top="150" left="190" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="217" width="78" height="14" font="2">: RTFM — R</text>
+<text top="150" left="295" width="25" height="11" font="3">EAD</text>
+<text top="148" left="324" width="8" height="14" font="2">T</text>
+<text top="150" left="333" width="16" height="11" font="3">HE</text>
+<text top="148" left="353" width="13" height="14" font="2">M</text>
+<text top="150" left="366" width="18" height="11" font="3">AN</text>
+<text top="148" left="389" width="8" height="14" font="2">P</text>
+<text top="150" left="396" width="31" height="11" font="3">AGES</text>
+<text top="163" left="87" width="432" height="14" font="2">Many times in this book, when referring to a particular system call or</text>
+<text top="178" left="87" width="226" height="14" font="2">library call, we’ll tell you to read the</text>
+<text top="178" left="318" width="86" height="13" font="11"><b>manual pages</b></text>
+<text top="178" left="404" width="21" height="14" font="2">, or</text>
+<text top="178" left="430" width="67" height="13" font="11"><b>man pages</b></text>
+<text top="178" left="502" width="17" height="14" font="2">for</text>
+<text top="193" left="87" width="432" height="14" font="2">short. Man pages are the original form of documentation that exist on</text>
+<text top="208" left="87" width="10" height="14" font="2">U</text>
+<text top="210" left="99" width="21" height="11" font="3">NIX</text>
+<text top="208" left="124" width="371" height="14" font="2">systems; realize that they were created before the thing called</text>
+<text top="208" left="500" width="19" height="13" font="11"><b>the</b></text>
+<text top="223" left="87" width="26" height="13" font="11"><b>web</b></text>
+<text top="223" left="117" width="45" height="14" font="2">existed.</text>
+<text top="240" left="87" width="432" height="14" font="2">Spending some time reading man pages is a key step in the growth of</text>
+<text top="255" left="87" width="432" height="14" font="2">a systems programmer; there are tons of useful tidbits hidden in those</text>
+<text top="270" left="87" width="432" height="14" font="2">pages. Some particularly useful pages to read are the man pages for</text>
+<text top="285" left="87" width="213" height="14" font="2">whichever shell you are using (e.g.,</text>
+<text top="285" left="304" width="25" height="13" font="11"><b>tcsh</b></text>
+<text top="285" left="328" width="20" height="14" font="2">, or</text>
+<text top="285" left="352" width="29" height="13" font="11"><b>bash</b></text>
+<text top="285" left="381" width="138" height="14" font="2">), and certainly for any</text>
+<text top="300" left="87" width="432" height="14" font="2">system calls your program makes (in order to see what return values and</text>
+<text top="315" left="87" width="134" height="14" font="2">error conditions exist).</text>
+<text top="332" left="87" width="432" height="14" font="2">Finally, reading the man pages can save you some embarrassment. When</text>
+<text top="347" left="87" width="265" height="14" font="2">you ask colleagues about some intricacy of</text>
+<text top="348" left="358" width="48" height="11" font="4">fork()</text>
+<text top="347" left="406" width="113" height="14" font="2">, they may simply</text>
+<text top="362" left="87" width="432" height="14" font="2">reply: “RTFM.” This is your colleagues’ way of gently urging you to Read</text>
+<text top="377" left="87" width="408" height="14" font="2">The Man pages. The F in RTFM just adds a little color to the phrase...</text>
+<text top="422" left="87" width="180" height="14" font="2">ual processes as well as entire</text>
+<text top="422" left="271" width="92" height="13" font="11"><b>process groups</b></text>
+<text top="422" left="363" width="156" height="14" font="2">. To use this form of com-</text>
+<text top="437" left="87" width="226" height="14" font="2">munication, a process should use the</text>
+<text top="438" left="318" width="65" height="11" font="4">signal()</text>
+<text top="437" left="387" width="132" height="14" font="2">system call to “catch”</text>
+<text top="452" left="87" width="432" height="14" font="2">various signals; doing so ensures that when a particular signal is deliv-</text>
+<text top="467" left="87" width="432" height="14" font="2">ered to a process, it will suspend its normal execution and run a particu-</text>
+<text top="482" left="87" width="432" height="14" font="2">lar piece of code in response to the signal. Read elsewhere [SR05] to learn</text>
+<text top="497" left="87" width="274" height="14" font="2">more about signals and their many intricacies.</text>
+<text top="515" left="105" width="414" height="14" font="2">This naturally raises the question: who can send a signal to a process,</text>
+<text top="530" left="87" width="432" height="14" font="2">and who cannot? Generally, the systems we use can have multiple people</text>
+<text top="545" left="87" width="432" height="14" font="2">using them at the same time; if one of these people can arbitrarily send</text>
+<text top="560" left="87" width="89" height="14" font="2">signals such as</text>
+<text top="560" left="179" width="48" height="11" font="4">SIGINT</text>
+<text top="560" left="231" width="288" height="14" font="2">(to interrupt a process, likely terminating it), the</text>
+<text top="575" left="87" width="432" height="14" font="2">usability and security of the system will be compromised. As a result,</text>
+<text top="589" left="87" width="372" height="14" font="2">modern systems include a strong conception of the notion of a</text>
+<text top="590" left="462" width="26" height="13" font="11"><b>user</b></text>
+<text top="589" left="488" width="31" height="14" font="2">. The</text>
+<text top="604" left="87" width="432" height="14" font="2">user, after entering a password to establish credentials, logs in to gain</text>
+<text top="619" left="87" width="432" height="14" font="2">access to system resources. The user may then launch one or many pro-</text>
+<text top="634" left="87" width="432" height="14" font="2">cesses, and exercise full control over them (pause them, kill them, etc.).</text>
+<text top="649" left="87" width="432" height="14" font="2">Users generally can only control their own processes; it is the job of the</text>
+<text top="664" left="87" width="432" height="14" font="2">operating system to parcel out resources (such as CPU, memory, and disk)</text>
+<text top="679" left="87" width="372" height="14" font="2">to each user (and their processes) to meet overall system goals.</text>
+<text top="719" left="55" width="116" height="17" font="5">5.6 Useful Tools</text>
+<text top="751" left="105" width="414" height="14" font="2">There are many command-line tools that are useful as well. For exam-</text>
+<text top="766" left="87" width="83" height="14" font="2">ple, using the</text>
+<text top="767" left="174" width="16" height="11" font="4">ps</text>
+<text top="766" left="195" width="324" height="14" font="2">command allows you to see which processes are run-</text>
+<text top="781" left="87" width="81" height="14" font="2">ning; read the</text>
+<text top="781" left="171" width="65" height="13" font="11"><b>man pages</b></text>
+<text top="781" left="238" width="179" height="14" font="2">for some useful ﬂags to pass to</text>
+<text top="782" left="420" width="16" height="11" font="4">ps</text>
+<text top="781" left="437" width="56" height="14" font="2">. The tool</text>
+<text top="782" left="495" width="24" height="11" font="4">top</text>
+<text top="796" left="87" width="432" height="14" font="2">is also quite helpful, as it displays the processes of the system and how</text>
+<text top="811" left="87" width="432" height="14" font="2">much CPU and other resources they are eating up. Humorously, many</text>
+<text top="826" left="87" width="135" height="14" font="2">times when you run it,</text>
+<text top="827" left="225" width="24" height="11" font="4">top</text>
+<text top="826" left="253" width="266" height="14" font="2">claims it is the top resource hog; perhaps it is</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="401" width="5" height="14" font="2">I</text>
+<text top="98" left="406" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="471" width="16" height="14" font="2">: P</text>
+<text top="98" left="487" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="148" left="248" width="10" height="14" font="2">A</text>
+<text top="150" left="260" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="286" width="16" height="14" font="2">: T</text>
+<text top="150" left="303" width="16" height="11" font="3">HE</text>
+<text top="148" left="324" width="7" height="14" font="2">S</text>
+<text top="150" left="331" width="61" height="11" font="3">UPERUSER</text>
+<text top="148" left="397" width="14" height="14" font="2">(R</text>
+<text top="150" left="411" width="25" height="11" font="3">OOT</text>
+<text top="148" left="437" width="4" height="14" font="2">)</text>
+<text top="163" left="129" width="249" height="14" font="2">A system generally needs a user who can</text>
+<text top="163" left="382" width="66" height="13" font="11"><b>administer</b></text>
+<text top="163" left="453" width="108" height="14" font="2">the system, and is</text>
+<text top="178" left="129" width="432" height="14" font="2">not limited in the way most users are. Such a user should be able to kill</text>
+<text top="193" left="129" width="432" height="14" font="2">an arbitrary process (e.g., if it is abusing the system in some way), even</text>
+<text top="208" left="129" width="432" height="14" font="2">though that process was not started by this user. Such a user should also</text>
+<text top="223" left="129" width="252" height="14" font="2">be able to run powerful commands such as</text>
+<text top="224" left="383" width="65" height="11" font="4">shutdown</text>
+<text top="223" left="451" width="110" height="14" font="2">(which, unsurpris-</text>
+<text top="238" left="129" width="210" height="14" font="2">ingly, shuts down the system). In U</text>
+<text top="240" left="339" width="21" height="11" font="3">NIX</text>
+<text top="238" left="361" width="200" height="14" font="2">-based systems, these special abil-</text>
+<text top="253" left="129" width="118" height="14" font="2">ities are given to the</text>
+<text top="253" left="250" width="61" height="13" font="11"><b>superuser</b></text>
+<text top="253" left="313" width="106" height="14" font="2">(sometimes called</text>
+<text top="253" left="422" width="25" height="13" font="11"><b>root</b></text>
+<text top="253" left="447" width="114" height="14" font="2">). While most users</text>
+<text top="268" left="129" width="432" height="14" font="2">can’t kill other users processes, the superuser can. Being root is much like</text>
+<text top="283" left="129" width="432" height="14" font="2">being Spider-Man: with great power comes great responsibility [QI15].</text>
+<text top="298" left="129" width="101" height="14" font="2">Thus, to increase</text>
+<text top="298" left="234" width="49" height="13" font="11"><b>security</b></text>
+<text top="298" left="286" width="275" height="14" font="2">(and avoid costly mistakes), it’s usually better</text>
+<text top="313" left="129" width="432" height="14" font="2">to be a regular user; if you do need to be root, tread carefully, as all of the</text>
+<text top="328" left="129" width="420" height="14" font="2">destructive powers of the computing world are now at your ﬁngertips.</text>
+<text top="371" left="129" width="220" height="14" font="2">a bit of an egomaniac. The command</text>
+<text top="372" left="353" width="32" height="11" font="4">kill</text>
+<text top="371" left="388" width="173" height="14" font="2">can be used to send arbitrary</text>
+<text top="386" left="129" width="348" height="14" font="2">signals to processes, as can the slightly more user friendly</text>
+<text top="387" left="481" width="57" height="11" font="4">killall</text>
+<text top="386" left="537" width="24" height="14" font="2">. Be</text>
+<text top="401" left="129" width="432" height="14" font="2">sure to use these carefully; if you accidentally kill your window manager,</text>
+<text top="416" left="129" width="432" height="14" font="2">the computer you are sitting in front of may become quite difﬁcult to use.</text>
+<text top="431" left="147" width="414" height="14" font="2">Finally, there are many different kinds of CPU meters you can use to</text>
+<text top="446" left="129" width="432" height="14" font="2">get a quick glance understanding of the load on your system; for example,</text>
+<text top="461" left="129" width="93" height="14" font="2">we always keep</text>
+<text top="461" left="225" width="79" height="13" font="11"><b>MenuMeters</b></text>
+<text top="461" left="307" width="254" height="14" font="2">(from Raging Menace software) running on</text>
+<text top="476" left="129" width="432" height="14" font="2">our Macintosh toolbars, so we can see how much CPU is being utilized</text>
+<text top="491" left="129" width="432" height="14" font="2">at any moment in time. In general, the more information about what is</text>
+<text top="506" left="129" width="118" height="14" font="2">going on, the better.</text>
+<text top="543" left="97" width="97" height="17" font="5">5.7 Summary</text>
+<text top="573" left="147" width="318" height="14" font="2">We have introduced some of the APIs dealing with U</text>
+<text top="575" left="466" width="21" height="11" font="3">NIX</text>
+<text top="573" left="491" width="70" height="14" font="2">process cre-</text>
+<text top="588" left="129" width="34" height="14" font="2">ation:</text>
+<text top="588" left="168" width="48" height="11" font="4">fork()</text>
+<text top="588" left="216" width="3" height="14" font="2">,</text>
+<text top="588" left="224" width="48" height="11" font="4">exec()</text>
+<text top="588" left="272" width="30" height="14" font="2">, and</text>
+<text top="588" left="306" width="48" height="11" font="4">wait()</text>
+<text top="588" left="355" width="206" height="14" font="2">. However, we have just skimmed</text>
+<text top="602" left="129" width="432" height="14" font="2">the surface. For more detail, read Stevens and Rago [SR05], of course,</text>
+<text top="617" left="129" width="432" height="14" font="2">particularly the chapters on Process Control, Process Relationships, and</text>
+<text top="632" left="129" width="343" height="14" font="2">Signals; there is much to extract from the wisdom therein.</text>
+<text top="647" left="147" width="161" height="14" font="2">While our passion for the U</text>
+<text top="649" left="309" width="21" height="11" font="3">NIX</text>
+<text top="647" left="333" width="228" height="14" font="2">process API remains strong, we should</text>
+<text top="662" left="129" width="432" height="14" font="2">also note that such positivity is not uniform. For example, a recent pa-</text>
+<text top="677" left="129" width="432" height="14" font="2">per by systems researchers from Microsoft, Boston University, and ETH</text>
+<text top="692" left="129" width="261" height="14" font="2">in Switzerland details some problems with</text>
+<text top="693" left="395" width="48" height="11" font="4">fork()</text>
+<text top="692" left="444" width="117" height="14" font="2">, and advocates for</text>
+<text top="707" left="129" width="269" height="14" font="2">other, simpler process creation APIs such as</text>
+<text top="708" left="402" width="57" height="11" font="12"><b>spawn()</b></text>
+<text top="707" left="464" width="97" height="14" font="2">[B+19]. Read it,</text>
+<text top="722" left="129" width="432" height="14" font="2">and the related work it refers to, to understand this different vantage</text>
+<text top="737" left="129" width="432" height="14" font="2">point. While it’s generally good to trust this book, remember too that</text>
+<text top="752" left="129" width="432" height="14" font="2">the authors have opinions; those opinions may not (always) be as widely</text>
+<text top="767" left="129" width="159" height="14" font="2">shared as you might think.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: P</text>
+<text top="98" left="174" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="223" width="24" height="14" font="2">API</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="148" left="202" width="10" height="14" font="2">A</text>
+<text top="150" left="213" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="240" width="18" height="14" font="2">: K</text>
+<text top="150" left="259" width="14" height="11" font="3">EY</text>
+<text top="148" left="277" width="8" height="14" font="2">P</text>
+<text top="150" left="286" width="45" height="11" font="3">ROCESS</text>
+<text top="148" left="335" width="37" height="14" font="2">API T</text>
+<text top="150" left="372" width="32" height="11" font="3">ERMS</text>
+<text top="163" left="107" width="412" height="14" font="2">• Each process has a name; in most systems, that name is a number</text>
+<text top="178" left="122" width="68" height="14" font="2">known as a</text>
+<text top="178" left="193" width="65" height="13" font="11"><b>process ID</b></text>
+<text top="178" left="261" width="4" height="14" font="2">(</text>
+<text top="178" left="266" width="25" height="13" font="11"><b>PID</b></text>
+<text top="178" left="290" width="8" height="14" font="2">).</text>
+<text top="203" left="107" width="38" height="14" font="2">• The</text>
+<text top="203" left="148" width="35" height="13" font="11"><b>fork()</b></text>
+<text top="203" left="186" width="140" height="14" font="2">system call is used in U</text>
+<text top="205" left="326" width="21" height="11" font="3">NIX</text>
+<text top="203" left="351" width="168" height="14" font="2">systems to create a new pro-</text>
+<text top="218" left="122" width="177" height="14" font="2">cess. The creator is called the</text>
+<text top="218" left="303" width="40" height="13" font="11"><b>parent</b></text>
+<text top="218" left="342" width="177" height="14" font="2">; the newly created process is</text>
+<text top="233" left="122" width="59" height="14" font="2">called the</text>
+<text top="233" left="185" width="31" height="13" font="11"><b>child</b></text>
+<text top="233" left="217" width="302" height="14" font="2">. As sometimes occurs in real life [J16], the child</text>
+<text top="248" left="122" width="278" height="14" font="2">process is a nearly identical copy of the parent.</text>
+<text top="273" left="107" width="38" height="14" font="2">• The</text>
+<text top="273" left="148" width="36" height="13" font="11"><b>wait()</b></text>
+<text top="273" left="188" width="331" height="14" font="2">system call allows a parent to wait for its child to com-</text>
+<text top="288" left="122" width="93" height="14" font="2">plete execution.</text>
+<text top="313" left="107" width="38" height="14" font="2">• The</text>
+<text top="313" left="148" width="35" height="13" font="11"><b>exec()</b></text>
+<text top="313" left="188" width="331" height="14" font="2">family of system calls allows a child to break free from</text>
+<text top="327" left="122" width="377" height="14" font="2">its similarity to its parent and execute an entirely new program.</text>
+<text top="352" left="107" width="42" height="14" font="2">• A U</text>
+<text top="354" left="149" width="21" height="11" font="3">NIX</text>
+<text top="352" left="175" width="30" height="13" font="11"><b>shell</b></text>
+<text top="352" left="211" width="95" height="14" font="2">commonly uses</text>
+<text top="353" left="311" width="48" height="11" font="4">fork()</text>
+<text top="352" left="359" width="3" height="14" font="2">,</text>
+<text top="353" left="368" width="48" height="11" font="4">wait()</text>
+<text top="352" left="417" width="32" height="14" font="2">, and</text>
+<text top="353" left="454" width="48" height="11" font="4">exec()</text>
+<text top="352" left="507" width="12" height="14" font="2">to</text>
+<text top="367" left="122" width="397" height="14" font="2">launch user commands; the separation of fork and exec enables fea-</text>
+<text top="382" left="122" width="55" height="14" font="2">tures like</text>
+<text top="382" left="181" width="150" height="13" font="11"><b>input/output redirection</b></text>
+<text top="382" left="330" width="3" height="14" font="2">,</text>
+<text top="382" left="337" width="34" height="13" font="11"><b>pipes</b></text>
+<text top="382" left="371" width="148" height="14" font="2">, and other cool features,</text>
+<text top="397" left="122" width="365" height="14" font="2">all without changing anything about the programs being run.</text>
+<text top="422" left="107" width="261" height="14" font="2">• Process control is available in the form of</text>
+<text top="422" left="371" width="43" height="13" font="11"><b>signals</b></text>
+<text top="422" left="414" width="105" height="14" font="2">, which can cause</text>
+<text top="437" left="122" width="241" height="14" font="2">jobs to stop, continue, or even terminate.</text>
+<text top="462" left="107" width="412" height="14" font="2">• Which processes can be controlled by a particular person is encap-</text>
+<text top="477" left="122" width="144" height="14" font="2">sulated in the notion of a</text>
+<text top="477" left="269" width="26" height="13" font="11"><b>user</b></text>
+<text top="477" left="295" width="224" height="14" font="2">; the operating system allows multiple</text>
+<text top="492" left="122" width="397" height="14" font="2">users onto the system, and ensures users can only control their own</text>
+<text top="507" left="122" width="60" height="14" font="2">processes.</text>
+<text top="532" left="107" width="26" height="14" font="2">• A</text>
+<text top="532" left="136" width="61" height="13" font="11"><b>superuser</b></text>
+<text top="532" left="201" width="318" height="14" font="2">can control all processes (and indeed do many other</text>
+<text top="547" left="122" width="397" height="14" font="2">things); this role should be assumed infrequently and with caution</text>
+<text top="562" left="122" width="119" height="14" font="2">for security reasons.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="16" family="WDDTRY+URWPalladioL" color="#000000"/>
+	<fontspec id="17" size="10" family="BTLIRJ+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="18" size="10" family="FRKAUI+NimbusMonL-ReguObli" color="#000000"/>
+	<fontspec id="19" size="10" family="PTVDWW+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="401" width="5" height="14" font="2">I</text>
+<text top="98" left="406" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="471" width="16" height="14" font="2">: P</text>
+<text top="98" left="487" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="137" left="129" width="82" height="16" font="16"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="9">[B+19] “A fork() in the road” by Andrew Baumann, Jonathan Appavoo, Orran Krieger, Tim-</text>
+<text top="177" left="129" width="191" height="11" font="9">othy Roscoe. HotOS ’19, Bertinoro, Italy.</text>
+<text top="177" left="325" width="80" height="11" font="17"><i>A fun paper full of</i></text>
+<text top="179" left="408" width="38" height="8" font="18">fork()</text>
+<text top="177" left="446" width="115" height="11" font="17"><i>ing rage. Read it to get an</i></text>
+<text top="189" left="129" width="112" height="11" font="17"><i>opposing viewpoint on the</i></text>
+<text top="189" left="244" width="8" height="11" font="9">U</text>
+<text top="191" left="252" width="16" height="8" font="15">NIX</text>
+<text top="189" left="272" width="289" height="11" font="17"><i>process API. Presented at the always lively HotOS workshop, where</i></text>
+<text top="201" left="129" width="432" height="11" font="17"><i>systems researchers go to present extreme opinions in the hopes of pushing the community in new di-</i></text>
+<text top="213" left="129" width="36" height="11" font="17"><i>rections.</i></text>
+<text top="236" left="129" width="432" height="11" font="9">[C63] “A Multiprocessor System Design” by Melvin E. Conway. AFIPS ’63 Fall Joint Computer</text>
+<text top="248" left="129" width="159" height="11" font="9">Conference, New York, USA 1963.</text>
+<text top="248" left="292" width="269" height="11" font="17"><i>An early paper on how to design multiprocessing systems; may</i></text>
+<text top="260" left="129" width="106" height="11" font="17"><i>be the ﬁrst place the term</i></text>
+<text top="261" left="237" width="38" height="8" font="18">fork()</text>
+<text top="260" left="277" width="229" height="11" font="17"><i>was used in the discussion of spawning new processes.</i></text>
+<text top="283" left="129" width="432" height="11" font="9">[DV66] “Programming Semantics for Multiprogrammed Computations” by Jack B. Dennis and</text>
+<text top="295" left="129" width="390" height="11" font="9">Earl C. Van Horn. Communications of the ACM, Volume 9, Number 3, March 1966.</text>
+<text top="295" left="523" width="38" height="11" font="17"><i>A classic</i></text>
+<text top="306" left="129" width="432" height="11" font="17"><i>paper that outlines the basics of multiprogrammed computer systems. Undoubtedly had great inﬂuence</i></text>
+<text top="318" left="129" width="176" height="11" font="17"><i>on Project MAC, Multics, and eventually</i></text>
+<text top="319" left="308" width="8" height="11" font="9">U</text>
+<text top="320" left="316" width="16" height="8" font="15">NIX</text>
+<text top="318" left="333" width="3" height="11" font="17"><i>.</i></text>
+<text top="341" left="129" width="410" height="11" font="9">[J16] “They could be twins!” by Phoebe Jackson-Edwards. The Daily Mail. March 1, 2016..</text>
+<text top="341" left="542" width="19" height="11" font="17"><i>This</i></text>
+<text top="353" left="129" width="432" height="11" font="17"><i>hard-hitting piece of journalism shows a bunch of weirdly similar child/parent photos and is frankly kind</i></text>
+<text top="365" left="129" width="432" height="11" font="17"><i>of mesmerizing. Go ahead, waste two minutes of your life and check it out. But don’t forget to come</i></text>
+<text top="377" left="129" width="272" height="11" font="17"><i>back here! This, in a microcosm, is the danger of surﬁng the web.</i></text>
+<text top="400" left="129" width="432" height="11" font="9">[L83] “Hints for Computer Systems Design” by Butler Lampson. ACM Operating Systems</text>
+<text top="412" left="129" width="166" height="11" font="9">Review, Volume 15:5, October 1983.</text>
+<text top="412" left="300" width="261" height="11" font="17"><i>Lampson’s famous hints on how to design computer systems.</i></text>
+<text top="424" left="129" width="362" height="11" font="17"><i>You should read it at some point in your life, and probably at many points in your life.</i></text>
+<text top="447" left="129" width="432" height="11" font="9">[QI15] “With Great Power Comes Great Responsibility” by The Quote Investigator. Available:</text>
+<text top="459" left="129" width="326" height="9" font="10">https://quoteinvestigator.com/2015/07/23/great-power</text>
+<text top="459" left="455" width="3" height="11" font="9">.</text>
+<text top="458" left="464" width="96" height="11" font="17"><i>The quote investigator</i></text>
+<text top="470" left="129" width="432" height="11" font="17"><i>concludes that the earliest mention of this concept is 1793, in a collection of decrees made at the French</i></text>
+<text top="482" left="129" width="432" height="11" font="17"><i>National Convention. The speciﬁc quote: “Ils doivent envisager qu’une grande responsabilit´e est la</i></text>
+<text top="494" left="129" width="432" height="11" font="17"><i>suite ins´eparable d’un grand pouvoir”, which roughly translates to “They must consider that great</i></text>
+<text top="506" left="129" width="432" height="11" font="17"><i>responsibility follows inseparably from great power.” Only in 1962 did the following words appear in</i></text>
+<text top="518" left="129" width="432" height="11" font="17"><i>Spider-Man: “...with great power there must also come–great responsibility!” So it looks like the French</i></text>
+<text top="530" left="129" width="257" height="11" font="17"><i>Revolution gets credit for this one, not Stan Lee. Sorry, Stan.</i></text>
+<text top="553" left="129" width="195" height="11" font="9">[SR05] “Advanced Programming in the U</text>
+<text top="555" left="324" width="16" height="8" font="15">NIX</text>
+<text top="553" left="344" width="217" height="11" font="9">Environment” by W. Richard Stevens, Stephen</text>
+<text top="565" left="129" width="149" height="11" font="9">A. Rago. Addison-Wesley, 2005.</text>
+<text top="565" left="283" width="150" height="11" font="17"><i>All nuances and subtleties of using</i></text>
+<text top="565" left="436" width="8" height="11" font="9">U</text>
+<text top="566" left="445" width="16" height="8" font="15">NIX</text>
+<text top="565" left="465" width="96" height="11" font="17"><i>APIs are found herein.</i></text>
+<text top="577" left="129" width="197" height="11" font="17"><i>Buy this book! Read it! And most importantly,</i></text>
+<text top="577" left="329" width="30" height="8" font="19"><b>live it.</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="20" size="15" family="WDDTRY+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: P</text>
+<text top="98" left="174" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="223" width="24" height="14" font="2">API</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="137" left="87" width="183" height="16" font="16"><b>Homework (Simulation)</b></text>
+<text top="166" left="105" width="226" height="14" font="2">This simulation homework focuses on</text>
+<text top="167" left="334" width="57" height="11" font="4">fork.py</text>
+<text top="166" left="390" width="129" height="14" font="2">, a simple process cre-</text>
+<text top="181" left="87" width="432" height="14" font="2">ation simulator that shows how processes are related in a single “famil-</text>
+<text top="196" left="87" width="432" height="14" font="2">ial” tree. Read the relevant README for details about how to run the</text>
+<text top="211" left="87" width="60" height="14" font="2">simulator.</text>
+<text top="247" left="87" width="70" height="15" font="20"><b>Questions</b></text>
+<text top="271" left="105" width="42" height="14" font="2">1. Run</text>
+<text top="272" left="150" width="121" height="11" font="4">./fork.py -s 10</text>
+<text top="271" left="274" width="245" height="14" font="2">and see which actions are taken. Can you</text>
+<text top="286" left="122" width="376" height="14" font="2">predict what the process tree looks like at each step? Use the</text>
+<text top="287" left="503" width="16" height="11" font="4">-c</text>
+<text top="301" left="122" width="377" height="14" font="2">ﬂag to check your answers. Try some different random seeds (</text>
+<text top="302" left="498" width="16" height="11" font="4">-s</text>
+<text top="301" left="514" width="4" height="14" font="2">)</text>
+<text top="316" left="122" width="126" height="14" font="2">or add more actions (</text>
+<text top="317" left="248" width="16" height="11" font="4">-a</text>
+<text top="316" left="264" width="127" height="14" font="2">) to get the hang of it.</text>
+<text top="341" left="105" width="260" height="14" font="2">2. One control the simulator gives you is the</text>
+<text top="342" left="367" width="121" height="11" font="4">fork_percentage</text>
+<text top="341" left="488" width="32" height="14" font="2">, con-</text>
+<text top="356" left="122" width="81" height="14" font="2">trolled by the</text>
+<text top="357" left="206" width="16" height="11" font="4">-f</text>
+<text top="356" left="226" width="293" height="14" font="2">ﬂag. The higher it is, the more likely the next ac-</text>
+<text top="371" left="122" width="397" height="14" font="2">tion is a fork; the lower it is, the more likely the action is an exit.</text>
+<text top="386" left="122" width="339" height="14" font="2">Run the simulator with a large number of actions (e.g.,</text>
+<text top="387" left="466" width="48" height="11" font="4">-a 100</text>
+<text top="386" left="514" width="4" height="14" font="2">)</text>
+<text top="401" left="122" width="79" height="14" font="2">and vary the</text>
+<text top="402" left="206" width="121" height="11" font="4">fork_percentage</text>
+<text top="401" left="333" width="186" height="14" font="2">from 0.1 to 0.9. What do you</text>
+<text top="416" left="122" width="397" height="14" font="2">think the resulting ﬁnal process trees will look like as the percent-</text>
+<text top="431" left="122" width="228" height="14" font="2">age changes? Check your answer with</text>
+<text top="432" left="353" width="16" height="11" font="4">-c</text>
+<text top="431" left="369" width="3" height="14" font="2">.</text>
+<text top="456" left="105" width="235" height="14" font="2">3. Now, switch the output by using the</text>
+<text top="457" left="344" width="16" height="11" font="4">-t</text>
+<text top="456" left="363" width="79" height="14" font="2">ﬂag (e.g., run</text>
+<text top="457" left="446" width="73" height="11" font="4">./fork.py</text>
+<text top="471" left="122" width="16" height="11" font="4">-t</text>
+<text top="471" left="138" width="381" height="14" font="2">). Given a set of process trees, can you tell which actions were</text>
+<text top="486" left="122" width="39" height="14" font="2">taken?</text>
+<text top="511" left="105" width="414" height="14" font="2">4. One interesting thing to note is what happens when a child exits;</text>
+<text top="525" left="122" width="397" height="14" font="2">what happens to its children in the process tree? To study this, let’s</text>
+<text top="540" left="122" width="147" height="14" font="2">create a speciﬁc example:</text>
+<text top="541" left="273" width="250" height="11" font="4">./fork.py -A a+b,b+c,c+d,c+e,c-</text>
+<text top="540" left="523" width="3" height="14" font="2">.</text>
+<text top="555" left="122" width="397" height="14" font="2">This example has process ’a’ create ’b’, which in turn creates ’c’,</text>
+<text top="570" left="122" width="397" height="14" font="2">which then creates ’d’ and ’e’. However, then, ’c’ exits. What do</text>
+<text top="585" left="122" width="397" height="14" font="2">you think the process tree should like after the exit? What if you</text>
+<text top="600" left="122" width="42" height="14" font="2">use the</text>
+<text top="601" left="168" width="16" height="11" font="4">-R</text>
+<text top="600" left="187" width="332" height="14" font="2">ﬂag? Learn more about what happens to orphaned pro-</text>
+<text top="615" left="122" width="242" height="14" font="2">cesses on your own to add more context.</text>
+<text top="640" left="105" width="201" height="14" font="2">5. One last ﬂag to explore is the</text>
+<text top="641" left="312" width="16" height="11" font="4">-F</text>
+<text top="640" left="333" width="186" height="14" font="2">ﬂag, which skips intermediate</text>
+<text top="655" left="122" width="321" height="14" font="2">steps and only asks to ﬁll in the ﬁnal process tree. Run</text>
+<text top="656" left="446" width="73" height="11" font="4">./fork.py</text>
+<text top="671" left="122" width="16" height="11" font="4">-F</text>
+<text top="670" left="142" width="377" height="14" font="2">and see if you can write down the ﬁnal tree by looking at the</text>
+<text top="685" left="122" width="397" height="14" font="2">series of actions generated. Use different random seeds to try this a</text>
+<text top="700" left="122" width="61" height="14" font="2">few times.</text>
+<text top="725" left="105" width="116" height="14" font="2">6. Finally, use both</text>
+<text top="726" left="224" width="16" height="11" font="4">-t</text>
+<text top="725" left="244" width="23" height="14" font="2">and</text>
+<text top="726" left="271" width="16" height="11" font="4">-F</text>
+<text top="725" left="292" width="227" height="14" font="2">together. This shows the ﬁnal process</text>
+<text top="740" left="122" width="397" height="14" font="2">tree, but then asks you to ﬁll in the actions that took place. By look-</text>
+<text top="755" left="122" width="397" height="14" font="2">ing at the tree, can you determine the exact actions that took place?</text>
+<text top="770" left="122" width="397" height="14" font="2">In which cases can you tell? In which can’t you tell? Try some dif-</text>
+<text top="785" left="122" width="282" height="14" font="2">ferent random seeds to delve into this question.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="401" width="5" height="14" font="2">I</text>
+<text top="98" left="406" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="471" width="16" height="14" font="2">: P</text>
+<text top="98" left="487" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="153" left="254" width="10" height="14" font="2">A</text>
+<text top="155" left="265" width="26" height="11" font="3">SIDE</text>
+<text top="153" left="292" width="18" height="14" font="2">: C</text>
+<text top="155" left="310" width="40" height="11" font="3">ODING</text>
+<text top="153" left="354" width="11" height="14" font="2">H</text>
+<text top="155" left="366" width="70" height="11" font="3">OMEWORKS</text>
+<text top="168" left="147" width="414" height="14" font="2">Coding homeworks are small exercises where you write code to run on</text>
+<text top="183" left="129" width="432" height="14" font="2">a real machine to get some experience with some basic operating system</text>
+<text top="197" left="129" width="432" height="14" font="2">APIs. After all, you are (probably) a computer scientist, and therefore</text>
+<text top="212" left="129" width="432" height="14" font="2">should like to code, right? If you don’t, there is always CS theory, but</text>
+<text top="227" left="129" width="432" height="14" font="2">that’s pretty hard. Of course, to truly become an expert, you have to</text>
+<text top="242" left="129" width="432" height="14" font="2">spend more than a little time hacking away at the machine; indeed, ﬁnd</text>
+<text top="257" left="129" width="432" height="14" font="2">every excuse you can to write some code and see how it works. Spend</text>
+<text top="272" left="129" width="358" height="14" font="2">the time, and become the wise master you know you can be.</text>
+<text top="330" left="129" width="139" height="16" font="16"><b>Homework (Code)</b></text>
+<text top="360" left="147" width="414" height="14" font="2">In this homework, you are to gain some familiarity with the process</text>
+<text top="375" left="129" width="432" height="14" font="2">management APIs about which you just read. Don’t worry – it’s even</text>
+<text top="390" left="129" width="432" height="14" font="2">more fun than it sounds! You’ll in general be much better off if you ﬁnd</text>
+<text top="405" left="129" width="399" height="14" font="2">as much time as you can to write some code, so why not start now?</text>
+<text top="435" left="129" width="70" height="15" font="20"><b>Questions</b></text>
+<text top="460" left="146" width="168" height="14" font="2">1. Write a program that calls</text>
+<text top="461" left="317" width="48" height="11" font="4">fork()</text>
+<text top="460" left="366" width="88" height="14" font="2">. Before calling</text>
+<text top="461" left="456" width="48" height="11" font="4">fork()</text>
+<text top="460" left="505" width="56" height="14" font="2">, have the</text>
+<text top="475" left="163" width="218" height="14" font="2">main process access a variable (e.g.,</text>
+<text top="476" left="386" width="8" height="11" font="4">x</text>
+<text top="475" left="394" width="166" height="14" font="2">) and set its value to some-</text>
+<text top="490" left="163" width="64" height="14" font="2">thing (e.g.,</text>
+<text top="491" left="233" width="24" height="11" font="4">100</text>
+<text top="490" left="257" width="304" height="14" font="2">). What value is the variable in the child process?</text>
+<text top="505" left="163" width="402" height="14" font="2">What happens to the variable when both the child and parent change</text>
+<text top="520" left="163" width="70" height="14" font="2">the value of</text>
+<text top="521" left="237" width="8" height="11" font="4">x</text>
+<text top="520" left="245" width="6" height="14" font="2">?</text>
+<text top="548" left="146" width="284" height="14" font="2">2. Write a program that opens a ﬁle (with the</text>
+<text top="549" left="435" width="48" height="11" font="4">open()</text>
+<text top="548" left="489" width="72" height="14" font="2">system call)</text>
+<text top="563" left="163" width="83" height="14" font="2">and then calls</text>
+<text top="564" left="250" width="48" height="11" font="4">fork()</text>
+<text top="563" left="303" width="258" height="14" font="2">to create a new process. Can both the child</text>
+<text top="578" left="163" width="297" height="14" font="2">and parent access the ﬁle descriptor returned by</text>
+<text top="578" left="465" width="48" height="11" font="4">open()</text>
+<text top="578" left="514" width="47" height="14" font="2">? What</text>
+<text top="593" left="163" width="397" height="14" font="2">happens when they are writing to the ﬁle concurrently, i.e., at the</text>
+<text top="608" left="163" width="67" height="14" font="2">same time?</text>
+<text top="636" left="146" width="195" height="14" font="2">3. Write another program using</text>
+<text top="636" left="347" width="48" height="11" font="4">fork()</text>
+<text top="636" left="395" width="165" height="14" font="2">. The child process should</text>
+<text top="651" left="163" width="405" height="14" font="2">print “hello”; the parent process should print “goodbye”. You should</text>
+<text top="665" left="163" width="397" height="14" font="2">try to ensure that the child process always prints ﬁrst; can you do</text>
+<text top="680" left="163" width="22" height="14" font="2">this</text>
+<text top="680" left="189" width="43" height="14" font="13"><i>without</i></text>
+<text top="680" left="235" width="40" height="14" font="2">calling</text>
+<text top="680" left="278" width="36" height="13" font="11"><b>wait()</b></text>
+<text top="680" left="317" width="82" height="14" font="2">in the parent?</text>
+<text top="708" left="146" width="180" height="14" font="2">4. Write a program that calls</text>
+<text top="709" left="332" width="48" height="11" font="4">fork()</text>
+<text top="708" left="386" width="175" height="14" font="2">and then calls some form of</text>
+<text top="724" left="163" width="48" height="11" font="4">exec()</text>
+<text top="723" left="215" width="114" height="14" font="2">to run the program</text>
+<text top="724" left="333" width="65" height="11" font="4">/bin/ls.</text>
+<text top="723" left="402" width="159" height="14" font="2">See if you can try all of the</text>
+<text top="738" left="163" width="64" height="14" font="2">variants of</text>
+<text top="739" left="231" width="48" height="11" font="4">exec()</text>
+<text top="738" left="280" width="132" height="14" font="2">, including (on Linux)</text>
+<text top="739" left="416" width="145" height="11" font="4">execl(), execle(),</text>
+<text top="754" left="163" width="226" height="11" font="4">execlp(), execv(), execvp(),</text>
+<text top="753" left="396" width="23" height="14" font="2">and</text>
+<text top="754" left="424" width="73" height="11" font="4">execvpe()</text>
+<text top="753" left="497" width="64" height="14" font="2">. Why do</text>
+<text top="768" left="163" width="352" height="14" font="2">you think there are so many variants of the same basic call?</text>
+<text top="796" left="146" width="199" height="14" font="2">5. Now write a program that uses</text>
+<text top="797" left="348" width="48" height="11" font="4">wait()</text>
+<text top="796" left="400" width="161" height="14" font="2">to wait for the child process</text>
+<text top="811" left="163" width="197" height="14" font="2">to ﬁnish in the parent. What does</text>
+<text top="812" left="364" width="48" height="11" font="4">wait()</text>
+<text top="811" left="416" width="145" height="14" font="2">return? What happens if</text>
+<text top="826" left="163" width="47" height="14" font="2">you use</text>
+<text top="827" left="213" width="48" height="11" font="4">wait()</text>
+<text top="826" left="265" width="73" height="14" font="2">in the child?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: P</text>
+<text top="98" left="174" width="45" height="11" font="3">ROCESS</text>
+<text top="96" left="223" width="24" height="14" font="2">API</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="139" left="105" width="414" height="14" font="2">6. Write a slight modiﬁcation of the previous program, this time us-</text>
+<text top="154" left="122" width="19" height="14" font="2">ing</text>
+<text top="154" left="145" width="73" height="11" font="4">waitpid()</text>
+<text top="154" left="222" width="59" height="14" font="2">instead of</text>
+<text top="154" left="286" width="48" height="11" font="4">wait()</text>
+<text top="154" left="334" width="89" height="14" font="2">. When would</text>
+<text top="154" left="428" width="73" height="11" font="4">waitpid()</text>
+<text top="154" left="505" width="14" height="14" font="2">be</text>
+<text top="169" left="122" width="43" height="14" font="2">useful?</text>
+<text top="193" left="105" width="414" height="14" font="2">7. Write a program that creates a child process, and then in the child</text>
+<text top="208" left="122" width="141" height="14" font="2">closes standard output (</text>
+<text top="209" left="262" width="105" height="11" font="4">STDOUT_FILENO</text>
+<text top="208" left="367" width="161" height="14" font="2">). What happens if the child</text>
+<text top="223" left="122" width="26" height="14" font="2">calls</text>
+<text top="224" left="151" width="65" height="11" font="4">printf()</text>
+<text top="223" left="219" width="291" height="14" font="2">to print some output after closing the descriptor?</text>
+<text top="248" left="105" width="414" height="14" font="2">8. Write a program that creates two children, and connects the stan-</text>
+<text top="263" left="122" width="397" height="14" font="2">dard output of one to the standard input of the other, using the</text>
+<text top="279" left="122" width="48" height="11" font="4">pipe()</text>
+<text top="278" left="173" width="69" height="14" font="2">system call.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+</pdf2xml>

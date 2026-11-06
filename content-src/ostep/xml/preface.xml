@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="22" family="AAAAAB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="16" family="AAAAAC+URWPalladioL" color="#000000"/>
+	<fontspec id="2" size="13" family="AAAAAD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="AAAAAC+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="AAAAAE+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="5" size="9" family="AAAAAD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="7" family="AAAAAD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="10" family="AAAAAD+URWPalladioL-Roma" color="#000000"/>
+<text top="260" left="496" width="73" height="21" font="0">Preface</text>
+<text top="304" left="138" width="92" height="16" font="1"><b>To Everyone</b></text>
+<text top="333" left="156" width="414" height="14" font="2">Welcome to this book! We hope you’ll enjoy reading it as much as we</text>
+<text top="348" left="138" width="230" height="14" font="2">enjoyed writing it. The book is called</text>
+<text top="348" left="373" width="197" height="13" font="3"><b>Operating Systems: Three Easy</b></text>
+<text top="363" left="138" width="38" height="13" font="3"><b>Pieces</b></text>
+<text top="363" left="180" width="73" height="14" font="2">(available at</text>
+<text top="364" left="258" width="129" height="11" font="4">http://ostep.org</text>
+<text top="363" left="387" width="182" height="14" font="2">), and the title is obviously an</text>
+<text top="378" left="138" width="432" height="14" font="2">homage to one of the greatest sets of lecture notes ever created, by one</text>
+<text top="393" left="138" width="432" height="14" font="2">Richard Feynman on the topic of Physics [F96]. While this book will un-</text>
+<text top="408" left="138" width="432" height="14" font="2">doubtedly fall short of the high standard set by that famous physicist,</text>
+<text top="423" left="138" width="432" height="14" font="2">perhaps it will be good enough for you in your quest to understand what</text>
+<text top="438" left="138" width="369" height="14" font="2">operating systems (and more generally, systems) are all about.</text>
+<text top="453" left="156" width="414" height="14" font="2">The three easy pieces refer to the three major thematic elements the</text>
+<text top="468" left="138" width="156" height="14" font="2">book is organized around:</text>
+<text top="468" left="299" width="84" height="13" font="3"><b>virtualization</b></text>
+<text top="468" left="383" width="3" height="14" font="2">,</text>
+<text top="468" left="390" width="75" height="13" font="3"><b>concurrency</b></text>
+<text top="468" left="464" width="30" height="14" font="2">, and</text>
+<text top="468" left="498" width="69" height="13" font="3"><b>persistence</b></text>
+<text top="468" left="566" width="3" height="14" font="2">.</text>
+<text top="483" left="138" width="432" height="14" font="2">In discussing these concepts, we’ll end up discussing most of the impor-</text>
+<text top="497" left="138" width="432" height="14" font="2">tant things an operating system does; hopefully, you’ll also have some</text>
+<text top="512" left="138" width="432" height="14" font="2">fun along the way. Learning new things is fun, right? At least, it (usually)</text>
+<text top="527" left="138" width="62" height="14" font="2">should be.</text>
+<text top="542" left="156" width="414" height="14" font="2">Each major concept is divided into a set of chapters, most of which</text>
+<text top="557" left="138" width="432" height="14" font="2">present a particular problem and then show how to solve it. The chapters</text>
+<text top="572" left="138" width="432" height="14" font="2">are short, and try (as best as possible) to reference the source material</text>
+<text top="587" left="138" width="432" height="14" font="2">where the ideas really came from. One of our goals in writing this book</text>
+<text top="602" left="138" width="432" height="14" font="2">is to make the paths of history as clear as possible, as we think that helps</text>
+<text top="617" left="138" width="432" height="14" font="2">a student understand what is, what was, and what will be more clearly.</text>
+<text top="632" left="138" width="432" height="14" font="2">In this case, seeing how the sausage was made is nearly as important as</text>
+<text top="649" left="138" width="261" height="14" font="2">understanding what the sausage is good for</text>
+<text top="647" left="399" width="4" height="9" font="5">1</text>
+<text top="649" left="404" width="3" height="14" font="2">.</text>
+<text top="664" left="156" width="414" height="14" font="2">There are a couple devices we use throughout the book which are</text>
+<text top="679" left="138" width="302" height="14" font="2">probably worth introducing here. The first is the</text>
+<text top="679" left="445" width="26" height="13" font="3"><b>crux</b></text>
+<text top="679" left="476" width="94" height="14" font="2">of the problem.</text>
+<text top="694" left="138" width="432" height="14" font="2">Anytime we are trying to solve a problem, we first try to state what the</text>
+<text top="709" left="138" width="190" height="14" font="2">most important issue is; such a</text>
+<text top="709" left="332" width="124" height="13" font="3"><b>crux of the problem</b></text>
+<text top="709" left="461" width="109" height="14" font="2">is explicitly called</text>
+<text top="724" left="138" width="432" height="14" font="2">out in the text, and hopefully solved via the techniques, algorithms, and</text>
+<text top="739" left="138" width="221" height="14" font="2">ideas presented in the rest of the text.</text>
+<text top="754" left="156" width="414" height="14" font="2">In many places, we’ll explain how a system works by showing its be-</text>
+<text top="769" left="138" width="142" height="14" font="2">havior over time. These</text>
+<text top="769" left="283" width="58" height="13" font="3"><b>timelines</b></text>
+<text top="769" left="344" width="225" height="14" font="2">are at the essence of understanding; if</text>
+<text top="784" left="138" width="432" height="14" font="2">you know what happens, for example, when a process page faults, you</text>
+<text top="799" left="138" width="432" height="14" font="2">are on your way to truly understanding how virtual memory operates. If</text>
+<text top="826" left="158" width="4" height="8" font="6">1</text>
+<text top="828" left="163" width="273" height="11" font="7">Hint: eating! Or if you’re a vegetarian, running away from.</text>
+<text top="862" left="348" width="12" height="14" font="2">iii</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="8" size="10" family="AAAAAE+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="9" size="11" family="AAAAAD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="12" family="AAAAAD+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="78" width="12" height="14" font="2">iv</text>
+<text top="139" left="78" width="432" height="14" font="2">you comprehend what takes place when a journaling file system writes a</text>
+<text top="154" left="78" width="432" height="14" font="2">block to disk, you have taken the first steps towards mastery of storage</text>
+<text top="169" left="78" width="51" height="14" font="2">systems.</text>
+<text top="185" left="96" width="148" height="14" font="2">There are also numerous</text>
+<text top="185" left="248" width="38" height="13" font="3"><b>asides</b></text>
+<text top="185" left="290" width="23" height="14" font="2">and</text>
+<text top="185" left="317" width="23" height="13" font="3"><b>tips</b></text>
+<text top="185" left="344" width="166" height="14" font="2">throughout the text, adding</text>
+<text top="200" left="78" width="432" height="14" font="2">a little color to the mainline presentation. Asides tend to discuss some-</text>
+<text top="215" left="78" width="432" height="14" font="2">thing relevant (but perhaps not essential) to the main text; tips tend to be</text>
+<text top="230" left="78" width="432" height="14" font="2">general lessons that can be applied to systems you build. An index at the</text>
+<text top="245" left="78" width="432" height="14" font="2">end of the book lists all of these tips and asides (as well as cruces, the odd</text>
+<text top="260" left="78" width="218" height="14" font="2">plural of crux) for your convenience.</text>
+<text top="276" left="96" width="281" height="14" font="2">We use one of the oldest didactic methods, the</text>
+<text top="276" left="381" width="54" height="13" font="3"><b>dialogue</b></text>
+<text top="276" left="435" width="75" height="14" font="2">, throughout</text>
+<text top="291" left="78" width="432" height="14" font="2">the book, as a way of presenting some of the material in a different light.</text>
+<text top="306" left="78" width="432" height="14" font="2">These are used to introduce the major thematic concepts (in a peachy way,</text>
+<text top="321" left="78" width="432" height="14" font="2">as we will see), as well as to review material every now and then. They</text>
+<text top="336" left="78" width="432" height="14" font="2">are also a chance to write in a more humorous style. Whether you find</text>
+<text top="351" left="78" width="369" height="14" font="2">them useful, or humorous, well, that’s another matter entirely.</text>
+<text top="367" left="96" width="362" height="14" font="2">At the beginning of each major section, we’ll first present an</text>
+<text top="367" left="462" width="48" height="13" font="3"><b>abstrac-</b></text>
+<text top="382" left="78" width="25" height="13" font="3"><b>tion</b></text>
+<text top="382" left="108" width="402" height="14" font="2">that an operating system provides, and then work in subsequent</text>
+<text top="397" left="78" width="432" height="14" font="2">chapters on the mechanisms, policies, and other support needed to pro-</text>
+<text top="412" left="78" width="432" height="14" font="2">vide the abstraction. Abstractions are fundamental to all aspects of Com-</text>
+<text top="427" left="78" width="432" height="14" font="2">puter Science, so it is perhaps no surprise that they are also essential in</text>
+<text top="442" left="78" width="112" height="14" font="2">operating systems.</text>
+<text top="458" left="96" width="241" height="14" font="2">Throughout the chapters, we try to use</text>
+<text top="459" left="342" width="56" height="13" font="3"><b>real code</b></text>
+<text top="458" left="403" width="24" height="14" font="2">(not</text>
+<text top="459" left="432" width="73" height="13" font="3"><b>pseudocode</b></text>
+<text top="458" left="506" width="4" height="14" font="2">)</text>
+<text top="473" left="78" width="432" height="14" font="2">where possible, so for virtually all examples, you should be able to type</text>
+<text top="488" left="78" width="432" height="14" font="2">them up yourself and run them. Running real code on real systems is the</text>
+<text top="503" left="78" width="432" height="14" font="2">best way to learn about operating systems, so we encourage you to do</text>
+<text top="518" left="78" width="432" height="14" font="2">so when you can. We are also making code available for your viewing</text>
+<text top="535" left="78" width="50" height="14" font="2">pleasure</text>
+<text top="533" left="129" width="4" height="9" font="5">2</text>
+<text top="535" left="134" width="3" height="14" font="2">.</text>
+<text top="552" left="96" width="337" height="14" font="2">In various parts of the text, we have sprinkled in a few</text>
+<text top="552" left="438" width="73" height="13" font="3"><b>homeworks</b></text>
+<text top="567" left="78" width="432" height="14" font="2">to ensure that you are understanding what is going on. Many of these</text>
+<text top="582" left="78" width="124" height="14" font="2">homeworks are little</text>
+<text top="582" left="206" width="73" height="13" font="3"><b>simulations</b></text>
+<text top="582" left="282" width="228" height="14" font="2">of pieces of the operating system; you</text>
+<text top="597" left="78" width="432" height="14" font="2">should download the homeworks, and run them to quiz yourself. The</text>
+<text top="612" left="78" width="432" height="14" font="2">homework simulators have the following feature: by giving them a dif-</text>
+<text top="627" left="78" width="432" height="14" font="2">ferent random seed, you can generate a virtually infinite set of problems;</text>
+<text top="642" left="78" width="432" height="14" font="2">the simulators can also be told to solve the problems for you. Thus, you</text>
+<text top="656" left="78" width="432" height="14" font="2">can test and re-test yourself until you have achieved a good level of un-</text>
+<text top="671" left="78" width="75" height="14" font="2">derstanding.</text>
+<text top="688" left="96" width="342" height="14" font="2">The most important addendum to this book is a set of</text>
+<text top="688" left="444" width="49" height="13" font="3"><b>projects</b></text>
+<text top="688" left="498" width="12" height="14" font="2">in</text>
+<text top="703" left="78" width="432" height="14" font="2">which you learn about how real systems work by designing, implement-</text>
+<text top="718" left="78" width="432" height="14" font="2">ing, and testing your own code. All projects (as well as the code exam-</text>
+<text top="733" left="78" width="198" height="14" font="2">ples, mentioned above) are in the</text>
+<text top="733" left="279" width="157" height="13" font="3"><b>C programming language</b></text>
+<text top="733" left="439" width="71" height="14" font="2">[KR88]; C is</text>
+<text top="748" left="78" width="432" height="14" font="2">a simple and powerful language that underlies most operating systems,</text>
+<text top="763" left="78" width="432" height="14" font="2">and thus worth adding to your tool-chest of languages. Two types of</text>
+<text top="778" left="78" width="432" height="14" font="2">projects are available (see the online appendix for ideas). The first type</text>
+<text top="792" left="78" width="10" height="14" font="2">is</text>
+<text top="793" left="92" width="137" height="13" font="3"><b>systems programming</b></text>
+<text top="792" left="232" width="278" height="14" font="2">projects; these projects are great for those who</text>
+<text top="826" left="99" width="4" height="8" font="6">2</text>
+<text top="829" left="103" width="309" height="9" font="8">https://github.com/remzi-arpacidusseau/ostep-code</text>
+<text top="881" left="78" width="11" height="14" font="2">O</text>
+<text top="883" left="90" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="78" width="7" height="14" font="2">S</text>
+<text top="898" left="86" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="78" width="13" height="12" font="10">[V</text>
+<text top="914" left="92" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="135" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="243" width="34" height="11" font="9">WWW</text>
+<text top="896" left="276" width="3" height="14" font="2">.</text>
+<text top="898" left="280" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="316" width="3" height="14" font="2">.</text>
+<text top="898" left="320" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="562" width="8" height="14" font="2">v</text>
+<text top="139" left="138" width="123" height="14" font="2">are new to C and U</text>
+<text top="141" left="261" width="21" height="11" font="9">NIX</text>
+<text top="139" left="288" width="282" height="14" font="2">and want to learn how to do low-level C pro-</text>
+<text top="154" left="138" width="432" height="14" font="2">gramming. The second type is based on a real operating system kernel</text>
+<text top="169" left="138" width="432" height="14" font="2">developed at MIT called xv6 [CK+08]; these projects are great for stu-</text>
+<text top="183" left="138" width="432" height="14" font="2">dents that already have some C and want to get their hands dirty inside</text>
+<text top="198" left="138" width="432" height="14" font="2">the OS. At Wisconsin, we’ve run the course in three different ways: either</text>
+<text top="213" left="138" width="388" height="14" font="2">all systems programming, all xv6 programming, or a mix of both.</text>
+<text top="228" left="156" width="414" height="14" font="2">We are slowly making project descriptions, and a testing framework,</text>
+<text top="245" left="138" width="170" height="14" font="2">available. See our repository</text>
+<text top="243" left="308" width="4" height="9" font="5">3</text>
+<text top="245" left="316" width="253" height="14" font="2">for more information. If not part of a class,</text>
+<text top="260" left="138" width="432" height="14" font="2">this will give you a chance to do these projects on your own, to better</text>
+<text top="275" left="138" width="432" height="14" font="2">learn the material. Unfortunately, you don’t have a TA to bug when you</text>
+<text top="290" left="138" width="394" height="14" font="2">get stuck, but not everything in life can be free (but books can be!).</text>
+<text top="826" left="158" width="4" height="8" font="6">3</text>
+<text top="829" left="163" width="334" height="9" font="8">https://github.com/remzi-arpacidusseau/ostep-projects</text>
+<text top="896" left="263" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="347" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="382" width="16" height="14" font="2">-D</text>
+<text top="898" left="399" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="520" width="8" height="14" font="2">T</text>
+<text top="890" left="529" width="31" height="11" font="9">HREE</text>
+<text top="903" left="529" width="8" height="14" font="2">E</text>
+<text top="905" left="538" width="23" height="11" font="9">ASY</text>
+<text top="918" left="519" width="8" height="14" font="2">P</text>
+<text top="920" left="528" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="78" width="12" height="14" font="2">vi</text>
+<text top="137" left="78" width="96" height="16" font="1"><b>To Educators</b></text>
+<text top="167" left="96" width="414" height="14" font="2">If you are an instructor or professor who wishes to use this book,</text>
+<text top="182" left="78" width="432" height="14" font="2">please feel free to do so. As you may have noticed, they are free and</text>
+<text top="196" left="78" width="277" height="14" font="2">available on-line from the following web page:</text>
+<text top="227" left="113" width="161" height="11" font="4">http://www.ostep.org</text>
+<text top="257" left="96" width="269" height="14" font="2">You can also purchase a printed copy from</text>
+<text top="257" left="371" width="121" height="11" font="4">http://lulu.com</text>
+<text top="257" left="497" width="13" height="14" font="2">or</text>
+<text top="272" left="78" width="137" height="11" font="4">http://amazon.com</text>
+<text top="272" left="215" width="213" height="14" font="2">. Look for it on the web page above.</text>
+<text top="287" left="96" width="324" height="14" font="2">The (current) proper citation for the book is as follows:</text>
+<text top="317" left="113" width="234" height="13" font="3"><b>Operating Systems: Three Easy Pieces</b></text>
+<text top="332" left="113" width="345" height="14" font="2">Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau</text>
+<text top="347" left="113" width="136" height="14" font="2">Arpaci-Dusseau Books</text>
+<text top="362" left="113" width="321" height="14" font="2">August, 2018 (Version 1.00) or July, 2019 (Version 1.01)</text>
+<text top="377" left="113" width="180" height="14" font="2">or October, 2023 (Version 1.10)</text>
+<text top="393" left="113" width="161" height="11" font="4">http://www.ostep.org</text>
+<text top="437" left="96" width="414" height="14" font="2">The course divides fairly well across a 15-week semester, in which you</text>
+<text top="452" left="78" width="432" height="14" font="2">can cover most of the topics within at a reasonable level of depth. Cram-</text>
+<text top="467" left="78" width="432" height="14" font="2">ming the course into a 10-week quarter probably requires dropping some</text>
+<text top="482" left="78" width="432" height="14" font="2">detail from each of the pieces. There are also a few chapters on virtual</text>
+<text top="496" left="78" width="432" height="14" font="2">machine monitors, which we usually squeeze in sometime during the</text>
+<text top="511" left="78" width="432" height="14" font="2">semester, either right at end of the large section on virtualization, or near</text>
+<text top="526" left="78" width="116" height="14" font="2">the end as an aside.</text>
+<text top="542" left="96" width="414" height="14" font="2">One slightly unusual aspect of the book is that concurrency, a topic at</text>
+<text top="557" left="78" width="432" height="14" font="2">the front of many OS books, is pushed off herein until the student has</text>
+<text top="572" left="78" width="432" height="14" font="2">built an understanding of virtualization of the CPU and of memory. In</text>
+<text top="587" left="78" width="432" height="14" font="2">our experience in teaching this course for nearly 20 years, students have</text>
+<text top="601" left="78" width="432" height="14" font="2">a hard time understanding how the concurrency problem arises, or why</text>
+<text top="616" left="78" width="432" height="14" font="2">they are trying to solve it, if they don’t yet understand what an address</text>
+<text top="631" left="78" width="432" height="14" font="2">space is, what a process is, or why context switches can occur at arbitrary</text>
+<text top="646" left="78" width="432" height="14" font="2">points in time. Once they do understand these concepts, however, in-</text>
+<text top="661" left="78" width="432" height="14" font="2">troducing the notion of threads and the problems that arise due to them</text>
+<text top="676" left="78" width="227" height="14" font="2">becomes rather easy, or at least, easier.</text>
+<text top="692" left="96" width="414" height="14" font="2">As much as is possible, we use a chalkboard (or whiteboard) to deliver</text>
+<text top="706" left="78" width="432" height="14" font="2">a lecture. On these more conceptual days, we come to class with a few</text>
+<text top="721" left="78" width="432" height="14" font="2">major ideas and examples in mind and use the board to present them.</text>
+<text top="736" left="78" width="432" height="14" font="2">Handouts are useful to give the students concrete problems to solve based</text>
+<text top="751" left="78" width="432" height="14" font="2">on the material. On more practical days, we simply plug a laptop into</text>
+<text top="766" left="78" width="432" height="14" font="2">the projector and show real code; this style works particularly well for</text>
+<text top="781" left="78" width="432" height="14" font="2">concurrency lectures as well as for any discussion sections where you</text>
+<text top="796" left="78" width="432" height="14" font="2">show students code that is relevant for their projects. We don’t generally</text>
+<text top="811" left="78" width="432" height="14" font="2">use slides to present material, but have now made a set available for those</text>
+<text top="826" left="78" width="220" height="14" font="2">who prefer that style of presentation.</text>
+<text top="881" left="78" width="11" height="14" font="2">O</text>
+<text top="883" left="90" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="78" width="7" height="14" font="2">S</text>
+<text top="898" left="86" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="78" width="13" height="12" font="10">[V</text>
+<text top="914" left="92" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="135" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="243" width="34" height="11" font="9">WWW</text>
+<text top="896" left="276" width="3" height="14" font="2">.</text>
+<text top="898" left="280" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="316" width="3" height="14" font="2">.</text>
+<text top="898" left="320" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="554" width="15" height="14" font="2">vii</text>
+<text top="139" left="156" width="414" height="14" font="2">If you’d like a copy of any of these materials, please drop us an email.</text>
+<text top="154" left="138" width="432" height="14" font="2">We have already shared them with many others around the world, and</text>
+<text top="169" left="138" width="279" height="14" font="2">others have contributed their materials as well.</text>
+<text top="183" left="156" width="371" height="14" font="2">One last request: if you use the free online chapters, please just</text>
+<text top="184" left="530" width="25" height="13" font="3"><b>link</b></text>
+<text top="183" left="558" width="12" height="14" font="2">to</text>
+<text top="198" left="138" width="432" height="14" font="2">them, instead of making a local copy. This helps us track usage (million</text>
+<text top="213" left="138" width="432" height="14" font="2">of chapters downloaded each month) and also ensures students get the</text>
+<text top="228" left="138" width="174" height="14" font="2">latest (and greatest?) version.</text>
+<text top="896" left="263" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="347" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="382" width="16" height="14" font="2">-D</text>
+<text top="898" left="399" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="520" width="8" height="14" font="2">T</text>
+<text top="890" left="529" width="31" height="11" font="9">HREE</text>
+<text top="903" left="529" width="8" height="14" font="2">E</text>
+<text top="905" left="538" width="23" height="11" font="9">ASY</text>
+<text top="918" left="519" width="8" height="14" font="2">P</text>
+<text top="920" left="528" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="78" width="19" height="14" font="2">viii</text>
+<text top="137" left="78" width="89" height="16" font="1"><b>To Students</b></text>
+<text top="166" left="96" width="414" height="14" font="2">If you are a student reading this book, thank you! It is an honor for us</text>
+<text top="181" left="78" width="432" height="14" font="2">to provide some material to help you in your pursuit of knowledge about</text>
+<text top="196" left="78" width="432" height="14" font="2">operating systems. We both think back fondly towards some textbooks of</text>
+<text top="211" left="78" width="432" height="14" font="2">our undergraduate days (e.g., Hennessy and Patterson [HP90], the classic</text>
+<text top="226" left="78" width="432" height="14" font="2">book on computer architecture) and hope this book will become one of</text>
+<text top="241" left="78" width="195" height="14" font="2">those positive memories for you.</text>
+<text top="258" left="96" width="364" height="14" font="2">You may have noticed this book is free and available online</text>
+<text top="256" left="460" width="4" height="9" font="5">4</text>
+<text top="258" left="465" width="45" height="14" font="2">. There</text>
+<text top="273" left="78" width="432" height="14" font="2">is one major reason for this: textbooks are generally too expensive. This</text>
+<text top="288" left="78" width="432" height="14" font="2">book, we hope, is the first of a new wave of free materials to help those</text>
+<text top="303" left="78" width="432" height="14" font="2">in pursuit of their education, regardless of which part of the world they</text>
+<text top="318" left="78" width="432" height="14" font="2">come from or how much they are willing to spend for a book. Failing</text>
+<text top="333" left="78" width="296" height="14" font="2">that, it is one free book, which is better than none.</text>
+<text top="348" left="96" width="414" height="14" font="2">We also hope, where possible, to point you to the original sources of</text>
+<text top="363" left="78" width="432" height="14" font="2">much of the material in the book: the great papers and persons who have</text>
+<text top="378" left="78" width="432" height="14" font="2">shaped the field of operating systems over the years. Ideas are not pulled</text>
+<text top="393" left="78" width="432" height="14" font="2">out of the air; they come from smart and hard-working people (including</text>
+<text top="410" left="78" width="201" height="14" font="2">numerous Turing-award winners</text>
+<text top="407" left="280" width="4" height="9" font="5">5</text>
+<text top="410" left="285" width="225" height="14" font="2">), and thus we should strive to cele-</text>
+<text top="425" left="78" width="432" height="14" font="2">brate those ideas and people where possible. In doing so, we hopefully</text>
+<text top="440" left="78" width="432" height="14" font="2">can better understand the revolutions that have taken place, instead of</text>
+<text top="455" left="78" width="432" height="14" font="2">writing texts as if those thoughts have always been present [K62]. Fur-</text>
+<text top="470" left="78" width="432" height="14" font="2">ther, perhaps such references will encourage you to dig deeper on your</text>
+<text top="484" left="78" width="432" height="14" font="2">own; reading the famous papers of our field is certainly one of the best</text>
+<text top="499" left="78" width="83" height="14" font="2">ways to learn.</text>
+<text top="729" left="99" width="4" height="8" font="6">4</text>
+<text top="731" left="103" width="407" height="11" font="7">A digression here: “free” in the way we use it here does not mean open source, and it</text>
+<text top="743" left="78" width="432" height="11" font="7">does not mean the book is not copyrighted with the usual protections – it is! What it means is</text>
+<text top="755" left="78" width="432" height="11" font="7">that you can download the chapters and use them to learn about operating systems. Why not</text>
+<text top="767" left="78" width="432" height="11" font="7">an open-source book, just like Linux is an open-source kernel? Well, we believe it is important</text>
+<text top="779" left="78" width="432" height="11" font="7">for a book to have a single voice throughout, and have worked hard to provide such a voice.</text>
+<text top="791" left="78" width="432" height="11" font="7">When you’re reading it, the book should kind of feel like a dialogue with the person explaining</text>
+<text top="803" left="78" width="186" height="11" font="7">something to you. Hence, our approach.</text>
+<text top="814" left="99" width="4" height="8" font="6">5</text>
+<text top="816" left="103" width="407" height="11" font="7">The Turing Award is the highest award in Computer Science; it is like the Nobel Prize,</text>
+<text top="828" left="78" width="177" height="11" font="7">except that you have never heard of it.</text>
+<text top="881" left="78" width="11" height="14" font="2">O</text>
+<text top="883" left="90" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="78" width="7" height="14" font="2">S</text>
+<text top="898" left="86" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="78" width="13" height="12" font="10">[V</text>
+<text top="914" left="92" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="135" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="243" width="34" height="11" font="9">WWW</text>
+<text top="896" left="276" width="3" height="14" font="2">.</text>
+<text top="898" left="280" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="316" width="3" height="14" font="2">.</text>
+<text top="898" left="320" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="559" width="11" height="14" font="2">ix</text>
+<text top="137" left="138" width="141" height="16" font="1"><b>Acknowledgments</b></text>
+<text top="166" left="156" width="414" height="14" font="2">This section will contain thanks to those who helped us put the book</text>
+<text top="181" left="138" width="236" height="14" font="2">together. The important thing for now:</text>
+<text top="181" left="380" width="159" height="13" font="3"><b>your name could go here!</b></text>
+<text top="181" left="546" width="24" height="14" font="2">But,</text>
+<text top="196" left="138" width="432" height="14" font="2">you have to help. So send us some feedback and help debug this book.</text>
+<text top="211" left="138" width="415" height="14" font="2">And you could be famous! Or, at least, have your name in some book.</text>
+<text top="226" left="156" width="260" height="14" font="2">The people who have helped so far include:</text>
+<text top="896" left="263" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="347" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="382" width="16" height="14" font="2">-D</text>
+<text top="898" left="399" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="520" width="8" height="14" font="2">T</text>
+<text top="890" left="529" width="31" height="11" font="9">HREE</text>
+<text top="903" left="529" width="8" height="14" font="2">E</text>
+<text top="905" left="538" width="23" height="11" font="9">ASY</text>
+<text top="918" left="519" width="8" height="14" font="2">P</text>
+<text top="920" left="528" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="78" width="7" height="14" font="2">x</text>
+<text top="141" left="96" width="414" height="11" font="7">Aaron Gember (Colgate), Aashrith H Govindraj (USF), Abdallah Ahmed, Abhinav Mehra,</text>
+<text top="156" left="78" width="432" height="11" font="7">Abhinay Reddy, Abhirami Senthilkumaran*, Abhishek Bhattacherjee (NITR), Adam Drescher*</text>
+<text top="171" left="78" width="432" height="11" font="7">(WUSTL), Adam Eggum, Adam Morrison, Aditya Venkataraman, Adriana Iamnitchi and class</text>
+<text top="186" left="78" width="432" height="11" font="7">(USF), Ahmad Jarara, Ahmed Fikri*, Aisha Atif, Ajaykrishna Raghavan, Akiel Khan, Alain</text>
+<text top="201" left="78" width="432" height="11" font="7">Clark (github), Alex Curtis, Alex Giorev, Alex Wyler, Alex Zhao (U. Colorado at Colorado</text>
+<text top="216" left="78" width="432" height="11" font="7">Springs), Alexander Nordin (MIT), Ali Razeen (Duke), Alistair Martin, Amila Senadheera,</text>
+<text top="230" left="78" width="432" height="11" font="7">AmirBehzad Eslami, Anand Mundada, Andrei Bozˆantan, Andrew Thomas Chan, Andrew</text>
+<text top="245" left="78" width="432" height="11" font="7">Mahler, Andrew Moss, Andrew Valencik (Saint Mary’s), Angela Demke Brown (Toronto), An-</text>
+<text top="260" left="78" width="432" height="11" font="7">tonella Bernobich (UoPeople)*, Arek Bulski, Arman Jasuja, Arun Rajan (Stonybrook), Aryan</text>
+<text top="275" left="78" width="432" height="11" font="7">Arora, Axel Solis Trompler (KIT), B. Brahmananda Reddy (Minnesota), Bala Subrahmanyam</text>
+<text top="290" left="78" width="432" height="11" font="7">Kambala, Bart Miller (Wisconsin), Basti Ortiz (github), Ben Kushigian (U. Mass), Benita Bose,</text>
+<text top="305" left="78" width="432" height="11" font="7">Benjamin Wilhelm (Konstanz), BigAPG (github), Bill Yang, Biswajit Mazumder (Clemson), Bo</text>
+<text top="320" left="78" width="432" height="11" font="7">Liu (UCSD), Bobby Adashev, Bobby Jack, Bj ¨orn Lindberg, Brad Spendlove (Randolph), Bran-</text>
+<text top="335" left="78" width="432" height="11" font="7">don Harshe (U. Minn), Brennan Payne, Brian Gorman, Brian Kroth, Burak Gorduk, Calder</text>
+<text top="350" left="78" width="432" height="11" font="7">White (University of Waterloo), Caleb Sumner (Southern Adventist), Cara Lauritzen, Charlotte</text>
+<text top="365" left="78" width="432" height="11" font="7">Kissinger, Chen Huo (Shippensburg University), Chris Simionovici (U. Toronto), Cheng Su,</text>
+<text top="380" left="78" width="432" height="11" font="7">Chien Chi, Chien-Chung Shen (Delaware)*, chriskorosu (github), Christian Stober, Christoph</text>
+<text top="395" left="78" width="432" height="11" font="7">Jaeger (HTWK Leipzig), C.J. Stanbridge (Memorial U. of Newfoundland), Cody Hanson, Con-</text>
+<text top="410" left="78" width="448" height="11" font="7">stantinos Georgiades, Dakota Cookenmaster (Southern Adventist), Dakota Crane (U. Washington-</text>
+<text top="425" left="78" width="432" height="11" font="7">Tacoma), Dan Soendergaard (U. Aarhus), Dan Tsafrir (Technion), Daniel J Williams (IBM)*,</text>
+<text top="440" left="78" width="432" height="11" font="7">Daniela Ferreira Franco Moura, Danilo Bruschi (Universita Degli Studi Di Milano), Darby</text>
+<text top="455" left="78" width="432" height="11" font="7">Asher Noam Haller, David Hanle (Grinnell), David Hartman, Dawn Flood, Deepika Muthuku-</text>
+<text top="470" left="78" width="432" height="11" font="7">mar, Demir Delic, Dennis Zhou, Dheeraj Shetty (North Carolina State), Diego Oleiarz (FaMAF</text>
+<text top="485" left="78" width="432" height="11" font="7">UNC), dominikw1 (github), Dominic White, Dorian Arnold (New Mexico), Dustin Metzler,</text>
+<text top="499" left="78" width="432" height="11" font="7">Dustin Passofaro, Dylan Kaplan, Eduardo Stelmaszczyk, Efkan S. Goktepe, Emad Sadeghi,</text>
+<text top="514" left="78" width="437" height="11" font="7">Emil Hessman, Emily Jacobson, Emmett Witchel (Texas), Eric Freudenthal (UTEP), Erik Hjelm˚as</text>
+<text top="529" left="78" width="432" height="11" font="7">Eric Kleinberg, Eric Johansson, Erik Turk, Ernst Biersack (France), Ethan Wood, Evan Leung,</text>
+<text top="544" left="78" width="432" height="11" font="7">Fangjun Kuang (U. Stuttgart), Feng Zhang (IBM), Finn Kuusisto*, Francesco Piccoli, Gavin In-</text>
+<text top="559" left="78" width="432" height="11" font="7">glis (Notre Dame), Gia Hoang Tran, Giovanni Di Santi, Giovanni Lagorio (DIBRIS), Giovanni</text>
+<text top="574" left="78" width="432" height="11" font="7">Moricca, Glenn Bruns (CSU Monterey Bay), Glen Granzow (College of Idaho), Greggory Van</text>
+<text top="589" left="78" width="432" height="11" font="7">Dycke, Guilherme Baptista, gurugio (github), Tian Guo (WPI), Hamid Reza Ghasemi, Hao</text>
+<text top="604" left="78" width="432" height="11" font="7">Chen, Hao Liu, Hein Meling (Stavanger), Helen Gaiser (HTWG Konstanz), Henry Abbey,</text>
+<text top="619" left="78" width="432" height="11" font="7">Hilmar G ´ustafsson (Aalborg University), Holly Johnson (USF), Hrishikesh Amur, Huanchen</text>
+<text top="634" left="78" width="432" height="11" font="7">Zhang*, Huseyin Sular, Hugo Diaz, Hyrum Carroll (Columbus State), Ilya Oblomkov, Imma-</text>
+<text top="649" left="78" width="432" height="11" font="7">colata Fasano, Itai Hass (Toronto), Jack Xu (Wisconsin), Jackson “Jake” Haenchen (Texas), Ja-</text>
+<text top="664" left="78" width="432" height="11" font="7">cob Levinson (UCLA), Jaeyoung Cho (SKKU), Jagannathan Eachambadi, Jake Gillberg, Jakob</text>
+<text top="679" left="78" width="432" height="11" font="7">Olandt, James Earley, James Perry (U. Michigan-Dearborn)*, Jan Reineke (Universit¨at des Saar-</text>
+<text top="694" left="78" width="432" height="11" font="7">landes), Jason MacLafferty (Southern Adventist), Jason Waterman (Vassar), Jay Lim, Jeremiah</text>
+<text top="709" left="78" width="432" height="11" font="7">Ryan Buizon, Jerod Weinman (Grinnell), Jersey Deng (UCLA), Jhih-Cheng Luo, Jiao Dong</text>
+<text top="724" left="78" width="432" height="11" font="7">(Rutgers), Jia-Shen Boon, Jiawen Bao, Jidong Xiao (Boise State), Jingxin Li, jmcruzGH (github),</text>
+<text top="739" left="78" width="432" height="11" font="7">Joe Jean (NYU), Joel Kuntz (Saint Mary’s), Joel Hassan (U. Helsinki), Joel Sommers (Colgate),</text>
+<text top="754" left="78" width="432" height="11" font="7">Johannes Kinder, John Brady (Grinnell), John Komenda, John McEachen (NPS), John Shawger</text>
+<text top="768" left="78" width="432" height="11" font="7">(Wisconsin), Jonathan Perry (MIT), Joshua Carpenter (NCSU), Josip Cavar, Jun He, Justinas</text>
+<text top="783" left="78" width="432" height="11" font="7">Petuchovas, k4lizen, Kai Mast (Wisconsin), Karl Schultheisz, Karl Wallinger, Kartik Singhal,</text>
+<text top="798" left="78" width="432" height="11" font="7">Katherine Dudenas, Katie Coyle (Georgia Tech), Kaushik Kannan, Kemal Bıc¸akcı, Kevin Liu*,</text>
+<text top="813" left="78" width="432" height="11" font="7">Khaled Emara, Kyle Hale (Illinois Institute of Technology), KyoungSoo Park (KAIST), Kyu-</text>
+<text top="828" left="78" width="432" height="11" font="7">tae Lee*, Lanyue Lu, Laura Xu, legate (github), Lei Tian (U. Nebraska-Lincoln), Leonardo</text>
+<text top="881" left="78" width="11" height="14" font="2">O</text>
+<text top="883" left="90" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="78" width="7" height="14" font="2">S</text>
+<text top="898" left="86" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="78" width="13" height="12" font="10">[V</text>
+<text top="914" left="92" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="135" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="243" width="34" height="11" font="9">WWW</text>
+<text top="896" left="276" width="3" height="14" font="2">.</text>
+<text top="898" left="280" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="316" width="3" height="14" font="2">.</text>
+<text top="898" left="320" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="559" width="11" height="14" font="2">xi</text>
+<text top="141" left="138" width="432" height="11" font="7">Medici (U. Milan), Leslie Schultz, Liang Yin, Lihao Wang, Looserof, Louie Lu, Luigi Finetti</text>
+<text top="156" left="138" width="432" height="11" font="7">(FaMAF, UNC) Luna Gal (Wooster), lyazj (github), Manav Batra (IIIT-Delhi), Manu Awasthi</text>
+<text top="171" left="138" width="432" height="11" font="7">(Samsung), Marcel van der Holst, Marco Guazzone (U. Piemonte Orientale), Marco Pedri-</text>
+<text top="186" left="138" width="432" height="11" font="7">nazzi (Universita Degli Studi Di Milano), Marius Rodi, Mart Oskamp, Martha Ferris, Mar-</text>
+<text top="201" left="138" width="432" height="11" font="7">tinho Macedo, Masashi Kishikawa (Sony), Matt Reichoff, Mat´ıas De Pascuale (FaMAF Uni-</text>
+<text top="216" left="138" width="432" height="11" font="7">versidad Nacional De Cordoba), Matthew Prinz, Matthias St. Pierre, Mattia Monga (U. Mi-</text>
+<text top="230" left="138" width="432" height="11" font="7">lan), Matty Williams, Megan Cutrofello, Meng Huang, Michael Machtel (Hochschule Kon-</text>
+<text top="245" left="138" width="432" height="11" font="7">stanz), Michael Walfish (NYU), Michael Wu (UCLA), Mike Griepentrog, Ming Chen (Stony-</text>
+<text top="260" left="138" width="432" height="11" font="7">brook), Mohammed Alali (Delaware), Mohamed Omran (GUST), Mondo Gao (Wisconsin),</text>
+<text top="275" left="138" width="432" height="11" font="7">Muhammad Mobeen Movania, Muhammad Yasoob Ullah Khalid, Murat Kerim Aslan, Muru-</text>
+<text top="290" left="138" width="432" height="11" font="7">gan Kandaswamy, Nadeem Shaikh, Nan Xiao, Natasha Eilbert, Natasha Stopa, Nathan Dipi-</text>
+<text top="305" left="138" width="432" height="11" font="7">azza, Nathan Sullivan, Neeraj Badlani (N.C. State), Neil Perry, Nelson Gomez, Neven Sajko,</text>
+<text top="320" left="138" width="432" height="11" font="7">Nghia Huynh (Texas), Ngu (Nicholas) Q. Truong, Nicholas Mandal, Nick Weinandt, Nishin</text>
+<text top="335" left="138" width="432" height="11" font="7">Shouzab, Nitin Puranik, Nizare Leonetti, Noah Jackson, Otto Sievert, ParagDixit (github),</text>
+<text top="350" left="138" width="432" height="11" font="7">Patel Pratyush Ashesh (BITS-Pilani), Patricio Jara, Patrick Elsen, Patrizio Palmisano, Pavle</text>
+<text top="365" left="138" width="432" height="11" font="7">Kostovic, Perry Kivolowitz, Peter Peterson (Minnesota), Phani Karan, Pieter Kockx, Po-Hao</text>
+<text top="380" left="138" width="432" height="11" font="7">Su (Taiwan) Prabhsimrandeep Singh, Prairie Rose Goodwin, Radford Smith, Raunak Sek-</text>
+<text top="395" left="138" width="432" height="11" font="7">saria, Repon Kumar Roy, Reynaldo H. Verdejo Pinochet, Riccardo Mutschlechner, Rick Perry,</text>
+<text top="410" left="138" width="432" height="11" font="7">Richard Campanha (Georgia Tech), Ripudaman Singh, Rita Pia Folisi, Robert Ord ´o ˜nez and</text>
+<text top="425" left="138" width="436" height="11" font="7">class (Southern Adventist), Robin Li (Cornell), Roger Wattenhofer (ETH), Rohan Das (Toronto)*,</text>
+<text top="440" left="138" width="432" height="11" font="7">Rohan Pasalkar (Minnesota), Rohan Puri, Roman Bureacov, Ross Aiken, Ruslan Kiselev, Ryan</text>
+<text top="455" left="138" width="432" height="11" font="7">Albrecht, Ryland Herrick, Sam Kelly, Sam Noh (UNIST), Sameer Punjal, Samer Al-Kiswany,</text>
+<text top="470" left="138" width="432" height="11" font="7">Sandeep Ummadi (Minnesota), Santiago Marini, Sankaralingam Panneerselvam, Sarvesh Tan-</text>
+<text top="485" left="138" width="432" height="11" font="7">don (Wisconsin), Satish Chebrolu (NetApp), Satyanarayana Shanmugam*, Scott Catlin, Scott</text>
+<text top="499" left="138" width="352" height="11" font="7">Clark, Scott Lee (UCLA), Scott Schoeller, sepehr541 (github), Seth Pollen,</text>
+<text top="499" left="504" width="65" height="11" font="7">Sharad Punu-</text>
+<text top="514" left="138" width="432" height="11" font="7">ganti, Shawn Ge, Shivaram Venkataraman, Shreevatsa R., Simon Pratt (University of Wa-</text>
+<text top="529" left="138" width="432" height="11" font="7">terloo), Sirui Chen, Sivaraman Sivaraman*, Song Jiang (Wayne State), Spencer Harston (We-</text>
+<text top="544" left="138" width="432" height="11" font="7">ber State), Srinivasan Thirunarayanan*, stadtz (github), Stardustman (github), Stefan Dekan-</text>
+<text top="559" left="138" width="432" height="11" font="7">ski, Stephen Bye, Stephen Schaub, Suriyhaprakhas Balaram Sankari, Sy Jin Cheah, Teri Zhao</text>
+<text top="574" left="138" width="432" height="11" font="7">(EMC), Thanumalayan S. Pillai, thasinaz (github), Thomas Griebel, Thomas John Lesniak (Wis-</text>
+<text top="589" left="138" width="432" height="11" font="7">consin), Thomas Scrace, Tianxia Bai, Tobi Popoola (Boise State), Tong He, Tongxin Zheng, Tony</text>
+<text top="604" left="138" width="432" height="11" font="7">Adkins, Torin Rudeen (Princeton), Tuo Wang, Tyler Couto, Varun Vats, Veera Sivarajan, Vegard</text>
+<text top="619" left="138" width="432" height="11" font="7">Stikbakke, Victor Chernyakin, Vikas Goel, Waciuma Wanjohi, William Royle (Grinnell), Win-</text>
+<text top="634" left="138" width="432" height="11" font="7">son Huang (github), Wojciech Rok (AGH University of Krak ´ow), Xiang Peng, Xu Di, Yanjun</text>
+<text top="649" left="138" width="432" height="11" font="7">Wen, Yanyan Jiang, Yifan Hao, Yuanyuan Chen, Yubin Ruan, Yudong Sun, Yue Zhuo (Texas</text>
+<text top="664" left="138" width="432" height="11" font="7">A&amp;M), Yufeng Zhang (UCLA), Yufui Ren, Yuxing Xiang (Peking), Zef RosnBrick, Zeyuan Hu</text>
+<text top="679" left="138" width="432" height="11" font="7">(Texas), Zhengguang Zhou (Wisconsin), ZiHan Zheng (USTC), zino23 (github), Zuyu Zhang.</text>
+<text top="692" left="138" width="432" height="14" font="2">Special thanks to those marked with an asterisk above, who have gone</text>
+<text top="706" left="138" width="338" height="14" font="2">above and beyond in their suggestions for improvement.</text>
+<text top="721" left="156" width="414" height="14" font="2">In addition, a hearty thanks to Professor Joe Meehean (Lynchburg) for</text>
+<text top="736" left="138" width="432" height="14" font="2">his detailed notes on each chapter, to Professor Jerod Weinman (Grin-</text>
+<text top="751" left="138" width="432" height="14" font="2">nell) and his entire class for their incredible booklets, to Professor Chien-</text>
+<text top="766" left="138" width="432" height="14" font="2">Chung Shen (Delaware) for his invaluable and detailed reading and com-</text>
+<text top="781" left="138" width="432" height="14" font="2">ments, to Adam Drescher (WUSTL) for his careful reading and sugges-</text>
+<text top="796" left="138" width="432" height="14" font="2">tions, to Glen Granzow (College of Idaho) for his incredibly detailed com-</text>
+<text top="811" left="138" width="432" height="14" font="2">ments and tips, Michael Walfish (NYU) for his enthusiasm and detailed</text>
+<text top="826" left="138" width="432" height="14" font="2">suggestions for improvement, Peter Peterson (UMD) for his many bits</text>
+<text top="896" left="263" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="347" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="382" width="16" height="14" font="2">-D</text>
+<text top="898" left="399" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="520" width="8" height="14" font="2">T</text>
+<text top="890" left="529" width="31" height="11" font="9">HREE</text>
+<text top="903" left="529" width="8" height="14" font="2">E</text>
+<text top="905" left="538" width="23" height="11" font="9">ASY</text>
+<text top="918" left="519" width="8" height="14" font="2">P</text>
+<text top="920" left="528" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="78" width="15" height="14" font="2">xii</text>
+<text top="139" left="78" width="432" height="14" font="2">of useful feedback and commentary, Mark Kampe (Pomona) for detailed</text>
+<text top="154" left="78" width="432" height="14" font="2">criticism (we only wish we could fix all suggestions!), and Youjip Won</text>
+<text top="169" left="78" width="432" height="14" font="2">(Hanyang) for his translation work into Korean(!) and numerous insight-</text>
+<text top="183" left="78" width="432" height="14" font="2">ful suggestions, to Terence Kelly for his sidebar on memory mapping. All</text>
+<text top="198" left="78" width="248" height="14" font="2">have helped these authors immeasurably!</text>
+<text top="213" left="96" width="414" height="14" font="2">A special thank you to Professor Peter Reiher (UCLA) for writing a</text>
+<text top="228" left="78" width="432" height="14" font="2">wonderful set of security chapters, all in the style of this book. We had</text>
+<text top="243" left="78" width="432" height="14" font="2">the fortune of meeting Peter many years ago, and little did we know that</text>
+<text top="258" left="78" width="424" height="14" font="2">we would collaborate in this fashion two decades later. Amazing work!</text>
+<text top="273" left="96" width="414" height="14" font="2">Also, many thanks to the hundreds of students who have taken 537</text>
+<text top="288" left="78" width="432" height="14" font="2">over the years. In particular, the Fall ’08 class who encouraged the first</text>
+<text top="303" left="78" width="432" height="14" font="2">written form of these notes (they were sick of not having any kind of</text>
+<text top="318" left="78" width="432" height="14" font="2">textbook to read — pushy students!), and then praised them enough for</text>
+<text top="333" left="78" width="432" height="14" font="2">us to keep going (including one hilarious “ZOMG! You should totally</text>
+<text top="348" left="78" width="384" height="14" font="2">write a textbook!” comment in our course evaluations that year).</text>
+<text top="363" left="96" width="414" height="14" font="2">A great debt of thanks is also owed to the brave few who took the xv6</text>
+<text top="378" left="78" width="432" height="14" font="2">project lab course, much of which is now incorporated into the main 537</text>
+<text top="393" left="78" width="432" height="14" font="2">course. From Spring ’09: Justin Cherniak, Patrick Deline, Matt Czech,</text>
+<text top="408" left="78" width="432" height="14" font="2">Tony Gregerson, Michael Griepentrog, Tyler Harter, Ryan Kroiss, Eric</text>
+<text top="423" left="78" width="432" height="14" font="2">Radzikowski, Wesley Reardan, Rajiv Vaidyanathan, and Christopher Wa-</text>
+<text top="437" left="78" width="432" height="14" font="2">clawik. From Fall ’09: Nick Bearson, Aaron Brown, Alex Bird, David</text>
+<text top="452" left="78" width="432" height="14" font="2">Capel, Keith Gould, Tom Grim, Jeffrey Hugo, Brandon Johnson, John</text>
+<text top="467" left="78" width="432" height="14" font="2">Kjell, Boyan Li, James Loethen, Will McCardell, Ryan Szaroletta, Simon</text>
+<text top="482" left="78" width="432" height="14" font="2">Tso, and Ben Yule. From Spring ’10: Patrick Blesi, Aidan Dennis-Oehling,</text>
+<text top="497" left="78" width="432" height="14" font="2">Paras Doshi, Jake Friedman, Benjamin Frisch, Evan Hanson, Pikkili He-</text>
+<text top="512" left="78" width="432" height="14" font="2">manth, Michael Jeung, Alex Langenfeld, Scott Rick, Mike Treffert, Garret</text>
+<text top="527" left="78" width="432" height="14" font="2">Staus, Brennan Wall, Hans Werner, Soo-Young Yang, and Carlos Griffin</text>
+<text top="542" left="78" width="52" height="14" font="2">(almost).</text>
+<text top="557" left="96" width="414" height="14" font="2">Although they do not directly help with the book, our Ph.D. students</text>
+<text top="572" left="78" width="432" height="14" font="2">have taught us much of what we know about systems. We talk with them</text>
+<text top="587" left="78" width="432" height="14" font="2">regularly while they are at Wisconsin, but they do all the real work —</text>
+<text top="602" left="78" width="432" height="14" font="2">and by telling us about what they are doing, we learn new things every</text>
+<text top="617" left="78" width="432" height="14" font="2">week. This list includes the following collection of former Ph.D.s: Nitin</text>
+<text top="632" left="78" width="432" height="14" font="2">Agrawal, Ram Alagappan, Leo Arulraj, Lakshmi Bairavasunaram, John</text>
+<text top="647" left="78" width="432" height="14" font="2">Bent, Nathan Burnett, Tyler Caraza-Harter, Vijay Chidambaram, Timo-</text>
+<text top="662" left="78" width="432" height="14" font="2">thy Denehy, Thanh Do, Aishwarya Ganesan, Haryadi Gunawi, Jun He,</text>
+<text top="677" left="78" width="432" height="14" font="2">Todd Jones, Jing Liu, Lanyue Lu, Joe Meehean, Yuvraj Patel, Thanu Pil-</text>
+<text top="692" left="78" width="432" height="14" font="2">lai, Florentina Popovici, Vijayan Prabhakaran, Anthony Rebello, Muthian</text>
+<text top="706" left="78" width="432" height="14" font="2">Sivathanu, Sriram Subramanian, Swami Sundararaman, Zev Weiss, Kan</text>
+<text top="721" left="78" width="432" height="14" font="2">Wu, Suli Yang, Yiying Zhang, Yupu Zhang, Yifan Dai, Guanzhou Hu. It</text>
+<text top="736" left="78" width="432" height="14" font="2">also includes the following post-doctoral students: Shaohua Duan, Samer</text>
+<text top="751" left="78" width="247" height="14" font="2">Al-Kiswany, Sudarsun Kannan, Kai Mast.</text>
+<text top="766" left="96" width="414" height="14" font="2">Of course, many other students (undergraduates and masters) and</text>
+<text top="781" left="78" width="432" height="14" font="2">collaborators have co-authored papers with us. We thank them as well;</text>
+<text top="796" left="78" width="325" height="14" font="2">please see our web pages or DBLP to see who they are.</text>
+<text top="811" left="96" width="414" height="14" font="2">Our graduate students have largely been funded by the National Sci-</text>
+<text top="826" left="78" width="437" height="14" font="2">ence Foundation (NSF), the Department of Energy Office of Science (DOE),</text>
+<text top="881" left="78" width="11" height="14" font="2">O</text>
+<text top="883" left="90" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="78" width="7" height="14" font="2">S</text>
+<text top="898" left="86" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="78" width="13" height="12" font="10">[V</text>
+<text top="914" left="92" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="135" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="243" width="34" height="11" font="9">WWW</text>
+<text top="896" left="276" width="3" height="14" font="2">.</text>
+<text top="898" left="280" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="316" width="3" height="14" font="2">.</text>
+<text top="898" left="320" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="551" width="19" height="14" font="2">xiii</text>
+<text top="139" left="138" width="432" height="14" font="2">and by industry gifts and grants. We are especially grateful to the NSF</text>
+<text top="154" left="138" width="432" height="14" font="2">for their support over many years, as our research has shaped the content</text>
+<text top="169" left="138" width="147" height="14" font="2">of many chapters herein.</text>
+<text top="183" left="156" width="414" height="14" font="2">We thank Thomas Griebel, who demanded a better cover for the book.</text>
+<text top="198" left="138" width="432" height="14" font="2">Although we didn’t take his specific suggestion (a dinosaur, can you be-</text>
+<text top="213" left="138" width="432" height="14" font="2">lieve it?), the beautiful picture of Halley’s comet would not be found on</text>
+<text top="228" left="138" width="136" height="14" font="2">the cover without him.</text>
+<text top="243" left="156" width="414" height="14" font="2">A final debt of gratitude is also owed to Aaron Brown, who first took</text>
+<text top="258" left="138" width="432" height="14" font="2">this course many years ago (Spring ’09), then took the xv6 lab course (Fall</text>
+<text top="273" left="138" width="432" height="14" font="2">’09), and finally was a graduate teaching assistant for the course for two</text>
+<text top="288" left="138" width="432" height="14" font="2">years or so (Fall ’10 through Spring ’12). His tireless work has vastly im-</text>
+<text top="303" left="138" width="432" height="14" font="2">proved the state of the projects (particularly those in xv6 land) and thus</text>
+<text top="318" left="138" width="432" height="14" font="2">has helped better the learning experience for countless undergraduates</text>
+<text top="333" left="138" width="432" height="14" font="2">and graduates here at Wisconsin. As Aaron would say (in his usual suc-</text>
+<text top="348" left="138" width="129" height="14" font="2">cinct manner): “Thx.”</text>
+<text top="896" left="263" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="347" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="382" width="16" height="14" font="2">-D</text>
+<text top="898" left="399" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="520" width="8" height="14" font="2">T</text>
+<text top="890" left="529" width="31" height="11" font="9">HREE</text>
+<text top="903" left="529" width="8" height="14" font="2">E</text>
+<text top="905" left="538" width="23" height="11" font="9">ASY</text>
+<text top="918" left="519" width="8" height="14" font="2">P</text>
+<text top="920" left="528" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="AAAAAF+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="78" width="18" height="14" font="2">xiv</text>
+<text top="137" left="78" width="90" height="16" font="1"><b>Final Words</b></text>
+<text top="166" left="96" width="414" height="14" font="2">Yeats famously said “Education is not the filling of a pail but the light-</text>
+<text top="183" left="78" width="340" height="14" font="2">ing of a fire.” He was right but wrong at the same time</text>
+<text top="181" left="418" width="4" height="9" font="5">6</text>
+<text top="183" left="423" width="87" height="14" font="2">. You do have</text>
+<text top="198" left="78" width="432" height="14" font="2">to “fill the pail” a bit, and these notes are certainly here to help with that</text>
+<text top="213" left="78" width="432" height="14" font="2">part of your education; after all, when you go to interview at Google, and</text>
+<text top="228" left="78" width="432" height="14" font="2">they ask you a trick question about how to use semaphores, it might be</text>
+<text top="243" left="78" width="300" height="14" font="2">good to actually know what a semaphore is, right?</text>
+<text top="258" left="96" width="414" height="14" font="2">But Yeats’s larger point is obviously on the mark: the real point of</text>
+<text top="273" left="78" width="432" height="14" font="2">education is to get you interested in something, to learn something more</text>
+<text top="288" left="78" width="432" height="14" font="2">about the subject matter on your own and not just what you have to digest</text>
+<text top="303" left="78" width="432" height="14" font="2">to get a good grade in some class. As one of our fathers (Remzi’s dad,</text>
+<text top="318" left="78" width="342" height="14" font="2">Vedat Arpaci) used to say, “Learn beyond the classroom”.</text>
+<text top="333" left="96" width="414" height="14" font="2">We created these notes to spark your interest in operating systems, to</text>
+<text top="348" left="78" width="432" height="14" font="2">read more about the topic on your own, to talk to your professor about all</text>
+<text top="363" left="78" width="432" height="14" font="2">the exciting research that is going on in the field, and even to get involved</text>
+<text top="378" left="78" width="432" height="14" font="2">with that research. It is a great field(!), full of exciting and wonderful</text>
+<text top="393" left="78" width="432" height="14" font="2">ideas that have shaped computing history in profound and important</text>
+<text top="407" left="78" width="432" height="14" font="2">ways. And while we understand this fire won’t light for all of you, we</text>
+<text top="422" left="78" width="432" height="14" font="2">hope it does for many, or even a few. Because once that fire is lit, well,</text>
+<text top="437" left="78" width="432" height="14" font="2">that is when you truly become capable of doing something great. And</text>
+<text top="452" left="78" width="432" height="14" font="2">thus the real point of the educational process: to go forth, to study many</text>
+<text top="467" left="78" width="432" height="14" font="2">new and fascinating topics, to learn, to mature, and most importantly, to</text>
+<text top="482" left="78" width="237" height="14" font="2">find something that lights a fire for you.</text>
+<text top="529" left="78" width="101" height="14" font="11">Andrea and Remzi</text>
+<text top="544" left="78" width="83" height="14" font="11">Married couple</text>
+<text top="559" left="78" width="339" height="14" font="11">Professors of Computer Science at the University of Wisconsin</text>
+<text top="576" left="78" width="177" height="14" font="11">Chief Lighters of Fires, hopefully</text>
+<text top="574" left="255" width="4" height="9" font="5">7</text>
+<text top="789" left="99" width="4" height="8" font="6">6</text>
+<text top="791" left="103" width="394" height="11" font="7">If he actually said this; as with many famous quotes, the history of this gem is murky.</text>
+<text top="802" left="99" width="4" height="8" font="6">7</text>
+<text top="804" left="103" width="407" height="11" font="7">If this sounds like we are admitting some past history as arsonists, you are probably</text>
+<text top="816" left="78" width="432" height="11" font="7">missing the point. Probably. If this sounds cheesy, well, that’s because it is, but you’ll just have</text>
+<text top="828" left="78" width="97" height="11" font="7">to forgive us for that.</text>
+<text top="881" left="78" width="11" height="14" font="2">O</text>
+<text top="883" left="90" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="78" width="7" height="14" font="2">S</text>
+<text top="898" left="86" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="78" width="13" height="12" font="10">[V</text>
+<text top="914" left="92" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="135" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="243" width="34" height="11" font="9">WWW</text>
+<text top="896" left="276" width="3" height="14" font="2">.</text>
+<text top="898" left="280" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="316" width="3" height="14" font="2">.</text>
+<text top="898" left="320" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="10" family="AAAAAF+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="13" size="8" family="AAAAAD+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="555" width="15" height="14" font="2">xv</text>
+<text top="137" left="138" width="82" height="16" font="1"><b>References</b></text>
+<text top="165" left="138" width="432" height="11" font="7">[CK+08] “The xv6 Operating System” by Russ Cox, Frans Kaashoek, Robert Morris, Nickolai</text>
+<text top="177" left="138" width="84" height="11" font="7">Zeldovich. From:</text>
+<text top="178" left="228" width="295" height="9" font="8">http://pdos.csail.mit.edu/6.828/2008/index.html</text>
+<text top="177" left="524" width="3" height="11" font="7">.</text>
+<text top="177" left="534" width="36" height="11" font="12">xv6 was</text>
+<text top="189" left="138" width="141" height="11" font="12">developed as a port of the original</text>
+<text top="189" left="282" width="8" height="11" font="7">U</text>
+<text top="191" left="291" width="16" height="8" font="13">NIX</text>
+<text top="189" left="310" width="259" height="11" font="12">version 6 and represents a beautiful, clean, and simple way to</text>
+<text top="201" left="138" width="167" height="11" font="12">understand a modern operating system.</text>
+<text top="218" left="138" width="432" height="11" font="7">[F96] “Six Easy Pieces: Essentials Of Physics Explained By Its Most Brilliant Teacher” by</text>
+<text top="229" left="138" width="187" height="11" font="7">Richard P. Feynman. Basic Books, 1996.</text>
+<text top="229" left="331" width="239" height="11" font="12">This book reprints the six easiest chapters of Feynman’s</text>
+<text top="241" left="138" width="304" height="11" font="12">Lectures on Physics, from 1963. If you like Physics, it is a fantastic read.</text>
+<text top="258" left="138" width="432" height="11" font="7">[HP90] “Computer Architecture a Quantitative Approach” (1st ed.) by David A. Patterson and</text>
+<text top="270" left="138" width="199" height="11" font="7">John L. Hennessy . Morgan-Kaufman, 1990.</text>
+<text top="270" left="340" width="229" height="11" font="12">A book that encouraged each of us at our undergraduate</text>
+<text top="282" left="138" width="432" height="11" font="12">institutions to pursue graduate studies; we later both had the pleasure of working with Patterson, who</text>
+<text top="294" left="138" width="227" height="11" font="12">greatly shaped the foundations of our research careers.</text>
+<text top="310" left="138" width="432" height="11" font="7">[KR88] “The C Programming Language” by Brian Kernighan and Dennis Ritchie. Prentice-</text>
+<text top="322" left="138" width="76" height="11" font="7">Hall, April 1988.</text>
+<text top="322" left="217" width="353" height="11" font="12">The C programming reference that everyone should have, by the people who invented</text>
+<text top="334" left="138" width="56" height="11" font="12">the language.</text>
+<text top="350" left="138" width="432" height="11" font="7">[K62] “The Structure of Scientific Revolutions” by Thomas S. Kuhn. University of Chicago</text>
+<text top="362" left="138" width="53" height="11" font="7">Press, 1962.</text>
+<text top="362" left="195" width="374" height="11" font="12">A great and famous read about the fundamentals of the scientific process. Mop-up work,</text>
+<text top="374" left="138" width="339" height="11" font="12">anomaly, crisis, and revolution. We are mostly destined to do mop-up work, alas.</text>
+<text top="896" left="263" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="347" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="382" width="16" height="14" font="2">-D</text>
+<text top="898" left="399" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="520" width="8" height="14" font="2">T</text>
+<text top="890" left="529" width="31" height="11" font="9">HREE</text>
+<text top="903" left="529" width="8" height="14" font="2">E</text>
+<text top="905" left="538" width="23" height="11" font="9">ASY</text>
+<text top="918" left="519" width="8" height="14" font="2">P</text>
+<text top="920" left="528" width="33" height="11" font="9">IECES</text>
+</page>
+</pdf2xml>

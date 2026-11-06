@@ -1,0 +1,1734 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="YLRRYW+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="YLRRYW+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="MTCDOX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="BUUMRO+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="MTCDOX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="16" family="MTCDOX+URWPalladioL-Roma" color="#000000"/>
+<text top="194" left="523" width="34" height="30" font="0">40</text>
+<text top="264" left="253" width="265" height="21" font="1">File System Implementation</text>
+<text top="344" left="105" width="414" height="14" font="2">In this chapter, we introduce a simple ﬁle system implementation,</text>
+<text top="359" left="87" width="58" height="14" font="2">known as</text>
+<text top="359" left="149" width="25" height="13" font="3"><b>vsfs</b></text>
+<text top="359" left="178" width="23" height="14" font="2">(the</text>
+<text top="359" left="205" width="152" height="13" font="3"><b>Very Simple File System</b></text>
+<text top="359" left="357" width="162" height="14" font="2">). This ﬁle system is a sim-</text>
+<text top="374" left="87" width="170" height="14" font="2">pliﬁed version of a typical U</text>
+<text top="376" left="258" width="21" height="11" font="4">NIX</text>
+<text top="374" left="283" width="236" height="14" font="2">ﬁle system and thus serves to introduce</text>
+<text top="389" left="87" width="432" height="14" font="2">some of the basic on-disk structures, access methods, and various policies</text>
+<text top="404" left="87" width="268" height="14" font="2">that you will ﬁnd in many ﬁle systems today.</text>
+<text top="419" left="105" width="414" height="14" font="2">The ﬁle system is pure software; unlike our development of CPU and</text>
+<text top="434" left="87" width="432" height="14" font="2">memory virtualization, we will not be adding hardware features to make</text>
+<text top="449" left="87" width="432" height="14" font="2">some aspect of the ﬁle system work better (though we will want to pay at-</text>
+<text top="464" left="87" width="432" height="14" font="2">tention to device characteristics to make sure the ﬁle system works well).</text>
+<text top="479" left="87" width="432" height="14" font="2">Because of the great ﬂexibility we have in building a ﬁle system, many</text>
+<text top="494" left="87" width="432" height="14" font="2">different ones have been built, literally from AFS (the Andrew File Sys-</text>
+<text top="509" left="87" width="432" height="14" font="2">tem) [H+88] to ZFS (Sun’s Zettabyte File System) [B07]. All of these ﬁle</text>
+<text top="524" left="87" width="432" height="14" font="2">systems have different data structures and do some things better or worse</text>
+<text top="539" left="87" width="432" height="14" font="2">than their peers. Thus, the way we will be learning about ﬁle systems is</text>
+<text top="554" left="87" width="432" height="14" font="2">through case studies: ﬁrst, a simple ﬁle system (vsfs) in this chapter to</text>
+<text top="569" left="87" width="432" height="14" font="2">introduce most concepts, and then a series of studies of real ﬁle systems</text>
+<text top="584" left="87" width="272" height="14" font="2">to understand how they can differ in practice.</text>
+<text top="622" left="131" width="8" height="14" font="2">T</text>
+<text top="624" left="140" width="16" height="11" font="4">HE</text>
+<text top="622" left="160" width="10" height="14" font="2">C</text>
+<text top="624" left="170" width="24" height="11" font="4">RUX</text>
+<text top="622" left="195" width="19" height="14" font="2">: H</text>
+<text top="624" left="215" width="20" height="11" font="4">OW</text>
+<text top="622" left="239" width="8" height="14" font="2">T</text>
+<text top="624" left="248" width="8" height="11" font="4">O</text>
+<text top="622" left="260" width="5" height="14" font="2">I</text>
+<text top="624" left="265" width="67" height="11" font="4">MPLEMENT</text>
+<text top="622" left="336" width="22" height="14" font="2">A S</text>
+<text top="624" left="358" width="36" height="11" font="4">IMPLE</text>
+<text top="622" left="398" width="7" height="14" font="2">F</text>
+<text top="624" left="407" width="18" height="11" font="4">ILE</text>
+<text top="622" left="429" width="7" height="14" font="2">S</text>
+<text top="624" left="436" width="39" height="11" font="4">YSTEM</text>
+<text top="637" left="105" width="414" height="14" font="2">How can we build a simple ﬁle system? What structures are needed</text>
+<text top="652" left="87" width="389" height="14" font="2">on the disk? What do they need to track? How are they accessed?</text>
+<text top="707" left="55" width="166" height="17" font="5">40.1 The Way To Think</text>
+<text top="736" left="105" width="414" height="14" font="2">To think about ﬁle systems, we usually suggest thinking about two</text>
+<text top="751" left="87" width="432" height="14" font="2">different aspects of them; if you understand both of these aspects, you</text>
+<text top="766" left="87" width="343" height="14" font="2">probably understand how the ﬁle system basically works.</text>
+<text top="781" left="105" width="84" height="14" font="2">The ﬁrst is the</text>
+<text top="781" left="193" width="90" height="13" font="3"><b>data structures</b></text>
+<text top="781" left="286" width="233" height="14" font="2">of the ﬁle system. In other words, what</text>
+<text top="796" left="87" width="432" height="14" font="2">types of on-disk structures are utilized by the ﬁle system to organize its</text>
+<text top="811" left="87" width="432" height="14" font="2">data and metadata? The ﬁrst ﬁle systems we’ll see (including vsfs below)</text>
+<text top="826" left="87" width="432" height="14" font="2">employ simple structures, like arrays of blocks or other objects, whereas</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="13" family="OEFWHO+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="7" size="13" family="CWGXHR+CMMI9" color="#000000"/>
+	<fontspec id="8" size="13" family="MXQHIX+CMSY9" color="#000000"/>
+	<fontspec id="9" size="13" family="ZCUMUG+CMR9" color="#000000"/>
+	<fontspec id="10" size="12" family="YLRRYW+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="11" size="12" family="MTCDOX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="12" size="10" family="MTCDOX+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="370" width="7" height="14" font="2">F</text>
+<text top="98" left="378" width="18" height="11" font="4">ILE</text>
+<text top="96" left="400" width="7" height="14" font="2">S</text>
+<text top="98" left="408" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="451" width="5" height="14" font="2">I</text>
+<text top="98" left="456" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="148" left="214" width="10" height="14" font="2">A</text>
+<text top="150" left="225" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="252" width="21" height="14" font="2">: M</text>
+<text top="150" left="273" width="39" height="11" font="4">ENTAL</text>
+<text top="148" left="316" width="13" height="14" font="2">M</text>
+<text top="150" left="329" width="38" height="11" font="4">ODELS</text>
+<text top="148" left="372" width="11" height="14" font="2">O</text>
+<text top="150" left="383" width="6" height="11" font="4">F</text>
+<text top="148" left="393" width="7" height="14" font="2">F</text>
+<text top="150" left="401" width="18" height="11" font="4">ILE</text>
+<text top="148" left="423" width="7" height="14" font="2">S</text>
+<text top="150" left="431" width="45" height="11" font="4">YSTEMS</text>
+<text top="163" left="129" width="432" height="14" font="2">As we’ve discussed before, mental models are what you are really trying</text>
+<text top="178" left="129" width="432" height="14" font="2">to develop when learning about systems. For ﬁle systems, your mental</text>
+<text top="193" left="129" width="432" height="14" font="2">model should eventually include answers to questions like: what on-disk</text>
+<text top="208" left="129" width="432" height="14" font="2">structures store the ﬁle system’s data and metadata? What happens when</text>
+<text top="223" left="129" width="432" height="14" font="2">a process opens a ﬁle? Which on-disk structures are accessed during a</text>
+<text top="238" left="129" width="432" height="14" font="2">read or write? By working on and improving your mental model, you</text>
+<text top="253" left="129" width="432" height="14" font="2">develop an abstract understanding of what is going on, instead of just</text>
+<text top="268" left="129" width="432" height="14" font="2">trying to understand the speciﬁcs of some ﬁle-system code (though that</text>
+<text top="283" left="129" width="149" height="14" font="2">is also useful, of course!).</text>
+<text top="338" left="129" width="432" height="14" font="2">more sophisticated ﬁle systems, like SGI’s XFS, use more complicated</text>
+<text top="353" left="129" width="168" height="14" font="2">tree-based structures [S+96].</text>
+<text top="369" left="147" width="241" height="14" font="2">The second aspect of a ﬁle system is its</text>
+<text top="369" left="392" width="95" height="13" font="3"><b>access methods</b></text>
+<text top="369" left="487" width="73" height="14" font="2">. How does</text>
+<text top="384" left="129" width="257" height="14" font="2">it map the calls made by a process, such as</text>
+<text top="385" left="390" width="48" height="11" font="6">open()</text>
+<text top="384" left="438" width="3" height="14" font="2">,</text>
+<text top="385" left="445" width="48" height="11" font="6">read()</text>
+<text top="384" left="494" width="3" height="14" font="2">,</text>
+<text top="385" left="501" width="57" height="11" font="6">write()</text>
+<text top="384" left="557" width="3" height="14" font="2">,</text>
+<text top="399" left="129" width="432" height="14" font="2">etc., onto its structures? Which structures are read during the execution</text>
+<text top="414" left="129" width="432" height="14" font="2">of a particular system call? Which are written? How efﬁciently are all of</text>
+<text top="429" left="129" width="137" height="14" font="2">these steps performed?</text>
+<text top="445" left="147" width="414" height="14" font="2">If you understand the data structures and access methods of a ﬁle sys-</text>
+<text top="460" left="129" width="432" height="14" font="2">tem, you have developed a good mental model of how it truly works, a</text>
+<text top="475" left="129" width="432" height="14" font="2">key part of the systems mindset. Try to work on developing your mental</text>
+<text top="490" left="129" width="290" height="14" font="2">model as we delve into our ﬁrst implementation.</text>
+<text top="528" left="97" width="188" height="17" font="5">40.2 Overall Organization</text>
+<text top="559" left="147" width="414" height="14" font="2">We now develop the overall on-disk organization of the data struc-</text>
+<text top="574" left="129" width="432" height="14" font="2">tures of the vsfs ﬁle system. The ﬁrst thing we’ll need to do is divide the</text>
+<text top="589" left="129" width="53" height="14" font="2">disk into</text>
+<text top="589" left="187" width="40" height="13" font="3"><b>blocks</b></text>
+<text top="589" left="227" width="333" height="14" font="2">; simple ﬁle systems use just one block size, and that’s</text>
+<text top="604" left="129" width="422" height="14" font="2">exactly what we’ll do here. Let’s choose a commonly-used size of 4 KB.</text>
+<text top="620" left="147" width="414" height="14" font="2">Thus, our view of the disk partition where we’re building our ﬁle sys-</text>
+<text top="634" left="129" width="432" height="14" font="2">tem is simple: a series of blocks, each of size 4 KB. The blocks are ad-</text>
+<text top="649" left="129" width="103" height="14" font="2">dressed from 0 to</text>
+<text top="650" left="235" width="11" height="12" font="7">N</text>
+<text top="652" left="250" width="11" height="7" font="8">−</text>
+<text top="649" left="263" width="7" height="13" font="9">1</text>
+<text top="649" left="270" width="125" height="14" font="2">, in a partition of size</text>
+<text top="650" left="398" width="11" height="12" font="7">N</text>
+<text top="649" left="414" width="147" height="14" font="2">4-KB blocks. Assume we</text>
+<text top="664" left="129" width="260" height="14" font="2">have a really small disk, with just 64 blocks:</text>
+<text top="715" left="148" width="7" height="11" font="10">0</text>
+<text top="715" left="230" width="24" height="11" font="10">7 8</text>
+<text top="715" left="327" width="31" height="11" font="10">15 16</text>
+<text top="715" left="426" width="31" height="11" font="10">23 24</text>
+<text top="715" left="526" width="13" height="11" font="10">31</text>
+<text top="756" left="145" width="13" height="11" font="10">32</text>
+<text top="756" left="227" width="31" height="11" font="10">39 40</text>
+<text top="756" left="327" width="31" height="11" font="10">47 48</text>
+<text top="756" left="426" width="31" height="11" font="10">55 56</text>
+<text top="756" left="526" width="13" height="11" font="10">63</text>
+<text top="781" left="147" width="414" height="14" font="2">Let’s now think about what we need to store in these blocks to build</text>
+<text top="796" left="129" width="432" height="14" font="2">a ﬁle system. Of course, the ﬁrst thing that comes to mind is user data.</text>
+<text top="811" left="129" width="432" height="14" font="2">In fact, most of the space in any ﬁle system is (and should be) user data.</text>
+<text top="826" left="129" width="327" height="14" font="2">Let’s call the region of the disk we use for user data the</text>
+<text top="826" left="459" width="69" height="13" font="3"><b>data region</b></text>
+<text top="826" left="528" width="33" height="14" font="2">, and,</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="9" family="YLRRYW+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="18" height="11" font="4">ILE</text>
+<text top="96" left="118" width="7" height="14" font="2">S</text>
+<text top="98" left="125" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="168" width="5" height="14" font="2">I</text>
+<text top="98" left="174" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="87" width="432" height="14" font="2">again for simplicity, reserve a ﬁxed portion of the disk for these blocks,</text>
+<text top="154" left="87" width="229" height="14" font="2">say the last 56 of 64 blocks on the disk:</text>
+<text top="213" left="106" width="7" height="11" font="10">0</text>
+<text top="213" left="188" width="7" height="11" font="10">7</text>
+<text top="201" left="205" width="8" height="11" font="10">D</text>
+<text top="213" left="206" width="7" height="11" font="10">8</text>
+<text top="201" left="217" width="79" height="11" font="10">D D D D D D D</text>
+<text top="213" left="285" width="13" height="11" font="10">15</text>
+<text top="201" left="305" width="8" height="11" font="10">D</text>
+<text top="213" left="302" width="13" height="11" font="10">16</text>
+<text top="201" left="316" width="79" height="11" font="10">D D D D D D D</text>
+<text top="213" left="384" width="13" height="11" font="10">23</text>
+<text top="201" left="404" width="8" height="11" font="10">D</text>
+<text top="213" left="402" width="13" height="11" font="10">24</text>
+<text top="201" left="416" width="79" height="11" font="10">D D D D D D D</text>
+<text top="213" left="484" width="13" height="11" font="10">31</text>
+<text top="242" left="105" width="8" height="11" font="10">D</text>
+<text top="254" left="103" width="13" height="11" font="10">32</text>
+<text top="242" left="117" width="79" height="11" font="10">D D D D D D D</text>
+<text top="254" left="185" width="13" height="11" font="10">39</text>
+<text top="242" left="205" width="8" height="11" font="10">D</text>
+<text top="254" left="203" width="13" height="11" font="10">40</text>
+<text top="242" left="217" width="79" height="11" font="10">D D D D D D D</text>
+<text top="254" left="285" width="13" height="11" font="10">47</text>
+<text top="242" left="305" width="8" height="11" font="10">D</text>
+<text top="254" left="302" width="13" height="11" font="10">48</text>
+<text top="242" left="316" width="79" height="11" font="10">D D D D D D D</text>
+<text top="254" left="384" width="13" height="11" font="10">55</text>
+<text top="242" left="404" width="8" height="11" font="10">D</text>
+<text top="254" left="402" width="13" height="11" font="10">56</text>
+<text top="242" left="416" width="79" height="11" font="10">D D D D D D D</text>
+<text top="254" left="484" width="13" height="11" font="10">63</text>
+<text top="183" left="318" width="65" height="11" font="10">Data Region</text>
+<text top="225" left="270" width="65" height="11" font="10">Data Region</text>
+<text top="288" left="105" width="414" height="14" font="2">As we learned about (a little) last chapter, the ﬁle system has to track</text>
+<text top="303" left="87" width="369" height="14" font="2">information about each ﬁle. This information is a key piece of</text>
+<text top="303" left="460" width="56" height="13" font="3"><b>metadata</b></text>
+<text top="303" left="516" width="3" height="14" font="2">,</text>
+<text top="318" left="87" width="432" height="14" font="2">and tracks things like which data blocks (in the data region) comprise a</text>
+<text top="333" left="87" width="432" height="14" font="2">ﬁle, the size of the ﬁle, its owner and access rights, access and modify</text>
+<text top="348" left="87" width="432" height="14" font="2">times, and other similar kinds of information. To store this information,</text>
+<text top="363" left="87" width="285" height="14" font="2">ﬁle systems usually have a structure called an</text>
+<text top="363" left="377" width="35" height="13" font="3"><b>inode</b></text>
+<text top="363" left="418" width="101" height="14" font="2">(we’ll read more</text>
+<text top="378" left="87" width="124" height="14" font="2">about inodes below).</text>
+<text top="393" left="105" width="414" height="14" font="2">To accommodate inodes, we’ll need to reserve some space on the disk</text>
+<text top="408" left="87" width="316" height="14" font="2">for them as well. Let’s call this portion of the disk the</text>
+<text top="408" left="406" width="69" height="13" font="3"><b>inode table</b></text>
+<text top="408" left="475" width="43" height="14" font="2">, which</text>
+<text top="423" left="87" width="432" height="14" font="2">simply holds an array of on-disk inodes. Thus, our on-disk image now</text>
+<text top="438" left="87" width="432" height="14" font="2">looks like this picture, assuming that we use 5 of our 64 blocks for inodes</text>
+<text top="452" left="87" width="188" height="14" font="2">(denoted by I’s in the diagram):</text>
+<text top="512" left="106" width="7" height="11" font="10">0</text>
+<text top="501" left="144" width="2" height="8" font="13">I</text>
+<text top="501" left="155" width="2" height="8" font="13">I</text>
+<text top="501" left="167" width="2" height="8" font="13">I</text>
+<text top="501" left="179" width="2" height="8" font="13">I</text>
+<text top="501" left="190" width="2" height="8" font="13">I</text>
+<text top="512" left="188" width="7" height="11" font="10">7</text>
+<text top="500" left="205" width="8" height="11" font="10">D</text>
+<text top="512" left="206" width="7" height="11" font="10">8</text>
+<text top="500" left="217" width="79" height="11" font="10">D D D D D D D</text>
+<text top="512" left="285" width="13" height="11" font="10">15</text>
+<text top="500" left="305" width="8" height="11" font="10">D</text>
+<text top="512" left="302" width="13" height="11" font="10">16</text>
+<text top="500" left="316" width="79" height="11" font="10">D D D D D D D</text>
+<text top="512" left="384" width="13" height="11" font="10">23</text>
+<text top="500" left="404" width="8" height="11" font="10">D</text>
+<text top="512" left="402" width="13" height="11" font="10">24</text>
+<text top="500" left="416" width="79" height="11" font="10">D D D D D D D</text>
+<text top="512" left="484" width="13" height="11" font="10">31</text>
+<text top="541" left="105" width="8" height="11" font="10">D</text>
+<text top="553" left="103" width="13" height="11" font="10">32</text>
+<text top="541" left="117" width="79" height="11" font="10">D D D D D D D</text>
+<text top="553" left="185" width="13" height="11" font="10">39</text>
+<text top="541" left="205" width="8" height="11" font="10">D</text>
+<text top="553" left="203" width="13" height="11" font="10">40</text>
+<text top="541" left="217" width="79" height="11" font="10">D D D D D D D</text>
+<text top="553" left="285" width="13" height="11" font="10">47</text>
+<text top="541" left="305" width="8" height="11" font="10">D</text>
+<text top="553" left="302" width="13" height="11" font="10">48</text>
+<text top="541" left="316" width="79" height="11" font="10">D D D D D D D</text>
+<text top="553" left="384" width="13" height="11" font="10">55</text>
+<text top="541" left="404" width="8" height="11" font="10">D</text>
+<text top="553" left="402" width="13" height="11" font="10">56</text>
+<text top="541" left="416" width="79" height="11" font="10">D D D D D D D</text>
+<text top="553" left="484" width="13" height="11" font="10">63</text>
+<text top="482" left="318" width="65" height="11" font="10">Data Region</text>
+<text top="524" left="270" width="65" height="11" font="10">Data Region</text>
+<text top="482" left="151" width="35" height="11" font="10">Inodes</text>
+<text top="587" left="105" width="414" height="14" font="2">We should note here that inodes are typically not that big, for example</text>
+<text top="602" left="87" width="432" height="14" font="2">128 or 256 bytes. Assuming 256 bytes per inode, a 4-KB block can hold 16</text>
+<text top="617" left="87" width="432" height="14" font="2">inodes, and our ﬁle system above contains 80 total inodes. In our simple</text>
+<text top="632" left="87" width="432" height="14" font="2">ﬁle system, built on a tiny 64-block partition, this number represents the</text>
+<text top="647" left="87" width="432" height="14" font="2">maximum number of ﬁles we can have in our ﬁle system; however, do</text>
+<text top="662" left="87" width="432" height="14" font="2">note that the same ﬁle system, built on a larger disk, could simply allocate</text>
+<text top="677" left="87" width="321" height="14" font="2">a larger inode table and thus accommodate more ﬁles.</text>
+<text top="692" left="105" width="414" height="14" font="2">Our ﬁle system thus far has data blocks (D), and inodes (I), but a few</text>
+<text top="706" left="87" width="432" height="14" font="2">things are still missing. One primary component that is still needed, as</text>
+<text top="721" left="87" width="432" height="14" font="2">you might have guessed, is some way to track whether inodes or data</text>
+<text top="736" left="87" width="192" height="14" font="2">blocks are free or allocated. Such</text>
+<text top="736" left="282" width="124" height="13" font="3"><b>allocation structures</b></text>
+<text top="736" left="408" width="111" height="14" font="2">are thus a requisite</text>
+<text top="751" left="87" width="158" height="14" font="2">element in any ﬁle system.</text>
+<text top="766" left="105" width="414" height="14" font="2">Many allocation-tracking methods are possible, of course. For exam-</text>
+<text top="781" left="87" width="114" height="14" font="2">ple, we could use a</text>
+<text top="781" left="205" width="47" height="13" font="3"><b>free list</b></text>
+<text top="781" left="255" width="264" height="14" font="2">that points to the ﬁrst free block, which then</text>
+<text top="796" left="87" width="432" height="14" font="2">points to the next free block, and so forth. We instead choose a simple and</text>
+<text top="811" left="87" width="179" height="14" font="2">popular structure known as a</text>
+<text top="811" left="270" width="44" height="13" font="3"><b>bitmap</b></text>
+<text top="811" left="314" width="174" height="14" font="2">, one for the data region (the</text>
+<text top="811" left="493" width="26" height="13" font="3"><b>data</b></text>
+<text top="826" left="87" width="44" height="13" font="3"><b>bitmap</b></text>
+<text top="826" left="131" width="204" height="14" font="2">), and one for the inode table (the</text>
+<text top="826" left="339" width="83" height="13" font="3"><b>inode bitmap</b></text>
+<text top="826" left="422" width="97" height="14" font="2">). A bitmap is a</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="12" family="YLRRYW+NimbusSanL-Regu" color="#ffffff"/>
+	<fontspec id="15" size="13" family="RYVMDT+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="370" width="7" height="14" font="2">F</text>
+<text top="98" left="378" width="18" height="11" font="4">ILE</text>
+<text top="96" left="400" width="7" height="14" font="2">S</text>
+<text top="98" left="408" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="451" width="5" height="14" font="2">I</text>
+<text top="98" left="456" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="139" left="129" width="432" height="14" font="2">simple structure: each bit is used to indicate whether the corresponding</text>
+<text top="154" left="129" width="432" height="14" font="2">object/block is free (0) or in-use (1). And thus our new on-disk layout,</text>
+<text top="169" left="129" width="280" height="14" font="2">with an inode bitmap (i) and a data bitmap (d):</text>
+<text top="230" left="148" width="7" height="11" font="10">0</text>
+<text top="217" left="162" width="16" height="11" font="14">i d</text>
+<text top="218" left="185" width="2" height="8" font="13">I</text>
+<text top="218" left="197" width="2" height="8" font="13">I</text>
+<text top="218" left="209" width="2" height="8" font="13">I</text>
+<text top="218" left="221" width="2" height="8" font="13">I</text>
+<text top="218" left="232" width="2" height="8" font="13">I</text>
+<text top="230" left="230" width="7" height="11" font="10">7</text>
+<text top="217" left="247" width="8" height="11" font="10">D</text>
+<text top="230" left="248" width="7" height="11" font="10">8</text>
+<text top="217" left="259" width="79" height="11" font="10">D D D D D D D</text>
+<text top="230" left="327" width="13" height="11" font="10">15</text>
+<text top="217" left="346" width="8" height="11" font="10">D</text>
+<text top="230" left="344" width="13" height="11" font="10">16</text>
+<text top="217" left="358" width="79" height="11" font="10">D D D D D D D</text>
+<text top="230" left="426" width="13" height="11" font="10">23</text>
+<text top="217" left="446" width="8" height="11" font="10">D</text>
+<text top="230" left="444" width="13" height="11" font="10">24</text>
+<text top="217" left="458" width="79" height="11" font="10">D D D D D D D</text>
+<text top="230" left="526" width="13" height="11" font="10">31</text>
+<text top="258" left="147" width="8" height="11" font="10">D</text>
+<text top="271" left="145" width="13" height="11" font="10">32</text>
+<text top="258" left="159" width="79" height="11" font="10">D D D D D D D</text>
+<text top="271" left="227" width="13" height="11" font="10">39</text>
+<text top="258" left="247" width="8" height="11" font="10">D</text>
+<text top="271" left="245" width="13" height="11" font="10">40</text>
+<text top="258" left="259" width="79" height="11" font="10">D D D D D D D</text>
+<text top="271" left="327" width="13" height="11" font="10">47</text>
+<text top="258" left="346" width="8" height="11" font="10">D</text>
+<text top="271" left="344" width="13" height="11" font="10">48</text>
+<text top="258" left="358" width="79" height="11" font="10">D D D D D D D</text>
+<text top="271" left="426" width="13" height="11" font="10">55</text>
+<text top="258" left="446" width="8" height="11" font="10">D</text>
+<text top="271" left="444" width="13" height="11" font="10">56</text>
+<text top="258" left="458" width="79" height="11" font="10">D D D D D D D</text>
+<text top="271" left="526" width="13" height="11" font="10">63</text>
+<text top="199" left="360" width="65" height="11" font="10">Data Region</text>
+<text top="242" left="312" width="65" height="11" font="10">Data Region</text>
+<text top="199" left="192" width="35" height="11" font="10">Inodes</text>
+<text top="306" left="147" width="414" height="14" font="2">You may notice that it is a bit of overkill to use an entire 4-KB block for</text>
+<text top="321" left="129" width="432" height="14" font="2">these bitmaps; such a bitmap can track whether 32K objects are allocated,</text>
+<text top="336" left="129" width="432" height="14" font="2">and yet we only have 80 inodes and 56 data blocks. However, we just use</text>
+<text top="351" left="129" width="357" height="14" font="2">an entire 4-KB block for each of these bitmaps for simplicity.</text>
+<text top="366" left="147" width="414" height="14" font="2">The careful reader (i.e., the reader who is still awake) may have no-</text>
+<text top="381" left="129" width="432" height="14" font="2">ticed there is one block left in the design of the on-disk structure of our</text>
+<text top="396" left="129" width="284" height="14" font="2">very simple ﬁle system. We reserve this for the</text>
+<text top="396" left="417" width="69" height="13" font="3"><b>superblock</b></text>
+<text top="396" left="485" width="75" height="14" font="2">, denoted by</text>
+<text top="411" left="129" width="432" height="14" font="2">an S in the diagram below. The superblock contains information about</text>
+<text top="426" left="129" width="432" height="14" font="2">this particular ﬁle system, including, for example, how many inodes and</text>
+<text top="441" left="129" width="432" height="14" font="2">data blocks are in the ﬁle system (80 and 56, respectively in this instance),</text>
+<text top="456" left="129" width="432" height="14" font="2">where the inode table begins (block 3), and so forth. It will likely also</text>
+<text top="471" left="129" width="432" height="14" font="2">include a magic number of some kind to identify the ﬁle system type (in</text>
+<text top="486" left="129" width="88" height="14" font="2">this case, vsfs).</text>
+<text top="534" left="147" width="8" height="11" font="10">S</text>
+<text top="546" left="148" width="7" height="11" font="10">0</text>
+<text top="534" left="162" width="16" height="11" font="14">i d</text>
+<text top="535" left="185" width="2" height="8" font="13">I</text>
+<text top="535" left="197" width="2" height="8" font="13">I</text>
+<text top="535" left="209" width="2" height="8" font="13">I</text>
+<text top="535" left="221" width="2" height="8" font="13">I</text>
+<text top="535" left="232" width="2" height="8" font="13">I</text>
+<text top="546" left="230" width="7" height="11" font="10">7</text>
+<text top="534" left="247" width="8" height="11" font="10">D</text>
+<text top="546" left="248" width="7" height="11" font="10">8</text>
+<text top="534" left="259" width="79" height="11" font="10">D D D D D D D</text>
+<text top="546" left="327" width="13" height="11" font="10">15</text>
+<text top="534" left="346" width="8" height="11" font="10">D</text>
+<text top="546" left="344" width="13" height="11" font="10">16</text>
+<text top="534" left="358" width="79" height="11" font="10">D D D D D D D</text>
+<text top="546" left="426" width="13" height="11" font="10">23</text>
+<text top="534" left="446" width="8" height="11" font="10">D</text>
+<text top="546" left="444" width="13" height="11" font="10">24</text>
+<text top="534" left="458" width="79" height="11" font="10">D D D D D D D</text>
+<text top="546" left="526" width="13" height="11" font="10">31</text>
+<text top="575" left="147" width="8" height="11" font="10">D</text>
+<text top="587" left="145" width="13" height="11" font="10">32</text>
+<text top="575" left="159" width="79" height="11" font="10">D D D D D D D</text>
+<text top="587" left="227" width="13" height="11" font="10">39</text>
+<text top="575" left="247" width="8" height="11" font="10">D</text>
+<text top="587" left="245" width="13" height="11" font="10">40</text>
+<text top="575" left="259" width="79" height="11" font="10">D D D D D D D</text>
+<text top="587" left="327" width="13" height="11" font="10">47</text>
+<text top="575" left="346" width="8" height="11" font="10">D</text>
+<text top="587" left="344" width="13" height="11" font="10">48</text>
+<text top="575" left="358" width="79" height="11" font="10">D D D D D D D</text>
+<text top="587" left="426" width="13" height="11" font="10">55</text>
+<text top="575" left="446" width="8" height="11" font="10">D</text>
+<text top="587" left="444" width="13" height="11" font="10">56</text>
+<text top="575" left="458" width="79" height="11" font="10">D D D D D D D</text>
+<text top="587" left="526" width="13" height="11" font="10">63</text>
+<text top="516" left="360" width="65" height="11" font="10">Data Region</text>
+<text top="558" left="312" width="65" height="11" font="10">Data Region</text>
+<text top="516" left="192" width="35" height="11" font="10">Inodes</text>
+<text top="623" left="147" width="414" height="14" font="2">Thus, when mounting a ﬁle system, the operating system will read</text>
+<text top="638" left="129" width="432" height="14" font="2">the superblock ﬁrst, to initialize various parameters, and then attach the</text>
+<text top="653" left="129" width="432" height="14" font="2">volume to the ﬁle-system tree. When ﬁles within the volume are accessed,</text>
+<text top="668" left="129" width="432" height="14" font="2">the system will thus know exactly where to look for the needed on-disk</text>
+<text top="683" left="129" width="62" height="14" font="2">structures.</text>
+<text top="721" left="97" width="243" height="17" font="5">40.3 File Organization: The Inode</text>
+<text top="751" left="147" width="414" height="14" font="2">One of the most important on-disk structures of a ﬁle system is the</text>
+<text top="766" left="129" width="35" height="13" font="3"><b>inode</b></text>
+<text top="766" left="164" width="397" height="14" font="2">; virtually all ﬁle systems have a structure similar to this. The name</text>
+<text top="781" left="129" width="106" height="14" font="2">inode is short for</text>
+<text top="781" left="239" width="70" height="13" font="3"><b>index node</b></text>
+<text top="781" left="309" width="186" height="14" font="2">, the historical term used in U</text>
+<text top="783" left="495" width="21" height="11" font="4">NIX</text>
+<text top="781" left="522" width="39" height="14" font="2">[RT74]</text>
+<text top="796" left="129" width="432" height="14" font="2">and possibly earlier systems. The name reﬂects the fact that these nodes</text>
+<text top="811" left="129" width="306" height="14" font="2">were originally stored in an array, which the system</text>
+<text top="811" left="438" width="42" height="14" font="15"><i>indexed</i></text>
+<text top="811" left="483" width="78" height="14" font="2">into to access</text>
+<text top="826" left="129" width="109" height="14" font="2">a particular inode.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="14" family="YLRRYW+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="17" size="14" family="YLRRYW+NimbusSanL-Regu" color="#ffffff"/>
+	<fontspec id="18" size="16" family="YLRRYW+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="19" size="11" family="YLRRYW+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="20" size="9" family="PLDTLE+CMR6" color="#000000"/>
+	<fontspec id="21" size="9" family="WVBGGS+CMSY6" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="18" height="11" font="4">ILE</text>
+<text top="96" left="118" width="7" height="14" font="2">S</text>
+<text top="98" left="125" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="168" width="5" height="14" font="2">I</text>
+<text top="98" left="174" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="148" left="180" width="10" height="14" font="2">A</text>
+<text top="150" left="191" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="218" width="19" height="14" font="2">: D</text>
+<text top="150" left="238" width="23" height="11" font="4">ATA</text>
+<text top="148" left="265" width="7" height="14" font="2">S</text>
+<text top="150" left="272" width="63" height="11" font="4">TRUCTURE</text>
+<text top="148" left="340" width="26" height="14" font="2">— T</text>
+<text top="150" left="366" width="16" height="11" font="4">HE</text>
+<text top="148" left="386" width="5" height="14" font="2">I</text>
+<text top="150" left="391" width="34" height="11" font="4">NODE</text>
+<text top="163" left="87" width="23" height="14" font="2">The</text>
+<text top="163" left="114" width="35" height="13" font="3"><b>inode</b></text>
+<text top="163" left="154" width="365" height="14" font="2">is the generic name that is used in many ﬁle systems to de-</text>
+<text top="178" left="87" width="432" height="14" font="2">scribe the structure that holds the metadata for a given ﬁle, such as its</text>
+<text top="193" left="87" width="432" height="14" font="2">length, permissions, and the location of its constituent blocks. The name</text>
+<text top="208" left="87" width="176" height="14" font="2">goes back at least as far as U</text>
+<text top="210" left="264" width="21" height="11" font="4">NIX</text>
+<text top="208" left="290" width="229" height="14" font="2">(and probably further back to Multics</text>
+<text top="223" left="87" width="214" height="14" font="2">if not earlier systems); it is short for</text>
+<text top="223" left="305" width="69" height="13" font="3"><b>index node</b></text>
+<text top="223" left="374" width="145" height="14" font="2">, as the inode number is</text>
+<text top="238" left="87" width="432" height="14" font="2">used to index into an array of on-disk inodes in order to ﬁnd the inode</text>
+<text top="253" left="87" width="432" height="14" font="2">of that number. As we’ll see, design of the inode is one key part of ﬁle</text>
+<text top="268" left="87" width="432" height="14" font="2">system design. Most modern systems have some kind of structure like</text>
+<text top="283" left="87" width="432" height="14" font="2">this for every ﬁle they track, but perhaps call them different things (such</text>
+<text top="298" left="87" width="141" height="14" font="2">as dnodes, fnodes, etc.).</text>
+<text top="339" left="105" width="346" height="14" font="2">Each inode is implicitly referred to by a number (called the</text>
+<text top="339" left="454" width="58" height="13" font="3"><b>i-number</b></text>
+<text top="339" left="511" width="8" height="14" font="2">),</text>
+<text top="354" left="87" width="183" height="14" font="2">which we’ve earlier called the</text>
+<text top="354" left="275" width="96" height="13" font="3"><b>low-level name</b></text>
+<text top="354" left="376" width="143" height="14" font="2">of the ﬁle. In vsfs (and</text>
+<text top="369" left="87" width="432" height="14" font="2">other simple ﬁle systems), given an i-number, you should directly be able</text>
+<text top="384" left="87" width="432" height="14" font="2">to calculate where on the disk the corresponding inode is located. For ex-</text>
+<text top="399" left="87" width="432" height="14" font="2">ample, take the inode table of vsfs as above: 20KB in size (ﬁve 4KB blocks)</text>
+<text top="414" left="87" width="432" height="14" font="2">and thus consisting of 80 inodes (assuming each inode is 256 bytes); fur-</text>
+<text top="429" left="87" width="432" height="14" font="2">ther assume that the inode region starts at 12KB (i.e, the superblock starts</text>
+<text top="444" left="87" width="432" height="14" font="2">at 0KB, the inode bitmap is at address 4KB, the data bitmap at 8KB, and</text>
+<text top="459" left="87" width="432" height="14" font="2">thus the inode table comes right after). In vsfs, we thus have the following</text>
+<text top="474" left="87" width="412" height="14" font="2">layout for the beginning of the ﬁle system partition (in closeup view):</text>
+<text top="553" left="96" width="36" height="13" font="16">Super</text>
+<text top="553" left="147" width="98" height="13" font="17">i-bmap d-bmap</text>
+<text top="589" left="76" width="23" height="12" font="10">0KB</text>
+<text top="589" left="130" width="23" height="12" font="10">4KB</text>
+<text top="589" left="184" width="23" height="12" font="10">8KB</text>
+<text top="589" left="234" width="30" height="12" font="10">12KB</text>
+<text top="589" left="288" width="30" height="12" font="10">16KB</text>
+<text top="589" left="342" width="30" height="12" font="10">20KB</text>
+<text top="589" left="396" width="30" height="12" font="10">24KB</text>
+<text top="589" left="450" width="30" height="12" font="10">28KB</text>
+<text top="589" left="504" width="30" height="12" font="10">32KB</text>
+<text top="496" left="290" width="193" height="16" font="18">The Inode Table (Closeup)</text>
+<text top="534" left="253" width="47" height="10" font="19">0 1 2 3</text>
+<text top="547" left="253" width="47" height="10" font="19">4 5 6 7</text>
+<text top="561" left="253" width="50" height="10" font="19">8 9 10 11</text>
+<text top="574" left="250" width="53" height="10" font="19">12 13 14 15</text>
+<text top="534" left="304" width="53" height="10" font="19">16 17 18 19</text>
+<text top="547" left="304" width="53" height="10" font="19">20 21 22 23</text>
+<text top="561" left="304" width="53" height="10" font="19">24 25 26 27</text>
+<text top="574" left="304" width="53" height="10" font="19">28 29 30 31</text>
+<text top="534" left="358" width="53" height="10" font="19">32 33 34 35</text>
+<text top="547" left="358" width="53" height="10" font="19">36 37 38 39</text>
+<text top="561" left="358" width="53" height="10" font="19">40 41 42 43</text>
+<text top="574" left="358" width="53" height="10" font="19">44 45 46 47</text>
+<text top="534" left="412" width="53" height="10" font="19">48 49 50 51</text>
+<text top="547" left="412" width="53" height="10" font="19">52 53 54 55</text>
+<text top="561" left="412" width="53" height="10" font="19">56 57 58 59</text>
+<text top="574" left="412" width="53" height="10" font="19">60 61 62 63</text>
+<text top="534" left="466" width="53" height="10" font="19">64 65 66 67</text>
+<text top="547" left="466" width="53" height="10" font="19">68 69 70 71</text>
+<text top="561" left="466" width="53" height="10" font="19">72 73 74 75</text>
+<text top="574" left="466" width="53" height="10" font="19">76 77 78 79</text>
+<text top="517" left="255" width="41" height="12" font="10">iblock 0</text>
+<text top="517" left="309" width="41" height="12" font="10">iblock 1</text>
+<text top="517" left="363" width="41" height="12" font="10">iblock 2</text>
+<text top="517" left="417" width="41" height="12" font="10">iblock 3</text>
+<text top="517" left="471" width="41" height="12" font="10">iblock 4</text>
+<text top="617" left="105" width="414" height="14" font="2">To read inode number 32, the ﬁle system would ﬁrst calculate the off-</text>
+<text top="632" left="87" width="156" height="14" font="2">set into the inode region (</text>
+<text top="632" left="243" width="14" height="13" font="9">32</text>
+<text top="635" left="261" width="4" height="7" font="8">·</text>
+<text top="632" left="269" width="38" height="12" font="7">sizeof</text>
+<text top="632" left="308" width="5" height="13" font="9">(</text>
+<text top="632" left="313" width="33" height="12" font="7">inode</text>
+<text top="632" left="347" width="5" height="13" font="9">)</text>
+<text top="632" left="357" width="13" height="14" font="2">or</text>
+<text top="632" left="373" width="28" height="13" font="9">8192</text>
+<text top="632" left="401" width="118" height="14" font="2">), add it to the start</text>
+<text top="647" left="87" width="205" height="14" font="2">address of the inode table on disk (</text>
+<text top="648" left="292" width="113" height="11" font="6">inodeStartAddr</text>
+<text top="647" left="408" width="8" height="14" font="2">=</text>
+<text top="646" left="419" width="14" height="13" font="9">12</text>
+<text top="647" left="433" width="23" height="12" font="7">KB</text>
+<text top="647" left="456" width="63" height="14" font="2">), and thus</text>
+<text top="662" left="87" width="387" height="14" font="2">arrive upon the correct byte address of the desired block of inodes:</text>
+<text top="661" left="478" width="14" height="13" font="9">20</text>
+<text top="662" left="492" width="23" height="12" font="7">KB</text>
+<text top="662" left="516" width="3" height="14" font="2">.</text>
+<text top="677" left="87" width="432" height="14" font="2">Recall that disks are not byte addressable, but rather consist of a large</text>
+<text top="692" left="87" width="432" height="14" font="2">number of addressable sectors, usually 512 bytes. Thus, to fetch the block</text>
+<text top="707" left="87" width="432" height="14" font="2">of inodes that contains inode 32, the ﬁle system would issue a read to sec-</text>
+<text top="723" left="87" width="17" height="14" font="2">tor</text>
+<text top="721" left="110" width="11" height="6" font="20">20</text>
+<text top="723" left="121" width="9" height="5" font="21">×</text>
+<text top="721" left="130" width="22" height="6" font="20">1024</text>
+<text top="731" left="123" width="16" height="6" font="20">512</text>
+<text top="723" left="154" width="365" height="14" font="2">, or 40, to fetch the desired inode block. More generally, the</text>
+<text top="738" left="87" width="85" height="14" font="2">sector address</text>
+<text top="739" left="175" width="48" height="11" font="6">sector</text>
+<text top="738" left="227" width="278" height="14" font="2">of the inode block can be calculated as follows:</text>
+<text top="760" left="87" width="24" height="11" font="6">blk</text>
+<text top="760" left="144" width="339" height="14" font="6">= (inumber * sizeof(inode_t)) / blockSize;</text>
+<text top="775" left="87" width="476" height="14" font="6">sector = ((blk * blockSize) + inodeStartAddr) / sectorSize;</text>
+<text top="796" left="105" width="414" height="14" font="2">Inside each inode is virtually all of the information you need about a</text>
+<text top="811" left="87" width="40" height="14" font="2">ﬁle: its</text>
+<text top="811" left="131" width="23" height="14" font="15"><i>type</i></text>
+<text top="811" left="158" width="210" height="14" font="2">(e.g., regular ﬁle, directory, etc.), its</text>
+<text top="811" left="371" width="20" height="14" font="15"><i>size</i></text>
+<text top="811" left="391" width="92" height="14" font="2">, the number of</text>
+<text top="811" left="486" width="33" height="14" font="15"><i>blocks</i></text>
+<text top="826" left="87" width="86" height="14" font="2">allocated to it,</text>
+<text top="826" left="178" width="123" height="14" font="15"><i>protection information</i></text>
+<text top="826" left="306" width="213" height="14" font="2">(such as who owns the ﬁle, as well</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="22" size="9" family="MTCDOX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="23" size="15" family="BUUMRO+URWPalladioL" color="#000000"/>
+	<fontspec id="24" size="7" family="MTCDOX+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="370" width="7" height="14" font="2">F</text>
+<text top="98" left="378" width="18" height="11" font="4">ILE</text>
+<text top="96" left="400" width="7" height="14" font="2">S</text>
+<text top="98" left="408" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="451" width="5" height="14" font="2">I</text>
+<text top="98" left="456" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="136" left="138" width="26" height="13" font="3"><b>Size</b></text>
+<text top="136" left="182" width="37" height="13" font="3"><b>Name</b></text>
+<text top="136" left="267" width="170" height="13" font="3"><b>What is this inode ﬁeld for?</b></text>
+<text top="151" left="157" width="7" height="14" font="2">2</text>
+<text top="151" left="182" width="34" height="14" font="2">mode</text>
+<text top="151" left="267" width="233" height="14" font="2">can this ﬁle be read/written/executed?</text>
+<text top="166" left="157" width="7" height="14" font="2">2</text>
+<text top="166" left="182" width="20" height="14" font="2">uid</text>
+<text top="166" left="267" width="115" height="14" font="2">who owns this ﬁle?</text>
+<text top="181" left="157" width="7" height="14" font="2">4</text>
+<text top="181" left="182" width="23" height="14" font="2">size</text>
+<text top="181" left="267" width="188" height="14" font="2">how many bytes are in this ﬁle?</text>
+<text top="196" left="157" width="7" height="14" font="2">4</text>
+<text top="196" left="182" width="27" height="14" font="2">time</text>
+<text top="196" left="267" width="219" height="14" font="2">what time was this ﬁle last accessed?</text>
+<text top="211" left="157" width="7" height="14" font="2">4</text>
+<text top="211" left="182" width="33" height="14" font="2">ctime</text>
+<text top="211" left="267" width="241" height="14" font="2">what time was this ﬁle’s inode changed?</text>
+<text top="226" left="157" width="7" height="14" font="2">4</text>
+<text top="226" left="182" width="39" height="14" font="2">mtime</text>
+<text top="226" left="267" width="222" height="14" font="2">what time was this ﬁle last modiﬁed?</text>
+<text top="241" left="157" width="7" height="14" font="2">4</text>
+<text top="241" left="182" width="35" height="14" font="2">dtime</text>
+<text top="241" left="267" width="203" height="14" font="2">what time was this inode deleted?</text>
+<text top="256" left="157" width="7" height="14" font="2">2</text>
+<text top="256" left="182" width="20" height="14" font="2">gid</text>
+<text top="256" left="267" width="219" height="14" font="2">which group does this ﬁle belong to?</text>
+<text top="271" left="157" width="7" height="14" font="2">2</text>
+<text top="271" left="182" width="67" height="14" font="2">links count</text>
+<text top="271" left="267" width="250" height="14" font="2">how many hard links are there to this ﬁle?</text>
+<text top="286" left="157" width="7" height="14" font="2">4</text>
+<text top="286" left="182" width="38" height="14" font="2">blocks</text>
+<text top="286" left="267" width="293" height="14" font="2">how many blocks have been allocated to this ﬁle?</text>
+<text top="301" left="157" width="7" height="14" font="2">4</text>
+<text top="301" left="182" width="28" height="14" font="2">ﬂags</text>
+<text top="301" left="267" width="191" height="14" font="2">how should ext2 use this inode?</text>
+<text top="316" left="157" width="7" height="14" font="2">4</text>
+<text top="316" left="182" width="28" height="14" font="2">osd1</text>
+<text top="316" left="267" width="134" height="14" font="2">an OS-dependent ﬁeld</text>
+<text top="331" left="151" width="13" height="14" font="2">60</text>
+<text top="331" left="182" width="32" height="14" font="2">block</text>
+<text top="331" left="267" width="179" height="14" font="2">a set of disk pointers (15 total)</text>
+<text top="345" left="157" width="7" height="14" font="2">4</text>
+<text top="345" left="182" width="64" height="14" font="2">generation</text>
+<text top="345" left="267" width="154" height="14" font="2">ﬁle version (used by NFS)</text>
+<text top="360" left="157" width="7" height="14" font="2">4</text>
+<text top="360" left="182" width="40" height="14" font="2">ﬁle acl</text>
+<text top="360" left="267" width="262" height="14" font="2">a new permissions model beyond mode bits</text>
+<text top="375" left="157" width="7" height="14" font="2">4</text>
+<text top="375" left="182" width="39" height="14" font="2">dir acl</text>
+<text top="375" left="267" width="147" height="14" font="2">called access control lists</text>
+<text top="404" left="242" width="69" height="14" font="2">Figure 40.1:</text>
+<text top="404" left="314" width="134" height="13" font="3"><b>Simpliﬁed Ext2 Inode</b></text>
+<text top="431" left="129" width="160" height="14" font="2">as who can access it), some</text>
+<text top="431" left="292" width="24" height="14" font="15"><i>time</i></text>
+<text top="431" left="319" width="242" height="14" font="2">information, including when the ﬁle was</text>
+<text top="446" left="129" width="432" height="14" font="2">created, modiﬁed, or last accessed, as well as information about where its</text>
+<text top="461" left="129" width="432" height="14" font="2">data blocks reside on disk (e.g., pointers of some kind). We refer to all</text>
+<text top="476" left="129" width="187" height="14" font="2">such information about a ﬁle as</text>
+<text top="476" left="319" width="56" height="13" font="3"><b>metadata</b></text>
+<text top="476" left="375" width="186" height="14" font="2">; in fact, any information inside</text>
+<text top="491" left="129" width="432" height="14" font="2">the ﬁle system that isn’t pure user data is often referred to as such. An</text>
+<text top="508" left="129" width="322" height="14" font="2">example inode from ext2 [P09] is shown in Figure 40.1</text>
+<text top="505" left="450" width="4" height="9" font="22">1</text>
+<text top="508" left="456" width="3" height="14" font="2">.</text>
+<text top="523" left="147" width="414" height="14" font="2">One of the most important decisions in the design of the inode is how</text>
+<text top="538" left="129" width="432" height="14" font="2">it refers to where data blocks are. One simple approach would be to</text>
+<text top="553" left="129" width="105" height="14" font="2">have one or more</text>
+<text top="553" left="237" width="90" height="13" font="3"><b>direct pointers</b></text>
+<text top="553" left="331" width="230" height="14" font="2">(disk addresses) inside the inode; each</text>
+<text top="568" left="129" width="432" height="14" font="2">pointer refers to one disk block that belongs to the ﬁle. Such an approach</text>
+<text top="582" left="129" width="432" height="14" font="2">is limited: for example, if you want to have a ﬁle that is really big (e.g.,</text>
+<text top="597" left="129" width="432" height="14" font="2">bigger than the block size multiplied by the number of direct pointers in</text>
+<text top="612" left="129" width="182" height="14" font="2">the inode), you are out of luck.</text>
+<text top="643" left="129" width="154" height="15" font="23"><b>The Multi-Level Index</b></text>
+<text top="665" left="129" width="432" height="14" font="2">To support bigger ﬁles, ﬁle system designers have had to introduce dif-</text>
+<text top="679" left="129" width="432" height="14" font="2">ferent structures within inodes. One common idea is to have a special</text>
+<text top="694" left="129" width="123" height="14" font="2">pointer known as an</text>
+<text top="695" left="255" width="96" height="13" font="3"><b>indirect pointer</b></text>
+<text top="694" left="351" width="210" height="14" font="2">. Instead of pointing to a block that</text>
+<text top="709" left="129" width="432" height="14" font="2">contains user data, it points to a block that contains more pointers, each</text>
+<text top="724" left="129" width="432" height="14" font="2">of which point to user data. Thus, an inode may have some ﬁxed number</text>
+<text top="739" left="129" width="432" height="14" font="2">of direct pointers (e.g., 12), and a single indirect pointer. If a ﬁle grows</text>
+<text top="754" left="129" width="432" height="14" font="2">large enough, an indirect block is allocated (from the data-block region of</text>
+<text top="769" left="129" width="432" height="14" font="2">the disk), and the inode’s slot for an indirect pointer is set to point to it.</text>
+<text top="784" left="129" width="432" height="14" font="2">Assuming 4-KB blocks and 4-byte disk addresses, that adds another 1024</text>
+<text top="799" left="129" width="187" height="14" font="2">pointers; the ﬁle can grow to be</text>
+<text top="799" left="319" width="69" height="13" font="9">(12 + 1024)</text>
+<text top="802" left="391" width="4" height="7" font="8">·</text>
+<text top="799" left="398" width="7" height="13" font="9">4</text>
+<text top="799" left="405" width="12" height="12" font="7">K</text>
+<text top="799" left="421" width="64" height="14" font="2">or 4144KB.</text>
+<text top="826" left="149" width="4" height="8" font="24">1</text>
+<text top="828" left="154" width="366" height="11" font="12">Type info is kept in the directory entry, and thus is not found in the inode itself.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="18" height="11" font="4">ILE</text>
+<text top="96" left="118" width="7" height="14" font="2">S</text>
+<text top="98" left="125" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="168" width="5" height="14" font="2">I</text>
+<text top="98" left="174" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="148" left="167" width="8" height="14" font="2">T</text>
+<text top="150" left="176" width="11" height="11" font="4">IP</text>
+<text top="148" left="187" width="18" height="14" font="2">: C</text>
+<text top="150" left="205" width="53" height="11" font="4">ONSIDER</text>
+<text top="148" left="262" width="8" height="14" font="2">E</text>
+<text top="150" left="271" width="39" height="11" font="4">XTENT</text>
+<text top="148" left="310" width="4" height="14" font="2">-</text>
+<text top="150" left="315" width="38" height="11" font="4">BASED</text>
+<text top="148" left="357" width="10" height="14" font="2">A</text>
+<text top="150" left="368" width="71" height="11" font="4">PPROACHES</text>
+<text top="163" left="87" width="182" height="14" font="2">A different approach is to use</text>
+<text top="163" left="273" width="43" height="13" font="3"><b>extents</b></text>
+<text top="163" left="321" width="198" height="14" font="2">instead of pointers. An extent is</text>
+<text top="178" left="87" width="432" height="14" font="2">simply a disk pointer plus a length (in blocks); thus, instead of requiring</text>
+<text top="193" left="87" width="432" height="14" font="2">a pointer for every block of a ﬁle, all one needs is a pointer and a length</text>
+<text top="208" left="87" width="432" height="14" font="2">to specify the on-disk location of a ﬁle. Just a single extent is limiting, as</text>
+<text top="223" left="87" width="432" height="14" font="2">one may have trouble ﬁnding a contiguous chunk of on-disk free space</text>
+<text top="238" left="87" width="432" height="14" font="2">when allocating a ﬁle. Thus, extent-based ﬁle systems often allow for</text>
+<text top="253" left="87" width="432" height="14" font="2">more than one extent, thus giving more freedom to the ﬁle system during</text>
+<text top="268" left="87" width="83" height="14" font="2">ﬁle allocation.</text>
+<text top="288" left="87" width="432" height="14" font="2">In comparing the two approaches, pointer-based approaches are the most</text>
+<text top="303" left="87" width="432" height="14" font="2">ﬂexible but use a large amount of metadata per ﬁle (particularly for large</text>
+<text top="318" left="87" width="432" height="14" font="2">ﬁles). Extent-based approaches are less ﬂexible but more compact; in par-</text>
+<text top="333" left="87" width="432" height="14" font="2">ticular, they work well when there is enough free space on the disk and</text>
+<text top="348" left="87" width="432" height="14" font="2">ﬁles can be laid out contiguously (which is the goal for virtually any ﬁle</text>
+<text top="363" left="87" width="158" height="14" font="2">allocation policy anyhow).</text>
+<text top="412" left="105" width="414" height="14" font="2">Not surprisingly, in such an approach, you might want to support</text>
+<text top="427" left="87" width="400" height="14" font="2">even larger ﬁles. To do so, just add another pointer to the inode: the</text>
+<text top="427" left="491" width="28" height="13" font="3"><b>dou-</b></text>
+<text top="442" left="87" width="119" height="13" font="3"><b>ble indirect pointer</b></text>
+<text top="442" left="206" width="313" height="14" font="2">. This pointer refers to a block that contains pointers</text>
+<text top="457" left="87" width="432" height="14" font="2">to indirect blocks, each of which contain pointers to data blocks. A dou-</text>
+<text top="472" left="87" width="432" height="14" font="2">ble indirect block thus adds the possibility to grow ﬁles with an additional</text>
+<text top="486" left="87" width="28" height="13" font="9">1024</text>
+<text top="490" left="118" width="4" height="7" font="8">·</text>
+<text top="486" left="126" width="28" height="13" font="9">1024</text>
+<text top="487" left="157" width="362" height="14" font="2">or 1-million 4KB blocks, in other words supporting ﬁles that</text>
+<text top="502" left="87" width="432" height="14" font="2">are over 4GB in size. You may want even more, though, and we bet you</text>
+<text top="517" left="87" width="186" height="14" font="2">know where this is headed: the</text>
+<text top="517" left="276" width="133" height="13" font="3"><b>triple indirect pointer</b></text>
+<text top="517" left="409" width="3" height="14" font="2">.</text>
+<text top="535" left="105" width="284" height="14" font="2">Overall, this imbalanced tree is referred to as the</text>
+<text top="535" left="392" width="105" height="13" font="3"><b>multi-level index</b></text>
+<text top="535" left="500" width="19" height="14" font="2">ap-</text>
+<text top="549" left="87" width="432" height="14" font="2">proach to pointing to ﬁle blocks. Let’s examine an example with twelve</text>
+<text top="564" left="87" width="432" height="14" font="2">direct pointers, as well as both a single and a double indirect block. As-</text>
+<text top="579" left="87" width="432" height="14" font="2">suming a block size of 4 KB, and 4-byte pointers, this structure can accom-</text>
+<text top="596" left="87" width="249" height="14" font="2">modate a ﬁle of just over 4 GB in size (i.e.,</text>
+<text top="596" left="340" width="109" height="13" font="9">(12 + 1024 + 1024</text>
+<text top="594" left="448" width="5" height="6" font="20">2</text>
+<text top="596" left="455" width="5" height="13" font="9">)</text>
+<text top="599" left="463" width="11" height="7" font="8">×</text>
+<text top="596" left="477" width="7" height="13" font="9">4</text>
+<text top="596" left="487" width="23" height="12" font="7">KB</text>
+<text top="596" left="511" width="8" height="14" font="2">).</text>
+<text top="611" left="87" width="432" height="14" font="2">Can you ﬁgure out how big of a ﬁle can be handled with the addition of</text>
+<text top="626" left="87" width="236" height="14" font="2">a triple-indirect block? (hint: pretty big)</text>
+<text top="644" left="105" width="414" height="14" font="2">Many ﬁle systems use a multi-level index, including commonly-used</text>
+<text top="659" left="87" width="432" height="14" font="2">ﬁle systems such as Linux ext2 [P09] and ext3, NetApp’s WAFL, as well as</text>
+<text top="674" left="87" width="83" height="14" font="2">the original U</text>
+<text top="676" left="171" width="21" height="11" font="4">NIX</text>
+<text top="674" left="196" width="323" height="14" font="2">ﬁle system. Other ﬁle systems, including SGI XFS and</text>
+<text top="689" left="87" width="89" height="14" font="2">Linux ext4, use</text>
+<text top="689" left="179" width="43" height="13" font="3"><b>extents</b></text>
+<text top="689" left="225" width="294" height="14" font="2">instead of simple pointers; see the earlier aside for</text>
+<text top="704" left="87" width="432" height="14" font="2">details on how extent-based schemes work (they are akin to segments in</text>
+<text top="719" left="87" width="204" height="14" font="2">the discussion of virtual memory).</text>
+<text top="736" left="105" width="414" height="14" font="2">You might be wondering: why use an imbalanced tree like this? Why</text>
+<text top="751" left="87" width="432" height="14" font="2">not a different approach? Well, as it turns out, many researchers have</text>
+<text top="766" left="87" width="432" height="14" font="2">studied ﬁle systems and how they are used, and virtually every time they</text>
+<text top="781" left="87" width="432" height="14" font="2">ﬁnd certain “truths” that hold across the decades. One such ﬁnding is</text>
+<text top="796" left="87" width="23" height="14" font="2">that</text>
+<text top="796" left="115" width="105" height="14" font="15"><i>most ﬁles are small</i></text>
+<text top="796" left="220" width="299" height="14" font="2">. This imbalanced design reﬂects such a reality; if</text>
+<text top="811" left="87" width="432" height="14" font="2">most ﬁles are indeed small, it makes sense to optimize for this case. Thus,</text>
+<text top="826" left="87" width="432" height="14" font="2">with a small number of direct pointers (12 is a typical number), an inode</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="370" width="7" height="14" font="2">F</text>
+<text top="98" left="378" width="18" height="11" font="4">ILE</text>
+<text top="96" left="400" width="7" height="14" font="2">S</text>
+<text top="98" left="408" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="451" width="5" height="14" font="2">I</text>
+<text top="98" left="456" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="137" left="138" width="119" height="13" font="3"><b>Most ﬁles are small</b></text>
+<text top="137" left="366" width="170" height="14" font="2">˜2K is the most common size</text>
+<text top="153" left="138" width="169" height="13" font="3"><b>Average ﬁle size is growing</b></text>
+<text top="153" left="366" width="162" height="14" font="2">Almost 200K is the average</text>
+<text top="168" left="138" width="210" height="13" font="3"><b>Most bytes are stored in large ﬁles</b></text>
+<text top="168" left="366" width="193" height="14" font="2">A few big ﬁles use most of space</text>
+<text top="184" left="138" width="195" height="13" font="3"><b>File systems contain lots of ﬁles</b></text>
+<text top="184" left="366" width="146" height="14" font="2">Almost 100K on average</text>
+<text top="199" left="138" width="203" height="13" font="3"><b>File systems are roughly half full</b></text>
+<text top="199" left="366" width="189" height="14" font="2">Even as disks grow, ﬁle systems</text>
+<text top="214" left="366" width="98" height="14" font="2">remain ˜50% full</text>
+<text top="230" left="138" width="184" height="13" font="3"><b>Directories are typically small</b></text>
+<text top="230" left="366" width="172" height="14" font="2">Many have few entries; most</text>
+<text top="245" left="366" width="99" height="14" font="2">have 20 or fewer</text>
+<text top="268" left="197" width="69" height="14" font="2">Figure 40.2:</text>
+<text top="268" left="270" width="222" height="13" font="3"><b>File System Measurement Summary</b></text>
+<text top="299" left="129" width="432" height="14" font="2">can directly point to 48 KB of data, needing one (or more) indirect blocks</text>
+<text top="314" left="129" width="432" height="14" font="2">for larger ﬁles. See Agrawal et. al [A+07] for a recent-ish study; Figure</text>
+<text top="328" left="129" width="180" height="14" font="2">40.2 summarizes those results.</text>
+<text top="344" left="147" width="414" height="14" font="2">Of course, in the space of inode design, many other possibilities ex-</text>
+<text top="359" left="129" width="432" height="14" font="2">ist; after all, the inode is just a data structure, and any data structure that</text>
+<text top="374" left="129" width="432" height="14" font="2">stores the relevant information, and can query it effectively, is sufﬁcient.</text>
+<text top="389" left="129" width="432" height="14" font="2">As ﬁle system software is readily changed, you should be willing to ex-</text>
+<text top="404" left="129" width="388" height="14" font="2">plore different designs should workloads or technologies change.</text>
+<text top="434" left="97" width="202" height="17" font="5">40.4 Directory Organization</text>
+<text top="461" left="147" width="414" height="14" font="2">In vsfs (as in many ﬁle systems), directories have a simple organiza-</text>
+<text top="476" left="129" width="432" height="14" font="2">tion; a directory basically just contains a list of (entry name, inode num-</text>
+<text top="491" left="129" width="432" height="14" font="2">ber) pairs. For each ﬁle or directory in a given directory, there is a string</text>
+<text top="505" left="129" width="432" height="14" font="2">and a number in the data block(s) of the directory. For each string, there</text>
+<text top="520" left="129" width="324" height="14" font="2">may also be a length (assuming variable-sized names).</text>
+<text top="536" left="147" width="194" height="14" font="2">For example, assume a directory</text>
+<text top="537" left="344" width="24" height="11" font="6">dir</text>
+<text top="536" left="372" width="189" height="14" font="2">(inode number 5) has three ﬁles</text>
+<text top="551" left="129" width="36" height="14" font="2">in it (</text>
+<text top="552" left="165" width="24" height="11" font="6">foo</text>
+<text top="551" left="189" width="3" height="14" font="2">,</text>
+<text top="552" left="199" width="24" height="11" font="6">bar</text>
+<text top="551" left="223" width="33" height="14" font="2">, and</text>
+<text top="552" left="262" width="218" height="11" font="6">foobar_is_a_pretty_longname</text>
+<text top="551" left="480" width="81" height="14" font="2">), with inode</text>
+<text top="566" left="129" width="336" height="14" font="2">numbers 12, 13, and 24 respectively. The on-disk data for</text>
+<text top="567" left="469" width="24" height="11" font="6">dir</text>
+<text top="566" left="496" width="65" height="14" font="2">might look</text>
+<text top="581" left="129" width="25" height="14" font="2">like:</text>
+<text top="607" left="145" width="234" height="11" font="6">inum | reclen | strlen | name</text>
+<text top="622" left="161" width="8" height="11" font="6">5</text>
+<text top="622" left="218" width="16" height="11" font="6">12</text>
+<text top="622" left="298" width="8" height="11" font="6">2</text>
+<text top="622" left="347" width="8" height="11" font="6">.</text>
+<text top="637" left="161" width="8" height="11" font="6">2</text>
+<text top="637" left="218" width="16" height="11" font="6">12</text>
+<text top="637" left="298" width="8" height="11" font="6">3</text>
+<text top="637" left="347" width="16" height="11" font="6">..</text>
+<text top="652" left="153" width="16" height="11" font="6">12</text>
+<text top="652" left="218" width="16" height="11" font="6">12</text>
+<text top="652" left="298" width="8" height="11" font="6">4</text>
+<text top="652" left="347" width="24" height="11" font="6">foo</text>
+<text top="667" left="153" width="16" height="11" font="6">13</text>
+<text top="667" left="218" width="16" height="11" font="6">12</text>
+<text top="667" left="298" width="8" height="11" font="6">4</text>
+<text top="667" left="347" width="24" height="11" font="6">bar</text>
+<text top="682" left="153" width="16" height="11" font="6">24</text>
+<text top="682" left="218" width="16" height="11" font="6">36</text>
+<text top="682" left="290" width="16" height="11" font="6">28</text>
+<text top="682" left="347" width="218" height="11" font="6">foobar_is_a_pretty_longname</text>
+<text top="706" left="147" width="414" height="14" font="2">In this example, each entry has an inode number, record length (the</text>
+<text top="721" left="129" width="432" height="14" font="2">total bytes for the name plus any left over space), string length (the actual</text>
+<text top="736" left="129" width="432" height="14" font="2">length of the name), and ﬁnally the name of the entry. Note that each di-</text>
+<text top="751" left="129" width="171" height="14" font="2">rectory has two extra entries,</text>
+<text top="752" left="303" width="8" height="11" font="6">.</text>
+<text top="751" left="315" width="59" height="14" font="2">“dot” and</text>
+<text top="752" left="377" width="16" height="11" font="6">..</text>
+<text top="751" left="398" width="163" height="14" font="2">“dot-dot”; the dot directory</text>
+<text top="766" left="129" width="261" height="14" font="2">is just the current directory (in this example,</text>
+<text top="767" left="394" width="24" height="11" font="6">dir</text>
+<text top="766" left="418" width="143" height="14" font="2">), whereas dot-dot is the</text>
+<text top="781" left="129" width="230" height="14" font="2">parent directory (in this case, the root).</text>
+<text top="796" left="147" width="163" height="14" font="2">Deleting a ﬁle (e.g., calling</text>
+<text top="797" left="315" width="65" height="11" font="6">unlink()</text>
+<text top="796" left="379" width="182" height="14" font="2">) can leave an empty space in</text>
+<text top="811" left="129" width="432" height="14" font="2">the middle of the directory, and hence there should be some way to mark</text>
+<text top="826" left="129" width="432" height="14" font="2">that as well (e.g., with a reserved inode number such as zero). Such a</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="18" height="11" font="4">ILE</text>
+<text top="96" left="118" width="7" height="14" font="2">S</text>
+<text top="98" left="125" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="168" width="5" height="14" font="2">I</text>
+<text top="98" left="174" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="191" width="10" height="14" font="2">A</text>
+<text top="150" left="203" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="229" width="16" height="14" font="2">: L</text>
+<text top="150" left="246" width="38" height="11" font="4">INKED</text>
+<text top="148" left="285" width="4" height="14" font="2">-</text>
+<text top="150" left="290" width="38" height="11" font="4">BASED</text>
+<text top="148" left="332" width="10" height="14" font="2">A</text>
+<text top="150" left="344" width="71" height="11" font="4">PPROACHES</text>
+<text top="163" left="87" width="358" height="14" font="2">Another simpler approach in designing inodes is to use a</text>
+<text top="163" left="450" width="65" height="13" font="3"><b>linked list</b></text>
+<text top="163" left="516" width="3" height="14" font="2">.</text>
+<text top="178" left="87" width="432" height="14" font="2">Thus, inside an inode, instead of having multiple pointers, you just need</text>
+<text top="193" left="87" width="432" height="14" font="2">one, to point to the ﬁrst block of the ﬁle. To handle larger ﬁles, add an-</text>
+<text top="208" left="87" width="432" height="14" font="2">other pointer at the end of that data block, and so on, and thus you can</text>
+<text top="223" left="87" width="111" height="14" font="2">support large ﬁles.</text>
+<text top="241" left="87" width="432" height="14" font="2">As you might have guessed, linked ﬁle allocation performs poorly for</text>
+<text top="256" left="87" width="432" height="14" font="2">some workloads; think about reading the last block of a ﬁle, for example,</text>
+<text top="271" left="87" width="432" height="14" font="2">or just doing random access. Thus, to make linked allocation work better,</text>
+<text top="286" left="87" width="432" height="14" font="2">some systems will keep an in-memory table of link information, instead</text>
+<text top="301" left="87" width="432" height="14" font="2">of storing the next pointers with the data blocks themselves. The table</text>
+<text top="316" left="87" width="252" height="14" font="2">is indexed by the address of a data block</text>
+<text top="316" left="344" width="11" height="12" font="7">D</text>
+<text top="316" left="356" width="163" height="14" font="2">; the content of an entry is</text>
+<text top="331" left="87" width="41" height="14" font="2">simply</text>
+<text top="331" left="132" width="11" height="12" font="7">D</text>
+<text top="331" left="143" width="375" height="14" font="2">’s next pointer, i.e., the address of the next block in a ﬁle which</text>
+<text top="346" left="87" width="44" height="14" font="2">follows</text>
+<text top="346" left="135" width="11" height="12" font="7">D</text>
+<text top="346" left="147" width="372" height="14" font="2">. A null-value could be there too (indicating an end-of-ﬁle), or</text>
+<text top="361" left="87" width="432" height="14" font="2">some other marker to indicate that a particular block is free. Having such</text>
+<text top="376" left="87" width="432" height="14" font="2">a table of next pointers makes it so that a linked allocation scheme can</text>
+<text top="390" left="87" width="432" height="14" font="2">effectively do random ﬁle accesses, simply by ﬁrst scanning through the</text>
+<text top="405" left="87" width="432" height="14" font="2">(in memory) table to ﬁnd the desired block, and then accessing (on disk)</text>
+<text top="420" left="87" width="59" height="14" font="2">it directly.</text>
+<text top="439" left="87" width="432" height="14" font="2">Does such a table sound familiar? What we have described is the basic</text>
+<text top="453" left="87" width="196" height="14" font="2">structure of what is known as the</text>
+<text top="454" left="286" width="117" height="13" font="3"><b>ﬁle allocation table</b></text>
+<text top="453" left="402" width="19" height="14" font="2">, or</text>
+<text top="454" left="425" width="25" height="13" font="3"><b>FAT</b></text>
+<text top="453" left="453" width="66" height="14" font="2">ﬁle system.</text>
+<text top="468" left="87" width="432" height="14" font="2">Yes, this classic old Windows ﬁle system, before NTFS [C94], is based on a</text>
+<text top="483" left="87" width="432" height="14" font="2">simple linked-based allocation scheme. There are other differences from</text>
+<text top="498" left="87" width="78" height="14" font="2">a standard U</text>
+<text top="500" left="165" width="21" height="11" font="4">NIX</text>
+<text top="498" left="190" width="328" height="14" font="2">ﬁle system too; for example, there are no inodes per se,</text>
+<text top="513" left="87" width="432" height="14" font="2">but rather directory entries which store metadata about a ﬁle and refer</text>
+<text top="528" left="87" width="432" height="14" font="2">directly to the ﬁrst block of said ﬁle, which makes creating hard links</text>
+<text top="543" left="87" width="377" height="14" font="2">impossible. See Brouwer [B02] for more of the inelegant details.</text>
+<text top="607" left="87" width="432" height="14" font="2">delete is one reason the record length is used: a new entry may reuse an</text>
+<text top="622" left="87" width="302" height="14" font="2">old, bigger entry and thus have extra space within.</text>
+<text top="642" left="105" width="414" height="14" font="2">You might be wondering where exactly directories are stored. Often,</text>
+<text top="657" left="87" width="432" height="14" font="2">ﬁle systems treat directories as a special type of ﬁle. Thus, a directory has</text>
+<text top="672" left="87" width="432" height="14" font="2">an inode, somewhere in the inode table (with the type ﬁeld of the inode</text>
+<text top="687" left="87" width="432" height="14" font="2">marked as “directory” instead of “regular ﬁle”). The directory has data</text>
+<text top="702" left="87" width="432" height="14" font="2">blocks pointed to by the inode (and perhaps, indirect blocks); these data</text>
+<text top="717" left="87" width="432" height="14" font="2">blocks live in the data block region of our simple ﬁle system. Our on-disk</text>
+<text top="732" left="87" width="207" height="14" font="2">structure thus remains unchanged.</text>
+<text top="751" left="105" width="414" height="14" font="2">We should also note again that this simple linear list of directory en-</text>
+<text top="766" left="87" width="432" height="14" font="2">tries is not the only way to store such information. As before, any data</text>
+<text top="781" left="87" width="432" height="14" font="2">structure is possible. For example, XFS [S+96] stores directories in B-tree</text>
+<text top="796" left="87" width="432" height="14" font="2">form, making ﬁle create operations (which have to ensure that a ﬁle name</text>
+<text top="811" left="87" width="432" height="14" font="2">has not been used before creating it) faster than systems with simple lists</text>
+<text top="826" left="87" width="224" height="14" font="2">that must be scanned in their entirety.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="370" width="7" height="14" font="2">F</text>
+<text top="98" left="378" width="18" height="11" font="4">ILE</text>
+<text top="96" left="400" width="7" height="14" font="2">S</text>
+<text top="98" left="408" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="451" width="5" height="14" font="2">I</text>
+<text top="98" left="456" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="148" left="238" width="10" height="14" font="2">A</text>
+<text top="150" left="249" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="276" width="16" height="14" font="2">: F</text>
+<text top="150" left="293" width="22" height="11" font="4">REE</text>
+<text top="148" left="318" width="7" height="14" font="2">S</text>
+<text top="150" left="326" width="30" height="11" font="4">PACE</text>
+<text top="148" left="360" width="13" height="14" font="2">M</text>
+<text top="150" left="373" width="78" height="11" font="4">ANAGEMENT</text>
+<text top="163" left="129" width="432" height="14" font="2">There are many ways to manage free space; bitmaps are just one way.</text>
+<text top="178" left="129" width="168" height="14" font="2">Some early ﬁle systems used</text>
+<text top="178" left="300" width="52" height="13" font="3"><b>free lists</b></text>
+<text top="178" left="352" width="209" height="14" font="2">, where a single pointer in the super</text>
+<text top="193" left="129" width="432" height="14" font="2">block was kept to point to the ﬁrst free block; inside that block the next</text>
+<text top="208" left="129" width="432" height="14" font="2">free pointer was kept, thus forming a list through the free blocks of the</text>
+<text top="223" left="129" width="432" height="14" font="2">system. When a block was needed, the head block was used and the list</text>
+<text top="238" left="129" width="125" height="14" font="2">updated accordingly.</text>
+<text top="256" left="129" width="432" height="14" font="2">Modern ﬁle systems use more sophisticated data structures. For example,</text>
+<text top="271" left="129" width="216" height="14" font="2">SGI’s XFS [S+96] uses some form of a</text>
+<text top="271" left="348" width="37" height="13" font="3"><b>B-tree</b></text>
+<text top="271" left="387" width="174" height="14" font="2">to compactly represent which</text>
+<text top="286" left="129" width="432" height="14" font="2">chunks of the disk are free. As with any data structure, different time-</text>
+<text top="301" left="129" width="170" height="14" font="2">space trade-offs are possible.</text>
+<text top="343" left="97" width="210" height="17" font="5">40.5 Free Space Management</text>
+<text top="379" left="147" width="414" height="14" font="2">A ﬁle system must track which inodes and data blocks are free, and</text>
+<text top="394" left="129" width="432" height="14" font="2">which are not, so that when a new ﬁle or directory is allocated, it can ﬁnd</text>
+<text top="409" left="129" width="101" height="14" font="2">space for it. Thus</text>
+<text top="409" left="232" width="142" height="13" font="3"><b>free space management</b></text>
+<text top="409" left="377" width="184" height="14" font="2">is important for all ﬁle systems.</text>
+<text top="424" left="129" width="293" height="14" font="2">In vsfs, we have two simple bitmaps for this task.</text>
+<text top="445" left="147" width="414" height="14" font="2">For example, when we create a ﬁle, we will have to allocate an inode</text>
+<text top="460" left="129" width="432" height="14" font="2">for that ﬁle. The ﬁle system will thus search through the bitmap for an in-</text>
+<text top="474" left="129" width="432" height="14" font="2">ode that is free, and allocate it to the ﬁle; the ﬁle system will have to mark</text>
+<text top="489" left="129" width="432" height="14" font="2">the inode as used (with a 1) and eventually update the on-disk bitmap</text>
+<text top="504" left="129" width="432" height="14" font="2">with the correct information. A similar set of activities take place when a</text>
+<text top="519" left="129" width="135" height="14" font="2">data block is allocated.</text>
+<text top="540" left="147" width="414" height="14" font="2">Some other considerations might also come into play when allocating</text>
+<text top="555" left="129" width="432" height="14" font="2">data blocks for a new ﬁle. For example, some Linux ﬁle systems, such</text>
+<text top="570" left="129" width="432" height="14" font="2">as ext2 and ext3, will look for a sequence of blocks (say 8) that are free</text>
+<text top="585" left="129" width="432" height="14" font="2">when a new ﬁle is created and needs data blocks; by ﬁnding such a se-</text>
+<text top="600" left="129" width="432" height="14" font="2">quence of free blocks, and then allocating them to the newly-created ﬁle,</text>
+<text top="615" left="129" width="432" height="14" font="2">the ﬁle system guarantees that a portion of the ﬁle will be contiguous on</text>
+<text top="630" left="129" width="286" height="14" font="2">the disk, thus improving performance. Such a</text>
+<text top="630" left="419" width="85" height="13" font="3"><b>pre-allocation</b></text>
+<text top="630" left="510" width="51" height="14" font="2">policy is</text>
+<text top="645" left="129" width="420" height="14" font="2">thus a commonly-used heuristic when allocating space for data blocks.</text>
+<text top="688" left="97" width="287" height="17" font="5">40.6 Access Paths: Reading and Writing</text>
+<text top="723" left="147" width="414" height="14" font="2">Now that we have some idea of how ﬁles and directories are stored on</text>
+<text top="738" left="129" width="432" height="14" font="2">disk, we should be able to follow the ﬂow of operation during the activity</text>
+<text top="753" left="129" width="391" height="14" font="2">of reading or writing a ﬁle. Understanding what happens on this</text>
+<text top="753" left="523" width="37" height="13" font="3"><b>access</b></text>
+<text top="768" left="129" width="28" height="13" font="3"><b>path</b></text>
+<text top="768" left="160" width="401" height="14" font="2">is thus the second key in developing an understanding of how a ﬁle</text>
+<text top="783" left="129" width="171" height="14" font="2">system works; pay attention!</text>
+<text top="804" left="147" width="414" height="14" font="2">For the following examples, let us assume that the ﬁle system has been</text>
+<text top="819" left="129" width="432" height="14" font="2">mounted and thus that the superblock is already in memory. Everything</text>
+<text top="834" left="129" width="278" height="14" font="2">else (i.e., inodes, directories) is still on the disk.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="25" size="12" family="BUUMRO+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="18" height="11" font="4">ILE</text>
+<text top="96" left="118" width="7" height="14" font="2">S</text>
+<text top="98" left="125" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="168" width="5" height="14" font="2">I</text>
+<text top="98" left="174" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="136" left="157" width="23" height="12" font="11">data</text>
+<text top="136" left="199" width="30" height="12" font="11">inode</text>
+<text top="136" left="245" width="21" height="12" font="11">root</text>
+<text top="136" left="284" width="17" height="12" font="11">foo</text>
+<text top="136" left="321" width="17" height="12" font="11">bar</text>
+<text top="136" left="354" width="50" height="12" font="11">root foo</text>
+<text top="136" left="418" width="17" height="12" font="11">bar</text>
+<text top="136" left="449" width="17" height="12" font="11">bar</text>
+<text top="136" left="480" width="17" height="12" font="11">bar</text>
+<text top="150" left="150" width="350" height="12" font="11">bitmap bitmap inode inode inode data data data data data</text>
+<text top="165" left="420" width="14" height="12" font="11">[0]</text>
+<text top="165" left="451" width="14" height="12" font="11">[1]</text>
+<text top="165" left="482" width="14" height="12" font="11">[2]</text>
+<text top="179" left="243" width="24" height="12" font="25"><b>read</b></text>
+<text top="194" left="353" width="24" height="12" font="25"><b>read</b></text>
+<text top="208" left="91" width="52" height="12" font="11">open(bar)</text>
+<text top="208" left="281" width="24" height="12" font="25"><b>read</b></text>
+<text top="222" left="384" width="24" height="12" font="25"><b>read</b></text>
+<text top="236" left="318" width="24" height="12" font="25"><b>read</b></text>
+<text top="251" left="318" width="24" height="12" font="25"><b>read</b></text>
+<text top="265" left="101" width="31" height="12" font="11">read()</text>
+<text top="265" left="415" width="24" height="12" font="25"><b>read</b></text>
+<text top="279" left="316" width="29" height="12" font="25"><b>write</b></text>
+<text top="294" left="318" width="24" height="12" font="25"><b>read</b></text>
+<text top="308" left="101" width="31" height="12" font="11">read()</text>
+<text top="308" left="446" width="24" height="12" font="25"><b>read</b></text>
+<text top="323" left="316" width="29" height="12" font="25"><b>write</b></text>
+<text top="337" left="318" width="24" height="12" font="25"><b>read</b></text>
+<text top="352" left="101" width="31" height="12" font="11">read()</text>
+<text top="352" left="477" width="24" height="12" font="25"><b>read</b></text>
+<text top="366" left="316" width="29" height="12" font="25"><b>write</b></text>
+<text top="388" left="116" width="69" height="14" font="2">Figure 40.3:</text>
+<text top="388" left="189" width="301" height="13" font="3"><b>File Read Timeline (Time Increasing Downward)</b></text>
+<text top="418" left="87" width="178" height="15" font="23"><b>Reading A File From Disk</b></text>
+<text top="444" left="87" width="432" height="14" font="2">In this simple example, let us ﬁrst assume that you want to simply open</text>
+<text top="459" left="87" width="60" height="14" font="2">a ﬁle (e.g.,</text>
+<text top="460" left="150" width="65" height="11" font="6">/foo/bar</text>
+<text top="459" left="215" width="304" height="14" font="2">), read it, and then close it. For this simple example,</text>
+<text top="474" left="87" width="317" height="14" font="2">let’s assume the ﬁle is just 12KB in size (i.e., 3 blocks).</text>
+<text top="491" left="105" width="120" height="14" font="2">When you issue an</text>
+<text top="492" left="231" width="210" height="11" font="6">open(&#34;/foo/bar&#34;, O_RDONLY)</text>
+<text top="491" left="446" width="73" height="14" font="2">call, the ﬁle</text>
+<text top="506" left="87" width="282" height="14" font="2">system ﬁrst needs to ﬁnd the inode for the ﬁle</text>
+<text top="507" left="374" width="24" height="11" font="6">bar</text>
+<text top="506" left="398" width="121" height="14" font="2">, to obtain some ba-</text>
+<text top="521" left="87" width="432" height="14" font="2">sic information about the ﬁle (permissions information, ﬁle size, etc.). To</text>
+<text top="536" left="87" width="432" height="14" font="2">do so, the ﬁle system must be able to ﬁnd the inode, but all it has right</text>
+<text top="551" left="87" width="291" height="14" font="2">now is the full pathname. The ﬁle system must</text>
+<text top="551" left="383" width="49" height="13" font="3"><b>traverse</b></text>
+<text top="551" left="436" width="83" height="14" font="2">the pathname</text>
+<text top="566" left="87" width="200" height="14" font="2">and thus locate the desired inode.</text>
+<text top="583" left="105" width="327" height="14" font="2">All traversals begin at the root of the ﬁle system, in the</text>
+<text top="583" left="435" width="84" height="13" font="3"><b>root directory</b></text>
+<text top="598" left="87" width="134" height="14" font="2">which is simply called</text>
+<text top="599" left="225" width="8" height="11" font="6">/</text>
+<text top="598" left="233" width="286" height="14" font="2">. Thus, the ﬁrst thing the FS will read from disk</text>
+<text top="613" left="87" width="432" height="14" font="2">is the inode of the root directory. But where is this inode? To ﬁnd an</text>
+<text top="628" left="87" width="432" height="14" font="2">inode, we must know its i-number. Usually, we ﬁnd the i-number of a ﬁle</text>
+<text top="643" left="87" width="432" height="14" font="2">or directory in its parent directory; the root has no parent (by deﬁnition).</text>
+<text top="658" left="87" width="432" height="14" font="2">Thus, the root inode number must be “well known”; the FS must know</text>
+<text top="673" left="87" width="332" height="14" font="2">what it is when the ﬁle system is mounted. In most U</text>
+<text top="675" left="420" width="21" height="11" font="4">NIX</text>
+<text top="673" left="445" width="74" height="14" font="2">ﬁle systems,</text>
+<text top="688" left="87" width="432" height="14" font="2">the root inode number is 2. Thus, to begin the process, the FS reads in the</text>
+<text top="702" left="87" width="343" height="14" font="2">block that contains inode number 2 (the ﬁrst inode block).</text>
+<text top="719" left="105" width="414" height="14" font="2">Once the inode is read in, the FS can look inside of it to ﬁnd pointers to</text>
+<text top="734" left="87" width="432" height="14" font="2">data blocks, which contain the contents of the root directory. The FS will</text>
+<text top="749" left="87" width="432" height="14" font="2">thus use these on-disk pointers to read through the directory, in this case</text>
+<text top="764" left="87" width="143" height="14" font="2">looking for an entry for</text>
+<text top="765" left="235" width="24" height="11" font="6">foo</text>
+<text top="764" left="259" width="260" height="14" font="2">. By reading in one or more directory data</text>
+<text top="779" left="87" width="432" height="14" font="2">blocks, it will ﬁnd the entry for foo; once found, the FS will also have</text>
+<text top="794" left="87" width="161" height="14" font="2">found the inode number of</text>
+<text top="795" left="251" width="24" height="11" font="6">foo</text>
+<text top="794" left="279" width="213" height="14" font="2">(say it is 44) which it will need next.</text>
+<text top="811" left="105" width="414" height="14" font="2">The next step is to recursively traverse the pathname until the desired</text>
+<text top="826" left="87" width="432" height="14" font="2">inode is found. In this example, the FS reads the block containing the</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="370" width="7" height="14" font="2">F</text>
+<text top="98" left="378" width="18" height="11" font="4">ILE</text>
+<text top="96" left="400" width="7" height="14" font="2">S</text>
+<text top="98" left="408" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="451" width="5" height="14" font="2">I</text>
+<text top="98" left="456" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="148" left="170" width="10" height="14" font="2">A</text>
+<text top="150" left="182" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="209" width="17" height="14" font="2">: R</text>
+<text top="150" left="226" width="31" height="11" font="4">EADS</text>
+<text top="148" left="261" width="10" height="14" font="2">D</text>
+<text top="150" left="272" width="18" height="11" font="4">ON</text>
+<text top="148" left="291" width="4" height="14" font="2">’</text>
+<text top="150" left="296" width="7" height="11" font="4">T</text>
+<text top="148" left="306" width="10" height="14" font="2">A</text>
+<text top="150" left="317" width="36" height="11" font="4">CCESS</text>
+<text top="148" left="357" width="10" height="14" font="2">A</text>
+<text top="150" left="368" width="70" height="11" font="4">LLOCATION</text>
+<text top="148" left="442" width="7" height="14" font="2">S</text>
+<text top="150" left="450" width="70" height="11" font="4">TRUCTURES</text>
+<text top="163" left="129" width="432" height="14" font="2">We’ve seen many students get confused by allocation structures such as</text>
+<text top="178" left="129" width="432" height="14" font="2">bitmaps. In particular, many often think that when you are simply read-</text>
+<text top="193" left="129" width="432" height="14" font="2">ing a ﬁle, and not allocating any new blocks, that the bitmap will still</text>
+<text top="208" left="129" width="432" height="14" font="2">be consulted. This is not true! Allocation structures, such as bitmaps,</text>
+<text top="223" left="129" width="432" height="14" font="2">are only accessed when allocation is needed. The inodes, directories, and</text>
+<text top="238" left="129" width="432" height="14" font="2">indirect blocks have all the information they need to complete a read re-</text>
+<text top="253" left="129" width="432" height="14" font="2">quest; there is no need to make sure a block is allocated when the inode</text>
+<text top="268" left="129" width="115" height="14" font="2">already points to it.</text>
+<text top="302" left="129" width="48" height="14" font="2">inode of</text>
+<text top="303" left="180" width="24" height="11" font="6">foo</text>
+<text top="302" left="207" width="354" height="14" font="2">and then its directory data, ﬁnally ﬁnding the inode number</text>
+<text top="317" left="129" width="12" height="14" font="2">of</text>
+<text top="318" left="144" width="24" height="11" font="6">bar</text>
+<text top="317" left="168" width="103" height="14" font="2">. The ﬁnal step of</text>
+<text top="318" left="275" width="48" height="11" font="6">open()</text>
+<text top="317" left="326" width="54" height="14" font="2">is to read</text>
+<text top="318" left="384" width="24" height="11" font="6">bar</text>
+<text top="317" left="408" width="152" height="14" font="2">’s inode into memory; the</text>
+<text top="332" left="129" width="432" height="14" font="2">FS then does a ﬁnal permissions check, allocates a ﬁle descriptor for this</text>
+<text top="347" left="129" width="397" height="14" font="2">process in the per-process open-ﬁle table, and returns it to the user.</text>
+<text top="362" left="147" width="246" height="14" font="2">Once open, the program can then issue a</text>
+<text top="363" left="396" width="48" height="11" font="6">read()</text>
+<text top="362" left="449" width="112" height="14" font="2">system call to read</text>
+<text top="377" left="129" width="272" height="14" font="2">from the ﬁle. The ﬁrst read (at offset 0 unless</text>
+<text top="378" left="404" width="57" height="11" font="6">lseek()</text>
+<text top="377" left="465" width="96" height="14" font="2">has been called)</text>
+<text top="392" left="129" width="432" height="14" font="2">will thus read in the ﬁrst block of the ﬁle, consulting the inode to ﬁnd</text>
+<text top="407" left="129" width="432" height="14" font="2">the location of such a block; it may also update the inode with a new last-</text>
+<text top="422" left="129" width="432" height="14" font="2">accessed time. The read will further update the in-memory open ﬁle table</text>
+<text top="437" left="129" width="432" height="14" font="2">for this ﬁle descriptor, updating the ﬁle offset such that the next read will</text>
+<text top="452" left="129" width="178" height="14" font="2">read the second ﬁle block, etc.</text>
+<text top="468" left="147" width="414" height="14" font="2">At some point, the ﬁle will be closed. There is much less work to be</text>
+<text top="482" left="129" width="432" height="14" font="2">done here; clearly, the ﬁle descriptor should be deallocated, but for now,</text>
+<text top="497" left="129" width="356" height="14" font="2">that is all the FS really needs to do. No disk I/Os take place.</text>
+<text top="513" left="147" width="414" height="14" font="2">A depiction of this entire process is found in Figure 40.3 (page 11);</text>
+<text top="528" left="129" width="432" height="14" font="2">time increases downward in the ﬁgure. In the ﬁgure, the open causes</text>
+<text top="543" left="129" width="432" height="14" font="2">numerous reads to take place in order to ﬁnally locate the inode of the ﬁle.</text>
+<text top="558" left="129" width="432" height="14" font="2">Afterwards, reading each block requires the ﬁle system to ﬁrst consult the</text>
+<text top="573" left="129" width="432" height="14" font="2">inode, then read the block, and then update the inode’s last-accessed-time</text>
+<text top="588" left="129" width="416" height="14" font="2">ﬁeld with a write. Spend some time and understand what is going on.</text>
+<text top="603" left="147" width="414" height="14" font="2">Also note that the amount of I/O generated by the open is propor-</text>
+<text top="618" left="129" width="432" height="14" font="2">tional to the length of the pathname. For each additional directory in the</text>
+<text top="633" left="129" width="432" height="14" font="2">path, we have to read its inode as well as its data. Making this worse</text>
+<text top="648" left="129" width="432" height="14" font="2">would be the presence of large directories; here, we only have to read one</text>
+<text top="663" left="129" width="432" height="14" font="2">block to get the contents of a directory, whereas with a large directory, we</text>
+<text top="678" left="129" width="432" height="14" font="2">might have to read many data blocks to ﬁnd the desired entry. Yes, life</text>
+<text top="693" left="129" width="432" height="14" font="2">can get pretty bad when reading a ﬁle; as you’re about to ﬁnd out, writing</text>
+<text top="708" left="129" width="353" height="14" font="2">out a ﬁle (and especially, creating a new one) is even worse.</text>
+<text top="731" left="129" width="154" height="15" font="23"><b>Writing A File To Disk</b></text>
+<text top="751" left="129" width="432" height="14" font="2">Writing to a ﬁle is a similar process. First, the ﬁle must be opened (as</text>
+<text top="766" left="129" width="235" height="14" font="2">above). Then, the application can issue</text>
+<text top="766" left="368" width="57" height="11" font="6">write()</text>
+<text top="766" left="428" width="133" height="14" font="2">calls to update the ﬁle</text>
+<text top="781" left="129" width="261" height="14" font="2">with new contents. Finally, the ﬁle is closed.</text>
+<text top="796" left="147" width="266" height="14" font="2">Unlike reading, writing to the ﬁle may also</text>
+<text top="796" left="418" width="47" height="13" font="3"><b>allocate</b></text>
+<text top="796" left="470" width="91" height="14" font="2">a block (unless</text>
+<text top="811" left="129" width="432" height="14" font="2">the block is being overwritten, for example). When writing out a new</text>
+<text top="826" left="129" width="432" height="14" font="2">ﬁle, each write not only has to write data to disk but has to ﬁrst decide</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="18" height="11" font="4">ILE</text>
+<text top="96" left="118" width="7" height="14" font="2">S</text>
+<text top="98" left="125" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="168" width="5" height="14" font="2">I</text>
+<text top="98" left="174" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="136" left="163" width="23" height="12" font="11">data</text>
+<text top="136" left="204" width="30" height="12" font="11">inode</text>
+<text top="136" left="250" width="21" height="12" font="11">root</text>
+<text top="136" left="289" width="17" height="12" font="11">foo</text>
+<text top="136" left="326" width="17" height="12" font="11">bar</text>
+<text top="136" left="359" width="21" height="12" font="11">root</text>
+<text top="136" left="395" width="17" height="12" font="11">foo</text>
+<text top="136" left="430" width="17" height="12" font="11">bar</text>
+<text top="136" left="466" width="17" height="12" font="11">bar</text>
+<text top="136" left="502" width="17" height="12" font="11">bar</text>
+<text top="150" left="155" width="259" height="12" font="11">bitmap bitmap inode inode inode data data</text>
+<text top="150" left="427" width="23" height="12" font="11">data</text>
+<text top="150" left="463" width="23" height="12" font="11">data</text>
+<text top="150" left="499" width="23" height="12" font="11">data</text>
+<text top="165" left="432" width="14" height="12" font="11">[0]</text>
+<text top="165" left="468" width="14" height="12" font="11">[1]</text>
+<text top="165" left="503" width="14" height="12" font="11">[2]</text>
+<text top="179" left="249" width="24" height="12" font="25"><b>read</b></text>
+<text top="194" left="358" width="24" height="12" font="25"><b>read</b></text>
+<text top="208" left="286" width="24" height="12" font="25"><b>read</b></text>
+<text top="222" left="391" width="24" height="12" font="25"><b>read</b></text>
+<text top="236" left="103" width="31" height="12" font="11">create</text>
+<text top="236" left="207" width="24" height="12" font="25"><b>read</b></text>
+<text top="250" left="91" width="57" height="12" font="11">(/foo/bar)</text>
+<text top="250" left="205" width="29" height="12" font="25"><b>write</b></text>
+<text top="265" left="389" width="29" height="12" font="25"><b>write</b></text>
+<text top="279" left="323" width="24" height="12" font="25"><b>read</b></text>
+<text top="293" left="321" width="29" height="12" font="25"><b>write</b></text>
+<text top="307" left="283" width="29" height="12" font="25"><b>write</b></text>
+<text top="322" left="323" width="24" height="12" font="25"><b>read</b></text>
+<text top="336" left="162" width="24" height="12" font="25"><b>read</b></text>
+<text top="350" left="101" width="36" height="12" font="11">write()</text>
+<text top="350" left="160" width="29" height="12" font="25"><b>write</b></text>
+<text top="365" left="424" width="29" height="12" font="25"><b>write</b></text>
+<text top="379" left="321" width="29" height="12" font="25"><b>write</b></text>
+<text top="394" left="323" width="24" height="12" font="25"><b>read</b></text>
+<text top="408" left="162" width="24" height="12" font="25"><b>read</b></text>
+<text top="422" left="101" width="36" height="12" font="11">write()</text>
+<text top="422" left="160" width="29" height="12" font="25"><b>write</b></text>
+<text top="436" left="460" width="29" height="12" font="25"><b>write</b></text>
+<text top="450" left="321" width="29" height="12" font="25"><b>write</b></text>
+<text top="465" left="323" width="24" height="12" font="25"><b>read</b></text>
+<text top="479" left="162" width="24" height="12" font="25"><b>read</b></text>
+<text top="494" left="101" width="36" height="12" font="11">write()</text>
+<text top="494" left="160" width="29" height="12" font="25"><b>write</b></text>
+<text top="508" left="496" width="29" height="12" font="25"><b>write</b></text>
+<text top="522" left="321" width="29" height="12" font="25"><b>write</b></text>
+<text top="547" left="105" width="69" height="14" font="2">Figure 40.4:</text>
+<text top="547" left="178" width="322" height="13" font="3"><b>File Creation Timeline (Time Increasing Downward)</b></text>
+<text top="569" left="87" width="432" height="14" font="2">which block to allocate to the ﬁle and thus update other structures of the</text>
+<text top="584" left="87" width="432" height="14" font="2">disk accordingly (e.g., the data bitmap and inode). Thus, each write to a</text>
+<text top="599" left="87" width="432" height="14" font="2">ﬁle logically generates ﬁve I/Os: one to read the data bitmap (which is</text>
+<text top="614" left="87" width="432" height="14" font="2">then updated to mark the newly-allocated block as used), one to write the</text>
+<text top="629" left="87" width="432" height="14" font="2">bitmap (to reﬂect its new state to disk), two more to read and then write</text>
+<text top="644" left="87" width="432" height="14" font="2">the inode (which is updated with the new block’s location), and ﬁnally</text>
+<text top="659" left="87" width="204" height="14" font="2">one to write the actual block itself.</text>
+<text top="677" left="105" width="414" height="14" font="2">The amount of write trafﬁc is even worse when one considers a sim-</text>
+<text top="692" left="87" width="432" height="14" font="2">ple and common operation such as ﬁle creation. To create a ﬁle, the ﬁle</text>
+<text top="707" left="87" width="432" height="14" font="2">system must not only allocate an inode, but also allocate space within</text>
+<text top="721" left="87" width="432" height="14" font="2">the directory containing the new ﬁle. The total amount of I/O trafﬁc to</text>
+<text top="736" left="87" width="432" height="14" font="2">do so is quite high: one read to the inode bitmap (to ﬁnd a free inode),</text>
+<text top="751" left="87" width="432" height="14" font="2">one write to the inode bitmap (to mark it allocated), one write to the new</text>
+<text top="766" left="87" width="432" height="14" font="2">inode itself (to initialize it), one to the data of the directory (to link the</text>
+<text top="781" left="87" width="432" height="14" font="2">high-level name of the ﬁle to its inode number), and one read and write</text>
+<text top="796" left="87" width="432" height="14" font="2">to the directory inode to update it. If the directory needs to grow to ac-</text>
+<text top="811" left="87" width="432" height="14" font="2">commodate the new entry, additional I/Os (i.e., to the data bitmap, and</text>
+<text top="826" left="87" width="424" height="14" font="2">the new directory block) will be needed too. All that just to create a ﬁle!</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="26" size="10" family="OEFWHO+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="27" size="10" family="RYVMDT+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="370" width="7" height="14" font="2">F</text>
+<text top="98" left="378" width="18" height="11" font="4">ILE</text>
+<text top="96" left="400" width="7" height="14" font="2">S</text>
+<text top="98" left="408" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="451" width="5" height="14" font="2">I</text>
+<text top="98" left="456" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="139" left="147" width="280" height="14" font="2">Let’s look at a speciﬁc example, where the ﬁle</text>
+<text top="139" left="431" width="65" height="11" font="6">/foo/bar</text>
+<text top="139" left="500" width="61" height="14" font="2">is created,</text>
+<text top="154" left="129" width="432" height="14" font="2">and three blocks are written to it. Figure 40.4 (page 13) shows what hap-</text>
+<text top="169" left="129" width="94" height="14" font="2">pens during the</text>
+<text top="169" left="226" width="48" height="11" font="6">open()</text>
+<text top="169" left="278" width="283" height="14" font="2">(which creates the ﬁle) and during each of three</text>
+<text top="183" left="129" width="68" height="14" font="2">4KB writes.</text>
+<text top="199" left="147" width="414" height="14" font="2">In the ﬁgure, reads and writes to the disk are grouped under which</text>
+<text top="214" left="129" width="432" height="14" font="2">system call caused them to occur, and the rough ordering they might take</text>
+<text top="229" left="129" width="432" height="14" font="2">place in goes from top to bottom of the ﬁgure. You can see how much</text>
+<text top="244" left="129" width="432" height="14" font="2">work it is to create the ﬁle: 10 I/Os in this case, to walk the pathname and</text>
+<text top="261" left="129" width="156" height="14" font="2">then ﬁnally create the ﬁle</text>
+<text top="258" left="285" width="4" height="9" font="22">2</text>
+<text top="261" left="290" width="271" height="14" font="2">. You can also see that each allocating write</text>
+<text top="276" left="129" width="432" height="14" font="2">costs 5 I/Os: a pair to read and update the inode, another pair to read</text>
+<text top="291" left="129" width="432" height="14" font="2">and update the data bitmap, and then ﬁnally the write of the data itself.</text>
+<text top="306" left="129" width="430" height="14" font="2">How can a ﬁle system accomplish any of this with reasonable efﬁciency?</text>
+<text top="341" left="179" width="8" height="14" font="2">T</text>
+<text top="343" left="188" width="16" height="11" font="4">HE</text>
+<text top="341" left="208" width="10" height="14" font="2">C</text>
+<text top="343" left="219" width="24" height="11" font="4">RUX</text>
+<text top="341" left="243" width="19" height="14" font="2">: H</text>
+<text top="343" left="263" width="20" height="11" font="4">OW</text>
+<text top="341" left="287" width="8" height="14" font="2">T</text>
+<text top="343" left="296" width="8" height="11" font="4">O</text>
+<text top="341" left="309" width="9" height="14" font="2">R</text>
+<text top="343" left="318" width="40" height="11" font="4">EDUCE</text>
+<text top="341" left="362" width="7" height="14" font="2">F</text>
+<text top="343" left="371" width="18" height="11" font="4">ILE</text>
+<text top="341" left="393" width="7" height="14" font="2">S</text>
+<text top="343" left="400" width="39" height="11" font="4">YSTEM</text>
+<text top="341" left="443" width="38" height="14" font="2">I/O C</text>
+<text top="343" left="482" width="28" height="11" font="4">OSTS</text>
+<text top="356" left="147" width="414" height="14" font="2">Even the simplest of operations like opening, reading, or writing a ﬁle</text>
+<text top="371" left="129" width="432" height="14" font="2">incurs a huge number of I/O operations, scattered over the disk. What</text>
+<text top="386" left="129" width="405" height="14" font="2">can a ﬁle system do to reduce the high costs of doing so many I/Os?</text>
+<text top="436" left="97" width="198" height="17" font="5">40.7 Caching and Buffering</text>
+<text top="459" left="147" width="414" height="14" font="2">As the examples above show, reading and writing ﬁles can be expen-</text>
+<text top="474" left="129" width="432" height="14" font="2">sive, incurring many I/Os to the (slow) disk. To remedy what would</text>
+<text top="489" left="129" width="432" height="14" font="2">clearly be a huge performance problem, most ﬁle systems aggressively</text>
+<text top="504" left="129" width="333" height="14" font="2">use system memory (DRAM) to cache important blocks.</text>
+<text top="520" left="147" width="414" height="14" font="2">Imagine the open example above: without caching, every ﬁle open</text>
+<text top="535" left="129" width="432" height="14" font="2">would require at least two reads for every level in the directory hierarchy</text>
+<text top="550" left="129" width="432" height="14" font="2">(one to read the inode of the directory in question, and at least one to read</text>
+<text top="565" left="129" width="432" height="14" font="2">its data). With a long pathname (e.g., /1/2/3/ ... /100/ﬁle.txt), the ﬁle</text>
+<text top="579" left="129" width="417" height="14" font="2">system would literally perform hundreds of reads just to open the ﬁle!</text>
+<text top="595" left="147" width="216" height="14" font="2">Early ﬁle systems thus introduced a</text>
+<text top="595" left="366" width="96" height="13" font="3"><b>ﬁxed-size cache</b></text>
+<text top="595" left="466" width="95" height="14" font="2">to hold popular</text>
+<text top="610" left="129" width="399" height="14" font="2">blocks. As in our discussion of virtual memory, strategies such as</text>
+<text top="610" left="532" width="28" height="13" font="3"><b>LRU</b></text>
+<text top="625" left="129" width="432" height="14" font="2">and different variants would decide which blocks to keep in cache. This</text>
+<text top="640" left="129" width="432" height="14" font="2">ﬁxed-size cache would usually be allocated at boot time to be roughly</text>
+<text top="655" left="129" width="126" height="14" font="2">10% of total memory.</text>
+<text top="670" left="147" width="26" height="14" font="2">This</text>
+<text top="670" left="177" width="111" height="13" font="3"><b>static partitioning</b></text>
+<text top="670" left="293" width="268" height="14" font="2">of memory, however, can be wasteful; what</text>
+<text top="685" left="129" width="432" height="14" font="2">if the ﬁle system doesn’t need 10% of memory at a given point in time?</text>
+<text top="700" left="129" width="432" height="14" font="2">With the ﬁxed-size approach described above, unused pages in the ﬁle</text>
+<text top="715" left="129" width="417" height="14" font="2">cache cannot be re-purposed for some other use, and thus go to waste.</text>
+<text top="731" left="147" width="226" height="14" font="2">Modern systems, in contrast, employ a</text>
+<text top="731" left="376" width="130" height="13" font="3"><b>dynamic partitioning</b></text>
+<text top="731" left="508" width="59" height="14" font="2">approach.</text>
+<text top="746" left="129" width="432" height="14" font="2">Speciﬁcally, many modern operating systems integrate virtual memory</text>
+<text top="760" left="129" width="204" height="14" font="2">pages and ﬁle system pages into a</text>
+<text top="761" left="336" width="114" height="13" font="3"><b>uniﬁed page cache</b></text>
+<text top="760" left="454" width="107" height="14" font="2">[S00]. In this way,</text>
+<text top="790" left="149" width="4" height="8" font="24">2</text>
+<text top="792" left="154" width="352" height="11" font="12">One surprise here is that there is a read associated with the creation of the</text>
+<text top="793" left="510" width="19" height="9" font="26">bar</text>
+<text top="792" left="532" width="29" height="11" font="12">inode,</text>
+<text top="804" left="129" width="267" height="11" font="12">even though it is not yet initialized; can you guess why?</text>
+<text top="804" left="401" width="37" height="11" font="27"><i>(think...)</i></text>
+<text top="804" left="443" width="118" height="11" font="12">Answer: this read occurs</text>
+<text top="816" left="129" width="432" height="11" font="12">because an inode (which is small) is contained within a larger block (e.g., 4KB). Thus, the</text>
+<text top="828" left="129" width="422" height="11" font="12">system performs a read-modify-write to update the newly allocated inode within the block.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="18" height="11" font="4">ILE</text>
+<text top="96" left="118" width="7" height="14" font="2">S</text>
+<text top="98" left="125" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="168" width="5" height="14" font="2">I</text>
+<text top="98" left="174" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="148" left="133" width="8" height="14" font="2">T</text>
+<text top="150" left="142" width="11" height="11" font="4">IP</text>
+<text top="148" left="153" width="19" height="14" font="2">: U</text>
+<text top="150" left="173" width="74" height="11" font="4">NDERSTAND</text>
+<text top="148" left="250" width="7" height="14" font="2">S</text>
+<text top="150" left="258" width="34" height="11" font="4">TATIC</text>
+<text top="148" left="296" width="10" height="14" font="2">V</text>
+<text top="150" left="306" width="6" height="11" font="4">S</text>
+<text top="148" left="312" width="19" height="14" font="2">. D</text>
+<text top="150" left="332" width="49" height="11" font="4">YNAMIC</text>
+<text top="148" left="385" width="8" height="14" font="2">P</text>
+<text top="150" left="393" width="81" height="11" font="4">ARTITIONING</text>
+<text top="163" left="87" width="432" height="14" font="2">When dividing a resource among different clients/users, you can use</text>
+<text top="178" left="87" width="34" height="14" font="2">either</text>
+<text top="178" left="126" width="111" height="13" font="3"><b>static partitioning</b></text>
+<text top="178" left="241" width="13" height="14" font="2">or</text>
+<text top="178" left="258" width="132" height="13" font="3"><b>dynamic partitioning</b></text>
+<text top="178" left="390" width="129" height="14" font="2">. The static approach</text>
+<text top="193" left="87" width="432" height="14" font="2">simply divides the resource into ﬁxed proportions once; for example, if</text>
+<text top="208" left="87" width="432" height="14" font="2">there are two possible users of memory, you can give some ﬁxed fraction</text>
+<text top="223" left="87" width="432" height="14" font="2">of memory to one user, and the rest to the other. The dynamic approach</text>
+<text top="238" left="87" width="432" height="14" font="2">is more ﬂexible, giving out differing amounts of the resource over time;</text>
+<text top="253" left="87" width="432" height="14" font="2">for example, one user may get a higher percentage of disk bandwidth for</text>
+<text top="268" left="87" width="432" height="14" font="2">a period of time, but then later, the system may switch and decide to give</text>
+<text top="283" left="87" width="361" height="14" font="2">a different user a larger fraction of available disk bandwidth.</text>
+<text top="303" left="87" width="432" height="14" font="2">Each approach has its advantages. Static partitioning ensures each user</text>
+<text top="318" left="87" width="432" height="14" font="2">receives some share of the resource, usually delivers more predictable</text>
+<text top="333" left="87" width="432" height="14" font="2">performance, and is often easier to implement. Dynamic partitioning can</text>
+<text top="348" left="87" width="432" height="14" font="2">achieve better utilization (by letting resource-hungry users consume oth-</text>
+<text top="363" left="87" width="432" height="14" font="2">erwise idle resources), but can be more complex to implement, and can</text>
+<text top="378" left="87" width="432" height="14" font="2">lead to worse performance for users whose idle resources get consumed</text>
+<text top="393" left="87" width="432" height="14" font="2">by others and then take a long time to reclaim when needed. As is of-</text>
+<text top="408" left="87" width="432" height="14" font="2">ten the case, there is no best method; rather, you should think about the</text>
+<text top="423" left="87" width="432" height="14" font="2">problem at hand and decide which approach is most suitable. Indeed,</text>
+<text top="437" left="87" width="217" height="14" font="2">shouldn’t you always be doing that?</text>
+<text top="482" left="87" width="432" height="14" font="2">memory can be allocated more ﬂexibly across virtual memory and ﬁle</text>
+<text top="496" left="87" width="392" height="14" font="2">system, depending on which needs more memory at a given time.</text>
+<text top="512" left="105" width="414" height="14" font="2">Now imagine the ﬁle open example with caching. The ﬁrst open may</text>
+<text top="527" left="87" width="432" height="14" font="2">generate a lot of I/O trafﬁc to read in directory inode and data, but sub-</text>
+<text top="542" left="87" width="432" height="14" font="2">sequent ﬁle opens of that same ﬁle (or ﬁles in the same directory) will</text>
+<text top="557" left="87" width="298" height="14" font="2">mostly hit in the cache and thus no I/O is needed.</text>
+<text top="572" left="105" width="414" height="14" font="2">Let us also consider the effect of caching on writes. Whereas read I/O</text>
+<text top="587" left="87" width="432" height="14" font="2">can be avoided altogether with a sufﬁciently large cache, write trafﬁc has</text>
+<text top="602" left="87" width="432" height="14" font="2">to go to disk in order to become persistent. Thus, a cache does not serve</text>
+<text top="617" left="87" width="432" height="14" font="2">as the same kind of ﬁlter on write trafﬁc that it does for reads. That said,</text>
+<text top="632" left="87" width="94" height="13" font="3"><b>write buffering</b></text>
+<text top="632" left="185" width="334" height="14" font="2">(as it is sometimes called) certainly has a number of per-</text>
+<text top="646" left="87" width="393" height="14" font="2">formance beneﬁts. First, by delaying writes, the ﬁle system can</text>
+<text top="647" left="485" width="34" height="13" font="3"><b>batch</b></text>
+<text top="661" left="87" width="432" height="14" font="2">some updates into a smaller set of I/Os; for example, if an inode bitmap</text>
+<text top="676" left="87" width="432" height="14" font="2">is updated when one ﬁle is created and then updated moments later as</text>
+<text top="691" left="87" width="432" height="14" font="2">another ﬁle is created, the ﬁle system saves an I/O by delaying the write</text>
+<text top="706" left="87" width="432" height="14" font="2">after the ﬁrst update. Second, by buffering a number of writes in memory,</text>
+<text top="721" left="87" width="116" height="14" font="2">the system can then</text>
+<text top="721" left="207" width="55" height="13" font="3"><b>schedule</b></text>
+<text top="721" left="264" width="255" height="14" font="2">the subsequent I/Os and thus increase per-</text>
+<text top="736" left="87" width="432" height="14" font="2">formance. Finally, some writes are avoided altogether by delaying them;</text>
+<text top="751" left="87" width="432" height="14" font="2">for example, if an application creates a ﬁle and then deletes it, delaying</text>
+<text top="766" left="87" width="258" height="14" font="2">the writes to reﬂect the ﬁle creation to disk</text>
+<text top="766" left="349" width="40" height="13" font="3"><b>avoids</b></text>
+<text top="766" left="393" width="126" height="14" font="2">them entirely. In this</text>
+<text top="781" left="87" width="301" height="14" font="2">case, laziness (in writing blocks to disk) is a virtue.</text>
+<text top="796" left="105" width="414" height="14" font="2">For the reasons above, most modern ﬁle systems buffer writes in mem-</text>
+<text top="811" left="87" width="432" height="14" font="2">ory for anywhere between ﬁve and thirty seconds, representing yet an-</text>
+<text top="826" left="87" width="432" height="14" font="2">other trade-off: if the system crashes before the updates have been prop-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="370" width="7" height="14" font="2">F</text>
+<text top="98" left="378" width="18" height="11" font="4">ILE</text>
+<text top="96" left="400" width="7" height="14" font="2">S</text>
+<text top="98" left="408" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="451" width="5" height="14" font="2">I</text>
+<text top="98" left="456" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="148" left="148" width="8" height="14" font="2">T</text>
+<text top="150" left="157" width="11" height="11" font="4">IP</text>
+<text top="148" left="168" width="19" height="14" font="2">: U</text>
+<text top="150" left="187" width="74" height="11" font="4">NDERSTAND</text>
+<text top="148" left="265" width="8" height="14" font="2">T</text>
+<text top="150" left="274" width="16" height="11" font="4">HE</text>
+<text top="148" left="294" width="10" height="14" font="2">D</text>
+<text top="150" left="305" width="64" height="11" font="4">URABILITY</text>
+<text top="148" left="369" width="17" height="14" font="2">/P</text>
+<text top="150" left="387" width="83" height="11" font="4">ERFORMANCE</text>
+<text top="148" left="474" width="8" height="14" font="2">T</text>
+<text top="150" left="483" width="32" height="11" font="4">RADE</text>
+<text top="148" left="516" width="4" height="14" font="2">-</text>
+<text top="150" left="521" width="21" height="11" font="4">OFF</text>
+<text top="163" left="129" width="432" height="14" font="2">Storage systems often present a durability/performance trade-off to</text>
+<text top="178" left="129" width="432" height="14" font="2">users. If the user wishes data that is written to be immediately durable,</text>
+<text top="193" left="129" width="432" height="14" font="2">the system must go through the full effort of committing the newly-</text>
+<text top="208" left="129" width="432" height="14" font="2">written data to disk, and thus the write is slow (but safe). However, if</text>
+<text top="223" left="129" width="432" height="14" font="2">the user can tolerate the loss of a little data, the system can buffer writes</text>
+<text top="238" left="129" width="432" height="14" font="2">in memory for some time and write them later to the disk (in the back-</text>
+<text top="253" left="129" width="432" height="14" font="2">ground). Doing so makes writes appear to complete quickly, thus im-</text>
+<text top="268" left="129" width="432" height="14" font="2">proving perceived performance; however, if a crash occurs, writes not</text>
+<text top="283" left="129" width="432" height="14" font="2">yet committed to disk will be lost, and hence the trade-off. To understand</text>
+<text top="298" left="129" width="432" height="14" font="2">how to make this trade-off properly, it is best to understand what the ap-</text>
+<text top="313" left="129" width="432" height="14" font="2">plication using the storage system requires; for example, while it may be</text>
+<text top="328" left="129" width="432" height="14" font="2">tolerable to lose the last few images downloaded by your web browser,</text>
+<text top="343" left="129" width="432" height="14" font="2">losing part of a database transaction that is adding money to your bank</text>
+<text top="358" left="129" width="432" height="14" font="2">account may be less tolerable. Unless you’re rich, of course; in that case,</text>
+<text top="373" left="129" width="356" height="14" font="2">why do you care so much about hoarding every last penny?</text>
+<text top="405" left="129" width="432" height="14" font="2">agated to disk, the updates are lost; however, by keeping writes in mem-</text>
+<text top="420" left="129" width="432" height="14" font="2">ory longer, performance can be improved by batching, scheduling, and</text>
+<text top="435" left="129" width="128" height="14" font="2">even avoiding writes.</text>
+<text top="450" left="147" width="414" height="14" font="2">Some applications (such as databases) don’t enjoy this trade-off. Thus,</text>
+<text top="465" left="129" width="432" height="14" font="2">to avoid unexpected data loss due to write buffering, they simply force</text>
+<text top="480" left="129" width="153" height="14" font="2">writes to disk, by calling</text>
+<text top="481" left="286" width="57" height="11" font="6">fsync()</text>
+<text top="480" left="343" width="62" height="14" font="2">, by using</text>
+<text top="480" left="410" width="61" height="13" font="3"><b>direct I/O</b></text>
+<text top="480" left="475" width="86" height="14" font="2">interfaces that</text>
+<text top="495" left="129" width="236" height="14" font="2">work around the cache, or by using the</text>
+<text top="495" left="368" width="54" height="13" font="3"><b>raw disk</b></text>
+<text top="495" left="426" width="135" height="14" font="2">interface and avoiding</text>
+<text top="512" left="129" width="151" height="14" font="2">the ﬁle system altogether</text>
+<text top="510" left="280" width="4" height="9" font="22">3</text>
+<text top="512" left="285" width="275" height="14" font="2">. While most applications live with the trade-</text>
+<text top="527" left="129" width="432" height="14" font="2">offs made by the ﬁle system, there are enough controls in place to get the</text>
+<text top="542" left="129" width="416" height="14" font="2">system to do what you want it to, should the default not be satisfying.</text>
+<text top="568" left="97" width="105" height="17" font="5">40.8 Summary</text>
+<text top="592" left="147" width="414" height="14" font="2">We have seen the basic machinery required in building a ﬁle system.</text>
+<text top="606" left="129" width="432" height="14" font="2">There needs to be some information about each ﬁle (metadata), usually</text>
+<text top="621" left="129" width="432" height="14" font="2">stored in a structure called an inode. Directories are just a speciﬁc type</text>
+<text top="636" left="129" width="133" height="14" font="2">of ﬁle that store name</text>
+<text top="639" left="262" width="14" height="7" font="8">→</text>
+<text top="636" left="276" width="285" height="14" font="2">inode-number mappings. And other structures</text>
+<text top="651" left="129" width="432" height="14" font="2">are needed too; for example, ﬁle systems often use a structure such as a</text>
+<text top="666" left="129" width="384" height="14" font="2">bitmap to track which inodes or data blocks are free or allocated.</text>
+<text top="681" left="147" width="414" height="14" font="2">The terriﬁc aspect of ﬁle system design is its freedom; the ﬁle systems</text>
+<text top="696" left="129" width="432" height="14" font="2">we explore in the coming chapters each take advantage of this freedom</text>
+<text top="711" left="129" width="432" height="14" font="2">to optimize some aspect of the ﬁle system. There are also clearly many</text>
+<text top="726" left="129" width="432" height="14" font="2">policy decisions we have left unexplored. For example, when a new ﬁle</text>
+<text top="741" left="129" width="432" height="14" font="2">is created, where should it be placed on disk? This policy and others will</text>
+<text top="758" left="129" width="302" height="14" font="2">also be the subject of future chapters. Or will they?</text>
+<text top="756" left="431" width="4" height="9" font="22">4</text>
+<text top="789" left="149" width="4" height="8" font="24">3</text>
+<text top="791" left="154" width="407" height="11" font="12">Take a database class to learn more about old-school databases and their former insis-</text>
+<text top="803" left="129" width="432" height="11" font="12">tence on avoiding the OS and controlling everything themselves. But watch out! Those</text>
+<text top="815" left="129" width="432" height="11" font="12">database types are always trying to bad mouth the OS. Shame on you, database people. Shame.</text>
+<text top="826" left="149" width="4" height="8" font="24">4</text>
+<text top="828" left="154" width="405" height="11" font="12">Cue mysterious music that gets you even more intrigued about the topic of ﬁle systems.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="28" size="16" family="BUUMRO+URWPalladioL" color="#000000"/>
+	<fontspec id="29" size="8" family="MTCDOX+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="18" height="11" font="4">ILE</text>
+<text top="96" left="118" width="7" height="14" font="2">S</text>
+<text top="98" left="125" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="168" width="5" height="14" font="2">I</text>
+<text top="98" left="174" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="137" left="87" width="82" height="16" font="28"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="12">[A+07] “A Five-Year Study of File-System Metadata” by Nitin Agrawal, William J. Bolosky,</text>
+<text top="177" left="87" width="373" height="11" font="12">John R. Douceur, Jacob R. Lorch. FAST ’07, San Jose, California, February 2007.</text>
+<text top="177" left="465" width="53" height="11" font="27"><i>An excellent</i></text>
+<text top="189" left="87" width="432" height="11" font="27"><i>recent analysis of how ﬁle systems are actually used. Use the bibliography within to follow the trail of</i></text>
+<text top="201" left="87" width="213" height="11" font="27"><i>ﬁle-system analysis papers back to the early 1980s.</i></text>
+<text top="218" left="87" width="432" height="11" font="12">[B07] “ZFS: The Last Word in File Systems” by Jeff Bonwick and Bill Moore. Available from:</text>
+<text top="230" left="87" width="270" height="9" font="26">http://www.ostep.org/Citations/zfs_last.pdf</text>
+<text top="229" left="357" width="3" height="11" font="12">.</text>
+<text top="229" left="363" width="156" height="11" font="27"><i>One of the most recent important ﬁle</i></text>
+<text top="241" left="87" width="409" height="11" font="27"><i>systems, full of features and awesomeness. We should have a chapter on it, and perhaps soon will.</i></text>
+<text top="258" left="87" width="432" height="11" font="12">[B02] “The FAT File System” by Andries Brouwer. September, 2002. Available online at:</text>
+<text top="270" left="87" width="314" height="9" font="26">http://www.win.tue.nl/%7eaeb/linux/fs/fat/fat.html</text>
+<text top="270" left="401" width="3" height="11" font="12">.</text>
+<text top="270" left="407" width="112" height="11" font="27"><i>A nice clean description of</i></text>
+<text top="282" left="87" width="432" height="11" font="27"><i>FAT. The ﬁle system kind, not the bacon kind. Though you have to admit, bacon fat probably tastes</i></text>
+<text top="294" left="87" width="26" height="11" font="27"><i>better.</i></text>
+<text top="310" left="87" width="395" height="11" font="12">[C94] “Inside the Windows NT File System” by Helen Custer. Microsoft Press, 1994.</text>
+<text top="310" left="487" width="32" height="11" font="27"><i>A short</i></text>
+<text top="322" left="87" width="335" height="11" font="27"><i>book about NTFS; there are probably ones with more technical details elsewhere.</i></text>
+<text top="338" left="87" width="432" height="11" font="12">[H+88] “Scale and Performance in a Distributed File System” by John H. Howard, Michael</text>
+<text top="350" left="87" width="432" height="11" font="12">L. Kazar, Sherri G. Menees, David A. Nichols, M. Satyanarayanan, Robert N. Sidebotham,</text>
+<text top="362" left="87" width="268" height="11" font="12">Michael J. West.. ACM TOCS, Volume 6:1, February 1988.</text>
+<text top="362" left="359" width="160" height="11" font="27"><i>A classic distributed ﬁle system; we’ll</i></text>
+<text top="374" left="87" width="184" height="11" font="27"><i>be learning more about it later, don’t worry.</i></text>
+<text top="390" left="87" width="432" height="11" font="12">[P09] “The Second Extended File System: Internal Layout” by Dave Poirier. 2009. Available:</text>
+<text top="403" left="87" width="251" height="9" font="26">http://www.nongnu.org/ext2-doc/ext2.html</text>
+<text top="402" left="338" width="3" height="11" font="12">.</text>
+<text top="402" left="344" width="175" height="11" font="27"><i>Some details on ext2, a very simple Linux</i></text>
+<text top="414" left="87" width="424" height="11" font="27"><i>ﬁle system based on FFS, the Berkeley Fast File System. We’ll be reading about it in the next chapter.</i></text>
+<text top="430" left="87" width="68" height="11" font="12">[RT74] “The U</text>
+<text top="432" left="155" width="16" height="8" font="29">NIX</text>
+<text top="430" left="175" width="344" height="11" font="12">Time-Sharing System” by Dennis M. Ritchie, Ken Thompson. CACM Vol-</text>
+<text top="442" left="87" width="71" height="11" font="12">ume 17:7, 1974.</text>
+<text top="442" left="161" width="104" height="11" font="27"><i>The original paper about</i></text>
+<text top="442" left="268" width="8" height="11" font="12">U</text>
+<text top="444" left="277" width="16" height="8" font="29">NIX</text>
+<text top="442" left="294" width="225" height="11" font="27"><i>. Read it to see the underpinnings of much of modern</i></text>
+<text top="454" left="87" width="304" height="11" font="27"><i>operating systems. It’s amazing how many things they simply got right!</i></text>
+<text top="471" left="87" width="432" height="11" font="12">[S00] “UBC: An Efﬁcient Uniﬁed I/O and Memory Caching Subsystem for NetBSD” by Chuck</text>
+<text top="483" left="87" width="112" height="11" font="12">Silvers. FREENIX, 2000.</text>
+<text top="483" left="203" width="316" height="11" font="27"><i>A nice paper about NetBSD’s integration of ﬁle-system buffer caching and</i></text>
+<text top="494" left="87" width="330" height="11" font="27"><i>the virtual-memory page cache. Many other systems do the same type of thing.</i></text>
+<text top="511" left="87" width="432" height="11" font="12">[S+96] “Scalability in the XFS File System” by Adan Sweeney, Doug Doucette, Wei Hu, Curtis</text>
+<text top="523" left="87" width="432" height="11" font="12">Anderson, Mike Nishimoto, Geoff Peck. USENIX ’96, January 1996, San Diego, California.</text>
+<text top="535" left="87" width="432" height="11" font="27"><i>The ﬁrst attempt to make scalability of operations, including things like having millions of ﬁles in a</i></text>
+<text top="547" left="87" width="432" height="11" font="27"><i>directory, a central focus. A great example of pushing an idea to the extreme. The key idea behind this</i></text>
+<text top="559" left="87" width="339" height="11" font="27"><i>ﬁle system: everything is a tree. We should have a chapter on this ﬁle system too.</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">18</text>
+<text top="96" left="370" width="7" height="14" font="2">F</text>
+<text top="98" left="378" width="18" height="11" font="4">ILE</text>
+<text top="96" left="400" width="7" height="14" font="2">S</text>
+<text top="98" left="408" width="39" height="11" font="4">YSTEM</text>
+<text top="96" left="451" width="5" height="14" font="2">I</text>
+<text top="98" left="456" width="105" height="11" font="4">MPLEMENTATION</text>
+<text top="137" left="129" width="183" height="16" font="28"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="77" height="14" font="2">Use this tool,</text>
+<text top="167" left="227" width="57" height="11" font="6">vsfs.py</text>
+<text top="166" left="284" width="277" height="14" font="2">, to study how ﬁle system state changes as var-</text>
+<text top="181" left="129" width="432" height="14" font="2">ious operations take place. The ﬁle system begins in an empty state, with</text>
+<text top="196" left="129" width="432" height="14" font="2">just a root directory. As the simulation takes place, various operations are</text>
+<text top="211" left="129" width="432" height="14" font="2">performed, thus slowly changing the on-disk state of the ﬁle system. See</text>
+<text top="226" left="129" width="148" height="14" font="2">the README for details.</text>
+<text top="262" left="129" width="70" height="15" font="23"><b>Questions</b></text>
+<text top="286" left="146" width="414" height="14" font="2">1. Run the simulator with some different random seeds (say 17, 18, 19,</text>
+<text top="301" left="163" width="397" height="14" font="2">20), and see if you can ﬁgure out which operations must have taken</text>
+<text top="316" left="163" width="195" height="14" font="2">place between each state change.</text>
+<text top="341" left="146" width="414" height="14" font="2">2. Now do the same, using different random seeds (say 21, 22, 23,</text>
+<text top="356" left="163" width="145" height="14" font="2">24), except run with the</text>
+<text top="357" left="313" width="16" height="11" font="6">-r</text>
+<text top="356" left="334" width="227" height="14" font="2">ﬂag, thus making you guess the state</text>
+<text top="371" left="163" width="397" height="14" font="2">change while being shown the operation. What can you conclude</text>
+<text top="386" left="163" width="397" height="14" font="2">about the inode and data-block allocation algorithms, in terms of</text>
+<text top="401" left="163" width="216" height="14" font="2">which blocks they prefer to allocate?</text>
+<text top="426" left="146" width="414" height="14" font="2">3. Now reduce the number of data blocks in the ﬁle system, to very</text>
+<text top="441" left="163" width="397" height="14" font="2">low numbers (say two), and run the simulator for a hundred or so</text>
+<text top="456" left="163" width="397" height="14" font="2">requests. What types of ﬁles end up in the ﬁle system in this highly-</text>
+<text top="471" left="163" width="341" height="14" font="2">constrained layout? What types of operations would fail?</text>
+<text top="496" left="146" width="414" height="14" font="2">4. Now do the same, but with inodes. With very few inodes, what</text>
+<text top="511" left="163" width="397" height="14" font="2">types of operations can succeed? Which will usually fail? What is</text>
+<text top="525" left="163" width="258" height="14" font="2">the ﬁnal state of the ﬁle system likely to be?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+</pdf2xml>

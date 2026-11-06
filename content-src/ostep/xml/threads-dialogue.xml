@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="WZFBDD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="WZFBDD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="WFRQJM+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="VENDKN+URWPalladioL-Roma" color="#000000"/>
+<text top="195" left="523" width="34" height="30" font="0">34</text>
+<text top="266" left="177" width="341" height="21" font="1">Summary Dialogue on Concurrency</text>
+<text top="353" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="352" left="152" width="161" height="14" font="3">So, does your head hurt now?</text>
+<text top="373" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="373" left="143" width="376" height="14" font="3">(taking two Motrin tablets) Well, some. It’s hard to think about all the</text>
+<text top="388" left="87" width="152" height="14" font="3">ways threads can interleave.</text>
+<text top="409" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="409" left="153" width="366" height="14" font="3">Indeed it is. I am always amazed that when concurrent execution is</text>
+<text top="424" left="87" width="418" height="14" font="3">involved, just a few lines of code can become nearly impossible to understand.</text>
+<text top="445" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="445" left="144" width="375" height="14" font="3">Me too! It’s kind of embarrassing, as a Computer Scientist, not to be</text>
+<text top="460" left="87" width="205" height="14" font="3">able to make sense of five lines of code.</text>
+<text top="481" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="480" left="153" width="366" height="14" font="3">Oh, don’t feel too badly. If you look through the first papers on con-</text>
+<text top="495" left="87" width="432" height="14" font="3">current algorithms, they are sometimes wrong! And the authors often professors!</text>
+<text top="516" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="516" left="143" width="236" height="14" font="3">(gasps) Professors can be ... umm... wrong?</text>
+<text top="537" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="537" left="155" width="364" height="14" font="3">Yes, it is true. Though don’t tell anybody — it’s one of our trade</text>
+<text top="552" left="87" width="39" height="14" font="3">secrets.</text>
+<text top="573" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="573" left="143" width="376" height="14" font="3">I am sworn to secrecy. But if concurrent code is so hard to think about,</text>
+<text top="588" left="87" width="428" height="14" font="3">and so hard to get right, how are we supposed to write correct concurrent code?</text>
+<text top="609" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="608" left="154" width="365" height="14" font="3">Well that is the real question, isn’t it? I think it starts with a few</text>
+<text top="623" left="87" width="432" height="14" font="3">simple things. First, keep it simple! Avoid complex interactions between threads,</text>
+<text top="638" left="87" width="411" height="14" font="3">and use well-known and tried-and-true ways to manage thread interactions.</text>
+<text top="659" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="659" left="143" width="328" height="14" font="3">Like simple locking, and maybe a producer-consumer queue?</text>
+<text top="680" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="680" left="154" width="365" height="14" font="3">Exactly! Those are common paradigms, and you should be able to</text>
+<text top="695" left="87" width="432" height="14" font="3">produce the working solutions given what you’ve learned. Second, only use con-</text>
+<text top="710" left="87" width="432" height="14" font="3">currency when absolutely needed; avoid it if at all possible. There is nothing</text>
+<text top="725" left="87" width="266" height="14" font="3">worse than premature optimization of a program.</text>
+<text top="746" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="745" left="143" width="263" height="14" font="3">I see — why add threads if you don’t need them?</text>
+<text top="766" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="766" left="154" width="365" height="14" font="3">Exactly. Third, if you really need parallelism, seek it in other sim-</text>
+<text top="781" left="87" width="432" height="14" font="3">plified forms. For example, the Map-Reduce method for writing parallel data</text>
+<text top="796" left="87" width="432" height="14" font="3">analysis code is an excellent example of achieving parallelism without having to</text>
+<text top="811" left="87" width="432" height="14" font="3">handle any of the horrific complexities of locks, condition variables, and the other</text>
+<text top="826" left="87" width="174" height="14" font="3">nasty things we’ve talked about.</text>
+<text top="862" left="300" width="7" height="14" font="4">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="11" family="VENDKN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="9" family="VENDKN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="7" family="VENDKN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="VENDKN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="FPZOBQ+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="10" size="12" family="VENDKN+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="4">2</text>
+<text top="96" left="309" width="7" height="14" font="4">S</text>
+<text top="98" left="316" width="54" height="11" font="5">UMMARY</text>
+<text top="96" left="375" width="10" height="14" font="4">D</text>
+<text top="98" left="386" width="76" height="11" font="5">IALOGUE ON</text>
+<text top="96" left="466" width="10" height="14" font="4">C</text>
+<text top="98" left="476" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="139" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="139" left="185" width="376" height="14" font="3">Map-Reduce, huh? Sounds interesting — I’ll have to read more about</text>
+<text top="154" left="129" width="75" height="14" font="3">it on my own.</text>
+<text top="174" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="174" left="197" width="364" height="14" font="3">Good! You should. In the end, you’ll have to do a lot of that, as</text>
+<text top="189" left="129" width="432" height="14" font="3">what we learn together can only serve as the barest introduction to the wealth</text>
+<text top="204" left="129" width="432" height="14" font="3">of knowledge that is out there. Read, read, and read some more! And then try</text>
+<text top="219" left="129" width="432" height="14" font="3">things out, write some code, and then write some more too. And practice more,</text>
+<text top="236" left="129" width="423" height="14" font="3">too; beyond what’s in this book, there are plenty of other resources out there</text>
+<text top="234" left="552" width="4" height="9" font="6">1</text>
+<text top="236" left="557" width="3" height="14" font="3">.</text>
+<text top="251" left="129" width="432" height="14" font="3">As Gladwell talks about in his book “Outliers”, you need to put roughly 10,000</text>
+<text top="266" left="129" width="432" height="14" font="3">hours into something in order to become a real expert. You can’t do that all inside</text>
+<text top="281" left="129" width="70" height="14" font="3">of class time!</text>
+<text top="301" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="301" left="186" width="375" height="14" font="3">Wow, I’m not sure if that is depressing, or uplifting. But I’ll assume</text>
+<text top="316" left="129" width="380" height="14" font="3">the latter, and get to work! Time to write some more concurrent code...</text>
+<text top="826" left="149" width="4" height="8" font="7">1</text>
+<text top="828" left="154" width="178" height="11" font="8">Here is a link to one, in gamified form:</text>
+<text top="829" left="335" width="207" height="9" font="9">https://deadlockempire.github.io/</text>
+<text top="881" left="129" width="11" height="14" font="4">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="4">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="4">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="4">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+</pdf2xml>

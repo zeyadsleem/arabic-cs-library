@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="22" family="VQDRKD+URWPalladioL" color="#000000"/>
+	<fontspec id="1" size="26" family="VQDRKD+URWPalladioL" color="#000000"/>
+	<fontspec id="2" size="13" family="AAEUIE+URWPalladioL-Roma" color="#000000"/>
+<text top="359" left="272" width="62" height="21" font="0"><b>Part II</b></text>
+<text top="419" left="228" width="151" height="25" font="1"><b>Concurrency</b></text>
+<text top="862" left="300" width="7" height="12" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="3" size="31" family="BYUJRB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="4" size="22" family="BYUJRB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="5" size="13" family="VQDRKD+URWPalladioL" color="#000000"/>
+	<fontspec id="6" size="13" family="RGZUBI+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="7" size="13" family="VCNMEZ+URWPalladioL" color="#000000"/>
+<text top="195" left="523" width="34" height="30" font="3">25</text>
+<text top="265" left="256" width="263" height="21" font="4">A Dialogue on Concurrency</text>
+<text top="352" left="87" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="352" left="154" width="365" height="14" font="6"><i>And thus we reach the second of our three pillars of operating sys-</i></text>
+<text top="367" left="87" width="29" height="14" font="6"><i>tems:</i></text>
+<text top="367" left="120" width="71" height="13" font="7"><b>concurrency</b></text>
+<text top="367" left="192" width="3" height="14" font="6"><i>.</i></text>
+<text top="387" left="87" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="387" left="143" width="189" height="14" font="6"><i>I thought there were four pillars...?</i></text>
+<text top="408" left="87" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="408" left="152" width="249" height="14" font="6"><i>Nope, that was in an older version of the book.</i></text>
+<text top="429" left="87" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="429" left="143" width="334" height="14" font="6"><i>Umm... OK. So what is concurrency, oh wonderful professor?</i></text>
+<text top="449" left="87" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="449" left="152" width="181" height="14" font="6"><i>Well, imagine we have a peach —</i></text>
+<text top="470" left="87" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="470" left="143" width="344" height="14" font="6"><i>(interrupting) Peaches again! What is it with you and peaches?</i></text>
+<text top="491" left="87" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="491" left="152" width="367" height="14" font="6"><i>Ever read T.S. Eliot? The Love Song of J. Alfred Prufrock, “Do I dare</i></text>
+<text top="505" left="87" width="205" height="14" font="6"><i>to eat a peach”, and all that fun stuff?</i></text>
+<text top="526" left="87" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="526" left="143" width="375" height="14" font="6"><i>Oh yes! In English class in high school. Great stuff! I really liked the</i></text>
+<text top="541" left="87" width="74" height="14" font="6"><i>part where —</i></text>
+<text top="562" left="87" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="562" left="152" width="367" height="14" font="6"><i>(interrupting) This has nothing to do with that — I just like peaches.</i></text>
+<text top="577" left="87" width="432" height="14" font="6"><i>Anyhow, imagine there are a lot of peaches on a table, and a lot of people who</i></text>
+<text top="592" left="87" width="432" height="14" font="6"><i>wish to eat them. Let’s say we did it this way: each eater first identifies a peach</i></text>
+<text top="607" left="87" width="430" height="14" font="6"><i>visually, and then tries to grab it and eat it. What is wrong with this approach?</i></text>
+<text top="627" left="87" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="627" left="145" width="373" height="14" font="6"><i>Hmmm... seems like you might see a peach that somebody else also</i></text>
+<text top="642" left="87" width="351" height="14" font="6"><i>sees. If they get there first, when you reach out, no peach for you!</i></text>
+<text top="663" left="87" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="663" left="152" width="219" height="14" font="6"><i>Exactly! So what should we do about it?</i></text>
+<text top="684" left="87" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="684" left="143" width="376" height="14" font="6"><i>Well, probably develop a better way of going about this. Maybe form a</i></text>
+<text top="698" left="87" width="363" height="14" font="6"><i>line, and when you get to the front, grab a peach and get on with it.</i></text>
+<text top="719" left="87" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="719" left="152" width="249" height="14" font="6"><i>Good! But what’s wrong with your approach?</i></text>
+<text top="740" left="87" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="740" left="143" width="195" height="14" font="6"><i>Sheesh, do I have to do all the work?</i></text>
+<text top="761" left="87" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="761" left="152" width="21" height="14" font="6"><i>Yes.</i></text>
+<text top="781" left="87" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="781" left="146" width="373" height="14" font="6"><i>OK, let me think. Well, we used to have many people grabbing for</i></text>
+<text top="796" left="87" width="432" height="14" font="6"><i>peaches all at once, which is faster. But in my way, we just go one at a time,</i></text>
+<text top="811" left="87" width="432" height="14" font="6"><i>which is correct, but quite a bit slower. The best kind of approach would be fast</i></text>
+<text top="826" left="87" width="117" height="14" font="6"><i>and correct, probably.</i></text>
+<text top="862" left="300" width="7" height="12" font="2">3</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="8" size="11" family="AAEUIE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="12" family="AAEUIE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="AAEUIE+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="12" font="2">4</text>
+<text top="96" left="360" width="25" height="12" font="2">A D</text>
+<text top="98" left="386" width="76" height="10" font="8">IALOGUE ON</text>
+<text top="96" left="466" width="10" height="12" font="2">C</text>
+<text top="98" left="476" width="84" height="10" font="8">ONCURRENCY</text>
+<text top="139" left="129" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="139" left="194" width="367" height="14" font="6"><i>You are really starting to impress. In fact, you just told us everything</i></text>
+<text top="154" left="129" width="259" height="14" font="6"><i>we need to know about concurrency! Well done.</i></text>
+<text top="174" left="129" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="174" left="186" width="375" height="14" font="6"><i>I did? I thought we were just talking about peaches. Remember, this</i></text>
+<text top="189" left="129" width="329" height="14" font="6"><i>is usually the part where you make it about computers again.</i></text>
+<text top="209" left="129" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="209" left="196" width="365" height="14" font="6"><i>Indeed. My apologies! One must never forget the concrete. Well,</i></text>
+<text top="224" left="129" width="338" height="14" font="6"><i>as it turns out, there are certain types of programs that we call</i></text>
+<text top="224" left="471" width="90" height="13" font="7"><b>multi-threaded</b></text>
+<text top="239" left="129" width="97" height="14" font="6"><i>applications; each</i></text>
+<text top="239" left="230" width="39" height="13" font="7"><b>thread</b></text>
+<text top="239" left="272" width="288" height="14" font="6"><i>is kind of like an independent agent running around</i></text>
+<text top="254" left="129" width="432" height="14" font="6"><i>in this program, doing things on the program’s behalf. But these threads access</i></text>
+<text top="269" left="129" width="432" height="14" font="6"><i>memory, and for them, each spot of memory is kind of like one of those peaches. If</i></text>
+<text top="284" left="129" width="432" height="14" font="6"><i>we don’t coordinate access to memory between threads, the program won’t work</i></text>
+<text top="299" left="129" width="136" height="14" font="6"><i>as expected. Make sense?</i></text>
+<text top="319" left="129" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="319" left="185" width="376" height="14" font="6"><i>Kind of. But why do we talk about this in an OS class? Isn’t that just</i></text>
+<text top="334" left="129" width="145" height="14" font="6"><i>application programming?</i></text>
+<text top="355" left="129" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="354" left="194" width="367" height="14" font="6"><i>Good question! A few reasons, actually. First, the OS must support</i></text>
+<text top="369" left="129" width="279" height="14" font="6"><i>multi-threaded applications with primitives such as</i></text>
+<text top="370" left="411" width="31" height="13" font="7"><b>locks</b></text>
+<text top="369" left="446" width="20" height="14" font="6"><i>and</i></text>
+<text top="370" left="470" width="91" height="13" font="7"><b>condition vari-</b></text>
+<text top="384" left="129" width="31" height="13" font="7"><b>ables</b></text>
+<text top="384" left="160" width="401" height="14" font="6"><i>, which we’ll talk about soon. Second, the OS itself was the first concurrent</i></text>
+<text top="399" left="129" width="432" height="14" font="6"><i>program — it must access its own memory very carefully or many strange and</i></text>
+<text top="414" left="129" width="310" height="14" font="6"><i>terrible things will happen. Really, it can get quite grisly.</i></text>
+<text top="435" left="129" width="52" height="13" font="5"><b>Student:</b></text>
+<text top="435" left="185" width="324" height="14" font="6"><i>I see. Sounds interesting. There are more details, I imagine?</i></text>
+<text top="455" left="129" width="61" height="13" font="5"><b>Professor:</b></text>
+<text top="455" left="194" width="96" height="14" font="6"><i>Indeed there are...</i></text>
+<text top="881" left="129" width="11" height="12" font="2">O</text>
+<text top="883" left="141" width="60" height="10" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="12" font="2">S</text>
+<text top="898" left="137" width="45" height="10" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="11" font="9">[V</text>
+<text top="914" left="143" width="39" height="9" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="11" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="10" font="8">WWW</text>
+<text top="896" left="327" width="3" height="12" font="2">.</text>
+<text top="898" left="331" width="36" height="10" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="12" font="2">.</text>
+<text top="898" left="371" width="25" height="10" font="8">ORG</text>
+</page>
+</pdf2xml>

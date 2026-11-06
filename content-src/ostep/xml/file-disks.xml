@@ -1,0 +1,1751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="EZNELC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="EZNELC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JDHCCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="VYQCXX+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="JDHCCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="16" family="JDHCCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="13" family="OAYIQW+CMR9" color="#000000"/>
+	<fontspec id="7" size="13" family="NDWYYU+CMMI9" color="#000000"/>
+	<fontspec id="8" size="13" family="FLSRFO+CMSY9" color="#000000"/>
+<text top="196" left="523" width="34" height="30" font="0">37</text>
+<text top="266" left="358" width="161" height="21" font="1">Hard Disk Drives</text>
+<text top="326" left="87" width="432" height="14" font="2">The last chapter introduced the general concept of an I/O device and</text>
+<text top="341" left="87" width="432" height="14" font="2">showed you how the OS might interact with such a beast. In this chapter,</text>
+<text top="356" left="87" width="367" height="14" font="2">we dive into more detail about one device in particular: the</text>
+<text top="356" left="459" width="60" height="13" font="3"><b>hard disk</b></text>
+<text top="371" left="87" width="32" height="13" font="3"><b>drive</b></text>
+<text top="370" left="119" width="400" height="14" font="2">. These drives have been the main form of persistent data storage in</text>
+<text top="385" left="87" width="432" height="14" font="2">computer systems for decades and much of the development of file sys-</text>
+<text top="400" left="87" width="432" height="14" font="2">tem technology (coming soon) is predicated on their behavior. Thus, it</text>
+<text top="415" left="87" width="432" height="14" font="2">is worth understanding the details of a disk’s operation before building</text>
+<text top="430" left="87" width="432" height="14" font="2">the file system software that manages it. Many of these details are avail-</text>
+<text top="445" left="87" width="432" height="14" font="2">able in excellent papers by Ruemmler and Wilkes [RW92] and Anderson,</text>
+<text top="460" left="87" width="167" height="14" font="2">Dykes, and Riedel [ADR03].</text>
+<text top="501" left="144" width="10" height="14" font="2">C</text>
+<text top="503" left="154" width="24" height="11" font="4">RUX</text>
+<text top="501" left="179" width="19" height="14" font="2">: H</text>
+<text top="503" left="199" width="20" height="11" font="4">OW</text>
+<text top="501" left="223" width="8" height="14" font="2">T</text>
+<text top="503" left="231" width="8" height="11" font="4">O</text>
+<text top="501" left="244" width="7" height="14" font="2">S</text>
+<text top="503" left="252" width="31" height="11" font="4">TORE</text>
+<text top="501" left="286" width="10" height="14" font="2">A</text>
+<text top="503" left="297" width="18" height="11" font="4">ND</text>
+<text top="501" left="319" width="10" height="14" font="2">A</text>
+<text top="503" left="331" width="36" height="11" font="4">CCESS</text>
+<text top="501" left="370" width="10" height="14" font="2">D</text>
+<text top="503" left="381" width="23" height="11" font="4">ATA</text>
+<text top="501" left="409" width="11" height="14" font="2">O</text>
+<text top="503" left="420" width="9" height="11" font="4">N</text>
+<text top="501" left="433" width="10" height="14" font="2">D</text>
+<text top="503" left="444" width="18" height="11" font="4">ISK</text>
+<text top="516" left="105" width="414" height="14" font="2">How do modern hard-disk drives store data? What is the interface?</text>
+<text top="531" left="87" width="432" height="14" font="2">How is the data actually laid out and accessed? How does disk schedul-</text>
+<text top="546" left="87" width="158" height="14" font="2">ing improve performance?</text>
+<text top="601" left="55" width="129" height="17" font="5">37.1 The Interface</text>
+<text top="631" left="105" width="414" height="14" font="2">Let’s start by understanding the interface to a modern disk drive. The</text>
+<text top="646" left="87" width="432" height="14" font="2">basic interface for all modern drives is straightforward. The drive consists</text>
+<text top="661" left="87" width="432" height="14" font="2">of a large number of sectors (512-byte blocks), each of which can be read</text>
+<text top="676" left="87" width="261" height="14" font="2">or written. The sectors are numbered from</text>
+<text top="675" left="352" width="7" height="13" font="6">0</text>
+<text top="676" left="364" width="12" height="14" font="2">to</text>
+<text top="675" left="380" width="8" height="13" font="7">n</text>
+<text top="675" left="392" width="11" height="13" font="8">−</text>
+<text top="675" left="407" width="7" height="13" font="6">1</text>
+<text top="676" left="418" width="88" height="14" font="2">on a disk with</text>
+<text top="675" left="511" width="8" height="13" font="7">n</text>
+<text top="691" left="87" width="353" height="14" font="2">sectors. Thus, we can view the disk as an array of sectors;</text>
+<text top="690" left="445" width="7" height="13" font="6">0</text>
+<text top="691" left="456" width="12" height="14" font="2">to</text>
+<text top="690" left="472" width="8" height="13" font="7">n</text>
+<text top="690" left="484" width="11" height="13" font="8">−</text>
+<text top="690" left="498" width="7" height="13" font="6">1</text>
+<text top="691" left="509" width="10" height="14" font="2">is</text>
+<text top="705" left="87" width="48" height="14" font="2">thus the</text>
+<text top="706" left="138" width="84" height="13" font="3"><b>address space</b></text>
+<text top="705" left="226" width="72" height="14" font="2">of the drive.</text>
+<text top="721" left="105" width="414" height="14" font="2">Multi-sector operations are possible; indeed, many file systems will</text>
+<text top="736" left="87" width="432" height="14" font="2">read or write 4KB at a time (or more). However, when updating the disk,</text>
+<text top="751" left="87" width="432" height="14" font="2">the only guarantee drive manufacturers make is that a single 512-byte</text>
+<text top="766" left="87" width="44" height="14" font="2">write is</text>
+<text top="766" left="135" width="41" height="13" font="3"><b>atomic</b></text>
+<text top="766" left="179" width="340" height="14" font="2">(i.e., it will either complete in its entirety or it won’t com-</text>
+<text top="781" left="87" width="432" height="14" font="2">plete at all); thus, if an untimely power loss occurs, only a portion of a</text>
+<text top="796" left="87" width="277" height="14" font="2">larger write may complete (sometimes called a</text>
+<text top="796" left="367" width="61" height="13" font="3"><b>torn write</b></text>
+<text top="796" left="428" width="8" height="14" font="2">).</text>
+<text top="811" left="105" width="414" height="14" font="2">There are some assumptions most clients of disk drives make, but</text>
+<text top="826" left="87" width="432" height="14" font="2">that are not specified directly in the interface; Schlosser and Ganger have</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="12" family="EZNELC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="10" size="11" family="EZNELC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="11" size="9" family="JDHCCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="12" size="7" family="JDHCCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="13" size="10" family="JDHCCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="14" size="10" family="VYQCXX+URWPalladioL" color="#000000"/>
+	<fontspec id="15" size="12" family="JDHCCY+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="441" width="11" height="14" font="2">H</text>
+<text top="98" left="453" width="25" height="11" font="4">ARD</text>
+<text top="96" left="482" width="10" height="14" font="2">D</text>
+<text top="98" left="493" width="18" height="11" font="4">ISK</text>
+<text top="96" left="516" width="10" height="14" font="2">D</text>
+<text top="98" left="527" width="33" height="11" font="4">RIVES</text>
+<text top="191" left="396" width="7" height="12" font="9">0</text>
+<text top="167" left="386" width="13" height="12" font="9">11</text>
+<text top="149" left="368" width="13" height="12" font="9">10</text>
+<text top="142" left="348" width="7" height="12" font="9">9</text>
+<text top="149" left="323" width="7" height="12" font="9">8</text>
+<text top="167" left="306" width="7" height="12" font="9">7</text>
+<text top="191" left="299" width="7" height="12" font="9">6</text>
+<text top="215" left="306" width="7" height="12" font="9">5</text>
+<text top="233" left="323" width="7" height="12" font="9">4</text>
+<text top="239" left="348" width="7" height="12" font="9">3</text>
+<text top="233" left="372" width="7" height="12" font="9">2</text>
+<text top="215" left="389" width="7" height="12" font="9">1</text>
+<text top="181" left="333" width="36" height="10" font="10">Spindle</text>
+<text top="272" left="209" width="69" height="14" font="2">Figure 37.1:</text>
+<text top="272" left="282" width="198" height="13" font="3"><b>A Disk With Just A Single Track</b></text>
+<text top="302" left="129" width="432" height="14" font="2">called this the “unwritten contract” of disk drives [SG04]. Specifically,</text>
+<text top="319" left="129" width="288" height="14" font="2">one can usually assume that accessing two blocks</text>
+<text top="317" left="417" width="4" height="9" font="11">1</text>
+<text top="319" left="425" width="142" height="14" font="2">near one-another within</text>
+<text top="334" left="129" width="432" height="14" font="2">the drive’s address space will be faster than accessing two blocks that are</text>
+<text top="349" left="129" width="432" height="14" font="2">far apart. One can also usually assume that accessing blocks in a contigu-</text>
+<text top="364" left="129" width="432" height="14" font="2">ous chunk (i.e., a sequential read or write) is the fastest access mode, and</text>
+<text top="379" left="129" width="348" height="14" font="2">usually much faster than any more random access pattern.</text>
+<text top="407" left="97" width="148" height="17" font="5">37.2 Basic Geometry</text>
+<text top="433" left="147" width="414" height="14" font="2">Let’s start to understand some of the components of a modern disk.</text>
+<text top="448" left="129" width="93" height="14" font="2">We start with a</text>
+<text top="448" left="227" width="40" height="13" font="3"><b>platter</b></text>
+<text top="448" left="267" width="293" height="14" font="2">, a circular hard surface on which data is stored</text>
+<text top="463" left="129" width="432" height="14" font="2">persistently by inducing magnetic changes to it. A disk may have one</text>
+<text top="478" left="129" width="404" height="14" font="2">or more platters; each platter has 2 sides, each of which is called a</text>
+<text top="478" left="537" width="24" height="13" font="3"><b>sur-</b></text>
+<text top="493" left="129" width="25" height="13" font="3"><b>face</b></text>
+<text top="493" left="154" width="407" height="14" font="2">. These platters are usually made of some hard material (such as</text>
+<text top="508" left="129" width="432" height="14" font="2">aluminum), and then coated with a thin magnetic layer that enables the</text>
+<text top="523" left="129" width="394" height="14" font="2">drive to persistently store bits even when the drive is powered off.</text>
+<text top="539" left="147" width="277" height="14" font="2">The platters are all bound together around the</text>
+<text top="539" left="428" width="46" height="13" font="3"><b>spindle</b></text>
+<text top="539" left="474" width="87" height="14" font="2">, which is con-</text>
+<text top="554" left="129" width="432" height="14" font="2">nected to a motor that spins the platters around (while the drive is pow-</text>
+<text top="569" left="129" width="432" height="14" font="2">ered on) at a constant (fixed) rate. The rate of rotation is often measured in</text>
+<text top="584" left="129" width="171" height="13" font="3"><b>rotations per minute (RPM)</b></text>
+<text top="584" left="299" width="261" height="14" font="2">, and typical modern values are in the 7,200</text>
+<text top="599" left="129" width="432" height="14" font="2">RPM to 15,000 RPM range. Note that we will often be interested in the</text>
+<text top="614" left="129" width="432" height="14" font="2">time of a single rotation, e.g., a drive that rotates at 10,000 RPM means</text>
+<text top="629" left="129" width="325" height="14" font="2">that a single rotation takes about 6 milliseconds (6 ms).</text>
+<text top="645" left="147" width="414" height="14" font="2">Data is encoded on each surface in concentric circles of sectors; we call</text>
+<text top="660" left="129" width="164" height="14" font="2">one such concentric circle a</text>
+<text top="660" left="297" width="31" height="13" font="3"><b>track</b></text>
+<text top="660" left="328" width="233" height="14" font="2">. A single surface contains many thou-</text>
+<text top="675" left="129" width="432" height="14" font="2">sands and thousands of tracks, tightly packed together, with hundreds of</text>
+<text top="690" left="129" width="263" height="14" font="2">tracks fitting into the width of a human hair.</text>
+<text top="706" left="147" width="414" height="14" font="2">To read and write from the surface, we need a mechanism that allows</text>
+<text top="721" left="129" width="432" height="14" font="2">us to either sense (i.e., read) the magnetic patterns on the disk or to in-</text>
+<text top="736" left="129" width="432" height="14" font="2">duce a change in (i.e., write) them. This process of reading and writing is</text>
+<text top="751" left="129" width="122" height="14" font="2">accomplished by the</text>
+<text top="751" left="255" width="60" height="13" font="3"><b>disk head</b></text>
+<text top="751" left="315" width="246" height="14" font="2">; there is one such head per surface of the</text>
+<text top="766" left="129" width="251" height="14" font="2">drive. The disk head is attached to a single</text>
+<text top="766" left="383" width="54" height="13" font="3"><b>disk arm</b></text>
+<text top="766" left="436" width="125" height="14" font="2">, which moves across</text>
+<text top="781" left="129" width="322" height="14" font="2">the surface to position the head over the desired track.</text>
+<text top="814" left="149" width="4" height="8" font="12">1</text>
+<text top="816" left="154" width="173" height="11" font="13">We, and others, often use the terms</text>
+<text top="816" left="332" width="27" height="10" font="14"><b>block</b></text>
+<text top="816" left="363" width="18" height="11" font="13">and</text>
+<text top="816" left="385" width="28" height="10" font="14"><b>sector</b></text>
+<text top="816" left="417" width="144" height="11" font="13">interchangeably, assuming the</text>
+<text top="828" left="129" width="319" height="11" font="13">reader will know exactly what is meant per context. Sorry about this!</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="15">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="15">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="11" family="EZNELC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="17" size="11" family="EZNELC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="18" size="15" family="VYQCXX+URWPalladioL" color="#000000"/>
+	<fontspec id="19" size="9" family="REDSNB+CMMI6" color="#000000"/>
+	<fontspec id="20" size="9" family="XICNNV+CMR6" color="#000000"/>
+<text top="96" left="87" width="11" height="14" font="2">H</text>
+<text top="98" left="99" width="25" height="11" font="4">ARD</text>
+<text top="96" left="129" width="10" height="14" font="2">D</text>
+<text top="98" left="140" width="18" height="11" font="4">ISK</text>
+<text top="96" left="162" width="10" height="14" font="2">D</text>
+<text top="98" left="173" width="33" height="11" font="4">RIVES</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="213" left="223" width="24" height="10" font="16">Head</text>
+<text top="268" left="247" width="7" height="10" font="17">Arm</text>
+<text top="227" left="354" width="7" height="12" font="9">0</text>
+<text top="203" left="344" width="13" height="12" font="9">11</text>
+<text top="185" left="326" width="13" height="12" font="9">10</text>
+<text top="179" left="306" width="7" height="12" font="9">9</text>
+<text top="185" left="282" width="7" height="12" font="9">8</text>
+<text top="203" left="264" width="7" height="12" font="9">7</text>
+<text top="227" left="257" width="7" height="12" font="9">6</text>
+<text top="251" left="264" width="7" height="12" font="9">5</text>
+<text top="269" left="282" width="7" height="12" font="9">4</text>
+<text top="275" left="306" width="7" height="12" font="9">3</text>
+<text top="269" left="330" width="7" height="12" font="9">2</text>
+<text top="251" left="348" width="7" height="12" font="9">1</text>
+<text top="217" left="291" width="36" height="10" font="10">Spindle</text>
+<text top="152" left="269" width="80" height="10" font="10">Rotates this way</text>
+<text top="312" left="181" width="69" height="14" font="2">Figure 37.2:</text>
+<text top="312" left="254" width="171" height="13" font="3"><b>A Single Track Plus A Head</b></text>
+<text top="335" left="55" width="184" height="17" font="5">37.3 A Simple Disk Drive</text>
+<text top="360" left="105" width="414" height="14" font="2">Let’s understand how disks work by building up a model one track at</text>
+<text top="375" left="87" width="432" height="14" font="2">a time. Assume we have a simple disk with a single track (Figure 37.1).</text>
+<text top="390" left="87" width="432" height="14" font="2">This track has just 12 sectors, each of which is 512 bytes in size (our typical</text>
+<text top="405" left="87" width="432" height="14" font="2">sector size, recall) and addressed therefore by the numbers 0 through 11.</text>
+<text top="420" left="87" width="432" height="14" font="2">The single platter we have here rotates around the spindle, to which a</text>
+<text top="435" left="87" width="107" height="14" font="2">motor is attached.</text>
+<text top="451" left="105" width="414" height="14" font="2">Of course, the track by itself isn’t too interesting; we want to be able</text>
+<text top="466" left="87" width="432" height="14" font="2">to read or write those sectors, and thus we need a disk head, attached</text>
+<text top="481" left="87" width="432" height="14" font="2">to a disk arm, as we now see (Figure 37.2). In the figure, the disk head,</text>
+<text top="496" left="87" width="432" height="14" font="2">attached to the end of the arm, is positioned over sector 6, and the surface</text>
+<text top="511" left="87" width="174" height="14" font="2">is rotating counter-clockwise.</text>
+<text top="534" left="87" width="294" height="15" font="18"><b>Single-track Latency: The Rotational Delay</b></text>
+<text top="554" left="87" width="432" height="14" font="2">To understand how a request would be processed on our simple, one-</text>
+<text top="569" left="87" width="432" height="14" font="2">track disk, imagine we now receive a request to read block 0. How should</text>
+<text top="584" left="87" width="170" height="14" font="2">the disk service this request?</text>
+<text top="600" left="105" width="414" height="14" font="2">In our simple disk, the disk doesn’t have to do much. In particular, it</text>
+<text top="615" left="87" width="432" height="14" font="2">must just wait for the desired sector to rotate under the disk head. This</text>
+<text top="630" left="87" width="432" height="14" font="2">wait happens often enough in modern drives, and is an important enough</text>
+<text top="645" left="87" width="345" height="14" font="2">component of I/O service time, that it has a special name:</text>
+<text top="645" left="436" width="83" height="13" font="3"><b>rotational de-</b></text>
+<text top="660" left="87" width="19" height="13" font="3"><b>lay</b></text>
+<text top="660" left="110" width="68" height="14" font="2">(sometimes</text>
+<text top="660" left="182" width="86" height="13" font="3"><b>rotation delay</b></text>
+<text top="660" left="268" width="251" height="14" font="2">, though that sounds weird). In the exam-</text>
+<text top="675" left="87" width="187" height="14" font="2">ple, if the full rotational delay is</text>
+<text top="674" left="277" width="10" height="13" font="7">R</text>
+<text top="675" left="288" width="231" height="14" font="2">, the disk has to incur a rotational delay</text>
+<text top="692" left="87" width="49" height="14" font="2">of about</text>
+<text top="689" left="141" width="8" height="9" font="19">R</text>
+<text top="699" left="143" width="5" height="9" font="20">2</text>
+<text top="692" left="154" width="365" height="14" font="2">to wait for 0 to come under the read/write head (if we start at</text>
+<text top="707" left="87" width="432" height="14" font="2">6). A worst-case request on this single track would be to sector 5, causing</text>
+<text top="722" left="87" width="371" height="14" font="2">nearly a full rotational delay in order to service such a request.</text>
+<text top="745" left="87" width="189" height="15" font="18"><b>Multiple Tracks: Seek Time</b></text>
+<text top="765" left="87" width="432" height="14" font="2">So far our disk just has a single track, which is not too realistic; modern</text>
+<text top="780" left="87" width="432" height="14" font="2">disks of course have many millions. Let’s thus look at an ever-so-slightly</text>
+<text top="795" left="87" width="419" height="14" font="2">more realistic disk surface, this one with three tracks (Figure 37.3, left).</text>
+<text top="811" left="105" width="414" height="14" font="2">In the figure, the head is currently positioned over the innermost track</text>
+<text top="826" left="87" width="432" height="14" font="2">(which contains sectors 24 through 35); the next track over contains the</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="9" family="EZNELC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="22" size="11" family="EZNELC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="23" size="13" family="ROSZAR+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="441" width="11" height="14" font="2">H</text>
+<text top="98" left="453" width="25" height="11" font="4">ARD</text>
+<text top="96" left="482" width="10" height="14" font="2">D</text>
+<text top="98" left="493" width="18" height="11" font="4">ISK</text>
+<text top="96" left="516" width="10" height="14" font="2">D</text>
+<text top="98" left="527" width="33" height="11" font="4">RIVES</text>
+<text top="242" left="316" width="6" height="11" font="10">0</text>
+<text top="203" left="302" width="12" height="11" font="10">11</text>
+<text top="174" left="274" width="12" height="11" font="10">10</text>
+<text top="164" left="238" width="6" height="11" font="10">9</text>
+<text top="174" left="199" width="6" height="11" font="10">8</text>
+<text top="203" left="171" width="6" height="11" font="10">7</text>
+<text top="242" left="161" width="6" height="11" font="10">6</text>
+<text top="280" left="171" width="6" height="11" font="10">5</text>
+<text top="309" left="199" width="6" height="11" font="10">4</text>
+<text top="319" left="238" width="6" height="11" font="10">3</text>
+<text top="309" left="277" width="6" height="11" font="10">2</text>
+<text top="280" left="305" width="6" height="11" font="10">1</text>
+<text top="242" left="296" width="12" height="11" font="10">12</text>
+<text top="211" left="288" width="12" height="11" font="10">23</text>
+<text top="189" left="266" width="12" height="11" font="10">22</text>
+<text top="181" left="235" width="12" height="11" font="10">21</text>
+<text top="189" left="205" width="12" height="11" font="10">20</text>
+<text top="211" left="182" width="12" height="11" font="10">19</text>
+<text top="242" left="174" width="12" height="11" font="10">18</text>
+<text top="272" left="182" width="12" height="11" font="10">17</text>
+<text top="294" left="205" width="12" height="11" font="10">16</text>
+<text top="303" left="235" width="12" height="11" font="10">15</text>
+<text top="294" left="266" width="12" height="11" font="10">14</text>
+<text top="272" left="288" width="12" height="11" font="10">13</text>
+<text top="242" left="279" width="12" height="11" font="10">24</text>
+<text top="219" left="273" width="12" height="11" font="10">35</text>
+<text top="203" left="257" width="12" height="11" font="10">34</text>
+<text top="197" left="235" width="12" height="11" font="10">33</text>
+<text top="203" left="213" width="12" height="11" font="10">32</text>
+<text top="219" left="197" width="12" height="11" font="10">31</text>
+<text top="242" left="191" width="12" height="11" font="10">30</text>
+<text top="264" left="197" width="12" height="11" font="10">29</text>
+<text top="280" left="213" width="12" height="11" font="10">28</text>
+<text top="286" left="235" width="12" height="11" font="10">27</text>
+<text top="280" left="257" width="12" height="11" font="10">26</text>
+<text top="264" left="273" width="12" height="11" font="10">25</text>
+<text top="232" left="223" width="37" height="11" font="10">Spindle</text>
+<text top="139" left="201" width="81" height="11" font="10">Rotates this way</text>
+<text top="222" left="394" width="20" height="9" font="21">Seek</text>
+<text top="222" left="352" width="53" height="11" font="22">Remaining rotation</text>
+<text top="241" left="534" width="6" height="11" font="10">3</text>
+<text top="202" left="524" width="6" height="11" font="10">2</text>
+<text top="174" left="495" width="6" height="11" font="10">1</text>
+<text top="163" left="457" width="6" height="11" font="10">0</text>
+<text top="174" left="415" width="12" height="11" font="10">11</text>
+<text top="202" left="386" width="12" height="11" font="10">10</text>
+<text top="241" left="379" width="6" height="11" font="10">9</text>
+<text top="280" left="389" width="6" height="11" font="10">8</text>
+<text top="308" left="418" width="6" height="11" font="10">7</text>
+<text top="318" left="457" width="6" height="11" font="10">6</text>
+<text top="308" left="495" width="6" height="11" font="10">5</text>
+<text top="280" left="524" width="6" height="11" font="10">4</text>
+<text top="241" left="514" width="12" height="11" font="10">15</text>
+<text top="210" left="506" width="12" height="11" font="10">14</text>
+<text top="188" left="484" width="12" height="11" font="10">13</text>
+<text top="180" left="453" width="12" height="11" font="10">12</text>
+<text top="188" left="423" width="12" height="11" font="10">23</text>
+<text top="210" left="401" width="12" height="11" font="10">22</text>
+<text top="241" left="392" width="12" height="11" font="10">21</text>
+<text top="271" left="401" width="12" height="11" font="10">20</text>
+<text top="294" left="423" width="12" height="11" font="10">19</text>
+<text top="302" left="453" width="12" height="11" font="10">18</text>
+<text top="294" left="484" width="12" height="11" font="10">17</text>
+<text top="271" left="506" width="12" height="11" font="10">16</text>
+<text top="241" left="498" width="12" height="11" font="10">27</text>
+<text top="219" left="492" width="12" height="11" font="10">26</text>
+<text top="202" left="476" width="12" height="11" font="10">25</text>
+<text top="196" left="453" width="12" height="11" font="10">24</text>
+<text top="202" left="431" width="12" height="11" font="10">35</text>
+<text top="219" left="415" width="12" height="11" font="10">34</text>
+<text top="241" left="409" width="12" height="11" font="10">33</text>
+<text top="263" left="415" width="12" height="11" font="10">32</text>
+<text top="279" left="431" width="12" height="11" font="10">31</text>
+<text top="285" left="453" width="12" height="11" font="10">30</text>
+<text top="279" left="476" width="12" height="11" font="10">29</text>
+<text top="263" left="492" width="12" height="11" font="10">28</text>
+<text top="232" left="441" width="37" height="11" font="10">Spindle</text>
+<text top="139" left="419" width="81" height="11" font="10">Rotates this way</text>
+<text top="350" left="170" width="69" height="14" font="2">Figure 37.3:</text>
+<text top="350" left="243" width="277" height="13" font="3"><b>Three Tracks Plus A Head (Right: With Seek)</b></text>
+<text top="368" left="129" width="432" height="14" font="2">next set of sectors (12 through 23), and the outermost track contains the</text>
+<text top="383" left="129" width="158" height="14" font="2">first sectors (0 through 11).</text>
+<text top="399" left="147" width="414" height="14" font="2">To understand how the drive might access a given sector, we now trace</text>
+<text top="414" left="129" width="432" height="14" font="2">what would happen on a request to a distant sector, e.g., a read to sector</text>
+<text top="429" left="129" width="432" height="14" font="2">11. To service this read, the drive has to first move the disk arm to the cor-</text>
+<text top="444" left="129" width="397" height="14" font="2">rect track (in this case, the outermost one), in a process known as a</text>
+<text top="444" left="530" width="28" height="13" font="3"><b>seek</b></text>
+<text top="444" left="557" width="3" height="14" font="2">.</text>
+<text top="459" left="129" width="416" height="14" font="2">Seeks, along with rotations, are one of the most costly disk operations.</text>
+<text top="474" left="147" width="345" height="14" font="2">The seek, it should be noted, has many phases: first an</text>
+<text top="474" left="497" width="64" height="14" font="23"><i>acceleration</i></text>
+<text top="489" left="129" width="248" height="14" font="2">phase as the disk arm gets moving; then</text>
+<text top="489" left="382" width="45" height="14" font="23"><i>coasting</i></text>
+<text top="489" left="432" width="129" height="14" font="2">as the arm is moving</text>
+<text top="504" left="129" width="110" height="14" font="2">at full speed, then</text>
+<text top="504" left="243" width="65" height="14" font="23"><i>deceleration</i></text>
+<text top="504" left="312" width="187" height="14" font="2">as the arm slows down; finally</text>
+<text top="504" left="503" width="41" height="14" font="23"><i>settling</i></text>
+<text top="504" left="548" width="12" height="14" font="2">as</text>
+<text top="519" left="129" width="350" height="14" font="2">the head is carefully positioned over the correct track. The</text>
+<text top="519" left="483" width="78" height="13" font="3"><b>settling time</b></text>
+<text top="534" left="129" width="432" height="14" font="2">is often quite significant, e.g., 0.5 to 2 ms, as the drive must be certain to</text>
+<text top="549" left="129" width="329" height="14" font="2">find the right track (imagine if it just got close instead!).</text>
+<text top="565" left="147" width="414" height="14" font="2">After the seek, the disk arm has positioned the head over the right</text>
+<text top="580" left="129" width="355" height="14" font="2">track. A depiction of the seek is found in Figure 37.3 (right).</text>
+<text top="596" left="147" width="414" height="14" font="2">As we can see, during the seek, the arm has been moved to the desired</text>
+<text top="611" left="129" width="432" height="14" font="2">track, and the platter of course has rotated, in this case about 3 sectors.</text>
+<text top="626" left="129" width="432" height="14" font="2">Thus, sector 9 is just about to pass under the disk head, and we must</text>
+<text top="640" left="129" width="360" height="14" font="2">only endure a short rotational delay to complete the transfer.</text>
+<text top="656" left="147" width="414" height="14" font="2">When sector 11 passes under the disk head, the final phase of I/O</text>
+<text top="671" left="129" width="175" height="14" font="2">will take place, known as the</text>
+<text top="671" left="308" width="48" height="13" font="3"><b>transfer</b></text>
+<text top="671" left="355" width="205" height="14" font="2">, where data is either read from or</text>
+<text top="686" left="129" width="432" height="14" font="2">written to the surface. And thus, we have a complete picture of I/O time:</text>
+<text top="701" left="129" width="428" height="14" font="2">first a seek, then waiting for the rotational delay, and finally the transfer.</text>
+<text top="741" left="129" width="134" height="15" font="18"><b>Some Other Details</b></text>
+<text top="766" left="129" width="432" height="14" font="2">Though we won’t spend too much time on it, there are some other inter-</text>
+<text top="781" left="129" width="432" height="14" font="2">esting details about how hard drives operate. Many drives employ some</text>
+<text top="796" left="129" width="44" height="14" font="2">kind of</text>
+<text top="796" left="178" width="68" height="13" font="3"><b>track skew</b></text>
+<text top="796" left="250" width="311" height="14" font="2">to make sure that sequential reads can be properly</text>
+<text top="811" left="129" width="432" height="14" font="2">serviced even when crossing track boundaries. In our simple example</text>
+<text top="826" left="129" width="321" height="14" font="2">disk, this might appear as seen in Figure 37.4 (page 5).</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="15">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="15">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="11" height="14" font="2">H</text>
+<text top="98" left="99" width="25" height="11" font="4">ARD</text>
+<text top="96" left="129" width="10" height="14" font="2">D</text>
+<text top="98" left="140" width="18" height="11" font="4">ISK</text>
+<text top="96" left="162" width="10" height="14" font="2">D</text>
+<text top="98" left="173" width="33" height="11" font="4">RIVES</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="339" left="256" width="105" height="11" font="10">Track skew: 2 blocks</text>
+<text top="244" left="385" width="6" height="11" font="10">0</text>
+<text top="204" left="371" width="13" height="11" font="10">11</text>
+<text top="175" left="342" width="13" height="11" font="10">10</text>
+<text top="164" left="306" width="6" height="11" font="10">9</text>
+<text top="175" left="266" width="6" height="11" font="10">8</text>
+<text top="204" left="237" width="6" height="11" font="10">7</text>
+<text top="244" left="226" width="6" height="11" font="10">6</text>
+<text top="283" left="237" width="6" height="11" font="10">5</text>
+<text top="312" left="266" width="6" height="11" font="10">4</text>
+<text top="323" left="306" width="6" height="11" font="10">3</text>
+<text top="312" left="345" width="6" height="11" font="10">2</text>
+<text top="283" left="374" width="6" height="11" font="10">1</text>
+<text top="244" left="365" width="13" height="11" font="10">22</text>
+<text top="212" left="357" width="13" height="11" font="10">21</text>
+<text top="189" left="334" width="13" height="11" font="10">20</text>
+<text top="181" left="302" width="13" height="11" font="10">19</text>
+<text top="189" left="271" width="13" height="11" font="10">18</text>
+<text top="212" left="248" width="13" height="11" font="10">17</text>
+<text top="244" left="240" width="13" height="11" font="10">16</text>
+<text top="275" left="248" width="13" height="11" font="10">15</text>
+<text top="298" left="271" width="13" height="11" font="10">14</text>
+<text top="306" left="302" width="13" height="11" font="10">13</text>
+<text top="298" left="334" width="13" height="11" font="10">12</text>
+<text top="275" left="357" width="13" height="11" font="10">23</text>
+<text top="244" left="348" width="13" height="11" font="10">32</text>
+<text top="221" left="342" width="13" height="11" font="10">31</text>
+<text top="204" left="325" width="13" height="11" font="10">30</text>
+<text top="198" left="302" width="13" height="11" font="10">29</text>
+<text top="204" left="280" width="13" height="11" font="10">28</text>
+<text top="221" left="263" width="13" height="11" font="10">27</text>
+<text top="244" left="257" width="13" height="11" font="10">26</text>
+<text top="266" left="263" width="13" height="11" font="10">25</text>
+<text top="283" left="280" width="13" height="11" font="10">24</text>
+<text top="289" left="302" width="13" height="11" font="10">35</text>
+<text top="283" left="325" width="13" height="11" font="10">34</text>
+<text top="266" left="342" width="13" height="11" font="10">33</text>
+<text top="235" left="290" width="38" height="11" font="10">Spindle</text>
+<text top="139" left="267" width="83" height="11" font="10">Rotates this way</text>
+<text top="370" left="173" width="69" height="14" font="2">Figure 37.4:</text>
+<text top="370" left="246" width="188" height="13" font="3"><b>Three Tracks: Track Skew Of 2</b></text>
+<text top="408" left="105" width="414" height="14" font="2">Sectors are often skewed like this because when switching from one</text>
+<text top="423" left="87" width="432" height="14" font="2">track to another, the disk needs time to reposition the head (even to neigh-</text>
+<text top="438" left="87" width="432" height="14" font="2">boring tracks). Without such skew, the head would be moved to the next</text>
+<text top="453" left="87" width="432" height="14" font="2">track but the desired next block would have already rotated under the</text>
+<text top="468" left="87" width="432" height="14" font="2">head, and thus the drive would have to wait almost the entire rotational</text>
+<text top="483" left="87" width="178" height="14" font="2">delay to access the next block.</text>
+<text top="498" left="105" width="414" height="14" font="2">Another reality is that outer tracks tend to have more sectors than</text>
+<text top="513" left="87" width="432" height="14" font="2">inner tracks, which is a result of geometry; there is simply more room</text>
+<text top="528" left="87" width="278" height="14" font="2">out there. These tracks are often referred to as</text>
+<text top="528" left="370" width="75" height="13" font="3"><b>multi-zoned</b></text>
+<text top="528" left="449" width="70" height="14" font="2">disk drives,</text>
+<text top="543" left="87" width="432" height="14" font="2">where the disk is organized into multiple zones, and where a zone is con-</text>
+<text top="558" left="87" width="432" height="14" font="2">secutive set of tracks on a surface. Each zone has the same number of</text>
+<text top="573" left="87" width="415" height="14" font="2">sectors per track, and outer zones have more sectors than inner zones.</text>
+<text top="588" left="105" width="350" height="14" font="2">Finally, an important part of any modern disk drive is its</text>
+<text top="588" left="460" width="34" height="13" font="3"><b>cache</b></text>
+<text top="588" left="493" width="25" height="14" font="2">, for</text>
+<text top="603" left="87" width="217" height="14" font="2">historical reasons sometimes called a</text>
+<text top="603" left="307" width="72" height="13" font="3"><b>track buffer</b></text>
+<text top="603" left="379" width="140" height="14" font="2">. This cache is just some</text>
+<text top="618" left="87" width="432" height="14" font="2">small amount of memory (usually around 8 or 16 MB) which the drive</text>
+<text top="632" left="87" width="432" height="14" font="2">can use to hold data read from or written to the disk. For example, when</text>
+<text top="647" left="87" width="432" height="14" font="2">reading a sector from the disk, the drive might decide to read in all of the</text>
+<text top="662" left="87" width="432" height="14" font="2">sectors on that track and cache them in its memory; doing so allows the</text>
+<text top="677" left="87" width="418" height="14" font="2">drive to quickly respond to any subsequent requests to the same track.</text>
+<text top="692" left="105" width="414" height="14" font="2">On writes, the drive has a choice: should it acknowledge the write has</text>
+<text top="707" left="87" width="432" height="14" font="2">completed when it has put the data in its memory, or after the write has</text>
+<text top="722" left="87" width="311" height="14" font="2">actually been written to disk? The former is called</text>
+<text top="722" left="403" width="66" height="13" font="3"><b>write back</b></text>
+<text top="722" left="473" width="46" height="14" font="2">caching</text>
+<text top="737" left="87" width="84" height="14" font="2">(or sometimes</text>
+<text top="737" left="174" width="127" height="13" font="3"><b>immediate reporting</b></text>
+<text top="737" left="301" width="90" height="14" font="2">), and the latter</text>
+<text top="737" left="394" width="85" height="13" font="3"><b>write through</b></text>
+<text top="737" left="479" width="40" height="14" font="2">. Write</text>
+<text top="752" left="87" width="432" height="14" font="2">back caching sometimes makes the drive appear “faster”, but can be dan-</text>
+<text top="767" left="87" width="432" height="14" font="2">gerous; if the file system or applications require that data be written to</text>
+<text top="782" left="87" width="432" height="14" font="2">disk in a certain order for correctness, write-back caching can lead to</text>
+<text top="797" left="87" width="383" height="14" font="2">problems (read the chapter on file-system journaling for details).</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="24" size="15" family="BPSBWD+LINE10" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="441" width="11" height="14" font="2">H</text>
+<text top="98" left="453" width="25" height="11" font="4">ARD</text>
+<text top="96" left="482" width="10" height="14" font="2">D</text>
+<text top="98" left="493" width="18" height="11" font="4">ISK</text>
+<text top="96" left="516" width="10" height="14" font="2">D</text>
+<text top="98" left="527" width="33" height="11" font="4">RIVES</text>
+<text top="148" left="246" width="10" height="14" font="2">A</text>
+<text top="150" left="257" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="284" width="19" height="14" font="2">: D</text>
+<text top="150" left="303" width="77" height="11" font="4">IMENSIONAL</text>
+<text top="148" left="384" width="10" height="14" font="2">A</text>
+<text top="150" left="395" width="49" height="11" font="4">NALYSIS</text>
+<text top="163" left="129" width="432" height="14" font="2">Remember in Chemistry class, how you solved virtually every problem</text>
+<text top="178" left="129" width="432" height="14" font="2">by simply setting up the units such that they canceled out, and somehow</text>
+<text top="193" left="129" width="432" height="14" font="2">the answers popped out as a result? That chemical magic is known by the</text>
+<text top="208" left="129" width="119" height="14" font="2">highfalutin name of</text>
+<text top="208" left="251" width="131" height="13" font="3"><b>dimensional analysis</b></text>
+<text top="208" left="386" width="175" height="14" font="2">and it turns out it is useful in</text>
+<text top="223" left="129" width="185" height="14" font="2">computer systems analysis too.</text>
+<text top="241" left="129" width="432" height="14" font="2">Let’s do an example to see how dimensional analysis works and why it is</text>
+<text top="256" left="129" width="432" height="14" font="2">useful. In this case, assume you have to figure out how long, in millisec-</text>
+<text top="271" left="129" width="432" height="14" font="2">onds, a single rotation of a disk takes. Unfortunately, you are given only</text>
+<text top="286" left="129" width="19" height="14" font="2">the</text>
+<text top="286" left="151" width="31" height="13" font="3"><b>RPM</b></text>
+<text top="286" left="186" width="82" height="14" font="2">of the disk, or</text>
+<text top="286" left="270" width="125" height="13" font="3"><b>rotations per minute</b></text>
+<text top="286" left="396" width="165" height="14" font="2">. Let’s assume we’re talking</text>
+<text top="301" left="129" width="432" height="14" font="2">about a 10K RPM disk (i.e., it rotates 10,000 times per minute). How do</text>
+<text top="316" left="129" width="432" height="14" font="2">we set up the dimensional analysis so that we get time per rotation in</text>
+<text top="331" left="129" width="81" height="14" font="2">milliseconds?</text>
+<text top="349" left="129" width="432" height="14" font="2">To do so, we start by putting the desired units on the left; in this case,</text>
+<text top="364" left="129" width="432" height="14" font="2">we wish to obtain the time (in milliseconds) per rotation, so that is ex-</text>
+<text top="382" left="129" width="163" height="14" font="2">actly what we write down:</text>
+<text top="379" left="301" width="27" height="9" font="19">T ime</text>
+<text top="379" left="331" width="4" height="9" font="20">(</text>
+<text top="379" left="335" width="15" height="9" font="19">ms</text>
+<text top="379" left="350" width="4" height="9" font="20">)</text>
+<text top="390" left="301" width="5" height="9" font="20">1</text>
+<text top="390" left="309" width="45" height="9" font="19">Rotation</text>
+<text top="382" left="356" width="205" height="14" font="2">. We then write down everything</text>
+<text top="397" left="129" width="432" height="14" font="2">we know, making sure to cancel units where possible. First, we obtain</text>
+<text top="412" left="150" width="5" height="9" font="20">1</text>
+<text top="412" left="159" width="37" height="9" font="19">minute</text>
+<text top="422" left="131" width="11" height="9" font="20">10</text>
+<text top="422" left="142" width="3" height="9" font="19">,</text>
+<text top="422" left="145" width="16" height="9" font="20">000</text>
+<text top="422" left="165" width="50" height="9" font="19">Rotations</text>
+<text top="414" left="221" width="340" height="14" font="2">(keeping rotation on the bottom, as that’s where it is on</text>
+<text top="434" left="129" width="309" height="14" font="2">the left), then transform minutes into seconds with</text>
+<text top="431" left="444" width="11" height="9" font="20">60</text>
+<text top="431" left="458" width="39" height="9" font="19">seconds</text>
+<text top="441" left="448" width="5" height="9" font="20">1</text>
+<text top="441" left="457" width="37" height="9" font="19">minute</text>
+<text top="434" left="499" width="62" height="14" font="2">, and then</text>
+<text top="451" left="129" width="274" height="14" font="2">finally transform seconds in milliseconds with</text>
+<text top="448" left="409" width="22" height="9" font="20">1000</text>
+<text top="448" left="434" width="15" height="9" font="19">ms</text>
+<text top="459" left="407" width="5" height="9" font="20">1</text>
+<text top="459" left="416" width="34" height="9" font="19">second</text>
+<text top="451" left="452" width="109" height="14" font="2">. The final result is</text>
+<text top="466" left="129" width="250" height="14" font="2">the following (with units nicely canceled):</text>
+<text top="495" left="146" width="27" height="9" font="19">T ime</text>
+<text top="495" left="176" width="4" height="9" font="20">(</text>
+<text top="495" left="180" width="15" height="9" font="19">ms</text>
+<text top="495" left="195" width="4" height="9" font="20">)</text>
+<text top="506" left="158" width="5" height="9" font="20">1</text>
+<text top="506" left="166" width="21" height="9" font="19">Rot.</text>
+<text top="498" left="205" width="11" height="13" font="6">=</text>
+<text top="496" left="227" width="5" height="9" font="20">1</text>
+<text top="496" left="234" width="30" height="8" font="24">✘✘</text>
+<text top="490" left="259" width="15" height="8" font="24">✘</text>
+<text top="496" left="235" width="37" height="9" font="19">minute</text>
+<text top="506" left="222" width="11" height="9" font="20">10</text>
+<text top="506" left="233" width="3" height="9" font="19">,</text>
+<text top="506" left="236" width="16" height="9" font="20">000</text>
+<text top="506" left="256" width="21" height="9" font="19">Rot.</text>
+<text top="498" left="282" width="4" height="13" font="8">·</text>
+<text top="496" left="291" width="11" height="9" font="20">60</text>
+<text top="497" left="303" width="30" height="8" font="24">✘✘</text>
+<text top="490" left="330" width="15" height="8" font="24">✘</text>
+<text top="496" left="305" width="39" height="9" font="19">seconds</text>
+<text top="507" left="295" width="5" height="9" font="20">1</text>
+<text top="507" left="302" width="30" height="8" font="24">✘✘</text>
+<text top="501" left="327" width="15" height="8" font="24">✘</text>
+<text top="507" left="303" width="37" height="9" font="19">minute</text>
+<text top="498" left="349" width="4" height="13" font="8">·</text>
+<text top="496" left="358" width="22" height="9" font="20">1000</text>
+<text top="496" left="384" width="15" height="9" font="19">ms</text>
+<text top="506" left="357" width="5" height="9" font="20">1</text>
+<text top="507" left="365" width="30" height="8" font="24">✘✘</text>
+<text top="501" left="386" width="15" height="8" font="24">✘</text>
+<text top="506" left="366" width="34" height="9" font="19">second</text>
+<text top="498" left="405" width="11" height="13" font="6">=</text>
+<text top="495" left="425" width="11" height="9" font="20">60</text>
+<text top="495" left="436" width="3" height="9" font="19">,</text>
+<text top="495" left="439" width="16" height="9" font="20">000</text>
+<text top="495" left="459" width="15" height="9" font="19">ms</text>
+<text top="506" left="422" width="11" height="9" font="20">10</text>
+<text top="506" left="433" width="3" height="9" font="19">,</text>
+<text top="506" left="436" width="16" height="9" font="20">000</text>
+<text top="506" left="456" width="21" height="9" font="19">Rot.</text>
+<text top="498" left="483" width="11" height="13" font="6">=</text>
+<text top="496" left="510" width="5" height="9" font="20">6</text>
+<text top="496" left="518" width="15" height="9" font="19">ms</text>
+<text top="506" left="499" width="45" height="9" font="19">Rotation</text>
+<text top="529" left="129" width="432" height="14" font="2">As you can see from this example, dimensional analysis makes what</text>
+<text top="543" left="129" width="343" height="14" font="2">seems intuitive into a simple and repeatable process.</text>
+<text top="543" left="489" width="72" height="14" font="2">Beyond the</text>
+<text top="558" left="129" width="432" height="14" font="2">RPM calculation above, it comes in handy with I/O analysis regularly.</text>
+<text top="573" left="129" width="432" height="14" font="2">For example, you will often be given the transfer rate of a disk, e.g.,</text>
+<text top="588" left="129" width="432" height="14" font="2">100 MB/second, and then asked: how long does it take to transfer a</text>
+<text top="603" left="129" width="404" height="14" font="2">512 KB block (in milliseconds)? With dimensional analysis, it’s easy:</text>
+<text top="632" left="167" width="27" height="9" font="19">T ime</text>
+<text top="632" left="197" width="4" height="9" font="20">(</text>
+<text top="632" left="201" width="15" height="9" font="19">ms</text>
+<text top="632" left="216" width="4" height="9" font="20">)</text>
+<text top="643" left="169" width="5" height="9" font="20">1</text>
+<text top="643" left="178" width="40" height="9" font="19">Request</text>
+<text top="636" left="226" width="11" height="13" font="6">=</text>
+<text top="633" left="248" width="16" height="9" font="20">512</text>
+<text top="635" left="266" width="15" height="8" font="24">✟</text>
+<text top="631" left="273" width="15" height="8" font="24">✟</text>
+<text top="633" left="268" width="18" height="9" font="19">KB</text>
+<text top="643" left="243" width="5" height="9" font="20">1</text>
+<text top="643" left="251" width="40" height="9" font="19">Request</text>
+<text top="636" left="297" width="4" height="13" font="8">·</text>
+<text top="633" left="313" width="5" height="9" font="20">1</text>
+<text top="635" left="320" width="15" height="8" font="24">✟</text>
+<text top="631" left="328" width="15" height="8" font="24">✟</text>
+<text top="633" left="321" width="20" height="9" font="19">M B</text>
+<text top="645" left="305" width="22" height="9" font="20">1024</text>
+<text top="646" left="329" width="15" height="8" font="24">✟</text>
+<text top="643" left="335" width="15" height="8" font="24">✟</text>
+<text top="645" left="330" width="18" height="9" font="19">KB</text>
+<text top="636" left="354" width="4" height="13" font="8">·</text>
+<text top="633" left="362" width="5" height="9" font="20">1</text>
+<text top="634" left="370" width="30" height="8" font="24">✘✘</text>
+<text top="628" left="391" width="15" height="8" font="24">✘</text>
+<text top="633" left="371" width="34" height="9" font="19">second</text>
+<text top="645" left="364" width="16" height="9" font="20">100</text>
+<text top="647" left="382" width="15" height="8" font="24">✟</text>
+<text top="643" left="390" width="15" height="8" font="24">✟</text>
+<text top="645" left="383" width="20" height="9" font="19">M B</text>
+<text top="636" left="410" width="4" height="13" font="8">·</text>
+<text top="633" left="419" width="22" height="9" font="20">1000</text>
+<text top="633" left="445" width="15" height="9" font="19">ms</text>
+<text top="644" left="418" width="5" height="9" font="20">1</text>
+<text top="645" left="426" width="30" height="8" font="24">✘✘</text>
+<text top="639" left="447" width="15" height="8" font="24">✘</text>
+<text top="644" left="427" width="34" height="9" font="19">second</text>
+<text top="636" left="466" width="11" height="13" font="6">=</text>
+<text top="633" left="491" width="5" height="9" font="20">5</text>
+<text top="633" left="500" width="15" height="9" font="19">ms</text>
+<text top="643" left="483" width="40" height="9" font="19">Request</text>
+<text top="706" left="97" width="231" height="17" font="5">37.4 I/O Time: Doing The Math</text>
+<text top="736" left="147" width="414" height="14" font="2">Now that we have an abstract model of the disk, we can use a little</text>
+<text top="751" left="129" width="432" height="14" font="2">analysis to better understand disk performance. In particular, we can</text>
+<text top="766" left="129" width="375" height="14" font="2">now represent I/O time as the sum of three major components:</text>
+<text top="799" left="237" width="8" height="13" font="7">T</text>
+<text top="805" left="245" width="20" height="9" font="19">I/O</text>
+<text top="799" left="269" width="11" height="13" font="6">=</text>
+<text top="799" left="284" width="8" height="13" font="7">T</text>
+<text top="804" left="292" width="22" height="9" font="19">seek</text>
+<text top="799" left="318" width="11" height="13" font="6">+</text>
+<text top="799" left="331" width="8" height="13" font="7">T</text>
+<text top="804" left="340" width="42" height="9" font="19">rotation</text>
+<text top="799" left="385" width="11" height="13" font="6">+</text>
+<text top="799" left="399" width="8" height="13" font="7">T</text>
+<text top="804" left="407" width="45" height="9" font="19">transf er</text>
+<text top="800" left="528" width="32" height="14" font="2">(37.1)</text>
+<text top="826" left="147" width="158" height="14" font="2">Note that the rate of I/O (</text>
+<text top="826" left="305" width="10" height="13" font="7">R</text>
+<text top="831" left="316" width="20" height="9" font="19">I/O</text>
+<text top="826" left="337" width="224" height="14" font="2">), which is often more easily used for</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="15">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="15">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="11" height="14" font="2">H</text>
+<text top="98" left="99" width="25" height="11" font="4">ARD</text>
+<text top="96" left="129" width="10" height="14" font="2">D</text>
+<text top="98" left="140" width="18" height="11" font="4">ISK</text>
+<text top="96" left="162" width="10" height="14" font="2">D</text>
+<text top="98" left="173" width="33" height="11" font="4">RIVES</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="136" left="269" width="86" height="14" font="2">Cheetah 15K.5</text>
+<text top="136" left="373" width="61" height="14" font="2">Barracuda</text>
+<text top="151" left="172" width="53" height="14" font="2">Capacity</text>
+<text top="151" left="313" width="42" height="14" font="2">300 GB</text>
+<text top="151" left="408" width="27" height="14" font="2">1 TB</text>
+<text top="166" left="172" width="30" height="14" font="2">RPM</text>
+<text top="166" left="318" width="37" height="14" font="2">15,000</text>
+<text top="166" left="404" width="30" height="14" font="2">7,200</text>
+<text top="181" left="172" width="80" height="14" font="2">Average Seek</text>
+<text top="181" left="328" width="28" height="14" font="2">4 ms</text>
+<text top="181" left="407" width="28" height="14" font="2">9 ms</text>
+<text top="196" left="172" width="79" height="14" font="2">Max Transfer</text>
+<text top="196" left="297" width="58" height="14" font="2">125 MB/s</text>
+<text top="196" left="376" width="58" height="14" font="2">105 MB/s</text>
+<text top="211" left="172" width="45" height="14" font="2">Platters</text>
+<text top="211" left="349" width="7" height="14" font="2">4</text>
+<text top="211" left="428" width="7" height="14" font="2">4</text>
+<text top="226" left="172" width="36" height="14" font="2">Cache</text>
+<text top="226" left="318" width="38" height="14" font="2">16 MB</text>
+<text top="226" left="375" width="59" height="14" font="2">16/32 MB</text>
+<text top="241" left="172" width="77" height="14" font="2">Connects via</text>
+<text top="241" left="327" width="28" height="14" font="2">SCSI</text>
+<text top="241" left="400" width="34" height="14" font="2">SATA</text>
+<text top="261" left="152" width="69" height="14" font="2">Figure 37.5:</text>
+<text top="261" left="225" width="229" height="13" font="3"><b>Disk Drive Specs: SCSI Versus SATA</b></text>
+<text top="291" left="87" width="432" height="14" font="2">comparison between drives (as we will do below), is easily computed</text>
+<text top="306" left="87" width="422" height="14" font="2">from the time. Simply divide the size of the transfer by the time it took:</text>
+<text top="340" left="238" width="10" height="13" font="7">R</text>
+<text top="346" left="248" width="20" height="9" font="19">I/O</text>
+<text top="340" left="273" width="11" height="13" font="6">=</text>
+<text top="331" left="289" width="27" height="13" font="7">Size</text>
+<text top="336" left="317" width="49" height="9" font="19">T ransf er</text>
+<text top="349" left="313" width="8" height="13" font="7">T</text>
+<text top="355" left="321" width="20" height="9" font="19">I/O</text>
+<text top="341" left="486" width="32" height="14" font="2">(37.2)</text>
+<text top="372" left="105" width="414" height="14" font="2">To get a better feel for I/O time, let us perform the following calcu-</text>
+<text top="387" left="87" width="432" height="14" font="2">lation. Assume there are two workloads we are interested in. The first,</text>
+<text top="401" left="87" width="79" height="14" font="2">known as the</text>
+<text top="402" left="169" width="48" height="13" font="3"><b>random</b></text>
+<text top="401" left="220" width="299" height="14" font="2">workload, issues small (e.g., 4KB) reads to random</text>
+<text top="416" left="87" width="432" height="14" font="2">locations on the disk. Random workloads are common in many impor-</text>
+<text top="431" left="87" width="432" height="14" font="2">tant applications, including database management systems. The second,</text>
+<text top="446" left="87" width="81" height="14" font="2">known as the</text>
+<text top="446" left="172" width="64" height="13" font="3"><b>sequential</b></text>
+<text top="446" left="240" width="279" height="14" font="2">workload, simply reads a large number of sec-</text>
+<text top="461" left="87" width="432" height="14" font="2">tors consecutively from the disk, without jumping around. Sequential</text>
+<text top="476" left="87" width="366" height="14" font="2">access patterns are quite common and thus important as well.</text>
+<text top="491" left="105" width="414" height="14" font="2">To understand the difference in performance between random and se-</text>
+<text top="506" left="87" width="432" height="14" font="2">quential workloads, we need to make a few assumptions about the disk</text>
+<text top="521" left="87" width="432" height="14" font="2">drive first. Let’s look at a couple of modern disks from Seagate. The first,</text>
+<text top="536" left="87" width="432" height="14" font="2">known as the Cheetah 15K.5 [S09b], is a high-performance SCSI drive.</text>
+<text top="551" left="87" width="432" height="14" font="2">The second, the Barracuda [S09a], is a drive built for capacity. Details on</text>
+<text top="566" left="87" width="175" height="14" font="2">both are found in Figure 37.5.</text>
+<text top="581" left="105" width="414" height="14" font="2">As you can see, the drives have quite different characteristics, and</text>
+<text top="596" left="87" width="432" height="14" font="2">in many ways nicely summarize two important components of the disk</text>
+<text top="611" left="87" width="432" height="14" font="2">drive market. The first is the “high performance” drive market, where</text>
+<text top="626" left="87" width="432" height="14" font="2">drives are engineered to spin as fast as possible, deliver low seek times,</text>
+<text top="641" left="87" width="432" height="14" font="2">and transfer data quickly. The second is the “capacity” market, where</text>
+<text top="656" left="87" width="432" height="14" font="2">cost per byte is the most important aspect; thus, the drives are slower but</text>
+<text top="670" left="87" width="319" height="14" font="2">pack as many bits as possible into the space available.</text>
+<text top="685" left="105" width="414" height="14" font="2">From these numbers, we can start to calculate how well the drives</text>
+<text top="700" left="87" width="432" height="14" font="2">would do under our two workloads outlined above. Let’s start by looking</text>
+<text top="715" left="87" width="432" height="14" font="2">at the random workload. Assuming each 4 KB read occurs at a random</text>
+<text top="730" left="87" width="432" height="14" font="2">location on disk, we can calculate how long each such read would take.</text>
+<text top="745" left="87" width="96" height="14" font="2">On the Cheetah:</text>
+<text top="785" left="112" width="8" height="13" font="7">T</text>
+<text top="790" left="121" width="22" height="9" font="19">seek</text>
+<text top="785" left="147" width="21" height="13" font="6">= 4</text>
+<text top="785" left="172" width="37" height="13" font="7">ms, T</text>
+<text top="790" left="209" width="42" height="9" font="19">rotation</text>
+<text top="785" left="256" width="21" height="13" font="6">= 2</text>
+<text top="785" left="281" width="37" height="13" font="7">ms, T</text>
+<text top="790" left="318" width="45" height="9" font="19">transf er</text>
+<text top="785" left="367" width="28" height="13" font="6">= 30</text>
+<text top="785" left="400" width="61" height="13" font="7">microsecs</text>
+<text top="786" left="486" width="32" height="14" font="2">(37.3)</text>
+<text top="811" left="105" width="414" height="14" font="2">The average seek time (4 milliseconds) is just taken as the average time</text>
+<text top="826" left="87" width="432" height="14" font="2">reported by the manufacturer; note that a full seek (from one end of the</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="441" width="11" height="14" font="2">H</text>
+<text top="98" left="453" width="25" height="11" font="4">ARD</text>
+<text top="96" left="482" width="10" height="14" font="2">D</text>
+<text top="98" left="493" width="18" height="11" font="4">ISK</text>
+<text top="96" left="516" width="10" height="14" font="2">D</text>
+<text top="98" left="527" width="33" height="11" font="4">RIVES</text>
+<text top="148" left="251" width="8" height="14" font="2">T</text>
+<text top="150" left="260" width="11" height="11" font="4">IP</text>
+<text top="148" left="271" width="19" height="14" font="2">: U</text>
+<text top="150" left="291" width="13" height="11" font="4">SE</text>
+<text top="148" left="308" width="10" height="14" font="2">D</text>
+<text top="150" left="319" width="25" height="11" font="4">ISKS</text>
+<text top="148" left="348" width="7" height="14" font="2">S</text>
+<text top="150" left="355" width="84" height="11" font="4">EQUENTIALLY</text>
+<text top="163" left="129" width="432" height="14" font="2">When at all possible, transfer data to and from disks in a sequential man-</text>
+<text top="178" left="129" width="432" height="14" font="2">ner. If sequential is not possible, at least think about transferring data</text>
+<text top="193" left="129" width="432" height="14" font="2">in large chunks: the bigger, the better. If I/O is done in little random</text>
+<text top="208" left="129" width="432" height="14" font="2">pieces, I/O performance will suffer dramatically. Also, users will suffer.</text>
+<text top="223" left="129" width="432" height="14" font="2">Also, you will suffer, knowing what suffering you have wrought with</text>
+<text top="238" left="129" width="164" height="14" font="2">your careless random I/Os.</text>
+<text top="292" left="129" width="432" height="14" font="2">surface to the other) would likely take two or three times longer. The</text>
+<text top="307" left="129" width="432" height="14" font="2">average rotational delay is calculated from the RPM directly. 15000 RPM</text>
+<text top="322" left="129" width="432" height="14" font="2">is equal to 250 RPS (rotations per second); thus, each rotation takes 4 ms.</text>
+<text top="337" left="129" width="432" height="14" font="2">On average, the disk will encounter a half rotation and thus 2 ms is the</text>
+<text top="352" left="129" width="432" height="14" font="2">average time. Finally, the transfer time is just the size of the transfer over</text>
+<text top="367" left="129" width="322" height="14" font="2">the peak transfer rate; here it is vanishingly small (30</text>
+<text top="367" left="455" width="72" height="14" font="23"><i>microseconds</i></text>
+<text top="367" left="527" width="34" height="14" font="2">; note</text>
+<text top="382" left="129" width="347" height="14" font="2">that we need 1000 microseconds just to get 1 millisecond!).</text>
+<text top="397" left="147" width="190" height="14" font="2">Thus, from our equation above,</text>
+<text top="396" left="341" width="8" height="13" font="7">T</text>
+<text top="402" left="349" width="20" height="9" font="19">I/O</text>
+<text top="397" left="374" width="187" height="14" font="2">for the Cheetah roughly equals</text>
+<text top="412" left="129" width="432" height="14" font="2">6 ms. To compute the rate of I/O, we just divide the size of the transfer</text>
+<text top="427" left="129" width="236" height="14" font="2">by the average time, and thus arrive at</text>
+<text top="426" left="369" width="10" height="13" font="7">R</text>
+<text top="432" left="379" width="20" height="9" font="19">I/O</text>
+<text top="427" left="404" width="157" height="14" font="2">for the Cheetah under the</text>
+<text top="442" left="129" width="161" height="14" font="2">random workload of about</text>
+<text top="441" left="294" width="7" height="13" font="6">0</text>
+<text top="441" left="301" width="4" height="13" font="7">.</text>
+<text top="441" left="305" width="14" height="13" font="6">66</text>
+<text top="442" left="322" width="239" height="14" font="2">MB/s. The same calculation for the Bar-</text>
+<text top="457" left="129" width="90" height="14" font="2">racuda yields a</text>
+<text top="456" left="223" width="8" height="13" font="7">T</text>
+<text top="462" left="231" width="20" height="9" font="19">I/O</text>
+<text top="457" left="255" width="306" height="14" font="2">of about 13.2 ms, more than twice as slow, and thus</text>
+<text top="471" left="129" width="85" height="14" font="2">a rate of about</text>
+<text top="471" left="218" width="7" height="13" font="6">0</text>
+<text top="471" left="225" width="4" height="13" font="7">.</text>
+<text top="471" left="229" width="14" height="13" font="6">31</text>
+<text top="471" left="246" width="38" height="14" font="2">MB/s.</text>
+<text top="486" left="147" width="414" height="14" font="2">Now let’s look at the sequential workload. Here we can assume there</text>
+<text top="501" left="129" width="432" height="14" font="2">is a single seek and rotation before a very long transfer. For simplicity,</text>
+<text top="516" left="129" width="279" height="14" font="2">assume the size of the transfer is 100 MB. Thus,</text>
+<text top="516" left="411" width="8" height="13" font="7">T</text>
+<text top="521" left="419" width="20" height="9" font="19">I/O</text>
+<text top="516" left="443" width="117" height="14" font="2">for the Cheetah and</text>
+<text top="531" left="129" width="432" height="14" font="2">Barracuda is about 800 ms and 950 ms, respectively. The rates of I/O</text>
+<text top="546" left="129" width="432" height="14" font="2">are thus very nearly the peak transfer rates of 125 MB/s and 105 MB/s,</text>
+<text top="561" left="129" width="312" height="14" font="2">respectively. Figure 37.6 summarizes these numbers.</text>
+<text top="588" left="344" width="49" height="14" font="2">Cheetah</text>
+<text top="588" left="412" width="61" height="14" font="2">Barracuda</text>
+<text top="603" left="217" width="10" height="13" font="7">R</text>
+<text top="609" left="227" width="20" height="9" font="19">I/O</text>
+<text top="603" left="251" width="51" height="14" font="2">Random</text>
+<text top="603" left="332" width="62" height="14" font="2">0.66 MB/s</text>
+<text top="603" left="411" width="62" height="14" font="2">0.31 MB/s</text>
+<text top="618" left="217" width="10" height="13" font="7">R</text>
+<text top="624" left="227" width="20" height="9" font="19">I/O</text>
+<text top="618" left="251" width="62" height="14" font="2">Sequential</text>
+<text top="618" left="335" width="58" height="14" font="2">125 MB/s</text>
+<text top="618" left="415" width="58" height="14" font="2">105 MB/s</text>
+<text top="638" left="173" width="69" height="14" font="2">Figure 37.6:</text>
+<text top="638" left="245" width="272" height="13" font="3"><b>Disk Drive Performance: SCSI Versus SATA</b></text>
+<text top="662" left="147" width="414" height="14" font="2">The figure shows us a number of important things. First, and most</text>
+<text top="677" left="129" width="432" height="14" font="2">importantly, there is a huge gap in drive performance between random</text>
+<text top="692" left="129" width="432" height="14" font="2">and sequential workloads, almost a factor of 200 or so for the Cheetah</text>
+<text top="707" left="129" width="432" height="14" font="2">and more than a factor 300 difference for the Barracuda. And thus we</text>
+<text top="722" left="129" width="387" height="14" font="2">arrive at the most obvious design tip in the history of computing.</text>
+<text top="737" left="147" width="414" height="14" font="2">A second, more subtle point: there is a large difference in performance</text>
+<text top="752" left="129" width="432" height="14" font="2">between high-end “performance” drives and low-end “capacity” drives.</text>
+<text top="767" left="129" width="432" height="14" font="2">For this reason (and others), people are often willing to pay top dollar for</text>
+<text top="782" left="129" width="369" height="14" font="2">the former while trying to get the latter as cheaply as possible.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="15">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="15">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="25" size="15" family="HRSHXJ+CMEX10" color="#000000"/>
+	<fontspec id="26" size="7" family="WGFXHR+CMR5" color="#000000"/>
+<text top="96" left="87" width="11" height="14" font="2">H</text>
+<text top="98" left="99" width="25" height="11" font="4">ARD</text>
+<text top="96" left="129" width="10" height="14" font="2">D</text>
+<text top="98" left="140" width="18" height="11" font="4">ISK</text>
+<text top="96" left="162" width="10" height="14" font="2">D</text>
+<text top="98" left="173" width="33" height="11" font="4">RIVES</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="153" left="172" width="10" height="14" font="2">A</text>
+<text top="155" left="183" width="26" height="11" font="4">SIDE</text>
+<text top="153" left="210" width="18" height="14" font="2">: C</text>
+<text top="155" left="229" width="66" height="11" font="4">OMPUTING</text>
+<text top="153" left="298" width="8" height="14" font="2">T</text>
+<text top="155" left="307" width="16" height="11" font="4">HE</text>
+<text top="153" left="327" width="18" height="14" font="2">“A</text>
+<text top="155" left="344" width="48" height="11" font="4">VERAGE</text>
+<text top="153" left="393" width="18" height="14" font="2">” S</text>
+<text top="155" left="412" width="22" height="11" font="4">EEK</text>
+<text top="168" left="105" width="414" height="14" font="2">In many books and papers, you will see average disk-seek time cited</text>
+<text top="183" left="87" width="432" height="14" font="2">as being roughly one-third of the full seek time. Where does this come</text>
+<text top="197" left="87" width="35" height="14" font="2">from?</text>
+<text top="212" left="105" width="414" height="14" font="2">Turns out it arises from a simple calculation based on average seek</text>
+<text top="227" left="87" width="44" height="14" font="23"><i>distance</i></text>
+<text top="227" left="131" width="311" height="14" font="2">, not time. Imagine the disk as a set of tracks, from</text>
+<text top="227" left="447" width="7" height="13" font="6">0</text>
+<text top="227" left="458" width="12" height="14" font="2">to</text>
+<text top="227" left="474" width="11" height="13" font="7">N</text>
+<text top="227" left="486" width="33" height="14" font="2">. The</text>
+<text top="242" left="87" width="229" height="14" font="2">seek distance between any two tracks</text>
+<text top="242" left="321" width="8" height="13" font="7">x</text>
+<text top="242" left="334" width="23" height="14" font="2">and</text>
+<text top="242" left="361" width="7" height="13" font="7">y</text>
+<text top="242" left="373" width="146" height="14" font="2">is thus computed as the</text>
+<text top="257" left="87" width="277" height="14" font="2">absolute value of the difference between them:</text>
+<text top="257" left="368" width="4" height="13" font="8">|</text>
+<text top="257" left="372" width="8" height="13" font="7">x</text>
+<text top="257" left="383" width="11" height="13" font="8">−</text>
+<text top="257" left="396" width="7" height="13" font="7">y</text>
+<text top="257" left="404" width="4" height="13" font="8">|</text>
+<text top="257" left="408" width="3" height="14" font="2">.</text>
+<text top="272" left="105" width="414" height="14" font="2">To compute the average seek distance, all you need to do is to first add</text>
+<text top="287" left="87" width="177" height="14" font="2">up all possible seek distances:</text>
+<text top="317" left="263" width="9" height="9" font="19">N</text>
+<text top="327" left="257" width="22" height="6" font="25">X</text>
+<text top="352" left="258" width="6" height="9" font="19">x</text>
+<text top="352" left="264" width="14" height="9" font="20">=0</text>
+<text top="317" left="287" width="9" height="9" font="19">N</text>
+<text top="327" left="281" width="22" height="6" font="25">X</text>
+<text top="352" left="282" width="6" height="9" font="19">y</text>
+<text top="352" left="288" width="14" height="9" font="20">=0</text>
+<text top="331" left="305" width="4" height="13" font="8">|</text>
+<text top="331" left="309" width="8" height="13" font="7">x</text>
+<text top="331" left="320" width="11" height="13" font="8">−</text>
+<text top="331" left="334" width="7" height="13" font="7">y</text>
+<text top="331" left="341" width="4" height="13" font="8">|</text>
+<text top="331" left="345" width="4" height="13" font="7">.</text>
+<text top="332" left="486" width="32" height="14" font="2">(37.4)</text>
+<text top="379" left="105" width="363" height="14" font="2">Then, divide this by the number of different possible seeks:</text>
+<text top="379" left="475" width="11" height="13" font="7">N</text>
+<text top="376" left="487" width="5" height="9" font="20">2</text>
+<text top="379" left="493" width="26" height="14" font="2">. To</text>
+<text top="394" left="87" width="295" height="14" font="2">compute the sum, we’ll just use the integral form:</text>
+<text top="422" left="232" width="8" height="6" font="25">Z</text>
+<text top="420" left="247" width="9" height="9" font="19">N</text>
+<text top="450" left="241" width="6" height="9" font="19">x</text>
+<text top="450" left="247" width="14" height="9" font="20">=0</text>
+<text top="422" left="264" width="8" height="6" font="25">Z</text>
+<text top="420" left="279" width="9" height="9" font="19">N</text>
+<text top="450" left="272" width="6" height="9" font="19">y</text>
+<text top="450" left="278" width="14" height="9" font="20">=0</text>
+<text top="432" left="295" width="4" height="13" font="8">|</text>
+<text top="432" left="299" width="8" height="13" font="7">x</text>
+<text top="432" left="310" width="11" height="13" font="8">−</text>
+<text top="432" left="324" width="7" height="13" font="7">y</text>
+<text top="432" left="331" width="4" height="13" font="8">|</text>
+<text top="432" left="337" width="8" height="13" font="6">d</text>
+<text top="432" left="345" width="7" height="13" font="7">y</text>
+<text top="432" left="354" width="8" height="13" font="6">d</text>
+<text top="432" left="362" width="12" height="13" font="7">x.</text>
+<text top="433" left="486" width="32" height="14" font="2">(37.5)</text>
+<text top="468" left="105" width="382" height="14" font="2">To compute the inner integral, let’s break out the absolute value:</text>
+<text top="496" left="203" width="8" height="6" font="25">Z</text>
+<text top="494" left="218" width="6" height="9" font="19">x</text>
+<text top="524" left="212" width="6" height="9" font="19">y</text>
+<text top="524" left="218" width="14" height="9" font="20">=0</text>
+<text top="507" left="232" width="5" height="13" font="6">(</text>
+<text top="507" left="238" width="8" height="13" font="7">x</text>
+<text top="507" left="248" width="11" height="13" font="8">−</text>
+<text top="507" left="262" width="7" height="13" font="7">y</text>
+<text top="507" left="270" width="15" height="13" font="6">) d</text>
+<text top="507" left="285" width="7" height="13" font="7">y</text>
+<text top="507" left="295" width="11" height="13" font="6">+</text>
+<text top="496" left="309" width="8" height="6" font="25">Z</text>
+<text top="494" left="324" width="9" height="9" font="19">N</text>
+<text top="524" left="317" width="6" height="9" font="19">y</text>
+<text top="524" left="323" width="8" height="9" font="20">=</text>
+<text top="524" left="332" width="6" height="9" font="19">x</text>
+<text top="507" left="339" width="5" height="13" font="6">(</text>
+<text top="507" left="344" width="7" height="13" font="7">y</text>
+<text top="507" left="355" width="11" height="13" font="8">−</text>
+<text top="507" left="368" width="8" height="13" font="7">x</text>
+<text top="507" left="376" width="15" height="13" font="6">) d</text>
+<text top="507" left="392" width="11" height="13" font="7">y.</text>
+<text top="507" left="486" width="32" height="14" font="2">(37.6)</text>
+<text top="547" left="105" width="120" height="14" font="2">Solving this leads to</text>
+<text top="547" left="231" width="5" height="13" font="6">(</text>
+<text top="547" left="236" width="15" height="13" font="7">xy</text>
+<text top="547" left="254" width="11" height="13" font="8">−</text>
+<text top="545" left="270" width="5" height="9" font="20">1</text>
+<text top="555" left="270" width="5" height="9" font="20">2</text>
+<text top="547" left="277" width="7" height="13" font="7">y</text>
+<text top="544" left="284" width="5" height="9" font="20">2</text>
+<text top="547" left="291" width="5" height="13" font="6">)</text>
+<text top="544" left="296" width="5" height="6" font="25"></text>
+<text top="553" left="296" width="5" height="6" font="25"></text>
+<text top="542" left="301" width="6" height="9" font="19">x</text>
+<text top="556" left="301" width="5" height="9" font="20">0</text>
+<text top="547" left="311" width="21" height="13" font="6">+ (</text>
+<text top="545" left="334" width="5" height="9" font="20">1</text>
+<text top="555" left="334" width="5" height="9" font="20">2</text>
+<text top="547" left="341" width="7" height="13" font="7">y</text>
+<text top="544" left="349" width="5" height="9" font="20">2</text>
+<text top="547" left="358" width="11" height="13" font="8">−</text>
+<text top="547" left="372" width="15" height="13" font="7">xy</text>
+<text top="547" left="387" width="5" height="13" font="6">)</text>
+<text top="544" left="392" width="5" height="6" font="25"></text>
+<text top="553" left="392" width="5" height="6" font="25"></text>
+<text top="542" left="397" width="9" height="9" font="19">N</text>
+<text top="556" left="397" width="6" height="9" font="19">x</text>
+<text top="547" left="411" width="108" height="14" font="2">which can be sim-</text>
+<text top="566" left="87" width="54" height="14" font="2">plified to</text>
+<text top="566" left="144" width="5" height="13" font="6">(</text>
+<text top="566" left="149" width="8" height="13" font="7">x</text>
+<text top="564" left="157" width="5" height="9" font="20">2</text>
+<text top="566" left="166" width="11" height="13" font="8">−</text>
+<text top="566" left="180" width="20" height="13" font="7">N x</text>
+<text top="566" left="203" width="11" height="13" font="6">+</text>
+<text top="564" left="218" width="5" height="9" font="20">1</text>
+<text top="574" left="218" width="5" height="9" font="20">2</text>
+<text top="566" left="225" width="11" height="13" font="7">N</text>
+<text top="564" left="238" width="5" height="9" font="20">2</text>
+<text top="566" left="244" width="5" height="13" font="6">)</text>
+<text top="566" left="249" width="4" height="13" font="7">.</text>
+<text top="566" left="257" width="262" height="14" font="2">Now we have to compute the outer integral:</text>
+<text top="595" left="224" width="8" height="6" font="25">Z</text>
+<text top="592" left="238" width="9" height="9" font="19">N</text>
+<text top="622" left="232" width="6" height="9" font="19">x</text>
+<text top="622" left="238" width="14" height="9" font="20">=0</text>
+<text top="605" left="253" width="5" height="13" font="6">(</text>
+<text top="605" left="258" width="8" height="13" font="7">x</text>
+<text top="602" left="266" width="5" height="9" font="20">2</text>
+<text top="605" left="275" width="11" height="13" font="8">−</text>
+<text top="605" left="289" width="20" height="13" font="7">N x</text>
+<text top="605" left="312" width="11" height="13" font="6">+</text>
+<text top="596" left="328" width="7" height="13" font="6">1</text>
+<text top="614" left="328" width="7" height="13" font="6">2</text>
+<text top="605" left="337" width="11" height="13" font="7">N</text>
+<text top="602" left="349" width="5" height="9" font="20">2</text>
+<text top="605" left="355" width="15" height="13" font="6">) d</text>
+<text top="605" left="371" width="12" height="13" font="7">x,</text>
+<text top="605" left="486" width="32" height="14" font="2">(37.7)</text>
+<text top="639" left="87" width="98" height="14" font="2">which results in:</text>
+<text top="679" left="205" width="5" height="13" font="6">(</text>
+<text top="670" left="213" width="7" height="13" font="6">1</text>
+<text top="688" left="213" width="7" height="13" font="6">3</text>
+<text top="679" left="221" width="8" height="13" font="7">x</text>
+<text top="676" left="229" width="5" height="9" font="20">3</text>
+<text top="679" left="238" width="11" height="13" font="8">−</text>
+<text top="670" left="254" width="11" height="13" font="7">N</text>
+<text top="688" left="257" width="7" height="13" font="6">2</text>
+<text top="679" left="268" width="8" height="13" font="7">x</text>
+<text top="676" left="276" width="5" height="9" font="20">2</text>
+<text top="679" left="285" width="11" height="13" font="6">+</text>
+<text top="670" left="301" width="11" height="13" font="7">N</text>
+<text top="668" left="314" width="5" height="9" font="20">2</text>
+<text top="688" left="307" width="7" height="13" font="6">2</text>
+<text top="679" left="322" width="8" height="13" font="7">x</text>
+<text top="679" left="329" width="5" height="13" font="6">)</text>
+<text top="667" left="335" width="5" height="6" font="25"></text>
+<text top="676" left="335" width="5" height="6" font="25"></text>
+<text top="685" left="335" width="5" height="6" font="25"></text>
+<text top="694" left="335" width="5" height="6" font="25"></text>
+<text top="664" left="340" width="9" height="9" font="19">N</text>
+<text top="697" left="340" width="5" height="9" font="20">0</text>
+<text top="679" left="358" width="11" height="13" font="6">=</text>
+<text top="670" left="378" width="11" height="13" font="7">N</text>
+<text top="668" left="391" width="5" height="9" font="20">3</text>
+<text top="688" left="384" width="7" height="13" font="6">3</text>
+<text top="679" left="399" width="4" height="13" font="7">.</text>
+<text top="679" left="486" width="32" height="14" font="2">(37.8)</text>
+<text top="714" left="105" width="414" height="14" font="2">Remember that we still have to divide by the total number of seeks</text>
+<text top="733" left="87" width="4" height="14" font="2">(</text>
+<text top="733" left="92" width="11" height="13" font="7">N</text>
+<text top="730" left="104" width="5" height="9" font="20">2</text>
+<text top="733" left="110" width="232" height="14" font="2">) to compute the average seek distance:</text>
+<text top="733" left="346" width="5" height="13" font="6">(</text>
+<text top="731" left="353" width="9" height="9" font="19">N</text>
+<text top="729" left="363" width="5" height="5" font="26">3</text>
+<text top="741" left="358" width="5" height="9" font="20">3</text>
+<text top="733" left="370" width="5" height="13" font="6">)</text>
+<text top="733" left="376" width="7" height="13" font="7">/</text>
+<text top="733" left="383" width="5" height="13" font="6">(</text>
+<text top="733" left="388" width="11" height="13" font="7">N</text>
+<text top="730" left="400" width="5" height="9" font="20">2</text>
+<text top="733" left="407" width="24" height="13" font="6">) =</text>
+<text top="731" left="440" width="5" height="9" font="20">1</text>
+<text top="741" left="440" width="5" height="9" font="20">3</text>
+<text top="733" left="447" width="11" height="13" font="7">N</text>
+<text top="733" left="460" width="59" height="14" font="2">. Thus the</text>
+<text top="748" left="87" width="432" height="14" font="2">average seek distance on a disk, over all possible seeks, is one-third the</text>
+<text top="763" left="87" width="432" height="14" font="2">full distance. And now when you hear that an average seek is one-third</text>
+<text top="778" left="87" width="275" height="14" font="2">of a full seek, you’ll know where it came from.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="441" width="11" height="14" font="2">H</text>
+<text top="98" left="453" width="25" height="11" font="4">ARD</text>
+<text top="96" left="482" width="10" height="14" font="2">D</text>
+<text top="98" left="493" width="18" height="11" font="4">ISK</text>
+<text top="96" left="516" width="10" height="14" font="2">D</text>
+<text top="98" left="527" width="33" height="11" font="4">RIVES</text>
+<text top="244" left="427" width="6" height="11" font="10">0</text>
+<text top="204" left="413" width="13" height="11" font="10">11</text>
+<text top="175" left="384" width="13" height="11" font="10">10</text>
+<text top="164" left="347" width="6" height="11" font="10">9</text>
+<text top="175" left="308" width="6" height="11" font="10">8</text>
+<text top="204" left="278" width="6" height="11" font="10">7</text>
+<text top="244" left="268" width="6" height="11" font="10">6</text>
+<text top="283" left="278" width="6" height="11" font="10">5</text>
+<text top="312" left="308" width="6" height="11" font="10">4</text>
+<text top="323" left="347" width="6" height="11" font="10">3</text>
+<text top="312" left="387" width="6" height="11" font="10">2</text>
+<text top="283" left="416" width="6" height="11" font="10">1</text>
+<text top="244" left="407" width="13" height="11" font="10">12</text>
+<text top="212" left="398" width="13" height="11" font="10">23</text>
+<text top="189" left="375" width="13" height="11" font="10">22</text>
+<text top="181" left="344" width="13" height="11" font="10">21</text>
+<text top="189" left="313" width="13" height="11" font="10">20</text>
+<text top="212" left="290" width="13" height="11" font="10">19</text>
+<text top="244" left="282" width="13" height="11" font="10">18</text>
+<text top="275" left="290" width="13" height="11" font="10">17</text>
+<text top="298" left="313" width="13" height="11" font="10">16</text>
+<text top="306" left="344" width="13" height="11" font="10">15</text>
+<text top="298" left="375" width="13" height="11" font="10">14</text>
+<text top="275" left="398" width="13" height="11" font="10">13</text>
+<text top="244" left="390" width="13" height="11" font="10">24</text>
+<text top="221" left="384" width="13" height="11" font="10">35</text>
+<text top="204" left="367" width="13" height="11" font="10">34</text>
+<text top="198" left="344" width="13" height="11" font="10">33</text>
+<text top="204" left="321" width="13" height="11" font="10">32</text>
+<text top="221" left="305" width="13" height="11" font="10">31</text>
+<text top="244" left="299" width="13" height="11" font="10">30</text>
+<text top="266" left="305" width="13" height="11" font="10">29</text>
+<text top="283" left="321" width="13" height="11" font="10">28</text>
+<text top="289" left="344" width="13" height="11" font="10">27</text>
+<text top="283" left="367" width="13" height="11" font="10">26</text>
+<text top="266" left="384" width="13" height="11" font="10">25</text>
+<text top="235" left="332" width="38" height="11" font="10">Spindle</text>
+<text top="139" left="309" width="83" height="11" font="10">Rotates this way</text>
+<text top="370" left="195" width="69" height="14" font="2">Figure 37.7:</text>
+<text top="370" left="268" width="226" height="13" font="3"><b>SSTF: Scheduling Requests 21 And 2</b></text>
+<text top="406" left="97" width="153" height="17" font="5">37.5 Disk Scheduling</text>
+<text top="436" left="147" width="414" height="14" font="2">Because of the high cost of I/O, the OS has historically played a role in</text>
+<text top="451" left="129" width="432" height="14" font="2">deciding the order of I/Os issued to the disk. More specifically, given a</text>
+<text top="466" left="129" width="134" height="14" font="2">set of I/O requests, the</text>
+<text top="466" left="266" width="89" height="13" font="3"><b>disk scheduler</b></text>
+<text top="466" left="358" width="203" height="14" font="2">examines the requests and decides</text>
+<text top="481" left="129" width="256" height="14" font="2">which one to schedule next [SCO90, JW91].</text>
+<text top="496" left="147" width="414" height="14" font="2">Unlike job scheduling, where the length of each job is usually un-</text>
+<text top="511" left="129" width="432" height="14" font="2">known, with disk scheduling, we can make a good guess at how long</text>
+<text top="526" left="129" width="432" height="14" font="2">a “job” (i.e., disk request) will take. By estimating the seek and possi-</text>
+<text top="541" left="129" width="432" height="14" font="2">ble rotational delay of a request, the disk scheduler can know how long</text>
+<text top="556" left="129" width="432" height="14" font="2">each request will take, and thus (greedily) pick the one that will take the</text>
+<text top="571" left="129" width="432" height="14" font="2">least time to service first. Thus, the disk scheduler will try to follow the</text>
+<text top="586" left="129" width="208" height="13" font="3"><b>principle of SJF (shortest job first)</b></text>
+<text top="586" left="340" width="93" height="14" font="2">in its operation.</text>
+<text top="622" left="129" width="210" height="15" font="18"><b>SSTF: Shortest Seek Time First</b></text>
+<text top="647" left="129" width="288" height="14" font="2">One early disk scheduling approach is known as</text>
+<text top="647" left="420" width="141" height="13" font="3"><b>shortest-seek-time-first</b></text>
+<text top="662" left="129" width="4" height="14" font="2">(</text>
+<text top="662" left="133" width="33" height="13" font="3"><b>SSTF</b></text>
+<text top="662" left="166" width="75" height="14" font="2">) (also called</text>
+<text top="662" left="246" width="109" height="13" font="3"><b>shortest-seek-first</b></text>
+<text top="662" left="358" width="13" height="14" font="2">or</text>
+<text top="662" left="375" width="24" height="13" font="3"><b>SSF</b></text>
+<text top="662" left="399" width="162" height="14" font="2">). SSTF orders the queue of</text>
+<text top="677" left="129" width="432" height="14" font="2">I/O requests by track, picking requests on the nearest track to complete</text>
+<text top="691" left="129" width="432" height="14" font="2">first. For example, assuming the current position of the head is over the</text>
+<text top="706" left="129" width="432" height="14" font="2">inner track, and we have requests for sectors 21 (middle track) and 2</text>
+<text top="721" left="129" width="432" height="14" font="2">(outer track), we would then issue the request to 21 first, wait for it to</text>
+<text top="736" left="129" width="322" height="14" font="2">complete, and then issue the request to 2 (Figure 37.7).</text>
+<text top="751" left="147" width="414" height="14" font="2">SSTF works well in this example, seeking to the middle track first and</text>
+<text top="766" left="129" width="432" height="14" font="2">then the outer track. However, SSTF is not a panacea, for the following</text>
+<text top="781" left="129" width="432" height="14" font="2">reasons. First, the drive geometry is not available to the host OS; rather,</text>
+<text top="796" left="129" width="432" height="14" font="2">it sees an array of blocks. Fortunately, this problem is rather easily fixed.</text>
+<text top="811" left="129" width="273" height="14" font="2">Instead of SSTF, an OS can simply implement</text>
+<text top="811" left="406" width="111" height="13" font="3"><b>nearest-block-first</b></text>
+<text top="811" left="521" width="4" height="14" font="2">(</text>
+<text top="811" left="525" width="28" height="13" font="3"><b>NBF</b></text>
+<text top="811" left="553" width="8" height="14" font="2">),</text>
+<text top="826" left="129" width="383" height="14" font="2">which schedules the request with the nearest block address next.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="15">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="15">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="11" height="14" font="2">H</text>
+<text top="98" left="99" width="25" height="11" font="4">ARD</text>
+<text top="96" left="129" width="10" height="14" font="2">D</text>
+<text top="98" left="140" width="18" height="11" font="4">ISK</text>
+<text top="96" left="162" width="10" height="14" font="2">D</text>
+<text top="98" left="173" width="33" height="11" font="4">RIVES</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="139" left="105" width="263" height="14" font="2">The second problem is more fundamental:</text>
+<text top="139" left="377" width="61" height="13" font="3"><b>starvation</b></text>
+<text top="139" left="438" width="81" height="14" font="2">. Imagine in</text>
+<text top="154" left="87" width="432" height="14" font="2">our example above if there were a steady stream of requests to the in-</text>
+<text top="169" left="87" width="432" height="14" font="2">ner track, where the head currently is positioned. Requests to any other</text>
+<text top="183" left="87" width="432" height="14" font="2">tracks would then be ignored completely by a pure SSTF approach. And</text>
+<text top="198" left="87" width="172" height="14" font="2">thus the crux of the problem:</text>
+<text top="240" left="170" width="10" height="14" font="2">C</text>
+<text top="242" left="180" width="24" height="11" font="4">RUX</text>
+<text top="240" left="205" width="19" height="14" font="2">: H</text>
+<text top="242" left="225" width="20" height="11" font="4">OW</text>
+<text top="240" left="249" width="8" height="14" font="2">T</text>
+<text top="242" left="257" width="8" height="11" font="4">O</text>
+<text top="240" left="270" width="11" height="14" font="2">H</text>
+<text top="242" left="282" width="41" height="11" font="4">ANDLE</text>
+<text top="240" left="327" width="10" height="14" font="2">D</text>
+<text top="242" left="338" width="18" height="11" font="4">ISK</text>
+<text top="240" left="361" width="7" height="14" font="2">S</text>
+<text top="242" left="368" width="68" height="11" font="4">TARVATION</text>
+<text top="255" left="87" width="401" height="14" font="2">How can we implement SSTF-like scheduling but avoid starvation?</text>
+<text top="302" left="87" width="235" height="15" font="18"><b>Elevator (a.k.a. SCAN or C-SCAN)</b></text>
+<text top="328" left="87" width="432" height="14" font="2">The answer to this query was developed some time ago (see [CKR72]</text>
+<text top="343" left="87" width="432" height="14" font="2">for example), and is relatively straightforward. The algorithm, originally</text>
+<text top="358" left="87" width="35" height="14" font="2">called</text>
+<text top="358" left="126" width="40" height="13" font="3"><b>SCAN</b></text>
+<text top="358" left="166" width="353" height="14" font="2">, simply moves back and forth across the disk servicing re-</text>
+<text top="373" left="87" width="432" height="14" font="2">quests in order across the tracks. Let’s call a single pass across the disk</text>
+<text top="388" left="87" width="282" height="14" font="2">(from outer to inner tracks, or inner to outer) a</text>
+<text top="387" left="373" width="32" height="14" font="23"><i>sweep</i></text>
+<text top="388" left="405" width="114" height="14" font="2">. Thus, if a request</text>
+<text top="402" left="87" width="432" height="14" font="2">comes for a block on a track that has already been serviced on this sweep</text>
+<text top="417" left="87" width="432" height="14" font="2">of the disk, it is not handled immediately, but rather queued until the next</text>
+<text top="432" left="87" width="178" height="14" font="2">sweep (in the other direction).</text>
+<text top="449" left="105" width="414" height="14" font="2">SCAN has a number of variants, all of which do about the same thing.</text>
+<text top="464" left="87" width="231" height="14" font="2">For example, Coffman et al. introduced</text>
+<text top="464" left="320" width="52" height="13" font="3"><b>F-SCAN</b></text>
+<text top="464" left="372" width="147" height="14" font="2">, which freezes the queue</text>
+<text top="478" left="87" width="432" height="14" font="2">to be serviced when it is doing a sweep [CKR72]; this action places re-</text>
+<text top="493" left="87" width="432" height="14" font="2">quests that come in during the sweep into a queue to be serviced later.</text>
+<text top="508" left="87" width="432" height="14" font="2">Doing so avoids starvation of far-away requests, by delaying the servic-</text>
+<text top="523" left="87" width="260" height="14" font="2">ing of late-arriving (but nearer by) requests.</text>
+<text top="540" left="105" width="54" height="13" font="3"><b>C-SCAN</b></text>
+<text top="540" left="164" width="229" height="14" font="2">is another common variant, short for</text>
+<text top="540" left="398" width="95" height="13" font="3"><b>Circular SCAN</b></text>
+<text top="540" left="493" width="26" height="14" font="2">. In-</text>
+<text top="554" left="87" width="432" height="14" font="2">stead of sweeping in both directions across the disk, the algorithm only</text>
+<text top="569" left="87" width="432" height="14" font="2">sweeps from outer-to-inner, and then resets at the outer track to begin</text>
+<text top="584" left="87" width="432" height="14" font="2">again. Doing so is a bit more fair to inner and outer tracks, as pure back-</text>
+<text top="599" left="87" width="432" height="14" font="2">and-forth SCAN favors the middle tracks, i.e., after servicing the outer</text>
+<text top="614" left="87" width="432" height="14" font="2">track, SCAN passes through the middle twice before coming back to the</text>
+<text top="629" left="87" width="104" height="14" font="2">outer track again.</text>
+<text top="645" left="105" width="414" height="14" font="2">For reasons that should now be clear, the SCAN algorithm (and its</text>
+<text top="660" left="87" width="244" height="14" font="2">cousins) is sometimes referred to as the</text>
+<text top="660" left="336" width="49" height="13" font="3"><b>elevator</b></text>
+<text top="660" left="391" width="128" height="14" font="2">algorithm, because it</text>
+<text top="675" left="87" width="432" height="14" font="2">behaves like an elevator which is either going up or down and not just</text>
+<text top="690" left="87" width="432" height="14" font="2">servicing requests to floors based on which floor is closer. Imagine how</text>
+<text top="705" left="87" width="432" height="14" font="2">annoying it would be if you were going down from floor 10 to 1, and</text>
+<text top="720" left="87" width="432" height="14" font="2">somebody got on at 3 and pressed 4, and the elevator went up to 4 be-</text>
+<text top="735" left="87" width="432" height="14" font="2">cause it was “closer” than 1! As you can see, the elevator algorithm, when</text>
+<text top="750" left="87" width="432" height="14" font="2">used in real life, prevents fights from taking place on elevators. In disks,</text>
+<text top="765" left="87" width="155" height="14" font="2">it just prevents starvation.</text>
+<text top="781" left="105" width="416" height="14" font="2">Unfortunately, SCAN and its cousins do not represent the best schedul-</text>
+<text top="796" left="87" width="432" height="14" font="2">ing technology. In particular, SCAN (or SSTF even) does not actually ad-</text>
+<text top="811" left="87" width="432" height="14" font="2">here as closely to the principle of SJF as they could. In particular, they</text>
+<text top="826" left="87" width="237" height="14" font="2">ignore rotation. And thus, another crux:</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="441" width="11" height="14" font="2">H</text>
+<text top="98" left="453" width="25" height="11" font="4">ARD</text>
+<text top="96" left="482" width="10" height="14" font="2">D</text>
+<text top="98" left="493" width="18" height="11" font="4">ISK</text>
+<text top="96" left="516" width="10" height="14" font="2">D</text>
+<text top="98" left="527" width="33" height="11" font="4">RIVES</text>
+<text top="148" left="178" width="10" height="14" font="2">C</text>
+<text top="150" left="188" width="24" height="11" font="4">RUX</text>
+<text top="148" left="213" width="19" height="14" font="2">: H</text>
+<text top="150" left="233" width="20" height="11" font="4">OW</text>
+<text top="148" left="257" width="8" height="14" font="2">T</text>
+<text top="150" left="266" width="8" height="11" font="4">O</text>
+<text top="148" left="278" width="10" height="14" font="2">A</text>
+<text top="150" left="289" width="51" height="11" font="4">CCOUNT</text>
+<text top="148" left="344" width="7" height="14" font="2">F</text>
+<text top="150" left="352" width="16" height="11" font="4">OR</text>
+<text top="148" left="373" width="10" height="14" font="2">D</text>
+<text top="150" left="384" width="18" height="11" font="4">ISK</text>
+<text top="148" left="406" width="9" height="14" font="2">R</text>
+<text top="150" left="416" width="54" height="11" font="4">OTATION</text>
+<text top="148" left="473" width="10" height="14" font="2">C</text>
+<text top="150" left="483" width="28" height="11" font="4">OSTS</text>
+<text top="163" left="129" width="432" height="14" font="2">How can we implement an algorithm that more closely approximates SJF</text>
+<text top="178" left="129" width="56" height="14" font="2">by taking</text>
+<text top="178" left="188" width="23" height="14" font="23"><i>both</i></text>
+<text top="178" left="215" width="185" height="14" font="2">seek and rotation into account?</text>
+<text top="234" left="129" width="256" height="15" font="18"><b>SPTF: Shortest Positioning Time First</b></text>
+<text top="259" left="129" width="103" height="14" font="2">Before discussing</text>
+<text top="259" left="235" width="179" height="13" font="3"><b>shortest positioning time first</b></text>
+<text top="259" left="416" width="13" height="14" font="2">or</text>
+<text top="259" left="431" width="33" height="13" font="3"><b>SPTF</b></text>
+<text top="259" left="467" width="108" height="14" font="2">scheduling (some-</text>
+<text top="274" left="129" width="97" height="14" font="2">times also called</text>
+<text top="274" left="229" width="146" height="13" font="3"><b>shortest access time first</b></text>
+<text top="274" left="378" width="13" height="14" font="2">or</text>
+<text top="274" left="394" width="34" height="13" font="3"><b>SATF</b></text>
+<text top="274" left="428" width="133" height="14" font="2">), which is the solution</text>
+<text top="289" left="129" width="432" height="14" font="2">to our problem, let us make sure we understand the problem in more de-</text>
+<text top="304" left="129" width="220" height="14" font="2">tail. Figure 37.8 presents an example.</text>
+<text top="320" left="147" width="414" height="14" font="2">In the example, the head is currently positioned over sector 30 on the</text>
+<text top="335" left="129" width="432" height="14" font="2">inner track. The scheduler thus has to decide: should it schedule sector 16</text>
+<text top="350" left="129" width="432" height="14" font="2">(on the middle track) or sector 8 (on the outer track) for its next request.</text>
+<text top="365" left="129" width="190" height="14" font="2">So which should it service next?</text>
+<text top="381" left="147" width="414" height="14" font="2">The answer, of course, is “it depends”. In engineering, it turns out</text>
+<text top="396" left="129" width="432" height="14" font="2">“it depends” is almost always the answer, reflecting that trade-offs are</text>
+<text top="411" left="129" width="432" height="14" font="2">part of the life of the engineer; such maxims are also good in a pinch,</text>
+<text top="426" left="129" width="432" height="14" font="2">e.g., when you don’t know an answer to your boss’s question, you might</text>
+<text top="441" left="129" width="393" height="14" font="2">want to try this gem. However, it is almost always better to know</text>
+<text top="441" left="526" width="23" height="14" font="23"><i>why</i></text>
+<text top="441" left="553" width="8" height="14" font="2">it</text>
+<text top="456" left="129" width="241" height="14" font="2">depends, which is what we discuss here.</text>
+<text top="472" left="147" width="414" height="14" font="2">What it depends on here is the relative time of seeking as compared</text>
+<text top="486" left="129" width="432" height="14" font="2">to rotation. If, in our example, seek time is much higher than rotational</text>
+<text top="501" left="129" width="432" height="14" font="2">delay, then SSTF (and variants) are just fine. However, imagine if seek is</text>
+<text top="516" left="129" width="432" height="14" font="2">quite a bit faster than rotation. Then, in our example, it would make more</text>
+<text top="531" left="129" width="77" height="14" font="2">sense to seek</text>
+<text top="531" left="210" width="38" height="14" font="23"><i>further</i></text>
+<text top="531" left="252" width="309" height="14" font="2">to service request 8 on the outer track than it would</text>
+<text top="546" left="129" width="432" height="14" font="2">to perform the shorter seek to the middle track to service 16, which has to</text>
+<text top="561" left="129" width="365" height="14" font="2">rotate all the way around before passing under the disk head.</text>
+<text top="699" left="427" width="6" height="11" font="10">0</text>
+<text top="659" left="413" width="13" height="11" font="10">11</text>
+<text top="630" left="384" width="13" height="11" font="10">10</text>
+<text top="620" left="347" width="6" height="11" font="10">9</text>
+<text top="630" left="308" width="6" height="11" font="10">8</text>
+<text top="659" left="278" width="6" height="11" font="10">7</text>
+<text top="699" left="268" width="6" height="11" font="10">6</text>
+<text top="739" left="278" width="6" height="11" font="10">5</text>
+<text top="768" left="308" width="6" height="11" font="10">4</text>
+<text top="779" left="347" width="6" height="11" font="10">3</text>
+<text top="768" left="387" width="6" height="11" font="10">2</text>
+<text top="739" left="416" width="6" height="11" font="10">1</text>
+<text top="699" left="407" width="13" height="11" font="10">12</text>
+<text top="668" left="398" width="13" height="11" font="10">23</text>
+<text top="645" left="375" width="13" height="11" font="10">22</text>
+<text top="637" left="344" width="13" height="11" font="10">21</text>
+<text top="645" left="313" width="13" height="11" font="10">20</text>
+<text top="668" left="290" width="13" height="11" font="10">19</text>
+<text top="699" left="282" width="13" height="11" font="10">18</text>
+<text top="730" left="290" width="13" height="11" font="10">17</text>
+<text top="753" left="313" width="13" height="11" font="10">16</text>
+<text top="762" left="344" width="13" height="11" font="10">15</text>
+<text top="753" left="375" width="13" height="11" font="10">14</text>
+<text top="730" left="398" width="13" height="11" font="10">13</text>
+<text top="699" left="390" width="13" height="11" font="10">24</text>
+<text top="676" left="384" width="13" height="11" font="10">35</text>
+<text top="660" left="367" width="13" height="11" font="10">34</text>
+<text top="654" left="344" width="13" height="11" font="10">33</text>
+<text top="660" left="321" width="13" height="11" font="10">32</text>
+<text top="676" left="305" width="13" height="11" font="10">31</text>
+<text top="699" left="299" width="13" height="11" font="10">30</text>
+<text top="722" left="305" width="13" height="11" font="10">29</text>
+<text top="739" left="321" width="13" height="11" font="10">28</text>
+<text top="745" left="344" width="13" height="11" font="10">27</text>
+<text top="739" left="367" width="13" height="11" font="10">26</text>
+<text top="722" left="384" width="13" height="11" font="10">25</text>
+<text top="690" left="332" width="38" height="11" font="10">Spindle</text>
+<text top="595" left="309" width="83" height="11" font="10">Rotates this way</text>
+<text top="836" left="197" width="69" height="14" font="2">Figure 37.8:</text>
+<text top="836" left="270" width="223" height="13" font="3"><b>SSTF: Sometimes Not Good Enough</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="15">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="15">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="11" height="14" font="2">H</text>
+<text top="98" left="99" width="25" height="11" font="4">ARD</text>
+<text top="96" left="129" width="10" height="14" font="2">D</text>
+<text top="98" left="140" width="18" height="11" font="4">ISK</text>
+<text top="96" left="162" width="10" height="14" font="2">D</text>
+<text top="98" left="173" width="33" height="11" font="4">RIVES</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="148" left="178" width="8" height="14" font="2">T</text>
+<text top="150" left="187" width="11" height="11" font="4">IP</text>
+<text top="148" left="198" width="13" height="14" font="2">: I</text>
+<text top="150" left="212" width="7" height="11" font="4">T</text>
+<text top="148" left="222" width="10" height="14" font="2">A</text>
+<text top="150" left="233" width="38" height="11" font="4">LWAYS</text>
+<text top="148" left="276" width="10" height="14" font="2">D</text>
+<text top="150" left="287" width="46" height="11" font="4">EPENDS</text>
+<text top="148" left="337" width="13" height="14" font="2">(L</text>
+<text top="150" left="351" width="30" height="11" font="4">IVNY</text>
+<text top="148" left="381" width="4" height="14" font="2">’</text>
+<text top="150" left="385" width="6" height="11" font="4">S</text>
+<text top="148" left="395" width="8" height="14" font="2">L</text>
+<text top="150" left="404" width="19" height="11" font="4">AW</text>
+<text top="148" left="424" width="4" height="14" font="2">)</text>
+<text top="163" left="87" width="432" height="14" font="2">Almost any question can be answered with “it depends”, as our colleague</text>
+<text top="178" left="87" width="432" height="14" font="2">Miron Livny always says. However, use with caution, as if you answer</text>
+<text top="193" left="87" width="432" height="14" font="2">too many questions this way, people will stop asking you questions alto-</text>
+<text top="208" left="87" width="432" height="14" font="2">gether. For example, somebody asks: “want to go to lunch?” You reply:</text>
+<text top="223" left="87" width="94" height="14" font="2">“it depends, are</text>
+<text top="223" left="185" width="20" height="14" font="23"><i>you</i></text>
+<text top="223" left="208" width="94" height="14" font="2">coming along?”</text>
+<text top="279" left="105" width="418" height="14" font="2">On modern drives, as we saw above, both seek and rotation are roughly</text>
+<text top="294" left="87" width="432" height="14" font="2">equivalent (depending, of course, on the exact requests), and thus SPTF</text>
+<text top="309" left="87" width="432" height="14" font="2">is useful and improves performance. However, it is even more difficult</text>
+<text top="324" left="87" width="432" height="14" font="2">to implement in an OS, which generally does not have a good idea where</text>
+<text top="339" left="87" width="432" height="14" font="2">track boundaries are or where the disk head currently is (in a rotational</text>
+<text top="354" left="87" width="429" height="14" font="2">sense). Thus, SPTF is usually performed inside a drive, described below.</text>
+<text top="394" left="87" width="168" height="15" font="18"><b>Other Scheduling Issues</b></text>
+<text top="420" left="87" width="432" height="14" font="2">There are many other issues we do not discuss in this brief description</text>
+<text top="435" left="87" width="432" height="14" font="2">of basic disk operation, scheduling, and related topics. One such is-</text>
+<text top="450" left="87" width="64" height="14" font="2">sue is this:</text>
+<text top="450" left="157" width="32" height="14" font="23"><i>where</i></text>
+<text top="450" left="194" width="325" height="14" font="2">is disk scheduling performed on modern systems? In</text>
+<text top="465" left="87" width="432" height="14" font="2">older systems, the operating system did all the scheduling; after looking</text>
+<text top="480" left="87" width="432" height="14" font="2">through the set of pending requests, the OS would pick the best one, and</text>
+<text top="495" left="87" width="432" height="14" font="2">issue it to the disk. When that request completed, the next one would be</text>
+<text top="509" left="87" width="370" height="14" font="2">chosen, and so forth. Disks were simpler then, and so was life.</text>
+<text top="525" left="105" width="414" height="14" font="2">In modern systems, disks can accommodate multiple outstanding re-</text>
+<text top="540" left="87" width="432" height="14" font="2">quests, and have sophisticated internal schedulers themselves (which can</text>
+<text top="555" left="87" width="432" height="14" font="2">implement SPTF accurately; inside the disk controller, all relevant details</text>
+<text top="570" left="87" width="432" height="14" font="2">are available, including exact head position). Thus, the OS scheduler usu-</text>
+<text top="585" left="87" width="432" height="14" font="2">ally picks what it thinks the best few requests are (say 16) and issues them</text>
+<text top="600" left="87" width="432" height="14" font="2">all to disk; the disk then uses its internal knowledge of head position and</text>
+<text top="615" left="87" width="432" height="14" font="2">detailed track layout information to service said requests in the best pos-</text>
+<text top="630" left="87" width="109" height="14" font="2">sible (SPTF) order.</text>
+<text top="646" left="105" width="389" height="14" font="2">Another important related task performed by disk schedulers is</text>
+<text top="646" left="499" width="20" height="13" font="3"><b>I/O</b></text>
+<text top="661" left="87" width="52" height="13" font="3"><b>merging</b></text>
+<text top="661" left="139" width="380" height="14" font="2">. For example, imagine a series of requests to read blocks 33,</text>
+<text top="676" left="87" width="391" height="14" font="2">then 8, then 34, as in Figure 37.8. In this case, the scheduler should</text>
+<text top="676" left="481" width="38" height="13" font="3"><b>merge</b></text>
+<text top="691" left="87" width="432" height="14" font="2">the requests for blocks 33 and 34 into a single two-block request; any re-</text>
+<text top="706" left="87" width="432" height="14" font="2">ordering that the scheduler does is performed upon the merged requests.</text>
+<text top="721" left="87" width="432" height="14" font="2">Merging is particularly important at the OS level, as it reduces the num-</text>
+<text top="735" left="87" width="348" height="14" font="2">ber of requests sent to the disk and thus lowers overheads.</text>
+<text top="751" left="105" width="414" height="14" font="2">One final problem that modern schedulers address is this: how long</text>
+<text top="766" left="87" width="432" height="14" font="2">should the system wait before issuing an I/O to disk? One might naively</text>
+<text top="781" left="87" width="432" height="14" font="2">think that the disk, once it has even a single I/O, should immediately</text>
+<text top="796" left="87" width="306" height="14" font="2">issue the request to the drive; this approach is called</text>
+<text top="796" left="396" width="104" height="13" font="3"><b>work-conserving</b></text>
+<text top="796" left="500" width="19" height="14" font="2">, as</text>
+<text top="811" left="87" width="432" height="14" font="2">the disk will never be idle if there are requests to serve. However, research</text>
+<text top="826" left="87" width="15" height="14" font="2">on</text>
+<text top="826" left="106" width="175" height="13" font="3"><b>anticipatory disk scheduling</b></text>
+<text top="826" left="284" width="235" height="14" font="2">has shown that sometimes it is better to</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="441" width="11" height="14" font="2">H</text>
+<text top="98" left="453" width="25" height="11" font="4">ARD</text>
+<text top="96" left="482" width="10" height="14" font="2">D</text>
+<text top="98" left="493" width="18" height="11" font="4">ISK</text>
+<text top="96" left="516" width="10" height="14" font="2">D</text>
+<text top="98" left="527" width="33" height="11" font="4">RIVES</text>
+<text top="139" left="129" width="233" height="14" font="2">wait for a bit [ID01], in what is called a</text>
+<text top="139" left="366" width="132" height="13" font="3"><b>non-work-conserving</b></text>
+<text top="139" left="502" width="59" height="14" font="2">approach.</text>
+<text top="154" left="129" width="432" height="14" font="2">By waiting, a new and “better” request may arrive at the disk, and thus</text>
+<text top="169" left="129" width="432" height="14" font="2">overall efficiency is increased. Of course, deciding when to wait, and for</text>
+<text top="183" left="129" width="432" height="14" font="2">how long, can be tricky; see the research paper for details, or check out</text>
+<text top="198" left="129" width="432" height="14" font="2">the Linux kernel implementation to see how such ideas are transitioned</text>
+<text top="213" left="129" width="256" height="14" font="2">into practice (if you are the ambitious sort).</text>
+<text top="250" left="97" width="105" height="17" font="5">37.6 Summary</text>
+<text top="280" left="147" width="414" height="14" font="2">We have presented a summary of how disks work. The summary is</text>
+<text top="295" left="129" width="432" height="14" font="2">actually a detailed functional model; it does not describe the amazing</text>
+<text top="310" left="129" width="432" height="14" font="2">physics, electronics, and material science that goes into actual drive de-</text>
+<text top="325" left="129" width="432" height="14" font="2">sign. For those interested in even more details of that nature, we suggest</text>
+<text top="340" left="129" width="432" height="14" font="2">a different major (or perhaps minor); for those that are happy with this</text>
+<text top="355" left="129" width="432" height="14" font="2">model, good! We can now proceed to using the model to build more in-</text>
+<text top="370" left="129" width="307" height="14" font="2">teresting systems on top of these incredible devices.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="15">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="15">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="27" size="16" family="VYQCXX+URWPalladioL" color="#000000"/>
+	<fontspec id="28" size="10" family="ROSZAR+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="29" size="10" family="XGCHVM+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="11" height="14" font="2">H</text>
+<text top="98" left="99" width="25" height="11" font="4">ARD</text>
+<text top="96" left="129" width="10" height="14" font="2">D</text>
+<text top="98" left="140" width="18" height="11" font="4">ISK</text>
+<text top="96" left="162" width="10" height="14" font="2">D</text>
+<text top="98" left="173" width="33" height="11" font="4">RIVES</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="137" left="87" width="82" height="16" font="27"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="13">[ADR03] “More Than an Interface: SCSI vs. ATA” by Dave Anderson, Jim Dykes, Erik Riedel.</text>
+<text top="177" left="87" width="71" height="11" font="13">FAST ’03, 2003.</text>
+<text top="177" left="163" width="356" height="11" font="28"><i>One of the best recent-ish references on how modern disk drives really work; a must</i></text>
+<text top="189" left="87" width="185" height="11" font="28"><i>read for anyone interested in knowing more.</i></text>
+<text top="206" left="87" width="432" height="11" font="13">[CKR72] “Analysis of Scanning Policies for Reducing Disk Seek Times” E.G. Coffman, L.A.</text>
+<text top="218" left="87" width="354" height="11" font="13">Klimko, B. Ryan SIAM Journal of Computing, September 1972, Vol 1. No 3.</text>
+<text top="217" left="446" width="73" height="11" font="28"><i>Some of the early</i></text>
+<text top="229" left="87" width="148" height="11" font="28"><i>work in the field of disk scheduling.</i></text>
+<text top="246" left="87" width="432" height="11" font="13">[HK+17] “The Unwritten Contract of Solid State Drives” by Jun He, Sudarsun Kannan, Andrea</text>
+<text top="258" left="87" width="414" height="11" font="13">C. Arpaci-Dusseau, Remzi H. Arpaci-Dusseau. EuroSys ’17, Belgrade, Serbia, April 2017.</text>
+<text top="258" left="505" width="14" height="11" font="28"><i>We</i></text>
+<text top="270" left="87" width="432" height="11" font="28"><i>take the idea of the unwritten contract, and extend it to SSDs. Using SSDs well seems as complicated</i></text>
+<text top="282" left="87" width="163" height="11" font="28"><i>as hard drives, and sometimes more so.</i></text>
+<text top="298" left="87" width="432" height="11" font="13">[ID01] “Anticipatory Scheduling: A Disk-scheduling Framework To Overcome Deceptive Idle-</text>
+<text top="310" left="87" width="377" height="11" font="13">ness In Synchronous I/O” by Sitaram Iyer, Peter Druschel. SOSP ’01, October 2001.</text>
+<text top="310" left="468" width="51" height="11" font="28"><i>A cool paper</i></text>
+<text top="322" left="87" width="370" height="11" font="28"><i>showing how waiting can improve disk scheduling: better requests may be on their way!</i></text>
+<text top="338" left="87" width="432" height="11" font="13">[JW91] “Disk Scheduling Algorithms Based On Rotational Position” by D. Jacobson, J. Wilkes.</text>
+<text top="350" left="87" width="327" height="11" font="13">Technical Report HPL-CSP-91-7rev1, Hewlett-Packard, February 1991.</text>
+<text top="350" left="419" width="100" height="11" font="28"><i>A more modern take on</i></text>
+<text top="362" left="87" width="432" height="11" font="28"><i>disk scheduling. It remains a technical report (and not a published paper) because the authors were</i></text>
+<text top="374" left="87" width="144" height="11" font="28"><i>scooped by Seltzer et al. [SCO90].</i></text>
+<text top="390" left="87" width="432" height="11" font="13">[RW92] “An Introduction to Disk Drive Modeling” by C. Ruemmler, J. Wilkes. IEEE Computer,</text>
+<text top="402" left="87" width="80" height="11" font="13">27:3, March 1994.</text>
+<text top="402" left="172" width="347" height="11" font="28"><i>A terrific introduction to the basics of disk operation. Some pieces are out of date,</i></text>
+<text top="414" left="87" width="125" height="11" font="28"><i>but most of the basics remain.</i></text>
+<text top="430" left="87" width="432" height="11" font="13">[SCO90] “Disk Scheduling Revisited” by Margo Seltzer, Peter Chen, John Ousterhout. USENIX</text>
+<text top="442" left="87" width="24" height="11" font="13">1990.</text>
+<text top="442" left="114" width="342" height="11" font="28"><i>A paper that talks about how rotation matters too in the world of disk scheduling.</i></text>
+<text top="459" left="87" width="432" height="11" font="13">[SG04] “MEMS-based storage devices and standard disk interfaces: A square peg in a round</text>
+<text top="471" left="87" width="352" height="11" font="13">hole?” Steven W. Schlosser, Gregory R. Ganger FAST ’04, pp. 87-100, 2004</text>
+<text top="471" left="442" width="77" height="11" font="28"><i>While the MEMS</i></text>
+<text top="483" left="87" width="432" height="11" font="28"><i>aspect of this paper hasn’t yet made an impact, the discussion of the contract between file systems and</i></text>
+<text top="494" left="87" width="432" height="11" font="28"><i>disks is wonderful and a lasting contribution. We later build on this work to study the “Unwritten</i></text>
+<text top="506" left="87" width="174" height="11" font="28"><i>Contract of Solid State Drives” [HK+17]</i></text>
+<text top="523" left="87" width="432" height="11" font="13">[S09a] “Barracuda ES.2 data sheet” by Seagate, Inc.. Available at this website, at least, it was:</text>
+<text top="535" left="87" width="414" height="9" font="29">http://www.seagate.com/docs/pdf/datasheet/disc/ds_barracuda_es.pdf</text>
+<text top="535" left="501" width="3" height="11" font="13">.</text>
+<text top="535" left="511" width="8" height="11" font="28"><i>A</i></text>
+<text top="547" left="87" width="243" height="11" font="28"><i>data sheet; read at your own risk. Risk of what? Boredom.</i></text>
+<text top="563" left="87" width="432" height="11" font="13">[S09b] “Cheetah 15K.5” by Seagate, Inc.. Available at this website, we’re pretty sure it is:</text>
+<text top="576" left="87" width="439" height="9" font="29">http://www.seagate.com/docs/pdf/datasheet/disc/ds-cheetah-15k-5-us.pdf</text>
+<text top="575" left="527" width="3" height="11" font="13">.</text>
+<text top="587" left="87" width="159" height="11" font="28"><i>See above commentary on data sheets.</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="30" size="13" family="XGCHVM+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="31" size="12" family="XGCHVM+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="32" size="12" family="VYQCXX+URWPalladioL" color="#000000"/>
+	<fontspec id="33" size="12" family="ROSZAR+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="441" width="11" height="14" font="2">H</text>
+<text top="98" left="453" width="25" height="11" font="4">ARD</text>
+<text top="96" left="482" width="10" height="14" font="2">D</text>
+<text top="98" left="493" width="18" height="11" font="4">ISK</text>
+<text top="96" left="516" width="10" height="14" font="2">D</text>
+<text top="98" left="527" width="33" height="11" font="4">RIVES</text>
+<text top="137" left="129" width="183" height="16" font="27"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="123" height="14" font="2">This homework uses</text>
+<text top="167" left="274" width="57" height="11" font="30">disk.py</text>
+<text top="166" left="334" width="227" height="14" font="2">to familiarize you with how a modern</text>
+<text top="181" left="129" width="432" height="14" font="2">hard drive works. It has a lot of different options, and unlike most of</text>
+<text top="196" left="129" width="432" height="14" font="2">the other simulations, has a graphical animator to show you exactly what</text>
+<text top="211" left="129" width="384" height="14" font="2">happens when the disk is in action. See the README for details.</text>
+<text top="229" left="148" width="413" height="12" font="15">1. Compute the seek, rotation, and transfer times for the following sets of re-</text>
+<text top="243" left="163" width="37" height="12" font="15">quests:</text>
+<text top="244" left="204" width="29" height="10" font="31">-a 0</text>
+<text top="243" left="233" width="3" height="12" font="15">,</text>
+<text top="244" left="239" width="29" height="10" font="31">-a 6</text>
+<text top="243" left="267" width="3" height="12" font="15">,</text>
+<text top="244" left="273" width="36" height="10" font="31">-a 30</text>
+<text top="243" left="309" width="3" height="12" font="15">,</text>
+<text top="244" left="315" width="65" height="10" font="31">-a 7,30,8</text>
+<text top="243" left="380" width="63" height="12" font="15">, and finally</text>
+<text top="244" left="446" width="100" height="10" font="31">-a 10,11,12,13</text>
+<text top="243" left="546" width="3" height="12" font="15">.</text>
+<text top="257" left="148" width="395" height="12" font="15">2. Do the same requests above, but change the seek rate to different values:</text>
+<text top="258" left="546" width="14" height="10" font="31">-S</text>
+<text top="272" left="163" width="7" height="10" font="31">2</text>
+<text top="271" left="171" width="3" height="12" font="15">,</text>
+<text top="272" left="177" width="29" height="10" font="31">-S 4</text>
+<text top="271" left="205" width="3" height="12" font="15">,</text>
+<text top="272" left="211" width="29" height="10" font="31">-S 8</text>
+<text top="271" left="240" width="3" height="12" font="15">,</text>
+<text top="272" left="246" width="36" height="10" font="31">-S 10</text>
+<text top="271" left="282" width="3" height="12" font="15">,</text>
+<text top="272" left="288" width="36" height="10" font="31">-S 40</text>
+<text top="271" left="324" width="3" height="12" font="15">,</text>
+<text top="272" left="330" width="43" height="10" font="31">-S 0.1</text>
+<text top="271" left="373" width="147" height="12" font="15">. How do the times change?</text>
+<text top="285" left="148" width="315" height="12" font="15">3. Do the same requests above, but change the rotation rate:</text>
+<text top="286" left="466" width="43" height="10" font="31">-R 0.1</text>
+<text top="285" left="509" width="3" height="12" font="15">,</text>
+<text top="286" left="515" width="43" height="10" font="31">-R 0.5</text>
+<text top="285" left="558" width="3" height="12" font="15">,</text>
+<text top="300" left="163" width="50" height="10" font="31">-R 0.01</text>
+<text top="300" left="214" width="147" height="12" font="15">. How do the times change?</text>
+<text top="314" left="148" width="295" height="12" font="15">4. FIFO is not always best, e.g., with the request stream</text>
+<text top="315" left="445" width="65" height="10" font="31">-a 7,30,8</text>
+<text top="314" left="510" width="51" height="12" font="15">, what or-</text>
+<text top="328" left="163" width="397" height="12" font="15">der should the requests be processed in? Run the shortest seek-time first</text>
+<text top="342" left="163" width="100" height="12" font="15">(SSTF) scheduler (</text>
+<text top="343" left="264" width="50" height="10" font="31">-p SSTF</text>
+<text top="342" left="314" width="247" height="12" font="15">) on this workload; how long should it take</text>
+<text top="356" left="163" width="285" height="12" font="15">(seek, rotation, transfer) for each request to be served?</text>
+<text top="371" left="148" width="316" height="12" font="15">5. Now use the shortest access-time first (SATF) scheduler (</text>
+<text top="371" left="464" width="50" height="10" font="31">-p SATF</text>
+<text top="371" left="514" width="47" height="12" font="15">). Does it</text>
+<text top="385" left="163" width="123" height="12" font="15">make any difference for</text>
+<text top="385" left="289" width="65" height="10" font="31">-a 7,30,8</text>
+<text top="385" left="356" width="204" height="12" font="15">workload? Find a set of requests where</text>
+<text top="399" left="163" width="386" height="12" font="15">SATF outperforms SSTF; more generally, when is SATF better than SSTF?</text>
+<text top="413" left="148" width="177" height="12" font="15">6. Here is a request stream to try:</text>
+<text top="414" left="328" width="100" height="10" font="31">-a 10,11,12,13</text>
+<text top="413" left="428" width="133" height="12" font="15">. What goes poorly when</text>
+<text top="427" left="163" width="303" height="12" font="15">it runs? Try adding track skew to address this problem (</text>
+<text top="428" left="466" width="50" height="10" font="31">-o skew</text>
+<text top="427" left="516" width="44" height="12" font="15">). Given</text>
+<text top="442" left="163" width="397" height="12" font="15">the default seek rate, what should the skew be to maximize performance?</text>
+<text top="456" left="163" width="219" height="12" font="15">What about for different seek rates (e.g.,</text>
+<text top="456" left="387" width="29" height="10" font="31">-S 2</text>
+<text top="456" left="416" width="3" height="12" font="15">,</text>
+<text top="456" left="423" width="29" height="10" font="31">-S 4</text>
+<text top="456" left="452" width="109" height="12" font="15">)? In general, could</text>
+<text top="470" left="163" width="229" height="12" font="15">you write a formula to figure out the skew?</text>
+<text top="484" left="148" width="290" height="12" font="15">7. Specify a disk with different density per zone, e.g.,</text>
+<text top="485" left="442" width="79" height="10" font="31">-z 10,20,30</text>
+<text top="484" left="521" width="40" height="12" font="15">, which</text>
+<text top="498" left="163" width="397" height="12" font="15">specifies the angular difference between blocks on the outer, middle, and</text>
+<text top="513" left="163" width="247" height="12" font="15">inner tracks. Run some random requests (e.g.,</text>
+<text top="513" left="414" width="108" height="10" font="31">-a -1 -A 5,-1,0</text>
+<text top="513" left="521" width="39" height="12" font="15">, which</text>
+<text top="527" left="163" width="287" height="12" font="15">specifies that random requests should be used via the</text>
+<text top="527" left="454" width="36" height="10" font="31">-a -1</text>
+<text top="527" left="493" width="68" height="12" font="15">flag and that</text>
+<text top="541" left="163" width="397" height="12" font="15">five requests ranging from 0 to the max be generated), and compute the</text>
+<text top="555" left="163" width="397" height="12" font="15">seek, rotation, and transfer times. Use different random seeds. What is the</text>
+<text top="569" left="163" width="397" height="12" font="15">bandwidth (in sectors per unit time) on the outer, middle, and inner tracks?</text>
+<text top="584" left="148" width="413" height="12" font="15">8. A scheduling window determines how many requests the disk can examine</text>
+<text top="598" left="163" width="228" height="12" font="15">at once. Generate random workloads (e.g.,</text>
+<text top="598" left="395" width="86" height="10" font="31">-A 1000,-1,0</text>
+<text top="598" left="481" width="80" height="12" font="15">, with different</text>
+<text top="612" left="163" width="397" height="12" font="15">seeds) and see how long the SATF scheduler takes when the scheduling win-</text>
+<text top="626" left="163" width="397" height="12" font="15">dow is changed from 1 up to the number of requests. How big of a window</text>
+<text top="640" left="163" width="274" height="12" font="15">is needed to maximize performance? Hint: use the</text>
+<text top="641" left="441" width="14" height="10" font="31">-c</text>
+<text top="640" left="459" width="102" height="12" font="15">flag and don’t turn</text>
+<text top="655" left="163" width="70" height="12" font="15">on graphics (</text>
+<text top="655" left="233" width="14" height="10" font="31">-G</text>
+<text top="655" left="248" width="313" height="12" font="15">) to run these quickly. When the scheduling window is set</text>
+<text top="669" left="163" width="250" height="12" font="15">to 1, does it matter which policy you are using?</text>
+<text top="683" left="148" width="413" height="12" font="15">9. Create a series of requests to starve a particular request, assuming an SATF</text>
+<text top="697" left="163" width="344" height="12" font="15">policy. Given that sequence, how does it perform if you use a</text>
+<text top="697" left="512" width="49" height="12" font="32"><b>bounded</b></text>
+<text top="711" left="163" width="30" height="12" font="32"><b>SATF</b></text>
+<text top="711" left="199" width="4" height="12" font="15">(</text>
+<text top="711" left="203" width="38" height="12" font="32"><b>BSATF</b></text>
+<text top="711" left="241" width="320" height="12" font="15">) scheduling approach? In this approach, you specify the</text>
+<text top="726" left="163" width="136" height="12" font="15">scheduling window (e.g.,</text>
+<text top="726" left="305" width="29" height="10" font="31">-w 4</text>
+<text top="726" left="333" width="228" height="12" font="15">); the scheduler only moves onto the next</text>
+<text top="740" left="163" width="137" height="12" font="15">window of requests when</text>
+<text top="740" left="303" width="12" height="12" font="33"><i>all</i></text>
+<text top="740" left="318" width="243" height="12" font="15">requests in the current window have been ser-</text>
+<text top="754" left="163" width="397" height="12" font="15">viced. Does this solve starvation? How does it perform, as compared to</text>
+<text top="768" left="163" width="397" height="12" font="15">SATF? In general, how should a disk make this trade-off between perfor-</text>
+<text top="782" left="163" width="176" height="12" font="15">mance and starvation avoidance?</text>
+<text top="796" left="142" width="324" height="12" font="15">10. All the scheduling policies we have looked at thus far are</text>
+<text top="797" left="469" width="37" height="12" font="32"><b>greedy</b></text>
+<text top="796" left="506" width="55" height="12" font="15">; they pick</text>
+<text top="811" left="163" width="397" height="12" font="15">the next best option instead of looking for an optimal schedule. Can you</text>
+<text top="825" left="163" width="278" height="12" font="15">find a set of requests in which greedy is not optimal?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="15">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="15">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+</pdf2xml>

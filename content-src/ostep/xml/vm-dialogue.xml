@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="XYSCFD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="XYSCFD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="LBDEAS+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="JNHLHN+URWPalladioL-Roma" color="#000000"/>
+<text top="204" left="523" width="34" height="30" font="0">24</text>
+<text top="276" left="91" width="428" height="21" font="1">Summary Dialogue on Memory Virtualization</text>
+<text top="365" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="365" left="143" width="217" height="14" font="3"><i>(Gulps) Wow, that was a lot of material.</i></text>
+<text top="388" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="388" left="152" width="52" height="14" font="3"><i>Yes, and?</i></text>
+<text top="411" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="411" left="143" width="376" height="14" font="3"><i>Well, how am I supposed to remember it all? You know, for the exam?</i></text>
+<text top="434" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="434" left="152" width="338" height="14" font="3"><i>Goodness, I hope that’s not why you are trying to remember it.</i></text>
+<text top="457" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="457" left="143" width="107" height="14" font="3"><i>Why should I then?</i></text>
+<text top="480" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="479" left="154" width="365" height="14" font="3"><i>Come on, I thought you knew better. You’re trying to learn some-</i></text>
+<text top="494" left="87" width="432" height="14" font="3"><i>thing here, so that when you go off into the world, you’ll understand how systems</i></text>
+<text top="509" left="87" width="77" height="14" font="3"><i>actually work.</i></text>
+<text top="532" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="532" left="143" width="185" height="14" font="3"><i>Hmm... can you give an example?</i></text>
+<text top="555" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="555" left="156" width="363" height="14" font="3"><i>Sure! One time back in graduate school, my friends and I were</i></text>
+<text top="570" left="87" width="432" height="14" font="3"><i>measuring how long memory accesses took, and once in a while the numbers</i></text>
+<text top="585" left="87" width="432" height="14" font="3"><i>were way higher than we expected; we thought all the data was fitting nicely into</i></text>
+<text top="600" left="87" width="432" height="14" font="3"><i>the second-level hardware cache, you see, and thus should have been really fast</i></text>
+<text top="615" left="87" width="50" height="14" font="3"><i>to access.</i></text>
+<text top="638" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="638" left="143" width="34" height="14" font="3"><i>(nods)</i></text>
+<text top="661" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="661" left="152" width="367" height="14" font="3"><i>We couldn’t figure out what was going on. So what do you do in such</i></text>
+<text top="676" left="87" width="432" height="14" font="3"><i>a case? Easy, ask a professor! So we went and asked one of our professors, who</i></text>
+<text top="691" left="87" width="432" height="14" font="3"><i>looked at the graph we had produced, and simply said “TLB”. Aha! Of course,</i></text>
+<text top="705" left="87" width="432" height="14" font="3"><i>TLB misses! Why didn’t we think of that? Having a good model of how virtual</i></text>
+<text top="720" left="87" width="408" height="14" font="3"><i>memory works helps diagnose all sorts of interesting performance problems.</i></text>
+<text top="744" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="743" left="145" width="374" height="14" font="3"><i>I think I see. I’m trying to build these mental models of how things</i></text>
+<text top="758" left="87" width="432" height="14" font="3"><i>work, so that when I’m out there working on my own, I won’t be surprised when</i></text>
+<text top="773" left="87" width="432" height="14" font="3"><i>a system doesn’t quite behave as expected. I should even be able to anticipate how</i></text>
+<text top="788" left="87" width="250" height="14" font="3"><i>the system will work just by thinking about it.</i></text>
+<text top="811" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="811" left="152" width="367" height="14" font="3"><i>Exactly. So what have you learned? What’s in your mental model of</i></text>
+<text top="826" left="87" width="153" height="14" font="3"><i>how virtual memory works?</i></text>
+<text top="862" left="300" width="7" height="12" font="4">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="11" family="JNHLHN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="12" family="JNHLHN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="10" family="JNHLHN+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="12" font="4">2</text>
+<text top="96" left="239" width="7" height="12" font="4">S</text>
+<text top="98" left="247" width="54" height="10" font="5">UMMARY</text>
+<text top="96" left="305" width="10" height="12" font="4">D</text>
+<text top="98" left="316" width="76" height="10" font="5">IALOGUE ON</text>
+<text top="96" left="397" width="13" height="12" font="4">M</text>
+<text top="98" left="410" width="42" height="10" font="5">EMORY</text>
+<text top="96" left="456" width="10" height="12" font="4">V</text>
+<text top="98" left="466" width="94" height="10" font="5">IRTUALIZATION</text>
+<text top="139" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="139" left="188" width="373" height="14" font="3"><i>Well, I think I now have a pretty good idea of what happens when</i></text>
+<text top="154" left="129" width="432" height="14" font="3"><i>memory is referenced by a process, which, as you’ve said many times, happens</i></text>
+<text top="168" left="129" width="324" height="14" font="3"><i>on each instruction fetch as well as explicit loads and stores.</i></text>
+<text top="190" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="190" left="194" width="159" height="14" font="3"><i>Sounds good — tell me more.</i></text>
+<text top="211" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="211" left="186" width="375" height="14" font="3"><i>Well, one thing I’ll always remember is that the addresses we see in a</i></text>
+<text top="226" left="129" width="222" height="14" font="3"><i>user program, written in C for example...</i></text>
+<text top="247" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="247" left="194" width="163" height="14" font="3"><i>What other language is there?</i></text>
+<text top="268" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="268" left="187" width="373" height="14" font="3"><i>(continuing) ... Yes, I know you like C. So do I! Anyhow, as I was</i></text>
+<text top="283" left="129" width="432" height="14" font="3"><i>saying, I now really know that all addresses that we can observe within a program</i></text>
+<text top="298" left="129" width="432" height="14" font="3"><i>are virtual addresses; that I, as a programmer, am just given this illusion of where</i></text>
+<text top="313" left="129" width="432" height="14" font="3"><i>data and code are in memory. I used to think it was cool that I could print the</i></text>
+<text top="328" left="129" width="432" height="14" font="3"><i>address of a pointer, but now I find it frustrating — it’s just a virtual address! I</i></text>
+<text top="343" left="129" width="293" height="14" font="3"><i>can’t see the real physical address where the data lives.</i></text>
+<text top="364" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="364" left="194" width="302" height="14" font="3"><i>Nope, the OS definitely hides that from you. What else?</i></text>
+<text top="385" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="385" left="186" width="375" height="14" font="3"><i>Well, I think the TLB is a really key piece, providing the system with</i></text>
+<text top="400" left="129" width="432" height="14" font="3"><i>a small hardware cache of address translations. Page tables are usually quite</i></text>
+<text top="415" left="129" width="432" height="14" font="3"><i>large and hence live in big and slow memories. Without that TLB, programs</i></text>
+<text top="430" left="129" width="432" height="14" font="3"><i>would certainly run a great deal more slowly. Seems like the TLB truly makes</i></text>
+<text top="445" left="129" width="432" height="14" font="3"><i>virtualizing memory possible. I couldn’t imagine building a system without one!</i></text>
+<text top="460" left="129" width="432" height="14" font="3"><i>And I shudder at the thought of a program with a working set that exceeds the</i></text>
+<text top="475" left="129" width="399" height="14" font="3"><i>coverage of the TLB: with all those TLB misses, it would be hard to watch.</i></text>
+<text top="496" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="496" left="196" width="365" height="14" font="3"><i>Yes, cover the eyes of the children! Beyond the TLB, what did you</i></text>
+<text top="511" left="129" width="34" height="14" font="3"><i>learn?</i></text>
+<text top="532" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="532" left="185" width="376" height="14" font="3"><i>I also now understand that the page table is one of those data structures</i></text>
+<text top="547" left="129" width="432" height="14" font="3"><i>you need to know about; it’s just a data structure, though, and that means almost</i></text>
+<text top="562" left="129" width="432" height="14" font="3"><i>any structure could be used. We started with simple structures, like arrays (a.k.a.</i></text>
+<text top="577" left="129" width="432" height="14" font="3"><i>linear page tables), and advanced all the way up to multi-level tables (which look</i></text>
+<text top="592" left="129" width="432" height="14" font="3"><i>like trees), and even crazier things like pageable page tables in kernel virtual</i></text>
+<text top="607" left="129" width="245" height="14" font="3"><i>memory. All to save a little space in memory!</i></text>
+<text top="628" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="628" left="194" width="39" height="14" font="3"><i>Indeed.</i></text>
+<text top="649" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="649" left="185" width="376" height="14" font="3"><i>And here’s one more important thing: I learned that the address trans-</i></text>
+<text top="664" left="129" width="432" height="14" font="3"><i>lation structures need to be flexible enough to support what programmers want</i></text>
+<text top="679" left="129" width="432" height="14" font="3"><i>to do with their address spaces. Structures like the multi-level table are perfect</i></text>
+<text top="694" left="129" width="432" height="14" font="3"><i>in this sense; they only create table space when the user needs a portion of the</i></text>
+<text top="709" left="129" width="432" height="14" font="3"><i>address space, and thus there is little waste. Earlier attempts, like the simple base</i></text>
+<text top="724" left="129" width="432" height="14" font="3"><i>and bounds register, just weren’t flexible enough; the structures need to match</i></text>
+<text top="739" left="129" width="346" height="14" font="3"><i>what users expect and want out of their virtual memory system.</i></text>
+<text top="760" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="760" left="197" width="363" height="14" font="3"><i>That’s a nice perspective. What about all of the stuff we learned</i></text>
+<text top="775" left="129" width="131" height="14" font="3"><i>about swapping to disk?</i></text>
+<text top="796" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="796" left="186" width="375" height="14" font="3"><i>Well, it’s certainly fun to study, and good to know how page replace-</i></text>
+<text top="811" left="129" width="432" height="14" font="3"><i>ment works. Some of the basic policies are kind of obvious (like LRU, for ex-</i></text>
+<text top="826" left="129" width="432" height="14" font="3"><i>ample), but building a real virtual memory system seems more interesting, like</i></text>
+<text top="881" left="129" width="11" height="12" font="4">O</text>
+<text top="883" left="141" width="60" height="10" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="12" font="4">S</text>
+<text top="898" left="137" width="45" height="10" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="11" font="6">[V</text>
+<text top="914" left="143" width="39" height="9" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="11" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="10" font="5">WWW</text>
+<text top="896" left="327" width="3" height="12" font="4">.</text>
+<text top="898" left="331" width="36" height="10" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="12" font="4">.</text>
+<text top="898" left="371" width="25" height="10" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="12" font="4">S</text>
+<text top="98" left="95" width="54" height="10" font="5">UMMARY</text>
+<text top="96" left="154" width="10" height="12" font="4">D</text>
+<text top="98" left="165" width="76" height="10" font="5">IALOGUE ON</text>
+<text top="96" left="245" width="13" height="12" font="4">M</text>
+<text top="98" left="258" width="42" height="10" font="5">EMORY</text>
+<text top="96" left="304" width="10" height="12" font="4">V</text>
+<text top="98" left="315" width="94" height="10" font="5">IRTUALIZATION</text>
+<text top="96" left="512" width="7" height="12" font="4">3</text>
+<text top="139" left="87" width="432" height="14" font="3"><i>we saw in the VMS case study. But somehow, I found the mechanisms more</i></text>
+<text top="154" left="87" width="189" height="14" font="3"><i>interesting, and the policies less so.</i></text>
+<text top="174" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="174" left="152" width="91" height="14" font="3"><i>Oh, why is that?</i></text>
+<text top="194" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="194" left="145" width="373" height="14" font="3"><i>Well, as you said, in the end the best solution to policy problems is</i></text>
+<text top="209" left="87" width="432" height="14" font="3"><i>simple: buy more memory. But the mechanisms you need to understand to know</i></text>
+<text top="224" left="87" width="235" height="14" font="3"><i>how stuff really works. Speaking of which...</i></text>
+<text top="245" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="244" left="152" width="25" height="14" font="3"><i>Yes?</i></text>
+<text top="265" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="265" left="143" width="376" height="14" font="3"><i>Well, my machine is running a little slowly these days... and memory</i></text>
+<text top="280" left="87" width="183" height="14" font="3"><i>certainly doesn’t cost that much...</i></text>
+<text top="300" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="300" left="152" width="367" height="14" font="3"><i>Oh fine, fine! Here’s a few bucks. Go and get yourself some DRAM,</i></text>
+<text top="315" left="87" width="60" height="14" font="3"><i>cheapskate.</i></text>
+<text top="336" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="335" left="144" width="375" height="14" font="3"><i>Thanks professor! I’ll never swap to disk again — or, if I do, at least</i></text>
+<text top="350" left="87" width="189" height="14" font="3"><i>I’ll know what’s actually going on!</i></text>
+<text top="896" left="212" width="83" height="12" font="4">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="10" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="12" font="4">-D</text>
+<text top="898" left="348" width="46" height="10" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="12" font="4">T</text>
+<text top="890" left="478" width="31" height="10" font="5">HREE</text>
+<text top="903" left="478" width="8" height="12" font="4">E</text>
+<text top="905" left="487" width="23" height="10" font="5">ASY</text>
+<text top="918" left="468" width="8" height="12" font="4">P</text>
+<text top="920" left="477" width="33" height="10" font="5">IECES</text>
+</page>
+</pdf2xml>

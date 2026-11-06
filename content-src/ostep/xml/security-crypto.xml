@@ -1,0 +1,1689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="IMLFNO+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="IMLFNO+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="15" family="SSZPBZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="15" family="NRBDXC+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="16" family="SSZPBZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="13" family="SSZPBZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="13" family="NRBDXC+URWPalladioL" color="#000000"/>
+<text top="196" left="523" width="34" height="30" font="0">56</text>
+<text top="267" left="125" width="394" height="21" font="1">Protecting Information With Cryptography</text>
+<text top="306" left="300" width="74" height="15" font="2">Chapter by</text>
+<text top="306" left="378" width="141" height="15" font="3"><b>Peter Reiher (UCLA)</b></text>
+<text top="345" left="55" width="125" height="17" font="4">56.1 Introduction</text>
+<text top="376" left="105" width="414" height="14" font="5">In previous chapters, we’ve discussed clarifying your security goals,</text>
+<text top="391" left="87" width="432" height="14" font="5">determining your security policies, using authentication mechanisms to</text>
+<text top="406" left="87" width="432" height="14" font="5">identify principals, and using access control mechanisms to enforce poli-</text>
+<text top="420" left="87" width="432" height="14" font="5">cies concerning which principals can access which computer resources in</text>
+<text top="435" left="87" width="432" height="14" font="5">which ways. While we identified a number of shortcomings and prob-</text>
+<text top="450" left="87" width="432" height="14" font="5">lems inherent in all of these elements of securing your system, if we re-</text>
+<text top="465" left="87" width="432" height="14" font="5">gard those topics as covered, what’s left for the operating system to worry</text>
+<text top="480" left="87" width="371" height="14" font="5">about, from a security perspective? Why isn’t that everything?</text>
+<text top="496" left="105" width="414" height="14" font="5">There are a number of reasons why we need more. Of particular im-</text>
+<text top="511" left="87" width="432" height="14" font="5">portance: not everything is controlled by the operating system. But per-</text>
+<text top="526" left="87" width="432" height="14" font="5">haps you respond, you told me the operating system is all-powerful! Not</text>
+<text top="541" left="87" width="432" height="14" font="5">really. It has substantial control over a limited domain – the hardware on</text>
+<text top="556" left="87" width="432" height="14" font="5">which it runs, using the interfaces of which it is given control. It has no</text>
+<text top="571" left="87" width="432" height="14" font="5">real control over what happens on other machines, nor what happens if</text>
+<text top="586" left="87" width="432" height="14" font="5">one of its pieces of hardware is accessed via some mechanism outside the</text>
+<text top="600" left="87" width="160" height="14" font="5">operating system’s control.</text>
+<text top="616" left="105" width="414" height="14" font="5">But how can we expect the operating system to protect something</text>
+<text top="631" left="87" width="432" height="14" font="5">when the system does not itself control access to that resource? The an-</text>
+<text top="646" left="87" width="432" height="14" font="5">swer is to prepare the resource for trouble in advance. In essence, we</text>
+<text top="661" left="87" width="432" height="14" font="5">assume that we are going to lose the data, or that an opponent will try to</text>
+<text top="676" left="87" width="432" height="14" font="5">alter it improperly. And we take steps to ensure that such actions don’t</text>
+<text top="691" left="87" width="432" height="14" font="5">cause us problems. The key observation is that if an opponent cannot un-</text>
+<text top="706" left="87" width="432" height="14" font="5">derstand the data in the form it is obtained, our secrets are safe. Further, if</text>
+<text top="721" left="87" width="432" height="14" font="5">the attacker cannot understand it, it probably can’t be altered, at least not</text>
+<text top="736" left="87" width="432" height="14" font="5">in a controllable way. If the attacker doesn’t know what the data means,</text>
+<text top="751" left="87" width="350" height="14" font="5">how can it be changed into something the attacker prefers?</text>
+<text top="766" left="105" width="193" height="14" font="5">The core technology we’ll use is</text>
+<text top="766" left="302" width="82" height="13" font="6"><b>cryptography</b></text>
+<text top="766" left="384" width="135" height="14" font="5">, a set of techniques to</text>
+<text top="781" left="87" width="432" height="14" font="5">convert data from one form to another, in controlled ways with expected</text>
+<text top="796" left="87" width="432" height="14" font="5">outcomes. We will convert the data from its ordinary form into another</text>
+<text top="811" left="87" width="432" height="14" font="5">form using cryptography. If we do it right, the opponent will not be able</text>
+<text top="826" left="87" width="432" height="14" font="5">to determine what the original data was by examining the protected form.</text>
+<text top="862" left="300" width="7" height="14" font="5">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="11" family="SSZPBZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="9" family="SSZPBZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="7" family="SSZPBZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="SSZPBZ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="11" size="12" family="SSZPBZ+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="5">2</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="139" left="129" width="432" height="14" font="5">Of course, if we ever want to use it again ourselves, we must be able</text>
+<text top="154" left="129" width="432" height="14" font="5">to reverse that transformation and return the data to its ordinary form.</text>
+<text top="169" left="129" width="432" height="14" font="5">That must be hard for the opponent to do, as well. If we can get to that</text>
+<text top="183" left="129" width="432" height="14" font="5">point, we can also provide some protection for the data from alteration,</text>
+<text top="198" left="129" width="432" height="14" font="5">or, more precisely, prevent opponents from altering the data to suit their</text>
+<text top="213" left="129" width="432" height="14" font="5">desires, and even know when opponents have tampered with our data.</text>
+<text top="228" left="129" width="223" height="14" font="5">All through the joys of cryptography!</text>
+<text top="245" left="147" width="414" height="14" font="5">But using cryptography properly is not easy, and many uses of cryp-</text>
+<text top="259" left="129" width="432" height="14" font="5">tography are computationally expensive. So we need to be selective about</text>
+<text top="274" left="129" width="432" height="14" font="5">where and when we use cryptography, and careful in how we implement</text>
+<text top="289" left="129" width="432" height="14" font="5">it and integrate it into our systems. Well chosen uses that are properly</text>
+<text top="304" left="129" width="432" height="14" font="5">performed will tremendously increase security. Poorly chosen uses that</text>
+<text top="319" left="129" width="361" height="14" font="5">are badly implemented won’t help at all, and may even hurt.</text>
+<text top="362" left="255" width="8" height="14" font="5">T</text>
+<text top="364" left="264" width="16" height="11" font="7">HE</text>
+<text top="362" left="284" width="10" height="14" font="5">C</text>
+<text top="364" left="294" width="24" height="11" font="7">RUX</text>
+<text top="362" left="323" width="11" height="14" font="5">O</text>
+<text top="364" left="334" width="6" height="11" font="7">F</text>
+<text top="362" left="344" width="8" height="14" font="5">T</text>
+<text top="364" left="353" width="16" height="11" font="7">HE</text>
+<text top="362" left="373" width="8" height="14" font="5">P</text>
+<text top="364" left="382" width="49" height="11" font="7">ROBLEM</text>
+<text top="362" left="431" width="3" height="14" font="5">:</text>
+<text top="377" left="155" width="11" height="14" font="5">H</text>
+<text top="379" left="166" width="20" height="11" font="7">OW</text>
+<text top="377" left="190" width="8" height="14" font="5">T</text>
+<text top="379" left="199" width="8" height="11" font="7">O</text>
+<text top="377" left="212" width="8" height="14" font="5">P</text>
+<text top="379" left="220" width="46" height="11" font="7">ROTECT</text>
+<text top="377" left="271" width="5" height="14" font="5">I</text>
+<text top="379" left="276" width="82" height="11" font="7">NFORMATION</text>
+<text top="377" left="362" width="11" height="14" font="5">O</text>
+<text top="379" left="373" width="43" height="11" font="7">UTSIDE</text>
+<text top="377" left="420" width="8" height="14" font="5">T</text>
+<text top="379" left="429" width="16" height="11" font="7">HE</text>
+<text top="377" left="449" width="23" height="14" font="5">OS’</text>
+<text top="379" left="472" width="6" height="11" font="7">S</text>
+<text top="377" left="482" width="10" height="14" font="5">D</text>
+<text top="379" left="493" width="42" height="11" font="7">OMAIN</text>
+<text top="392" left="147" width="414" height="14" font="5">How can we use cryptography to ensure that, even if others gain ac-</text>
+<text top="407" left="129" width="432" height="14" font="5">cess to critical data outside the control of the operating system, they will</text>
+<text top="422" left="129" width="432" height="14" font="5">be unable to either use or alter it? What cryptographic technologies are</text>
+<text top="437" left="129" width="432" height="14" font="5">available to assist in this problem? How do we properly use those tech-</text>
+<text top="452" left="129" width="390" height="14" font="5">nologies? What are the limitations on what we can do with them?</text>
+<text top="508" left="97" width="137" height="17" font="4">56.2 Cryptography</text>
+<text top="539" left="147" width="414" height="14" font="5">Many books have been written about cryptography, but we’re only</text>
+<text top="554" left="129" width="432" height="14" font="5">going to spend a chapter on it. We’ll still be able to say useful things</text>
+<text top="569" left="129" width="432" height="14" font="5">about it because, fortunately, there are important and complex issues of</text>
+<text top="583" left="129" width="432" height="14" font="5">cryptography that we can mostly ignore. That’s because we aren’t going</text>
+<text top="598" left="129" width="432" height="14" font="5">to become cryptographers ourselves. We’re merely going to be users of</text>
+<text top="613" left="129" width="432" height="14" font="5">the technology, relying on experts in that esoteric field to provide us with</text>
+<text top="628" left="129" width="432" height="14" font="5">tools that we can use without having full understanding of their work-</text>
+<text top="646" left="129" width="25" height="14" font="5">ings</text>
+<text top="643" left="154" width="4" height="9" font="8">1</text>
+<text top="646" left="159" width="402" height="14" font="5">. That sounds kind of questionable, but you are already doing just</text>
+<text top="660" left="129" width="432" height="14" font="5">that. Relatively few of us really understand the deep details of how our</text>
+<text top="675" left="129" width="432" height="14" font="5">computer hardware works, yet we are able to make successful use of it,</text>
+<text top="690" left="129" width="432" height="14" font="5">because we have good interfaces and know that smart people have taken</text>
+<text top="705" left="129" width="432" height="14" font="5">great care in building the hardware for us. Similarly, cryptography pro-</text>
+<text top="720" left="129" width="432" height="14" font="5">vides us with strong interfaces, well-defined behaviors, and better than</text>
+<text top="735" left="129" width="432" height="14" font="5">usual assurance that there is a lot of brain power behind the tools we use.</text>
+<text top="751" left="147" width="414" height="14" font="5">That said, cryptography is no magic wand, and there is a lot you need</text>
+<text top="766" left="129" width="432" height="14" font="5">to understand merely to use it correctly. That, particularly in the context</text>
+<text top="781" left="129" width="403" height="14" font="5">of operating system use, is what we’re going to concentrate on here.</text>
+<text top="814" left="149" width="4" height="8" font="9">1</text>
+<text top="816" left="154" width="407" height="11" font="10">If you’d like to learn more about the fascinating history of cryptography, check out Kahn</text>
+<text top="828" left="129" width="342" height="11" font="10">[K96]. If more technical detail is your desire, Schneier [S96] is a good start.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="13" family="QLONTM+CMMI9" color="#000000"/>
+	<fontspec id="13" size="13" family="FYCDKP+CMR9" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="5">P</text>
+<text top="98" left="96" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="169" width="5" height="14" font="5">I</text>
+<text top="98" left="175" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="261" width="13" height="14" font="5">W</text>
+<text top="98" left="275" width="21" height="11" font="7">ITH</text>
+<text top="96" left="299" width="10" height="14" font="5">C</text>
+<text top="98" left="309" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="96" left="512" width="7" height="14" font="5">3</text>
+<text top="139" left="105" width="414" height="14" font="5">The basic idea behind cryptography is to take a piece of data and use</text>
+<text top="154" left="87" width="169" height="14" font="5">an algorithm (often called a</text>
+<text top="154" left="261" width="39" height="13" font="6"><b>cipher</b></text>
+<text top="154" left="300" width="219" height="14" font="5">), usually augmented with a second</text>
+<text top="169" left="87" width="236" height="14" font="5">piece of information (which is called a</text>
+<text top="169" left="328" width="22" height="13" font="6"><b>key</b></text>
+<text top="169" left="350" width="169" height="14" font="5">), to convert the data into a</text>
+<text top="183" left="87" width="432" height="14" font="5">different form. The new form should look nothing like the old one, but,</text>
+<text top="198" left="87" width="432" height="14" font="5">typically, we want to be able to run another algorithm, again augmented</text>
+<text top="213" left="87" width="432" height="14" font="5">with a second piece of information, to convert the data back to its original</text>
+<text top="228" left="87" width="32" height="14" font="5">form.</text>
+<text top="243" left="105" width="331" height="14" font="5">Let’s formalize that just a little bit. We start with data</text>
+<text top="244" left="440" width="9" height="12" font="12">P</text>
+<text top="243" left="455" width="63" height="14" font="5">(which we</text>
+<text top="258" left="87" width="89" height="14" font="5">usually call the</text>
+<text top="258" left="179" width="55" height="13" font="6"><b>plaintext</b></text>
+<text top="258" left="234" width="42" height="14" font="5">), a key</text>
+<text top="259" left="279" width="12" height="12" font="12">K</text>
+<text top="258" left="292" width="176" height="14" font="5">, and an encryption algorithm</text>
+<text top="259" left="471" width="10" height="12" font="12">E</text>
+<text top="258" left="482" width="11" height="13" font="13">()</text>
+<text top="258" left="493" width="26" height="14" font="5">. We</text>
+<text top="273" left="87" width="74" height="14" font="5">end up with</text>
+<text top="273" left="165" width="10" height="12" font="12">C</text>
+<text top="273" left="176" width="120" height="14" font="5">, the altered form of</text>
+<text top="273" left="300" width="9" height="12" font="12">P</text>
+<text top="273" left="311" width="161" height="14" font="5">, which we usually call the</text>
+<text top="273" left="476" width="43" height="13" font="6"><b>cipher-</b></text>
+<text top="288" left="87" width="22" height="13" font="6"><b>text</b></text>
+<text top="288" left="109" width="3" height="14" font="5">:</text>
+<text top="318" left="264" width="10" height="12" font="12">C</text>
+<text top="318" left="278" width="11" height="13" font="13">=</text>
+<text top="318" left="293" width="10" height="12" font="12">E</text>
+<text top="318" left="304" width="5" height="13" font="13">(</text>
+<text top="318" left="309" width="27" height="12" font="12">P, K</text>
+<text top="318" left="337" width="5" height="13" font="13">)</text>
+<text top="318" left="486" width="32" height="14" font="5">(56.1)</text>
+<text top="340" left="105" width="414" height="14" font="5">For example, we might take the plaintext “Transfer $100 to my savings</text>
+<text top="355" left="87" width="432" height="14" font="5">account” and convert it into ciphertext “Sqzmredq #099 sn lx rzuhmfr</text>
+<text top="370" left="87" width="432" height="14" font="5">zbbntms.” This example actually uses a pretty poor encryption algorithm</text>
+<text top="385" left="87" width="432" height="14" font="5">called a Caesar cipher. Spend a minute or two studying the plaintext and</text>
+<text top="400" left="87" width="432" height="14" font="5">ciphertext and see if you can figure out what the encryption algorithm</text>
+<text top="415" left="87" width="96" height="14" font="5">was in this case.</text>
+<text top="430" left="105" width="201" height="14" font="5">The reverse transformation takes</text>
+<text top="430" left="311" width="10" height="12" font="12">C</text>
+<text top="430" left="322" width="197" height="14" font="5">, which we just produced, a de-</text>
+<text top="445" left="87" width="112" height="14" font="5">cryption algorithm</text>
+<text top="445" left="203" width="11" height="12" font="12">D</text>
+<text top="445" left="215" width="11" height="13" font="13">()</text>
+<text top="445" left="225" width="76" height="14" font="5">, and the key</text>
+<text top="445" left="305" width="12" height="12" font="12">K</text>
+<text top="445" left="318" width="3" height="14" font="5">:</text>
+<text top="475" left="263" width="9" height="12" font="12">P</text>
+<text top="475" left="277" width="11" height="13" font="13">=</text>
+<text top="475" left="292" width="11" height="12" font="12">D</text>
+<text top="475" left="304" width="5" height="13" font="13">(</text>
+<text top="475" left="309" width="28" height="12" font="12">C, K</text>
+<text top="475" left="338" width="5" height="13" font="13">)</text>
+<text top="475" left="486" width="32" height="14" font="5">(56.2)</text>
+<text top="497" left="105" width="414" height="14" font="5">So we can decrypt “Sqzmredq #099 sn lx rzuhmfr zbbntms” back into</text>
+<text top="512" left="87" width="432" height="14" font="5">“Transfer $100 to my savings account.” If you figured out how we en-</text>
+<text top="527" left="87" width="432" height="14" font="5">crypted the data in the first place, it should be easy to figure out how to</text>
+<text top="542" left="87" width="61" height="14" font="5">decrypt it.</text>
+<text top="557" left="105" width="414" height="14" font="5">We use cryptography for a lot of things, but when discussing it gener-</text>
+<text top="572" left="87" width="432" height="14" font="5">ally, it’s common to talk about messages being sent and received. In such</text>
+<text top="587" left="87" width="152" height="14" font="5">discussions, the plaintext</text>
+<text top="587" left="243" width="9" height="12" font="12">P</text>
+<text top="587" left="258" width="261" height="14" font="5">is the message we want to send and the ci-</text>
+<text top="602" left="87" width="50" height="14" font="5">phertext</text>
+<text top="602" left="140" width="10" height="12" font="12">C</text>
+<text top="602" left="155" width="364" height="14" font="5">is the protected version of that message that we send out into</text>
+<text top="617" left="87" width="127" height="14" font="5">the cold, cruel world.</text>
+<text top="632" left="105" width="414" height="14" font="5">For the encryption process to be useful, it must be deterministic, so</text>
+<text top="647" left="87" width="316" height="14" font="5">the first transformation always converts a particular</text>
+<text top="647" left="408" width="9" height="12" font="12">P</text>
+<text top="647" left="423" width="96" height="14" font="5">using a particu-</text>
+<text top="662" left="87" width="16" height="14" font="5">lar</text>
+<text top="662" left="106" width="12" height="12" font="12">K</text>
+<text top="662" left="123" width="84" height="14" font="5">to a particular</text>
+<text top="662" left="210" width="10" height="12" font="12">C</text>
+<text top="662" left="221" width="298" height="14" font="5">, and the second transformation always converts a</text>
+<text top="677" left="87" width="58" height="14" font="5">particular</text>
+<text top="677" left="150" width="10" height="12" font="12">C</text>
+<text top="677" left="165" width="107" height="14" font="5">using a particular</text>
+<text top="677" left="276" width="12" height="12" font="12">K</text>
+<text top="677" left="293" width="85" height="14" font="5">to the original</text>
+<text top="677" left="383" width="9" height="12" font="12">P</text>
+<text top="677" left="394" width="99" height="14" font="5">. In many cases,</text>
+<text top="677" left="497" width="10" height="12" font="12">E</text>
+<text top="676" left="508" width="11" height="13" font="13">()</text>
+<text top="692" left="87" width="23" height="14" font="5">and</text>
+<text top="692" left="113" width="11" height="12" font="12">D</text>
+<text top="691" left="125" width="11" height="13" font="13">()</text>
+<text top="692" left="139" width="380" height="14" font="5">are actually the same algorithm, but that is not required. Also, it</text>
+<text top="706" left="87" width="194" height="14" font="5">should be very hard to figure out</text>
+<text top="707" left="284" width="9" height="12" font="12">P</text>
+<text top="706" left="297" width="29" height="14" font="5">from</text>
+<text top="707" left="329" width="10" height="12" font="12">C</text>
+<text top="706" left="343" width="103" height="14" font="5">without knowing</text>
+<text top="707" left="449" width="16" height="12" font="12">K.</text>
+<text top="706" left="467" width="52" height="14" font="5">Impossi-</text>
+<text top="721" left="87" width="432" height="14" font="5">ble would be nice, but we’ll usually settle for computationally infeasible.</text>
+<text top="736" left="87" width="238" height="14" font="5">If we have that property, we can show</text>
+<text top="737" left="330" width="10" height="12" font="12">C</text>
+<text top="736" left="346" width="173" height="14" font="5">to the most hostile, smartest</text>
+<text top="751" left="87" width="380" height="14" font="5">opponent in the world and they still won’t be able to learn what</text>
+<text top="752" left="470" width="9" height="12" font="12">P</text>
+<text top="751" left="484" width="13" height="14" font="5">is.</text>
+<text top="766" left="105" width="159" height="14" font="5">Provided, of course, that ...</text>
+<text top="781" left="105" width="414" height="14" font="5">This is where cleanly theoretical papers and messy reality start to col-</text>
+<text top="796" left="87" width="432" height="14" font="5">lide. We only get that pleasant assurance of secrecy if the opponent does</text>
+<text top="811" left="87" width="87" height="14" font="5">not know both</text>
+<text top="811" left="178" width="11" height="12" font="12">D</text>
+<text top="811" left="190" width="11" height="13" font="13">()</text>
+<text top="811" left="204" width="72" height="14" font="5">and our key</text>
+<text top="811" left="280" width="12" height="12" font="12">K</text>
+<text top="811" left="292" width="227" height="14" font="5">. If they are known, the opponent will</text>
+<text top="826" left="87" width="34" height="14" font="5">apply</text>
+<text top="826" left="125" width="11" height="12" font="12">D</text>
+<text top="826" left="136" width="11" height="13" font="13">()</text>
+<text top="826" left="151" width="23" height="14" font="5">and</text>
+<text top="826" left="177" width="12" height="12" font="12">K</text>
+<text top="826" left="193" width="225" height="14" font="5">to C and extract the same information</text>
+<text top="826" left="421" width="9" height="12" font="12">P</text>
+<text top="826" left="435" width="72" height="14" font="5">that we can.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="7">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="7">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="7">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="7">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="7">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="9" family="SBCRBP+CMSY6" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="5">4</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="139" left="147" width="225" height="14" font="5">It turns out that we usually can’t keep</text>
+<text top="139" left="375" width="10" height="12" font="12">E</text>
+<text top="138" left="386" width="11" height="13" font="13">()</text>
+<text top="139" left="400" width="23" height="14" font="5">and</text>
+<text top="139" left="426" width="11" height="12" font="12">D</text>
+<text top="138" left="438" width="11" height="13" font="13">()</text>
+<text top="139" left="452" width="109" height="14" font="5">secret. Since we’re</text>
+<text top="154" left="129" width="432" height="14" font="5">not trying to be cryptographers, we won’t get into the why of the matter,</text>
+<text top="169" left="129" width="432" height="14" font="5">but it is extremely hard to design good ciphers. If the cipher has weak-</text>
+<text top="183" left="129" width="296" height="14" font="5">nesses, then an opponent can extract the plaintext</text>
+<text top="184" left="429" width="9" height="12" font="12">P</text>
+<text top="183" left="443" width="79" height="14" font="5">even without</text>
+<text top="184" left="526" width="12" height="12" font="12">K</text>
+<text top="183" left="538" width="22" height="14" font="5">. So</text>
+<text top="198" left="129" width="432" height="14" font="5">we need to have a really good cipher, which is hard to come by. Most</text>
+<text top="213" left="129" width="432" height="14" font="5">of us don’t have a world-class cryptographer at our fingertips to design a</text>
+<text top="228" left="129" width="432" height="14" font="5">new one, so we have to rely on one of a relatively small number of known</text>
+<text top="243" left="129" width="432" height="14" font="5">strong ciphers. AES, a standard cipher that was carefully designed and</text>
+<text top="258" left="129" width="432" height="14" font="5">thoroughly studied, is one good example that you should think about</text>
+<text top="273" left="129" width="36" height="14" font="5">using.</text>
+<text top="291" left="147" width="414" height="14" font="5">It sounds like we’ve thrown away half our protection, since now the</text>
+<text top="306" left="129" width="432" height="14" font="5">cryptography’s benefit relies entirely on the secrecy of the key. Precisely.</text>
+<text top="321" left="129" width="432" height="14" font="5">Let’s say that again in all caps, since it’s so important that you really</text>
+<text top="336" left="129" width="125" height="14" font="5">need to remember it:</text>
+<text top="336" left="259" width="302" height="13" font="6"><b>THE CRYPTOGRAPHY’S BENEFIT RELIES EN-</b></text>
+<text top="351" left="129" width="266" height="13" font="6"><b>TIRELY ON THE SECRECY OF THE KEY</b></text>
+<text top="351" left="395" width="166" height="14" font="5">. It probably wouldn’t hurt</text>
+<text top="366" left="129" width="432" height="14" font="5">for you to re-read that statement a few dozen times, since the landscape</text>
+<text top="381" left="129" width="411" height="14" font="5">is littered with insecure systems that did not take that lesson to heart.</text>
+<text top="399" left="147" width="414" height="14" font="5">The good news is that if you’re using a strong cipher and are careful</text>
+<text top="414" left="129" width="432" height="14" font="5">about maintaining key secrecy, your cryptography is strong. You don’t</text>
+<text top="429" left="129" width="432" height="14" font="5">need to worry about anything else. The bad news is that maintaining key</text>
+<text top="443" left="129" width="432" height="14" font="5">secrecy in practical systems for real uses of cryptography isn’t easy. We’ll</text>
+<text top="458" left="129" width="153" height="14" font="5">talk more about that later.</text>
+<text top="476" left="147" width="414" height="14" font="5">For the moment, revel in the protection we have achieved, and re-</text>
+<text top="491" left="129" width="432" height="14" font="5">joice to learn that we’ve gotten more than secrecy from our proper use</text>
+<text top="506" left="129" width="432" height="14" font="5">of cryptography! Consider the properties of the transformations we’ve</text>
+<text top="521" left="129" width="432" height="14" font="5">performed. If our opponent gets access to our encrypted data, it can’t be</text>
+<text top="536" left="129" width="432" height="14" font="5">understood. But what if the opponent can alter it? What’s being altered</text>
+<text top="551" left="129" width="301" height="14" font="5">is the encrypted form, i.e., making some changes in</text>
+<text top="551" left="433" width="10" height="12" font="12">C</text>
+<text top="551" left="447" width="114" height="14" font="5">to convert it to, say,</text>
+<text top="566" left="129" width="10" height="12" font="12">C</text>
+<text top="565" left="140" width="3" height="8" font="14">′</text>
+<text top="566" left="144" width="261" height="14" font="5">. What will happen when we try to decrypt</text>
+<text top="566" left="409" width="10" height="12" font="12">C</text>
+<text top="566" left="420" width="141" height="14" font="5">? Well, it won’t decrypt</text>
+<text top="581" left="129" width="12" height="14" font="5">to</text>
+<text top="581" left="145" width="9" height="12" font="12">P</text>
+<text top="581" left="155" width="232" height="14" font="5">. It will decrypt to something else, say</text>
+<text top="581" left="391" width="9" height="12" font="12">P</text>
+<text top="580" left="402" width="3" height="8" font="14">′</text>
+<text top="581" left="406" width="155" height="14" font="5">. For a good cipher of the</text>
+<text top="596" left="129" width="432" height="14" font="5">type you should be using, it will be difficult to determine what a piece of</text>
+<text top="611" left="129" width="60" height="14" font="5">ciphertext</text>
+<text top="611" left="192" width="10" height="12" font="12">C</text>
+<text top="610" left="203" width="3" height="8" font="14">′</text>
+<text top="611" left="211" width="198" height="14" font="5">will decrypt to, unless you know</text>
+<text top="611" left="413" width="12" height="12" font="12">K</text>
+<text top="611" left="426" width="135" height="14" font="5">. That means it will be</text>
+<text top="626" left="129" width="432" height="14" font="5">hard to predict which ciphertext you need to have to decrypt to a partic-</text>
+<text top="641" left="129" width="432" height="14" font="5">ular plaintext. Which in turn means that the attacker will have no idea</text>
+<text top="656" left="129" width="160" height="14" font="5">what the altered ciphertext</text>
+<text top="656" left="292" width="10" height="12" font="12">C</text>
+<text top="655" left="303" width="3" height="8" font="14">′</text>
+<text top="656" left="310" width="91" height="14" font="5">will decrypt to.</text>
+<text top="674" left="147" width="414" height="14" font="5">Out of all possible bit patterns it could decrypt to, the chances are good</text>
+<text top="689" left="129" width="23" height="14" font="5">that</text>
+<text top="689" left="157" width="9" height="12" font="12">P</text>
+<text top="688" left="168" width="3" height="8" font="14">′</text>
+<text top="689" left="177" width="384" height="14" font="5">will turn out to be garbage, when considered in the context of</text>
+<text top="703" left="129" width="432" height="14" font="5">what we expected to see: ASCII text, a proper PDF file, or whatever. If</text>
+<text top="718" left="129" width="200" height="14" font="5">we’re careful, we can detect that</text>
+<text top="719" left="334" width="9" height="12" font="12">P</text>
+<text top="718" left="344" width="3" height="8" font="14">′</text>
+<text top="718" left="353" width="207" height="14" font="5">isn’t what we started with, which</text>
+<text top="733" left="129" width="432" height="14" font="5">would tell us that our opponent tampered with our encrypted data. If we</text>
+<text top="748" left="129" width="432" height="14" font="5">want to be really sure, we can perform a hashing function on the plaintext</text>
+<text top="763" left="129" width="432" height="14" font="5">and include the hash with the message or encrypted file. If the plaintext</text>
+<text top="778" left="129" width="432" height="14" font="5">we get out doesn’t produce the same hash, we will have a strong indica-</text>
+<text top="793" left="129" width="170" height="14" font="5">tion that something is amiss.</text>
+<text top="811" left="147" width="414" height="14" font="5">So we can use cryptography to help us protect the integrity of our data,</text>
+<text top="826" left="129" width="45" height="14" font="5">as well.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="5">P</text>
+<text top="98" left="96" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="169" width="5" height="14" font="5">I</text>
+<text top="98" left="175" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="261" width="13" height="14" font="5">W</text>
+<text top="98" left="275" width="21" height="11" font="7">ITH</text>
+<text top="96" left="299" width="10" height="14" font="5">C</text>
+<text top="98" left="309" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="96" left="512" width="7" height="14" font="5">5</text>
+<text top="153" left="134" width="8" height="14" font="5">T</text>
+<text top="155" left="143" width="11" height="11" font="7">IP</text>
+<text top="153" left="155" width="19" height="14" font="5">: D</text>
+<text top="155" left="174" width="69" height="11" font="7">EVELOPING</text>
+<text top="153" left="246" width="9" height="14" font="5">Y</text>
+<text top="155" left="256" width="25" height="11" font="7">OUR</text>
+<text top="153" left="285" width="11" height="14" font="5">O</text>
+<text top="155" left="297" width="20" height="11" font="7">WN</text>
+<text top="153" left="321" width="10" height="14" font="5">C</text>
+<text top="155" left="331" width="42" height="11" font="7">IPHERS</text>
+<text top="153" left="374" width="98" height="14" font="5">: DON’T DO IT</text>
+<text top="171" left="105" width="37" height="14" font="5">Don’t.</text>
+<text top="189" left="105" width="414" height="14" font="5">It’s tempting to leave it at that, since it’s really important that you</text>
+<text top="204" left="87" width="432" height="14" font="5">follow this guidance. But you may not believe it, so we’ll expand a little.</text>
+<text top="219" left="87" width="432" height="14" font="5">The world’s best cryptographers often produce flawed ciphers. Are you</text>
+<text top="234" left="87" width="432" height="14" font="5">one of the world’s best cryptographers? If you aren’t, and the top experts</text>
+<text top="249" left="87" width="432" height="14" font="5">often fail to build strong ciphers, what makes you think you’ll do better,</text>
+<text top="264" left="87" width="95" height="14" font="5">or even as well?</text>
+<text top="282" left="105" width="414" height="14" font="5">We know what you’ll say next: “but the cipher I wrote is so strong that</text>
+<text top="297" left="87" width="432" height="14" font="5">I can’t even break it myself.” Well, pretty much anyone who puts their</text>
+<text top="312" left="87" width="432" height="14" font="5">mind to it can create a cipher they can’t break themselves. But remember</text>
+<text top="327" left="87" width="432" height="14" font="5">those world-class cryptographers we talked about? How did they get to</text>
+<text top="342" left="87" width="432" height="14" font="5">be world class? By careful study of the underpinnings of cryptography</text>
+<text top="357" left="87" width="432" height="14" font="5">and by breaking other people’s ciphers. They’re very good at it, and if it’s</text>
+<text top="372" left="87" width="432" height="14" font="5">worth their trouble, they will break yours. They might ignore it if you just</text>
+<text top="386" left="87" width="432" height="14" font="5">go around bragging about your wonderful cipher (since they hear that all</text>
+<text top="401" left="87" width="432" height="14" font="5">the time), but if you actually use it for something important, you will</text>
+<text top="416" left="87" width="432" height="14" font="5">unfortunately draw their attention. Following which your secrets will be</text>
+<text top="431" left="87" width="432" height="14" font="5">revealed, following which you will look foolish for designing your own</text>
+<text top="446" left="87" width="432" height="14" font="5">cipher instead of using something standard like AES, which is easier to</text>
+<text top="461" left="87" width="72" height="14" font="5">do, anyway.</text>
+<text top="479" left="105" width="56" height="14" font="5">So, don’t.</text>
+<text top="520" left="105" width="414" height="14" font="5">Wait, there’s more! What if someone hands you a piece of data that</text>
+<text top="535" left="87" width="188" height="14" font="5">has been encrypted with a key</text>
+<text top="535" left="280" width="12" height="12" font="12">K</text>
+<text top="535" left="298" width="221" height="14" font="5">that is known only to you and your</text>
+<text top="550" left="87" width="432" height="14" font="5">buddy Remzi? You know you didn’t create it, so if it decrypts properly</text>
+<text top="565" left="87" width="57" height="14" font="5">using key</text>
+<text top="565" left="147" width="12" height="12" font="12">K</text>
+<text top="565" left="159" width="360" height="14" font="5">, you know that Remzi must have created it. After all, he’s the</text>
+<text top="580" left="87" width="194" height="14" font="5">only other person who knew key</text>
+<text top="580" left="284" width="12" height="12" font="12">K</text>
+<text top="580" left="297" width="222" height="14" font="5">, so only he could have performed the</text>
+<text top="595" left="87" width="432" height="14" font="5">encryption. Voila, we have used cryptography for authentication! Unfor-</text>
+<text top="610" left="87" width="432" height="14" font="5">tunately, cryptography will not clean your room, do your homework for</text>
+<text top="625" left="87" width="432" height="14" font="5">you, or make thousands of julienne fries in seconds, but it’s a mighty fine</text>
+<text top="640" left="87" width="79" height="14" font="5">tool, anyway.</text>
+<text top="655" left="105" width="356" height="14" font="5">The form of cryptography we just described is often called</text>
+<text top="655" left="466" width="53" height="13" font="6"><b>symmet-</b></text>
+<text top="670" left="87" width="102" height="13" font="6"><b>ric cryptography</b></text>
+<text top="669" left="189" width="330" height="14" font="5">, because the same key is used to encrypt and decrypt</text>
+<text top="684" left="87" width="432" height="14" font="5">the data. For a long time, everyone believed that was the only form of</text>
+<text top="699" left="87" width="339" height="14" font="5">cryptography possible. It turns out everyone was wrong.</text>
+<text top="737" left="55" width="220" height="17" font="4">56.3 Public Key Cryptography</text>
+<text top="766" left="105" width="414" height="14" font="5">When we discussed using cryptography for authentication, you might</text>
+<text top="781" left="87" width="432" height="14" font="5">have noticed a little problem. In order to verify the authenticity of a piece</text>
+<text top="796" left="87" width="432" height="14" font="5">of encrypted information, you need to know the key used to encrypt it. If</text>
+<text top="811" left="87" width="432" height="14" font="5">we only care about using cryptography for authentication, that’s incon-</text>
+<text top="826" left="87" width="432" height="14" font="5">venient. It means that we need to communicate the key we’re using for</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="7">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="7">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="7">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="7">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="7">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="9" family="ISNDAS+CMMI6" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="5">6</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="139" left="129" width="432" height="14" font="5">that purpose to whoever might need to authenticate us. What if we’re</text>
+<text top="154" left="129" width="432" height="14" font="5">Microsoft, and we want to authenticate ourselves to every user who has</text>
+<text top="169" left="129" width="432" height="14" font="5">purchased our software? We can’t use just one key to do this, because</text>
+<text top="183" left="129" width="432" height="14" font="5">we’d need to send that key to hundreds of millions of users and, once</text>
+<text top="198" left="129" width="432" height="14" font="5">they had that key, they could pretend to be Microsoft by using it to en-</text>
+<text top="213" left="129" width="432" height="14" font="5">crypt information. Alternately, Microsoft could generate a different key</text>
+<text top="228" left="129" width="432" height="14" font="5">for each of those hundreds of millions of users, but that would require</text>
+<text top="243" left="129" width="432" height="14" font="5">secretly delivering a unique key to hundreds of millions of users, not to</text>
+<text top="258" left="129" width="294" height="14" font="5">mention keeping track of all those keys. Bummer.</text>
+<text top="273" left="147" width="414" height="14" font="5">Fortunately, our good friends, the cryptographic wizards, came up</text>
+<text top="288" left="129" width="432" height="14" font="5">with a solution. What if we use two different keys for cryptography, one</text>
+<text top="303" left="129" width="393" height="14" font="5">to encrypt and one to decrypt? Our encryption operation becomes</text>
+<text top="330" left="286" width="10" height="12" font="12">C</text>
+<text top="329" left="301" width="11" height="13" font="13">=</text>
+<text top="330" left="315" width="10" height="12" font="12">E</text>
+<text top="329" left="326" width="5" height="13" font="13">(</text>
+<text top="330" left="332" width="27" height="12" font="12">P, K</text>
+<text top="335" left="359" width="39" height="8" font="15">encrypt</text>
+<text top="329" left="398" width="5" height="13" font="13">)</text>
+<text top="330" left="528" width="32" height="14" font="5">(56.3)</text>
+<text top="348" left="147" width="234" height="14" font="5">And our decryption operation becomes</text>
+<text top="375" left="286" width="9" height="12" font="12">P</text>
+<text top="374" left="300" width="11" height="13" font="13">=</text>
+<text top="375" left="315" width="11" height="12" font="12">D</text>
+<text top="374" left="327" width="5" height="13" font="13">(</text>
+<text top="375" left="332" width="28" height="12" font="12">C, K</text>
+<text top="380" left="360" width="38" height="8" font="15">decrypt</text>
+<text top="374" left="398" width="5" height="13" font="13">)</text>
+<text top="374" left="528" width="32" height="14" font="5">(56.4)</text>
+<text top="393" left="147" width="414" height="14" font="5">Life has just become a lot easier for Microsoft. They can tell every-</text>
+<text top="408" left="129" width="145" height="14" font="5">one their decryption key</text>
+<text top="408" left="276" width="12" height="12" font="12">K</text>
+<text top="413" left="288" width="38" height="8" font="15">decrypt</text>
+<text top="408" left="326" width="180" height="14" font="5">, but keep their encryption key</text>
+<text top="408" left="510" width="12" height="12" font="12">K</text>
+<text top="413" left="521" width="39" height="8" font="15">encrypt</text>
+<text top="423" left="129" width="432" height="14" font="5">secret. They can now authenticate their data by encrypting it with their</text>
+<text top="437" left="129" width="432" height="14" font="5">secret key, while their hundreds of millions of users can check the authen-</text>
+<text top="452" left="129" width="432" height="14" font="5">ticity using the key Microsoft made public. For example, Microsoft could</text>
+<text top="467" left="129" width="288" height="14" font="5">encrypt an update to their operating system with</text>
+<text top="468" left="419" width="12" height="12" font="12">K</text>
+<text top="472" left="431" width="39" height="8" font="15">encrypt</text>
+<text top="467" left="473" width="87" height="14" font="5">and send it out</text>
+<text top="482" left="129" width="287" height="14" font="5">to all their users. Each user could decrypt it with</text>
+<text top="483" left="419" width="12" height="12" font="12">K</text>
+<text top="488" left="431" width="38" height="8" font="15">decrypt</text>
+<text top="482" left="469" width="92" height="14" font="5">. If it decrypted</text>
+<text top="497" left="129" width="432" height="14" font="5">into a properly formatted software update, the user could be sure it was</text>
+<text top="512" left="129" width="432" height="14" font="5">created by Microsoft. Since no one else knows that private key, no one</text>
+<text top="527" left="129" width="209" height="14" font="5">else could have created the update.</text>
+<text top="542" left="147" width="414" height="14" font="5">Sounds like magic, but it isn’t. It’s actually mathematics coming to our</text>
+<text top="557" left="129" width="432" height="14" font="5">rescue, as it so frequently does. We won’t get into the details here, but you</text>
+<text top="572" left="129" width="389" height="14" font="5">have to admit it’s pretty neat. This form of cryptography is called</text>
+<text top="572" left="521" width="40" height="13" font="6"><b>public</b></text>
+<text top="587" left="129" width="108" height="13" font="6"><b>key cryptography</b></text>
+<text top="587" left="237" width="324" height="14" font="5">, since one of the two keys can be widely known to the</text>
+<text top="602" left="129" width="432" height="14" font="5">entire public, while still achieving desirable results. The key everyone</text>
+<text top="617" left="129" width="116" height="14" font="5">knows is called the</text>
+<text top="617" left="249" width="66" height="13" font="6"><b>public key</b></text>
+<text top="617" left="315" width="246" height="14" font="5">, and the key that only the owner knows</text>
+<text top="632" left="129" width="71" height="14" font="5">is called the</text>
+<text top="632" left="204" width="70" height="13" font="6"><b>private key</b></text>
+<text top="632" left="274" width="287" height="14" font="5">. Public key cryptography (often abbreviated as</text>
+<text top="647" left="129" width="19" height="13" font="6"><b>PK</b></text>
+<text top="647" left="148" width="413" height="14" font="5">) has a complicated invention history, which, while interesting, is not</text>
+<text top="662" left="129" width="432" height="14" font="5">really germane to our discussion. Check out a paper by a pioneer in the</text>
+<text top="677" left="129" width="232" height="14" font="5">field, Whitfield Diffie, for details [D88].</text>
+<text top="692" left="147" width="414" height="14" font="5">Public key cryptography avoids one hard issue that faced earlier forms</text>
+<text top="706" left="129" width="432" height="14" font="5">of cryptography: securely distributing a secret key. Here, the private key</text>
+<text top="721" left="129" width="432" height="14" font="5">is created by one party and kept secret by him. It’s never distributed to</text>
+<text top="736" left="129" width="432" height="14" font="5">anyone else. The public key must be distributed, but generally we don’t</text>
+<text top="751" left="129" width="432" height="14" font="5">care if some third party learns this key, since they can’t use it to sign</text>
+<text top="766" left="129" width="432" height="14" font="5">messages. Distributing a public key is an easier problem than distributing</text>
+<text top="781" left="129" width="407" height="14" font="5">a secret key, though, alas, it’s harder than it sounds. We’ll get to that.</text>
+<text top="796" left="147" width="414" height="14" font="5">Public key cryptography is actually even neater, since it works the</text>
+<text top="811" left="129" width="309" height="14" font="5">other way around. You can use the decryption key</text>
+<text top="811" left="442" width="12" height="12" font="12">K</text>
+<text top="816" left="453" width="38" height="8" font="15">decrypt</text>
+<text top="811" left="496" width="65" height="14" font="5">to encrypt,</text>
+<text top="826" left="129" width="257" height="14" font="5">in which case you need the encryption key</text>
+<text top="826" left="390" width="12" height="12" font="12">K</text>
+<text top="831" left="402" width="39" height="8" font="15">encrypt</text>
+<text top="826" left="446" width="115" height="14" font="5">to decrypt. We still</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="13" family="PSKEPM+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="5">P</text>
+<text top="98" left="96" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="169" width="5" height="14" font="5">I</text>
+<text top="98" left="175" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="261" width="13" height="14" font="5">W</text>
+<text top="98" left="275" width="21" height="11" font="7">ITH</text>
+<text top="96" left="299" width="10" height="14" font="5">C</text>
+<text top="98" left="309" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="96" left="512" width="7" height="14" font="5">7</text>
+<text top="139" left="87" width="432" height="14" font="5">expect the encryption key to be kept secret and the decryption key to be</text>
+<text top="154" left="87" width="432" height="14" font="5">publicly known, so doing things in this order no longer allows authenti-</text>
+<text top="169" left="87" width="207" height="14" font="5">cation. Anyone could encrypt with</text>
+<text top="169" left="297" width="12" height="12" font="12">K</text>
+<text top="174" left="308" width="38" height="8" font="15">decrypt</text>
+<text top="169" left="347" width="172" height="14" font="5">, after all. But only the owner</text>
+<text top="183" left="87" width="257" height="14" font="5">of the key can decrypt such messages using</text>
+<text top="184" left="348" width="12" height="12" font="12">K</text>
+<text top="189" left="359" width="39" height="8" font="15">encrypt</text>
+<text top="183" left="399" width="120" height="14" font="5">. So that allows any-</text>
+<text top="198" left="87" width="432" height="14" font="5">one to send an encrypted message to someone who has a private key,</text>
+<text top="213" left="87" width="432" height="14" font="5">provided you know their public key. Thus, PK allows authentication if</text>
+<text top="228" left="87" width="432" height="14" font="5">you encrypt with the private key and secret communication if you en-</text>
+<text top="243" left="87" width="151" height="14" font="5">crypt with the public key.</text>
+<text top="258" left="105" width="414" height="14" font="5">What if you want both, as you very well might? You’ll need two differ-</text>
+<text top="273" left="87" width="432" height="14" font="5">ent key pairs to do that. Let’s say Alice wants to use PK to communicate</text>
+<text top="288" left="87" width="432" height="14" font="5">secretly with her pal Bob, and also wants to be sure Bob can authenti-</text>
+<text top="303" left="87" width="432" height="14" font="5">cate her messages. Let’s also say Alice and Bob each have their own PK</text>
+<text top="318" left="87" width="432" height="14" font="5">pair. Each of them knows his or her own private key and the other party’s</text>
+<text top="333" left="87" width="432" height="14" font="5">public key. If Alice encrypts her message with her own private key, she’ll</text>
+<text top="348" left="87" width="432" height="14" font="5">authenticate the message, since Bob can use her public key to decrypt and</text>
+<text top="363" left="87" width="432" height="14" font="5">will know that only Alice could have created that message. But everyone</text>
+<text top="378" left="87" width="432" height="14" font="5">knows Alice’s public key, so there would be no secrecy achieved. How-</text>
+<text top="393" left="87" width="432" height="14" font="5">ever, if Alice takes the authenticated message and encrypts it a second</text>
+<text top="408" left="87" width="432" height="14" font="5">time, this time with Bob’s public key, she will achieve secrecy as well.</text>
+<text top="423" left="87" width="432" height="14" font="5">Only Bob knows the matching private key, so only Bob can read the mes-</text>
+<text top="437" left="87" width="432" height="14" font="5">sage. Of course, Bob will need to decrypt twice, once with his private key</text>
+<text top="452" left="87" width="279" height="14" font="5">and then a second time with Alice’s public key.</text>
+<text top="467" left="105" width="414" height="14" font="5">Sounds expensive. It’s actually worse than you think, since it turns out</text>
+<text top="482" left="87" width="432" height="14" font="5">that public key cryptography has a shortcoming: it’s much more compu-</text>
+<text top="497" left="87" width="432" height="14" font="5">tationally expensive than traditional cryptography that relies on a single</text>
+<text top="512" left="87" width="432" height="14" font="5">shared key. Public key cryptography can take hundreds of times longer</text>
+<text top="527" left="87" width="432" height="14" font="5">to perform than standard symmetric cryptography. As a result, we really</text>
+<text top="542" left="87" width="432" height="14" font="5">can’t afford to use public key cryptography for everything. We need to</text>
+<text top="557" left="87" width="404" height="14" font="5">pick and choose our spots, using it to achieve the things it’s good at.</text>
+<text top="572" left="105" width="414" height="14" font="5">There’s another important issue. We rather blithely said that Alice</text>
+<text top="587" left="87" width="432" height="14" font="5">knows Bob’s public key and Bob knows Alice’s. How did we achieve</text>
+<text top="602" left="87" width="432" height="14" font="5">this blissful state of affairs? Originally, only Alice knew her public key</text>
+<text top="617" left="87" width="432" height="14" font="5">and only Bob knew his public key. We’re going to need to do something</text>
+<text top="632" left="87" width="432" height="14" font="5">to get that knowledge out to the rest of the world if we want to benefit</text>
+<text top="647" left="87" width="432" height="14" font="5">from the magic of public key cryptography. And we’d better be careful</text>
+<text top="662" left="87" width="432" height="14" font="5">about it, since Bob is going to assume that messages encrypted with the</text>
+<text top="677" left="87" width="216" height="14" font="5">public key he thinks belongs to Alice</text>
+<text top="677" left="306" width="25" height="14" font="16">were</text>
+<text top="677" left="334" width="185" height="14" font="5">actually created by Alice. What</text>
+<text top="692" left="87" width="432" height="14" font="5">if some evil genius, called, perhaps, Eve, manages to convince Bob that</text>
+<text top="706" left="87" width="432" height="14" font="5">Eve’s public key actually belongs to Alice? If that happens, messages</text>
+<text top="721" left="87" width="432" height="14" font="5">created by Eve would be misidentified by Bob as originating from Alice,</text>
+<text top="736" left="87" width="432" height="14" font="5">subverting our entire goal of authenticating the messages. We’d better</text>
+<text top="751" left="87" width="417" height="14" font="5">make sure Eve can’t fool Bob about which public key belongs to Alice.</text>
+<text top="766" left="105" width="414" height="14" font="5">This leads down a long and shadowy road to the arcane realm of key</text>
+<text top="781" left="87" width="432" height="14" font="5">distribution infrastructures. You will be happier if you don’t try to travel</text>
+<text top="796" left="87" width="432" height="14" font="5">that road yourself, since even the most well prepared pioneers who have</text>
+<text top="811" left="87" width="432" height="14" font="5">hazarded it often come to grief. We’ll discuss how, in practice, we dis-</text>
+<text top="826" left="87" width="432" height="14" font="5">tribute public keys in a chapter on distributed system security. For the</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="7">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="7">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="7">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="7">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="7">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="5">8</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="139" left="129" width="432" height="14" font="5">moment, bear in mind that the beautiful magic of public key cryptogra-</text>
+<text top="154" left="129" width="414" height="14" font="5">phy rests on the grubby and uncertain foundation of key distribution.</text>
+<text top="169" left="147" width="247" height="14" font="5">One more thing about PK cryptography:</text>
+<text top="169" left="400" width="161" height="13" font="6"><b>THE CRYPTOGRAPHY’S</b></text>
+<text top="184" left="129" width="400" height="13" font="6"><b>BENEFIT RELIES ENTIRELY ON THE SECRECY OF THE KEY</b></text>
+<text top="183" left="529" width="32" height="14" font="5">. (Bet</text>
+<text top="198" left="129" width="432" height="14" font="5">you’ve heard that before.) In this case, the private key. But the secrecy of</text>
+<text top="213" left="129" width="432" height="14" font="5">that private key is every bit as important to the overall benefit of public</text>
+<text top="228" left="129" width="432" height="14" font="5">key cryptography as the secrecy of the single shared key in the case of</text>
+<text top="243" left="129" width="432" height="14" font="5">symmetric cryptography. Never divulge private keys. Never share pri-</text>
+<text top="258" left="129" width="432" height="14" font="5">vate keys. Take great care in your use of private keys and in how you</text>
+<text top="273" left="129" width="432" height="14" font="5">store them. If you lose a private key, everything you used it for is at risk,</text>
+<text top="288" left="129" width="432" height="14" font="5">and whoever gets hold of it can pose as you and read your secret mes-</text>
+<text top="303" left="129" width="269" height="14" font="5">sages. That wouldn’t be very good, would it?</text>
+<text top="340" left="97" width="198" height="17" font="4">56.4 Cryptographic Hashes</text>
+<text top="370" left="147" width="414" height="14" font="5">As we discussed earlier, we can protect data integrity by using cryp-</text>
+<text top="385" left="129" width="432" height="14" font="5">tography, since alterations to encrypted data will not decrypt properly.</text>
+<text top="400" left="129" width="432" height="14" font="5">We can reduce the costs of that integrity check by hashing the data and</text>
+<text top="415" left="129" width="432" height="14" font="5">encrypting just the hash, instead of encrypting the entire thing. However,</text>
+<text top="430" left="129" width="432" height="14" font="5">if we want to be really careful, we can’t use just any hash function, since</text>
+<text top="445" left="129" width="245" height="14" font="5">hash functions, by their very nature, have</text>
+<text top="445" left="377" width="91" height="13" font="6"><b>hash collisions</b></text>
+<text top="445" left="468" width="93" height="14" font="5">, where two dif-</text>
+<text top="459" left="129" width="432" height="14" font="5">ferent bit patterns hash to the same thing. If an attacker can change the</text>
+<text top="474" left="129" width="432" height="14" font="5">bit pattern we intended to send to some other bit pattern that hashes to</text>
+<text top="489" left="129" width="317" height="14" font="5">the same thing, we would lose our integrity property.</text>
+<text top="504" left="147" width="253" height="14" font="5">So to be particularly careful, we can use a</text>
+<text top="504" left="404" width="118" height="13" font="6"><b>cryptographic hash</b></text>
+<text top="504" left="526" width="35" height="14" font="5">to en-</text>
+<text top="519" left="129" width="432" height="14" font="5">sure integrity. Cryptographic hashes are a special category of hash func-</text>
+<text top="534" left="129" width="236" height="14" font="5">tions with several important properties:</text>
+<text top="559" left="148" width="412" height="14" font="5">• It is computationally infeasible to find two inputs that will produce</text>
+<text top="574" left="163" width="124" height="14" font="5">the same hash value.</text>
+<text top="591" left="148" width="412" height="14" font="5">• Any change to an input will result in an unpredictable change to</text>
+<text top="605" left="163" width="146" height="14" font="5">the resulting hash value.</text>
+<text top="622" left="148" width="412" height="14" font="5">• It is computationally infeasible to infer any properties of the input</text>
+<text top="637" left="163" width="176" height="14" font="5">based only on the hash value.</text>
+<text top="662" left="147" width="414" height="14" font="5">Based on these properties, if we only care about data integrity, rather</text>
+<text top="677" left="129" width="432" height="14" font="5">than secrecy, we can take the cryptographic hash of a piece of data, en-</text>
+<text top="692" left="129" width="432" height="14" font="5">crypt only that hash, and send both the encrypted hash and the unen-</text>
+<text top="707" left="129" width="432" height="14" font="5">crypted data to our partner. If an opponent fiddles with the data in tran-</text>
+<text top="722" left="129" width="432" height="14" font="5">sit, when we decrypt the hash and repeat the hashing operation on the</text>
+<text top="739" left="129" width="308" height="14" font="5">data, we’ll see a mismatch and detect the tampering</text>
+<text top="736" left="437" width="4" height="9" font="8">2</text>
+<text top="739" left="443" width="3" height="14" font="5">.</text>
+<text top="766" left="149" width="4" height="8" font="9">2</text>
+<text top="768" left="154" width="407" height="11" font="10">Why do we need to encrypt the cryptographic hash? Well, anyone, including our oppo-</text>
+<text top="780" left="129" width="432" height="11" font="10">nent, can run a cryptographic hashing algorithm on anything, including an altered version of</text>
+<text top="792" left="129" width="432" height="11" font="10">the message. If we don’t encrypt the hash, the attacker will change the message, compute a</text>
+<text top="804" left="129" width="432" height="11" font="10">new hash, replace both the original message and the original hash with these versions, and</text>
+<text top="816" left="129" width="432" height="11" font="10">send the result. If the hash we sent is encrypted, though, the attacker can’t know what the</text>
+<text top="828" left="129" width="222" height="11" font="10">encrypted version of the altered hash should be.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="10" family="VZWJUV+CMMI7" color="#000000"/>
+	<fontspec id="18" size="7" family="SKVLCT+CMSY5" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="5">P</text>
+<text top="98" left="96" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="169" width="5" height="14" font="5">I</text>
+<text top="98" left="175" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="261" width="13" height="14" font="5">W</text>
+<text top="98" left="275" width="21" height="11" font="7">ITH</text>
+<text top="96" left="299" width="10" height="14" font="5">C</text>
+<text top="98" left="309" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="96" left="512" width="7" height="14" font="5">9</text>
+<text top="139" left="105" width="414" height="14" font="5">To formalize it a bit, to perform a cryptographic hash we take a plain-</text>
+<text top="154" left="87" width="22" height="14" font="5">text</text>
+<text top="154" left="114" width="9" height="12" font="12">P</text>
+<text top="154" left="129" width="150" height="14" font="5">and a hashing algorithm</text>
+<text top="154" left="284" width="11" height="12" font="12">H</text>
+<text top="153" left="296" width="11" height="13" font="13">()</text>
+<text top="154" left="307" width="212" height="14" font="5">. Note that there is not necessarily</text>
+<text top="169" left="87" width="240" height="14" font="5">any key involved. Here’s what happens:</text>
+<text top="199" left="272" width="8" height="12" font="12">S</text>
+<text top="198" left="285" width="11" height="13" font="13">=</text>
+<text top="199" left="300" width="11" height="12" font="12">H</text>
+<text top="198" left="312" width="5" height="13" font="13">(</text>
+<text top="199" left="318" width="9" height="12" font="12">P</text>
+<text top="198" left="328" width="5" height="13" font="13">)</text>
+<text top="198" left="486" width="32" height="14" font="5">(56.5)</text>
+<text top="219" left="105" width="414" height="14" font="5">Since cryptographic hashes are a subclass of hashes in general, we nor-</text>
+<text top="234" left="87" width="76" height="14" font="5">mally expect</text>
+<text top="234" left="167" width="8" height="12" font="12">S</text>
+<text top="234" left="181" width="107" height="14" font="5">to be shorter than</text>
+<text top="234" left="292" width="9" height="12" font="12">P</text>
+<text top="234" left="303" width="216" height="14" font="5">, perhaps a lot shorter. That implies</text>
+<text top="249" left="87" width="392" height="14" font="5">there will be collisions, situations in which two different plaintexts</text>
+<text top="249" left="482" width="9" height="12" font="12">P</text>
+<text top="249" left="496" width="23" height="14" font="5">and</text>
+<text top="264" left="87" width="9" height="12" font="12">P</text>
+<text top="263" left="98" width="3" height="8" font="14">′</text>
+<text top="264" left="105" width="74" height="14" font="5">both hash to</text>
+<text top="264" left="183" width="8" height="12" font="12">S</text>
+<text top="264" left="192" width="327" height="14" font="5">. However, the properties of cryptographic hashes out-</text>
+<text top="279" left="87" width="432" height="14" font="5">lined above will make it difficult for an adversary to make use of colli-</text>
+<text top="294" left="87" width="186" height="14" font="5">sions. Even if you know both</text>
+<text top="294" left="278" width="8" height="12" font="12">S</text>
+<text top="294" left="292" width="23" height="14" font="5">and</text>
+<text top="294" left="320" width="9" height="12" font="12">P</text>
+<text top="294" left="331" width="188" height="14" font="5">, it should be hard to find any</text>
+<text top="311" left="87" width="87" height="14" font="5">other plaintext</text>
+<text top="311" left="178" width="9" height="12" font="12">P</text>
+<text top="310" left="188" width="3" height="8" font="14">′</text>
+<text top="311" left="196" width="92" height="14" font="5">that hashes to S</text>
+<text top="308" left="288" width="4" height="9" font="8">3</text>
+<text top="311" left="293" width="226" height="14" font="5">. It won’t be hard to figure out what S’</text>
+<text top="326" left="87" width="247" height="14" font="5">should be for an altered value of plaintext</text>
+<text top="326" left="337" width="9" height="12" font="12">P</text>
+<text top="325" left="348" width="3" height="8" font="14">′</text>
+<text top="326" left="352" width="167" height="14" font="5">, since you can simply apply</text>
+<text top="341" left="87" width="280" height="14" font="5">the cryptographic hashing algorithm directly to</text>
+<text top="341" left="370" width="9" height="12" font="12">P</text>
+<text top="340" left="381" width="3" height="8" font="14">′</text>
+<text top="341" left="385" width="134" height="14" font="5">. But even a slightly al-</text>
+<text top="356" left="87" width="93" height="14" font="5">tered version of</text>
+<text top="356" left="184" width="9" height="12" font="12">P</text>
+<text top="356" left="195" width="61" height="14" font="5">, such as a</text>
+<text top="356" left="259" width="9" height="12" font="12">P</text>
+<text top="355" left="269" width="3" height="8" font="14">′</text>
+<text top="356" left="277" width="242" height="14" font="5">differing only in one bit, should produce</text>
+<text top="371" left="87" width="371" height="14" font="5">a hash S’ that differs from S in completely unpredictable ways.</text>
+<text top="386" left="105" width="414" height="14" font="5">Cryptographic hashes can be used for other purposes than ensuring</text>
+<text top="400" left="87" width="432" height="14" font="5">integrity of encrypted data, as well. They are the class of hashes of choice</text>
+<text top="415" left="87" width="432" height="14" font="5">for storing salted hashed passwords, for example, as discussed in the</text>
+<text top="430" left="87" width="432" height="14" font="5">chapter on authentication. They can be used to determine if a stored file</text>
+<text top="445" left="87" width="432" height="14" font="5">has been altered, a function provided by well-known security software</text>
+<text top="460" left="87" width="432" height="14" font="5">like Tripwire. They can also be used to force a process to perform a certain</text>
+<text top="475" left="87" width="432" height="14" font="5">amount of work before submitting a request, an approach called “proof</text>
+<text top="490" left="87" width="432" height="14" font="5">of work.” The submitter is required to submit a request that hashes to</text>
+<text top="505" left="87" width="432" height="14" font="5">a certain value using some specified cryptographic hash, which, because</text>
+<text top="520" left="87" width="432" height="14" font="5">of the properties of such hashes, requires them to try a lot of request for-</text>
+<text top="535" left="87" width="432" height="14" font="5">mats before finding one that hashes to the required value. Since each hash</text>
+<text top="550" left="87" width="432" height="14" font="5">operation takes some time, submitting a proper request will require a pre-</text>
+<text top="565" left="87" width="432" height="14" font="5">dictable amount of work. This use of hashes, in varying forms, occurs in</text>
+<text top="580" left="87" width="389" height="14" font="5">several applications, including spam prevention and blockchains.</text>
+<text top="595" left="105" width="414" height="14" font="5">Like other cryptographic algorithms, you’re well advised to use stan-</text>
+<text top="610" left="87" width="432" height="14" font="5">dard algorithms for cryptographic hashing. For example, the SHA-3 al-</text>
+<text top="625" left="87" width="432" height="14" font="5">gorithm is commonly regarded as a good choice. However, there is a</text>
+<text top="640" left="87" width="432" height="14" font="5">history of cryptographic hashing algorithms becoming obsolete, so if you</text>
+<text top="654" left="87" width="432" height="14" font="5">are designing a system that uses one, it’s wise to first check to see what</text>
+<text top="669" left="87" width="372" height="14" font="5">current recommendations are for choices of such an algorithm.</text>
+<text top="707" left="55" width="208" height="17" font="4">56.5 Cracking Cryptography</text>
+<text top="736" left="105" width="414" height="14" font="5">Chances are that you’ve heard about people cracking cryptography.</text>
+<text top="751" left="87" width="432" height="14" font="5">It’s a popular theme in film and television. How worried should you be</text>
+<text top="766" left="87" width="67" height="14" font="5">about that?</text>
+<text top="790" left="107" width="4" height="8" font="9">3</text>
+<text top="792" left="112" width="407" height="11" font="10">Every so often, a well known cryptographic hashing function is “broken” in the sense</text>
+<text top="804" left="87" width="190" height="11" font="10">that someone figures out how to create a</text>
+<text top="805" left="280" width="8" height="11" font="17">P</text>
+<text top="803" left="289" width="3" height="7" font="18">′</text>
+<text top="804" left="296" width="223" height="11" font="10">that uses the function to produce the same hash</text>
+<text top="816" left="87" width="10" height="11" font="10">as</text>
+<text top="817" left="100" width="8" height="11" font="17">P</text>
+<text top="816" left="109" width="410" height="11" font="10">. That happened to a hashing function known as SHA-1 in 2017, rendering that function</text>
+<text top="828" left="87" width="230" height="11" font="10">unsafe and unusable for integrity purposes [G17].</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="7">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="7">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="7">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="7">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="7">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="9" family="ROEGUO+CMR6" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">10</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="139" left="147" width="414" height="14" font="5">Well, if you didn’t take our earlier advice and went ahead and built</text>
+<text top="154" left="129" width="432" height="14" font="5">your own cipher, you should be very worried. Worried enough that you</text>
+<text top="169" left="129" width="432" height="14" font="5">should stop reading this, rip out your own cipher from your system, and</text>
+<text top="183" left="129" width="432" height="14" font="5">replace it with a well-known respected standard. Go ahead, we’ll still be</text>
+<text top="198" left="129" width="145" height="14" font="5">here when you get back.</text>
+<text top="216" left="147" width="414" height="14" font="5">What if you did use one of those standards? In that case, you’re prob-</text>
+<text top="231" left="129" width="432" height="14" font="5">ably OK. If you use a modern standard, with a few unimportant excep-</text>
+<text top="245" left="129" width="432" height="14" font="5">tions, there are no known ways to read data encrypted with these algo-</text>
+<text top="260" left="129" width="432" height="14" font="5">rithms without obtaining the key. Which isn’t to say your system is se-</text>
+<text top="275" left="129" width="432" height="14" font="5">cure, but probably no one will break into it by cracking the cryptographic</text>
+<text top="290" left="129" width="62" height="14" font="5">algorithm.</text>
+<text top="308" left="147" width="414" height="14" font="5">How will they do it, then? Probably by exploiting software flaws in</text>
+<text top="322" left="129" width="432" height="14" font="5">your system having nothing to do with the cryptography, but there’s</text>
+<text top="337" left="129" width="432" height="14" font="5">some chance they will crack it by obtaining your keys or exploiting some</text>
+<text top="352" left="129" width="432" height="14" font="5">other flaw in your management of cryptography. How? Software flaws</text>
+<text top="367" left="129" width="432" height="14" font="5">in how you create and use your keys are a common problem. In dis-</text>
+<text top="382" left="129" width="432" height="14" font="5">tributed environments, flaws in the methods used to share keys are also</text>
+<text top="397" left="129" width="432" height="14" font="5">a common weakness that can be exploited. Peter Gutmann produced a</text>
+<text top="412" left="129" width="432" height="14" font="5">nice survey of the sorts of problems improper management of cryptogra-</text>
+<text top="427" left="129" width="432" height="14" font="5">phy frequently causes [G02]. Examples include distributing secret keys</text>
+<text top="442" left="129" width="432" height="14" font="5">in software shared by many people, incorrectly transmitting plaintext</text>
+<text top="457" left="129" width="432" height="14" font="5">versions of keys across a network, and choosing keys from a seriously</text>
+<text top="472" left="129" width="432" height="14" font="5">reduced set of possible choices, rather than the larger theoretically pos-</text>
+<text top="487" left="129" width="432" height="14" font="5">sible set. More recently, the Heartbleed attack demonstrated a way to</text>
+<text top="502" left="129" width="432" height="14" font="5">obtain keys being used in OpenSSL sessions from the memory of a re-</text>
+<text top="517" left="129" width="432" height="14" font="5">mote computer, which allowed an attacker to decrypt the entire session,</text>
+<text top="532" left="129" width="432" height="14" font="5">despite no flaws in either the cipher itself or its implementation, nor in its</text>
+<text top="547" left="129" width="432" height="14" font="5">key selection procedures. This flaw allowed attackers to read the traffic</text>
+<text top="562" left="129" width="432" height="14" font="5">of something between 1/4 and 1/2 of all sites using HTTPS, the crypto-</text>
+<text top="576" left="129" width="277" height="14" font="5">graphically protected version of HTTP [D+14].</text>
+<text top="594" left="147" width="414" height="14" font="5">One way attackers deal with cryptography is by guessing the key. Do-</text>
+<text top="609" left="129" width="432" height="14" font="5">ing so doesn’t actually crack the cryptography at all. Cryptographic al-</text>
+<text top="624" left="129" width="432" height="14" font="5">gorithms are designed to prevent people who don’t know the key from</text>
+<text top="639" left="129" width="432" height="14" font="5">obtaining the secrets. If you know the key, it’s not supposed to make</text>
+<text top="653" left="129" width="100" height="14" font="5">decryption hard.</text>
+<text top="671" left="147" width="414" height="14" font="5">So an attacker could try simply guessing each possible key and trying</text>
+<text top="686" left="129" width="432" height="14" font="5">it. That’s called a brute force attack, and it’s why you should use long</text>
+<text top="701" left="129" width="432" height="14" font="5">keys. For example, AES keys are at least 128 bits. Assuming you generate</text>
+<text top="717" left="129" width="338" height="14" font="5">your AES key at random, an attacker will need to make</text>
+<text top="717" left="471" width="7" height="13" font="13">2</text>
+<text top="715" left="478" width="16" height="6" font="19">127</text>
+<text top="717" left="500" width="61" height="14" font="5">guesses at</text>
+<text top="732" left="129" width="432" height="14" font="5">your key, on average, before he gets it right. That’s a lot of guesses and</text>
+<text top="747" left="129" width="432" height="14" font="5">will take a lot of time. Of course, if a software flaw causes your system</text>
+<text top="762" left="129" width="432" height="14" font="5">to select one out of thirty two possible AES keys, instead of one out of</text>
+<text top="779" left="129" width="7" height="13" font="13">2</text>
+<text top="777" left="136" width="16" height="6" font="19">128</text>
+<text top="779" left="153" width="408" height="14" font="5">, a brute force attack may become trivial. Key selection is a big deal</text>
+<text top="794" left="129" width="104" height="14" font="5">for cryptography.</text>
+<text top="811" left="147" width="420" height="14" font="5">For example, the original 802.11 wireless networking standard included</text>
+<text top="826" left="129" width="432" height="14" font="5">no cryptographic protection of data being streamed through the air. The</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="20" size="13" family="GGJETH+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="5">P</text>
+<text top="98" left="96" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="169" width="5" height="14" font="5">I</text>
+<text top="98" left="175" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="261" width="13" height="14" font="5">W</text>
+<text top="98" left="275" width="21" height="11" font="7">ITH</text>
+<text top="96" left="299" width="10" height="14" font="5">C</text>
+<text top="98" left="309" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="96" left="506" width="13" height="14" font="5">11</text>
+<text top="148" left="238" width="8" height="14" font="5">T</text>
+<text top="150" left="247" width="11" height="11" font="7">IP</text>
+<text top="148" left="258" width="15" height="14" font="5">: S</text>
+<text top="150" left="274" width="59" height="11" font="7">ELECTING</text>
+<text top="148" left="337" width="10" height="14" font="5">K</text>
+<text top="150" left="348" width="21" height="11" font="7">EYS</text>
+<text top="163" left="87" width="432" height="14" font="5">One important aspect of key secrecy is selecting a good one to begin with.</text>
+<text top="178" left="87" width="432" height="14" font="5">For public key cryptography, you need to run an algorithm to select one</text>
+<text top="193" left="87" width="432" height="14" font="5">of the few possible pairs of keys you will use. But for symmetric cryp-</text>
+<text top="208" left="87" width="432" height="14" font="5">tography, you are free to select any of the possible keys. How should you</text>
+<text top="223" left="87" width="47" height="14" font="5">choose?</text>
+<text top="241" left="87" width="432" height="14" font="5">Randomly. If you use any deterministic method to select your key, your</text>
+<text top="256" left="87" width="432" height="14" font="5">opponent’s problem of finding out your key has just been converted into</text>
+<text top="271" left="87" width="432" height="14" font="5">a problem of figuring out your method. Worse, since you’ll probably</text>
+<text top="286" left="87" width="432" height="14" font="5">generate many keys over the course of time, once he knows your method,</text>
+<text top="301" left="87" width="432" height="14" font="5">he’ll get all of them. If you use random chance to generate keys, though,</text>
+<text top="316" left="87" width="432" height="14" font="5">figuring out one of them won’t help your opponent figure out any of your</text>
+<text top="331" left="87" width="432" height="14" font="5">other keys. This highly desirable property in a cryptographic system is</text>
+<text top="346" left="87" width="35" height="14" font="5">called</text>
+<text top="346" left="126" width="143" height="13" font="6"><b>perfect forward secrecy</b></text>
+<text top="346" left="268" width="3" height="14" font="5">.</text>
+<text top="364" left="87" width="432" height="14" font="5">Unfortunately, true randomness is hard to come by. The best source for</text>
+<text top="379" left="87" width="432" height="14" font="5">operating system purposes is to examine hardware processes that are be-</text>
+<text top="394" left="87" width="432" height="14" font="5">lieved to be random in nature, like low order bits of the times required</text>
+<text top="409" left="87" width="432" height="14" font="5">for pieces of hardware to perform operations, and convert the results into</text>
+<text top="424" left="87" width="186" height="14" font="5">random numbers. That’s called</text>
+<text top="424" left="276" width="110" height="13" font="6"><b>gathering entropy</b></text>
+<text top="424" left="386" width="133" height="14" font="5">. In Linux, this is done</text>
+<text top="439" left="87" width="432" height="14" font="5">for you automatically, and you can use the gathered entropy by reading</text>
+<text top="454" left="87" width="89" height="11" font="20">/dev/random</text>
+<text top="453" left="176" width="343" height="14" font="5">. Windows has a similar entropy-gathering feature. Use</text>
+<text top="468" left="87" width="432" height="14" font="5">these to generate your keys. They’re not perfect, but they’re good enough</text>
+<text top="483" left="87" width="116" height="14" font="5">for many purposes.</text>
+<text top="538" left="87" width="432" height="14" font="5">first attempt to add such protection was called WEP (Wired Equivalent</text>
+<text top="553" left="87" width="432" height="14" font="5">Protocol, a rather optimistic name). WEP was constrained by the need</text>
+<text top="568" left="87" width="432" height="14" font="5">to fit into the existing standard, but the method it used to generate and</text>
+<text top="583" left="87" width="432" height="14" font="5">distribute symmetric keys was seriously flawed. Merely by listening in</text>
+<text top="598" left="87" width="432" height="14" font="5">on wireless traffic on an 802.11 network, an attacker could determine the</text>
+<text top="613" left="87" width="432" height="14" font="5">key being used in as little as a minute. There are widely available tools</text>
+<text top="630" left="87" width="157" height="14" font="5">that allow anyone to do so</text>
+<text top="628" left="244" width="4" height="9" font="8">4</text>
+<text top="630" left="250" width="3" height="14" font="5">.</text>
+<text top="645" left="105" width="414" height="14" font="5">As another example, an early implementation of the Netscape web</text>
+<text top="660" left="87" width="432" height="14" font="5">browser generated cryptographic keys using some easily guess-able val-</text>
+<text top="675" left="87" width="432" height="14" font="5">ues as seeds to a random number generator, such as the time of day and</text>
+<text top="690" left="87" width="432" height="14" font="5">the ID of the process requesting the key. Researchers discovered they</text>
+<text top="705" left="87" width="366" height="14" font="5">could guess the keys produced in around 30 seconds [GW96].</text>
+<text top="720" left="105" width="414" height="14" font="5">You might have heard that PK systems use much longer keys, 2K or 4K</text>
+<text top="735" left="87" width="432" height="14" font="5">bits. Sounds much safer, no? Shouldn’t that at least make them stronger</text>
+<text top="750" left="87" width="432" height="14" font="5">against brute force attacks? However, you can’t select keys for this type of</text>
+<text top="778" left="107" width="4" height="8" font="9">4</text>
+<text top="780" left="112" width="407" height="11" font="10">WEP got replaced by WPA. Unfortunately, WPA proved to have its own weaknesses, so</text>
+<text top="792" left="87" width="432" height="11" font="10">it was replaced by WPA2. Unfortunately, WPA2 proved to have its own weaknesses, so it</text>
+<text top="804" left="87" width="432" height="11" font="10">is being replaced by WPA3, as of 2018. The sad fate of providing cryptography for wireless</text>
+<text top="816" left="87" width="432" height="11" font="10">networks should serve as a lesson to any of you tempted to underestimate the difficulties in</text>
+<text top="828" left="87" width="103" height="11" font="10">getting this stuff right.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="7">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="7">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="7">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="7">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="7">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="5">12</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="139" left="129" width="432" height="14" font="5">cryptosystem at random. Only a relatively few pairs of public and private</text>
+<text top="154" left="129" width="432" height="14" font="5">keys are possible. That’s because the public and private keys must be</text>
+<text top="169" left="129" width="432" height="14" font="5">related to each other for the system to work. The relationship is usually</text>
+<text top="183" left="129" width="432" height="14" font="5">mathematical, and usually intended to be mathematically hard to derive,</text>
+<text top="198" left="129" width="432" height="14" font="5">so knowing the public key should not make it easy to learn the private</text>
+<text top="213" left="129" width="432" height="14" font="5">key. However, with the public key in hand, one can use the mathematical</text>
+<text top="228" left="129" width="432" height="14" font="5">properties of the system to derive the private key eventually. That’s why</text>
+<text top="243" left="129" width="432" height="14" font="5">PK systems use such big keys – to make sure “eventually” is a very long</text>
+<text top="258" left="129" width="30" height="14" font="5">time.</text>
+<text top="275" left="147" width="414" height="14" font="5">But that only matters if you keep the private key secret. By now, we</text>
+<text top="290" left="129" width="432" height="14" font="5">hope this sounds obvious, but many makers of embedded devices use PK</text>
+<text top="305" left="129" width="432" height="14" font="5">to provide encryption for those devices, and include a private key in the</text>
+<text top="320" left="129" width="432" height="14" font="5">device’s software. All too often, the same private key is used for all de-</text>
+<text top="335" left="129" width="432" height="14" font="5">vices of a particular model. Such shared private keys invariably become,</text>
+<text top="350" left="129" width="432" height="14" font="5">well, public. In September 2016, one study found 4.5 million embedded</text>
+<text top="365" left="129" width="432" height="14" font="5">devices relying on these private keys that were no longer so private [V16].</text>
+<text top="380" left="129" width="432" height="14" font="5">Anyone could pose as any of these devices for any purpose, and could</text>
+<text top="395" left="129" width="432" height="14" font="5">read any information sent to them using PK. In essence, the cryptography</text>
+<text top="410" left="129" width="432" height="14" font="5">performed by these devices was little more than window dressing and</text>
+<text top="425" left="129" width="421" height="14" font="5">did not increase the security of the devices by any appreciable amount.</text>
+<text top="442" left="147" width="414" height="14" font="5">To summarize, cracking cryptography is usually about learning the</text>
+<text top="457" left="129" width="220" height="14" font="5">key. Or, as you might have guessed:</text>
+<text top="457" left="355" width="206" height="13" font="6"><b>THE CRYPTOGRAPHY’S BENE-</b></text>
+<text top="472" left="129" width="355" height="13" font="6"><b>FIT RELIES ENTIRELY ON THE SECRECY OF THE KEY.</b></text>
+<text top="511" left="97" width="315" height="17" font="4">56.6 Cryptography And Operating Systems</text>
+<text top="546" left="147" width="368" height="14" font="5">Cryptography is fascinating, but lots of things are fascinating</text>
+<text top="543" left="515" width="4" height="9" font="8">5</text>
+<text top="546" left="520" width="41" height="14" font="5">, while</text>
+<text top="560" left="129" width="432" height="14" font="5">having no bearing on operating systems. Why did we bother spending</text>
+<text top="575" left="129" width="432" height="14" font="5">half a chapter on cryptography? Because we can use it to protect operat-</text>
+<text top="590" left="129" width="73" height="14" font="5">ing systems.</text>
+<text top="607" left="147" width="414" height="14" font="5">But not just anywhere and for all purposes. We’ve pounded into your</text>
+<text top="622" left="129" width="432" height="14" font="5">head that key secrecy is vital for effective use of cryptography. That</text>
+<text top="637" left="129" width="432" height="14" font="5">should make it clear that any time the key can’t be kept secret, you can’t</text>
+<text top="652" left="129" width="432" height="14" font="5">effectively use cryptography. Casting your mind back to the first chap-</text>
+<text top="667" left="129" width="432" height="14" font="5">ter on security, remember that the operating system has control of and</text>
+<text top="682" left="129" width="432" height="14" font="5">access to all resources on a computer. Which implies that if you have en-</text>
+<text top="697" left="129" width="432" height="14" font="5">crypted information on the computer, and you have the necessary key to</text>
+<text top="712" left="129" width="432" height="14" font="5">decrypt it on the same computer, the operating system on that machine</text>
+<text top="729" left="129" width="402" height="14" font="5">can decrypt the data, whether that was the effect you wanted or not</text>
+<text top="727" left="531" width="4" height="9" font="8">6</text>
+<text top="729" left="536" width="3" height="14" font="5">.</text>
+<text top="765" left="149" width="4" height="8" font="9">5</text>
+<text top="767" left="154" width="407" height="11" font="10">For example, the late piano Sonatas of Beethoven. One movement of his last Sonata,</text>
+<text top="779" left="129" width="303" height="11" font="10">Opus 111, even sounds like jazz, while being written in the 1820s!</text>
+<text top="790" left="149" width="4" height="8" font="9">6</text>
+<text top="792" left="154" width="407" height="11" font="10">But remember our discussion of security enclaves in an earlier chapter, hardware that</text>
+<text top="804" left="129" width="432" height="11" font="10">does not allow the operating system full access to information that the enclave protects. Think</text>
+<text top="816" left="129" width="432" height="11" font="10">for a moment what the implications of that are for cryptography on a computer using such an</text>
+<text top="828" left="129" width="204" height="11" font="10">enclave, and what new possibilities it offers.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="5">P</text>
+<text top="98" left="96" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="169" width="5" height="14" font="5">I</text>
+<text top="98" left="175" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="261" width="13" height="14" font="5">W</text>
+<text top="98" left="275" width="21" height="11" font="7">ITH</text>
+<text top="96" left="299" width="10" height="14" font="5">C</text>
+<text top="98" left="309" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="96" left="506" width="13" height="14" font="5">13</text>
+<text top="139" left="105" width="414" height="14" font="5">Either you trust your operating system or you don’t. If you don’t,</text>
+<text top="154" left="87" width="432" height="14" font="5">life is going to be unpleasant anyway, but one implication is that the un-</text>
+<text top="169" left="87" width="432" height="14" font="5">trusted operating system, having access at one time to your secret key,</text>
+<text top="183" left="87" width="432" height="14" font="5">can copy it and re-use it whenever it wants to. If, on the other hand, you</text>
+<text top="198" left="87" width="432" height="14" font="5">trust your operating system, you don’t need to hide your data from it, so</text>
+<text top="213" left="87" width="432" height="14" font="5">cryptography isn’t necessary in this case. This observation has relevance</text>
+<text top="228" left="87" width="432" height="14" font="5">to any situation in which you provide your data to something you don’t</text>
+<text top="243" left="87" width="432" height="14" font="5">trust. For instance, if you don’t trust your cloud computing facility with</text>
+<text top="258" left="87" width="432" height="14" font="5">your data, you won’t improve the situation by giving them your data in</text>
+<text top="273" left="87" width="432" height="14" font="5">plaintext and asking them to encrypt it. They’ve seen the plaintext and</text>
+<text top="288" left="87" width="158" height="14" font="5">can keep a copy of the key.</text>
+<text top="306" left="105" width="414" height="14" font="5">If you’re sure your operating system is trustworthy right now, but are</text>
+<text top="321" left="87" width="432" height="14" font="5">concerned it might not be later, you can encrypt something now and</text>
+<text top="336" left="87" width="432" height="14" font="5">make sure the key is not stored on the machine. Of course, if you’re</text>
+<text top="351" left="87" width="432" height="14" font="5">wrong about the current security of the operating system, or if you ever</text>
+<text top="366" left="87" width="432" height="14" font="5">decrypt the data on the machine after the OS goes rogue, your cryptog-</text>
+<text top="381" left="87" width="432" height="14" font="5">raphy will not protect you, since that ever-so-vital secrecy of the key will</text>
+<text top="396" left="87" width="102" height="14" font="5">be compromised.</text>
+<text top="414" left="105" width="414" height="14" font="5">One can argue that not all compromises of an operating system are</text>
+<text top="429" left="87" width="432" height="14" font="5">permanent. Many are, but some only give an attacker temporary access</text>
+<text top="444" left="87" width="432" height="14" font="5">to system resources, or perhaps access to only a few particular resources.</text>
+<text top="458" left="87" width="432" height="14" font="5">In such cases, if the encrypted data is not stored in plaintext and the de-</text>
+<text top="473" left="87" width="432" height="14" font="5">cryption key is not available at the time or in the place the attacker can</text>
+<text top="488" left="87" width="432" height="14" font="5">access, encrypting that data may still provide benefit. The tricky issue</text>
+<text top="503" left="87" width="432" height="14" font="5">here is that you can’t know ahead of time whether successful attacks on</text>
+<text top="518" left="87" width="432" height="14" font="5">your system will only occur at particular times, for particular durations,</text>
+<text top="533" left="87" width="432" height="14" font="5">or on particular elements of the system. So if you take this approach,</text>
+<text top="548" left="87" width="432" height="14" font="5">you want to minimize all your exposure: decrypt infrequently, dispose</text>
+<text top="563" left="87" width="432" height="14" font="5">of plaintext data quickly and carefully, and don’t keep a plaintext ver-</text>
+<text top="578" left="87" width="432" height="14" font="5">sion of the key in the system except when performing the cryptographic</text>
+<text top="593" left="87" width="341" height="14" font="5">operations. Such minimization can be difficult to achieve.</text>
+<text top="611" left="105" width="414" height="14" font="5">If cryptography won’t protect us completely against a dishonest oper-</text>
+<text top="626" left="87" width="432" height="14" font="5">ating system, what OS uses for cryptography are there? We saw a spe-</text>
+<text top="641" left="87" width="432" height="14" font="5">cialized example in the chapter on authentication. Some cryptographic</text>
+<text top="656" left="87" width="432" height="14" font="5">operations are one-way: they can encrypt, but never decrypt. We can use</text>
+<text top="671" left="87" width="432" height="14" font="5">these to securely store passwords in encrypted form, even if the OS is</text>
+<text top="688" left="87" width="384" height="14" font="5">compromised, since the encrypted passwords can’t be decrypted</text>
+<text top="685" left="471" width="4" height="9" font="8">7</text>
+<text top="688" left="477" width="3" height="14" font="5">.</text>
+<text top="706" left="105" width="414" height="14" font="5">What else? In a distributed environment, if we encrypt data on one</text>
+<text top="721" left="87" width="432" height="14" font="5">machine and then send it across the network, all the intermediate com-</text>
+<text top="736" left="87" width="432" height="14" font="5">ponents won’t be part of our machine, and thus won’t have access to the</text>
+<text top="751" left="87" width="432" height="14" font="5">key. The data will be protected in transit. Of course, our partner on the</text>
+<text top="790" left="107" width="4" height="8" font="9">7</text>
+<text top="792" left="112" width="407" height="11" font="10">But if the legitimate user ever provides the correct password to a compromised OS, all</text>
+<text top="804" left="87" width="432" height="11" font="10">bets are off, alas. The compromised OS will copy the password provided by the user and hand</text>
+<text top="816" left="87" width="432" height="11" font="10">it off to whatever villain is working behind the scenes, before it runs the password through the</text>
+<text top="828" left="87" width="198" height="11" font="10">one-way cryptographic hashing algorithm.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="7">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="7">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="7">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="7">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="7">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="10" family="NRBDXC+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">14</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="139" left="129" width="432" height="14" font="5">final destination machine will need the key if he or she is to use the data.</text>
+<text top="154" left="129" width="385" height="14" font="5">As we promised before, we’ll get to that issue in another chapter.</text>
+<text top="169" left="147" width="414" height="14" font="5">Anything else? Well, what if someone can get access to some of our</text>
+<text top="184" left="129" width="432" height="14" font="5">hardware without going through our operating system? If the data stored</text>
+<text top="198" left="129" width="432" height="14" font="5">on that hardware is encrypted, and the key isn’t on that hardware it-</text>
+<text top="213" left="129" width="432" height="14" font="5">self, the cryptography will protect the data. This form of encryption is</text>
+<text top="228" left="129" width="103" height="14" font="5">sometimes called</text>
+<text top="228" left="235" width="138" height="13" font="6"><b>at-rest data encryption</b></text>
+<text top="228" left="373" width="188" height="14" font="5">, to distinguish it from encrypt-</text>
+<text top="243" left="129" width="432" height="14" font="5">ing data we’re sending between machines. It’s useful and important, so</text>
+<text top="258" left="129" width="179" height="14" font="5">let’s examine it in more detail.</text>
+<text top="286" left="97" width="212" height="17" font="4">56.7 At-Rest Data Encryption</text>
+<text top="306" left="147" width="414" height="14" font="5">As we saw in the chapters on persistence, data can be stored on a disk</text>
+<text top="321" left="129" width="432" height="14" font="5">drive, flash drive, or other medium. If it’s sensitive data, we might want</text>
+<text top="336" left="129" width="432" height="14" font="5">some of our desirable security properties, such as secrecy or integrity, to</text>
+<text top="351" left="129" width="432" height="14" font="5">be applied to it. One technique to achieve these goals for this data is to</text>
+<text top="366" left="129" width="432" height="14" font="5">store it in encrypted form, rather than in plaintext. Of course, encrypted</text>
+<text top="380" left="129" width="432" height="14" font="5">data cannot be used in most computations, so if the machine where it is</text>
+<text top="395" left="129" width="432" height="14" font="5">stored needs to perform a general computation on the data, it must first</text>
+<text top="413" left="129" width="77" height="14" font="5">be decrypted</text>
+<text top="410" left="206" width="4" height="9" font="8">8</text>
+<text top="413" left="211" width="349" height="14" font="5">. If the purpose is merely to preserve a safe copy of the data,</text>
+<text top="427" left="129" width="432" height="14" font="5">rather than to use it, decryption may not be necessary, but that is not the</text>
+<text top="442" left="129" width="84" height="14" font="5">common case.</text>
+<text top="457" left="147" width="414" height="14" font="5">The data can be encrypted in different ways, using different ciphers</text>
+<text top="472" left="129" width="432" height="14" font="5">(DES, AES, Blowfish), at different granularities (records, data blocks, in-</text>
+<text top="487" left="129" width="432" height="14" font="5">dividual files, entire file systems), by different system components (ap-</text>
+<text top="502" left="129" width="432" height="14" font="5">plications, libraries, file systems, device drivers). One common general</text>
+<text top="517" left="129" width="233" height="14" font="5">use of at-rest data encryption is called</text>
+<text top="517" left="367" width="125" height="13" font="6"><b>full disk encryption</b></text>
+<text top="517" left="492" width="69" height="14" font="5">. This usu-</text>
+<text top="532" left="129" width="432" height="14" font="5">ally means that the entire contents (or almost the entire contents) of the</text>
+<text top="547" left="129" width="432" height="14" font="5">storage device are encrypted. Despite the name, full-disk encryption can</text>
+<text top="562" left="129" width="432" height="14" font="5">actually be used on many kinds of persistent storage media, not just hard</text>
+<text top="577" left="129" width="432" height="14" font="5">disk drives. Full disk encryption is usually provided either in hardware</text>
+<text top="592" left="129" width="432" height="14" font="5">(built into the storage device) or by system software (a device driver or</text>
+<text top="607" left="129" width="432" height="14" font="5">some element of a file system). In either case, the operating system plays</text>
+<text top="622" left="129" width="432" height="14" font="5">a role in the protection provided. Windows BitLocker and Apple’s File-</text>
+<text top="637" left="129" width="345" height="14" font="5">Vault are examples of software-based full disk encryption.</text>
+<text top="652" left="147" width="414" height="14" font="5">Generally, at boot time either the decryption key or information usable</text>
+<text top="667" left="129" width="432" height="14" font="5">to obtain that key (such as a passphrase – like a password, but possibly</text>
+<text top="682" left="129" width="432" height="14" font="5">multiple words) is requested from the user. If the right information is</text>
+<text top="697" left="129" width="432" height="14" font="5">provided, the key or keys necessary to perform the decryption become</text>
+<text top="712" left="129" width="432" height="14" font="5">available (either to the hardware or the operating system). As data is</text>
+<text top="726" left="129" width="432" height="14" font="5">placed on the device, it is encrypted. As data moves off the device, it is</text>
+<text top="754" left="149" width="4" height="8" font="9">8</text>
+<text top="756" left="157" width="403" height="11" font="10">There’s one possible exception worth mentioning. Those cryptographic wizards have</text>
+<text top="768" left="129" width="175" height="11" font="10">created a form of cryptography called</text>
+<text top="769" left="306" width="134" height="10" font="21"><b>homomorphic cryptography</b></text>
+<text top="768" left="440" width="120" height="11" font="10">, which allows you to per-</text>
+<text top="780" left="129" width="432" height="11" font="10">form operations on the encrypted form of the data without decrypting it. For example, you</text>
+<text top="792" left="129" width="432" height="11" font="10">could add one to an encrypted integer without decrypting it first. When you decrypted the re-</text>
+<text top="804" left="129" width="432" height="11" font="10">sult, sure enough, one would have been added to the original number. Homomorphic ciphers</text>
+<text top="816" left="129" width="432" height="11" font="10">have been developed, but high computational and storage costs render them impractical for</text>
+<text top="828" left="129" width="389" height="11" font="10">most purposes, as of the writing of this chapter. Perhaps that will change, with time.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="5">P</text>
+<text top="98" left="96" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="169" width="5" height="14" font="5">I</text>
+<text top="98" left="175" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="261" width="13" height="14" font="5">W</text>
+<text top="98" left="275" width="21" height="11" font="7">ITH</text>
+<text top="96" left="299" width="10" height="14" font="5">C</text>
+<text top="98" left="309" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="96" left="506" width="13" height="14" font="5">15</text>
+<text top="139" left="87" width="432" height="14" font="5">decrypted. The data remains decrypted as long as it is stored anywhere</text>
+<text top="154" left="87" width="432" height="14" font="5">in the machine’s memory, including in shared buffers or user address</text>
+<text top="169" left="87" width="432" height="14" font="5">space. When new data is to be sent to the device, it is first encrypted.</text>
+<text top="183" left="87" width="432" height="14" font="5">The data is never placed on the storage device in decrypted form. After</text>
+<text top="198" left="87" width="432" height="14" font="5">the initial request to obtain the decryption key is performed, encryption</text>
+<text top="213" left="87" width="432" height="14" font="5">and decryption are totally transparent to users and applications. They</text>
+<text top="228" left="87" width="432" height="14" font="5">never see the data in encrypted form and are not asked for the key again,</text>
+<text top="243" left="87" width="155" height="14" font="5">until the machine reboots.</text>
+<text top="258" left="105" width="414" height="14" font="5">Cryptography is a computationally expensive operation, particularly</text>
+<text top="273" left="87" width="432" height="14" font="5">if performed in software. There will be overhead associated with per-</text>
+<text top="288" left="87" width="432" height="14" font="5">forming software-based full disk encryption. Reports of the amount of</text>
+<text top="303" left="87" width="432" height="14" font="5">overhead vary, but a few percent extra latency for disk-heavy operations</text>
+<text top="318" left="87" width="432" height="14" font="5">is common. For operations making less use of the disk, the overhead</text>
+<text top="333" left="87" width="432" height="14" font="5">may be imperceptible. For hardware-based full disk encryption, the rated</text>
+<text top="348" left="87" width="432" height="14" font="5">speed of the disk drive will be achieved, which may or may not be slower</text>
+<text top="363" left="87" width="306" height="14" font="5">than a similar model not using full disk encryption.</text>
+<text top="378" left="105" width="301" height="14" font="5">What does this form of encryption protect against?</text>
+<text top="399" left="107" width="412" height="14" font="5">• It offers no extra protection against users trying to access data they</text>
+<text top="414" left="122" width="397" height="14" font="5">should not be allowed to see. Either the standard access control</text>
+<text top="429" left="122" width="397" height="14" font="5">mechanisms that the operating system provides work (and such</text>
+<text top="444" left="122" width="397" height="14" font="5">users can’t get to the data because they lack access permissions)</text>
+<text top="459" left="122" width="397" height="14" font="5">or they don’t (in which case such users will be given equal use of</text>
+<text top="474" left="122" width="208" height="14" font="5">the decryption key as anyone else).</text>
+<text top="490" left="107" width="412" height="14" font="5">• It does not protect against flaws in applications that divulge data.</text>
+<text top="505" left="122" width="397" height="14" font="5">Such flaws will permit attackers to pose as the user, so if the user</text>
+<text top="520" left="122" width="397" height="14" font="5">can access the unencrypted data, so can the attacker. For example,</text>
+<text top="535" left="122" width="396" height="14" font="5">it offers little protection against buffer overflows or SQL injections.</text>
+<text top="551" left="107" width="412" height="14" font="5">• It does not protect against dishonest privileged users on the system,</text>
+<text top="566" left="122" width="397" height="14" font="5">such as a system administrator. Administrator’s privileges may al-</text>
+<text top="581" left="122" width="397" height="14" font="5">low the admin to pose as the user who owns the data or to install</text>
+<text top="596" left="122" width="397" height="14" font="5">system components that provide access to the user’s data; thus, the</text>
+<text top="611" left="122" width="356" height="14" font="5">admin could access decrypted copies of the data on request.</text>
+<text top="628" left="107" width="412" height="14" font="5">• It does not protect against security flaws in the OS itself. Once the</text>
+<text top="643" left="122" width="397" height="14" font="5">key is provided, it is available (directly in memory, or indirectly by</text>
+<text top="658" left="122" width="397" height="14" font="5">asking the hardware to use it) to the operating system, whether that</text>
+<text top="673" left="122" width="356" height="14" font="5">OS is trustworthy and secure or compromised and insecure.</text>
+<text top="691" left="105" width="414" height="14" font="5">So what benefit does this form of encryption provide? Consider this</text>
+<text top="706" left="87" width="432" height="14" font="5">situation. If a hardware device storing data is physically moved from</text>
+<text top="721" left="87" width="432" height="14" font="5">one machine to another, the OS on the other machine is not obligated to</text>
+<text top="736" left="87" width="432" height="14" font="5">honor the access control information stored on the device. In fact, it need</text>
+<text top="751" left="87" width="432" height="14" font="5">not even use the same file system to access that device. For example, it</text>
+<text top="766" left="87" width="432" height="14" font="5">can treat the device as merely a source of raw data blocks, rather than an</text>
+<text top="781" left="87" width="432" height="14" font="5">organized file system. So any access control information associated with</text>
+<text top="796" left="87" width="391" height="14" font="5">files on the device might be ignored by the new operating system.</text>
+<text top="811" left="105" width="414" height="14" font="5">However, if the data on the device is encrypted via full disk encryp-</text>
+<text top="826" left="87" width="432" height="14" font="5">tion, the new machine will usually be unable to obtain the encryption</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="7">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="7">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="7">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="7">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="7">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="5">16</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="139" left="129" width="432" height="14" font="5">key. It can access the raw blocks, but they are encrypted and cannot be</text>
+<text top="154" left="129" width="432" height="14" font="5">decrypted without the key. This benefit would be useful if the hardware</text>
+<text top="169" left="129" width="432" height="14" font="5">in question was stolen and moved to another machine, for example. This</text>
+<text top="183" left="129" width="432" height="14" font="5">situation is a very real possibility for mobile devices, which are frequently</text>
+<text top="198" left="129" width="432" height="14" font="5">lost or stolen. Disk drives are sometimes resold, and data belonging to the</text>
+<text top="213" left="129" width="432" height="14" font="5">former owner (including quite sensitive data) has been found on them by</text>
+<text top="228" left="129" width="432" height="14" font="5">the re-purchaser. These are important cases where full disk encryption</text>
+<text top="243" left="129" width="131" height="14" font="5">provides real benefits.</text>
+<text top="259" left="147" width="414" height="14" font="5">For other forms of encryption of data at rest, the system must still ad-</text>
+<text top="274" left="129" width="432" height="14" font="5">dress the issues of how much is encrypted, how to obtain the key, and</text>
+<text top="288" left="129" width="432" height="14" font="5">when to encrypt and decrypt the data, with different types of protection</text>
+<text top="303" left="129" width="432" height="14" font="5">resulting depending on how these questions are addressed. Generally,</text>
+<text top="318" left="129" width="432" height="14" font="5">such situations require that some software ensures that the unencrypted</text>
+<text top="333" left="129" width="432" height="14" font="5">form of the data is no longer stored anywhere, including caches, and that</text>
+<text top="348" left="129" width="432" height="14" font="5">the cryptographic key is not available to those who might try to illicitly</text>
+<text top="363" left="129" width="432" height="14" font="5">access the data. There are relatively few circumstances where such pro-</text>
+<text top="378" left="129" width="340" height="14" font="5">tection is of value, but there are a few common examples:</text>
+<text top="396" left="148" width="412" height="14" font="5">• Archiving data that might need to be copied and must be preserved,</text>
+<text top="411" left="163" width="397" height="14" font="5">but need not be used. In this case, the data can be encrypted at</text>
+<text top="426" left="163" width="397" height="14" font="5">the time of its creation, and perhaps never decrypted, or only de-</text>
+<text top="441" left="163" width="397" height="14" font="5">crypted under special circumstances under the control of the data’s</text>
+<text top="456" left="163" width="397" height="14" font="5">owner. If the machine was uncompromised when the data was first</text>
+<text top="471" left="163" width="397" height="14" font="5">encrypted and the key is not permanently stored on the system, the</text>
+<text top="486" left="163" width="397" height="14" font="5">encrypted data is fairly safe. Note, however, that if the key is lost,</text>
+<text top="501" left="163" width="306" height="14" font="5">you will never be able to decrypt the archived data.</text>
+<text top="517" left="148" width="412" height="14" font="5">• Storing sensitive data in a cloud computing facility, a variant of the</text>
+<text top="532" left="163" width="397" height="14" font="5">previous example. If one does not completely trust the cloud com-</text>
+<text top="547" left="163" width="397" height="14" font="5">puting provider (or one is uncertain of how careful that provider</text>
+<text top="562" left="163" width="397" height="14" font="5">is – remember, when you trust another computing element, you’re</text>
+<text top="577" left="163" width="397" height="14" font="5">trusting not only its honesty, but also its carefulness and correct-</text>
+<text top="592" left="163" width="397" height="14" font="5">ness), encrypting the data before sending it to the cloud facility is</text>
+<text top="607" left="163" width="397" height="14" font="5">wise. Many cloud backup products include this capability. In this</text>
+<text top="622" left="163" width="397" height="14" font="5">case, the cryptography and key use occur before moving the data</text>
+<text top="637" left="163" width="384" height="14" font="5">to the untrusted system, or after it is recovered from that system.</text>
+<text top="653" left="148" width="412" height="14" font="5">• User-level encryption performed through an application. For ex-</text>
+<text top="668" left="163" width="397" height="14" font="5">ample, a user might choose to encrypt an email message, with any</text>
+<text top="683" left="163" width="397" height="14" font="5">stored version of it being in encrypted form. In this case, the cryp-</text>
+<text top="698" left="163" width="397" height="14" font="5">tography will be performed by the application, and the user will</text>
+<text top="713" left="163" width="397" height="14" font="5">do something to make a cryptographic key available to the appli-</text>
+<text top="728" left="163" width="397" height="14" font="5">cation. Ideally, that application will ensure that the unencrypted</text>
+<text top="743" left="163" width="397" height="14" font="5">form of the data and the key used to encrypt it are no longer readily</text>
+<text top="758" left="163" width="397" height="14" font="5">available after encryption is completed. Remember, however, that</text>
+<text top="773" left="163" width="397" height="14" font="5">while the key exists, the operating system can obtain access to it</text>
+<text top="788" left="163" width="209" height="14" font="5">without your application knowing.</text>
+<text top="811" left="147" width="414" height="14" font="5">One important special case for encrypting selected data at rest is a</text>
+<text top="826" left="129" width="95" height="13" font="6"><b>password vault</b></text>
+<text top="826" left="228" width="102" height="14" font="5">(also known as a</text>
+<text top="826" left="335" width="52" height="13" font="6"><b>key ring</b></text>
+<text top="826" left="388" width="173" height="14" font="5">), which we discussed in the</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="5">P</text>
+<text top="98" left="96" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="169" width="5" height="14" font="5">I</text>
+<text top="98" left="175" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="261" width="13" height="14" font="5">W</text>
+<text top="98" left="275" width="21" height="11" font="7">ITH</text>
+<text top="96" left="299" width="10" height="14" font="5">C</text>
+<text top="98" left="309" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="96" left="506" width="13" height="14" font="5">17</text>
+<text top="139" left="87" width="432" height="14" font="5">authentication chapter. Typical users interact with many remote sites that</text>
+<text top="154" left="87" width="432" height="14" font="5">require them to provide passwords (authentication based on “what you</text>
+<text top="169" left="87" width="432" height="14" font="5">know”, remember?) The best security is achieved if one uses a different</text>
+<text top="183" left="87" width="432" height="14" font="5">password for each site, but doing so places a burden on the human user,</text>
+<text top="198" left="87" width="432" height="14" font="5">who generally has a hard time remembering many passwords. A solution</text>
+<text top="213" left="87" width="432" height="14" font="5">is to encrypt all the different passwords and store them on the machine,</text>
+<text top="228" left="87" width="432" height="14" font="5">indexed by the site they are used for. When one of the passwords is re-</text>
+<text top="243" left="87" width="370" height="14" font="5">quired, it is decrypted and provided to the site that requires it.</text>
+<text top="259" left="105" width="414" height="14" font="5">For password vaults and all such special cases, the system must have</text>
+<text top="274" left="87" width="432" height="14" font="5">some way of obtaining the required key whenever data needs to be en-</text>
+<text top="289" left="87" width="432" height="14" font="5">crypted or decrypted. If an attacker can obtain the key, the cryptography</text>
+<text top="304" left="87" width="432" height="14" font="5">becomes useless, so safe storage of the key becomes critical. Typically,</text>
+<text top="319" left="87" width="432" height="14" font="5">if the key is stored in unencrypted form anywhere on the computer in</text>
+<text top="333" left="87" width="432" height="14" font="5">question, the encrypted data is at risk, so well designed encryption sys-</text>
+<text top="348" left="87" width="432" height="14" font="5">tems tend not to do so. For example, in the case of password vaults, the</text>
+<text top="363" left="87" width="432" height="14" font="5">key used to decrypt the passwords is not stored in the machine’s stable</text>
+<text top="378" left="87" width="432" height="14" font="5">storage. It is obtained by asking the user for it when required, or asking</text>
+<text top="393" left="87" width="432" height="14" font="5">for a passphrase used to derive the key. The key is then used to decrypt</text>
+<text top="408" left="87" width="432" height="14" font="5">the needed password. Maximum security would suggest destroying the</text>
+<text top="423" left="87" width="432" height="14" font="5">key as soon as this decryption was performed (remember the principle of</text>
+<text top="438" left="87" width="432" height="14" font="5">least privilege?), but doing so would imply that the user would have to</text>
+<text top="453" left="87" width="432" height="14" font="5">re-enter the key each time a password was needed (remember the prin-</text>
+<text top="468" left="87" width="432" height="14" font="5">ciple of acceptability?). A compromise between usability and security is</text>
+<text top="483" left="87" width="432" height="14" font="5">reached, in most cases, by remembering the key after first entry for a sig-</text>
+<text top="498" left="87" width="432" height="14" font="5">nificant period of time, but only keeping it in RAM. When the user logs</text>
+<text top="513" left="87" width="432" height="14" font="5">out, or the system shuts down, or the application that handles the pass-</text>
+<text top="528" left="87" width="432" height="14" font="5">word vault (such as a web browser) exits, the key is “forgotten.” This</text>
+<text top="543" left="87" width="432" height="14" font="5">approach is reminiscent of single sign-on systems, where a user is asked</text>
+<text top="558" left="87" width="432" height="14" font="5">for a password when the system is first accessed, but is not required to</text>
+<text top="573" left="87" width="432" height="14" font="5">re-authenticate again until logging out. It has the same disadvantages as</text>
+<text top="588" left="87" width="432" height="14" font="5">those systems, such as permitting an unattended terminal to be used by</text>
+<text top="602" left="87" width="432" height="14" font="5">unauthorized parties to use someone else’s access permissions. Both have</text>
+<text top="617" left="87" width="432" height="14" font="5">the tremendous advantage that they don’t annoy their users so much that</text>
+<text top="632" left="87" width="428" height="14" font="5">they are abandoned in favor of systems offering no security whatsoever.</text>
+<text top="655" left="55" width="231" height="17" font="4">56.8 Cryptographic Capabilities</text>
+<text top="677" left="105" width="414" height="14" font="5">Remember from our chapter on access control that capabilities had the</text>
+<text top="692" left="87" width="432" height="14" font="5">problem that we could not leave them in users’ hands, since then users</text>
+<text top="706" left="87" width="432" height="14" font="5">could forge them and grant themselves access to anything they wanted.</text>
+<text top="721" left="87" width="432" height="14" font="5">Cryptography can be used to create unforgeable capabilities. A trusted</text>
+<text top="736" left="87" width="432" height="14" font="5">entity could use cryptography to create a sufficiently long and securely</text>
+<text top="751" left="87" width="432" height="14" font="5">encrypted data structure that indicated that the possessor was allowed</text>
+<text top="766" left="87" width="432" height="14" font="5">to have access to a particular resource. This data structure could then</text>
+<text top="781" left="87" width="432" height="14" font="5">be given to a user, who would present it to the owner of the matching</text>
+<text top="796" left="87" width="432" height="14" font="5">resource to obtain access. The system that actually controlled the resource</text>
+<text top="811" left="87" width="432" height="14" font="5">must be able to check the validity of the data structure before granting</text>
+<text top="826" left="87" width="360" height="14" font="5">access, but would not need to maintain an access control list.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="7">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="7">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="7">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="7">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="7">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="5">18</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="139" left="147" width="414" height="14" font="5">Such cryptographic capabilities could be created either with symmet-</text>
+<text top="154" left="129" width="432" height="14" font="5">ric or public key cryptography. With symmetric cryptography, both the</text>
+<text top="169" left="129" width="432" height="14" font="5">creator of the capability and the system checking it would need to share</text>
+<text top="183" left="129" width="432" height="14" font="5">the same key. This option is most feasible when both of those entities are</text>
+<text top="198" left="129" width="432" height="14" font="5">the same system, since otherwise it requires moving keys around between</text>
+<text top="213" left="129" width="432" height="14" font="5">the machines that need to use the keys, possibly at high speed and scale,</text>
+<text top="228" left="129" width="432" height="14" font="5">depending on the use scenario. One might wonder why the single ma-</text>
+<text top="243" left="129" width="432" height="14" font="5">chine would bother creating a cryptographic capability to allow access,</text>
+<text top="258" left="129" width="432" height="14" font="5">rather than simply remembering that the user had passed an access check,</text>
+<text top="273" left="129" width="432" height="14" font="5">but there are several possible reasons. For example, if the machine con-</text>
+<text top="288" left="129" width="432" height="14" font="5">trolling the resource worked with vast numbers of users, keeping track</text>
+<text top="303" left="129" width="432" height="14" font="5">of the access status for each of them would be costly and complex, par-</text>
+<text top="318" left="129" width="432" height="14" font="5">ticularly in a distributed environment where the system needed to worry</text>
+<text top="333" left="129" width="432" height="14" font="5">about failures and delays. Or if the system wished to give transferable</text>
+<text top="348" left="129" width="432" height="14" font="5">rights to the access, as it might if the principal might move from machine</text>
+<text top="363" left="129" width="432" height="14" font="5">to machine, it would be more feasible to allow the capability to move with</text>
+<text top="378" left="129" width="432" height="14" font="5">the principal and be used from any location. Symmetric cryptographic ca-</text>
+<text top="393" left="129" width="432" height="14" font="5">pabilities also make sense when all of the machines creating and checking</text>
+<text top="408" left="129" width="401" height="14" font="5">them are inherently trusted and key distribution is not problematic.</text>
+<text top="426" left="147" width="414" height="14" font="5">If public key cryptography is used to create the capabilities, then the</text>
+<text top="441" left="129" width="432" height="14" font="5">creator and the resource controller need not be co-located and the trust re-</text>
+<text top="456" left="129" width="432" height="14" font="5">lationships need not be as strong. The creator of the capability needs one</text>
+<text top="471" left="129" width="432" height="14" font="5">key (typically the secret key) and the controller of the resource needs the</text>
+<text top="486" left="129" width="432" height="14" font="5">other. If the content of the capability is not itself secret, then a true public</text>
+<text top="501" left="129" width="432" height="14" font="5">key can be used, with no concern over who knows it. If secrecy (or at least</text>
+<text top="516" left="129" width="432" height="14" font="5">some degree of obscurity) is required, what would otherwise be a public</text>
+<text top="531" left="129" width="432" height="14" font="5">key can be distributed only to the limited set of entities that would need</text>
+<text top="548" left="129" width="144" height="14" font="5">to check the capabilities</text>
+<text top="545" left="273" width="4" height="9" font="8">9</text>
+<text top="548" left="278" width="283" height="14" font="5">. A resource manager could create a set of cre-</text>
+<text top="563" left="129" width="432" height="14" font="5">dentials (indicating which principal was allowed to use what resources,</text>
+<text top="578" left="129" width="432" height="14" font="5">in what ways, for what period of time) and then encrypt them with a pri-</text>
+<text top="593" left="129" width="432" height="14" font="5">vate key. Any one else can validate those credentials by decrypting them</text>
+<text top="608" left="129" width="432" height="14" font="5">with the manager’s public key. As long as only the resource manager</text>
+<text top="623" left="129" width="309" height="14" font="5">knows the private key, no one can forge capabilities.</text>
+<text top="641" left="147" width="414" height="14" font="5">As suggested above, such cryptographic capabilities can hold a good</text>
+<text top="656" left="129" width="432" height="14" font="5">deal of information, including expiration times, identity of the party who</text>
+<text top="671" left="129" width="432" height="14" font="5">was given the capability, and much else. Since strong cryptography will</text>
+<text top="686" left="129" width="432" height="14" font="5">ensure integrity of all such information, the capability can be relied upon.</text>
+<text top="701" left="129" width="432" height="14" font="5">This feature allows the creator of the capability to prevent arbitrary copy-</text>
+<text top="716" left="129" width="432" height="14" font="5">ing and sharing of the capability, at least to a certain extent. For example,</text>
+<text top="731" left="129" width="432" height="14" font="5">a cryptographic capability used in a network context can be tied to a par-</text>
+<text top="746" left="129" width="432" height="14" font="5">ticular IP address, and would only be regarded as valid if the message</text>
+<text top="761" left="129" width="208" height="14" font="5">carrying it came from that address.</text>
+<text top="802" left="149" width="4" height="8" font="9">9</text>
+<text top="804" left="154" width="407" height="11" font="10">Remember, however, that if you are embedding a key in a piece of widely distributed</text>
+<text top="816" left="129" width="432" height="11" font="10">software, you can count on that key becoming public knowledge. So even if you believe the</text>
+<text top="828" left="129" width="364" height="11" font="10">matching key is secret, not public, it is unwise to rely too heavily on that belief.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="19" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="5">P</text>
+<text top="98" left="96" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="169" width="5" height="14" font="5">I</text>
+<text top="98" left="175" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="261" width="13" height="14" font="5">W</text>
+<text top="98" left="275" width="21" height="11" font="7">ITH</text>
+<text top="96" left="299" width="10" height="14" font="5">C</text>
+<text top="98" left="309" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="96" left="506" width="13" height="14" font="5">19</text>
+<text top="139" left="105" width="414" height="14" font="5">Many different encryption schemes can be used. The important point</text>
+<text top="154" left="87" width="432" height="14" font="5">is that the encrypted capabilities must be long enough that it is compu-</text>
+<text top="169" left="87" width="432" height="14" font="5">tationally infeasible to find a valid capability by brute force enumeration</text>
+<text top="185" left="87" width="368" height="14" font="5">or random guessing (e.g., the number of invalid bit patterns is</text>
+<text top="185" left="458" width="14" height="13" font="13">10</text>
+<text top="183" left="472" width="11" height="6" font="19">15</text>
+<text top="185" left="487" width="32" height="14" font="5">times</text>
+<text top="200" left="87" width="266" height="14" font="5">larger than the number of valid bit patterns).</text>
+<text top="215" left="105" width="414" height="14" font="5">We’ll say a bit more about cryptographic capabilities in the chapter on</text>
+<text top="230" left="87" width="164" height="14" font="5">distributed system security.</text>
+<text top="267" left="55" width="105" height="17" font="4">56.9 Summary</text>
+<text top="297" left="105" width="414" height="14" font="5">Cryptography can offer certain forms of protection for data even when</text>
+<text top="312" left="87" width="432" height="14" font="5">that data is no longer in a system’s custody. These forms of protection in-</text>
+<text top="327" left="87" width="432" height="14" font="5">clude secrecy, integrity, and authentication. Cryptography achieves such</text>
+<text top="342" left="87" width="432" height="14" font="5">protection by converting the data’s original bit pattern into a different bit</text>
+<text top="357" left="87" width="432" height="14" font="5">pattern, using an algorithm called a cipher. In most cases, the transforma-</text>
+<text top="372" left="87" width="432" height="14" font="5">tion can be reversed to obtain the original bit pattern. Symmetric ciphers</text>
+<text top="387" left="87" width="432" height="14" font="5">use a single secret key shared by all parties with rights to access the data.</text>
+<text top="402" left="87" width="432" height="14" font="5">Asymmetric ciphers use one key to encrypt the data and a second key</text>
+<text top="416" left="87" width="432" height="14" font="5">to decrypt the data, with one of the keys kept secret and the other com-</text>
+<text top="431" left="87" width="432" height="14" font="5">monly made public. Cryptographic hashes, on the other hand, do not</text>
+<text top="446" left="87" width="414" height="14" font="5">allow reversal of the cryptography and do not require the use of keys.</text>
+<text top="461" left="105" width="414" height="14" font="5">Strong ciphers make it computationally infeasible to obtain the orig-</text>
+<text top="476" left="87" width="432" height="14" font="5">inal bit pattern without access to the required key. For symmetric and</text>
+<text top="491" left="87" width="432" height="14" font="5">asymmetric ciphers, this implies that only holders of the proper key can</text>
+<text top="506" left="87" width="432" height="14" font="5">obtain the cipher’s benefits. Since cryptographic hashes have no key, this</text>
+<text top="521" left="87" width="432" height="14" font="5">implies that no one should be able to obtain the original bit pattern from</text>
+<text top="536" left="87" width="53" height="14" font="5">the hash.</text>
+<text top="551" left="105" width="414" height="14" font="5">For operating systems, the obvious situations in which cryptography</text>
+<text top="566" left="87" width="432" height="14" font="5">can be helpful are when data is sent to another machine, or when hard-</text>
+<text top="581" left="87" width="432" height="14" font="5">ware used to store the data might be accessed without the intervention of</text>
+<text top="596" left="87" width="432" height="14" font="5">the operating system. In the latter case, data can be encrypted on the de-</text>
+<text top="611" left="87" width="432" height="14" font="5">vice (using either hardware or software), and decrypted as it is delivered</text>
+<text top="626" left="87" width="143" height="14" font="5">to the operating system.</text>
+<text top="641" left="105" width="414" height="14" font="5">Ciphers are generally not secret, but rather are widely known and</text>
+<text top="656" left="87" width="432" height="14" font="5">studied standards. A cipher’s ability to protect data thus relies entirely on</text>
+<text top="671" left="87" width="432" height="14" font="5">key secrecy. If attackers can learn, deduce, or guess the key, all protection</text>
+<text top="685" left="87" width="432" height="14" font="5">is lost. Thus, extreme care in key selection and maintaining key secrecy</text>
+<text top="700" left="87" width="432" height="14" font="5">is required if one relies on cryptography for protection. A good princi-</text>
+<text top="715" left="87" width="432" height="14" font="5">ple is to store keys in as few places as possible, for as short a duration as</text>
+<text top="730" left="87" width="280" height="14" font="5">possible, available to as few parties as possible.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="7">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="7">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="7">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="7">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="7">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="20" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="22" size="16" family="NRBDXC+URWPalladioL" color="#000000"/>
+	<fontspec id="23" size="10" family="PSKEPM+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="24" size="10" family="GGJETH+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">20</text>
+<text top="96" left="250" width="8" height="14" font="5">P</text>
+<text top="98" left="259" width="69" height="11" font="7">ROTECTING</text>
+<text top="96" left="332" width="5" height="14" font="5">I</text>
+<text top="98" left="337" width="82" height="11" font="7">NFORMATION</text>
+<text top="96" left="423" width="13" height="14" font="5">W</text>
+<text top="98" left="437" width="21" height="11" font="7">ITH</text>
+<text top="96" left="462" width="10" height="14" font="5">C</text>
+<text top="98" left="472" width="88" height="11" font="7">RYPTOGRAPHY</text>
+<text top="137" left="129" width="82" height="16" font="22"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="10">[D88] “The First Ten Years of Public Key Cryptography” by Whitfield Diffie. Communications</text>
+<text top="177" left="129" width="184" height="11" font="10">of the ACM, Vol. 76, No. 5, May 1988.</text>
+<text top="177" left="319" width="242" height="11" font="23">A description of the complex history of where public key</text>
+<text top="189" left="129" width="105" height="11" font="23">cryptography came from.</text>
+<text top="206" left="129" width="432" height="11" font="10">[D+14] “The Matter of Heartbleed” by Zakir Durumeric, James Kasten, David Adrian, J. Alex</text>
+<text top="218" left="129" width="432" height="11" font="10">Halderman, Michael Bailey, Frank Li, Nicholas Weaver, Johanna Amann, Jethro Beekman,</text>
+<text top="229" left="129" width="432" height="11" font="10">Mathias Payer, and Vern Paxson. Proceedings of the 2014 Conference on Internet Measure-</text>
+<text top="241" left="129" width="82" height="11" font="10">ment Conference.</text>
+<text top="241" left="215" width="346" height="11" font="23">A good description of the Heartbleed vulnerability in OpenSSL and its impact on</text>
+<text top="253" left="129" width="432" height="11" font="23">the Internet as a whole. Worth reading for the latter, especially, as it points out how one small bug in</text>
+<text top="265" left="129" width="282" height="11" font="23">one critical piece of system software can have a tremendous impact.</text>
+<text top="282" left="129" width="432" height="11" font="10">[G02] “Lessons Learned in Implementing and Deploying Crypto Software” by Peter Gutmann.</text>
+<text top="294" left="129" width="158" height="11" font="10">Usenix Security Symposium, 2002.</text>
+<text top="294" left="290" width="270" height="11" font="23">A good analysis of the many ways in which poor use of a perfectly</text>
+<text top="305" left="129" width="432" height="11" font="23">good cipher can totally compromise your software, backed up by actual cases of the problems occurring</text>
+<text top="317" left="129" width="72" height="11" font="23">in the real world.</text>
+<text top="334" left="129" width="172" height="11" font="10">[G17] “SHA-1 Shattered” by Google.</text>
+<text top="334" left="307" width="126" height="9" font="24">https://shattered.io</text>
+<text top="334" left="433" width="30" height="11" font="10">, 2017.</text>
+<text top="334" left="468" width="92" height="11" font="23">A web site describing</text>
+<text top="346" left="129" width="432" height="11" font="23">details of how Google demonstrated the insecurity of the SHA-1 cryptographic hashing function. The</text>
+<text top="358" left="129" width="432" height="11" font="23">web site provides general details, but also includes a link to a technical paper describing exactly how it</text>
+<text top="370" left="129" width="41" height="11" font="23">was done.</text>
+<text top="386" left="129" width="432" height="11" font="10">[GW96] “Randomness and the Netscape Browser” by Ian Goldberg and David Wagner. Dr.</text>
+<text top="398" left="129" width="136" height="11" font="10">Dobbs Journal, January 1996.</text>
+<text top="398" left="270" width="291" height="11" font="23">Another example of being able to deduce keys that were not properly</text>
+<text top="410" left="129" width="432" height="11" font="23">created and handled, in this case by guessing the inputs to the random number generator used to create</text>
+<text top="422" left="129" width="267" height="11" font="23">the keys. Aren’t attackers clever? Don’t you wish they weren’t?</text>
+<text top="438" left="129" width="333" height="11" font="10">[K96] “The Codebreakers” by David Kahn. Scribner Publishing, 1996.</text>
+<text top="438" left="469" width="92" height="11" font="23">A long, but readable,</text>
+<text top="450" left="129" width="234" height="11" font="23">history of cryptography, its uses, and how it is attacked.</text>
+<text top="466" left="129" width="383" height="11" font="10">[S96] “Applied Cryptography” by Bruce Schneier. Jon Wiley and Sons, Inc., 1996.</text>
+<text top="466" left="517" width="43" height="11" font="23">A detailed</text>
+<text top="478" left="129" width="432" height="11" font="23">description of how to use cryptography in many different circumstances, including example source code.</text>
+<text top="494" left="129" width="432" height="11" font="10">[V16] “House of Keys: 9 Months later... 40% Worse” by Stefan Viehbock. Available on:</text>
+<text top="507" left="129" width="446" height="9" font="24">blog.sec-consult.com/2016/09/house-of-keys-9-months-later-40-worse.html</text>
+<text top="506" left="575" width="3" height="11" font="10">.</text>
+<text top="518" left="129" width="432" height="11" font="23">A web page describing the unfortunate ubiquity of the same private key being used in many different</text>
+<text top="530" left="129" width="76" height="11" font="23">embedded devices.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+</pdf2xml>

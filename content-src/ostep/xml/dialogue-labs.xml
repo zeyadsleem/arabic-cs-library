@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="OJTLYI+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="OJTLYI+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="PCXZOW+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="MXZBSN+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="13" family="NMLGJR+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="11" family="NMLGJR+URWPalladioL-Roma" color="#000000"/>
+<text top="193" left="537" width="21" height="29" font="0">E</text>
+<text top="262" left="331" width="188" height="20" font="1">A Dialogue on Labs</text>
+<text top="348" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="348" left="143" width="139" height="14" font="3"><i>Is this our final dialogue?</i></text>
+<text top="369" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="369" left="152" width="306" height="14" font="3"><i>I hope so! You’ve been becoming quite a pain, you know!</i></text>
+<text top="389" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="389" left="143" width="304" height="14" font="3"><i>Yes, I’ve enjoyed our conversations too. What’s up here?</i></text>
+<text top="409" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="409" left="152" width="367" height="14" font="3"><i>It’s about the projects you should be doing as you learn this material;</i></text>
+<text top="424" left="87" width="432" height="14" font="3"><i>you know, actual programming, where you do some real work instead of this</i></text>
+<text top="439" left="87" width="286" height="14" font="3"><i>incessant talking and reading. The real way to learn!</i></text>
+<text top="460" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="459" left="143" width="275" height="14" font="3"><i>Sounds important. Why didn’t you tell me earlier?</i></text>
+<text top="480" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="480" left="155" width="364" height="14" font="3"><i>Well, hopefully those using this book actually do look at this part</i></text>
+<text top="495" left="87" width="399" height="14" font="3"><i>earlier, all throughout the course. If not, they’re really missing something.</i></text>
+<text top="515" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="515" left="143" width="232" height="14" font="3"><i>Seems like it. So what are the projects like?</i></text>
+<text top="536" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="535" left="152" width="367" height="14" font="3"><i>Well, there are two types of projects. The first set are what you might</i></text>
+<text top="550" left="87" width="19" height="14" font="3"><i>call</i></text>
+<text top="551" left="110" width="132" height="13" font="4"><b>systems programming</b></text>
+<text top="550" left="246" width="273" height="14" font="3"><i>projects, done on machines running Linux and in</i></text>
+<text top="565" left="87" width="432" height="14" font="3"><i>the C programming environment. This type of programming is quite useful to</i></text>
+<text top="580" left="87" width="432" height="14" font="3"><i>know, as when you go off into the real world, you very well might have to do</i></text>
+<text top="595" left="87" width="199" height="14" font="3"><i>some of this type of hacking yourself.</i></text>
+<text top="616" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="616" left="143" width="184" height="14" font="3"><i>What’s the second type of project?</i></text>
+<text top="636" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="636" left="154" width="365" height="14" font="3"><i>The second type is based inside a real kernel, a cool little teaching</i></text>
+<text top="651" left="87" width="170" height="14" font="3"><i>kernel developed at MIT called</i></text>
+<text top="651" left="262" width="21" height="13" font="4"><b>xv6</b></text>
+<text top="651" left="283" width="197" height="14" font="3"><i>. It is a “port” of an old version of</i></text>
+<text top="651" left="486" width="10" height="12" font="5">U</text>
+<text top="653" left="498" width="21" height="10" font="6">NIX</text>
+<text top="666" left="87" width="432" height="14" font="3"><i>to Intel x86, and is quite neat! With these projects, instead of writing code that</i></text>
+<text top="681" left="87" width="432" height="14" font="3"><i>interacts with the kernel (as you do in systems programming), you actually get</i></text>
+<text top="696" left="87" width="191" height="14" font="3"><i>to re-write parts of the kernel itself!</i></text>
+<text top="716" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="716" left="143" width="376" height="14" font="3"><i>Sounds fun! So what should we do in a semester? You know, there are</i></text>
+<text top="731" left="87" width="432" height="14" font="3"><i>only so many hours in the day, and as you professors seem to forget, we students</i></text>
+<text top="746" left="87" width="215" height="14" font="3"><i>take four or five courses, not just yours!</i></text>
+<text top="766" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="766" left="152" width="367" height="14" font="3"><i>Well, there is a lot of flexibility here. Some classes just do all systems</i></text>
+<text top="781" left="87" width="432" height="14" font="3"><i>programming, because it is so practical. Some classes do all xv6 hacking, because</i></text>
+<text top="796" left="87" width="432" height="14" font="3"><i>it really gets you to see how operating systems work. And some, as you may have</i></text>
+<text top="811" left="87" width="432" height="14" font="3"><i>guessed, do a mix, starting with some systems programming, and then doing xv6</i></text>
+<text top="826" left="87" width="327" height="14" font="3"><i>at the end. It’s really up to the professor of a particular class.</i></text>
+<text top="862" left="300" width="7" height="12" font="5">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="12" family="NMLGJR+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="NMLGJR+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="12" font="5">2</text>
+<text top="96" left="424" width="25" height="12" font="5">A D</text>
+<text top="98" left="449" width="76" height="10" font="6">IALOGUE ON</text>
+<text top="96" left="530" width="8" height="12" font="5">L</text>
+<text top="98" left="539" width="22" height="10" font="6">ABS</text>
+<text top="139" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="139" left="185" width="274" height="14" font="3"><i>(sighing) Professors have all the control, it seems...</i></text>
+<text top="159" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="159" left="196" width="365" height="14" font="3"><i>Oh, hardly! But that little control they do get to exercise is one of</i></text>
+<text top="174" left="129" width="432" height="14" font="3"><i>the fun parts of the job. Deciding on assignments is important you know — and</i></text>
+<text top="189" left="129" width="225" height="14" font="3"><i>not something any professor takes lightly.</i></text>
+<text top="209" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="209" left="187" width="374" height="14" font="3"><i>Well, that is good to hear. I guess we should see what these projects</i></text>
+<text top="224" left="129" width="77" height="14" font="3"><i>are all about...</i></text>
+<text top="245" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="244" left="197" width="364" height="14" font="3"><i>OK. And one more thing: if you’re interested in the systems pro-</i></text>
+<text top="259" left="129" width="284" height="14" font="3"><i>gramming part, there is also a little tutorial about the</i></text>
+<text top="259" left="416" width="10" height="12" font="5">U</text>
+<text top="261" left="427" width="21" height="10" font="6">NIX</text>
+<text top="259" left="451" width="109" height="14" font="3"><i>and C programming</i></text>
+<text top="274" left="129" width="73" height="14" font="3"><i>environment.</i></text>
+<text top="295" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="295" left="185" width="193" height="14" font="3"><i>Sounds almost too useful to be true.</i></text>
+<text top="315" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="315" left="195" width="366" height="14" font="3"><i>Well, take a look. You know, classes are supposed to be about useful</i></text>
+<text top="330" left="129" width="102" height="14" font="3"><i>things, sometimes!</i></text>
+<text top="881" left="129" width="11" height="12" font="5">O</text>
+<text top="883" left="141" width="60" height="10" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="12" font="5">S</text>
+<text top="898" left="137" width="45" height="10" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="11" font="7">[V</text>
+<text top="914" left="143" width="39" height="9" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="11" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="10" font="6">WWW</text>
+<text top="896" left="327" width="3" height="12" font="5">.</text>
+<text top="898" left="331" width="36" height="10" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="12" font="5">.</text>
+<text top="898" left="371" width="25" height="10" font="6">ORG</text>
+</page>
+</pdf2xml>

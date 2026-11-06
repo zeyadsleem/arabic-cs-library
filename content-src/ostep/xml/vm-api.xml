@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="QUROOE+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="QUROOE+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="YBDHEY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="11" family="YBDHEY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="9" family="YBDHEY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="16" family="YBDHEY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="13" family="RUQYQO+URWPalladioL" color="#000000"/>
+	<fontspec id="7" size="13" family="PKXKMU+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="8" size="13" family="ZRDBEI+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="9" size="7" family="YBDHEY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="YBDHEY+URWPalladioL-Roma" color="#000000"/>
+<text top="198" left="523" width="34" height="29" font="0">14</text>
+<text top="268" left="302" width="216" height="20" font="1">Interlude: Memory API</text>
+<text top="350" left="105" width="392" height="14" font="2">In this interlude, we discuss the memory allocation interfaces in U</text>
+<text top="352" left="498" width="21" height="11" font="3">NIX</text>
+<text top="365" left="87" width="432" height="14" font="2">systems. The interfaces provided are quite simple, and hence the chapter</text>
+<text top="382" left="87" width="142" height="14" font="2">is short and to the point</text>
+<text top="380" left="229" width="4" height="9" font="4">1</text>
+<text top="382" left="234" width="229" height="14" font="2">. The main problem we address is this:</text>
+<text top="424" left="144" width="10" height="14" font="2">C</text>
+<text top="426" left="154" width="24" height="11" font="3">RUX</text>
+<text top="424" left="179" width="19" height="14" font="2">: H</text>
+<text top="426" left="199" width="20" height="11" font="3">OW</text>
+<text top="424" left="223" width="8" height="14" font="2">T</text>
+<text top="426" left="232" width="8" height="11" font="3">O</text>
+<text top="424" left="244" width="10" height="14" font="2">A</text>
+<text top="426" left="255" width="54" height="11" font="3">LLOCATE</text>
+<text top="424" left="313" width="10" height="14" font="2">A</text>
+<text top="426" left="324" width="18" height="11" font="3">ND</text>
+<text top="424" left="346" width="13" height="14" font="2">M</text>
+<text top="426" left="360" width="43" height="11" font="3">ANAGE</text>
+<text top="424" left="407" width="13" height="14" font="2">M</text>
+<text top="426" left="420" width="42" height="11" font="3">EMORY</text>
+<text top="439" left="105" width="29" height="14" font="2">In U</text>
+<text top="441" left="135" width="21" height="11" font="3">NIX</text>
+<text top="439" left="156" width="363" height="14" font="2">/C programs, understanding how to allocate and manage</text>
+<text top="454" left="87" width="432" height="14" font="2">memory is critical in building robust and reliable software. What inter-</text>
+<text top="469" left="87" width="367" height="14" font="2">faces are commonly used? What mistakes should be avoided?</text>
+<text top="525" left="55" width="161" height="17" font="5">14.1 Types of Memory</text>
+<text top="550" left="105" width="414" height="14" font="2">In running a C program, there are two types of memory that are allo-</text>
+<text top="565" left="87" width="140" height="14" font="2">cated. The ﬁrst is called</text>
+<text top="565" left="231" width="31" height="13" font="6"><b>stack</b></text>
+<text top="565" left="266" width="253" height="14" font="2">memory, and allocations and deallocations</text>
+<text top="580" left="87" width="104" height="14" font="2">of it are managed</text>
+<text top="580" left="194" width="53" height="14" font="7"><i>implicitly</i></text>
+<text top="580" left="250" width="269" height="14" font="2">by the compiler for you, the programmer; for</text>
+<text top="595" left="87" width="195" height="14" font="2">this reason it is sometimes called</text>
+<text top="595" left="285" width="61" height="13" font="6"><b>automatic</b></text>
+<text top="595" left="349" width="52" height="14" font="2">memory.</text>
+<text top="611" left="105" width="414" height="14" font="2">Declaring memory on the stack in C is easy. For example, let’s say you</text>
+<text top="626" left="87" width="177" height="14" font="2">need some space in a function</text>
+<text top="626" left="268" width="48" height="11" font="8">func()</text>
+<text top="626" left="319" width="121" height="14" font="2">for an integer, called</text>
+<text top="626" left="443" width="8" height="11" font="8">x</text>
+<text top="626" left="451" width="68" height="14" font="2">. To declare</text>
+<text top="641" left="87" width="332" height="14" font="2">such a piece of memory, you just do something like this:</text>
+<text top="657" left="87" width="105" height="11" font="8">void func() {</text>
+<text top="672" left="103" width="339" height="11" font="8">int x; // declares an integer on the stack</text>
+<text top="687" left="103" width="24" height="11" font="8">...</text>
+<text top="702" left="87" width="8" height="11" font="8">}</text>
+<text top="735" left="105" width="414" height="14" font="2">The compiler does the rest, making sure to make space on the stack</text>
+<text top="750" left="87" width="109" height="14" font="2">when you call into</text>
+<text top="750" left="199" width="48" height="11" font="8">func()</text>
+<text top="750" left="247" width="272" height="14" font="2">. When you return from the function, the com-</text>
+<text top="765" left="87" width="432" height="14" font="2">piler deallocates the memory for you; thus, if you want some information</text>
+<text top="779" left="87" width="432" height="14" font="2">to live beyond the call invocation, you had better not leave that informa-</text>
+<text top="794" left="87" width="101" height="14" font="2">tion on the stack.</text>
+<text top="826" left="107" width="4" height="8" font="9">1</text>
+<text top="828" left="112" width="364" height="11" font="10">Indeed, we hope all chapters are! But this one is shorter and pointier, we think.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="16" family="ZRDBEI+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="12" size="13" family="MFTFYX+NimbusMonL" color="#000000"/>
+	<fontspec id="13" size="10" family="ZRDBEI+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="14" size="12" family="YBDHEY+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="399" width="5" height="14" font="2">I</text>
+<text top="98" left="404" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="469" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="139" left="147" width="414" height="14" font="2">It is this need for long-lived memory that gets us to the second type</text>
+<text top="154" left="129" width="107" height="14" font="2">of memory, called</text>
+<text top="154" left="240" width="30" height="13" font="6"><b>heap</b></text>
+<text top="154" left="273" width="288" height="14" font="2">memory, where all allocations and deallocations</text>
+<text top="169" left="129" width="18" height="14" font="2">are</text>
+<text top="168" left="152" width="50" height="14" font="7"><i>explicitly</i></text>
+<text top="169" left="207" width="354" height="14" font="2">handled by you, the programmer. A heavy responsibility,</text>
+<text top="183" left="129" width="432" height="14" font="2">no doubt! And certainly the cause of many bugs. But if you are careful</text>
+<text top="198" left="129" width="432" height="14" font="2">and pay attention, you will use such interfaces correctly and without too</text>
+<text top="213" left="129" width="432" height="14" font="2">much trouble. Here is an example of how one might allocate an integer</text>
+<text top="228" left="129" width="73" height="14" font="2">on the heap:</text>
+<text top="254" left="129" width="105" height="11" font="8">void func() {</text>
+<text top="269" left="145" width="299" height="14" font="8">int *x = (int *) malloc(sizeof(int));</text>
+<text top="284" left="145" width="24" height="11" font="8">...</text>
+<text top="299" left="129" width="8" height="11" font="8">}</text>
+<text top="322" left="147" width="414" height="14" font="2">A couple of notes about this small code snippet. First, you might no-</text>
+<text top="337" left="129" width="432" height="14" font="2">tice that both stack and heap allocation occur on this line: ﬁrst the com-</text>
+<text top="352" left="129" width="432" height="14" font="2">piler knows to make room for a pointer to an integer when it sees your</text>
+<text top="367" left="129" width="170" height="14" font="2">declaration of said pointer (</text>
+<text top="368" left="299" width="48" height="14" font="8">int *x</text>
+<text top="367" left="348" width="213" height="14" font="2">); subsequently, when the program</text>
+<text top="382" left="129" width="26" height="14" font="2">calls</text>
+<text top="383" left="159" width="65" height="11" font="8">malloc()</text>
+<text top="382" left="224" width="337" height="14" font="2">, it requests space for an integer on the heap; the routine</text>
+<text top="397" left="129" width="328" height="14" font="2">returns the address of such an integer (upon success, or</text>
+<text top="398" left="460" width="32" height="11" font="8">NULL</text>
+<text top="397" left="496" width="65" height="14" font="2">on failure),</text>
+<text top="412" left="129" width="337" height="14" font="2">which is then stored on the stack for use by the program.</text>
+<text top="427" left="147" width="414" height="14" font="2">Because of its explicit nature, and because of its more varied usage,</text>
+<text top="442" left="129" width="432" height="14" font="2">heap memory presents more challenges to both users and systems. Thus,</text>
+<text top="457" left="129" width="289" height="14" font="2">it is the focus of the remainder of our discussion.</text>
+<text top="494" left="97" width="61" height="17" font="5">14.2 The</text>
+<text top="495" left="162" width="79" height="14" font="11">malloc()</text>
+<text top="494" left="245" width="29" height="17" font="5">Call</text>
+<text top="524" left="147" width="23" height="14" font="2">The</text>
+<text top="526" left="173" width="65" height="11" font="12"><b>malloc()</b></text>
+<text top="524" left="241" width="320" height="14" font="2">call is quite simple: you pass it a size asking for some</text>
+<text top="539" left="129" width="432" height="14" font="2">room on the heap, and it either succeeds and gives you back a pointer to</text>
+<text top="556" left="129" width="273" height="14" font="2">the newly-allocated space, or fails and returns</text>
+<text top="557" left="405" width="32" height="11" font="8">NULL</text>
+<text top="554" left="438" width="4" height="9" font="4">2</text>
+<text top="556" left="443" width="3" height="14" font="2">.</text>
+<text top="572" left="147" width="386" height="14" font="2">The manual page shows what you need to do to use malloc; type</text>
+<text top="572" left="537" width="24" height="11" font="8">man</text>
+<text top="587" left="129" width="48" height="11" font="8">malloc</text>
+<text top="587" left="181" width="226" height="14" font="2">at the command line and you will see:</text>
+<text top="612" left="145" width="153" height="11" font="8">#include &lt;stdlib.h&gt;</text>
+<text top="627" left="145" width="24" height="11" font="8">...</text>
+<text top="642" left="145" width="210" height="14" font="8">void *malloc(size_t size);</text>
+<text top="665" left="147" width="414" height="14" font="2">From this information, you can see that all you need to do is include</text>
+<text top="680" left="129" width="85" height="14" font="2">the header ﬁle</text>
+<text top="681" left="218" width="65" height="11" font="8">stdlib.h</text>
+<text top="680" left="286" width="275" height="14" font="2">to use malloc. In fact, you don’t really need to</text>
+<text top="695" left="129" width="432" height="14" font="2">even do this, as the C library, which all C programs link with by default,</text>
+<text top="710" left="129" width="98" height="14" font="2">has the code for</text>
+<text top="711" left="232" width="65" height="11" font="8">malloc()</text>
+<text top="710" left="301" width="260" height="14" font="2">inside of it; adding the header just lets the</text>
+<text top="725" left="129" width="231" height="14" font="2">compiler check whether you are calling</text>
+<text top="726" left="362" width="65" height="11" font="8">malloc()</text>
+<text top="725" left="429" width="131" height="14" font="2">correctly (e.g., passing</text>
+<text top="740" left="129" width="321" height="14" font="2">the right number of arguments to it, of the right type).</text>
+<text top="755" left="147" width="127" height="14" font="2">The single parameter</text>
+<text top="756" left="278" width="65" height="11" font="8">malloc()</text>
+<text top="755" left="347" width="91" height="14" font="2">takes is of type</text>
+<text top="756" left="442" width="48" height="11" font="8">size_t</text>
+<text top="755" left="494" width="67" height="14" font="2">which sim-</text>
+<text top="770" left="129" width="432" height="14" font="2">ply describes how many bytes you need. However, most programmers</text>
+<text top="785" left="129" width="432" height="14" font="2">do not type in a number here directly (such as 10); indeed, it would be</text>
+<text top="814" left="149" width="4" height="8" font="9">2</text>
+<text top="816" left="154" width="44" height="11" font="10">Note that</text>
+<text top="817" left="200" width="25" height="9" font="13">NULL</text>
+<text top="816" left="228" width="333" height="11" font="10">in C isn’t really anything special, usually just a macro for the value zero,</text>
+<text top="828" left="129" width="19" height="11" font="10">e.g.,</text>
+<text top="829" left="150" width="88" height="9" font="13">#define NULL 0</text>
+<text top="828" left="241" width="62" height="11" font="10">or sometimes</text>
+<text top="829" left="305" width="138" height="11" font="13">#define NULL (void *)0</text>
+<text top="828" left="443" width="3" height="11" font="10">.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="21" height="14" font="2">: M</text>
+<text top="98" left="179" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="225" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="148" left="197" width="8" height="14" font="2">T</text>
+<text top="150" left="206" width="11" height="11" font="3">IP</text>
+<text top="148" left="218" width="22" height="14" font="2">: W</text>
+<text top="150" left="240" width="26" height="11" font="3">HEN</text>
+<text top="148" left="270" width="5" height="14" font="2">I</text>
+<text top="150" left="275" width="9" height="11" font="3">N</text>
+<text top="148" left="288" width="10" height="14" font="2">D</text>
+<text top="150" left="299" width="32" height="11" font="3">OUBT</text>
+<text top="148" left="331" width="16" height="14" font="2">, T</text>
+<text top="150" left="347" width="15" height="11" font="3">RY</text>
+<text top="148" left="366" width="5" height="14" font="2">I</text>
+<text top="150" left="371" width="7" height="11" font="3">T</text>
+<text top="148" left="382" width="11" height="14" font="2">O</text>
+<text top="150" left="393" width="16" height="11" font="3">UT</text>
+<text top="163" left="87" width="432" height="14" font="2">If you aren’t sure how some routine or operator you are using behaves,</text>
+<text top="178" left="87" width="432" height="14" font="2">there is no substitute for simply trying it out and making sure it behaves</text>
+<text top="193" left="87" width="432" height="14" font="2">as you expect. While reading the manual pages or other documentation</text>
+<text top="208" left="87" width="432" height="14" font="2">is useful, how it works in practice is what matters. Write some code and</text>
+<text top="223" left="87" width="432" height="14" font="2">test it! That is no doubt the best way to make sure your code behaves as</text>
+<text top="238" left="87" width="432" height="14" font="2">you desire. Indeed, that is what we did to double-check the things we</text>
+<text top="253" left="87" width="109" height="14" font="2">were saying about</text>
+<text top="254" left="199" width="65" height="11" font="8">sizeof()</text>
+<text top="253" left="267" width="111" height="14" font="2">were actually true!</text>
+<text top="307" left="87" width="432" height="14" font="2">considered poor form to do so. Instead, various routines and macros are</text>
+<text top="322" left="87" width="432" height="14" font="2">utilized. For example, to allocate space for a double-precision ﬂoating</text>
+<text top="337" left="87" width="189" height="14" font="2">point value, you simply do this:</text>
+<text top="367" left="103" width="371" height="14" font="8">double *d = (double *) malloc(sizeof(double));</text>
+<text top="396" left="105" width="103" height="14" font="2">Wow, that’s lot of</text>
+<text top="396" left="212" width="48" height="11" font="8">double</text>
+<text top="396" left="260" width="139" height="14" font="2">-ing! This invocation of</text>
+<text top="396" left="403" width="65" height="11" font="8">malloc()</text>
+<text top="396" left="471" width="48" height="14" font="2">uses the</text>
+<text top="411" left="87" width="65" height="11" font="8">sizeof()</text>
+<text top="410" left="157" width="362" height="14" font="2">operator to request the right amount of space; in C, this is</text>
+<text top="425" left="87" width="152" height="14" font="2">generally thought of as a</text>
+<text top="425" left="243" width="70" height="14" font="7"><i>compile-time</i></text>
+<text top="425" left="318" width="201" height="14" font="2">operator, meaning that the actual</text>
+<text top="440" left="87" width="101" height="14" font="2">size is known at</text>
+<text top="440" left="193" width="70" height="14" font="7"><i>compile time</i></text>
+<text top="440" left="269" width="250" height="14" font="2">and thus a number (in this case, 8, for a</text>
+<text top="455" left="87" width="254" height="14" font="2">double) is substituted as the argument to</text>
+<text top="456" left="347" width="65" height="11" font="8">malloc()</text>
+<text top="455" left="411" width="108" height="14" font="2">. For this reason,</text>
+<text top="471" left="87" width="65" height="11" font="8">sizeof()</text>
+<text top="470" left="156" width="363" height="14" font="2">is correctly thought of as an operator and not a function call</text>
+<text top="485" left="87" width="270" height="14" font="2">(a function call would take place at run time).</text>
+<text top="500" left="105" width="414" height="14" font="2">You can also pass in the name of a variable (and not just a type) to</text>
+<text top="516" left="87" width="65" height="11" font="8">sizeof()</text>
+<text top="515" left="152" width="367" height="14" font="2">, but in some cases you may not get the desired results, so be</text>
+<text top="530" left="87" width="362" height="14" font="2">careful. For example, let’s look at the following code snippet:</text>
+<text top="560" left="103" width="274" height="14" font="8">int *x = malloc(10 * sizeof(int));</text>
+<text top="575" left="103" width="210" height="11" font="8">printf(&#34;%d\n&#34;, sizeof(x));</text>
+<text top="603" left="105" width="414" height="14" font="2">In the ﬁrst line, we’ve declared space for an array of 10 integers, which</text>
+<text top="618" left="87" width="262" height="14" font="2">is ﬁne and dandy. However, when we use</text>
+<text top="619" left="354" width="65" height="11" font="8">sizeof()</text>
+<text top="618" left="423" width="96" height="14" font="2">in the next line,</text>
+<text top="633" left="87" width="432" height="14" font="2">it returns a small value, such as 4 (on 32-bit machines) or 8 (on 64-bit</text>
+<text top="648" left="87" width="249" height="14" font="2">machines). The reason is that in this case,</text>
+<text top="649" left="340" width="65" height="11" font="8">sizeof()</text>
+<text top="648" left="408" width="111" height="14" font="2">thinks we are sim-</text>
+<text top="663" left="87" width="126" height="14" font="2">ply asking how big a</text>
+<text top="663" left="217" width="39" height="14" font="7"><i>pointer</i></text>
+<text top="663" left="259" width="260" height="14" font="2">to an integer is, not how much memory we</text>
+<text top="678" left="87" width="297" height="14" font="2">have dynamically allocated. However, sometimes</text>
+<text top="679" left="388" width="65" height="11" font="8">sizeof()</text>
+<text top="678" left="456" width="63" height="14" font="2">does work</text>
+<text top="693" left="87" width="123" height="14" font="2">as you might expect:</text>
+<text top="723" left="103" width="81" height="11" font="8">int x[10];</text>
+<text top="738" left="103" width="210" height="11" font="8">printf(&#34;%d\n&#34;, sizeof(x));</text>
+<text top="766" left="105" width="414" height="14" font="2">In this case, there is enough static information for the compiler to</text>
+<text top="781" left="87" width="236" height="14" font="2">know that 40 bytes have been allocated.</text>
+<text top="796" left="105" width="414" height="14" font="2">Another place to be careful is with strings. When declaring space for a</text>
+<text top="811" left="87" width="187" height="14" font="2">string, use the following idiom:</text>
+<text top="812" left="278" width="169" height="11" font="8">malloc(strlen(s) + 1)</text>
+<text top="811" left="448" width="71" height="14" font="2">, which gets</text>
+<text top="826" left="87" width="257" height="14" font="2">the length of the string using the function</text>
+<text top="827" left="348" width="65" height="11" font="8">strlen()</text>
+<text top="826" left="413" width="106" height="14" font="2">, and adds 1 to it</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="15" family="RUQYQO+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="399" width="5" height="14" font="2">I</text>
+<text top="98" left="404" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="469" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="139" left="129" width="363" height="14" font="2">in order to make room for the end-of-string character. Using</text>
+<text top="139" left="496" width="65" height="11" font="8">sizeof()</text>
+<text top="154" left="129" width="148" height="14" font="2">may lead to trouble here.</text>
+<text top="169" left="147" width="157" height="14" font="2">You might also notice that</text>
+<text top="170" left="307" width="65" height="11" font="8">malloc()</text>
+<text top="169" left="375" width="146" height="14" font="2">returns a pointer to type</text>
+<text top="170" left="525" width="32" height="11" font="8">void</text>
+<text top="169" left="557" width="3" height="14" font="2">.</text>
+<text top="184" left="129" width="432" height="14" font="2">Doing so is just the way in C to pass back an address and let the pro-</text>
+<text top="199" left="129" width="432" height="14" font="2">grammer decide what to do with it. The programmer further helps out</text>
+<text top="214" left="129" width="154" height="14" font="2">by using what is called a</text>
+<text top="214" left="288" width="23" height="13" font="6"><b>cast</b></text>
+<text top="214" left="311" width="250" height="14" font="2">; in our example above, the programmer</text>
+<text top="229" left="129" width="143" height="14" font="2">casts the return type of</text>
+<text top="230" left="278" width="65" height="11" font="8">malloc()</text>
+<text top="229" left="347" width="101" height="14" font="2">to a pointer to a</text>
+<text top="230" left="454" width="48" height="11" font="8">double</text>
+<text top="229" left="502" width="59" height="14" font="2">. Casting</text>
+<text top="244" left="129" width="432" height="14" font="2">doesn’t really accomplish anything, other than tell the compiler and other</text>
+<text top="259" left="129" width="432" height="14" font="2">programmers who might be reading your code: “yeah, I know what I’m</text>
+<text top="274" left="129" width="183" height="14" font="2">doing.” By casting the result of</text>
+<text top="275" left="315" width="65" height="11" font="8">malloc()</text>
+<text top="274" left="379" width="182" height="14" font="2">, the programmer is just giving</text>
+<text top="289" left="129" width="355" height="14" font="2">some reassurance; the cast is not needed for the correctness.</text>
+<text top="326" left="97" width="61" height="17" font="5">14.3 The</text>
+<text top="327" left="162" width="59" height="14" font="11">free()</text>
+<text top="326" left="225" width="29" height="17" font="5">Call</text>
+<text top="351" left="147" width="414" height="14" font="2">As it turns out, allocating memory is the easy part of the equation;</text>
+<text top="366" left="129" width="432" height="14" font="2">knowing when, how, and even if to free memory is the hard part. To free</text>
+<text top="381" left="129" width="377" height="14" font="2">heap memory that is no longer in use, programmers simply call</text>
+<text top="382" left="509" width="48" height="11" font="12"><b>free()</b></text>
+<text top="381" left="557" width="3" height="14" font="2">:</text>
+<text top="408" left="145" width="274" height="14" font="8">int *x = malloc(10 * sizeof(int));</text>
+<text top="423" left="145" width="24" height="11" font="8">...</text>
+<text top="438" left="145" width="65" height="11" font="8">free(x);</text>
+<text top="463" left="147" width="341" height="14" font="2">The routine takes one argument, a pointer returned by</text>
+<text top="464" left="493" width="65" height="11" font="8">malloc()</text>
+<text top="463" left="557" width="3" height="14" font="2">.</text>
+<text top="478" left="129" width="432" height="14" font="2">Thus, you might notice, the size of the allocated region is not passed in</text>
+<text top="493" left="129" width="428" height="14" font="2">by the user, and must be tracked by the memory-allocation library itself.</text>
+<text top="525" left="97" width="151" height="17" font="5">14.4 Common Errors</text>
+<text top="550" left="147" width="350" height="14" font="2">There are a number of common errors that arise in the use of</text>
+<text top="551" left="499" width="65" height="11" font="8">malloc()</text>
+<text top="565" left="129" width="23" height="14" font="2">and</text>
+<text top="566" left="155" width="48" height="11" font="8">free()</text>
+<text top="565" left="204" width="357" height="14" font="2">. Here are some we’ve seen over and over again in teaching</text>
+<text top="580" left="129" width="432" height="14" font="2">the undergraduate operating systems course. All of these examples com-</text>
+<text top="595" left="129" width="432" height="14" font="2">pile and run with nary a peep from the compiler; while compiling a C</text>
+<text top="610" left="129" width="432" height="14" font="2">program is necessary to build a correct C program, it is far from sufﬁ-</text>
+<text top="625" left="129" width="277" height="14" font="2">cient, as you will learn (often in the hard way).</text>
+<text top="640" left="147" width="414" height="14" font="2">Correct memory management has been such a problem, in fact, that</text>
+<text top="655" left="129" width="252" height="14" font="2">many newer languages have support for</text>
+<text top="655" left="386" width="175" height="13" font="6"><b>automatic memory manage-</b></text>
+<text top="670" left="129" width="31" height="13" font="6"><b>ment</b></text>
+<text top="670" left="160" width="331" height="14" font="2">. In such languages, while you call something akin to</text>
+<text top="671" left="496" width="65" height="11" font="8">malloc()</text>
+<text top="685" left="129" width="168" height="14" font="2">to allocate memory (usually</text>
+<text top="685" left="301" width="26" height="13" font="6"><b>new</b></text>
+<text top="685" left="331" width="230" height="14" font="2">or something similar to allocate a new</text>
+<text top="700" left="129" width="380" height="14" font="2">object), you never have to call something to free space; rather, a</text>
+<text top="700" left="512" width="49" height="13" font="6"><b>garbage</b></text>
+<text top="715" left="129" width="52" height="13" font="6"><b>collector</b></text>
+<text top="715" left="186" width="375" height="14" font="2">runs and ﬁgures out what memory you no longer have refer-</text>
+<text top="730" left="129" width="167" height="14" font="2">ences to and frees it for you.</text>
+<text top="758" left="129" width="213" height="15" font="15"><b>Forgetting To Allocate Memory</b></text>
+<text top="783" left="129" width="432" height="14" font="2">Many routines expect memory to be allocated before you call them. For</text>
+<text top="798" left="129" width="123" height="14" font="2">example, the routine</text>
+<text top="799" left="256" width="129" height="11" font="8">strcpy(dst, src)</text>
+<text top="798" left="389" width="172" height="14" font="2">copies a string from a source</text>
+<text top="813" left="129" width="432" height="14" font="2">pointer to a destination pointer. However, if you are not careful, you</text>
+<text top="828" left="129" width="83" height="14" font="2">might do this:</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="13" family="IHYBCA+CMSY9" color="#000000"/>
+	<fontspec id="17" size="13" family="ESYZVZ+CMR9" color="#000000"/>
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="21" height="14" font="2">: M</text>
+<text top="98" left="179" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="225" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="139" left="103" width="161" height="14" font="8">char *src = &#34;hello&#34;;</text>
+<text top="154" left="103" width="81" height="14" font="8">char *dst;</text>
+<text top="154" left="248" width="161" height="11" font="8">// oops! unallocated</text>
+<text top="169" left="103" width="299" height="11" font="8">strcpy(dst, src); // segfault and die</text>
+<text top="210" left="161" width="8" height="14" font="2">T</text>
+<text top="212" left="170" width="11" height="11" font="3">IP</text>
+<text top="210" left="181" width="13" height="14" font="2">: I</text>
+<text top="212" left="194" width="7" height="11" font="3">T</text>
+<text top="210" left="205" width="10" height="14" font="2">C</text>
+<text top="212" left="215" width="54" height="11" font="3">OMPILED</text>
+<text top="210" left="273" width="11" height="14" font="2">O</text>
+<text top="212" left="285" width="7" height="11" font="3">R</text>
+<text top="210" left="296" width="5" height="14" font="2">I</text>
+<text top="212" left="301" width="7" height="11" font="3">T</text>
+<text top="210" left="312" width="9" height="14" font="2">R</text>
+<text top="212" left="321" width="18" height="11" font="3">AN</text>
+<text top="210" left="343" width="0" height="13" font="16">6</text>
+<text top="215" left="343" width="11" height="10" font="17">=</text>
+<text top="210" left="358" width="5" height="14" font="2">I</text>
+<text top="212" left="363" width="7" height="11" font="3">T</text>
+<text top="210" left="373" width="5" height="14" font="2">I</text>
+<text top="212" left="379" width="6" height="11" font="3">S</text>
+<text top="210" left="388" width="10" height="14" font="2">C</text>
+<text top="212" left="398" width="47" height="11" font="3">ORRECT</text>
+<text top="225" left="87" width="432" height="14" font="2">Just because a program compiled(!) or even ran once or many times cor-</text>
+<text top="240" left="87" width="432" height="14" font="2">rectly does not mean the program is correct. Many events may have con-</text>
+<text top="255" left="87" width="432" height="14" font="2">spired to get you to a point where you believe it works, but then some-</text>
+<text top="270" left="87" width="432" height="14" font="2">thing changes and it stops. A common student reaction is to say (or yell)</text>
+<text top="285" left="87" width="432" height="14" font="2">“But it worked before!” and then blame the compiler, operating system,</text>
+<text top="300" left="87" width="432" height="14" font="2">hardware, or even (dare we say it) the professor. But the problem is usu-</text>
+<text top="315" left="87" width="432" height="14" font="2">ally right where you think it would be, in your code. Get to work and</text>
+<text top="330" left="87" width="305" height="14" font="2">debug it before you blame those other components.</text>
+<text top="366" left="105" width="285" height="14" font="2">When you run this code, it will likely lead to a</text>
+<text top="366" left="394" width="116" height="13" font="6"><b>segmentation fault</b></text>
+<text top="364" left="510" width="4" height="9" font="4">3</text>
+<text top="366" left="516" width="3" height="14" font="2">,</text>
+<text top="381" left="87" width="160" height="14" font="2">which is a fancy term for</text>
+<text top="381" left="253" width="266" height="13" font="6"><b>YOU DID SOMETHING WRONG WITH</b></text>
+<text top="396" left="87" width="402" height="13" font="6"><b>MEMORY YOU FOOLISH PROGRAMMER AND I AM ANGRY.</b></text>
+<text top="412" left="105" width="335" height="14" font="2">In this case, the proper code might instead look like this:</text>
+<text top="442" left="103" width="161" height="14" font="8">char *src = &#34;hello&#34;;</text>
+<text top="457" left="103" width="363" height="14" font="8">char *dst = (char *) malloc(strlen(src) + 1);</text>
+<text top="472" left="103" width="274" height="11" font="8">strcpy(dst, src); // work properly</text>
+<text top="500" left="105" width="157" height="14" font="2">Alternately, you could use</text>
+<text top="501" left="265" width="65" height="11" font="8">strdup()</text>
+<text top="500" left="333" width="185" height="14" font="2">and make your life even easier.</text>
+<text top="515" left="87" width="52" height="14" font="2">Read the</text>
+<text top="516" left="143" width="48" height="11" font="8">strdup</text>
+<text top="515" left="195" width="191" height="14" font="2">man page for more information.</text>
+<text top="552" left="87" width="220" height="15" font="15"><b>Not Allocating Enough Memory</b></text>
+<text top="577" left="87" width="397" height="14" font="2">A related error is not allocating enough memory, sometimes called a</text>
+<text top="577" left="487" width="39" height="13" font="6"><b>buffer</b></text>
+<text top="592" left="87" width="54" height="13" font="6"><b>overﬂow</b></text>
+<text top="592" left="141" width="293" height="14" font="2">. In the example above, a common error is to make</text>
+<text top="592" left="437" width="36" height="14" font="7"><i>almost</i></text>
+<text top="592" left="475" width="45" height="14" font="2">enough</text>
+<text top="607" left="87" width="186" height="14" font="2">room for the destination buffer.</text>
+<text top="637" left="103" width="161" height="14" font="8">char *src = &#34;hello&#34;;</text>
+<text top="652" left="103" width="444" height="14" font="8">char *dst = (char *) malloc(strlen(src)); // too small!</text>
+<text top="667" left="103" width="274" height="11" font="8">strcpy(dst, src); // work properly</text>
+<text top="696" left="105" width="414" height="14" font="2">Oddly enough, depending on how malloc is implemented and many</text>
+<text top="711" left="87" width="432" height="14" font="2">other details, this program will often run seemingly correctly. In some</text>
+<text top="726" left="87" width="432" height="14" font="2">cases, when the string copy executes, it writes one byte too far past the</text>
+<text top="741" left="87" width="432" height="14" font="2">end of the allocated space, but in some cases this is harmless, perhaps</text>
+<text top="756" left="87" width="432" height="14" font="2">overwriting a variable that isn’t used anymore. In some cases, these over-</text>
+<text top="771" left="87" width="432" height="14" font="2">ﬂows can be incredibly harmful, and in fact are the source of many secu-</text>
+<text top="786" left="87" width="432" height="14" font="2">rity vulnerabilities in systems [W06]. In other cases, the malloc library</text>
+<text top="814" left="107" width="4" height="8" font="9">3</text>
+<text top="816" left="112" width="407" height="11" font="10">Although it sounds arcane, you will soon learn why such an illegal memory access is</text>
+<text top="828" left="87" width="317" height="11" font="10">called a segmentation fault; if that isn’t incentive to read on, what is?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="399" width="5" height="14" font="2">I</text>
+<text top="98" left="404" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="469" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="139" left="129" width="432" height="14" font="2">allocated a little extra space anyhow, and thus your program actually</text>
+<text top="154" left="129" width="432" height="14" font="2">doesn’t scribble on some other variable’s value and works quite ﬁne. In</text>
+<text top="169" left="129" width="432" height="14" font="2">even other cases, the program will indeed fault and crash. And thus we</text>
+<text top="183" left="129" width="432" height="14" font="2">learn another valuable lesson: even though it ran correctly once, doesn’t</text>
+<text top="198" left="129" width="101" height="14" font="2">mean it’s correct.</text>
+<text top="242" left="129" width="285" height="15" font="15"><b>Forgetting to Initialize Allocated Memory</b></text>
+<text top="268" left="129" width="138" height="14" font="2">With this error, you call</text>
+<text top="268" left="270" width="65" height="11" font="8">malloc()</text>
+<text top="268" left="338" width="223" height="14" font="2">properly, but forget to ﬁll in some val-</text>
+<text top="283" left="129" width="432" height="14" font="2">ues into your newly-allocated data type. Don’t do this! If you do forget,</text>
+<text top="298" left="129" width="260" height="14" font="2">your program will eventually encounter an</text>
+<text top="298" left="393" width="111" height="13" font="6"><b>uninitialized read</b></text>
+<text top="298" left="504" width="57" height="14" font="2">, where it</text>
+<text top="312" left="129" width="432" height="14" font="2">reads from the heap some data of unknown value. Who knows what</text>
+<text top="327" left="129" width="432" height="14" font="2">might be in there? If you’re lucky, some value such that the program still</text>
+<text top="342" left="129" width="419" height="14" font="2">works (e.g., zero). If you’re not lucky, something random and harmful.</text>
+<text top="386" left="129" width="186" height="15" font="15"><b>Forgetting To Free Memory</b></text>
+<text top="412" left="129" width="225" height="14" font="2">Another common error is known as a</text>
+<text top="412" left="358" width="81" height="13" font="6"><b>memory leak</b></text>
+<text top="412" left="439" width="122" height="14" font="2">, and it occurs when</text>
+<text top="427" left="129" width="432" height="14" font="2">you forget to free memory. In long-running applications or systems (such</text>
+<text top="441" left="129" width="432" height="14" font="2">as the OS itself), this is a huge problem, as slowly leaking memory even-</text>
+<text top="456" left="129" width="432" height="14" font="2">tually leads one to run out of memory, at which point a restart is required.</text>
+<text top="471" left="129" width="432" height="14" font="2">Thus, in general, when you are done with a chunk of memory, you should</text>
+<text top="486" left="129" width="432" height="14" font="2">make sure to free it. Note that using a garbage-collected language doesn’t</text>
+<text top="501" left="129" width="432" height="14" font="2">help here: if you still have a reference to some chunk of memory, no</text>
+<text top="516" left="129" width="432" height="14" font="2">garbage collector will ever free it, and thus memory leaks remain a prob-</text>
+<text top="531" left="129" width="221" height="14" font="2">lem even in more modern languages.</text>
+<text top="548" left="147" width="253" height="14" font="2">In some cases, it may seem like not calling</text>
+<text top="548" left="403" width="48" height="11" font="8">free()</text>
+<text top="548" left="455" width="105" height="14" font="2">is reasonable. For</text>
+<text top="563" left="129" width="432" height="14" font="2">example, your program is short-lived, and will soon exit; in this case,</text>
+<text top="578" left="129" width="432" height="14" font="2">when the process dies, the OS will clean up all of its allocated pages and</text>
+<text top="592" left="129" width="432" height="14" font="2">thus no memory leak will take place per se. While this certainly “works”</text>
+<text top="607" left="129" width="432" height="14" font="2">(see the asideon page 7), it is probably a bad habit to develop, so be wary</text>
+<text top="622" left="129" width="432" height="14" font="2">of choosing such a strategy. In the long run, one of your goals as a pro-</text>
+<text top="637" left="129" width="432" height="14" font="2">grammer is to develop good habits; one of those habits is understanding</text>
+<text top="652" left="129" width="432" height="14" font="2">how you are managing memory, and (in languages like C), freeing the</text>
+<text top="667" left="129" width="432" height="14" font="2">blocks you have allocated. Even if you can get away with not doing so,</text>
+<text top="682" left="129" width="432" height="14" font="2">it is probably good to get in the habit of freeing each and every byte you</text>
+<text top="697" left="129" width="107" height="14" font="2">explicitly allocate.</text>
+<text top="740" left="129" width="313" height="15" font="15"><b>Freeing Memory Before You Are Done With It</b></text>
+<text top="766" left="129" width="432" height="14" font="2">Sometimes a program will free memory before it is ﬁnished using it; such</text>
+<text top="781" left="129" width="120" height="14" font="2">a mistake is called a</text>
+<text top="781" left="252" width="104" height="13" font="6"><b>dangling pointer</b></text>
+<text top="781" left="356" width="204" height="14" font="2">, and it, as you can guess, is also a</text>
+<text top="796" left="129" width="432" height="14" font="2">bad thing. The subsequent use can crash the program, or overwrite valid</text>
+<text top="811" left="129" width="153" height="14" font="2">memory (e.g., you called</text>
+<text top="812" left="287" width="48" height="11" font="8">free()</text>
+<text top="811" left="335" width="101" height="14" font="2">, but then called</text>
+<text top="812" left="442" width="65" height="11" font="8">malloc()</text>
+<text top="811" left="511" width="50" height="14" font="2">again to</text>
+<text top="826" left="129" width="431" height="14" font="2">allocate something else, which then recycles the errantly-freed memory).</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="15" family="MFTFYX+NimbusMonL" color="#000000"/>
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="21" height="14" font="2">: M</text>
+<text top="98" left="179" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="225" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="148" left="102" width="10" height="14" font="2">A</text>
+<text top="150" left="113" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="140" width="22" height="14" font="2">: W</text>
+<text top="150" left="162" width="17" height="11" font="3">HY</text>
+<text top="148" left="183" width="11" height="14" font="2">N</text>
+<text top="150" left="195" width="8" height="11" font="3">O</text>
+<text top="148" left="207" width="13" height="14" font="2">M</text>
+<text top="150" left="220" width="42" height="11" font="3">EMORY</text>
+<text top="148" left="266" width="5" height="14" font="2">I</text>
+<text top="150" left="272" width="6" height="11" font="3">S</text>
+<text top="148" left="281" width="8" height="14" font="2">L</text>
+<text top="150" left="290" width="40" height="11" font="3">EAKED</text>
+<text top="148" left="334" width="11" height="14" font="2">O</text>
+<text top="150" left="346" width="24" height="11" font="3">NCE</text>
+<text top="148" left="374" width="9" height="14" font="2">Y</text>
+<text top="150" left="384" width="25" height="11" font="3">OUR</text>
+<text top="148" left="413" width="8" height="14" font="2">P</text>
+<text top="150" left="422" width="45" height="11" font="3">ROCESS</text>
+<text top="148" left="471" width="8" height="14" font="2">E</text>
+<text top="150" left="479" width="25" height="11" font="3">XITS</text>
+<text top="168" left="87" width="432" height="14" font="2">When you write a short-lived program, you might allocate some space</text>
+<text top="183" left="87" width="33" height="14" font="2">using</text>
+<text top="184" left="125" width="65" height="11" font="8">malloc()</text>
+<text top="183" left="189" width="330" height="14" font="2">. The program runs and is about to complete: is there</text>
+<text top="198" left="87" width="68" height="14" font="2">need to call</text>
+<text top="199" left="159" width="48" height="11" font="8">free()</text>
+<text top="198" left="211" width="308" height="14" font="2">a bunch of times just before exiting? While it seems</text>
+<text top="213" left="87" width="432" height="14" font="2">wrong not to, no memory will be “lost” in any real sense. The reason is</text>
+<text top="228" left="87" width="432" height="14" font="2">simple: there are really two levels of memory management in the system.</text>
+<text top="246" left="87" width="432" height="14" font="2">The ﬁrst level of memory management is performed by the OS, which</text>
+<text top="261" left="87" width="432" height="14" font="2">hands out memory to processes when they run, and takes it back when</text>
+<text top="276" left="87" width="208" height="14" font="2">processes exit (or otherwise die).</text>
+<text top="276" left="310" width="209" height="14" font="2">The second level of management</text>
+<text top="291" left="87" width="10" height="14" font="2">is</text>
+<text top="291" left="104" width="36" height="14" font="7"><i>within</i></text>
+<text top="291" left="147" width="372" height="14" font="2">each process, for example within the heap when you call</text>
+<text top="307" left="87" width="65" height="11" font="8">malloc()</text>
+<text top="306" left="155" width="23" height="14" font="2">and</text>
+<text top="307" left="190" width="48" height="11" font="8">free()</text>
+<text top="306" left="238" width="140" height="14" font="2">. Even if you fail to call</text>
+<text top="307" left="382" width="48" height="11" font="8">free()</text>
+<text top="306" left="434" width="85" height="14" font="2">(and thus leak</text>
+<text top="321" left="87" width="326" height="14" font="2">memory in the heap), the operating system will reclaim</text>
+<text top="321" left="416" width="13" height="14" font="7"><i>all</i></text>
+<text top="321" left="432" width="87" height="14" font="2">the memory of</text>
+<text top="336" left="87" width="432" height="14" font="2">the process (including those pages for code, stack, and, as relevant here,</text>
+<text top="351" left="87" width="432" height="14" font="2">heap) when the program is ﬁnished running. No matter what the state</text>
+<text top="366" left="87" width="432" height="14" font="2">of your heap in your address space, the OS takes back all of those pages</text>
+<text top="381" left="87" width="432" height="14" font="2">when the process dies, thus ensuring that no memory is lost despite the</text>
+<text top="396" left="87" width="155" height="14" font="2">fact that you didn’t free it.</text>
+<text top="414" left="87" width="432" height="14" font="2">Thus, for short-lived programs, leaking memory often does not cause any</text>
+<text top="429" left="87" width="432" height="14" font="2">operational problems (though it may be considered poor form). When</text>
+<text top="444" left="87" width="432" height="14" font="2">you write a long-running server (such as a web server or database man-</text>
+<text top="459" left="87" width="432" height="14" font="2">agement system, which never exit), leaked memory is a much bigger is-</text>
+<text top="474" left="87" width="432" height="14" font="2">sue, and will eventually lead to a crash when the application runs out of</text>
+<text top="489" left="87" width="432" height="14" font="2">memory. And of course, leaking memory is an even larger issue inside</text>
+<text top="504" left="87" width="432" height="14" font="2">one particular program: the operating system itself. Showing us once</text>
+<text top="519" left="87" width="404" height="14" font="2">again: those who write the kernel code have the toughest job of all...</text>
+<text top="587" left="87" width="194" height="15" font="15"><b>Freeing Memory Repeatedly</b></text>
+<text top="618" left="87" width="432" height="14" font="2">Programs also sometimes free memory more than once; this is known as</text>
+<text top="633" left="87" width="19" height="14" font="2">the</text>
+<text top="633" left="110" width="71" height="13" font="6"><b>double free</b></text>
+<text top="633" left="181" width="338" height="14" font="2">. The result of doing so is undeﬁned. As you can imag-</text>
+<text top="648" left="87" width="432" height="14" font="2">ine, the memory-allocation library might get confused and do all sorts of</text>
+<text top="663" left="87" width="271" height="14" font="2">weird things; crashes are a common outcome.</text>
+<text top="736" left="87" width="51" height="15" font="15"><b>Calling</b></text>
+<text top="737" left="141" width="54" height="12" font="18"><b>free()</b></text>
+<text top="736" left="199" width="74" height="15" font="15"><b>Incorrectly</b></text>
+<text top="766" left="87" width="250" height="14" font="2">One last problem we discuss is the call of</text>
+<text top="767" left="341" width="48" height="11" font="8">free()</text>
+<text top="766" left="394" width="125" height="14" font="2">incorrectly. After all,</text>
+<text top="782" left="87" width="48" height="11" font="8">free()</text>
+<text top="781" left="140" width="379" height="14" font="2">expects you only to pass to it one of the pointers you received</text>
+<text top="796" left="87" width="29" height="14" font="2">from</text>
+<text top="797" left="120" width="65" height="11" font="8">malloc()</text>
+<text top="796" left="188" width="331" height="14" font="2">earlier. When you pass in some other value, bad things</text>
+<text top="811" left="87" width="210" height="14" font="2">can (and do) happen. Thus, such</text>
+<text top="811" left="302" width="79" height="13" font="6"><b>invalid frees</b></text>
+<text top="811" left="387" width="132" height="14" font="2">are dangerous and of</text>
+<text top="826" left="87" width="183" height="14" font="2">course should also be avoided.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="399" width="5" height="14" font="2">I</text>
+<text top="98" left="404" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="469" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="138" left="129" width="66" height="15" font="15"><b>Summary</b></text>
+<text top="164" left="129" width="432" height="14" font="2">As you can see, there are lots of ways to abuse memory. Because of fre-</text>
+<text top="179" left="129" width="432" height="14" font="2">quent errors with memory, a whole ecosphere of tools have developed to</text>
+<text top="194" left="129" width="322" height="14" font="2">help ﬁnd such problems in your code. Check out both</text>
+<text top="194" left="454" width="39" height="13" font="6"><b>purify</b></text>
+<text top="194" left="496" width="64" height="14" font="2">[HJ92] and</text>
+<text top="209" left="129" width="52" height="13" font="6"><b>valgrind</b></text>
+<text top="209" left="186" width="375" height="14" font="2">[SN05]; both are excellent at helping you locate the source of</text>
+<text top="224" left="129" width="432" height="14" font="2">your memory-related problems. Once you become accustomed to using</text>
+<text top="239" left="129" width="427" height="14" font="2">these powerful tools, you will wonder how you survived without them.</text>
+<text top="279" left="97" width="206" height="17" font="5">14.5 Underlying OS Support</text>
+<text top="312" left="147" width="414" height="14" font="2">You might have noticed that we haven’t been talking about system</text>
+<text top="327" left="129" width="128" height="14" font="2">calls when discussing</text>
+<text top="327" left="260" width="65" height="11" font="8">malloc()</text>
+<text top="327" left="328" width="23" height="14" font="2">and</text>
+<text top="327" left="354" width="48" height="11" font="8">free()</text>
+<text top="327" left="402" width="159" height="14" font="2">. The reason for this is sim-</text>
+<text top="342" left="129" width="432" height="14" font="2">ple: they are not system calls, but rather library calls. Thus the malloc li-</text>
+<text top="357" left="129" width="432" height="14" font="2">brary manages space within your virtual address space, but itself is built</text>
+<text top="371" left="129" width="432" height="14" font="2">on top of some system calls which call into the OS to ask for more mem-</text>
+<text top="386" left="129" width="231" height="14" font="2">ory or release some back to the system.</text>
+<text top="404" left="147" width="179" height="14" font="2">One such system call is called</text>
+<text top="405" left="330" width="24" height="11" font="8">brk</text>
+<text top="404" left="354" width="207" height="14" font="2">, which is used to change the loca-</text>
+<text top="419" left="129" width="127" height="14" font="2">tion of the program’s</text>
+<text top="419" left="259" width="35" height="13" font="6"><b>break</b></text>
+<text top="419" left="295" width="266" height="14" font="2">: the location of the end of the heap. It takes</text>
+<text top="434" left="129" width="432" height="14" font="2">one argument (the address of the new break), and thus either increases or</text>
+<text top="449" left="129" width="432" height="14" font="2">decreases the size of the heap based on whether the new break is larger</text>
+<text top="464" left="129" width="318" height="14" font="2">or smaller than the current break. An additional call</text>
+<text top="465" left="451" width="32" height="11" font="8">sbrk</text>
+<text top="464" left="487" width="73" height="14" font="2">is passed an</text>
+<text top="479" left="129" width="296" height="14" font="2">increment but otherwise serves a similar purpose.</text>
+<text top="497" left="147" width="287" height="14" font="2">Note that you should never directly call either</text>
+<text top="498" left="439" width="24" height="11" font="8">brk</text>
+<text top="497" left="468" width="13" height="14" font="2">or</text>
+<text top="498" left="486" width="32" height="11" font="8">sbrk</text>
+<text top="497" left="518" width="43" height="14" font="2">. They</text>
+<text top="512" left="129" width="432" height="14" font="2">are used by the memory-allocation library; if you try to use them, you</text>
+<text top="527" left="129" width="337" height="14" font="2">will likely make something go (horribly) wrong. Stick to</text>
+<text top="527" left="470" width="65" height="11" font="8">malloc()</text>
+<text top="527" left="538" width="23" height="14" font="2">and</text>
+<text top="542" left="129" width="48" height="11" font="8">free()</text>
+<text top="542" left="181" width="47" height="14" font="2">instead.</text>
+<text top="559" left="147" width="414" height="14" font="2">Finally, you can also obtain memory from the operating system via the</text>
+<text top="575" left="129" width="48" height="11" font="8">mmap()</text>
+<text top="574" left="181" width="246" height="14" font="2">call. By passing in the correct arguments,</text>
+<text top="575" left="431" width="48" height="11" font="8">mmap()</text>
+<text top="574" left="483" width="77" height="14" font="2">can create an</text>
+<text top="589" left="129" width="72" height="13" font="6"><b>anonymous</b></text>
+<text top="589" left="203" width="358" height="14" font="2">memory region within your program — a region which is not</text>
+<text top="604" left="129" width="291" height="14" font="2">associated with any particular ﬁle but rather with</text>
+<text top="604" left="423" width="69" height="13" font="6"><b>swap space</b></text>
+<text top="604" left="492" width="69" height="14" font="2">, something</text>
+<text top="619" left="129" width="432" height="14" font="2">we’ll discuss in detail later on in virtual memory. This memory can then</text>
+<text top="634" left="129" width="432" height="14" font="2">also be treated like a heap and managed as such. Read the manual page</text>
+<text top="649" left="129" width="12" height="14" font="2">of</text>
+<text top="650" left="144" width="48" height="11" font="8">mmap()</text>
+<text top="649" left="196" width="97" height="14" font="2">for more details.</text>
+<text top="689" left="97" width="116" height="17" font="5">14.6 Other Calls</text>
+<text top="721" left="147" width="414" height="14" font="2">There are a few other calls that the memory-allocation library sup-</text>
+<text top="736" left="129" width="120" height="14" font="2">ports. For example,</text>
+<text top="737" left="253" width="65" height="11" font="8">calloc()</text>
+<text top="736" left="322" width="239" height="14" font="2">allocates memory and also zeroes it be-</text>
+<text top="751" left="129" width="432" height="14" font="2">fore returning; this prevents some errors where you assume that memory</text>
+<text top="766" left="129" width="432" height="14" font="2">is zeroed and forget to initialize it yourself (see the paragraph on “unini-</text>
+<text top="781" left="129" width="207" height="14" font="2">tialized reads” above). The routine</text>
+<text top="782" left="339" width="73" height="11" font="8">realloc()</text>
+<text top="781" left="415" width="145" height="14" font="2">can also be useful, when</text>
+<text top="796" left="129" width="432" height="14" font="2">you’ve allocated space for something (say, an array), and then need to</text>
+<text top="811" left="129" width="121" height="14" font="2">add something to it:</text>
+<text top="812" left="254" width="73" height="11" font="8">realloc()</text>
+<text top="811" left="331" width="230" height="14" font="2">makes a new larger region of memory,</text>
+<text top="826" left="129" width="417" height="14" font="2">copies the old region into it, and returns the pointer to the new region.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="21" height="14" font="2">: M</text>
+<text top="98" left="179" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="225" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="137" left="55" width="105" height="17" font="5">14.7 Summary</text>
+<text top="166" left="105" width="414" height="14" font="2">We have introduced some of the APIs dealing with memory allocation.</text>
+<text top="181" left="87" width="432" height="14" font="2">As always, we have just covered the basics; more details are available</text>
+<text top="196" left="87" width="432" height="14" font="2">elsewhere. Read the C book [KR88] and Stevens [SR05] (Chapter 7) for</text>
+<text top="211" left="87" width="432" height="14" font="2">more information. For a cool modern paper on how to detect and correct</text>
+<text top="226" left="87" width="432" height="14" font="2">many of these problems automatically, see Novark et al. [N+07]; this</text>
+<text top="241" left="87" width="432" height="14" font="2">paper also contains a nice summary of common problems and some neat</text>
+<text top="256" left="87" width="204" height="14" font="2">ideas on how to ﬁnd and ﬁx them.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="16" family="RUQYQO+URWPalladioL" color="#000000"/>
+	<fontspec id="20" size="10" family="PKXKMU+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="21" size="8" family="YBDHEY+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="399" width="5" height="14" font="2">I</text>
+<text top="98" left="404" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="469" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="137" left="129" width="82" height="16" font="19"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="10">[HJ92] “Purify: Fast Detection of Memory Leaks and Access Errors” by R. Hastings, B. Joyce.</text>
+<text top="177" left="129" width="92" height="11" font="10">USENIX Winter ’92.</text>
+<text top="177" left="224" width="274" height="11" font="20"><i>The paper behind the cool Purify tool, now a commercial product.</i></text>
+<text top="194" left="129" width="432" height="11" font="10">[KR88] “The C Programming Language” by Brian Kernighan, Dennis Ritchie. Prentice-Hall</text>
+<text top="206" left="129" width="24" height="11" font="10">1988.</text>
+<text top="206" left="157" width="404" height="11" font="20"><i>The C book, by the developers of C. Read it once, do some programming, then read it again, and</i></text>
+<text top="217" left="129" width="224" height="11" font="20"><i>then keep it near your desk or wherever you program.</i></text>
+<text top="234" left="129" width="432" height="11" font="10">[N+07] “Exterminator: Automatically Correcting Memory Errors with High Probability” by</text>
+<text top="246" left="129" width="327" height="11" font="10">G. Novark, E. D. Berger, B. G. Zorn. PLDI 2007, San Diego, California.</text>
+<text top="246" left="461" width="100" height="11" font="20"><i>A cool paper on ﬁnding</i></text>
+<text top="258" left="129" width="432" height="11" font="20"><i>and correcting memory errors automatically, and a great overview of many common errors in C and</i></text>
+<text top="270" left="129" width="432" height="11" font="20"><i>C++ programs. An extended version of this paper is available CACM (Volume 51, Issue 12, December</i></text>
+<text top="282" left="129" width="27" height="11" font="20"><i>2008).</i></text>
+<text top="298" left="129" width="432" height="11" font="10">[SN05] “Using Valgrind to Detect Undeﬁned Value Errors with Bit-precision” by J. Seward, N.</text>
+<text top="310" left="129" width="115" height="11" font="10">Nethercote. USENIX ’05.</text>
+<text top="310" left="247" width="213" height="11" font="20"><i>How to use valgrind to ﬁnd certain types of errors.</i></text>
+<text top="326" left="129" width="195" height="11" font="10">[SR05] “Advanced Programming in the U</text>
+<text top="328" left="324" width="16" height="8" font="21">NIX</text>
+<text top="326" left="344" width="217" height="11" font="10">Environment” by W. Richard Stevens, Stephen</text>
+<text top="338" left="129" width="149" height="11" font="10">A. Rago. Addison-Wesley, 2005.</text>
+<text top="338" left="282" width="278" height="11" font="20"><i>We’ve said it before, we’ll say it again: read this book many times</i></text>
+<text top="350" left="129" width="432" height="11" font="20"><i>and use it as a reference whenever you are in doubt. The authors are always surprised at how each time</i></text>
+<text top="362" left="129" width="429" height="11" font="20"><i>they read something in this book, they learn something new, even after many years of C programming.</i></text>
+<text top="378" left="129" width="432" height="11" font="10">[W06] “Survey on Buffer Overﬂow Attacks and Countermeasures” by T. Werthman. Avail-</text>
+<text top="390" left="129" width="361" height="11" font="10">able: www.nds.rub.de/lehre/seminar/SS06/Werthmann BufferOverﬂow.pdf.</text>
+<text top="390" left="493" width="68" height="11" font="20"><i>A nice survey of</i></text>
+<text top="402" left="129" width="423" height="11" font="20"><i>buffer overﬂows and some of the security problems they cause. Refers to many of the famous exploits.</i></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="21" height="14" font="2">: M</text>
+<text top="98" left="179" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="225" width="24" height="14" font="2">API</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="137" left="87" width="139" height="16" font="19"><b>Homework (Code)</b></text>
+<text top="167" left="105" width="414" height="14" font="2">In this homework, you will gain some familiarity with memory allo-</text>
+<text top="182" left="87" width="432" height="14" font="2">cation. First, you’ll write some buggy programs (fun!). Then, you’ll use</text>
+<text top="197" left="87" width="432" height="14" font="2">some tools to help you ﬁnd the bugs you inserted. Then, you will realize</text>
+<text top="212" left="87" width="432" height="14" font="2">how awesome these tools are and use them in the future, thus making</text>
+<text top="227" left="87" width="432" height="14" font="2">yourself more happy and productive. The tools are the debugger (e.g.,</text>
+<text top="243" left="87" width="24" height="11" font="8">gdb</text>
+<text top="242" left="111" width="212" height="14" font="2">) and a memory-bug detector called</text>
+<text top="243" left="327" width="65" height="11" font="8">valgrind</text>
+<text top="242" left="395" width="44" height="14" font="2">[SN05].</text>
+<text top="284" left="87" width="70" height="15" font="15"><b>Questions</b></text>
+<text top="309" left="105" width="232" height="14" font="2">1. First, write a simple program called</text>
+<text top="310" left="341" width="48" height="11" font="8">null.c</text>
+<text top="309" left="393" width="126" height="14" font="2">that creates a pointer</text>
+<text top="324" left="122" width="131" height="14" font="2">to an integer, sets it to</text>
+<text top="325" left="256" width="32" height="11" font="8">NULL</text>
+<text top="324" left="288" width="231" height="14" font="2">, and then tries to dereference it. Com-</text>
+<text top="339" left="122" width="200" height="14" font="2">pile this into an executable called</text>
+<text top="340" left="326" width="32" height="11" font="8">null</text>
+<text top="339" left="358" width="161" height="14" font="2">. What happens when you</text>
+<text top="354" left="122" width="108" height="14" font="2">run this program?</text>
+<text top="383" left="105" width="418" height="14" font="2">2. Next, compile this program with symbol information included (with</text>
+<text top="398" left="122" width="19" height="14" font="2">the</text>
+<text top="399" left="146" width="16" height="11" font="8">-g</text>
+<text top="398" left="168" width="351" height="14" font="2">ﬂag). Doing so let’s put more information into the exe-</text>
+<text top="413" left="122" width="397" height="14" font="2">cutable, enabling the debugger to access more useful information</text>
+<text top="428" left="122" width="397" height="14" font="2">about variable names and the like. Run the program under the</text>
+<text top="443" left="122" width="120" height="14" font="2">debugger by typing</text>
+<text top="443" left="246" width="81" height="11" font="8">gdb ./null</text>
+<text top="443" left="331" width="89" height="14" font="2">and then, once</text>
+<text top="443" left="425" width="24" height="11" font="8">gdb</text>
+<text top="443" left="453" width="66" height="14" font="2">is running,</text>
+<text top="458" left="122" width="39" height="14" font="2">typing</text>
+<text top="458" left="164" width="24" height="11" font="8">run</text>
+<text top="458" left="188" width="165" height="14" font="2">. What does gdb show you?</text>
+<text top="486" left="105" width="104" height="14" font="2">3. Finally, use the</text>
+<text top="487" left="211" width="65" height="11" font="8">valgrind</text>
+<text top="486" left="279" width="180" height="14" font="2">tool on this program. We’ll use</text>
+<text top="487" left="461" width="65" height="11" font="8">memcheck</text>
+<text top="501" left="122" width="93" height="14" font="2">that is a part of</text>
+<text top="502" left="219" width="65" height="11" font="8">valgrind</text>
+<text top="501" left="288" width="231" height="14" font="2">to analyze what happens. Run this by</text>
+<text top="516" left="122" width="138" height="14" font="2">typing in the following:</text>
+<text top="517" left="263" width="258" height="11" font="8">valgrind --leak-check=yes ./null</text>
+<text top="516" left="522" width="3" height="14" font="2">.</text>
+<text top="531" left="122" width="397" height="14" font="2">What happens when you run this? Can you interpret the output</text>
+<text top="546" left="122" width="83" height="14" font="2">from the tool?</text>
+<text top="575" left="105" width="324" height="14" font="2">4. Write a simple program that allocates memory using</text>
+<text top="576" left="432" width="65" height="11" font="8">malloc()</text>
+<text top="575" left="499" width="20" height="14" font="2">but</text>
+<text top="590" left="122" width="397" height="14" font="2">forgets to free it before exiting. What happens when this program</text>
+<text top="605" left="122" width="115" height="14" font="2">runs? Can you use</text>
+<text top="606" left="240" width="24" height="11" font="8">gdb</text>
+<text top="605" left="269" width="250" height="14" font="2">to ﬁnd any problems with it? How about</text>
+<text top="621" left="122" width="65" height="11" font="8">valgrind</text>
+<text top="620" left="190" width="90" height="14" font="2">(again with the</text>
+<text top="621" left="283" width="129" height="11" font="8">--leak-check=yes</text>
+<text top="620" left="415" width="33" height="14" font="2">ﬂag)?</text>
+<text top="649" left="105" width="339" height="14" font="2">5. Write a program that creates an array of integers called</text>
+<text top="650" left="446" width="32" height="11" font="8">data</text>
+<text top="649" left="481" width="37" height="14" font="2">of size</text>
+<text top="664" left="122" width="58" height="14" font="2">100 using</text>
+<text top="665" left="185" width="48" height="11" font="8">malloc</text>
+<text top="664" left="233" width="61" height="14" font="2">; then, set</text>
+<text top="665" left="299" width="73" height="11" font="8">data[100]</text>
+<text top="664" left="376" width="143" height="14" font="2">to zero. What happens</text>
+<text top="679" left="122" width="397" height="14" font="2">when you run this program? What happens when you run this</text>
+<text top="694" left="122" width="88" height="14" font="2">program using</text>
+<text top="694" left="213" width="65" height="11" font="8">valgrind</text>
+<text top="694" left="278" width="147" height="14" font="2">? Is the program correct?</text>
+<text top="723" left="105" width="414" height="14" font="2">6. Create a program that allocates an array of integers (as above), frees</text>
+<text top="737" left="122" width="397" height="14" font="2">them, and then tries to print the value of one of the elements of</text>
+<text top="752" left="122" width="397" height="14" font="2">the array. Does the program run? What happens when you use</text>
+<text top="768" left="122" width="65" height="11" font="8">valgrind</text>
+<text top="767" left="190" width="33" height="14" font="2">on it?</text>
+<text top="796" left="105" width="414" height="14" font="2">7. Now pass a funny value to free (e.g., a pointer in the middle of the</text>
+<text top="811" left="122" width="397" height="14" font="2">array you allocated above). What happens? Do you need tools to</text>
+<text top="826" left="122" width="154" height="14" font="2">ﬁnd this type of problem?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="399" width="5" height="14" font="2">I</text>
+<text top="98" left="404" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="469" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="42" height="11" font="3">EMORY</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="139" left="146" width="414" height="14" font="2">8. Try out some of the other interfaces to memory allocation. For ex-</text>
+<text top="154" left="163" width="397" height="14" font="2">ample, create a simple vector-like data structure and related rou-</text>
+<text top="169" left="163" width="81" height="14" font="2">tines that use</text>
+<text top="169" left="250" width="73" height="11" font="8">realloc()</text>
+<text top="169" left="327" width="234" height="14" font="2">to manage the vector. Use an array to</text>
+<text top="183" left="163" width="397" height="14" font="2">store the vectors elements; when a user adds an entry to the vec-</text>
+<text top="198" left="163" width="44" height="14" font="2">tor, use</text>
+<text top="199" left="212" width="73" height="11" font="8">realloc()</text>
+<text top="198" left="289" width="271" height="14" font="2">to allocate more space for it. How well does</text>
+<text top="213" left="163" width="397" height="14" font="2">such a vector perform? How does it compare to a linked list? Use</text>
+<text top="229" left="163" width="65" height="11" font="8">valgrind</text>
+<text top="228" left="231" width="131" height="14" font="2">to help you ﬁnd bugs.</text>
+<text top="253" left="146" width="246" height="14" font="2">9. Spend more time and read about using</text>
+<text top="254" left="395" width="24" height="11" font="8">gdb</text>
+<text top="253" left="423" width="23" height="14" font="2">and</text>
+<text top="254" left="448" width="65" height="11" font="8">valgrind</text>
+<text top="253" left="513" width="48" height="14" font="2">. Know-</text>
+<text top="268" left="163" width="397" height="14" font="2">ing your tools is critical; spend the time and learn how to become</text>
+<text top="283" left="163" width="167" height="14" font="2">an expert debugger in the U</text>
+<text top="285" left="331" width="21" height="11" font="3">NIX</text>
+<text top="283" left="356" width="119" height="14" font="2">and C environment.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+</pdf2xml>

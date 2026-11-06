@@ -1,0 +1,1946 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="DLHTFM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="DLHTFM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="KBYPOS+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="AYAVJR+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="16" family="KBYPOS+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="13" family="BYZPAJ+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="6" size="7" family="KBYPOS+URWPalladioL-Roma" color="#000000"/>
+<text top="193" left="523" width="34" height="23" font="0">28</text>
+<text top="262" left="463" width="56" height="16" font="1">Locks</text>
+<text top="305" left="105" width="414" height="14" font="2">From the introduction to concurrency, we saw one of the fundamental</text>
+<text top="320" left="87" width="432" height="14" font="2">problems in concurrent programming: we would like to execute a series</text>
+<text top="335" left="87" width="432" height="14" font="2">of instructions atomically, but due to the presence of interrupts on a single</text>
+<text top="350" left="87" width="432" height="14" font="2">processor (or multiple threads executing on multiple processors concur-</text>
+<text top="365" left="87" width="432" height="14" font="2">rently), we couldn’t. In this chapter, we thus attack this problem directly,</text>
+<text top="380" left="87" width="309" height="14" font="2">with the introduction of something referred to as a</text>
+<text top="380" left="401" width="26" height="13" font="3"><b>lock</b></text>
+<text top="380" left="427" width="92" height="14" font="2">. Programmers</text>
+<text top="395" left="87" width="432" height="14" font="2">annotate source code with locks, putting them around critical sections,</text>
+<text top="410" left="87" width="432" height="14" font="2">and thus ensure that any such critical section executes as if it were a sin-</text>
+<text top="425" left="87" width="133" height="14" font="2">gle atomic instruction.</text>
+<text top="462" left="55" width="190" height="17" font="4">28.1 Locks: The Basic Idea</text>
+<text top="492" left="105" width="414" height="14" font="2">As an example, assume our critical section looks like this, the canonical</text>
+<text top="506" left="87" width="165" height="14" font="2">update of a shared variable:</text>
+<text top="522" left="87" width="178" height="11" font="5">balance = balance + 1;</text>
+<text top="548" left="105" width="414" height="14" font="2">Of course, other critical sections are possible, such as adding an ele-</text>
+<text top="563" left="87" width="432" height="14" font="2">ment to a linked list or other more complex updates to shared structures,</text>
+<text top="578" left="87" width="432" height="14" font="2">but we’ll just keep to this simple example for now. To use a lock, we add</text>
+<text top="593" left="87" width="273" height="14" font="2">some code around the critical section like this:</text>
+<text top="624" left="65" width="4" height="8" font="6">1</text>
+<text top="621" left="87" width="428" height="11" font="5">lock_t mutex; // some globally-allocated lock ’mutex’</text>
+<text top="639" left="65" width="4" height="8" font="6">2</text>
+<text top="636" left="87" width="24" height="11" font="5">...</text>
+<text top="654" left="65" width="4" height="8" font="6">3</text>
+<text top="651" left="87" width="105" height="11" font="5">lock(&amp;mutex);</text>
+<text top="669" left="65" width="4" height="8" font="6">4</text>
+<text top="666" left="87" width="178" height="11" font="5">balance = balance + 1;</text>
+<text top="684" left="65" width="4" height="8" font="6">5</text>
+<text top="680" left="87" width="121" height="11" font="5">unlock(&amp;mutex);</text>
+<text top="707" left="105" width="384" height="14" font="2">A lock is just a variable, and thus to use one, you must declare a</text>
+<text top="707" left="493" width="26" height="13" font="3"><b>lock</b></text>
+<text top="722" left="87" width="50" height="13" font="3"><b>variable</b></text>
+<text top="721" left="141" width="130" height="14" font="2">of some kind (such as</text>
+<text top="722" left="275" width="40" height="11" font="5">mutex</text>
+<text top="721" left="319" width="200" height="14" font="2">above). This lock variable (or just</text>
+<text top="736" left="87" width="432" height="14" font="2">“lock” for short) holds the state of the lock at any instant in time. It is ei-</text>
+<text top="751" left="87" width="24" height="14" font="2">ther</text>
+<text top="751" left="114" width="56" height="13" font="3"><b>available</b></text>
+<text top="751" left="173" width="17" height="14" font="2">(or</text>
+<text top="751" left="194" width="58" height="13" font="3"><b>unlocked</b></text>
+<text top="751" left="254" width="13" height="14" font="2">or</text>
+<text top="751" left="270" width="24" height="13" font="3"><b>free</b></text>
+<text top="751" left="294" width="225" height="14" font="2">) and thus no thread holds the lock, or</text>
+<text top="766" left="87" width="54" height="13" font="3"><b>acquired</b></text>
+<text top="766" left="145" width="17" height="14" font="2">(or</text>
+<text top="766" left="165" width="41" height="13" font="3"><b>locked</b></text>
+<text top="766" left="210" width="13" height="14" font="2">or</text>
+<text top="766" left="227" width="28" height="13" font="3"><b>held</b></text>
+<text top="766" left="254" width="265" height="14" font="2">), and thus exactly one thread holds the lock</text>
+<text top="781" left="87" width="432" height="14" font="2">and presumably is in a critical section. We could store other information</text>
+<text top="796" left="87" width="432" height="14" font="2">in the data type as well, such as which thread holds the lock, or a queue</text>
+<text top="811" left="87" width="432" height="14" font="2">for ordering lock acquisition, but information like that is hidden from the</text>
+<text top="826" left="87" width="94" height="14" font="2">user of the lock.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="11" family="KBYPOS+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="13" family="PUSEAC+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="9" size="12" family="KBYPOS+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="KBYPOS+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="139" left="147" width="119" height="14" font="2">The semantics of the</text>
+<text top="139" left="269" width="48" height="11" font="5">lock()</text>
+<text top="139" left="320" width="23" height="14" font="2">and</text>
+<text top="139" left="345" width="65" height="11" font="5">unlock()</text>
+<text top="139" left="413" width="148" height="14" font="2">routines are simple. Call-</text>
+<text top="154" left="129" width="88" height="14" font="2">ing the routine</text>
+<text top="154" left="221" width="48" height="11" font="5">lock()</text>
+<text top="154" left="273" width="288" height="14" font="2">tries to acquire the lock; if no other thread holds</text>
+<text top="169" left="129" width="432" height="14" font="2">the lock (i.e., it is free), the thread will acquire the lock and enter the crit-</text>
+<text top="183" left="129" width="304" height="14" font="2">ical section; this thread is sometimes said to be the</text>
+<text top="184" left="437" width="39" height="13" font="3"><b>owner</b></text>
+<text top="183" left="479" width="81" height="14" font="2">of the lock. If</text>
+<text top="198" left="129" width="150" height="14" font="2">another thread then calls</text>
+<text top="199" left="283" width="48" height="11" font="5">lock()</text>
+<text top="198" left="336" width="168" height="14" font="2">on that same lock variable (</text>
+<text top="199" left="504" width="40" height="11" font="5">mutex</text>
+<text top="198" left="549" width="12" height="14" font="2">in</text>
+<text top="213" left="129" width="432" height="14" font="2">this example), it will not return while the lock is held by another thread;</text>
+<text top="228" left="129" width="432" height="14" font="2">in this way, other threads are prevented from entering the critical section</text>
+<text top="243" left="129" width="302" height="14" font="2">while the ﬁrst thread that holds the lock is in there.</text>
+<text top="258" left="147" width="191" height="14" font="2">Once the owner of the lock calls</text>
+<text top="259" left="342" width="65" height="11" font="5">unlock()</text>
+<text top="258" left="406" width="155" height="14" font="2">, the lock is now available</text>
+<text top="273" left="129" width="432" height="14" font="2">(free) again. If no other threads are waiting for the lock (i.e., no other</text>
+<text top="288" left="129" width="104" height="14" font="2">thread has called</text>
+<text top="289" left="238" width="48" height="11" font="5">lock()</text>
+<text top="288" left="291" width="270" height="14" font="2">and is stuck therein), the state of the lock is</text>
+<text top="303" left="129" width="371" height="14" font="2">simply changed to free. If there are waiting threads (stuck in</text>
+<text top="304" left="505" width="48" height="11" font="5">lock()</text>
+<text top="303" left="553" width="8" height="14" font="2">),</text>
+<text top="318" left="129" width="432" height="14" font="2">one of them will (eventually) notice (or be informed of) this change of the</text>
+<text top="333" left="129" width="343" height="14" font="2">lock’s state, acquire the lock, and enter the critical section.</text>
+<text top="348" left="147" width="414" height="14" font="2">Locks provide some minimal amount of control over scheduling to</text>
+<text top="363" left="129" width="432" height="14" font="2">programmers. In general, we view threads as entities created by the pro-</text>
+<text top="378" left="129" width="432" height="14" font="2">grammer but scheduled by the OS, in any fashion that the OS chooses.</text>
+<text top="393" left="129" width="432" height="14" font="2">Locks yield some of that control back to the programmer; by putting</text>
+<text top="408" left="129" width="432" height="14" font="2">a lock around a section of code, the programmer can guarantee that no</text>
+<text top="423" left="129" width="432" height="14" font="2">more than a single thread can ever be active within that code. Thus locks</text>
+<text top="438" left="129" width="432" height="14" font="2">help transform the chaos that is traditional OS scheduling into a more</text>
+<text top="453" left="129" width="110" height="14" font="2">controlled activity.</text>
+<text top="490" left="97" width="137" height="17" font="4">28.2 Pthread Locks</text>
+<text top="520" left="147" width="299" height="14" font="2">The name that the POSIX library uses for a lock is a</text>
+<text top="520" left="449" width="38" height="13" font="3"><b>mutex</b></text>
+<text top="520" left="487" width="74" height="14" font="2">, as it is used</text>
+<text top="535" left="129" width="62" height="14" font="2">to provide</text>
+<text top="535" left="195" width="106" height="13" font="3"><b>mutual exclusion</b></text>
+<text top="535" left="304" width="257" height="14" font="2">between threads, i.e., if one thread is in the</text>
+<text top="550" left="129" width="432" height="14" font="2">critical section, it excludes the others from entering until it has completed</text>
+<text top="565" left="129" width="432" height="14" font="2">the section. Thus, when you see the following POSIX threads code, you</text>
+<text top="580" left="129" width="432" height="14" font="2">should understand that it is doing the same thing as above (we again use</text>
+<text top="595" left="129" width="345" height="14" font="2">our wrappers that check for errors upon lock and unlock):</text>
+<text top="629" left="107" width="4" height="8" font="6">1</text>
+<text top="625" left="129" width="395" height="11" font="5">pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;</text>
+<text top="644" left="107" width="4" height="8" font="6">2</text>
+<text top="659" left="107" width="4" height="8" font="6">3</text>
+<text top="655" left="129" width="444" height="11" font="5">Pthread_mutex_lock(&amp;lock); // wrapper; exits on failure</text>
+<text top="674" left="107" width="4" height="8" font="6">4</text>
+<text top="670" left="129" width="178" height="11" font="5">balance = balance + 1;</text>
+<text top="689" left="107" width="4" height="8" font="6">5</text>
+<text top="685" left="129" width="226" height="11" font="5">Pthread_mutex_unlock(&amp;lock);</text>
+<text top="714" left="147" width="414" height="14" font="2">You might also notice here that the POSIX version passes a variable</text>
+<text top="729" left="129" width="234" height="14" font="2">to lock and unlock, as we may be using</text>
+<text top="729" left="367" width="45" height="14" font="8"><i>different</i></text>
+<text top="729" left="416" width="145" height="14" font="2">locks to protect different</text>
+<text top="744" left="129" width="432" height="14" font="2">variables. Doing so can increase concurrency: instead of one big lock that</text>
+<text top="759" left="129" width="292" height="14" font="2">is used any time any critical section is accessed (a</text>
+<text top="759" left="424" width="90" height="13" font="3"><b>coarse-grained</b></text>
+<text top="759" left="517" width="44" height="14" font="2">locking</text>
+<text top="773" left="129" width="432" height="14" font="2">strategy), one will often protect different data and data structures with</text>
+<text top="788" left="129" width="432" height="14" font="2">different locks, thus allowing more threads to be in locked code at once</text>
+<text top="803" left="129" width="45" height="14" font="2">(a more</text>
+<text top="803" left="178" width="75" height="13" font="3"><b>ﬁne-grained</b></text>
+<text top="803" left="256" width="64" height="14" font="2">approach).</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="137" left="55" width="153" height="17" font="4">28.3 Building A Lock</text>
+<text top="166" left="105" width="414" height="14" font="2">By now, you should have some understanding of how a lock works,</text>
+<text top="181" left="87" width="432" height="14" font="2">from the perspective of a programmer. But how should we build a lock?</text>
+<text top="196" left="87" width="432" height="14" font="2">What hardware support is needed? What OS support? It is this set of</text>
+<text top="211" left="87" width="280" height="14" font="2">questions we address in the rest of this chapter.</text>
+<text top="248" left="193" width="8" height="14" font="2">T</text>
+<text top="250" left="202" width="16" height="11" font="7">HE</text>
+<text top="248" left="222" width="10" height="14" font="2">C</text>
+<text top="250" left="233" width="24" height="11" font="7">RUX</text>
+<text top="248" left="257" width="19" height="14" font="2">: H</text>
+<text top="250" left="277" width="20" height="11" font="7">OW</text>
+<text top="248" left="301" width="8" height="14" font="2">T</text>
+<text top="250" left="310" width="8" height="11" font="7">O</text>
+<text top="248" left="322" width="8" height="14" font="2">B</text>
+<text top="250" left="331" width="29" height="11" font="7">UILD</text>
+<text top="248" left="364" width="23" height="14" font="2">A L</text>
+<text top="250" left="388" width="25" height="11" font="7">OCK</text>
+<text top="263" left="105" width="414" height="14" font="2">How can we build an efﬁcient lock? Efﬁcient locks provide mutual</text>
+<text top="278" left="87" width="432" height="14" font="2">exclusion at low cost, and also might attain a few other properties we</text>
+<text top="293" left="87" width="413" height="14" font="2">discuss below. What hardware support is needed? What OS support?</text>
+<text top="333" left="105" width="414" height="14" font="2">To build a working lock, we will need some help from our old friend,</text>
+<text top="348" left="87" width="432" height="14" font="2">the hardware, as well as our good pal, the OS. Over the years, a num-</text>
+<text top="363" left="87" width="432" height="14" font="2">ber of different hardware primitives have been added to the instruction</text>
+<text top="378" left="87" width="432" height="14" font="2">sets of various computer architectures; while we won’t study how these</text>
+<text top="393" left="87" width="432" height="14" font="2">instructions are implemented (that, after all, is the topic of a computer</text>
+<text top="408" left="87" width="432" height="14" font="2">architecture class), we will study how to use them in order to build a mu-</text>
+<text top="423" left="87" width="432" height="14" font="2">tual exclusion primitive like a lock. We will also study how the OS gets</text>
+<text top="438" left="87" width="432" height="14" font="2">involved to complete the picture and enable us to build a sophisticated</text>
+<text top="453" left="87" width="89" height="14" font="2">locking library.</text>
+<text top="490" left="55" width="159" height="17" font="4">28.4 Evaluating Locks</text>
+<text top="519" left="105" width="414" height="14" font="2">Before building any locks, we should ﬁrst understand what our goals</text>
+<text top="534" left="87" width="432" height="14" font="2">are, and thus we ask how to evaluate the efﬁcacy of a particular lock</text>
+<text top="549" left="87" width="432" height="14" font="2">implementation. To evaluate whether a lock works (and works well), we</text>
+<text top="564" left="87" width="432" height="14" font="2">should establish some basic criteria. The ﬁrst is whether the lock does its</text>
+<text top="579" left="87" width="179" height="14" font="2">basic task, which is to provide</text>
+<text top="579" left="270" width="106" height="13" font="3"><b>mutual exclusion</b></text>
+<text top="579" left="376" width="143" height="14" font="2">. Basically, does the lock</text>
+<text top="594" left="87" width="394" height="14" font="2">work, preventing multiple threads from entering a critical section?</text>
+<text top="609" left="105" width="82" height="14" font="2">The second is</text>
+<text top="609" left="191" width="49" height="13" font="3"><b>fairness</b></text>
+<text top="609" left="239" width="280" height="14" font="2">. Does each thread contending for the lock get</text>
+<text top="624" left="87" width="432" height="14" font="2">a fair shot at acquiring it once it is free? Another way to look at this is</text>
+<text top="639" left="87" width="432" height="14" font="2">by examining the more extreme case: does any thread contending for the</text>
+<text top="654" left="87" width="25" height="14" font="2">lock</text>
+<text top="654" left="115" width="37" height="13" font="3"><b>starve</b></text>
+<text top="654" left="155" width="235" height="14" font="2">while doing so, thus never obtaining it?</text>
+<text top="669" left="105" width="117" height="14" font="2">The ﬁnal criterion is</text>
+<text top="669" left="224" width="78" height="13" font="3"><b>performance</b></text>
+<text top="669" left="302" width="227" height="14" font="2">, speciﬁcally the time overheads added</text>
+<text top="684" left="87" width="432" height="14" font="2">by using the lock. There are a few different cases that are worth con-</text>
+<text top="699" left="87" width="432" height="14" font="2">sidering here. One is the case of no contention; when a single thread</text>
+<text top="714" left="87" width="432" height="14" font="2">is running and grabs and releases the lock, what is the overhead of do-</text>
+<text top="729" left="87" width="432" height="14" font="2">ing so? Another is the case where multiple threads are contending for</text>
+<text top="744" left="87" width="432" height="14" font="2">the lock on a single CPU; in this case, are there performance concerns? Fi-</text>
+<text top="759" left="87" width="432" height="14" font="2">nally, how does the lock perform when there are multiple CPUs involved,</text>
+<text top="773" left="87" width="432" height="14" font="2">and threads on each contending for the lock? By comparing these differ-</text>
+<text top="788" left="87" width="432" height="14" font="2">ent scenarios, we can better understand the performance impact of using</text>
+<text top="803" left="87" width="282" height="14" font="2">various locking techniques, as described below.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="137" left="97" width="194" height="17" font="4">28.5 Controlling Interrupts</text>
+<text top="166" left="147" width="414" height="14" font="2">One of the earliest solutions used to provide mutual exclusion was</text>
+<text top="181" left="129" width="432" height="14" font="2">to disable interrupts for critical sections; this solution was invented for</text>
+<text top="196" left="129" width="334" height="14" font="2">single-processor systems. The code would look like this:</text>
+<text top="223" left="107" width="4" height="8" font="6">1</text>
+<text top="219" left="129" width="105" height="11" font="5">void lock() {</text>
+<text top="238" left="107" width="4" height="8" font="6">2</text>
+<text top="234" left="161" width="161" height="11" font="5">DisableInterrupts();</text>
+<text top="253" left="107" width="4" height="8" font="6">3</text>
+<text top="249" left="129" width="8" height="11" font="5">}</text>
+<text top="268" left="107" width="4" height="8" font="6">4</text>
+<text top="264" left="129" width="121" height="11" font="5">void unlock() {</text>
+<text top="283" left="107" width="4" height="8" font="6">5</text>
+<text top="279" left="161" width="153" height="11" font="5">EnableInterrupts();</text>
+<text top="298" left="107" width="4" height="8" font="6">6</text>
+<text top="294" left="129" width="8" height="11" font="5">}</text>
+<text top="310" left="147" width="414" height="14" font="2">Assume we are running on such a single-processor system. By turn-</text>
+<text top="325" left="129" width="432" height="14" font="2">ing off interrupts (using some kind of special hardware instruction) be-</text>
+<text top="340" left="129" width="432" height="14" font="2">fore entering a critical section, we ensure that the code inside the critical</text>
+<text top="355" left="129" width="68" height="14" font="2">section will</text>
+<text top="355" left="200" width="18" height="14" font="8"><i>not</i></text>
+<text top="355" left="222" width="339" height="14" font="2">be interrupted, and thus will execute as if it were atomic.</text>
+<text top="370" left="129" width="432" height="14" font="2">When we are ﬁnished, we re-enable interrupts (again, via a hardware in-</text>
+<text top="385" left="129" width="302" height="14" font="2">struction) and thus the program proceeds as usual.</text>
+<text top="400" left="147" width="414" height="14" font="2">The main positive of this approach is its simplicity. You certainly don’t</text>
+<text top="415" left="129" width="432" height="14" font="2">have to scratch your head too hard to ﬁgure out why this works. Without</text>
+<text top="430" left="129" width="432" height="14" font="2">interruption, a thread can be sure that the code it executes will execute</text>
+<text top="445" left="129" width="270" height="14" font="2">and that no other thread will interfere with it.</text>
+<text top="460" left="147" width="414" height="14" font="2">The negatives, unfortunately, are many. First, this approach requires</text>
+<text top="475" left="129" width="259" height="14" font="2">us to allow any calling thread to perform a</text>
+<text top="475" left="392" width="54" height="14" font="8"><i>privileged</i></text>
+<text top="475" left="450" width="111" height="14" font="2">operation (turning</text>
+<text top="490" left="129" width="191" height="14" font="2">interrupts on and off), and thus</text>
+<text top="490" left="325" width="27" height="14" font="8"><i>trust</i></text>
+<text top="490" left="356" width="205" height="14" font="2">that this facility is not abused. As</text>
+<text top="505" left="129" width="432" height="14" font="2">you already know, any time we are required to trust an arbitrary pro-</text>
+<text top="520" left="129" width="432" height="14" font="2">gram, we are probably in trouble. Here, the trouble manifests in numer-</text>
+<text top="535" left="129" width="240" height="14" font="2">ous ways: a greedy program could call</text>
+<text top="535" left="373" width="48" height="11" font="5">lock()</text>
+<text top="535" left="426" width="134" height="14" font="2">at the beginning of its</text>
+<text top="550" left="129" width="432" height="14" font="2">execution and thus monopolize the processor; worse, an errant or mali-</text>
+<text top="564" left="129" width="152" height="14" font="2">cious program could call</text>
+<text top="565" left="285" width="48" height="11" font="5">lock()</text>
+<text top="564" left="339" width="222" height="14" font="2">and go into an endless loop. In this</text>
+<text top="579" left="129" width="432" height="14" font="2">latter case, the OS never regains control of the system, and there is only</text>
+<text top="594" left="129" width="432" height="14" font="2">one recourse: restart the system. Using interrupt disabling as a general-</text>
+<text top="609" left="129" width="432" height="14" font="2">purpose synchronization solution requires too much trust in applications.</text>
+<text top="624" left="147" width="414" height="14" font="2">Second, the approach does not work on multiprocessors. If multiple</text>
+<text top="639" left="129" width="432" height="14" font="2">threads are running on different CPUs, and each try to enter the same</text>
+<text top="654" left="129" width="432" height="14" font="2">critical section, it does not matter whether interrupts are disabled; threads</text>
+<text top="669" left="129" width="432" height="14" font="2">will be able to run on other processors, and thus could enter the critical</text>
+<text top="684" left="129" width="432" height="14" font="2">section. As multiprocessors are now commonplace, our general solution</text>
+<text top="699" left="129" width="185" height="14" font="2">will have to do better than this.</text>
+<text top="714" left="147" width="414" height="14" font="2">Third, turning off interrupts for extended periods of time can lead to</text>
+<text top="729" left="129" width="432" height="14" font="2">interrupts becoming lost, which can lead to serious systems problems.</text>
+<text top="744" left="129" width="432" height="14" font="2">Imagine, for example, if the CPU missed the fact that a disk device has</text>
+<text top="759" left="129" width="432" height="14" font="2">ﬁnished a read request. How will the OS know to wake the process wait-</text>
+<text top="774" left="129" width="103" height="14" font="2">ing for said read?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="138" left="65" width="4" height="8" font="6">1</text>
+<text top="135" left="87" width="363" height="11" font="5">typedef struct __lock_t { int flag; } lock_t;</text>
+<text top="153" left="65" width="4" height="8" font="6">2</text>
+<text top="168" left="65" width="4" height="8" font="6">3</text>
+<text top="165" left="87" width="210" height="14" font="5">void init(lock_t *mutex) {</text>
+<text top="183" left="65" width="4" height="8" font="6">4</text>
+<text top="180" left="119" width="291" height="11" font="5">// 0 -&gt; lock is available, 1 -&gt; held</text>
+<text top="198" left="65" width="4" height="8" font="6">5</text>
+<text top="195" left="119" width="129" height="11" font="5">mutex-&gt;flag = 0;</text>
+<text top="213" left="65" width="4" height="8" font="6">6</text>
+<text top="210" left="87" width="8" height="11" font="5">}</text>
+<text top="228" left="65" width="4" height="8" font="6">7</text>
+<text top="243" left="65" width="4" height="8" font="6">8</text>
+<text top="240" left="87" width="210" height="14" font="5">void lock(lock_t *mutex) {</text>
+<text top="258" left="65" width="4" height="8" font="6">9</text>
+<text top="254" left="119" width="194" height="11" font="5">while (mutex-&gt;flag == 1)</text>
+<text top="254" left="329" width="129" height="11" font="5">// TEST the flag</text>
+<text top="273" left="62" width="7" height="8" font="6">10</text>
+<text top="269" left="152" width="218" height="11" font="5">; // spin-wait (do nothing)</text>
+<text top="288" left="62" width="7" height="8" font="6">11</text>
+<text top="284" left="119" width="129" height="11" font="5">mutex-&gt;flag = 1;</text>
+<text top="284" left="329" width="113" height="11" font="5">// now SET it!</text>
+<text top="303" left="62" width="7" height="8" font="6">12</text>
+<text top="299" left="87" width="8" height="11" font="5">}</text>
+<text top="318" left="62" width="7" height="8" font="6">13</text>
+<text top="333" left="62" width="7" height="8" font="6">14</text>
+<text top="329" left="87" width="226" height="14" font="5">void unlock(lock_t *mutex) {</text>
+<text top="348" left="62" width="7" height="8" font="6">15</text>
+<text top="344" left="119" width="129" height="11" font="5">mutex-&gt;flag = 0;</text>
+<text top="363" left="62" width="7" height="8" font="6">16</text>
+<text top="359" left="87" width="8" height="11" font="5">}</text>
+<text top="372" left="178" width="69" height="14" font="2">Figure 28.1:</text>
+<text top="372" left="251" width="177" height="13" font="3"><b>First Attempt: A Simple Flag</b></text>
+<text top="392" left="105" width="414" height="14" font="2">For these reasons, turning off interrupts is only used in limited con-</text>
+<text top="407" left="87" width="432" height="14" font="2">texts as a mutual-exclusion primitive. For example, in some cases an</text>
+<text top="422" left="87" width="432" height="14" font="2">operating system itself will use interrupt masking to guarantee atom-</text>
+<text top="437" left="87" width="432" height="14" font="2">icity when accessing its own data structures, or at least to prevent cer-</text>
+<text top="452" left="87" width="432" height="14" font="2">tain messy interrupt handling situations from arising. This usage makes</text>
+<text top="467" left="87" width="432" height="14" font="2">sense, as the trust issue disappears inside the OS, which always trusts</text>
+<text top="482" left="87" width="281" height="14" font="2">itself to perform privileged operations anyhow.</text>
+<text top="521" left="55" width="346" height="17" font="4">28.6 A Failed Attempt: Just Using Loads/Stores</text>
+<text top="552" left="105" width="414" height="14" font="2">To move beyond interrupt-based techniques, we will have to rely on</text>
+<text top="567" left="87" width="432" height="14" font="2">CPU hardware and the instructions it provides us to build a proper lock.</text>
+<text top="582" left="87" width="432" height="14" font="2">Let’s ﬁrst try to build a simple lock by using a single ﬂag variable. In this</text>
+<text top="597" left="87" width="432" height="14" font="2">failed attempt, we’ll see some of the basic ideas needed to build a lock,</text>
+<text top="612" left="87" width="432" height="14" font="2">and (hopefully) see why just using a single variable and accessing it via</text>
+<text top="627" left="87" width="229" height="14" font="2">normal loads and stores is insufﬁcient.</text>
+<text top="643" left="105" width="414" height="14" font="2">In this ﬁrst attempt (Figure 28.1), the idea is quite simple: use a simple</text>
+<text top="658" left="87" width="56" height="14" font="2">variable (</text>
+<text top="659" left="143" width="32" height="11" font="5">flag</text>
+<text top="658" left="175" width="344" height="14" font="2">) to indicate whether some thread has possession of a lock.</text>
+<text top="673" left="87" width="333" height="14" font="2">The ﬁrst thread that enters the critical section will call</text>
+<text top="674" left="425" width="48" height="11" font="5">lock()</text>
+<text top="673" left="473" width="46" height="14" font="2">, which</text>
+<text top="688" left="87" width="28" height="13" font="3"><b>tests</b></text>
+<text top="688" left="119" width="373" height="14" font="2">whether the ﬂag is equal to 1 (in this case, it is not), and then</text>
+<text top="688" left="496" width="23" height="13" font="3"><b>sets</b></text>
+<text top="703" left="87" width="252" height="14" font="2">the ﬂag to 1 to indicate that the thread now</text>
+<text top="703" left="342" width="34" height="13" font="3"><b>holds</b></text>
+<text top="703" left="379" width="140" height="14" font="2">the lock. When ﬁnished</text>
+<text top="718" left="87" width="243" height="14" font="2">with the critical section, the thread calls</text>
+<text top="719" left="335" width="65" height="11" font="5">unlock()</text>
+<text top="718" left="404" width="115" height="14" font="2">and clears the ﬂag,</text>
+<text top="733" left="87" width="273" height="14" font="2">thus indicating that the lock is no longer held.</text>
+<text top="750" left="105" width="197" height="14" font="2">If another thread happens to call</text>
+<text top="750" left="306" width="48" height="11" font="5">lock()</text>
+<text top="750" left="358" width="161" height="14" font="2">while that ﬁrst thread is in</text>
+<text top="765" left="87" width="204" height="14" font="2">the critical section, it will simply</text>
+<text top="765" left="297" width="58" height="13" font="3"><b>spin-wait</b></text>
+<text top="765" left="360" width="158" height="14" font="2">in the while loop for that</text>
+<text top="780" left="87" width="80" height="14" font="2">thread to call</text>
+<text top="780" left="171" width="65" height="11" font="5">unlock()</text>
+<text top="780" left="240" width="278" height="14" font="2">and clear the ﬂag. Once that ﬁrst thread does</text>
+<text top="795" left="87" width="432" height="14" font="2">so, the waiting thread will fall out of the while loop, set the ﬂag to 1 for</text>
+<text top="809" left="87" width="250" height="14" font="2">itself, and proceed into the critical section.</text>
+<text top="826" left="105" width="414" height="14" font="2">Unfortunately, the code has two problems: one of correctness, and an-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="9" family="KBYPOS+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="12" size="10" family="BYZPAJ+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="136" left="160" width="54" height="13" font="3"><b>Thread 1</b></text>
+<text top="136" left="354" width="54" height="13" font="3"><b>Thread 2</b></text>
+<text top="151" left="160" width="21" height="14" font="2">call</text>
+<text top="152" left="184" width="48" height="11" font="5">lock()</text>
+<text top="166" left="160" width="98" height="14" font="2">while (ﬂag == 1)</text>
+<text top="181" left="160" width="176" height="13" font="3"><b>interrupt: switch to Thread 2</b></text>
+<text top="196" left="354" width="21" height="14" font="2">call</text>
+<text top="197" left="378" width="48" height="11" font="5">lock()</text>
+<text top="211" left="354" width="98" height="14" font="2">while (ﬂag == 1)</text>
+<text top="226" left="354" width="47" height="14" font="2">ﬂag = 1;</text>
+<text top="241" left="354" width="176" height="13" font="3"><b>interrupt: switch to Thread 1</b></text>
+<text top="256" left="160" width="173" height="14" font="2">ﬂag = 1; // set ﬂag to 1 (too!)</text>
+<text top="276" left="223" width="69" height="14" font="2">Figure 28.2:</text>
+<text top="276" left="296" width="170" height="13" font="3"><b>Trace: No Mutual Exclusion</b></text>
+<text top="301" left="129" width="432" height="14" font="2">other of performance. The correctness problem is simple to see once you</text>
+<text top="316" left="129" width="432" height="14" font="2">get used to thinking about concurrent programming. Imagine the code</text>
+<text top="331" left="129" width="207" height="14" font="2">interleaving in Figure 28.2; assume</text>
+<text top="332" left="339" width="48" height="11" font="5">flag=0</text>
+<text top="331" left="391" width="52" height="14" font="2">to begin.</text>
+<text top="346" left="147" width="414" height="14" font="2">As you can see from this interleaving, with timely (untimely?) inter-</text>
+<text top="361" left="129" width="257" height="14" font="2">rupts, we can easily produce a case where</text>
+<text top="361" left="390" width="23" height="14" font="8"><i>both</i></text>
+<text top="361" left="418" width="143" height="14" font="2">threads set the ﬂag to 1</text>
+<text top="376" left="129" width="432" height="14" font="2">and both threads are thus able to enter the critical section. This behavior</text>
+<text top="391" left="129" width="432" height="14" font="2">is what professionals call “bad” – we have obviously failed to provide the</text>
+<text top="405" left="129" width="315" height="14" font="2">most basic requirement: providing mutual exclusion.</text>
+<text top="420" left="147" width="414" height="14" font="2">The performance problem, which we will address more later on, is the</text>
+<text top="435" left="129" width="432" height="14" font="2">fact that the way a thread waits to acquire a lock that is already held:</text>
+<text top="450" left="129" width="347" height="14" font="2">it endlessly checks the value of ﬂag, a technique known as</text>
+<text top="450" left="479" width="78" height="13" font="3"><b>spin-waiting</b></text>
+<text top="450" left="557" width="3" height="14" font="2">.</text>
+<text top="465" left="129" width="432" height="14" font="2">Spin-waiting wastes time waiting for another thread to release a lock. The</text>
+<text top="480" left="129" width="432" height="14" font="2">waste is exceptionally high on a uniprocessor, where the thread that the</text>
+<text top="495" left="129" width="432" height="14" font="2">waiter is waiting for cannot even run (at least, until a context switch oc-</text>
+<text top="510" left="129" width="432" height="14" font="2">curs)! Thus, as we move forward and develop more sophisticated solu-</text>
+<text top="525" left="129" width="378" height="14" font="2">tions, we should also consider ways to avoid this kind of waste.</text>
+<text top="552" left="97" width="382" height="17" font="4">28.7 Building Working Spin Locks with Test-And-Set</text>
+<text top="575" left="147" width="414" height="14" font="2">Because disabling interrupts does not work on multiple processors,</text>
+<text top="590" left="129" width="432" height="14" font="2">and because simple approaches using loads and stores (as shown above)</text>
+<text top="604" left="129" width="432" height="14" font="2">don’t work, system designers started to invent hardware support for lock-</text>
+<text top="619" left="129" width="432" height="14" font="2">ing. The earliest multiprocessor systems, such as the Burroughs B5000 in</text>
+<text top="634" left="129" width="432" height="14" font="2">the early 1960’s [M82], had such support; today all systems provide this</text>
+<text top="649" left="129" width="272" height="14" font="2">type of support, even for single CPU systems.</text>
+<text top="664" left="147" width="414" height="14" font="2">The simplest bit of hardware support to understand is known as a</text>
+<text top="682" left="129" width="71" height="13" font="3"><b>test-and-set</b></text>
+<text top="681" left="204" width="17" height="14" font="2">(or</text>
+<text top="682" left="225" width="102" height="13" font="3"><b>atomic exchange</b></text>
+<text top="679" left="327" width="4" height="9" font="11">1</text>
+<text top="681" left="332" width="229" height="14" font="2">) instruction. We deﬁne what the test-</text>
+<text top="696" left="129" width="343" height="14" font="2">and-set instruction does via the following C code snippet:</text>
+<text top="721" left="107" width="4" height="8" font="6">1</text>
+<text top="718" left="129" width="315" height="14" font="5">int TestAndSet(int *old_ptr, int new) {</text>
+<text top="736" left="107" width="4" height="8" font="6">2</text>
+<text top="733" left="161" width="395" height="14" font="5">int old = *old_ptr; // fetch old value at old_ptr</text>
+<text top="751" left="107" width="4" height="8" font="6">3</text>
+<text top="750" left="161" width="121" height="11" font="5">*old_ptr = new;</text>
+<text top="748" left="323" width="218" height="11" font="5">// store ’new’ into old_ptr</text>
+<text top="766" left="107" width="4" height="8" font="6">4</text>
+<text top="763" left="161" width="89" height="11" font="5">return old;</text>
+<text top="763" left="323" width="186" height="11" font="5">// return the old value</text>
+<text top="781" left="107" width="4" height="8" font="6">5</text>
+<text top="778" left="129" width="8" height="11" font="5">}</text>
+<text top="802" left="149" width="4" height="8" font="6">1</text>
+<text top="804" left="154" width="407" height="11" font="10">Each architecture that supports test-and-set calls it by a different name. On SPARC it is</text>
+<text top="816" left="129" width="222" height="11" font="10">called the load/store unsigned byte instruction (</text>
+<text top="817" left="351" width="38" height="9" font="12">ldstub</text>
+<text top="816" left="389" width="172" height="11" font="10">); on x86 it is the locked version of the</text>
+<text top="828" left="129" width="83" height="11" font="10">atomic exchange (</text>
+<text top="829" left="212" width="25" height="9" font="12">xchg</text>
+<text top="828" left="237" width="6" height="11" font="10">).</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="148" left="151" width="10" height="14" font="2">A</text>
+<text top="150" left="163" width="26" height="11" font="7">SIDE</text>
+<text top="148" left="189" width="19" height="14" font="2">: D</text>
+<text top="150" left="209" width="39" height="11" font="7">EKKER</text>
+<text top="148" left="248" width="4" height="14" font="2">’</text>
+<text top="150" left="252" width="6" height="11" font="7">S</text>
+<text top="148" left="262" width="10" height="14" font="2">A</text>
+<text top="150" left="273" width="18" height="11" font="7">ND</text>
+<text top="148" left="295" width="8" height="14" font="2">P</text>
+<text top="150" left="304" width="54" height="11" font="7">ETERSON</text>
+<text top="148" left="359" width="4" height="14" font="2">’</text>
+<text top="150" left="363" width="6" height="11" font="7">S</text>
+<text top="148" left="373" width="10" height="14" font="2">A</text>
+<text top="150" left="384" width="71" height="11" font="7">LGORITHMS</text>
+<text top="163" left="87" width="432" height="14" font="2">In the 1960’s, Dijkstra posed the concurrency problem to his friends, and</text>
+<text top="178" left="87" width="432" height="14" font="2">one of them, a mathematician named Theodorus Jozef Dekker, came up</text>
+<text top="193" left="87" width="432" height="14" font="2">with a solution [D68]. Unlike the solutions we discuss here, which use</text>
+<text top="208" left="87" width="308" height="14" font="2">special hardware instructions and even OS support,</text>
+<text top="208" left="399" width="120" height="13" font="3"><b>Dekker’s algorithm</b></text>
+<text top="223" left="87" width="432" height="14" font="2">uses just loads and stores (assuming they are atomic with respect to each</text>
+<text top="238" left="87" width="249" height="14" font="2">other, which was true on early hardware).</text>
+<text top="256" left="87" width="432" height="14" font="2">Dekker’s approach was later reﬁned by Peterson [P81]. Once again, just</text>
+<text top="271" left="87" width="432" height="14" font="2">loads and stores are used, and the idea is to ensure that two threads never</text>
+<text top="286" left="87" width="278" height="14" font="2">enter a critical section at the same time. Here is</text>
+<text top="286" left="368" width="126" height="13" font="3"><b>Peterson’s algorithm</b></text>
+<text top="286" left="497" width="22" height="14" font="2">(for</text>
+<text top="301" left="87" width="370" height="14" font="2">two threads); see if you can understand the code. What are the</text>
+<text top="302" left="461" width="32" height="11" font="5">flag</text>
+<text top="301" left="496" width="23" height="14" font="2">and</text>
+<text top="317" left="87" width="32" height="11" font="5">turn</text>
+<text top="316" left="123" width="112" height="14" font="2">variables used for?</text>
+<text top="344" left="87" width="97" height="11" font="5">int flag[2];</text>
+<text top="359" left="87" width="73" height="11" font="5">int turn;</text>
+<text top="389" left="87" width="105" height="11" font="5">void init() {</text>
+<text top="404" left="119" width="395" height="11" font="5">// indicate you intend to hold the lock w/ ’flag’</text>
+<text top="419" left="119" width="178" height="11" font="5">flag[0] = flag[1] = 0;</text>
+<text top="434" left="119" width="291" height="11" font="5">// whose turn is it? (thread 0 or 1)</text>
+<text top="449" left="119" width="73" height="11" font="5">turn = 0;</text>
+<text top="464" left="87" width="8" height="11" font="5">}</text>
+<text top="479" left="87" width="105" height="11" font="5">void lock() {</text>
+<text top="494" left="119" width="291" height="11" font="5">// ’self’ is the thread ID of caller</text>
+<text top="509" left="119" width="121" height="11" font="5">flag[self] = 1;</text>
+<text top="524" left="119" width="242" height="11" font="5">// make it other thread’s turn</text>
+<text top="539" left="119" width="129" height="11" font="5">turn = 1 - self;</text>
+<text top="554" left="119" width="395" height="11" font="5">while ((flag[1-self] == 1) &amp;&amp; (turn == 1 - self))</text>
+<text top="569" left="152" width="315" height="11" font="5">; // spin-wait while it’s not your turn</text>
+<text top="584" left="87" width="8" height="11" font="5">}</text>
+<text top="599" left="87" width="121" height="11" font="5">void unlock() {</text>
+<text top="613" left="119" width="210" height="11" font="5">// simply undo your intent</text>
+<text top="628" left="119" width="121" height="11" font="5">flag[self] = 0;</text>
+<text top="643" left="87" width="8" height="11" font="5">}</text>
+<text top="670" left="87" width="432" height="14" font="2">For some reason, developing locks that work without special hardware</text>
+<text top="685" left="87" width="432" height="14" font="2">support became all the rage for a while, giving theory-types a lot of prob-</text>
+<text top="700" left="87" width="432" height="14" font="2">lems to work on. Of course, this line of work became quite useless when</text>
+<text top="715" left="87" width="432" height="14" font="2">people realized it is much easier to assume a little hardware support (and</text>
+<text top="730" left="87" width="432" height="14" font="2">indeed that support had been around from the earliest days of multipro-</text>
+<text top="745" left="87" width="432" height="14" font="2">cessing). Further, algorithms like the ones above don’t work on mod-</text>
+<text top="760" left="87" width="432" height="14" font="2">ern hardware (due to relaxed memory consistency models), thus making</text>
+<text top="775" left="87" width="432" height="14" font="2">them even less useful than they were before. Yet more research relegated</text>
+<text top="790" left="87" width="152" height="14" font="2">to the dustbin of history...</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="138" left="107" width="4" height="8" font="6">1</text>
+<text top="135" left="129" width="202" height="11" font="5">typedef struct __lock_t {</text>
+<text top="153" left="107" width="4" height="8" font="6">2</text>
+<text top="149" left="161" width="73" height="11" font="5">int flag;</text>
+<text top="168" left="107" width="4" height="8" font="6">3</text>
+<text top="164" left="129" width="73" height="11" font="5">} lock_t;</text>
+<text top="183" left="107" width="4" height="8" font="6">4</text>
+<text top="198" left="107" width="4" height="8" font="6">5</text>
+<text top="194" left="129" width="202" height="14" font="5">void init(lock_t *lock) {</text>
+<text top="213" left="107" width="4" height="8" font="6">6</text>
+<text top="209" left="161" width="323" height="11" font="5">// 0: lock is available, 1: lock is held</text>
+<text top="228" left="107" width="4" height="8" font="6">7</text>
+<text top="224" left="161" width="121" height="11" font="5">lock-&gt;flag = 0;</text>
+<text top="243" left="107" width="4" height="8" font="6">8</text>
+<text top="239" left="129" width="8" height="11" font="5">}</text>
+<text top="258" left="107" width="4" height="8" font="6">9</text>
+<text top="273" left="104" width="7" height="8" font="6">10</text>
+<text top="269" left="129" width="202" height="14" font="5">void lock(lock_t *lock) {</text>
+<text top="288" left="104" width="7" height="8" font="6">11</text>
+<text top="284" left="161" width="315" height="11" font="5">while (TestAndSet(&amp;lock-&gt;flag, 1) == 1)</text>
+<text top="302" left="104" width="7" height="8" font="6">12</text>
+<text top="299" left="193" width="218" height="11" font="5">; // spin-wait (do nothing)</text>
+<text top="317" left="104" width="7" height="8" font="6">13</text>
+<text top="314" left="129" width="8" height="11" font="5">}</text>
+<text top="332" left="104" width="7" height="8" font="6">14</text>
+<text top="347" left="104" width="7" height="8" font="6">15</text>
+<text top="344" left="129" width="218" height="14" font="5">void unlock(lock_t *lock) {</text>
+<text top="362" left="104" width="7" height="8" font="6">16</text>
+<text top="359" left="161" width="121" height="11" font="5">lock-&gt;flag = 0;</text>
+<text top="377" left="104" width="7" height="8" font="6">17</text>
+<text top="374" left="129" width="8" height="11" font="5">}</text>
+<text top="387" left="188" width="69" height="14" font="2">Figure 28.3:</text>
+<text top="387" left="261" width="241" height="13" font="3"><b>A Simple Spin Lock Using Test-and-set</b></text>
+<text top="417" left="147" width="414" height="14" font="2">What the test-and-set instruction does is as follows. It returns the old</text>
+<text top="432" left="129" width="136" height="14" font="2">value pointed to by the</text>
+<text top="433" left="267" width="57" height="11" font="5">old_ptr</text>
+<text top="432" left="324" width="237" height="14" font="2">, and simultaneously updates said value</text>
+<text top="447" left="129" width="12" height="14" font="2">to</text>
+<text top="448" left="143" width="24" height="11" font="5">new</text>
+<text top="447" left="167" width="393" height="14" font="2">. The key, of course, is that this sequence of operations is performed</text>
+<text top="462" left="129" width="64" height="13" font="3"><b>atomically</b></text>
+<text top="462" left="193" width="368" height="14" font="2">. The reason it is called “test and set” is that it enables you</text>
+<text top="477" left="129" width="432" height="14" font="2">to “test” the old value (which is what is returned) while simultaneously</text>
+<text top="492" left="129" width="432" height="14" font="2">“setting” the memory location to a new value; as it turns out, this slightly</text>
+<text top="507" left="129" width="328" height="14" font="2">more powerful instruction is enough to build a simple</text>
+<text top="507" left="462" width="57" height="13" font="3"><b>spin lock</b></text>
+<text top="507" left="519" width="42" height="14" font="2">, as we</text>
+<text top="521" left="129" width="407" height="14" font="2">now examine in Figure 28.3. Or better yet: ﬁgure it out ﬁrst yourself!</text>
+<text top="538" left="147" width="414" height="14" font="2">Let’s make sure we understand why this lock works. Imagine ﬁrst the</text>
+<text top="553" left="129" width="145" height="14" font="2">case where a thread calls</text>
+<text top="554" left="277" width="48" height="11" font="5">lock()</text>
+<text top="553" left="329" width="232" height="14" font="2">and no other thread currently holds the</text>
+<text top="568" left="129" width="60" height="14" font="2">lock; thus,</text>
+<text top="569" left="192" width="32" height="11" font="5">flag</text>
+<text top="568" left="227" width="202" height="14" font="2">should be 0. When the thread calls</text>
+<text top="569" left="432" width="129" height="11" font="5">TestAndSet(flag,</text>
+<text top="584" left="129" width="16" height="11" font="5">1)</text>
+<text top="583" left="145" width="231" height="14" font="2">, the routine will return the old value of</text>
+<text top="584" left="378" width="32" height="11" font="5">flag</text>
+<text top="583" left="411" width="150" height="14" font="2">, which is 0; thus, the call-</text>
+<text top="598" left="129" width="118" height="14" font="2">ing thread, which is</text>
+<text top="598" left="250" width="37" height="14" font="8"><i>testing</i></text>
+<text top="598" left="291" width="270" height="14" font="2">the value of ﬂag, will not get caught spinning</text>
+<text top="613" left="129" width="432" height="14" font="2">in the while loop and will acquire the lock. The thread will also atomi-</text>
+<text top="628" left="129" width="28" height="14" font="2">cally</text>
+<text top="628" left="161" width="15" height="14" font="8"><i>set</i></text>
+<text top="628" left="180" width="381" height="14" font="2">the value to 1, thus indicating that the lock is now held. When</text>
+<text top="643" left="129" width="307" height="14" font="2">the thread is ﬁnished with its critical section, it calls</text>
+<text top="644" left="439" width="65" height="11" font="5">unlock()</text>
+<text top="643" left="507" width="54" height="14" font="2">to set the</text>
+<text top="658" left="129" width="101" height="14" font="2">ﬂag back to zero.</text>
+<text top="675" left="147" width="414" height="14" font="2">The second case we can imagine arises when one thread already has</text>
+<text top="690" left="129" width="103" height="14" font="2">the lock held (i.e.,</text>
+<text top="690" left="235" width="32" height="11" font="5">flag</text>
+<text top="690" left="270" width="214" height="14" font="2">is 1). In this case, this thread will call</text>
+<text top="690" left="487" width="48" height="11" font="5">lock()</text>
+<text top="690" left="538" width="23" height="14" font="2">and</text>
+<text top="705" left="129" width="52" height="14" font="2">then call</text>
+<text top="705" left="186" width="153" height="11" font="5">TestAndSet(flag, 1)</text>
+<text top="705" left="344" width="115" height="14" font="2">as well. This time,</text>
+<text top="705" left="464" width="97" height="11" font="5">TestAndSet()</text>
+<text top="720" left="129" width="432" height="14" font="2">will return the old value at ﬂag, which is 1 (because the lock is held),</text>
+<text top="735" left="129" width="432" height="14" font="2">while simultaneously setting it to 1 again. As long as the lock is held by</text>
+<text top="749" left="129" width="93" height="14" font="2">another thread,</text>
+<text top="750" left="227" width="97" height="11" font="5">TestAndSet()</text>
+<text top="749" left="328" width="233" height="14" font="2">will repeatedly return 1, and thus this</text>
+<text top="764" left="129" width="432" height="14" font="2">thread will spin and spin until the lock is ﬁnally released. When the ﬂag is</text>
+<text top="779" left="129" width="332" height="14" font="2">ﬁnally set to 0 by some other thread, this thread will call</text>
+<text top="780" left="464" width="97" height="11" font="5">TestAndSet()</text>
+<text top="794" left="129" width="432" height="14" font="2">again, which will now return 0 while atomically setting the value to 1 and</text>
+<text top="809" left="129" width="297" height="14" font="2">thus acquire the lock and enter the critical section.</text>
+<text top="826" left="147" width="121" height="14" font="2">By making both the</text>
+<text top="826" left="273" width="22" height="13" font="3"><b>test</b></text>
+<text top="826" left="300" width="164" height="14" font="2">(of the old lock value) and</text>
+<text top="826" left="468" width="17" height="13" font="3"><b>set</b></text>
+<text top="826" left="491" width="70" height="14" font="2">(of the new</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="13" family="AXRWRM+CMMI9" color="#000000"/>
+	<fontspec id="14" size="13" family="HZQYSD+CMSY9" color="#000000"/>
+	<fontspec id="15" size="13" family="VXEECP+CMR9" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="103" width="8" height="14" font="2">T</text>
+<text top="150" left="112" width="11" height="11" font="7">IP</text>
+<text top="148" left="123" width="16" height="14" font="2">: T</text>
+<text top="150" left="140" width="31" height="11" font="7">HINK</text>
+<text top="148" left="176" width="10" height="14" font="2">A</text>
+<text top="150" left="187" width="32" height="11" font="7">BOUT</text>
+<text top="148" left="223" width="10" height="14" font="2">C</text>
+<text top="150" left="233" width="84" height="11" font="7">ONCURRENCY</text>
+<text top="148" left="321" width="10" height="14" font="2">A</text>
+<text top="150" left="332" width="6" height="11" font="7">S</text>
+<text top="148" left="342" width="27" height="14" font="2">A M</text>
+<text top="150" left="370" width="57" height="11" font="7">ALICIOUS</text>
+<text top="148" left="431" width="7" height="14" font="2">S</text>
+<text top="150" left="438" width="65" height="11" font="7">CHEDULER</text>
+<text top="163" left="87" width="432" height="14" font="2">From this example, you might get a sense of the approach you need to</text>
+<text top="178" left="87" width="432" height="14" font="2">take to understand concurrent execution. What you should try to do is to</text>
+<text top="193" left="87" width="104" height="14" font="2">pretend you are a</text>
+<text top="193" left="195" width="123" height="13" font="3"><b>malicious scheduler</b></text>
+<text top="193" left="317" width="202" height="14" font="2">, one that interrupts threads at the</text>
+<text top="208" left="87" width="432" height="14" font="2">most inopportune of times in order to foil their feeble attempts at building</text>
+<text top="223" left="87" width="432" height="14" font="2">synchronization primitives. What a mean scheduler you are! Although</text>
+<text top="238" left="87" width="237" height="14" font="2">the exact sequence of interrupts may be</text>
+<text top="238" left="328" width="59" height="14" font="8"><i>improbable</i></text>
+<text top="238" left="387" width="29" height="14" font="2">, it is</text>
+<text top="238" left="420" width="42" height="14" font="8"><i>possible</i></text>
+<text top="238" left="462" width="57" height="14" font="2">, and that</text>
+<text top="253" left="87" width="432" height="14" font="2">is all we need to demonstrate that a particular approach does not work.</text>
+<text top="268" left="87" width="341" height="14" font="2">It can be useful to think maliciously! (at least, sometimes)</text>
+<text top="323" left="87" width="432" height="14" font="2">value) a single atomic operation, we ensure that only one thread acquires</text>
+<text top="338" left="87" width="429" height="14" font="2">the lock. And that’s how to build a working mutual exclusion primitive!</text>
+<text top="354" left="105" width="414" height="14" font="2">You may also now understand why this type of lock is usually referred</text>
+<text top="369" left="87" width="37" height="14" font="2">to as a</text>
+<text top="369" left="127" width="56" height="13" font="3"><b>spin lock</b></text>
+<text top="369" left="183" width="336" height="14" font="2">. It is the simplest type of lock to build, and simply spins,</text>
+<text top="384" left="87" width="432" height="14" font="2">using CPU cycles, until the lock becomes available. To work correctly</text>
+<text top="398" left="87" width="208" height="14" font="2">on a single processor, it requires a</text>
+<text top="399" left="300" width="135" height="13" font="3"><b>preemptive scheduler</b></text>
+<text top="398" left="439" width="80" height="14" font="2">(i.e., one that</text>
+<text top="413" left="87" width="432" height="14" font="2">will interrupt a thread via a timer, in order to run a different thread, from</text>
+<text top="428" left="87" width="432" height="14" font="2">time to time). Without preemption, spin locks don’t make much sense on</text>
+<text top="443" left="87" width="406" height="14" font="2">a single CPU, as a thread spinning on a CPU will never relinquish it.</text>
+<text top="470" left="55" width="196" height="17" font="4">28.8 Evaluating Spin Locks</text>
+<text top="495" left="105" width="414" height="14" font="2">Given our basic spin lock, we can now evaluate how effective it is</text>
+<text top="510" left="87" width="432" height="14" font="2">along our previously described axes. The most important aspect of a lock</text>
+<text top="525" left="87" width="10" height="14" font="2">is</text>
+<text top="525" left="100" width="68" height="13" font="3"><b>correctness</b></text>
+<text top="525" left="168" width="351" height="14" font="2">: does it provide mutual exclusion? The answer here is yes:</text>
+<text top="540" left="87" width="432" height="14" font="2">the spin lock only allows a single thread to enter the critical section at a</text>
+<text top="555" left="87" width="206" height="14" font="2">time. Thus, we have a correct lock.</text>
+<text top="570" left="105" width="93" height="14" font="2">The next axis is</text>
+<text top="570" left="201" width="49" height="13" font="3"><b>fairness</b></text>
+<text top="570" left="250" width="269" height="14" font="2">. How fair is a spin lock to a waiting thread?</text>
+<text top="585" left="87" width="432" height="14" font="2">Can you guarantee that a waiting thread will ever enter the critical sec-</text>
+<text top="600" left="87" width="432" height="14" font="2">tion? The answer here, unfortunately, is bad news: spin locks don’t pro-</text>
+<text top="615" left="87" width="432" height="14" font="2">vide any fairness guarantees. Indeed, a thread spinning may spin forever,</text>
+<text top="630" left="87" width="432" height="14" font="2">under contention. Simple spin locks (as discussed thus far) are not fair</text>
+<text top="645" left="87" width="163" height="14" font="2">and may lead to starvation.</text>
+<text top="661" left="105" width="92" height="14" font="2">The ﬁnal axis is</text>
+<text top="661" left="201" width="78" height="13" font="3"><b>performance</b></text>
+<text top="661" left="278" width="241" height="14" font="2">. What are the costs of using a spin lock?</text>
+<text top="675" left="87" width="432" height="14" font="2">To analyze this more carefully, we suggest thinking about a few different</text>
+<text top="690" left="87" width="432" height="14" font="2">cases. In the ﬁrst, imagine threads competing for the lock on a single</text>
+<text top="705" left="87" width="432" height="14" font="2">processor; in the second, consider threads spread out across many CPUs.</text>
+<text top="721" left="105" width="414" height="14" font="2">For spin locks, in the single CPU case, performance overheads can</text>
+<text top="736" left="87" width="432" height="14" font="2">be quite painful; imagine the case where the thread holding the lock is</text>
+<text top="751" left="87" width="432" height="14" font="2">preempted within a critical section. The scheduler might then run every</text>
+<text top="766" left="87" width="187" height="14" font="2">other thread (imagine there are</text>
+<text top="766" left="278" width="11" height="14" font="13">N</text>
+<text top="772" left="294" width="11" height="8" font="14">−</text>
+<text top="767" left="309" width="7" height="14" font="15">1</text>
+<text top="766" left="320" width="199" height="14" font="2">others), each of which tries to ac-</text>
+<text top="781" left="87" width="432" height="14" font="2">quire the lock. In this case, each of those threads will spin for the duration</text>
+<text top="796" left="87" width="377" height="14" font="2">of a time slice before giving up the CPU, a waste of CPU cycles.</text>
+<text top="811" left="105" width="414" height="14" font="2">However, on multiple CPUs, spin locks work reasonably well (if the</text>
+<text top="826" left="87" width="432" height="14" font="2">number of threads roughly equals the number of CPUs). The thinking</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="138" left="107" width="4" height="8" font="6">1</text>
+<text top="135" left="129" width="428" height="14" font="5">int CompareAndSwap(int *ptr, int expected, int new) {</text>
+<text top="153" left="107" width="4" height="8" font="6">2</text>
+<text top="150" left="161" width="161" height="14" font="5">int original = *ptr;</text>
+<text top="168" left="107" width="4" height="8" font="6">3</text>
+<text top="165" left="161" width="202" height="11" font="5">if (original == expected)</text>
+<text top="183" left="107" width="4" height="8" font="6">4</text>
+<text top="182" left="193" width="89" height="11" font="5">*ptr = new;</text>
+<text top="198" left="107" width="4" height="8" font="6">5</text>
+<text top="195" left="161" width="129" height="11" font="5">return original;</text>
+<text top="213" left="107" width="4" height="8" font="6">6</text>
+<text top="210" left="129" width="8" height="11" font="5">}</text>
+<text top="223" left="248" width="69" height="14" font="2">Figure 28.4:</text>
+<text top="223" left="321" width="120" height="13" font="3"><b>Compare-and-swap</b></text>
+<text top="259" left="129" width="432" height="14" font="2">goes as follows: imagine Thread A on CPU 1 and Thread B on CPU 2,</text>
+<text top="274" left="129" width="432" height="14" font="2">both contending for a lock. If Thread A (CPU 1) grabs the lock, and then</text>
+<text top="289" left="129" width="432" height="14" font="2">Thread B tries to, B will spin (on CPU 2). However, presumably the crit-</text>
+<text top="304" left="129" width="432" height="14" font="2">ical section is short, and thus soon the lock becomes available, and is ac-</text>
+<text top="319" left="129" width="432" height="14" font="2">quired by Thread B. Spinning to wait for a lock held on another processor</text>
+<text top="334" left="129" width="383" height="14" font="2">doesn’t waste many cycles in this case, and thus can be effective.</text>
+<text top="371" left="97" width="184" height="17" font="4">28.9 Compare-And-Swap</text>
+<text top="401" left="147" width="414" height="14" font="2">Another hardware primitive that some systems provide is known as</text>
+<text top="416" left="129" width="19" height="14" font="2">the</text>
+<text top="416" left="152" width="117" height="13" font="3"><b>compare-and-swap</b></text>
+<text top="416" left="274" width="287" height="14" font="2">instruction (as it is called on SPARC, for exam-</text>
+<text top="431" left="129" width="43" height="14" font="2">ple), or</text>
+<text top="431" left="176" width="141" height="13" font="3"><b>compare-and-exchange</b></text>
+<text top="431" left="322" width="239" height="14" font="2">(as it called on x86). The C pseudocode</text>
+<text top="446" left="129" width="288" height="14" font="2">for this single instruction is found in Figure 28.4.</text>
+<text top="461" left="147" width="414" height="14" font="2">The basic idea is for compare-and-swap to test whether the value at the</text>
+<text top="476" left="129" width="120" height="14" font="2">address speciﬁed by</text>
+<text top="476" left="252" width="24" height="11" font="5">ptr</text>
+<text top="476" left="279" width="60" height="14" font="2">is equal to</text>
+<text top="476" left="342" width="65" height="11" font="5">expected</text>
+<text top="476" left="407" width="154" height="14" font="2">; if so, update the memory</text>
+<text top="491" left="129" width="135" height="14" font="2">location pointed to by</text>
+<text top="491" left="268" width="24" height="11" font="5">ptr</text>
+<text top="491" left="297" width="263" height="14" font="2">with the new value. If not, do nothing. In</text>
+<text top="506" left="129" width="432" height="14" font="2">either case, return the original value at that memory location, thus allow-</text>
+<text top="520" left="129" width="432" height="14" font="2">ing the code calling compare-and-swap to know whether it succeeded or</text>
+<text top="535" left="129" width="23" height="14" font="2">not.</text>
+<text top="550" left="147" width="414" height="14" font="2">With the compare-and-swap instruction, we can build a lock in a man-</text>
+<text top="565" left="129" width="432" height="14" font="2">ner quite similar to that with test-and-set. For example, we could just</text>
+<text top="580" left="129" width="65" height="14" font="2">replace the</text>
+<text top="581" left="197" width="48" height="11" font="5">lock()</text>
+<text top="580" left="249" width="199" height="14" font="2">routine above with the following:</text>
+<text top="611" left="107" width="4" height="8" font="6">1</text>
+<text top="608" left="129" width="202" height="14" font="5">void lock(lock_t *lock) {</text>
+<text top="626" left="107" width="4" height="8" font="6">2</text>
+<text top="623" left="161" width="371" height="11" font="5">while (CompareAndSwap(&amp;lock-&gt;flag, 0, 1) == 1)</text>
+<text top="641" left="107" width="4" height="8" font="6">3</text>
+<text top="638" left="193" width="73" height="11" font="5">; // spin</text>
+<text top="656" left="107" width="4" height="8" font="6">4</text>
+<text top="653" left="129" width="8" height="11" font="5">}</text>
+<text top="678" left="147" width="414" height="14" font="2">The rest of the code is the same as the test-and-set example above.</text>
+<text top="693" left="129" width="432" height="14" font="2">This code works quite similarly; it simply checks if the ﬂag is 0 and if</text>
+<text top="708" left="129" width="432" height="14" font="2">so, atomically swaps in a 1 thus acquiring the lock. Threads that try to</text>
+<text top="723" left="129" width="432" height="14" font="2">acquire the lock while it is held will get stuck spinning until the lock is</text>
+<text top="738" left="129" width="94" height="14" font="2">ﬁnally released.</text>
+<text top="753" left="147" width="414" height="14" font="2">If you want to see how to really make a C-callable x86-version of</text>
+<text top="770" left="129" width="400" height="14" font="2">compare-and-swap, the code sequence (from [S05]) might be useful</text>
+<text top="768" left="529" width="4" height="9" font="11">2</text>
+<text top="770" left="534" width="3" height="14" font="2">.</text>
+<text top="785" left="147" width="414" height="14" font="2">Finally, as you may have sensed, compare-and-swap is a more power-</text>
+<text top="800" left="129" width="432" height="14" font="2">ful instruction than test-and-set. We will make some use of this power in</text>
+<text top="826" left="149" width="4" height="8" font="6">2</text>
+<text top="829" left="154" width="421" height="9" font="12">github.com/remzi-arpacidusseau/ostep-code/tree/master/threads-locks</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="139" left="87" width="316" height="14" font="2">the future when we brieﬂy delve into topics such as</text>
+<text top="139" left="407" width="112" height="13" font="3"><b>lock-free synchro-</b></text>
+<text top="154" left="87" width="51" height="13" font="3"><b>nization</b></text>
+<text top="154" left="142" width="377" height="14" font="2">[H91]. However, if we just build a simple spin lock with it, its</text>
+<text top="169" left="87" width="335" height="14" font="2">behavior is identical to the spin lock we analyzed above.</text>
+<text top="207" left="55" width="301" height="17" font="4">28.10 Load-Linked and Store-Conditional</text>
+<text top="238" left="105" width="414" height="14" font="2">Some platforms provide a pair of instructions that work in concert to</text>
+<text top="253" left="87" width="432" height="14" font="2">help build critical sections. On the MIPS architecture [H93], for example,</text>
+<text top="268" left="87" width="19" height="14" font="2">the</text>
+<text top="268" left="108" width="72" height="13" font="3"><b>load-linked</b></text>
+<text top="268" left="183" width="23" height="14" font="2">and</text>
+<text top="268" left="208" width="105" height="13" font="3"><b>store-conditional</b></text>
+<text top="268" left="315" width="204" height="14" font="2">instructions can be used in tandem</text>
+<text top="283" left="87" width="432" height="14" font="2">to build locks and other concurrent structures. The C pseudocode for</text>
+<text top="298" left="87" width="432" height="14" font="2">these instructions is as found in Figure 28.5. Alpha, PowerPC, and ARM</text>
+<text top="313" left="87" width="208" height="14" font="2">provide similar instructions [W09].</text>
+<text top="330" left="105" width="414" height="14" font="2">The load-linked operates much like a typical load instruction, and sim-</text>
+<text top="345" left="87" width="432" height="14" font="2">ply fetches a value from memory and places it in a register. The key differ-</text>
+<text top="359" left="87" width="432" height="14" font="2">ence comes with the store-conditional, which only succeeds (and updates</text>
+<text top="374" left="87" width="432" height="14" font="2">the value stored at the address just load-linked from) if no intervening</text>
+<text top="389" left="87" width="432" height="14" font="2">store to the address has taken place. In the case of success, the store-</text>
+<text top="404" left="87" width="281" height="14" font="2">conditional returns 1 and updates the value at</text>
+<text top="405" left="372" width="24" height="11" font="5">ptr</text>
+<text top="404" left="401" width="12" height="14" font="2">to</text>
+<text top="405" left="417" width="40" height="11" font="5">value</text>
+<text top="404" left="457" width="62" height="14" font="2">; if it fails,</text>
+<text top="419" left="87" width="69" height="14" font="2">the value at</text>
+<text top="420" left="160" width="24" height="11" font="5">ptr</text>
+<text top="419" left="187" width="10" height="14" font="2">is</text>
+<text top="419" left="200" width="18" height="14" font="8"><i>not</i></text>
+<text top="419" left="222" width="158" height="14" font="2">updated and 0 is returned.</text>
+<text top="436" left="105" width="414" height="14" font="2">As a challenge to yourself, try thinking about how to build a lock using</text>
+<text top="451" left="87" width="432" height="14" font="2">load-linked and store-conditional. Then, when you are ﬁnished, look at</text>
+<text top="466" left="87" width="432" height="14" font="2">the code below which provides one simple solution. Do it! The solution</text>
+<text top="481" left="87" width="97" height="14" font="2">is in Figure 28.6.</text>
+<text top="497" left="105" width="23" height="14" font="2">The</text>
+<text top="498" left="132" width="48" height="11" font="5">lock()</text>
+<text top="497" left="185" width="334" height="14" font="2">code is the only interesting piece. First, a thread spins</text>
+<text top="512" left="87" width="432" height="14" font="2">waiting for the ﬂag to be set to 0 (and thus indicate the lock is not held).</text>
+<text top="527" left="87" width="432" height="14" font="2">Once so, the thread tries to acquire the lock via the store-conditional; if it</text>
+<text top="542" left="87" width="432" height="14" font="2">succeeds, the thread has atomically changed the ﬂag’s value to 1 and thus</text>
+<text top="557" left="87" width="212" height="14" font="2">can proceed into the critical section.</text>
+<text top="573" left="105" width="414" height="14" font="2">Note how failure of the store-conditional might arise. One thread calls</text>
+<text top="589" left="87" width="48" height="11" font="5">lock()</text>
+<text top="588" left="139" width="380" height="14" font="2">and executes the load-linked, returning 0 as the lock is not held.</text>
+<text top="603" left="87" width="432" height="14" font="2">Before it can attempt the store-conditional, it is interrupted and another</text>
+<text top="618" left="87" width="432" height="14" font="2">thread enters the lock code, also executing the load-linked instruction,</text>
+<text top="652" left="65" width="4" height="8" font="6">1</text>
+<text top="648" left="87" width="210" height="14" font="5">int LoadLinked(int *ptr) {</text>
+<text top="667" left="65" width="4" height="8" font="6">2</text>
+<text top="663" left="119" width="97" height="14" font="5">return *ptr;</text>
+<text top="682" left="65" width="4" height="8" font="6">3</text>
+<text top="678" left="87" width="8" height="11" font="5">}</text>
+<text top="697" left="65" width="4" height="8" font="6">4</text>
+<text top="712" left="65" width="4" height="8" font="6">5</text>
+<text top="708" left="87" width="347" height="14" font="5">int StoreConditional(int *ptr, int value) {</text>
+<text top="727" left="65" width="4" height="8" font="6">6</text>
+<text top="723" left="119" width="371" height="14" font="5">if (no update to *ptr since LL to this addr) {</text>
+<text top="741" left="65" width="4" height="8" font="6">7</text>
+<text top="740" left="152" width="105" height="11" font="5">*ptr = value;</text>
+<text top="756" left="65" width="4" height="8" font="6">8</text>
+<text top="753" left="152" width="169" height="11" font="5">return 1; // success!</text>
+<text top="771" left="65" width="4" height="8" font="6">9</text>
+<text top="768" left="119" width="65" height="11" font="5">} else {</text>
+<text top="786" left="62" width="7" height="8" font="6">10</text>
+<text top="783" left="152" width="234" height="11" font="5">return 0; // failed to update</text>
+<text top="801" left="62" width="7" height="8" font="6">11</text>
+<text top="798" left="119" width="8" height="11" font="5">}</text>
+<text top="816" left="62" width="7" height="8" font="6">12</text>
+<text top="813" left="87" width="8" height="11" font="5">}</text>
+<text top="826" left="159" width="69" height="14" font="2">Figure 28.5:</text>
+<text top="826" left="232" width="216" height="13" font="3"><b>Load-linked And Store-conditional</b></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="138" left="107" width="4" height="8" font="6">1</text>
+<text top="135" left="129" width="202" height="14" font="5">void lock(lock_t *lock) {</text>
+<text top="153" left="107" width="4" height="8" font="6">2</text>
+<text top="150" left="161" width="89" height="11" font="5">while (1) {</text>
+<text top="168" left="107" width="4" height="8" font="6">3</text>
+<text top="165" left="193" width="291" height="11" font="5">while (LoadLinked(&amp;lock-&gt;flag) == 1)</text>
+<text top="183" left="107" width="4" height="8" font="6">4</text>
+<text top="180" left="226" width="202" height="11" font="5">; // spin until it’s zero</text>
+<text top="198" left="107" width="4" height="8" font="6">5</text>
+<text top="195" left="193" width="339" height="11" font="5">if (StoreConditional(&amp;lock-&gt;flag, 1) == 1)</text>
+<text top="213" left="107" width="4" height="8" font="6">6</text>
+<text top="210" left="226" width="323" height="11" font="5">return; // if set-to-1 was success: done</text>
+<text top="228" left="107" width="4" height="8" font="6">7</text>
+<text top="225" left="290" width="186" height="11" font="5">// otherwise: try again</text>
+<text top="243" left="107" width="4" height="8" font="6">8</text>
+<text top="240" left="161" width="8" height="11" font="5">}</text>
+<text top="258" left="107" width="4" height="8" font="6">9</text>
+<text top="254" left="129" width="8" height="11" font="5">}</text>
+<text top="273" left="104" width="7" height="8" font="6">10</text>
+<text top="288" left="104" width="7" height="8" font="6">11</text>
+<text top="284" left="129" width="218" height="14" font="5">void unlock(lock_t *lock) {</text>
+<text top="303" left="104" width="7" height="8" font="6">12</text>
+<text top="299" left="161" width="121" height="11" font="5">lock-&gt;flag = 0;</text>
+<text top="318" left="104" width="7" height="8" font="6">13</text>
+<text top="314" left="129" width="8" height="11" font="5">}</text>
+<text top="327" left="218" width="69" height="14" font="2">Figure 28.6:</text>
+<text top="327" left="291" width="181" height="13" font="3"><b>Using LL/SC To Build A Lock</b></text>
+<text top="359" left="129" width="432" height="14" font="2">and also getting a 0 and continuing. At this point, two threads have</text>
+<text top="374" left="129" width="432" height="14" font="2">each executed the load-linked and each are about to attempt the store-</text>
+<text top="389" left="129" width="432" height="14" font="2">conditional. The key feature of these instructions is that only one of these</text>
+<text top="404" left="129" width="432" height="14" font="2">threads will succeed in updating the ﬂag to 1 and thus acquire the lock;</text>
+<text top="419" left="129" width="432" height="14" font="2">the second thread to attempt the store-conditional will fail (because the</text>
+<text top="434" left="129" width="432" height="14" font="2">other thread updated the value of ﬂag between its load-linked and store-</text>
+<text top="449" left="129" width="347" height="14" font="2">conditional) and thus have to try to acquire the lock again.</text>
+<text top="466" left="147" width="414" height="14" font="2">In class a few years ago, undergraduate student David Capel sug-</text>
+<text top="481" left="129" width="432" height="14" font="2">gested a more concise form of the above, for those of you who enjoy</text>
+<text top="496" left="129" width="432" height="14" font="2">short-circuiting boolean conditionals. See if you can ﬁgure out why it</text>
+<text top="511" left="129" width="210" height="14" font="2">is equivalent. It certainly is shorter!</text>
+<text top="555" left="107" width="4" height="8" font="6">1</text>
+<text top="551" left="129" width="202" height="14" font="5">void lock(lock_t *lock) {</text>
+<text top="570" left="107" width="4" height="8" font="6">2</text>
+<text top="566" left="161" width="266" height="11" font="5">while (LoadLinked(&amp;lock-&gt;flag) ||</text>
+<text top="585" left="107" width="4" height="8" font="6">3</text>
+<text top="581" left="210" width="274" height="11" font="5">!StoreConditional(&amp;lock-&gt;flag, 1))</text>
+<text top="600" left="107" width="4" height="8" font="6">4</text>
+<text top="596" left="193" width="73" height="11" font="5">; // spin</text>
+<text top="615" left="107" width="4" height="8" font="6">5</text>
+<text top="611" left="129" width="8" height="11" font="5">}</text>
+<text top="650" left="97" width="157" height="17" font="4">28.11 Fetch-And-Add</text>
+<text top="682" left="147" width="212" height="14" font="2">One ﬁnal hardware primitive is the</text>
+<text top="682" left="362" width="86" height="13" font="3"><b>fetch-and-add</b></text>
+<text top="682" left="452" width="109" height="14" font="2">instruction, which</text>
+<text top="697" left="129" width="432" height="14" font="2">atomically increments a value while returning the old value at a partic-</text>
+<text top="712" left="129" width="432" height="14" font="2">ular address. The C pseudocode for the fetch-and-add instruction looks</text>
+<text top="727" left="129" width="50" height="14" font="2">like this:</text>
+<text top="771" left="107" width="4" height="8" font="6">1</text>
+<text top="767" left="129" width="218" height="14" font="5">int FetchAndAdd(int *ptr) {</text>
+<text top="786" left="107" width="4" height="8" font="6">2</text>
+<text top="782" left="161" width="121" height="14" font="5">int old = *ptr;</text>
+<text top="801" left="107" width="4" height="8" font="6">3</text>
+<text top="799" left="161" width="121" height="11" font="5">*ptr = old + 1;</text>
+<text top="815" left="107" width="4" height="8" font="6">4</text>
+<text top="812" left="161" width="89" height="11" font="5">return old;</text>
+<text top="830" left="107" width="4" height="8" font="6">5</text>
+<text top="827" left="129" width="8" height="11" font="5">}</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="148" left="155" width="8" height="14" font="2">T</text>
+<text top="150" left="163" width="11" height="11" font="7">IP</text>
+<text top="148" left="175" width="16" height="14" font="2">: L</text>
+<text top="150" left="192" width="19" height="11" font="7">ESS</text>
+<text top="148" left="215" width="10" height="14" font="2">C</text>
+<text top="150" left="225" width="25" height="11" font="7">ODE</text>
+<text top="148" left="254" width="5" height="14" font="2">I</text>
+<text top="150" left="259" width="6" height="11" font="7">S</text>
+<text top="148" left="269" width="8" height="14" font="2">B</text>
+<text top="150" left="278" width="36" height="11" font="7">ETTER</text>
+<text top="148" left="318" width="10" height="14" font="2">C</text>
+<text top="150" left="328" width="25" height="11" font="7">ODE</text>
+<text top="148" left="357" width="13" height="14" font="2">(L</text>
+<text top="150" left="371" width="33" height="11" font="7">AUER</text>
+<text top="148" left="404" width="4" height="14" font="2">’</text>
+<text top="150" left="409" width="6" height="11" font="7">S</text>
+<text top="148" left="418" width="8" height="14" font="2">L</text>
+<text top="150" left="427" width="19" height="11" font="7">AW</text>
+<text top="148" left="447" width="4" height="14" font="2">)</text>
+<text top="163" left="87" width="432" height="14" font="2">Programmers tend to brag about how much code they wrote to do some-</text>
+<text top="178" left="87" width="432" height="14" font="2">thing. Doing so is fundamentally broken. What one should brag about,</text>
+<text top="193" left="87" width="85" height="14" font="2">rather, is how</text>
+<text top="193" left="177" width="25" height="14" font="8"><i>little</i></text>
+<text top="193" left="208" width="311" height="14" font="2">code one wrote to accomplish a given task. Short,</text>
+<text top="208" left="87" width="432" height="14" font="2">concise code is always preferred; it is likely easier to understand and has</text>
+<text top="223" left="87" width="432" height="14" font="2">fewer bugs. As Hugh Lauer said, when discussing the construction of</text>
+<text top="238" left="87" width="432" height="14" font="2">the Pilot operating system: “If the same people had twice as much time,</text>
+<text top="253" left="87" width="432" height="14" font="2">they could produce as good of a system in half the code.” [L81] We’ll call</text>
+<text top="268" left="87" width="22" height="14" font="2">this</text>
+<text top="268" left="113" width="75" height="13" font="3"><b>Lauer’s Law</b></text>
+<text top="268" left="187" width="332" height="14" font="2">, and it is well worth remembering. So next time you’re</text>
+<text top="283" left="87" width="432" height="14" font="2">bragging about how much code you wrote to ﬁnish the assignment, think</text>
+<text top="298" left="87" width="432" height="14" font="2">again, or better yet, go back, rewrite, and make the code as clear and con-</text>
+<text top="313" left="87" width="93" height="14" font="2">cise as possible.</text>
+<text top="351" left="105" width="414" height="14" font="2">In this example, we’ll use fetch-and-add to build a more interesting</text>
+<text top="366" left="87" width="66" height="13" font="3"><b>ticket lock</b></text>
+<text top="366" left="153" width="366" height="14" font="2">, as introduced by Mellor-Crummey and Scott [MS91]. The</text>
+<text top="381" left="87" width="324" height="14" font="2">lock and unlock code is found in Figure 28.7 (page 14).</text>
+<text top="397" left="105" width="414" height="14" font="2">Instead of a single value, this solution uses a ticket and turn variable in</text>
+<text top="412" left="87" width="432" height="14" font="2">combination to build a lock. The basic operation is pretty simple: when</text>
+<text top="427" left="87" width="432" height="14" font="2">a thread wishes to acquire a lock, it ﬁrst does an atomic fetch-and-add</text>
+<text top="442" left="87" width="432" height="14" font="2">on the ticket value; that value is now considered this thread’s “turn”</text>
+<text top="457" left="87" width="4" height="14" font="2">(</text>
+<text top="458" left="92" width="48" height="11" font="5">myturn</text>
+<text top="457" left="140" width="135" height="14" font="2">). The globally shared</text>
+<text top="458" left="279" width="81" height="11" font="5">lock-&gt;turn</text>
+<text top="457" left="364" width="155" height="14" font="2">is then used to determine</text>
+<text top="472" left="87" width="184" height="14" font="2">which thread’s turn it is; when</text>
+<text top="473" left="275" width="129" height="11" font="5">(myturn == turn)</text>
+<text top="472" left="408" width="111" height="14" font="2">for a given thread,</text>
+<text top="487" left="87" width="432" height="14" font="2">it is that thread’s turn to enter the critical section. Unlock is accomplished</text>
+<text top="502" left="87" width="432" height="14" font="2">simply by incrementing the turn such that the next waiting thread (if</text>
+<text top="517" left="87" width="274" height="14" font="2">there is one) can now enter the critical section.</text>
+<text top="533" left="105" width="414" height="14" font="2">Note one important difference with this solution versus our previous</text>
+<text top="548" left="87" width="432" height="14" font="2">attempts: it ensures progress for all threads. Once a thread is assigned its</text>
+<text top="563" left="87" width="432" height="14" font="2">ticket value, it will be scheduled at some point in the future (once those in</text>
+<text top="578" left="87" width="432" height="14" font="2">front of it have passed through the critical section and released the lock).</text>
+<text top="593" left="87" width="432" height="14" font="2">In our previous attempts, no such guarantee existed; a thread spinning</text>
+<text top="607" left="87" width="432" height="14" font="2">on test-and-set (for example) could spin forever even as other threads</text>
+<text top="622" left="87" width="167" height="14" font="2">acquire and release the lock.</text>
+<text top="661" left="55" width="281" height="17" font="4">28.12 Too Much Spinning: What Now?</text>
+<text top="692" left="105" width="414" height="14" font="2">Our hardware-based locks are simple (only a few lines of code) and</text>
+<text top="707" left="87" width="432" height="14" font="2">they work (you could even prove that if you’d like to, by writing some</text>
+<text top="721" left="87" width="432" height="14" font="2">code), which are two excellent properties of any system or code. How-</text>
+<text top="736" left="87" width="432" height="14" font="2">ever, in some cases, these solutions can be quite inefﬁcient. Imagine you</text>
+<text top="751" left="87" width="432" height="14" font="2">are running two threads on a single processor. Now imagine that one</text>
+<text top="766" left="87" width="432" height="14" font="2">thread (thread 0) is in a critical section and thus has a lock held, and un-</text>
+<text top="781" left="87" width="432" height="14" font="2">fortunately gets interrupted. The second thread (thread 1) now tries to</text>
+<text top="796" left="87" width="432" height="14" font="2">acquire the lock, but ﬁnds that it is held. Thus, it begins to spin. And</text>
+<text top="811" left="87" width="432" height="14" font="2">spin. Then it spins some more. And ﬁnally, a timer interrupt goes off,</text>
+<text top="826" left="87" width="432" height="14" font="2">thread 0 is run again, which releases the lock, and ﬁnally (the next time</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="138" left="107" width="4" height="8" font="6">1</text>
+<text top="135" left="129" width="202" height="11" font="5">typedef struct __lock_t {</text>
+<text top="153" left="107" width="4" height="8" font="6">2</text>
+<text top="149" left="161" width="89" height="11" font="5">int ticket;</text>
+<text top="168" left="107" width="4" height="8" font="6">3</text>
+<text top="164" left="161" width="73" height="11" font="5">int turn;</text>
+<text top="183" left="107" width="4" height="8" font="6">4</text>
+<text top="179" left="129" width="73" height="11" font="5">} lock_t;</text>
+<text top="198" left="107" width="4" height="8" font="6">5</text>
+<text top="213" left="107" width="4" height="8" font="6">6</text>
+<text top="209" left="129" width="242" height="14" font="5">void lock_init(lock_t *lock) {</text>
+<text top="228" left="107" width="4" height="8" font="6">7</text>
+<text top="224" left="161" width="137" height="11" font="5">lock-&gt;ticket = 0;</text>
+<text top="243" left="107" width="4" height="8" font="6">8</text>
+<text top="239" left="161" width="81" height="11" font="5">lock-&gt;turn</text>
+<text top="239" left="266" width="32" height="11" font="5">= 0;</text>
+<text top="258" left="107" width="4" height="8" font="6">9</text>
+<text top="254" left="129" width="8" height="11" font="5">}</text>
+<text top="273" left="104" width="7" height="8" font="6">10</text>
+<text top="288" left="104" width="7" height="8" font="6">11</text>
+<text top="284" left="129" width="202" height="14" font="5">void lock(lock_t *lock) {</text>
+<text top="302" left="104" width="7" height="8" font="6">12</text>
+<text top="299" left="161" width="323" height="11" font="5">int myturn = FetchAndAdd(&amp;lock-&gt;ticket);</text>
+<text top="317" left="104" width="7" height="8" font="6">13</text>
+<text top="314" left="161" width="226" height="11" font="5">while (lock-&gt;turn != myturn)</text>
+<text top="332" left="104" width="7" height="8" font="6">14</text>
+<text top="329" left="193" width="73" height="11" font="5">; // spin</text>
+<text top="347" left="104" width="7" height="8" font="6">15</text>
+<text top="344" left="137" width="8" height="11" font="5">}</text>
+<text top="362" left="104" width="7" height="8" font="6">16</text>
+<text top="377" left="104" width="7" height="8" font="6">17</text>
+<text top="374" left="129" width="218" height="14" font="5">void unlock(lock_t *lock) {</text>
+<text top="392" left="104" width="7" height="8" font="6">18</text>
+<text top="389" left="161" width="226" height="11" font="5">lock-&gt;turn = lock-&gt;turn + 1;</text>
+<text top="407" left="104" width="7" height="8" font="6">19</text>
+<text top="404" left="129" width="8" height="11" font="5">}</text>
+<text top="416" left="270" width="69" height="14" font="2">Figure 28.7:</text>
+<text top="417" left="343" width="77" height="13" font="3"><b>Ticket Locks</b></text>
+<text top="442" left="129" width="432" height="14" font="2">it runs, say), thread 1 won’t have to spin so much and will be able to ac-</text>
+<text top="457" left="129" width="432" height="14" font="2">quire the lock. Thus, any time a thread gets caught spinning in a situation</text>
+<text top="472" left="129" width="432" height="14" font="2">like this, it wastes an entire time slice doing nothing but checking a value</text>
+<text top="486" left="129" width="338" height="14" font="2">that isn’t going to change! The problem gets worse with</text>
+<text top="487" left="471" width="11" height="14" font="13">N</text>
+<text top="486" left="487" width="74" height="14" font="2">threads con-</text>
+<text top="501" left="129" width="109" height="14" font="2">tending for a lock;</text>
+<text top="502" left="242" width="11" height="14" font="13">N</text>
+<text top="508" left="258" width="11" height="8" font="14">−</text>
+<text top="502" left="272" width="7" height="14" font="15">1</text>
+<text top="501" left="282" width="279" height="14" font="2">time slices may be wasted in a similar manner,</text>
+<text top="516" left="129" width="432" height="14" font="2">simply spinning and waiting for a single thread to release the lock. And</text>
+<text top="531" left="129" width="139" height="14" font="2">thus, our next problem:</text>
+<text top="569" left="228" width="8" height="14" font="2">T</text>
+<text top="571" left="237" width="16" height="11" font="7">HE</text>
+<text top="569" left="257" width="10" height="14" font="2">C</text>
+<text top="571" left="267" width="24" height="11" font="7">RUX</text>
+<text top="569" left="292" width="19" height="14" font="2">: H</text>
+<text top="571" left="312" width="20" height="11" font="7">OW</text>
+<text top="569" left="336" width="8" height="14" font="2">T</text>
+<text top="571" left="345" width="8" height="11" font="7">O</text>
+<text top="569" left="357" width="10" height="14" font="2">A</text>
+<text top="571" left="367" width="30" height="11" font="7">VOID</text>
+<text top="569" left="401" width="7" height="14" font="2">S</text>
+<text top="571" left="409" width="53" height="11" font="7">PINNING</text>
+<text top="584" left="147" width="414" height="14" font="2">How can we develop a lock that doesn’t needlessly waste time spin-</text>
+<text top="599" left="129" width="105" height="14" font="2">ning on the CPU?</text>
+<text top="640" left="147" width="414" height="14" font="2">Hardware support alone cannot solve the problem. We’ll need OS sup-</text>
+<text top="655" left="129" width="334" height="14" font="2">port too! Let’s now ﬁgure out just how that might work.</text>
+<text top="692" left="97" width="309" height="17" font="4">28.13 A Simple Approach: Just Yield, Baby</text>
+<text top="721" left="147" width="414" height="14" font="2">Hardware support got us pretty far: working locks, and even (as with</text>
+<text top="736" left="129" width="432" height="14" font="2">the case of the ticket lock) fairness in lock acquisition. However, we still</text>
+<text top="751" left="129" width="432" height="14" font="2">have a problem: what to do when a context switch occurs in a critical</text>
+<text top="766" left="129" width="432" height="14" font="2">section, and threads start to spin endlessly, waiting for the interrupted</text>
+<text top="781" left="129" width="226" height="14" font="2">(lock-holding) thread to be run again?</text>
+<text top="796" left="147" width="414" height="14" font="2">Our ﬁrst try is a simple and friendly approach: when you are going to</text>
+<text top="811" left="129" width="432" height="14" font="2">spin, instead give up the CPU to another thread. As Al Davis might say,</text>
+<text top="826" left="129" width="401" height="14" font="2">“just yield, baby!” [D91]. Figure 28.8 (page 15) shows the approach.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="138" left="65" width="4" height="8" font="6">1</text>
+<text top="135" left="87" width="105" height="11" font="5">void init() {</text>
+<text top="153" left="65" width="4" height="8" font="6">2</text>
+<text top="150" left="119" width="73" height="11" font="5">flag = 0;</text>
+<text top="168" left="65" width="4" height="8" font="6">3</text>
+<text top="165" left="87" width="8" height="11" font="5">}</text>
+<text top="183" left="65" width="4" height="8" font="6">4</text>
+<text top="198" left="65" width="4" height="8" font="6">5</text>
+<text top="195" left="87" width="105" height="11" font="5">void lock() {</text>
+<text top="213" left="65" width="4" height="8" font="6">6</text>
+<text top="210" left="119" width="266" height="11" font="5">while (TestAndSet(&amp;flag, 1) == 1)</text>
+<text top="228" left="65" width="4" height="8" font="6">7</text>
+<text top="225" left="152" width="218" height="11" font="5">yield(); // give up the CPU</text>
+<text top="243" left="65" width="4" height="8" font="6">8</text>
+<text top="240" left="87" width="8" height="11" font="5">}</text>
+<text top="258" left="65" width="4" height="8" font="6">9</text>
+<text top="273" left="62" width="7" height="8" font="6">10</text>
+<text top="269" left="87" width="121" height="11" font="5">void unlock() {</text>
+<text top="288" left="62" width="7" height="8" font="6">11</text>
+<text top="284" left="119" width="73" height="11" font="5">flag = 0;</text>
+<text top="303" left="62" width="7" height="8" font="6">12</text>
+<text top="299" left="87" width="8" height="11" font="5">}</text>
+<text top="312" left="163" width="69" height="14" font="2">Figure 28.8:</text>
+<text top="312" left="236" width="206" height="13" font="3"><b>Lock With Test-and-set And Yield</b></text>
+<text top="340" left="105" width="354" height="14" font="2">In this approach, we assume an operating system primitive</text>
+<text top="341" left="462" width="57" height="11" font="5">yield()</text>
+<text top="355" left="87" width="432" height="14" font="2">which a thread can call when it wants to give up the CPU and let an-</text>
+<text top="370" left="87" width="432" height="14" font="2">other thread run. A thread can be in one of three states (running, ready,</text>
+<text top="385" left="87" width="432" height="14" font="2">or blocked); yield is simply a system call that moves the caller from the</text>
+<text top="400" left="87" width="50" height="13" font="3"><b>running</b></text>
+<text top="400" left="142" width="68" height="14" font="2">state to the</text>
+<text top="400" left="216" width="34" height="13" font="3"><b>ready</b></text>
+<text top="400" left="255" width="264" height="14" font="2">state, and thus promotes another thread to</text>
+<text top="415" left="87" width="271" height="14" font="2">running. Thus, the yielding thread essentially</text>
+<text top="415" left="362" width="75" height="13" font="3"><b>deschedules</b></text>
+<text top="415" left="441" width="32" height="14" font="2">itself.</text>
+<text top="430" left="105" width="414" height="14" font="2">Think about the example with two threads on one CPU; in this case,</text>
+<text top="445" left="87" width="432" height="14" font="2">our yield-based approach works quite well. If a thread happens to call</text>
+<text top="461" left="87" width="48" height="11" font="5">lock()</text>
+<text top="460" left="139" width="380" height="14" font="2">and ﬁnd a lock held, it will simply yield the CPU, and thus the</text>
+<text top="475" left="87" width="432" height="14" font="2">other thread will run and ﬁnish its critical section. In this simple case, the</text>
+<text top="490" left="87" width="181" height="14" font="2">yielding approach works well.</text>
+<text top="505" left="105" width="414" height="14" font="2">Let us now consider the case where there are many threads (say 100)</text>
+<text top="520" left="87" width="432" height="14" font="2">contending for a lock repeatedly. In this case, if one thread acquires</text>
+<text top="535" left="87" width="432" height="14" font="2">the lock and is preempted before releasing it, the other 99 will each call</text>
+<text top="550" left="87" width="48" height="11" font="5">lock()</text>
+<text top="550" left="136" width="383" height="14" font="2">, ﬁnd the lock held, and yield the CPU. Assuming some kind</text>
+<text top="565" left="87" width="432" height="14" font="2">of round-robin scheduler, each of the 99 will execute this run-and-yield</text>
+<text top="580" left="87" width="432" height="14" font="2">pattern before the thread holding the lock gets to run again. While better</text>
+<text top="594" left="87" width="432" height="14" font="2">than our spinning approach (which would waste 99 time slices spinning),</text>
+<text top="609" left="87" width="432" height="14" font="2">this approach is still costly; the cost of a context switch can be substantial,</text>
+<text top="624" left="87" width="197" height="14" font="2">and there is thus plenty of waste.</text>
+<text top="639" left="105" width="414" height="14" font="2">Worse, this approach does not address starvation. A thread may get</text>
+<text top="654" left="87" width="432" height="14" font="2">caught in an endless yield loop while other threads repeatedly enter and</text>
+<text top="669" left="87" width="432" height="14" font="2">exit the critical section. We clearly will need an approach that addresses</text>
+<text top="684" left="87" width="111" height="14" font="2">starvation directly.</text>
+<text top="722" left="55" width="366" height="17" font="4">28.14 Using Queues: Sleeping Instead Of Spinning</text>
+<text top="751" left="105" width="414" height="14" font="2">The real problem with some previous approaches (other than the ticket</text>
+<text top="766" left="87" width="432" height="14" font="2">lock) is that they leave too much to chance. The scheduler determines</text>
+<text top="781" left="87" width="432" height="14" font="2">which thread runs next; if the scheduler makes a bad choice, a thread that</text>
+<text top="796" left="87" width="432" height="14" font="2">runs must either spin waiting for the lock (our ﬁrst approach), or yield the</text>
+<text top="811" left="87" width="432" height="14" font="2">CPU immediately (our second approach). Either way, there is potential</text>
+<text top="826" left="87" width="250" height="14" font="2">for waste and no prevention of starvation.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="138" left="107" width="4" height="8" font="6">1</text>
+<text top="135" left="129" width="202" height="11" font="5">typedef struct __lock_t {</text>
+<text top="153" left="107" width="4" height="8" font="6">2</text>
+<text top="149" left="161" width="73" height="11" font="5">int flag;</text>
+<text top="168" left="107" width="4" height="8" font="6">3</text>
+<text top="164" left="161" width="81" height="11" font="5">int guard;</text>
+<text top="183" left="107" width="4" height="8" font="6">4</text>
+<text top="179" left="161" width="89" height="14" font="5">queue_t *q;</text>
+<text top="198" left="107" width="4" height="8" font="6">5</text>
+<text top="194" left="129" width="73" height="11" font="5">} lock_t;</text>
+<text top="213" left="107" width="4" height="8" font="6">6</text>
+<text top="228" left="107" width="4" height="8" font="6">7</text>
+<text top="224" left="129" width="218" height="14" font="5">void lock_init(lock_t *m) {</text>
+<text top="243" left="107" width="4" height="8" font="6">8</text>
+<text top="239" left="161" width="57" height="11" font="5">m-&gt;flag</text>
+<text top="239" left="234" width="32" height="11" font="5">= 0;</text>
+<text top="258" left="107" width="4" height="8" font="6">9</text>
+<text top="254" left="161" width="105" height="11" font="5">m-&gt;guard = 0;</text>
+<text top="273" left="104" width="7" height="8" font="6">10</text>
+<text top="269" left="161" width="137" height="11" font="5">queue_init(m-&gt;q);</text>
+<text top="288" left="104" width="7" height="8" font="6">11</text>
+<text top="284" left="129" width="8" height="11" font="5">}</text>
+<text top="302" left="104" width="7" height="8" font="6">12</text>
+<text top="317" left="104" width="7" height="8" font="6">13</text>
+<text top="314" left="129" width="178" height="14" font="5">void lock(lock_t *m) {</text>
+<text top="332" left="104" width="7" height="8" font="6">14</text>
+<text top="329" left="161" width="299" height="11" font="5">while (TestAndSet(&amp;m-&gt;guard, 1) == 1)</text>
+<text top="347" left="104" width="7" height="8" font="6">15</text>
+<text top="344" left="193" width="274" height="11" font="5">; //acquire guard lock by spinning</text>
+<text top="362" left="104" width="7" height="8" font="6">16</text>
+<text top="359" left="161" width="153" height="11" font="5">if (m-&gt;flag == 0) {</text>
+<text top="377" left="104" width="7" height="8" font="6">17</text>
+<text top="374" left="193" width="258" height="11" font="5">m-&gt;flag = 1; // lock is acquired</text>
+<text top="392" left="104" width="7" height="8" font="6">18</text>
+<text top="389" left="193" width="105" height="11" font="5">m-&gt;guard = 0;</text>
+<text top="407" left="104" width="7" height="8" font="6">19</text>
+<text top="404" left="161" width="65" height="11" font="5">} else {</text>
+<text top="422" left="104" width="7" height="8" font="6">20</text>
+<text top="418" left="193" width="210" height="11" font="5">queue_add(m-&gt;q, gettid());</text>
+<text top="437" left="104" width="7" height="8" font="6">21</text>
+<text top="433" left="193" width="105" height="11" font="5">m-&gt;guard = 0;</text>
+<text top="452" left="104" width="7" height="8" font="6">22</text>
+<text top="448" left="193" width="57" height="11" font="5">park();</text>
+<text top="467" left="104" width="7" height="8" font="6">23</text>
+<text top="463" left="161" width="8" height="11" font="5">}</text>
+<text top="482" left="104" width="7" height="8" font="6">24</text>
+<text top="478" left="129" width="8" height="11" font="5">}</text>
+<text top="497" left="104" width="7" height="8" font="6">25</text>
+<text top="512" left="104" width="7" height="8" font="6">26</text>
+<text top="508" left="129" width="194" height="14" font="5">void unlock(lock_t *m) {</text>
+<text top="527" left="104" width="7" height="8" font="6">27</text>
+<text top="523" left="161" width="299" height="11" font="5">while (TestAndSet(&amp;m-&gt;guard, 1) == 1)</text>
+<text top="542" left="104" width="7" height="8" font="6">28</text>
+<text top="538" left="193" width="274" height="11" font="5">; //acquire guard lock by spinning</text>
+<text top="557" left="104" width="7" height="8" font="6">29</text>
+<text top="553" left="161" width="178" height="11" font="5">if (queue_empty(m-&gt;q))</text>
+<text top="571" left="104" width="7" height="8" font="6">30</text>
+<text top="568" left="193" width="379" height="11" font="5">m-&gt;flag = 0; // let go of lock; no one wants it</text>
+<text top="586" left="104" width="7" height="8" font="6">31</text>
+<text top="583" left="161" width="32" height="11" font="5">else</text>
+<text top="601" left="104" width="7" height="8" font="6">32</text>
+<text top="598" left="193" width="323" height="11" font="5">unpark(queue_remove(m-&gt;q)); // hold lock</text>
+<text top="616" left="104" width="7" height="8" font="6">33</text>
+<text top="613" left="419" width="169" height="11" font="5">// (for next thread!)</text>
+<text top="631" left="104" width="7" height="8" font="6">34</text>
+<text top="628" left="161" width="105" height="11" font="5">m-&gt;guard = 0;</text>
+<text top="646" left="104" width="7" height="8" font="6">35</text>
+<text top="643" left="129" width="8" height="11" font="5">}</text>
+<text top="656" left="148" width="69" height="14" font="2">Figure 28.9:</text>
+<text top="656" left="221" width="321" height="13" font="3"><b>Lock With Queues, Test-and-set, Yield, And Wakeup</b></text>
+<text top="689" left="147" width="414" height="14" font="2">Thus, we must explicitly exert some control over which thread next</text>
+<text top="704" left="129" width="432" height="14" font="2">gets to acquire the lock after the current holder releases it. To do this, we</text>
+<text top="719" left="129" width="432" height="14" font="2">will need a little more OS support, as well as a queue to keep track of</text>
+<text top="734" left="129" width="271" height="14" font="2">which threads are waiting to acquire the lock.</text>
+<text top="751" left="147" width="414" height="14" font="2">For simplicity, we will use the support provided by Solaris, in terms of</text>
+<text top="766" left="129" width="55" height="14" font="2">two calls:</text>
+<text top="767" left="188" width="48" height="11" font="5">park()</text>
+<text top="766" left="239" width="204" height="14" font="2">to put a calling thread to sleep, and</text>
+<text top="767" left="445" width="129" height="11" font="5">unpark(threadID)</text>
+<text top="781" left="129" width="266" height="14" font="2">to wake a particular thread as designated by</text>
+<text top="782" left="399" width="65" height="11" font="5">threadID</text>
+<text top="781" left="464" width="97" height="14" font="2">. These two rou-</text>
+<text top="796" left="129" width="432" height="14" font="2">tines can be used in tandem to build a lock that puts a caller to sleep if it</text>
+<text top="811" left="129" width="432" height="14" font="2">tries to acquire a held lock and wakes it when the lock is free. Let’s look at</text>
+<text top="826" left="129" width="432" height="14" font="2">the code in Figure 28.9 to understand one possible use of such primitives.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="148" left="101" width="10" height="14" font="2">A</text>
+<text top="150" left="112" width="26" height="11" font="7">SIDE</text>
+<text top="148" left="139" width="21" height="14" font="2">: M</text>
+<text top="150" left="161" width="24" height="11" font="7">ORE</text>
+<text top="148" left="188" width="9" height="14" font="2">R</text>
+<text top="150" left="198" width="41" height="11" font="7">EASON</text>
+<text top="148" left="243" width="8" height="14" font="2">T</text>
+<text top="150" left="251" width="8" height="11" font="7">O</text>
+<text top="148" left="264" width="10" height="14" font="2">A</text>
+<text top="150" left="274" width="30" height="11" font="7">VOID</text>
+<text top="148" left="308" width="7" height="14" font="2">S</text>
+<text top="150" left="316" width="53" height="11" font="7">PINNING</text>
+<text top="148" left="369" width="16" height="14" font="2">: P</text>
+<text top="150" left="386" width="48" height="11" font="7">RIORITY</text>
+<text top="148" left="438" width="5" height="14" font="2">I</text>
+<text top="150" left="443" width="62" height="11" font="7">NVERSION</text>
+<text top="165" left="87" width="432" height="14" font="2">One good reason to avoid spin locks is performance: as described in the</text>
+<text top="180" left="87" width="432" height="14" font="2">main text, if a thread is interrupted while holding a lock, other threads</text>
+<text top="195" left="87" width="432" height="14" font="2">that use spin locks will spend a large amount of CPU time just waiting for</text>
+<text top="210" left="87" width="432" height="14" font="2">the lock to become available. However, it turns out there is another inter-</text>
+<text top="225" left="87" width="432" height="14" font="2">esting reason to avoid spin locks on some systems: correctness. The prob-</text>
+<text top="240" left="87" width="178" height="14" font="2">lem to be wary of is known as</text>
+<text top="240" left="268" width="109" height="13" font="3"><b>priority inversion</b></text>
+<text top="240" left="377" width="142" height="14" font="2">, which unfortunately is</text>
+<text top="255" left="87" width="395" height="14" font="2">an intergalactic scourge, occurring on Earth [M15] and Mars [R97]!</text>
+<text top="273" left="87" width="432" height="14" font="2">Let’s assume there are two threads in a system. Thread 2 (T2) has a high</text>
+<text top="288" left="87" width="432" height="14" font="2">scheduling priority, and Thread 1 (T1) has lower priority. In this example,</text>
+<text top="303" left="87" width="432" height="14" font="2">let’s assume that the CPU scheduler will always run T2 over T1, if indeed</text>
+<text top="318" left="87" width="432" height="14" font="2">both are runnable; T1 only runs when T2 is not able to do so (e.g., when</text>
+<text top="333" left="87" width="131" height="14" font="2">T2 is blocked on I/O).</text>
+<text top="351" left="87" width="432" height="14" font="2">Now, the problem. Assume T2 is blocked for some reason. So T1 runs,</text>
+<text top="366" left="87" width="432" height="14" font="2">grabs a spin lock, and enters a critical section. T2 now becomes unblocked</text>
+<text top="381" left="87" width="432" height="14" font="2">(perhaps because an I/O completed), and the CPU scheduler immedi-</text>
+<text top="396" left="87" width="432" height="14" font="2">ately schedules it (thus descheduling T1). T2 now tries to acquire the lock,</text>
+<text top="411" left="87" width="432" height="14" font="2">and because it can’t (T1 holds the lock), it just keeps spinning. Because</text>
+<text top="426" left="87" width="376" height="14" font="2">the lock is a spin lock, T2 spins forever, and the system is hung.</text>
+<text top="444" left="87" width="432" height="14" font="2">Just avoiding the use of spin locks, unfortunately, does not avoid the</text>
+<text top="459" left="87" width="432" height="14" font="2">problem of inversion (alas). Imagine three threads, T1, T2, and T3, with</text>
+<text top="474" left="87" width="432" height="14" font="2">T3 at the highest priority, and T1 the lowest. Imagine now that T1 grabs</text>
+<text top="489" left="87" width="432" height="14" font="2">a lock. T3 then starts, and because it is higher priority than T1, runs im-</text>
+<text top="504" left="87" width="432" height="14" font="2">mediately (preempting T1). T3 tries to acquire the lock that T1 holds, but</text>
+<text top="519" left="87" width="432" height="14" font="2">gets stuck waiting, because T1 still holds it. If T2 starts to run, it will have</text>
+<text top="534" left="87" width="432" height="14" font="2">higher priority than T1, and thus it will run. T3, which is higher priority</text>
+<text top="549" left="87" width="432" height="14" font="2">than T2, is stuck waiting for T1, which may never run now that T2 is run-</text>
+<text top="563" left="87" width="432" height="14" font="2">ning. Isn’t it sad that the mighty T3 can’t run, while lowly T2 controls the</text>
+<text top="578" left="87" width="329" height="14" font="2">CPU? Having high priority just ain’t what it used to be.</text>
+<text top="597" left="87" width="432" height="14" font="2">You can address the priority inversion problem in a number of ways. In</text>
+<text top="612" left="87" width="432" height="14" font="2">the speciﬁc case where spin locks cause the problem, you can avoid us-</text>
+<text top="627" left="87" width="432" height="14" font="2">ing spin locks (described more below). More generally, a higher-priority</text>
+<text top="641" left="87" width="432" height="14" font="2">thread waiting for a lower-priority thread can temporarily boost the</text>
+<text top="656" left="87" width="432" height="14" font="2">lower thread’s priority, thus enabling it to run and overcoming the in-</text>
+<text top="671" left="87" width="188" height="14" font="2">version, a technique known as</text>
+<text top="671" left="280" width="122" height="13" font="3"><b>priority inheritance</b></text>
+<text top="671" left="402" width="117" height="14" font="2">. A last solution is</text>
+<text top="686" left="87" width="302" height="14" font="2">simplest: ensure all threads have the same priority.</text>
+<text top="734" left="105" width="414" height="14" font="2">We do a couple of interesting things in this example. First, we combine</text>
+<text top="749" left="87" width="432" height="14" font="2">the old test-and-set idea with an explicit queue of lock waiters to make a</text>
+<text top="764" left="87" width="432" height="14" font="2">more efﬁcient lock. Second, we use a queue to help control who gets the</text>
+<text top="779" left="87" width="213" height="14" font="2">lock next and thus avoid starvation.</text>
+<text top="796" left="105" width="414" height="14" font="2">You might notice how the guard is used (Figure 28.9, page 16), basi-</text>
+<text top="811" left="87" width="432" height="14" font="2">cally as a spin-lock around the ﬂag and queue manipulations the lock is</text>
+<text top="826" left="87" width="432" height="14" font="2">using. This approach thus doesn’t avoid spin-waiting entirely; a thread</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">18</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="139" left="129" width="432" height="14" font="2">might be interrupted while acquiring or releasing the lock, and thus cause</text>
+<text top="154" left="129" width="432" height="14" font="2">other threads to spin-wait for this one to run again. However, the time</text>
+<text top="169" left="129" width="432" height="14" font="2">spent spinning is quite limited (just a few instructions inside the lock and</text>
+<text top="183" left="129" width="432" height="14" font="2">unlock code, instead of the user-deﬁned critical section), and thus this</text>
+<text top="198" left="129" width="173" height="14" font="2">approach may be reasonable.</text>
+<text top="213" left="147" width="179" height="14" font="2">You might also observe that in</text>
+<text top="214" left="328" width="48" height="11" font="5">lock()</text>
+<text top="213" left="377" width="184" height="14" font="2">, when a thread can not acquire</text>
+<text top="228" left="129" width="432" height="14" font="2">the lock (it is already held), we are careful to add ourselves to a queue (by</text>
+<text top="243" left="129" width="61" height="14" font="2">calling the</text>
+<text top="244" left="193" width="65" height="11" font="5">gettid()</text>
+<text top="243" left="261" width="300" height="14" font="2">function to get the thread ID of the current thread),</text>
+<text top="258" left="129" width="432" height="14" font="2">set guard to 0, and yield the CPU. A question for the reader: What would</text>
+<text top="273" left="129" width="271" height="14" font="2">happen if the release of the guard lock came</text>
+<text top="273" left="405" width="25" height="14" font="8"><i>after</i></text>
+<text top="273" left="434" width="19" height="14" font="2">the</text>
+<text top="274" left="457" width="48" height="11" font="5">park()</text>
+<text top="273" left="506" width="55" height="14" font="2">, and not</text>
+<text top="288" left="129" width="174" height="14" font="2">before? Hint: something bad.</text>
+<text top="303" left="147" width="414" height="14" font="2">You might further detect that the ﬂag does not get set back to 0 when</text>
+<text top="318" left="129" width="432" height="14" font="2">another thread gets woken up. Why is this? Well, it is not an error, but</text>
+<text top="333" left="129" width="432" height="14" font="2">rather a necessity! When a thread is woken up, it will be as if it is re-</text>
+<text top="348" left="129" width="78" height="14" font="2">turning from</text>
+<text top="349" left="211" width="48" height="11" font="5">park()</text>
+<text top="348" left="259" width="302" height="14" font="2">; however, it does not hold the guard at that point</text>
+<text top="363" left="129" width="432" height="14" font="2">in the code and thus cannot even try to set the ﬂag to 1. Thus, we just</text>
+<text top="378" left="129" width="432" height="14" font="2">pass the lock directly from the thread releasing the lock to the next thread</text>
+<text top="393" left="129" width="252" height="14" font="2">acquiring it; ﬂag is not set to 0 in-between.</text>
+<text top="408" left="147" width="414" height="14" font="2">Finally, you might notice the perceived race condition in the solution,</text>
+<text top="423" left="129" width="125" height="14" font="2">just before the call to</text>
+<text top="423" left="258" width="48" height="11" font="5">park()</text>
+<text top="423" left="306" width="255" height="14" font="2">. With just the wrong timing, a thread will</text>
+<text top="438" left="129" width="432" height="14" font="2">be about to park, assuming that it should sleep until the lock is no longer</text>
+<text top="452" left="129" width="432" height="14" font="2">held. A switch at that time to another thread (say, a thread holding the</text>
+<text top="467" left="129" width="432" height="14" font="2">lock) could lead to trouble, for example, if that thread then released the</text>
+<text top="482" left="129" width="432" height="14" font="2">lock. The subsequent park by the ﬁrst thread would then sleep forever</text>
+<text top="497" left="129" width="268" height="14" font="2">(potentially), a problem sometimes called the</text>
+<text top="497" left="400" width="128" height="13" font="3"><b>wakeup/waiting race</b></text>
+<text top="497" left="529" width="3" height="14" font="2">.</text>
+<text top="512" left="147" width="334" height="14" font="2">Solaris solves this problem by adding a third system call:</text>
+<text top="513" left="485" width="73" height="11" font="5">setpark()</text>
+<text top="512" left="557" width="3" height="14" font="2">.</text>
+<text top="527" left="129" width="291" height="14" font="2">By calling this routine, a thread can indicate it is</text>
+<text top="527" left="424" width="45" height="14" font="8"><i>about to</i></text>
+<text top="527" left="472" width="89" height="14" font="2">park. If it then</text>
+<text top="542" left="129" width="432" height="14" font="2">happens to be interrupted and another thread calls unpark before park is</text>
+<text top="557" left="129" width="432" height="14" font="2">actually called, the subsequent park returns immediately instead of sleep-</text>
+<text top="572" left="129" width="218" height="14" font="2">ing. The code modiﬁcation, inside of</text>
+<text top="573" left="350" width="48" height="11" font="5">lock()</text>
+<text top="572" left="398" width="89" height="14" font="2">, is quite small:</text>
+<text top="603" left="107" width="4" height="8" font="6">1</text>
+<text top="599" left="161" width="210" height="11" font="5">queue_add(m-&gt;q, gettid());</text>
+<text top="618" left="107" width="4" height="8" font="6">2</text>
+<text top="614" left="161" width="178" height="11" font="5">setpark(); // new code</text>
+<text top="633" left="107" width="4" height="8" font="6">3</text>
+<text top="629" left="161" width="105" height="11" font="5">m-&gt;guard = 0;</text>
+<text top="655" left="147" width="414" height="14" font="2">A different solution could pass the guard into the kernel. In that case,</text>
+<text top="670" left="129" width="432" height="14" font="2">the kernel could take precautions to atomically release the lock and de-</text>
+<text top="685" left="129" width="156" height="14" font="2">queue the running thread.</text>
+<text top="722" left="97" width="268" height="17" font="4">28.15 Different OS, Different Support</text>
+<text top="751" left="147" width="414" height="14" font="2">We have thus far seen one type of support that an OS can provide in</text>
+<text top="766" left="129" width="432" height="14" font="2">order to build a more efﬁcient lock in a thread library. Other OS’s provide</text>
+<text top="781" left="129" width="192" height="14" font="2">similar support; the details vary.</text>
+<text top="796" left="147" width="181" height="14" font="2">For example, Linux provides a</text>
+<text top="796" left="332" width="31" height="13" font="3"><b>futex</b></text>
+<text top="796" left="366" width="194" height="14" font="2">which is similar to the Solaris in-</text>
+<text top="811" left="129" width="432" height="14" font="2">terface but provides more in-kernel functionality. Speciﬁcally, each futex</text>
+<text top="826" left="129" width="432" height="14" font="2">has associated with it a speciﬁc physical memory location, as well as a</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="19" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="506" width="13" height="14" font="2">19</text>
+<text top="138" left="65" width="4" height="8" font="6">1</text>
+<text top="135" left="87" width="242" height="14" font="5">void mutex_lock (int *mutex) {</text>
+<text top="153" left="65" width="4" height="8" font="6">2</text>
+<text top="150" left="103" width="48" height="11" font="5">int v;</text>
+<text top="168" left="65" width="4" height="8" font="6">3</text>
+<text top="165" left="103" width="387" height="11" font="5">// Bit 31 was clear, we got the mutex (fastpath)</text>
+<text top="183" left="65" width="4" height="8" font="6">4</text>
+<text top="180" left="103" width="331" height="11" font="5">if (atomic_bit_test_set (mutex, 31) == 0)</text>
+<text top="198" left="65" width="4" height="8" font="6">5</text>
+<text top="195" left="119" width="57" height="11" font="5">return;</text>
+<text top="213" left="65" width="4" height="8" font="6">6</text>
+<text top="210" left="103" width="202" height="11" font="5">atomic_increment (mutex);</text>
+<text top="228" left="65" width="4" height="8" font="6">7</text>
+<text top="225" left="103" width="89" height="11" font="5">while (1) {</text>
+<text top="243" left="65" width="4" height="8" font="6">8</text>
+<text top="240" left="135" width="347" height="11" font="5">if (atomic_bit_test_set (mutex, 31) == 0) {</text>
+<text top="258" left="65" width="4" height="8" font="6">9</text>
+<text top="254" left="168" width="202" height="11" font="5">atomic_decrement (mutex);</text>
+<text top="273" left="62" width="7" height="8" font="6">10</text>
+<text top="269" left="168" width="57" height="11" font="5">return;</text>
+<text top="288" left="62" width="7" height="8" font="6">11</text>
+<text top="284" left="135" width="8" height="11" font="5">}</text>
+<text top="303" left="62" width="7" height="8" font="6">12</text>
+<text top="299" left="135" width="363" height="11" font="5">// Have to waitFirst to make sure futex value</text>
+<text top="318" left="62" width="7" height="8" font="6">13</text>
+<text top="314" left="135" width="339" height="11" font="5">// we are monitoring is negative (locked).</text>
+<text top="333" left="62" width="7" height="8" font="6">14</text>
+<text top="329" left="135" width="89" height="14" font="5">v = *mutex;</text>
+<text top="348" left="62" width="7" height="8" font="6">15</text>
+<text top="344" left="135" width="89" height="11" font="5">if (v &gt;= 0)</text>
+<text top="363" left="62" width="7" height="8" font="6">16</text>
+<text top="359" left="152" width="73" height="11" font="5">continue;</text>
+<text top="378" left="62" width="7" height="8" font="6">17</text>
+<text top="374" left="135" width="178" height="11" font="5">futex_wait (mutex, v);</text>
+<text top="393" left="62" width="7" height="8" font="6">18</text>
+<text top="389" left="103" width="8" height="11" font="5">}</text>
+<text top="407" left="62" width="7" height="8" font="6">19</text>
+<text top="404" left="87" width="8" height="11" font="5">}</text>
+<text top="422" left="62" width="7" height="8" font="6">20</text>
+<text top="437" left="62" width="7" height="8" font="6">21</text>
+<text top="434" left="87" width="258" height="14" font="5">void mutex_unlock (int *mutex) {</text>
+<text top="452" left="62" width="7" height="8" font="6">22</text>
+<text top="449" left="103" width="412" height="11" font="5">// Adding 0x80000000 to counter results in 0 if and</text>
+<text top="467" left="62" width="7" height="8" font="6">23</text>
+<text top="464" left="103" width="395" height="11" font="5">// only if there are not other interested threads</text>
+<text top="482" left="62" width="7" height="8" font="6">24</text>
+<text top="479" left="103" width="323" height="11" font="5">if (atomic_add_zero (mutex, 0x80000000))</text>
+<text top="497" left="62" width="7" height="8" font="6">25</text>
+<text top="494" left="119" width="57" height="11" font="5">return;</text>
+<text top="512" left="62" width="7" height="8" font="6">26</text>
+<text top="527" left="62" width="7" height="8" font="6">27</text>
+<text top="523" left="103" width="403" height="11" font="5">// There are other threads waiting for this mutex,</text>
+<text top="542" left="62" width="7" height="8" font="6">28</text>
+<text top="538" left="103" width="186" height="11" font="5">// wake one of them up.</text>
+<text top="557" left="62" width="7" height="8" font="6">29</text>
+<text top="553" left="103" width="153" height="11" font="5">futex_wake (mutex);</text>
+<text top="572" left="62" width="7" height="8" font="6">30</text>
+<text top="568" left="87" width="8" height="11" font="5">}</text>
+<text top="587" left="187" width="75" height="14" font="2">Figure 28.10:</text>
+<text top="587" left="267" width="152" height="13" font="3"><b>Linux-based Futex Locks</b></text>
+<text top="612" left="87" width="432" height="14" font="2">per-futex in-kernel queue. Callers can use futex calls (described below)</text>
+<text top="627" left="87" width="176" height="14" font="2">to sleep and wake as need be.</text>
+<text top="644" left="105" width="268" height="14" font="2">Speciﬁcally, two calls are available. The call to</text>
+<text top="644" left="375" width="153" height="11" font="5">futex_wait(address,</text>
+<text top="659" left="87" width="73" height="11" font="5">expected)</text>
+<text top="658" left="162" width="357" height="14" font="2">puts the calling thread to sleep, assuming the value at the ad-</text>
+<text top="673" left="87" width="31" height="14" font="2">dress</text>
+<text top="674" left="123" width="57" height="11" font="5">address</text>
+<text top="673" left="183" width="63" height="14" font="2">is equal to</text>
+<text top="674" left="250" width="65" height="11" font="5">expected</text>
+<text top="673" left="315" width="46" height="14" font="2">. If it is</text>
+<text top="673" left="365" width="18" height="14" font="8"><i>not</i></text>
+<text top="673" left="388" width="131" height="14" font="2">equal, the call returns</text>
+<text top="688" left="87" width="210" height="14" font="2">immediately. The call to the routine</text>
+<text top="689" left="300" width="153" height="11" font="5">futex_wake(address)</text>
+<text top="688" left="457" width="62" height="14" font="2">wakes one</text>
+<text top="703" left="87" width="432" height="14" font="2">thread that is waiting on the queue. The usage of these calls in a Linux</text>
+<text top="718" left="87" width="246" height="14" font="2">mutex is shown in Figure 28.10 (page 19).</text>
+<text top="735" left="105" width="138" height="14" font="2">This code snippet from</text>
+<text top="736" left="247" width="113" height="11" font="5">lowlevellock.h</text>
+<text top="735" left="364" width="155" height="14" font="2">in the nptl library (part of</text>
+<text top="750" left="87" width="432" height="14" font="2">the gnu libc library) [L09] is interesting for a few reasons. First, it uses a</text>
+<text top="765" left="87" width="432" height="14" font="2">single integer to track both whether the lock is held or not (the high bit</text>
+<text top="780" left="87" width="432" height="14" font="2">of the integer) and the number of waiters on the lock (all the other bits).</text>
+<text top="795" left="87" width="432" height="14" font="2">Thus, if the lock is negative, it is held (because the high bit is set and that</text>
+<text top="810" left="87" width="226" height="14" font="2">bit determines the sign of the integer).</text>
+<text top="826" left="105" width="414" height="14" font="2">Second, the code snippet shows how to optimize for the common case,</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="20" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="10" family="PUSEAC+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">20</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="139" left="129" width="432" height="14" font="2">speciﬁcally when there is no contention for the lock; with only one thread</text>
+<text top="154" left="129" width="432" height="14" font="2">acquiring and releasing a lock, very little work is done (the atomic bit</text>
+<text top="169" left="129" width="344" height="14" font="2">test-and-set to lock and an atomic add to release the lock).</text>
+<text top="183" left="147" width="414" height="14" font="2">See if you can puzzle through the rest of this “real-world” lock to un-</text>
+<text top="198" left="129" width="432" height="14" font="2">derstand how it works. Do it and become a master of Linux locking, or at</text>
+<text top="216" left="129" width="397" height="14" font="2">least somebody who listens when a book tells you to do something</text>
+<text top="213" left="530" width="4" height="9" font="11">3</text>
+<text top="216" left="535" width="3" height="14" font="2">.</text>
+<text top="253" left="97" width="167" height="17" font="4">28.16 Two-Phase Locks</text>
+<text top="282" left="147" width="414" height="14" font="2">One ﬁnal note: the Linux approach has the ﬂavor of an old approach</text>
+<text top="297" left="129" width="432" height="14" font="2">that has been used on and off for years, going at least as far back to Dahm</text>
+<text top="312" left="129" width="364" height="14" font="2">Locks in the early 1960’s [M82], and is now referred to as a</text>
+<text top="312" left="497" width="64" height="13" font="3"><b>two-phase</b></text>
+<text top="327" left="129" width="26" height="13" font="3"><b>lock</b></text>
+<text top="327" left="155" width="406" height="14" font="2">. A two-phase lock realizes that spinning can be useful, particularly</text>
+<text top="342" left="129" width="432" height="14" font="2">if the lock is about to be released. So in the ﬁrst phase, the lock spins for</text>
+<text top="357" left="129" width="255" height="14" font="2">a while, hoping that it can acquire the lock.</text>
+<text top="372" left="147" width="414" height="14" font="2">However, if the lock is not acquired during the ﬁrst spin phase, a sec-</text>
+<text top="387" left="129" width="432" height="14" font="2">ond phase is entered, where the caller is put to sleep, and only woken up</text>
+<text top="402" left="129" width="432" height="14" font="2">when the lock becomes free later. The Linux lock above is a form of such</text>
+<text top="417" left="129" width="432" height="14" font="2">a lock, but it only spins once; a generalization of this could spin in a loop</text>
+<text top="432" left="129" width="232" height="14" font="2">for a ﬁxed amount of time before using</text>
+<text top="432" left="364" width="31" height="13" font="3"><b>futex</b></text>
+<text top="432" left="399" width="99" height="14" font="2">support to sleep.</text>
+<text top="447" left="147" width="267" height="14" font="2">Two-phase locks are yet another instance of a</text>
+<text top="447" left="417" width="42" height="13" font="3"><b>hybrid</b></text>
+<text top="447" left="461" width="99" height="14" font="2">approach, where</text>
+<text top="462" left="129" width="432" height="14" font="2">combining two good ideas may indeed yield a better one. Of course,</text>
+<text top="477" left="129" width="432" height="14" font="2">whether it does depends strongly on many things, including the hard-</text>
+<text top="492" left="129" width="432" height="14" font="2">ware environment, number of threads, and other workload details. As</text>
+<text top="507" left="129" width="432" height="14" font="2">always, making a single general-purpose lock, good for all possible use</text>
+<text top="521" left="129" width="154" height="14" font="2">cases, is quite a challenge.</text>
+<text top="559" left="97" width="113" height="17" font="4">28.17 Summary</text>
+<text top="588" left="147" width="414" height="14" font="2">The above approach shows how real locks are built these days: some</text>
+<text top="603" left="129" width="432" height="14" font="2">hardware support (in the form of a more powerful instruction) plus some</text>
+<text top="618" left="129" width="281" height="14" font="2">operating system support (e.g., in the form of</text>
+<text top="619" left="415" width="48" height="11" font="5">park()</text>
+<text top="618" left="468" width="23" height="14" font="2">and</text>
+<text top="619" left="496" width="65" height="11" font="5">unpark()</text>
+<text top="633" left="129" width="141" height="14" font="2">primitives on Solaris, or</text>
+<text top="633" left="273" width="31" height="13" font="3"><b>futex</b></text>
+<text top="633" left="308" width="253" height="14" font="2">on Linux). Of course, the details differ, and</text>
+<text top="648" left="129" width="432" height="14" font="2">the exact code to perform such locking is usually highly tuned. Check out</text>
+<text top="663" left="129" width="432" height="14" font="2">the Solaris or Linux code bases if you want to see more details; they are</text>
+<text top="678" left="129" width="432" height="14" font="2">a fascinating read [L09, S09]. Also see David et al.’s excellent work for a</text>
+<text top="693" left="129" width="407" height="14" font="2">comparison of locking strategies on modern multiprocessors [D+13].</text>
+<text top="790" left="149" width="4" height="8" font="6">3</text>
+<text top="792" left="154" width="407" height="11" font="10">Like buy a print copy of OSTEP! Even though the book is available for free online,</text>
+<text top="804" left="129" width="432" height="11" font="10">wouldn’t you just love a hard cover for your desk? Or, better yet, ten copies to share with</text>
+<text top="816" left="129" width="370" height="11" font="10">friends and family? And maybe one extra copy to throw at an enemy? (the book</text>
+<text top="816" left="501" width="7" height="11" font="16"><i>is</i></text>
+<text top="816" left="511" width="50" height="11" font="10">heavy, and</text>
+<text top="828" left="129" width="189" height="11" font="10">thus chucking it is surprisingly effective)</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="21" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="16" family="AYAVJR+URWPalladioL" color="#000000"/>
+	<fontspec id="18" size="10" family="ESEHOY+NimbusMonL-ReguObli" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="32" height="11" font="7">OCKS</text>
+<text top="96" left="506" width="13" height="14" font="2">21</text>
+<text top="137" left="87" width="82" height="16" font="17"><b>References</b></text>
+<text top="165" left="87" width="390" height="11" font="10">[D91] “Just Win, Baby: Al Davis and His Raiders” by Glenn Dickey. Harcourt, 1991.</text>
+<text top="165" left="482" width="37" height="11" font="16"><i>The book</i></text>
+<text top="177" left="87" width="432" height="11" font="16"><i>about Al Davis and his famous quote. Or, we suppose, the book is more about Al Davis and the Raiders,</i></text>
+<text top="189" left="87" width="426" height="11" font="16"><i>and not so much the quote. To be clear: we are not recommending this book, we just needed a citation.</i></text>
+<text top="206" left="87" width="432" height="11" font="10">[D+13] “Everything You Always Wanted to Know about Synchronization but Were Afraid to</text>
+<text top="218" left="87" width="432" height="11" font="10">Ask” by Tudor David, Rachid Guerraoui, Vasileios Trigonakis. SOSP ’13, Nemacolin Wood-</text>
+<text top="229" left="87" width="205" height="11" font="10">lands Resort, Pennsylvania, November 2013.</text>
+<text top="229" left="295" width="224" height="11" font="16"><i>An excellent paper comparing many different ways to</i></text>
+<text top="241" left="87" width="400" height="11" font="16"><i>build locks using hardware primitives. Great to see how many ideas work on modern hardware.</i></text>
+<text top="258" left="87" width="432" height="11" font="10">[D68] “Cooperating sequential processes” by Edsger W. Dijkstra. 1968. Available online here:</text>
+<text top="270" left="87" width="333" height="9" font="12">http://www.cs.utexas.edu/users/EWD/ewd01xx/EWD123.PDF</text>
+<text top="270" left="420" width="3" height="11" font="10">.</text>
+<text top="270" left="425" width="94" height="11" font="16"><i>One of the early semi-</i></text>
+<text top="282" left="87" width="416" height="11" font="16"><i>nal papers. Discusses how Dijkstra posed the original concurrency problem, and Dekker’s solution.</i></text>
+<text top="298" left="87" width="432" height="11" font="10">[H93] “MIPS R4000 Microprocessor User’s Manual” by Joe Heinrich. Prentice-Hall, June 1993.</text>
+<text top="310" left="87" width="379" height="11" font="10">Available: http://cag.csail.mit.edu/raw/documents/R4400 Uman book Ed2.pdf.</text>
+<text top="310" left="470" width="58" height="11" font="16"><i>The old MIPS</i></text>
+<text top="322" left="87" width="200" height="11" font="16"><i>user’s manual. Download it while it still exists.</i></text>
+<text top="338" left="87" width="432" height="11" font="10">[H91] “Wait-free Synchronization” by Maurice Herlihy. ACM TOPLAS, Volume 13: 1, January</text>
+<text top="350" left="87" width="24" height="11" font="10">1991.</text>
+<text top="350" left="115" width="404" height="11" font="16"><i>A landmark paper introducing a different approach to building concurrent data structures. Be-</i></text>
+<text top="362" left="87" width="429" height="11" font="16"><i>cause of the complexity involved, some of these ideas have been slow to gain acceptance in deployment.</i></text>
+<text top="378" left="87" width="432" height="11" font="10">[L81] “Observations on the Development of an Operating System” by Hugh Lauer. SOSP ’81,</text>
+<text top="390" left="87" width="193" height="11" font="10">Paciﬁc Grove, California, December 1981.</text>
+<text top="390" left="285" width="234" height="11" font="16"><i>A must-read retrospective about the development of the</i></text>
+<text top="402" left="87" width="274" height="11" font="16"><i>Pilot OS, an early PC operating system. Fun and full of insights.</i></text>
+<text top="418" left="87" width="432" height="11" font="10">[L09] “glibc 2.9 (include Linux pthreads implementation)” by Many authors.. Available here:</text>
+<text top="431" left="87" width="176" height="9" font="12">http://ftp.gnu.org/gnu/glibc</text>
+<text top="430" left="263" width="3" height="11" font="10">.</text>
+<text top="430" left="269" width="250" height="11" font="16"><i>In particular, take a look at the nptl subdirectory where you</i></text>
+<text top="442" left="87" width="221" height="11" font="16"><i>will ﬁnd most of the pthread support in Linux today.</i></text>
+<text top="459" left="87" width="432" height="11" font="10">[M82] “The Architecture of the Burroughs B5000: 20 Years Later and Still Ahead of the Times?”</text>
+<text top="471" left="87" width="139" height="11" font="10">by A. Mayer. 1982. Available:</text>
+<text top="471" left="230" width="232" height="9" font="12">www.ajwm.net/amayer/papers/B5000.html</text>
+<text top="471" left="462" width="3" height="11" font="10">.</text>
+<text top="471" left="469" width="50" height="11" font="16"><i>“It (RDLK)</i></text>
+<text top="483" left="87" width="432" height="11" font="16"><i>is an indivisible operation which reads from and writes into a memory location.” RDLK is thus test-</i></text>
+<text top="494" left="87" width="416" height="11" font="16"><i>and-set! Dave Dahm created spin locks (“Buzz Locks”) and a two-phase lock called “Dahm Locks.”</i></text>
+<text top="511" left="87" width="201" height="11" font="10">[M15] “OSSpinLock Is Unsafe” by J. McCall.</text>
+<text top="511" left="291" width="232" height="9" font="12">mjtsai.com/blog/2015/12/16/osspinlock</text>
+<text top="523" left="87" width="63" height="9" font="12">-is-unsafe</text>
+<text top="523" left="150" width="3" height="11" font="10">.</text>
+<text top="523" left="156" width="363" height="11" font="16"><i>Calling OSSpinLock on a Mac is unsafe when using threads of different priorities – you</i></text>
+<text top="535" left="87" width="414" height="11" font="16"><i>might spin forever! So be careful, Mac fanatics, even your mighty system can be less than perfect...</i></text>
+<text top="551" left="87" width="432" height="11" font="10">[MS91] “Algorithms for Scalable Synchronization on Shared-Memory Multiprocessors” by</text>
+<text top="563" left="87" width="432" height="11" font="10">John M. Mellor-Crummey and M. L. Scott. ACM TOCS, Volume 9, Issue 1, February 1991.</text>
+<text top="575" left="87" width="432" height="11" font="16"><i>An excellent and thorough survey on different locking algorithms. However, no operating systems</i></text>
+<text top="587" left="87" width="209" height="11" font="16"><i>support is used, just fancy hardware instructions.</i></text>
+<text top="603" left="87" width="432" height="11" font="10">[P81] “Myths About the Mutual Exclusion Problem” by G.L. Peterson. Information Processing</text>
+<text top="615" left="87" width="160" height="11" font="10">Letters, 12(3), pages 115–116, 1981.</text>
+<text top="615" left="250" width="157" height="11" font="16"><i>Peterson’s algorithm introduced here.</i></text>
+<text top="631" left="87" width="432" height="11" font="10">[R97] “What Really Happened on Mars?” by Glenn E. Reeves. Available on our site at:</text>
+<text top="644" left="87" width="377" height="9" font="12">https://pages.cs.wisc.edu/%7Eremzi/OSTEP/Citations/mars.html</text>
+<text top="643" left="464" width="3" height="11" font="10">.</text>
+<text top="643" left="474" width="45" height="11" font="16"><i>A descrip-</i></text>
+<text top="655" left="87" width="432" height="11" font="16"><i>tion of priority inversion on Mars Pathﬁnder. Concurrent code correctness matters, especially in space!</i></text>
+<text top="672" left="87" width="432" height="11" font="10">[S05] “Guide to porting from Solaris to Linux on x86” by Ajay Sood, April 29, 2005. Available:</text>
+<text top="684" left="87" width="352" height="9" font="12">http://www.ibm.com/developerworks/linux/library/l-solar/</text>
+<text top="683" left="439" width="3" height="11" font="10">.</text>
+<text top="700" left="87" width="233" height="11" font="10">[S09] “OpenSolaris Thread Library” by Sun.. Code:</text>
+<text top="700" left="323" width="201" height="9" font="12">src.opensolaris.org/source/xref/</text>
+<text top="712" left="87" width="326" height="9" font="12">onnv/onnv-gate/usr/src/lib/libc/port/threads/synch.c</text>
+<text top="712" left="414" width="3" height="11" font="10">.</text>
+<text top="712" left="424" width="95" height="11" font="16"><i>Pretty interesting, al-</i></text>
+<text top="724" left="87" width="431" height="11" font="16"><i>though who knows what will happen now that Oracle owns Sun. Thanks to Mike Swift for the pointer.</i></text>
+<text top="740" left="87" width="261" height="11" font="10">[W09] “Load-Link, Store-Conditional” by Many authors..</text>
+<text top="741" left="351" width="169" height="9" font="12">en.wikipedia.org/wiki/Load-</text>
+<text top="753" left="87" width="138" height="9" font="12">Link/Store-Conditional</text>
+<text top="752" left="225" width="3" height="11" font="10">.</text>
+<text top="752" left="233" width="286" height="11" font="16"><i>Can you believe we referenced Wikipedia? But, we found the infor-</i></text>
+<text top="764" left="87" width="432" height="11" font="16"><i>mation there and it felt wrong not to. Further, it was useful, listing the instructions for the differ-</i></text>
+<text top="776" left="87" width="73" height="11" font="16"><i>ent architectures:</i></text>
+<text top="776" left="163" width="69" height="9" font="18">ldl_l/stl_c</text>
+<text top="776" left="235" width="16" height="11" font="16"><i>and</i></text>
+<text top="776" left="254" width="69" height="9" font="18">ldq_l/stq_c</text>
+<text top="776" left="325" width="35" height="11" font="16"><i>(Alpha),</i></text>
+<text top="776" left="363" width="69" height="9" font="18">lwarx/stwcx</text>
+<text top="776" left="435" width="50" height="11" font="16"><i>(PowerPC),</i></text>
+<text top="776" left="488" width="31" height="9" font="18">ll/sc</text>
+<text top="788" left="87" width="53" height="11" font="16"><i>(MIPS), and</i></text>
+<text top="788" left="143" width="69" height="9" font="18">ldrex/strex</text>
+<text top="788" left="214" width="305" height="11" font="16"><i>(ARM). Actually Wikipedia is pretty amazing, so don’t be so harsh, OK?</i></text>
+<text top="804" left="87" width="432" height="11" font="10">[WG00] “The SPARC Architecture Manual: Version 9” by D. Weaver, T. Germond. SPARC</text>
+<text top="816" left="87" width="89" height="11" font="10">International, 2000.</text>
+<text top="817" left="181" width="264" height="9" font="12">http://www.sparc.org/standards/SPARCV9.pdf</text>
+<text top="816" left="445" width="3" height="11" font="10">.</text>
+<text top="816" left="452" width="67" height="11" font="16"><i>See the website:</i></text>
+<text top="829" left="87" width="308" height="9" font="18">developers.sun.com/solaris/articles/atomic_sparc/</text>
+<text top="828" left="397" width="85" height="11" font="16"><i>for more on atomics.</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="22" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="15" family="AYAVJR+URWPalladioL" color="#000000"/>
+	<fontspec id="20" size="12" family="BYZPAJ+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">22</text>
+<text top="96" left="520" width="8" height="14" font="2">L</text>
+<text top="98" left="529" width="32" height="11" font="7">OCKS</text>
+<text top="137" left="129" width="183" height="16" font="17"><b>Homework (Simulation)</b></text>
+<text top="161" left="147" width="85" height="14" font="2">This program,</text>
+<text top="162" left="236" width="48" height="11" font="5">x86.py</text>
+<text top="161" left="285" width="276" height="14" font="2">, allows you to see how different thread inter-</text>
+<text top="176" left="129" width="432" height="14" font="2">leavings either cause or avoid race conditions. See the README for de-</text>
+<text top="191" left="129" width="388" height="14" font="2">tails on how the program works and answer the questions below.</text>
+<text top="215" left="129" width="70" height="15" font="19"><b>Questions</b></text>
+<text top="240" left="148" width="62" height="12" font="9">1. Examine</text>
+<text top="240" left="214" width="43" height="10" font="20">flag.s</text>
+<text top="240" left="257" width="304" height="12" font="9">. This code “implements” locking with a single memory</text>
+<text top="254" left="163" width="212" height="12" font="9">ﬂag. Can you understand the assembly?</text>
+<text top="268" left="148" width="221" height="12" font="9">2. When you run with the defaults, does</text>
+<text top="269" left="373" width="43" height="10" font="20">flag.s</text>
+<text top="268" left="420" width="80" height="12" font="9">work? Use the</text>
+<text top="269" left="504" width="14" height="10" font="20">-M</text>
+<text top="268" left="522" width="20" height="12" font="9">and</text>
+<text top="269" left="546" width="14" height="10" font="20">-R</text>
+<text top="282" left="163" width="269" height="12" font="9">ﬂags to trace variables and registers (and turn on</text>
+<text top="283" left="436" width="14" height="10" font="20">-c</text>
+<text top="282" left="455" width="106" height="12" font="9">to see their values).</text>
+<text top="297" left="163" width="224" height="12" font="9">Can you predict what value will end up in</text>
+<text top="297" left="391" width="29" height="10" font="20">flag</text>
+<text top="297" left="419" width="5" height="12" font="9">?</text>
+<text top="311" left="148" width="184" height="12" font="9">3. Change the value of the register</text>
+<text top="312" left="335" width="22" height="10" font="20">%bx</text>
+<text top="311" left="359" width="44" height="12" font="9">with the</text>
+<text top="312" left="406" width="14" height="10" font="20">-a</text>
+<text top="311" left="424" width="48" height="12" font="9">ﬂag (e.g.,</text>
+<text top="312" left="475" width="86" height="10" font="20">-a bx=2,bx=2</text>
+<text top="325" left="163" width="397" height="12" font="9">if you are running just two threads). What does the code do? How does it</text>
+<text top="340" left="163" width="233" height="12" font="9">change your answer for the question above?</text>
+<text top="354" left="148" width="32" height="12" font="9">4. Set</text>
+<text top="355" left="183" width="14" height="10" font="20">bx</text>
+<text top="354" left="200" width="257" height="12" font="9">to a high value for each thread, and then use the</text>
+<text top="355" left="461" width="14" height="10" font="20">-i</text>
+<text top="354" left="479" width="82" height="12" font="9">ﬂag to generate</text>
+<text top="368" left="163" width="397" height="12" font="9">different interrupt frequencies; what values lead to a bad outcomes? Which</text>
+<text top="382" left="163" width="125" height="12" font="9">lead to good outcomes?</text>
+<text top="397" left="148" width="177" height="12" font="9">5. Now let’s look at the program</text>
+<text top="398" left="328" width="100" height="10" font="20">test-and-set.s</text>
+<text top="397" left="428" width="132" height="12" font="9">. First, try to understand</text>
+<text top="411" left="163" width="131" height="12" font="9">the code, which uses the</text>
+<text top="412" left="298" width="29" height="10" font="20">xchg</text>
+<text top="411" left="330" width="231" height="12" font="9">instruction to build a simple locking primi-</text>
+<text top="425" left="163" width="331" height="12" font="9">tive. How is the lock acquire written? How about lock release?</text>
+<text top="440" left="148" width="359" height="12" font="9">6. Now run the code, changing the value of the interrupt interval (</text>
+<text top="440" left="507" width="14" height="10" font="20">-i</text>
+<text top="440" left="521" width="40" height="12" font="9">) again,</text>
+<text top="454" left="163" width="397" height="12" font="9">and making sure to loop for a number of times. Does the code always work</text>
+<text top="468" left="163" width="397" height="12" font="9">as expected? Does it sometimes lead to an inefﬁcient use of the CPU? How</text>
+<text top="482" left="163" width="130" height="12" font="9">could you quantify that?</text>
+<text top="497" left="148" width="56" height="12" font="9">7. Use the</text>
+<text top="498" left="207" width="14" height="10" font="20">-P</text>
+<text top="497" left="225" width="336" height="12" font="9">ﬂag to generate speciﬁc tests of the locking code. For example,</text>
+<text top="511" left="163" width="397" height="12" font="9">run a schedule that grabs the lock in the ﬁrst thread, but then tries to acquire</text>
+<text top="525" left="163" width="386" height="12" font="9">it in the second. Does the right thing happen? What else should you test?</text>
+<text top="540" left="148" width="173" height="12" font="9">8. Now let’s look at the code in</text>
+<text top="540" left="324" width="72" height="10" font="20">peterson.s</text>
+<text top="540" left="396" width="165" height="12" font="9">, which implements Peterson’s</text>
+<text top="554" left="163" width="397" height="12" font="9">algorithm (mentioned in a sidebar in the text). Study the code and see if</text>
+<text top="568" left="163" width="132" height="12" font="9">you can make sense of it.</text>
+<text top="583" left="148" width="242" height="12" font="9">9. Now run the code with different values of</text>
+<text top="583" left="393" width="14" height="10" font="20">-i</text>
+<text top="583" left="408" width="153" height="12" font="9">. What kinds of different be-</text>
+<text top="597" left="163" width="380" height="12" font="9">havior do you see? Make sure to set the thread IDs appropriately (using</text>
+<text top="597" left="546" width="14" height="10" font="20">-a</text>
+<text top="612" left="163" width="65" height="10" font="20">bx=0,bx=1</text>
+<text top="611" left="231" width="190" height="12" font="9">for example) as the code assumes it.</text>
+<text top="625" left="142" width="241" height="12" font="9">10. Can you control the scheduling (with the</text>
+<text top="626" left="386" width="14" height="10" font="20">-P</text>
+<text top="625" left="404" width="157" height="12" font="9">ﬂag) to “prove” that the code</text>
+<text top="640" left="163" width="397" height="12" font="9">works? What are the different cases you should show hold? Think about</text>
+<text top="654" left="163" width="226" height="12" font="9">mutual exclusion and deadlock avoidance.</text>
+<text top="668" left="142" width="234" height="12" font="9">11. Now study the code for the ticket lock in</text>
+<text top="669" left="378" width="57" height="10" font="20">ticket.s</text>
+<text top="668" left="436" width="125" height="12" font="9">. Does it match the code</text>
+<text top="682" left="163" width="264" height="12" font="9">in the chapter? Then run with the following ﬂags:</text>
+<text top="683" left="432" width="129" height="10" font="20">-a bx=1000,bx=1000</text>
+<text top="697" left="163" width="397" height="12" font="9">(causing each thread to loop through the critical section 1000 times). Watch</text>
+<text top="711" left="163" width="390" height="12" font="9">what happens; do the threads spend much time spin-waiting for the lock?</text>
+<text top="725" left="142" width="303" height="12" font="9">12. How does the code behave as you add more threads?</text>
+<text top="740" left="142" width="97" height="12" font="9">13. Now examine</text>
+<text top="741" left="242" width="50" height="10" font="20">yield.s</text>
+<text top="740" left="292" width="64" height="12" font="9">, in which a</text>
+<text top="741" left="359" width="36" height="10" font="20">yield</text>
+<text top="740" left="399" width="162" height="12" font="9">instruction enables one thread</text>
+<text top="754" left="163" width="397" height="12" font="9">to yield control of the CPU (realistically, this would be an OS primitive, but</text>
+<text top="768" left="163" width="397" height="12" font="9">for the simplicity, we assume an instruction does the task). Find a scenario</text>
+<text top="782" left="163" width="33" height="12" font="9">where</text>
+<text top="783" left="201" width="100" height="10" font="20">test-and-set.s</text>
+<text top="782" left="305" width="148" height="12" font="9">wastes cycles spinning, but</text>
+<text top="783" left="457" width="50" height="10" font="20">yield.s</text>
+<text top="782" left="512" width="49" height="12" font="9">does not.</text>
+<text top="797" left="163" width="397" height="12" font="9">How many instructions are saved? In what scenarios do these savings arise?</text>
+<text top="811" left="142" width="109" height="12" font="9">14. Finally, examine</text>
+<text top="812" left="255" width="165" height="10" font="20">test-and-test-and-set.s</text>
+<text top="811" left="420" width="141" height="12" font="9">. What does this lock do?</text>
+<text top="825" left="163" width="288" height="12" font="9">What kind of savings does it introduce as compared to</text>
+<text top="826" left="454" width="100" height="10" font="20">test-and-set.s</text>
+<text top="825" left="555" width="5" height="12" font="9">?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+</pdf2xml>

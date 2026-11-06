@@ -1,0 +1,1800 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="ZFPNEV+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="ZFPNEV+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="SWBGOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="HKHAJT+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="HLIHCJ+CMMI9" color="#000000"/>
+	<fontspec id="5" size="11" family="SWBGOH+URWPalladioL-Roma" color="#000000"/>
+<text top="194" left="523" width="34" height="30" font="0">42</text>
+<text top="263" left="120" width="399" height="21" font="1">Crash Consistency: FSCK and Journaling</text>
+<text top="344" left="87" width="432" height="14" font="2">As we’ve seen thus far, the file system manages a set of data structures to</text>
+<text top="359" left="87" width="432" height="14" font="2">implement the expected abstractions: files, directories, and all of the other</text>
+<text top="374" left="87" width="432" height="14" font="2">metadata needed to support the basic abstraction that we expect from a</text>
+<text top="389" left="87" width="432" height="14" font="2">file system. Unlike most data structures (for example, those found in</text>
+<text top="404" left="87" width="384" height="14" font="2">memory of a running program), file system data structures must</text>
+<text top="404" left="475" width="41" height="13" font="3"><b>persist</b></text>
+<text top="404" left="516" width="3" height="14" font="2">,</text>
+<text top="419" left="87" width="432" height="14" font="2">i.e., they must survive over the long haul, stored on devices that retain</text>
+<text top="434" left="87" width="385" height="14" font="2">data despite power loss (such as hard disks or flash-based SSDs).</text>
+<text top="449" left="105" width="414" height="14" font="2">One major challenge faced by a file system is how to update persis-</text>
+<text top="464" left="87" width="263" height="14" font="2">tent data structures despite the presence of a</text>
+<text top="464" left="353" width="66" height="13" font="3"><b>power loss</b></text>
+<text top="464" left="422" width="13" height="14" font="2">or</text>
+<text top="464" left="438" width="78" height="13" font="3"><b>system crash</b></text>
+<text top="464" left="516" width="3" height="14" font="2">.</text>
+<text top="479" left="87" width="432" height="14" font="2">Specifically, what happens if, right in the middle of updating on-disk</text>
+<text top="494" left="87" width="432" height="14" font="2">structures, someone trips over the power cord and the machine loses</text>
+<text top="509" left="87" width="432" height="14" font="2">power? Or the operating system encounters a bug and crashes? Because</text>
+<text top="524" left="87" width="432" height="14" font="2">of power losses and crashes, updating a persistent data structure can be</text>
+<text top="539" left="87" width="432" height="14" font="2">quite tricky, and leads to a new and interesting problem in file system</text>
+<text top="554" left="87" width="181" height="14" font="2">implementation, known as the</text>
+<text top="554" left="272" width="163" height="13" font="3"><b>crash-consistency problem</b></text>
+<text top="554" left="435" width="3" height="14" font="2">.</text>
+<text top="568" left="105" width="414" height="14" font="2">This problem is quite simple to understand. Imagine you have to up-</text>
+<text top="583" left="87" width="169" height="14" font="2">date two on-disk structures,</text>
+<text top="584" left="261" width="10" height="14" font="4">A</text>
+<text top="583" left="276" width="23" height="14" font="2">and</text>
+<text top="584" left="303" width="10" height="14" font="4">B</text>
+<text top="583" left="314" width="205" height="14" font="2">, in order to complete a particular</text>
+<text top="598" left="87" width="432" height="14" font="2">operation. Because the disk only services a single request at a time, one</text>
+<text top="613" left="87" width="290" height="14" font="2">of these requests will reach the disk first (either</text>
+<text top="613" left="382" width="10" height="14" font="4">A</text>
+<text top="613" left="397" width="13" height="14" font="2">or</text>
+<text top="613" left="414" width="10" height="14" font="4">B</text>
+<text top="613" left="425" width="94" height="14" font="2">). If the system</text>
+<text top="628" left="87" width="432" height="14" font="2">crashes or loses power after one write completes, the on-disk structure</text>
+<text top="643" left="87" width="96" height="14" font="2">will be left in an</text>
+<text top="643" left="186" width="75" height="13" font="3"><b>inconsistent</b></text>
+<text top="643" left="264" width="255" height="14" font="2">state. And thus, we have a problem that all</text>
+<text top="658" left="87" width="154" height="14" font="2">file systems need to solve:</text>
+<text top="697" left="125" width="8" height="14" font="2">T</text>
+<text top="699" left="134" width="16" height="11" font="5">HE</text>
+<text top="697" left="155" width="10" height="14" font="2">C</text>
+<text top="699" left="165" width="24" height="11" font="5">RUX</text>
+<text top="697" left="190" width="19" height="14" font="2">: H</text>
+<text top="699" left="210" width="20" height="11" font="5">OW</text>
+<text top="697" left="233" width="8" height="14" font="2">T</text>
+<text top="699" left="242" width="8" height="11" font="5">O</text>
+<text top="697" left="255" width="10" height="14" font="2">U</text>
+<text top="699" left="266" width="38" height="11" font="5">PDATE</text>
+<text top="697" left="308" width="8" height="14" font="2">T</text>
+<text top="699" left="317" width="16" height="11" font="5">HE</text>
+<text top="697" left="337" width="10" height="14" font="2">D</text>
+<text top="699" left="348" width="18" height="11" font="5">ISK</text>
+<text top="697" left="371" width="10" height="14" font="2">D</text>
+<text top="699" left="382" width="39" height="11" font="5">ESPITE</text>
+<text top="697" left="425" width="10" height="14" font="2">C</text>
+<text top="699" left="435" width="46" height="11" font="5">RASHES</text>
+<text top="712" left="105" width="414" height="14" font="2">The system may crash or lose power between any two writes, and</text>
+<text top="727" left="87" width="432" height="14" font="2">thus the on-disk state may only partially get updated. After the crash,</text>
+<text top="742" left="87" width="432" height="14" font="2">the system boots and wishes to mount the file system again (in order to</text>
+<text top="757" left="87" width="432" height="14" font="2">access files and such). Given that crashes can occur at arbitrary points</text>
+<text top="772" left="87" width="432" height="14" font="2">in time, how do we ensure the file system keeps the on-disk image in a</text>
+<text top="787" left="87" width="101" height="14" font="2">reasonable state?</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="16" family="SWBGOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="13" family="GNESKC+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="8" size="12" family="ZFPNEV+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="9" size="11" family="ZFPNEV+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="10" size="12" family="ZFPNEV+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="11" size="12" family="SWBGOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="12" size="10" family="SWBGOH+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="139" left="147" width="414" height="14" font="2">In this chapter, we’ll describe this problem in more detail, and look</text>
+<text top="154" left="129" width="432" height="14" font="2">at some methods file systems have used to overcome it. We’ll begin by</text>
+<text top="169" left="129" width="366" height="14" font="2">examining the approach taken by older file systems, known as</text>
+<text top="169" left="498" width="25" height="13" font="3"><b>fsck</b></text>
+<text top="169" left="527" width="34" height="14" font="2">or the</text>
+<text top="184" left="129" width="118" height="13" font="3"><b>file system checker</b></text>
+<text top="183" left="247" width="314" height="14" font="2">. We’ll then turn our attention to another approach,</text>
+<text top="198" left="129" width="58" height="14" font="2">known as</text>
+<text top="198" left="191" width="65" height="13" font="3"><b>journaling</b></text>
+<text top="198" left="260" width="90" height="14" font="2">(also known as</text>
+<text top="198" left="355" width="124" height="13" font="3"><b>write-ahead logging</b></text>
+<text top="198" left="479" width="81" height="14" font="2">), a technique</text>
+<text top="213" left="129" width="432" height="14" font="2">which adds a little bit of overhead to each write but recovers more quickly</text>
+<text top="228" left="129" width="432" height="14" font="2">from crashes or power losses. We will discuss the basic machinery of</text>
+<text top="243" left="129" width="432" height="14" font="2">journaling, including a few different flavors of journaling that Linux ext3</text>
+<text top="258" left="129" width="413" height="14" font="2">[T98,PAA05] (a relatively modern journaling file system) implements.</text>
+<text top="296" left="97" width="180" height="17" font="6">42.1 A Detailed Example</text>
+<text top="326" left="147" width="414" height="14" font="2">To kick off our investigation of journaling, let’s look at an example.</text>
+<text top="341" left="129" width="119" height="14" font="2">We’ll need to use a</text>
+<text top="341" left="253" width="59" height="13" font="3"><b>workload</b></text>
+<text top="341" left="317" width="244" height="14" font="2">that updates on-disk structures in some</text>
+<text top="356" left="129" width="432" height="14" font="2">way. Assume here that the workload is simple: the append of a single</text>
+<text top="371" left="129" width="432" height="14" font="2">data block to an existing file. The append is accomplished by opening the</text>
+<text top="386" left="129" width="65" height="14" font="2">file, calling</text>
+<text top="386" left="197" width="57" height="11" font="7">lseek()</text>
+<text top="386" left="256" width="305" height="14" font="2">to move the file offset to the end of the file, and then</text>
+<text top="401" left="129" width="314" height="14" font="2">issuing a single 4KB write to the file before closing it.</text>
+<text top="416" left="147" width="414" height="14" font="2">Let’s also assume we are using standard simple file system structures</text>
+<text top="431" left="129" width="432" height="14" font="2">on the disk, similar to file systems we have seen before. This tiny example</text>
+<text top="446" left="129" width="68" height="14" font="2">includes an</text>
+<text top="446" left="200" width="83" height="13" font="3"><b>inode bitmap</b></text>
+<text top="446" left="286" width="198" height="14" font="2">(with just 8 bits, one per inode), a</text>
+<text top="446" left="487" width="74" height="13" font="3"><b>data bitmap</b></text>
+<text top="461" left="129" width="432" height="14" font="2">(also 8 bits, one per data block), inodes (8 total, numbered 0 to 7, and</text>
+<text top="476" left="129" width="432" height="14" font="2">spread across four blocks), and data blocks (8 total, numbered 0 to 7).</text>
+<text top="491" left="129" width="216" height="14" font="2">Here is a diagram of this file system:</text>
+<text top="509" left="136" width="45" height="12" font="8">Bitmaps</text>
+<text top="526" left="129" width="57" height="11" font="9">Inode Data</text>
+<text top="522" left="233" width="37" height="12" font="8">Inodes</text>
+<text top="522" left="405" width="66" height="12" font="8">Data Blocks</text>
+<text top="561" left="233" width="0" height="12" font="10">I[v1]</text>
+<text top="554" left="445" width="16" height="12" font="8">Da</text>
+<text top="579" left="194" width="115" height="11" font="9">0 1 2 3 4 5 6 7</text>
+<text top="579" left="326" width="6" height="11" font="9">0</text>
+<text top="579" left="357" width="6" height="11" font="9">1</text>
+<text top="579" left="388" width="6" height="11" font="9">2</text>
+<text top="579" left="419" width="6" height="11" font="9">3</text>
+<text top="579" left="450" width="6" height="11" font="9">4</text>
+<text top="579" left="481" width="6" height="11" font="9">5</text>
+<text top="579" left="512" width="6" height="11" font="9">6</text>
+<text top="579" left="543" width="6" height="11" font="9">7</text>
+<text top="597" left="129" width="432" height="14" font="2">If you look at the structures in the picture, you can see that a single inode</text>
+<text top="612" left="129" width="432" height="14" font="2">is allocated (inode number 2), which is marked in the inode bitmap, and a</text>
+<text top="627" left="129" width="432" height="14" font="2">single allocated data block (data block 4), also marked in the data bitmap.</text>
+<text top="642" left="129" width="432" height="14" font="2">The inode is denoted I[v1], as it is the first version of this inode; it will</text>
+<text top="657" left="129" width="335" height="14" font="2">soon be updated (due to the workload described above).</text>
+<text top="672" left="147" width="388" height="14" font="2">Let’s peek inside this simplified inode too. Inside of I[v1], we see:</text>
+<text top="698" left="137" width="40" height="11" font="7">owner</text>
+<text top="698" left="234" width="56" height="11" font="7">: remzi</text>
+<text top="713" left="137" width="194" height="11" font="7">permissions : read-write</text>
+<text top="728" left="137" width="32" height="11" font="7">size</text>
+<text top="728" left="234" width="24" height="11" font="7">: 1</text>
+<text top="742" left="137" width="57" height="11" font="7">pointer</text>
+<text top="742" left="234" width="24" height="11" font="7">: 4</text>
+<text top="757" left="137" width="57" height="11" font="7">pointer</text>
+<text top="757" left="234" width="48" height="11" font="7">: null</text>
+<text top="772" left="137" width="57" height="11" font="7">pointer</text>
+<text top="772" left="234" width="48" height="11" font="7">: null</text>
+<text top="787" left="137" width="57" height="11" font="7">pointer</text>
+<text top="787" left="234" width="48" height="11" font="7">: null</text>
+<text top="811" left="147" width="167" height="14" font="2">In this simplified inode, the</text>
+<text top="812" left="318" width="32" height="11" font="7">size</text>
+<text top="811" left="355" width="71" height="14" font="2">of the file is</text>
+<text top="812" left="430" width="8" height="11" font="7">1</text>
+<text top="811" left="442" width="119" height="14" font="2">(it has one block al-</text>
+<text top="826" left="129" width="282" height="14" font="2">located), the first direct pointer points to block</text>
+<text top="827" left="415" width="8" height="11" font="7">4</text>
+<text top="826" left="427" width="134" height="14" font="2">(the first data block of</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="15" family="HKHAJT+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="87" width="329" height="14" font="2">the file, Da), and all three other direct pointers are set to</text>
+<text top="139" left="419" width="32" height="11" font="7">null</text>
+<text top="139" left="454" width="65" height="14" font="2">(indicating</text>
+<text top="154" left="87" width="432" height="14" font="2">that they are not used). Of course, real inodes have many more fields; see</text>
+<text top="169" left="87" width="238" height="14" font="2">previous chapters for more information.</text>
+<text top="183" left="105" width="414" height="14" font="2">When we append to the file, we are adding a new data block to it, and</text>
+<text top="198" left="87" width="432" height="14" font="2">thus must update three on-disk structures: the inode (which must point</text>
+<text top="213" left="87" width="432" height="14" font="2">to the new block and record the new larger size due to the append), the</text>
+<text top="228" left="87" width="432" height="14" font="2">new data block Db, and a new version of the data bitmap (call it B[v2]) to</text>
+<text top="243" left="87" width="305" height="14" font="2">indicate that the new data block has been allocated.</text>
+<text top="258" left="105" width="414" height="14" font="2">Thus, in the memory of the system, we have three blocks which we</text>
+<text top="273" left="87" width="432" height="14" font="2">must write to disk. The updated inode (inode version 2, or I[v2] for short)</text>
+<text top="288" left="87" width="115" height="14" font="2">now looks like this:</text>
+<text top="310" left="95" width="40" height="11" font="7">owner</text>
+<text top="310" left="192" width="57" height="11" font="7">: remzi</text>
+<text top="325" left="95" width="194" height="11" font="7">permissions : read-write</text>
+<text top="340" left="95" width="32" height="11" font="7">size</text>
+<text top="340" left="192" width="24" height="11" font="7">: 2</text>
+<text top="355" left="95" width="57" height="11" font="7">pointer</text>
+<text top="355" left="192" width="24" height="11" font="7">: 4</text>
+<text top="369" left="95" width="57" height="11" font="7">pointer</text>
+<text top="369" left="192" width="24" height="11" font="7">: 5</text>
+<text top="384" left="95" width="57" height="11" font="7">pointer</text>
+<text top="384" left="192" width="48" height="11" font="7">: null</text>
+<text top="399" left="95" width="57" height="11" font="7">pointer</text>
+<text top="399" left="192" width="48" height="11" font="7">: null</text>
+<text top="419" left="87" width="432" height="14" font="2">The updated data bitmap (B[v2]) now looks like this: 00001100. Finally,</text>
+<text top="434" left="87" width="432" height="14" font="2">there is the data block (Db), which is just filled with whatever it is users</text>
+<text top="449" left="87" width="219" height="14" font="2">put into files. Stolen music, perhaps?</text>
+<text top="464" left="105" width="414" height="14" font="2">What we would like is for the final on-disk image of the file system to</text>
+<text top="479" left="87" width="80" height="14" font="2">look like this:</text>
+<text top="498" left="95" width="45" height="12" font="8">Bitmaps</text>
+<text top="514" left="87" width="57" height="11" font="9">Inode Data</text>
+<text top="510" left="191" width="37" height="12" font="8">Inodes</text>
+<text top="510" left="363" width="66" height="12" font="8">Data Blocks</text>
+<text top="550" left="191" width="0" height="12" font="10">I[v2]</text>
+<text top="542" left="404" width="16" height="12" font="8">Da</text>
+<text top="542" left="435" width="16" height="12" font="8">Db</text>
+<text top="568" left="153" width="115" height="11" font="9">0 1 2 3 4 5 6 7</text>
+<text top="568" left="284" width="6" height="11" font="9">0</text>
+<text top="568" left="315" width="6" height="11" font="9">1</text>
+<text top="568" left="346" width="6" height="11" font="9">2</text>
+<text top="568" left="377" width="6" height="11" font="9">3</text>
+<text top="568" left="408" width="6" height="11" font="9">4</text>
+<text top="568" left="439" width="6" height="11" font="9">5</text>
+<text top="568" left="470" width="6" height="11" font="9">6</text>
+<text top="568" left="502" width="6" height="11" font="9">7</text>
+<text top="587" left="105" width="414" height="14" font="2">To achieve this transition, the file system must perform three sepa-</text>
+<text top="602" left="87" width="432" height="14" font="2">rate writes to the disk, one each for the inode (I[v2]), bitmap (B[v2]), and</text>
+<text top="617" left="87" width="432" height="14" font="2">data block (Db). Note that these writes usually don’t happen immedi-</text>
+<text top="632" left="87" width="173" height="14" font="2">ately when the user issues a</text>
+<text top="632" left="265" width="57" height="11" font="7">write()</text>
+<text top="632" left="326" width="193" height="14" font="2">system call; rather, the dirty in-</text>
+<text top="647" left="87" width="360" height="14" font="2">ode, bitmap, and new data will sit in main memory (in the</text>
+<text top="647" left="452" width="67" height="13" font="3"><b>page cache</b></text>
+<text top="662" left="87" width="13" height="14" font="2">or</text>
+<text top="662" left="105" width="77" height="13" font="3"><b>buffer cache</b></text>
+<text top="662" left="182" width="337" height="14" font="2">) for some time first; then, when the file system finally</text>
+<text top="676" left="87" width="432" height="14" font="2">decides to write them to disk (after say 5 seconds or 30 seconds), the file</text>
+<text top="691" left="87" width="432" height="14" font="2">system will issue the requisite write requests to the disk. Unfortunately,</text>
+<text top="706" left="87" width="432" height="14" font="2">a crash may occur and thus interfere with these updates to the disk. In</text>
+<text top="721" left="87" width="432" height="14" font="2">particular, if a crash happens after one or two of these writes have taken</text>
+<text top="736" left="87" width="400" height="14" font="2">place, but not all three, the file system could be left in a funny state.</text>
+<text top="772" left="87" width="109" height="15" font="13"><b>Crash Scenarios</b></text>
+<text top="796" left="87" width="432" height="14" font="2">To understand the problem better, let’s look at some example crash sce-</text>
+<text top="811" left="87" width="432" height="14" font="2">narios. Imagine only a single write succeeds; there are thus three possible</text>
+<text top="826" left="87" width="175" height="14" font="2">outcomes, which we list here:</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="9" family="SWBGOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="15" size="7" family="SWBGOH+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="139" left="148" width="8" height="14" font="2">•</text>
+<text top="139" left="163" width="258" height="13" font="3"><b>Just the data block (Db) is written to disk.</b></text>
+<text top="139" left="426" width="135" height="14" font="2">In this case, the data is</text>
+<text top="154" left="163" width="397" height="14" font="2">on disk, but there is no inode that points to it and no bitmap that</text>
+<text top="169" left="163" width="397" height="14" font="2">even says the block is allocated. Thus, it is as if the write never</text>
+<text top="183" left="163" width="397" height="14" font="2">occurred. This case is not a problem at all, from the perspective of</text>
+<text top="201" left="163" width="171" height="14" font="2">file-system crash consistency</text>
+<text top="198" left="335" width="4" height="9" font="14">1</text>
+<text top="201" left="340" width="3" height="14" font="2">.</text>
+<text top="228" left="148" width="8" height="14" font="2">•</text>
+<text top="228" left="163" width="297" height="13" font="3"><b>Just the updated inode (I[v2]) is written to disk.</b></text>
+<text top="228" left="467" width="94" height="14" font="2">In this case, the</text>
+<text top="243" left="163" width="397" height="14" font="2">inode points to the disk address (5) where Db was about to be writ-</text>
+<text top="258" left="163" width="397" height="14" font="2">ten, but Db has not yet been written there. Thus, if we trust that</text>
+<text top="273" left="163" width="125" height="14" font="2">pointer, we will read</text>
+<text top="273" left="293" width="49" height="13" font="3"><b>garbage</b></text>
+<text top="273" left="345" width="216" height="14" font="2">data from the disk (the old contents</text>
+<text top="288" left="163" width="108" height="14" font="2">of disk address 5).</text>
+<text top="309" left="163" width="304" height="14" font="2">Further, we have a new problem, which we call a</text>
+<text top="309" left="472" width="88" height="13" font="3"><b>file-system in-</b></text>
+<text top="324" left="163" width="71" height="13" font="3"><b>consistency</b></text>
+<text top="323" left="234" width="326" height="14" font="2">. The on-disk bitmap is telling us that data block 5 has</text>
+<text top="338" left="163" width="397" height="14" font="2">not been allocated, but the inode is saying that it has. The disagree-</text>
+<text top="353" left="163" width="397" height="14" font="2">ment between the bitmap and the inode is an inconsistency in the</text>
+<text top="368" left="163" width="397" height="14" font="2">data structures of the file system; to use the file system, we must</text>
+<text top="383" left="163" width="314" height="14" font="2">somehow resolve this problem (more on that below).</text>
+<text top="410" left="148" width="8" height="14" font="2">•</text>
+<text top="410" left="163" width="302" height="13" font="3"><b>Just the updated bitmap (B[v2]) is written to disk.</b></text>
+<text top="410" left="470" width="91" height="14" font="2">In this case, the</text>
+<text top="425" left="163" width="397" height="14" font="2">bitmap indicates that block 5 is allocated, but there is no inode that</text>
+<text top="440" left="163" width="397" height="14" font="2">points to it. Thus the file system is inconsistent again; if left unre-</text>
+<text top="455" left="163" width="215" height="14" font="2">solved, this write would result in a</text>
+<text top="455" left="384" width="64" height="13" font="3"><b>space leak</b></text>
+<text top="455" left="448" width="113" height="14" font="2">, as block 5 would</text>
+<text top="470" left="163" width="193" height="14" font="2">never be used by the file system.</text>
+<text top="501" left="147" width="414" height="14" font="2">There are also three more crash scenarios in this attempt to write three</text>
+<text top="516" left="129" width="418" height="14" font="2">blocks to disk. In these cases, two writes succeed and the last one fails:</text>
+<text top="548" left="148" width="8" height="14" font="2">•</text>
+<text top="548" left="163" width="397" height="13" font="3"><b>The inode (I[v2]) and bitmap (B[v2]) are written to disk, but not</b></text>
+<text top="563" left="163" width="62" height="13" font="3"><b>data (Db).</b></text>
+<text top="563" left="230" width="331" height="14" font="2">In this case, the file system metadata is completely con-</text>
+<text top="577" left="163" width="397" height="14" font="2">sistent: the inode has a pointer to block 5, the bitmap indicates that</text>
+<text top="592" left="163" width="397" height="14" font="2">5 is in use, and thus everything looks OK from the perspective of</text>
+<text top="607" left="163" width="397" height="14" font="2">the file system’s metadata. But there is one problem: 5 has garbage</text>
+<text top="622" left="163" width="63" height="14" font="2">in it again.</text>
+<text top="649" left="148" width="8" height="14" font="2">•</text>
+<text top="649" left="163" width="397" height="13" font="3"><b>The inode (I[v2]) and the data block (Db) are written, but not the</b></text>
+<text top="664" left="163" width="92" height="13" font="3"><b>bitmap (B[v2]).</b></text>
+<text top="664" left="260" width="301" height="14" font="2">In this case, we have the inode pointing to the cor-</text>
+<text top="679" left="163" width="397" height="14" font="2">rect data on disk, but again have an inconsistency between the in-</text>
+<text top="694" left="163" width="397" height="14" font="2">ode and the old version of the bitmap (B1). Thus, we once again</text>
+<text top="709" left="163" width="335" height="14" font="2">need to resolve the problem before using the file system.</text>
+<text top="736" left="148" width="8" height="14" font="2">•</text>
+<text top="736" left="163" width="397" height="13" font="3"><b>The bitmap (B[v2]) and data block (Db) are written, but not the</b></text>
+<text top="751" left="163" width="79" height="13" font="3"><b>inode (I[v2]).</b></text>
+<text top="751" left="247" width="314" height="14" font="2">In this case, we again have an inconsistency between</text>
+<text top="766" left="163" width="397" height="14" font="2">the inode and the data bitmap. However, even though the block</text>
+<text top="781" left="163" width="397" height="14" font="2">was written and the bitmap indicates its usage, we have no idea</text>
+<text top="796" left="163" width="313" height="14" font="2">which file it belongs to, as no inode points to the file.</text>
+<text top="826" left="149" width="4" height="8" font="15">1</text>
+<text top="828" left="154" width="319" height="11" font="12">However, it might be a problem for the user, who just lost some data!</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="13" family="LSWGIK+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="138" left="87" width="219" height="15" font="13"><b>The Crash Consistency Problem</b></text>
+<text top="162" left="87" width="432" height="14" font="2">Hopefully, from these crash scenarios, you can see the many problems</text>
+<text top="177" left="87" width="432" height="14" font="2">that can occur to our on-disk file system image because of crashes: we can</text>
+<text top="192" left="87" width="432" height="14" font="2">have inconsistency in file system data structures; we can have space leaks;</text>
+<text top="207" left="87" width="432" height="14" font="2">we can return garbage data to a user; and so forth. What we’d like to do</text>
+<text top="222" left="87" width="432" height="14" font="2">ideally is move the file system from one consistent state (e.g., before the</text>
+<text top="237" left="87" width="189" height="14" font="2">file got appended to) to another</text>
+<text top="237" left="280" width="64" height="13" font="3"><b>atomically</b></text>
+<text top="237" left="347" width="172" height="14" font="2">(e.g., after the inode, bitmap,</text>
+<text top="252" left="87" width="432" height="14" font="2">and new data block have been written to disk). Unfortunately, we can’t</text>
+<text top="267" left="87" width="432" height="14" font="2">do this easily because the disk only commits one write at a time, and</text>
+<text top="282" left="87" width="432" height="14" font="2">crashes or power loss may occur between these updates. We call this</text>
+<text top="297" left="87" width="119" height="14" font="2">general problem the</text>
+<text top="297" left="210" width="163" height="13" font="3"><b>crash-consistency problem</b></text>
+<text top="297" left="376" width="143" height="14" font="2">(we could also call it the</text>
+<text top="312" left="87" width="165" height="13" font="3"><b>consistent-update problem</b></text>
+<text top="312" left="252" width="8" height="14" font="2">).</text>
+<text top="338" left="55" width="302" height="17" font="6">42.2 Solution #1: The File System Checker</text>
+<text top="363" left="105" width="414" height="14" font="2">Early file systems took a simple approach to crash consistency. Basi-</text>
+<text top="378" left="87" width="432" height="14" font="2">cally, they decided to let inconsistencies happen and then fix them later</text>
+<text top="393" left="87" width="432" height="14" font="2">(when rebooting). A classic example of this lazy approach is found in a</text>
+<text top="410" left="87" width="114" height="14" font="2">tool that does this:</text>
+<text top="410" left="208" width="25" height="13" font="3"><b>fsck</b></text>
+<text top="407" left="233" width="4" height="9" font="14">2</text>
+<text top="410" left="238" width="3" height="14" font="2">.</text>
+<text top="410" left="250" width="32" height="11" font="7">fsck</text>
+<text top="410" left="287" width="37" height="14" font="2">is a U</text>
+<text top="412" left="325" width="21" height="11" font="5">NIX</text>
+<text top="410" left="351" width="168" height="14" font="2">tool for finding such incon-</text>
+<text top="425" left="87" width="432" height="14" font="2">sistencies and repairing them [MK96]; similar tools to check and repair</text>
+<text top="440" left="87" width="432" height="14" font="2">a disk partition exist on different systems. Note that such an approach</text>
+<text top="454" left="87" width="432" height="14" font="2">can’t fix all problems; consider, for example, the case above where the file</text>
+<text top="469" left="87" width="432" height="14" font="2">system looks consistent but the inode points to garbage data. The only</text>
+<text top="484" left="87" width="432" height="14" font="2">real goal is to make sure the file system metadata is internally consistent.</text>
+<text top="499" left="105" width="51" height="14" font="2">The tool</text>
+<text top="500" left="162" width="32" height="11" font="7">fsck</text>
+<text top="499" left="200" width="318" height="14" font="2">operates in a number of phases, as summarized in</text>
+<text top="514" left="87" width="304" height="14" font="2">McKusick and Kowalski’s paper [MK96]. It is run</text>
+<text top="514" left="396" width="31" height="14" font="16"><i>before</i></text>
+<text top="514" left="431" width="88" height="14" font="2">the file system</text>
+<text top="529" left="87" width="196" height="14" font="2">is mounted and made available (</text>
+<text top="530" left="283" width="32" height="11" font="7">fsck</text>
+<text top="529" left="319" width="200" height="14" font="2">assumes that no other file-system</text>
+<text top="544" left="87" width="432" height="14" font="2">activity is on-going while it runs); once finished, the on-disk file system</text>
+<text top="559" left="87" width="369" height="14" font="2">should be consistent and thus can be made accessible to users.</text>
+<text top="574" left="105" width="194" height="14" font="2">Here is a basic summary of what</text>
+<text top="575" left="303" width="32" height="11" font="7">fsck</text>
+<text top="574" left="338" width="31" height="14" font="2">does:</text>
+<text top="592" left="107" width="8" height="14" font="2">•</text>
+<text top="592" left="122" width="74" height="13" font="3"><b>Superblock:</b></text>
+<text top="593" left="202" width="32" height="11" font="7">fsck</text>
+<text top="592" left="239" width="280" height="14" font="2">first checks if the superblock looks reasonable,</text>
+<text top="607" left="122" width="397" height="14" font="2">mostly doing sanity checks such as making sure the file system size</text>
+<text top="622" left="122" width="397" height="14" font="2">is greater than the number of blocks that have been allocated. Usu-</text>
+<text top="637" left="122" width="397" height="14" font="2">ally the goal of these sanity checks is to find a suspect (corrupt)</text>
+<text top="652" left="122" width="397" height="14" font="2">superblock; in this case, the system (or administrator) may decide</text>
+<text top="667" left="122" width="251" height="14" font="2">to use an alternate copy of the superblock.</text>
+<text top="682" left="107" width="8" height="14" font="2">•</text>
+<text top="682" left="122" width="74" height="13" font="3"><b>Free blocks:</b></text>
+<text top="682" left="202" width="32" height="14" font="2">Next,</text>
+<text top="682" left="239" width="32" height="11" font="7">fsck</text>
+<text top="682" left="275" width="244" height="14" font="2">scans the inodes, indirect blocks, double</text>
+<text top="697" left="122" width="397" height="14" font="2">indirect blocks, etc., to build an understanding of which blocks are</text>
+<text top="711" left="122" width="397" height="14" font="2">currently allocated within the file system. It uses this knowledge</text>
+<text top="726" left="122" width="397" height="14" font="2">to produce a correct version of the allocation bitmaps; thus, if there</text>
+<text top="741" left="122" width="397" height="14" font="2">is any inconsistency between bitmaps and inodes, it is resolved by</text>
+<text top="756" left="122" width="397" height="14" font="2">trusting the information within the inodes. The same type of check</text>
+<text top="771" left="122" width="397" height="14" font="2">is performed for all the inodes, making sure that all inodes that look</text>
+<text top="786" left="122" width="358" height="14" font="2">like they are in use are marked as such in the inode bitmaps.</text>
+<text top="814" left="107" width="4" height="8" font="15">2</text>
+<text top="816" left="112" width="407" height="11" font="12">Pronounced either “eff-ess-see-kay”, “eff-ess-check”, or, if you don’t like the tool, “eff-</text>
+<text top="828" left="87" width="244" height="11" font="12">suck”. Yes, serious professional people use this term.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="139" left="148" width="8" height="14" font="2">•</text>
+<text top="139" left="163" width="73" height="13" font="3"><b>Inode state:</b></text>
+<text top="139" left="243" width="317" height="14" font="2">Each inode is checked for corruption or other prob-</text>
+<text top="154" left="163" width="114" height="14" font="2">lems. For example,</text>
+<text top="154" left="281" width="32" height="11" font="7">fsck</text>
+<text top="154" left="317" width="244" height="14" font="2">makes sure that each allocated inode has</text>
+<text top="169" left="163" width="397" height="14" font="2">a valid type field (e.g., regular file, directory, symbolic link, etc.). If</text>
+<text top="183" left="163" width="397" height="14" font="2">there are problems with the inode fields that are not easily fixed, the</text>
+<text top="198" left="163" width="253" height="14" font="2">inode is considered suspect and cleared by</text>
+<text top="199" left="420" width="32" height="11" font="7">fsck</text>
+<text top="198" left="453" width="108" height="14" font="2">; the inode bitmap</text>
+<text top="213" left="163" width="168" height="14" font="2">is correspondingly updated.</text>
+<text top="228" left="148" width="8" height="14" font="2">•</text>
+<text top="228" left="163" width="74" height="13" font="3"><b>Inode links:</b></text>
+<text top="229" left="243" width="32" height="11" font="7">fsck</text>
+<text top="228" left="279" width="282" height="14" font="2">also verifies the link count of each allocated in-</text>
+<text top="243" left="163" width="397" height="14" font="2">ode. As you may recall, the link count indicates the number of dif-</text>
+<text top="258" left="163" width="397" height="14" font="2">ferent directories that contain a reference (i.e., a link) to this par-</text>
+<text top="273" left="163" width="222" height="14" font="2">ticular file. To verify the link count,</text>
+<text top="274" left="391" width="32" height="11" font="7">fsck</text>
+<text top="273" left="429" width="132" height="14" font="2">scans through the en-</text>
+<text top="288" left="163" width="397" height="14" font="2">tire directory tree, starting at the root directory, and builds its own</text>
+<text top="303" left="163" width="397" height="14" font="2">link counts for every file and directory in the file system. If there</text>
+<text top="318" left="163" width="397" height="14" font="2">is a mismatch between the newly-calculated count and that found</text>
+<text top="333" left="163" width="397" height="14" font="2">within an inode, corrective action must be taken, usually by fixing</text>
+<text top="348" left="163" width="397" height="14" font="2">the count within the inode. If an allocated inode is discovered but</text>
+<text top="363" left="163" width="246" height="14" font="2">no directory refers to it, it is moved to the</text>
+<text top="364" left="413" width="81" height="11" font="7">lost+found</text>
+<text top="363" left="497" width="56" height="14" font="2">directory.</text>
+<text top="378" left="148" width="8" height="14" font="2">•</text>
+<text top="378" left="163" width="70" height="13" font="3"><b>Duplicates:</b></text>
+<text top="379" left="237" width="32" height="11" font="7">fsck</text>
+<text top="378" left="272" width="295" height="14" font="2">also checks for duplicate pointers, i.e., cases where</text>
+<text top="393" left="163" width="397" height="14" font="2">two different inodes refer to the same block. If one inode is obvi-</text>
+<text top="408" left="163" width="397" height="14" font="2">ously bad, it may be cleared. Alternately, the pointed-to block could</text>
+<text top="423" left="163" width="345" height="14" font="2">be copied, thus giving each inode its own copy as desired.</text>
+<text top="438" left="148" width="8" height="14" font="2">•</text>
+<text top="438" left="163" width="71" height="13" font="3"><b>Bad blocks:</b></text>
+<text top="438" left="238" width="323" height="14" font="2">A check for bad block pointers is also performed while</text>
+<text top="452" left="163" width="397" height="14" font="2">scanning through the list of all pointers. A pointer is considered</text>
+<text top="467" left="163" width="397" height="14" font="2">“bad” if it obviously points to something outside its valid range,</text>
+<text top="482" left="163" width="397" height="14" font="2">e.g., it has an address that refers to a block greater than the parti-</text>
+<text top="497" left="163" width="127" height="14" font="2">tion size. In this case,</text>
+<text top="498" left="294" width="32" height="11" font="7">fsck</text>
+<text top="497" left="330" width="231" height="14" font="2">can’t do anything too intelligent; it just</text>
+<text top="512" left="163" width="361" height="14" font="2">removes (clears) the pointer from the inode or indirect block.</text>
+<text top="527" left="148" width="8" height="14" font="2">•</text>
+<text top="527" left="163" width="107" height="13" font="3"><b>Directory checks:</b></text>
+<text top="528" left="277" width="32" height="11" font="7">fsck</text>
+<text top="527" left="313" width="248" height="14" font="2">does not understand the contents of user</text>
+<text top="542" left="163" width="397" height="14" font="2">files; however, directories hold specifically formatted information</text>
+<text top="557" left="163" width="235" height="14" font="2">created by the file system itself. Thus,</text>
+<text top="558" left="403" width="32" height="11" font="7">fsck</text>
+<text top="557" left="440" width="121" height="14" font="2">performs additional</text>
+<text top="572" left="163" width="397" height="14" font="2">integrity checks on the contents of each directory, making sure that</text>
+<text top="587" left="163" width="397" height="14" font="2">“.” and “..” are the first entries, that each inode referred to in a</text>
+<text top="602" left="163" width="397" height="14" font="2">directory entry is allocated, and ensuring that no directory is linked</text>
+<text top="617" left="163" width="243" height="14" font="2">to more than once in the entire hierarchy.</text>
+<text top="646" left="147" width="207" height="14" font="2">As you can see, building a working</text>
+<text top="647" left="356" width="32" height="11" font="7">fsck</text>
+<text top="646" left="392" width="169" height="14" font="2">requires intricate knowledge</text>
+<text top="661" left="129" width="432" height="14" font="2">of the file system; making sure such a piece of code works correctly in all</text>
+<text top="676" left="129" width="432" height="14" font="2">cases can be challenging [G+08]. However, fsck (and similar approaches)</text>
+<text top="691" left="129" width="381" height="14" font="2">have a bigger and perhaps more fundamental problem: they are</text>
+<text top="691" left="513" width="44" height="14" font="16"><i>too slow</i></text>
+<text top="691" left="557" width="3" height="14" font="2">.</text>
+<text top="706" left="129" width="432" height="14" font="2">With a very large disk volume, scanning the entire disk to find all the</text>
+<text top="721" left="129" width="432" height="14" font="2">allocated blocks and read the entire directory tree may take many minutes</text>
+<text top="736" left="129" width="158" height="14" font="2">or hours. Performance of</text>
+<text top="737" left="292" width="32" height="11" font="7">fsck</text>
+<text top="736" left="324" width="237" height="14" font="2">, as disks grew in capacity and RAIDs</text>
+<text top="751" left="129" width="432" height="14" font="2">grew in popularity, became prohibitive (despite recent advances [M+13]).</text>
+<text top="766" left="147" width="239" height="14" font="2">At a higher level, the basic premise of</text>
+<text top="767" left="392" width="32" height="11" font="7">fsck</text>
+<text top="766" left="429" width="131" height="14" font="2">seems just a tad irra-</text>
+<text top="781" left="129" width="432" height="14" font="2">tional. Consider our example above, where just three blocks are written</text>
+<text top="796" left="129" width="432" height="14" font="2">to the disk; it is incredibly expensive to scan the entire disk to fix prob-</text>
+<text top="811" left="129" width="432" height="14" font="2">lems that occurred during an update of just three blocks. This situation is</text>
+<text top="826" left="129" width="432" height="14" font="2">akin to dropping your keys on the floor in your bedroom, and then com-</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="139" left="87" width="63" height="14" font="2">mencing a</text>
+<text top="139" left="155" width="172" height="14" font="16"><i>search-the-entire-house-for-keys</i></text>
+<text top="139" left="332" width="187" height="14" font="2">recovery algorithm, starting in</text>
+<text top="154" left="87" width="432" height="14" font="2">the basement and working your way through every room. It works but is</text>
+<text top="169" left="87" width="432" height="14" font="2">wasteful. Thus, as disks (and RAIDs) grew, researchers and practitioners</text>
+<text top="183" left="87" width="202" height="14" font="2">started to look for other solutions.</text>
+<text top="212" left="55" width="393" height="17" font="6">42.3 Solution #2: Journaling (or Write-Ahead Logging)</text>
+<text top="237" left="105" width="414" height="14" font="2">Probably the most popular solution to the consistent update problem</text>
+<text top="252" left="87" width="432" height="14" font="2">is to steal an idea from the world of database management systems. That</text>
+<text top="267" left="87" width="88" height="14" font="2">idea, known as</text>
+<text top="267" left="178" width="123" height="13" font="3"><b>write-ahead logging</b></text>
+<text top="267" left="301" width="218" height="14" font="2">, was invented to address exactly this</text>
+<text top="282" left="87" width="400" height="14" font="2">type of problem. In file systems, we usually call write-ahead logging</text>
+<text top="282" left="489" width="30" height="13" font="3"><b>jour-</b></text>
+<text top="297" left="87" width="40" height="13" font="3"><b>naling</b></text>
+<text top="297" left="131" width="388" height="14" font="2">for historical reasons. The first file system to do this was Cedar</text>
+<text top="312" left="87" width="432" height="14" font="2">[H87], though many modern file systems use the idea, including Linux</text>
+<text top="327" left="87" width="388" height="14" font="2">ext3 and ext4, reiserfs, IBM’s JFS, SGI’s XFS, and Windows NTFS.</text>
+<text top="342" left="105" width="414" height="14" font="2">The basic idea is as follows. When updating the disk, before over-</text>
+<text top="357" left="87" width="432" height="14" font="2">writing the structures in place, first write down a little note (somewhere</text>
+<text top="372" left="87" width="432" height="14" font="2">else on the disk, in a well-known location) describing what you are about</text>
+<text top="387" left="87" width="432" height="14" font="2">to do. Writing this note is the “write ahead” part, and we write it to a</text>
+<text top="402" left="87" width="389" height="14" font="2">structure that we organize as a “log”; hence, write-ahead logging.</text>
+<text top="417" left="105" width="414" height="14" font="2">By writing the note to disk, you are guaranteeing that if a crash takes</text>
+<text top="432" left="87" width="432" height="14" font="2">places during the update (overwrite) of the structures you are updating,</text>
+<text top="447" left="87" width="432" height="14" font="2">you can go back and look at the note you made and try again; thus, you</text>
+<text top="461" left="87" width="432" height="14" font="2">will know exactly what to fix (and how to fix it) after a crash, instead</text>
+<text top="476" left="87" width="432" height="14" font="2">of having to scan the entire disk. By design, journaling thus adds a bit</text>
+<text top="491" left="87" width="432" height="14" font="2">of work during updates to greatly reduce the amount of work required</text>
+<text top="506" left="87" width="98" height="14" font="2">during recovery.</text>
+<text top="521" left="105" width="144" height="14" font="2">We’ll now describe how</text>
+<text top="521" left="253" width="64" height="13" font="3"><b>Linux ext3</b></text>
+<text top="521" left="317" width="202" height="14" font="2">, a popular journaling file system,</text>
+<text top="536" left="87" width="432" height="14" font="2">incorporates journaling into the file system. Most of the on-disk struc-</text>
+<text top="551" left="87" width="119" height="14" font="2">tures are identical to</text>
+<text top="551" left="208" width="63" height="13" font="3"><b>Linux ext2</b></text>
+<text top="551" left="271" width="249" height="14" font="2">, e.g., the disk is divided into block groups,</text>
+<text top="566" left="87" width="432" height="14" font="2">and each block group contains an inode bitmap, data bitmap, inodes, and</text>
+<text top="581" left="87" width="432" height="14" font="2">data blocks. The new key structure is the journal itself, which occupies</text>
+<text top="596" left="87" width="432" height="14" font="2">some small amount of space within the partition or on another device.</text>
+<text top="611" left="87" width="359" height="14" font="2">Thus, an ext2 file system (without journaling) looks like this:</text>
+<text top="652" left="104" width="32" height="11" font="8">Super</text>
+<text top="652" left="163" width="43" height="11" font="8">Group 0</text>
+<text top="652" left="249" width="43" height="11" font="8">Group 1</text>
+<text top="652" left="327" width="17" height="11" font="8">. . .</text>
+<text top="652" left="378" width="45" height="11" font="8">Group N</text>
+<text top="696" left="105" width="414" height="14" font="2">Assuming the journal is placed within the same file system image</text>
+<text top="711" left="87" width="432" height="14" font="2">(though sometimes it is placed on a separate device, or as a file within</text>
+<text top="726" left="87" width="381" height="14" font="2">the file system), an ext3 file system with a journal looks like this:</text>
+<text top="767" left="104" width="79" height="11" font="8">Super Journal</text>
+<text top="767" left="206" width="43" height="11" font="8">Group 0</text>
+<text top="767" left="292" width="43" height="11" font="8">Group 1</text>
+<text top="767" left="370" width="17" height="11" font="8">. . .</text>
+<text top="767" left="421" width="45" height="11" font="8">Group N</text>
+<text top="811" left="105" width="414" height="14" font="2">The real difference is just the presence of the journal, and of course,</text>
+<text top="826" left="87" width="86" height="14" font="2">how it is used.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="138" left="129" width="109" height="15" font="13"><b>Data Journaling</b></text>
+<text top="162" left="129" width="292" height="14" font="2">Let’s look at a simple example to understand how</text>
+<text top="162" left="424" width="94" height="13" font="3"><b>data journaling</b></text>
+<text top="162" left="520" width="40" height="14" font="2">works.</text>
+<text top="177" left="129" width="432" height="14" font="2">Data journaling is available as a mode with the Linux ext3 file system,</text>
+<text top="192" left="129" width="266" height="14" font="2">from which much of this discussion is based.</text>
+<text top="207" left="147" width="414" height="14" font="2">Say we have our canonical update again, where we wish to write the</text>
+<text top="222" left="129" width="432" height="14" font="2">inode (I[v2]), bitmap (B[v2]), and data block (Db) to disk again. Before</text>
+<text top="237" left="129" width="432" height="14" font="2">writing them to their final disk locations, we are now first going to write</text>
+<text top="252" left="129" width="428" height="14" font="2">them to the log (a.k.a. journal). This is what this will look like in the log:</text>
+<text top="309" left="154" width="0" height="11" font="10">Journal</text>
+<text top="294" left="161" width="54" height="11" font="8">TxB I[v2]</text>
+<text top="294" left="234" width="27" height="11" font="8">B[v2]</text>
+<text top="294" left="283" width="15" height="11" font="8">Db</text>
+<text top="294" left="313" width="21" height="11" font="8">TxE</text>
+<text top="340" left="147" width="414" height="14" font="2">You can see we have written five blocks here. The transaction begin</text>
+<text top="355" left="129" width="432" height="14" font="2">(TxB) tells us about this update, including information about the pend-</text>
+<text top="370" left="129" width="432" height="14" font="2">ing update to the file system (e.g., the final addresses of the blocks I[v2],</text>
+<text top="384" left="129" width="200" height="14" font="2">B[v2], and Db), and some kind of</text>
+<text top="385" left="332" width="129" height="13" font="3"><b>transaction identifier</b></text>
+<text top="384" left="465" width="4" height="14" font="2">(</text>
+<text top="385" left="469" width="25" height="13" font="3"><b>TID</b></text>
+<text top="384" left="494" width="66" height="14" font="2">). The mid-</text>
+<text top="399" left="129" width="432" height="14" font="2">dle three blocks just contain the exact contents of the blocks themselves;</text>
+<text top="414" left="129" width="100" height="14" font="2">this is known as</text>
+<text top="414" left="233" width="103" height="13" font="3"><b>physical logging</b></text>
+<text top="414" left="341" width="219" height="14" font="2">as we are putting the exact physical</text>
+<text top="429" left="129" width="332" height="14" font="2">contents of the update in the journal (an alternate idea,</text>
+<text top="429" left="465" width="92" height="13" font="3"><b>logical logging</b></text>
+<text top="429" left="557" width="3" height="14" font="2">,</text>
+<text top="444" left="129" width="432" height="14" font="2">puts a more compact logical representation of the update in the journal,</text>
+<text top="459" left="129" width="432" height="14" font="2">e.g., “this update wishes to append data block Db to file X”, which is a</text>
+<text top="474" left="129" width="432" height="14" font="2">little more complex but can save space in the log and perhaps improve</text>
+<text top="489" left="129" width="432" height="14" font="2">performance). The final block (TxE) is a marker of the end of this transac-</text>
+<text top="504" left="129" width="206" height="14" font="2">tion, and will also contain the TID.</text>
+<text top="519" left="147" width="414" height="14" font="2">Once this transaction is safely on disk, we are ready to overwrite the</text>
+<text top="534" left="129" width="335" height="14" font="2">old structures in the file system; this process is called</text>
+<text top="534" left="469" width="88" height="13" font="3"><b>checkpointing</b></text>
+<text top="534" left="557" width="3" height="14" font="2">.</text>
+<text top="549" left="129" width="48" height="14" font="2">Thus, to</text>
+<text top="549" left="180" width="68" height="13" font="3"><b>checkpoint</b></text>
+<text top="549" left="251" width="310" height="14" font="2">the file system (i.e., bring it up to date with the pend-</text>
+<text top="564" left="129" width="432" height="14" font="2">ing update in the journal), we issue the writes I[v2], B[v2], and Db to</text>
+<text top="579" left="129" width="432" height="14" font="2">their disk locations as seen above; if these writes complete successfully,</text>
+<text top="594" left="129" width="432" height="14" font="2">we have successfully checkpointed the file system and are basically done.</text>
+<text top="609" left="129" width="238" height="14" font="2">Thus, our initial sequence of operations:</text>
+<text top="635" left="146" width="10" height="14" font="2">1.</text>
+<text top="635" left="163" width="85" height="13" font="3"><b>Journal write:</b></text>
+<text top="635" left="253" width="307" height="14" font="2">Write the transaction, including a transaction-begin</text>
+<text top="650" left="163" width="397" height="14" font="2">block, all pending data and metadata updates, and a transaction-</text>
+<text top="665" left="163" width="325" height="14" font="2">end block, to the log; wait for these writes to complete.</text>
+<text top="680" left="146" width="10" height="14" font="2">2.</text>
+<text top="680" left="163" width="75" height="13" font="3"><b>Checkpoint:</b></text>
+<text top="680" left="243" width="318" height="14" font="2">Write the pending metadata and data updates to their</text>
+<text top="695" left="163" width="190" height="14" font="2">final locations in the file system.</text>
+<text top="721" left="147" width="414" height="14" font="2">In our example, we would write TxB, I[v2], B[v2], Db, and TxE to the</text>
+<text top="736" left="129" width="432" height="14" font="2">journal first. When these writes complete, we would complete the update</text>
+<text top="751" left="129" width="410" height="14" font="2">by checkpointing I[v2], B[v2], and Db, to their final locations on disk.</text>
+<text top="766" left="147" width="414" height="14" font="2">Things get a little trickier when a crash occurs during the writes to</text>
+<text top="781" left="129" width="432" height="14" font="2">the journal. Here, we are trying to write the set of blocks in the transac-</text>
+<text top="796" left="129" width="432" height="14" font="2">tion (e.g., TxB, I[v2], B[v2], Db, TxE) to disk. One simple way to do this</text>
+<text top="811" left="129" width="432" height="14" font="2">would be to issue each one at a time, waiting for each to complete, and</text>
+<text top="826" left="129" width="432" height="14" font="2">then issuing the next. However, this is slow. Ideally, we’d like to issue</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="10" family="ZFPNEV+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="200" width="10" height="14" font="2">A</text>
+<text top="150" left="211" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="238" width="16" height="14" font="2">: F</text>
+<text top="150" left="254" width="47" height="11" font="5">ORCING</text>
+<text top="148" left="305" width="13" height="14" font="2">W</text>
+<text top="150" left="319" width="32" height="11" font="5">RITES</text>
+<text top="148" left="356" width="8" height="14" font="2">T</text>
+<text top="150" left="364" width="8" height="11" font="5">O</text>
+<text top="148" left="377" width="10" height="14" font="2">D</text>
+<text top="150" left="388" width="18" height="11" font="5">ISK</text>
+<text top="163" left="87" width="432" height="14" font="2">To enforce ordering between two disk writes, modern file systems have</text>
+<text top="178" left="87" width="432" height="14" font="2">to take a few extra precautions. In olden times, forcing ordering between</text>
+<text top="193" left="87" width="67" height="14" font="2">two writes,</text>
+<text top="193" left="158" width="10" height="14" font="4">A</text>
+<text top="193" left="172" width="23" height="14" font="2">and</text>
+<text top="193" left="198" width="10" height="14" font="4">B</text>
+<text top="193" left="209" width="196" height="14" font="2">, was easy: just issue the write of</text>
+<text top="193" left="409" width="10" height="14" font="4">A</text>
+<text top="193" left="423" width="96" height="14" font="2">to the disk, wait</text>
+<text top="208" left="87" width="432" height="14" font="2">for the disk to interrupt the OS when the write is complete, and then issue</text>
+<text top="223" left="87" width="68" height="14" font="2">the write of</text>
+<text top="223" left="159" width="10" height="14" font="4">B</text>
+<text top="223" left="170" width="3" height="14" font="2">.</text>
+<text top="240" left="87" width="432" height="14" font="2">Things got slightly more complex due to the increased use of write caches</text>
+<text top="255" left="87" width="363" height="14" font="2">within disks. With write buffering enabled (sometimes called</text>
+<text top="255" left="453" width="66" height="13" font="3"><b>immediate</b></text>
+<text top="270" left="87" width="58" height="13" font="3"><b>reporting</b></text>
+<text top="270" left="145" width="374" height="14" font="2">), a disk will inform the OS the write is complete when it simply</text>
+<text top="285" left="87" width="432" height="14" font="2">has been placed in the disk’s memory cache, and has not yet reached</text>
+<text top="300" left="87" width="432" height="14" font="2">disk. If the OS then issues a subsequent write, it is not guaranteed to</text>
+<text top="315" left="87" width="432" height="14" font="2">reach the disk after previous writes; thus ordering between writes is not</text>
+<text top="330" left="87" width="432" height="14" font="2">preserved. One solution is to disable write buffering. However, more</text>
+<text top="345" left="87" width="341" height="14" font="2">modern systems take extra precautions and issue explicit</text>
+<text top="345" left="432" width="84" height="13" font="3"><b>write barriers</b></text>
+<text top="345" left="516" width="3" height="14" font="2">;</text>
+<text top="360" left="87" width="432" height="14" font="2">such a barrier, when it completes, guarantees that all writes issued before</text>
+<text top="374" left="87" width="400" height="14" font="2">the barrier will reach disk before any writes issued after the barrier.</text>
+<text top="392" left="87" width="432" height="14" font="2">All of this machinery requires a great deal of trust in the correct oper-</text>
+<text top="407" left="87" width="432" height="14" font="2">ation of the disk. Unfortunately, recent research shows that some disk</text>
+<text top="421" left="87" width="432" height="14" font="2">manufacturers, in an effort to deliver “higher performing” disks, explic-</text>
+<text top="436" left="87" width="432" height="14" font="2">itly ignore write-barrier requests, thus making the disks seemingly run</text>
+<text top="451" left="87" width="432" height="14" font="2">faster but at the risk of incorrect operation [C+13, R+11]. As Kahan said,</text>
+<text top="466" left="87" width="393" height="14" font="2">the fast almost always beats out the slow, even if the fast is wrong.</text>
+<text top="523" left="87" width="432" height="14" font="2">all five block writes at once, as this would turn five writes into a single</text>
+<text top="538" left="87" width="432" height="14" font="2">sequential write and thus be faster. However, this is unsafe, for the fol-</text>
+<text top="553" left="87" width="432" height="14" font="2">lowing reason: given such a big write, the disk internally may perform</text>
+<text top="568" left="87" width="432" height="14" font="2">scheduling and complete small pieces of the big write in any order. Thus,</text>
+<text top="583" left="87" width="432" height="14" font="2">the disk internally may (1) write TxB, I[v2], B[v2], and TxE and only later</text>
+<text top="598" left="87" width="432" height="14" font="2">(2) write Db. Unfortunately, if the disk loses power between (1) and (2),</text>
+<text top="613" left="87" width="170" height="14" font="2">this is what ends up on disk:</text>
+<text top="673" left="112" width="0" height="11" font="10">Journal</text>
+<text top="658" left="120" width="21" height="11" font="8">TxB</text>
+<text top="670" left="121" width="19" height="9" font="17">id=1</text>
+<text top="658" left="151" width="22" height="11" font="8">I[v2]</text>
+<text top="658" left="192" width="27" height="11" font="8">B[v2]</text>
+<text top="658" left="242" width="13" height="11" font="8">??</text>
+<text top="658" left="271" width="21" height="11" font="8">TxE</text>
+<text top="670" left="272" width="19" height="9" font="17">id=1</text>
+<text top="707" left="105" width="414" height="14" font="2">Why is this a problem? Well, the transaction looks like a valid trans-</text>
+<text top="721" left="87" width="432" height="14" font="2">action (it has a begin and an end with matching sequence numbers). Fur-</text>
+<text top="736" left="87" width="432" height="14" font="2">ther, the file system can’t look at that fourth block and know it is wrong;</text>
+<text top="751" left="87" width="432" height="14" font="2">after all, it is arbitrary user data. Thus, if the system now reboots and</text>
+<text top="766" left="87" width="432" height="14" font="2">runs recovery, it will replay this transaction, and ignorantly copy the con-</text>
+<text top="781" left="87" width="432" height="14" font="2">tents of the garbage block ’??’ to the location where Db is supposed to</text>
+<text top="796" left="87" width="432" height="14" font="2">live. This is bad for arbitrary user data in a file; it is much worse if it hap-</text>
+<text top="811" left="87" width="432" height="14" font="2">pens to a critical piece of file system, such as the superblock, which could</text>
+<text top="826" left="87" width="215" height="14" font="2">render the file system unmountable.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="148" left="244" width="10" height="14" font="2">A</text>
+<text top="150" left="255" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="282" width="19" height="14" font="2">: O</text>
+<text top="150" left="301" width="64" height="11" font="5">PTIMIZING</text>
+<text top="148" left="369" width="8" height="14" font="2">L</text>
+<text top="150" left="378" width="17" height="11" font="5">OG</text>
+<text top="148" left="399" width="13" height="14" font="2">W</text>
+<text top="150" left="414" width="32" height="11" font="5">RITES</text>
+<text top="163" left="129" width="432" height="14" font="2">You may have noticed a particular inefficiency of writing to the log.</text>
+<text top="178" left="129" width="432" height="14" font="2">Namely, the file system first has to write out the transaction-begin block</text>
+<text top="193" left="129" width="432" height="14" font="2">and contents of the transaction; only after these writes complete can the</text>
+<text top="208" left="129" width="432" height="14" font="2">file system send the transaction-end block to disk. The performance im-</text>
+<text top="223" left="129" width="432" height="14" font="2">pact is clear, if you think about how a disk works: usually an extra rota-</text>
+<text top="238" left="129" width="205" height="14" font="2">tion is incurred (think about why).</text>
+<text top="255" left="129" width="432" height="14" font="2">One of our former graduate students, Vijayan Prabhakaran, had a simple</text>
+<text top="270" left="129" width="432" height="14" font="2">idea to fix this problem [P+05]. When writing a transaction to the journal,</text>
+<text top="285" left="129" width="432" height="14" font="2">include a checksum of the contents of the journal in the begin and end</text>
+<text top="300" left="129" width="432" height="14" font="2">blocks. Doing so enables the file system to write the entire transaction at</text>
+<text top="315" left="129" width="432" height="14" font="2">once, without incurring a wait; if, during recovery, the file system sees</text>
+<text top="330" left="129" width="432" height="14" font="2">a mismatch in the computed checksum versus the stored checksum in</text>
+<text top="345" left="129" width="432" height="14" font="2">the transaction, it can conclude that a crash occurred during the write</text>
+<text top="360" left="129" width="432" height="14" font="2">of the transaction and thus discard the file-system update. Thus, with a</text>
+<text top="374" left="129" width="432" height="14" font="2">small tweak in the write protocol and recovery system, a file system can</text>
+<text top="389" left="129" width="432" height="14" font="2">achieve faster common-case performance; on top of that, the system is</text>
+<text top="404" left="129" width="432" height="14" font="2">slightly more reliable, as any reads from the journal are now protected by</text>
+<text top="419" left="129" width="73" height="14" font="2">a checksum.</text>
+<text top="436" left="129" width="432" height="14" font="2">This simple fix was attractive enough to gain the notice of Linux file sys-</text>
+<text top="451" left="129" width="432" height="14" font="2">tem developers, who then incorporated it into the next generation Linux</text>
+<text top="466" left="129" width="217" height="14" font="2">file system, called (you guessed it!)</text>
+<text top="466" left="356" width="66" height="13" font="3"><b>Linux ext4</b></text>
+<text top="466" left="421" width="140" height="14" font="2">. It now ships on mil-</text>
+<text top="481" left="129" width="432" height="14" font="2">lions of machines worldwide, including the Android handheld platform.</text>
+<text top="496" left="129" width="432" height="14" font="2">Thus, every time you write to disk on many Linux-based systems, a little</text>
+<text top="511" left="129" width="432" height="14" font="2">code developed at Wisconsin makes your system a little faster and more</text>
+<text top="526" left="129" width="47" height="14" font="2">reliable.</text>
+<text top="575" left="147" width="414" height="14" font="2">To avoid this problem, the file system issues the transactional write in</text>
+<text top="590" left="129" width="432" height="14" font="2">two steps. First, it writes all blocks except the TxE block to the journal,</text>
+<text top="605" left="129" width="432" height="14" font="2">issuing these writes all at once. When these writes complete, the journal</text>
+<text top="620" left="129" width="412" height="14" font="2">will look something like this (assuming our append workload again):</text>
+<text top="678" left="154" width="0" height="11" font="10">Journal</text>
+<text top="662" left="161" width="21" height="11" font="8">TxB</text>
+<text top="674" left="163" width="19" height="9" font="17">id=1</text>
+<text top="662" left="193" width="22" height="11" font="8">I[v2]</text>
+<text top="662" left="234" width="27" height="11" font="8">B[v2]</text>
+<text top="662" left="283" width="15" height="11" font="8">Db</text>
+<text top="708" left="147" width="414" height="14" font="2">When those writes complete, the file system issues the write of the TxE</text>
+<text top="723" left="129" width="315" height="14" font="2">block, thus leaving the journal in this final, safe state:</text>
+<text top="781" left="154" width="0" height="11" font="10">Journal</text>
+<text top="765" left="161" width="21" height="11" font="8">TxB</text>
+<text top="777" left="163" width="19" height="9" font="17">id=1</text>
+<text top="765" left="193" width="22" height="11" font="8">I[v2]</text>
+<text top="765" left="234" width="27" height="11" font="8">B[v2]</text>
+<text top="765" left="283" width="15" height="11" font="8">Db</text>
+<text top="765" left="313" width="21" height="11" font="8">TxE</text>
+<text top="777" left="314" width="19" height="9" font="17">id=1</text>
+<text top="811" left="147" width="414" height="14" font="2">An important aspect of this process is the atomicity guarantee pro-</text>
+<text top="826" left="129" width="432" height="14" font="2">vided by the disk. It turns out that the disk guarantees that any 512-byte</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="139" left="87" width="432" height="14" font="2">write will either happen or not (and never be half-written); thus, to make</text>
+<text top="154" left="87" width="432" height="14" font="2">sure the write of TxE is atomic, one should make it a single 512-byte block.</text>
+<text top="169" left="87" width="432" height="14" font="2">Thus, our current protocol to update the file system, with each of its three</text>
+<text top="183" left="87" width="90" height="14" font="2">phases labeled:</text>
+<text top="212" left="105" width="10" height="14" font="2">1.</text>
+<text top="212" left="122" width="84" height="13" font="3"><b>Journal write:</b></text>
+<text top="212" left="210" width="309" height="14" font="2">Write the contents of the transaction (including TxB,</text>
+<text top="227" left="122" width="382" height="14" font="2">metadata, and data) to the log; wait for these writes to complete.</text>
+<text top="242" left="105" width="10" height="14" font="2">2.</text>
+<text top="242" left="122" width="101" height="13" font="3"><b>Journal commit:</b></text>
+<text top="242" left="230" width="289" height="14" font="2">Write the transaction commit block (containing</text>
+<text top="257" left="122" width="397" height="14" font="2">TxE) to the log; wait for write to complete; transaction is said to be</text>
+<text top="272" left="122" width="66" height="13" font="3"><b>committed</b></text>
+<text top="272" left="187" width="3" height="14" font="2">.</text>
+<text top="287" left="105" width="10" height="14" font="2">3.</text>
+<text top="287" left="122" width="75" height="13" font="3"><b>Checkpoint:</b></text>
+<text top="287" left="202" width="317" height="14" font="2">Write the contents of the update (metadata and data)</text>
+<text top="302" left="122" width="181" height="14" font="2">to their final on-disk locations.</text>
+<text top="339" left="87" width="63" height="15" font="13"><b>Recovery</b></text>
+<text top="363" left="87" width="432" height="14" font="2">Let’s now understand how a file system can use the contents of the jour-</text>
+<text top="378" left="87" width="34" height="14" font="2">nal to</text>
+<text top="378" left="124" width="45" height="13" font="3"><b>recover</b></text>
+<text top="378" left="173" width="346" height="14" font="2">from a crash. A crash may happen at any time during this</text>
+<text top="393" left="87" width="432" height="14" font="2">sequence of updates. If the crash happens before the transaction is writ-</text>
+<text top="408" left="87" width="432" height="14" font="2">ten safely to the log (i.e., before Step 2 above completes), then our job</text>
+<text top="423" left="87" width="432" height="14" font="2">is easy: the pending update is simply skipped. If the crash happens af-</text>
+<text top="438" left="87" width="432" height="14" font="2">ter the transaction has committed to the log, but before the checkpoint is</text>
+<text top="453" left="87" width="176" height="14" font="2">complete, the file system can</text>
+<text top="453" left="268" width="45" height="13" font="3"><b>recover</b></text>
+<text top="453" left="317" width="201" height="14" font="2">the update as follows. When the</text>
+<text top="468" left="87" width="432" height="14" font="2">system boots, the file system recovery process will scan the log and look</text>
+<text top="483" left="87" width="432" height="14" font="2">for transactions that have committed to the disk; these transactions are</text>
+<text top="498" left="87" width="26" height="14" font="2">thus</text>
+<text top="498" left="117" width="54" height="13" font="3"><b>replayed</b></text>
+<text top="498" left="176" width="343" height="14" font="2">(in order), with the file system again attempting to write</text>
+<text top="513" left="87" width="432" height="14" font="2">out the blocks in the transaction to their final on-disk locations. This form</text>
+<text top="528" left="87" width="348" height="14" font="2">of logging is one of the simplest forms there is, and is called</text>
+<text top="528" left="438" width="78" height="13" font="3"><b>redo logging</b></text>
+<text top="528" left="516" width="3" height="14" font="2">.</text>
+<text top="543" left="87" width="432" height="14" font="2">By recovering the committed transactions in the journal, the file system</text>
+<text top="558" left="87" width="432" height="14" font="2">ensures that the on-disk structures are consistent, and thus can proceed</text>
+<text top="573" left="87" width="386" height="14" font="2">by mounting the file system and readying itself for new requests.</text>
+<text top="588" left="105" width="414" height="14" font="2">Note that it is fine for a crash to happen at any point during check-</text>
+<text top="603" left="87" width="432" height="14" font="2">pointing, even after some of the updates to the final locations of the blocks</text>
+<text top="618" left="87" width="432" height="14" font="2">have completed. In the worst case, some of these updates are simply per-</text>
+<text top="633" left="87" width="432" height="14" font="2">formed again during recovery. Because recovery is a rare operation (only</text>
+<text top="648" left="87" width="432" height="14" font="2">taking place after an unexpected system crash), a few redundant writes</text>
+<text top="665" left="87" width="161" height="14" font="2">are nothing to worry about</text>
+<text top="662" left="248" width="4" height="9" font="14">3</text>
+<text top="665" left="253" width="3" height="14" font="2">.</text>
+<text top="701" left="87" width="150" height="15" font="13"><b>Batching Log Updates</b></text>
+<text top="726" left="87" width="432" height="14" font="2">You might have noticed that the basic protocol could add a lot of extra</text>
+<text top="741" left="87" width="432" height="14" font="2">disk traffic. For example, imagine we create two files in a row, called</text>
+<text top="757" left="87" width="40" height="11" font="7">file1</text>
+<text top="756" left="133" width="23" height="14" font="2">and</text>
+<text top="757" left="161" width="40" height="11" font="7">file2</text>
+<text top="756" left="202" width="317" height="14" font="2">, in the same directory. To create one file, one has</text>
+<text top="771" left="87" width="432" height="14" font="2">to update a number of on-disk structures, minimally including: the in-</text>
+<text top="786" left="87" width="432" height="14" font="2">ode bitmap (to allocate a new inode), the newly-created inode of the file,</text>
+<text top="814" left="107" width="4" height="8" font="15">3</text>
+<text top="816" left="112" width="407" height="11" font="12">Unless you worry about everything, in which case we can’t help you. Stop worrying so</text>
+<text top="828" left="87" width="361" height="11" font="12">much, it is unhealthy! But now you’re probably worried about over-worrying.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="139" left="129" width="432" height="14" font="2">the data block of the parent directory containing the new directory en-</text>
+<text top="154" left="129" width="432" height="14" font="2">try, and the parent directory inode (which now has a new modification</text>
+<text top="169" left="129" width="432" height="14" font="2">time). With journaling, we logically commit all of this information to</text>
+<text top="183" left="129" width="432" height="14" font="2">the journal for each of our two file creations; because the files are in the</text>
+<text top="198" left="129" width="432" height="14" font="2">same directory, and assuming they even have inodes within the same in-</text>
+<text top="213" left="129" width="432" height="14" font="2">ode block, this means that if we’re not careful, we’ll end up writing these</text>
+<text top="228" left="129" width="161" height="14" font="2">same blocks over and over.</text>
+<text top="244" left="147" width="414" height="14" font="2">To remedy this problem, some file systems do not commit each update</text>
+<text top="259" left="129" width="432" height="14" font="2">to disk one at a time (e.g., Linux ext3); rather, one can buffer all updates</text>
+<text top="273" left="129" width="432" height="14" font="2">into a global transaction. In our example above, when the two files are</text>
+<text top="288" left="129" width="432" height="14" font="2">created, the file system just marks the in-memory inode bitmap, inodes</text>
+<text top="303" left="129" width="432" height="14" font="2">of the files, directory data, and directory inode as dirty, and adds them to</text>
+<text top="318" left="129" width="432" height="14" font="2">the list of blocks that form the current transaction. When it is finally time</text>
+<text top="333" left="129" width="432" height="14" font="2">to write these blocks to disk (say, after a timeout of 5 seconds), this single</text>
+<text top="348" left="129" width="432" height="14" font="2">global transaction is committed containing all of the updates described</text>
+<text top="363" left="129" width="432" height="14" font="2">above. Thus, by buffering updates, a file system can avoid excessive write</text>
+<text top="378" left="129" width="168" height="14" font="2">traffic to disk in many cases.</text>
+<text top="415" left="129" width="157" height="15" font="13"><b>Making The Log Finite</b></text>
+<text top="440" left="129" width="432" height="14" font="2">We thus have arrived at a basic protocol for updating file-system on-disk</text>
+<text top="455" left="129" width="432" height="14" font="2">structures. The file system buffers updates in memory for some time;</text>
+<text top="470" left="129" width="432" height="14" font="2">when it is finally time to write to disk, the file system first carefully writes</text>
+<text top="485" left="129" width="432" height="14" font="2">out the details of the transaction to the journal (a.k.a. write-ahead log);</text>
+<text top="500" left="129" width="432" height="14" font="2">after the transaction is complete, the file system checkpoints those blocks</text>
+<text top="515" left="129" width="180" height="14" font="2">to their final locations on disk.</text>
+<text top="530" left="147" width="414" height="14" font="2">However, the log is of a finite size. If we keep adding transactions to</text>
+<text top="545" left="129" width="414" height="14" font="2">it (as in this figure), it will soon fill. What do you think happens then?</text>
+<text top="609" left="154" width="0" height="11" font="10">Journal</text>
+<text top="594" left="173" width="20" height="11" font="8">Tx1</text>
+<text top="594" left="216" width="20" height="11" font="8">Tx2</text>
+<text top="594" left="259" width="20" height="11" font="8">Tx3</text>
+<text top="594" left="303" width="20" height="11" font="8">Tx4</text>
+<text top="594" left="346" width="20" height="11" font="8">Tx5</text>
+<text top="594" left="383" width="10" height="11" font="8">...</text>
+<text top="646" left="147" width="414" height="14" font="2">Two problems arise when the log becomes full. The first is simpler,</text>
+<text top="661" left="129" width="432" height="14" font="2">but less critical: the larger the log, the longer recovery will take, as the</text>
+<text top="676" left="129" width="432" height="14" font="2">recovery process must replay all the transactions within the log (in order)</text>
+<text top="691" left="129" width="432" height="14" font="2">to recover. The second is more of an issue: when the log is full (or nearly</text>
+<text top="706" left="129" width="432" height="14" font="2">full), no further transactions can be committed to the disk, thus making</text>
+<text top="721" left="129" width="276" height="14" font="2">the file system “less than useful” (i.e., useless).</text>
+<text top="736" left="147" width="414" height="14" font="2">To address these problems, journaling file systems treat the log as a</text>
+<text top="751" left="129" width="432" height="14" font="2">circular data structure, re-using it over and over; this is why the journal</text>
+<text top="766" left="129" width="171" height="14" font="2">is sometimes referred to as a</text>
+<text top="766" left="304" width="70" height="13" font="3"><b>circular log</b></text>
+<text top="766" left="373" width="187" height="14" font="2">. To do so, the file system must</text>
+<text top="781" left="129" width="432" height="14" font="2">take action some time after a checkpoint. Specifically, once a transaction</text>
+<text top="796" left="129" width="432" height="14" font="2">has been checkpointed, the file system should free the space it was occu-</text>
+<text top="811" left="129" width="432" height="14" font="2">pying within the journal, allowing the log space to be reused. There are</text>
+<text top="826" left="129" width="432" height="14" font="2">many ways to achieve this end; for example, you could simply mark the</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="139" left="87" width="383" height="14" font="2">oldest and newest non-checkpointed transactions in the log in a</text>
+<text top="139" left="474" width="45" height="13" font="3"><b>journal</b></text>
+<text top="154" left="87" width="69" height="13" font="3"><b>superblock</b></text>
+<text top="154" left="156" width="313" height="14" font="2">; all other space is free. Here is a graphical depiction:</text>
+<text top="224" left="112" width="0" height="11" font="10">Journal</text>
+<text top="201" left="122" width="39" height="11" font="8">Journal</text>
+<text top="215" left="125" width="32" height="11" font="8">Super</text>
+<text top="208" left="174" width="20" height="11" font="8">Tx1</text>
+<text top="208" left="218" width="20" height="11" font="8">Tx2</text>
+<text top="208" left="261" width="20" height="11" font="8">Tx3</text>
+<text top="208" left="304" width="20" height="11" font="8">Tx4</text>
+<text top="208" left="347" width="20" height="11" font="8">Tx5</text>
+<text top="208" left="384" width="10" height="11" font="8">...</text>
+<text top="255" left="105" width="414" height="14" font="2">In the journal superblock (not to be confused with the main file system</text>
+<text top="270" left="87" width="432" height="14" font="2">superblock), the journaling system records enough information to know</text>
+<text top="285" left="87" width="432" height="14" font="2">which transactions have not yet been checkpointed, and thus reduces re-</text>
+<text top="300" left="87" width="432" height="14" font="2">covery time as well as enables re-use of the log in a circular fashion. And</text>
+<text top="315" left="87" width="279" height="14" font="2">thus we add another step to our basic protocol:</text>
+<text top="345" left="105" width="10" height="14" font="2">1.</text>
+<text top="345" left="122" width="84" height="13" font="3"><b>Journal write:</b></text>
+<text top="345" left="210" width="309" height="14" font="2">Write the contents of the transaction (containing TxB</text>
+<text top="360" left="122" width="397" height="14" font="2">and the contents of the update) to the log; wait for these writes to</text>
+<text top="375" left="122" width="58" height="14" font="2">complete.</text>
+<text top="390" left="105" width="10" height="14" font="2">2.</text>
+<text top="390" left="122" width="101" height="13" font="3"><b>Journal commit:</b></text>
+<text top="390" left="230" width="289" height="14" font="2">Write the transaction commit block (containing</text>
+<text top="405" left="122" width="397" height="14" font="2">TxE) to the log; wait for the write to complete; the transaction is</text>
+<text top="420" left="122" width="26" height="14" font="2">now</text>
+<text top="420" left="151" width="66" height="13" font="3"><b>committed</b></text>
+<text top="420" left="217" width="3" height="14" font="2">.</text>
+<text top="435" left="105" width="10" height="14" font="2">3.</text>
+<text top="435" left="122" width="75" height="13" font="3"><b>Checkpoint:</b></text>
+<text top="435" left="201" width="318" height="14" font="2">Write the contents of the update to their final locations</text>
+<text top="450" left="122" width="131" height="14" font="2">within the file system.</text>
+<text top="464" left="105" width="10" height="14" font="2">4.</text>
+<text top="465" left="122" width="30" height="13" font="3"><b>Free:</b></text>
+<text top="464" left="158" width="361" height="14" font="2">Some time later, mark the transaction free in the journal by</text>
+<text top="479" left="122" width="195" height="14" font="2">updating the journal superblock.</text>
+<text top="509" left="105" width="414" height="14" font="2">Thus we have our final data journaling protocol. But there is still a</text>
+<text top="524" left="87" width="325" height="14" font="2">problem: we are writing each data block to the disk</text>
+<text top="524" left="417" width="29" height="14" font="16"><i>twice</i></text>
+<text top="524" left="446" width="73" height="14" font="2">, which is a</text>
+<text top="539" left="87" width="432" height="14" font="2">heavy cost to pay, especially for something as rare as a system crash. Can</text>
+<text top="554" left="87" width="417" height="14" font="2">you figure out a way to retain consistency without writing data twice?</text>
+<text top="592" left="87" width="141" height="15" font="13"><b>Metadata Journaling</b></text>
+<text top="617" left="87" width="432" height="14" font="2">Although recovery is now fast (scanning the journal and replaying a few</text>
+<text top="631" left="87" width="432" height="14" font="2">transactions as opposed to scanning the entire disk), normal operation</text>
+<text top="646" left="87" width="432" height="14" font="2">of the file system is slower than we might desire. In particular, for each</text>
+<text top="661" left="87" width="432" height="14" font="2">write to disk, we are now also writing to the journal first, thus doubling</text>
+<text top="676" left="87" width="432" height="14" font="2">write traffic; this doubling is especially painful during sequential write</text>
+<text top="691" left="87" width="432" height="14" font="2">workloads, which now will proceed at half the peak write bandwidth of</text>
+<text top="706" left="87" width="432" height="14" font="2">the drive. Further, between writes to the journal and writes to the main</text>
+<text top="721" left="87" width="432" height="14" font="2">file system, there is a costly seek, which adds noticeable overhead for</text>
+<text top="736" left="87" width="101" height="14" font="2">some workloads.</text>
+<text top="751" left="105" width="414" height="14" font="2">Because of the high cost of writing every data block to disk twice, peo-</text>
+<text top="766" left="87" width="432" height="14" font="2">ple have tried a few different things in order to speed up performance.</text>
+<text top="781" left="87" width="432" height="14" font="2">For example, the mode of journaling we described above is often called</text>
+<text top="796" left="87" width="94" height="13" font="3"><b>data journaling</b></text>
+<text top="796" left="185" width="334" height="14" font="2">(as in Linux ext3), as it journals all user data (in addition</text>
+<text top="811" left="87" width="432" height="14" font="2">to the metadata of the file system). A simpler (and more common) form</text>
+<text top="826" left="87" width="201" height="14" font="2">of journaling is sometimes called</text>
+<text top="826" left="293" width="118" height="13" font="3"><b>ordered journaling</b></text>
+<text top="826" left="415" width="43" height="14" font="2">(or just</text>
+<text top="826" left="463" width="56" height="13" font="3"><b>metadata</b></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="139" left="129" width="65" height="13" font="3"><b>journaling</b></text>
+<text top="139" left="194" width="311" height="14" font="2">), and it is nearly the same, except that user data is</text>
+<text top="139" left="509" width="18" height="14" font="16"><i>not</i></text>
+<text top="139" left="531" width="29" height="14" font="2">writ-</text>
+<text top="154" left="129" width="432" height="14" font="2">ten to the journal. Thus, when performing the same update as above, the</text>
+<text top="169" left="129" width="324" height="14" font="2">following information would be written to the journal:</text>
+<text top="225" left="154" width="0" height="11" font="10">Journal</text>
+<text top="209" left="161" width="54" height="11" font="8">TxB I[v2]</text>
+<text top="209" left="234" width="56" height="11" font="8">B[v2] TxE</text>
+<text top="254" left="147" width="414" height="14" font="2">The data block Db, previously written to the log, would instead be</text>
+<text top="269" left="129" width="432" height="14" font="2">written to the file system proper, avoiding the extra write; given that most</text>
+<text top="284" left="129" width="432" height="14" font="2">I/O traffic to the disk is data, not writing data twice substantially reduces</text>
+<text top="299" left="129" width="432" height="14" font="2">the I/O load of journaling. The modification does raise an interesting</text>
+<text top="314" left="129" width="362" height="14" font="2">question, though: when should we write data blocks to disk?</text>
+<text top="328" left="147" width="414" height="14" font="2">Let’s again consider our example append of a file to understand the</text>
+<text top="343" left="129" width="432" height="14" font="2">problem better. The update consists of three blocks: I[v2], B[v2], and</text>
+<text top="358" left="129" width="432" height="14" font="2">Db. The first two are both metadata and will be logged and then check-</text>
+<text top="373" left="129" width="432" height="14" font="2">pointed; the latter will only be written once to the file system. When</text>
+<text top="388" left="129" width="262" height="14" font="2">should we write Db to disk? Does it matter?</text>
+<text top="403" left="147" width="414" height="14" font="2">As it turns out, the ordering of the data write does matter for metadata-</text>
+<text top="418" left="129" width="344" height="14" font="2">only journaling. For example, what if we write Db to disk</text>
+<text top="418" left="476" width="25" height="14" font="16"><i>after</i></text>
+<text top="418" left="504" width="57" height="14" font="2">the trans-</text>
+<text top="433" left="129" width="432" height="14" font="2">action (containing I[v2] and B[v2]) completes? Unfortunately, this ap-</text>
+<text top="448" left="129" width="432" height="14" font="2">proach has a problem: the file system is consistent but I[v2] may end up</text>
+<text top="463" left="129" width="432" height="14" font="2">pointing to garbage data. Specifically, consider the case where I[v2] and</text>
+<text top="478" left="129" width="432" height="14" font="2">B[v2] are written but Db did not make it to disk. The file system will then</text>
+<text top="493" left="129" width="178" height="14" font="2">try to recover. Because Db is</text>
+<text top="493" left="312" width="18" height="14" font="16"><i>not</i></text>
+<text top="493" left="335" width="226" height="14" font="2">in the log, the file system will replay</text>
+<text top="508" left="129" width="432" height="14" font="2">writes to I[v2] and B[v2], and produce a consistent file system (from the</text>
+<text top="523" left="129" width="432" height="14" font="2">perspective of file-system metadata). However, I[v2] will be pointing to</text>
+<text top="538" left="129" width="406" height="14" font="2">garbage data, i.e., at whatever was in the slot where Db was headed.</text>
+<text top="553" left="147" width="414" height="14" font="2">To ensure this situation does not arise, some file systems (e.g., Linux</text>
+<text top="568" left="129" width="313" height="14" font="2">ext3) write data blocks (of regular files) to the disk</text>
+<text top="567" left="447" width="22" height="14" font="16"><i>first</i></text>
+<text top="568" left="469" width="92" height="14" font="2">, before related</text>
+<text top="582" left="129" width="390" height="14" font="2">metadata is written to disk. Specifically, the protocol is as follows:</text>
+<text top="607" left="146" width="10" height="14" font="2">1.</text>
+<text top="607" left="163" width="68" height="13" font="3"><b>Data write:</b></text>
+<text top="607" left="236" width="282" height="14" font="2">Write data to final location; wait for completion</text>
+<text top="622" left="163" width="255" height="14" font="2">(the wait is optional; see below for details).</text>
+<text top="637" left="146" width="10" height="14" font="2">2.</text>
+<text top="637" left="163" width="144" height="13" font="3"><b>Journal metadata write:</b></text>
+<text top="637" left="312" width="249" height="14" font="2">Write the begin block and metadata to the</text>
+<text top="652" left="163" width="189" height="14" font="2">log; wait for writes to complete.</text>
+<text top="667" left="146" width="10" height="14" font="2">3.</text>
+<text top="667" left="163" width="101" height="13" font="3"><b>Journal commit:</b></text>
+<text top="667" left="272" width="289" height="14" font="2">Write the transaction commit block (containing</text>
+<text top="682" left="163" width="397" height="14" font="2">TxE) to the log; wait for the write to complete; the transaction (in-</text>
+<text top="697" left="163" width="122" height="14" font="2">cluding data) is now</text>
+<text top="697" left="289" width="66" height="13" font="3"><b>committed</b></text>
+<text top="697" left="355" width="3" height="14" font="2">.</text>
+<text top="712" left="146" width="10" height="14" font="2">4.</text>
+<text top="712" left="163" width="136" height="13" font="3"><b>Checkpoint metadata:</b></text>
+<text top="712" left="305" width="256" height="14" font="2">Write the contents of the metadata update</text>
+<text top="727" left="163" width="264" height="14" font="2">to their final locations within the file system.</text>
+<text top="742" left="146" width="10" height="14" font="2">5.</text>
+<text top="742" left="163" width="30" height="13" font="3"><b>Free:</b></text>
+<text top="742" left="197" width="319" height="14" font="2">Later, mark the transaction free in journal superblock.</text>
+<text top="766" left="147" width="414" height="14" font="2">By forcing the data write first, a file system can guarantee that a pointer</text>
+<text top="781" left="129" width="432" height="14" font="2">will never point to garbage. Indeed, this rule of “write the pointed-to</text>
+<text top="796" left="129" width="432" height="14" font="2">object before the object that points to it” is at the core of crash consis-</text>
+<text top="811" left="129" width="432" height="14" font="2">tency, and is exploited even further by other crash consistency schemes</text>
+<text top="826" left="129" width="178" height="14" font="2">[GP94] (see below for details).</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="139" left="105" width="414" height="14" font="2">In most systems, metadata journaling (akin to ordered journaling of</text>
+<text top="154" left="87" width="432" height="14" font="2">ext3) is more popular than full data journaling. For example, Windows</text>
+<text top="169" left="87" width="432" height="14" font="2">NTFS and SGI’s XFS both use some form of metadata journaling. Linux</text>
+<text top="183" left="87" width="432" height="14" font="2">ext3 gives you the option of choosing either data, ordered, or unordered</text>
+<text top="198" left="87" width="432" height="14" font="2">modes (in unordered mode, data can be written at any time). All of these</text>
+<text top="213" left="87" width="418" height="14" font="2">modes keep metadata consistent; they vary in their semantics for data.</text>
+<text top="228" left="105" width="414" height="14" font="2">Finally, note that forcing the data write to complete (Step 1) before is-</text>
+<text top="243" left="87" width="432" height="14" font="2">suing writes to the journal (Step 2) is not required for correctness, as indi-</text>
+<text top="258" left="87" width="432" height="14" font="2">cated in the protocol above. Specifically, it would be fine to concurrently</text>
+<text top="273" left="87" width="432" height="14" font="2">issue writes to data, the transaction-begin block, and journaled metadata;</text>
+<text top="288" left="87" width="432" height="14" font="2">the only real requirement is that Steps 1 and 2 complete before the issuing</text>
+<text top="303" left="87" width="216" height="14" font="2">of the journal commit block (Step 3).</text>
+<text top="340" left="87" width="172" height="15" font="13"><b>Tricky Case: Block Reuse</b></text>
+<text top="365" left="87" width="432" height="14" font="2">There are some interesting corner cases that make journaling more tricky,</text>
+<text top="380" left="87" width="432" height="14" font="2">and thus are worth discussing. A number of them revolve around block</text>
+<text top="394" left="87" width="403" height="14" font="2">reuse; as Stephen Tweedie (one of the main forces behind ext3) said:</text>
+<text top="416" left="122" width="363" height="12" font="11">“What’s the hideous part of the entire system? ... It’s deleting files.</text>
+<text top="431" left="122" width="363" height="12" font="11">Everything to do with delete is hairy. Everything to do with delete...</text>
+<text top="445" left="122" width="363" height="12" font="11">you have nightmares around what happens if blocks get deleted and</text>
+<text top="459" left="122" width="124" height="12" font="11">then reallocated.” [T00]</text>
+<text top="480" left="105" width="414" height="14" font="2">The particular example Tweedie gives is as follows. Suppose you are</text>
+<text top="495" left="87" width="432" height="14" font="2">using some form of metadata journaling (and thus data blocks for files</text>
+<text top="509" left="87" width="18" height="14" font="2">are</text>
+<text top="509" left="110" width="18" height="14" font="16"><i>not</i></text>
+<text top="509" left="132" width="295" height="14" font="2">journaled). Let’s say you have a directory called</text>
+<text top="510" left="431" width="24" height="11" font="7">foo</text>
+<text top="509" left="456" width="63" height="14" font="2">. The user</text>
+<text top="524" left="87" width="102" height="14" font="2">adds an entry to</text>
+<text top="525" left="194" width="24" height="11" font="7">foo</text>
+<text top="524" left="223" width="296" height="14" font="2">(say by creating a file), and thus the contents of</text>
+<text top="540" left="87" width="24" height="11" font="7">foo</text>
+<text top="539" left="115" width="404" height="14" font="2">(because directories are considered metadata) are written to the log;</text>
+<text top="554" left="87" width="155" height="14" font="2">assume the location of the</text>
+<text top="555" left="246" width="24" height="11" font="7">foo</text>
+<text top="554" left="274" width="245" height="14" font="2">directory data is block 1000. The log thus</text>
+<text top="569" left="87" width="170" height="14" font="2">contains something like this:</text>
+<text top="628" left="112" width="0" height="11" font="10">Journal</text>
+<text top="612" left="120" width="21" height="11" font="8">TxB</text>
+<text top="624" left="121" width="19" height="9" font="17">id=1</text>
+<text top="612" left="149" width="26" height="11" font="8">I[foo]</text>
+<text top="625" left="143" width="40" height="10" font="9">ptr:1000</text>
+<text top="612" left="222" width="32" height="11" font="8">D[foo]</text>
+<text top="625" left="199" width="77" height="10" font="9">[final addr:1000]</text>
+<text top="612" left="292" width="21" height="11" font="8">TxE</text>
+<text top="624" left="294" width="19" height="9" font="17">id=1</text>
+<text top="659" left="105" width="414" height="14" font="2">At this point, the user deletes everything in the directory and the di-</text>
+<text top="674" left="87" width="432" height="14" font="2">rectory itself, freeing up block 1000 for reuse. Finally, the user creates a</text>
+<text top="689" left="87" width="74" height="14" font="2">new file (say</text>
+<text top="690" left="164" width="24" height="11" font="7">bar</text>
+<text top="689" left="188" width="331" height="14" font="2">), which ends up reusing the same block (1000) that used</text>
+<text top="704" left="87" width="73" height="14" font="2">to belong to</text>
+<text top="705" left="164" width="24" height="11" font="7">foo</text>
+<text top="704" left="188" width="87" height="14" font="2">. The inode of</text>
+<text top="705" left="280" width="24" height="11" font="7">bar</text>
+<text top="704" left="308" width="211" height="14" font="2">is committed to disk, as is its data;</text>
+<text top="719" left="87" width="432" height="14" font="2">note, however, because metadata journaling is in use, only the inode of</text>
+<text top="735" left="87" width="24" height="11" font="7">bar</text>
+<text top="734" left="115" width="404" height="14" font="2">is committed to the journal; the newly-written data in block 1000 in</text>
+<text top="749" left="87" width="41" height="14" font="2">the file</text>
+<text top="750" left="131" width="24" height="11" font="7">bar</text>
+<text top="749" left="159" width="10" height="14" font="2">is</text>
+<text top="749" left="172" width="18" height="14" font="16"><i>not</i></text>
+<text top="749" left="193" width="60" height="14" font="2">journaled.</text>
+<text top="808" left="112" width="0" height="11" font="10">Journal</text>
+<text top="792" left="120" width="21" height="11" font="8">TxB</text>
+<text top="804" left="121" width="19" height="9" font="17">id=1</text>
+<text top="792" left="149" width="26" height="11" font="8">I[foo]</text>
+<text top="805" left="143" width="40" height="10" font="9">ptr:1000</text>
+<text top="792" left="222" width="32" height="11" font="8">D[foo]</text>
+<text top="805" left="199" width="77" height="10" font="9">[final addr:1000]</text>
+<text top="792" left="292" width="21" height="11" font="8">TxE</text>
+<text top="804" left="294" width="19" height="9" font="17">id=1</text>
+<text top="792" left="314" width="21" height="11" font="8">TxB</text>
+<text top="804" left="315" width="19" height="9" font="17">id=2</text>
+<text top="792" left="343" width="27" height="11" font="8">I[bar]</text>
+<text top="805" left="337" width="40" height="10" font="9">ptr:1000</text>
+<text top="792" left="379" width="21" height="11" font="8">TxE</text>
+<text top="804" left="380" width="19" height="9" font="17">id=2</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="136" left="258" width="46" height="13" font="3"><b>Journal</b></text>
+<text top="136" left="438" width="71" height="13" font="3"><b>File System</b></text>
+<text top="151" left="172" width="23" height="14" font="2">TxB</text>
+<text top="151" left="254" width="53" height="14" font="2">Contents</text>
+<text top="151" left="365" width="23" height="14" font="2">TxE</text>
+<text top="151" left="414" width="56" height="14" font="2">Metadata</text>
+<text top="151" left="492" width="28" height="14" font="2">Data</text>
+<text top="167" left="220" width="57" height="12" font="11">(metadata)</text>
+<text top="167" left="297" width="31" height="12" font="11">(data)</text>
+<text top="181" left="168" width="31" height="13" font="3"><b>issue</b></text>
+<text top="181" left="233" width="31" height="13" font="3"><b>issue</b></text>
+<text top="181" left="297" width="31" height="13" font="3"><b>issue</b></text>
+<text top="196" left="156" width="56" height="13" font="3"><b>complete</b></text>
+<text top="211" left="220" width="56" height="13" font="3"><b>complete</b></text>
+<text top="226" left="285" width="56" height="13" font="3"><b>complete</b></text>
+<text top="242" left="361" width="31" height="13" font="3"><b>issue</b></text>
+<text top="256" left="349" width="56" height="13" font="3"><b>complete</b></text>
+<text top="272" left="426" width="31" height="13" font="3"><b>issue</b></text>
+<text top="272" left="490" width="31" height="13" font="3"><b>issue</b></text>
+<text top="287" left="478" width="56" height="13" font="3"><b>complete</b></text>
+<text top="302" left="414" width="56" height="13" font="3"><b>complete</b></text>
+<text top="327" left="230" width="69" height="14" font="2">Figure 42.1:</text>
+<text top="327" left="303" width="157" height="13" font="3"><b>Data Journaling Timeline</b></text>
+<text top="352" left="147" width="414" height="14" font="2">Now assume a crash occurs and all of this information is still in the</text>
+<text top="367" left="129" width="432" height="14" font="2">log. During replay, the recovery process simply replays everything in the</text>
+<text top="382" left="129" width="432" height="14" font="2">log, including the write of directory data in block 1000; the replay thus</text>
+<text top="397" left="129" width="232" height="14" font="2">overwrites the user data of current file</text>
+<text top="397" left="365" width="24" height="11" font="7">bar</text>
+<text top="397" left="394" width="167" height="14" font="2">with old directory contents!</text>
+<text top="412" left="129" width="432" height="14" font="2">Clearly this is not a correct recovery action, and certainly it will be a sur-</text>
+<text top="426" left="129" width="225" height="14" font="2">prise to the user when reading the file</text>
+<text top="427" left="357" width="24" height="11" font="7">bar</text>
+<text top="426" left="382" width="3" height="14" font="2">.</text>
+<text top="443" left="147" width="414" height="14" font="2">There are a number of solutions to this problem. One could, for ex-</text>
+<text top="458" left="129" width="432" height="14" font="2">ample, never reuse blocks until the delete of said blocks is checkpointed</text>
+<text top="472" left="129" width="432" height="14" font="2">out of the journal. What Linux ext3 does instead is to add a new type</text>
+<text top="487" left="129" width="221" height="14" font="2">of record to the journal, known as a</text>
+<text top="488" left="355" width="42" height="13" font="3"><b>revoke</b></text>
+<text top="487" left="402" width="159" height="14" font="2">record. In the case above,</text>
+<text top="502" left="129" width="432" height="14" font="2">deleting the directory would cause a revoke record to be written to the</text>
+<text top="517" left="129" width="432" height="14" font="2">journal. When replaying the journal, the system first scans for such re-</text>
+<text top="532" left="129" width="432" height="14" font="2">voke records; any such revoked data is never replayed, thus avoiding the</text>
+<text top="547" left="129" width="160" height="14" font="2">problem mentioned above.</text>
+<text top="589" left="129" width="254" height="15" font="13"><b>Wrapping Up Journaling: A Timeline</b></text>
+<text top="614" left="129" width="432" height="14" font="2">Before ending our discussion of journaling, we summarize the protocols</text>
+<text top="629" left="129" width="432" height="14" font="2">we have discussed with timelines depicting each of them. Figure 42.1</text>
+<text top="644" left="129" width="432" height="14" font="2">shows the protocol when journaling data and metadata, whereas Figure</text>
+<text top="659" left="129" width="333" height="14" font="2">42.2 shows the protocol when journaling only metadata.</text>
+<text top="675" left="147" width="414" height="14" font="2">In each figure, time increases in the downward direction, and each row</text>
+<text top="690" left="129" width="432" height="14" font="2">in the figure shows the logical time that a write can be issued or might</text>
+<text top="705" left="129" width="432" height="14" font="2">complete. For example, in the data journaling protocol (Figure 42.1), the</text>
+<text top="720" left="129" width="432" height="14" font="2">writes of the transaction begin block (TxB) and the contents of the trans-</text>
+<text top="735" left="129" width="432" height="14" font="2">action can logically be issued at the same time, and thus can be completed</text>
+<text top="750" left="129" width="432" height="14" font="2">in any order; however, the write to the transaction end block (TxE) must</text>
+<text top="765" left="129" width="432" height="14" font="2">not be issued until said previous writes complete. Similarly, the check-</text>
+<text top="780" left="129" width="432" height="14" font="2">pointing writes to data and metadata blocks cannot begin until the trans-</text>
+<text top="795" left="129" width="432" height="14" font="2">action end block has committed. Horizontal dashed lines show where</text>
+<text top="810" left="129" width="270" height="14" font="2">write-ordering requirements must be obeyed.</text>
+<text top="826" left="147" width="414" height="14" font="2">A similar timeline is shown for the metadata journaling protocol. Note</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="136" left="216" width="46" height="13" font="3"><b>Journal</b></text>
+<text top="136" left="364" width="71" height="13" font="3"><b>File System</b></text>
+<text top="151" left="162" width="23" height="14" font="2">TxB</text>
+<text top="151" left="212" width="53" height="14" font="2">Contents</text>
+<text top="151" left="291" width="23" height="14" font="2">TxE</text>
+<text top="151" left="340" width="56" height="14" font="2">Metadata</text>
+<text top="151" left="418" width="28" height="14" font="2">Data</text>
+<text top="167" left="210" width="57" height="12" font="11">(metadata)</text>
+<text top="181" left="158" width="31" height="13" font="3"><b>issue</b></text>
+<text top="181" left="223" width="31" height="13" font="3"><b>issue</b></text>
+<text top="181" left="417" width="31" height="13" font="3"><b>issue</b></text>
+<text top="196" left="404" width="56" height="13" font="3"><b>complete</b></text>
+<text top="211" left="146" width="56" height="13" font="3"><b>complete</b></text>
+<text top="226" left="210" width="56" height="13" font="3"><b>complete</b></text>
+<text top="242" left="288" width="31" height="13" font="3"><b>issue</b></text>
+<text top="256" left="275" width="56" height="13" font="3"><b>complete</b></text>
+<text top="272" left="352" width="31" height="13" font="3"><b>issue</b></text>
+<text top="287" left="340" width="56" height="13" font="3"><b>complete</b></text>
+<text top="312" left="174" width="69" height="14" font="2">Figure 42.2:</text>
+<text top="312" left="247" width="185" height="13" font="3"><b>Metadata Journaling Timeline</b></text>
+<text top="333" left="87" width="432" height="14" font="2">that the data write can logically be issued at the same time as the writes</text>
+<text top="348" left="87" width="432" height="14" font="2">to the transaction begin and the contents of the journal; however, it must</text>
+<text top="363" left="87" width="397" height="14" font="2">be issued and complete before the transaction end has been issued.</text>
+<text top="380" left="105" width="414" height="14" font="2">Finally, note that the time of completion marked for each write in the</text>
+<text top="395" left="87" width="432" height="14" font="2">timelines is arbitrary. In a real system, completion time is determined by</text>
+<text top="410" left="87" width="432" height="14" font="2">the I/O subsystem, which may reorder writes to improve performance.</text>
+<text top="425" left="87" width="432" height="14" font="2">The only guarantees about ordering that we have are those that must</text>
+<text top="440" left="87" width="432" height="14" font="2">be enforced for protocol correctness (and are shown via the horizontal</text>
+<text top="454" left="87" width="164" height="14" font="2">dashed lines in the figures).</text>
+<text top="494" left="55" width="258" height="17" font="6">42.4 Solution #3: Other Approaches</text>
+<text top="525" left="105" width="414" height="14" font="2">We’ve thus far described two options in keeping file system metadata</text>
+<text top="540" left="87" width="221" height="14" font="2">consistent: a lazy approach based on</text>
+<text top="541" left="312" width="32" height="11" font="7">fsck</text>
+<text top="540" left="345" width="174" height="14" font="2">, and a more active approach</text>
+<text top="555" left="87" width="432" height="14" font="2">known as journaling. However, these are not the only two approaches.</text>
+<text top="570" left="87" width="432" height="14" font="2">One such approach, known as Soft Updates [GP94], was introduced by</text>
+<text top="585" left="87" width="432" height="14" font="2">Ganger and Patt. This approach carefully orders all writes to the file sys-</text>
+<text top="600" left="87" width="432" height="14" font="2">tem to ensure that the on-disk structures are never left in an inconsis-</text>
+<text top="615" left="87" width="397" height="14" font="2">tent state. For example, by writing a pointed-to data block to disk</text>
+<text top="615" left="488" width="31" height="14" font="16"><i>before</i></text>
+<text top="630" left="87" width="432" height="14" font="2">the inode that points to it, we can ensure that the inode never points to</text>
+<text top="645" left="87" width="432" height="14" font="2">garbage; similar rules can be derived for all the structures of the file sys-</text>
+<text top="660" left="87" width="432" height="14" font="2">tem. Implementing Soft Updates can be a challenge, however; whereas</text>
+<text top="675" left="87" width="432" height="14" font="2">the journaling layer described above can be implemented with relatively</text>
+<text top="690" left="87" width="432" height="14" font="2">little knowledge of the exact file system structures, Soft Updates requires</text>
+<text top="705" left="87" width="432" height="14" font="2">intricate knowledge of each file system data structure and thus adds a fair</text>
+<text top="719" left="87" width="217" height="14" font="2">amount of complexity to the system.</text>
+<text top="736" left="105" width="180" height="14" font="2">Another approach is known as</text>
+<text top="736" left="288" width="86" height="13" font="3"><b>copy-on-write</b></text>
+<text top="736" left="377" width="27" height="14" font="2">(yes,</text>
+<text top="736" left="407" width="34" height="13" font="3"><b>COW</b></text>
+<text top="736" left="442" width="77" height="14" font="2">), and is used</text>
+<text top="751" left="87" width="432" height="14" font="2">in a number of popular file systems, including Sun’s ZFS [B07]. This tech-</text>
+<text top="766" left="87" width="432" height="14" font="2">nique never overwrites files or directories in place; rather, it places new</text>
+<text top="781" left="87" width="432" height="14" font="2">updates to previously unused locations on disk. After a number of up-</text>
+<text top="796" left="87" width="432" height="14" font="2">dates are completed, COW file systems flip the root structure of the file</text>
+<text top="811" left="87" width="432" height="14" font="2">system to include pointers to the newly updated structures. Doing so</text>
+<text top="826" left="87" width="432" height="14" font="2">makes keeping the file system consistent straightforward. We’ll be learn-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">18</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="139" left="129" width="432" height="14" font="2">ing more about this technique when we discuss the log-structured file</text>
+<text top="154" left="129" width="402" height="14" font="2">system (LFS) in a future chapter; LFS is an early example of a COW.</text>
+<text top="169" left="147" width="414" height="14" font="2">Another approach is one we just developed here at Wisconsin. In this</text>
+<text top="183" left="129" width="110" height="14" font="2">technique, entitled</text>
+<text top="184" left="242" width="188" height="13" font="3"><b>backpointer-based consistency</b></text>
+<text top="183" left="433" width="17" height="14" font="2">(or</text>
+<text top="184" left="453" width="28" height="13" font="3"><b>BBC</b></text>
+<text top="183" left="480" width="80" height="14" font="2">), no ordering</text>
+<text top="198" left="129" width="398" height="14" font="2">is enforced between writes. To achieve consistency, an additional</text>
+<text top="198" left="532" width="29" height="13" font="3"><b>back</b></text>
+<text top="213" left="129" width="45" height="13" font="3"><b>pointer</b></text>
+<text top="213" left="179" width="382" height="14" font="2">is added to every block in the system; for example, each data</text>
+<text top="228" left="129" width="432" height="14" font="2">block has a reference to the inode to which it belongs. When accessing</text>
+<text top="243" left="129" width="432" height="14" font="2">a file, the file system can determine if the file is consistent by checking if</text>
+<text top="258" left="129" width="432" height="14" font="2">the forward pointer (e.g., the address in the inode or direct block) points</text>
+<text top="273" left="129" width="432" height="14" font="2">to a block that refers back to it. If so, everything must have safely reached</text>
+<text top="288" left="129" width="432" height="14" font="2">disk and thus the file is consistent; if not, the file is inconsistent, and an</text>
+<text top="303" left="129" width="432" height="14" font="2">error is returned. By adding back pointers to the file system, a new form</text>
+<text top="318" left="129" width="287" height="14" font="2">of lazy crash consistency can be attained [C+12].</text>
+<text top="333" left="147" width="414" height="14" font="2">Finally, we also have explored techniques to reduce the number of</text>
+<text top="348" left="129" width="432" height="14" font="2">times a journal protocol has to wait for disk writes to complete. Entitled</text>
+<text top="363" left="129" width="174" height="13" font="3"><b>optimistic crash consistency</b></text>
+<text top="363" left="307" width="254" height="14" font="2">[C+13], this new approach issues as many</text>
+<text top="378" left="129" width="360" height="14" font="2">writes to disk as possible by using a generalized form of the</text>
+<text top="378" left="493" width="68" height="13" font="3"><b>transaction</b></text>
+<text top="393" left="129" width="61" height="13" font="3"><b>checksum</b></text>
+<text top="393" left="195" width="366" height="14" font="2">[P+05], and includes a few other techniques to detect incon-</text>
+<text top="408" left="129" width="432" height="14" font="2">sistencies should they arise. For some workloads, these optimistic tech-</text>
+<text top="423" left="129" width="432" height="14" font="2">niques can improve performance by an order of magnitude. However, to</text>
+<text top="438" left="129" width="424" height="14" font="2">truly function well, a slightly different disk interface is required [C+13].</text>
+<text top="475" left="97" width="105" height="17" font="6">42.5 Summary</text>
+<text top="504" left="147" width="414" height="14" font="2">We have introduced the problem of crash consistency, and discussed</text>
+<text top="519" left="129" width="432" height="14" font="2">various approaches to attacking this problem. The older approach of</text>
+<text top="534" left="129" width="432" height="14" font="2">building a file system checker works but is likely too slow to recover on</text>
+<text top="549" left="129" width="432" height="14" font="2">modern systems. Thus, many file systems now use journaling. Journaling</text>
+<text top="564" left="129" width="432" height="14" font="2">reduces recovery time from O(size-of-the-disk-volume) to O(size-of-the-</text>
+<text top="579" left="129" width="432" height="14" font="2">log), thus speeding recovery substantially after a crash and restart. For</text>
+<text top="594" left="129" width="432" height="14" font="2">this reason, many modern file systems use journaling. We have also seen</text>
+<text top="609" left="129" width="432" height="14" font="2">that journaling can come in many different forms; the most commonly</text>
+<text top="624" left="129" width="432" height="14" font="2">used is ordered metadata journaling, which reduces the amount of traffic</text>
+<text top="639" left="129" width="432" height="14" font="2">to the journal while still preserving reasonable consistency guarantees for</text>
+<text top="654" left="129" width="432" height="14" font="2">both file system metadata and user data. In the end, strong guarantees</text>
+<text top="669" left="129" width="432" height="14" font="2">on user data are probably one of the most important things to provide;</text>
+<text top="684" left="129" width="432" height="14" font="2">oddly enough, as recent research has shown, this area remains a work in</text>
+<text top="699" left="129" width="96" height="14" font="2">progress [P+14].</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="19" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="16" family="HKHAJT+URWPalladioL" color="#000000"/>
+	<fontspec id="19" size="10" family="GNESKC+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="20" size="10" family="LSWGIK+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="21" size="10" family="ZCFZOD+NimbusMonL-ReguObli" color="#000000"/>
+	<fontspec id="22" size="8" family="SWBGOH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="23" size="10" family="VVWWKM+CMMI7" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="506" width="13" height="14" font="2">19</text>
+<text top="137" left="87" width="82" height="16" font="18"><b>References</b></text>
+<text top="166" left="87" width="432" height="11" font="12">[B07] “ZFS: The Last Word in File Systems” by Jeff Bonwick and Bill Moore. Available online:</text>
+<text top="178" left="87" width="270" height="9" font="19">http://www.ostep.org/Citations/zfs_last.pdf</text>
+<text top="177" left="357" width="3" height="11" font="12">.</text>
+<text top="177" left="363" width="156" height="11" font="20"><i>ZFS uses copy-on-write and journal-</i></text>
+<text top="189" left="87" width="305" height="11" font="20"><i>ing, actually, as in some cases, logging writes to disk will perform better.</i></text>
+<text top="206" left="87" width="432" height="11" font="12">[C+12] “Consistency Without Ordering” by Vijay Chidambaram, Tushar Sharma, Andrea C.</text>
+<text top="218" left="87" width="353" height="11" font="12">Arpaci-Dusseau, Remzi H. Arpaci-Dusseau. FAST ’12, San Jose, California.</text>
+<text top="218" left="445" width="74" height="11" font="20"><i>A recent paper of</i></text>
+<text top="230" left="87" width="412" height="11" font="20"><i>ours about a new form of crash consistency based on back pointers. Read it for the exciting details!</i></text>
+<text top="246" left="87" width="432" height="11" font="12">[C+13] “Optimistic Crash Consistency” by Vijay Chidambaram, Thanu S. Pillai, Andrea C.</text>
+<text top="258" left="87" width="432" height="11" font="12">Arpaci-Dusseau, Remzi H. Arpaci-Dusseau . SOSP ’13, Nemacolin Woodlands Resort, PA,</text>
+<text top="270" left="87" width="77" height="11" font="12">November 2013.</text>
+<text top="270" left="170" width="349" height="11" font="20"><i>Our work on a more optimistic and higher performance journaling protocol. For</i></text>
+<text top="282" left="87" width="79" height="11" font="20"><i>workloads that call</i></text>
+<text top="283" left="169" width="44" height="8" font="21">fsync()</text>
+<text top="282" left="215" width="181" height="11" font="20"><i>a lot, performance can be greatly improved.</i></text>
+<text top="298" left="87" width="432" height="11" font="12">[GP94] “Metadata Update Performance in File Systems” by Gregory R. Ganger and Yale N.</text>
+<text top="310" left="87" width="73" height="11" font="12">Patt. OSDI ’94.</text>
+<text top="310" left="166" width="352" height="11" font="20"><i>A clever paper about using careful ordering of writes as the main way to achieve</i></text>
+<text top="322" left="87" width="230" height="11" font="20"><i>consistency. Implemented later in BSD-based systems.</i></text>
+<text top="339" left="87" width="432" height="11" font="12">[G+08] “SQCK: A Declarative File System Checker” by Haryadi S. Gunawi, Abhishek Ra-</text>
+<text top="351" left="87" width="432" height="11" font="12">jimwale, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-Dusseau. OSDI ’08, San Diego, Califor-</text>
+<text top="363" left="87" width="17" height="11" font="12">nia.</text>
+<text top="362" left="107" width="412" height="11" font="20"><i>Our own paper on a new and better way to build a file system checker using SQL queries. We also</i></text>
+<text top="374" left="87" width="432" height="11" font="20"><i>show some problems with the existing checker, finding numerous bugs and odd behaviors, a direct result</i></text>
+<text top="386" left="87" width="82" height="11" font="20"><i>of the complexity of</i></text>
+<text top="388" left="172" width="25" height="8" font="21">fsck</text>
+<text top="386" left="197" width="3" height="11" font="20"><i>.</i></text>
+<text top="403" left="87" width="432" height="11" font="12">[H87] “Reimplementing the Cedar File System Using Logging and Group Commit” by Robert</text>
+<text top="415" left="87" width="242" height="11" font="12">Hagmann. SOSP ’87, Austin, Texas, November 1987.</text>
+<text top="415" left="332" width="187" height="11" font="20"><i>The first work (that we know of) that applied</i></text>
+<text top="427" left="87" width="231" height="11" font="20"><i>write-ahead logging (a.k.a. journaling) to a file system.</i></text>
+<text top="443" left="87" width="432" height="11" font="12">[M+13] “ffsck: The Fast File System Checker” by Ao Ma, Chris Dragga, Andrea C. Arpaci-</text>
+<text top="455" left="87" width="390" height="11" font="12">Dusseau, Remzi H. Arpaci-Dusseau. FAST ’13, San Jose, California, February 2013.</text>
+<text top="455" left="483" width="36" height="11" font="20"><i>A recent</i></text>
+<text top="467" left="87" width="432" height="11" font="20"><i>paper of ours detailing how to make fsck an order of magnitude faster. Some of the ideas have already</i></text>
+<text top="479" left="87" width="350" height="11" font="20"><i>been incorporated into the BSD file system checker [MK96] and are deployed today.</i></text>
+<text top="495" left="87" width="104" height="11" font="12">[MK96] “Fsck – The U</text>
+<text top="497" left="192" width="16" height="8" font="22">NIX</text>
+<text top="495" left="212" width="307" height="11" font="12">File System Check Program” by Marshall Kirk McKusick and T. J.</text>
+<text top="507" left="87" width="127" height="11" font="12">Kowalski. Revised in 1996.</text>
+<text top="507" left="220" width="299" height="11" font="20"><i>Describes the first comprehensive file-system checking tool, the epony-</i></text>
+<text top="519" left="87" width="23" height="11" font="20"><i>mous</i></text>
+<text top="521" left="112" width="25" height="8" font="21">fsck</text>
+<text top="519" left="137" width="250" height="11" font="20"><i>. Written by some of the same people who brought you FFS.</i></text>
+<text top="536" left="87" width="432" height="11" font="12">[MJLF84] “A Fast File System for UNIX” by Marshall K. McKusick, William N. Joy, Sam J.</text>
+<text top="548" left="87" width="432" height="11" font="12">Leffler, Robert S. Fabry. ACM Transactions on Computing Systems, Volume 2:3, August 1984.</text>
+<text top="559" left="87" width="420" height="11" font="20"><i>You already know enough about FFS, right? But come on, it is OK to re-reference important papers.</i></text>
+<text top="576" left="87" width="443" height="11" font="12">[P+14] “All File Systems Are Not Created Equal: On the Complexity of Crafting Crash-Consistent</text>
+<text top="588" left="87" width="432" height="11" font="12">Applications” by Thanumalayan Sankaranarayana Pillai, Vijay Chidambaram, Ramnatthan</text>
+<text top="600" left="87" width="432" height="11" font="12">Alagappan, Samer Al-Kiswany, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-Dusseau. OSDI</text>
+<text top="612" left="87" width="190" height="11" font="12">’14, Broomfield, Colorado, October 2014.</text>
+<text top="612" left="282" width="237" height="11" font="20"><i>A paper in which we study what file systems guarantee</i></text>
+<text top="624" left="87" width="432" height="11" font="20"><i>after crashes, and show that applications expect something different, leading to all sorts of interesting</i></text>
+<text top="636" left="87" width="40" height="11" font="20"><i>problems.</i></text>
+<text top="652" left="87" width="432" height="11" font="12">[P+05] “IRON File Systems” by Vijayan Prabhakaran, Lakshmi N. Bairavasundaram, Nitin</text>
+<text top="664" left="87" width="432" height="11" font="12">Agrawal, Haryadi S. Gunawi, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-Dusseau. SOSP</text>
+<text top="676" left="87" width="175" height="11" font="12">’05, Brighton, England, October 2005.</text>
+<text top="676" left="267" width="252" height="11" font="20"><i>A paper mostly focused on studying how file systems react</i></text>
+<text top="688" left="87" width="432" height="11" font="20"><i>to disk failures. Towards the end, we introduce a transaction checksum to speed up logging, which was</i></text>
+<text top="700" left="87" width="150" height="11" font="20"><i>eventually adopted into Linux ext4.</i></text>
+<text top="716" left="87" width="432" height="11" font="12">[PAA05] “Analysis and Evolution of Journaling File Systems” by Vijayan Prabhakaran, Andrea</text>
+<text top="728" left="87" width="432" height="11" font="12">C. Arpaci-Dusseau, Remzi H. Arpaci-Dusseau. USENIX ’05, Anaheim, California, April 2005.</text>
+<text top="740" left="87" width="292" height="11" font="20"><i>An early paper we wrote analyzing how journaling file systems work.</i></text>
+<text top="757" left="87" width="432" height="11" font="12">[R+11] “Coerced Cache Eviction and Discreet-Mode Journaling” by Abhishek Rajimwale, Vijay</text>
+<text top="768" left="87" width="432" height="11" font="12">Chidambaram, Deepak Ramamurthi, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-Dusseau.</text>
+<text top="780" left="87" width="182" height="11" font="12">DSN ’11, Hong Kong, China, June 2011.</text>
+<text top="780" left="272" width="247" height="11" font="20"><i>Our own paper on the problem of disks that buffer writes in</i></text>
+<text top="792" left="87" width="432" height="11" font="20"><i>a memory cache instead of forcing them to disk, even when explicitly told not to do that! Our solution</i></text>
+<text top="804" left="87" width="159" height="11" font="20"><i>to overcome this problem: if you want</i></text>
+<text top="805" left="248" width="9" height="11" font="23">A</text>
+<text top="804" left="260" width="111" height="11" font="20"><i>to be written to disk before</i></text>
+<text top="805" left="374" width="9" height="11" font="23">B</text>
+<text top="804" left="383" width="47" height="11" font="20"><i>, first write</i></text>
+<text top="805" left="433" width="9" height="11" font="23">A</text>
+<text top="804" left="442" width="77" height="11" font="20"><i>, then send a lot of</i></text>
+<text top="816" left="87" width="181" height="11" font="20"><i>“dummy” writes to disk, hopefully causing</i></text>
+<text top="816" left="270" width="9" height="11" font="23">A</text>
+<text top="816" left="282" width="237" height="11" font="20"><i>to be forced to disk to make room for them in the cache. A</i></text>
+<text top="828" left="87" width="116" height="11" font="20"><i>neat if impractical solution.</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="20" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">20</text>
+<text top="96" left="271" width="10" height="14" font="2">C</text>
+<text top="98" left="281" width="32" height="11" font="5">RASH</text>
+<text top="96" left="317" width="10" height="14" font="2">C</text>
+<text top="98" left="327" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="402" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="450" width="27" height="11" font="5">AND</text>
+<text top="96" left="481" width="4" height="14" font="2">J</text>
+<text top="98" left="486" width="74" height="11" font="5">OURNALING</text>
+<text top="141" left="129" width="432" height="11" font="12">[T98] “Journaling the Linux ext2fs File System” by Stephen C. Tweedie. The Fourth Annual</text>
+<text top="153" left="129" width="106" height="11" font="12">Linux Expo, May 1998.</text>
+<text top="153" left="238" width="322" height="11" font="20"><i>Tweedie did much of the heavy lifting in adding journaling to the Linux ext2</i></text>
+<text top="165" left="129" width="432" height="11" font="20"><i>file system; the result, not surprisingly, is called ext3. Some nice design decisions include the strong</i></text>
+<text top="177" left="129" width="432" height="11" font="20"><i>focus on backwards compatibility, e.g., you can just add a journaling file to an existing ext2 file system</i></text>
+<text top="189" left="129" width="171" height="11" font="20"><i>and then mount it as an ext3 file system.</i></text>
+<text top="205" left="129" width="432" height="11" font="12">[T00] “EXT3, Journaling Filesystem” by Stephen Tweedie. Talk at the Ottawa Linux Sympo-</text>
+<text top="217" left="129" width="395" height="11" font="12">sium, July 2000. olstrans.sourceforge.net/release/OLS2000-ext3/OLS2000-ext3.html</text>
+<text top="217" left="528" width="33" height="11" font="20"><i>A tran-</i></text>
+<text top="229" left="129" width="171" height="11" font="20"><i>script of a talk given by Tweedie on ext3.</i></text>
+<text top="245" left="129" width="432" height="11" font="12">[T01] “The Linux ext2 File System” by Theodore Ts’o, June, 2001.. Available online here:</text>
+<text top="258" left="129" width="264" height="9" font="19">http://e2fsprogs.sourceforge.net/ext2.html</text>
+<text top="257" left="393" width="3" height="11" font="12">.</text>
+<text top="257" left="402" width="159" height="11" font="20"><i>A simple Linux file system based on</i></text>
+<text top="269" left="129" width="432" height="11" font="20"><i>the ideas found in FFS. For a while it was quite heavily used; now it is really just in the kernel as an</i></text>
+<text top="281" left="129" width="131" height="11" font="20"><i>example of a simple file system.</i></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="21" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="32" height="11" font="5">RASH</text>
+<text top="96" left="134" width="10" height="14" font="2">C</text>
+<text top="98" left="144" width="75" height="11" font="5">ONSISTENCY</text>
+<text top="96" left="219" width="44" height="14" font="2">: FSCK</text>
+<text top="98" left="267" width="27" height="11" font="5">AND</text>
+<text top="96" left="298" width="4" height="14" font="2">J</text>
+<text top="98" left="303" width="74" height="11" font="5">OURNALING</text>
+<text top="96" left="506" width="13" height="14" font="2">21</text>
+<text top="137" left="87" width="183" height="16" font="18"><b>Homework (Simulation)</b></text>
+<text top="166" left="105" width="139" height="14" font="2">This section introduces</text>
+<text top="167" left="249" width="57" height="11" font="7">fsck.py</text>
+<text top="166" left="305" width="214" height="14" font="2">, a simple simulator you can use to</text>
+<text top="181" left="87" width="432" height="14" font="2">better understand how file system corruptions can be detected (and po-</text>
+<text top="196" left="87" width="432" height="14" font="2">tentially repaired). Please see the associated README for details on how</text>
+<text top="211" left="87" width="121" height="14" font="2">to run the simulator.</text>
+<text top="247" left="87" width="70" height="15" font="13"><b>Questions</b></text>
+<text top="271" left="105" width="72" height="14" font="2">1. First, run</text>
+<text top="272" left="179" width="81" height="11" font="7">fsck.py -D</text>
+<text top="271" left="260" width="259" height="14" font="2">; this flag turns off any corruption, and thus</text>
+<text top="286" left="122" width="397" height="14" font="2">you can use it to generate a random file system, and see if you can</text>
+<text top="301" left="122" width="397" height="14" font="2">determine which files and directories are in there. So, go ahead and</text>
+<text top="316" left="122" width="97" height="14" font="2">do that! Use the</text>
+<text top="317" left="222" width="16" height="11" font="7">-p</text>
+<text top="316" left="242" width="277" height="14" font="2">flag to see if you were right. Try this for a few</text>
+<text top="331" left="122" width="377" height="14" font="2">different randomly-generated file systems by setting the seed (</text>
+<text top="332" left="498" width="16" height="11" font="7">-s</text>
+<text top="331" left="514" width="4" height="14" font="2">)</text>
+<text top="346" left="122" width="203" height="14" font="2">to different values, like 1, 2, and 3.</text>
+<text top="361" left="105" width="260" height="14" font="2">2. Now, let’s introduce a corruption. Run</text>
+<text top="362" left="370" width="97" height="11" font="7">fsck.py -S 1</text>
+<text top="361" left="472" width="47" height="14" font="2">to start.</text>
+<text top="376" left="122" width="397" height="14" font="2">Can you see what inconsistency is introduced? How would you fix</text>
+<text top="391" left="122" width="222" height="14" font="2">it in a real file system repair tool? Use</text>
+<text top="392" left="346" width="16" height="11" font="7">-c</text>
+<text top="391" left="365" width="153" height="14" font="2">to check if you were right.</text>
+<text top="406" left="105" width="135" height="14" font="2">3. Change the seed to</text>
+<text top="407" left="244" width="32" height="11" font="7">-S 3</text>
+<text top="406" left="282" width="13" height="14" font="2">or</text>
+<text top="407" left="299" width="40" height="11" font="7">-S 19</text>
+<text top="406" left="340" width="179" height="14" font="2">; which inconsistency do you</text>
+<text top="421" left="122" width="54" height="14" font="2">see? Use</text>
+<text top="422" left="180" width="16" height="11" font="7">-c</text>
+<text top="421" left="200" width="319" height="14" font="2">to check your answer. What is different in these two</text>
+<text top="436" left="122" width="36" height="14" font="2">cases?</text>
+<text top="451" left="105" width="134" height="14" font="2">4. Change the seed to</text>
+<text top="452" left="243" width="32" height="11" font="7">-S 5</text>
+<text top="451" left="275" width="244" height="14" font="2">; which inconsistency do you see? How</text>
+<text top="466" left="122" width="364" height="14" font="2">hard would it be to fix this problem in an automatic way? Use</text>
+<text top="467" left="488" width="16" height="11" font="7">-c</text>
+<text top="466" left="507" width="12" height="14" font="2">to</text>
+<text top="481" left="122" width="378" height="14" font="2">check your answer. Then, introduce a similar inconsistency with</text>
+<text top="481" left="503" width="16" height="11" font="7">-S</text>
+<text top="496" left="122" width="16" height="11" font="7">38</text>
+<text top="496" left="138" width="284" height="14" font="2">; is this harder/possible to detect? Finally, use</text>
+<text top="496" left="426" width="48" height="11" font="7">-S 642</text>
+<text top="496" left="475" width="44" height="14" font="2">; is this</text>
+<text top="511" left="122" width="394" height="14" font="2">inconsistency detectable? If so, how would you fix the file system?</text>
+<text top="525" left="105" width="135" height="14" font="2">5. Change the seed to</text>
+<text top="526" left="244" width="32" height="11" font="7">-S 6</text>
+<text top="525" left="282" width="13" height="14" font="2">or</text>
+<text top="526" left="299" width="40" height="11" font="7">-S 13</text>
+<text top="525" left="340" width="179" height="14" font="2">; which inconsistency do you</text>
+<text top="540" left="122" width="55" height="14" font="2">see? Use</text>
+<text top="541" left="182" width="16" height="11" font="7">-c</text>
+<text top="540" left="202" width="316" height="14" font="2">to check your answer. What is the difference across</text>
+<text top="555" left="122" width="397" height="14" font="2">these two cases? What should the repair tool do when encountering</text>
+<text top="570" left="122" width="99" height="14" font="2">such a situation?</text>
+<text top="585" left="105" width="131" height="14" font="2">6. Change the seed to</text>
+<text top="586" left="239" width="32" height="11" font="7">-S 9</text>
+<text top="585" left="271" width="228" height="14" font="2">; which inconsistency do you see? Use</text>
+<text top="586" left="503" width="16" height="11" font="7">-c</text>
+<text top="600" left="122" width="397" height="14" font="2">to check your answer. Which piece of information should a check-</text>
+<text top="615" left="122" width="195" height="14" font="2">and-repair tool trust in this case?</text>
+<text top="630" left="105" width="133" height="14" font="2">7. Change the seed to</text>
+<text top="631" left="242" width="40" height="11" font="7">-S 15</text>
+<text top="630" left="283" width="236" height="14" font="2">; which inconsistency do you see? Use</text>
+<text top="646" left="122" width="16" height="11" font="7">-c</text>
+<text top="645" left="141" width="377" height="14" font="2">to check your answer. What can a repair tool do in this case? If</text>
+<text top="660" left="122" width="262" height="14" font="2">no repair is possible, how much data is lost?</text>
+<text top="675" left="105" width="133" height="14" font="2">8. Change the seed to</text>
+<text top="676" left="242" width="40" height="11" font="7">-S 10</text>
+<text top="675" left="283" width="236" height="14" font="2">; which inconsistency do you see? Use</text>
+<text top="691" left="122" width="16" height="11" font="7">-c</text>
+<text top="690" left="143" width="376" height="14" font="2">to check your answer. Is there redundancy in the file system</text>
+<text top="705" left="122" width="218" height="14" font="2">structure here that can help a repair?</text>
+<text top="720" left="105" width="130" height="14" font="2">9. Change the seed to</text>
+<text top="721" left="237" width="40" height="11" font="7">-S 16</text>
+<text top="720" left="281" width="23" height="14" font="2">and</text>
+<text top="721" left="307" width="40" height="11" font="7">-S 20</text>
+<text top="720" left="347" width="172" height="14" font="2">; which inconsistency do you</text>
+<text top="735" left="122" width="53" height="14" font="2">see? Use</text>
+<text top="736" left="179" width="16" height="11" font="7">-c</text>
+<text top="735" left="199" width="320" height="14" font="2">to check your answer. How should the repair tool fix</text>
+<text top="750" left="122" width="78" height="14" font="2">the problem?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+</pdf2xml>

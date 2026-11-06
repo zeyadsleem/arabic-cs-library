@@ -1,0 +1,957 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="EAQGTD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="EAQGTD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="XTJIUX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="11" family="XTJIUX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="16" family="XTJIUX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="13" family="EZBVTI+NimbusMonL-Regu" color="#000000"/>
+<text top="195" left="523" width="34" height="23" font="0">27</text>
+<text top="264" left="313" width="206" height="16" font="1">Interlude: Thread API</text>
+<text top="345" left="87" width="432" height="14" font="2">This chapter briefly covers the main portions of the thread API. Each part</text>
+<text top="360" left="87" width="432" height="14" font="2">will be explained further in the subsequent chapters, as we show how</text>
+<text top="375" left="87" width="432" height="14" font="2">to use the API. More details can be found in various books and online</text>
+<text top="390" left="87" width="432" height="14" font="2">sources [B89, B97, B+96, K+96]. We should note that the subsequent chap-</text>
+<text top="405" left="87" width="432" height="14" font="2">ters introduce the concepts of locks and condition variables more slowly,</text>
+<text top="420" left="87" width="400" height="14" font="2">with many examples; this chapter is thus better used as a reference.</text>
+<text top="459" left="150" width="10" height="14" font="2">C</text>
+<text top="461" left="160" width="24" height="11" font="3">RUX</text>
+<text top="459" left="185" width="19" height="14" font="2">: H</text>
+<text top="461" left="205" width="20" height="11" font="3">OW</text>
+<text top="459" left="229" width="8" height="14" font="2">T</text>
+<text top="461" left="238" width="8" height="11" font="3">O</text>
+<text top="459" left="250" width="10" height="14" font="2">C</text>
+<text top="461" left="260" width="37" height="11" font="3">REATE</text>
+<text top="459" left="302" width="10" height="14" font="2">A</text>
+<text top="461" left="313" width="18" height="11" font="3">ND</text>
+<text top="459" left="335" width="10" height="14" font="2">C</text>
+<text top="461" left="345" width="50" height="11" font="3">ONTROL</text>
+<text top="459" left="399" width="8" height="14" font="2">T</text>
+<text top="461" left="407" width="48" height="11" font="3">HREADS</text>
+<text top="474" left="105" width="414" height="14" font="2">What interfaces should the OS present for thread creation and control?</text>
+<text top="489" left="87" width="432" height="14" font="2">How should these interfaces be designed to enable ease of use as well as</text>
+<text top="504" left="87" width="42" height="14" font="2">utility?</text>
+<text top="559" left="55" width="152" height="17" font="4">27.1 Thread Creation</text>
+<text top="589" left="105" width="414" height="14" font="2">The first thing you have to be able to do to write a multi-threaded</text>
+<text top="604" left="87" width="432" height="14" font="2">program is to create new threads, and thus some kind of thread creation</text>
+<text top="619" left="87" width="239" height="14" font="2">interface must exist. In POSIX, it is easy:</text>
+<text top="649" left="87" width="161" height="11" font="5">#include &lt;pthread.h&gt;</text>
+<text top="663" left="87" width="24" height="11" font="5">int</text>
+<text top="678" left="87" width="194" height="11" font="5">pthread_create(pthread_t</text>
+<text top="681" left="329" width="65" height="11" font="5">*thread,</text>
+<text top="693" left="160" width="218" height="14" font="5">const pthread_attr_t *attr,</text>
+<text top="708" left="208" width="32" height="11" font="5">void</text>
+<text top="711" left="329" width="202" height="11" font="5">*(*start_routine)(void*),</text>
+<text top="723" left="208" width="32" height="11" font="5">void</text>
+<text top="726" left="329" width="48" height="11" font="5">*arg);</text>
+<text top="751" left="105" width="414" height="14" font="2">This declaration might look a little complex (particularly if you haven’t</text>
+<text top="766" left="87" width="432" height="14" font="2">used function pointers in C), but actually it’s not too bad. There are</text>
+<text top="781" left="87" width="97" height="14" font="2">four arguments:</text>
+<text top="782" left="192" width="48" height="11" font="5">thread</text>
+<text top="781" left="240" width="3" height="14" font="2">,</text>
+<text top="782" left="249" width="32" height="11" font="5">attr</text>
+<text top="781" left="281" width="3" height="14" font="2">,</text>
+<text top="782" left="290" width="102" height="11" font="5">start routine</text>
+<text top="781" left="392" width="31" height="14" font="2">, and</text>
+<text top="782" left="428" width="24" height="11" font="5">arg</text>
+<text top="781" left="452" width="67" height="14" font="2">. The first,</text>
+<text top="797" left="87" width="48" height="11" font="5">thread</text>
+<text top="796" left="136" width="217" height="14" font="2">, is a pointer to a structure of type</text>
+<text top="797" left="358" width="69" height="11" font="5">pthread t</text>
+<text top="796" left="427" width="92" height="14" font="2">; we’ll use this</text>
+<text top="811" left="87" width="432" height="14" font="2">structure to interact with this thread, and thus we need to pass it to</text>
+<text top="827" left="87" width="126" height="11" font="5">pthread create()</text>
+<text top="826" left="216" width="133" height="14" font="2">in order to initialize it.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="13" family="FDFLWV+URWPalladioL" color="#000000"/>
+	<fontspec id="7" size="13" family="LVADFS+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="8" size="12" family="XTJIUX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="XTJIUX+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="403" width="5" height="14" font="2">I</text>
+<text top="98" left="408" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="473" width="16" height="14" font="2">: T</text>
+<text top="98" left="490" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="139" left="147" width="130" height="14" font="2">The second argument,</text>
+<text top="139" left="280" width="32" height="11" font="5">attr</text>
+<text top="139" left="312" width="255" height="14" font="2">, is used to specify any attributes this thread</text>
+<text top="154" left="129" width="432" height="14" font="2">might have. Some examples include setting the stack size or perhaps in-</text>
+<text top="169" left="129" width="432" height="14" font="2">formation about the scheduling priority of the thread. An attribute is</text>
+<text top="183" left="129" width="197" height="14" font="2">initialized with a separate call to</text>
+<text top="184" left="330" width="147" height="11" font="5">pthread attr init()</text>
+<text top="183" left="477" width="84" height="14" font="2">; see the man-</text>
+<text top="198" left="129" width="432" height="14" font="2">ual page for details. However, in most cases, the defaults will be fine; in</text>
+<text top="213" left="129" width="233" height="14" font="2">this case, we will simply pass the value</text>
+<text top="214" left="365" width="32" height="11" font="5">NULL</text>
+<text top="213" left="401" width="15" height="14" font="2">in.</text>
+<text top="228" left="147" width="417" height="14" font="2">The third argument is the most complex, but is really just asking: which</text>
+<text top="243" left="129" width="376" height="14" font="2">function should this thread start running in? In C, we call this a</text>
+<text top="243" left="509" width="52" height="13" font="6"><b>function</b></text>
+<text top="258" left="129" width="45" height="13" font="6"><b>pointer</b></text>
+<text top="258" left="174" width="387" height="14" font="2">, and this one tells us the following is expected: a function name</text>
+<text top="273" left="129" width="4" height="14" font="2">(</text>
+<text top="274" left="133" width="102" height="11" font="5">start routine</text>
+<text top="273" left="235" width="255" height="14" font="2">), which is passed a single argument of type</text>
+<text top="274" left="493" width="48" height="14" font="5">void *</text>
+<text top="273" left="544" width="17" height="14" font="2">(as</text>
+<text top="288" left="129" width="197" height="14" font="2">indicated in the parentheses after</text>
+<text top="289" left="329" width="102" height="11" font="5">start routine</text>
+<text top="288" left="431" width="130" height="14" font="2">), and which returns a</text>
+<text top="303" left="129" width="78" height="14" font="2">value of type</text>
+<text top="304" left="210" width="48" height="14" font="5">void *</text>
+<text top="303" left="262" width="35" height="14" font="2">(i.e., a</text>
+<text top="303" left="300" width="76" height="13" font="6"><b>void pointer</b></text>
+<text top="303" left="376" width="8" height="14" font="2">).</text>
+<text top="318" left="147" width="414" height="14" font="2">If this routine instead required an integer argument, instead of a void</text>
+<text top="333" left="129" width="263" height="14" font="2">pointer, the declaration would look like this:</text>
+<text top="355" left="129" width="436" height="11" font="5">int pthread_create(..., // first two args are the same</text>
+<text top="370" left="282" width="226" height="14" font="5">void *(*start_routine)(int),</text>
+<text top="385" left="282" width="24" height="11" font="5">int</text>
+<text top="385" left="323" width="40" height="11" font="5">arg);</text>
+<text top="406" left="147" width="414" height="14" font="2">If instead the routine took a void pointer as an argument, but returned</text>
+<text top="421" left="129" width="199" height="14" font="2">an integer, it would look like this:</text>
+<text top="443" left="129" width="436" height="11" font="5">int pthread_create(..., // first two args are the same</text>
+<text top="458" left="282" width="234" height="14" font="5">int (*start_routine)(void *),</text>
+<text top="473" left="282" width="89" height="14" font="5">void *arg);</text>
+<text top="493" left="147" width="169" height="14" font="2">Finally, the fourth argument,</text>
+<text top="494" left="319" width="24" height="11" font="5">arg</text>
+<text top="493" left="343" width="218" height="14" font="2">, is exactly the argument to be passed</text>
+<text top="508" left="129" width="432" height="14" font="2">to the function where the thread begins execution. You might ask: why</text>
+<text top="523" left="129" width="432" height="14" font="2">do we need these void pointers? Well, the answer is quite simple: having</text>
+<text top="538" left="129" width="268" height="14" font="2">a void pointer as an argument to the function</text>
+<text top="539" left="400" width="102" height="11" font="5">start routine</text>
+<text top="538" left="505" width="56" height="14" font="2">allows us</text>
+<text top="553" left="129" width="59" height="14" font="2">to pass in</text>
+<text top="553" left="193" width="20" height="14" font="7"><i>any</i></text>
+<text top="553" left="218" width="343" height="14" font="2">type of argument; having it as a return value allows the</text>
+<text top="568" left="129" width="94" height="14" font="2">thread to return</text>
+<text top="568" left="227" width="20" height="14" font="7"><i>any</i></text>
+<text top="568" left="250" width="82" height="14" font="2">type of result.</text>
+<text top="583" left="147" width="414" height="14" font="2">Let’s look at an example in Figure 27.1. Here we just create a thread</text>
+<text top="598" left="129" width="432" height="14" font="2">that is passed two arguments, packaged into a single type we define our-</text>
+<text top="613" left="129" width="44" height="14" font="2">selves (</text>
+<text top="614" left="173" width="53" height="11" font="5">myarg t</text>
+<text top="613" left="226" width="335" height="14" font="2">). The thread, once created, can simply cast its argument</text>
+<text top="628" left="129" width="381" height="14" font="2">to the type it expects and thus unpack the arguments as desired.</text>
+<text top="643" left="147" width="414" height="14" font="2">And there it is! Once you create a thread, you really have another</text>
+<text top="658" left="129" width="432" height="14" font="2">live executing entity, complete with its own call stack, running within the</text>
+<text top="673" left="129" width="27" height="14" font="7"><i>same</i></text>
+<text top="673" left="160" width="401" height="14" font="2">address space as all the currently existing threads in the program.</text>
+<text top="688" left="129" width="122" height="14" font="2">The fun thus begins!</text>
+<text top="725" left="97" width="176" height="17" font="4">27.2 Thread Completion</text>
+<text top="754" left="147" width="414" height="14" font="2">The example above shows how to create a thread. However, what</text>
+<text top="769" left="129" width="432" height="14" font="2">happens if you want to wait for a thread to complete? You need to do</text>
+<text top="784" left="129" width="432" height="14" font="2">something special in order to wait for completion; in particular, you must</text>
+<text top="799" left="129" width="89" height="14" font="2">call the routine</text>
+<text top="800" left="221" width="110" height="11" font="5">pthread join()</text>
+<text top="799" left="331" width="3" height="14" font="2">.</text>
+<text top="827" left="129" width="428" height="14" font="5">int pthread_join(pthread_t thread, void **value_ptr);</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="7" family="XTJIUX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="11" size="9" family="XTJIUX+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: T</text>
+<text top="98" left="174" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="220" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="138" left="65" width="4" height="8" font="10">1</text>
+<text top="135" left="87" width="145" height="11" font="5">#include &lt;stdio.h&gt;</text>
+<text top="153" left="65" width="4" height="8" font="10">2</text>
+<text top="150" left="87" width="161" height="11" font="5">#include &lt;pthread.h&gt;</text>
+<text top="168" left="65" width="4" height="8" font="10">3</text>
+<text top="183" left="65" width="4" height="8" font="10">4</text>
+<text top="180" left="87" width="129" height="11" font="5">typedef struct {</text>
+<text top="198" left="65" width="4" height="8" font="10">5</text>
+<text top="195" left="119" width="48" height="11" font="5">int a;</text>
+<text top="213" left="65" width="4" height="8" font="10">6</text>
+<text top="210" left="119" width="48" height="11" font="5">int b;</text>
+<text top="228" left="65" width="4" height="8" font="10">7</text>
+<text top="225" left="87" width="81" height="11" font="5">} myarg_t;</text>
+<text top="243" left="65" width="4" height="8" font="10">8</text>
+<text top="258" left="65" width="4" height="8" font="10">9</text>
+<text top="254" left="87" width="218" height="14" font="5">void *mythread(void *arg) {</text>
+<text top="273" left="62" width="7" height="8" font="10">10</text>
+<text top="269" left="119" width="258" height="14" font="5">myarg_t *args = (myarg_t *) arg;</text>
+<text top="288" left="62" width="7" height="8" font="10">11</text>
+<text top="284" left="119" width="291" height="11" font="5">printf(&#34;%d %d\n&#34;, args-&gt;a, args-&gt;b);</text>
+<text top="303" left="62" width="7" height="8" font="10">12</text>
+<text top="299" left="119" width="97" height="11" font="5">return NULL;</text>
+<text top="318" left="62" width="7" height="8" font="10">13</text>
+<text top="314" left="87" width="8" height="11" font="5">}</text>
+<text top="333" left="62" width="7" height="8" font="10">14</text>
+<text top="348" left="62" width="7" height="8" font="10">15</text>
+<text top="344" left="87" width="274" height="14" font="5">int main(int argc, char *argv[]) {</text>
+<text top="363" left="62" width="7" height="8" font="10">16</text>
+<text top="359" left="119" width="97" height="11" font="5">pthread_t p;</text>
+<text top="378" left="62" width="7" height="8" font="10">17</text>
+<text top="374" left="119" width="210" height="11" font="5">myarg_t args = { 10, 20 };</text>
+<text top="393" left="62" width="7" height="8" font="10">18</text>
+<text top="407" left="62" width="7" height="8" font="10">19</text>
+<text top="404" left="119" width="412" height="11" font="5">int rc = pthread_create(&amp;p, NULL, mythread, &amp;args);</text>
+<text top="422" left="62" width="7" height="8" font="10">20</text>
+<text top="419" left="119" width="24" height="11" font="5">...</text>
+<text top="437" left="62" width="7" height="8" font="10">21</text>
+<text top="434" left="87" width="8" height="11" font="5">}</text>
+<text top="447" left="211" width="69" height="14" font="2">Figure 27.1:</text>
+<text top="447" left="284" width="111" height="13" font="6"><b>Creating a Thread</b></text>
+<text top="468" left="105" width="312" height="14" font="2">This routine takes two arguments. The first is of type</text>
+<text top="469" left="420" width="69" height="11" font="5">pthread t</text>
+<text top="468" left="490" width="29" height="14" font="2">, and</text>
+<text top="483" left="87" width="432" height="14" font="2">is used to specify which thread to wait for. This variable is initialized by</text>
+<text top="498" left="87" width="432" height="14" font="2">the thread creation routine (when you pass a pointer to it as an argument</text>
+<text top="513" left="87" width="12" height="14" font="2">to</text>
+<text top="514" left="102" width="126" height="11" font="5">pthread create()</text>
+<text top="513" left="228" width="291" height="14" font="2">); if you keep it around, you can use it to wait for</text>
+<text top="528" left="87" width="144" height="14" font="2">that thread to terminate.</text>
+<text top="544" left="105" width="414" height="14" font="2">The second argument is a pointer to the return value you expect to get</text>
+<text top="559" left="87" width="432" height="14" font="2">back. Because the routine can return anything, it is defined to return a</text>
+<text top="574" left="87" width="166" height="14" font="2">pointer to void; because the</text>
+<text top="574" left="257" width="110" height="11" font="5">pthread join()</text>
+<text top="574" left="370" width="43" height="14" font="2">routine</text>
+<text top="574" left="417" width="43" height="14" font="7"><i>changes</i></text>
+<text top="574" left="464" width="55" height="14" font="2">the value</text>
+<text top="589" left="87" width="432" height="14" font="2">of the passed in argument, you need to pass in a pointer to that value, not</text>
+<text top="603" left="87" width="115" height="14" font="2">just the value itself.</text>
+<text top="619" left="105" width="414" height="14" font="2">Let’s look at another example (Figure 27.2, page 4). In the code, a</text>
+<text top="634" left="87" width="432" height="14" font="2">single thread is again created, and passed a couple of arguments via the</text>
+<text top="650" left="87" width="53" height="11" font="5">myarg t</text>
+<text top="649" left="145" width="193" height="14" font="2">structure. To return values, the</text>
+<text top="650" left="343" width="53" height="11" font="5">myret t</text>
+<text top="649" left="401" width="118" height="14" font="2">type is used. Once</text>
+<text top="664" left="87" width="432" height="14" font="2">the thread is finished running, the main thread, which has been waiting</text>
+<text top="681" left="87" width="73" height="14" font="2">inside of the</text>
+<text top="682" left="164" width="110" height="11" font="5">pthread join()</text>
+<text top="681" left="277" width="43" height="14" font="2">routine</text>
+<text top="679" left="320" width="4" height="9" font="11">1</text>
+<text top="681" left="325" width="194" height="14" font="2">, then returns, and we can access</text>
+<text top="696" left="87" width="350" height="14" font="2">the values returned from the thread, namely whatever is in</text>
+<text top="697" left="441" width="53" height="11" font="5">myret t</text>
+<text top="696" left="494" width="3" height="14" font="2">.</text>
+<text top="712" left="105" width="414" height="14" font="2">A few things to note about this example. First, often times we don’t</text>
+<text top="727" left="87" width="432" height="14" font="2">have to do all of this painful packing and unpacking of arguments. For</text>
+<text top="742" left="87" width="396" height="14" font="2">example, if we just create a thread with no arguments, we can pass</text>
+<text top="743" left="487" width="32" height="11" font="5">NULL</text>
+<text top="757" left="87" width="397" height="14" font="2">in as an argument when the thread is created. Similarly, we can pass</text>
+<text top="757" left="487" width="32" height="11" font="5">NULL</text>
+<text top="772" left="87" width="23" height="14" font="2">into</text>
+<text top="772" left="114" width="110" height="11" font="5">pthread join()</text>
+<text top="772" left="227" width="231" height="14" font="2">if we don’t care about the return value.</text>
+<text top="802" left="107" width="4" height="8" font="10">1</text>
+<text top="804" left="112" width="407" height="11" font="9">Note we use wrapper functions here; specifically, we call Malloc(), Pthread join(), and</text>
+<text top="816" left="87" width="432" height="11" font="9">Pthread create(), which just call their similarly-named lower-case versions and make sure the</text>
+<text top="828" left="87" width="209" height="11" font="9">routines did not return anything unexpected.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="403" width="5" height="14" font="2">I</text>
+<text top="98" left="408" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="473" width="16" height="14" font="2">: T</text>
+<text top="98" left="490" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="138" left="107" width="4" height="8" font="10">1</text>
+<text top="135" left="129" width="331" height="11" font="5">typedef struct { int a; int b; } myarg_t;</text>
+<text top="153" left="107" width="4" height="8" font="10">2</text>
+<text top="150" left="129" width="331" height="11" font="5">typedef struct { int x; int y; } myret_t;</text>
+<text top="168" left="107" width="4" height="8" font="10">3</text>
+<text top="183" left="107" width="4" height="8" font="10">4</text>
+<text top="180" left="129" width="218" height="14" font="5">void *mythread(void *arg) {</text>
+<text top="198" left="107" width="4" height="8" font="10">5</text>
+<text top="195" left="161" width="331" height="14" font="5">myret_t *rvals = Malloc(sizeof(myret_t));</text>
+<text top="213" left="107" width="4" height="8" font="10">6</text>
+<text top="210" left="161" width="105" height="11" font="5">rvals-&gt;x = 1;</text>
+<text top="228" left="107" width="4" height="8" font="10">7</text>
+<text top="225" left="161" width="105" height="11" font="5">rvals-&gt;y = 2;</text>
+<text top="243" left="107" width="4" height="8" font="10">8</text>
+<text top="240" left="161" width="178" height="14" font="5">return (void *) rvals;</text>
+<text top="258" left="107" width="4" height="8" font="10">9</text>
+<text top="254" left="129" width="8" height="11" font="5">}</text>
+<text top="273" left="104" width="7" height="8" font="10">10</text>
+<text top="288" left="104" width="7" height="8" font="10">11</text>
+<text top="284" left="129" width="274" height="14" font="5">int main(int argc, char *argv[]) {</text>
+<text top="303" left="104" width="7" height="8" font="10">12</text>
+<text top="299" left="161" width="97" height="11" font="5">pthread_t p;</text>
+<text top="318" left="104" width="7" height="8" font="10">13</text>
+<text top="314" left="161" width="121" height="14" font="5">myret_t *rvals;</text>
+<text top="333" left="104" width="7" height="8" font="10">14</text>
+<text top="329" left="161" width="210" height="11" font="5">myarg_t args = { 10, 20 };</text>
+<text top="348" left="104" width="7" height="8" font="10">15</text>
+<text top="344" left="161" width="339" height="11" font="5">Pthread_create(&amp;p, NULL, mythread, &amp;args);</text>
+<text top="363" left="104" width="7" height="8" font="10">16</text>
+<text top="359" left="161" width="274" height="14" font="5">Pthread_join(p, (void **) &amp;rvals);</text>
+<text top="378" left="104" width="7" height="8" font="10">17</text>
+<text top="374" left="161" width="379" height="11" font="5">printf(&#34;returned %d %d\n&#34;, rvals-&gt;x, rvals-&gt;y);</text>
+<text top="393" left="104" width="7" height="8" font="10">18</text>
+<text top="389" left="161" width="97" height="11" font="5">free(rvals);</text>
+<text top="407" left="104" width="7" height="8" font="10">19</text>
+<text top="404" left="161" width="73" height="11" font="5">return 0;</text>
+<text top="422" left="104" width="7" height="8" font="10">20</text>
+<text top="419" left="129" width="8" height="11" font="5">}</text>
+<text top="443" left="212" width="69" height="14" font="2">Figure 27.2:</text>
+<text top="443" left="284" width="194" height="13" font="6"><b>Waiting for Thread Completion</b></text>
+<text top="475" left="147" width="336" height="14" font="2">Second, if we are just passing in a single value (e.g., a</text>
+<text top="476" left="488" width="73" height="11" font="5">long long</text>
+<text top="491" left="129" width="24" height="11" font="5">int</text>
+<text top="490" left="153" width="408" height="14" font="2">), we don’t have to package it up as an argument. Figure 27.3 (page</text>
+<text top="505" left="129" width="432" height="14" font="2">5) shows an example. In this case, life is a bit simpler, as we don’t have to</text>
+<text top="520" left="129" width="345" height="14" font="2">package arguments and return values inside of structures.</text>
+<text top="537" left="147" width="414" height="14" font="2">Third, we should note that one has to be extremely careful with how</text>
+<text top="552" left="129" width="432" height="14" font="2">values are returned from a thread. Specifically, never return a pointer</text>
+<text top="567" left="129" width="432" height="14" font="2">which refers to something allocated on the thread’s call stack. If you do,</text>
+<text top="582" left="129" width="432" height="14" font="2">what do you think will happen? (think about it!) Here is an example of a</text>
+<text top="597" left="129" width="400" height="14" font="2">dangerous piece of code, modified from the example in Figure 27.2.</text>
+<text top="641" left="107" width="4" height="8" font="10">1</text>
+<text top="637" left="129" width="218" height="14" font="5">void *mythread(void *arg) {</text>
+<text top="656" left="107" width="4" height="8" font="10">2</text>
+<text top="652" left="161" width="258" height="14" font="5">myarg_t *args = (myarg_t *) arg;</text>
+<text top="671" left="107" width="4" height="8" font="10">3</text>
+<text top="667" left="161" width="291" height="11" font="5">printf(&#34;%d %d\n&#34;, args-&gt;a, args-&gt;b);</text>
+<text top="686" left="107" width="4" height="8" font="10">4</text>
+<text top="682" left="161" width="331" height="11" font="5">myret_t oops; // ALLOCATED ON STACK: BAD!</text>
+<text top="701" left="107" width="4" height="8" font="10">5</text>
+<text top="697" left="161" width="89" height="11" font="5">oops.x = 1;</text>
+<text top="716" left="107" width="4" height="8" font="10">6</text>
+<text top="712" left="161" width="89" height="11" font="5">oops.y = 2;</text>
+<text top="731" left="107" width="4" height="8" font="10">7</text>
+<text top="727" left="161" width="178" height="14" font="5">return (void *) &amp;oops;</text>
+<text top="746" left="107" width="4" height="8" font="10">8</text>
+<text top="742" left="129" width="8" height="11" font="5">}</text>
+<text top="781" left="147" width="144" height="14" font="2">In this case, the variable</text>
+<text top="782" left="295" width="32" height="11" font="5">oops</text>
+<text top="781" left="331" width="158" height="14" font="2">is allocated on the stack of</text>
+<text top="782" left="493" width="65" height="11" font="5">mythread</text>
+<text top="781" left="557" width="3" height="14" font="2">.</text>
+<text top="796" left="129" width="432" height="14" font="2">However, when it returns, the value is automatically deallocated (that’s</text>
+<text top="811" left="129" width="432" height="14" font="2">why the stack is so easy to use, after all!), and thus, passing back a pointer</text>
+<text top="826" left="129" width="432" height="14" font="2">to a now deallocated variable will lead to all sorts of bad results. Cer-</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="10" family="EZBVTI+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: T</text>
+<text top="98" left="174" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="220" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="135" left="87" width="218" height="14" font="5">void *mythread(void *arg) {</text>
+<text top="150" left="119" width="339" height="11" font="5">long long int value = (long long int) arg;</text>
+<text top="165" left="119" width="194" height="11" font="5">printf(&#34;%lld\n&#34;, value);</text>
+<text top="180" left="119" width="226" height="14" font="5">return (void *) (value + 1);</text>
+<text top="195" left="87" width="8" height="11" font="5">}</text>
+<text top="225" left="87" width="274" height="14" font="5">int main(int argc, char *argv[]) {</text>
+<text top="240" left="119" width="97" height="11" font="5">pthread_t p;</text>
+<text top="254" left="119" width="169" height="11" font="5">long long int rvalue;</text>
+<text top="269" left="119" width="395" height="14" font="5">Pthread_create(&amp;p, NULL, mythread, (void *) 100);</text>
+<text top="284" left="119" width="282" height="14" font="5">Pthread_join(p, (void **) &amp;rvalue);</text>
+<text top="299" left="119" width="274" height="11" font="5">printf(&#34;returned %lld\n&#34;, rvalue);</text>
+<text top="314" left="119" width="73" height="11" font="5">return 0;</text>
+<text top="329" left="87" width="8" height="11" font="5">}</text>
+<text top="353" left="147" width="69" height="14" font="2">Figure 27.3:</text>
+<text top="353" left="220" width="239" height="13" font="6"><b>Simpler Argument Passing to a Thread</b></text>
+<text top="393" left="87" width="432" height="14" font="2">tainly, when you print out the values you think you returned, you’ll prob-</text>
+<text top="410" left="87" width="420" height="14" font="2">ably (but not necessarily!) be surprised. Try it and find out for yourself</text>
+<text top="408" left="507" width="4" height="9" font="11">2</text>
+<text top="410" left="512" width="4" height="14" font="2">!</text>
+<text top="426" left="105" width="232" height="14" font="2">Finally, you might notice that the use of</text>
+<text top="427" left="340" width="126" height="11" font="5">pthread create()</text>
+<text top="426" left="469" width="50" height="14" font="2">to create</text>
+<text top="441" left="87" width="252" height="14" font="2">a thread, followed by an immediate call to</text>
+<text top="442" left="343" width="110" height="11" font="5">pthread join()</text>
+<text top="441" left="453" width="66" height="14" font="2">, is a pretty</text>
+<text top="456" left="87" width="432" height="14" font="2">strange way to create a thread. In fact, there is an easier way to accom-</text>
+<text top="471" left="87" width="190" height="14" font="2">plish this exact task; it’s called a</text>
+<text top="471" left="281" width="87" height="13" font="6"><b>procedure call</b></text>
+<text top="471" left="368" width="151" height="14" font="2">. Clearly, we’ll usually be</text>
+<text top="486" left="87" width="432" height="14" font="2">creating more than just one thread and waiting for it to complete, other-</text>
+<text top="501" left="87" width="321" height="14" font="2">wise there is not much purpose to using threads at all.</text>
+<text top="517" left="105" width="414" height="14" font="2">We should note that not all code that is multi-threaded uses the join</text>
+<text top="532" left="87" width="432" height="14" font="2">routine. For example, a multi-threaded web server might create a number</text>
+<text top="547" left="87" width="432" height="14" font="2">of worker threads, and then use the main thread to accept requests and</text>
+<text top="561" left="87" width="432" height="14" font="2">pass them to the workers, indefinitely. Such long-lived programs thus</text>
+<text top="576" left="87" width="432" height="14" font="2">may not need to join. However, a parallel program that creates threads</text>
+<text top="591" left="87" width="432" height="14" font="2">to execute a particular task (in parallel) will likely use join to make sure</text>
+<text top="606" left="87" width="432" height="14" font="2">all such work completes before exiting or moving onto the next stage of</text>
+<text top="621" left="87" width="79" height="14" font="2">computation.</text>
+<text top="659" left="55" width="76" height="17" font="4">27.3 Locks</text>
+<text top="690" left="105" width="414" height="14" font="2">Beyond thread creation and join, probably the next most useful set of</text>
+<text top="705" left="87" width="432" height="14" font="2">functions provided by the POSIX threads library are those for providing</text>
+<text top="720" left="87" width="246" height="14" font="2">mutual exclusion to a critical section via</text>
+<text top="720" left="338" width="32" height="13" font="6"><b>locks</b></text>
+<text top="720" left="370" width="148" height="14" font="2">. The most basic pair of</text>
+<text top="735" left="87" width="361" height="14" font="2">routines to use for this purpose is provided by the following:</text>
+<text top="769" left="87" width="379" height="14" font="5">int pthread_mutex_lock(pthread_mutex_t *mutex);</text>
+<text top="784" left="87" width="395" height="14" font="5">int pthread_mutex_unlock(pthread_mutex_t *mutex);</text>
+<text top="814" left="107" width="4" height="8" font="10">2</text>
+<text top="816" left="112" width="115" height="11" font="9">Fortunately the compiler</text>
+<text top="817" left="230" width="19" height="9" font="12">gcc</text>
+<text top="816" left="252" width="267" height="11" font="9">will likely complain when you write code like this, which</text>
+<text top="828" left="87" width="276" height="11" font="9">is yet another reason to pay attention to compiler warnings.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="403" width="5" height="14" font="2">I</text>
+<text top="98" left="408" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="473" width="16" height="14" font="2">: T</text>
+<text top="98" left="490" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="139" left="147" width="414" height="14" font="2">The routines should be easy to understand and use. When you have a</text>
+<text top="154" left="129" width="135" height="14" font="2">region of code that is a</text>
+<text top="154" left="267" width="89" height="13" font="6"><b>critical section</b></text>
+<text top="154" left="356" width="205" height="14" font="2">, and thus needs to be protected to</text>
+<text top="169" left="129" width="432" height="14" font="2">ensure correct operation, locks are quite useful. You can probably imag-</text>
+<text top="183" left="129" width="169" height="14" font="2">ine what the code looks like:</text>
+<text top="207" left="129" width="169" height="11" font="5">pthread_mutex_t lock;</text>
+<text top="222" left="129" width="210" height="11" font="5">pthread_mutex_lock(&amp;lock);</text>
+<text top="237" left="129" width="403" height="11" font="5">x = x + 1; // or whatever your critical section is</text>
+<text top="252" left="129" width="226" height="11" font="5">pthread_mutex_unlock(&amp;lock);</text>
+<text top="273" left="147" width="414" height="14" font="2">The intent of the code is as follows: if no other thread holds the lock</text>
+<text top="288" left="129" width="33" height="14" font="2">when</text>
+<text top="289" left="165" width="155" height="11" font="5">pthread mutex lock()</text>
+<text top="288" left="323" width="237" height="14" font="2">is called, the thread will acquire the lock</text>
+<text top="303" left="129" width="432" height="14" font="2">and enter the critical section. If another thread does indeed hold the lock,</text>
+<text top="318" left="129" width="432" height="14" font="2">the thread trying to grab the lock will not return from the call until it has</text>
+<text top="333" left="129" width="432" height="14" font="2">acquired the lock (implying that the thread holding the lock has released</text>
+<text top="348" left="129" width="432" height="14" font="2">it via the unlock call). Of course, many threads may be stuck waiting</text>
+<text top="363" left="129" width="432" height="14" font="2">inside the lock acquisition function at a given time; only the thread with</text>
+<text top="378" left="129" width="279" height="14" font="2">the lock acquired, however, should call unlock.</text>
+<text top="393" left="147" width="414" height="14" font="2">Unfortunately, this code is broken, in two important ways. The first</text>
+<text top="408" left="129" width="76" height="14" font="2">problem is a</text>
+<text top="408" left="210" width="174" height="13" font="6"><b>lack of proper initialization</b></text>
+<text top="408" left="384" width="176" height="14" font="2">. All locks must be properly</text>
+<text top="423" left="129" width="432" height="14" font="2">initialized in order to guarantee that they have the correct values to begin</text>
+<text top="438" left="129" width="379" height="14" font="2">with and thus work as desired when lock and unlock are called.</text>
+<text top="453" left="147" width="414" height="14" font="2">With POSIX threads, there are two ways to initialize locks. One way</text>
+<text top="468" left="129" width="108" height="14" font="2">to do this is to use</text>
+<text top="468" left="240" width="195" height="11" font="5">PTHREAD MUTEX INITIALIZER</text>
+<text top="468" left="435" width="70" height="14" font="2">, as follows:</text>
+<text top="491" left="129" width="395" height="11" font="5">pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;</text>
+<text top="513" left="147" width="414" height="14" font="2">Doing so sets the lock to the default values and thus makes the lock</text>
+<text top="528" left="129" width="432" height="14" font="2">usable. The dynamic way to do it (i.e., at run time) is to make a call to</text>
+<text top="543" left="129" width="155" height="11" font="5">pthread mutex init()</text>
+<text top="542" left="284" width="70" height="14" font="2">, as follows:</text>
+<text top="566" left="129" width="331" height="11" font="5">int rc = pthread_mutex_init(&amp;lock, NULL);</text>
+<text top="581" left="129" width="331" height="11" font="5">assert(rc == 0); // always check success!</text>
+<text top="602" left="147" width="425" height="14" font="2">The first argument to this routine is the address of the lock itself, whereas</text>
+<text top="617" left="129" width="432" height="14" font="2">the second is an optional set of attributes. Read more about the attributes</text>
+<text top="632" left="129" width="101" height="14" font="2">yourself; passing</text>
+<text top="633" left="232" width="32" height="11" font="5">NULL</text>
+<text top="632" left="267" width="294" height="14" font="2">in simply uses the defaults. Either way works, but</text>
+<text top="647" left="129" width="432" height="14" font="2">we usually use the dynamic (latter) method. Note that a corresponding</text>
+<text top="662" left="129" width="36" height="14" font="2">call to</text>
+<text top="663" left="168" width="179" height="11" font="5">pthread mutex destroy()</text>
+<text top="662" left="351" width="210" height="14" font="2">should also be made, when you are</text>
+<text top="677" left="129" width="360" height="14" font="2">done with the lock; see the manual page for all of the details.</text>
+<text top="692" left="147" width="414" height="14" font="2">The second problem with the code above is that it fails to check error</text>
+<text top="707" left="129" width="432" height="14" font="2">codes when calling lock and unlock. Just like virtually any library rou-</text>
+<text top="722" left="129" width="115" height="14" font="2">tine you call in a U</text>
+<text top="724" left="245" width="21" height="11" font="3">NIX</text>
+<text top="722" left="270" width="291" height="14" font="2">system, these routines can also fail! If your code</text>
+<text top="737" left="129" width="432" height="14" font="2">doesn’t properly check error codes, the failure will happen silently, which</text>
+<text top="752" left="129" width="432" height="14" font="2">in this case could allow multiple threads into a critical section. Minimally,</text>
+<text top="767" left="129" width="432" height="14" font="2">use wrappers, which assert that the routine succeeded, as shown in Fig-</text>
+<text top="782" left="129" width="432" height="14" font="2">ure 27.4 (page 7); more sophisticated (non-toy) programs, which can’t</text>
+<text top="797" left="129" width="432" height="14" font="2">simply exit when something goes wrong, should check for failure and do</text>
+<text top="812" left="129" width="315" height="14" font="2">something appropriate when a call does not succeed.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: T</text>
+<text top="98" left="174" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="220" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="135" left="87" width="444" height="11" font="5">// Keeps code clean; only use if exit() OK upon failure</text>
+<text top="150" left="87" width="395" height="14" font="5">void Pthread_mutex_lock(pthread_mutex_t *mutex) {</text>
+<text top="165" left="119" width="283" height="11" font="5">int rc = pthread_mutex_lock(mutex);</text>
+<text top="180" left="119" width="129" height="11" font="5">assert(rc == 0);</text>
+<text top="195" left="87" width="8" height="11" font="5">}</text>
+<text top="208" left="201" width="69" height="14" font="2">Figure 27.4:</text>
+<text top="208" left="274" width="131" height="13" font="6"><b>An Example Wrapper</b></text>
+<text top="232" left="105" width="414" height="14" font="2">The lock and unlock routines are not the only routines within the</text>
+<text top="247" left="87" width="410" height="14" font="2">pthreads library to interact with locks. Two other routines of interest:</text>
+<text top="268" left="87" width="404" height="14" font="5">int pthread_mutex_trylock(pthread_mutex_t *mutex);</text>
+<text top="283" left="87" width="412" height="14" font="5">int pthread_mutex_timedlock(pthread_mutex_t *mutex,</text>
+<text top="298" left="273" width="242" height="14" font="5">struct timespec *abs_timeout);</text>
+<text top="317" left="105" width="287" height="14" font="2">These two calls are used in lock acquisition. The</text>
+<text top="318" left="395" width="57" height="11" font="5">trylock</text>
+<text top="317" left="455" width="64" height="14" font="2">version re-</text>
+<text top="332" left="87" width="249" height="14" font="2">turns failure if the lock is already held; the</text>
+<text top="333" left="339" width="73" height="11" font="5">timedlock</text>
+<text top="332" left="415" width="104" height="14" font="2">version of acquir-</text>
+<text top="347" left="87" width="432" height="14" font="2">ing a lock returns after a timeout or after acquiring the lock, whichever</text>
+<text top="362" left="87" width="432" height="14" font="2">happens first. Thus, the timedlock with a timeout of zero degenerates</text>
+<text top="377" left="87" width="432" height="14" font="2">to the trylock case. Both of these versions should generally be avoided;</text>
+<text top="392" left="87" width="432" height="14" font="2">however, there are a few cases where avoiding getting stuck (perhaps in-</text>
+<text top="407" left="87" width="432" height="14" font="2">definitely) in a lock acquisition routine can be useful, as we’ll see in future</text>
+<text top="422" left="87" width="243" height="14" font="2">chapters (e.g., when we study deadlock).</text>
+<text top="459" left="55" width="178" height="17" font="4">27.4 Condition Variables</text>
+<text top="488" left="105" width="414" height="14" font="2">The other major component of any threads library, and certainly the</text>
+<text top="503" left="87" width="274" height="14" font="2">case with POSIX threads, is the presence of a</text>
+<text top="503" left="365" width="114" height="13" font="6"><b>condition variable</b></text>
+<text top="503" left="479" width="40" height="14" font="2">. Con-</text>
+<text top="518" left="87" width="432" height="14" font="2">dition variables are useful when some kind of signaling must take place</text>
+<text top="533" left="87" width="432" height="14" font="2">between threads, if one thread is waiting for another to do something be-</text>
+<text top="548" left="87" width="432" height="14" font="2">fore it can continue. Two primary routines are used by programs wishing</text>
+<text top="563" left="87" width="132" height="14" font="2">to interact in this way:</text>
+<text top="581" left="87" width="347" height="14" font="5">int pthread_cond_wait(pthread_cond_t *cond,</text>
+<text top="596" left="265" width="194" height="14" font="5">pthread_mutex_t *mutex);</text>
+<text top="611" left="87" width="371" height="14" font="5">int pthread_cond_signal(pthread_cond_t *cond);</text>
+<text top="627" left="105" width="414" height="14" font="2">To use a condition variable, one has to in addition have a lock that is</text>
+<text top="642" left="87" width="432" height="14" font="2">associated with this condition. When calling either of the above routines,</text>
+<text top="657" left="87" width="145" height="14" font="2">this lock should be held.</text>
+<text top="672" left="105" width="101" height="14" font="2">The first routine,</text>
+<text top="672" left="211" width="147" height="11" font="5">pthread cond wait()</text>
+<text top="672" left="358" width="161" height="14" font="2">, puts the calling thread to</text>
+<text top="686" left="87" width="432" height="14" font="2">sleep, and thus waits for some other thread to signal it, usually when</text>
+<text top="701" left="87" width="438" height="14" font="2">something in the program has changed that the now-sleeping thread might</text>
+<text top="716" left="87" width="250" height="14" font="2">care about. A typical usage looks like this:</text>
+<text top="737" left="87" width="396" height="11" font="5">pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;</text>
+<text top="752" left="87" width="113" height="11" font="5">pthread_cond_t</text>
+<text top="752" left="216" width="258" height="11" font="5">cond = PTHREAD_COND_INITIALIZER;</text>
+<text top="782" left="87" width="210" height="11" font="5">Pthread_mutex_lock(&amp;lock);</text>
+<text top="797" left="87" width="145" height="11" font="5">while (ready == 0)</text>
+<text top="812" left="119" width="258" height="11" font="5">Pthread_cond_wait(&amp;cond, &amp;lock);</text>
+<text top="827" left="87" width="226" height="11" font="5">Pthread_mutex_unlock(&amp;lock);</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="403" width="5" height="14" font="2">I</text>
+<text top="98" left="408" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="473" width="16" height="14" font="2">: T</text>
+<text top="98" left="490" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="139" left="147" width="394" height="14" font="2">In this code, after initialization of the relevant lock and condition</text>
+<text top="136" left="541" width="4" height="9" font="11">3</text>
+<text top="139" left="546" width="15" height="14" font="2">, a</text>
+<text top="154" left="129" width="207" height="14" font="2">thread checks to see if the variable</text>
+<text top="154" left="339" width="40" height="11" font="5">ready</text>
+<text top="154" left="384" width="177" height="14" font="2">has yet been set to something</text>
+<text top="169" left="129" width="432" height="14" font="2">other than zero. If not, the thread simply calls the wait routine in order to</text>
+<text top="183" left="129" width="229" height="14" font="2">sleep until some other thread wakes it.</text>
+<text top="199" left="147" width="414" height="14" font="2">The code to wake a thread, which would run in some other thread,</text>
+<text top="214" left="129" width="85" height="14" font="2">looks like this:</text>
+<text top="239" left="129" width="210" height="11" font="5">Pthread_mutex_lock(&amp;lock);</text>
+<text top="254" left="129" width="81" height="11" font="5">ready = 1;</text>
+<text top="269" left="129" width="218" height="11" font="5">Pthread_cond_signal(&amp;cond);</text>
+<text top="284" left="129" width="226" height="11" font="5">Pthread_mutex_unlock(&amp;lock);</text>
+<text top="307" left="147" width="414" height="14" font="2">A few things to note about this code sequence. First, when signaling</text>
+<text top="322" left="129" width="278" height="14" font="2">(as well as when modifying the global variable</text>
+<text top="323" left="410" width="40" height="11" font="5">ready</text>
+<text top="322" left="451" width="110" height="14" font="2">), we always make</text>
+<text top="337" left="129" width="432" height="14" font="2">sure to have the lock held. This ensures that we don’t accidentally intro-</text>
+<text top="352" left="129" width="212" height="14" font="2">duce a race condition into our code.</text>
+<text top="367" left="147" width="414" height="14" font="2">Second, you might notice that the wait call takes a lock as its second</text>
+<text top="382" left="129" width="432" height="14" font="2">parameter, whereas the signal call only takes a condition. The reason</text>
+<text top="397" left="129" width="432" height="14" font="2">for this difference is that the wait call, in addition to putting the call-</text>
+<text top="412" left="129" width="119" height="14" font="2">ing thread to sleep,</text>
+<text top="412" left="254" width="41" height="14" font="7"><i>releases</i></text>
+<text top="412" left="300" width="260" height="14" font="2">the lock when putting said caller to sleep.</text>
+<text top="427" left="129" width="432" height="14" font="2">Imagine if it did not: how could the other thread acquire the lock and</text>
+<text top="442" left="129" width="193" height="14" font="2">signal it to wake up? However,</text>
+<text top="442" left="327" width="31" height="14" font="7"><i>before</i></text>
+<text top="442" left="363" width="198" height="14" font="2">returning after being woken, the</text>
+<text top="458" left="129" width="147" height="11" font="5">pthread cond wait()</text>
+<text top="457" left="279" width="282" height="14" font="2">re-acquires the lock, thus ensuring that any time</text>
+<text top="472" left="129" width="432" height="14" font="2">the waiting thread is running between the lock acquire at the beginning</text>
+<text top="487" left="129" width="412" height="14" font="2">of the wait sequence, and the lock release at the end, it holds the lock.</text>
+<text top="502" left="147" width="414" height="14" font="2">One last oddity: the waiting thread re-checks the condition in a while</text>
+<text top="517" left="129" width="432" height="14" font="2">loop, instead of a simple if statement. We’ll discuss this issue in detail</text>
+<text top="532" left="129" width="432" height="14" font="2">when we study condition variables in a future chapter, but in general,</text>
+<text top="547" left="129" width="432" height="14" font="2">using a while loop is the simple and safe thing to do. Although it rechecks</text>
+<text top="562" left="129" width="432" height="14" font="2">the condition (perhaps adding a little overhead), there are some pthread</text>
+<text top="577" left="129" width="432" height="14" font="2">implementations that could spuriously wake up a waiting thread; in such</text>
+<text top="592" left="129" width="432" height="14" font="2">a case, without rechecking, the waiting thread will continue thinking that</text>
+<text top="607" left="129" width="432" height="14" font="2">the condition has changed even though it has not. It is safer thus to view</text>
+<text top="622" left="129" width="432" height="14" font="2">waking up as a hint that something might have changed, rather than an</text>
+<text top="637" left="129" width="78" height="14" font="2">absolute fact.</text>
+<text top="652" left="147" width="414" height="14" font="2">Note that sometimes it is tempting to use a simple flag to signal be-</text>
+<text top="667" left="129" width="432" height="14" font="2">tween two threads, instead of a condition variable and associated lock.</text>
+<text top="682" left="129" width="432" height="14" font="2">For example, we could rewrite the waiting code above to look more like</text>
+<text top="697" left="129" width="142" height="14" font="2">this in the waiting code:</text>
+<text top="722" left="129" width="145" height="11" font="5">while (ready == 0)</text>
+<text top="737" left="161" width="73" height="11" font="5">; // spin</text>
+<text top="766" left="132" width="302" height="14" font="2">The associated signaling code would look like this:</text>
+<text top="786" left="129" width="81" height="11" font="5">ready = 1;</text>
+<text top="814" left="149" width="4" height="8" font="10">3</text>
+<text top="816" left="154" width="58" height="11" font="9">One can use</text>
+<text top="817" left="215" width="114" height="9" font="12">pthread cond init()</text>
+<text top="816" left="332" width="21" height="11" font="9">(and</text>
+<text top="817" left="357" width="133" height="9" font="12">pthread cond destroy()</text>
+<text top="816" left="490" width="71" height="11" font="9">) instead of the</text>
+<text top="828" left="129" width="71" height="11" font="9">static initializer</text>
+<text top="829" left="203" width="146" height="9" font="12">PTHREAD COND INITIALIZER</text>
+<text top="828" left="348" width="136" height="11" font="9">. Sound like more work? It is.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: T</text>
+<text top="98" left="174" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="220" width="24" height="14" font="2">API</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="139" left="105" width="414" height="14" font="2">Don’t ever do this, for the following reasons. First, it performs poorly</text>
+<text top="154" left="87" width="432" height="14" font="2">in many cases (spinning for a long time just wastes CPU cycles). Second,</text>
+<text top="169" left="87" width="432" height="14" font="2">it is error prone. As recent research shows [X+10], it is surprisingly easy</text>
+<text top="183" left="87" width="432" height="14" font="2">to make mistakes when using flags (as above) to synchronize between</text>
+<text top="198" left="87" width="312" height="14" font="2">threads; in that study, roughly half the uses of these</text>
+<text top="198" left="403" width="35" height="14" font="7"><i>ad hoc</i></text>
+<text top="198" left="442" width="77" height="14" font="2">synchroniza-</text>
+<text top="213" left="87" width="432" height="14" font="2">tions were buggy! Don’t be lazy; use condition variables even when you</text>
+<text top="228" left="87" width="247" height="14" font="2">think you can get away without doing so.</text>
+<text top="243" left="105" width="414" height="14" font="2">If condition variables sound confusing, don’t worry too much (yet) –</text>
+<text top="258" left="87" width="432" height="14" font="2">we’ll be covering them in great detail in a subsequent chapter. Until then,</text>
+<text top="273" left="87" width="432" height="14" font="2">it should suffice to know that they exist and to have some idea how and</text>
+<text top="288" left="87" width="113" height="14" font="2">why they are used.</text>
+<text top="325" left="55" width="211" height="17" font="4">27.5 Compiling and Running</text>
+<text top="355" left="105" width="414" height="14" font="2">All of the code examples in this chapter are relatively easy to get up</text>
+<text top="370" left="87" width="356" height="14" font="2">and running. To compile them, you must include the header</text>
+<text top="371" left="446" width="73" height="11" font="5">pthread.h</text>
+<text top="385" left="87" width="432" height="14" font="2">in your code. On the link line, you must also explicitly link with the</text>
+<text top="400" left="87" width="184" height="14" font="2">pthreads library, by adding the</text>
+<text top="401" left="274" width="65" height="11" font="5">-pthread</text>
+<text top="400" left="342" width="26" height="14" font="2">flag.</text>
+<text top="415" left="105" width="414" height="14" font="2">For example, to compile a simple multi-threaded program, all you</text>
+<text top="430" left="87" width="162" height="14" font="2">have to do is the following:</text>
+<text top="453" left="87" width="331" height="11" font="5">prompt&gt; gcc -o main main.c -Wall -pthread</text>
+<text top="475" left="105" width="63" height="14" font="2">As long as</text>
+<text top="475" left="172" width="48" height="11" font="5">main.c</text>
+<text top="475" left="224" width="295" height="14" font="2">includes the pthreads header, you have now suc-</text>
+<text top="490" left="87" width="432" height="14" font="2">cessfully compiled a concurrent program. Whether it works or not, as</text>
+<text top="505" left="87" width="207" height="14" font="2">usual, is a different matter entirely.</text>
+<text top="542" left="55" width="105" height="17" font="4">27.6 Summary</text>
+<text top="571" left="105" width="414" height="14" font="2">We have introduced the basics of the pthread library, including thread</text>
+<text top="586" left="87" width="432" height="14" font="2">creation, building mutual exclusion via locks, and signaling and waiting</text>
+<text top="601" left="87" width="432" height="14" font="2">via condition variables. You don’t need much else to write robust and</text>
+<text top="616" left="87" width="415" height="14" font="2">efficient multi-threaded code, except patience and a great deal of care!</text>
+<text top="631" left="105" width="414" height="14" font="2">We now end the chapter with a set of tips that might be useful to you</text>
+<text top="646" left="87" width="432" height="14" font="2">when you write multi-threaded code (see the aside on the following page</text>
+<text top="661" left="87" width="432" height="14" font="2">for details). There are other aspects of the API that are interesting; if you</text>
+<text top="676" left="87" width="178" height="14" font="2">want more information, type</text>
+<text top="677" left="270" width="113" height="11" font="5">man -k pthread</text>
+<text top="676" left="388" width="131" height="14" font="2">on a Linux system to</text>
+<text top="691" left="87" width="432" height="14" font="2">see over one hundred APIs that make up the entire interface. However,</text>
+<text top="706" left="87" width="432" height="14" font="2">the basics discussed herein should enable you to build sophisticated (and</text>
+<text top="721" left="87" width="432" height="14" font="2">hopefully, correct and performant) multi-threaded programs. The hard</text>
+<text top="736" left="87" width="432" height="14" font="2">part with threads is not the APIs, but rather the tricky logic of how you</text>
+<text top="751" left="87" width="303" height="14" font="2">build concurrent programs. Read on to learn more.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="403" width="5" height="14" font="2">I</text>
+<text top="98" left="408" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="473" width="16" height="14" font="2">: T</text>
+<text top="98" left="490" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="148" left="243" width="10" height="14" font="2">A</text>
+<text top="150" left="254" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="281" width="16" height="14" font="2">: T</text>
+<text top="150" left="298" width="42" height="11" font="3">HREAD</text>
+<text top="148" left="344" width="39" height="14" font="2">API G</text>
+<text top="150" left="383" width="64" height="11" font="3">UIDELINES</text>
+<text top="163" left="129" width="432" height="14" font="2">There are a number of small but important things to remember when</text>
+<text top="178" left="129" width="432" height="14" font="2">you use the POSIX thread library (or really, any thread library) to build a</text>
+<text top="193" left="129" width="208" height="14" font="2">multi-threaded program. They are:</text>
+<text top="221" left="148" width="8" height="14" font="2">•</text>
+<text top="221" left="163" width="94" height="13" font="6"><b>Keep it simple.</b></text>
+<text top="221" left="263" width="298" height="14" font="2">Above all else, any code to lock or signal between</text>
+<text top="236" left="163" width="397" height="14" font="2">threads should be as simple as possible. Tricky thread interactions</text>
+<text top="251" left="163" width="76" height="14" font="2">lead to bugs.</text>
+<text top="276" left="148" width="8" height="14" font="2">•</text>
+<text top="276" left="163" width="187" height="13" font="6"><b>Minimize thread interactions.</b></text>
+<text top="276" left="360" width="201" height="14" font="2">Try to keep the number of ways</text>
+<text top="291" left="163" width="397" height="14" font="2">in which threads interact to a minimum. Each interaction should</text>
+<text top="306" left="163" width="397" height="14" font="2">be carefully thought out and constructed with tried and true ap-</text>
+<text top="320" left="163" width="397" height="14" font="2">proaches (many of which we will learn about in the coming chap-</text>
+<text top="335" left="163" width="30" height="14" font="2">ters).</text>
+<text top="360" left="148" width="8" height="14" font="2">•</text>
+<text top="360" left="163" width="244" height="13" font="6"><b>Initialize locks and condition variables.</b></text>
+<text top="360" left="413" width="148" height="14" font="2">Failure to do so will lead</text>
+<text top="375" left="163" width="397" height="14" font="2">to code that sometimes works and sometimes fails in very strange</text>
+<text top="390" left="163" width="34" height="14" font="2">ways.</text>
+<text top="415" left="148" width="8" height="14" font="2">•</text>
+<text top="415" left="163" width="154" height="13" font="6"><b>Check your return codes.</b></text>
+<text top="415" left="323" width="156" height="14" font="2">Of course, in any C and U</text>
+<text top="417" left="479" width="21" height="11" font="3">NIX</text>
+<text top="415" left="504" width="56" height="14" font="2">program-</text>
+<text top="430" left="163" width="397" height="14" font="2">ming you do, you should be checking each and every return code,</text>
+<text top="445" left="163" width="397" height="14" font="2">and it’s true here as well. Failure to do so will lead to bizarre and</text>
+<text top="460" left="163" width="397" height="14" font="2">hard to understand behavior, making you likely to (a) scream, (b)</text>
+<text top="475" left="163" width="227" height="14" font="2">pull some of your hair out, or (c) both.</text>
+<text top="500" left="148" width="8" height="14" font="2">•</text>
+<text top="500" left="163" width="397" height="13" font="6"><b>Be careful with how you pass arguments to, and return values</b></text>
+<text top="515" left="163" width="85" height="13" font="6"><b>from, threads.</b></text>
+<text top="515" left="253" width="308" height="14" font="2">In particular, any time you are passing a reference to</text>
+<text top="530" left="163" width="397" height="14" font="2">a variable allocated on the stack, you are probably doing something</text>
+<text top="545" left="163" width="42" height="14" font="2">wrong.</text>
+<text top="570" left="148" width="8" height="14" font="2">•</text>
+<text top="570" left="163" width="181" height="13" font="6"><b>Each thread has its own stack.</b></text>
+<text top="570" left="348" width="213" height="14" font="2">As related to the point above, please</text>
+<text top="584" left="163" width="397" height="14" font="2">remember that each thread has its own stack. Thus, if you have a</text>
+<text top="599" left="163" width="397" height="14" font="2">locally-allocated variable inside of some function a thread is exe-</text>
+<text top="614" left="163" width="136" height="14" font="2">cuting, it is essentially</text>
+<text top="614" left="305" width="38" height="14" font="7"><i>private</i></text>
+<text top="614" left="348" width="213" height="14" font="2">to that thread; no other thread can</text>
+<text top="629" left="163" width="397" height="14" font="2">(easily) access it. To share data between threads, the values must be</text>
+<text top="644" left="163" width="34" height="14" font="2">in the</text>
+<text top="644" left="201" width="30" height="13" font="6"><b>heap</b></text>
+<text top="644" left="234" width="303" height="14" font="2">or otherwise some locale that is globally accessible.</text>
+<text top="669" left="148" width="8" height="14" font="2">•</text>
+<text top="669" left="163" width="357" height="13" font="6"><b>Always use condition variables to signal between threads.</b></text>
+<text top="669" left="525" width="36" height="14" font="2">While</text>
+<text top="684" left="163" width="303" height="14" font="2">it is often tempting to use a simple flag, don’t do it.</text>
+<text top="709" left="148" width="8" height="14" font="2">•</text>
+<text top="709" left="163" width="141" height="13" font="6"><b>Use the manual pages.</b></text>
+<text top="709" left="312" width="249" height="14" font="2">On Linux, in particular, the pthread man</text>
+<text top="724" left="163" width="397" height="14" font="2">pages are highly informative and discuss many of the nuances pre-</text>
+<text top="739" left="163" width="354" height="14" font="2">sented here, often in even more detail. Read them carefully!</text>
+<text top="806" left="147" width="3" height="14" font="2">.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="16" family="FDFLWV+URWPalladioL" color="#000000"/>
+	<fontspec id="14" size="10" family="LVADFS+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="157" width="16" height="14" font="2">: T</text>
+<text top="98" left="174" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="220" width="24" height="14" font="2">API</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="137" left="87" width="82" height="16" font="13"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="9">[B89] “An Introduction to Programming with Threads” by Andrew D. Birrell. DEC Techni-</text>
+<text top="177" left="87" width="421" height="11" font="9">cal Report, January, 1989. Available: https://birrell.org/andrew/papers/035-Threads.pdf</text>
+<text top="177" left="511" width="8" height="11" font="14"><i>A</i></text>
+<text top="189" left="87" width="423" height="11" font="14"><i>classic but older introduction to threaded programming. Still a worthwhile read, and freely available.</i></text>
+<text top="206" left="87" width="432" height="11" font="9">[B97] “Programming with POSIX Threads” by David R. Butenhof. Addison-Wesley, May 1997.</text>
+<text top="217" left="87" width="160" height="11" font="14"><i>Another one of these books on threads.</i></text>
+<text top="234" left="87" width="432" height="11" font="9">[B+96] “PThreads Programming: by A POSIX Standard for Better Multiprocessing. ” Dick</text>
+<text top="246" left="87" width="320" height="11" font="9">Buttlar, Jacqueline Farrell, Bradford Nichols. O’Reilly, September 1996</text>
+<text top="246" left="409" width="110" height="11" font="14"><i>A reasonable book from the</i></text>
+<text top="258" left="87" width="432" height="11" font="14"><i>excellent, practical publishing house O’Reilly. Our bookshelves certainly contain a great deal of books</i></text>
+<text top="270" left="87" width="432" height="11" font="14"><i>from this company, including some excellent offerings on Perl, Python, and Javascript (particularly</i></text>
+<text top="282" left="87" width="180" height="11" font="14"><i>Crockford’s “Javascript: The Good Parts”.)</i></text>
+<text top="298" left="87" width="432" height="11" font="9">[K+96] “Programming With Threads” by Steve Kleiman, Devang Shah, Bart Smaalders. Pren-</text>
+<text top="310" left="87" width="107" height="11" font="9">tice Hall, January 1996.</text>
+<text top="310" left="197" width="322" height="11" font="14"><i>Probably one of the better books in this space. Get it at your local library. Or</i></text>
+<text top="322" left="87" width="432" height="11" font="14"><i>steal it from your mother. More seriously, just ask your mother for it – she’ll let you borrow it, don’t</i></text>
+<text top="334" left="87" width="28" height="11" font="14"><i>worry.</i></text>
+<text top="350" left="87" width="432" height="11" font="9">[X+10] “Ad Hoc Synchronization Considered Harmful” by Weiwei Xiong, Soyeon Park, Jiaqi</text>
+<text top="362" left="87" width="333" height="11" font="9">Zhang, Yuanyuan Zhou, Zhiqiang Ma. OSDI 2010, Vancouver, Canada.</text>
+<text top="362" left="425" width="94" height="11" font="14"><i>This paper shows how</i></text>
+<text top="374" left="87" width="432" height="11" font="14"><i>seemingly simple synchronization code can lead to a surprising number of bugs. Use condition variables</i></text>
+<text top="386" left="87" width="129" height="11" font="14"><i>and do the signaling correctly!</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="15" family="FDFLWV+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="403" width="5" height="14" font="2">I</text>
+<text top="98" left="408" width="64" height="11" font="3">NTERLUDE</text>
+<text top="96" left="473" width="16" height="14" font="2">: T</text>
+<text top="98" left="490" width="42" height="11" font="3">HREAD</text>
+<text top="96" left="536" width="24" height="14" font="2">API</text>
+<text top="137" left="129" width="139" height="16" font="13"><b>Homework (Code)</b></text>
+<text top="166" left="147" width="414" height="14" font="2">In this section, we’ll write some simple multi-threaded programs and</text>
+<text top="181" left="129" width="146" height="14" font="2">use a specific tool, called</text>
+<text top="181" left="278" width="53" height="13" font="6"><b>helgrind</b></text>
+<text top="181" left="332" width="219" height="14" font="2">, to find problems in these programs.</text>
+<text top="196" left="147" width="414" height="14" font="2">Read the README in the homework download for details on how to</text>
+<text top="211" left="129" width="165" height="14" font="2">build the programs and run</text>
+<text top="212" left="297" width="73" height="11" font="5">helgrind.</text>
+<text top="247" left="129" width="70" height="15" font="15"><b>Questions</b></text>
+<text top="271" left="146" width="80" height="14" font="2">1. First build</text>
+<text top="272" left="232" width="89" height="11" font="5">main-race.c</text>
+<text top="271" left="321" width="240" height="14" font="2">. Examine the code so you can see the</text>
+<text top="286" left="163" width="306" height="14" font="2">(hopefully obvious) data race in the code. Now run</text>
+<text top="287" left="473" width="65" height="11" font="5">helgrind</text>
+<text top="286" left="541" width="19" height="14" font="2">(by</text>
+<text top="301" left="163" width="39" height="14" font="2">typing</text>
+<text top="302" left="206" width="274" height="11" font="5">valgrind --tool=helgrind main-race</text>
+<text top="301" left="480" width="81" height="14" font="2">) to see how it</text>
+<text top="316" left="163" width="397" height="14" font="2">reports the race. Does it point to the right lines of code? What other</text>
+<text top="331" left="163" width="190" height="14" font="2">information does it give to you?</text>
+<text top="356" left="146" width="414" height="14" font="2">2. What happens when you remove one of the offending lines of code?</text>
+<text top="371" left="163" width="397" height="14" font="2">Now add a lock around one of the updates to the shared variable,</text>
+<text top="386" left="163" width="198" height="14" font="2">and then around both. What does</text>
+<text top="387" left="364" width="65" height="11" font="5">helgrind</text>
+<text top="386" left="432" width="129" height="14" font="2">report in each of these</text>
+<text top="401" left="163" width="36" height="14" font="2">cases?</text>
+<text top="426" left="146" width="125" height="14" font="2">3. Now let’s look at</text>
+<text top="427" left="277" width="121" height="11" font="5">main-deadlock.c</text>
+<text top="426" left="398" width="163" height="14" font="2">. Examine the code. This</text>
+<text top="441" left="163" width="175" height="14" font="2">code has a problem known as</text>
+<text top="441" left="341" width="56" height="13" font="6"><b>deadlock</b></text>
+<text top="441" left="401" width="160" height="14" font="2">(which we discuss in much</text>
+<text top="456" left="163" width="397" height="14" font="2">more depth in a forthcoming chapter). Can you see what problem</text>
+<text top="471" left="163" width="85" height="14" font="2">it might have?</text>
+<text top="496" left="146" width="71" height="14" font="2">4. Now run</text>
+<text top="496" left="221" width="65" height="11" font="5">helgrind</text>
+<text top="496" left="289" width="143" height="14" font="2">on this code. What does</text>
+<text top="496" left="435" width="65" height="11" font="5">helgrind</text>
+<text top="496" left="503" width="43" height="14" font="2">report?</text>
+<text top="520" left="146" width="74" height="14" font="2">5. Now run</text>
+<text top="521" left="226" width="65" height="11" font="5">helgrind</text>
+<text top="520" left="296" width="15" height="14" font="2">on</text>
+<text top="521" left="317" width="178" height="11" font="5">main-deadlock-global.c</text>
+<text top="520" left="494" width="66" height="14" font="2">. Examine</text>
+<text top="535" left="163" width="272" height="14" font="2">the code; does it have the same problem that</text>
+<text top="536" left="440" width="121" height="11" font="5">main-deadlock.c</text>
+<text top="550" left="163" width="77" height="14" font="2">has? Should</text>
+<text top="551" left="245" width="65" height="11" font="5">helgrind</text>
+<text top="550" left="314" width="246" height="14" font="2">be reporting the same error? What does</text>
+<text top="565" left="163" width="165" height="14" font="2">this tell you about tools like</text>
+<text top="566" left="332" width="65" height="11" font="5">helgrind</text>
+<text top="565" left="396" width="6" height="14" font="2">?</text>
+<text top="590" left="146" width="116" height="14" font="2">6. Let’s next look at</text>
+<text top="591" left="265" width="105" height="11" font="5">main-signal.c</text>
+<text top="590" left="370" width="159" height="14" font="2">. This code uses a variable (</text>
+<text top="591" left="529" width="32" height="11" font="5">done</text>
+<text top="590" left="561" width="4" height="14" font="2">)</text>
+<text top="605" left="163" width="397" height="14" font="2">to signal that the child is done and that the parent can now continue.</text>
+<text top="620" left="163" width="397" height="14" font="2">Why is this code inefficient? (what does the parent end up spend-</text>
+<text top="635" left="163" width="397" height="14" font="2">ing its time doing, particularly if the child thread takes a long time</text>
+<text top="650" left="163" width="80" height="14" font="2">to complete?)</text>
+<text top="675" left="146" width="72" height="14" font="2">7. Now run</text>
+<text top="676" left="223" width="65" height="11" font="5">helgrind</text>
+<text top="675" left="291" width="270" height="14" font="2">on this program. What does it report? Is the</text>
+<text top="690" left="163" width="78" height="14" font="2">code correct?</text>
+<text top="715" left="146" width="414" height="14" font="2">8. Now look at a slightly modified version of the code, which is found</text>
+<text top="730" left="163" width="12" height="14" font="2">in</text>
+<text top="731" left="179" width="129" height="11" font="5">main-signal-cv.c</text>
+<text top="730" left="308" width="252" height="14" font="2">. This version uses a condition variable to</text>
+<text top="745" left="163" width="397" height="14" font="2">do the signaling (and associated lock). Why is this code preferred</text>
+<text top="760" left="163" width="393" height="14" font="2">to the previous version? Is it correctness, or performance, or both?</text>
+<text top="784" left="146" width="111" height="14" font="2">9. Once again run</text>
+<text top="785" left="262" width="65" height="11" font="5">helgrind</text>
+<text top="784" left="332" width="15" height="14" font="2">on</text>
+<text top="785" left="352" width="113" height="11" font="5">main-signal-cv</text>
+<text top="784" left="465" width="96" height="14" font="2">. Does it report</text>
+<text top="799" left="163" width="67" height="14" font="2">any errors?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+</pdf2xml>

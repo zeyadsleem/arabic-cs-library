@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="22" family="POQILW+URWPalladioL" color="#000000"/>
+	<fontspec id="1" size="26" family="POQILW+URWPalladioL" color="#000000"/>
+	<fontspec id="2" size="13" family="YHYSEE+URWPalladioL-Roma" color="#000000"/>
+<text top="359" left="276" width="53" height="16" font="0"><b>Part I</b></text>
+<text top="419" left="221" width="165" height="19" font="1"><b>Virtualization</b></text>
+<text top="862" left="300" width="7" height="12" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="3" size="31" family="DPMSZG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="4" size="22" family="DPMSZG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="5" size="13" family="POQILW+URWPalladioL" color="#000000"/>
+	<fontspec id="6" size="13" family="RUZDVN+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="7" size="13" family="EVIBBG+URWPalladioL" color="#000000"/>
+<text top="196" left="540" width="17" height="29" font="3">3</text>
+<text top="266" left="254" width="265" height="20" font="4">A Dialogue on Virtualization</text>
+<text top="352" left="87" width="61" height="10" font="5"><b>Professor:</b></text>
+<text top="352" left="152" width="367" height="14" font="6"><i>And thus we reach the first of our three pieces on operating systems:</i></text>
+<text top="367" left="87" width="85" height="13" font="7"><b>virtualization</b></text>
+<text top="367" left="172" width="3" height="14" font="6"><i>.</i></text>
+<text top="388" left="87" width="52" height="10" font="5"><b>Student:</b></text>
+<text top="388" left="143" width="251" height="14" font="6"><i>But what is virtualization, oh noble professor?</i></text>
+<text top="409" left="87" width="61" height="10" font="5"><b>Professor:</b></text>
+<text top="409" left="152" width="137" height="14" font="6"><i>Imagine we have a peach.</i></text>
+<text top="430" left="87" width="52" height="10" font="5"><b>Student:</b></text>
+<text top="429" left="143" width="127" height="14" font="6"><i>A peach? (incredulous)</i></text>
+<text top="450" left="87" width="61" height="10" font="5"><b>Professor:</b></text>
+<text top="450" left="152" width="172" height="14" font="6"><i>Yes, a peach. Let us call that the</i></text>
+<text top="450" left="327" width="51" height="13" font="7"><b>physical</b></text>
+<text top="450" left="381" width="138" height="14" font="6"><i>peach. But we have many</i></text>
+<text top="465" left="87" width="432" height="14" font="6"><i>eaters who would like to eat this peach. What we would like to present to each</i></text>
+<text top="480" left="87" width="432" height="14" font="6"><i>eater is their own peach, so that they can be happy. We call the peach we give</i></text>
+<text top="495" left="87" width="31" height="14" font="6"><i>eaters</i></text>
+<text top="495" left="122" width="42" height="13" font="7"><b>virtual</b></text>
+<text top="495" left="168" width="351" height="14" font="6"><i>peaches; we somehow create many of these virtual peaches out of</i></text>
+<text top="510" left="87" width="432" height="14" font="6"><i>the one physical peach. And the important thing: in this illusion, it looks to each</i></text>
+<text top="525" left="87" width="332" height="14" font="6"><i>eater like they have a physical peach, but in reality they don’t.</i></text>
+<text top="546" left="87" width="52" height="10" font="5"><b>Student:</b></text>
+<text top="546" left="143" width="313" height="14" font="6"><i>So you are sharing the peach, but you don’t even know it?</i></text>
+<text top="567" left="87" width="61" height="10" font="5"><b>Professor:</b></text>
+<text top="567" left="152" width="83" height="14" font="6"><i>Right! Exactly.</i></text>
+<text top="588" left="87" width="52" height="10" font="5"><b>Student:</b></text>
+<text top="587" left="143" width="145" height="14" font="6"><i>But there’s only one peach.</i></text>
+<text top="608" left="87" width="61" height="10" font="5"><b>Professor:</b></text>
+<text top="608" left="152" width="66" height="14" font="6"><i>Yes. And...?</i></text>
+<text top="629" left="87" width="52" height="10" font="5"><b>Student:</b></text>
+<text top="629" left="146" width="373" height="14" font="6"><i>Well, if I was sharing a peach with somebody else, I think I would</i></text>
+<text top="644" left="87" width="36" height="14" font="6"><i>notice.</i></text>
+<text top="665" left="87" width="61" height="10" font="5"><b>Professor:</b></text>
+<text top="665" left="154" width="365" height="14" font="6"><i>Ah yes! Good point. But that is the thing with many eaters; most</i></text>
+<text top="680" left="87" width="432" height="14" font="6"><i>of the time they are napping or doing something else, and thus, you can snatch</i></text>
+<text top="695" left="87" width="432" height="14" font="6"><i>that peach away and give it to someone else for a while. And thus we create the</i></text>
+<text top="710" left="87" width="321" height="14" font="6"><i>illusion of many virtual peaches, one peach for each person!</i></text>
+<text top="731" left="87" width="52" height="10" font="5"><b>Student:</b></text>
+<text top="730" left="143" width="376" height="14" font="6"><i>Sounds like a bad campaign slogan. You are talking about computers,</i></text>
+<text top="745" left="87" width="87" height="14" font="6"><i>right Professor?</i></text>
+<text top="766" left="87" width="61" height="10" font="5"><b>Professor:</b></text>
+<text top="766" left="153" width="366" height="14" font="6"><i>Ah, young grasshopper, you wish to have a more concrete example.</i></text>
+<text top="781" left="87" width="432" height="14" font="6"><i>Good idea! Let us take the most basic of resources, the CPU. Assume there is one</i></text>
+<text top="796" left="87" width="432" height="14" font="6"><i>physical CPU in a system (though now there are often two or four or more). What</i></text>
+<text top="811" left="87" width="432" height="14" font="6"><i>virtualization does is take that single CPU and make it look like many virtual</i></text>
+<text top="826" left="87" width="432" height="14" font="6"><i>CPUs to the applications running on the system. Thus, while each application</i></text>
+<text top="862" left="300" width="7" height="12" font="2">3</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="8" size="11" family="YHYSEE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="12" family="YHYSEE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="YHYSEE+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="12" font="2">4</text>
+<text top="96" left="350" width="25" height="12" font="2">A D</text>
+<text top="98" left="376" width="76" height="10" font="8">IALOGUE ON</text>
+<text top="96" left="456" width="10" height="12" font="2">V</text>
+<text top="98" left="466" width="94" height="10" font="8">IRTUALIZATION</text>
+<text top="139" left="129" width="432" height="14" font="6"><i>thinks it has its own CPU to use, there is really only one. And thus the OS has</i></text>
+<text top="154" left="129" width="297" height="14" font="6"><i>created a beautiful illusion: it has virtualized the CPU.</i></text>
+<text top="174" left="129" width="52" height="10" font="5"><b>Student:</b></text>
+<text top="174" left="185" width="361" height="14" font="6"><i>Wow! That sounds like magic. Tell me more! How does that work?</i></text>
+<text top="194" left="129" width="61" height="10" font="5"><b>Professor:</b></text>
+<text top="194" left="195" width="366" height="14" font="6"><i>In time, young student, in good time. Sounds like you are ready to</i></text>
+<text top="209" left="129" width="33" height="14" font="6"><i>begin.</i></text>
+<text top="230" left="129" width="52" height="10" font="5"><b>Student:</b></text>
+<text top="230" left="185" width="376" height="14" font="6"><i>I am! Well, sort of. I must admit, I’m a little worried you are going to</i></text>
+<text top="244" left="129" width="181" height="14" font="6"><i>start talking about peaches again.</i></text>
+<text top="265" left="129" width="61" height="10" font="5"><b>Professor:</b></text>
+<text top="265" left="196" width="365" height="14" font="6"><i>Don’t worry too much; I don’t even like peaches. And thus we be-</i></text>
+<text top="280" left="129" width="28" height="14" font="6"><i>gin...</i></text>
+<text top="881" left="129" width="11" height="12" font="2">O</text>
+<text top="883" left="141" width="60" height="10" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="12" font="2">S</text>
+<text top="898" left="137" width="45" height="10" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="11" font="9">[V</text>
+<text top="914" left="143" width="39" height="9" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="11" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="10" font="8">WWW</text>
+<text top="896" left="327" width="3" height="12" font="2">.</text>
+<text top="898" left="331" width="36" height="10" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="12" font="2">.</text>
+<text top="898" left="371" width="25" height="10" font="8">ORG</text>
+</page>
+</pdf2xml>

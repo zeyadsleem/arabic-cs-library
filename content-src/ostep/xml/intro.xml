@@ -1,0 +1,1724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="AEBSUW+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="AEBSUW+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="YPQVME+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="QOUXZF+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="9" family="YPQVME+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="7" family="YPQVME+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="10" family="YPQVME+URWPalladioL-Roma" color="#000000"/>
+<text top="200" left="540" width="17" height="30" font="0">2</text>
+<text top="271" left="194" width="325" height="21" font="1">Introduction to Operating Systems</text>
+<text top="353" left="105" width="414" height="14" font="2">If you are taking an undergraduate operating systems course, you</text>
+<text top="368" left="87" width="432" height="14" font="2">should already have some idea of what a computer program does when</text>
+<text top="383" left="87" width="432" height="14" font="2">it runs. If not, this book (and the corresponding course) is going to be</text>
+<text top="398" left="87" width="432" height="14" font="2">difﬁcult — so you should probably stop reading this book, or run to the</text>
+<text top="413" left="87" width="432" height="14" font="2">nearest bookstore and quickly consume the necessary background mate-</text>
+<text top="428" left="87" width="432" height="14" font="2">rial before continuing (both Patt &amp; Patel [PP03] and Bryant &amp; O’Hallaron</text>
+<text top="443" left="87" width="193" height="14" font="2">[BOH10] are pretty great books).</text>
+<text top="459" left="105" width="240" height="14" font="2">So what happens when a program runs?</text>
+<text top="476" left="105" width="414" height="14" font="2">Well, a running program does one very simple thing: it executes in-</text>
+<text top="491" left="87" width="432" height="14" font="2">structions. Many millions (and these days, even billions) of times ev-</text>
+<text top="506" left="87" width="153" height="14" font="2">ery second, the processor</text>
+<text top="506" left="244" width="43" height="13" font="3"><b>fetches</b></text>
+<text top="506" left="292" width="173" height="14" font="2">an instruction from memory,</text>
+<text top="506" left="470" width="49" height="13" font="3"><b>decodes</b></text>
+<text top="521" left="87" width="290" height="14" font="2">it (i.e., ﬁgures out which instruction this is), and</text>
+<text top="521" left="382" width="52" height="13" font="3"><b>executes</b></text>
+<text top="521" left="437" width="82" height="14" font="2">it (i.e., it does</text>
+<text top="536" left="87" width="432" height="14" font="2">the thing that it is supposed to do, like add two numbers together, access</text>
+<text top="551" left="87" width="432" height="14" font="2">memory, check a condition, jump to a function, and so forth). After it is</text>
+<text top="566" left="87" width="432" height="14" font="2">done with this instruction, the processor moves on to the next instruction,</text>
+<text top="583" left="87" width="339" height="14" font="2">and so on, and so on, until the program ﬁnally completes</text>
+<text top="580" left="426" width="4" height="9" font="4">1</text>
+<text top="583" left="431" width="3" height="14" font="2">.</text>
+<text top="599" left="105" width="267" height="14" font="2">Thus, we have just described the basics of the</text>
+<text top="599" left="375" width="89" height="13" font="3"><b>Von Neumann</b></text>
+<text top="599" left="466" width="53" height="14" font="2">model of</text>
+<text top="616" left="87" width="65" height="14" font="2">computing</text>
+<text top="614" left="152" width="4" height="9" font="4">2</text>
+<text top="616" left="157" width="362" height="14" font="2">. Sounds simple, right? But in this class, we will be learning</text>
+<text top="631" left="87" width="432" height="14" font="2">that while a program runs, a lot of other wild things are going on with</text>
+<text top="646" left="87" width="230" height="14" font="2">the primary goal of making the system</text>
+<text top="646" left="321" width="66" height="13" font="3"><b>easy to use</b></text>
+<text top="646" left="387" width="3" height="14" font="2">.</text>
+<text top="663" left="105" width="414" height="14" font="2">There is a body of software, in fact, that is responsible for making it</text>
+<text top="678" left="87" width="432" height="14" font="2">easy to run programs (even allowing you to seemingly run many at the</text>
+<text top="693" left="87" width="432" height="14" font="2">same time), allowing programs to share memory, enabling programs to</text>
+<text top="708" left="87" width="432" height="14" font="2">interact with devices, and other fun stuff like that. That body of software</text>
+<text top="741" left="107" width="4" height="8" font="5">1</text>
+<text top="743" left="112" width="407" height="11" font="6">Of course, modern processors do many bizarre and frightening things underneath the</text>
+<text top="755" left="87" width="432" height="11" font="6">hood to make programs run faster, e.g., executing multiple instructions at once, and even issu-</text>
+<text top="767" left="87" width="432" height="11" font="6">ing and completing them out of order! But that is not our concern here; we are just concerned</text>
+<text top="779" left="87" width="432" height="11" font="6">with the simple model most programs assume: that instructions seemingly execute one at a</text>
+<text top="791" left="87" width="195" height="11" font="6">time, in an orderly and sequential fashion.</text>
+<text top="802" left="107" width="4" height="8" font="5">2</text>
+<text top="804" left="112" width="407" height="11" font="6">Von Neumann was one of the early pioneers of computing systems. He also did pioneer-</text>
+<text top="816" left="87" width="432" height="11" font="6">ing work on game theory and atomic bombs, and played in the NBA for six years. OK, one of</text>
+<text top="828" left="87" width="103" height="11" font="6">those things isn’t true.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="11" family="YPQVME+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="13" family="MJMFFN+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="9" size="10" family="QOUXZF+URWPalladioL" color="#000000"/>
+	<fontspec id="10" size="12" family="YPQVME+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="314" width="5" height="14" font="2">I</text>
+<text top="98" left="319" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="432" width="11" height="14" font="2">O</text>
+<text top="98" left="444" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="7">YSTEMS</text>
+<text top="148" left="257" width="8" height="14" font="2">T</text>
+<text top="150" left="266" width="16" height="11" font="7">HE</text>
+<text top="148" left="286" width="10" height="14" font="2">C</text>
+<text top="150" left="296" width="71" height="11" font="7">RUX OF THE</text>
+<text top="148" left="371" width="8" height="14" font="2">P</text>
+<text top="150" left="380" width="49" height="11" font="7">ROBLEM</text>
+<text top="148" left="429" width="3" height="14" font="2">:</text>
+<text top="163" left="242" width="11" height="14" font="2">H</text>
+<text top="165" left="254" width="20" height="11" font="7">OW</text>
+<text top="163" left="278" width="8" height="14" font="2">T</text>
+<text top="165" left="287" width="8" height="11" font="7">O</text>
+<text top="163" left="299" width="10" height="14" font="2">V</text>
+<text top="165" left="310" width="63" height="11" font="7">IRTUALIZE</text>
+<text top="163" left="377" width="9" height="14" font="2">R</text>
+<text top="165" left="387" width="61" height="11" font="7">ESOURCES</text>
+<text top="178" left="129" width="432" height="14" font="2">One central question we will answer in this book is quite simple: how</text>
+<text top="193" left="129" width="432" height="14" font="2">does the operating system virtualize resources? This is the crux of our</text>
+<text top="208" left="129" width="54" height="14" font="2">problem.</text>
+<text top="208" left="190" width="26" height="14" font="8"><i>Why</i></text>
+<text top="208" left="220" width="341" height="14" font="2">the OS does this is not the main question, as the answer</text>
+<text top="223" left="129" width="432" height="14" font="2">should be obvious: it makes the system easier to use. Thus, we focus on</text>
+<text top="238" left="129" width="19" height="14" font="2">the</text>
+<text top="238" left="152" width="22" height="14" font="8"><i>how</i></text>
+<text top="238" left="175" width="386" height="14" font="2">: what mechanisms and policies are implemented by the OS to</text>
+<text top="253" left="129" width="432" height="14" font="2">attain virtualization? How does the OS do so efﬁciently? What hardware</text>
+<text top="268" left="129" width="113" height="14" font="2">support is needed?</text>
+<text top="286" left="129" width="432" height="14" font="2">We will use the “crux of the problem”, in shaded boxes such as this one,</text>
+<text top="301" left="129" width="432" height="14" font="2">as a way to call out speciﬁc problems we are trying to solve in building</text>
+<text top="316" left="129" width="432" height="14" font="2">an operating system. Thus, within a note on a particular topic, you may</text>
+<text top="331" left="129" width="98" height="14" font="2">ﬁnd one or more</text>
+<text top="331" left="230" width="34" height="14" font="8"><i>cruces</i></text>
+<text top="331" left="268" width="293" height="14" font="2">(yes, this is the proper plural) which highlight the</text>
+<text top="346" left="129" width="432" height="14" font="2">problem. The details within the chapter, of course, present the solution,</text>
+<text top="361" left="129" width="264" height="14" font="2">or at least the basic parameters of a solution.</text>
+<text top="418" left="129" width="70" height="14" font="2">is called the</text>
+<text top="419" left="202" width="105" height="13" font="3"><b>operating system</b></text>
+<text top="418" left="311" width="4" height="14" font="2">(</text>
+<text top="419" left="315" width="19" height="13" font="3"><b>OS</b></text>
+<text top="418" left="335" width="4" height="14" font="2">)</text>
+<text top="416" left="339" width="4" height="9" font="4">3</text>
+<text top="418" left="344" width="216" height="14" font="2">, as it is in charge of making sure the</text>
+<text top="433" left="129" width="394" height="14" font="2">system operates correctly and efﬁciently in an easy-to-use manner.</text>
+<text top="450" left="147" width="414" height="14" font="2">The primary way the OS does this is through a general technique that</text>
+<text top="465" left="129" width="42" height="14" font="2">we call</text>
+<text top="465" left="175" width="84" height="13" font="3"><b>virtualization</b></text>
+<text top="465" left="258" width="141" height="14" font="2">. That is, the OS takes a</text>
+<text top="465" left="403" width="52" height="13" font="3"><b>physical</b></text>
+<text top="465" left="459" width="102" height="14" font="2">resource (such as</text>
+<text top="480" left="129" width="432" height="14" font="2">the processor, or memory, or a disk) and transforms it into a more gen-</text>
+<text top="495" left="129" width="183" height="14" font="2">eral, powerful, and easy-to-use</text>
+<text top="495" left="314" width="41" height="13" font="3"><b>virtual</b></text>
+<text top="495" left="358" width="203" height="14" font="2">form of itself. Thus, we sometimes</text>
+<text top="510" left="129" width="197" height="14" font="2">refer to the operating system as a</text>
+<text top="510" left="329" width="97" height="13" font="3"><b>virtual machine</b></text>
+<text top="510" left="426" width="3" height="14" font="2">.</text>
+<text top="527" left="147" width="414" height="14" font="2">Of course, in order to allow users to tell the OS what to do and thus</text>
+<text top="542" left="129" width="432" height="14" font="2">make use of the features of the virtual machine (such as running a pro-</text>
+<text top="557" left="129" width="432" height="14" font="2">gram, or allocating memory, or accessing a ﬁle), the OS also provides</text>
+<text top="571" left="129" width="432" height="14" font="2">some interfaces (APIs) that you can call. A typical OS, in fact, exports</text>
+<text top="586" left="129" width="90" height="14" font="2">a few hundred</text>
+<text top="586" left="224" width="75" height="13" font="3"><b>system calls</b></text>
+<text top="586" left="303" width="257" height="14" font="2">that are available to applications. Because</text>
+<text top="601" left="129" width="432" height="14" font="2">the OS provides these calls to run programs, access memory and devices,</text>
+<text top="616" left="129" width="432" height="14" font="2">and other related actions, we also sometimes say that the OS provides a</text>
+<text top="631" left="129" width="99" height="13" font="3"><b>standard library</b></text>
+<text top="631" left="231" width="91" height="14" font="2">to applications.</text>
+<text top="648" left="147" width="417" height="14" font="2">Finally, because virtualization allows many programs to run (thus shar-</text>
+<text top="663" left="129" width="432" height="14" font="2">ing the CPU), and many programs to concurrently access their own in-</text>
+<text top="678" left="129" width="432" height="14" font="2">structions and data (thus sharing memory), and many programs to access</text>
+<text top="693" left="129" width="432" height="14" font="2">devices (thus sharing disks and so forth), the OS is sometimes known as</text>
+<text top="708" left="129" width="7" height="14" font="2">a</text>
+<text top="708" left="140" width="109" height="13" font="3"><b>resource manager</b></text>
+<text top="708" left="249" width="255" height="14" font="2">. Each of the CPU, memory, and disk is a</text>
+<text top="708" left="509" width="52" height="13" font="3"><b>resource</b></text>
+<text top="723" left="129" width="324" height="14" font="2">of the system; it is thus the operating system’s role to</text>
+<text top="723" left="457" width="48" height="13" font="3"><b>manage</b></text>
+<text top="723" left="509" width="52" height="14" font="2">those re-</text>
+<text top="738" left="129" width="432" height="14" font="2">sources, doing so efﬁciently or fairly or indeed with many other possible</text>
+<text top="753" left="129" width="432" height="14" font="2">goals in mind. To understand the role of the OS a little bit better, let’s take</text>
+<text top="768" left="129" width="148" height="14" font="2">a look at some examples.</text>
+<text top="802" left="149" width="4" height="8" font="5">3</text>
+<text top="804" left="154" width="181" height="11" font="6">Another early name for the OS was the</text>
+<text top="804" left="338" width="51" height="10" font="9"><b>supervisor</b></text>
+<text top="804" left="391" width="52" height="11" font="6">or even the</text>
+<text top="804" left="446" width="112" height="10" font="9"><b>master control program</b></text>
+<text top="804" left="558" width="3" height="11" font="6">.</text>
+<text top="816" left="129" width="432" height="11" font="6">Apparently, the latter sounded a little overzealous (see the movie Tron for details) and thus,</text>
+<text top="828" left="129" width="230" height="11" font="6">thankfully, “operating system” caught on instead.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="6">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="PCRQZT+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="12" size="13" family="EHTJMF+NimbusMonL" color="#000000"/>
+	<fontspec id="13" size="16" family="YPQVME+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="2">O</text>
+<text top="98" left="217" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="2">S</text>
+<text top="98" left="289" width="45" height="11" font="7">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="138" left="65" width="4" height="8" font="5">1</text>
+<text top="135" left="87" width="145" height="11" font="11">#include &lt;stdio.h&gt;</text>
+<text top="153" left="65" width="4" height="8" font="5">2</text>
+<text top="150" left="87" width="153" height="11" font="11">#include &lt;stdlib.h&gt;</text>
+<text top="168" left="65" width="4" height="8" font="5">3</text>
+<text top="165" left="87" width="170" height="11" font="11">#include &lt;sys/time.h&gt;</text>
+<text top="183" left="65" width="4" height="8" font="5">4</text>
+<text top="180" left="87" width="153" height="11" font="11">#include &lt;assert.h&gt;</text>
+<text top="198" left="65" width="4" height="8" font="5">5</text>
+<text top="195" left="87" width="153" height="11" font="11">#include &#34;common.h&#34;</text>
+<text top="213" left="65" width="4" height="8" font="5">6</text>
+<text top="228" left="65" width="4" height="8" font="5">7</text>
+<text top="225" left="87" width="24" height="11" font="11">int</text>
+<text top="243" left="65" width="4" height="8" font="5">8</text>
+<text top="240" left="87" width="226" height="14" font="11">main(int argc, char *argv[])</text>
+<text top="258" left="65" width="4" height="8" font="5">9</text>
+<text top="254" left="87" width="8" height="11" font="11">{</text>
+<text top="273" left="62" width="7" height="8" font="5">10</text>
+<text top="269" left="119" width="129" height="11" font="11">if (argc != 2) {</text>
+<text top="288" left="62" width="7" height="8" font="5">11</text>
+<text top="284" left="152" width="331" height="11" font="11">fprintf(stderr, &#34;usage: cpu &lt;string&gt;\n&#34;);</text>
+<text top="303" left="62" width="7" height="8" font="5">12</text>
+<text top="299" left="152" width="65" height="11" font="11">exit(1);</text>
+<text top="318" left="62" width="7" height="8" font="5">13</text>
+<text top="314" left="119" width="8" height="11" font="11">}</text>
+<text top="333" left="62" width="7" height="8" font="5">14</text>
+<text top="329" left="119" width="161" height="14" font="11">char *str = argv[1];</text>
+<text top="348" left="62" width="7" height="8" font="5">15</text>
+<text top="344" left="119" width="89" height="11" font="11">while (1) {</text>
+<text top="363" left="62" width="7" height="8" font="5">16</text>
+<text top="359" left="152" width="65" height="11" font="11">Spin(1);</text>
+<text top="378" left="62" width="7" height="8" font="5">17</text>
+<text top="374" left="152" width="161" height="11" font="11">printf(&#34;%s\n&#34;, str);</text>
+<text top="393" left="62" width="7" height="8" font="5">18</text>
+<text top="389" left="119" width="8" height="11" font="11">}</text>
+<text top="407" left="62" width="7" height="8" font="5">19</text>
+<text top="404" left="119" width="73" height="11" font="11">return 0;</text>
+<text top="422" left="62" width="7" height="8" font="5">20</text>
+<text top="419" left="87" width="8" height="11" font="11">}</text>
+<text top="453" left="102" width="62" height="14" font="2">Figure 2.1:</text>
+<text top="454" left="168" width="291" height="13" font="3"><b>Simple Example: Code That Loops And Prints (</b></text>
+<text top="455" left="459" width="40" height="11" font="12"><b>cpu.c</b></text>
+<text top="454" left="499" width="4" height="13" font="3"><b>)</b></text>
+<text top="478" left="55" width="182" height="17" font="13">2.1 Virtualizing The CPU</text>
+<text top="508" left="105" width="414" height="14" font="2">Figure 2.1 depicts our ﬁrst program. It doesn’t do much. In fact, all</text>
+<text top="523" left="87" width="82" height="14" font="2">it does is call</text>
+<text top="524" left="174" width="48" height="11" font="11">Spin()</text>
+<text top="523" left="223" width="296" height="14" font="2">, a function that repeatedly checks the time and</text>
+<text top="538" left="87" width="432" height="14" font="2">returns once it has run for a second. Then, it prints out the string that the</text>
+<text top="553" left="87" width="342" height="14" font="2">user passed in on the command line, and repeats, forever.</text>
+<text top="568" left="105" width="169" height="14" font="2">Let’s say we save this ﬁle as</text>
+<text top="569" left="278" width="40" height="11" font="11">cpu.c</text>
+<text top="568" left="322" width="197" height="14" font="2">and decide to compile and run it</text>
+<text top="583" left="87" width="229" height="14" font="2">on a system with a single processor (or</text>
+<text top="583" left="319" width="28" height="13" font="3"><b>CPU</b></text>
+<text top="583" left="350" width="169" height="14" font="2">as we will sometimes call it).</text>
+<text top="598" left="87" width="148" height="14" font="2">Here is what we will see:</text>
+<text top="624" left="87" width="242" height="11" font="11">prompt&gt; gcc -o cpu cpu.c -Wall</text>
+<text top="638" left="87" width="137" height="11" font="11">prompt&gt; ./cpu &#34;A&#34;</text>
+<text top="653" left="87" width="8" height="11" font="11">A</text>
+<text top="668" left="87" width="8" height="11" font="11">A</text>
+<text top="683" left="87" width="8" height="11" font="11">A</text>
+<text top="698" left="87" width="8" height="11" font="11">A</text>
+<text top="713" left="87" width="16" height="11" font="11">ˆC</text>
+<text top="728" left="87" width="57" height="11" font="11">prompt&gt;</text>
+<text top="751" left="105" width="414" height="14" font="2">Not too interesting of a run — the system begins running the program,</text>
+<text top="766" left="87" width="432" height="14" font="2">which repeatedly checks the time until a second has elapsed. Once a sec-</text>
+<text top="781" left="87" width="432" height="14" font="2">ond has passed, the code prints the input string passed in by the user (in</text>
+<text top="796" left="87" width="432" height="14" font="2">this example, the letter “A”), and continues. Note the program will run</text>
+<text top="811" left="87" width="269" height="14" font="2">forever; by pressing “Control-c” (which on U</text>
+<text top="813" left="357" width="21" height="11" font="7">NIX</text>
+<text top="811" left="379" width="140" height="14" font="2">-based systems will ter-</text>
+<text top="826" left="87" width="432" height="14" font="2">minate the program running in the foreground) we can halt the program.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="10" family="PCRQZT+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="314" width="5" height="14" font="2">I</text>
+<text top="98" left="319" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="432" width="11" height="14" font="2">O</text>
+<text top="98" left="444" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="7">YSTEMS</text>
+<text top="135" left="129" width="379" height="11" font="11">prompt&gt; ./cpu A &amp; ./cpu B &amp; ./cpu C &amp; ./cpu D &amp;</text>
+<text top="149" left="129" width="65" height="11" font="11">[1] 7353</text>
+<text top="164" left="129" width="65" height="11" font="11">[2] 7354</text>
+<text top="179" left="129" width="65" height="11" font="11">[3] 7355</text>
+<text top="194" left="129" width="65" height="11" font="11">[4] 7356</text>
+<text top="209" left="129" width="8" height="11" font="11">A</text>
+<text top="224" left="129" width="8" height="11" font="11">B</text>
+<text top="239" left="129" width="8" height="11" font="11">D</text>
+<text top="254" left="129" width="8" height="11" font="11">C</text>
+<text top="269" left="129" width="8" height="11" font="11">A</text>
+<text top="284" left="129" width="8" height="11" font="11">B</text>
+<text top="299" left="129" width="8" height="11" font="11">D</text>
+<text top="314" left="129" width="8" height="11" font="11">C</text>
+<text top="329" left="129" width="8" height="11" font="11">A</text>
+<text top="344" left="129" width="24" height="11" font="11">...</text>
+<text top="362" left="207" width="62" height="14" font="2">Figure 2.2:</text>
+<text top="362" left="273" width="209" height="13" font="3"><b>Running Many Programs At Once</b></text>
+<text top="388" left="147" width="414" height="14" font="2">Now, let’s do the same thing, but this time, let’s run many different in-</text>
+<text top="403" left="129" width="432" height="14" font="2">stances of this same program. Figure 2.2 shows the results of this slightly</text>
+<text top="418" left="129" width="164" height="14" font="2">more complicated example.</text>
+<text top="434" left="147" width="414" height="14" font="2">Well, now things are getting a little more interesting. Even though we</text>
+<text top="449" left="129" width="432" height="14" font="2">have only one processor, somehow all four of these programs seem to be</text>
+<text top="467" left="129" width="336" height="14" font="2">running at the same time! How does this magic happen?</text>
+<text top="464" left="465" width="4" height="9" font="4">4</text>
+<text top="483" left="147" width="414" height="14" font="2">It turns out that the operating system, with some help from the hard-</text>
+<text top="498" left="129" width="153" height="14" font="2">ware, is in charge of this</text>
+<text top="498" left="286" width="48" height="13" font="3"><b>illusion</b></text>
+<text top="498" left="334" width="227" height="14" font="2">, i.e., the illusion that the system has</text>
+<text top="513" left="129" width="432" height="14" font="2">a very large number of virtual CPUs. Turning a single CPU (or a small</text>
+<text top="528" left="129" width="432" height="14" font="2">set of them) into a seemingly inﬁnite number of CPUs and thus allowing</text>
+<text top="543" left="129" width="334" height="14" font="2">many programs to seemingly run at once is what we call</text>
+<text top="543" left="466" width="95" height="13" font="3"><b>virtualizing the</b></text>
+<text top="558" left="129" width="28" height="13" font="3"><b>CPU</b></text>
+<text top="558" left="157" width="267" height="14" font="2">, the focus of the ﬁrst major part of this book.</text>
+<text top="575" left="147" width="414" height="14" font="2">Of course, to run programs, and stop them, and otherwise tell the OS</text>
+<text top="590" left="129" width="432" height="14" font="2">which programs to run, there need to be some interfaces (APIs) that you</text>
+<text top="604" left="129" width="432" height="14" font="2">can use to communicate your desires to the OS. We’ll talk about these</text>
+<text top="619" left="129" width="432" height="14" font="2">APIs throughout this book; indeed, they are the major way in which most</text>
+<text top="634" left="129" width="225" height="14" font="2">users interact with operating systems.</text>
+<text top="651" left="147" width="414" height="14" font="2">You might also notice that the ability to run multiple programs at once</text>
+<text top="666" left="129" width="432" height="14" font="2">raises all sorts of new questions. For example, if two programs want to</text>
+<text top="681" left="129" width="183" height="14" font="2">run at a particular time, which</text>
+<text top="681" left="315" width="36" height="14" font="8"><i>should</i></text>
+<text top="681" left="355" width="206" height="14" font="2">run? This question is answered by</text>
+<text top="696" left="129" width="7" height="14" font="2">a</text>
+<text top="696" left="140" width="38" height="13" font="3"><b>policy</b></text>
+<text top="696" left="182" width="378" height="14" font="2">of the OS; policies are used in many different places within an</text>
+<text top="711" left="129" width="432" height="14" font="2">OS to answer these types of questions, and thus we will study them as</text>
+<text top="726" left="129" width="145" height="14" font="2">we learn about the basic</text>
+<text top="726" left="277" width="76" height="13" font="3"><b>mechanisms</b></text>
+<text top="726" left="357" width="204" height="14" font="2">that operating systems implement</text>
+<text top="741" left="129" width="432" height="14" font="2">(such as the ability to run multiple programs at once). Hence the role of</text>
+<text top="756" left="129" width="66" height="14" font="2">the OS as a</text>
+<text top="756" left="198" width="108" height="13" font="3"><b>resource manager</b></text>
+<text top="756" left="306" width="3" height="14" font="2">.</text>
+<text top="790" left="149" width="4" height="8" font="5">4</text>
+<text top="792" left="154" width="285" height="11" font="6">Note how we ran four processes at the same time, by using the</text>
+<text top="793" left="441" width="6" height="9" font="14">&amp;</text>
+<text top="792" left="449" width="111" height="11" font="6">symbol. Doing so runs a</text>
+<text top="804" left="129" width="130" height="11" font="6">job in the background in the</text>
+<text top="805" left="261" width="19" height="9" font="14">zsh</text>
+<text top="804" left="283" width="278" height="11" font="6">shell, which means that the user is able to immediately issue</text>
+<text top="816" left="129" width="432" height="11" font="6">their next command, which in this case is another program to run. If you’re using a different</text>
+<text top="828" left="129" width="46" height="11" font="6">shell (e.g.,</text>
+<text top="829" left="178" width="25" height="9" font="14">tcsh</text>
+<text top="828" left="203" width="317" height="11" font="6">), it works slightly differently; read documentation online for details.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="6">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="2">O</text>
+<text top="98" left="217" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="2">S</text>
+<text top="98" left="289" width="45" height="11" font="7">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="138" left="65" width="4" height="8" font="5">1</text>
+<text top="135" left="87" width="153" height="11" font="11">#include &lt;unistd.h&gt;</text>
+<text top="153" left="65" width="4" height="8" font="5">2</text>
+<text top="150" left="87" width="145" height="11" font="11">#include &lt;stdio.h&gt;</text>
+<text top="168" left="65" width="4" height="8" font="5">3</text>
+<text top="165" left="87" width="153" height="11" font="11">#include &lt;stdlib.h&gt;</text>
+<text top="183" left="65" width="4" height="8" font="5">4</text>
+<text top="180" left="87" width="153" height="11" font="11">#include &#34;common.h&#34;</text>
+<text top="198" left="65" width="4" height="8" font="5">5</text>
+<text top="213" left="65" width="4" height="8" font="5">6</text>
+<text top="210" left="87" width="24" height="11" font="11">int</text>
+<text top="228" left="65" width="4" height="8" font="5">7</text>
+<text top="225" left="87" width="226" height="14" font="11">main(int argc, char *argv[])</text>
+<text top="243" left="65" width="4" height="8" font="5">8</text>
+<text top="240" left="87" width="8" height="11" font="11">{</text>
+<text top="258" left="65" width="4" height="8" font="5">9</text>
+<text top="254" left="119" width="234" height="14" font="11">int *p = malloc(sizeof(int));</text>
+<text top="254" left="474" width="40" height="11" font="11">// a1</text>
+<text top="273" left="62" width="7" height="8" font="5">10</text>
+<text top="269" left="119" width="145" height="11" font="11">assert(p != NULL);</text>
+<text top="288" left="62" width="7" height="8" font="5">11</text>
+<text top="284" left="119" width="355" height="11" font="11">printf(&#34;(%d) address pointed to by p: %p\n&#34;,</text>
+<text top="303" left="62" width="7" height="8" font="5">12</text>
+<text top="299" left="176" width="105" height="11" font="11">getpid(), p);</text>
+<text top="299" left="474" width="40" height="11" font="11">// a2</text>
+<text top="318" left="62" width="7" height="8" font="5">13</text>
+<text top="317" left="119" width="56" height="11" font="11">*p = 0;</text>
+<text top="314" left="474" width="40" height="11" font="11">// a3</text>
+<text top="333" left="62" width="7" height="8" font="5">14</text>
+<text top="329" left="119" width="89" height="11" font="11">while (1) {</text>
+<text top="348" left="62" width="7" height="8" font="5">15</text>
+<text top="344" left="152" width="65" height="11" font="11">Spin(1);</text>
+<text top="363" left="62" width="7" height="8" font="5">16</text>
+<text top="361" left="152" width="97" height="11" font="11">*p = *p + 1;</text>
+<text top="378" left="62" width="7" height="8" font="5">17</text>
+<text top="374" left="152" width="299" height="14" font="11">printf(&#34;(%d) p: %d\n&#34;, getpid(), *p);</text>
+<text top="374" left="474" width="40" height="11" font="11">// a4</text>
+<text top="393" left="62" width="7" height="8" font="5">18</text>
+<text top="389" left="119" width="8" height="11" font="11">}</text>
+<text top="407" left="62" width="7" height="8" font="5">19</text>
+<text top="404" left="119" width="73" height="11" font="11">return 0;</text>
+<text top="422" left="62" width="7" height="8" font="5">20</text>
+<text top="419" left="87" width="8" height="11" font="11">}</text>
+<text top="432" left="138" width="62" height="14" font="2">Figure 2.3:</text>
+<text top="432" left="204" width="219" height="13" font="3"><b>A Program That Accesses Memory (</b></text>
+<text top="433" left="423" width="40" height="11" font="12"><b>mem.c</b></text>
+<text top="432" left="463" width="4" height="13" font="3"><b>)</b></text>
+<text top="462" left="55" width="179" height="17" font="13">2.2 Virtualizing Memory</text>
+<text top="494" left="105" width="270" height="14" font="2">Now let’s consider memory. The model of</text>
+<text top="494" left="381" width="108" height="13" font="3"><b>physical memory</b></text>
+<text top="494" left="495" width="24" height="14" font="2">pre-</text>
+<text top="509" left="87" width="432" height="14" font="2">sented by modern machines is very simple. Memory is just an array of</text>
+<text top="524" left="87" width="51" height="14" font="2">bytes; to</text>
+<text top="524" left="142" width="27" height="13" font="3"><b>read</b></text>
+<text top="524" left="173" width="177" height="14" font="2">memory, one must specify an</text>
+<text top="524" left="354" width="47" height="13" font="3"><b>address</b></text>
+<text top="524" left="405" width="114" height="14" font="2">to be able to access</text>
+<text top="539" left="87" width="140" height="14" font="2">the data stored there; to</text>
+<text top="539" left="230" width="32" height="13" font="3"><b>write</b></text>
+<text top="539" left="266" width="17" height="14" font="2">(or</text>
+<text top="539" left="286" width="43" height="13" font="3"><b>update</b></text>
+<text top="539" left="329" width="190" height="14" font="2">) memory, one must also specify</text>
+<text top="554" left="87" width="254" height="14" font="2">the data to be written to the given address.</text>
+<text top="571" left="105" width="414" height="14" font="2">Memory is accessed all the time when a program is running. A pro-</text>
+<text top="586" left="87" width="436" height="14" font="2">gram keeps all of its data structures in memory, and accesses them through</text>
+<text top="601" left="87" width="432" height="14" font="2">various instructions, like loads and stores or other explicit instructions</text>
+<text top="616" left="87" width="432" height="14" font="2">that access memory in doing their work. Don’t forget that each instruc-</text>
+<text top="631" left="87" width="432" height="14" font="2">tion of the program is in memory too; thus memory is accessed on each</text>
+<text top="646" left="87" width="100" height="14" font="2">instruction fetch.</text>
+<text top="663" left="105" width="414" height="14" font="2">Let’s take a look at a program (in Figure 2.3) that allocates some mem-</text>
+<text top="678" left="87" width="82" height="14" font="2">ory by calling</text>
+<text top="679" left="172" width="65" height="11" font="11">malloc()</text>
+<text top="678" left="237" width="282" height="14" font="2">. The output of this program can be found here:</text>
+<text top="722" left="87" width="105" height="11" font="11">prompt&gt; ./mem</text>
+<text top="737" left="87" width="323" height="11" font="11">(2134) address pointed to by p: 0x200000</text>
+<text top="752" left="87" width="89" height="11" font="11">(2134) p: 1</text>
+<text top="767" left="87" width="89" height="11" font="11">(2134) p: 2</text>
+<text top="782" left="87" width="89" height="11" font="11">(2134) p: 3</text>
+<text top="797" left="87" width="89" height="11" font="11">(2134) p: 4</text>
+<text top="812" left="87" width="89" height="11" font="11">(2134) p: 5</text>
+<text top="827" left="87" width="16" height="11" font="11">ˆC</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="314" width="5" height="14" font="2">I</text>
+<text top="98" left="319" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="432" width="11" height="14" font="2">O</text>
+<text top="98" left="444" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="7">YSTEMS</text>
+<text top="135" left="129" width="186" height="11" font="11">prompt&gt; ./mem &amp; ./mem &amp;</text>
+<text top="149" left="129" width="73" height="11" font="11">[1] 24113</text>
+<text top="164" left="129" width="73" height="11" font="11">[2] 24114</text>
+<text top="179" left="129" width="331" height="11" font="11">(24113) address pointed to by p: 0x200000</text>
+<text top="194" left="129" width="331" height="11" font="11">(24114) address pointed to by p: 0x200000</text>
+<text top="209" left="129" width="97" height="11" font="11">(24113) p: 1</text>
+<text top="224" left="129" width="97" height="11" font="11">(24114) p: 1</text>
+<text top="239" left="129" width="97" height="11" font="11">(24114) p: 2</text>
+<text top="254" left="129" width="97" height="11" font="11">(24113) p: 2</text>
+<text top="269" left="129" width="97" height="11" font="11">(24113) p: 3</text>
+<text top="284" left="129" width="97" height="11" font="11">(24114) p: 3</text>
+<text top="299" left="129" width="97" height="11" font="11">(24113) p: 4</text>
+<text top="314" left="129" width="97" height="11" font="11">(24114) p: 4</text>
+<text top="329" left="129" width="24" height="11" font="11">...</text>
+<text top="347" left="166" width="62" height="14" font="2">Figure 2.4:</text>
+<text top="347" left="232" width="292" height="13" font="3"><b>Running The Memory Program Multiple Times</b></text>
+<text top="375" left="147" width="414" height="14" font="2">The program does a couple of things. First, it allocates some memory</text>
+<text top="390" left="129" width="432" height="14" font="2">(line a1). Then, it prints out the address of the memory (a2), and then</text>
+<text top="405" left="129" width="432" height="14" font="2">puts the number zero into the ﬁrst slot of the newly allocated memory</text>
+<text top="420" left="129" width="432" height="14" font="2">(a3). Finally, it loops, delaying for a second and incrementing the value</text>
+<text top="435" left="129" width="168" height="14" font="2">stored at the address held in</text>
+<text top="435" left="300" width="16" height="11" font="11">p.</text>
+<text top="435" left="320" width="240" height="14" font="2">With every print statement, it also prints</text>
+<text top="450" left="129" width="432" height="14" font="2">out what is called the process identiﬁer (the PID) of the running program.</text>
+<text top="464" left="129" width="236" height="14" font="2">This PID is unique per running process.</text>
+<text top="479" left="147" width="414" height="14" font="2">Again, this ﬁrst result is not too interesting. The newly allocated mem-</text>
+<text top="494" left="129" width="98" height="14" font="2">ory is at address</text>
+<text top="495" left="231" width="65" height="11" font="11">0x200000</text>
+<text top="494" left="295" width="266" height="14" font="2">. As the program runs, it slowly updates the</text>
+<text top="509" left="129" width="183" height="14" font="2">value and prints out the result.</text>
+<text top="524" left="147" width="414" height="14" font="2">Now, we again run multiple instances of this same program to see</text>
+<text top="539" left="129" width="432" height="14" font="2">what happens (Figure 2.4). We see from the example that each running</text>
+<text top="554" left="129" width="312" height="14" font="2">program has allocated memory at the same address (</text>
+<text top="555" left="441" width="65" height="11" font="11">0x200000</text>
+<text top="554" left="506" width="55" height="14" font="2">), and yet</text>
+<text top="569" left="129" width="229" height="14" font="2">each seems to be updating the value at</text>
+<text top="570" left="361" width="65" height="11" font="11">0x200000</text>
+<text top="569" left="429" width="132" height="14" font="2">independently! It is as</text>
+<text top="584" left="129" width="432" height="14" font="2">if each running program has its own private memory, instead of sharing</text>
+<text top="601" left="129" width="337" height="14" font="2">the same physical memory with other running programs</text>
+<text top="599" left="466" width="4" height="9" font="4">5</text>
+<text top="601" left="471" width="3" height="14" font="2">.</text>
+<text top="616" left="147" width="353" height="14" font="2">Indeed, that is exactly what is happening here as the OS is</text>
+<text top="616" left="504" width="57" height="13" font="3"><b>virtualiz-</b></text>
+<text top="631" left="129" width="74" height="13" font="3"><b>ing memory</b></text>
+<text top="631" left="203" width="227" height="14" font="2">. Each process accesses its own private</text>
+<text top="631" left="433" width="128" height="13" font="3"><b>virtual address space</b></text>
+<text top="646" left="129" width="151" height="14" font="2">(sometimes just called its</text>
+<text top="646" left="284" width="85" height="13" font="3"><b>address space</b></text>
+<text top="646" left="369" width="192" height="14" font="2">), which the OS somehow maps</text>
+<text top="661" left="129" width="432" height="14" font="2">onto the physical memory of the machine. A memory reference within</text>
+<text top="676" left="129" width="432" height="14" font="2">one running program does not affect the address space of other processes</text>
+<text top="691" left="129" width="432" height="14" font="2">(or the OS itself); as far as the running program is concerned, it has phys-</text>
+<text top="706" left="129" width="432" height="14" font="2">ical memory all to itself. The reality, however, is that physical memory is</text>
+<text top="721" left="129" width="432" height="14" font="2">a shared resource, managed by the operating system. Exactly how all of</text>
+<text top="736" left="129" width="432" height="14" font="2">this is accomplished is also the subject of the ﬁrst part of this book, on the</text>
+<text top="751" left="129" width="45" height="14" font="2">topic of</text>
+<text top="751" left="177" width="84" height="13" font="3"><b>virtualization</b></text>
+<text top="751" left="261" width="3" height="14" font="2">.</text>
+<text top="790" left="149" width="4" height="8" font="5">5</text>
+<text top="792" left="154" width="407" height="11" font="6">For this example to work, you need to make sure address-space randomization is dis-</text>
+<text top="804" left="129" width="432" height="11" font="6">abled; randomization, as it turns out, can be a good defense against certain kinds of security</text>
+<text top="816" left="129" width="432" height="11" font="6">ﬂaws. Read more about it on your own, especially if you want to learn how to break into</text>
+<text top="828" left="129" width="428" height="11" font="6">computer systems via stack-smashing attacks. Not that we would recommend such a thing...</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="6">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="2">O</text>
+<text top="98" left="217" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="2">S</text>
+<text top="98" left="289" width="45" height="11" font="7">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="137" left="55" width="119" height="17" font="13">2.3 Concurrency</text>
+<text top="168" left="65" width="4" height="8" font="5">1</text>
+<text top="165" left="87" width="145" height="11" font="11">#include &lt;stdio.h&gt;</text>
+<text top="183" left="65" width="4" height="8" font="5">2</text>
+<text top="180" left="87" width="153" height="11" font="11">#include &lt;stdlib.h&gt;</text>
+<text top="198" left="65" width="4" height="8" font="5">3</text>
+<text top="195" left="87" width="153" height="11" font="11">#include &#34;common.h&#34;</text>
+<text top="213" left="65" width="4" height="8" font="5">4</text>
+<text top="210" left="87" width="218" height="11" font="11">#include &#34;common_threads.h&#34;</text>
+<text top="228" left="65" width="4" height="8" font="5">5</text>
+<text top="243" left="65" width="4" height="8" font="5">6</text>
+<text top="239" left="87" width="202" height="11" font="11">volatile int counter = 0;</text>
+<text top="258" left="65" width="4" height="8" font="5">7</text>
+<text top="254" left="87" width="81" height="11" font="11">int loops;</text>
+<text top="273" left="65" width="4" height="8" font="5">8</text>
+<text top="288" left="65" width="4" height="8" font="5">9</text>
+<text top="284" left="87" width="202" height="14" font="11">void *worker(void *arg) {</text>
+<text top="303" left="62" width="7" height="8" font="5">10</text>
+<text top="299" left="119" width="48" height="11" font="11">int i;</text>
+<text top="318" left="62" width="7" height="8" font="5">11</text>
+<text top="314" left="119" width="234" height="11" font="11">for (i = 0; i &lt; loops; i++) {</text>
+<text top="333" left="62" width="7" height="8" font="5">12</text>
+<text top="329" left="152" width="81" height="11" font="11">counter++;</text>
+<text top="348" left="62" width="7" height="8" font="5">13</text>
+<text top="344" left="119" width="8" height="11" font="11">}</text>
+<text top="363" left="62" width="7" height="8" font="5">14</text>
+<text top="359" left="119" width="97" height="11" font="11">return NULL;</text>
+<text top="378" left="62" width="7" height="8" font="5">15</text>
+<text top="374" left="87" width="8" height="11" font="11">}</text>
+<text top="392" left="62" width="7" height="8" font="5">16</text>
+<text top="407" left="62" width="7" height="8" font="5">17</text>
+<text top="404" left="87" width="274" height="14" font="11">int main(int argc, char *argv[]) {</text>
+<text top="422" left="62" width="7" height="8" font="5">18</text>
+<text top="419" left="119" width="129" height="11" font="11">if (argc != 2) {</text>
+<text top="437" left="62" width="7" height="8" font="5">19</text>
+<text top="434" left="152" width="355" height="11" font="11">fprintf(stderr, &#34;usage: threads &lt;value&gt;\n&#34;);</text>
+<text top="452" left="62" width="7" height="8" font="5">20</text>
+<text top="449" left="152" width="65" height="11" font="11">exit(1);</text>
+<text top="467" left="62" width="7" height="8" font="5">21</text>
+<text top="464" left="119" width="8" height="11" font="11">}</text>
+<text top="482" left="62" width="7" height="8" font="5">22</text>
+<text top="479" left="119" width="178" height="11" font="11">loops = atoi(argv[1]);</text>
+<text top="497" left="62" width="7" height="8" font="5">23</text>
+<text top="494" left="119" width="137" height="11" font="11">pthread_t p1, p2;</text>
+<text top="512" left="62" width="7" height="8" font="5">24</text>
+<text top="508" left="119" width="323" height="11" font="11">printf(&#34;Initial value : %d\n&#34;, counter);</text>
+<text top="527" left="62" width="7" height="8" font="5">25</text>
+<text top="542" left="62" width="7" height="8" font="5">26</text>
+<text top="538" left="119" width="323" height="11" font="11">Pthread_create(&amp;p1, NULL, worker, NULL);</text>
+<text top="557" left="62" width="7" height="8" font="5">27</text>
+<text top="553" left="119" width="323" height="11" font="11">Pthread_create(&amp;p2, NULL, worker, NULL);</text>
+<text top="572" left="62" width="7" height="8" font="5">28</text>
+<text top="568" left="119" width="186" height="11" font="11">Pthread_join(p1, NULL);</text>
+<text top="587" left="62" width="7" height="8" font="5">29</text>
+<text top="583" left="119" width="186" height="11" font="11">Pthread_join(p2, NULL);</text>
+<text top="602" left="62" width="7" height="8" font="5">30</text>
+<text top="598" left="119" width="153" height="11" font="11">printf(&#34;Final value</text>
+<text top="598" left="297" width="145" height="11" font="11">: %d\n&#34;, counter);</text>
+<text top="617" left="62" width="7" height="8" font="5">31</text>
+<text top="613" left="119" width="73" height="11" font="11">return 0;</text>
+<text top="632" left="62" width="7" height="8" font="5">32</text>
+<text top="628" left="87" width="8" height="11" font="11">}</text>
+<text top="646" left="146" width="62" height="14" font="2">Figure 2.5:</text>
+<text top="646" left="212" width="171" height="13" font="3"><b>A Multi-threaded Program (</b></text>
+<text top="648" left="383" width="73" height="11" font="12"><b>threads.c</b></text>
+<text top="646" left="456" width="4" height="13" font="3"><b>)</b></text>
+<text top="662" left="105" width="211" height="14" font="2">Another main theme of this book is</text>
+<text top="662" left="319" width="75" height="13" font="3"><b>concurrency</b></text>
+<text top="662" left="394" width="125" height="14" font="2">. We use this concep-</text>
+<text top="677" left="87" width="432" height="14" font="2">tual term to refer to a host of problems that arise, and must be addressed,</text>
+<text top="692" left="87" width="432" height="14" font="2">when working on many things at once (i.e., concurrently) in the same</text>
+<text top="707" left="87" width="432" height="14" font="2">program. The problems of concurrency arose ﬁrst within the operating</text>
+<text top="721" left="87" width="432" height="14" font="2">system itself; as you can see in the examples above on virtualization, the</text>
+<text top="736" left="87" width="432" height="14" font="2">OS is juggling many things at once, ﬁrst running one process, then an-</text>
+<text top="751" left="87" width="432" height="14" font="2">other, and so forth. As it turns out, doing so leads to some deep and</text>
+<text top="766" left="87" width="126" height="14" font="2">interesting problems.</text>
+<text top="781" left="105" width="414" height="14" font="2">Unfortunately, the problems of concurrency are no longer limited just</text>
+<text top="796" left="87" width="202" height="14" font="2">to the OS itself. Indeed, modern</text>
+<text top="796" left="294" width="93" height="13" font="3"><b>multi-threaded</b></text>
+<text top="796" left="392" width="127" height="14" font="2">programs exhibit the</text>
+<text top="811" left="87" width="336" height="14" font="2">same problems. Let us demonstrate with an example of a</text>
+<text top="811" left="426" width="93" height="13" font="3"><b>multi-threaded</b></text>
+<text top="826" left="87" width="126" height="14" font="2">program (Figure 2.5).</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="13" family="AXRWRM+CMMI9" color="#000000"/>
+	<fontspec id="16" size="13" family="XMVMIF+CMR9" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="314" width="5" height="14" font="2">I</text>
+<text top="98" left="319" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="432" width="11" height="14" font="2">O</text>
+<text top="98" left="444" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="7">YSTEMS</text>
+<text top="139" left="147" width="414" height="14" font="2">Although you might not understand this example fully at the moment</text>
+<text top="154" left="129" width="432" height="14" font="2">(and we’ll learn a lot more about it in later chapters, in the section of the</text>
+<text top="169" left="129" width="432" height="14" font="2">book on concurrency), the basic idea is simple. The main program creates</text>
+<text top="186" left="129" width="23" height="14" font="2">two</text>
+<text top="186" left="155" width="46" height="13" font="3"><b>threads</b></text>
+<text top="186" left="205" width="33" height="14" font="2">using</text>
+<text top="186" left="241" width="129" height="11" font="11">Pthread_create()</text>
+<text top="183" left="370" width="4" height="9" font="4">6</text>
+<text top="186" left="376" width="185" height="14" font="2">. You can think of a thread as a</text>
+<text top="201" left="129" width="432" height="14" font="2">function running within the same memory space as other functions, with</text>
+<text top="216" left="129" width="432" height="14" font="2">more than one of them active at a time. In this example, each thread starts</text>
+<text top="231" left="129" width="163" height="14" font="2">running in a routine called</text>
+<text top="231" left="296" width="65" height="11" font="11">worker()</text>
+<text top="231" left="361" width="200" height="14" font="2">, in which it simply increments a</text>
+<text top="245" left="129" width="121" height="14" font="2">counter in a loop for</text>
+<text top="246" left="253" width="40" height="11" font="11">loops</text>
+<text top="245" left="297" width="101" height="14" font="2">number of times.</text>
+<text top="261" left="147" width="414" height="14" font="2">Below is a transcript of what happens when we run this program with</text>
+<text top="276" left="129" width="189" height="14" font="2">the input value for the variable</text>
+<text top="277" left="322" width="40" height="11" font="11">loops</text>
+<text top="276" left="367" width="150" height="14" font="2">set to 1000. The value of</text>
+<text top="277" left="520" width="40" height="11" font="11">loops</text>
+<text top="291" left="129" width="432" height="14" font="2">determines how many times each of the two workers will increment the</text>
+<text top="306" left="129" width="432" height="14" font="2">shared counter in a loop. When the program is run with the value of</text>
+<text top="322" left="129" width="40" height="11" font="11">loops</text>
+<text top="321" left="173" width="289" height="14" font="2">set to 1000, what do you expect the ﬁnal value of</text>
+<text top="322" left="465" width="57" height="11" font="11">counter</text>
+<text top="321" left="525" width="35" height="14" font="2">to be?</text>
+<text top="356" left="129" width="379" height="11" font="11">prompt&gt; gcc -o threads threads.c -Wall -pthread</text>
+<text top="371" left="129" width="178" height="11" font="11">prompt&gt; ./threads 1000</text>
+<text top="386" left="129" width="137" height="11" font="11">Initial value : 0</text>
+<text top="401" left="129" width="89" height="11" font="11">Final value</text>
+<text top="401" left="242" width="48" height="11" font="11">: 2000</text>
+<text top="433" left="147" width="414" height="14" font="2">As you probably guessed, when the two threads are ﬁnished, the ﬁnal</text>
+<text top="448" left="129" width="432" height="14" font="2">value of the counter is 2000, as each thread incremented the counter 1000</text>
+<text top="463" left="129" width="245" height="14" font="2">times. Indeed, when the input value of</text>
+<text top="464" left="379" width="40" height="11" font="11">loops</text>
+<text top="463" left="425" width="48" height="14" font="2">is set to</text>
+<text top="464" left="478" width="11" height="14" font="15">N</text>
+<text top="463" left="490" width="70" height="14" font="2">, we would</text>
+<text top="478" left="129" width="259" height="14" font="2">expect the ﬁnal output of the program to be</text>
+<text top="479" left="392" width="7" height="14" font="16">2</text>
+<text top="479" left="399" width="11" height="14" font="15">N</text>
+<text top="478" left="411" width="150" height="14" font="2">. But life is not so simple,</text>
+<text top="493" left="129" width="432" height="14" font="2">as it turns out. Let’s run the same program, but with higher values for</text>
+<text top="509" left="129" width="40" height="11" font="11">loops</text>
+<text top="508" left="169" width="142" height="14" font="2">, and see what happens:</text>
+<text top="543" left="129" width="194" height="11" font="11">prompt&gt; ./threads 100000</text>
+<text top="558" left="129" width="137" height="11" font="11">Initial value : 0</text>
+<text top="573" left="129" width="89" height="11" font="11">Final value</text>
+<text top="573" left="242" width="65" height="11" font="11">: 143012</text>
+<text top="573" left="339" width="65" height="11" font="11">// huh??</text>
+<text top="588" left="129" width="194" height="11" font="11">prompt&gt; ./threads 100000</text>
+<text top="603" left="129" width="137" height="11" font="11">Initial value : 0</text>
+<text top="618" left="129" width="89" height="11" font="11">Final value</text>
+<text top="618" left="242" width="65" height="11" font="11">: 137298</text>
+<text top="618" left="339" width="105" height="11" font="11">// what the??</text>
+<text top="650" left="147" width="414" height="14" font="2">In this run, when we gave an input value of 100,000, instead of getting</text>
+<text top="665" left="129" width="432" height="14" font="2">a ﬁnal value of 200,000, we instead ﬁrst get 143,012. Then, when we run</text>
+<text top="680" left="129" width="327" height="14" font="2">the program a second time, we not only again get the</text>
+<text top="680" left="461" width="35" height="14" font="8"><i>wrong</i></text>
+<text top="680" left="500" width="61" height="14" font="2">value, but</text>
+<text top="695" left="129" width="35" height="14" font="2">also a</text>
+<text top="695" left="168" width="45" height="14" font="8"><i>different</i></text>
+<text top="695" left="218" width="343" height="14" font="2">value than the last time. In fact, if you run the program</text>
+<text top="710" left="129" width="204" height="14" font="2">over and over with high values of</text>
+<text top="711" left="337" width="40" height="11" font="11">loops</text>
+<text top="710" left="378" width="183" height="14" font="2">, you may ﬁnd that sometimes</text>
+<text top="725" left="129" width="341" height="14" font="2">you even get the right answer! So why is this happening?</text>
+<text top="741" left="147" width="414" height="14" font="2">As it turns out, the reason for these odd and unusual outcomes relate</text>
+<text top="756" left="129" width="432" height="14" font="2">to how instructions are executed, which is one at a time. Unfortunately, a</text>
+<text top="771" left="129" width="432" height="14" font="2">key part of the program above, where the shared counter is incremented,</text>
+<text top="802" left="149" width="4" height="8" font="5">6</text>
+<text top="804" left="154" width="181" height="11" font="6">The actual call should be to lower-case</text>
+<text top="805" left="338" width="100" height="9" font="14">pthread_create()</text>
+<text top="804" left="439" width="122" height="11" font="6">; the upper-case version is</text>
+<text top="816" left="129" width="129" height="11" font="6">our own wrapper that calls</text>
+<text top="817" left="261" width="100" height="9" font="14">pthread_create()</text>
+<text top="816" left="365" width="196" height="11" font="6">and makes sure that the return code indi-</text>
+<text top="828" left="129" width="244" height="11" font="6">cates that the call succeeded. See the code for details.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="6">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="2">O</text>
+<text top="98" left="217" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="2">S</text>
+<text top="98" left="289" width="45" height="11" font="7">YSTEMS</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="215" width="8" height="14" font="2">T</text>
+<text top="150" left="224" width="16" height="11" font="7">HE</text>
+<text top="148" left="244" width="10" height="14" font="2">C</text>
+<text top="150" left="255" width="71" height="11" font="7">RUX OF THE</text>
+<text top="148" left="329" width="8" height="14" font="2">P</text>
+<text top="150" left="338" width="49" height="11" font="7">ROBLEM</text>
+<text top="148" left="388" width="3" height="14" font="2">:</text>
+<text top="163" left="144" width="11" height="14" font="2">H</text>
+<text top="165" left="156" width="20" height="11" font="7">OW</text>
+<text top="163" left="180" width="8" height="14" font="2">T</text>
+<text top="165" left="189" width="8" height="11" font="7">O</text>
+<text top="163" left="201" width="8" height="14" font="2">B</text>
+<text top="165" left="210" width="29" height="11" font="7">UILD</text>
+<text top="163" left="243" width="10" height="14" font="2">C</text>
+<text top="165" left="253" width="47" height="11" font="7">ORRECT</text>
+<text top="163" left="304" width="10" height="14" font="2">C</text>
+<text top="165" left="314" width="75" height="11" font="7">ONCURRENT</text>
+<text top="163" left="394" width="8" height="14" font="2">P</text>
+<text top="165" left="403" width="59" height="11" font="7">ROGRAMS</text>
+<text top="178" left="87" width="432" height="14" font="2">When there are many concurrently executing threads within the same</text>
+<text top="193" left="87" width="432" height="14" font="2">memory space, how can we build a correctly working program? What</text>
+<text top="208" left="87" width="432" height="14" font="2">primitives are needed from the OS? What mechanisms should be pro-</text>
+<text top="223" left="87" width="432" height="14" font="2">vided by the hardware? How can we use them to solve the problems of</text>
+<text top="238" left="87" width="79" height="14" font="2">concurrency?</text>
+<text top="293" left="87" width="432" height="14" font="2">takes three instructions: one to load the value of the counter from mem-</text>
+<text top="308" left="87" width="432" height="14" font="2">ory into a register, one to increment it, and one to store it back into mem-</text>
+<text top="323" left="87" width="322" height="14" font="2">ory. Because these three instructions do not execute</text>
+<text top="323" left="414" width="64" height="13" font="3"><b>atomically</b></text>
+<text top="323" left="484" width="35" height="14" font="2">(all at</text>
+<text top="338" left="87" width="326" height="14" font="2">once), strange things can happen. It is this problem of</text>
+<text top="338" left="417" width="75" height="13" font="3"><b>concurrency</b></text>
+<text top="338" left="496" width="23" height="14" font="2">that</text>
+<text top="353" left="87" width="366" height="14" font="2">we will address in great detail in the second part of this book.</text>
+<text top="391" left="55" width="106" height="17" font="13">2.4 Persistence</text>
+<text top="421" left="105" width="223" height="14" font="2">The third major theme of the course is</text>
+<text top="421" left="331" width="69" height="13" font="3"><b>persistence</b></text>
+<text top="421" left="400" width="119" height="14" font="2">. In system memory,</text>
+<text top="436" left="87" width="383" height="14" font="2">data can be easily lost, as devices such as DRAM store values in a</text>
+<text top="436" left="473" width="46" height="13" font="3"><b>volatile</b></text>
+<text top="451" left="87" width="432" height="14" font="2">manner; when power goes away or the system crashes, any data in mem-</text>
+<text top="466" left="87" width="432" height="14" font="2">ory is lost. Thus, we need hardware and software to be able to store data</text>
+<text top="481" left="87" width="72" height="13" font="3"><b>persistently</b></text>
+<text top="481" left="160" width="359" height="14" font="2">; such storage is thus critical to any system as users care a</text>
+<text top="496" left="87" width="160" height="14" font="2">great deal about their data.</text>
+<text top="512" left="105" width="291" height="14" font="2">The hardware comes in the form of some kind of</text>
+<text top="512" left="400" width="79" height="13" font="3"><b>input/output</b></text>
+<text top="512" left="482" width="13" height="14" font="2">or</text>
+<text top="512" left="499" width="20" height="13" font="3"><b>I/O</b></text>
+<text top="527" left="87" width="170" height="14" font="2">device; in modern systems, a</text>
+<text top="527" left="260" width="63" height="13" font="3"><b>hard drive</b></text>
+<text top="527" left="326" width="193" height="14" font="2">is a common repository for long-</text>
+<text top="541" left="87" width="166" height="14" font="2">lived information, although</text>
+<text top="542" left="257" width="106" height="13" font="3"><b>solid-state drives</b></text>
+<text top="541" left="367" width="4" height="14" font="2">(</text>
+<text top="542" left="372" width="34" height="13" font="3"><b>SSDs</b></text>
+<text top="541" left="405" width="114" height="14" font="2">) are making head-</text>
+<text top="556" left="87" width="150" height="14" font="2">way in this arena as well.</text>
+<text top="572" left="105" width="414" height="14" font="2">The software in the operating system that usually manages the disk is</text>
+<text top="587" left="87" width="58" height="14" font="2">called the</text>
+<text top="587" left="149" width="66" height="13" font="3"><b>ﬁle system</b></text>
+<text top="587" left="214" width="223" height="14" font="2">; it is thus responsible for storing any</text>
+<text top="587" left="442" width="25" height="13" font="3"><b>ﬁles</b></text>
+<text top="587" left="471" width="48" height="14" font="2">the user</text>
+<text top="602" left="87" width="400" height="14" font="2">creates in a reliable and efﬁcient manner on the disks of the system.</text>
+<text top="617" left="105" width="414" height="14" font="2">Unlike the abstractions provided by the OS for the CPU and memory,</text>
+<text top="632" left="87" width="432" height="14" font="2">the OS does not create a private, virtualized disk for each application.</text>
+<text top="647" left="87" width="339" height="14" font="2">Rather, it is assumed that often times, users will want to</text>
+<text top="647" left="430" width="33" height="13" font="3"><b>share</b></text>
+<text top="647" left="467" width="52" height="14" font="2">informa-</text>
+<text top="662" left="87" width="432" height="14" font="2">tion that is in ﬁles. For example, when writing a C program, you might</text>
+<text top="679" left="87" width="178" height="14" font="2">ﬁrst use an editor (e.g., Emacs</text>
+<text top="677" left="265" width="4" height="9" font="4">7</text>
+<text top="679" left="271" width="176" height="14" font="2">) to create and edit the C ﬁle (</text>
+<text top="680" left="446" width="73" height="11" font="11">emacs -nw</text>
+<text top="695" left="87" width="48" height="11" font="11">main.c</text>
+<text top="694" left="136" width="383" height="14" font="2">). Once done, you might use the compiler to turn the source code</text>
+<text top="709" left="87" width="139" height="14" font="2">into an executable (e.g.,</text>
+<text top="710" left="230" width="145" height="11" font="11">gcc -o main main.c</text>
+<text top="709" left="375" width="144" height="14" font="2">). When you’re ﬁnished,</text>
+<text top="724" left="87" width="234" height="14" font="2">you might run the new executable (e.g.,</text>
+<text top="725" left="324" width="48" height="11" font="11">./main</text>
+<text top="724" left="373" width="146" height="14" font="2">). Thus, you can see how</text>
+<text top="739" left="87" width="432" height="14" font="2">ﬁles are shared across different processes. First, Emacs creates a ﬁle that</text>
+<text top="754" left="87" width="432" height="14" font="2">serves as input to the compiler; the compiler uses that input ﬁle to create</text>
+<text top="769" left="87" width="432" height="14" font="2">a new executable ﬁle (in many steps — take a compiler course for details);</text>
+<text top="784" left="87" width="430" height="14" font="2">ﬁnally, the new executable is then run. And thus a new program is born!</text>
+<text top="814" left="107" width="4" height="8" font="5">7</text>
+<text top="816" left="112" width="407" height="11" font="6">You should be using Emacs. If you are using vi, there is probably something wrong with</text>
+<text top="828" left="87" width="369" height="11" font="6">you. If you are using something that is not a real code editor, that is even worse.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="314" width="5" height="14" font="2">I</text>
+<text top="98" left="319" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="432" width="11" height="14" font="2">O</text>
+<text top="98" left="444" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="7">YSTEMS</text>
+<text top="138" left="107" width="4" height="8" font="5">1</text>
+<text top="135" left="129" width="145" height="11" font="11">#include &lt;stdio.h&gt;</text>
+<text top="153" left="107" width="4" height="8" font="5">2</text>
+<text top="150" left="129" width="153" height="11" font="11">#include &lt;unistd.h&gt;</text>
+<text top="168" left="107" width="4" height="8" font="5">3</text>
+<text top="165" left="129" width="153" height="11" font="11">#include &lt;assert.h&gt;</text>
+<text top="183" left="107" width="4" height="8" font="5">4</text>
+<text top="180" left="129" width="145" height="11" font="11">#include &lt;fcntl.h&gt;</text>
+<text top="198" left="107" width="4" height="8" font="5">5</text>
+<text top="195" left="129" width="178" height="11" font="11">#include &lt;sys/types.h&gt;</text>
+<text top="213" left="107" width="4" height="8" font="5">6</text>
+<text top="228" left="107" width="4" height="8" font="5">7</text>
+<text top="225" left="129" width="274" height="14" font="11">int main(int argc, char *argv[]) {</text>
+<text top="243" left="107" width="4" height="8" font="5">8</text>
+<text top="240" left="161" width="210" height="11" font="11">int fd = open(&#34;/tmp/file&#34;,</text>
+<text top="258" left="107" width="4" height="8" font="5">9</text>
+<text top="254" left="274" width="202" height="11" font="11">O_WRONLY|O_CREAT|O_TRUNC,</text>
+<text top="273" left="104" width="7" height="8" font="5">10</text>
+<text top="269" left="274" width="73" height="11" font="11">S_IRWXU);</text>
+<text top="288" left="104" width="7" height="8" font="5">11</text>
+<text top="284" left="161" width="129" height="11" font="11">assert(fd &gt; -1);</text>
+<text top="303" left="104" width="7" height="8" font="5">12</text>
+<text top="299" left="161" width="323" height="11" font="11">int rc = write(fd, &#34;hello world\n&#34;, 12);</text>
+<text top="318" left="104" width="7" height="8" font="5">13</text>
+<text top="314" left="161" width="137" height="11" font="11">assert(rc == 12);</text>
+<text top="333" left="104" width="7" height="8" font="5">14</text>
+<text top="329" left="161" width="81" height="11" font="11">close(fd);</text>
+<text top="348" left="104" width="7" height="8" font="5">15</text>
+<text top="344" left="161" width="73" height="11" font="11">return 0;</text>
+<text top="363" left="104" width="7" height="8" font="5">16</text>
+<text top="359" left="129" width="8" height="11" font="11">}</text>
+<text top="377" left="211" width="62" height="14" font="2">Figure 2.6:</text>
+<text top="378" left="277" width="164" height="13" font="3"><b>A Program That Does I/O (</b></text>
+<text top="379" left="442" width="32" height="11" font="12"><b>io.c</b></text>
+<text top="378" left="474" width="4" height="13" font="3"><b>)</b></text>
+<text top="406" left="147" width="414" height="14" font="2">To understand this better, let’s look at some code. Figure 2.6 presents</text>
+<text top="421" left="129" width="121" height="14" font="2">code to create a ﬁle (</text>
+<text top="422" left="250" width="73" height="11" font="11">/tmp/file</text>
+<text top="421" left="323" width="233" height="14" font="2">) that contains the string “hello world”.</text>
+<text top="437" left="147" width="414" height="14" font="2">To accomplish this task, the program makes three calls into the oper-</text>
+<text top="452" left="129" width="186" height="14" font="2">ating system. The ﬁrst, a call to</text>
+<text top="453" left="318" width="48" height="11" font="11">open()</text>
+<text top="452" left="367" width="194" height="14" font="2">, opens the ﬁle and creates it; the</text>
+<text top="467" left="129" width="45" height="14" font="2">second,</text>
+<text top="468" left="178" width="57" height="11" font="11">write()</text>
+<text top="467" left="234" width="233" height="14" font="2">, writes some data to the ﬁle; the third,</text>
+<text top="468" left="471" width="57" height="11" font="11">close()</text>
+<text top="467" left="527" width="33" height="14" font="2">, sim-</text>
+<text top="482" left="129" width="432" height="14" font="2">ply closes the ﬁle thus indicating the program won’t be writing any more</text>
+<text top="497" left="129" width="97" height="14" font="2">data to it. These</text>
+<text top="497" left="229" width="74" height="13" font="3"><b>system calls</b></text>
+<text top="497" left="307" width="254" height="14" font="2">are routed to the part of the operating sys-</text>
+<text top="512" left="129" width="85" height="14" font="2">tem called the</text>
+<text top="512" left="218" width="66" height="13" font="3"><b>ﬁle system</b></text>
+<text top="512" left="284" width="277" height="14" font="2">, which then handles the requests and returns</text>
+<text top="527" left="129" width="210" height="14" font="2">some kind of error code to the user.</text>
+<text top="542" left="147" width="414" height="14" font="2">You might be wondering what the OS does in order to actually write</text>
+<text top="557" left="129" width="432" height="14" font="2">to disk. We would show you but you’d have to promise to close your</text>
+<text top="572" left="129" width="432" height="14" font="2">eyes ﬁrst; it is that unpleasant. The ﬁle system has to do a fair bit of work:</text>
+<text top="587" left="129" width="432" height="14" font="2">ﬁrst ﬁguring out where on disk this new data will reside, and then keep-</text>
+<text top="602" left="129" width="432" height="14" font="2">ing track of it in various structures the ﬁle system maintains. Doing so</text>
+<text top="617" left="129" width="432" height="14" font="2">requires issuing I/O requests to the underlying storage device, to either</text>
+<text top="632" left="129" width="432" height="14" font="2">read existing structures or update (write) them. As anyone who has writ-</text>
+<text top="649" left="129" width="30" height="14" font="2">ten a</text>
+<text top="649" left="164" width="82" height="13" font="3"><b>device driver</b></text>
+<text top="646" left="246" width="4" height="9" font="4">8</text>
+<text top="649" left="257" width="304" height="14" font="2">knows, getting a device to do something on your</text>
+<text top="664" left="129" width="432" height="14" font="2">behalf is an intricate and detailed process. It requires a deep knowledge</text>
+<text top="679" left="129" width="432" height="14" font="2">of the low-level device interface and its exact semantics. Fortunately, the</text>
+<text top="694" left="129" width="432" height="14" font="2">OS provides a standard and simple way to access devices through its sys-</text>
+<text top="709" left="129" width="272" height="14" font="2">tem calls. Thus, the OS is sometimes seen as a</text>
+<text top="709" left="404" width="99" height="13" font="3"><b>standard library</b></text>
+<text top="709" left="503" width="3" height="14" font="2">.</text>
+<text top="724" left="147" width="414" height="14" font="2">Of course, there are many more details in how devices are accessed,</text>
+<text top="739" left="129" width="432" height="14" font="2">and how ﬁle systems manage data persistently atop said devices. For</text>
+<text top="754" left="129" width="432" height="14" font="2">performance reasons, most ﬁle systems ﬁrst delay such writes for a while,</text>
+<text top="769" left="129" width="432" height="14" font="2">hoping to batch them into larger groups. To handle the problems of sys-</text>
+<text top="784" left="129" width="432" height="14" font="2">tem crashes during writes, most ﬁle systems incorporate some kind of</text>
+<text top="814" left="149" width="4" height="8" font="5">8</text>
+<text top="816" left="154" width="407" height="11" font="6">A device driver is some code in the operating system that knows how to deal with a</text>
+<text top="828" left="129" width="335" height="11" font="6">speciﬁc device. We will talk more about devices and device drivers later.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="6">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="2">O</text>
+<text top="98" left="217" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="2">S</text>
+<text top="98" left="289" width="45" height="11" font="7">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="148" left="215" width="8" height="14" font="2">T</text>
+<text top="150" left="224" width="16" height="11" font="7">HE</text>
+<text top="148" left="244" width="10" height="14" font="2">C</text>
+<text top="150" left="255" width="71" height="11" font="7">RUX OF THE</text>
+<text top="148" left="329" width="8" height="14" font="2">P</text>
+<text top="150" left="338" width="49" height="11" font="7">ROBLEM</text>
+<text top="148" left="388" width="3" height="14" font="2">:</text>
+<text top="163" left="191" width="11" height="14" font="2">H</text>
+<text top="165" left="203" width="20" height="11" font="7">OW</text>
+<text top="163" left="227" width="8" height="14" font="2">T</text>
+<text top="165" left="236" width="8" height="11" font="7">O</text>
+<text top="163" left="248" width="7" height="14" font="2">S</text>
+<text top="165" left="256" width="31" height="11" font="7">TORE</text>
+<text top="163" left="291" width="10" height="14" font="2">D</text>
+<text top="165" left="302" width="23" height="11" font="7">ATA</text>
+<text top="163" left="329" width="8" height="14" font="2">P</text>
+<text top="165" left="338" width="77" height="11" font="7">ERSISTENTLY</text>
+<text top="178" left="87" width="432" height="14" font="2">The ﬁle system is the part of the OS in charge of managing persistent data.</text>
+<text top="193" left="87" width="432" height="14" font="2">What techniques are needed to do so correctly? What mechanisms and</text>
+<text top="208" left="87" width="432" height="14" font="2">policies are required to do so with high performance? How is reliability</text>
+<text top="223" left="87" width="346" height="14" font="2">achieved, in the face of failures in hardware and software?</text>
+<text top="277" left="87" width="193" height="14" font="2">intricate write protocol, such as</text>
+<text top="277" left="285" width="65" height="13" font="3"><b>journaling</b></text>
+<text top="277" left="355" width="13" height="14" font="2">or</text>
+<text top="277" left="372" width="86" height="13" font="3"><b>copy-on-write</b></text>
+<text top="277" left="458" width="61" height="14" font="2">, carefully</text>
+<text top="292" left="87" width="432" height="14" font="2">ordering writes to disk to ensure that if a failure occurs during the write</text>
+<text top="307" left="87" width="432" height="14" font="2">sequence, the system can recover to reasonable state afterwards. To make</text>
+<text top="322" left="87" width="432" height="14" font="2">different common operations efﬁcient, ﬁle systems employ many differ-</text>
+<text top="337" left="87" width="432" height="14" font="2">ent data structures and access methods, from simple lists to complex b-</text>
+<text top="352" left="87" width="432" height="14" font="2">trees. If all of this doesn’t make sense yet, good! We’ll be talking about</text>
+<text top="367" left="87" width="355" height="14" font="2">all of this quite a bit more in the third part of this book on</text>
+<text top="367" left="447" width="69" height="13" font="3"><b>persistence</b></text>
+<text top="367" left="516" width="3" height="14" font="2">,</text>
+<text top="382" left="87" width="432" height="14" font="2">where we’ll discuss devices and I/O in general, and then disks, RAIDs,</text>
+<text top="397" left="87" width="184" height="14" font="2">and ﬁle systems in great detail.</text>
+<text top="435" left="55" width="122" height="17" font="13">2.5 Design Goals</text>
+<text top="465" left="105" width="414" height="14" font="2">So now you have some idea of what an OS actually does: it takes phys-</text>
+<text top="480" left="87" width="21" height="14" font="2">ical</text>
+<text top="480" left="111" width="58" height="13" font="3"><b>resources</b></text>
+<text top="480" left="169" width="229" height="14" font="2">, such as a CPU, memory, or disk, and</text>
+<text top="480" left="402" width="65" height="13" font="3"><b>virtualizes</b></text>
+<text top="480" left="471" width="48" height="14" font="2">them. It</text>
+<text top="495" left="87" width="245" height="14" font="2">handles tough and tricky issues related to</text>
+<text top="495" left="335" width="75" height="13" font="3"><b>concurrency</b></text>
+<text top="495" left="409" width="110" height="14" font="2">. And it stores ﬁles</text>
+<text top="510" left="87" width="72" height="13" font="3"><b>persistently</b></text>
+<text top="510" left="160" width="359" height="14" font="2">, thus making them safe over the long-term. Given that we</text>
+<text top="525" left="87" width="432" height="14" font="2">want to build such a system, we want to have some goals in mind to help</text>
+<text top="540" left="87" width="432" height="14" font="2">focus our design and implementation and make trade-offs as necessary;</text>
+<text top="555" left="87" width="365" height="14" font="2">ﬁnding the right set of trade-offs is a key to building systems.</text>
+<text top="571" left="105" width="284" height="14" font="2">One of the most basic goals is to build up some</text>
+<text top="571" left="393" width="74" height="13" font="3"><b>abstractions</b></text>
+<text top="571" left="471" width="48" height="14" font="2">in order</text>
+<text top="586" left="87" width="432" height="14" font="2">to make the system convenient and easy to use. Abstractions are fun-</text>
+<text top="601" left="87" width="432" height="14" font="2">damental to everything we do in computer science. Abstraction makes</text>
+<text top="616" left="87" width="432" height="14" font="2">it possible to write a large program by dividing it into small and under-</text>
+<text top="631" left="87" width="432" height="14" font="2">standable pieces, to write such a program in a high-level language like</text>
+<text top="648" left="87" width="10" height="14" font="2">C</text>
+<text top="645" left="97" width="4" height="9" font="4">9</text>
+<text top="648" left="106" width="413" height="14" font="2">without thinking about assembly, to write code in assembly without</text>
+<text top="663" left="87" width="432" height="14" font="2">thinking about logic gates, and to build a processor out of gates without</text>
+<text top="678" left="87" width="432" height="14" font="2">thinking too much about transistors. Abstraction is so fundamental that</text>
+<text top="693" left="87" width="432" height="14" font="2">sometimes we forget its importance, but we won’t here; thus, in each sec-</text>
+<text top="707" left="87" width="432" height="14" font="2">tion, we’ll discuss some of the major abstractions that have developed</text>
+<text top="722" left="87" width="355" height="14" font="2">over time, giving you a way to think about pieces of the OS.</text>
+<text top="738" left="105" width="414" height="14" font="2">One goal in designing and implementing an operating system is to</text>
+<text top="753" left="87" width="77" height="14" font="2">provide high</text>
+<text top="753" left="167" width="78" height="13" font="3"><b>performance</b></text>
+<text top="753" left="245" width="237" height="14" font="2">; another way to say this is our goal is to</text>
+<text top="753" left="485" width="34" height="13" font="3"><b>mini-</b></text>
+<text top="768" left="87" width="118" height="13" font="3"><b>mize the overheads</b></text>
+<text top="768" left="208" width="311" height="14" font="2">of the OS. Virtualization and making the system easy</text>
+<text top="783" left="87" width="432" height="14" font="2">to use are well worth it, but not at any cost; thus, we must strive to pro-</text>
+<text top="814" left="107" width="4" height="8" font="5">9</text>
+<text top="816" left="112" width="407" height="11" font="6">Some of you might object to calling C a high-level language. Remember this is an OS</text>
+<text top="828" left="87" width="403" height="11" font="6">course, though, where we’re simply happy not to have to code in assembly all the time!</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="15" family="QOUXZF+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="314" width="5" height="14" font="2">I</text>
+<text top="98" left="319" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="432" width="11" height="14" font="2">O</text>
+<text top="98" left="444" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="7">YSTEMS</text>
+<text top="139" left="129" width="432" height="14" font="2">vide virtualization and other OS features without excessive overheads.</text>
+<text top="154" left="129" width="432" height="14" font="2">These overheads arise in a number of forms: extra time (more instruc-</text>
+<text top="169" left="129" width="432" height="14" font="2">tions) and extra space (in memory or on disk). We’ll seek solutions that</text>
+<text top="183" left="129" width="432" height="14" font="2">minimize one or the other or both, if possible. Perfection, however, is not</text>
+<text top="198" left="129" width="432" height="14" font="2">always attainable, something we will learn to notice and (where appro-</text>
+<text top="213" left="129" width="91" height="14" font="2">priate) tolerate.</text>
+<text top="230" left="147" width="194" height="14" font="2">Another goal will be to provide</text>
+<text top="230" left="345" width="63" height="13" font="3"><b>protection</b></text>
+<text top="230" left="413" width="148" height="14" font="2">between applications, as</text>
+<text top="245" left="129" width="432" height="14" font="2">well as between the OS and applications. Because we wish to allow</text>
+<text top="260" left="129" width="432" height="14" font="2">many programs to run at the same time, we want to make sure that the</text>
+<text top="275" left="129" width="432" height="14" font="2">malicious or accidental bad behavior of one does not harm others; we</text>
+<text top="290" left="129" width="432" height="14" font="2">certainly don’t want an application to be able to harm the OS itself (as</text>
+<text top="305" left="129" width="104" height="14" font="2">that would affect</text>
+<text top="305" left="237" width="13" height="14" font="8"><i>all</i></text>
+<text top="305" left="255" width="306" height="14" font="2">programs running on the system). Protection is at</text>
+<text top="320" left="129" width="432" height="14" font="2">the heart of one of the main principles underlying an operating system,</text>
+<text top="335" left="129" width="91" height="14" font="2">which is that of</text>
+<text top="335" left="224" width="54" height="13" font="3"><b>isolation</b></text>
+<text top="335" left="277" width="283" height="14" font="2">; isolating processes from one another is the key</text>
+<text top="350" left="129" width="371" height="14" font="2">to protection and thus underlies much of what an OS must do.</text>
+<text top="367" left="147" width="357" height="14" font="2">The operating system must also run non-stop; when it fails,</text>
+<text top="367" left="508" width="13" height="14" font="8"><i>all</i></text>
+<text top="367" left="526" width="35" height="14" font="2">appli-</text>
+<text top="382" left="129" width="432" height="14" font="2">cations running on the system fail as well. Because of this dependence,</text>
+<text top="397" left="129" width="343" height="14" font="2">operating systems often strive to provide a high degree of</text>
+<text top="397" left="476" width="61" height="13" font="3"><b>reliability</b></text>
+<text top="397" left="537" width="24" height="14" font="2">. As</text>
+<text top="412" left="129" width="432" height="14" font="2">operating systems grow evermore complex (sometimes containing mil-</text>
+<text top="427" left="129" width="432" height="14" font="2">lions of lines of code), building a reliable operating system is quite a chal-</text>
+<text top="442" left="129" width="432" height="14" font="2">lenge — and indeed, much of the on-going research in the ﬁeld (including</text>
+<text top="457" left="129" width="413" height="14" font="2">some of our own work [BS+09, SS+10]) focuses on this exact problem.</text>
+<text top="474" left="147" width="142" height="14" font="2">Other goals make sense:</text>
+<text top="474" left="293" width="105" height="13" font="3"><b>energy-efﬁciency</b></text>
+<text top="474" left="401" width="160" height="14" font="2">is important in our increas-</text>
+<text top="489" left="129" width="114" height="14" font="2">ingly green world;</text>
+<text top="489" left="248" width="49" height="13" font="3"><b>security</b></text>
+<text top="489" left="302" width="259" height="14" font="2">(an extension of protection, really) against</text>
+<text top="504" left="129" width="432" height="14" font="2">malicious applications is critical, especially in these highly-networked</text>
+<text top="519" left="129" width="36" height="14" font="2">times;</text>
+<text top="519" left="168" width="53" height="13" font="3"><b>mobility</b></text>
+<text top="519" left="225" width="336" height="14" font="2">is increasingly important as OSes are run on smaller and</text>
+<text top="533" left="129" width="432" height="14" font="2">smaller devices. Depending on how the system is used, the OS will have</text>
+<text top="548" left="129" width="432" height="14" font="2">different goals and thus likely be implemented in at least slightly differ-</text>
+<text top="563" left="129" width="432" height="14" font="2">ent ways. However, as we will see, many of the principles we will present</text>
+<text top="578" left="129" width="382" height="14" font="2">on how to build an OS are useful on a range of different devices.</text>
+<text top="618" left="97" width="125" height="17" font="13">2.6 Some History</text>
+<text top="649" left="147" width="414" height="14" font="2">Before closing this introduction, let us present a brief history of how</text>
+<text top="664" left="129" width="432" height="14" font="2">operating systems developed. Like any system built by humans, good</text>
+<text top="679" left="129" width="432" height="14" font="2">ideas accumulated in operating systems over time, as engineers learned</text>
+<text top="694" left="129" width="432" height="14" font="2">what was important in their design. Here, we discuss a few major devel-</text>
+<text top="709" left="129" width="432" height="14" font="2">opments. For a richer treatment, see Brinch Hansen’s excellent history of</text>
+<text top="724" left="129" width="157" height="14" font="2">operating systems [BH00].</text>
+<text top="770" left="129" width="269" height="15" font="17"><b>Early Operating Systems: Just Libraries</b></text>
+<text top="796" left="129" width="432" height="14" font="2">In the beginning, the operating system didn’t do too much. Basically,</text>
+<text top="811" left="129" width="432" height="14" font="2">it was just a set of libraries of commonly-used functions; for example,</text>
+<text top="826" left="129" width="432" height="14" font="2">instead of having each programmer of the system write low-level I/O</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="6">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="2">O</text>
+<text top="98" left="217" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="2">S</text>
+<text top="98" left="289" width="45" height="11" font="7">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="139" left="87" width="432" height="14" font="2">handling code, the “OS” would provide such APIs, and thus make life</text>
+<text top="154" left="87" width="143" height="14" font="2">easier for the developer.</text>
+<text top="170" left="105" width="414" height="14" font="2">Usually, on these old mainframe systems, one program ran at a time,</text>
+<text top="185" left="87" width="432" height="14" font="2">as controlled by a human operator. Much of what you think a modern</text>
+<text top="200" left="87" width="432" height="14" font="2">OS would do (e.g., deciding what order to run jobs in) was performed by</text>
+<text top="215" left="87" width="432" height="14" font="2">this operator. If you were a smart developer, you would be nice to this</text>
+<text top="230" left="87" width="404" height="14" font="2">operator, so that they might move your job to the front of the queue.</text>
+<text top="246" left="105" width="232" height="14" font="2">This mode of computing was known as</text>
+<text top="246" left="340" width="34" height="13" font="3"><b>batch</b></text>
+<text top="246" left="377" width="142" height="14" font="2">processing, as a number</text>
+<text top="261" left="87" width="432" height="14" font="2">of jobs were set up and then run in a “batch” by the operator. Computers,</text>
+<text top="276" left="87" width="432" height="14" font="2">as of that point, were not used in an interactive manner, because of cost:</text>
+<text top="291" left="87" width="432" height="14" font="2">it was simply too expensive to let a user sit in front of the computer and</text>
+<text top="306" left="87" width="432" height="14" font="2">use it, as most of the time it would just sit idle then, costing the facility</text>
+<text top="321" left="87" width="301" height="14" font="2">hundreds of thousands of dollars per hour [BH00].</text>
+<text top="364" left="87" width="196" height="15" font="17"><b>Beyond Libraries: Protection</b></text>
+<text top="390" left="87" width="432" height="14" font="2">In moving beyond being a simple library of commonly-used services, op-</text>
+<text top="405" left="87" width="432" height="14" font="2">erating systems took on a more central role in managing machines. One</text>
+<text top="420" left="87" width="432" height="14" font="2">important aspect of this was the realization that code run on behalf of the</text>
+<text top="435" left="87" width="432" height="14" font="2">OS was special; it had control of devices and thus should be treated dif-</text>
+<text top="450" left="87" width="432" height="14" font="2">ferently than normal application code. Why is this? Well, imagine if you</text>
+<text top="464" left="87" width="432" height="14" font="2">allowed any application to read from anywhere on the disk; the notion of</text>
+<text top="479" left="87" width="432" height="14" font="2">privacy goes out the window, as any program could read any ﬁle. Thus,</text>
+<text top="494" left="87" width="94" height="14" font="2">implementing a</text>
+<text top="494" left="184" width="65" height="13" font="3"><b>ﬁle system</b></text>
+<text top="494" left="251" width="268" height="14" font="2">(to manage your ﬁles) as a library makes little</text>
+<text top="509" left="87" width="256" height="14" font="2">sense. Instead, something else was needed.</text>
+<text top="526" left="105" width="112" height="14" font="2">Thus, the idea of a</text>
+<text top="526" left="222" width="68" height="13" font="3"><b>system call</b></text>
+<text top="526" left="294" width="225" height="14" font="2">was invented, pioneered by the Atlas</text>
+<text top="541" left="87" width="432" height="14" font="2">computing system [K+61,L78]. Instead of providing OS routines as a li-</text>
+<text top="556" left="87" width="171" height="14" font="2">brary (where you just make a</text>
+<text top="556" left="260" width="86" height="13" font="3"><b>procedure call</b></text>
+<text top="556" left="349" width="170" height="14" font="2">to access them), the idea here</text>
+<text top="571" left="87" width="432" height="14" font="2">was to add a special pair of hardware instructions and hardware state to</text>
+<text top="585" left="87" width="390" height="14" font="2">make the transition into the OS a more formal, controlled process.</text>
+<text top="602" left="105" width="414" height="14" font="2">The key difference between a system call and a procedure call is that</text>
+<text top="617" left="87" width="432" height="14" font="2">a system call transfers control (i.e., jumps) into the OS while simultane-</text>
+<text top="632" left="87" width="98" height="14" font="2">ously raising the</text>
+<text top="632" left="188" width="149" height="13" font="3"><b>hardware privilege level</b></text>
+<text top="632" left="337" width="182" height="14" font="2">. User applications run in what</text>
+<text top="647" left="87" width="92" height="14" font="2">is referred to as</text>
+<text top="647" left="182" width="64" height="13" font="3"><b>user mode</b></text>
+<text top="647" left="250" width="269" height="14" font="2">which means the hardware restricts what ap-</text>
+<text top="662" left="87" width="432" height="14" font="2">plications can do; for example, an application running in user mode can’t</text>
+<text top="677" left="87" width="432" height="14" font="2">typically initiate an I/O request to the disk, access any physical memory</text>
+<text top="692" left="87" width="432" height="14" font="2">page, or send a packet on the network. When a system call is initiated</text>
+<text top="707" left="87" width="336" height="14" font="2">(usually through a special hardware instruction called a</text>
+<text top="707" left="427" width="25" height="13" font="3"><b>trap</b></text>
+<text top="707" left="452" width="67" height="14" font="2">), the hard-</text>
+<text top="721" left="87" width="237" height="14" font="2">ware transfers control to a pre-speciﬁed</text>
+<text top="722" left="328" width="76" height="13" font="3"><b>trap handler</b></text>
+<text top="721" left="407" width="111" height="14" font="2">(that the OS set up</text>
+<text top="736" left="87" width="349" height="14" font="2">previously) and simultaneously raises the privilege level to</text>
+<text top="736" left="439" width="77" height="13" font="3"><b>kernel mode</b></text>
+<text top="736" left="516" width="3" height="14" font="2">.</text>
+<text top="751" left="87" width="432" height="14" font="2">In kernel mode, the OS has full access to the hardware of the system and</text>
+<text top="766" left="87" width="432" height="14" font="2">thus can do things like initiate an I/O request or make more memory</text>
+<text top="781" left="87" width="432" height="14" font="2">available to a program. When the OS is done servicing the request, it</text>
+<text top="796" left="87" width="256" height="14" font="2">passes control back to the user via a special</text>
+<text top="796" left="346" width="102" height="13" font="3"><b>return-from-trap</b></text>
+<text top="796" left="451" width="68" height="14" font="2">instruction,</text>
+<text top="811" left="87" width="432" height="14" font="2">which reverts to user mode while simultaneously passing control back to</text>
+<text top="826" left="87" width="175" height="14" font="2">where the application left off.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="314" width="5" height="14" font="2">I</text>
+<text top="98" left="319" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="432" width="11" height="14" font="2">O</text>
+<text top="98" left="444" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="7">YSTEMS</text>
+<text top="138" left="129" width="207" height="15" font="17"><b>The Era of Multiprogramming</b></text>
+<text top="163" left="129" width="432" height="14" font="2">Where operating systems really took off was in the era of computing be-</text>
+<text top="178" left="129" width="197" height="14" font="2">yond the mainframe, that of the</text>
+<text top="178" left="331" width="87" height="13" font="3"><b>minicomputer</b></text>
+<text top="178" left="419" width="142" height="14" font="2">. Classic machines like</text>
+<text top="193" left="129" width="432" height="14" font="2">the PDP family from Digital Equipment made computers hugely more</text>
+<text top="208" left="129" width="432" height="14" font="2">affordable; thus, instead of having one mainframe per large organization,</text>
+<text top="223" left="129" width="432" height="14" font="2">now a smaller collection of people within an organization could likely</text>
+<text top="238" left="129" width="432" height="14" font="2">have their own computer. Not surprisingly, one of the major impacts of</text>
+<text top="253" left="129" width="432" height="14" font="2">this drop in cost was an increase in developer activity; more smart people</text>
+<text top="268" left="129" width="432" height="14" font="2">got their hands on computers and thus made computer systems do more</text>
+<text top="283" left="129" width="190" height="14" font="2">interesting and beautiful things.</text>
+<text top="298" left="147" width="76" height="14" font="2">In particular,</text>
+<text top="298" left="226" width="118" height="13" font="3"><b>multiprogramming</b></text>
+<text top="298" left="346" width="214" height="14" font="2">became commonplace due to the de-</text>
+<text top="313" left="129" width="432" height="14" font="2">sire to make better use of machine resources. Instead of just running one</text>
+<text top="328" left="129" width="432" height="14" font="2">job at a time, the OS would load a number of jobs into memory and switch</text>
+<text top="343" left="129" width="432" height="14" font="2">rapidly between them, thus improving CPU utilization. This switching</text>
+<text top="358" left="129" width="432" height="14" font="2">was particularly important because I/O devices were slow; having a pro-</text>
+<text top="373" left="129" width="432" height="14" font="2">gram wait on the CPU while its I/O was being serviced was a waste of</text>
+<text top="388" left="129" width="429" height="14" font="2">CPU time. Instead, why not switch to another job and run it for a while?</text>
+<text top="404" left="147" width="414" height="14" font="2">The desire to support multiprogramming and overlap in the presence</text>
+<text top="419" left="129" width="432" height="14" font="2">of I/O and interrupts forced innovation in the conceptual development of</text>
+<text top="434" left="129" width="377" height="14" font="2">operating systems along a number of directions. Issues such as</text>
+<text top="434" left="510" width="51" height="13" font="3"><b>memory</b></text>
+<text top="449" left="129" width="63" height="13" font="3"><b>protection</b></text>
+<text top="449" left="195" width="366" height="14" font="2">became important; we wouldn’t want one program to be able</text>
+<text top="464" left="129" width="432" height="14" font="2">to access the memory of another program. Understanding how to deal</text>
+<text top="479" left="129" width="50" height="14" font="2">with the</text>
+<text top="479" left="183" width="75" height="13" font="3"><b>concurrency</b></text>
+<text top="479" left="262" width="299" height="14" font="2">issues introduced by multiprogramming was also</text>
+<text top="493" left="129" width="432" height="14" font="2">critical; making sure the OS was behaving correctly despite the presence</text>
+<text top="508" left="129" width="432" height="14" font="2">of interrupts is a great challenge. We will study these issues and related</text>
+<text top="523" left="129" width="139" height="14" font="2">topics later in the book.</text>
+<text top="539" left="147" width="414" height="14" font="2">One of the major practical advances of the time was the introduction</text>
+<text top="554" left="129" width="50" height="14" font="2">of the U</text>
+<text top="556" left="179" width="21" height="11" font="7">NIX</text>
+<text top="554" left="205" width="356" height="14" font="2">operating system, primarily thanks to Ken Thompson (and</text>
+<text top="569" left="129" width="342" height="14" font="2">Dennis Ritchie) at Bell Labs (yes, the phone company). U</text>
+<text top="571" left="472" width="21" height="11" font="7">NIX</text>
+<text top="569" left="497" width="64" height="14" font="2">took many</text>
+<text top="584" left="129" width="432" height="14" font="2">good ideas from different operating systems (particularly from Multics</text>
+<text top="599" left="129" width="432" height="14" font="2">[O72], and some from systems like TENEX [B+72] and the Berkeley Time-</text>
+<text top="614" left="129" width="432" height="14" font="2">Sharing System [S68]), but made them simpler and easier to use. Soon this</text>
+<text top="629" left="129" width="230" height="14" font="2">team was shipping tapes containing U</text>
+<text top="631" left="359" width="21" height="11" font="7">NIX</text>
+<text top="629" left="384" width="177" height="14" font="2">source code to people around</text>
+<text top="644" left="129" width="432" height="14" font="2">the world, many of whom then got involved and added to the system</text>
+<text top="661" left="129" width="114" height="14" font="2">themselves; see the</text>
+<text top="661" left="246" width="36" height="13" font="3"><b>Aside</b></text>
+<text top="661" left="285" width="158" height="14" font="2">(next page) for more detail</text>
+<text top="659" left="443" width="9" height="9" font="4">10</text>
+<text top="661" left="453" width="3" height="14" font="2">.</text>
+<text top="701" left="129" width="111" height="15" font="17"><b>The Modern Era</b></text>
+<text top="726" left="129" width="432" height="14" font="2">Beyond the minicomputer came a new type of machine, cheaper, faster,</text>
+<text top="741" left="129" width="136" height="14" font="2">and for the masses: the</text>
+<text top="741" left="268" width="114" height="13" font="3"><b>personal computer</b></text>
+<text top="741" left="383" width="19" height="14" font="2">, or</text>
+<text top="741" left="405" width="18" height="13" font="3"><b>PC</b></text>
+<text top="741" left="426" width="135" height="14" font="2">as we call it today. Led</text>
+<text top="756" left="129" width="432" height="14" font="2">by Apple’s early machines (e.g., the Apple II) and the IBM PC, this new</text>
+<text top="771" left="129" width="432" height="14" font="2">breed of machine would soon become the dominant force in computing,</text>
+<text top="802" left="146" width="7" height="8" font="5">10</text>
+<text top="804" left="154" width="407" height="11" font="6">We’ll use asides and other related text boxes to call attention to various items that don’t</text>
+<text top="816" left="129" width="432" height="11" font="6">quite ﬁt the main ﬂow of the text. Sometimes, we’ll even use them just to make a joke, because</text>
+<text top="828" left="129" width="331" height="11" font="6">why not have a little fun along the way? Yes, many of the jokes are bad.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="6">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="2">O</text>
+<text top="98" left="217" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="2">S</text>
+<text top="98" left="289" width="45" height="11" font="7">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="148" left="198" width="10" height="14" font="2">A</text>
+<text top="150" left="209" width="26" height="11" font="7">SIDE</text>
+<text top="148" left="236" width="16" height="14" font="2">: T</text>
+<text top="150" left="253" width="16" height="11" font="7">HE</text>
+<text top="148" left="273" width="5" height="14" font="2">I</text>
+<text top="150" left="278" width="94" height="11" font="7">MPORTANCE OF</text>
+<text top="148" left="376" width="10" height="14" font="2">U</text>
+<text top="150" left="387" width="21" height="11" font="7">NIX</text>
+<text top="166" left="87" width="274" height="14" font="2">It is difﬁcult to overstate the importance of U</text>
+<text top="168" left="361" width="21" height="11" font="7">NIX</text>
+<text top="166" left="387" width="132" height="14" font="2">in the history of oper-</text>
+<text top="181" left="87" width="432" height="14" font="2">ating systems. Inﬂuenced by earlier systems (in particular, the famous</text>
+<text top="196" left="87" width="47" height="13" font="3"><b>Multics</b></text>
+<text top="196" left="137" width="124" height="14" font="2">system from MIT), U</text>
+<text top="198" left="263" width="21" height="11" font="7">NIX</text>
+<text top="196" left="287" width="232" height="14" font="2">brought together many great ideas and</text>
+<text top="211" left="87" width="303" height="14" font="2">made a system that was both simple and powerful.</text>
+<text top="229" left="87" width="230" height="14" font="2">Underlying the original “Bell Labs” U</text>
+<text top="231" left="318" width="21" height="11" font="7">NIX</text>
+<text top="229" left="343" width="176" height="14" font="2">was the unifying principle of</text>
+<text top="244" left="87" width="432" height="14" font="2">building small powerful programs that could be connected together to</text>
+<text top="259" left="87" width="166" height="14" font="2">form larger workﬂows. The</text>
+<text top="259" left="257" width="30" height="13" font="3"><b>shell</b></text>
+<text top="259" left="287" width="232" height="14" font="2">, where you type commands, provided</text>
+<text top="274" left="87" width="112" height="14" font="2">primitives such as</text>
+<text top="274" left="204" width="34" height="13" font="3"><b>pipes</b></text>
+<text top="274" left="243" width="276" height="14" font="2">to enable such meta-level programming, and</text>
+<text top="289" left="87" width="432" height="14" font="2">thus it became easy to string together programs to accomplish a big-</text>
+<text top="304" left="87" width="432" height="14" font="2">ger task. For example, to ﬁnd lines of a text ﬁle that have the word</text>
+<text top="319" left="87" width="432" height="14" font="2">“foo” in them, and then to count how many such lines exist, you would</text>
+<text top="334" left="87" width="30" height="14" font="2">type:</text>
+<text top="335" left="121" width="186" height="11" font="11">grep foo file.txt|wc -l</text>
+<text top="334" left="307" width="91" height="14" font="2">, thus using the</text>
+<text top="335" left="401" width="32" height="11" font="11">grep</text>
+<text top="334" left="437" width="23" height="14" font="2">and</text>
+<text top="335" left="463" width="16" height="11" font="11">wc</text>
+<text top="334" left="483" width="36" height="14" font="2">(word</text>
+<text top="349" left="87" width="225" height="14" font="2">count) programs to achieve your task.</text>
+<text top="367" left="87" width="39" height="14" font="2">The U</text>
+<text top="369" left="126" width="21" height="11" font="7">NIX</text>
+<text top="367" left="153" width="366" height="14" font="2">environment was friendly for programmers and developers</text>
+<text top="382" left="87" width="266" height="14" font="2">alike, also providing a compiler for the new</text>
+<text top="382" left="357" width="159" height="13" font="3"><b>C programming language</b></text>
+<text top="382" left="516" width="3" height="14" font="2">.</text>
+<text top="397" left="87" width="432" height="14" font="2">Making it easy for programmers to write their own programs, as well as</text>
+<text top="412" left="87" width="122" height="14" font="2">share them, made U</text>
+<text top="414" left="210" width="21" height="11" font="7">NIX</text>
+<text top="412" left="235" width="284" height="14" font="2">enormously popular. And it probably helped a</text>
+<text top="427" left="87" width="432" height="14" font="2">lot that the authors gave out copies for free to anyone who asked, an early</text>
+<text top="442" left="87" width="44" height="14" font="2">form of</text>
+<text top="442" left="135" width="131" height="13" font="3"><b>open-source software</b></text>
+<text top="442" left="266" width="3" height="14" font="2">.</text>
+<text top="460" left="87" width="432" height="14" font="2">Also of critical importance was the accessibility and readability of the</text>
+<text top="475" left="87" width="432" height="14" font="2">code. Having a beautiful, small kernel written in C invited others to play</text>
+<text top="490" left="87" width="432" height="14" font="2">with the kernel, adding new and cool features. For example, an enter-</text>
+<text top="505" left="87" width="193" height="14" font="2">prising group at Berkeley, led by</text>
+<text top="505" left="283" width="46" height="13" font="3"><b>Bill Joy</b></text>
+<text top="505" left="329" width="190" height="14" font="2">, made a wonderful distribution</text>
+<text top="520" left="87" width="23" height="14" font="2">(the</text>
+<text top="520" left="113" width="189" height="13" font="3"><b>Berkeley Systems Distribution</b></text>
+<text top="520" left="302" width="19" height="14" font="2">, or</text>
+<text top="520" left="325" width="28" height="13" font="3"><b>BSD</b></text>
+<text top="520" left="353" width="166" height="14" font="2">) which had some advanced</text>
+<text top="535" left="87" width="432" height="14" font="2">virtual memory, ﬁle system, and networking subsystems. Joy later co-</text>
+<text top="550" left="87" width="51" height="14" font="2">founded</text>
+<text top="550" left="141" width="113" height="13" font="3"><b>Sun Microsystems</b></text>
+<text top="550" left="254" width="3" height="14" font="2">.</text>
+<text top="568" left="87" width="180" height="14" font="2">Unfortunately, the spread of U</text>
+<text top="570" left="268" width="21" height="11" font="7">NIX</text>
+<text top="568" left="292" width="227" height="14" font="2">was slowed a bit as companies tried to</text>
+<text top="583" left="87" width="432" height="14" font="2">assert ownership and proﬁt from it, an unfortunate (but common) result</text>
+<text top="598" left="87" width="432" height="14" font="2">of lawyers getting involved. Many companies had their own variants:</text>
+<text top="613" left="87" width="44" height="13" font="3"><b>SunOS</b></text>
+<text top="613" left="134" width="143" height="14" font="2">from Sun Microsystems,</text>
+<text top="613" left="279" width="25" height="13" font="3"><b>AIX</b></text>
+<text top="613" left="306" width="60" height="14" font="2">from IBM,</text>
+<text top="613" left="369" width="39" height="13" font="3"><b>HPUX</b></text>
+<text top="613" left="411" width="108" height="14" font="2">(a.k.a. “H-Pucks”)</text>
+<text top="628" left="87" width="84" height="14" font="2">from HP, and</text>
+<text top="628" left="176" width="29" height="13" font="3"><b>IRIX</b></text>
+<text top="628" left="211" width="308" height="14" font="2">from SGI. The legal wrangling among AT&amp;T/Bell</text>
+<text top="643" left="87" width="339" height="14" font="2">Labs and these other players cast a dark cloud over U</text>
+<text top="645" left="426" width="21" height="11" font="7">NIX</text>
+<text top="643" left="448" width="71" height="14" font="2">, and many</text>
+<text top="657" left="87" width="432" height="14" font="2">wondered if it would survive, especially as Windows was introduced and</text>
+<text top="672" left="87" width="208" height="14" font="2">took over much of the PC market...</text>
+<text top="718" left="87" width="432" height="14" font="2">as their low-cost enabled one machine per desktop instead of a shared</text>
+<text top="733" left="87" width="182" height="14" font="2">minicomputer per workgroup.</text>
+<text top="751" left="105" width="414" height="14" font="2">Unfortunately, for operating systems, the PC at ﬁrst represented a</text>
+<text top="766" left="87" width="432" height="14" font="2">great leap backwards, as early systems forgot (or never knew of) the</text>
+<text top="781" left="87" width="432" height="14" font="2">lessons learned in the era of minicomputers. For example, early operat-</text>
+<text top="796" left="87" width="118" height="14" font="2">ing systems such as</text>
+<text top="796" left="209" width="31" height="13" font="3"><b>DOS</b></text>
+<text top="796" left="243" width="23" height="14" font="2">(the</text>
+<text top="796" left="270" width="145" height="13" font="3"><b>Disk Operating System</b></text>
+<text top="796" left="415" width="36" height="14" font="2">, from</text>
+<text top="796" left="455" width="60" height="13" font="3"><b>Microsoft</b></text>
+<text top="796" left="514" width="4" height="14" font="2">)</text>
+<text top="811" left="87" width="432" height="14" font="2">didn’t think memory protection was important; thus, a malicious (or per-</text>
+<text top="826" left="87" width="432" height="14" font="2">haps just a poorly-programmed) application could scribble all over mem-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="314" width="5" height="14" font="2">I</text>
+<text top="98" left="319" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="432" width="11" height="14" font="2">O</text>
+<text top="98" left="444" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="7">YSTEMS</text>
+<text top="148" left="246" width="10" height="14" font="2">A</text>
+<text top="150" left="257" width="26" height="11" font="7">SIDE</text>
+<text top="148" left="284" width="19" height="14" font="2">: A</text>
+<text top="150" left="303" width="18" height="11" font="7">ND</text>
+<text top="148" left="325" width="8" height="14" font="2">T</text>
+<text top="150" left="334" width="26" height="11" font="7">HEN</text>
+<text top="148" left="364" width="10" height="14" font="2">C</text>
+<text top="150" left="374" width="26" height="11" font="7">AME</text>
+<text top="148" left="405" width="8" height="14" font="2">L</text>
+<text top="150" left="414" width="30" height="11" font="7">INUX</text>
+<text top="166" left="129" width="104" height="14" font="2">Fortunately for U</text>
+<text top="168" left="233" width="21" height="11" font="7">NIX</text>
+<text top="166" left="255" width="189" height="14" font="2">, a young Finnish hacker named</text>
+<text top="166" left="447" width="91" height="13" font="3"><b>Linus Torvalds</b></text>
+<text top="166" left="542" width="19" height="14" font="2">de-</text>
+<text top="181" left="129" width="216" height="14" font="2">cided to write his own version of U</text>
+<text top="183" left="345" width="21" height="11" font="7">NIX</text>
+<text top="181" left="371" width="190" height="14" font="2">which borrowed heavily on the</text>
+<text top="196" left="129" width="432" height="14" font="2">principles and ideas behind the original system, but not from the code</text>
+<text top="211" left="129" width="432" height="14" font="2">base, thus avoiding issues of legality. He enlisted help from many others</text>
+<text top="226" left="129" width="432" height="14" font="2">around the world, took advantage of the sophisticated GNU tools that</text>
+<text top="241" left="129" width="191" height="14" font="2">already existed [G85], and soon</text>
+<text top="241" left="324" width="36" height="13" font="3"><b>Linux</b></text>
+<text top="241" left="364" width="197" height="14" font="2">was born (as well as the modern</text>
+<text top="256" left="129" width="203" height="14" font="2">open-source software movement).</text>
+<text top="274" left="129" width="432" height="14" font="2">As the internet era came into place, most companies (such as Google,</text>
+<text top="289" left="129" width="432" height="14" font="2">Amazon, Facebook, and others) chose to run Linux, as it was free and</text>
+<text top="304" left="129" width="432" height="14" font="2">could be readily modiﬁed to suit their needs; indeed, it is hard to imag-</text>
+<text top="319" left="129" width="432" height="14" font="2">ine the success of these new companies had such a system not existed.</text>
+<text top="334" left="129" width="432" height="14" font="2">As smart phones became a dominant user-facing platform, Linux found</text>
+<text top="349" left="129" width="432" height="14" font="2">a stronghold there too (via Android), for many of the same reasons. And</text>
+<text top="364" left="129" width="129" height="14" font="2">Steve Jobs took his U</text>
+<text top="366" left="258" width="21" height="11" font="7">NIX</text>
+<text top="364" left="280" width="39" height="14" font="2">-based</text>
+<text top="364" left="323" width="64" height="13" font="3"><b>NeXTStep</b></text>
+<text top="364" left="391" width="170" height="14" font="2">operating environment with</text>
+<text top="379" left="129" width="185" height="14" font="2">him to Apple, thus making U</text>
+<text top="381" left="315" width="21" height="11" font="7">NIX</text>
+<text top="379" left="342" width="219" height="14" font="2">popular on desktops (though many</text>
+<text top="394" left="129" width="432" height="14" font="2">users of Apple technology are probably not even aware of this fact). Thus</text>
+<text top="409" left="129" width="10" height="14" font="2">U</text>
+<text top="411" left="140" width="21" height="11" font="7">NIX</text>
+<text top="409" left="166" width="395" height="14" font="2">lives on, more important today than ever before. The computing</text>
+<text top="424" left="129" width="432" height="14" font="2">gods, if you believe in them, should be thanked for this wonderful out-</text>
+<text top="439" left="129" width="35" height="14" font="2">come.</text>
+<text top="489" left="129" width="188" height="14" font="2">ory. The ﬁrst generations of the</text>
+<text top="489" left="320" width="49" height="13" font="3"><b>Mac OS</b></text>
+<text top="489" left="373" width="187" height="14" font="2">(v9 and earlier) took a coopera-</text>
+<text top="504" left="129" width="432" height="14" font="2">tive approach to job scheduling; thus, a thread that accidentally got stuck</text>
+<text top="519" left="129" width="432" height="14" font="2">in an inﬁnite loop could take over the entire system, forcing a reboot. The</text>
+<text top="534" left="129" width="432" height="14" font="2">painful list of OS features missing in this generation of systems is long,</text>
+<text top="549" left="129" width="202" height="14" font="2">too long for a full discussion here.</text>
+<text top="564" left="147" width="414" height="14" font="2">Fortunately, after some years of suffering, the old features of mini-</text>
+<text top="579" left="129" width="432" height="14" font="2">computer operating systems started to ﬁnd their way onto the desktop.</text>
+<text top="594" left="129" width="229" height="14" font="2">For example, Mac OS X/macOS has U</text>
+<text top="596" left="359" width="21" height="11" font="7">NIX</text>
+<text top="594" left="384" width="177" height="14" font="2">at its core, including all of the</text>
+<text top="609" left="129" width="432" height="14" font="2">features one would expect from such a mature system. Windows has sim-</text>
+<text top="624" left="129" width="432" height="14" font="2">ilarly adopted many of the great ideas in computing history, starting in</text>
+<text top="639" left="129" width="432" height="14" font="2">particular with Windows NT, a great leap forward in Microsoft OS tech-</text>
+<text top="654" left="129" width="432" height="14" font="2">nology. Even today’s cell phones run operating systems (such as Linux)</text>
+<text top="669" left="129" width="432" height="14" font="2">that are much more like what a minicomputer ran in the 1970s than what</text>
+<text top="684" left="129" width="432" height="14" font="2">a PC ran in the 1980s (thank goodness); it is good to see that the good</text>
+<text top="699" left="129" width="432" height="14" font="2">ideas developed in the heyday of OS development have found their way</text>
+<text top="713" left="129" width="432" height="14" font="2">into the modern world. Even better is that these ideas continue to de-</text>
+<text top="728" left="129" width="432" height="14" font="2">velop, providing more features and making modern systems even better</text>
+<text top="743" left="129" width="157" height="14" font="2">for users and applications.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="6">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="2">O</text>
+<text top="98" left="217" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="2">S</text>
+<text top="98" left="289" width="45" height="11" font="7">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="137" left="55" width="97" height="17" font="13">2.7 Summary</text>
+<text top="166" left="105" width="414" height="14" font="2">Thus, we have an introduction to the OS. Today’s operating systems</text>
+<text top="181" left="87" width="432" height="14" font="2">make systems relatively easy to use, and virtually all operating systems</text>
+<text top="196" left="87" width="432" height="14" font="2">you use today have been inﬂuenced by the developments we will discuss</text>
+<text top="211" left="87" width="126" height="14" font="2">throughout the book.</text>
+<text top="226" left="105" width="414" height="14" font="2">Unfortunately, due to time constraints, there are a number of parts of</text>
+<text top="241" left="87" width="403" height="14" font="2">the OS we won’t cover in the book. For example, there is a lot of</text>
+<text top="241" left="495" width="24" height="13" font="3"><b>net-</b></text>
+<text top="256" left="87" width="52" height="13" font="3"><b>working</b></text>
+<text top="256" left="143" width="376" height="14" font="2">code in the operating system; we leave it to you to take the net-</text>
+<text top="271" left="87" width="303" height="14" font="2">working class to learn more about that. Similarly,</text>
+<text top="271" left="395" width="52" height="13" font="3"><b>graphics</b></text>
+<text top="271" left="452" width="67" height="14" font="2">devices are</text>
+<text top="286" left="87" width="432" height="14" font="2">particularly important; take the graphics course to expand your knowl-</text>
+<text top="301" left="87" width="432" height="14" font="2">edge in that direction. Finally, some operating system books talk a great</text>
+<text top="316" left="87" width="63" height="14" font="2">deal about</text>
+<text top="316" left="154" width="49" height="13" font="3"><b>security</b></text>
+<text top="316" left="202" width="317" height="14" font="2">; we will do so in the sense that the OS must provide</text>
+<text top="331" left="87" width="432" height="14" font="2">protection between running programs and give users the ability to pro-</text>
+<text top="346" left="87" width="432" height="14" font="2">tect their ﬁles, but we won’t delve into deeper security issues that one</text>
+<text top="360" left="87" width="185" height="14" font="2">might ﬁnd in a security course.</text>
+<text top="375" left="105" width="414" height="14" font="2">However, there are many important topics that we will cover, includ-</text>
+<text top="390" left="87" width="432" height="14" font="2">ing the basics of virtualization of the CPU and memory, concurrency, and</text>
+<text top="405" left="87" width="432" height="14" font="2">persistence via devices and ﬁle systems. Don’t worry! While there is a</text>
+<text top="420" left="87" width="432" height="14" font="2">lot of ground to cover, most of it is quite cool, and at the end of the road,</text>
+<text top="435" left="87" width="432" height="14" font="2">you’ll have a new appreciation for how computer systems really work.</text>
+<text top="450" left="87" width="105" height="14" font="2">Now get to work!</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="16" family="QOUXZF+URWPalladioL" color="#000000"/>
+	<fontspec id="19" size="10" family="MJMFFN+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="20" size="10" family="OVNFWT+NimbusMonL-ReguObli" color="#000000"/>
+	<fontspec id="21" size="8" family="YPQVME+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">18</text>
+<text top="96" left="314" width="5" height="14" font="2">I</text>
+<text top="98" left="319" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="432" width="11" height="14" font="2">O</text>
+<text top="98" left="444" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="508" width="7" height="14" font="2">S</text>
+<text top="98" left="515" width="45" height="11" font="7">YSTEMS</text>
+<text top="137" left="129" width="82" height="16" font="18"><b>References</b></text>
+<text top="166" left="129" width="432" height="11" font="6">[BS+09] “Tolerating File-System Mistakes with EnvyFS” by L. Bairavasundaram, S. Sundarara-</text>
+<text top="177" left="129" width="401" height="11" font="6">man, A. Arpaci-Dusseau, R. Arpaci-Dusseau. USENIX ’09, San Diego, CA, June 2009.</text>
+<text top="177" left="535" width="25" height="11" font="19"><i>A fun</i></text>
+<text top="189" left="129" width="366" height="11" font="19"><i>paper about using multiple ﬁle systems at once to tolerate a mistake in any one of them.</i></text>
+<text top="206" left="129" width="432" height="11" font="6">[BH00] “The Evolution of Operating Systems” by P. Brinch Hansen. In ’Classic Operating</text>
+<text top="218" left="129" width="432" height="11" font="6">Systems: From Batch Processing to Distributed Systems.’ Springer-Verlag, New York, 2000.</text>
+<text top="230" left="129" width="425" height="11" font="19"><i>This essay provides an intro to a wonderful collection of papers about historically signiﬁcant systems.</i></text>
+<text top="246" left="129" width="432" height="11" font="6">[B+72] “TENEX, A Paged Time Sharing System for the PDP-10” by D. Bobrow, J. Burchﬁel, D.</text>
+<text top="258" left="129" width="320" height="11" font="6">Murphy, R. Tomlinson. CACM, Volume 15, Number 3, March 1972.</text>
+<text top="258" left="454" width="106" height="11" font="19"><i>TENEX has much of the</i></text>
+<text top="270" left="129" width="432" height="11" font="19"><i>machinery found in modern operating systems; read more about it to see how much innovation was</i></text>
+<text top="282" left="129" width="148" height="11" font="19"><i>already in place in the early 1970’s.</i></text>
+<text top="298" left="129" width="323" height="11" font="6">[B75] “The Mythical Man-Month” by F. Brooks. Addison-Wesley, 1975.</text>
+<text top="298" left="455" width="106" height="11" font="19"><i>A classic text on software</i></text>
+<text top="310" left="129" width="139" height="11" font="19"><i>engineering; well worth the read.</i></text>
+<text top="327" left="129" width="432" height="11" font="6">[BOH10] “Computer Systems: A Programmer’s Perspective” by R. Bryant and D. O’Hallaron.</text>
+<text top="339" left="129" width="104" height="11" font="6">Addison-Wesley, 2010.</text>
+<text top="339" left="236" width="324" height="11" font="19"><i>Another great intro to how computer systems work. Has a little bit of overlap</i></text>
+<text top="351" left="129" width="432" height="11" font="19"><i>with this book — so if you’d like, you can skip the last few chapters of that book, or simply read them to</i></text>
+<text top="362" left="129" width="432" height="11" font="19"><i>get a different perspective on some of the same material. After all, one good way to build up your own</i></text>
+<text top="374" left="129" width="432" height="11" font="19"><i>knowledge is to hear as many other perspectives as possible, and then develop your own opinion and</i></text>
+<text top="386" left="129" width="200" height="11" font="19"><i>thoughts on the matter. You know, by thinking!</i></text>
+<text top="403" left="129" width="236" height="11" font="6">[G85] “The GNU Manifesto” by R. Stallman. 1985.</text>
+<text top="403" left="370" width="188" height="9" font="14">www.gnu.org/gnu/manifesto.html</text>
+<text top="403" left="558" width="3" height="11" font="6">.</text>
+<text top="415" left="129" width="361" height="11" font="19"><i>A huge part of Linux’s success was no doubt the presence of an excellent compiler,</i></text>
+<text top="418" left="494" width="19" height="6" font="20">gcc</text>
+<text top="415" left="513" width="48" height="11" font="19"><i>, and other</i></text>
+<text top="427" left="129" width="432" height="11" font="19"><i>relevant pieces of open software, thanks to the GNU effort headed by Stallman. Stallman is a visionary</i></text>
+<text top="439" left="129" width="340" height="11" font="19"><i>when it comes to open source, and this manifesto lays out his thoughts as to why.</i></text>
+<text top="455" left="129" width="432" height="11" font="6">[K+61] “One-Level Storage System” by T. Kilburn, D.B.G. Edwards, M.J. Lanigan, F.H. Sumner.</text>
+<text top="467" left="129" width="251" height="11" font="6">IRE Transactions on Electronic Computers, April 1962.</text>
+<text top="467" left="384" width="177" height="11" font="19"><i>The Atlas pioneered much of what you see</i></text>
+<text top="479" left="129" width="432" height="11" font="19"><i>in modern systems. However, this paper is not the best read. If you were to only read one, you might</i></text>
+<text top="491" left="129" width="174" height="11" font="19"><i>try the historical perspective below [L78].</i></text>
+<text top="507" left="129" width="432" height="11" font="6">[L78] “The Manchester Mark I and Atlas: A Historical Perspective” by S. H. Lavington. Com-</text>
+<text top="519" left="129" width="249" height="11" font="6">munications of the ACM, Volume 21:1, January 1978.</text>
+<text top="519" left="383" width="178" height="11" font="19"><i>A nice piece of history on the early devel-</i></text>
+<text top="531" left="129" width="432" height="11" font="19"><i>opment of computer systems and the pioneering efforts of the Atlas. Of course, one could go back and</i></text>
+<text top="543" left="129" width="432" height="11" font="19"><i>read the Atlas papers themselves, but this paper provides a great overview and adds some historical</i></text>
+<text top="555" left="129" width="49" height="11" font="19"><i>perspective.</i></text>
+<text top="571" left="129" width="432" height="11" font="6">[O72] “The Multics System: An Examination of its Structure” by Elliott Organick. MIT Press,</text>
+<text top="583" left="129" width="24" height="11" font="6">1972.</text>
+<text top="583" left="160" width="401" height="11" font="19"><i>A great overview of Multics. So many good ideas, and yet it was an over-designed system,</i></text>
+<text top="595" left="129" width="432" height="11" font="19"><i>shooting for too much, and thus never really worked. A classic example of what Fred Brooks would call</i></text>
+<text top="607" left="129" width="140" height="11" font="19"><i>the “second-system effect” [B75].</i></text>
+<text top="624" left="129" width="432" height="11" font="6">[PP03] “Introduction to Computing Systems: From Bits and Gates to C and Beyond” by Yale</text>
+<text top="636" left="129" width="200" height="11" font="6">N. Patt, Sanjay J. Patel. McGraw-Hill, 2003.</text>
+<text top="636" left="333" width="228" height="11" font="19"><i>One of our favorite intro to computing systems books.</i></text>
+<text top="648" left="129" width="391" height="11" font="19"><i>Starts at transistors and gets you all the way up to C; the early material is particularly great.</i></text>
+<text top="664" left="129" width="67" height="11" font="6">[RT74] “The U</text>
+<text top="666" left="197" width="16" height="8" font="21">NIX</text>
+<text top="664" left="216" width="345" height="11" font="6">Time-Sharing System” by Dennis M. Ritchie, Ken Thompson. CACM, Vol-</text>
+<text top="676" left="129" width="93" height="11" font="6">ume 17: 7, July 1974.</text>
+<text top="676" left="226" width="83" height="11" font="19"><i>A great summary of</i></text>
+<text top="676" left="313" width="8" height="11" font="6">U</text>
+<text top="677" left="321" width="16" height="8" font="21">NIX</text>
+<text top="676" left="340" width="221" height="11" font="19"><i>written as it was taking over the world of computing,</i></text>
+<text top="688" left="129" width="112" height="11" font="19"><i>by the people who wrote it.</i></text>
+<text top="704" left="129" width="432" height="11" font="6">[S68] “SDS 940 Time-Sharing System” by Scientiﬁc Data Systems. TECHNICAL MANUAL,</text>
+<text top="716" left="129" width="127" height="11" font="6">SDS 90 11168, August 1968.</text>
+<text top="716" left="259" width="301" height="11" font="19"><i>Yes, a technical manual was the best we could ﬁnd. But it is fascinating</i></text>
+<text top="728" left="129" width="432" height="11" font="19"><i>to read these old system documents, and see how much was already in place in the late 1960’s. One of</i></text>
+<text top="740" left="129" width="432" height="11" font="19"><i>the minds behind the Berkeley Time-Sharing System (which eventually became the SDS system) was</i></text>
+<text top="752" left="129" width="339" height="11" font="19"><i>Butler Lampson, who later won a Turing award for his contributions in systems.</i></text>
+<text top="768" left="129" width="432" height="11" font="6">[SS+10] “Membrane: Operating System Support for Restartable File Systems” by S. Sundarara-</text>
+<text top="780" left="129" width="432" height="11" font="6">man, S. Subramanian, A. Rajimwale, A. Arpaci-Dusseau, R. Arpaci-Dusseau, M. Swift. FAST</text>
+<text top="792" left="129" width="153" height="11" font="6">’10, San Jose, CA, February 2010.</text>
+<text top="792" left="286" width="275" height="11" font="19"><i>The great thing about writing your own class notes: you can ad-</i></text>
+<text top="804" left="129" width="432" height="11" font="19"><i>vertise your own research. But this paper is actually pretty neat — when a ﬁle system hits a bug and</i></text>
+<text top="816" left="129" width="432" height="11" font="19"><i>crashes, Membrane auto-magically restarts it, all without applications or the rest of the system being</i></text>
+<text top="828" left="129" width="34" height="11" font="19"><i>affected.</i></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="6">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="19" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="2">I</text>
+<text top="98" left="93" width="109" height="11" font="7">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="2">O</text>
+<text top="98" left="217" width="60" height="11" font="7">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="2">S</text>
+<text top="98" left="289" width="45" height="11" font="7">YSTEMS</text>
+<text top="96" left="506" width="13" height="14" font="2">19</text>
+<text top="137" left="87" width="85" height="16" font="18"><b>Homework</b></text>
+<text top="166" left="105" width="414" height="14" font="2">Most (and eventually, all) chapters of this book have homework sec-</text>
+<text top="181" left="87" width="432" height="14" font="2">tions at the end. Doing these homeworks is important, as each lets you,</text>
+<text top="196" left="87" width="432" height="14" font="2">the reader, gain more experience with the concepts presented within the</text>
+<text top="211" left="87" width="47" height="14" font="2">chapter.</text>
+<text top="226" left="105" width="327" height="14" font="2">There are two types of homeworks. The ﬁrst is based on</text>
+<text top="226" left="435" width="66" height="13" font="3"><b>simulation</b></text>
+<text top="226" left="501" width="18" height="14" font="2">. A</text>
+<text top="241" left="87" width="432" height="14" font="2">simulation of a computer system is just a simple program that pretends to</text>
+<text top="256" left="87" width="432" height="14" font="2">do some of the interesting parts of what a real system does, and then re-</text>
+<text top="271" left="87" width="432" height="14" font="2">port some output metrics to show how the system behaves. For example,</text>
+<text top="286" left="87" width="432" height="14" font="2">a hard drive simulator might take a series of requests, simulate how long</text>
+<text top="301" left="87" width="432" height="14" font="2">they would take to get serviced by a hard drive with certain performance</text>
+<text top="316" left="87" width="395" height="14" font="2">characteristics, and then report the average latency of the requests.</text>
+<text top="331" left="105" width="414" height="14" font="2">The cool thing about simulations is they let you easily explore how</text>
+<text top="346" left="87" width="432" height="14" font="2">systems behave without the difﬁculty of running a real system. Indeed,</text>
+<text top="360" left="87" width="432" height="14" font="2">they even let you create systems that cannot exist in the real world (for</text>
+<text top="375" left="87" width="432" height="14" font="2">example, a hard drive with unimaginably fast performance), and thus see</text>
+<text top="390" left="87" width="256" height="14" font="2">the potential impact of future technologies.</text>
+<text top="405" left="105" width="414" height="14" font="2">Of course, simulations are not without their downsides. By their very</text>
+<text top="420" left="87" width="432" height="14" font="2">nature, simulations are just approximations of how a real system behaves.</text>
+<text top="435" left="87" width="432" height="14" font="2">If an important aspect of real-world behavior is omitted, the simulation</text>
+<text top="450" left="87" width="432" height="14" font="2">will report bad results. Thus, results from a simulation should always be</text>
+<text top="465" left="87" width="432" height="14" font="2">treated with some suspicion. In the end, how a system behaves in the real</text>
+<text top="480" left="87" width="134" height="14" font="2">world is what matters.</text>
+<text top="495" left="105" width="344" height="14" font="2">The second type of homework requires interaction with</text>
+<text top="495" left="455" width="64" height="13" font="3"><b>real-world</b></text>
+<text top="510" left="87" width="28" height="13" font="3"><b>code</b></text>
+<text top="510" left="115" width="403" height="14" font="2">. Some of these homeworks are measurement focused, whereas oth-</text>
+<text top="525" left="87" width="432" height="14" font="2">ers just require some small-scale development and experimentation. Both</text>
+<text top="540" left="87" width="432" height="14" font="2">are just small forays into the larger world you should be getting into,</text>
+<text top="555" left="87" width="268" height="14" font="2">which is how to write systems code in C on U</text>
+<text top="557" left="356" width="21" height="11" font="7">NIX</text>
+<text top="555" left="377" width="142" height="14" font="2">-based systems. Indeed,</text>
+<text top="570" left="87" width="432" height="14" font="2">larger-scale projects, which go beyond these homeworks, are needed to</text>
+<text top="585" left="87" width="442" height="14" font="2">push you in this direction; thus, beyond just doing homeworks, we strongly</text>
+<text top="600" left="87" width="432" height="14" font="2">recommend you do projects to solidify your systems skills. See this page</text>
+<text top="615" left="87" width="4" height="14" font="2">(</text>
+<text top="615" left="92" width="428" height="11" font="11">https://github.com/remzi-arpacidusseau/ostep-projects</text>
+<text top="615" left="519" width="4" height="14" font="2">)</text>
+<text top="629" left="87" width="105" height="14" font="2">for some projects.</text>
+<text top="644" left="105" width="325" height="14" font="2">To do these homeworks, you likely have to be on a U</text>
+<text top="646" left="431" width="21" height="11" font="7">NIX</text>
+<text top="644" left="453" width="66" height="14" font="2">-based ma-</text>
+<text top="659" left="87" width="432" height="14" font="2">chine, running either Linux, macOS, or some similar system. It should</text>
+<text top="674" left="87" width="222" height="14" font="2">also have a C compiler installed (e.g.,</text>
+<text top="674" left="312" width="19" height="13" font="3"><b>gcc</b></text>
+<text top="674" left="332" width="187" height="14" font="2">) as well as Python. You should</text>
+<text top="689" left="87" width="369" height="14" font="2">also know how to edit code in a real code editor of some kind.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+</pdf2xml>

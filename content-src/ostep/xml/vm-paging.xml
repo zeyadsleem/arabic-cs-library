@@ -1,0 +1,1121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="QEZZCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="CDXTSN+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="SHOJON+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="11" family="QEZZCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="16" family="QEZZCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="9" family="QEZZCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="7" family="QEZZCY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="QEZZCY+URWPalladioL-Roma" color="#000000"/>
+<text top="194" left="523" width="34" height="30" font="0">18</text>
+<text top="263" left="327" width="192" height="21" font="1">Paging: Introduction</text>
+<text top="322" left="105" width="414" height="14" font="2">It is sometimes said that the operating system takes one of two ap-</text>
+<text top="337" left="87" width="432" height="14" font="2">proaches when solving most any space-management problem. The ﬁrst</text>
+<text top="352" left="87" width="210" height="14" font="2">approach is to chop things up into</text>
+<text top="352" left="301" width="74" height="14" font="3"><i>variable-sized</i></text>
+<text top="352" left="380" width="139" height="14" font="2">pieces, as we saw with</text>
+<text top="367" left="87" width="83" height="13" font="4"><b>segmentation</b></text>
+<text top="367" left="174" width="345" height="14" font="2">in virtual memory. Unfortunately, this solution has inher-</text>
+<text top="382" left="87" width="432" height="14" font="2">ent difﬁculties. In particular, when dividing a space into different-size</text>
+<text top="397" left="87" width="213" height="14" font="2">chunks, the space itself can become</text>
+<text top="397" left="304" width="71" height="13" font="4"><b>fragmented</b></text>
+<text top="397" left="375" width="144" height="14" font="2">, and thus allocation be-</text>
+<text top="412" left="87" width="208" height="14" font="2">comes more challenging over time.</text>
+<text top="427" left="105" width="414" height="14" font="2">Thus, it may be worth considering the second approach: to chop up</text>
+<text top="442" left="87" width="60" height="14" font="2">space into</text>
+<text top="442" left="151" width="57" height="14" font="3"><i>ﬁxed-sized</i></text>
+<text top="442" left="212" width="257" height="14" font="2">pieces. In virtual memory, we call this idea</text>
+<text top="442" left="473" width="43" height="13" font="4"><b>paging</b></text>
+<text top="442" left="516" width="3" height="14" font="2">,</text>
+<text top="457" left="87" width="432" height="14" font="2">and it goes back to an early and important system, the Atlas [KE+62, L78].</text>
+<text top="472" left="87" width="432" height="14" font="2">Instead of splitting up a process’s address space into some number of</text>
+<text top="487" left="87" width="432" height="14" font="2">variable-sized logical segments (e.g., code, heap, stack), we divide it into</text>
+<text top="502" left="87" width="237" height="14" font="2">ﬁxed-sized units, each of which we call a</text>
+<text top="502" left="327" width="29" height="13" font="4"><b>page</b></text>
+<text top="502" left="356" width="163" height="14" font="2">. Correspondingly, we view</text>
+<text top="517" left="87" width="322" height="14" font="2">physical memory as an array of ﬁxed-sized slots called</text>
+<text top="517" left="412" width="74" height="13" font="4"><b>page frames</b></text>
+<text top="517" left="486" width="33" height="14" font="2">; each</text>
+<text top="532" left="87" width="432" height="14" font="2">of these frames can contain a single virtual-memory page. Our challenge:</text>
+<text top="563" left="131" width="8" height="14" font="2">T</text>
+<text top="565" left="140" width="16" height="11" font="5">HE</text>
+<text top="563" left="161" width="10" height="14" font="2">C</text>
+<text top="565" left="171" width="24" height="11" font="5">RUX</text>
+<text top="563" left="196" width="19" height="14" font="2">: H</text>
+<text top="565" left="216" width="20" height="11" font="5">OW</text>
+<text top="563" left="240" width="8" height="14" font="2">T</text>
+<text top="565" left="248" width="8" height="11" font="5">O</text>
+<text top="563" left="261" width="10" height="14" font="2">V</text>
+<text top="565" left="271" width="63" height="11" font="5">IRTUALIZE</text>
+<text top="563" left="338" width="13" height="14" font="2">M</text>
+<text top="565" left="352" width="42" height="11" font="5">EMORY</text>
+<text top="563" left="397" width="13" height="14" font="2">W</text>
+<text top="565" left="412" width="21" height="11" font="5">ITH</text>
+<text top="563" left="436" width="8" height="14" font="2">P</text>
+<text top="565" left="444" width="31" height="11" font="5">AGES</text>
+<text top="578" left="105" width="414" height="14" font="2">How can we virtualize memory with pages, so as to avoid the prob-</text>
+<text top="593" left="87" width="432" height="14" font="2">lems of segmentation? What are the basic techniques? How do we make</text>
+<text top="608" left="87" width="413" height="14" font="2">those techniques work well, with minimal space and time overheads?</text>
+<text top="662" left="55" width="281" height="17" font="6">18.1 A Simple Example And Overview</text>
+<text top="692" left="105" width="414" height="14" font="2">To help make this approach more clear, let’s illustrate it with a simple</text>
+<text top="707" left="87" width="432" height="14" font="2">example. Figure 18.1 (page 2) presents an example of a tiny address space,</text>
+<text top="722" left="87" width="432" height="14" font="2">only 64 bytes total in size, with four 16-byte pages (virtual pages 0, 1, 2,</text>
+<text top="737" left="87" width="432" height="14" font="2">and 3). Real address spaces are much bigger, of course, commonly 32 bits</text>
+<text top="754" left="87" width="282" height="14" font="2">and thus 4-GB of address space, or even 64 bits</text>
+<text top="751" left="369" width="4" height="9" font="7">1</text>
+<text top="754" left="374" width="145" height="14" font="2">; in the book, we’ll often</text>
+<text top="769" left="87" width="287" height="14" font="2">use tiny examples to make them easier to digest.</text>
+<text top="802" left="107" width="4" height="8" font="8">1</text>
+<text top="804" left="112" width="407" height="11" font="9">A 64-bit address space is hard to imagine, it is so amazingly large. An analogy might</text>
+<text top="816" left="87" width="432" height="11" font="9">help: if you think of a 32-bit address space as the size of a tennis court, a 64-bit address space</text>
+<text top="828" left="87" width="135" height="11" font="9">is about the size of Europe(!).</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="11" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="11" size="12" family="QEZZCY+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="409" width="8" height="14" font="2">P</text>
+<text top="98" left="417" width="40" height="11" font="5">AGING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="277" left="194" width="12" height="10" font="10">64</text>
+<text top="244" left="194" width="12" height="10" font="10">48</text>
+<text top="211" left="194" width="12" height="10" font="10">32</text>
+<text top="179" left="194" width="12" height="10" font="10">16</text>
+<text top="146" left="194" width="6" height="10" font="10">0</text>
+<text top="260" left="346" width="40" height="10" font="10">(page 3)</text>
+<text top="228" left="346" width="40" height="10" font="10">(page 2)</text>
+<text top="195" left="346" width="40" height="10" font="10">(page 1)</text>
+<text top="162" left="346" width="144" height="10" font="10">(page 0 of the address space)</text>
+<text top="300" left="209" width="69" height="14" font="2">Figure 18.1:</text>
+<text top="300" left="282" width="199" height="13" font="4"><b>A Simple 64-byte Address Space</b></text>
+<text top="318" left="147" width="414" height="14" font="2">Physical memory, as shown in Figure 18.2, also consists of a number</text>
+<text top="333" left="129" width="432" height="14" font="2">of ﬁxed-sized slots, in this case eight page frames (making for a 128-byte</text>
+<text top="348" left="129" width="432" height="14" font="2">physical memory, also ridiculously small). As you can see in the diagram,</text>
+<text top="363" left="129" width="432" height="14" font="2">the pages of the virtual address space have been placed at different loca-</text>
+<text top="378" left="129" width="432" height="14" font="2">tions throughout physical memory; the diagram also shows the OS using</text>
+<text top="392" left="129" width="209" height="14" font="2">some of physical memory for itself.</text>
+<text top="410" left="147" width="414" height="14" font="2">Paging, as we will see, has a number of advantages over our previous</text>
+<text top="425" left="129" width="386" height="14" font="2">approaches. Probably the most important improvement will be</text>
+<text top="425" left="520" width="41" height="14" font="3"><i>ﬂexibil-</i></text>
+<text top="440" left="129" width="15" height="14" font="3"><i>ity</i></text>
+<text top="440" left="144" width="417" height="14" font="2">: with a fully-developed paging approach, the system will be able to</text>
+<text top="455" left="129" width="432" height="14" font="2">support the abstraction of an address space effectively, regardless of how</text>
+<text top="470" left="129" width="432" height="14" font="2">a process uses the address space; we won’t, for example, make assump-</text>
+<text top="484" left="129" width="432" height="14" font="2">tions about the direction the heap and stack grow and how they are used.</text>
+<text top="791" left="178" width="19" height="11" font="10">128</text>
+<text top="758" left="178" width="19" height="11" font="10">112</text>
+<text top="724" left="178" width="12" height="11" font="10">96</text>
+<text top="691" left="178" width="12" height="11" font="10">80</text>
+<text top="657" left="178" width="12" height="11" font="10">64</text>
+<text top="624" left="178" width="12" height="11" font="10">48</text>
+<text top="590" left="178" width="12" height="11" font="10">32</text>
+<text top="557" left="178" width="12" height="11" font="10">16</text>
+<text top="523" left="178" width="6" height="11" font="10">0</text>
+<text top="775" left="334" width="66" height="11" font="10">page frame 7</text>
+<text top="741" left="334" width="66" height="11" font="10">page frame 6</text>
+<text top="708" left="334" width="66" height="11" font="10">page frame 5</text>
+<text top="674" left="334" width="66" height="11" font="10">page frame 4</text>
+<text top="641" left="334" width="66" height="11" font="10">page frame 3</text>
+<text top="607" left="334" width="66" height="11" font="10">page frame 2</text>
+<text top="574" left="334" width="66" height="11" font="10">page frame 1</text>
+<text top="540" left="334" width="165" height="11" font="10">page frame 0 of physical memory</text>
+<text top="540" left="222" width="79" height="11" font="10">reserved for OS</text>
+<text top="574" left="239" width="44" height="11" font="10">(unused)</text>
+<text top="607" left="229" width="65" height="11" font="10">page 3 of AS</text>
+<text top="641" left="229" width="65" height="11" font="10">page 0 of AS</text>
+<text top="674" left="239" width="44" height="11" font="10">(unused)</text>
+<text top="708" left="229" width="65" height="11" font="10">page 2 of AS</text>
+<text top="741" left="239" width="44" height="11" font="10">(unused)</text>
+<text top="775" left="229" width="65" height="11" font="10">page 1 of AS</text>
+<text top="815" left="134" width="69" height="14" font="2">Figure 18.2:</text>
+<text top="815" left="206" width="350" height="13" font="4"><b>A 64-Byte Address Space In A 128-Byte Physical Memory</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="13" family="KKWOPW+CMSY9" color="#000000"/>
+	<fontspec id="13" size="13" family="BRBABF+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="14" size="13" family="GWPQJF+CMR9" color="#000000"/>
+	<fontspec id="15" size="9" family="LTXEOU+CMR6" color="#000000"/>
+	<fontspec id="16" size="13" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="17" size="16" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">P</text>
+<text top="98" left="95" width="40" height="11" font="5">AGING</text>
+<text top="96" left="136" width="13" height="14" font="2">: I</text>
+<text top="98" left="149" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="105" width="148" height="14" font="2">Another advantage is the</text>
+<text top="139" left="255" width="54" height="14" font="3"><i>simplicity</i></text>
+<text top="139" left="312" width="210" height="14" font="2">of free-space management that pag-</text>
+<text top="154" left="87" width="432" height="14" font="2">ing affords. For example, when the OS wishes to place our tiny 64-byte</text>
+<text top="169" left="87" width="432" height="14" font="2">address space into our eight-page physical memory, it simply ﬁnds four</text>
+<text top="183" left="87" width="207" height="14" font="2">free pages; perhaps the OS keeps a</text>
+<text top="184" left="298" width="47" height="13" font="4"><b>free list</b></text>
+<text top="183" left="349" width="170" height="14" font="2">of all free pages for this, and</text>
+<text top="198" left="87" width="432" height="14" font="2">just grabs the ﬁrst four free pages off of this list. In the example, the OS</text>
+<text top="213" left="87" width="432" height="14" font="2">has placed virtual page 0 of the address space (AS) in physical frame 3,</text>
+<text top="228" left="87" width="432" height="14" font="2">virtual page 1 of the AS in physical frame 7, page 2 in frame 5, and page</text>
+<text top="243" left="87" width="322" height="14" font="2">3 in frame 2. Page frames 1, 4, and 6 are currently free.</text>
+<text top="258" left="105" width="414" height="14" font="2">To record where each virtual page of the address space is placed in</text>
+<text top="273" left="87" width="336" height="14" font="2">physical memory, the operating system usually keeps a</text>
+<text top="273" left="428" width="61" height="14" font="3"><i>per-process</i></text>
+<text top="273" left="493" width="26" height="14" font="2">data</text>
+<text top="288" left="87" width="128" height="14" font="2">structure known as a</text>
+<text top="288" left="219" width="64" height="13" font="4"><b>page table</b></text>
+<text top="288" left="283" width="236" height="14" font="2">. The major role of the page table is to</text>
+<text top="303" left="87" width="29" height="14" font="2">store</text>
+<text top="303" left="121" width="125" height="13" font="4"><b>address translations</b></text>
+<text top="303" left="251" width="268" height="14" font="2">for each of the virtual pages of the address</text>
+<text top="318" left="87" width="432" height="14" font="2">space, thus letting us know where in physical memory each page resides.</text>
+<text top="333" left="87" width="432" height="14" font="2">For our simple example (Figure 18.2, page 2), the page table would thus</text>
+<text top="348" left="87" width="295" height="14" font="2">have the following four entries: (Virtual Page 0</text>
+<text top="351" left="387" width="14" height="7" font="12">→</text>
+<text top="348" left="406" width="113" height="14" font="2">Physical Frame 3),</text>
+<text top="363" left="87" width="32" height="14" font="2">(VP 1</text>
+<text top="366" left="123" width="14" height="7" font="12">→</text>
+<text top="363" left="140" width="69" height="14" font="2">PF 7), (VP 2</text>
+<text top="366" left="213" width="14" height="7" font="12">→</text>
+<text top="363" left="230" width="95" height="14" font="2">PF 5), and (VP 3</text>
+<text top="366" left="329" width="14" height="7" font="12">→</text>
+<text top="363" left="346" width="34" height="14" font="2">PF 2).</text>
+<text top="378" left="105" width="318" height="14" font="2">It is important to remember that this page table is a</text>
+<text top="378" left="428" width="61" height="14" font="3"><i>per-process</i></text>
+<text top="378" left="493" width="26" height="14" font="2">data</text>
+<text top="393" left="87" width="432" height="14" font="2">structure (most page table structures we discuss are per-process struc-</text>
+<text top="408" left="87" width="238" height="14" font="2">tures; an exception we’ll touch on is the</text>
+<text top="408" left="328" width="119" height="13" font="4"><b>inverted page table</b></text>
+<text top="408" left="447" width="72" height="14" font="2">). If another</text>
+<text top="423" left="87" width="432" height="14" font="2">process were to run in our example above, the OS would have to manage</text>
+<text top="438" left="87" width="383" height="14" font="2">a different page table for it, as its virtual pages obviously map to</text>
+<text top="437" left="474" width="45" height="14" font="3"><i>different</i></text>
+<text top="452" left="87" width="279" height="14" font="2">physical pages (modulo any sharing going on).</text>
+<text top="467" left="105" width="414" height="14" font="2">Now, we know enough to perform an address-translation example.</text>
+<text top="482" left="87" width="432" height="14" font="2">Let’s imagine the process with that tiny address space (64 bytes) is per-</text>
+<text top="497" left="87" width="155" height="14" font="2">forming a memory access:</text>
+<text top="518" left="111" width="226" height="11" font="13">movl &lt;virtual address&gt;, %eax</text>
+<text top="538" left="105" width="414" height="14" font="2">Speciﬁcally, let’s pay attention to the explicit load of the data from</text>
+<text top="553" left="87" width="46" height="14" font="2">address</text>
+<text top="554" left="136" width="137" height="11" font="13">&lt;virtual address&gt;</text>
+<text top="553" left="276" width="93" height="14" font="2">into the register</text>
+<text top="554" left="373" width="24" height="11" font="13">eax</text>
+<text top="553" left="400" width="119" height="14" font="2">(and thus ignore the</text>
+<text top="568" left="87" width="293" height="14" font="2">instruction fetch that must have happened prior).</text>
+<text top="583" left="105" width="14" height="14" font="2">To</text>
+<text top="583" left="124" width="53" height="13" font="4"><b>translate</b></text>
+<text top="583" left="181" width="338" height="14" font="2">this virtual address that the process generated, we have</text>
+<text top="598" left="87" width="233" height="14" font="2">to ﬁrst split it into two components: the</text>
+<text top="598" left="323" width="167" height="13" font="4"><b>virtual page number (VPN)</b></text>
+<text top="598" left="490" width="29" height="14" font="2">, and</text>
+<text top="613" left="87" width="19" height="14" font="2">the</text>
+<text top="613" left="109" width="35" height="13" font="4"><b>offset</b></text>
+<text top="613" left="148" width="371" height="14" font="2">within the page. For this example, because the virtual address</text>
+<text top="628" left="87" width="432" height="14" font="2">space of the process is 64 bytes, we need 6 bits total for our virtual address</text>
+<text top="644" left="87" width="4" height="14" font="2">(</text>
+<text top="645" left="92" width="7" height="9" font="14">2</text>
+<text top="643" left="98" width="5" height="6" font="15">6</text>
+<text top="645" left="112" width="32" height="9" font="14">= 64</text>
+<text top="644" left="145" width="363" height="14" font="2">). Thus, our virtual address can be conceptualized as follows:</text>
+<text top="676" left="210" width="185" height="12" font="16">Va5 Va4 Va3 Va2 Va1 Va0</text>
+<text top="706" left="105" width="414" height="14" font="2">In this diagram, Va5 is the highest-order bit of the virtual address, and</text>
+<text top="721" left="87" width="432" height="14" font="2">Va0 the lowest-order bit. Because we know the page size (16 bytes), we</text>
+<text top="736" left="87" width="289" height="14" font="2">can further divide the virtual address as follows:</text>
+<text top="802" left="210" width="185" height="12" font="16">Va5 Va4 Va3 Va2 Va1 Va0</text>
+<text top="758" left="222" width="33" height="16" font="17">VPN</text>
+<text top="758" left="316" width="40" height="16" font="17">offset</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="12" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="19" size="15" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="409" width="8" height="14" font="2">P</text>
+<text top="98" left="417" width="40" height="11" font="5">AGING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="139" left="147" width="414" height="14" font="2">The page size is 16 bytes in a 64-byte address space; thus we need to</text>
+<text top="154" left="129" width="432" height="14" font="2">be able to select 4 pages, and the top 2 bits of the address do just that.</text>
+<text top="169" left="129" width="432" height="14" font="2">Thus, we have a 2-bit virtual page number (VPN). The remaining bits tell</text>
+<text top="183" left="129" width="432" height="14" font="2">us which byte of the page we are interested in, 4 bits in this case; we call</text>
+<text top="198" left="129" width="83" height="14" font="2">this the offset.</text>
+<text top="214" left="147" width="414" height="14" font="2">When a process generates a virtual address, the OS and hardware</text>
+<text top="229" left="129" width="432" height="14" font="2">must combine to translate it into a meaningful physical address. For ex-</text>
+<text top="244" left="129" width="369" height="14" font="2">ample, let us assume the load above was to virtual address 21:</text>
+<text top="265" left="153" width="105" height="11" font="13">movl 21, %eax</text>
+<text top="289" left="147" width="414" height="14" font="2">Turning “21” into binary form, we get “010101”, and thus we can ex-</text>
+<text top="304" left="129" width="432" height="14" font="2">amine this virtual address and see how it breaks down into a virtual page</text>
+<text top="319" left="129" width="154" height="14" font="2">number (VPN) and offset:</text>
+<text top="389" left="260" width="7" height="12" font="16">0</text>
+<text top="389" left="293" width="7" height="12" font="16">1</text>
+<text top="389" left="325" width="7" height="12" font="16">0</text>
+<text top="389" left="357" width="7" height="12" font="16">1</text>
+<text top="389" left="390" width="7" height="12" font="16">0</text>
+<text top="389" left="422" width="7" height="12" font="16">1</text>
+<text top="345" left="263" width="33" height="16" font="17">VPN</text>
+<text top="345" left="357" width="40" height="16" font="17">offset</text>
+<text top="427" left="147" width="414" height="14" font="2">Thus, the virtual address “21” is on the 5th (“0101”th) byte of virtual</text>
+<text top="442" left="129" width="432" height="14" font="2">page “01” (or 1). With our virtual page number, we can now index our</text>
+<text top="457" left="129" width="432" height="14" font="2">page table and ﬁnd which physical frame virtual page 1 resides within. In</text>
+<text top="472" left="129" width="146" height="14" font="2">the page table above the</text>
+<text top="472" left="278" width="144" height="13" font="4"><b>physical frame number</b></text>
+<text top="472" left="426" width="4" height="14" font="2">(</text>
+<text top="472" left="430" width="27" height="13" font="4"><b>PFN</b></text>
+<text top="472" left="457" width="104" height="14" font="2">) (also sometimes</text>
+<text top="487" left="129" width="57" height="14" font="2">called the</text>
+<text top="487" left="190" width="136" height="13" font="4"><b>physical page number</b></text>
+<text top="487" left="329" width="13" height="14" font="2">or</text>
+<text top="487" left="345" width="28" height="13" font="4"><b>PPN</b></text>
+<text top="487" left="373" width="188" height="14" font="2">) is 7 (binary 111). Thus, we can</text>
+<text top="501" left="129" width="432" height="14" font="2">translate this virtual address by replacing the VPN with the PFN and then</text>
+<text top="516" left="129" width="284" height="14" font="2">issue the load to physical memory (Figure 18.3).</text>
+<text top="601" left="296" width="7" height="12" font="18">0</text>
+<text top="601" left="326" width="7" height="12" font="18">1</text>
+<text top="601" left="357" width="7" height="12" font="18">0</text>
+<text top="601" left="387" width="7" height="12" font="18">1</text>
+<text top="601" left="417" width="7" height="12" font="18">0</text>
+<text top="601" left="447" width="7" height="12" font="18">1</text>
+<text top="560" left="299" width="31" height="15" font="19">VPN</text>
+<text top="560" left="387" width="37" height="15" font="19">offset</text>
+<text top="752" left="266" width="7" height="12" font="18">1</text>
+<text top="752" left="296" width="7" height="12" font="18">1</text>
+<text top="752" left="326" width="7" height="12" font="18">1</text>
+<text top="752" left="357" width="7" height="12" font="18">0</text>
+<text top="752" left="387" width="7" height="12" font="18">1</text>
+<text top="752" left="417" width="7" height="12" font="18">0</text>
+<text top="752" left="447" width="7" height="12" font="18">1</text>
+<text top="667" left="272" width="55" height="15" font="19">Address</text>
+<text top="682" left="262" width="75" height="15" font="19">Translation</text>
+<text top="787" left="284" width="30" height="15" font="19">PFN</text>
+<text top="787" left="387" width="37" height="15" font="19">offset</text>
+<text top="594" left="237" width="34" height="12" font="18">Virtual</text>
+<text top="609" left="232" width="44" height="12" font="18">Address</text>
+<text top="745" left="201" width="45" height="12" font="18">Physical</text>
+<text top="760" left="202" width="44" height="12" font="18">Address</text>
+<text top="815" left="208" width="69" height="14" font="2">Figure 18.3:</text>
+<text top="815" left="281" width="200" height="13" font="4"><b>The Address Translation Process</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">P</text>
+<text top="98" left="95" width="40" height="11" font="5">AGING</text>
+<text top="96" left="136" width="13" height="14" font="2">: I</text>
+<text top="98" left="149" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="401" left="141" width="18" height="10" font="10">128</text>
+<text top="369" left="141" width="18" height="10" font="10">112</text>
+<text top="336" left="141" width="12" height="10" font="10">96</text>
+<text top="304" left="141" width="12" height="10" font="10">80</text>
+<text top="271" left="141" width="12" height="10" font="10">64</text>
+<text top="239" left="141" width="12" height="10" font="10">48</text>
+<text top="207" left="141" width="12" height="10" font="10">32</text>
+<text top="174" left="141" width="12" height="10" font="10">16</text>
+<text top="142" left="141" width="6" height="10" font="10">0</text>
+<text top="385" left="292" width="64" height="10" font="10">page frame 7</text>
+<text top="353" left="292" width="64" height="10" font="10">page frame 6</text>
+<text top="320" left="292" width="64" height="10" font="10">page frame 5</text>
+<text top="288" left="292" width="64" height="10" font="10">page frame 4</text>
+<text top="255" left="292" width="64" height="10" font="10">page frame 3</text>
+<text top="223" left="292" width="64" height="10" font="10">page frame 2</text>
+<text top="190" left="292" width="64" height="10" font="10">page frame 1</text>
+<text top="158" left="292" width="160" height="10" font="10">page frame 0 of physical memory</text>
+<text top="190" left="201" width="43" height="10" font="10">(unused)</text>
+<text top="223" left="191" width="63" height="10" font="10">page 3 of AS</text>
+<text top="255" left="191" width="63" height="10" font="10">page 0 of AS</text>
+<text top="288" left="201" width="43" height="10" font="10">(unused)</text>
+<text top="320" left="191" width="63" height="10" font="10">page 2 of AS</text>
+<text top="353" left="201" width="43" height="10" font="10">(unused)</text>
+<text top="385" left="191" width="63" height="10" font="10">page 1 of AS</text>
+<text top="150" left="195" width="54" height="10" font="10">page table:</text>
+<text top="165" left="206" width="33" height="10" font="10">3 7 5 2</text>
+<text top="424" left="117" width="69" height="14" font="2">Figure 18.4:</text>
+<text top="424" left="190" width="299" height="13" font="4"><b>Example: Page Table in Kernel Physical Memory</b></text>
+<text top="456" left="105" width="414" height="14" font="2">Note the offset stays the same (i.e., it is not translated), because the</text>
+<text top="471" left="87" width="171" height="14" font="2">offset just tells us which byte</text>
+<text top="471" left="261" width="36" height="14" font="3"><i>within</i></text>
+<text top="471" left="300" width="219" height="14" font="2">the page we want. Our ﬁnal physical</text>
+<text top="486" left="87" width="432" height="14" font="2">address is 1110101 (117 in decimal), and is exactly where we want our</text>
+<text top="501" left="87" width="262" height="14" font="2">load to fetch data from (Figure 18.2, page 2).</text>
+<text top="518" left="105" width="414" height="14" font="2">With this basic overview in mind, we can now ask (and hopefully,</text>
+<text top="533" left="87" width="432" height="14" font="2">answer) a few basic questions you may have about paging. For example,</text>
+<text top="548" left="87" width="432" height="14" font="2">where are these page tables stored? What are the typical contents of the</text>
+<text top="563" left="87" width="432" height="14" font="2">page table, and how big are the tables? Does paging make the system</text>
+<text top="578" left="87" width="432" height="14" font="2">(too) slow? These and other beguiling questions are answered, at least in</text>
+<text top="593" left="87" width="189" height="14" font="2">part, in the text below. Read on!</text>
+<text top="629" left="55" width="259" height="17" font="6">18.2 Where Are Page Tables Stored?</text>
+<text top="658" left="105" width="414" height="14" font="2">Page tables can get terribly large, much bigger than the small segment</text>
+<text top="673" left="87" width="432" height="14" font="2">table or base/bounds pair we have discussed previously. For example,</text>
+<text top="688" left="87" width="432" height="14" font="2">imagine a typical 32-bit address space, with 4KB pages. This virtual ad-</text>
+<text top="703" left="87" width="432" height="14" font="2">dress splits into a 20-bit VPN and 12-bit offset (recall that 10 bits would</text>
+<text top="717" left="87" width="407" height="14" font="2">be needed for a 1KB page size, and just add two more to get to 4KB).</text>
+<text top="736" left="105" width="208" height="14" font="2">A 20-bit VPN implies that there are</text>
+<text top="737" left="316" width="7" height="9" font="14">2</text>
+<text top="735" left="323" width="11" height="6" font="15">20</text>
+<text top="736" left="338" width="181" height="14" font="2">translations that the OS would</text>
+<text top="751" left="87" width="432" height="14" font="2">have to manage for each process (that’s roughly a million); assuming we</text>
+<text top="766" left="87" width="99" height="14" font="2">need 4 bytes per</text>
+<text top="766" left="190" width="138" height="13" font="4"><b>page table entry (PTE)</b></text>
+<text top="766" left="332" width="187" height="14" font="2">to hold the physical translation</text>
+<text top="781" left="87" width="432" height="14" font="2">plus any other useful stuff, we get an immense 4MB of memory needed</text>
+<text top="796" left="87" width="432" height="14" font="2">for each page table! That is pretty large. Now imagine there are 100</text>
+<text top="811" left="87" width="432" height="14" font="2">processes running: this means the OS would need 400MB of memory</text>
+<text top="826" left="87" width="432" height="14" font="2">just for all those address translations! Even in the modern era, where</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="409" width="8" height="14" font="2">P</text>
+<text top="98" left="417" width="40" height="11" font="5">AGING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="148" left="205" width="10" height="14" font="2">A</text>
+<text top="150" left="216" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="243" width="19" height="14" font="2">: D</text>
+<text top="150" left="262" width="23" height="11" font="5">ATA</text>
+<text top="148" left="289" width="7" height="14" font="2">S</text>
+<text top="150" left="297" width="63" height="11" font="5">TRUCTURE</text>
+<text top="148" left="364" width="26" height="14" font="2">— T</text>
+<text top="150" left="390" width="16" height="11" font="5">HE</text>
+<text top="148" left="411" width="8" height="14" font="2">P</text>
+<text top="150" left="418" width="25" height="11" font="5">AGE</text>
+<text top="148" left="447" width="8" height="14" font="2">T</text>
+<text top="150" left="455" width="30" height="11" font="5">ABLE</text>
+<text top="163" left="129" width="432" height="14" font="2">One of the most important data structures in the memory management</text>
+<text top="178" left="129" width="205" height="14" font="2">subsystem of a modern OS is the</text>
+<text top="178" left="339" width="65" height="13" font="4"><b>page table</b></text>
+<text top="178" left="403" width="157" height="14" font="2">. In general, a page table</text>
+<text top="193" left="129" width="35" height="14" font="2">stores</text>
+<text top="193" left="169" width="243" height="13" font="4"><b>virtual-to-physical address translations</b></text>
+<text top="193" left="412" width="149" height="14" font="2">, thus letting the system</text>
+<text top="208" left="129" width="432" height="14" font="2">know where each page of an address space actually resides in physical</text>
+<text top="223" left="129" width="432" height="14" font="2">memory. Because each address space requires such translations, in gen-</text>
+<text top="238" left="129" width="432" height="14" font="2">eral there is one page table per process in the system. The exact structure</text>
+<text top="253" left="129" width="432" height="14" font="2">of the page table is either determined by the hardware (older systems) or</text>
+<text top="268" left="129" width="353" height="14" font="2">can be more ﬂexibly managed by the OS (modern systems).</text>
+<text top="301" left="129" width="432" height="14" font="2">machines have gigabytes of memory, it seems a little crazy to use a large</text>
+<text top="316" left="129" width="432" height="14" font="2">chunk of it just for translations, no? And we won’t even think about how</text>
+<text top="331" left="129" width="432" height="14" font="2">big such a page table would be for a 64-bit address space; that would be</text>
+<text top="346" left="129" width="288" height="14" font="2">too gruesome and perhaps scare you off entirely.</text>
+<text top="361" left="147" width="414" height="14" font="2">Because page tables are so big, we don’t keep any special on-chip hard-</text>
+<text top="376" left="129" width="432" height="14" font="2">ware in the MMU to store the page table of the currently-running process.</text>
+<text top="391" left="129" width="308" height="14" font="2">Instead, we store the page table for each process in</text>
+<text top="391" left="441" width="44" height="14" font="3"><i>memory</i></text>
+<text top="391" left="489" width="72" height="14" font="2">somewhere.</text>
+<text top="406" left="129" width="432" height="14" font="2">Let’s assume for now that the page tables live in physical memory that</text>
+<text top="421" left="129" width="432" height="14" font="2">the OS manages; later we’ll see that much of OS memory itself can be vir-</text>
+<text top="436" left="129" width="432" height="14" font="2">tualized, and thus page tables can be stored in OS virtual memory (and</text>
+<text top="451" left="129" width="432" height="14" font="2">even swapped to disk), but that is too confusing right now, so we’ll ig-</text>
+<text top="466" left="129" width="432" height="14" font="2">nore it. In Figure 18.4 (page 5) is a picture of a page table in OS memory;</text>
+<text top="481" left="129" width="230" height="14" font="2">see the tiny set of translations in there?</text>
+<text top="515" left="97" width="290" height="17" font="6">18.3 What’s Actually In The Page Table?</text>
+<text top="542" left="147" width="414" height="14" font="2">Let’s talk a little about page table organization. The page table is just</text>
+<text top="557" left="129" width="432" height="14" font="2">a data structure that is used to map virtual addresses (or really, virtual</text>
+<text top="572" left="129" width="432" height="14" font="2">page numbers) to physical addresses (physical frame numbers). Thus,</text>
+<text top="587" left="129" width="360" height="14" font="2">any data structure could work. The simplest form is called a</text>
+<text top="587" left="492" width="69" height="13" font="4"><b>linear page</b></text>
+<text top="602" left="129" width="31" height="13" font="4"><b>table</b></text>
+<text top="602" left="160" width="184" height="14" font="2">, which is just an array. The OS</text>
+<text top="602" left="347" width="40" height="14" font="3"><i>indexes</i></text>
+<text top="602" left="391" width="170" height="14" font="2">the array by the virtual page</text>
+<text top="617" left="129" width="432" height="14" font="2">number (VPN), and looks up the page-table entry (PTE) at that index in</text>
+<text top="631" left="129" width="432" height="14" font="2">order to ﬁnd the desired physical frame number (PFN). For now, we will</text>
+<text top="646" left="129" width="432" height="14" font="2">assume this simple linear structure; in later chapters, we will make use of</text>
+<text top="661" left="129" width="432" height="14" font="2">more advanced data structures to help solve some problems with paging.</text>
+<text top="677" left="147" width="414" height="14" font="2">As for the contents of each PTE, we have a number of different bits</text>
+<text top="692" left="129" width="286" height="14" font="2">in there worth understanding at some level. A</text>
+<text top="692" left="420" width="53" height="13" font="4"><b>valid bit</b></text>
+<text top="692" left="478" width="83" height="14" font="2">is common to</text>
+<text top="707" left="129" width="432" height="14" font="2">indicate whether the particular translation is valid; for example, when</text>
+<text top="721" left="129" width="432" height="14" font="2">a program starts running, it will have code and heap at one end of its</text>
+<text top="736" left="129" width="432" height="14" font="2">address space, and the stack at the other. All the unused space in-between</text>
+<text top="751" left="129" width="90" height="14" font="2">will be marked</text>
+<text top="751" left="222" width="44" height="13" font="4"><b>invalid</b></text>
+<text top="751" left="266" width="294" height="14" font="2">, and if the process tries to access such memory, it</text>
+<text top="766" left="129" width="432" height="14" font="2">will generate a trap to the OS which will likely terminate the process.</text>
+<text top="781" left="129" width="432" height="14" font="2">Thus, the valid bit is crucial for supporting a sparse address space; by</text>
+<text top="796" left="129" width="432" height="14" font="2">simply marking all the unused pages in the address space invalid, we</text>
+<text top="811" left="129" width="432" height="14" font="2">remove the need to allocate physical frames for those pages and thus save</text>
+<text top="826" left="129" width="140" height="14" font="2">a great deal of memory.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="20" size="9" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">P</text>
+<text top="98" left="95" width="40" height="11" font="5">AGING</text>
+<text top="96" left="136" width="13" height="14" font="2">: I</text>
+<text top="98" left="149" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="137" left="96" width="13" height="11" font="18">31</text>
+<text top="137" left="342" width="34" height="11" font="18">12 11</text>
+<text top="137" left="388" width="125" height="11" font="18">9 8 7 6 5 4 3 2 1 0</text>
+<text top="157" left="217" width="21" height="10" font="10">PFN</text>
+<text top="158" left="408" width="0" height="9" font="20">G</text>
+<text top="163" left="421" width="0" height="9" font="20">PAT</text>
+<text top="158" left="435" width="0" height="9" font="20">D</text>
+<text top="158" left="448" width="0" height="9" font="20">A</text>
+<text top="164" left="461" width="0" height="9" font="20">PCD</text>
+<text top="165" left="474" width="0" height="9" font="20">PWT</text>
+<text top="162" left="487" width="0" height="9" font="20">U/S</text>
+<text top="163" left="500" width="0" height="9" font="20">R/W</text>
+<text top="158" left="513" width="0" height="9" font="20">P</text>
+<text top="185" left="173" width="69" height="14" font="2">Figure 18.5:</text>
+<text top="185" left="246" width="186" height="13" font="4"><b>An x86 Page Table Entry (PTE)</b></text>
+<text top="205" left="105" width="115" height="14" font="2">We also might have</text>
+<text top="205" left="222" width="89" height="13" font="4"><b>protection bits</b></text>
+<text top="205" left="311" width="208" height="14" font="2">, indicating whether the page could</text>
+<text top="220" left="87" width="432" height="14" font="2">be read from, written to, or executed from. Again, accessing a page in a</text>
+<text top="235" left="87" width="357" height="14" font="2">way not allowed by these bits will generate a trap to the OS.</text>
+<text top="250" left="105" width="414" height="14" font="2">There are a couple of other bits that are important but we won’t talk</text>
+<text top="265" left="87" width="136" height="14" font="2">about much for now. A</text>
+<text top="265" left="226" width="66" height="13" font="4"><b>present bit</b></text>
+<text top="265" left="294" width="225" height="14" font="2">indicates whether this page is in phys-</text>
+<text top="280" left="87" width="242" height="14" font="2">ical memory or on disk (i.e., it has been</text>
+<text top="280" left="333" width="80" height="13" font="4"><b>swapped out</b></text>
+<text top="280" left="413" width="106" height="14" font="2">). We will under-</text>
+<text top="295" left="87" width="320" height="14" font="2">stand this machinery further when we study how to</text>
+<text top="295" left="412" width="32" height="13" font="4"><b>swap</b></text>
+<text top="295" left="449" width="70" height="14" font="2">parts of the</text>
+<text top="310" left="87" width="432" height="14" font="2">address space to disk to support address spaces that are larger than phys-</text>
+<text top="325" left="87" width="432" height="14" font="2">ical memory; swapping allows the OS to free up physical memory by</text>
+<text top="339" left="87" width="216" height="14" font="2">moving rarely-used pages to disk. A</text>
+<text top="340" left="307" width="50" height="13" font="4"><b>dirty bit</b></text>
+<text top="339" left="360" width="159" height="14" font="2">is also common, indicating</text>
+<text top="354" left="87" width="421" height="14" font="2">whether the page has been modiﬁed since it was brought into memory.</text>
+<text top="369" left="105" width="10" height="14" font="2">A</text>
+<text top="369" left="118" width="77" height="13" font="4"><b>reference bit</b></text>
+<text top="369" left="197" width="35" height="14" font="2">(a.k.a.</text>
+<text top="369" left="236" width="72" height="13" font="4"><b>accessed bit</b></text>
+<text top="369" left="309" width="213" height="14" font="2">) is sometimes used to track whether</text>
+<text top="384" left="87" width="432" height="14" font="2">a page has been accessed, and is useful in determining which pages are</text>
+<text top="399" left="87" width="432" height="14" font="2">popular and thus should be kept in memory; such knowledge is critical</text>
+<text top="414" left="87" width="41" height="14" font="2">during</text>
+<text top="414" left="132" width="109" height="13" font="4"><b>page replacement</b></text>
+<text top="414" left="240" width="279" height="14" font="2">, a topic we will study in great detail in subse-</text>
+<text top="429" left="87" width="91" height="14" font="2">quent chapters.</text>
+<text top="444" left="105" width="414" height="14" font="2">Figure 18.5 shows an example page table entry from the x86 architec-</text>
+<text top="459" left="87" width="432" height="14" font="2">ture [I09]. It contains a present bit (P); a read/write bit (R/W) which</text>
+<text top="474" left="87" width="432" height="14" font="2">determines if writes are allowed to this page; a user/supervisor bit (U/S)</text>
+<text top="489" left="87" width="432" height="14" font="2">which determines if user-mode processes can access the page; a few bits</text>
+<text top="504" left="87" width="432" height="14" font="2">(PWT, PCD, PAT, and G) that determine how hardware caching works for</text>
+<text top="519" left="87" width="432" height="14" font="2">these pages; an accessed bit (A) and a dirty bit (D); and ﬁnally, the page</text>
+<text top="534" left="87" width="160" height="14" font="2">frame number (PFN) itself.</text>
+<text top="549" left="105" width="414" height="14" font="2">Read the Intel Architecture Manuals [I09] for more details on x86 pag-</text>
+<text top="564" left="87" width="432" height="14" font="2">ing support. Be forewarned, however; reading manuals such as these,</text>
+<text top="579" left="87" width="432" height="14" font="2">while quite informative (and certainly necessary for those who write code</text>
+<text top="593" left="87" width="432" height="14" font="2">to use such page tables in the OS), can be challenging at ﬁrst. A little pa-</text>
+<text top="608" left="87" width="222" height="14" font="2">tience, and a lot of desire, is required.</text>
+<text top="649" left="216" width="10" height="14" font="2">A</text>
+<text top="651" left="227" width="26" height="11" font="5">SIDE</text>
+<text top="649" left="254" width="22" height="14" font="2">: W</text>
+<text top="651" left="276" width="17" height="11" font="5">HY</text>
+<text top="649" left="297" width="11" height="14" font="2">N</text>
+<text top="651" left="309" width="8" height="11" font="5">O</text>
+<text top="649" left="322" width="10" height="14" font="2">V</text>
+<text top="651" left="331" width="29" height="11" font="5">ALID</text>
+<text top="649" left="364" width="8" height="14" font="2">B</text>
+<text top="651" left="372" width="11" height="11" font="5">IT</text>
+<text top="649" left="384" width="6" height="14" font="2">?</text>
+<text top="664" left="87" width="432" height="14" font="2">You may notice that in the Intel example, there are no separate valid and</text>
+<text top="679" left="87" width="432" height="14" font="2">present bits, but rather just a present bit (P). If that bit is set (P=1), it</text>
+<text top="694" left="87" width="432" height="14" font="2">means the page is both present and valid. If not (P=0), it means that</text>
+<text top="709" left="87" width="432" height="14" font="2">the page may not be present in memory (but is valid), or may not be</text>
+<text top="724" left="87" width="432" height="14" font="2">valid. An access to a page with P=0 will trigger a trap to the OS; the</text>
+<text top="739" left="87" width="432" height="14" font="2">OS must then use additional structures it keeps to determine whether</text>
+<text top="754" left="87" width="432" height="14" font="2">the page is valid (and thus perhaps should be swapped back in) or not</text>
+<text top="769" left="87" width="432" height="14" font="2">(and thus the program is attempting to access memory illegally). This</text>
+<text top="784" left="87" width="432" height="14" font="2">sort of judiciousness is common in hardware, which often just provide</text>
+<text top="799" left="87" width="417" height="14" font="2">the minimal set of features upon which the OS can build a full service.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="409" width="8" height="14" font="2">P</text>
+<text top="98" left="417" width="40" height="11" font="5">AGING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="137" left="97" width="198" height="17" font="6">18.4 Paging: Also Too Slow</text>
+<text top="166" left="147" width="414" height="14" font="2">With page tables in memory, we already know that they might be too</text>
+<text top="181" left="129" width="432" height="14" font="2">big. As it turns out, they can slow things down too. For example, take</text>
+<text top="196" left="129" width="135" height="14" font="2">our simple instruction:</text>
+<text top="221" left="153" width="105" height="11" font="13">movl 21, %eax</text>
+<text top="243" left="147" width="414" height="14" font="2">Again, let’s just examine the explicit reference to address 21 and not</text>
+<text top="258" left="129" width="432" height="14" font="2">worry about the instruction fetch. In this example, we’ll assume the hard-</text>
+<text top="273" left="129" width="432" height="14" font="2">ware performs the translation for us. To fetch the desired data, the system</text>
+<text top="288" left="129" width="58" height="14" font="2">must ﬁrst</text>
+<text top="288" left="191" width="53" height="13" font="4"><b>translate</b></text>
+<text top="288" left="248" width="313" height="14" font="2">the virtual address (21) into the correct physical ad-</text>
+<text top="303" left="129" width="432" height="14" font="2">dress (117). Thus, before fetching the data from address 117, the system</text>
+<text top="318" left="129" width="432" height="14" font="2">must ﬁrst fetch the proper page table entry from the process’s page table,</text>
+<text top="333" left="129" width="419" height="14" font="2">perform the translation, and then load the data from physical memory.</text>
+<text top="348" left="147" width="414" height="14" font="2">To do so, the hardware must know where the page table is for the</text>
+<text top="363" left="129" width="364" height="14" font="2">currently-running process. Let’s assume for now that a single</text>
+<text top="363" left="497" width="64" height="13" font="4"><b>page-table</b></text>
+<text top="378" left="129" width="78" height="13" font="4"><b>base register</b></text>
+<text top="378" left="210" width="351" height="14" font="2">contains the physical address of the starting location of the</text>
+<text top="393" left="129" width="432" height="14" font="2">page table. To ﬁnd the location of the desired PTE, the hardware will thus</text>
+<text top="408" left="129" width="194" height="14" font="2">perform the following functions:</text>
+<text top="432" left="153" width="24" height="11" font="13">VPN</text>
+<text top="432" left="218" width="307" height="11" font="13">= (VirtualAddress &amp; VPN_MASK) &gt;&gt; SHIFT</text>
+<text top="447" left="153" width="428" height="14" font="13">PTEAddr = PageTableBaseRegister + (VPN * sizeof(PTE))</text>
+<text top="469" left="147" width="97" height="14" font="2">In our example,</text>
+<text top="470" left="249" width="65" height="11" font="13">VPN_MASK</text>
+<text top="469" left="319" width="242" height="14" font="2">would be set to 0x30 (hex 30, or binary</text>
+<text top="484" left="129" width="389" height="14" font="2">110000) which picks out the VPN bits from the full virtual address;</text>
+<text top="485" left="520" width="40" height="11" font="13">SHIFT</text>
+<text top="499" left="129" width="432" height="14" font="2">is set to 4 (the number of bits in the offset), such that we move the VPN</text>
+<text top="514" left="129" width="432" height="14" font="2">bits down to form the correct integer virtual page number. For exam-</text>
+<text top="529" left="129" width="432" height="14" font="2">ple, with virtual address 21 (010101), and masking turns this value into</text>
+<text top="544" left="129" width="432" height="14" font="2">010000; the shift turns it into 01, or virtual page 1, as desired. We then use</text>
+<text top="559" left="129" width="432" height="14" font="2">this value as an index into the array of PTEs pointed to by the page table</text>
+<text top="574" left="129" width="77" height="14" font="2">base register.</text>
+<text top="589" left="147" width="414" height="14" font="2">Once this physical address is known, the hardware can fetch the PTE</text>
+<text top="604" left="129" width="432" height="14" font="2">from memory, extract the PFN, and concatenate it with the offset from the</text>
+<text top="619" left="129" width="432" height="14" font="2">virtual address to form the desired physical address. Speciﬁcally, you can</text>
+<text top="634" left="129" width="219" height="14" font="2">think of the PFN being left-shifted by</text>
+<text top="635" left="351" width="40" height="11" font="13">SHIFT</text>
+<text top="634" left="391" width="169" height="14" font="2">, and then bitwise OR’d with</text>
+<text top="649" left="129" width="270" height="14" font="2">the offset to form the ﬁnal address as follows:</text>
+<text top="678" left="153" width="48" height="11" font="13">offset</text>
+<text top="678" left="226" width="242" height="11" font="13">= VirtualAddress &amp; OFFSET_MASK</text>
+<text top="693" left="153" width="274" height="11" font="13">PhysAddr = (PFN &lt;&lt; SHIFT) | offset</text>
+<text top="721" left="147" width="414" height="14" font="2">Finally, the hardware can fetch the desired data from memory and put</text>
+<text top="736" left="129" width="84" height="14" font="2">it into register</text>
+<text top="737" left="217" width="24" height="11" font="13">eax</text>
+<text top="736" left="241" width="319" height="14" font="2">. The program has now succeeded at loading a value</text>
+<text top="751" left="129" width="86" height="14" font="2">from memory!</text>
+<text top="766" left="147" width="414" height="14" font="2">To summarize, we now describe the initial protocol for what happens</text>
+<text top="781" left="129" width="432" height="14" font="2">on each memory reference. Figure 18.6 (page 9) shows the approach. For</text>
+<text top="796" left="129" width="432" height="14" font="2">every memory reference (whether an instruction fetch or an explicit load</text>
+<text top="811" left="129" width="432" height="14" font="2">or store), paging requires us to perform one extra memory reference in</text>
+<text top="826" left="129" width="432" height="14" font="2">order to ﬁrst fetch the translation from the page table. That is a lot of</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">P</text>
+<text top="98" left="95" width="40" height="11" font="5">AGING</text>
+<text top="96" left="136" width="13" height="14" font="2">: I</text>
+<text top="98" left="149" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="138" left="65" width="4" height="8" font="8">1</text>
+<text top="135" left="87" width="347" height="11" font="13">// Extract the VPN from the virtual address</text>
+<text top="153" left="65" width="4" height="8" font="8">2</text>
+<text top="150" left="87" width="339" height="11" font="13">VPN = (VirtualAddress &amp; VPN_MASK) &gt;&gt; SHIFT</text>
+<text top="168" left="65" width="4" height="8" font="8">3</text>
+<text top="183" left="65" width="4" height="8" font="8">4</text>
+<text top="180" left="87" width="395" height="11" font="13">// Form the address of the page-table entry (PTE)</text>
+<text top="198" left="65" width="4" height="8" font="8">5</text>
+<text top="195" left="87" width="291" height="14" font="13">PTEAddr = PTBR + (VPN * sizeof(PTE))</text>
+<text top="213" left="65" width="4" height="8" font="8">6</text>
+<text top="228" left="65" width="4" height="8" font="8">7</text>
+<text top="225" left="87" width="129" height="11" font="13">// Fetch the PTE</text>
+<text top="243" left="65" width="4" height="8" font="8">8</text>
+<text top="240" left="87" width="218" height="11" font="13">PTE = AccessMemory(PTEAddr)</text>
+<text top="258" left="65" width="4" height="8" font="8">9</text>
+<text top="273" left="62" width="7" height="8" font="8">10</text>
+<text top="269" left="87" width="315" height="11" font="13">// Check if process can access the page</text>
+<text top="288" left="62" width="7" height="8" font="8">11</text>
+<text top="284" left="87" width="186" height="11" font="13">if (PTE.Valid == False)</text>
+<text top="303" left="62" width="7" height="8" font="8">12</text>
+<text top="299" left="119" width="274" height="11" font="13">RaiseException(SEGMENTATION_FAULT)</text>
+<text top="318" left="62" width="7" height="8" font="8">13</text>
+<text top="314" left="87" width="363" height="11" font="13">else if (CanAccess(PTE.ProtectBits) == False)</text>
+<text top="333" left="62" width="7" height="8" font="8">14</text>
+<text top="329" left="119" width="258" height="11" font="13">RaiseException(PROTECTION_FAULT)</text>
+<text top="348" left="62" width="7" height="8" font="8">15</text>
+<text top="344" left="87" width="32" height="11" font="13">else</text>
+<text top="363" left="62" width="7" height="8" font="8">16</text>
+<text top="359" left="119" width="387" height="11" font="13">// Access OK: form physical address and fetch it</text>
+<text top="378" left="62" width="7" height="8" font="8">17</text>
+<text top="374" left="119" width="48" height="11" font="13">offset</text>
+<text top="374" left="192" width="242" height="11" font="13">= VirtualAddress &amp; OFFSET_MASK</text>
+<text top="393" left="62" width="7" height="8" font="8">18</text>
+<text top="389" left="119" width="339" height="11" font="13">PhysAddr = (PTE.PFN &lt;&lt; PFN_SHIFT) | offset</text>
+<text top="407" left="62" width="7" height="8" font="8">19</text>
+<text top="404" left="119" width="266" height="11" font="13">Register = AccessMemory(PhysAddr)</text>
+<text top="438" left="168" width="69" height="14" font="2">Figure 18.6:</text>
+<text top="439" left="241" width="196" height="13" font="4"><b>Accessing Memory With Paging</b></text>
+<text top="477" left="87" width="432" height="14" font="2">work! Extra memory references are costly, and in this case will likely</text>
+<text top="492" left="87" width="297" height="14" font="2">slow down the process by a factor of two or more.</text>
+<text top="507" left="105" width="276" height="14" font="2">And now you can hopefully see that there are</text>
+<text top="507" left="385" width="20" height="14" font="3"><i>two</i></text>
+<text top="507" left="410" width="109" height="14" font="2">real problems that</text>
+<text top="522" left="87" width="432" height="14" font="2">we must solve. Without careful design of both hardware and software,</text>
+<text top="537" left="87" width="432" height="14" font="2">page tables will cause the system to run too slowly, as well as take up</text>
+<text top="552" left="87" width="432" height="14" font="2">too much memory. While seemingly a great solution for our memory</text>
+<text top="567" left="87" width="427" height="14" font="2">virtualization needs, these two crucial problems must ﬁrst be overcome.</text>
+<text top="604" left="55" width="156" height="17" font="6">18.5 A Memory Trace</text>
+<text top="634" left="105" width="414" height="14" font="2">Before closing, we now trace through a simple memory access exam-</text>
+<text top="649" left="87" width="432" height="14" font="2">ple to demonstrate all of the resulting memory accesses that occur when</text>
+<text top="664" left="87" width="318" height="14" font="2">using paging. The code snippet (in C, in a ﬁle called</text>
+<text top="665" left="409" width="57" height="11" font="13">array.c</text>
+<text top="664" left="465" width="54" height="14" font="2">) that we</text>
+<text top="679" left="87" width="175" height="14" font="2">are interested in is as follows:</text>
+<text top="709" left="87" width="129" height="11" font="13">int array[1000];</text>
+<text top="724" left="87" width="24" height="11" font="13">...</text>
+<text top="739" left="87" width="210" height="11" font="13">for (i = 0; i &lt; 1000; i++)</text>
+<text top="754" left="119" width="105" height="11" font="13">array[i] = 0;</text>
+<text top="782" left="87" width="70" height="14" font="2">We compile</text>
+<text top="783" left="160" width="57" height="11" font="13">array.c</text>
+<text top="782" left="220" width="245" height="14" font="2">and run it with the following commands:</text>
+<text top="812" left="87" width="299" height="11" font="13">prompt&gt; gcc -o array array.c -Wall -O</text>
+<text top="827" left="87" width="121" height="11" font="13">prompt&gt; ./array</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="12" family="RAIRGL+CMSY8" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="409" width="8" height="14" font="2">P</text>
+<text top="98" left="417" width="40" height="11" font="5">AGING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="139" left="147" width="414" height="14" font="2">Of course, to truly understand what memory accesses this code snip-</text>
+<text top="154" left="129" width="432" height="14" font="2">pet (which simply initializes an array) will make, we’ll have to know (or</text>
+<text top="169" left="129" width="287" height="14" font="2">assume) a few more things. First, we’ll have to</text>
+<text top="169" left="420" width="75" height="13" font="4"><b>disassemble</b></text>
+<text top="169" left="500" width="61" height="14" font="2">the result-</text>
+<text top="183" left="129" width="105" height="14" font="2">ing binary (using</text>
+<text top="184" left="238" width="57" height="11" font="13">objdump</text>
+<text top="183" left="300" width="76" height="14" font="2">on Linux, or</text>
+<text top="184" left="380" width="40" height="11" font="13">otool</text>
+<text top="183" left="425" width="136" height="14" font="2">on a Mac) to see what</text>
+<text top="198" left="129" width="432" height="14" font="2">assembly instructions are used to initialize the array in a loop. Here is the</text>
+<text top="213" left="129" width="146" height="14" font="2">resulting assembly code:</text>
+<text top="240" left="129" width="226" height="11" font="13">1024 movl $0x0,(%edi,%eax,4)</text>
+<text top="255" left="129" width="113" height="11" font="13">1028 incl %eax</text>
+<text top="270" left="129" width="178" height="11" font="13">1032 cmpl $0x03e8,%eax</text>
+<text top="285" left="129" width="65" height="11" font="13">1036 jne</text>
+<text top="285" left="210" width="32" height="11" font="13">1024</text>
+<text top="311" left="147" width="169" height="14" font="2">The code, if you know a little</text>
+<text top="311" left="318" width="20" height="13" font="4"><b>x86</b></text>
+<text top="311" left="339" width="214" height="14" font="2">, is actually quite easy to understand</text>
+<text top="308" left="552" width="4" height="9" font="7">2</text>
+<text top="311" left="557" width="3" height="14" font="2">.</text>
+<text top="326" left="129" width="316" height="14" font="2">The ﬁrst instruction moves the value zero (shown as</text>
+<text top="326" left="449" width="32" height="11" font="13">$0x0</text>
+<text top="326" left="481" width="80" height="14" font="2">) into the vir-</text>
+<text top="341" left="129" width="432" height="14" font="2">tual memory address of the location of the array; this address is computed</text>
+<text top="355" left="129" width="146" height="14" font="2">by taking the contents of</text>
+<text top="356" left="278" width="32" height="11" font="13">%edi</text>
+<text top="355" left="314" width="68" height="14" font="2">and adding</text>
+<text top="356" left="386" width="32" height="11" font="13">%eax</text>
+<text top="355" left="421" width="139" height="14" font="2">multiplied by four to it.</text>
+<text top="370" left="129" width="33" height="14" font="2">Thus,</text>
+<text top="371" left="166" width="32" height="11" font="13">%edi</text>
+<text top="370" left="202" width="264" height="14" font="2">holds the base address of the array, whereas</text>
+<text top="371" left="469" width="32" height="11" font="13">%eax</text>
+<text top="370" left="505" width="55" height="14" font="2">holds the</text>
+<text top="385" left="129" width="76" height="14" font="2">array index (</text>
+<text top="386" left="205" width="8" height="11" font="13">i</text>
+<text top="385" left="213" width="348" height="14" font="2">); we multiply by four because the array is an array of inte-</text>
+<text top="400" left="129" width="167" height="14" font="2">gers, each of size four bytes.</text>
+<text top="415" left="147" width="347" height="14" font="2">The second instruction increments the array index held in</text>
+<text top="416" left="498" width="32" height="11" font="13">%eax</text>
+<text top="415" left="531" width="30" height="14" font="2">, and</text>
+<text top="430" left="129" width="432" height="14" font="2">the third instruction compares the contents of that register to the hex</text>
+<text top="445" left="129" width="33" height="14" font="2">value</text>
+<text top="446" left="166" width="48" height="11" font="13">0x03e8</text>
+<text top="445" left="215" width="346" height="14" font="2">, or decimal 1000. If the comparison shows that two val-</text>
+<text top="460" left="129" width="236" height="14" font="2">ues are not yet equal (which is what the</text>
+<text top="461" left="368" width="24" height="11" font="13">jne</text>
+<text top="460" left="396" width="165" height="14" font="2">instruction tests), the fourth</text>
+<text top="475" left="129" width="267" height="14" font="2">instruction jumps back to the top of the loop.</text>
+<text top="490" left="147" width="418" height="14" font="2">To understand which memory accesses this instruction sequence makes</text>
+<text top="505" left="129" width="432" height="14" font="2">(at both the virtual and physical levels), we’ll have to assume something</text>
+<text top="520" left="129" width="432" height="14" font="2">about where in virtual memory the code snippet and array are found, as</text>
+<text top="535" left="129" width="298" height="14" font="2">well as the contents and location of the page table.</text>
+<text top="550" left="147" width="414" height="14" font="2">For this example, we assume a virtual address space of size 64KB (un-</text>
+<text top="565" left="129" width="324" height="14" font="2">realistically small). We also assume a page size of 1KB.</text>
+<text top="580" left="147" width="414" height="14" font="2">All we need to know now are the contents of the page table, and its</text>
+<text top="595" left="129" width="432" height="14" font="2">location in physical memory. Let’s assume we have a linear (array-based)</text>
+<text top="610" left="129" width="372" height="14" font="2">page table and that it is located at physical address 1KB (1024).</text>
+<text top="624" left="147" width="414" height="14" font="2">As for its contents, there are just a few virtual pages we need to worry</text>
+<text top="639" left="129" width="432" height="14" font="2">about having mapped for this example. First, there is the virtual page the</text>
+<text top="654" left="129" width="432" height="14" font="2">code lives on. Because the page size is 1KB, virtual address 1024 resides</text>
+<text top="669" left="129" width="432" height="14" font="2">on the second page of the virtual address space (VPN=1, as VPN=0 is</text>
+<text top="684" left="129" width="432" height="14" font="2">the ﬁrst page). Let’s assume this virtual page maps to physical frame 4</text>
+<text top="699" left="129" width="44" height="14" font="2">(VPN 1</text>
+<text top="702" left="176" width="14" height="7" font="12">→</text>
+<text top="699" left="193" width="45" height="14" font="2">PFN 4).</text>
+<text top="714" left="147" width="414" height="14" font="2">Next, there is the array itself. Its size is 4000 bytes (1000 integers),</text>
+<text top="729" left="129" width="432" height="14" font="2">and we assume that it resides at virtual addresses 40000 through 44000</text>
+<text top="744" left="129" width="432" height="14" font="2">(not including the last byte). The virtual pages for this decimal range are</text>
+<text top="759" left="129" width="432" height="14" font="2">VPN=39 ... VPN=42. Thus, we need mappings for these pages. Let’s as-</text>
+<text top="774" left="129" width="338" height="14" font="2">sume these virtual-to-physical mappings for the example:</text>
+<text top="775" left="470" width="44" height="12" font="11">(VPN 39</text>
+<text top="778" left="517" width="13" height="6" font="21">→</text>
+<text top="775" left="532" width="39" height="12" font="11">PFN 7),</text>
+<text top="790" left="129" width="45" height="12" font="11">(VPN 40</text>
+<text top="792" left="177" width="13" height="6" font="21">→</text>
+<text top="790" left="192" width="87" height="12" font="11">PFN 8), (VPN 41</text>
+<text top="792" left="283" width="13" height="6" font="21">→</text>
+<text top="790" left="298" width="87" height="12" font="11">PFN 9), (VPN 42</text>
+<text top="792" left="389" width="13" height="6" font="21">→</text>
+<text top="790" left="405" width="46" height="12" font="11">PFN 10).</text>
+<text top="814" left="149" width="4" height="8" font="8">2</text>
+<text top="816" left="154" width="407" height="11" font="9">We are cheating a little bit here, assuming each instruction is four bytes in size for sim-</text>
+<text top="828" left="129" width="251" height="11" font="9">plicity; in actuality, x86 instructions are variable-sized.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="22" size="13" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="23" size="14" family="JNAWQT+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">P</text>
+<text top="98" left="95" width="40" height="11" font="5">AGING</text>
+<text top="96" left="136" width="13" height="14" font="2">: I</text>
+<text top="98" left="149" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="471" left="136" width="7" height="12" font="16">0</text>
+<text top="471" left="198" width="14" height="12" font="16">10</text>
+<text top="471" left="263" width="14" height="12" font="16">20</text>
+<text top="471" left="329" width="14" height="12" font="16">30</text>
+<text top="471" left="394" width="14" height="12" font="16">40</text>
+<text top="471" left="460" width="14" height="12" font="16">50</text>
+<text top="458" left="102" width="28" height="12" font="16">1024</text>
+<text top="426" left="102" width="28" height="12" font="16">1074</text>
+<text top="395" left="102" width="28" height="12" font="16">1124</text>
+<text top="488" left="258" width="90" height="12" font="16">Memory Access</text>
+<text top="451" left="89" width="0" height="12" font="22">Code (VA)</text>
+<text top="370" left="95" width="35" height="12" font="16">40000</text>
+<text top="338" left="95" width="35" height="12" font="16">40050</text>
+<text top="307" left="95" width="35" height="12" font="16">40100</text>
+<text top="363" left="92" width="0" height="12" font="22">Array (VA)</text>
+<text top="281" left="476" width="28" height="12" font="16">1024</text>
+<text top="250" left="476" width="28" height="12" font="16">1074</text>
+<text top="218" left="476" width="28" height="12" font="16">1124</text>
+<text top="187" left="476" width="28" height="12" font="16">1174</text>
+<text top="155" left="476" width="28" height="12" font="16">1224</text>
+<text top="260" left="517" width="0" height="12" font="22">Page Table (PA)</text>
+<text top="458" left="476" width="28" height="12" font="16">4096</text>
+<text top="426" left="476" width="28" height="12" font="16">4146</text>
+<text top="395" left="476" width="28" height="12" font="16">4196</text>
+<text top="451" left="517" width="0" height="12" font="22">Code (PA)</text>
+<text top="370" left="476" width="28" height="12" font="16">7232</text>
+<text top="338" left="476" width="28" height="12" font="16">7282</text>
+<text top="307" left="476" width="28" height="12" font="16">7332</text>
+<text top="363" left="517" width="0" height="12" font="22">Array (PA)</text>
+<text top="416" left="151" width="0" height="13" font="23">mov</text>
+<text top="407" left="177" width="0" height="13" font="23">inc</text>
+<text top="416" left="190" width="0" height="13" font="23">cmp</text>
+<text top="408" left="203" width="0" height="13" font="23">jne</text>
+<text top="327" left="164" width="0" height="13" font="23">mov</text>
+<text top="230" left="71" width="75" height="12" font="16">PageTable[1]</text>
+<text top="136" left="77" width="82" height="12" font="16">PageTable[39]</text>
+<text top="521" left="145" width="69" height="14" font="2">Figure 18.7:</text>
+<text top="521" left="218" width="242" height="13" font="4"><b>A Virtual (And Physical) Memory Trace</b></text>
+<text top="541" left="105" width="414" height="14" font="2">We are now ready to trace the memory references of the program.</text>
+<text top="556" left="87" width="432" height="14" font="2">When it runs, each instruction fetch will generate two memory references:</text>
+<text top="571" left="87" width="432" height="14" font="2">one to the page table to ﬁnd the physical frame that the instruction resides</text>
+<text top="586" left="87" width="432" height="14" font="2">within, and one to the instruction itself to fetch it to the CPU for process-</text>
+<text top="601" left="87" width="432" height="14" font="2">ing. In addition, there is one explicit memory reference in the form of</text>
+<text top="615" left="87" width="19" height="14" font="2">the</text>
+<text top="616" left="109" width="24" height="11" font="13">mov</text>
+<text top="615" left="137" width="382" height="14" font="2">instruction; this adds another page table access ﬁrst (to translate</text>
+<text top="630" left="87" width="432" height="14" font="2">the array virtual address to the correct physical one) and then the array</text>
+<text top="645" left="87" width="72" height="14" font="2">access itself.</text>
+<text top="662" left="105" width="414" height="14" font="2">The entire process, for the ﬁrst ﬁve loop iterations, is depicted in Fig-</text>
+<text top="677" left="87" width="432" height="14" font="2">ure 18.7 (page 11). The bottom most graph shows the instruction memory</text>
+<text top="692" left="87" width="432" height="14" font="2">references on the y-axis in black (with virtual addresses on the left, and</text>
+<text top="707" left="87" width="432" height="14" font="2">the actual physical addresses on the right); the middle graph shows array</text>
+<text top="721" left="87" width="432" height="14" font="2">accesses in dark gray (again with virtual on left and physical on right); ﬁ-</text>
+<text top="736" left="87" width="432" height="14" font="2">nally, the topmost graph shows page table memory accesses in light gray</text>
+<text top="751" left="87" width="432" height="14" font="2">(just physical, as the page table in this example resides in physical mem-</text>
+<text top="766" left="87" width="432" height="14" font="2">ory). The x-axis, for the entire trace, shows memory accesses across the</text>
+<text top="781" left="87" width="432" height="14" font="2">ﬁrst ﬁve iterations of the loop; there are 10 memory accesses per loop,</text>
+<text top="796" left="87" width="432" height="14" font="2">which includes four instruction fetches, one explicit update of memory,</text>
+<text top="811" left="87" width="432" height="14" font="2">and ﬁve page table accesses to translate those four fetches and one explicit</text>
+<text top="826" left="87" width="45" height="14" font="2">update.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="409" width="8" height="14" font="2">P</text>
+<text top="98" left="417" width="40" height="11" font="5">AGING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="139" left="147" width="414" height="14" font="2">See if you can make sense of the patterns that show up in this visu-</text>
+<text top="154" left="129" width="432" height="14" font="2">alization. In particular, what will change as the loop continues to run</text>
+<text top="169" left="129" width="432" height="14" font="2">beyond these ﬁrst ﬁve iterations? Which new memory locations will be</text>
+<text top="183" left="129" width="191" height="14" font="2">accessed? Can you ﬁgure it out?</text>
+<text top="198" left="147" width="414" height="14" font="2">This has just been the simplest of examples (only a few lines of C code),</text>
+<text top="213" left="129" width="432" height="14" font="2">and yet you might already be able to sense the complexity of understand-</text>
+<text top="228" left="129" width="432" height="14" font="2">ing the actual memory behavior of real applications. Don’t worry: it deﬁ-</text>
+<text top="243" left="129" width="432" height="14" font="2">nitely gets worse, because the mechanisms we are about to introduce only</text>
+<text top="260" left="129" width="297" height="14" font="2">complicate this already complex machinery. Sorry</text>
+<text top="258" left="426" width="4" height="9" font="7">3</text>
+<text top="260" left="431" width="4" height="14" font="2">!</text>
+<text top="298" left="97" width="105" height="17" font="6">18.6 Summary</text>
+<text top="327" left="147" width="211" height="14" font="2">We have introduced the concept of</text>
+<text top="327" left="363" width="43" height="13" font="4"><b>paging</b></text>
+<text top="327" left="410" width="151" height="14" font="2">as a solution to our chal-</text>
+<text top="342" left="129" width="432" height="14" font="2">lenge of virtualizing memory. Paging has many advantages over previ-</text>
+<text top="357" left="129" width="432" height="14" font="2">ous approaches (such as segmentation). First, it does not lead to external</text>
+<text top="372" left="129" width="432" height="14" font="2">fragmentation, as paging (by design) divides memory into ﬁxed-sized</text>
+<text top="387" left="129" width="432" height="14" font="2">units. Second, it is quite ﬂexible, enabling the sparse use of virtual ad-</text>
+<text top="402" left="129" width="76" height="14" font="2">dress spaces.</text>
+<text top="417" left="147" width="414" height="14" font="2">However, implementing paging support without care will lead to a</text>
+<text top="432" left="129" width="432" height="14" font="2">slower machine (with many extra memory accesses to access the page</text>
+<text top="447" left="129" width="432" height="14" font="2">table) as well as memory waste (with memory ﬁlled with page tables in-</text>
+<text top="462" left="129" width="432" height="14" font="2">stead of useful application data). We’ll thus have to think a little harder</text>
+<text top="477" left="129" width="432" height="14" font="2">to come up with a paging system that not only works, but works well.</text>
+<text top="492" left="129" width="369" height="14" font="2">The next two chapters, fortunately, will show us how to do so.</text>
+<text top="826" left="149" width="4" height="8" font="8">3</text>
+<text top="828" left="154" width="379" height="11" font="9">We’re not really sorry. But, we are sorry about not being sorry, if that makes sense.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="24" size="16" family="SHOJON+URWPalladioL" color="#000000"/>
+	<fontspec id="25" size="10" family="CDXTSN+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">P</text>
+<text top="98" left="95" width="40" height="11" font="5">AGING</text>
+<text top="96" left="136" width="13" height="14" font="2">: I</text>
+<text top="98" left="149" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="137" left="87" width="82" height="16" font="24"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="9">[KE+62] “One-level Storage System” by T. Kilburn, D.B.G. Edwards, M.J. Lanigan, F.H. Sum-</text>
+<text top="177" left="87" width="432" height="11" font="9">ner. IRE Trans. EC-11, 2, 1962. Reprinted in Bell and Newell, “Computer Structures: Readings</text>
+<text top="189" left="87" width="222" height="11" font="9">and Examples”. McGraw-Hill, New York, 1971.</text>
+<text top="189" left="313" width="206" height="11" font="25"><i>The Atlas pioneered the idea of dividing memory</i></text>
+<text top="201" left="87" width="432" height="11" font="25"><i>into ﬁxed-sized pages and in many senses was an early form of the memory-management ideas we see</i></text>
+<text top="213" left="87" width="124" height="11" font="25"><i>in modern computer systems.</i></text>
+<text top="229" left="87" width="432" height="11" font="9">[I09] “Intel 64 and IA-32 Architectures Software Developer’s Manuals” Intel, 2009. Available:</text>
+<text top="241" left="87" width="252" height="11" font="9">http://www.intel.com/products/processor/manuals.</text>
+<text top="241" left="346" width="173" height="11" font="25"><i>In particular, pay attention to “Volume</i></text>
+<text top="253" left="87" width="409" height="11" font="25"><i>3A: System Programming Guide Part 1” and “Volume 3B: System Programming Guide Part 2”.</i></text>
+<text top="270" left="87" width="432" height="11" font="9">[L78] “The Manchester Mark I and Atlas: A Historical Perspective” by S. H. Lavington. Com-</text>
+<text top="282" left="87" width="244" height="11" font="9">munications of the ACM, Volume 21:1, January 1978.</text>
+<text top="282" left="334" width="185" height="11" font="25"><i>This paper is a great retrospective of some of</i></text>
+<text top="294" left="87" width="432" height="11" font="25"><i>the history of the development of some important computer systems. As we sometimes forget in the US,</i></text>
+<text top="305" left="87" width="187" height="11" font="25"><i>many of these new ideas came from overseas.</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="26" size="15" family="SHOJON+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="409" width="8" height="14" font="2">P</text>
+<text top="98" left="417" width="40" height="11" font="5">AGING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="137" left="129" width="183" height="16" font="24"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="414" height="14" font="2">In this homework, you will use a simple program, which is known as</text>
+<text top="182" left="129" width="210" height="11" font="13">paging-linear-translate.py</text>
+<text top="181" left="339" width="222" height="14" font="2">, to see if you understand how simple</text>
+<text top="196" left="129" width="432" height="14" font="2">virtual-to-physical address translation works with linear page tables. See</text>
+<text top="211" left="129" width="148" height="14" font="2">the README for details.</text>
+<text top="247" left="129" width="70" height="15" font="26"><b>Questions</b></text>
+<text top="271" left="146" width="414" height="14" font="2">1. Before doing any translations, let’s use the simulator to study how</text>
+<text top="286" left="163" width="397" height="14" font="2">linear page tables change size given different parameters. Compute</text>
+<text top="301" left="163" width="397" height="14" font="2">the size of linear page tables as different parameters change. Some</text>
+<text top="316" left="163" width="245" height="14" font="2">suggested inputs are below; by using the</text>
+<text top="317" left="412" width="16" height="11" font="13">-v</text>
+<text top="316" left="432" width="129" height="14" font="2">ﬂag, you can see how</text>
+<text top="331" left="163" width="397" height="14" font="2">many page-table entries are ﬁlled. First, to understand how linear</text>
+<text top="346" left="163" width="397" height="14" font="2">page table size changes as the address space grows, run with these</text>
+<text top="361" left="163" width="31" height="14" font="2">ﬂags:</text>
+<text top="386" left="179" width="8" height="14" font="2">•</text>
+<text top="387" left="194" width="218" height="11" font="13">-P 1k -a 1m -p 512m -v -n 0</text>
+<text top="405" left="179" width="8" height="14" font="2">•</text>
+<text top="406" left="194" width="218" height="11" font="13">-P 1k -a 2m -p 512m -v -n 0</text>
+<text top="425" left="179" width="8" height="14" font="2">•</text>
+<text top="426" left="194" width="218" height="11" font="13">-P 1k -a 4m -p 512m -v -n 0</text>
+<text top="450" left="146" width="414" height="14" font="2">2. Then, let’s understand how linear page table size changes as page</text>
+<text top="465" left="163" width="397" height="14" font="2">size grows. Before running any of these, try to think about the ex-</text>
+<text top="480" left="163" width="397" height="14" font="2">pected trends. How should page-table size change as the address</text>
+<text top="495" left="163" width="397" height="14" font="2">space grows? As the page size grows? Why not use big pages in</text>
+<text top="510" left="163" width="50" height="14" font="2">general?</text>
+<text top="534" left="179" width="8" height="14" font="2">•</text>
+<text top="535" left="194" width="218" height="11" font="13">-P 1k -a 1m -p 512m -v -n 0</text>
+<text top="554" left="179" width="8" height="14" font="2">•</text>
+<text top="555" left="194" width="218" height="11" font="13">-P 2k -a 1m -p 512m -v -n 0</text>
+<text top="574" left="179" width="8" height="14" font="2">•</text>
+<text top="575" left="194" width="218" height="11" font="13">-P 4k -a 1m -p 512m -v -n 0</text>
+<text top="598" left="146" width="414" height="14" font="2">3. Now let’s do some translations. Start with some small examples,</text>
+<text top="613" left="163" width="397" height="14" font="2">and change the number of pages that are allocated to the address</text>
+<text top="628" left="163" width="86" height="14" font="2">space with the</text>
+<text top="629" left="254" width="16" height="11" font="13">-u</text>
+<text top="628" left="273" width="287" height="14" font="2">ﬂag. What happens as you increase the percent-</text>
+<text top="643" left="163" width="316" height="14" font="2">age of pages that are allocated in each address space?</text>
+<text top="668" left="179" width="8" height="14" font="2">•</text>
+<text top="669" left="194" width="218" height="11" font="13">-P 1k -a 16k -p 32k -v -u 0</text>
+<text top="688" left="179" width="8" height="14" font="2">•</text>
+<text top="688" left="194" width="226" height="11" font="13">-P 1k -a 16k -p 32k -v -u 25</text>
+<text top="707" left="179" width="8" height="14" font="2">•</text>
+<text top="708" left="194" width="226" height="11" font="13">-P 1k -a 16k -p 32k -v -u 50</text>
+<text top="727" left="179" width="8" height="14" font="2">•</text>
+<text top="728" left="194" width="226" height="11" font="13">-P 1k -a 16k -p 32k -v -u 75</text>
+<text top="747" left="179" width="8" height="14" font="2">•</text>
+<text top="748" left="194" width="234" height="11" font="13">-P 1k -a 16k -p 32k -v -u 100</text>
+<text top="771" left="146" width="414" height="14" font="2">4. Now let’s try some different random seeds, and some different (and</text>
+<text top="786" left="163" width="404" height="14" font="2">sometimes quite crazy) address-space parameters, for variety. Which</text>
+<text top="801" left="163" width="326" height="14" font="2">of these parameter combinations are unrealistic? Why?</text>
+<text top="826" left="179" width="8" height="14" font="2">•</text>
+<text top="827" left="194" width="32" height="11" font="13">-P 8</text>
+<text top="827" left="242" width="40" height="11" font="13">-a 32</text>
+<text top="827" left="307" width="121" height="11" font="13">-p 1024 -v -s 1</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="11">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="11">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">P</text>
+<text top="98" left="95" width="40" height="11" font="5">AGING</text>
+<text top="96" left="136" width="13" height="14" font="2">: I</text>
+<text top="98" left="149" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="139" left="137" width="8" height="14" font="2">•</text>
+<text top="139" left="152" width="97" height="11" font="13">-P 8k -a 32k</text>
+<text top="139" left="265" width="40" height="11" font="13">-p 1m</text>
+<text top="139" left="330" width="56" height="11" font="13">-v -s 2</text>
+<text top="159" left="137" width="8" height="14" font="2">•</text>
+<text top="159" left="152" width="234" height="11" font="13">-P 1m -a 256m -p 512m -v -s 3</text>
+<text top="183" left="105" width="414" height="14" font="2">5. Use the program to try out some other problems. Can you ﬁnd the</text>
+<text top="198" left="122" width="397" height="14" font="2">limits of where the program doesn’t work anymore? For example,</text>
+<text top="213" left="122" width="241" height="14" font="2">what happens if the address-space size is</text>
+<text top="213" left="365" width="34" height="14" font="3"><i>bigger</i></text>
+<text top="213" left="402" width="117" height="14" font="2">than physical mem-</text>
+<text top="228" left="122" width="26" height="14" font="2">ory?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+</pdf2xml>

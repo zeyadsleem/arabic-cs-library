@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="WMSFTT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="WMSFTT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="WKUKON+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="LCAVNK+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="13" family="ILOGAC+URWPalladioL-Roma" color="#000000"/>
+<text top="194" left="523" width="34" height="29" font="0">12</text>
+<text top="263" left="169" width="350" height="20" font="1">A Dialogue on Memory Virtualization</text>
+<text top="349" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="349" left="143" width="196" height="14" font="3"><i>So, are we done with virtualization?</i></text>
+<text top="370" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="370" left="152" width="21" height="14" font="3"><i>No!</i></text>
+<text top="390" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="390" left="143" width="376" height="14" font="3"><i>Hey, no reason to get so excited; I was just asking a question. Students</i></text>
+<text top="405" left="87" width="164" height="14" font="3"><i>are supposed to do that, right?</i></text>
+<text top="425" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="425" left="154" width="365" height="14" font="3"><i>Well, professors do always say that, but really they mean this: ask</i></text>
+<text top="440" left="87" width="54" height="14" font="3"><i>questions,</i></text>
+<text top="440" left="145" width="9" height="13" font="4"><b>if</b></text>
+<text top="440" left="158" width="130" height="14" font="3"><i>they are good questions,</i></text>
+<text top="440" left="291" width="22" height="13" font="4"><b>and</b></text>
+<text top="440" left="317" width="202" height="14" font="3"><i>you have actually put a little thought</i></text>
+<text top="455" left="87" width="55" height="14" font="3"><i>into them.</i></text>
+<text top="476" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="476" left="143" width="246" height="14" font="3"><i>Well, that sure takes the wind out of my sails.</i></text>
+<text top="496" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="496" left="155" width="364" height="14" font="3"><i>Mission accomplished. In any case, we are not nearly done with</i></text>
+<text top="511" left="87" width="432" height="14" font="3"><i>virtualization! Rather, you have just seen how to virtualize the CPU, but really</i></text>
+<text top="526" left="87" width="432" height="14" font="3"><i>there is a big monster waiting in the closet: memory. Virtualizing memory is</i></text>
+<text top="541" left="87" width="432" height="14" font="3"><i>complicated and requires us to understand many more intricate details about</i></text>
+<text top="556" left="87" width="190" height="14" font="3"><i>how the hardware and OS interact.</i></text>
+<text top="576" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="576" left="143" width="198" height="14" font="3"><i>That sounds cool. Why is it so hard?</i></text>
+<text top="597" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="596" left="154" width="365" height="14" font="3"><i>Well, there are a lot of details, and you have to keep them straight</i></text>
+<text top="611" left="87" width="432" height="14" font="3"><i>in your head to really develop a mental model of what is going on. We’ll start</i></text>
+<text top="626" left="87" width="432" height="14" font="3"><i>simple, with very basic techniques like base/bounds, and slowly add complexity</i></text>
+<text top="641" left="87" width="432" height="14" font="3"><i>to tackle new challenges, including fun topics like TLBs and multi-level page</i></text>
+<text top="656" left="87" width="432" height="14" font="3"><i>tables. Eventually, we’ll be able to describe the workings of a fully-functional</i></text>
+<text top="671" left="87" width="182" height="14" font="3"><i>modern virtual memory manager.</i></text>
+<text top="692" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="691" left="144" width="375" height="14" font="3"><i>Neat! Any tips for the poor student, inundated with all of this infor-</i></text>
+<text top="706" left="87" width="202" height="14" font="3"><i>mation and generally sleep-deprived?</i></text>
+<text top="727" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="727" left="154" width="365" height="14" font="3"><i>For the sleep deprivation, that’s easy: sleep more (and party less).</i></text>
+<text top="742" left="87" width="282" height="14" font="3"><i>For understanding virtual memory, start with this:</i></text>
+<text top="742" left="375" width="144" height="13" font="4"><b>every address generated</b></text>
+<text top="757" left="87" width="227" height="13" font="4"><b>by a user program is a virtual address</b></text>
+<text top="757" left="314" width="205" height="14" font="3"><i>. The OS is just providing an illusion</i></text>
+<text top="772" left="87" width="432" height="14" font="3"><i>to each process, specifically that it has its own large and private memory; with</i></text>
+<text top="786" left="87" width="432" height="14" font="3"><i>some hardware help, the OS will turn these pretend virtual addresses into real</i></text>
+<text top="801" left="87" width="372" height="14" font="3"><i>physical addresses, and thus be able to locate the desired information.</i></text>
+<text top="862" left="300" width="7" height="12" font="5">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="11" family="ILOGAC+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="12" family="ILOGAC+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="ILOGAC+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="12" font="5">2</text>
+<text top="96" left="291" width="25" height="12" font="5">A D</text>
+<text top="98" left="316" width="76" height="10" font="6">IALOGUE ON</text>
+<text top="96" left="397" width="13" height="12" font="5">M</text>
+<text top="98" left="410" width="42" height="10" font="6">EMORY</text>
+<text top="96" left="456" width="10" height="12" font="5">V</text>
+<text top="98" left="466" width="94" height="10" font="6">IRTUALIZATION</text>
+<text top="139" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="139" left="186" width="375" height="14" font="3"><i>OK, I think I can remember that... (to self) every address from a user</i></text>
+<text top="154" left="129" width="395" height="14" font="3"><i>program is virtual, every address from a user program is virtual, every ...</i></text>
+<text top="174" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="174" left="194" width="173" height="14" font="3"><i>What are you mumbling about?</i></text>
+<text top="194" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="194" left="186" width="374" height="14" font="3"><i>Oh nothing.... (awkward pause) ... Anyway, why does the OS want</i></text>
+<text top="209" left="129" width="162" height="14" font="3"><i>to provide this illusion again?</i></text>
+<text top="230" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="230" left="195" width="39" height="14" font="3"><i>Mostly</i></text>
+<text top="230" left="237" width="64" height="13" font="4"><b>ease of use</b></text>
+<text top="230" left="301" width="260" height="14" font="3"><i>: the OS will give each program the view that it</i></text>
+<text top="244" left="129" width="123" height="14" font="3"><i>has a large contiguous</i></text>
+<text top="245" left="256" width="82" height="13" font="4"><b>address space</b></text>
+<text top="244" left="343" width="218" height="14" font="3"><i>to put its code and data into; thus, as a</i></text>
+<text top="259" left="129" width="432" height="14" font="3"><i>programmer, you never have to worry about things like “where should I store this</i></text>
+<text top="274" left="129" width="432" height="14" font="3"><i>variable?” because the virtual address space of the program is large and has lots</i></text>
+<text top="289" left="129" width="432" height="14" font="3"><i>of room for that sort of thing. Life, for a programmer, becomes much more tricky</i></text>
+<text top="304" left="129" width="432" height="14" font="3"><i>if you have to worry about fitting all of your code data into a small, crowded</i></text>
+<text top="319" left="129" width="47" height="14" font="3"><i>memory.</i></text>
+<text top="340" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="340" left="185" width="56" height="14" font="3"><i>Why else?</i></text>
+<text top="360" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="360" left="196" width="28" height="14" font="3"><i>Well,</i></text>
+<text top="360" left="228" width="55" height="13" font="4"><b>isolation</b></text>
+<text top="360" left="287" width="20" height="14" font="3"><i>and</i></text>
+<text top="360" left="311" width="62" height="13" font="4"><b>protection</b></text>
+<text top="360" left="377" width="184" height="14" font="3"><i>are big deals, too. We don’t want</i></text>
+<text top="375" left="129" width="432" height="14" font="3"><i>one errant program to be able to read, or worse, overwrite, some other program’s</i></text>
+<text top="390" left="129" width="88" height="14" font="3"><i>memory, do we?</i></text>
+<text top="410" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="410" left="188" width="373" height="14" font="3"><i>Probably not. Unless it’s a program written by someone you don’t</i></text>
+<text top="425" left="129" width="22" height="14" font="3"><i>like.</i></text>
+<text top="446" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="445" left="194" width="367" height="14" font="3"><i>Hmmm.... I think we might need to add a class on morals and ethics</i></text>
+<text top="460" left="129" width="432" height="14" font="3"><i>to your schedule for next semester. Perhaps OS class isn’t getting the right mes-</i></text>
+<text top="475" left="129" width="63" height="14" font="3"><i>sage across.</i></text>
+<text top="496" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="496" left="186" width="375" height="14" font="3"><i>Maybe we should. But remember, it’s not me who taught us that the</i></text>
+<text top="511" left="129" width="415" height="14" font="3"><i>proper OS response to errant process behavior is to kill the offending process!</i></text>
+<text top="881" left="129" width="11" height="12" font="5">O</text>
+<text top="883" left="141" width="60" height="10" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="12" font="5">S</text>
+<text top="898" left="137" width="45" height="10" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="11" font="7">[V</text>
+<text top="914" left="143" width="39" height="9" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="11" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="10" font="6">WWW</text>
+<text top="896" left="327" width="3" height="12" font="5">.</text>
+<text top="898" left="331" width="36" height="10" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="12" font="5">.</text>
+<text top="898" left="371" width="25" height="10" font="6">ORG</text>
+</page>
+</pdf2xml>

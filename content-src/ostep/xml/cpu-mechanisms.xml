@@ -1,0 +1,1386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="IGHYWV+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="IGHYWV+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="SPTVFB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="WSWVYW+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="ICHZKU+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="5" size="11" family="SPTVFB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="16" family="SPTVFB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="13" family="JNCNMC+NimbusMonL-Regu" color="#000000"/>
+<text top="197" left="540" width="17" height="23" font="0">6</text>
+<text top="267" left="164" width="355" height="16" font="1">Mechanism: Limited Direct Execution</text>
+<text top="349" left="87" width="432" height="14" font="2">In order to virtualize the CPU, the operating system needs to somehow</text>
+<text top="364" left="87" width="432" height="14" font="2">share the physical CPU among many jobs running seemingly at the same</text>
+<text top="379" left="87" width="432" height="14" font="2">time. The basic idea is simple: run one process for a little while, then</text>
+<text top="393" left="87" width="202" height="14" font="2">run another one, and so forth. By</text>
+<text top="394" left="293" width="78" height="13" font="3"><b>time sharing</b></text>
+<text top="393" left="375" width="144" height="14" font="2">the CPU in this manner,</text>
+<text top="408" left="87" width="154" height="14" font="2">virtualization is achieved.</text>
+<text top="424" left="105" width="414" height="14" font="2">There are a few challenges, however, in building such virtualization</text>
+<text top="439" left="87" width="139" height="14" font="2">machinery. The first is</text>
+<text top="439" left="231" width="67" height="14" font="4"><i>performance</i></text>
+<text top="439" left="298" width="221" height="14" font="2">: how can we implement virtualiza-</text>
+<text top="454" left="87" width="432" height="14" font="2">tion without adding excessive overhead to the system? The second is</text>
+<text top="469" left="87" width="38" height="14" font="4"><i>control</i></text>
+<text top="469" left="125" width="394" height="14" font="2">: how can we run processes efficiently while retaining control over</text>
+<text top="484" left="87" width="432" height="14" font="2">the CPU? Control is particularly important to the OS, as it is in charge of</text>
+<text top="499" left="87" width="432" height="14" font="2">resources; without control, a process could simply run forever and take</text>
+<text top="514" left="87" width="432" height="14" font="2">over the machine, or access information that it should not be allowed to</text>
+<text top="529" left="87" width="432" height="14" font="2">access. Obtaining high performance while maintaining control is thus</text>
+<text top="544" left="87" width="365" height="14" font="2">one of the central challenges in building an operating system.</text>
+<text top="585" left="269" width="8" height="14" font="2">T</text>
+<text top="587" left="278" width="16" height="11" font="5">HE</text>
+<text top="585" left="298" width="10" height="14" font="2">C</text>
+<text top="587" left="309" width="24" height="11" font="5">RUX</text>
+<text top="585" left="333" width="3" height="14" font="2">:</text>
+<text top="600" left="116" width="11" height="14" font="2">H</text>
+<text top="602" left="128" width="20" height="11" font="5">OW</text>
+<text top="600" left="151" width="8" height="14" font="2">T</text>
+<text top="602" left="160" width="8" height="11" font="5">O</text>
+<text top="600" left="173" width="8" height="14" font="2">E</text>
+<text top="602" left="182" width="66" height="11" font="5">FFICIENTLY</text>
+<text top="600" left="252" width="10" height="14" font="2">V</text>
+<text top="602" left="262" width="63" height="11" font="5">IRTUALIZE</text>
+<text top="600" left="329" width="8" height="14" font="2">T</text>
+<text top="602" left="338" width="16" height="11" font="5">HE</text>
+<text top="600" left="358" width="47" height="14" font="2">CPU W</text>
+<text top="602" left="406" width="21" height="11" font="5">ITH</text>
+<text top="600" left="431" width="10" height="14" font="2">C</text>
+<text top="602" left="441" width="50" height="11" font="5">ONTROL</text>
+<text top="615" left="105" width="414" height="14" font="2">The OS must virtualize the CPU in an efficient manner while retaining</text>
+<text top="630" left="87" width="432" height="14" font="2">control over the system. To do so, both hardware and operating-system</text>
+<text top="645" left="87" width="432" height="14" font="2">support will be required. The OS will often use a judicious bit of hard-</text>
+<text top="660" left="87" width="335" height="14" font="2">ware support in order to accomplish its work effectively.</text>
+<text top="706" left="55" width="332" height="17" font="6">6.1 Basic Technique: Limited Direct Execution</text>
+<text top="736" left="105" width="414" height="14" font="2">To make a program run as fast as one might expect, not surprisingly</text>
+<text top="751" left="87" width="343" height="14" font="2">OS developers came up with a technique, which we call</text>
+<text top="751" left="434" width="85" height="13" font="3"><b>limited direct</b></text>
+<text top="766" left="87" width="59" height="13" font="3"><b>execution</b></text>
+<text top="766" left="146" width="373" height="14" font="2">. The “direct execution” part of the idea is simple: just run the</text>
+<text top="781" left="87" width="432" height="14" font="2">program directly on the CPU. Thus, when the OS wishes to start a pro-</text>
+<text top="796" left="87" width="432" height="14" font="2">gram running, it creates a process entry for it in a process list, allocates</text>
+<text top="811" left="87" width="432" height="14" font="2">some memory for it, loads the program code into memory (from disk), lo-</text>
+<text top="826" left="87" width="163" height="14" font="2">cates its entry point (i.e., the</text>
+<text top="827" left="253" width="48" height="11" font="7">main()</text>
+<text top="826" left="304" width="215" height="14" font="2">routine or something similar), jumps</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="8" size="12" family="SPTVFB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="SPTVFB+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="298" width="13" height="14" font="2">M</text>
+<text top="98" left="312" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="377" width="16" height="14" font="2">: L</text>
+<text top="98" left="394" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="440" width="10" height="14" font="2">D</text>
+<text top="98" left="451" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="490" width="8" height="14" font="2">E</text>
+<text top="98" left="498" width="62" height="11" font="5">XECUTION</text>
+<text top="136" left="152" width="19" height="13" font="3"><b>OS</b></text>
+<text top="136" left="384" width="52" height="13" font="3"><b>Program</b></text>
+<text top="151" left="152" width="163" height="14" font="2">Create entry for process list</text>
+<text top="166" left="152" width="179" height="14" font="2">Allocate memory for program</text>
+<text top="181" left="152" width="166" height="14" font="2">Load program into memory</text>
+<text top="196" left="152" width="165" height="14" font="2">Set up stack with argc/argv</text>
+<text top="211" left="152" width="86" height="14" font="2">Clear registers</text>
+<text top="226" left="152" width="47" height="14" font="2">Execute</text>
+<text top="226" left="202" width="22" height="13" font="3"><b>call</b></text>
+<text top="226" left="227" width="39" height="14" font="2">main()</text>
+<text top="241" left="384" width="68" height="14" font="2">Run main()</text>
+<text top="256" left="384" width="47" height="14" font="2">Execute</text>
+<text top="256" left="434" width="38" height="13" font="3"><b>return</b></text>
+<text top="256" left="475" width="62" height="14" font="2">from main</text>
+<text top="271" left="152" width="142" height="14" font="2">Free memory of process</text>
+<text top="286" left="152" width="150" height="14" font="2">Remove from process list</text>
+<text top="322" left="181" width="62" height="14" font="2">Figure 6.1:</text>
+<text top="322" left="247" width="262" height="13" font="3"><b>Direct Execution Protocol (Without Limits)</b></text>
+<text top="360" left="129" width="432" height="14" font="2">to it, and starts running the user’s code. Figure 6.1 shows this basic di-</text>
+<text top="375" left="129" width="432" height="14" font="2">rect execution protocol (without any limits, yet), using a normal call and</text>
+<text top="390" left="129" width="189" height="14" font="2">return to jump to the program’s</text>
+<text top="390" left="321" width="48" height="11" font="7">main()</text>
+<text top="390" left="373" width="177" height="14" font="2">and later back into the kernel.</text>
+<text top="405" left="147" width="414" height="14" font="2">Sounds simple, no? But this approach gives rise to a few problems</text>
+<text top="419" left="129" width="432" height="14" font="2">in our quest to virtualize the CPU. The first is simple: if we just run a</text>
+<text top="434" left="129" width="432" height="14" font="2">program, how can the OS make sure the program doesn’t do anything</text>
+<text top="449" left="129" width="432" height="14" font="2">that we don’t want it to do, while still running it efficiently? The second:</text>
+<text top="464" left="129" width="432" height="14" font="2">when we are running a process, how does the operating system stop it</text>
+<text top="479" left="129" width="401" height="14" font="2">from running and switch to another process, thus implementing the</text>
+<text top="479" left="533" width="28" height="13" font="3"><b>time</b></text>
+<text top="494" left="129" width="46" height="13" font="3"><b>sharing</b></text>
+<text top="494" left="179" width="199" height="14" font="2">we require to virtualize the CPU?</text>
+<text top="509" left="147" width="414" height="14" font="2">In answering these questions below, we’ll get a much better sense of</text>
+<text top="524" left="129" width="432" height="14" font="2">what is needed to virtualize the CPU. In developing these techniques,</text>
+<text top="539" left="129" width="432" height="14" font="2">we’ll also see where the “limited” part of the name arises from; without</text>
+<text top="554" left="129" width="432" height="14" font="2">limits on running programs, the OS wouldn’t be in control of anything</text>
+<text top="569" left="129" width="432" height="14" font="2">and thus would be “just a library” — a very sad state of affairs for an</text>
+<text top="584" left="129" width="159" height="14" font="2">aspiring operating system!</text>
+<text top="621" left="97" width="274" height="17" font="6">6.2 Problem #1: Restricted Operations</text>
+<text top="651" left="147" width="414" height="14" font="2">Direct execution has the obvious advantage of being fast; the program</text>
+<text top="666" left="129" width="432" height="14" font="2">runs natively on the hardware CPU and thus executes as quickly as one</text>
+<text top="681" left="129" width="432" height="14" font="2">would expect. But running on the CPU introduces a problem: what if</text>
+<text top="695" left="129" width="432" height="14" font="2">the process wishes to perform some kind of restricted operation, such</text>
+<text top="710" left="129" width="432" height="14" font="2">as issuing an I/O request to a disk, or gaining access to more system</text>
+<text top="725" left="129" width="210" height="14" font="2">resources such as CPU or memory?</text>
+<text top="764" left="172" width="8" height="14" font="2">T</text>
+<text top="766" left="181" width="16" height="11" font="5">HE</text>
+<text top="764" left="201" width="10" height="14" font="2">C</text>
+<text top="766" left="211" width="24" height="11" font="5">RUX</text>
+<text top="764" left="236" width="19" height="14" font="2">: H</text>
+<text top="766" left="256" width="20" height="11" font="5">OW</text>
+<text top="764" left="280" width="8" height="14" font="2">T</text>
+<text top="766" left="288" width="8" height="11" font="5">O</text>
+<text top="764" left="301" width="8" height="14" font="2">P</text>
+<text top="766" left="310" width="49" height="11" font="5">ERFORM</text>
+<text top="764" left="363" width="9" height="14" font="2">R</text>
+<text top="766" left="372" width="64" height="11" font="5">ESTRICTED</text>
+<text top="764" left="440" width="11" height="14" font="2">O</text>
+<text top="766" left="452" width="66" height="11" font="5">PERATIONS</text>
+<text top="779" left="147" width="414" height="14" font="2">A process must be able to perform I/O and some other restricted oper-</text>
+<text top="794" left="129" width="432" height="14" font="2">ations, but without giving the process complete control over the system.</text>
+<text top="809" left="129" width="328" height="14" font="2">How can the OS and hardware work together to do so?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="16" height="14" font="2">: L</text>
+<text top="98" left="183" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="229" width="10" height="14" font="2">D</text>
+<text top="98" left="241" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="279" width="8" height="14" font="2">E</text>
+<text top="98" left="288" width="62" height="11" font="5">XECUTION</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="148" left="121" width="10" height="14" font="2">A</text>
+<text top="150" left="132" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="159" width="22" height="14" font="2">: W</text>
+<text top="150" left="182" width="17" height="11" font="5">HY</text>
+<text top="148" left="202" width="7" height="14" font="2">S</text>
+<text top="150" left="210" width="39" height="11" font="5">YSTEM</text>
+<text top="148" left="253" width="10" height="14" font="2">C</text>
+<text top="150" left="263" width="29" height="11" font="5">ALLS</text>
+<text top="148" left="296" width="8" height="14" font="2">L</text>
+<text top="150" left="305" width="26" height="11" font="5">OOK</text>
+<text top="148" left="335" width="8" height="14" font="2">L</text>
+<text top="150" left="344" width="19" height="11" font="5">IKE</text>
+<text top="148" left="368" width="8" height="14" font="2">P</text>
+<text top="150" left="376" width="65" height="11" font="5">ROCEDURE</text>
+<text top="148" left="445" width="10" height="14" font="2">C</text>
+<text top="150" left="456" width="29" height="11" font="5">ALLS</text>
+<text top="168" left="87" width="309" height="14" font="2">You may wonder why a call to a system call, such as</text>
+<text top="169" left="400" width="48" height="11" font="7">open()</text>
+<text top="168" left="451" width="13" height="14" font="2">or</text>
+<text top="169" left="467" width="48" height="11" font="7">read()</text>
+<text top="168" left="516" width="3" height="14" font="2">,</text>
+<text top="183" left="87" width="432" height="14" font="2">looks exactly like a typical procedure call in C; that is, if it looks just like</text>
+<text top="198" left="87" width="432" height="14" font="2">a procedure call, how does the system know it’s a system call, and do all</text>
+<text top="213" left="87" width="223" height="14" font="2">the right stuff? The simple reason: it</text>
+<text top="213" left="314" width="9" height="14" font="4"><i>is</i></text>
+<text top="213" left="328" width="191" height="14" font="2">a procedure call, but hidden in-</text>
+<text top="228" left="87" width="432" height="14" font="2">side that procedure call is the famous trap instruction. More specifically,</text>
+<text top="243" left="87" width="84" height="14" font="2">when you call</text>
+<text top="244" left="175" width="48" height="11" font="7">open()</text>
+<text top="243" left="227" width="292" height="14" font="2">(for example), you are executing a procedure call</text>
+<text top="258" left="87" width="236" height="14" font="2">into the C library. Therein, whether for</text>
+<text top="259" left="327" width="48" height="11" font="7">open()</text>
+<text top="258" left="379" width="140" height="14" font="2">or any of the other sys-</text>
+<text top="273" left="87" width="432" height="14" font="2">tem calls provided, the library uses an agreed-upon calling convention</text>
+<text top="288" left="87" width="233" height="14" font="2">with the kernel to put the arguments to</text>
+<text top="289" left="324" width="48" height="11" font="7">open()</text>
+<text top="288" left="376" width="143" height="14" font="2">in well-known locations</text>
+<text top="303" left="87" width="432" height="14" font="2">(e.g., on the stack, or in specific registers), puts the system-call number</text>
+<text top="318" left="87" width="432" height="14" font="2">into a well-known location as well (again, onto the stack or a register),</text>
+<text top="333" left="87" width="432" height="14" font="2">and then executes the aforementioned trap instruction. The code in the</text>
+<text top="348" left="87" width="432" height="14" font="2">library after the trap unpacks return values and returns control to the</text>
+<text top="363" left="87" width="432" height="14" font="2">program that issued the system call. Thus, the parts of the C library that</text>
+<text top="378" left="87" width="432" height="14" font="2">make system calls are hand-coded in assembly, as they need to carefully</text>
+<text top="393" left="87" width="432" height="14" font="2">follow convention in order to process arguments and return values cor-</text>
+<text top="408" left="87" width="432" height="14" font="2">rectly, as well as execute the hardware-specific trap instruction. And now</text>
+<text top="423" left="87" width="432" height="14" font="2">you know why you personally don’t have to write assembly code to trap</text>
+<text top="437" left="87" width="385" height="14" font="2">into an OS; somebody has already written that assembly for you.</text>
+<text top="475" left="105" width="414" height="14" font="2">One approach would simply be to let any process do whatever it wants</text>
+<text top="490" left="87" width="432" height="14" font="2">in terms of I/O and other related operations. However, doing so would</text>
+<text top="505" left="87" width="432" height="14" font="2">prevent the construction of many kinds of systems that are desirable. For</text>
+<text top="520" left="87" width="432" height="14" font="2">example, if we wish to build a file system that checks permissions before</text>
+<text top="535" left="87" width="432" height="14" font="2">granting access to a file, we can’t simply let any user process issue I/Os</text>
+<text top="550" left="87" width="432" height="14" font="2">to the disk; if we did, a process could simply read or write the entire disk</text>
+<text top="565" left="87" width="227" height="14" font="2">and thus all protections would be lost.</text>
+<text top="582" left="105" width="414" height="14" font="2">Thus, the approach we take is to introduce a new processor mode,</text>
+<text top="597" left="87" width="58" height="14" font="2">known as</text>
+<text top="597" left="148" width="64" height="13" font="3"><b>user mode</b></text>
+<text top="597" left="212" width="307" height="14" font="2">; code that runs in user mode is restricted in what it</text>
+<text top="612" left="87" width="432" height="14" font="2">can do. For example, when running in user mode, a process can’t issue</text>
+<text top="627" left="87" width="432" height="14" font="2">I/O requests; doing so would result in the processor raising an exception;</text>
+<text top="642" left="87" width="244" height="14" font="2">the OS would then likely kill the process.</text>
+<text top="659" left="105" width="160" height="14" font="2">In contrast to user mode is</text>
+<text top="659" left="268" width="78" height="13" font="3"><b>kernel mode</b></text>
+<text top="659" left="346" width="173" height="14" font="2">, which the operating system</text>
+<text top="674" left="87" width="432" height="14" font="2">(or kernel) runs in. In this mode, code that runs can do what it likes, in-</text>
+<text top="689" left="87" width="432" height="14" font="2">cluding privileged operations such as issuing I/O requests and executing</text>
+<text top="704" left="87" width="201" height="14" font="2">all types of restricted instructions.</text>
+<text top="721" left="105" width="414" height="14" font="2">We are still left with a challenge, however: what should a user pro-</text>
+<text top="736" left="87" width="432" height="14" font="2">cess do when it wishes to perform some kind of privileged operation,</text>
+<text top="751" left="87" width="432" height="14" font="2">such as reading from disk? To enable this, virtually all modern hard-</text>
+<text top="766" left="87" width="354" height="14" font="2">ware provides the ability for user programs to perform a</text>
+<text top="766" left="446" width="70" height="13" font="3"><b>system call</b></text>
+<text top="766" left="516" width="3" height="14" font="2">.</text>
+<text top="781" left="87" width="432" height="14" font="2">Pioneered on ancient machines such as the Atlas [K+61,L78], system calls</text>
+<text top="796" left="87" width="432" height="14" font="2">allow the kernel to carefully expose certain key pieces of functionality to</text>
+<text top="811" left="87" width="432" height="14" font="2">user programs, such as accessing the file system, creating and destroy-</text>
+<text top="826" left="87" width="432" height="14" font="2">ing processes, communicating with other processes, and allocating more</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="9" family="SPTVFB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="11" size="7" family="SPTVFB+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="298" width="13" height="14" font="2">M</text>
+<text top="98" left="312" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="377" width="16" height="14" font="2">: L</text>
+<text top="98" left="394" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="440" width="10" height="14" font="2">D</text>
+<text top="98" left="451" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="490" width="8" height="14" font="2">E</text>
+<text top="98" left="498" width="62" height="11" font="5">XECUTION</text>
+<text top="148" left="216" width="8" height="14" font="2">T</text>
+<text top="150" left="224" width="11" height="11" font="5">IP</text>
+<text top="148" left="236" width="19" height="14" font="2">: U</text>
+<text top="150" left="255" width="13" height="11" font="5">SE</text>
+<text top="148" left="272" width="8" height="14" font="2">P</text>
+<text top="150" left="281" width="63" height="11" font="5">ROTECTED</text>
+<text top="148" left="348" width="10" height="14" font="2">C</text>
+<text top="150" left="358" width="50" height="11" font="5">ONTROL</text>
+<text top="148" left="411" width="8" height="14" font="2">T</text>
+<text top="150" left="420" width="54" height="11" font="5">RANSFER</text>
+<text top="163" left="129" width="432" height="14" font="2">The hardware assists the OS by providing different modes of execution.</text>
+<text top="178" left="129" width="12" height="14" font="2">In</text>
+<text top="178" left="144" width="64" height="13" font="3"><b>user mode</b></text>
+<text top="178" left="208" width="353" height="14" font="2">, applications do not have full access to hardware resources.</text>
+<text top="193" left="129" width="12" height="14" font="2">In</text>
+<text top="193" left="146" width="78" height="13" font="3"><b>kernel mode</b></text>
+<text top="193" left="224" width="337" height="14" font="2">, the OS has access to the full resources of the machine.</text>
+<text top="208" left="129" width="132" height="14" font="2">Special instructions to</text>
+<text top="208" left="265" width="25" height="13" font="3"><b>trap</b></text>
+<text top="208" left="294" width="114" height="14" font="2">into the kernel and</text>
+<text top="208" left="412" width="102" height="13" font="3"><b>return-from-trap</b></text>
+<text top="208" left="517" width="43" height="14" font="2">back to</text>
+<text top="223" left="129" width="432" height="14" font="2">user-mode programs are also provided, as well as instructions that allow</text>
+<text top="238" left="129" width="222" height="14" font="2">the OS to tell the hardware where the</text>
+<text top="238" left="354" width="59" height="13" font="3"><b>trap table</b></text>
+<text top="238" left="416" width="112" height="14" font="2">resides in memory.</text>
+<text top="284" left="129" width="432" height="14" font="2">memory. Most operating systems provide a few hundred calls (see the</text>
+<text top="299" left="129" width="432" height="14" font="2">POSIX standard for details [P10]); early Unix systems exposed a more</text>
+<text top="314" left="129" width="224" height="14" font="2">concise subset of around twenty calls.</text>
+<text top="330" left="147" width="338" height="14" font="2">To execute a system call, a program must execute a special</text>
+<text top="330" left="488" width="25" height="13" font="3"><b>trap</b></text>
+<text top="330" left="515" width="46" height="14" font="2">instruc-</text>
+<text top="345" left="129" width="432" height="14" font="2">tion. This instruction simultaneously jumps into the kernel and raises the</text>
+<text top="360" left="129" width="432" height="14" font="2">privilege level to kernel mode; once in the kernel, the system can now per-</text>
+<text top="375" left="129" width="432" height="14" font="2">form whatever privileged operations are needed (if allowed), and thus do</text>
+<text top="390" left="129" width="432" height="14" font="2">the required work for the calling process. When finished, the OS calls a</text>
+<text top="405" left="129" width="41" height="14" font="2">special</text>
+<text top="405" left="173" width="102" height="13" font="3"><b>return-from-trap</b></text>
+<text top="405" left="278" width="283" height="14" font="2">instruction, which, as you might expect, returns</text>
+<text top="420" left="129" width="432" height="14" font="2">into the calling user program while simultaneously reducing the privi-</text>
+<text top="435" left="129" width="172" height="14" font="2">lege level back to user mode.</text>
+<text top="451" left="147" width="414" height="14" font="2">The hardware needs to be a bit careful when executing a trap, in that it</text>
+<text top="466" left="129" width="432" height="14" font="2">must make sure to save enough of the caller’s registers in order to be able</text>
+<text top="481" left="129" width="432" height="14" font="2">to return correctly when the OS issues the return-from-trap instruction.</text>
+<text top="496" left="129" width="432" height="14" font="2">On x86, for example, the processor will push the program counter, flags,</text>
+<text top="511" left="129" width="253" height="14" font="2">and a few other registers onto a per-process</text>
+<text top="511" left="385" width="74" height="13" font="3"><b>kernel stack</b></text>
+<text top="511" left="458" width="102" height="14" font="2">; the return-from-</text>
+<text top="525" left="129" width="432" height="14" font="2">trap will pop these values off the stack and resume execution of the user-</text>
+<text top="540" left="129" width="432" height="14" font="2">mode program (see the Intel systems manuals [I11] for details). Other</text>
+<text top="555" left="129" width="432" height="14" font="2">hardware systems use different conventions, but the basic concepts are</text>
+<text top="570" left="129" width="146" height="14" font="2">similar across platforms.</text>
+<text top="587" left="147" width="414" height="14" font="2">There is one important detail left out of this discussion: how does the</text>
+<text top="601" left="129" width="432" height="14" font="2">trap know which code to run inside the OS? Clearly, the calling process</text>
+<text top="616" left="129" width="432" height="14" font="2">can’t specify an address to jump to (as you would when making a pro-</text>
+<text top="631" left="129" width="432" height="14" font="2">cedure call); doing so would allow programs to jump anywhere into the</text>
+<text top="649" left="129" width="145" height="14" font="2">kernel which clearly is a</text>
+<text top="649" left="278" width="87" height="13" font="3"><b>Very Bad Idea</b></text>
+<text top="646" left="364" width="4" height="9" font="10">1</text>
+<text top="649" left="369" width="191" height="14" font="2">. Thus the kernel must carefully</text>
+<text top="664" left="129" width="237" height="14" font="2">control what code executes upon a trap.</text>
+<text top="680" left="147" width="207" height="14" font="2">The kernel does so by setting up a</text>
+<text top="680" left="358" width="59" height="13" font="3"><b>trap table</b></text>
+<text top="680" left="421" width="140" height="14" font="2">at boot time. When the</text>
+<text top="695" left="129" width="432" height="14" font="2">machine boots up, it does so in privileged (kernel) mode, and thus is free</text>
+<text top="710" left="129" width="432" height="14" font="2">to configure machine hardware as need be. One of the first things the OS</text>
+<text top="725" left="129" width="432" height="14" font="2">thus does is to tell the hardware what code to run when certain excep-</text>
+<text top="740" left="129" width="432" height="14" font="2">tional events occur. For example, what code should run when a hard-</text>
+<text top="755" left="129" width="432" height="14" font="2">disk interrupt takes place, when a keyboard interrupt occurs, or when</text>
+<text top="769" left="129" width="432" height="14" font="2">a program makes a system call? The OS informs the hardware of the</text>
+<text top="802" left="149" width="4" height="8" font="11">1</text>
+<text top="804" left="154" width="407" height="11" font="9">Imagine jumping into code to access a file, but just after a permission check; in fact, it is</text>
+<text top="816" left="129" width="432" height="11" font="9">likely such an ability would enable a wily programmer to get the kernel to run arbitrary code</text>
+<text top="828" left="129" width="317" height="11" font="9">sequences [S07]. In general, try to avoid Very Bad Ideas like this one.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="12" family="WSWVYW+URWPalladioL" color="#000000"/>
+	<fontspec id="13" size="12" family="JNCNMC+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="16" height="14" font="2">: L</text>
+<text top="98" left="183" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="229" width="10" height="14" font="2">D</text>
+<text top="98" left="241" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="279" width="8" height="14" font="2">E</text>
+<text top="98" left="288" width="62" height="11" font="5">XECUTION</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="136" left="98" width="57" height="12" font="12"><b>OS @ boot</b></text>
+<text top="136" left="275" width="54" height="12" font="12"><b>Hardware</b></text>
+<text top="150" left="98" width="77" height="12" font="12"><b>(kernel mode)</b></text>
+<text top="165" left="98" width="104" height="12" font="12"><b>initialize trap table</b></text>
+<text top="179" left="275" width="121" height="12" font="8">remember address of...</text>
+<text top="194" left="281" width="79" height="12" font="8">syscall handler</text>
+<text top="236" left="98" width="51" height="12" font="12"><b>OS @ run</b></text>
+<text top="236" left="275" width="54" height="12" font="12"><b>Hardware</b></text>
+<text top="236" left="413" width="46" height="12" font="12"><b>Program</b></text>
+<text top="250" left="98" width="77" height="12" font="12"><b>(kernel mode)</b></text>
+<text top="250" left="413" width="65" height="12" font="12"><b>(user mode)</b></text>
+<text top="265" left="98" width="145" height="12" font="8">Create entry for process list</text>
+<text top="279" left="98" width="159" height="12" font="8">Allocate memory for program</text>
+<text top="294" left="98" width="148" height="12" font="8">Load program into memory</text>
+<text top="308" left="98" width="140" height="12" font="8">Setup user stack with argv</text>
+<text top="322" left="98" width="153" height="12" font="8">Fill kernel stack with reg/PC</text>
+<text top="336" left="98" width="90" height="12" font="12"><b>return-from-trap</b></text>
+<text top="350" left="275" width="61" height="12" font="8">restore regs</text>
+<text top="365" left="275" width="100" height="12" font="8">(from kernel stack)</text>
+<text top="379" left="275" width="102" height="12" font="8">move to user mode</text>
+<text top="393" left="275" width="71" height="12" font="8">jump to main</text>
+<text top="407" left="413" width="60" height="12" font="8">Run main()</text>
+<text top="421" left="413" width="9" height="12" font="8">...</text>
+<text top="436" left="413" width="83" height="12" font="8">Call system call</text>
+<text top="450" left="413" width="22" height="12" font="12"><b>trap</b></text>
+<text top="450" left="438" width="40" height="12" font="8">into OS</text>
+<text top="464" left="275" width="48" height="12" font="8">save regs</text>
+<text top="478" left="275" width="85" height="12" font="8">(to kernel stack)</text>
+<text top="492" left="275" width="112" height="12" font="8">move to kernel mode</text>
+<text top="507" left="275" width="110" height="12" font="8">jump to trap handler</text>
+<text top="521" left="98" width="64" height="12" font="8">Handle trap</text>
+<text top="535" left="104" width="98" height="12" font="8">Do work of syscall</text>
+<text top="549" left="98" width="90" height="12" font="12"><b>return-from-trap</b></text>
+<text top="563" left="275" width="61" height="12" font="8">restore regs</text>
+<text top="578" left="275" width="100" height="12" font="8">(from kernel stack)</text>
+<text top="592" left="275" width="102" height="12" font="8">move to user mode</text>
+<text top="606" left="275" width="112" height="12" font="8">jump to PC after trap</text>
+<text top="620" left="413" width="9" height="12" font="8">...</text>
+<text top="634" left="413" width="92" height="12" font="8">return from main</text>
+<text top="649" left="413" width="22" height="12" font="12"><b>trap</b></text>
+<text top="649" left="438" width="20" height="12" font="8">(via</text>
+<text top="649" left="461" width="43" height="10" font="13">exit()</text>
+<text top="649" left="504" width="4" height="12" font="8">)</text>
+<text top="663" left="98" width="126" height="12" font="8">Free memory of process</text>
+<text top="677" left="98" width="133" height="12" font="8">Remove from process list</text>
+<text top="702" left="166" width="62" height="14" font="2">Figure 6.2:</text>
+<text top="702" left="232" width="208" height="13" font="3"><b>Limited Direct Execution Protocol</b></text>
+<text top="724" left="87" width="106" height="14" font="2">locations of these</text>
+<text top="724" left="198" width="83" height="13" font="3"><b>trap handlers</b></text>
+<text top="724" left="281" width="238" height="14" font="2">, usually with some kind of special in-</text>
+<text top="739" left="87" width="432" height="14" font="2">struction. Once the hardware is informed, it remembers the location of</text>
+<text top="754" left="87" width="432" height="14" font="2">these handlers until the machine is next rebooted, and thus the hardware</text>
+<text top="769" left="87" width="432" height="14" font="2">knows what to do (i.e., what code to jump to) when system calls and other</text>
+<text top="784" left="87" width="176" height="14" font="2">exceptional events take place.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="298" width="13" height="14" font="2">M</text>
+<text top="98" left="312" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="377" width="16" height="14" font="2">: L</text>
+<text top="98" left="394" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="440" width="10" height="14" font="2">D</text>
+<text top="98" left="451" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="490" width="8" height="14" font="2">E</text>
+<text top="98" left="498" width="62" height="11" font="5">XECUTION</text>
+<text top="148" left="187" width="8" height="14" font="2">T</text>
+<text top="150" left="196" width="11" height="11" font="5">IP</text>
+<text top="148" left="207" width="16" height="14" font="2">: B</text>
+<text top="150" left="224" width="7" height="11" font="5">E</text>
+<text top="148" left="235" width="13" height="14" font="2">W</text>
+<text top="150" left="248" width="24" height="11" font="5">ARY</text>
+<text top="148" left="276" width="11" height="14" font="2">O</text>
+<text top="150" left="287" width="6" height="11" font="5">F</text>
+<text top="148" left="297" width="10" height="14" font="2">U</text>
+<text top="150" left="308" width="21" height="11" font="5">SER</text>
+<text top="148" left="333" width="5" height="14" font="2">I</text>
+<text top="150" left="338" width="39" height="11" font="5">NPUTS</text>
+<text top="148" left="381" width="5" height="14" font="2">I</text>
+<text top="150" left="386" width="9" height="11" font="5">N</text>
+<text top="148" left="399" width="7" height="14" font="2">S</text>
+<text top="150" left="407" width="39" height="11" font="5">ECURE</text>
+<text top="148" left="450" width="7" height="14" font="2">S</text>
+<text top="150" left="458" width="45" height="11" font="5">YSTEMS</text>
+<text top="163" left="129" width="432" height="14" font="2">Even though we have taken great pains to protect the OS during system</text>
+<text top="178" left="129" width="432" height="14" font="2">calls (by adding a hardware trapping mechanism, and ensuring all calls to</text>
+<text top="193" left="129" width="432" height="14" font="2">the OS are routed through it), there are still many other aspects to imple-</text>
+<text top="208" left="129" width="60" height="14" font="2">menting a</text>
+<text top="208" left="193" width="39" height="13" font="3"><b>secure</b></text>
+<text top="208" left="236" width="325" height="14" font="2">operating system that we must consider. One of these</text>
+<text top="223" left="129" width="432" height="14" font="2">is the handling of arguments at the system call boundary; the OS must</text>
+<text top="238" left="129" width="432" height="14" font="2">check what the user passes in and ensure that arguments are properly</text>
+<text top="253" left="129" width="218" height="14" font="2">specified, or otherwise reject the call.</text>
+<text top="271" left="129" width="121" height="14" font="2">For example, with a</text>
+<text top="272" left="254" width="57" height="11" font="7">write()</text>
+<text top="271" left="315" width="246" height="14" font="2">system call, the user specifies an address</text>
+<text top="286" left="129" width="432" height="14" font="2">of a buffer as a source of the write call. If the user (either accidentally</text>
+<text top="301" left="129" width="432" height="14" font="2">or maliciously) passes in a “bad” address (e.g., one inside the kernel’s</text>
+<text top="316" left="129" width="432" height="14" font="2">portion of the address space), the OS must detect this and reject the call.</text>
+<text top="331" left="129" width="432" height="14" font="2">Otherwise, it would be possible for a user to read all of kernel memory;</text>
+<text top="346" left="129" width="432" height="14" font="2">given that kernel (virtual) memory also usually includes all of the physi-</text>
+<text top="361" left="129" width="432" height="14" font="2">cal memory of the system, this small slip would enable a program to read</text>
+<text top="376" left="129" width="281" height="14" font="2">the memory of any other process in the system.</text>
+<text top="394" left="129" width="432" height="14" font="2">In general, a secure system must treat user inputs with great suspicion.</text>
+<text top="409" left="129" width="432" height="14" font="2">Not doing so will undoubtedly lead to easily hacked software, a despair-</text>
+<text top="424" left="129" width="432" height="14" font="2">ing sense that the world is an unsafe and scary place, and the loss of job</text>
+<text top="439" left="129" width="269" height="14" font="2">security for the all-too-trusting OS developer.</text>
+<text top="495" left="147" width="204" height="14" font="2">To specify the exact system call, a</text>
+<text top="495" left="356" width="122" height="13" font="3"><b>system-call number</b></text>
+<text top="495" left="482" width="79" height="14" font="2">is usually as-</text>
+<text top="510" left="129" width="432" height="14" font="2">signed to each system call. The user code is thus responsible for placing</text>
+<text top="525" left="129" width="432" height="14" font="2">the desired system-call number in a register or at a specified location on</text>
+<text top="539" left="129" width="432" height="14" font="2">the stack; the OS, when handling the system call inside the trap handler,</text>
+<text top="554" left="129" width="432" height="14" font="2">examines this number, ensures it is valid, and, if it is, executes the corre-</text>
+<text top="569" left="129" width="361" height="14" font="2">sponding code. This level of indirection serves as a form of</text>
+<text top="569" left="495" width="63" height="13" font="3"><b>protection</b></text>
+<text top="569" left="557" width="3" height="14" font="2">;</text>
+<text top="584" left="129" width="432" height="14" font="2">user code cannot specify an exact address to jump to, but rather must</text>
+<text top="599" left="129" width="235" height="14" font="2">request a particular service via number.</text>
+<text top="615" left="147" width="414" height="14" font="2">One last aside: being able to execute the instruction to tell the hard-</text>
+<text top="630" left="129" width="432" height="14" font="2">ware where the trap tables are is a very powerful capability. Thus, as you</text>
+<text top="645" left="129" width="190" height="14" font="2">might have guessed, it is also a</text>
+<text top="645" left="323" width="64" height="13" font="3"><b>privileged</b></text>
+<text top="645" left="391" width="170" height="14" font="2">operation. If you try to exe-</text>
+<text top="660" left="129" width="432" height="14" font="2">cute this instruction in user mode, the hardware won’t let you, and you</text>
+<text top="675" left="129" width="432" height="14" font="2">can probably guess what will happen (hint: adios, offending program).</text>
+<text top="690" left="129" width="432" height="14" font="2">Point to ponder: what horrible things could you do to a system if you</text>
+<text top="705" left="129" width="409" height="14" font="2">could install your own trap table? Could you take over the machine?</text>
+<text top="721" left="147" width="414" height="14" font="2">The timeline (with time increasing downward, in Figure 6.2) summa-</text>
+<text top="736" left="129" width="432" height="14" font="2">rizes the protocol. We assume each process has a kernel stack where reg-</text>
+<text top="750" left="129" width="432" height="14" font="2">isters (including general purpose registers and the program counter) are</text>
+<text top="765" left="129" width="432" height="14" font="2">saved to and restored from (by the hardware) when transitioning into and</text>
+<text top="780" left="129" width="101" height="14" font="2">out of the kernel.</text>
+<text top="796" left="147" width="325" height="14" font="2">There are two phases in the limited direct execution (</text>
+<text top="796" left="471" width="28" height="13" font="3"><b>LDE</b></text>
+<text top="796" left="499" width="62" height="14" font="2">) protocol.</text>
+<text top="811" left="129" width="432" height="14" font="2">In the first (at boot time), the kernel initializes the trap table, and the</text>
+<text top="826" left="129" width="432" height="14" font="2">CPU remembers its location for subsequent use. The kernel does so via a</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="15" family="WSWVYW+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="16" height="14" font="2">: L</text>
+<text top="98" left="183" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="229" width="10" height="14" font="2">D</text>
+<text top="98" left="241" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="279" width="8" height="14" font="2">E</text>
+<text top="98" left="288" width="62" height="11" font="5">XECUTION</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="139" left="87" width="432" height="14" font="2">privileged instruction (all privileged instructions are highlighted in bold).</text>
+<text top="154" left="105" width="414" height="14" font="2">In the second (when running a process), the kernel sets up a few things</text>
+<text top="169" left="87" width="432" height="14" font="2">(e.g., allocating a node on the process list, allocating memory) before us-</text>
+<text top="184" left="87" width="432" height="14" font="2">ing a return-from-trap instruction to start the execution of the process;</text>
+<text top="199" left="87" width="432" height="14" font="2">this switches the CPU to user mode and begins running the process.</text>
+<text top="214" left="87" width="432" height="14" font="2">When the process wishes to issue a system call, it traps back into the OS,</text>
+<text top="229" left="87" width="432" height="14" font="2">which handles it and once again returns control via a return-from-trap</text>
+<text top="244" left="87" width="432" height="14" font="2">to the process. The process then completes its work, and returns from</text>
+<text top="259" left="87" width="48" height="11" font="7">main()</text>
+<text top="259" left="136" width="383" height="14" font="2">; this usually will return into some stub code which will properly</text>
+<text top="274" left="87" width="210" height="14" font="2">exit the program (say, by calling the</text>
+<text top="274" left="300" width="48" height="11" font="7">exit()</text>
+<text top="274" left="351" width="168" height="14" font="2">system call, which traps into</text>
+<text top="289" left="87" width="337" height="14" font="2">the OS). At this point, the OS cleans up and we are done.</text>
+<text top="326" left="55" width="328" height="17" font="6">6.3 Problem #2: Switching Between Processes</text>
+<text top="356" left="105" width="414" height="14" font="2">The next problem with direct execution is achieving a switch between</text>
+<text top="371" left="87" width="432" height="14" font="2">processes. Switching between processes should be simple, right? The</text>
+<text top="386" left="87" width="432" height="14" font="2">OS should just decide to stop one process and start another. What’s the</text>
+<text top="401" left="87" width="432" height="14" font="2">big deal? But it actually is a little bit tricky: specifically, if a process is</text>
+<text top="416" left="87" width="337" height="14" font="2">running on the CPU, this by definition means the OS is</text>
+<text top="416" left="429" width="18" height="14" font="4"><i>not</i></text>
+<text top="416" left="451" width="68" height="14" font="2">running. If</text>
+<text top="431" left="87" width="432" height="14" font="2">the OS is not running, how can it do anything at all? (hint: it can’t) While</text>
+<text top="446" left="87" width="432" height="14" font="2">this sounds almost philosophical, it is a real problem: there is clearly no</text>
+<text top="461" left="87" width="432" height="14" font="2">way for the OS to take an action if it is not running on the CPU. Thus we</text>
+<text top="476" left="87" width="195" height="14" font="2">arrive at the crux of the problem.</text>
+<text top="516" left="141" width="8" height="14" font="2">T</text>
+<text top="518" left="149" width="16" height="11" font="5">HE</text>
+<text top="516" left="170" width="10" height="14" font="2">C</text>
+<text top="518" left="180" width="24" height="11" font="5">RUX</text>
+<text top="516" left="205" width="19" height="14" font="2">: H</text>
+<text top="518" left="225" width="20" height="11" font="5">OW</text>
+<text top="516" left="249" width="8" height="14" font="2">T</text>
+<text top="518" left="257" width="8" height="11" font="5">O</text>
+<text top="516" left="270" width="9" height="14" font="2">R</text>
+<text top="518" left="279" width="38" height="11" font="5">EGAIN</text>
+<text top="516" left="322" width="10" height="14" font="2">C</text>
+<text top="518" left="332" width="50" height="11" font="5">ONTROL</text>
+<text top="516" left="386" width="11" height="14" font="2">O</text>
+<text top="518" left="397" width="6" height="11" font="5">F</text>
+<text top="516" left="407" width="8" height="14" font="2">T</text>
+<text top="518" left="416" width="16" height="11" font="5">HE</text>
+<text top="516" left="436" width="29" height="14" font="2">CPU</text>
+<text top="531" left="105" width="180" height="14" font="2">How can the operating system</text>
+<text top="531" left="288" width="85" height="13" font="3"><b>regain control</b></text>
+<text top="531" left="377" width="142" height="14" font="2">of the CPU so that it can</text>
+<text top="546" left="87" width="158" height="14" font="2">switch between processes?</text>
+<text top="591" left="87" width="327" height="15" font="14"><b>A Cooperative Approach: Wait For System Calls</b></text>
+<text top="616" left="87" width="432" height="14" font="2">One approach that some systems have taken in the past (for example,</text>
+<text top="631" left="87" width="432" height="14" font="2">early versions of the Macintosh operating system [M11], or the old Xerox</text>
+<text top="646" left="87" width="213" height="14" font="2">Alto system [A79]) is known as the</text>
+<text top="646" left="304" width="71" height="13" font="3"><b>cooperative</b></text>
+<text top="646" left="379" width="140" height="14" font="2">approach. In this style,</text>
+<text top="661" left="87" width="40" height="14" font="2">the OS</text>
+<text top="661" left="130" width="32" height="14" font="4"><i>trusts</i></text>
+<text top="661" left="166" width="353" height="14" font="2">the processes of the system to behave reasonably. Processes</text>
+<text top="676" left="87" width="432" height="14" font="2">that run for too long are assumed to periodically give up the CPU so that</text>
+<text top="691" left="87" width="246" height="14" font="2">the OS can decide to run some other task.</text>
+<text top="706" left="105" width="414" height="14" font="2">Thus, you might ask, how does a friendly process give up the CPU in</text>
+<text top="721" left="87" width="432" height="14" font="2">this utopian world? Most processes, as it turns out, transfer control of</text>
+<text top="736" left="87" width="274" height="14" font="2">the CPU to the OS quite frequently by making</text>
+<text top="736" left="364" width="74" height="13" font="3"><b>system calls</b></text>
+<text top="736" left="438" width="81" height="14" font="2">, for example,</text>
+<text top="751" left="87" width="432" height="14" font="2">to open a file and subsequently read it, or to send a message to another</text>
+<text top="766" left="87" width="432" height="14" font="2">machine, or to create a new process. Systems like this often include an</text>
+<text top="781" left="87" width="44" height="14" font="2">explicit</text>
+<text top="781" left="135" width="31" height="13" font="3"><b>yield</b></text>
+<text top="781" left="170" width="349" height="14" font="2">system call, which does nothing except to transfer control</text>
+<text top="796" left="87" width="229" height="14" font="2">to the OS so it can run other processes.</text>
+<text top="811" left="105" width="414" height="14" font="2">Applications also transfer control to the OS when they do something</text>
+<text top="826" left="87" width="432" height="14" font="2">illegal. For example, if an application divides by zero, or tries to access</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="298" width="13" height="14" font="2">M</text>
+<text top="98" left="312" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="377" width="16" height="14" font="2">: L</text>
+<text top="98" left="394" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="440" width="10" height="14" font="2">D</text>
+<text top="98" left="451" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="490" width="8" height="14" font="2">E</text>
+<text top="98" left="498" width="62" height="11" font="5">XECUTION</text>
+<text top="139" left="129" width="364" height="14" font="2">memory that it shouldn’t be able to access, it will generate a</text>
+<text top="139" left="497" width="25" height="13" font="3"><b>trap</b></text>
+<text top="139" left="526" width="35" height="14" font="2">to the</text>
+<text top="154" left="129" width="432" height="14" font="2">OS. The OS will then have control of the CPU again (and likely terminate</text>
+<text top="169" left="129" width="135" height="14" font="2">the offending process).</text>
+<text top="184" left="147" width="414" height="14" font="2">Thus, in a cooperative scheduling system, the OS regains control of</text>
+<text top="199" left="129" width="432" height="14" font="2">the CPU by waiting for a system call or an illegal operation of some kind</text>
+<text top="214" left="129" width="432" height="14" font="2">to take place. You might also be thinking: isn’t this passive approach less</text>
+<text top="229" left="129" width="432" height="14" font="2">than ideal? What happens, for example, if a process (whether malicious,</text>
+<text top="243" left="129" width="432" height="14" font="2">or just full of bugs) ends up in an infinite loop, and never makes a system</text>
+<text top="258" left="129" width="185" height="14" font="2">call? What can the OS do then?</text>
+<text top="295" left="129" width="363" height="15" font="14"><b>A Non-Cooperative Approach: The OS Takes Control</b></text>
+<text top="320" left="129" width="432" height="14" font="2">Without some additional help from the hardware, it turns out the OS can’t</text>
+<text top="335" left="129" width="432" height="14" font="2">do much at all when a process refuses to make system calls (or mistakes)</text>
+<text top="350" left="129" width="432" height="14" font="2">and thus return control to the OS. In fact, in the cooperative approach,</text>
+<text top="365" left="129" width="432" height="14" font="2">your only recourse when a process gets stuck in an infinite loop is to</text>
+<text top="380" left="129" width="388" height="14" font="2">resort to the age-old solution to all problems in computer systems:</text>
+<text top="380" left="521" width="40" height="13" font="3"><b>reboot</b></text>
+<text top="395" left="129" width="75" height="13" font="3"><b>the machine</b></text>
+<text top="395" left="204" width="357" height="14" font="2">. Thus, we again arrive at a subproblem of our general quest</text>
+<text top="410" left="129" width="158" height="14" font="2">to gain control of the CPU.</text>
+<text top="449" left="153" width="8" height="14" font="2">T</text>
+<text top="451" left="162" width="16" height="11" font="5">HE</text>
+<text top="449" left="183" width="10" height="14" font="2">C</text>
+<text top="451" left="193" width="24" height="11" font="5">RUX</text>
+<text top="449" left="218" width="19" height="14" font="2">: H</text>
+<text top="451" left="238" width="20" height="11" font="5">OW</text>
+<text top="449" left="261" width="8" height="14" font="2">T</text>
+<text top="451" left="270" width="8" height="11" font="5">O</text>
+<text top="449" left="283" width="10" height="14" font="2">G</text>
+<text top="451" left="294" width="22" height="11" font="5">AIN</text>
+<text top="449" left="320" width="10" height="14" font="2">C</text>
+<text top="451" left="330" width="50" height="11" font="5">ONTROL</text>
+<text top="449" left="384" width="13" height="14" font="2">W</text>
+<text top="451" left="398" width="46" height="11" font="5">ITHOUT</text>
+<text top="449" left="448" width="10" height="14" font="2">C</text>
+<text top="451" left="458" width="78" height="11" font="5">OOPERATION</text>
+<text top="464" left="147" width="414" height="14" font="2">How can the OS gain control of the CPU even if processes are not being</text>
+<text top="479" left="129" width="432" height="14" font="2">cooperative? What can the OS do to ensure a rogue process does not take</text>
+<text top="494" left="129" width="109" height="14" font="2">over the machine?</text>
+<text top="534" left="147" width="414" height="14" font="2">The answer turns out to be simple and was discovered by a number</text>
+<text top="549" left="129" width="336" height="14" font="2">of people building computer systems many years ago: a</text>
+<text top="549" left="469" width="92" height="13" font="3"><b>timer interrupt</b></text>
+<text top="564" left="129" width="432" height="14" font="2">[M+63]. A timer device can be programmed to raise an interrupt every</text>
+<text top="578" left="129" width="432" height="14" font="2">so many milliseconds; when the interrupt is raised, the currently running</text>
+<text top="593" left="129" width="230" height="14" font="2">process is halted, and a pre-configured</text>
+<text top="593" left="362" width="107" height="13" font="3"><b>interrupt handler</b></text>
+<text top="593" left="472" width="88" height="14" font="2">in the OS runs.</text>
+<text top="608" left="129" width="432" height="14" font="2">At this point, the OS has regained control of the CPU, and thus can do</text>
+<text top="623" left="129" width="390" height="14" font="2">what it pleases: stop the current process, and start a different one.</text>
+<text top="638" left="147" width="414" height="14" font="2">As we discussed before with system calls, the OS must inform the</text>
+<text top="653" left="129" width="432" height="14" font="2">hardware of which code to run when the timer interrupt occurs; thus,</text>
+<text top="668" left="129" width="432" height="14" font="2">at boot time, the OS does exactly that. Second, also during the boot</text>
+<text top="709" left="195" width="8" height="14" font="2">T</text>
+<text top="711" left="204" width="11" height="11" font="5">IP</text>
+<text top="709" left="215" width="19" height="14" font="2">: D</text>
+<text top="711" left="234" width="46" height="11" font="5">EALING</text>
+<text top="709" left="284" width="13" height="14" font="2">W</text>
+<text top="711" left="298" width="21" height="11" font="5">ITH</text>
+<text top="709" left="323" width="10" height="14" font="2">A</text>
+<text top="711" left="334" width="72" height="11" font="5">PPLICATION</text>
+<text top="709" left="410" width="13" height="14" font="2">M</text>
+<text top="711" left="423" width="72" height="11" font="5">ISBEHAVIOR</text>
+<text top="724" left="129" width="432" height="14" font="2">Operating systems often have to deal with misbehaving processes, those</text>
+<text top="739" left="129" width="432" height="14" font="2">that either through design (maliciousness) or accident (bugs) attempt to</text>
+<text top="754" left="129" width="432" height="14" font="2">do something that they shouldn’t. In modern systems, the way the OS</text>
+<text top="769" left="129" width="432" height="14" font="2">tries to handle such malfeasance is to simply terminate the offender. One</text>
+<text top="784" left="129" width="432" height="14" font="2">strike and you’re out! Perhaps brutal, but what else should the OS do</text>
+<text top="799" left="129" width="432" height="14" font="2">when you try to access memory illegally or execute an illegal instruction?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="16" height="14" font="2">: L</text>
+<text top="98" left="183" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="229" width="10" height="14" font="2">D</text>
+<text top="98" left="241" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="279" width="8" height="14" font="2">E</text>
+<text top="98" left="288" width="62" height="11" font="5">XECUTION</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="139" left="87" width="432" height="14" font="2">sequence, the OS must start the timer, which is of course a privileged</text>
+<text top="154" left="87" width="432" height="14" font="2">operation. Once the timer has begun, the OS can thus feel safe in that</text>
+<text top="169" left="87" width="432" height="14" font="2">control will eventually be returned to it, and thus the OS is free to run</text>
+<text top="183" left="87" width="432" height="14" font="2">user programs. The timer can also be turned off (also a privileged opera-</text>
+<text top="198" left="87" width="432" height="14" font="2">tion), something we will discuss later when we understand concurrency</text>
+<text top="213" left="87" width="86" height="14" font="2">in more detail.</text>
+<text top="229" left="105" width="414" height="14" font="2">Note that the hardware has some responsibility when an interrupt oc-</text>
+<text top="244" left="87" width="432" height="14" font="2">curs, in particular to save enough of the state of the program that was</text>
+<text top="259" left="87" width="432" height="14" font="2">running when the interrupt occurred such that a subsequent return-from-</text>
+<text top="274" left="87" width="432" height="14" font="2">trap instruction will be able to resume the running program correctly.</text>
+<text top="289" left="87" width="432" height="14" font="2">This set of actions is quite similar to the behavior of the hardware during</text>
+<text top="304" left="87" width="432" height="14" font="2">an explicit system-call trap into the kernel, with various registers thus</text>
+<text top="319" left="87" width="432" height="14" font="2">getting saved (e.g., onto a kernel stack) and thus easily restored by the</text>
+<text top="334" left="87" width="171" height="14" font="2">return-from-trap instruction.</text>
+<text top="374" left="87" width="204" height="15" font="14"><b>Saving and Restoring Context</b></text>
+<text top="400" left="87" width="432" height="14" font="2">Now that the OS has regained control, whether cooperatively via a sys-</text>
+<text top="415" left="87" width="432" height="14" font="2">tem call, or more forcefully via a timer interrupt, a decision has to be</text>
+<text top="429" left="87" width="432" height="14" font="2">made: whether to continue running the currently-running process, or</text>
+<text top="444" left="87" width="432" height="14" font="2">switch to a different one. This decision is made by a part of the operating</text>
+<text top="459" left="87" width="129" height="14" font="2">system known as the</text>
+<text top="459" left="220" width="60" height="13" font="3"><b>scheduler</b></text>
+<text top="459" left="280" width="239" height="14" font="2">; we will discuss scheduling policies in</text>
+<text top="474" left="87" width="216" height="14" font="2">great detail in the next few chapters.</text>
+<text top="490" left="105" width="414" height="14" font="2">If the decision is made to switch, the OS then executes a low-level</text>
+<text top="505" left="87" width="216" height="14" font="2">piece of code which we refer to as a</text>
+<text top="505" left="307" width="88" height="13" font="3"><b>context switch</b></text>
+<text top="505" left="395" width="124" height="14" font="2">. A context switch is</text>
+<text top="520" left="87" width="432" height="14" font="2">conceptually simple: all the OS has to do is save a few register values</text>
+<text top="535" left="87" width="432" height="14" font="2">for the currently-executing process (onto its kernel stack, for example)</text>
+<text top="550" left="87" width="432" height="14" font="2">and restore a few for the soon-to-be-executing process (from its kernel</text>
+<text top="565" left="87" width="432" height="14" font="2">stack). By doing so, the OS thus ensures that when the return-from-trap</text>
+<text top="580" left="87" width="432" height="14" font="2">instruction is finally executed, instead of returning to the process that was</text>
+<text top="595" left="87" width="347" height="14" font="2">running, the system resumes execution of another process.</text>
+<text top="611" left="105" width="414" height="14" font="2">To save the context of the currently-running process, the OS will ex-</text>
+<text top="626" left="87" width="432" height="14" font="2">ecute some low-level assembly code to save the general purpose regis-</text>
+<text top="641" left="87" width="432" height="14" font="2">ters, PC, and the kernel stack pointer of the currently-running process,</text>
+<text top="656" left="87" width="432" height="14" font="2">and then restore said registers, PC, and switch to the kernel stack for the</text>
+<text top="670" left="87" width="432" height="14" font="2">soon-to-be-executing process. By switching stacks, the kernel enters the</text>
+<text top="685" left="87" width="432" height="14" font="2">call to the switch code in the context of one process (the one that was in-</text>
+<text top="700" left="87" width="432" height="14" font="2">terrupted) and returns in the context of another (the soon-to-be-executing</text>
+<text top="743" left="136" width="8" height="14" font="2">T</text>
+<text top="745" left="145" width="11" height="11" font="5">IP</text>
+<text top="743" left="157" width="19" height="14" font="2">: U</text>
+<text top="745" left="176" width="13" height="11" font="5">SE</text>
+<text top="743" left="193" width="8" height="14" font="2">T</text>
+<text top="745" left="202" width="16" height="11" font="5">HE</text>
+<text top="743" left="222" width="8" height="14" font="2">T</text>
+<text top="745" left="231" width="30" height="11" font="5">IMER</text>
+<text top="743" left="265" width="5" height="14" font="2">I</text>
+<text top="745" left="270" width="63" height="11" font="5">NTERRUPT</text>
+<text top="743" left="337" width="8" height="14" font="2">T</text>
+<text top="745" left="345" width="8" height="11" font="5">O</text>
+<text top="743" left="358" width="9" height="14" font="2">R</text>
+<text top="745" left="367" width="38" height="11" font="5">EGAIN</text>
+<text top="743" left="410" width="10" height="14" font="2">C</text>
+<text top="745" left="420" width="50" height="11" font="5">ONTROL</text>
+<text top="758" left="87" width="106" height="14" font="2">The addition of a</text>
+<text top="758" left="198" width="93" height="13" font="3"><b>timer interrupt</b></text>
+<text top="758" left="296" width="223" height="14" font="2">gives the OS the ability to run again</text>
+<text top="773" left="87" width="432" height="14" font="2">on a CPU even if processes act in a non-cooperative fashion. Thus, this</text>
+<text top="788" left="87" width="432" height="14" font="2">hardware feature is essential in helping the OS maintain control of the</text>
+<text top="802" left="87" width="54" height="14" font="2">machine.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="298" width="13" height="14" font="2">M</text>
+<text top="98" left="312" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="377" width="16" height="14" font="2">: L</text>
+<text top="98" left="394" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="440" width="10" height="14" font="2">D</text>
+<text top="98" left="451" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="490" width="8" height="14" font="2">E</text>
+<text top="98" left="498" width="62" height="11" font="5">XECUTION</text>
+<text top="148" left="273" width="8" height="14" font="2">T</text>
+<text top="150" left="282" width="11" height="11" font="5">IP</text>
+<text top="148" left="294" width="17" height="14" font="2">: R</text>
+<text top="150" left="311" width="39" height="11" font="5">EBOOT</text>
+<text top="148" left="355" width="5" height="14" font="2">I</text>
+<text top="150" left="360" width="6" height="11" font="5">S</text>
+<text top="148" left="370" width="10" height="14" font="2">U</text>
+<text top="150" left="381" width="36" height="11" font="5">SEFUL</text>
+<text top="163" left="129" width="432" height="14" font="2">Earlier on, we noted that the only solution to infinite loops (and similar</text>
+<text top="178" left="129" width="272" height="14" font="2">behaviors) under cooperative preemption is to</text>
+<text top="178" left="404" width="40" height="13" font="3"><b>reboot</b></text>
+<text top="178" left="446" width="115" height="14" font="2">the machine. While</text>
+<text top="193" left="129" width="432" height="14" font="2">you may scoff at this hack, researchers have shown that reboot (or in gen-</text>
+<text top="208" left="129" width="432" height="14" font="2">eral, starting over some piece of software) can be a hugely useful tool in</text>
+<text top="223" left="129" width="190" height="14" font="2">building robust systems [C+04].</text>
+<text top="241" left="129" width="432" height="14" font="2">Specifically, reboot is useful because it moves software back to a known</text>
+<text top="256" left="129" width="432" height="14" font="2">and likely more tested state. Reboots also reclaim stale or leaked re-</text>
+<text top="271" left="129" width="432" height="14" font="2">sources (e.g., memory) which may otherwise be hard to handle. Finally,</text>
+<text top="286" left="129" width="432" height="14" font="2">reboots are easy to automate. For all of these reasons, it is not uncommon</text>
+<text top="301" left="129" width="432" height="14" font="2">in large-scale cluster Internet services for system management software</text>
+<text top="316" left="129" width="432" height="14" font="2">to periodically reboot sets of machines in order to reset them and thus</text>
+<text top="331" left="129" width="209" height="14" font="2">obtain the advantages listed above.</text>
+<text top="349" left="129" width="432" height="14" font="2">Thus, next time you reboot, you are not just enacting some ugly hack.</text>
+<text top="364" left="129" width="432" height="14" font="2">Rather, you are using a time-tested approach to improving the behavior</text>
+<text top="379" left="129" width="199" height="14" font="2">of a computer system. Well done!</text>
+<text top="435" left="129" width="432" height="14" font="2">one). When the OS then finally executes a return-from-trap instruction,</text>
+<text top="450" left="129" width="432" height="14" font="2">the soon-to-be-executing process becomes the currently-running process.</text>
+<text top="465" left="129" width="241" height="14" font="2">And thus the context switch is complete.</text>
+<text top="481" left="147" width="414" height="14" font="2">A timeline of the entire process is shown in Figure 6.3. In this example,</text>
+<text top="495" left="129" width="432" height="14" font="2">Process A is running and then is interrupted by the timer interrupt. The</text>
+<text top="510" left="129" width="432" height="14" font="2">hardware saves its registers (onto its kernel stack) and enters the kernel</text>
+<text top="525" left="129" width="432" height="14" font="2">(switching to kernel mode). In the timer interrupt handler, the OS decides</text>
+<text top="540" left="129" width="432" height="14" font="2">to switch from running Process A to Process B. At that point, it calls the</text>
+<text top="556" left="129" width="65" height="11" font="7">switch()</text>
+<text top="555" left="196" width="364" height="14" font="2">routine, which carefully saves current register values (into the</text>
+<text top="570" left="129" width="432" height="14" font="2">process structure of A), restores the registers of Process B (from its process</text>
+<text top="585" left="129" width="151" height="14" font="2">structure entry), and then</text>
+<text top="585" left="284" width="106" height="13" font="3"><b>switches contexts</b></text>
+<text top="585" left="390" width="171" height="14" font="2">, specifically by changing the</text>
+<text top="600" left="129" width="432" height="14" font="2">stack pointer to use B’s kernel stack (and not A’s). Finally, the OS returns-</text>
+<text top="615" left="129" width="354" height="14" font="2">from-trap, which restores B’s registers and starts running it.</text>
+<text top="631" left="147" width="414" height="14" font="2">Note that there are two types of register saves/restores that happen</text>
+<text top="646" left="129" width="432" height="14" font="2">during this protocol. The first is when the timer interrupt occurs; in this</text>
+<text top="661" left="129" width="51" height="14" font="2">case, the</text>
+<text top="661" left="184" width="73" height="14" font="4"><i>user registers</i></text>
+<text top="661" left="261" width="299" height="14" font="2">of the running process are implicitly saved by the</text>
+<text top="676" left="129" width="51" height="14" font="4"><i>hardware</i></text>
+<text top="676" left="179" width="381" height="14" font="2">, using the kernel stack of that process. The second is when the</text>
+<text top="691" left="129" width="301" height="14" font="2">OS decides to switch from A to B; in this case, the</text>
+<text top="691" left="434" width="83" height="14" font="4"><i>kernel registers</i></text>
+<text top="691" left="521" width="40" height="14" font="2">are ex-</text>
+<text top="706" left="129" width="122" height="14" font="2">plicitly saved by the</text>
+<text top="706" left="255" width="45" height="14" font="4"><i>software</i></text>
+<text top="706" left="305" width="256" height="14" font="2">(i.e., the OS), but this time into memory in</text>
+<text top="721" left="129" width="432" height="14" font="2">the process structure of the process. The latter action moves the system</text>
+<text top="735" left="129" width="432" height="14" font="2">from running as if it just trapped into the kernel from A to as if it just</text>
+<text top="750" left="129" width="184" height="14" font="2">trapped into the kernel from B.</text>
+<text top="766" left="147" width="414" height="14" font="2">To give you a better sense of how such a switch is enacted, Figure 6.4</text>
+<text top="781" left="129" width="432" height="14" font="2">shows the context switch code for xv6. See if you can make sense of it</text>
+<text top="796" left="129" width="432" height="14" font="2">(you’ll have to know a bit of x86, as well as some xv6, to do so). The</text>
+<text top="812" left="129" width="57" height="11" font="7">context</text>
+<text top="811" left="189" width="59" height="14" font="2">structures</text>
+<text top="812" left="251" width="24" height="11" font="7">old</text>
+<text top="811" left="278" width="23" height="14" font="2">and</text>
+<text top="812" left="304" width="24" height="11" font="7">new</text>
+<text top="811" left="332" width="229" height="14" font="2">are found in the old and new process’s</text>
+<text top="826" left="129" width="187" height="14" font="2">process structures, respectively.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="12" family="PJPYBU+CMSY8" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="16" height="14" font="2">: L</text>
+<text top="98" left="183" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="229" width="10" height="14" font="2">D</text>
+<text top="98" left="241" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="279" width="8" height="14" font="2">E</text>
+<text top="98" left="288" width="62" height="11" font="5">XECUTION</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="136" left="105" width="57" height="12" font="12"><b>OS @ boot</b></text>
+<text top="136" left="271" width="54" height="12" font="12"><b>Hardware</b></text>
+<text top="150" left="105" width="77" height="12" font="12"><b>(kernel mode)</b></text>
+<text top="165" left="105" width="104" height="12" font="12"><b>initialize trap table</b></text>
+<text top="179" left="271" width="131" height="12" font="8">remember addresses of...</text>
+<text top="194" left="278" width="79" height="12" font="8">syscall handler</text>
+<text top="208" left="278" width="72" height="12" font="8">timer handler</text>
+<text top="222" left="105" width="108" height="12" font="12"><b>start interrupt timer</b></text>
+<text top="236" left="271" width="55" height="12" font="8">start timer</text>
+<text top="250" left="271" width="119" height="12" font="8">interrupt CPU in X ms</text>
+<text top="293" left="105" width="51" height="12" font="12"><b>OS @ run</b></text>
+<text top="293" left="271" width="54" height="12" font="12"><b>Hardware</b></text>
+<text top="293" left="437" width="46" height="12" font="12"><b>Program</b></text>
+<text top="307" left="105" width="77" height="12" font="12"><b>(kernel mode)</b></text>
+<text top="307" left="437" width="65" height="12" font="12"><b>(user mode)</b></text>
+<text top="322" left="437" width="52" height="12" font="8">Process A</text>
+<text top="336" left="437" width="9" height="12" font="8">...</text>
+<text top="350" left="271" width="81" height="12" font="12"><b>timer interrupt</b></text>
+<text top="365" left="271" width="66" height="12" font="8">save regs(A)</text>
+<text top="367" left="340" width="13" height="6" font="15">→</text>
+<text top="365" left="355" width="55" height="12" font="8">k-stack(A)</text>
+<text top="379" left="271" width="112" height="12" font="8">move to kernel mode</text>
+<text top="393" left="271" width="110" height="12" font="8">jump to trap handler</text>
+<text top="407" left="105" width="84" height="12" font="8">Handle the trap</text>
+<text top="421" left="105" width="21" height="12" font="8">Call</text>
+<text top="422" left="129" width="57" height="10" font="13">switch()</text>
+<text top="421" left="189" width="38" height="12" font="8">routine</text>
+<text top="436" left="111" width="66" height="12" font="8">save regs(A)</text>
+<text top="438" left="180" width="13" height="6" font="15">→</text>
+<text top="436" left="196" width="49" height="12" font="8">proc t(A)</text>
+<text top="450" left="111" width="76" height="12" font="8">restore regs(B)</text>
+<text top="452" left="190" width="13" height="6" font="15">←</text>
+<text top="450" left="206" width="47" height="12" font="8">proc t(B)</text>
+<text top="464" left="111" width="104" height="12" font="8">switch to k-stack(B)</text>
+<text top="478" left="105" width="134" height="12" font="12"><b>return-from-trap (into B)</b></text>
+<text top="492" left="271" width="76" height="12" font="8">restore regs(B)</text>
+<text top="495" left="350" width="13" height="6" font="15">←</text>
+<text top="492" left="366" width="53" height="12" font="8">k-stack(B)</text>
+<text top="507" left="271" width="102" height="12" font="8">move to user mode</text>
+<text top="521" left="271" width="79" height="12" font="8">jump to B’s PC</text>
+<text top="535" left="437" width="50" height="12" font="8">Process B</text>
+<text top="549" left="437" width="9" height="12" font="8">...</text>
+<text top="578" left="112" width="62" height="14" font="2">Figure 6.3:</text>
+<text top="579" left="178" width="316" height="13" font="3"><b>Limited Direct Execution Protocol (Timer Interrupt)</b></text>
+<text top="609" left="55" width="240" height="17" font="6">6.4 Worried About Concurrency?</text>
+<text top="642" left="105" width="414" height="14" font="2">Some of you, as attentive and thoughtful readers, may be now think-</text>
+<text top="656" left="87" width="432" height="14" font="2">ing: “Hmm... what happens when, during a system call, a timer interrupt</text>
+<text top="671" left="87" width="432" height="14" font="2">occurs?” or “What happens when you’re handling one interrupt and an-</text>
+<text top="686" left="87" width="432" height="14" font="2">other one happens? Doesn’t that get hard to handle in the kernel?” Good</text>
+<text top="701" left="87" width="304" height="14" font="2">questions — we really have some hope for you yet!</text>
+<text top="719" left="105" width="414" height="14" font="2">The answer is yes, the OS does indeed need to be concerned as to what</text>
+<text top="734" left="87" width="432" height="14" font="2">happens if, during interrupt or trap handling, another interrupt occurs.</text>
+<text top="749" left="87" width="432" height="14" font="2">This, in fact, is the exact topic of the entire second piece of this book, on</text>
+<text top="764" left="87" width="75" height="13" font="3"><b>concurrency</b></text>
+<text top="764" left="162" width="262" height="14" font="2">; we’ll defer a detailed discussion until then.</text>
+<text top="781" left="105" width="414" height="14" font="2">To whet your appetite, we’ll just sketch some basics of how the OS</text>
+<text top="796" left="87" width="405" height="14" font="2">handles these tricky situations. One simple thing an OS might do is</text>
+<text top="796" left="496" width="23" height="13" font="3"><b>dis-</b></text>
+<text top="811" left="87" width="91" height="13" font="3"><b>able interrupts</b></text>
+<text top="811" left="182" width="337" height="14" font="2">during interrupt processing; doing so ensures that when</text>
+<text top="826" left="87" width="432" height="14" font="2">one interrupt is being handled, no other one will be delivered to the CPU.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="298" width="13" height="14" font="2">M</text>
+<text top="98" left="312" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="377" width="16" height="14" font="2">: L</text>
+<text top="98" left="394" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="440" width="10" height="14" font="2">D</text>
+<text top="98" left="451" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="490" width="8" height="14" font="2">E</text>
+<text top="98" left="498" width="62" height="11" font="5">XECUTION</text>
+<text top="138" left="107" width="4" height="8" font="11">1</text>
+<text top="135" left="129" width="444" height="14" font="7"># void swtch(struct context *old, struct context *new);</text>
+<text top="153" left="107" width="4" height="8" font="11">2</text>
+<text top="150" left="129" width="8" height="11" font="7">#</text>
+<text top="168" left="107" width="4" height="8" font="11">3</text>
+<text top="165" left="129" width="307" height="11" font="7"># Save current register context in old</text>
+<text top="183" left="107" width="4" height="8" font="11">4</text>
+<text top="180" left="129" width="339" height="11" font="7"># and then load register context from new.</text>
+<text top="198" left="107" width="4" height="8" font="11">5</text>
+<text top="195" left="129" width="97" height="11" font="7">.globl swtch</text>
+<text top="213" left="107" width="4" height="8" font="11">6</text>
+<text top="210" left="129" width="48" height="11" font="7">swtch:</text>
+<text top="228" left="107" width="4" height="8" font="11">7</text>
+<text top="225" left="145" width="161" height="11" font="7"># Save old registers</text>
+<text top="243" left="107" width="4" height="8" font="11">8</text>
+<text top="240" left="145" width="145" height="11" font="7">movl 4(%esp), %eax</text>
+<text top="240" left="306" width="178" height="11" font="7"># put old ptr into eax</text>
+<text top="258" left="107" width="4" height="8" font="11">9</text>
+<text top="254" left="145" width="97" height="11" font="7">popl 0(%eax)</text>
+<text top="254" left="306" width="137" height="11" font="7"># save the old IP</text>
+<text top="273" left="104" width="7" height="8" font="11">10</text>
+<text top="269" left="145" width="145" height="11" font="7">movl %esp, 4(%eax)</text>
+<text top="269" left="306" width="89" height="11" font="7"># and stack</text>
+<text top="288" left="104" width="7" height="8" font="11">11</text>
+<text top="284" left="145" width="145" height="11" font="7">movl %ebx, 8(%eax)</text>
+<text top="284" left="306" width="170" height="11" font="7"># and other registers</text>
+<text top="303" left="104" width="7" height="8" font="11">12</text>
+<text top="299" left="145" width="153" height="11" font="7">movl %ecx, 12(%eax)</text>
+<text top="318" left="104" width="7" height="8" font="11">13</text>
+<text top="314" left="145" width="153" height="11" font="7">movl %edx, 16(%eax)</text>
+<text top="333" left="104" width="7" height="8" font="11">14</text>
+<text top="329" left="145" width="153" height="11" font="7">movl %esi, 20(%eax)</text>
+<text top="348" left="104" width="7" height="8" font="11">15</text>
+<text top="344" left="145" width="153" height="11" font="7">movl %edi, 24(%eax)</text>
+<text top="363" left="104" width="7" height="8" font="11">16</text>
+<text top="359" left="145" width="153" height="11" font="7">movl %ebp, 28(%eax)</text>
+<text top="378" left="104" width="7" height="8" font="11">17</text>
+<text top="393" left="104" width="7" height="8" font="11">18</text>
+<text top="389" left="145" width="161" height="11" font="7"># Load new registers</text>
+<text top="407" left="104" width="7" height="8" font="11">19</text>
+<text top="404" left="145" width="145" height="11" font="7">movl 4(%esp), %eax</text>
+<text top="404" left="306" width="178" height="11" font="7"># put new ptr into eax</text>
+<text top="422" left="104" width="7" height="8" font="11">20</text>
+<text top="419" left="145" width="363" height="11" font="7">movl 28(%eax), %ebp # restore other registers</text>
+<text top="437" left="104" width="7" height="8" font="11">21</text>
+<text top="434" left="145" width="153" height="11" font="7">movl 24(%eax), %edi</text>
+<text top="452" left="104" width="7" height="8" font="11">22</text>
+<text top="449" left="145" width="153" height="11" font="7">movl 20(%eax), %esi</text>
+<text top="467" left="104" width="7" height="8" font="11">23</text>
+<text top="464" left="145" width="153" height="11" font="7">movl 16(%eax), %edx</text>
+<text top="482" left="104" width="7" height="8" font="11">24</text>
+<text top="479" left="145" width="153" height="11" font="7">movl 12(%eax), %ecx</text>
+<text top="497" left="104" width="7" height="8" font="11">25</text>
+<text top="494" left="145" width="145" height="11" font="7">movl 8(%eax), %ebx</text>
+<text top="512" left="104" width="7" height="8" font="11">26</text>
+<text top="509" left="145" width="145" height="11" font="7">movl 4(%eax), %esp</text>
+<text top="509" left="306" width="194" height="11" font="7"># stack is switched here</text>
+<text top="527" left="104" width="7" height="8" font="11">27</text>
+<text top="523" left="145" width="105" height="11" font="7">pushl 0(%eax)</text>
+<text top="523" left="306" width="210" height="11" font="7"># return addr put in place</text>
+<text top="542" left="104" width="7" height="8" font="11">28</text>
+<text top="538" left="145" width="24" height="11" font="7">ret</text>
+<text top="538" left="306" width="242" height="11" font="7"># finally return into new ctxt</text>
+<text top="568" left="221" width="62" height="14" font="2">Figure 6.4:</text>
+<text top="568" left="288" width="181" height="13" font="3"><b>The xv6 Context Switch Code</b></text>
+<text top="591" left="129" width="432" height="14" font="2">Of course, the OS has to be careful in doing so; disabling interrupts for</text>
+<text top="606" left="129" width="420" height="14" font="2">too long could lead to lost interrupts, which is (in technical terms) bad.</text>
+<text top="622" left="147" width="414" height="14" font="2">Operating systems also have developed a number of sophisticated</text>
+<text top="637" left="129" width="46" height="13" font="3"><b>locking</b></text>
+<text top="637" left="179" width="382" height="14" font="2">schemes to protect concurrent access to internal data structures.</text>
+<text top="652" left="129" width="432" height="14" font="2">This enables multiple activities to be on-going within the kernel at the</text>
+<text top="667" left="129" width="432" height="14" font="2">same time, particularly useful on multiprocessors. As we’ll see in the</text>
+<text top="682" left="129" width="432" height="14" font="2">next piece of this book on concurrency, though, such locking can be com-</text>
+<text top="696" left="129" width="392" height="14" font="2">plicated and lead to a variety of interesting and hard-to-find bugs.</text>
+<text top="724" left="97" width="97" height="17" font="6">6.5 Summary</text>
+<text top="751" left="147" width="414" height="14" font="2">We have described some key low-level mechanisms to implement CPU</text>
+<text top="766" left="129" width="384" height="14" font="2">virtualization, a set of techniques which we collectively refer to as</text>
+<text top="766" left="516" width="45" height="13" font="3"><b>limited</b></text>
+<text top="781" left="129" width="98" height="13" font="3"><b>direct execution</b></text>
+<text top="781" left="227" width="334" height="14" font="2">. The basic idea is straightforward: just run the program</text>
+<text top="795" left="129" width="432" height="14" font="2">you want to run on the CPU, but first make sure to set up the hardware</text>
+<text top="810" left="129" width="359" height="14" font="2">so as to limit what the process can do without OS assistance.</text>
+<text top="826" left="147" width="414" height="14" font="2">This general approach is taken in real life as well. For example, those</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="16" height="14" font="2">: L</text>
+<text top="98" left="183" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="229" width="10" height="14" font="2">D</text>
+<text top="98" left="241" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="279" width="8" height="14" font="2">E</text>
+<text top="98" left="288" width="62" height="11" font="5">XECUTION</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="148" left="162" width="10" height="14" font="2">A</text>
+<text top="150" left="173" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="200" width="19" height="14" font="2">: H</text>
+<text top="150" left="220" width="20" height="11" font="5">OW</text>
+<text top="148" left="244" width="8" height="14" font="2">L</text>
+<text top="150" left="253" width="27" height="11" font="5">ONG</text>
+<text top="148" left="284" width="10" height="14" font="2">C</text>
+<text top="150" left="294" width="48" height="11" font="5">ONTEXT</text>
+<text top="148" left="346" width="7" height="14" font="2">S</text>
+<text top="150" left="354" width="54" height="11" font="5">WITCHES</text>
+<text top="148" left="412" width="8" height="14" font="2">T</text>
+<text top="150" left="420" width="24" height="11" font="5">AKE</text>
+<text top="163" left="87" width="432" height="14" font="2">A natural question you might have is: how long does something like a</text>
+<text top="178" left="87" width="432" height="14" font="2">context switch take? Or even a system call? For those of you that are cu-</text>
+<text top="193" left="87" width="159" height="14" font="2">rious, there is a tool called</text>
+<text top="193" left="250" width="54" height="13" font="3"><b>lmbench</b></text>
+<text top="193" left="308" width="211" height="14" font="2">[MS96] that measures exactly those</text>
+<text top="208" left="87" width="432" height="14" font="2">things, as well as a few other performance measures that might be rele-</text>
+<text top="223" left="87" width="30" height="14" font="2">vant.</text>
+<text top="241" left="87" width="432" height="14" font="2">Results have improved quite a bit over time, roughly tracking processor</text>
+<text top="256" left="87" width="432" height="14" font="2">performance. For example, in 1996 running Linux 1.3.37 on a 200-MHz</text>
+<text top="271" left="87" width="432" height="14" font="2">P6 CPU, system calls took roughly 4 microseconds, and a context switch</text>
+<text top="286" left="87" width="432" height="14" font="2">roughly 6 microseconds [MS96]. Modern systems perform almost an or-</text>
+<text top="301" left="87" width="432" height="14" font="2">der of magnitude better, with sub-microsecond results on systems with</text>
+<text top="316" left="87" width="139" height="14" font="2">2- or 3-GHz processors.</text>
+<text top="334" left="87" width="432" height="14" font="2">It should be noted that not all operating-system actions track CPU per-</text>
+<text top="349" left="87" width="432" height="14" font="2">formance. As Ousterhout observed, many OS operations are memory</text>
+<text top="364" left="87" width="432" height="14" font="2">intensive, and memory bandwidth has not improved as dramatically as</text>
+<text top="379" left="87" width="432" height="14" font="2">processor speed over time [O90]. Thus, depending on your workload,</text>
+<text top="394" left="87" width="432" height="14" font="2">buying the latest and greatest processor may not speed up your OS as</text>
+<text top="409" left="87" width="151" height="14" font="2">much as you might hope.</text>
+<text top="463" left="87" width="432" height="14" font="2">of you who have children, or, at least, have heard of children, may be</text>
+<text top="478" left="87" width="164" height="14" font="2">familiar with the concept of</text>
+<text top="478" left="255" width="86" height="13" font="3"><b>baby proofing</b></text>
+<text top="478" left="345" width="174" height="14" font="2">a room: locking cabinets con-</text>
+<text top="493" left="87" width="432" height="14" font="2">taining dangerous stuff and covering electrical sockets. When the room is</text>
+<text top="508" left="87" width="432" height="14" font="2">thus readied, you can let your baby roam freely, secure in the knowledge</text>
+<text top="523" left="87" width="389" height="14" font="2">that the most dangerous aspects of the room have been restricted.</text>
+<text top="538" left="105" width="414" height="14" font="2">In an analogous manner, the OS “baby proofs” the CPU, by first (dur-</text>
+<text top="553" left="87" width="432" height="14" font="2">ing boot time) setting up the trap handlers and starting an interrupt timer,</text>
+<text top="568" left="87" width="432" height="14" font="2">and then by only running processes in a restricted mode. By doing so, the</text>
+<text top="583" left="87" width="432" height="14" font="2">OS can feel quite assured that processes can run efficiently, only requir-</text>
+<text top="598" left="87" width="432" height="14" font="2">ing OS intervention to perform privileged operations or when they have</text>
+<text top="612" left="87" width="409" height="14" font="2">monopolized the CPU for too long and thus need to be switched out.</text>
+<text top="627" left="105" width="414" height="14" font="2">We thus have the basic mechanisms for virtualizing the CPU in place.</text>
+<text top="642" left="87" width="432" height="14" font="2">But a major question is left unanswered: which process should we run at</text>
+<text top="657" left="87" width="432" height="14" font="2">a given time? It is this question that the scheduler must answer, and thus</text>
+<text top="672" left="87" width="159" height="14" font="2">the next topic of our study.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="298" width="13" height="14" font="2">M</text>
+<text top="98" left="312" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="377" width="16" height="14" font="2">: L</text>
+<text top="98" left="394" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="440" width="10" height="14" font="2">D</text>
+<text top="98" left="451" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="490" width="8" height="14" font="2">E</text>
+<text top="98" left="498" width="62" height="11" font="5">XECUTION</text>
+<text top="148" left="167" width="10" height="14" font="2">A</text>
+<text top="150" left="178" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="205" width="18" height="14" font="2">: K</text>
+<text top="150" left="223" width="14" height="11" font="5">EY</text>
+<text top="148" left="242" width="43" height="14" font="2">CPU V</text>
+<text top="150" left="286" width="94" height="11" font="5">IRTUALIZATION</text>
+<text top="148" left="384" width="8" height="14" font="2">T</text>
+<text top="150" left="393" width="32" height="11" font="5">ERMS</text>
+<text top="148" left="428" width="18" height="14" font="2">(M</text>
+<text top="150" left="447" width="71" height="11" font="5">ECHANISMS</text>
+<text top="148" left="519" width="4" height="14" font="2">)</text>
+<text top="168" left="148" width="412" height="14" font="2">• The CPU should support at least two modes of execution: a re-</text>
+<text top="183" left="163" width="44" height="14" font="2">stricted</text>
+<text top="183" left="211" width="64" height="13" font="3"><b>user mode</b></text>
+<text top="183" left="278" width="193" height="14" font="2">and a privileged (non-restricted)</text>
+<text top="183" left="475" width="77" height="13" font="3"><b>kernel mode</b></text>
+<text top="183" left="552" width="3" height="14" font="2">.</text>
+<text top="208" left="148" width="340" height="14" font="2">• Typical user applications run in user mode, and use a</text>
+<text top="208" left="492" width="68" height="13" font="3"><b>system call</b></text>
+<text top="223" left="163" width="12" height="14" font="2">to</text>
+<text top="223" left="179" width="25" height="13" font="3"><b>trap</b></text>
+<text top="223" left="207" width="308" height="14" font="2">into the kernel to request operating system services.</text>
+<text top="248" left="148" width="412" height="14" font="2">• The trap instruction saves register state carefully, changes the hard-</text>
+<text top="263" left="163" width="397" height="14" font="2">ware status to kernel mode, and jumps into the OS to a pre-specified</text>
+<text top="278" left="163" width="93" height="14" font="2">destination: the</text>
+<text top="278" left="260" width="59" height="13" font="3"><b>trap table</b></text>
+<text top="278" left="318" width="3" height="14" font="2">.</text>
+<text top="303" left="148" width="412" height="14" font="2">• When the OS finishes servicing a system call, it returns to the user</text>
+<text top="318" left="163" width="164" height="14" font="2">program via another special</text>
+<text top="318" left="331" width="102" height="13" font="3"><b>return-from-trap</b></text>
+<text top="318" left="435" width="126" height="14" font="2">instruction, which re-</text>
+<text top="333" left="163" width="397" height="14" font="2">duces privilege and returns control to the instruction after the trap</text>
+<text top="348" left="163" width="146" height="14" font="2">that jumped into the OS.</text>
+<text top="373" left="148" width="412" height="14" font="2">• The trap tables must be set up by the OS at boot time, and make</text>
+<text top="388" left="163" width="397" height="14" font="2">sure that they cannot be readily modified by user programs. All</text>
+<text top="402" left="163" width="120" height="14" font="2">of this is part of the</text>
+<text top="403" left="287" width="147" height="13" font="3"><b>limited direct execution</b></text>
+<text top="402" left="439" width="122" height="14" font="2">protocol which runs</text>
+<text top="417" left="163" width="304" height="14" font="2">programs efficiently but without loss of OS control.</text>
+<text top="442" left="148" width="412" height="14" font="2">• Once a program is running, the OS must use hardware mechanisms</text>
+<text top="457" left="163" width="361" height="14" font="2">to ensure the user program does not run forever, namely the</text>
+<text top="457" left="528" width="33" height="13" font="3"><b>timer</b></text>
+<text top="472" left="163" width="55" height="13" font="3"><b>interrupt</b></text>
+<text top="472" left="219" width="126" height="14" font="2">. This approach is a</text>
+<text top="472" left="350" width="99" height="13" font="3"><b>non-cooperative</b></text>
+<text top="472" left="455" width="106" height="14" font="2">approach to CPU</text>
+<text top="487" left="163" width="69" height="14" font="2">scheduling.</text>
+<text top="512" left="148" width="412" height="14" font="2">• Sometimes the OS, during a timer interrupt or system call, might</text>
+<text top="527" left="163" width="397" height="14" font="2">wish to switch from running the current process to a different one,</text>
+<text top="542" left="163" width="198" height="14" font="2">a low-level technique known as a</text>
+<text top="542" left="365" width="88" height="13" font="3"><b>context switch</b></text>
+<text top="542" left="453" width="3" height="14" font="2">.</text>
+<text top="609" left="147" width="3" height="14" font="2">.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="16" family="WSWVYW+URWPalladioL" color="#000000"/>
+	<fontspec id="17" size="10" family="JNCNMC+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="18" size="10" family="ICHZKU+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="166" width="16" height="14" font="2">: L</text>
+<text top="98" left="183" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="229" width="10" height="14" font="2">D</text>
+<text top="98" left="241" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="279" width="8" height="14" font="2">E</text>
+<text top="98" left="288" width="62" height="11" font="5">XECUTION</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="137" left="87" width="82" height="16" font="16"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="9">[A79] “Alto User’s Handbook” by Xerox. Xerox Palo Alto Research Center, September 1979.</text>
+<text top="177" left="87" width="46" height="11" font="9">Available:</text>
+<text top="178" left="139" width="358" height="9" font="17">http://history-computer.com/Library/AltoUsersHandbook.pdf</text>
+<text top="177" left="496" width="3" height="11" font="9">.</text>
+<text top="177" left="506" width="13" height="11" font="18"><i>An</i></text>
+<text top="189" left="87" width="432" height="11" font="18"><i>amazing system, way ahead of its time. Became famous because Steve Jobs visited, took notes, and built</i></text>
+<text top="201" left="87" width="107" height="11" font="18"><i>Lisa and eventually Mac.</i></text>
+<text top="218" left="87" width="432" height="11" font="9">[C+04] “Microreboot — A Technique for Cheap Recovery” by G. Candea, S. Kawamoto, Y.</text>
+<text top="229" left="87" width="347" height="11" font="9">Fujiki, G. Friedman, A. Fox. OSDI ’04, San Francisco, CA, December 2004.</text>
+<text top="229" left="439" width="80" height="11" font="18"><i>An excellent paper</i></text>
+<text top="241" left="87" width="324" height="11" font="18"><i>pointing out how far one can go with reboot in building more robust systems.</i></text>
+<text top="258" left="87" width="432" height="11" font="9">[I11] “Intel 64 and IA-32 Architectures Software Developer’s Manual” by Volume 3A and 3B:</text>
+<text top="270" left="87" width="288" height="11" font="9">System Programming Guide. Intel Corporation, January 2011.</text>
+<text top="270" left="379" width="140" height="11" font="18"><i>This is just a boring manual, but</i></text>
+<text top="282" left="87" width="114" height="11" font="18"><i>sometimes those are useful.</i></text>
+<text top="298" left="87" width="432" height="11" font="9">[K+61] “One-Level Storage System” by T. Kilburn, D.B.G. Edwards, M.J. Lanigan, F.H. Sumner.</text>
+<text top="310" left="87" width="251" height="11" font="9">IRE Transactions on Electronic Computers, April 1962.</text>
+<text top="310" left="342" width="177" height="11" font="18"><i>The Atlas pioneered much of what you see</i></text>
+<text top="322" left="87" width="432" height="11" font="18"><i>in modern systems. However, this paper is not the best one to read. If you were to only read one, you</i></text>
+<text top="334" left="87" width="202" height="11" font="18"><i>might try the historical perspective below [L78].</i></text>
+<text top="350" left="87" width="432" height="11" font="9">[L78] “The Manchester Mark I and Atlas: A Historical Perspective” by S. H. Lavington. Com-</text>
+<text top="362" left="87" width="207" height="11" font="9">munications of the ACM, 21:1, January 1978.</text>
+<text top="362" left="298" width="221" height="11" font="18"><i>A history of the early development of computers and</i></text>
+<text top="374" left="87" width="127" height="11" font="18"><i>the pioneering efforts of Atlas.</i></text>
+<text top="390" left="87" width="432" height="11" font="9">[M+63] “A Time-Sharing Debugging System for a Small Computer” by J. McCarthy, S. Boilen,</text>
+<text top="402" left="87" width="364" height="11" font="9">E. Fredkin, J. C. R. Licklider. AFIPS ’63 (Spring), May, 1963, New York, USA.</text>
+<text top="402" left="455" width="64" height="11" font="18"><i>An early paper</i></text>
+<text top="414" left="87" width="432" height="11" font="18"><i>about time-sharing that refers to using a timer interrupt; the quote that discusses it: “The basic task of</i></text>
+<text top="426" left="87" width="432" height="11" font="18"><i>the channel 17 clock routine is to decide whether to remove the current user from core and if so to decide</i></text>
+<text top="438" left="87" width="199" height="11" font="18"><i>which user program to swap in as he goes out.”</i></text>
+<text top="454" left="87" width="432" height="11" font="9">[MS96] “lmbench: Portable tools for performance analysis” by Larry McVoy and Carl Staelin.</text>
+<text top="466" left="87" width="244" height="11" font="9">USENIX Annual Technical Conference, January 1996.</text>
+<text top="466" left="334" width="185" height="11" font="18"><i>A fun paper about how to measure a number</i></text>
+<text top="478" left="87" width="385" height="11" font="18"><i>of different things about your OS and its performance. Download lmbench and give it a try.</i></text>
+<text top="495" left="87" width="432" height="11" font="9">[M11] “Mac OS 9” by Apple Computer, Inc.. January 2011. Available at the following URL:</text>
+<text top="507" left="87" width="227" height="9" font="17">http://en.wikipedia.org/wiki/Mac OS 9</text>
+<text top="506" left="317" width="3" height="11" font="9">.</text>
+<text top="506" left="324" width="195" height="11" font="18"><i>You can probably even find an OS 9 emulator</i></text>
+<text top="518" left="87" width="242" height="11" font="18"><i>out there if you want to; check it out, it’s a fun little Mac!</i></text>
+<text top="535" left="87" width="432" height="11" font="9">[O90] “Why Aren’t Operating Systems Getting Faster as Fast as Hardware?” by J. Ouster-</text>
+<text top="547" left="87" width="218" height="11" font="9">hout. USENIX Summer Conference, June 1990.</text>
+<text top="547" left="310" width="209" height="11" font="18"><i>A classic paper on the nature of operating system</i></text>
+<text top="559" left="87" width="54" height="11" font="18"><i>performance.</i></text>
+<text top="575" left="87" width="432" height="11" font="9">[P10] “The Single UNIX Specification, Version 3” by The Open Group, May 2010. Available:</text>
+<text top="587" left="87" width="182" height="9" font="17">http://www.unix.org/version3/</text>
+<text top="587" left="269" width="3" height="11" font="9">.</text>
+<text top="587" left="275" width="244" height="11" font="18"><i>This is hard and painful to read, so probably avoid it if you</i></text>
+<text top="599" left="87" width="395" height="11" font="18"><i>can. Like, unless someone is paying you to read it. Or, you’re just so curious you can’t help it!</i></text>
+<text top="615" left="87" width="432" height="11" font="9">[S07] “The Geometry of Innocent Flesh on the Bone: Return-into-libc without Function Calls</text>
+<text top="627" left="87" width="268" height="11" font="9">(on the x86)” by Hovav Shacham. CCS ’07, October 2007.</text>
+<text top="627" left="360" width="159" height="11" font="18"><i>One of those awesome, mind-blowing</i></text>
+<text top="639" left="87" width="432" height="11" font="18"><i>ideas that you’ll see in research from time to time. The author shows that if you can jump into code</i></text>
+<text top="651" left="87" width="432" height="11" font="18"><i>arbitrarily, you can essentially stitch together any code sequence you like (given a large code base); read</i></text>
+<text top="663" left="87" width="425" height="11" font="18"><i>the paper for the details. The technique makes it even harder to defend against malicious attacks, alas.</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="298" width="13" height="14" font="2">M</text>
+<text top="98" left="312" width="65" height="11" font="5">ECHANISM</text>
+<text top="96" left="377" width="16" height="14" font="2">: L</text>
+<text top="98" left="394" width="42" height="11" font="5">IMITED</text>
+<text top="96" left="440" width="10" height="14" font="2">D</text>
+<text top="98" left="451" width="34" height="11" font="5">IRECT</text>
+<text top="96" left="490" width="8" height="14" font="2">E</text>
+<text top="98" left="498" width="62" height="11" font="5">XECUTION</text>
+<text top="137" left="129" width="202" height="16" font="16"><b>Homework (Measurement)</b></text>
+<text top="188" left="232" width="10" height="14" font="2">A</text>
+<text top="190" left="243" width="26" height="11" font="5">SIDE</text>
+<text top="188" left="270" width="21" height="14" font="2">: M</text>
+<text top="190" left="291" width="81" height="11" font="5">EASUREMENT</text>
+<text top="188" left="376" width="11" height="14" font="2">H</text>
+<text top="190" left="388" width="70" height="11" font="5">OMEWORKS</text>
+<text top="203" left="147" width="414" height="14" font="2">Measurement homeworks are small exercises where you write code to</text>
+<text top="218" left="129" width="432" height="14" font="2">run on a real machine, in order to measure some aspect of OS or hardware</text>
+<text top="233" left="129" width="432" height="14" font="2">performance. The idea behind such homeworks is to give you a little bit</text>
+<text top="248" left="129" width="314" height="14" font="2">of hands-on experience with a real operating system.</text>
+<text top="288" left="147" width="414" height="14" font="2">In this homework, you’ll measure the costs of a system call and context</text>
+<text top="303" left="129" width="432" height="14" font="2">switch. Measuring the cost of a system call is relatively easy. For example,</text>
+<text top="318" left="129" width="432" height="14" font="2">you could repeatedly call a simple system call (e.g., performing a 0-byte</text>
+<text top="333" left="129" width="432" height="14" font="2">read), and time how long it takes; dividing the time by the number of</text>
+<text top="348" left="129" width="349" height="14" font="2">iterations gives you an estimate of the cost of a system call.</text>
+<text top="363" left="147" width="414" height="14" font="2">One thing you’ll have to take into account is the precision and accu-</text>
+<text top="378" left="129" width="313" height="14" font="2">racy of your timer. A typical timer that you can use is</text>
+<text top="379" left="444" width="113" height="11" font="7">gettimeofday()</text>
+<text top="378" left="557" width="3" height="14" font="2">;</text>
+<text top="393" left="129" width="338" height="14" font="2">read the man page for details. What you’ll see there is that</text>
+<text top="394" left="470" width="113" height="11" font="7">gettimeofday()</text>
+<text top="408" left="129" width="432" height="14" font="2">returns the time in microseconds since 1970; however, this does not mean</text>
+<text top="423" left="129" width="432" height="14" font="2">that the timer is precise to the microsecond. Measure back-to-back calls</text>
+<text top="438" left="129" width="12" height="14" font="2">to</text>
+<text top="438" left="144" width="113" height="11" font="7">gettimeofday()</text>
+<text top="438" left="260" width="300" height="14" font="2">to learn something about how precise the timer re-</text>
+<text top="452" left="129" width="432" height="14" font="2">ally is; this will tell you how many iterations of your null system-call</text>
+<text top="467" left="129" width="432" height="14" font="2">test you’ll have to run in order to get a good measurement result. If</text>
+<text top="483" left="129" width="113" height="11" font="7">gettimeofday()</text>
+<text top="482" left="247" width="314" height="14" font="2">is not precise enough for you, you might look into</text>
+<text top="497" left="129" width="55" height="14" font="2">using the</text>
+<text top="498" left="187" width="40" height="11" font="7">rdtsc</text>
+<text top="497" left="231" width="227" height="14" font="2">instruction available on x86 machines.</text>
+<text top="512" left="147" width="414" height="14" font="2">Measuring the cost of a context switch is a little trickier. The lmbench</text>
+<text top="527" left="129" width="432" height="14" font="2">benchmark does so by running two processes on a single CPU, and set-</text>
+<text top="542" left="129" width="86" height="14" font="2">ting up two U</text>
+<text top="544" left="215" width="21" height="11" font="5">NIX</text>
+<text top="542" left="241" width="320" height="14" font="2">pipes between them; a pipe is just one of many ways</text>
+<text top="557" left="129" width="96" height="14" font="2">processes in a U</text>
+<text top="559" left="226" width="21" height="11" font="5">NIX</text>
+<text top="557" left="250" width="310" height="14" font="2">system can communicate with one another. The first</text>
+<text top="572" left="129" width="432" height="14" font="2">process then issues a write to the first pipe, and waits for a read on the</text>
+<text top="587" left="129" width="432" height="14" font="2">second; upon seeing the first process waiting for something to read from</text>
+<text top="602" left="129" width="432" height="14" font="2">the second pipe, the OS puts the first process in the blocked state, and</text>
+<text top="617" left="129" width="432" height="14" font="2">switches to the other process, which reads from the first pipe and then</text>
+<text top="632" left="129" width="432" height="14" font="2">writes to the second. When the second process tries to read from the first</text>
+<text top="647" left="129" width="432" height="14" font="2">pipe again, it blocks, and thus the back-and-forth cycle of communication</text>
+<text top="662" left="129" width="432" height="14" font="2">continues. By measuring the cost of communicating like this repeatedly,</text>
+<text top="677" left="129" width="432" height="14" font="2">lmbench can make a good estimate of the cost of a context switch. You</text>
+<text top="692" left="129" width="432" height="14" font="2">can try to re-create something similar here, using pipes, or perhaps some</text>
+<text top="707" left="129" width="260" height="14" font="2">other communication mechanism such as U</text>
+<text top="708" left="390" width="21" height="11" font="5">NIX</text>
+<text top="707" left="415" width="46" height="14" font="2">sockets.</text>
+<text top="721" left="147" width="414" height="14" font="2">One difficulty in measuring context-switch cost arises in systems with</text>
+<text top="736" left="129" width="432" height="14" font="2">more than one CPU; what you need to do on such a system is ensure that</text>
+<text top="751" left="129" width="432" height="14" font="2">your context-switching processes are located on the same processor. For-</text>
+<text top="766" left="129" width="432" height="14" font="2">tunately, most operating systems have calls to bind a process to a partic-</text>
+<text top="781" left="129" width="253" height="14" font="2">ular processor; on Linux, for example, the</text>
+<text top="782" left="386" width="150" height="11" font="7">sched setaffinity()</text>
+<text top="781" left="540" width="21" height="14" font="2">call</text>
+<text top="796" left="129" width="432" height="14" font="2">is what you’re looking for. By ensuring both processes are on the same</text>
+<text top="811" left="129" width="432" height="14" font="2">processor, you are making sure to measure the cost of the OS stopping</text>
+<text top="826" left="129" width="311" height="14" font="2">one process and restoring another on the same CPU.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+</pdf2xml>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="WSIGFJ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="WSIGFJ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="IMARGO+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="JMRQDQ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="13" family="KAKSWN+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="5" size="16" family="JMRQDQ+URWPalladioL-Roma" color="#000000"/>
+<text top="197" left="533" width="24" height="30" font="0">G</text>
+<text top="268" left="236" width="283" height="21" font="1">Laboratory: Systems Projects</text>
+<text top="376" left="105" width="43" height="10" font="2"><b>NOTE:</b></text>
+<text top="376" left="151" width="211" height="14" font="3">Projects are slowing being added to</text>
+<text top="377" left="366" width="153" height="11" font="4">https://github.com/</text>
+<text top="392" left="87" width="276" height="11" font="4">remzi-arpacidusseau/ostep-projects</text>
+<text top="391" left="363" width="156" height="14" font="3">, which includes project</text>
+<text top="406" left="87" width="432" height="14" font="3">descriptions and a simple testing framework. Please be sure to check</text>
+<text top="421" left="87" width="124" height="14" font="3">that out if interested.</text>
+<text top="464" left="87" width="432" height="14" font="3">This chapter presents some ideas for systems projects. We usually do</text>
+<text top="479" left="87" width="432" height="14" font="3">about six or seven projects in a 15-week semester, meaning one every two</text>
+<text top="494" left="87" width="432" height="14" font="3">weeks or so. The first few are usually done by a single student, and the</text>
+<text top="509" left="87" width="177" height="14" font="3">last few in groups of size two.</text>
+<text top="525" left="105" width="414" height="14" font="3">Each semester, the projects follow this same outline; however, we vary</text>
+<text top="539" left="87" width="448" height="14" font="3">the details to keep it interesting and make “sharing” of code across semesters</text>
+<text top="554" left="87" width="432" height="14" font="3">more challenging (not that anyone would do that!). We also use the Moss</text>
+<text top="569" left="87" width="263" height="14" font="3">tool [M94] to look for this kind of “sharing”.</text>
+<text top="585" left="105" width="414" height="14" font="3">As for grading, we’ve tried a number of different approaches, each</text>
+<text top="600" left="87" width="432" height="14" font="3">of which have their strengths and weaknesses. Demos are fun but time</text>
+<text top="615" left="87" width="432" height="14" font="3">consuming. Automated test scripts are less time intensive but require a</text>
+<text top="630" left="87" width="432" height="14" font="3">great deal of care to get them to carefully test interesting corner cases.</text>
+<text top="645" left="87" width="432" height="14" font="3">Check the book web page for more details on these projects; if you’d like</text>
+<text top="660" left="87" width="302" height="14" font="3">the automated test scripts, we’d be happy to share.</text>
+<text top="698" left="55" width="119" height="17" font="5">G.1 Intro Project</text>
+<text top="729" left="105" width="414" height="14" font="3">The first project is an introduction to systems programming. Typical</text>
+<text top="744" left="87" width="319" height="14" font="3">assignments have been to write some variant of the</text>
+<text top="744" left="411" width="32" height="11" font="4">sort</text>
+<text top="744" left="448" width="71" height="14" font="3">utility, with</text>
+<text top="759" left="87" width="432" height="14" font="3">different constraints. For example, sorting text data, sorting binary data,</text>
+<text top="773" left="87" width="432" height="14" font="3">and other similar projects all make sense. To complete the project, one</text>
+<text top="788" left="87" width="432" height="14" font="3">must get familiar with some system calls (and their return error codes),</text>
+<text top="803" left="87" width="310" height="14" font="3">use a few simple data structures, and not much else.</text>
+<text top="862" left="300" width="7" height="14" font="3">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="11" family="JMRQDQ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="12" family="JMRQDQ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="JMRQDQ+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="3">2</text>
+<text top="96" left="356" width="8" height="14" font="3">L</text>
+<text top="98" left="365" width="72" height="11" font="6">ABORATORY</text>
+<text top="96" left="437" width="15" height="14" font="3">: S</text>
+<text top="98" left="453" width="45" height="11" font="6">YSTEMS</text>
+<text top="96" left="502" width="8" height="14" font="3">P</text>
+<text top="98" left="511" width="50" height="11" font="6">ROJECTS</text>
+<text top="137" left="97" width="43" height="17" font="5">G.2 U</text>
+<text top="139" left="141" width="26" height="13" font="3">NIX</text>
+<text top="137" left="171" width="35" height="17" font="5">Shell</text>
+<text top="167" left="147" width="268" height="14" font="3">In this project, students build a variant of a U</text>
+<text top="169" left="415" width="21" height="11" font="6">NIX</text>
+<text top="167" left="440" width="121" height="14" font="3">shell. Students learn</text>
+<text top="182" left="129" width="432" height="14" font="3">about process management as well as how mysterious things like pipes</text>
+<text top="197" left="129" width="432" height="14" font="3">and redirects actually work. Variants include unusual features, like a</text>
+<text top="212" left="129" width="432" height="14" font="3">redirection symbol that also compresses the output via gzip. Another</text>
+<text top="227" left="129" width="432" height="14" font="3">variant is a batch mode which allows the user to batch up a few requests</text>
+<text top="242" left="129" width="419" height="14" font="3">and then execute them, perhaps using different scheduling disciplines.</text>
+<text top="279" left="97" width="227" height="17" font="5">G.3 Memory-allocation Library</text>
+<text top="310" left="147" width="414" height="14" font="3">This project explores how a chunk of memory is managed, by building</text>
+<text top="324" left="129" width="280" height="14" font="3">an alternative memory-allocation library (like</text>
+<text top="325" left="414" width="65" height="11" font="4">malloc()</text>
+<text top="324" left="484" width="23" height="14" font="3">and</text>
+<text top="325" left="512" width="48" height="11" font="4">free()</text>
+<text top="339" left="129" width="387" height="14" font="3">but with different names). The project teaches students how to use</text>
+<text top="340" left="519" width="48" height="11" font="4">mmap()</text>
+<text top="354" left="129" width="432" height="14" font="3">to get a chunk of anonymous memory, and then about pointers in great</text>
+<text top="369" left="129" width="432" height="14" font="3">detail in order to build a simple (or perhaps, more complex) free list to</text>
+<text top="384" left="129" width="432" height="14" font="3">manage the space. Variants include: best/worst fit, buddy, and various</text>
+<text top="399" left="129" width="95" height="14" font="3">other allocators.</text>
+<text top="432" left="97" width="182" height="17" font="5">G.4 Intro to Concurrency</text>
+<text top="462" left="147" width="414" height="14" font="3">This project introduces concurrent programming with POSIX threads.</text>
+<text top="477" left="129" width="432" height="14" font="3">Build some simple thread-safe libraries: a list, hash table, and some more</text>
+<text top="492" left="129" width="432" height="14" font="3">complicated data structures are good exercises in adding locks to real-</text>
+<text top="507" left="129" width="446" height="14" font="3">world code. Measure the performance of coarse-grained versus fine-grained</text>
+<text top="522" left="129" width="432" height="14" font="3">alternatives. Variants just focus on different (and perhaps more complex)</text>
+<text top="536" left="129" width="92" height="14" font="3">data structures.</text>
+<text top="569" left="97" width="199" height="17" font="5">G.5 Concurrent Web Server</text>
+<text top="599" left="147" width="414" height="14" font="3">This project explores the use of concurrency in a real-world applica-</text>
+<text top="614" left="129" width="432" height="14" font="3">tion. Students take a simple web server (or build one) and add a thread</text>
+<text top="629" left="129" width="432" height="14" font="3">pool to it, in order to serve requests concurrently. The thread pool should</text>
+<text top="644" left="129" width="432" height="14" font="3">be of a fixed size, and use a producer/consumer bounded buffer to pass</text>
+<text top="659" left="129" width="432" height="14" font="3">requests from a main thread to the fixed pool of workers. Learn how</text>
+<text top="674" left="129" width="432" height="14" font="3">threads, locks, and condition variables are used to build a real server.</text>
+<text top="689" left="129" width="308" height="14" font="3">Variants include scheduling policies for the threads.</text>
+<text top="721" left="97" width="177" height="17" font="5">G.6 File System Checker</text>
+<text top="751" left="147" width="414" height="14" font="3">This project explores on-disk data structures and their consistency.</text>
+<text top="766" left="129" width="299" height="14" font="3">Students build a simple file system checker. The</text>
+<text top="767" left="432" width="57" height="11" font="4">debugfs</text>
+<text top="766" left="494" width="67" height="14" font="3">tool can be</text>
+<text top="781" left="129" width="432" height="14" font="3">used on Linux to make real file-system images; crawl through them and</text>
+<text top="796" left="129" width="432" height="14" font="3">make sure all is well. To make it more difficult, also fix any problems that</text>
+<text top="811" left="129" width="432" height="14" font="3">are found. Variants focus on different types of problems: pointers, link</text>
+<text top="826" left="129" width="199" height="14" font="3">counts, use of indirect blocks, etc.</text>
+<text top="881" left="129" width="11" height="14" font="3">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="3">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="3">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="3">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="3">L</text>
+<text top="98" left="96" width="72" height="11" font="6">ABORATORY</text>
+<text top="96" left="168" width="15" height="14" font="3">: S</text>
+<text top="98" left="184" width="45" height="11" font="6">YSTEMS</text>
+<text top="96" left="234" width="8" height="14" font="3">P</text>
+<text top="98" left="242" width="50" height="11" font="6">ROJECTS</text>
+<text top="96" left="512" width="7" height="14" font="3">3</text>
+<text top="137" left="55" width="218" height="17" font="5">G.7 File System Defragmenter</text>
+<text top="166" left="105" width="414" height="14" font="3">This project explores on-disk data structures and their performance</text>
+<text top="181" left="87" width="432" height="14" font="3">implications. The project should give some particular file-system images</text>
+<text top="196" left="87" width="432" height="14" font="3">to students with known fragmentation problems; students should then</text>
+<text top="211" left="87" width="432" height="14" font="3">crawl through the image, and look for files that are not laid out sequen-</text>
+<text top="226" left="87" width="432" height="14" font="3">tially. Write out a new “defragmented” image that fixes this problem,</text>
+<text top="241" left="87" width="199" height="14" font="3">perhaps reporting some statistics.</text>
+<text top="278" left="55" width="194" height="17" font="5">G.8 Concurrent File Server</text>
+<text top="308" left="105" width="414" height="14" font="3">This project combines concurrency and file systems and even a little</text>
+<text top="323" left="87" width="432" height="14" font="3">bit of networking and distributed systems. Students build a simple con-</text>
+<text top="338" left="87" width="432" height="14" font="3">current file server. The protocol should look something like NFS, with</text>
+<text top="353" left="87" width="432" height="14" font="3">lookups, reads, writes, and stats. Store files within a single disk image</text>
+<text top="368" left="87" width="432" height="14" font="3">(designed as a file). Variants are manifold, with different suggested on-</text>
+<text top="382" left="87" width="216" height="14" font="3">disk formats and network protocols.</text>
+<text top="896" left="212" width="83" height="14" font="3">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="3">-D</text>
+<text top="898" left="348" width="46" height="11" font="6">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="3">T</text>
+<text top="890" left="478" width="31" height="11" font="6">HREE</text>
+<text top="903" left="478" width="8" height="14" font="3">E</text>
+<text top="905" left="487" width="23" height="11" font="6">ASY</text>
+<text top="918" left="468" width="8" height="14" font="3">P</text>
+<text top="920" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="16" family="IMARGO+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="3">4</text>
+<text top="96" left="356" width="8" height="14" font="3">L</text>
+<text top="98" left="365" width="72" height="11" font="6">ABORATORY</text>
+<text top="96" left="437" width="15" height="14" font="3">: S</text>
+<text top="98" left="453" width="45" height="11" font="6">YSTEMS</text>
+<text top="96" left="502" width="8" height="14" font="3">P</text>
+<text top="98" left="511" width="50" height="11" font="6">ROJECTS</text>
+<text top="137" left="129" width="82" height="12" font="9"><b>References</b></text>
+<text top="165" left="129" width="274" height="11" font="8">[M94] “Moss: A System for Detecting Software Plagiarism”</text>
+<text top="177" left="129" width="52" height="11" font="8">Alex Aiken</text>
+<text top="189" left="129" width="246" height="11" font="8">Available: http://theory.stanford.edu/˜aiken/moss/</text>
+<text top="881" left="129" width="11" height="14" font="3">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="3">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="3">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="3">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+</pdf2xml>

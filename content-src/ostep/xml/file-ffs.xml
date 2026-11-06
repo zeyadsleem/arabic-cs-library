@@ -1,0 +1,1245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="UCJTAB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="UCJTAB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="GWWKFX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="11" family="GWWKFX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="15" family="UCJTAB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="5" size="16" family="GWWKFX+URWPalladioL-Roma" color="#000000"/>
+<text top="195" left="523" width="34" height="30" font="0">41</text>
+<text top="265" left="196" width="323" height="21" font="1">Locality and The Fast File System</text>
+<text top="346" left="105" width="72" height="14" font="2">When the U</text>
+<text top="348" left="177" width="21" height="11" font="3">NIX</text>
+<text top="346" left="202" width="265" height="14" font="2">operating system was ﬁrst introduced, the U</text>
+<text top="348" left="468" width="21" height="11" font="3">NIX</text>
+<text top="346" left="493" width="26" height="14" font="2">wiz-</text>
+<text top="361" left="87" width="432" height="14" font="2">ard himself Ken Thompson wrote the ﬁrst ﬁle system. Let’s call that the</text>
+<text top="376" left="87" width="40" height="14" font="2">“old U</text>
+<text top="378" left="128" width="21" height="11" font="3">NIX</text>
+<text top="376" left="153" width="366" height="14" font="2">ﬁle system”, and it was really simple. Basically, its data struc-</text>
+<text top="391" left="87" width="197" height="14" font="2">tures looked like this on the disk:</text>
+<text top="424" left="144" width="10" height="14" font="4">S</text>
+<text top="424" left="175" width="45" height="14" font="4">Inodes</text>
+<text top="424" left="336" width="32" height="14" font="4">Data</text>
+<text top="459" left="105" width="414" height="14" font="2">The super block (S) contained information about the entire ﬁle system:</text>
+<text top="474" left="87" width="432" height="14" font="2">how big the volume is, how many inodes there are, a pointer to the head</text>
+<text top="489" left="87" width="432" height="14" font="2">of a free list of blocks, and so forth. The inode region of the disk contained</text>
+<text top="504" left="87" width="432" height="14" font="2">all the inodes for the ﬁle system. Finally, most of the disk was taken up</text>
+<text top="519" left="87" width="89" height="14" font="2">by data blocks.</text>
+<text top="534" left="105" width="414" height="14" font="2">The good thing about the old ﬁle system was that it was simple, and</text>
+<text top="549" left="87" width="432" height="14" font="2">supported the basic abstractions the ﬁle system was trying to deliver: ﬁles</text>
+<text top="564" left="87" width="432" height="14" font="2">and the directory hierarchy. This easy-to-use system was a real step for-</text>
+<text top="579" left="87" width="432" height="14" font="2">ward from the clumsy, record-based storage systems of the past, and the</text>
+<text top="594" left="87" width="432" height="14" font="2">directory hierarchy was a true advance over simpler, one-level hierarchies</text>
+<text top="609" left="87" width="169" height="14" font="2">provided by earlier systems.</text>
+<text top="646" left="55" width="266" height="17" font="5">41.1 The Problem: Poor Performance</text>
+<text top="676" left="105" width="414" height="14" font="2">The problem: performance was terrible. As measured by Kirk McKu-</text>
+<text top="691" left="87" width="432" height="14" font="2">sick and his colleagues at Berkeley [MJLF84], performance started off bad</text>
+<text top="706" left="87" width="432" height="14" font="2">and got worse over time, to the point where the ﬁle system was delivering</text>
+<text top="721" left="87" width="209" height="14" font="2">only 2% of overall disk bandwidth!</text>
+<text top="736" left="105" width="197" height="14" font="2">The main issue was that the old U</text>
+<text top="738" left="303" width="21" height="11" font="3">NIX</text>
+<text top="736" left="327" width="192" height="14" font="2">ﬁle system treated the disk like it</text>
+<text top="751" left="87" width="432" height="14" font="2">was a random-access memory; data was spread all over the place without</text>
+<text top="766" left="87" width="432" height="14" font="2">regard to the fact that the medium holding the data was a disk, and thus</text>
+<text top="781" left="87" width="432" height="14" font="2">had real and expensive positioning costs. For example, the data blocks of</text>
+<text top="796" left="87" width="432" height="14" font="2">a ﬁle were often very far away from its inode, thus inducing an expensive</text>
+<text top="811" left="87" width="432" height="14" font="2">seek whenever one ﬁrst read the inode and then the data blocks of a ﬁle</text>
+<text top="826" left="87" width="175" height="14" font="2">(a pretty common operation).</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="13" family="ISUZAB+URWPalladioL" color="#000000"/>
+	<fontspec id="7" size="12" family="UCJTAB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="8" size="12" family="UCJTAB+NimbusSanL-Regu" color="#ffffff"/>
+	<fontspec id="9" size="12" family="GWWKFX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="GWWKFX+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="325" width="8" height="14" font="2">L</text>
+<text top="98" left="334" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="421" width="8" height="14" font="2">T</text>
+<text top="98" left="430" width="16" height="11" font="3">HE</text>
+<text top="96" left="450" width="7" height="14" font="2">F</text>
+<text top="98" left="458" width="22" height="11" font="3">AST</text>
+<text top="96" left="484" width="7" height="14" font="2">F</text>
+<text top="98" left="492" width="18" height="11" font="3">ILE</text>
+<text top="96" left="514" width="7" height="14" font="2">S</text>
+<text top="98" left="522" width="39" height="11" font="3">YSTEM</text>
+<text top="139" left="147" width="298" height="14" font="2">Worse, the ﬁle system would end up getting quite</text>
+<text top="139" left="448" width="71" height="13" font="6"><b>fragmented</b></text>
+<text top="139" left="519" width="42" height="14" font="2">, as the</text>
+<text top="154" left="129" width="432" height="14" font="2">free space was not carefully managed. The free list would end up point-</text>
+<text top="169" left="129" width="432" height="14" font="2">ing to a bunch of blocks spread across the disk, and as ﬁles got allocated,</text>
+<text top="183" left="129" width="432" height="14" font="2">they would simply take the next free block. The result was that a logi-</text>
+<text top="198" left="129" width="432" height="14" font="2">cally contiguous ﬁle would be accessed by going back and forth across</text>
+<text top="213" left="129" width="296" height="14" font="2">the disk, thus reducing performance dramatically.</text>
+<text top="229" left="147" width="414" height="14" font="2">For example, imagine the following data block region, which contains</text>
+<text top="244" left="129" width="280" height="14" font="2">four ﬁles (A, B, C, and D), each of size 2 blocks:</text>
+<text top="284" left="224" width="15" height="12" font="7">A1</text>
+<text top="284" left="257" width="15" height="12" font="7">A2</text>
+<text top="284" left="289" width="15" height="12" font="7">B1</text>
+<text top="284" left="321" width="15" height="12" font="7">B2</text>
+<text top="284" left="353" width="15" height="12" font="7">C1</text>
+<text top="284" left="386" width="15" height="12" font="7">C2</text>
+<text top="284" left="418" width="15" height="12" font="7">D1</text>
+<text top="284" left="451" width="15" height="12" font="7">D2</text>
+<text top="317" left="129" width="269" height="14" font="2">If B and D are deleted, the resulting layout is:</text>
+<text top="357" left="224" width="15" height="12" font="7">A1</text>
+<text top="357" left="257" width="15" height="12" font="7">A2</text>
+<text top="357" left="353" width="15" height="12" font="7">C1</text>
+<text top="357" left="386" width="15" height="12" font="7">C2</text>
+<text top="390" left="147" width="414" height="14" font="2">As you can see, the free space is fragmented into two chunks of two</text>
+<text top="404" left="129" width="432" height="14" font="2">blocks, instead of one nice contiguous chunk of four. Let’s say you now</text>
+<text top="419" left="129" width="254" height="14" font="2">wish to allocate a ﬁle E, of size four blocks:</text>
+<text top="458" left="224" width="15" height="12" font="7">A1</text>
+<text top="458" left="257" width="15" height="12" font="7">A2</text>
+<text top="458" left="289" width="15" height="12" font="8">E1</text>
+<text top="458" left="321" width="15" height="12" font="8">E2</text>
+<text top="458" left="353" width="15" height="12" font="7">C1</text>
+<text top="458" left="386" width="15" height="12" font="7">C2</text>
+<text top="458" left="419" width="15" height="12" font="8">E3</text>
+<text top="458" left="451" width="15" height="12" font="8">E4</text>
+<text top="492" left="147" width="414" height="14" font="2">You can see what happens: E gets spread across the disk, and as a</text>
+<text top="507" left="129" width="432" height="14" font="2">result, when accessing E, you don’t get peak (sequential) performance</text>
+<text top="522" left="129" width="432" height="14" font="2">from the disk. Rather, you ﬁrst read E1 and E2, then seek, then read E3</text>
+<text top="537" left="129" width="432" height="14" font="2">and E4. This fragmentation problem happened all the time in the old</text>
+<text top="552" left="129" width="10" height="14" font="2">U</text>
+<text top="554" left="140" width="21" height="11" font="3">NIX</text>
+<text top="552" left="166" width="395" height="14" font="2">ﬁle system, and it hurt performance. A side note: this problem is</text>
+<text top="567" left="129" width="106" height="14" font="2">exactly what disk</text>
+<text top="567" left="239" width="102" height="13" font="6"><b>defragmentation</b></text>
+<text top="567" left="345" width="216" height="14" font="2">tools help with; they reorganize on-</text>
+<text top="582" left="129" width="432" height="14" font="2">disk data to place ﬁles contiguously and make free space for one or a few</text>
+<text top="597" left="129" width="432" height="14" font="2">contiguous regions, moving data around and then rewriting inodes and</text>
+<text top="612" left="129" width="159" height="14" font="2">such to reﬂect the changes.</text>
+<text top="628" left="147" width="414" height="14" font="2">One other problem: the original block size was too small (512 bytes).</text>
+<text top="643" left="129" width="432" height="14" font="2">Thus, transferring data from the disk was inherently inefﬁcient. Smaller</text>
+<text top="658" left="129" width="249" height="14" font="2">blocks were good because they minimized</text>
+<text top="658" left="380" width="139" height="13" font="6"><b>internal fragmentation</b></text>
+<text top="658" left="522" width="39" height="14" font="2">(waste</text>
+<text top="672" left="129" width="432" height="14" font="2">within the block), but bad for transfer as each block might require a posi-</text>
+<text top="687" left="129" width="284" height="14" font="2">tioning overhead to reach it. Thus, the problem:</text>
+<text top="730" left="311" width="8" height="14" font="2">T</text>
+<text top="732" left="320" width="16" height="11" font="3">HE</text>
+<text top="730" left="340" width="10" height="14" font="2">C</text>
+<text top="732" left="350" width="24" height="11" font="3">RUX</text>
+<text top="730" left="375" width="3" height="14" font="2">:</text>
+<text top="745" left="148" width="11" height="14" font="2">H</text>
+<text top="747" left="160" width="20" height="11" font="3">OW</text>
+<text top="745" left="184" width="8" height="14" font="2">T</text>
+<text top="747" left="192" width="8" height="11" font="3">O</text>
+<text top="745" left="205" width="11" height="14" font="2">O</text>
+<text top="747" left="216" width="54" height="11" font="3">RGANIZE</text>
+<text top="745" left="274" width="11" height="14" font="2">O</text>
+<text top="747" left="285" width="9" height="11" font="3">N</text>
+<text top="745" left="295" width="4" height="14" font="2">-</text>
+<text top="747" left="300" width="27" height="11" font="3">DISK</text>
+<text top="745" left="332" width="10" height="14" font="2">D</text>
+<text top="747" left="343" width="23" height="11" font="3">ATA</text>
+<text top="745" left="370" width="8" height="14" font="2">T</text>
+<text top="747" left="378" width="8" height="11" font="3">O</text>
+<text top="745" left="391" width="5" height="14" font="2">I</text>
+<text top="747" left="396" width="50" height="11" font="3">MPROVE</text>
+<text top="745" left="450" width="8" height="14" font="2">P</text>
+<text top="747" left="459" width="83" height="11" font="3">ERFORMANCE</text>
+<text top="760" left="147" width="414" height="14" font="2">How can we organize ﬁle system data structures so as to improve per-</text>
+<text top="775" left="129" width="432" height="14" font="2">formance? What types of allocation policies do we need on top of those</text>
+<text top="790" left="129" width="381" height="14" font="2">data structures? How do we make the ﬁle system “disk aware”?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="YXYNXL+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="12" size="13" family="NSWWOJ+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="13" size="13" family="FKLBYH+CMMI9" color="#000000"/>
+	<fontspec id="14" size="12" family="UCJTAB+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="184" width="8" height="14" font="2">T</text>
+<text top="98" left="193" width="16" height="11" font="3">HE</text>
+<text top="96" left="213" width="7" height="14" font="2">F</text>
+<text top="98" left="220" width="22" height="11" font="3">AST</text>
+<text top="96" left="246" width="7" height="14" font="2">F</text>
+<text top="98" left="254" width="18" height="11" font="3">ILE</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="39" height="11" font="3">YSTEM</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="137" left="55" width="298" height="17" font="5">41.2 FFS: Disk Awareness Is The Solution</text>
+<text top="166" left="105" width="414" height="14" font="2">A group at Berkeley decided to build a better, faster ﬁle system, which</text>
+<text top="181" left="87" width="141" height="14" font="2">they cleverly called the</text>
+<text top="181" left="232" width="138" height="13" font="6"><b>Fast File System (FFS)</b></text>
+<text top="181" left="370" width="149" height="14" font="2">. The idea was to design</text>
+<text top="196" left="87" width="432" height="14" font="2">the ﬁle system structures and allocation policies to be “disk aware” and</text>
+<text top="211" left="87" width="432" height="14" font="2">thus improve performance, which is exactly what they did. FFS thus ush-</text>
+<text top="226" left="87" width="381" height="14" font="2">ered in a new era of ﬁle system research; by keeping the same</text>
+<text top="226" left="472" width="47" height="14" font="11"><i>interface</i></text>
+<text top="241" left="87" width="258" height="14" font="2">to the ﬁle system (the same APIs, including</text>
+<text top="242" left="349" width="48" height="11" font="12">open()</text>
+<text top="241" left="397" width="3" height="14" font="2">,</text>
+<text top="242" left="404" width="48" height="11" font="12">read()</text>
+<text top="241" left="452" width="3" height="14" font="2">,</text>
+<text top="242" left="459" width="57" height="11" font="12">write()</text>
+<text top="241" left="516" width="3" height="14" font="2">,</text>
+<text top="257" left="87" width="57" height="11" font="12">close()</text>
+<text top="256" left="144" width="315" height="14" font="2">, and other ﬁle system calls) but changing the internal</text>
+<text top="256" left="461" width="58" height="14" font="11"><i>implemen-</i></text>
+<text top="271" left="87" width="32" height="14" font="11"><i>tation</i></text>
+<text top="271" left="119" width="400" height="14" font="2">, the authors paved the path for new ﬁle system construction, work</text>
+<text top="286" left="87" width="432" height="14" font="2">that continues today. Virtually all modern ﬁle systems adhere to the ex-</text>
+<text top="301" left="87" width="432" height="14" font="2">isting interface (and thus preserve compatibility with applications) while</text>
+<text top="316" left="87" width="409" height="14" font="2">changing their internals for performance, reliability, or other reasons.</text>
+<text top="353" left="55" width="343" height="17" font="5">41.3 Organizing Structure: The Cylinder Group</text>
+<text top="383" left="105" width="414" height="14" font="2">The ﬁrst step was to change the on-disk structures. FFS divides the</text>
+<text top="398" left="87" width="127" height="14" font="2">disk into a number of</text>
+<text top="398" left="217" width="96" height="13" font="6"><b>cylinder groups</b></text>
+<text top="398" left="313" width="56" height="14" font="2">. A single</text>
+<text top="398" left="373" width="51" height="13" font="6"><b>cylinder</b></text>
+<text top="398" left="426" width="93" height="14" font="2">is a set of tracks</text>
+<text top="413" left="87" width="432" height="14" font="2">on different surfaces of a hard drive that are the same distance from the</text>
+<text top="428" left="87" width="432" height="14" font="2">center of the drive; it is called a cylinder because of its clear resemblance</text>
+<text top="443" left="87" width="304" height="14" font="2">to the so-called geometrical shape. FFS aggregates</text>
+<text top="443" left="395" width="11" height="9" font="13">N</text>
+<text top="443" left="412" width="107" height="14" font="2">consecutive cylin-</text>
+<text top="457" left="87" width="432" height="14" font="2">ders into a group, and thus the entire disk can thus be viewed as a collec-</text>
+<text top="472" left="87" width="432" height="14" font="2">tion of cylinder groups. Here is a simple example, showing the four outer</text>
+<text top="487" left="87" width="432" height="14" font="2">most tracks of a drive with six platters, and a cylinder group that consists</text>
+<text top="502" left="87" width="107" height="14" font="2">of three cylinders:</text>
+<text top="535" left="122" width="153" height="12" font="7">Single track (e.g., dark gray)</text>
+<text top="665" left="107" width="0" height="12" font="14">Cylinder:</text>
+<text top="739" left="119" width="0" height="12" font="14">Tracks at same distance from center</text>
+<text top="729" left="131" width="0" height="12" font="14">of drive across different surfaces</text>
+<text top="712" left="143" width="0" height="12" font="14">[all tracks with same color]</text>
+<text top="684" left="465" width="0" height="12" font="14">Cylinder Group:</text>
+<text top="723" left="477" width="0" height="12" font="14">Set of N consecutive cylinders</text>
+<text top="704" left="490" width="0" height="12" font="14">[if N=3, first group does</text>
+<text top="703" left="502" width="0" height="12" font="14">not include black track]</text>
+<text top="781" left="105" width="414" height="14" font="2">Note that modern drives do not export enough information for the</text>
+<text top="796" left="87" width="432" height="14" font="2">ﬁle system to truly understand whether a particular cylinder is in use;</text>
+<text top="811" left="87" width="432" height="14" font="2">as discussed previously [AD18a], disks export a logical address space of</text>
+<text top="826" left="87" width="432" height="14" font="2">blocks and hide details of their geometry from clients. Thus, modern ﬁle</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="325" width="8" height="14" font="2">L</text>
+<text top="98" left="334" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="421" width="8" height="14" font="2">T</text>
+<text top="98" left="430" width="16" height="11" font="3">HE</text>
+<text top="96" left="450" width="7" height="14" font="2">F</text>
+<text top="98" left="458" width="22" height="11" font="3">AST</text>
+<text top="96" left="484" width="7" height="14" font="2">F</text>
+<text top="98" left="492" width="18" height="11" font="3">ILE</text>
+<text top="96" left="514" width="7" height="14" font="2">S</text>
+<text top="98" left="522" width="39" height="11" font="3">YSTEM</text>
+<text top="139" left="129" width="432" height="14" font="2">systems (such as Linux ext2, ext3, and ext4) instead organize the drive</text>
+<text top="154" left="129" width="23" height="14" font="2">into</text>
+<text top="154" left="155" width="80" height="13" font="6"><b>block groups</b></text>
+<text top="154" left="235" width="326" height="14" font="2">, each of which is just a consecutive portion of the disk’s</text>
+<text top="169" left="129" width="432" height="14" font="2">address space. The picture below illustrates an example where every 8</text>
+<text top="183" left="129" width="432" height="14" font="2">blocks are organized into a different block group (note that real groups</text>
+<text top="198" left="129" width="219" height="14" font="2">would consist of many more blocks):</text>
+<text top="249" left="213" width="43" height="12" font="7">Group 0</text>
+<text top="249" left="317" width="43" height="12" font="7">Group 1</text>
+<text top="249" left="420" width="43" height="12" font="7">Group 2</text>
+<text top="336" left="147" width="414" height="14" font="2">Whether you call them cylinder groups or block groups, these groups</text>
+<text top="351" left="129" width="432" height="14" font="2">are the central mechanism that FFS uses to improve performance. Crit-</text>
+<text top="366" left="129" width="432" height="14" font="2">ically, by placing two ﬁles within the same group, FFS can ensure that</text>
+<text top="381" left="129" width="428" height="14" font="2">accessing one after the other will not result in long seeks across the disk.</text>
+<text top="397" left="147" width="414" height="14" font="2">To use these groups to store ﬁles and directories, FFS needs to have the</text>
+<text top="412" left="129" width="432" height="14" font="2">ability to place ﬁles and directories into a group, and track all necessary</text>
+<text top="427" left="129" width="432" height="14" font="2">information about them therein. To do so, FFS includes all the structures</text>
+<text top="442" left="129" width="432" height="14" font="2">you might expect a ﬁle system to have within each group, e.g., space for</text>
+<text top="457" left="129" width="432" height="14" font="2">inodes, data blocks, and some structures to track whether each of those</text>
+<text top="472" left="129" width="432" height="14" font="2">are allocated or free. Here is a depiction of what FFS keeps within a single</text>
+<text top="487" left="129" width="92" height="14" font="2">cylinder group:</text>
+<text top="538" left="187" width="8" height="12" font="7">S</text>
+<text top="538" left="202" width="28" height="12" font="8">ib db</text>
+<text top="538" left="254" width="36" height="12" font="7">Inodes</text>
+<text top="538" left="397" width="25" height="12" font="7">Data</text>
+<text top="592" left="147" width="414" height="14" font="2">Let’s now examine the components of this single cylinder group in</text>
+<text top="607" left="129" width="224" height="14" font="2">more detail. FFS keeps a copy of the</text>
+<text top="607" left="357" width="73" height="13" font="6"><b>super block</b></text>
+<text top="607" left="435" width="126" height="14" font="2">(S) in each group for</text>
+<text top="622" left="129" width="432" height="14" font="2">reliability reasons. The super block is needed to mount the ﬁle system;</text>
+<text top="637" left="129" width="432" height="14" font="2">by keeping multiple copies, if one copy becomes corrupt, you can still</text>
+<text top="652" left="129" width="360" height="14" font="2">mount and access the ﬁle system by using a working replica.</text>
+<text top="668" left="147" width="414" height="14" font="2">Within each group, FFS needs to track whether the inodes and data</text>
+<text top="683" left="129" width="290" height="14" font="2">blocks of the group are allocated. A per-group</text>
+<text top="683" left="423" width="84" height="13" font="6"><b>inode bitmap</b></text>
+<text top="683" left="513" width="48" height="14" font="2">(ib) and</text>
+<text top="698" left="129" width="73" height="13" font="6"><b>data bitmap</b></text>
+<text top="698" left="205" width="356" height="14" font="2">(db) serve this role for inodes and data blocks in each group.</text>
+<text top="712" left="129" width="432" height="14" font="2">Bitmaps are an excellent way to manage free space in a ﬁle system be-</text>
+<text top="727" left="129" width="432" height="14" font="2">cause it is easy to ﬁnd a large chunk of free space and allocate it to a ﬁle,</text>
+<text top="742" left="129" width="432" height="14" font="2">perhaps avoiding some of the fragmentation problems of the free list in</text>
+<text top="757" left="129" width="112" height="14" font="2">the old ﬁle system.</text>
+<text top="773" left="147" width="65" height="14" font="2">Finally, the</text>
+<text top="774" left="215" width="35" height="13" font="6"><b>inode</b></text>
+<text top="773" left="254" width="23" height="14" font="2">and</text>
+<text top="774" left="280" width="64" height="13" font="6"><b>data block</b></text>
+<text top="773" left="347" width="214" height="14" font="2">regions are just like those in the pre-</text>
+<text top="788" left="129" width="432" height="14" font="2">vious very-simple ﬁle system (VSFS). Most of each cylinder group, as</text>
+<text top="803" left="129" width="204" height="14" font="2">usual, is comprised of data blocks.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="184" width="8" height="14" font="2">T</text>
+<text top="98" left="193" width="16" height="11" font="3">HE</text>
+<text top="96" left="213" width="7" height="14" font="2">F</text>
+<text top="98" left="220" width="22" height="11" font="3">AST</text>
+<text top="96" left="246" width="7" height="14" font="2">F</text>
+<text top="98" left="254" width="18" height="11" font="3">ILE</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="39" height="11" font="3">YSTEM</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="148" left="220" width="10" height="14" font="2">A</text>
+<text top="150" left="231" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="258" width="43" height="14" font="2">: FFS F</text>
+<text top="150" left="301" width="18" height="11" font="3">ILE</text>
+<text top="148" left="323" width="10" height="14" font="2">C</text>
+<text top="150" left="334" width="53" height="11" font="3">REATION</text>
+<text top="163" left="87" width="432" height="14" font="2">As an example, think about what data structures must be updated when</text>
+<text top="178" left="87" width="432" height="14" font="2">a ﬁle is created; assume, for this example, that the user creates a new ﬁle</text>
+<text top="194" left="87" width="97" height="11" font="12">/foo/bar.txt</text>
+<text top="193" left="188" width="331" height="14" font="2">and that the ﬁle is one block long (4KB). The ﬁle is new,</text>
+<text top="208" left="87" width="432" height="14" font="2">and thus needs a new inode; thus, both the inode bitmap and the newly-</text>
+<text top="223" left="87" width="432" height="14" font="2">allocated inode will be written to disk. The ﬁle also has data in it and</text>
+<text top="238" left="87" width="432" height="14" font="2">thus it too must be allocated; the data bitmap and a data block will thus</text>
+<text top="253" left="87" width="432" height="14" font="2">(eventually) be written to disk. Hence, at least four writes to the current</text>
+<text top="268" left="87" width="432" height="14" font="2">cylinder group will take place (recall that these writes may be buffered</text>
+<text top="283" left="87" width="432" height="14" font="2">in memory for a while before they take place). But this is not all! In</text>
+<text top="298" left="87" width="432" height="14" font="2">particular, when creating a new ﬁle, you must also place the ﬁle in the</text>
+<text top="313" left="87" width="432" height="14" font="2">ﬁle-system hierarchy, i.e., the directory must be updated. Speciﬁcally, the</text>
+<text top="327" left="87" width="96" height="14" font="2">parent directory</text>
+<text top="328" left="186" width="24" height="11" font="12">foo</text>
+<text top="327" left="213" width="218" height="14" font="2">must be updated to add the entry for</text>
+<text top="328" left="434" width="57" height="11" font="12">bar.txt</text>
+<text top="327" left="491" width="28" height="14" font="2">; this</text>
+<text top="342" left="87" width="252" height="14" font="2">update may ﬁt in an existing data block of</text>
+<text top="343" left="342" width="24" height="11" font="12">foo</text>
+<text top="342" left="370" width="149" height="14" font="2">or require a new block to</text>
+<text top="357" left="87" width="341" height="14" font="2">be allocated (with associated data bitmap). The inode of</text>
+<text top="358" left="433" width="24" height="11" font="12">foo</text>
+<text top="357" left="461" width="58" height="14" font="2">must also</text>
+<text top="372" left="87" width="432" height="14" font="2">be updated, both to reﬂect the new length of the directory as well as to</text>
+<text top="387" left="87" width="432" height="14" font="2">update time ﬁelds (such as last-modiﬁed-time). Overall, it is a lot of work</text>
+<text top="402" left="87" width="432" height="14" font="2">just to create a new ﬁle! Perhaps next time you do so, you should be more</text>
+<text top="417" left="87" width="321" height="14" font="2">thankful, or at least surprised that it all works so well.</text>
+<text top="461" left="55" width="372" height="17" font="5">41.4 Policies: How To Allocate Files and Directories</text>
+<text top="492" left="105" width="414" height="14" font="2">With this group structure in place, FFS now has to decide how to place</text>
+<text top="507" left="87" width="432" height="14" font="2">ﬁles and directories and associated metadata on disk to improve perfor-</text>
+<text top="522" left="87" width="206" height="14" font="2">mance. The basic mantra is simple:</text>
+<text top="522" left="297" width="137" height="14" font="11"><i>keep related stuff together</i></text>
+<text top="522" left="438" width="81" height="14" font="2">(and its corol-</text>
+<text top="537" left="87" width="25" height="14" font="2">lary,</text>
+<text top="537" left="116" width="156" height="14" font="11"><i>keep unrelated stuff far apart</i></text>
+<text top="537" left="272" width="8" height="14" font="2">).</text>
+<text top="553" left="105" width="414" height="14" font="2">Thus, to obey the mantra, FFS has to decide what is “related” and</text>
+<text top="568" left="87" width="432" height="14" font="2">place it within the same block group; conversely, unrelated items should</text>
+<text top="583" left="87" width="432" height="14" font="2">be placed into different block groups. To achieve this end, FFS makes use</text>
+<text top="598" left="87" width="220" height="14" font="2">of a few simple placement heuristics.</text>
+<text top="614" left="105" width="414" height="14" font="2">The ﬁrst is the placement of directories. FFS employs a simple ap-</text>
+<text top="629" left="87" width="432" height="14" font="2">proach: ﬁnd the cylinder group with a low number of allocated direc-</text>
+<text top="644" left="87" width="432" height="14" font="2">tories (to balance directories across groups) and a high number of free</text>
+<text top="659" left="87" width="432" height="14" font="2">inodes (to subsequently be able to allocate a bunch of ﬁles), and put the</text>
+<text top="674" left="87" width="432" height="14" font="2">directory data and inode in that group. Of course, other heuristics could</text>
+<text top="689" left="87" width="416" height="14" font="2">be used here (e.g., taking into account the number of free data blocks).</text>
+<text top="705" left="105" width="414" height="14" font="2">For ﬁles, FFS does two things. First, it makes sure (in the general case)</text>
+<text top="720" left="87" width="432" height="14" font="2">to allocate the data blocks of a ﬁle in the same group as its inode, thus</text>
+<text top="735" left="87" width="432" height="14" font="2">preventing long seeks between inode and data (as in the old ﬁle system).</text>
+<text top="750" left="87" width="432" height="14" font="2">Second, it places all ﬁles that are in the same directory in the cylinder</text>
+<text top="765" left="87" width="393" height="14" font="2">group of the directory they are in. Thus, if a user creates four ﬁles,</text>
+<text top="766" left="483" width="32" height="11" font="12">/a/b</text>
+<text top="765" left="516" width="3" height="14" font="2">,</text>
+<text top="781" left="87" width="32" height="11" font="12">/a/c</text>
+<text top="780" left="119" width="3" height="14" font="2">,</text>
+<text top="781" left="128" width="32" height="11" font="12">/a/d</text>
+<text top="780" left="160" width="31" height="14" font="2">, and</text>
+<text top="781" left="196" width="32" height="11" font="12">/b/f</text>
+<text top="780" left="228" width="291" height="14" font="2">, FFS would try to place the ﬁrst three near one</text>
+<text top="795" left="87" width="409" height="14" font="2">another (same group) and the fourth far away (in some other group).</text>
+<text top="811" left="105" width="414" height="14" font="2">Let’s look at an example of such an allocation. In the example, as-</text>
+<text top="826" left="87" width="432" height="14" font="2">sume that there are only 10 inodes and 10 data blocks in each group (both</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="9" family="GWWKFX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="16" size="7" family="GWWKFX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="17" size="10" family="ISUZAB+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="325" width="8" height="14" font="2">L</text>
+<text top="98" left="334" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="421" width="8" height="14" font="2">T</text>
+<text top="98" left="430" width="16" height="11" font="3">HE</text>
+<text top="96" left="450" width="7" height="14" font="2">F</text>
+<text top="98" left="458" width="22" height="11" font="3">AST</text>
+<text top="96" left="484" width="7" height="14" font="2">F</text>
+<text top="98" left="492" width="18" height="11" font="3">ILE</text>
+<text top="96" left="514" width="7" height="14" font="2">S</text>
+<text top="98" left="522" width="39" height="11" font="3">YSTEM</text>
+<text top="139" left="129" width="432" height="14" font="2">unrealistically small numbers), and that the three directories (the root di-</text>
+<text top="154" left="129" width="42" height="14" font="2">rectory</text>
+<text top="154" left="175" width="8" height="11" font="12">/</text>
+<text top="154" left="183" width="3" height="14" font="2">,</text>
+<text top="154" left="191" width="16" height="11" font="12">/a</text>
+<text top="154" left="207" width="31" height="14" font="2">, and</text>
+<text top="154" left="242" width="16" height="11" font="12">/b</text>
+<text top="154" left="258" width="98" height="14" font="2">) and four ﬁles (</text>
+<text top="154" left="356" width="178" height="11" font="12">/a/c, /a/d, /a/e, /b/f</text>
+<text top="154" left="534" width="27" height="14" font="2">) are</text>
+<text top="169" left="129" width="432" height="14" font="2">placed within them per the FFS policies. Assume the regular ﬁles are each</text>
+<text top="183" left="129" width="432" height="14" font="2">two blocks in size, and that the directories have just a single block of data.</text>
+<text top="198" left="129" width="432" height="14" font="2">For this ﬁgure, we use the obvious symbols for each ﬁle or directory (i.e.,</text>
+<text top="214" left="129" width="8" height="11" font="12">/</text>
+<text top="213" left="140" width="126" height="14" font="2">for the root directory,</text>
+<text top="214" left="270" width="8" height="11" font="12">a</text>
+<text top="213" left="281" width="17" height="14" font="2">for</text>
+<text top="214" left="302" width="16" height="11" font="12">/a</text>
+<text top="213" left="318" width="3" height="14" font="2">,</text>
+<text top="214" left="325" width="8" height="11" font="12">f</text>
+<text top="213" left="336" width="17" height="14" font="2">for</text>
+<text top="214" left="356" width="32" height="11" font="12">/b/f</text>
+<text top="213" left="389" width="86" height="14" font="2">, and so forth).</text>
+<text top="233" left="129" width="97" height="11" font="12">group inodes</text>
+<text top="233" left="266" width="32" height="11" font="12">data</text>
+<text top="248" left="161" width="186" height="11" font="12">0 /--------- /---------</text>
+<text top="263" left="161" width="186" height="11" font="12">1 acde------ accddee---</text>
+<text top="278" left="161" width="186" height="11" font="12">2 bf-------- bff-------</text>
+<text top="293" left="161" width="186" height="11" font="12">3 ---------- ----------</text>
+<text top="308" left="161" width="186" height="11" font="12">4 ---------- ----------</text>
+<text top="323" left="161" width="186" height="11" font="12">5 ---------- ----------</text>
+<text top="338" left="161" width="186" height="11" font="12">6 ---------- ----------</text>
+<text top="353" left="161" width="186" height="11" font="12">7 ---------- ----------</text>
+<text top="379" left="147" width="414" height="14" font="2">Note that the FFS policy does two positive things: the data blocks of</text>
+<text top="394" left="129" width="432" height="14" font="2">each ﬁle are near each ﬁle’s inode, and ﬁles in the same directory are</text>
+<text top="409" left="129" width="155" height="14" font="2">near one another (namely,</text>
+<text top="410" left="287" width="32" height="11" font="12">/a/c</text>
+<text top="409" left="319" width="3" height="14" font="2">,</text>
+<text top="410" left="326" width="32" height="11" font="12">/a/d</text>
+<text top="409" left="359" width="30" height="14" font="2">, and</text>
+<text top="410" left="392" width="32" height="11" font="12">/a/e</text>
+<text top="409" left="427" width="134" height="14" font="2">are all in Group 1, and</text>
+<text top="424" left="129" width="54" height="14" font="2">directory</text>
+<text top="425" left="186" width="16" height="11" font="12">/b</text>
+<text top="424" left="206" width="62" height="14" font="2">and its ﬁle</text>
+<text top="425" left="271" width="32" height="11" font="12">/b/f</text>
+<text top="424" left="307" width="197" height="14" font="2">are near one another in Group 2).</text>
+<text top="439" left="147" width="414" height="14" font="2">In contrast, let’s now look at an inode allocation policy that simply</text>
+<text top="454" left="129" width="432" height="14" font="2">spreads inodes across groups, trying to ensure that no group’s inode table</text>
+<text top="469" left="129" width="426" height="14" font="2">ﬁlls up quickly. The ﬁnal allocation might thus look something like this:</text>
+<text top="489" left="129" width="97" height="11" font="12">group inodes</text>
+<text top="489" left="266" width="32" height="11" font="12">data</text>
+<text top="504" left="161" width="186" height="11" font="12">0 /--------- /---------</text>
+<text top="519" left="161" width="186" height="11" font="12">1 a--------- a---------</text>
+<text top="534" left="161" width="186" height="11" font="12">2 b--------- b---------</text>
+<text top="549" left="161" width="186" height="11" font="12">3 c--------- cc--------</text>
+<text top="564" left="161" width="186" height="11" font="12">4 d--------- dd--------</text>
+<text top="579" left="161" width="186" height="11" font="12">5 e--------- ee--------</text>
+<text top="593" left="161" width="186" height="11" font="12">6 f--------- ff--------</text>
+<text top="608" left="161" width="186" height="11" font="12">7 ---------- ----------</text>
+<text top="635" left="147" width="414" height="14" font="2">As you can see from the ﬁgure, while this policy does indeed keep ﬁle</text>
+<text top="650" left="129" width="432" height="14" font="2">(and directory) data near its respective inode, ﬁles within a directory are</text>
+<text top="665" left="129" width="432" height="14" font="2">arbitrarily spread around the disk, and thus name-based locality is not</text>
+<text top="679" left="129" width="149" height="14" font="2">preserved. Access to ﬁles</text>
+<text top="680" left="281" width="32" height="11" font="12">/a/c</text>
+<text top="679" left="313" width="3" height="14" font="2">,</text>
+<text top="680" left="320" width="32" height="11" font="12">/a/d</text>
+<text top="679" left="352" width="29" height="14" font="2">, and</text>
+<text top="680" left="384" width="32" height="11" font="12">/a/e</text>
+<text top="679" left="419" width="141" height="14" font="2">now spans three groups</text>
+<text top="694" left="129" width="232" height="14" font="2">instead of one as per the FFS approach.</text>
+<text top="710" left="147" width="414" height="14" font="2">The FFS policy heuristics are not based on extensive studies of ﬁle-</text>
+<text top="725" left="129" width="432" height="14" font="2">system trafﬁc or anything particularly nuanced; rather, they are based on</text>
+<text top="740" left="129" width="118" height="14" font="2">good old-fashioned</text>
+<text top="740" left="252" width="92" height="13" font="6"><b>common sense</b></text>
+<text top="740" left="348" width="213" height="14" font="2">(isn’t that what CS stands for after</text>
+<text top="757" left="129" width="25" height="14" font="2">all?)</text>
+<text top="755" left="154" width="4" height="9" font="15">1</text>
+<text top="757" left="159" width="126" height="14" font="2">. Files in a directory</text>
+<text top="757" left="290" width="16" height="14" font="11"><i>are</i></text>
+<text top="757" left="311" width="250" height="14" font="2">often accessed together: imagine compil-</text>
+<text top="772" left="129" width="432" height="14" font="2">ing a bunch of ﬁles and then linking them into a single executable. Be-</text>
+<text top="802" left="149" width="4" height="8" font="16">1</text>
+<text top="804" left="154" width="183" height="11" font="10">Some people refer to common sense as</text>
+<text top="804" left="340" width="56" height="10" font="17"><b>horse sense</b></text>
+<text top="804" left="395" width="166" height="11" font="10">, especially people who work regu-</text>
+<text top="816" left="129" width="432" height="11" font="10">larly with horses. However, we have a feeling that this idiom may be lost as the “mechanized</text>
+<text top="828" left="129" width="418" height="11" font="10">horse”, a.k.a. the car, gains in popularity. What will they invent next? A ﬂying machine??!!</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="184" width="8" height="14" font="2">T</text>
+<text top="98" left="193" width="16" height="11" font="3">HE</text>
+<text top="96" left="213" width="7" height="14" font="2">F</text>
+<text top="98" left="220" width="22" height="11" font="3">AST</text>
+<text top="96" left="246" width="7" height="14" font="2">F</text>
+<text top="98" left="254" width="18" height="11" font="3">ILE</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="39" height="11" font="3">YSTEM</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="398" left="216" width="7" height="12" font="7">0</text>
+<text top="398" left="255" width="7" height="12" font="7">2</text>
+<text top="398" left="294" width="7" height="12" font="7">4</text>
+<text top="398" left="333" width="7" height="12" font="7">6</text>
+<text top="398" left="371" width="7" height="12" font="7">8</text>
+<text top="398" left="407" width="13" height="12" font="7">10</text>
+<text top="385" left="174" width="17" height="12" font="7">0%</text>
+<text top="338" left="167" width="24" height="12" font="7">20%</text>
+<text top="292" left="167" width="24" height="12" font="7">40%</text>
+<text top="245" left="167" width="24" height="12" font="7">60%</text>
+<text top="198" left="167" width="24" height="12" font="7">80%</text>
+<text top="152" left="161" width="31" height="12" font="7">100%</text>
+<text top="138" left="283" width="67" height="12" font="7">FFS Locality</text>
+<text top="413" left="275" width="83" height="12" font="7">Path Difference</text>
+<text top="324" left="157" width="0" height="12" font="14">Cumulative Frequency</text>
+<text top="175" left="230" width="31" height="12" font="7">Trace</text>
+<text top="184" left="230" width="45" height="12" font="7">Random</text>
+<text top="435" left="177" width="69" height="14" font="2">Figure 41.1:</text>
+<text top="435" left="250" width="179" height="13" font="6"><b>FFS Locality For SEER Traces</b></text>
+<text top="455" left="87" width="432" height="14" font="2">cause such namespace-based locality exists, FFS will often improve per-</text>
+<text top="470" left="87" width="432" height="14" font="2">formance, making sure that seeks between related ﬁles are nice and short.</text>
+<text top="501" left="55" width="205" height="17" font="5">41.5 Measuring File Locality</text>
+<text top="523" left="105" width="414" height="14" font="2">To understand better whether these heuristics make sense, let’s ana-</text>
+<text top="538" left="87" width="432" height="14" font="2">lyze some traces of ﬁle system access and see if indeed there is namespace</text>
+<text top="553" left="87" width="432" height="14" font="2">locality. For some reason, there doesn’t seem to be a good study of this</text>
+<text top="568" left="87" width="128" height="14" font="2">topic in the literature.</text>
+<text top="585" left="105" width="414" height="14" font="2">Speciﬁcally, we’ll use the SEER traces [K94] and analyze how “far</text>
+<text top="600" left="87" width="432" height="14" font="2">away” ﬁle accesses were from one another in the directory tree. For ex-</text>
+<text top="615" left="87" width="77" height="14" font="2">ample, if ﬁle</text>
+<text top="616" left="169" width="8" height="11" font="12">f</text>
+<text top="615" left="182" width="337" height="14" font="2">is opened, and then re-opened next in the trace (before</text>
+<text top="630" left="87" width="432" height="14" font="2">any other ﬁles are opened), the distance between these two opens in the</text>
+<text top="645" left="87" width="344" height="14" font="2">directory tree is zero (as they are the same ﬁle). If a ﬁle</text>
+<text top="646" left="435" width="8" height="11" font="12">f</text>
+<text top="645" left="448" width="71" height="14" font="2">in directory</text>
+<text top="661" left="87" width="24" height="11" font="12">dir</text>
+<text top="660" left="114" width="25" height="14" font="2">(i.e.,</text>
+<text top="661" left="142" width="40" height="11" font="12">dir/f</text>
+<text top="660" left="183" width="255" height="14" font="2">) is opened, and followed by an open of ﬁle</text>
+<text top="661" left="441" width="8" height="11" font="12">g</text>
+<text top="660" left="452" width="67" height="14" font="2">in the same</text>
+<text top="675" left="87" width="83" height="14" font="2">directory (i.e.,</text>
+<text top="676" left="174" width="40" height="11" font="12">dir/g</text>
+<text top="675" left="214" width="305" height="14" font="2">), the distance between the two ﬁle accesses is one,</text>
+<text top="690" left="87" width="432" height="14" font="2">as they share the same directory but are not the same ﬁle. Our distance</text>
+<text top="705" left="87" width="432" height="14" font="2">metric, in other words, measures how far up the directory tree you have</text>
+<text top="720" left="87" width="114" height="14" font="2">to travel to ﬁnd the</text>
+<text top="720" left="204" width="94" height="14" font="11"><i>common ancestor</i></text>
+<text top="720" left="302" width="217" height="14" font="2">of two ﬁles; the closer they are in the</text>
+<text top="735" left="87" width="152" height="14" font="2">tree, the lower the metric.</text>
+<text top="751" left="105" width="414" height="14" font="2">Figure 41.1 shows the locality observed in the SEER traces over all</text>
+<text top="766" left="87" width="432" height="14" font="2">workstations in the SEER cluster over the entirety of all traces. The graph</text>
+<text top="781" left="87" width="432" height="14" font="2">plots the difference metric along the x-axis, and shows the cumulative</text>
+<text top="796" left="87" width="432" height="14" font="2">percentage of ﬁle opens that were of that difference along the y-axis.</text>
+<text top="811" left="87" width="432" height="14" font="2">Speciﬁcally, for the SEER traces (marked “Trace” in the graph), you can</text>
+<text top="826" left="87" width="432" height="14" font="2">see that about 7% of ﬁle accesses were to the ﬁle that was opened previ-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="12" family="NSWWOJ+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="325" width="8" height="14" font="2">L</text>
+<text top="98" left="334" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="421" width="8" height="14" font="2">T</text>
+<text top="98" left="430" width="16" height="11" font="3">HE</text>
+<text top="96" left="450" width="7" height="14" font="2">F</text>
+<text top="98" left="458" width="22" height="11" font="3">AST</text>
+<text top="96" left="484" width="7" height="14" font="2">F</text>
+<text top="98" left="492" width="18" height="11" font="3">ILE</text>
+<text top="96" left="514" width="7" height="14" font="2">S</text>
+<text top="98" left="522" width="39" height="11" font="3">YSTEM</text>
+<text top="139" left="129" width="432" height="14" font="2">ously, and that nearly 40% of ﬁle accesses were to either the same ﬁle or</text>
+<text top="154" left="129" width="432" height="14" font="2">to one in the same directory (i.e., a difference of zero or one). Thus, the</text>
+<text top="169" left="129" width="418" height="14" font="2">FFS locality assumption seems to make sense (at least for these traces).</text>
+<text top="186" left="147" width="414" height="14" font="2">Interestingly, another 25% or so of ﬁle accesses were to ﬁles that had a</text>
+<text top="201" left="129" width="432" height="14" font="2">distance of two. This type of locality occurs when the user has structured</text>
+<text top="216" left="129" width="432" height="14" font="2">a set of related directories in a multi-level fashion and consistently jumps</text>
+<text top="231" left="129" width="273" height="14" font="2">between them. For example, if a user has a</text>
+<text top="231" left="407" width="24" height="11" font="12">src</text>
+<text top="231" left="436" width="125" height="14" font="2">directory and builds</text>
+<text top="245" left="129" width="72" height="14" font="2">object ﬁles (</text>
+<text top="246" left="201" width="16" height="11" font="12">.o</text>
+<text top="245" left="221" width="75" height="14" font="2">ﬁles) into an</text>
+<text top="246" left="300" width="24" height="11" font="12">obj</text>
+<text top="245" left="329" width="232" height="14" font="2">directory, and both of these directories</text>
+<text top="260" left="129" width="175" height="14" font="2">are sub-directories of a main</text>
+<text top="261" left="309" width="32" height="11" font="12">proj</text>
+<text top="260" left="346" width="215" height="14" font="2">directory, a common access pattern</text>
+<text top="275" left="129" width="40" height="14" font="2">will be</text>
+<text top="276" left="173" width="113" height="11" font="12">proj/src/foo.c</text>
+<text top="275" left="289" width="71" height="14" font="2">followed by</text>
+<text top="276" left="364" width="113" height="11" font="12">proj/obj/foo.o</text>
+<text top="275" left="477" width="83" height="14" font="2">. The distance</text>
+<text top="290" left="129" width="222" height="14" font="2">between these two accesses is two, as</text>
+<text top="291" left="355" width="32" height="11" font="12">proj</text>
+<text top="290" left="391" width="170" height="14" font="2">is the common ancestor. FFS</text>
+<text top="305" left="129" width="28" height="14" font="2">does</text>
+<text top="305" left="160" width="18" height="14" font="11"><i>not</i></text>
+<text top="305" left="180" width="380" height="14" font="2">capture this type of locality in its policies, and thus more seeking</text>
+<text top="320" left="129" width="199" height="14" font="2">will occur between such accesses.</text>
+<text top="337" left="147" width="414" height="14" font="2">For comparison, the graph also shows locality for a “Random” trace.</text>
+<text top="352" left="129" width="432" height="14" font="2">The random trace was generated by selecting ﬁles from within an existing</text>
+<text top="367" left="129" width="432" height="14" font="2">SEER trace in random order, and calculating the distance metric between</text>
+<text top="382" left="129" width="432" height="14" font="2">these randomly-ordered accesses. As you can see, there is less namespace</text>
+<text top="397" left="129" width="432" height="14" font="2">locality in the random traces, as expected. However, because eventually</text>
+<text top="412" left="129" width="432" height="14" font="2">every ﬁle shares a common ancestor (e.g., the root), there is some locality,</text>
+<text top="427" left="129" width="294" height="14" font="2">and thus random is useful as a comparison point.</text>
+<text top="466" left="97" width="215" height="17" font="5">41.6 The Large-File Exception</text>
+<text top="498" left="147" width="414" height="14" font="2">In FFS, there is one important exception to the general policy of ﬁle</text>
+<text top="513" left="129" width="432" height="14" font="2">placement, and it arises for large ﬁles. Without a different rule, a large</text>
+<text top="528" left="129" width="432" height="14" font="2">ﬁle would entirely ﬁll the block group it is ﬁrst placed within (and maybe</text>
+<text top="543" left="129" width="432" height="14" font="2">others). Filling a block group in this manner is undesirable, as it prevents</text>
+<text top="558" left="129" width="432" height="14" font="2">subsequent “related” ﬁles from being placed within this block group, and</text>
+<text top="573" left="129" width="196" height="14" font="2">thus may hurt ﬁle-access locality.</text>
+<text top="590" left="147" width="414" height="14" font="2">Thus, for large ﬁles, FFS does the following. After some number of</text>
+<text top="605" left="129" width="432" height="14" font="2">blocks are allocated into the ﬁrst block group (e.g., 12 blocks, or the num-</text>
+<text top="620" left="129" width="440" height="14" font="2">ber of direct pointers available within an inode), FFS places the next “large”</text>
+<text top="635" left="129" width="432" height="14" font="2">chunk of the ﬁle (e.g., those pointed to by the ﬁrst indirect block) in an-</text>
+<text top="650" left="129" width="432" height="14" font="2">other block group (perhaps chosen for its low utilization). Then, the next</text>
+<text top="665" left="129" width="432" height="14" font="2">chunk of the ﬁle is placed in yet another different block group, and so on.</text>
+<text top="682" left="147" width="414" height="14" font="2">Let’s look at some diagrams to understand this policy better. Without</text>
+<text top="697" left="129" width="432" height="14" font="2">the large-ﬁle exception, a single large ﬁle would place all of its blocks into</text>
+<text top="712" left="129" width="364" height="14" font="2">one part of the disk. We investigate a small example of a ﬁle (</text>
+<text top="713" left="493" width="16" height="11" font="12">/a</text>
+<text top="712" left="509" width="52" height="14" font="2">) with 30</text>
+<text top="727" left="129" width="432" height="14" font="2">blocks in an FFS conﬁgured with 10 inodes and 40 data blocks per group.</text>
+<text top="742" left="129" width="357" height="14" font="2">Here is the depiction of FFS without the large-ﬁle exception:</text>
+<text top="772" left="129" width="86" height="10" font="18">group inodes</text>
+<text top="772" left="251" width="29" height="10" font="18">data</text>
+<text top="787" left="143" width="7" height="10" font="18">0</text>
+<text top="787" left="172" width="387" height="10" font="18">/a-------- /aaaaaaaaa aaaaaaaaaa aaaaaaaaaa a---------</text>
+<text top="801" left="143" width="7" height="10" font="18">1</text>
+<text top="801" left="172" width="387" height="10" font="18">---------- ---------- ---------- ---------- ----------</text>
+<text top="815" left="143" width="7" height="10" font="18">2</text>
+<text top="815" left="172" width="387" height="10" font="18">---------- ---------- ---------- ---------- ----------</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="13" family="NQQSON+CMR9" color="#000000"/>
+	<fontspec id="20" size="15" family="BPSBWD+LINE10" color="#000000"/>
+	<fontspec id="21" size="13" family="ARTRLC+CMSY9" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="184" width="8" height="14" font="2">T</text>
+<text top="98" left="193" width="16" height="11" font="3">HE</text>
+<text top="96" left="213" width="7" height="14" font="2">F</text>
+<text top="98" left="220" width="22" height="11" font="3">AST</text>
+<text top="96" left="246" width="7" height="14" font="2">F</text>
+<text top="98" left="254" width="18" height="11" font="3">ILE</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="39" height="11" font="3">YSTEM</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="139" left="105" width="182" height="14" font="2">As you can see in the picture,</text>
+<text top="139" left="292" width="16" height="11" font="12">/a</text>
+<text top="139" left="313" width="206" height="14" font="2">ﬁlls up most of the data blocks in</text>
+<text top="154" left="87" width="432" height="14" font="2">Group 0, whereas other groups remain empty. If some other ﬁles are now</text>
+<text top="169" left="87" width="175" height="14" font="2">created in the root directory (</text>
+<text top="169" left="262" width="8" height="11" font="12">/</text>
+<text top="169" left="270" width="249" height="14" font="2">), there is not much room for their data in</text>
+<text top="183" left="87" width="61" height="14" font="2">the group.</text>
+<text top="198" left="105" width="414" height="14" font="2">With the large-ﬁle exception (here set to ﬁve blocks in each chunk),</text>
+<text top="213" left="87" width="432" height="14" font="2">FFS instead spreads the ﬁle across groups, and the resulting utilization</text>
+<text top="228" left="87" width="221" height="14" font="2">within any one group is not too high:</text>
+<text top="253" left="87" width="86" height="10" font="18">group inodes</text>
+<text top="253" left="209" width="29" height="10" font="18">data</text>
+<text top="267" left="101" width="7" height="10" font="18">0</text>
+<text top="267" left="130" width="387" height="10" font="18">/a-------- /aaaaa---- ---------- ---------- ----------</text>
+<text top="282" left="101" width="7" height="10" font="18">1</text>
+<text top="282" left="130" width="387" height="10" font="18">---------- aaaaa----- ---------- ---------- ----------</text>
+<text top="296" left="101" width="7" height="10" font="18">2</text>
+<text top="296" left="130" width="387" height="10" font="18">---------- aaaaa----- ---------- ---------- ----------</text>
+<text top="310" left="101" width="7" height="10" font="18">3</text>
+<text top="310" left="130" width="387" height="10" font="18">---------- aaaaa----- ---------- ---------- ----------</text>
+<text top="324" left="101" width="7" height="10" font="18">4</text>
+<text top="324" left="130" width="387" height="10" font="18">---------- aaaaa----- ---------- ---------- ----------</text>
+<text top="338" left="101" width="7" height="10" font="18">5</text>
+<text top="338" left="130" width="387" height="10" font="18">---------- aaaaa----- ---------- ---------- ----------</text>
+<text top="353" left="101" width="7" height="10" font="18">6</text>
+<text top="353" left="130" width="387" height="10" font="18">---------- ---------- ---------- ---------- ----------</text>
+<text top="376" left="105" width="414" height="14" font="2">The astute reader (that’s you) will note that spreading blocks of a ﬁle</text>
+<text top="391" left="87" width="432" height="14" font="2">across the disk will hurt performance, particularly in the relatively com-</text>
+<text top="406" left="87" width="432" height="14" font="2">mon case of sequential ﬁle access (e.g., when a user or application reads</text>
+<text top="421" left="87" width="432" height="14" font="2">chunks 0 through 29 in order). And you are right, oh astute reader of</text>
+<text top="436" left="87" width="432" height="14" font="2">ours! But you can address this problem by choosing chunk size carefully.</text>
+<text top="450" left="105" width="414" height="14" font="2">Speciﬁcally, if the chunk size is large enough, the ﬁle system will spend</text>
+<text top="465" left="87" width="432" height="14" font="2">most of its time transferring data from disk and just a (relatively) little</text>
+<text top="480" left="87" width="432" height="14" font="2">time seeking between chunks of the block. This process of reducing an</text>
+<text top="495" left="87" width="350" height="14" font="2">overhead by doing more work per overhead paid is called</text>
+<text top="495" left="441" width="78" height="13" font="6"><b>amortization</b></text>
+<text top="510" left="87" width="293" height="14" font="2">and is a common technique in computer systems.</text>
+<text top="525" left="105" width="414" height="14" font="2">Let’s do an example: assume that the average positioning time (i.e.,</text>
+<text top="540" left="87" width="432" height="14" font="2">seek and rotation) for a disk is 10 ms. Assume further that the disk trans-</text>
+<text top="555" left="87" width="432" height="14" font="2">fers data at 40 MB/s. If your goal was to spend half our time seeking</text>
+<text top="570" left="87" width="432" height="14" font="2">between chunks and half our time transferring data (and thus achieve</text>
+<text top="585" left="87" width="432" height="14" font="2">50% of peak disk performance), you would thus need to spend 10 ms</text>
+<text top="600" left="87" width="432" height="14" font="2">transferring data for every 10 ms positioning. So the question becomes:</text>
+<text top="615" left="87" width="432" height="14" font="2">how big does a chunk have to be in order to spend 10 ms in transfer?</text>
+<text top="630" left="87" width="432" height="14" font="2">Easy, just use our old friend, math, in particular the dimensional analysis</text>
+<text top="645" left="87" width="259" height="14" font="2">mentioned in the chapter on disks [AD18a]:</text>
+<text top="671" left="137" width="14" height="9" font="19">40</text>
+<text top="671" left="153" width="29" height="8" font="20">✘✘</text>
+<text top="671" left="154" width="25" height="9" font="13">M B</text>
+<text top="693" left="148" width="15" height="8" font="20">✟</text>
+<text top="689" left="155" width="15" height="8" font="20">✟</text>
+<text top="689" left="149" width="19" height="9" font="13">sec</text>
+<text top="685" left="185" width="4" height="9" font="21">·</text>
+<text top="671" left="194" width="28" height="9" font="19">1024</text>
+<text top="671" left="225" width="23" height="9" font="13">K B</text>
+<text top="689" left="203" width="7" height="9" font="19">1</text>
+<text top="689" left="213" width="29" height="8" font="20">✘✘</text>
+<text top="689" left="214" width="25" height="9" font="13">M B</text>
+<text top="685" left="254" width="4" height="9" font="21">·</text>
+<text top="671" left="273" width="7" height="9" font="19">1</text>
+<text top="675" left="282" width="15" height="8" font="20">✟</text>
+<text top="672" left="289" width="15" height="8" font="20">✟</text>
+<text top="671" left="284" width="19" height="9" font="13">sec</text>
+<text top="689" left="263" width="28" height="9" font="19">1000</text>
+<text top="693" left="293" width="15" height="8" font="20">✟</text>
+<text top="689" left="299" width="15" height="8" font="20">✟</text>
+<text top="689" left="294" width="19" height="9" font="13">ms</text>
+<text top="685" left="318" width="4" height="9" font="21">·</text>
+<text top="680" left="325" width="14" height="9" font="19">10</text>
+<text top="684" left="341" width="15" height="8" font="20">✟</text>
+<text top="680" left="348" width="15" height="8" font="20">✟</text>
+<text top="680" left="342" width="19" height="9" font="13">ms</text>
+<text top="680" left="365" width="35" height="9" font="19">= 409</text>
+<text top="680" left="400" width="4" height="9" font="13">.</text>
+<text top="680" left="404" width="7" height="9" font="19">6</text>
+<text top="680" left="415" width="23" height="9" font="13">K B</text>
+<text top="679" left="486" width="32" height="14" font="2">(41.1)</text>
+<text top="707" left="105" width="414" height="14" font="2">Basically, what this equation says is this: if you transfer data at 40</text>
+<text top="721" left="87" width="432" height="14" font="2">MB/s, you need to transfer only 409.6KB every time you seek in order to</text>
+<text top="736" left="87" width="432" height="14" font="2">spend half your time seeking and half your time transferring. Similarly,</text>
+<text top="751" left="87" width="432" height="14" font="2">you can compute the size of the chunk you would need to achieve 90%</text>
+<text top="766" left="87" width="432" height="14" font="2">of peak bandwidth (turns out it is about 3.6MB), or even 99% of peak</text>
+<text top="781" left="87" width="432" height="14" font="2">bandwidth (39.6MB!). As you can see, the closer you want to get to peak,</text>
+<text top="796" left="87" width="414" height="14" font="2">the bigger these chunks get (see Figure 41.2 for a plot of these values).</text>
+<text top="811" left="105" width="414" height="14" font="2">FFS did not use this type of calculation in order to spread large ﬁles</text>
+<text top="826" left="87" width="432" height="14" font="2">across groups, however. Instead, it took a simple approach, based on the</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="22" size="14" family="UCJTAB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="23" size="14" family="UCJTAB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="24" size="11" family="UCJTAB+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="325" width="8" height="14" font="2">L</text>
+<text top="98" left="334" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="421" width="8" height="14" font="2">T</text>
+<text top="98" left="430" width="16" height="11" font="3">HE</text>
+<text top="96" left="450" width="7" height="14" font="2">F</text>
+<text top="98" left="458" width="22" height="11" font="3">AST</text>
+<text top="96" left="484" width="7" height="14" font="2">F</text>
+<text top="98" left="492" width="18" height="11" font="3">ILE</text>
+<text top="96" left="514" width="7" height="14" font="2">S</text>
+<text top="98" left="522" width="39" height="11" font="3">YSTEM</text>
+<text top="373" left="250" width="20" height="13" font="22">0%</text>
+<text top="373" left="297" width="28" height="13" font="22">25%</text>
+<text top="373" left="347" width="28" height="13" font="22">50%</text>
+<text top="373" left="397" width="28" height="13" font="22">75%</text>
+<text top="373" left="443" width="36" height="13" font="22">100%</text>
+<text top="358" left="234" width="17" height="13" font="22">1K</text>
+<text top="291" left="226" width="25" height="13" font="22">32K</text>
+<text top="225" left="231" width="19" height="13" font="22">1M</text>
+<text top="180" left="224" width="27" height="13" font="22">10M</text>
+<text top="143" left="264" width="194" height="13" font="22">The Challenges of Amortization</text>
+<text top="391" left="272" width="178" height="13" font="22">Percent Bandwidth (Desired)</text>
+<text top="331" left="217" width="0" height="13" font="23">Log(Chunk Size Needed)</text>
+<text top="234" left="279" width="64" height="11" font="24">50%, 409.6K</text>
+<text top="192" left="321" width="59" height="11" font="24">90%, 3.69M</text>
+<text top="424" left="160" width="69" height="14" font="2">Figure 41.2:</text>
+<text top="424" left="233" width="297" height="13" font="6"><b>Amortization: How Big Do Chunks Have To Be?</b></text>
+<text top="442" left="129" width="432" height="14" font="2">structure of the inode itself. The ﬁrst twelve direct blocks were placed</text>
+<text top="457" left="129" width="432" height="14" font="2">in the same group as the inode; each subsequent indirect block, and all</text>
+<text top="472" left="129" width="432" height="14" font="2">the blocks it pointed to, was placed in a different group. With a block</text>
+<text top="487" left="129" width="432" height="14" font="2">size of 4KB, and 32-bit disk addresses, this strategy implies that every</text>
+<text top="502" left="129" width="432" height="14" font="2">1024 blocks of the ﬁle (4MB) were placed in separate groups, the lone</text>
+<text top="517" left="129" width="428" height="14" font="2">exception being the ﬁrst 48KB of the ﬁle as pointed to by direct pointers.</text>
+<text top="533" left="147" width="414" height="14" font="2">Note that the trend in disk drives is that transfer rate improves fairly</text>
+<text top="548" left="129" width="432" height="14" font="2">rapidly, as disk manufacturers are good at cramming more bits into the</text>
+<text top="563" left="129" width="432" height="14" font="2">same surface, but the mechanical aspects of drives related to seeks (disk</text>
+<text top="578" left="129" width="432" height="14" font="2">arm speed and the rate of rotation) improve rather slowly [P98]. The</text>
+<text top="593" left="129" width="432" height="14" font="2">implication is that over time, mechanical costs become relatively more</text>
+<text top="607" left="129" width="432" height="14" font="2">expensive, and thus, to amortize said costs, you have to transfer more</text>
+<text top="622" left="129" width="118" height="14" font="2">data between seeks.</text>
+<text top="660" left="97" width="262" height="17" font="5">41.7 A Few Other Things About FFS</text>
+<text top="691" left="147" width="414" height="14" font="2">FFS introduced a few other innovations too. In particular, the design-</text>
+<text top="706" left="129" width="432" height="14" font="2">ers were extremely worried about accommodating small ﬁles; as it turned</text>
+<text top="721" left="129" width="432" height="14" font="2">out, many ﬁles were 2KB or so in size back then, and using 4KB blocks,</text>
+<text top="736" left="129" width="432" height="14" font="2">while good for transferring data, was not so good for space efﬁciency.</text>
+<text top="751" left="129" width="26" height="14" font="2">This</text>
+<text top="751" left="158" width="140" height="13" font="6"><b>internal fragmentation</b></text>
+<text top="751" left="302" width="259" height="14" font="2">could thus lead to roughly half the disk be-</text>
+<text top="766" left="129" width="210" height="14" font="2">ing wasted for a typical ﬁle system.</text>
+<text top="781" left="147" width="414" height="14" font="2">The solution the FFS designers hit upon was simple and solved the</text>
+<text top="796" left="129" width="224" height="14" font="2">problem. They decided to introduce</text>
+<text top="796" left="358" width="67" height="13" font="6"><b>sub-blocks</b></text>
+<text top="796" left="426" width="135" height="14" font="2">, which were 512-byte</text>
+<text top="811" left="129" width="432" height="14" font="2">little blocks that the ﬁle system could allocate to ﬁles. Thus, if you created</text>
+<text top="826" left="129" width="432" height="14" font="2">a small ﬁle (say 1KB in size), it would occupy two sub-blocks and thus not</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="25" size="13" family="UCJTAB+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="184" width="8" height="14" font="2">T</text>
+<text top="98" left="193" width="16" height="11" font="3">HE</text>
+<text top="96" left="213" width="7" height="14" font="2">F</text>
+<text top="98" left="220" width="22" height="11" font="3">AST</text>
+<text top="96" left="246" width="7" height="14" font="2">F</text>
+<text top="98" left="254" width="18" height="11" font="3">ILE</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="39" height="11" font="3">YSTEM</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="206" left="274" width="7" height="12" font="25">0</text>
+<text top="181" left="264" width="14" height="12" font="25">11</text>
+<text top="162" left="246" width="14" height="12" font="25">10</text>
+<text top="155" left="224" width="7" height="12" font="25">9</text>
+<text top="162" left="199" width="7" height="12" font="25">8</text>
+<text top="181" left="180" width="7" height="12" font="25">7</text>
+<text top="206" left="174" width="7" height="12" font="25">6</text>
+<text top="231" left="180" width="7" height="12" font="25">5</text>
+<text top="249" left="199" width="7" height="12" font="25">4</text>
+<text top="256" left="224" width="7" height="12" font="25">3</text>
+<text top="249" left="249" width="7" height="12" font="25">2</text>
+<text top="231" left="268" width="7" height="12" font="25">1</text>
+<text top="195" left="206" width="42" height="12" font="25">Spindle</text>
+<text top="206" left="426" width="7" height="12" font="25">0</text>
+<text top="181" left="415" width="14" height="12" font="25">11</text>
+<text top="162" left="400" width="7" height="12" font="25">5</text>
+<text top="155" left="372" width="14" height="12" font="25">10</text>
+<text top="162" left="350" width="7" height="12" font="25">4</text>
+<text top="181" left="331" width="7" height="12" font="25">9</text>
+<text top="206" left="325" width="7" height="12" font="25">3</text>
+<text top="231" left="331" width="7" height="12" font="25">8</text>
+<text top="249" left="350" width="7" height="12" font="25">2</text>
+<text top="256" left="375" width="7" height="12" font="25">7</text>
+<text top="249" left="400" width="7" height="12" font="25">1</text>
+<text top="231" left="419" width="7" height="12" font="25">6</text>
+<text top="195" left="358" width="42" height="12" font="25">Spindle</text>
+<text top="299" left="122" width="69" height="14" font="2">Figure 41.3:</text>
+<text top="299" left="195" width="289" height="13" font="6"><b>FFS: Standard Versus Parameterized Placement</b></text>
+<text top="322" left="87" width="432" height="14" font="2">waste an entire 4KB block. As the ﬁle grew, the ﬁle system will continue</text>
+<text top="337" left="87" width="432" height="14" font="2">allocating 512-byte blocks to it until it acquires a full 4KB of data. At that</text>
+<text top="352" left="87" width="194" height="14" font="2">point, FFS will ﬁnd a 4KB block,</text>
+<text top="352" left="286" width="25" height="14" font="11"><i>copy</i></text>
+<text top="352" left="314" width="205" height="14" font="2">the sub-blocks into it, and free the</text>
+<text top="367" left="87" width="151" height="14" font="2">sub-blocks for future use.</text>
+<text top="384" left="105" width="414" height="14" font="2">You might observe that this process is inefﬁcient, requiring a lot of ex-</text>
+<text top="399" left="87" width="432" height="14" font="2">tra work for the ﬁle system (in particular, a lot of extra I/O to perform the</text>
+<text top="414" left="87" width="432" height="14" font="2">copy). And you’d be right again! Thus, FFS generally avoided this pes-</text>
+<text top="429" left="87" width="197" height="14" font="2">simal behavior by modifying the</text>
+<text top="430" left="289" width="32" height="11" font="12">libc</text>
+<text top="429" left="325" width="194" height="14" font="2">library; the library would buffer</text>
+<text top="444" left="87" width="432" height="14" font="2">writes and then issue them in 4KB chunks to the ﬁle system, thus avoid-</text>
+<text top="459" left="87" width="321" height="14" font="2">ing the sub-block specialization entirely in most cases.</text>
+<text top="476" left="105" width="414" height="14" font="2">A second neat thing that FFS introduced was a disk layout that was</text>
+<text top="491" left="87" width="432" height="14" font="2">optimized for performance. In those times (before SCSI and other more</text>
+<text top="506" left="87" width="432" height="14" font="2">modern device interfaces), disks were much less sophisticated and re-</text>
+<text top="521" left="87" width="432" height="14" font="2">quired the host CPU to control their operation in a more hands-on way.</text>
+<text top="536" left="87" width="432" height="14" font="2">A problem arose in FFS when a ﬁle was placed on consecutive sectors of</text>
+<text top="551" left="87" width="217" height="14" font="2">the disk, as on the left in Figure 41.3.</text>
+<text top="568" left="105" width="414" height="14" font="2">In particular, the problem arose during sequential reads. FFS would</text>
+<text top="583" left="87" width="432" height="14" font="2">ﬁrst issue a read to block 0; by the time the read was complete, and FFS</text>
+<text top="598" left="87" width="432" height="14" font="2">issued a read to block 1, it was too late: block 1 had rotated under the</text>
+<text top="613" left="87" width="362" height="14" font="2">head and now the read to block 1 would incur a full rotation.</text>
+<text top="630" left="105" width="414" height="14" font="2">FFS solved this problem with a different layout, as you can see on the</text>
+<text top="645" left="87" width="432" height="14" font="2">right in Figure 41.3. By skipping over every other block (in the example),</text>
+<text top="660" left="87" width="432" height="14" font="2">FFS has enough time to request the next block before it went past the</text>
+<text top="675" left="87" width="432" height="14" font="2">disk head. In fact, FFS was smart enough to ﬁgure out for a particular</text>
+<text top="689" left="87" width="25" height="14" font="2">disk</text>
+<text top="689" left="116" width="56" height="14" font="11"><i>how many</i></text>
+<text top="689" left="176" width="343" height="14" font="2">blocks it should skip in doing layout in order to avoid the</text>
+<text top="704" left="87" width="239" height="14" font="2">extra rotations; this technique was called</text>
+<text top="704" left="329" width="105" height="13" font="6"><b>parameterization</b></text>
+<text top="704" left="434" width="85" height="14" font="2">, as FFS would</text>
+<text top="719" left="87" width="432" height="14" font="2">ﬁgure out the speciﬁc performance parameters of the disk and use those</text>
+<text top="734" left="87" width="282" height="14" font="2">to decide on the exact staggered layout scheme.</text>
+<text top="751" left="105" width="414" height="14" font="2">You might be thinking: this scheme isn’t so great after all. In fact, you</text>
+<text top="766" left="87" width="432" height="14" font="2">will only get 50% of peak bandwidth with this type of layout, because</text>
+<text top="781" left="87" width="432" height="14" font="2">you have to go around each track twice just to read each block once. For-</text>
+<text top="796" left="87" width="432" height="14" font="2">tunately, modern disks are much smarter: they internally read the entire</text>
+<text top="811" left="87" width="356" height="14" font="2">track in and buffer it in an internal disk cache (often called a</text>
+<text top="811" left="446" width="73" height="13" font="6"><b>track buffer</b></text>
+<text top="826" left="87" width="432" height="14" font="2">for this very reason). Then, on subsequent reads to the track, the disk will</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="325" width="8" height="14" font="2">L</text>
+<text top="98" left="334" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="421" width="8" height="14" font="2">T</text>
+<text top="98" left="430" width="16" height="11" font="3">HE</text>
+<text top="96" left="450" width="7" height="14" font="2">F</text>
+<text top="98" left="458" width="22" height="11" font="3">AST</text>
+<text top="96" left="484" width="7" height="14" font="2">F</text>
+<text top="98" left="492" width="18" height="11" font="3">ILE</text>
+<text top="96" left="514" width="7" height="14" font="2">S</text>
+<text top="98" left="522" width="39" height="11" font="3">YSTEM</text>
+<text top="148" left="246" width="8" height="14" font="2">T</text>
+<text top="150" left="255" width="11" height="11" font="3">IP</text>
+<text top="148" left="267" width="21" height="14" font="2">: M</text>
+<text top="150" left="288" width="24" height="11" font="3">AKE</text>
+<text top="148" left="316" width="8" height="14" font="2">T</text>
+<text top="150" left="325" width="16" height="11" font="3">HE</text>
+<text top="148" left="345" width="7" height="14" font="2">S</text>
+<text top="150" left="353" width="39" height="11" font="3">YSTEM</text>
+<text top="148" left="396" width="10" height="14" font="2">U</text>
+<text top="150" left="407" width="36" height="11" font="3">SABLE</text>
+<text top="163" left="129" width="432" height="14" font="2">Probably the most basic lesson from FFS is that not only did it intro-</text>
+<text top="178" left="129" width="432" height="14" font="2">duce the conceptually good idea of disk-aware layout, but it also added</text>
+<text top="193" left="129" width="432" height="14" font="2">a number of features that simply made the system more usable. Long ﬁle</text>
+<text top="208" left="129" width="432" height="14" font="2">names, symbolic links, and a rename operation that worked atomically</text>
+<text top="223" left="129" width="432" height="14" font="2">all improved the utility of a system; while hard to write a research pa-</text>
+<text top="238" left="129" width="432" height="14" font="2">per about (imagine trying to read a 14-pager about “The Symbolic Link:</text>
+<text top="253" left="129" width="432" height="14" font="2">Hard Link’s Long Lost Cousin”), such small features made FFS more use-</text>
+<text top="268" left="129" width="432" height="14" font="2">ful and thus likely increased its chances for adoption. Making a system</text>
+<text top="283" left="129" width="428" height="14" font="2">usable is often as or more important than its deep technical innovations.</text>
+<text top="337" left="129" width="432" height="14" font="2">just return the desired data from its cache. File systems thus no longer</text>
+<text top="352" left="129" width="432" height="14" font="2">have to worry about these incredibly low-level details. Abstraction and</text>
+<text top="367" left="129" width="406" height="14" font="2">higher-level interfaces can be a good thing, when designed properly.</text>
+<text top="382" left="147" width="414" height="14" font="2">Some other usability improvements were added as well. FFS was one</text>
+<text top="397" left="129" width="210" height="14" font="2">of the ﬁrst ﬁle systems to allow for</text>
+<text top="397" left="342" width="95" height="13" font="6"><b>long ﬁle names</b></text>
+<text top="397" left="437" width="124" height="14" font="2">, thus enabling more</text>
+<text top="412" left="129" width="432" height="14" font="2">expressive names in the ﬁle system instead of the traditional ﬁxed-size</text>
+<text top="427" left="129" width="432" height="14" font="2">approach (e.g., 8 characters). Further, a new concept was introduced</text>
+<text top="442" left="129" width="47" height="14" font="2">called a</text>
+<text top="442" left="181" width="87" height="13" font="6"><b>symbolic link</b></text>
+<text top="442" left="268" width="293" height="14" font="2">. As discussed in a previous chapter [AD18b] ,</text>
+<text top="457" left="129" width="432" height="14" font="2">hard links are limited in that they both could not point to directories (for</text>
+<text top="471" left="129" width="432" height="14" font="2">fear of introducing loops in the ﬁle system hierarchy) and that they can</text>
+<text top="486" left="129" width="432" height="14" font="2">only point to ﬁles within the same volume (i.e., the inode number must</text>
+<text top="501" left="129" width="432" height="14" font="2">still be meaningful). Symbolic links allow the user to create an “alias” to</text>
+<text top="516" left="129" width="432" height="14" font="2">any other ﬁle or directory on a system and thus are much more ﬂexible.</text>
+<text top="531" left="129" width="185" height="14" font="2">FFS also introduced an atomic</text>
+<text top="532" left="318" width="65" height="11" font="12">rename()</text>
+<text top="531" left="388" width="173" height="14" font="2">operation for renaming ﬁles.</text>
+<text top="546" left="129" width="432" height="14" font="2">Usability improvements, beyond the basic technology, also likely gained</text>
+<text top="561" left="129" width="147" height="14" font="2">FFS a stronger user base.</text>
+<text top="598" left="97" width="105" height="17" font="5">41.8 Summary</text>
+<text top="628" left="147" width="414" height="14" font="2">The introduction of FFS was a watershed moment in ﬁle system his-</text>
+<text top="643" left="129" width="432" height="14" font="2">tory, as it made clear that the problem of ﬁle management was one of the</text>
+<text top="658" left="129" width="432" height="14" font="2">most interesting issues within an operating system, and showed how one</text>
+<text top="673" left="129" width="432" height="14" font="2">might begin to deal with that most important of devices, the hard disk.</text>
+<text top="688" left="129" width="432" height="14" font="2">Since that time, hundreds of new ﬁle systems have developed, but still</text>
+<text top="703" left="129" width="432" height="14" font="2">today many ﬁle systems take cues from FFS (e.g., Linux ext2 and ext3 are</text>
+<text top="718" left="129" width="432" height="14" font="2">obvious intellectual descendants). Certainly all modern systems account</text>
+<text top="733" left="129" width="326" height="14" font="2">for the main lesson of FFS: treat the disk like it’s a disk.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="26" size="16" family="ISUZAB+URWPalladioL" color="#000000"/>
+	<fontspec id="27" size="10" family="YXYNXL+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="28" size="8" family="GWWKFX+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="184" width="8" height="14" font="2">T</text>
+<text top="98" left="193" width="16" height="11" font="3">HE</text>
+<text top="96" left="213" width="7" height="14" font="2">F</text>
+<text top="98" left="220" width="22" height="11" font="3">AST</text>
+<text top="96" left="246" width="7" height="14" font="2">F</text>
+<text top="98" left="254" width="18" height="11" font="3">ILE</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="39" height="11" font="3">YSTEM</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="137" left="87" width="82" height="16" font="26"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="10">[AD18a] “Operating Systems: Three Easy Pieces” (Chapter: Hard Disk Drives) by Remzi</text>
+<text top="177" left="87" width="357" height="11" font="10">Arpaci-Dusseau and Andrea Arpaci-Dusseau. Arpaci-Dusseau Books, 2018.</text>
+<text top="177" left="450" width="69" height="11" font="27"><i>There is no way</i></text>
+<text top="189" left="87" width="432" height="11" font="27"><i>you should be reading about FFS without having ﬁrst understood hard drives in some detail. If you try</i></text>
+<text top="201" left="87" width="432" height="11" font="27"><i>to do so, please instead go directly to jail; do not pass go, and, critically, do not collect 200 much-needed</i></text>
+<text top="213" left="87" width="44" height="11" font="27"><i>simoleons.</i></text>
+<text top="229" left="87" width="432" height="11" font="10">[AD18b] “Operating Systems: Three Easy Pieces” (Chapter: File System Implementation) by</text>
+<text top="241" left="87" width="387" height="11" font="10">Remzi Arpaci-Dusseau and Andrea Arpaci-Dusseau . Arpaci-Dusseau Books, 2018.</text>
+<text top="241" left="478" width="41" height="11" font="27"><i>As above,</i></text>
+<text top="253" left="87" width="432" height="11" font="27"><i>it makes little sense to read this chapter unless you have read (and understood) the chapter on ﬁle</i></text>
+<text top="265" left="87" width="432" height="11" font="27"><i>system implementation. Otherwise, we’ll be throwing around terms like “inode” and “indirect block”</i></text>
+<text top="277" left="87" width="250" height="11" font="27"><i>and you’ll be like “huh?” and that is no fun for either of us.</i></text>
+<text top="294" left="87" width="432" height="11" font="10">[K94] “The Design of the SEER Predictive Caching System” by G. H. Kuenning. MOBICOMM</text>
+<text top="306" left="87" width="199" height="11" font="10">’94, Santa Cruz, California, December 1994.</text>
+<text top="305" left="289" width="230" height="11" font="27"><i>According to Kuenning, this is the best overview of the</i></text>
+<text top="317" left="87" width="326" height="11" font="27"><i>SEER project, which led to (among other things) the collection of these traces.</i></text>
+<text top="334" left="87" width="171" height="11" font="10">[MJLF84] “A Fast File System for U</text>
+<text top="335" left="259" width="16" height="8" font="28">NIX</text>
+<text top="334" left="275" width="244" height="11" font="10">” by Marshall K. McKusick, William N. Joy, Sam J.</text>
+<text top="346" left="87" width="254" height="11" font="10">Lefﬂer, Robert S. Fabry. ACM TOCS, 2:3, August 1984.</text>
+<text top="346" left="346" width="173" height="11" font="27"><i>McKusick was recently honored with the</i></text>
+<text top="358" left="87" width="432" height="11" font="27"><i>IEEE Reynold B. Johnson award for his contributions to ﬁle systems, much of which was based on</i></text>
+<text top="370" left="87" width="432" height="11" font="27"><i>his work building FFS. In his acceptance speech, he discussed the original FFS software: only 1200</i></text>
+<text top="382" left="87" width="432" height="11" font="27"><i>lines of code! Modern versions are a little more complex, e.g., the BSD FFS descendant now is in the</i></text>
+<text top="393" left="87" width="137" height="11" font="27"><i>50-thousand lines-of-code range.</i></text>
+<text top="410" left="87" width="432" height="11" font="10">[P98] “Hardware Technology Trends and Database Opportunities” by David A. Patterson.</text>
+<text top="422" left="87" width="201" height="11" font="10">Keynote Lecture at SIGMOD ’98, June 1998.</text>
+<text top="422" left="292" width="227" height="11" font="27"><i>A great and simple overview of disk technology trends</i></text>
+<text top="434" left="87" width="133" height="11" font="27"><i>and how they change over time.</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="29" size="15" family="ISUZAB+URWPalladioL" color="#000000"/>
+	<fontspec id="30" size="12" family="YXYNXL+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="325" width="8" height="14" font="2">L</text>
+<text top="98" left="334" width="83" height="11" font="3">OCALITY AND</text>
+<text top="96" left="421" width="8" height="14" font="2">T</text>
+<text top="98" left="430" width="16" height="11" font="3">HE</text>
+<text top="96" left="450" width="7" height="14" font="2">F</text>
+<text top="98" left="458" width="22" height="11" font="3">AST</text>
+<text top="96" left="484" width="7" height="14" font="2">F</text>
+<text top="98" left="492" width="18" height="11" font="3">ILE</text>
+<text top="96" left="514" width="7" height="14" font="2">S</text>
+<text top="98" left="522" width="39" height="11" font="3">YSTEM</text>
+<text top="137" left="129" width="183" height="16" font="26"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="139" height="14" font="2">This section introduces</text>
+<text top="167" left="290" width="48" height="11" font="12">ffs.py</text>
+<text top="166" left="338" width="223" height="14" font="2">, a simple FFS simulator you can use</text>
+<text top="181" left="129" width="432" height="14" font="2">to understand better how FFS-based ﬁle and directory allocation work.</text>
+<text top="196" left="129" width="340" height="14" font="2">See the README for details on how to run the simulator.</text>
+<text top="216" left="129" width="70" height="15" font="29"><b>Questions</b></text>
+<text top="241" left="148" width="102" height="12" font="9">1. Examine the ﬁle</text>
+<text top="242" left="254" width="86" height="10" font="18">in.largefile</text>
+<text top="241" left="340" width="203" height="12" font="9">, and then run the simulator with ﬂag</text>
+<text top="242" left="546" width="14" height="10" font="18">-f</text>
+<text top="256" left="163" width="86" height="10" font="18">in.largefile</text>
+<text top="255" left="252" width="20" height="12" font="9">and</text>
+<text top="256" left="274" width="29" height="10" font="18">-L 4</text>
+<text top="255" left="303" width="259" height="12" font="9">. The latter sets the large-ﬁle exception to 4 blocks.</text>
+<text top="270" left="163" width="283" height="12" font="9">What will the resulting allocation look like? Run with</text>
+<text top="270" left="450" width="14" height="10" font="18">-c</text>
+<text top="270" left="467" width="46" height="12" font="9">to check.</text>
+<text top="284" left="148" width="92" height="12" font="9">2. Now run with</text>
+<text top="284" left="243" width="36" height="10" font="18">-L 30</text>
+<text top="284" left="279" width="264" height="12" font="9">. What do you expect to see? Once again, turn on</text>
+<text top="284" left="546" width="14" height="10" font="18">-c</text>
+<text top="298" left="163" width="228" height="12" font="9">to see if you were right. You can also use</text>
+<text top="299" left="395" width="14" height="10" font="18">-S</text>
+<text top="298" left="414" width="147" height="12" font="9">to see exactly which blocks</text>
+<text top="312" left="163" width="129" height="12" font="9">were allocated to the ﬁle</text>
+<text top="313" left="295" width="14" height="10" font="18">/a</text>
+<text top="312" left="310" width="3" height="12" font="9">.</text>
+<text top="326" left="148" width="413" height="12" font="9">3. Now we will compute some statistics about the ﬁle. The ﬁrst is something</text>
+<text top="341" left="163" width="38" height="12" font="9">we call</text>
+<text top="340" left="205" width="37" height="12" font="30"><i>ﬁlespan</i></text>
+<text top="341" left="242" width="319" height="12" font="9">, which is the max distance between any two data blocks of</text>
+<text top="355" left="163" width="397" height="12" font="9">the ﬁle or between the inode and any data block. Calculate the ﬁlespan of</text>
+<text top="370" left="163" width="14" height="10" font="18">/a</text>
+<text top="369" left="178" width="31" height="12" font="9">. Run</text>
+<text top="370" left="212" width="237" height="10" font="18">ffs.py -f in.largefile -L 4 -T -c</text>
+<text top="369" left="452" width="108" height="12" font="9">to see what it is. Do</text>
+<text top="383" left="163" width="77" height="12" font="9">the same with</text>
+<text top="384" left="244" width="43" height="10" font="18">-L 100</text>
+<text top="383" left="287" width="273" height="12" font="9">. What difference do you expect in ﬁlespan as the</text>
+<text top="397" left="163" width="376" height="12" font="9">large-ﬁle exception parameter changes from low values to high values?</text>
+<text top="412" left="148" width="197" height="12" font="9">4. Now let’s look at a new input ﬁle,</text>
+<text top="412" left="348" width="86" height="10" font="18">in.manyfiles</text>
+<text top="412" left="434" width="127" height="12" font="9">. How do you think the</text>
+<text top="426" left="163" width="365" height="12" font="9">FFS policy will lay these ﬁles out across groups? (you can run with</text>
+<text top="426" left="532" width="14" height="10" font="18">-v</text>
+<text top="426" left="550" width="10" height="12" font="9">to</text>
+<text top="440" left="163" width="248" height="12" font="9">see what ﬁles and directories are created, or just</text>
+<text top="441" left="413" width="115" height="10" font="18">cat in.manyfiles</text>
+<text top="440" left="528" width="33" height="12" font="9">). Run</text>
+<text top="454" left="163" width="98" height="12" font="9">the simulator with</text>
+<text top="455" left="264" width="14" height="10" font="18">-c</text>
+<text top="454" left="282" width="124" height="12" font="9">to see if you were right.</text>
+<text top="468" left="148" width="193" height="12" font="9">5. A metric to evaluate FFS is called</text>
+<text top="468" left="344" width="37" height="12" font="30"><i>dirspan</i></text>
+<text top="468" left="380" width="181" height="12" font="9">. This metric calculates the spread</text>
+<text top="483" left="163" width="397" height="12" font="9">of ﬁles within a particular directory, speciﬁcally the max distance between</text>
+<text top="497" left="163" width="397" height="12" font="9">the inodes and data blocks of all ﬁles in the directory and the inode and data</text>
+<text top="511" left="163" width="198" height="12" font="9">block of the directory itself. Run with</text>
+<text top="512" left="365" width="86" height="10" font="18">in.manyfiles</text>
+<text top="511" left="454" width="40" height="12" font="9">and the</text>
+<text top="512" left="497" width="14" height="10" font="18">-T</text>
+<text top="511" left="515" width="46" height="12" font="9">ﬂag, and</text>
+<text top="525" left="163" width="296" height="12" font="9">calculate the dirspan of the three directories. Run with</text>
+<text top="526" left="463" width="14" height="10" font="18">-c</text>
+<text top="525" left="481" width="80" height="12" font="9">to check. How</text>
+<text top="539" left="163" width="262" height="12" font="9">good of a job does FFS do in minimizing dirspan?</text>
+<text top="554" left="148" width="307" height="12" font="9">6. Now change the size of the inode table per group to 5 (</text>
+<text top="554" left="454" width="29" height="10" font="18">-i 5</text>
+<text top="554" left="483" width="78" height="12" font="9">). How do you</text>
+<text top="568" left="163" width="285" height="12" font="9">think this will change the layout of the ﬁles? Run with</text>
+<text top="568" left="452" width="14" height="10" font="18">-c</text>
+<text top="568" left="469" width="92" height="12" font="9">to see if you were</text>
+<text top="582" left="163" width="197" height="12" font="9">right. How does it affect the dirspan?</text>
+<text top="596" left="148" width="413" height="12" font="9">7. Which group should FFS place inode of a new directory in? The default</text>
+<text top="610" left="163" width="397" height="12" font="9">(simulator) policy looks for the group with the most free inodes. A different</text>
+<text top="624" left="163" width="397" height="12" font="9">policy looks for a set of groups with the most free inodes. For example, if</text>
+<text top="639" left="163" width="69" height="12" font="9">you run with</text>
+<text top="639" left="235" width="29" height="10" font="18">-A 2</text>
+<text top="639" left="263" width="297" height="12" font="9">, when allocating a new directory, the simulator will look</text>
+<text top="653" left="163" width="337" height="12" font="9">at groups in pairs and pick the best pair for the allocation. Run</text>
+<text top="654" left="503" width="57" height="10" font="18">./ffs.py</text>
+<text top="668" left="163" width="201" height="10" font="18">-f in.manyfiles -i 5 -A 2 -c</text>
+<text top="667" left="369" width="192" height="12" font="9">to see how allocation changes with</text>
+<text top="681" left="163" width="388" height="12" font="9">this strategy. How does it affect dirspan? Why might this policy be good?</text>
+<text top="695" left="148" width="413" height="12" font="9">8. One last policy change we will explore relates to ﬁle fragmentation. Run</text>
+<text top="710" left="163" width="201" height="10" font="18">./ffs.py -f in.fragmented -v</text>
+<text top="710" left="369" width="192" height="12" font="9">and see if you can predict how the</text>
+<text top="724" left="163" width="215" height="12" font="9">ﬁles that remain are allocated. Run with</text>
+<text top="725" left="382" width="14" height="10" font="18">-c</text>
+<text top="724" left="399" width="161" height="12" font="9">to conﬁrm your answer. What</text>
+<text top="738" left="163" width="216" height="12" font="9">is interesting about the data layout of ﬁle</text>
+<text top="739" left="383" width="14" height="10" font="18">/i</text>
+<text top="738" left="397" width="128" height="12" font="9">? Why is it problematic?</text>
+<text top="752" left="148" width="170" height="12" font="9">9. A new policy, which we call</text>
+<text top="752" left="321" width="104" height="12" font="30"><i>contiguous allocation</i></text>
+<text top="752" left="430" width="4" height="12" font="9">(</text>
+<text top="753" left="434" width="14" height="10" font="18">-C</text>
+<text top="752" left="448" width="113" height="12" font="9">), tries to ensure that</text>
+<text top="766" left="163" width="280" height="12" font="9">each ﬁle is allocated contiguously. Speciﬁcally, with</text>
+<text top="767" left="447" width="29" height="10" font="18">-C n</text>
+<text top="766" left="476" width="85" height="12" font="9">, the ﬁle system</text>
+<text top="781" left="163" width="101" height="12" font="9">tries to ensure that</text>
+<text top="781" left="269" width="7" height="10" font="18">n</text>
+<text top="781" left="280" width="281" height="12" font="9">contiguous blocks are free within a group before al-</text>
+<text top="795" left="163" width="120" height="12" font="9">locating a block. Run</text>
+<text top="796" left="288" width="258" height="10" font="18">./ffs.py -f in.fragmented -v -C 2 -c</text>
+<text top="795" left="550" width="10" height="12" font="9">to</text>
+<text top="809" left="163" width="380" height="12" font="9">see the difference. How does layout change as the parameter passed to</text>
+<text top="810" left="546" width="14" height="10" font="18">-C</text>
+<text top="823" left="163" width="149" height="12" font="9">increases? Finally, how does</text>
+<text top="824" left="316" width="14" height="10" font="18">-C</text>
+<text top="823" left="333" width="145" height="12" font="9">affect ﬁlespan and dirspan?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+</pdf2xml>

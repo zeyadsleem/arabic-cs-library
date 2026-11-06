@@ -1,0 +1,1464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="CGXVUT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="CGXVUT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="BXPNAJ+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="16" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="15" family="BXPNAJ+URWPalladioL" color="#000000"/>
+<text top="196" left="523" width="34" height="30" font="0">29</text>
+<text top="266" left="140" width="379" height="21" font="1">Lock-based Concurrent Data Structures</text>
+<text top="326" left="87" width="432" height="14" font="2">Before moving beyond locks, we’ll first describe how to use locks in some</text>
+<text top="341" left="87" width="432" height="14" font="2">common data structures. Adding locks to a data structure to make it us-</text>
+<text top="356" left="87" width="213" height="14" font="2">able by threads makes the structure</text>
+<text top="356" left="304" width="68" height="13" font="3"><b>thread safe</b></text>
+<text top="356" left="373" width="146" height="14" font="2">. Of course, exactly how</text>
+<text top="371" left="87" width="432" height="14" font="2">such locks are added determines both the correctness and performance of</text>
+<text top="386" left="87" width="259" height="14" font="2">the data structure. And thus, our challenge:</text>
+<text top="426" left="146" width="10" height="14" font="2">C</text>
+<text top="428" left="156" width="24" height="11" font="4">RUX</text>
+<text top="426" left="181" width="19" height="14" font="2">: H</text>
+<text top="428" left="201" width="20" height="11" font="4">OW</text>
+<text top="426" left="225" width="8" height="14" font="2">T</text>
+<text top="428" left="234" width="8" height="11" font="4">O</text>
+<text top="426" left="246" width="10" height="14" font="2">A</text>
+<text top="428" left="257" width="17" height="11" font="4">DD</text>
+<text top="426" left="279" width="8" height="14" font="2">L</text>
+<text top="428" left="288" width="32" height="11" font="4">OCKS</text>
+<text top="426" left="323" width="8" height="14" font="2">T</text>
+<text top="428" left="332" width="8" height="11" font="4">O</text>
+<text top="426" left="344" width="10" height="14" font="2">D</text>
+<text top="428" left="356" width="23" height="11" font="4">ATA</text>
+<text top="426" left="383" width="7" height="14" font="2">S</text>
+<text top="428" left="390" width="70" height="11" font="4">TRUCTURES</text>
+<text top="441" left="105" width="414" height="14" font="2">When given a particular data structure, how should we add locks to</text>
+<text top="456" left="87" width="432" height="14" font="2">it, in order to make it work correctly? Further, how do we add locks such</text>
+<text top="471" left="87" width="432" height="14" font="2">that the data structure yields high performance, enabling many threads</text>
+<text top="486" left="87" width="203" height="14" font="2">to access the structure at once, i.e.,</text>
+<text top="486" left="293" width="78" height="13" font="3"><b>concurrently</b></text>
+<text top="486" left="371" width="6" height="14" font="2">?</text>
+<text top="530" left="105" width="414" height="14" font="2">Of course, we will be hard pressed to cover all data structures or all</text>
+<text top="545" left="87" width="432" height="14" font="2">methods for adding concurrency, as this is a topic that has been studied</text>
+<text top="560" left="87" width="432" height="14" font="2">for years, with (literally) thousands of research papers published about</text>
+<text top="575" left="87" width="432" height="14" font="2">it. Thus, we hope to provide a sufficient introduction to the type of think-</text>
+<text top="590" left="87" width="432" height="14" font="2">ing required, and refer you to some good sources of material for further</text>
+<text top="605" left="87" width="432" height="14" font="2">inquiry on your own. We found Moir and Shavit’s survey to be a great</text>
+<text top="620" left="87" width="177" height="14" font="2">source of information [MS04].</text>
+<text top="658" left="55" width="187" height="17" font="5">29.1 Concurrent Counters</text>
+<text top="688" left="105" width="414" height="14" font="2">One of the simplest data structures is a counter. It is a structure that</text>
+<text top="703" left="87" width="432" height="14" font="2">is commonly used and has a simple interface. We define a simple non-</text>
+<text top="718" left="87" width="200" height="14" font="2">concurrent counter in Figure 29.1.</text>
+<text top="756" left="87" width="167" height="15" font="6"><b>Simple But Not Scalable</b></text>
+<text top="781" left="87" width="432" height="14" font="2">As you can see, the non-synchronized counter is a trivial data structure,</text>
+<text top="796" left="87" width="432" height="14" font="2">requiring a tiny amount of code to implement. We now have our next</text>
+<text top="811" left="87" width="236" height="14" font="2">challenge: how can we make this code</text>
+<text top="811" left="328" width="69" height="13" font="3"><b>thread safe</b></text>
+<text top="811" left="396" width="123" height="14" font="2">? Figure 29.2 shows</text>
+<text top="826" left="87" width="86" height="14" font="2">how we do so.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="7" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="13" family="XPJEUP+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="9" size="13" family="CZBOQE+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="10" size="12" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="11" size="10" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="273" width="8" height="14" font="2">L</text>
+<text top="98" left="282" width="25" height="11" font="4">OCK</text>
+<text top="96" left="308" width="4" height="14" font="2">-</text>
+<text top="98" left="313" width="38" height="11" font="4">BASED</text>
+<text top="96" left="356" width="10" height="14" font="2">C</text>
+<text top="98" left="366" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="445" width="10" height="14" font="2">D</text>
+<text top="98" left="456" width="23" height="11" font="4">ATA</text>
+<text top="96" left="483" width="7" height="14" font="2">S</text>
+<text top="98" left="491" width="70" height="11" font="4">TRUCTURES</text>
+<text top="138" left="107" width="4" height="8" font="7">1</text>
+<text top="135" left="129" width="226" height="11" font="8">typedef struct __counter_t {</text>
+<text top="153" left="107" width="4" height="8" font="7">2</text>
+<text top="149" left="161" width="81" height="11" font="8">int value;</text>
+<text top="168" left="107" width="4" height="8" font="7">3</text>
+<text top="164" left="129" width="97" height="11" font="8">} counter_t;</text>
+<text top="183" left="107" width="4" height="8" font="7">4</text>
+<text top="198" left="107" width="4" height="8" font="7">5</text>
+<text top="194" left="129" width="202" height="14" font="8">void init(counter_t *c) {</text>
+<text top="213" left="107" width="4" height="8" font="7">6</text>
+<text top="209" left="161" width="105" height="11" font="8">c-&gt;value = 0;</text>
+<text top="228" left="107" width="4" height="8" font="7">7</text>
+<text top="224" left="129" width="8" height="11" font="8">}</text>
+<text top="243" left="107" width="4" height="8" font="7">8</text>
+<text top="258" left="107" width="4" height="8" font="7">9</text>
+<text top="254" left="129" width="242" height="14" font="8">void increment(counter_t *c) {</text>
+<text top="273" left="104" width="7" height="8" font="7">10</text>
+<text top="269" left="161" width="89" height="11" font="8">c-&gt;value++;</text>
+<text top="288" left="104" width="7" height="8" font="7">11</text>
+<text top="284" left="129" width="8" height="11" font="8">}</text>
+<text top="302" left="104" width="7" height="8" font="7">12</text>
+<text top="317" left="104" width="7" height="8" font="7">13</text>
+<text top="314" left="129" width="242" height="14" font="8">void decrement(counter_t *c) {</text>
+<text top="332" left="104" width="7" height="8" font="7">14</text>
+<text top="329" left="161" width="89" height="11" font="8">c-&gt;value--;</text>
+<text top="347" left="104" width="7" height="8" font="7">15</text>
+<text top="344" left="129" width="8" height="11" font="8">}</text>
+<text top="362" left="104" width="7" height="8" font="7">16</text>
+<text top="377" left="104" width="7" height="8" font="7">17</text>
+<text top="374" left="129" width="186" height="14" font="8">int get(counter_t *c) {</text>
+<text top="392" left="104" width="7" height="8" font="7">18</text>
+<text top="389" left="161" width="129" height="11" font="8">return c-&gt;value;</text>
+<text top="407" left="104" width="7" height="8" font="7">19</text>
+<text top="404" left="129" width="8" height="11" font="8">}</text>
+<text top="416" left="230" width="69" height="14" font="2">Figure 29.1:</text>
+<text top="417" left="303" width="157" height="13" font="3"><b>A Counter Without Locks</b></text>
+<text top="447" left="147" width="414" height="14" font="2">This concurrent counter is simple and works correctly. In fact, it fol-</text>
+<text top="462" left="129" width="432" height="14" font="2">lows a design pattern common to the simplest and most basic concurrent</text>
+<text top="477" left="129" width="432" height="14" font="2">data structures: it simply adds a single lock, which is acquired when call-</text>
+<text top="492" left="129" width="432" height="14" font="2">ing a routine that manipulates the data structure, and is released when</text>
+<text top="507" left="129" width="432" height="14" font="2">returning from the call. In this manner, it is similar to a data structure</text>
+<text top="522" left="129" width="59" height="14" font="2">built with</text>
+<text top="522" left="191" width="55" height="13" font="3"><b>monitors</b></text>
+<text top="522" left="250" width="311" height="14" font="2">[BH73], where locks are acquired and released auto-</text>
+<text top="537" left="129" width="316" height="14" font="2">matically as you call and return from object methods.</text>
+<text top="554" left="147" width="414" height="14" font="2">At this point, you have a working concurrent data structure. The prob-</text>
+<text top="569" left="129" width="432" height="14" font="2">lem you might have is performance. If your data structure is too slow,</text>
+<text top="584" left="129" width="432" height="14" font="2">you’ll have to do more than just add a single lock; such optimizations, if</text>
+<text top="599" left="129" width="432" height="14" font="2">needed, are thus the topic of the rest of the chapter. Note that if the data</text>
+<text top="614" left="129" width="66" height="14" font="2">structure is</text>
+<text top="613" left="199" width="18" height="14" font="9">not</text>
+<text top="614" left="220" width="341" height="14" font="2">too slow, you are done! No need to do something fancy if</text>
+<text top="628" left="129" width="170" height="14" font="2">something simple will work.</text>
+<text top="645" left="147" width="414" height="14" font="2">To understand the performance costs of the simple approach, we run a</text>
+<text top="660" left="129" width="432" height="14" font="2">benchmark in which each thread updates a single shared counter a fixed</text>
+<text top="675" left="129" width="432" height="14" font="2">number of times; we then vary the number of threads. Figure 29.5 shows</text>
+<text top="690" left="129" width="432" height="14" font="2">the total time taken, with one to four threads active; each thread updates</text>
+<text top="705" left="129" width="432" height="14" font="2">the counter one million times. This experiment was run upon an iMac</text>
+<text top="720" left="129" width="432" height="14" font="2">with four Intel 2.7 GHz i5 CPUs; with more CPUs active, we hope to get</text>
+<text top="735" left="129" width="213" height="14" font="2">more total work done per unit time.</text>
+<text top="751" left="147" width="414" height="14" font="2">From the top line in the figure (labeled ’Precise’), you can see that the</text>
+<text top="766" left="129" width="432" height="14" font="2">performance of the synchronized counter scales poorly. Whereas a single</text>
+<text top="781" left="129" width="432" height="14" font="2">thread can complete the million counter updates in a tiny amount of time</text>
+<text top="796" left="129" width="432" height="14" font="2">(roughly 0.03 seconds), having two threads each update the counter one</text>
+<text top="811" left="129" width="432" height="14" font="2">million times concurrently leads to a massive slowdown (taking over 5</text>
+<text top="826" left="129" width="284" height="14" font="2">seconds!). It only gets worse with more threads.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="25" height="11" font="4">OCK</text>
+<text top="96" left="122" width="4" height="14" font="2">-</text>
+<text top="98" left="127" width="38" height="11" font="4">BASED</text>
+<text top="96" left="170" width="10" height="14" font="2">C</text>
+<text top="98" left="180" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="259" width="10" height="14" font="2">D</text>
+<text top="98" left="270" width="23" height="11" font="4">ATA</text>
+<text top="96" left="297" width="7" height="14" font="2">S</text>
+<text top="98" left="305" width="70" height="11" font="4">TRUCTURES</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="138" left="65" width="4" height="8" font="7">1</text>
+<text top="135" left="87" width="226" height="11" font="8">typedef struct __counter_t {</text>
+<text top="153" left="65" width="4" height="8" font="7">2</text>
+<text top="149" left="119" width="24" height="11" font="8">int</text>
+<text top="149" left="248" width="48" height="11" font="8">value;</text>
+<text top="168" left="65" width="4" height="8" font="7">3</text>
+<text top="164" left="119" width="169" height="11" font="8">pthread_mutex_t lock;</text>
+<text top="183" left="65" width="4" height="8" font="7">4</text>
+<text top="179" left="87" width="97" height="11" font="8">} counter_t;</text>
+<text top="198" left="65" width="4" height="8" font="7">5</text>
+<text top="213" left="65" width="4" height="8" font="7">6</text>
+<text top="209" left="87" width="202" height="14" font="8">void init(counter_t *c) {</text>
+<text top="228" left="65" width="4" height="8" font="7">7</text>
+<text top="224" left="119" width="105" height="11" font="8">c-&gt;value = 0;</text>
+<text top="243" left="65" width="4" height="8" font="7">8</text>
+<text top="239" left="119" width="282" height="11" font="8">Pthread_mutex_init(&amp;c-&gt;lock, NULL);</text>
+<text top="258" left="65" width="4" height="8" font="7">9</text>
+<text top="254" left="87" width="8" height="11" font="8">}</text>
+<text top="273" left="62" width="7" height="8" font="7">10</text>
+<text top="288" left="62" width="7" height="8" font="7">11</text>
+<text top="284" left="87" width="242" height="14" font="8">void increment(counter_t *c) {</text>
+<text top="302" left="62" width="7" height="8" font="7">12</text>
+<text top="299" left="119" width="234" height="11" font="8">Pthread_mutex_lock(&amp;c-&gt;lock);</text>
+<text top="317" left="62" width="7" height="8" font="7">13</text>
+<text top="314" left="119" width="89" height="11" font="8">c-&gt;value++;</text>
+<text top="332" left="62" width="7" height="8" font="7">14</text>
+<text top="329" left="119" width="250" height="11" font="8">Pthread_mutex_unlock(&amp;c-&gt;lock);</text>
+<text top="347" left="62" width="7" height="8" font="7">15</text>
+<text top="344" left="87" width="8" height="11" font="8">}</text>
+<text top="362" left="62" width="7" height="8" font="7">16</text>
+<text top="377" left="62" width="7" height="8" font="7">17</text>
+<text top="374" left="87" width="242" height="14" font="8">void decrement(counter_t *c) {</text>
+<text top="392" left="62" width="7" height="8" font="7">18</text>
+<text top="389" left="119" width="234" height="11" font="8">Pthread_mutex_lock(&amp;c-&gt;lock);</text>
+<text top="407" left="62" width="7" height="8" font="7">19</text>
+<text top="404" left="119" width="89" height="11" font="8">c-&gt;value--;</text>
+<text top="422" left="62" width="7" height="8" font="7">20</text>
+<text top="418" left="119" width="250" height="11" font="8">Pthread_mutex_unlock(&amp;c-&gt;lock);</text>
+<text top="437" left="62" width="7" height="8" font="7">21</text>
+<text top="433" left="87" width="8" height="11" font="8">}</text>
+<text top="452" left="62" width="7" height="8" font="7">22</text>
+<text top="467" left="62" width="7" height="8" font="7">23</text>
+<text top="463" left="87" width="186" height="14" font="8">int get(counter_t *c) {</text>
+<text top="482" left="62" width="7" height="8" font="7">24</text>
+<text top="478" left="119" width="234" height="11" font="8">Pthread_mutex_lock(&amp;c-&gt;lock);</text>
+<text top="497" left="62" width="7" height="8" font="7">25</text>
+<text top="493" left="119" width="145" height="11" font="8">int rc = c-&gt;value;</text>
+<text top="512" left="62" width="7" height="8" font="7">26</text>
+<text top="508" left="119" width="250" height="11" font="8">Pthread_mutex_unlock(&amp;c-&gt;lock);</text>
+<text top="527" left="62" width="7" height="8" font="7">27</text>
+<text top="523" left="119" width="81" height="11" font="8">return rc;</text>
+<text top="542" left="62" width="7" height="8" font="7">28</text>
+<text top="538" left="87" width="8" height="11" font="8">}</text>
+<text top="551" left="198" width="69" height="14" font="2">Figure 29.2:</text>
+<text top="551" left="271" width="137" height="13" font="3"><b>A Counter With Locks</b></text>
+<text top="572" left="105" width="414" height="14" font="2">Ideally, you’d like to see the threads complete just as quickly on mul-</text>
+<text top="587" left="87" width="432" height="14" font="2">tiple processors as the single thread does on one. Achieving this end is</text>
+<text top="602" left="87" width="35" height="14" font="2">called</text>
+<text top="602" left="126" width="90" height="13" font="3"><b>perfect scaling</b></text>
+<text top="602" left="215" width="304" height="14" font="2">; even though more work is done, it is done in par-</text>
+<text top="616" left="87" width="402" height="14" font="2">allel, and hence the time taken to complete the task is not increased.</text>
+<text top="662" left="87" width="126" height="15" font="6"><b>Scalable Counting</b></text>
+<text top="688" left="87" width="432" height="14" font="2">Amazingly, researchers have studied how to build more scalable coun-</text>
+<text top="703" left="87" width="432" height="14" font="2">ters for years [MS04]. Even more amazing is the fact that scalable coun-</text>
+<text top="718" left="87" width="432" height="14" font="2">ters matter, as recent work in operating system performance analysis has</text>
+<text top="733" left="87" width="432" height="14" font="2">shown [B+10]; without scalable counting, some workloads running on</text>
+<text top="748" left="87" width="415" height="14" font="2">Linux suffer from serious scalability problems on multicore machines.</text>
+<text top="764" left="105" width="414" height="14" font="2">Many techniques have been developed to attack this problem. We’ll</text>
+<text top="779" left="87" width="212" height="14" font="2">describe one approach known as an</text>
+<text top="779" left="303" width="127" height="13" font="3"><b>approximate counter</b></text>
+<text top="779" left="433" width="35" height="14" font="2">[C06].</text>
+<text top="796" left="105" width="420" height="14" font="2">The approximate counter works by representing a single logical counter</text>
+<text top="811" left="87" width="81" height="14" font="2">via numerous</text>
+<text top="811" left="171" width="25" height="14" font="9">local</text>
+<text top="811" left="198" width="320" height="14" font="2">physical counters, one per CPU core, as well as a single</text>
+<text top="826" left="87" width="32" height="14" font="9">global</text>
+<text top="826" left="123" width="396" height="14" font="2">counter. Specifically, on a machine with four CPUs, there are four</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="13" family="TPCCGJ+CMMI9" color="#000000"/>
+	<fontspec id="13" size="9" family="WWQSQT+CMR6" color="#000000"/>
+	<fontspec id="14" size="13" family="KKWOPW+CMSY9" color="#000000"/>
+	<fontspec id="15" size="9" family="PEGKWP+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="16" size="13" family="UMRPDM+CMR9" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="273" width="8" height="14" font="2">L</text>
+<text top="98" left="282" width="25" height="11" font="4">OCK</text>
+<text top="96" left="308" width="4" height="14" font="2">-</text>
+<text top="98" left="313" width="38" height="11" font="4">BASED</text>
+<text top="96" left="356" width="10" height="14" font="2">C</text>
+<text top="98" left="366" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="445" width="10" height="14" font="2">D</text>
+<text top="98" left="456" width="23" height="11" font="4">ATA</text>
+<text top="96" left="483" width="7" height="14" font="2">S</text>
+<text top="98" left="491" width="70" height="11" font="4">TRUCTURES</text>
+<text top="136" left="198" width="30" height="14" font="2">Time</text>
+<text top="136" left="256" width="9" height="10" font="12">L</text>
+<text top="141" left="265" width="5" height="6" font="13">1</text>
+<text top="136" left="298" width="9" height="10" font="12">L</text>
+<text top="141" left="308" width="5" height="6" font="13">2</text>
+<text top="136" left="332" width="9" height="10" font="12">L</text>
+<text top="141" left="341" width="5" height="6" font="13">3</text>
+<text top="136" left="375" width="9" height="10" font="12">L</text>
+<text top="141" left="384" width="5" height="6" font="13">4</text>
+<text top="136" left="418" width="11" height="10" font="12">G</text>
+<text top="151" left="221" width="7" height="14" font="2">0</text>
+<text top="151" left="260" width="7" height="14" font="2">0</text>
+<text top="151" left="303" width="7" height="14" font="2">0</text>
+<text top="151" left="336" width="7" height="14" font="2">0</text>
+<text top="151" left="379" width="7" height="14" font="2">0</text>
+<text top="151" left="418" width="7" height="14" font="2">0</text>
+<text top="166" left="221" width="7" height="14" font="2">1</text>
+<text top="166" left="260" width="7" height="14" font="2">0</text>
+<text top="166" left="303" width="7" height="14" font="2">0</text>
+<text top="166" left="336" width="7" height="14" font="2">1</text>
+<text top="166" left="379" width="7" height="14" font="2">1</text>
+<text top="166" left="418" width="7" height="14" font="2">0</text>
+<text top="181" left="221" width="7" height="14" font="2">2</text>
+<text top="181" left="260" width="7" height="14" font="2">1</text>
+<text top="181" left="303" width="7" height="14" font="2">0</text>
+<text top="181" left="336" width="7" height="14" font="2">2</text>
+<text top="181" left="379" width="7" height="14" font="2">1</text>
+<text top="181" left="418" width="7" height="14" font="2">0</text>
+<text top="196" left="221" width="7" height="14" font="2">3</text>
+<text top="196" left="260" width="7" height="14" font="2">2</text>
+<text top="196" left="303" width="7" height="14" font="2">0</text>
+<text top="196" left="336" width="7" height="14" font="2">3</text>
+<text top="196" left="379" width="7" height="14" font="2">1</text>
+<text top="196" left="418" width="7" height="14" font="2">0</text>
+<text top="211" left="221" width="7" height="14" font="2">4</text>
+<text top="211" left="260" width="7" height="14" font="2">3</text>
+<text top="211" left="303" width="7" height="14" font="2">0</text>
+<text top="211" left="336" width="7" height="14" font="2">3</text>
+<text top="211" left="379" width="7" height="14" font="2">2</text>
+<text top="211" left="418" width="7" height="14" font="2">0</text>
+<text top="226" left="221" width="7" height="14" font="2">5</text>
+<text top="226" left="260" width="7" height="14" font="2">4</text>
+<text top="226" left="303" width="7" height="14" font="2">1</text>
+<text top="226" left="336" width="7" height="14" font="2">3</text>
+<text top="226" left="379" width="7" height="14" font="2">3</text>
+<text top="226" left="418" width="7" height="14" font="2">0</text>
+<text top="241" left="221" width="7" height="14" font="2">6</text>
+<text top="241" left="246" width="7" height="14" font="2">5</text>
+<text top="244" left="257" width="14" height="7" font="14">→</text>
+<text top="241" left="274" width="7" height="14" font="2">0</text>
+<text top="241" left="303" width="7" height="14" font="2">1</text>
+<text top="241" left="336" width="7" height="14" font="2">3</text>
+<text top="241" left="379" width="7" height="14" font="2">4</text>
+<text top="241" left="418" width="43" height="14" font="2">5 (from</text>
+<text top="241" left="465" width="9" height="10" font="12">L</text>
+<text top="246" left="474" width="5" height="6" font="13">1</text>
+<text top="241" left="480" width="4" height="14" font="2">)</text>
+<text top="256" left="221" width="7" height="14" font="2">7</text>
+<text top="256" left="260" width="7" height="14" font="2">0</text>
+<text top="256" left="303" width="7" height="14" font="2">2</text>
+<text top="256" left="336" width="7" height="14" font="2">4</text>
+<text top="256" left="365" width="7" height="14" font="2">5</text>
+<text top="259" left="376" width="14" height="7" font="14">→</text>
+<text top="256" left="393" width="7" height="14" font="2">0</text>
+<text top="256" left="418" width="50" height="14" font="2">10 (from</text>
+<text top="256" left="471" width="9" height="10" font="12">L</text>
+<text top="261" left="481" width="5" height="6" font="13">4</text>
+<text top="256" left="487" width="4" height="14" font="2">)</text>
+<text top="281" left="202" width="69" height="14" font="2">Figure 29.3:</text>
+<text top="281" left="275" width="212" height="13" font="3"><b>Tracing the Approximate Counters</b></text>
+<text top="309" left="129" width="432" height="14" font="2">local counters and one global one. In addition to these counters, there are</text>
+<text top="326" left="129" width="217" height="14" font="2">also locks: one for each local counter</text>
+<text top="323" left="346" width="4" height="9" font="15">1</text>
+<text top="326" left="352" width="188" height="14" font="2">, and one for the global counter.</text>
+<text top="341" left="147" width="414" height="14" font="2">The basic idea of approximate counting is as follows. When a thread</text>
+<text top="356" left="129" width="432" height="14" font="2">running on a given core wishes to increment the counter, it increments its</text>
+<text top="371" left="129" width="432" height="14" font="2">local counter; access to this local counter is synchronized via the corre-</text>
+<text top="386" left="129" width="432" height="14" font="2">sponding local lock. Because each CPU has its own local counter, threads</text>
+<text top="401" left="129" width="432" height="14" font="2">across CPUs can update local counters without contention, and thus up-</text>
+<text top="416" left="129" width="192" height="14" font="2">dates to the counter are scalable.</text>
+<text top="431" left="147" width="414" height="14" font="2">However, to keep the global counter up to date (in case a thread wishes</text>
+<text top="445" left="129" width="432" height="14" font="2">to read its value), the local values are periodically transferred to the global</text>
+<text top="460" left="129" width="432" height="14" font="2">counter, by acquiring the global lock and incrementing it by the local</text>
+<text top="475" left="129" width="319" height="14" font="2">counter’s value; the local counter is then reset to zero.</text>
+<text top="490" left="147" width="420" height="14" font="2">How often this local-to-global transfer occurs is determined by a thresh-</text>
+<text top="505" left="129" width="19" height="14" font="2">old</text>
+<text top="506" left="151" width="8" height="10" font="12">S</text>
+<text top="505" left="160" width="76" height="14" font="2">. The smaller</text>
+<text top="506" left="239" width="8" height="10" font="12">S</text>
+<text top="505" left="251" width="310" height="14" font="2">is, the more the counter behaves like the non-scalable</text>
+<text top="520" left="129" width="152" height="14" font="2">counter above; the bigger</text>
+<text top="521" left="284" width="8" height="10" font="12">S</text>
+<text top="520" left="297" width="264" height="14" font="2">is, the more scalable the counter, but the fur-</text>
+<text top="535" left="129" width="432" height="14" font="2">ther off the global value might be from the actual count. One could sim-</text>
+<text top="550" left="129" width="432" height="14" font="2">ply acquire all the local locks and the global lock (in a specified order, to</text>
+<text top="565" left="129" width="363" height="14" font="2">avoid deadlock) to get an exact value, but that is not scalable.</text>
+<text top="580" left="147" width="414" height="14" font="2">To make this clear, let’s look at an example (Figure 29.3). In this ex-</text>
+<text top="595" left="129" width="124" height="14" font="2">ample, the threshold</text>
+<text top="595" left="258" width="8" height="10" font="12">S</text>
+<text top="595" left="271" width="46" height="14" font="2">is set to</text>
+<text top="596" left="322" width="7" height="9" font="16">5</text>
+<text top="595" left="329" width="232" height="14" font="2">, and there are threads on each of four</text>
+<text top="610" left="129" width="213" height="14" font="2">CPUs updating their local counters</text>
+<text top="610" left="346" width="9" height="10" font="12">L</text>
+<text top="615" left="356" width="5" height="6" font="13">1</text>
+<text top="610" left="366" width="10" height="14" font="2">...</text>
+<text top="610" left="384" width="9" height="10" font="12">L</text>
+<text top="615" left="393" width="5" height="6" font="13">4</text>
+<text top="610" left="399" width="161" height="14" font="2">. The global counter value</text>
+<text top="625" left="129" width="4" height="14" font="2">(</text>
+<text top="625" left="133" width="11" height="10" font="12">G</text>
+<text top="625" left="144" width="417" height="14" font="2">) is also shown in the trace, with time increasing downward. At each</text>
+<text top="640" left="129" width="432" height="14" font="2">time step, a local counter may be incremented; if the local value reaches</text>
+<text top="655" left="129" width="80" height="14" font="2">the threshold</text>
+<text top="655" left="213" width="8" height="10" font="12">S</text>
+<text top="655" left="222" width="338" height="14" font="2">, the local value is transferred to the global counter and</text>
+<text top="670" left="129" width="146" height="14" font="2">the local counter is reset.</text>
+<text top="685" left="147" width="414" height="14" font="2">The lower line in Figure 29.5 (labeled ’Approximate’, on page 6) shows</text>
+<text top="700" left="129" width="343" height="14" font="2">the performance of approximate counters with a threshold</text>
+<text top="700" left="475" width="8" height="10" font="12">S</text>
+<text top="700" left="487" width="12" height="14" font="2">of</text>
+<text top="700" left="502" width="28" height="9" font="16">1024</text>
+<text top="700" left="529" width="31" height="14" font="2">. Per-</text>
+<text top="714" left="129" width="432" height="14" font="2">formance is excellent; the time taken to update the counter four million</text>
+<text top="729" left="129" width="432" height="14" font="2">times on four processors is hardly higher than the time taken to update it</text>
+<text top="744" left="129" width="210" height="14" font="2">one million times on one processor.</text>
+<text top="814" left="149" width="4" height="8" font="7">1</text>
+<text top="816" left="154" width="407" height="11" font="11">We need the local locks because we assume there may be more than one thread on each</text>
+<text top="828" left="129" width="375" height="11" font="11">core. If, instead, only one thread ran on each core, no local lock would be needed.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="25" height="11" font="4">OCK</text>
+<text top="96" left="122" width="4" height="14" font="2">-</text>
+<text top="98" left="127" width="38" height="11" font="4">BASED</text>
+<text top="96" left="170" width="10" height="14" font="2">C</text>
+<text top="98" left="180" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="259" width="10" height="14" font="2">D</text>
+<text top="98" left="270" width="23" height="11" font="4">ATA</text>
+<text top="96" left="297" width="7" height="14" font="2">S</text>
+<text top="98" left="305" width="70" height="11" font="4">TRUCTURES</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="138" left="65" width="4" height="8" font="7">1</text>
+<text top="135" left="87" width="226" height="11" font="8">typedef struct __counter_t {</text>
+<text top="153" left="65" width="4" height="8" font="7">2</text>
+<text top="149" left="119" width="24" height="11" font="8">int</text>
+<text top="149" left="248" width="57" height="11" font="8">global;</text>
+<text top="149" left="378" width="121" height="11" font="8">// global count</text>
+<text top="168" left="65" width="4" height="8" font="7">3</text>
+<text top="164" left="119" width="178" height="11" font="8">pthread_mutex_t glock;</text>
+<text top="164" left="378" width="113" height="11" font="8">// global lock</text>
+<text top="183" left="65" width="4" height="8" font="7">4</text>
+<text top="179" left="119" width="24" height="11" font="8">int</text>
+<text top="179" left="248" width="258" height="11" font="8">local[NUMCPUS]; // per-CPU count</text>
+<text top="198" left="65" width="4" height="8" font="7">5</text>
+<text top="194" left="119" width="387" height="11" font="8">pthread_mutex_t llock[NUMCPUS]; // ... and locks</text>
+<text top="213" left="65" width="4" height="8" font="7">6</text>
+<text top="209" left="119" width="24" height="11" font="8">int</text>
+<text top="209" left="248" width="81" height="11" font="8">threshold;</text>
+<text top="209" left="378" width="113" height="11" font="8">// update freq</text>
+<text top="228" left="65" width="4" height="8" font="7">7</text>
+<text top="224" left="87" width="97" height="11" font="8">} counter_t;</text>
+<text top="243" left="65" width="4" height="8" font="7">8</text>
+<text top="258" left="65" width="4" height="8" font="7">9</text>
+<text top="254" left="87" width="404" height="11" font="8">// init: record threshold, init locks, init values</text>
+<text top="273" left="62" width="7" height="8" font="7">10</text>
+<text top="269" left="87" width="16" height="11" font="8">//</text>
+<text top="269" left="160" width="291" height="11" font="8">of all local counts and global count</text>
+<text top="288" left="62" width="7" height="8" font="7">11</text>
+<text top="284" left="87" width="323" height="14" font="8">void init(counter_t *c, int threshold) {</text>
+<text top="302" left="62" width="7" height="8" font="7">12</text>
+<text top="299" left="119" width="202" height="11" font="8">c-&gt;threshold = threshold;</text>
+<text top="317" left="62" width="7" height="8" font="7">13</text>
+<text top="314" left="119" width="113" height="11" font="8">c-&gt;global = 0;</text>
+<text top="332" left="62" width="7" height="8" font="7">14</text>
+<text top="329" left="119" width="291" height="11" font="8">pthread_mutex_init(&amp;c-&gt;glock, NULL);</text>
+<text top="347" left="62" width="7" height="8" font="7">15</text>
+<text top="344" left="119" width="48" height="11" font="8">int i;</text>
+<text top="362" left="62" width="7" height="8" font="7">16</text>
+<text top="359" left="119" width="250" height="11" font="8">for (i = 0; i &lt; NUMCPUS; i++) {</text>
+<text top="377" left="62" width="7" height="8" font="7">17</text>
+<text top="374" left="152" width="129" height="11" font="8">c-&gt;local[i] = 0;</text>
+<text top="392" left="62" width="7" height="8" font="7">18</text>
+<text top="389" left="152" width="315" height="11" font="8">pthread_mutex_init(&amp;c-&gt;llock[i], NULL);</text>
+<text top="407" left="62" width="7" height="8" font="7">19</text>
+<text top="404" left="119" width="8" height="11" font="8">}</text>
+<text top="422" left="62" width="7" height="8" font="7">20</text>
+<text top="418" left="87" width="8" height="11" font="8">}</text>
+<text top="437" left="62" width="7" height="8" font="7">21</text>
+<text top="452" left="62" width="7" height="8" font="7">22</text>
+<text top="448" left="87" width="412" height="11" font="8">// update: usually, just grab local lock and update</text>
+<text top="467" left="62" width="7" height="8" font="7">23</text>
+<text top="463" left="87" width="379" height="11" font="8">// local amount; once it has risen ’threshold’,</text>
+<text top="482" left="62" width="7" height="8" font="7">24</text>
+<text top="478" left="87" width="412" height="11" font="8">// grab global lock and transfer local values to it</text>
+<text top="497" left="62" width="7" height="8" font="7">25</text>
+<text top="493" left="87" width="403" height="14" font="8">void update(counter_t *c, int threadID, int amt) {</text>
+<text top="512" left="62" width="7" height="8" font="7">26</text>
+<text top="508" left="119" width="234" height="11" font="8">int cpu = threadID % NUMCPUS;</text>
+<text top="527" left="62" width="7" height="8" font="7">27</text>
+<text top="523" left="119" width="283" height="11" font="8">pthread_mutex_lock(&amp;c-&gt;llock[cpu]);</text>
+<text top="542" left="62" width="7" height="8" font="7">28</text>
+<text top="538" left="119" width="169" height="11" font="8">c-&gt;local[cpu] += amt;</text>
+<text top="557" left="62" width="7" height="8" font="7">29</text>
+<text top="553" left="119" width="291" height="11" font="8">if (c-&gt;local[cpu] &gt;= c-&gt;threshold) {</text>
+<text top="571" left="62" width="7" height="8" font="7">30</text>
+<text top="568" left="152" width="299" height="11" font="8">// transfer to global (assumes amt&gt;0)</text>
+<text top="586" left="62" width="7" height="8" font="7">31</text>
+<text top="583" left="152" width="242" height="11" font="8">pthread_mutex_lock(&amp;c-&gt;glock);</text>
+<text top="601" left="62" width="7" height="8" font="7">32</text>
+<text top="598" left="152" width="218" height="11" font="8">c-&gt;global += c-&gt;local[cpu];</text>
+<text top="616" left="62" width="7" height="8" font="7">33</text>
+<text top="613" left="152" width="258" height="11" font="8">pthread_mutex_unlock(&amp;c-&gt;glock);</text>
+<text top="631" left="62" width="7" height="8" font="7">34</text>
+<text top="628" left="152" width="145" height="11" font="8">c-&gt;local[cpu] = 0;</text>
+<text top="646" left="62" width="7" height="8" font="7">35</text>
+<text top="643" left="119" width="8" height="11" font="8">}</text>
+<text top="661" left="62" width="7" height="8" font="7">36</text>
+<text top="658" left="119" width="299" height="11" font="8">pthread_mutex_unlock(&amp;c-&gt;llock[cpu]);</text>
+<text top="676" left="62" width="7" height="8" font="7">37</text>
+<text top="673" left="87" width="8" height="11" font="8">}</text>
+<text top="691" left="62" width="7" height="8" font="7">38</text>
+<text top="706" left="62" width="7" height="8" font="7">39</text>
+<text top="702" left="87" width="379" height="11" font="8">// get: just return global amount (approximate)</text>
+<text top="721" left="62" width="7" height="8" font="7">40</text>
+<text top="717" left="87" width="186" height="14" font="8">int get(counter_t *c) {</text>
+<text top="736" left="62" width="7" height="8" font="7">41</text>
+<text top="732" left="119" width="242" height="11" font="8">pthread_mutex_lock(&amp;c-&gt;glock);</text>
+<text top="751" left="62" width="7" height="8" font="7">42</text>
+<text top="747" left="119" width="161" height="11" font="8">int val = c-&gt;global;</text>
+<text top="766" left="62" width="7" height="8" font="7">43</text>
+<text top="762" left="119" width="258" height="11" font="8">pthread_mutex_unlock(&amp;c-&gt;glock);</text>
+<text top="781" left="62" width="7" height="8" font="7">44</text>
+<text top="777" left="119" width="258" height="11" font="8">return val; // only approximate!</text>
+<text top="796" left="62" width="7" height="8" font="7">45</text>
+<text top="792" left="87" width="8" height="11" font="8">}</text>
+<text top="805" left="148" width="69" height="14" font="2">Figure 29.4:</text>
+<text top="805" left="221" width="237" height="13" font="3"><b>Approximate Counter Implementation</b></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="13" family="CGXVUT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="18" size="13" family="CGXVUT+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="19" size="11" family="CGXVUT+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="273" width="8" height="14" font="2">L</text>
+<text top="98" left="282" width="25" height="11" font="4">OCK</text>
+<text top="96" left="308" width="4" height="14" font="2">-</text>
+<text top="98" left="313" width="38" height="11" font="4">BASED</text>
+<text top="96" left="356" width="10" height="14" font="2">C</text>
+<text top="98" left="366" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="445" width="10" height="14" font="2">D</text>
+<text top="98" left="456" width="23" height="11" font="4">ATA</text>
+<text top="96" left="483" width="7" height="14" font="2">S</text>
+<text top="98" left="491" width="70" height="11" font="4">TRUCTURES</text>
+<text top="373" left="260" width="7" height="13" font="17">1</text>
+<text top="373" left="327" width="7" height="13" font="17">2</text>
+<text top="373" left="394" width="7" height="13" font="17">3</text>
+<text top="373" left="461" width="7" height="13" font="17">4</text>
+<text top="359" left="214" width="7" height="13" font="17">0</text>
+<text top="295" left="214" width="7" height="13" font="17">5</text>
+<text top="231" left="207" width="15" height="13" font="17">10</text>
+<text top="168" left="207" width="15" height="13" font="17">15</text>
+<text top="390" left="340" width="49" height="13" font="17">Threads</text>
+<text top="304" left="201" width="0" height="13" font="18">Time (seconds)</text>
+<text top="181" left="276" width="35" height="10" font="19">Precise</text>
+<text top="192" left="276" width="60" height="10" font="19">Approximate</text>
+<text top="409" left="144" width="69" height="14" font="2">Figure 29.5:</text>
+<text top="409" left="217" width="330" height="13" font="3"><b>Performance of Traditional vs. Approximate Counters</b></text>
+<text top="641" left="227" width="7" height="13" font="17">1</text>
+<text top="641" left="254" width="7" height="13" font="17">2</text>
+<text top="641" left="280" width="7" height="13" font="17">4</text>
+<text top="641" left="307" width="7" height="13" font="17">8</text>
+<text top="641" left="330" width="126" height="13" font="17">16 32 64 128 256</text>
+<text top="641" left="484" width="30" height="13" font="17">1024</text>
+<text top="641" left="461" width="22" height="13" font="17">512</text>
+<text top="627" left="214" width="7" height="13" font="17">0</text>
+<text top="563" left="214" width="7" height="13" font="17">5</text>
+<text top="499" left="207" width="15" height="13" font="17">10</text>
+<text top="436" left="207" width="15" height="13" font="17">15</text>
+<text top="658" left="291" width="148" height="13" font="17">Approximation Factor (S)</text>
+<text top="572" left="201" width="0" height="13" font="18">Time (seconds)</text>
+<text top="682" left="214" width="69" height="14" font="2">Figure 29.6:</text>
+<text top="682" left="287" width="189" height="13" font="3"><b>Scaling Approximate Counters</b></text>
+<text top="707" left="147" width="337" height="14" font="2">Figure 29.6 shows the importance of the threshold value</text>
+<text top="707" left="488" width="8" height="10" font="12">S</text>
+<text top="707" left="497" width="64" height="14" font="2">, with four</text>
+<text top="721" left="129" width="419" height="14" font="2">threads each incrementing the counter 1 million times on four CPUs. If</text>
+<text top="722" left="552" width="8" height="10" font="12">S</text>
+<text top="736" left="129" width="432" height="14" font="2">is low, performance is poor (but the global count is always quite accurate);</text>
+<text top="751" left="129" width="8" height="14" font="2">if</text>
+<text top="752" left="140" width="8" height="10" font="12">S</text>
+<text top="751" left="152" width="409" height="14" font="2">is high, performance is excellent, but the global count lags (by at most</text>
+<text top="766" left="129" width="204" height="14" font="2">the number of CPUs multiplied by</text>
+<text top="767" left="336" width="8" height="10" font="12">S</text>
+<text top="766" left="345" width="215" height="14" font="2">). This accuracy/performance trade-</text>
+<text top="781" left="129" width="241" height="14" font="2">off is what approximate counters enable.</text>
+<text top="796" left="147" width="414" height="14" font="2">A rough version of an approximate counter is found in Figure 29.4</text>
+<text top="811" left="129" width="432" height="14" font="2">(page 5). Read it, or better yet, run it yourself in some experiments to</text>
+<text top="826" left="129" width="192" height="14" font="2">better understand how it works.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="25" height="11" font="4">OCK</text>
+<text top="96" left="122" width="4" height="14" font="2">-</text>
+<text top="98" left="127" width="38" height="11" font="4">BASED</text>
+<text top="96" left="170" width="10" height="14" font="2">C</text>
+<text top="98" left="180" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="259" width="10" height="14" font="2">D</text>
+<text top="98" left="270" width="23" height="11" font="4">ATA</text>
+<text top="96" left="297" width="7" height="14" font="2">S</text>
+<text top="98" left="305" width="70" height="11" font="4">TRUCTURES</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="148" left="136" width="8" height="14" font="2">T</text>
+<text top="150" left="145" width="11" height="11" font="4">IP</text>
+<text top="148" left="156" width="21" height="14" font="2">: M</text>
+<text top="150" left="178" width="24" height="11" font="4">ORE</text>
+<text top="148" left="205" width="10" height="14" font="2">C</text>
+<text top="150" left="216" width="84" height="11" font="4">ONCURRENCY</text>
+<text top="148" left="304" width="5" height="14" font="2">I</text>
+<text top="150" left="309" width="15" height="11" font="4">SN</text>
+<text top="148" left="325" width="4" height="14" font="2">’</text>
+<text top="150" left="329" width="7" height="11" font="4">T</text>
+<text top="148" left="340" width="11" height="14" font="2">N</text>
+<text top="150" left="352" width="70" height="11" font="4">ECESSARILY</text>
+<text top="148" left="426" width="7" height="14" font="2">F</text>
+<text top="150" left="433" width="37" height="11" font="4">ASTER</text>
+<text top="163" left="87" width="432" height="14" font="2">If the scheme you design adds a lot of overhead (for example, by acquir-</text>
+<text top="178" left="87" width="432" height="14" font="2">ing and releasing locks frequently, instead of once), the fact that it is more</text>
+<text top="193" left="87" width="432" height="14" font="2">concurrent may not be important. Simple schemes tend to work well,</text>
+<text top="208" left="87" width="432" height="14" font="2">especially if they use costly routines rarely. Adding more locks and com-</text>
+<text top="223" left="87" width="432" height="14" font="2">plexity can be your downfall. All of that said, there is one way to really</text>
+<text top="238" left="87" width="432" height="14" font="2">know: build both alternatives (simple but less concurrent, and complex</text>
+<text top="253" left="87" width="432" height="14" font="2">but more concurrent) and measure how they do. In the end, you can’t</text>
+<text top="268" left="87" width="342" height="14" font="2">cheat on performance; your idea is either faster, or it isn’t.</text>
+<text top="337" left="55" width="210" height="17" font="5">29.2 Concurrent Linked Lists</text>
+<text top="369" left="105" width="414" height="14" font="2">We next examine a more complicated structure, the linked list. Let’s</text>
+<text top="384" left="87" width="432" height="14" font="2">start with a basic approach once again. For simplicity, we’ll omit some of</text>
+<text top="399" left="87" width="432" height="14" font="2">the obvious routines that such a list would have and just focus on concur-</text>
+<text top="414" left="87" width="432" height="14" font="2">rent insert and lookup; we’ll leave it to the reader to think about delete,</text>
+<text top="428" left="87" width="398" height="14" font="2">etc. Figure 29.7 shows the code for this rudimentary data structure.</text>
+<text top="445" left="105" width="414" height="14" font="2">As you can see in the code, the code simply acquires a lock in the insert</text>
+<text top="460" left="87" width="432" height="14" font="2">routine upon entry, and releases it upon exit. One small tricky issue arises</text>
+<text top="475" left="87" width="8" height="14" font="2">if</text>
+<text top="476" left="99" width="65" height="11" font="8">malloc()</text>
+<text top="475" left="167" width="352" height="14" font="2">happens to fail (a rare case); in this case, the code must also</text>
+<text top="490" left="87" width="235" height="14" font="2">release the lock before failing the insert.</text>
+<text top="507" left="105" width="414" height="14" font="2">This kind of exceptional control flow has been shown to be quite error</text>
+<text top="522" left="87" width="432" height="14" font="2">prone; a recent study of Linux kernel patches found that a huge fraction of</text>
+<text top="537" left="87" width="432" height="14" font="2">bugs (nearly 40%) are found on such rarely-taken code paths (indeed, this</text>
+<text top="552" left="87" width="432" height="14" font="2">observation sparked some of our own research, in which we removed all</text>
+<text top="567" left="87" width="432" height="14" font="2">memory-failing paths from a Linux file system, resulting in a more robust</text>
+<text top="582" left="87" width="90" height="14" font="2">system [S+11]).</text>
+<text top="598" left="105" width="414" height="14" font="2">Thus, a challenge: can we rewrite the insert and lookup routines to re-</text>
+<text top="613" left="87" width="432" height="14" font="2">main correct under concurrent insert but avoid the case where the failure</text>
+<text top="628" left="87" width="275" height="14" font="2">path also requires us to add the call to unlock?</text>
+<text top="645" left="105" width="414" height="14" font="2">The answer, in this case, is yes. Specifically, we can rearrange the code</text>
+<text top="660" left="87" width="432" height="14" font="2">a bit so that the lock and release only surround the actual critical section</text>
+<text top="675" left="87" width="432" height="14" font="2">in the insert code, and that a common exit path is used in the lookup code.</text>
+<text top="690" left="87" width="432" height="14" font="2">The former works because part of the insert actually need not be locked;</text>
+<text top="705" left="87" width="84" height="14" font="2">assuming that</text>
+<text top="706" left="175" width="65" height="11" font="8">malloc()</text>
+<text top="705" left="243" width="276" height="14" font="2">itself is thread-safe, each thread can call into it</text>
+<text top="720" left="87" width="432" height="14" font="2">without worry of race conditions or other concurrency bugs. Only when</text>
+<text top="735" left="87" width="432" height="14" font="2">updating the shared list does a lock need to be held. See Figure 29.8 for</text>
+<text top="750" left="87" width="199" height="14" font="2">the details of these modifications.</text>
+<text top="766" left="105" width="414" height="14" font="2">As for the lookup routine, it is a simple code transformation to jump</text>
+<text top="781" left="87" width="432" height="14" font="2">out of the main search loop to a single return path. Doing so again re-</text>
+<text top="796" left="87" width="432" height="14" font="2">duces the number of lock acquire/release points in the code, and thus</text>
+<text top="811" left="87" width="432" height="14" font="2">decreases the chances of accidentally introducing bugs (such as forget-</text>
+<text top="826" left="87" width="271" height="14" font="2">ting to unlock before returning) into the code.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="273" width="8" height="14" font="2">L</text>
+<text top="98" left="282" width="25" height="11" font="4">OCK</text>
+<text top="96" left="308" width="4" height="14" font="2">-</text>
+<text top="98" left="313" width="38" height="11" font="4">BASED</text>
+<text top="96" left="356" width="10" height="14" font="2">C</text>
+<text top="98" left="366" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="445" width="10" height="14" font="2">D</text>
+<text top="98" left="456" width="23" height="11" font="4">ATA</text>
+<text top="96" left="483" width="7" height="14" font="2">S</text>
+<text top="98" left="491" width="70" height="11" font="4">TRUCTURES</text>
+<text top="138" left="107" width="4" height="8" font="7">1</text>
+<text top="135" left="129" width="186" height="11" font="8">// basic node structure</text>
+<text top="153" left="107" width="4" height="8" font="7">2</text>
+<text top="150" left="129" width="202" height="11" font="8">typedef struct __node_t {</text>
+<text top="168" left="107" width="4" height="8" font="7">3</text>
+<text top="165" left="161" width="24" height="11" font="8">int</text>
+<text top="165" left="323" width="32" height="11" font="8">key;</text>
+<text top="183" left="107" width="4" height="8" font="7">4</text>
+<text top="180" left="161" width="121" height="11" font="8">struct __node_t</text>
+<text top="182" left="355" width="48" height="11" font="8">*next;</text>
+<text top="198" left="107" width="4" height="8" font="7">5</text>
+<text top="195" left="129" width="73" height="11" font="8">} node_t;</text>
+<text top="213" left="107" width="4" height="8" font="7">6</text>
+<text top="228" left="107" width="4" height="8" font="7">7</text>
+<text top="225" left="129" width="347" height="11" font="8">// basic list structure (one used per list)</text>
+<text top="243" left="107" width="4" height="8" font="7">8</text>
+<text top="240" left="129" width="202" height="11" font="8">typedef struct __list_t {</text>
+<text top="258" left="107" width="4" height="8" font="7">9</text>
+<text top="254" left="161" width="48" height="11" font="8">node_t</text>
+<text top="257" left="339" width="48" height="11" font="8">*head;</text>
+<text top="273" left="104" width="7" height="8" font="7">10</text>
+<text top="269" left="161" width="121" height="11" font="8">pthread_mutex_t</text>
+<text top="269" left="323" width="40" height="11" font="8">lock;</text>
+<text top="288" left="104" width="7" height="8" font="7">11</text>
+<text top="284" left="129" width="73" height="11" font="8">} list_t;</text>
+<text top="303" left="104" width="7" height="8" font="7">12</text>
+<text top="318" left="104" width="7" height="8" font="7">13</text>
+<text top="314" left="129" width="218" height="14" font="8">void List_Init(list_t *L) {</text>
+<text top="333" left="104" width="7" height="8" font="7">14</text>
+<text top="329" left="161" width="121" height="11" font="8">L-&gt;head = NULL;</text>
+<text top="348" left="104" width="7" height="8" font="7">15</text>
+<text top="344" left="161" width="282" height="11" font="8">pthread_mutex_init(&amp;L-&gt;lock, NULL);</text>
+<text top="363" left="104" width="7" height="8" font="7">16</text>
+<text top="359" left="129" width="8" height="11" font="8">}</text>
+<text top="378" left="104" width="7" height="8" font="7">17</text>
+<text top="393" left="104" width="7" height="8" font="7">18</text>
+<text top="389" left="129" width="299" height="14" font="8">int List_Insert(list_t *L, int key) {</text>
+<text top="407" left="104" width="7" height="8" font="7">19</text>
+<text top="404" left="161" width="234" height="11" font="8">pthread_mutex_lock(&amp;L-&gt;lock);</text>
+<text top="422" left="104" width="7" height="8" font="7">20</text>
+<text top="419" left="161" width="299" height="14" font="8">node_t *new = malloc(sizeof(node_t));</text>
+<text top="437" left="104" width="7" height="8" font="7">21</text>
+<text top="434" left="161" width="145" height="11" font="8">if (new == NULL) {</text>
+<text top="452" left="104" width="7" height="8" font="7">22</text>
+<text top="449" left="193" width="137" height="11" font="8">perror(&#34;malloc&#34;);</text>
+<text top="467" left="104" width="7" height="8" font="7">23</text>
+<text top="464" left="193" width="250" height="11" font="8">pthread_mutex_unlock(&amp;L-&gt;lock);</text>
+<text top="482" left="104" width="7" height="8" font="7">24</text>
+<text top="479" left="193" width="145" height="11" font="8">return -1; // fail</text>
+<text top="497" left="104" width="7" height="8" font="7">25</text>
+<text top="494" left="161" width="8" height="11" font="8">}</text>
+<text top="512" left="104" width="7" height="8" font="7">26</text>
+<text top="509" left="161" width="65" height="11" font="8">new-&gt;key</text>
+<text top="509" left="242" width="48" height="11" font="8">= key;</text>
+<text top="527" left="104" width="7" height="8" font="7">27</text>
+<text top="523" left="161" width="161" height="11" font="8">new-&gt;next = L-&gt;head;</text>
+<text top="542" left="104" width="7" height="8" font="7">28</text>
+<text top="538" left="161" width="57" height="11" font="8">L-&gt;head</text>
+<text top="538" left="242" width="48" height="11" font="8">= new;</text>
+<text top="557" left="104" width="7" height="8" font="7">29</text>
+<text top="553" left="161" width="250" height="11" font="8">pthread_mutex_unlock(&amp;L-&gt;lock);</text>
+<text top="572" left="104" width="7" height="8" font="7">30</text>
+<text top="568" left="161" width="161" height="11" font="8">return 0; // success</text>
+<text top="587" left="104" width="7" height="8" font="7">31</text>
+<text top="583" left="129" width="8" height="11" font="8">}</text>
+<text top="602" left="104" width="7" height="8" font="7">32</text>
+<text top="617" left="104" width="7" height="8" font="7">33</text>
+<text top="613" left="129" width="299" height="14" font="8">int List_Lookup(list_t *L, int key) {</text>
+<text top="632" left="104" width="7" height="8" font="7">34</text>
+<text top="628" left="161" width="234" height="11" font="8">pthread_mutex_lock(&amp;L-&gt;lock);</text>
+<text top="647" left="104" width="7" height="8" font="7">35</text>
+<text top="643" left="161" width="186" height="14" font="8">node_t *curr = L-&gt;head;</text>
+<text top="662" left="104" width="7" height="8" font="7">36</text>
+<text top="658" left="161" width="113" height="11" font="8">while (curr) {</text>
+<text top="676" left="104" width="7" height="8" font="7">37</text>
+<text top="673" left="193" width="186" height="11" font="8">if (curr-&gt;key == key) {</text>
+<text top="691" left="104" width="7" height="8" font="7">38</text>
+<text top="688" left="226" width="250" height="11" font="8">pthread_mutex_unlock(&amp;L-&gt;lock);</text>
+<text top="706" left="104" width="7" height="8" font="7">39</text>
+<text top="703" left="226" width="161" height="11" font="8">return 0; // success</text>
+<text top="721" left="104" width="7" height="8" font="7">40</text>
+<text top="718" left="193" width="8" height="11" font="8">}</text>
+<text top="736" left="104" width="7" height="8" font="7">41</text>
+<text top="733" left="193" width="145" height="11" font="8">curr = curr-&gt;next;</text>
+<text top="751" left="104" width="7" height="8" font="7">42</text>
+<text top="748" left="161" width="8" height="11" font="8">}</text>
+<text top="766" left="104" width="7" height="8" font="7">43</text>
+<text top="763" left="161" width="250" height="11" font="8">pthread_mutex_unlock(&amp;L-&gt;lock);</text>
+<text top="781" left="104" width="7" height="8" font="7">44</text>
+<text top="778" left="161" width="169" height="11" font="8">return -1; // failure</text>
+<text top="796" left="104" width="7" height="8" font="7">45</text>
+<text top="792" left="129" width="8" height="11" font="8">}</text>
+<text top="805" left="237" width="69" height="14" font="2">Figure 29.7:</text>
+<text top="805" left="310" width="143" height="13" font="3"><b>Concurrent Linked List</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="25" height="11" font="4">OCK</text>
+<text top="96" left="122" width="4" height="14" font="2">-</text>
+<text top="98" left="127" width="38" height="11" font="4">BASED</text>
+<text top="96" left="170" width="10" height="14" font="2">C</text>
+<text top="98" left="180" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="259" width="10" height="14" font="2">D</text>
+<text top="98" left="270" width="23" height="11" font="4">ATA</text>
+<text top="96" left="297" width="7" height="14" font="2">S</text>
+<text top="98" left="305" width="70" height="11" font="4">TRUCTURES</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="138" left="65" width="4" height="8" font="7">1</text>
+<text top="135" left="87" width="218" height="14" font="8">void List_Init(list_t *L) {</text>
+<text top="153" left="65" width="4" height="8" font="7">2</text>
+<text top="150" left="119" width="121" height="11" font="8">L-&gt;head = NULL;</text>
+<text top="168" left="65" width="4" height="8" font="7">3</text>
+<text top="165" left="119" width="282" height="11" font="8">pthread_mutex_init(&amp;L-&gt;lock, NULL);</text>
+<text top="183" left="65" width="4" height="8" font="7">4</text>
+<text top="180" left="87" width="8" height="11" font="8">}</text>
+<text top="198" left="65" width="4" height="8" font="7">5</text>
+<text top="213" left="65" width="4" height="8" font="7">6</text>
+<text top="210" left="87" width="299" height="14" font="8">int List_Insert(list_t *L, int key) {</text>
+<text top="228" left="65" width="4" height="8" font="7">7</text>
+<text top="225" left="119" width="234" height="11" font="8">// synchronization not needed</text>
+<text top="243" left="65" width="4" height="8" font="7">8</text>
+<text top="240" left="119" width="299" height="14" font="8">node_t *new = malloc(sizeof(node_t));</text>
+<text top="258" left="65" width="4" height="8" font="7">9</text>
+<text top="254" left="119" width="145" height="11" font="8">if (new == NULL) {</text>
+<text top="273" left="62" width="7" height="8" font="7">10</text>
+<text top="269" left="152" width="137" height="11" font="8">perror(&#34;malloc&#34;);</text>
+<text top="288" left="62" width="7" height="8" font="7">11</text>
+<text top="284" left="152" width="81" height="11" font="8">return -1;</text>
+<text top="303" left="62" width="7" height="8" font="7">12</text>
+<text top="299" left="119" width="8" height="11" font="8">}</text>
+<text top="318" left="62" width="7" height="8" font="7">13</text>
+<text top="314" left="119" width="121" height="11" font="8">new-&gt;key = key;</text>
+<text top="333" left="62" width="7" height="8" font="7">14</text>
+<text top="329" left="119" width="234" height="11" font="8">// just lock critical section</text>
+<text top="348" left="62" width="7" height="8" font="7">15</text>
+<text top="344" left="119" width="234" height="11" font="8">pthread_mutex_lock(&amp;L-&gt;lock);</text>
+<text top="363" left="62" width="7" height="8" font="7">16</text>
+<text top="359" left="119" width="161" height="11" font="8">new-&gt;next = L-&gt;head;</text>
+<text top="378" left="62" width="7" height="8" font="7">17</text>
+<text top="374" left="119" width="57" height="11" font="8">L-&gt;head</text>
+<text top="374" left="200" width="48" height="11" font="8">= new;</text>
+<text top="393" left="62" width="7" height="8" font="7">18</text>
+<text top="389" left="119" width="250" height="11" font="8">pthread_mutex_unlock(&amp;L-&gt;lock);</text>
+<text top="407" left="62" width="7" height="8" font="7">19</text>
+<text top="404" left="119" width="161" height="11" font="8">return 0; // success</text>
+<text top="422" left="62" width="7" height="8" font="7">20</text>
+<text top="419" left="87" width="8" height="11" font="8">}</text>
+<text top="437" left="62" width="7" height="8" font="7">21</text>
+<text top="452" left="62" width="7" height="8" font="7">22</text>
+<text top="449" left="87" width="299" height="14" font="8">int List_Lookup(list_t *L, int key) {</text>
+<text top="467" left="62" width="7" height="8" font="7">23</text>
+<text top="464" left="119" width="97" height="11" font="8">int rv = -1;</text>
+<text top="482" left="62" width="7" height="8" font="7">24</text>
+<text top="479" left="119" width="234" height="11" font="8">pthread_mutex_lock(&amp;L-&gt;lock);</text>
+<text top="497" left="62" width="7" height="8" font="7">25</text>
+<text top="494" left="119" width="186" height="14" font="8">node_t *curr = L-&gt;head;</text>
+<text top="512" left="62" width="7" height="8" font="7">26</text>
+<text top="509" left="119" width="113" height="11" font="8">while (curr) {</text>
+<text top="527" left="62" width="7" height="8" font="7">27</text>
+<text top="523" left="152" width="186" height="11" font="8">if (curr-&gt;key == key) {</text>
+<text top="542" left="62" width="7" height="8" font="7">28</text>
+<text top="538" left="184" width="56" height="11" font="8">rv = 0;</text>
+<text top="557" left="62" width="7" height="8" font="7">29</text>
+<text top="553" left="184" width="48" height="11" font="8">break;</text>
+<text top="572" left="62" width="7" height="8" font="7">30</text>
+<text top="568" left="152" width="8" height="11" font="8">}</text>
+<text top="587" left="62" width="7" height="8" font="7">31</text>
+<text top="583" left="152" width="145" height="11" font="8">curr = curr-&gt;next;</text>
+<text top="602" left="62" width="7" height="8" font="7">32</text>
+<text top="598" left="119" width="8" height="11" font="8">}</text>
+<text top="617" left="62" width="7" height="8" font="7">33</text>
+<text top="613" left="119" width="250" height="11" font="8">pthread_mutex_unlock(&amp;L-&gt;lock);</text>
+<text top="632" left="62" width="7" height="8" font="7">34</text>
+<text top="628" left="119" width="339" height="11" font="8">return rv; // now both success and failure</text>
+<text top="647" left="62" width="7" height="8" font="7">35</text>
+<text top="643" left="87" width="8" height="11" font="8">}</text>
+<text top="667" left="160" width="69" height="14" font="2">Figure 29.8:</text>
+<text top="667" left="233" width="212" height="13" font="3"><b>Concurrent Linked List: Rewritten</b></text>
+<text top="695" left="87" width="139" height="15" font="6"><b>Scaling Linked Lists</b></text>
+<text top="721" left="87" width="432" height="14" font="2">Though we again have a basic concurrent linked list, once again we are</text>
+<text top="736" left="87" width="432" height="14" font="2">in a situation where it does not scale particularly well. One technique</text>
+<text top="750" left="87" width="432" height="14" font="2">that researchers have explored to enable more concurrency within a list is</text>
+<text top="765" left="87" width="101" height="14" font="2">something called</text>
+<text top="765" left="191" width="148" height="13" font="3"><b>hand-over-hand locking</b></text>
+<text top="765" left="342" width="35" height="14" font="2">(a.k.a.</text>
+<text top="765" left="382" width="84" height="13" font="3"><b>lock coupling</b></text>
+<text top="765" left="466" width="53" height="14" font="2">) [MS04].</text>
+<text top="781" left="105" width="414" height="14" font="2">The idea is pretty simple. Instead of having a single lock for the entire</text>
+<text top="796" left="87" width="432" height="14" font="2">list, you instead add a lock per node of the list. When traversing the</text>
+<text top="811" left="87" width="432" height="14" font="2">list, the code first grabs the next node’s lock and then releases the current</text>
+<text top="826" left="87" width="328" height="14" font="2">node’s lock (which inspires the name hand-over-hand).</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="273" width="8" height="14" font="2">L</text>
+<text top="98" left="282" width="25" height="11" font="4">OCK</text>
+<text top="96" left="308" width="4" height="14" font="2">-</text>
+<text top="98" left="313" width="38" height="11" font="4">BASED</text>
+<text top="96" left="356" width="10" height="14" font="2">C</text>
+<text top="98" left="366" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="445" width="10" height="14" font="2">D</text>
+<text top="98" left="456" width="23" height="11" font="4">ATA</text>
+<text top="96" left="483" width="7" height="14" font="2">S</text>
+<text top="98" left="491" width="70" height="11" font="4">TRUCTURES</text>
+<text top="148" left="202" width="8" height="14" font="2">T</text>
+<text top="150" left="210" width="11" height="11" font="4">IP</text>
+<text top="148" left="222" width="16" height="14" font="2">: B</text>
+<text top="150" left="239" width="7" height="11" font="4">E</text>
+<text top="148" left="250" width="13" height="14" font="2">W</text>
+<text top="150" left="263" width="24" height="11" font="4">ARY</text>
+<text top="148" left="290" width="11" height="14" font="2">O</text>
+<text top="150" left="302" width="6" height="11" font="4">F</text>
+<text top="148" left="312" width="8" height="14" font="2">L</text>
+<text top="150" left="320" width="32" height="11" font="4">OCKS</text>
+<text top="148" left="356" width="10" height="14" font="2">A</text>
+<text top="150" left="367" width="18" height="11" font="4">ND</text>
+<text top="148" left="389" width="10" height="14" font="2">C</text>
+<text top="150" left="399" width="50" height="11" font="4">ONTROL</text>
+<text top="148" left="453" width="7" height="14" font="2">F</text>
+<text top="150" left="461" width="27" height="11" font="4">LOW</text>
+<text top="163" left="129" width="432" height="14" font="2">A general design tip, which is useful in concurrent code as well as else-</text>
+<text top="178" left="129" width="432" height="14" font="2">where, is to be wary of control flow changes that lead to function returns,</text>
+<text top="193" left="129" width="432" height="14" font="2">exits, or other similar error conditions that halt the execution of a func-</text>
+<text top="208" left="129" width="432" height="14" font="2">tion. Because many functions will begin by acquiring a lock, allocating</text>
+<text top="223" left="129" width="432" height="14" font="2">some memory, or doing other similar stateful operations, when errors</text>
+<text top="238" left="129" width="432" height="14" font="2">arise, the code has to undo all of the state before returning, which is error-</text>
+<text top="253" left="129" width="381" height="14" font="2">prone. Thus, it is best to structure code to minimize this pattern.</text>
+<text top="312" left="147" width="414" height="14" font="2">Conceptually, a hand-over-hand linked list makes some sense; it en-</text>
+<text top="327" left="129" width="432" height="14" font="2">ables a high degree of concurrency in list operations. However, in prac-</text>
+<text top="342" left="129" width="432" height="14" font="2">tice, it is hard to make such a structure faster than the simple single lock</text>
+<text top="357" left="129" width="432" height="14" font="2">approach, as the overheads of acquiring and releasing locks for each node</text>
+<text top="372" left="129" width="432" height="14" font="2">of a list traversal is prohibitive. Even with very large lists, and a large</text>
+<text top="387" left="129" width="432" height="14" font="2">number of threads, the concurrency enabled by allowing multiple on-</text>
+<text top="401" left="129" width="432" height="14" font="2">going traversals is unlikely to be faster than simply grabbing a single</text>
+<text top="416" left="129" width="432" height="14" font="2">lock, performing an operation, and releasing it. Perhaps some kind of hy-</text>
+<text top="431" left="129" width="432" height="14" font="2">brid (where you grab a new lock every so many nodes) would be worth</text>
+<text top="446" left="129" width="81" height="14" font="2">investigating.</text>
+<text top="486" left="97" width="176" height="17" font="5">29.3 Concurrent Queues</text>
+<text top="518" left="147" width="414" height="14" font="2">As you know by now, there is always a standard method to make a</text>
+<text top="533" left="129" width="432" height="14" font="2">concurrent data structure: add a big lock. For a queue, we’ll skip that</text>
+<text top="548" left="129" width="247" height="14" font="2">approach, assuming you can figure it out.</text>
+<text top="565" left="147" width="414" height="14" font="2">Instead, we’ll take a look at a slightly more concurrent queue designed</text>
+<text top="580" left="129" width="432" height="14" font="2">by Michael and Scott [MS98]. The data structures and code used for this</text>
+<text top="595" left="129" width="243" height="14" font="2">queue are found in Figure 29.9 (page 11).</text>
+<text top="612" left="147" width="414" height="14" font="2">If you study this code carefully, you’ll notice that there are two locks,</text>
+<text top="627" left="129" width="432" height="14" font="2">one for the head of the queue, and one for the tail. The goal of these two</text>
+<text top="642" left="129" width="432" height="14" font="2">locks is to enable concurrency of enqueue and dequeue operations. In</text>
+<text top="657" left="129" width="432" height="14" font="2">the common case, the enqueue routine will only access the tail lock, and</text>
+<text top="672" left="129" width="167" height="14" font="2">dequeue only the head lock.</text>
+<text top="689" left="147" width="414" height="14" font="2">One trick used by Michael and Scott is to add a dummy node (allo-</text>
+<text top="704" left="129" width="432" height="14" font="2">cated in the queue initialization code); this dummy enables the separa-</text>
+<text top="719" left="129" width="432" height="14" font="2">tion of head and tail operations. Study the code, or better yet, type it in,</text>
+<text top="734" left="129" width="346" height="14" font="2">run it, and measure it, to understand how it works deeply.</text>
+<text top="751" left="147" width="414" height="14" font="2">Queues are commonly used in multi-threaded applications. However,</text>
+<text top="766" left="129" width="432" height="14" font="2">the type of queue used here (with just locks) often does not completely</text>
+<text top="781" left="129" width="432" height="14" font="2">meet the needs of such programs. A more fully developed bounded</text>
+<text top="796" left="129" width="432" height="14" font="2">queue, that enables a thread to wait if the queue is either empty or overly</text>
+<text top="811" left="129" width="432" height="14" font="2">full, is the subject of our intense study in the next chapter on condition</text>
+<text top="826" left="129" width="134" height="14" font="2">variables. Watch for it!</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="25" height="11" font="4">OCK</text>
+<text top="96" left="122" width="4" height="14" font="2">-</text>
+<text top="98" left="127" width="38" height="11" font="4">BASED</text>
+<text top="96" left="170" width="10" height="14" font="2">C</text>
+<text top="98" left="180" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="259" width="10" height="14" font="2">D</text>
+<text top="98" left="270" width="23" height="11" font="4">ATA</text>
+<text top="96" left="297" width="7" height="14" font="2">S</text>
+<text top="98" left="305" width="70" height="11" font="4">TRUCTURES</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="138" left="65" width="4" height="8" font="7">1</text>
+<text top="135" left="87" width="202" height="11" font="8">typedef struct __node_t {</text>
+<text top="153" left="65" width="4" height="8" font="7">2</text>
+<text top="149" left="119" width="24" height="11" font="8">int</text>
+<text top="149" left="281" width="48" height="11" font="8">value;</text>
+<text top="168" left="65" width="4" height="8" font="7">3</text>
+<text top="164" left="119" width="121" height="11" font="8">struct __node_t</text>
+<text top="167" left="273" width="48" height="11" font="8">*next;</text>
+<text top="183" left="65" width="4" height="8" font="7">4</text>
+<text top="179" left="87" width="73" height="11" font="8">} node_t;</text>
+<text top="198" left="65" width="4" height="8" font="7">5</text>
+<text top="213" left="65" width="4" height="8" font="7">6</text>
+<text top="209" left="87" width="210" height="11" font="8">typedef struct __queue_t {</text>
+<text top="228" left="65" width="4" height="8" font="7">7</text>
+<text top="224" left="119" width="48" height="11" font="8">node_t</text>
+<text top="227" left="281" width="48" height="11" font="8">*head;</text>
+<text top="243" left="65" width="4" height="8" font="7">8</text>
+<text top="239" left="119" width="48" height="11" font="8">node_t</text>
+<text top="241" left="281" width="48" height="11" font="8">*tail;</text>
+<text top="258" left="65" width="4" height="8" font="7">9</text>
+<text top="254" left="119" width="121" height="11" font="8">pthread_mutex_t</text>
+<text top="254" left="281" width="170" height="11" font="8">head_lock, tail_lock;</text>
+<text top="273" left="62" width="7" height="8" font="7">10</text>
+<text top="269" left="87" width="81" height="11" font="8">} queue_t;</text>
+<text top="288" left="62" width="7" height="8" font="7">11</text>
+<text top="302" left="62" width="7" height="8" font="7">12</text>
+<text top="299" left="87" width="234" height="14" font="8">void Queue_Init(queue_t *q) {</text>
+<text top="317" left="62" width="7" height="8" font="7">13</text>
+<text top="314" left="119" width="299" height="14" font="8">node_t *tmp = malloc(sizeof(node_t));</text>
+<text top="332" left="62" width="7" height="8" font="7">14</text>
+<text top="329" left="119" width="137" height="11" font="8">tmp-&gt;next = NULL;</text>
+<text top="347" left="62" width="7" height="8" font="7">15</text>
+<text top="344" left="119" width="194" height="11" font="8">q-&gt;head = q-&gt;tail = tmp;</text>
+<text top="362" left="62" width="7" height="8" font="7">16</text>
+<text top="359" left="119" width="323" height="11" font="8">pthread_mutex_init(&amp;q-&gt;head_lock, NULL);</text>
+<text top="377" left="62" width="7" height="8" font="7">17</text>
+<text top="374" left="119" width="323" height="11" font="8">pthread_mutex_init(&amp;q-&gt;tail_lock, NULL);</text>
+<text top="392" left="62" width="7" height="8" font="7">18</text>
+<text top="389" left="87" width="8" height="11" font="8">}</text>
+<text top="407" left="62" width="7" height="8" font="7">19</text>
+<text top="422" left="62" width="7" height="8" font="7">20</text>
+<text top="418" left="87" width="347" height="14" font="8">void Queue_Enqueue(queue_t *q, int value) {</text>
+<text top="437" left="62" width="7" height="8" font="7">21</text>
+<text top="433" left="119" width="299" height="14" font="8">node_t *tmp = malloc(sizeof(node_t));</text>
+<text top="452" left="62" width="7" height="8" font="7">22</text>
+<text top="448" left="119" width="161" height="11" font="8">assert(tmp != NULL);</text>
+<text top="467" left="62" width="7" height="8" font="7">23</text>
+<text top="463" left="119" width="153" height="11" font="8">tmp-&gt;value = value;</text>
+<text top="482" left="62" width="7" height="8" font="7">24</text>
+<text top="478" left="119" width="73" height="11" font="8">tmp-&gt;next</text>
+<text top="478" left="208" width="56" height="11" font="8">= NULL;</text>
+<text top="497" left="62" width="7" height="8" font="7">25</text>
+<text top="512" left="62" width="7" height="8" font="7">26</text>
+<text top="508" left="119" width="274" height="11" font="8">pthread_mutex_lock(&amp;q-&gt;tail_lock);</text>
+<text top="527" left="62" width="7" height="8" font="7">27</text>
+<text top="523" left="119" width="161" height="11" font="8">q-&gt;tail-&gt;next = tmp;</text>
+<text top="542" left="62" width="7" height="8" font="7">28</text>
+<text top="538" left="119" width="113" height="11" font="8">q-&gt;tail = tmp;</text>
+<text top="557" left="62" width="7" height="8" font="7">29</text>
+<text top="553" left="119" width="291" height="11" font="8">pthread_mutex_unlock(&amp;q-&gt;tail_lock);</text>
+<text top="571" left="62" width="7" height="8" font="7">30</text>
+<text top="568" left="87" width="8" height="11" font="8">}</text>
+<text top="586" left="62" width="7" height="8" font="7">31</text>
+<text top="601" left="62" width="7" height="8" font="7">32</text>
+<text top="598" left="87" width="347" height="14" font="8">int Queue_Dequeue(queue_t *q, int *value) {</text>
+<text top="616" left="62" width="7" height="8" font="7">33</text>
+<text top="613" left="119" width="274" height="11" font="8">pthread_mutex_lock(&amp;q-&gt;head_lock);</text>
+<text top="631" left="62" width="7" height="8" font="7">34</text>
+<text top="628" left="119" width="178" height="14" font="8">node_t *tmp = q-&gt;head;</text>
+<text top="646" left="62" width="7" height="8" font="7">35</text>
+<text top="643" left="119" width="234" height="14" font="8">node_t *new_head = tmp-&gt;next;</text>
+<text top="661" left="62" width="7" height="8" font="7">36</text>
+<text top="658" left="119" width="186" height="11" font="8">if (new_head == NULL) {</text>
+<text top="676" left="62" width="7" height="8" font="7">37</text>
+<text top="673" left="152" width="291" height="11" font="8">pthread_mutex_unlock(&amp;q-&gt;head_lock);</text>
+<text top="691" left="62" width="7" height="8" font="7">38</text>
+<text top="687" left="152" width="234" height="11" font="8">return -1; // queue was empty</text>
+<text top="706" left="62" width="7" height="8" font="7">39</text>
+<text top="702" left="119" width="8" height="11" font="8">}</text>
+<text top="721" left="62" width="7" height="8" font="7">40</text>
+<text top="720" left="119" width="202" height="11" font="8">*value = new_head-&gt;value;</text>
+<text top="736" left="62" width="7" height="8" font="7">41</text>
+<text top="732" left="119" width="153" height="11" font="8">q-&gt;head = new_head;</text>
+<text top="751" left="62" width="7" height="8" font="7">42</text>
+<text top="747" left="119" width="291" height="11" font="8">pthread_mutex_unlock(&amp;q-&gt;head_lock);</text>
+<text top="766" left="62" width="7" height="8" font="7">43</text>
+<text top="762" left="119" width="81" height="11" font="8">free(tmp);</text>
+<text top="781" left="62" width="7" height="8" font="7">44</text>
+<text top="777" left="119" width="73" height="11" font="8">return 0;</text>
+<text top="796" left="62" width="7" height="8" font="7">45</text>
+<text top="792" left="87" width="8" height="11" font="8">}</text>
+<text top="805" left="153" width="69" height="14" font="2">Figure 29.9:</text>
+<text top="805" left="226" width="228" height="13" font="3"><b>Michael and Scott Concurrent Queue</b></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="273" width="8" height="14" font="2">L</text>
+<text top="98" left="282" width="25" height="11" font="4">OCK</text>
+<text top="96" left="308" width="4" height="14" font="2">-</text>
+<text top="98" left="313" width="38" height="11" font="4">BASED</text>
+<text top="96" left="356" width="10" height="14" font="2">C</text>
+<text top="98" left="366" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="445" width="10" height="14" font="2">D</text>
+<text top="98" left="456" width="23" height="11" font="4">ATA</text>
+<text top="96" left="483" width="7" height="14" font="2">S</text>
+<text top="98" left="491" width="70" height="11" font="4">TRUCTURES</text>
+<text top="138" left="107" width="4" height="8" font="7">1</text>
+<text top="135" left="129" width="169" height="11" font="8">#define BUCKETS (101)</text>
+<text top="153" left="107" width="4" height="8" font="7">2</text>
+<text top="168" left="107" width="4" height="8" font="7">3</text>
+<text top="165" left="129" width="202" height="11" font="8">typedef struct __hash_t {</text>
+<text top="183" left="107" width="4" height="8" font="7">4</text>
+<text top="180" left="161" width="178" height="11" font="8">list_t lists[BUCKETS];</text>
+<text top="198" left="107" width="4" height="8" font="7">5</text>
+<text top="195" left="129" width="73" height="11" font="8">} hash_t;</text>
+<text top="213" left="107" width="4" height="8" font="7">6</text>
+<text top="228" left="107" width="4" height="8" font="7">7</text>
+<text top="225" left="129" width="218" height="14" font="8">void Hash_Init(hash_t *H) {</text>
+<text top="243" left="107" width="4" height="8" font="7">8</text>
+<text top="240" left="161" width="48" height="11" font="8">int i;</text>
+<text top="258" left="107" width="4" height="8" font="7">9</text>
+<text top="254" left="161" width="234" height="11" font="8">for (i = 0; i &lt; BUCKETS; i++)</text>
+<text top="273" left="104" width="7" height="8" font="7">10</text>
+<text top="269" left="193" width="194" height="11" font="8">List_Init(&amp;H-&gt;lists[i]);</text>
+<text top="288" left="104" width="7" height="8" font="7">11</text>
+<text top="284" left="129" width="8" height="11" font="8">}</text>
+<text top="303" left="104" width="7" height="8" font="7">12</text>
+<text top="318" left="104" width="7" height="8" font="7">13</text>
+<text top="314" left="129" width="299" height="14" font="8">int Hash_Insert(hash_t *H, int key) {</text>
+<text top="333" left="104" width="7" height="8" font="7">14</text>
+<text top="329" left="161" width="403" height="11" font="8">return List_Insert(&amp;H-&gt;lists[key % BUCKETS], key);</text>
+<text top="348" left="104" width="7" height="8" font="7">15</text>
+<text top="344" left="129" width="8" height="11" font="8">}</text>
+<text top="363" left="104" width="7" height="8" font="7">16</text>
+<text top="378" left="104" width="7" height="8" font="7">17</text>
+<text top="374" left="129" width="299" height="14" font="8">int Hash_Lookup(hash_t *H, int key) {</text>
+<text top="393" left="104" width="7" height="8" font="7">18</text>
+<text top="389" left="161" width="403" height="11" font="8">return List_Lookup(&amp;H-&gt;lists[key % BUCKETS], key);</text>
+<text top="407" left="104" width="7" height="8" font="7">19</text>
+<text top="404" left="129" width="8" height="11" font="8">}</text>
+<text top="428" left="227" width="75" height="14" font="2">Figure 29.10:</text>
+<text top="428" left="307" width="156" height="13" font="3"><b>A Concurrent Hash Table</b></text>
+<text top="455" left="97" width="201" height="17" font="5">29.4 Concurrent Hash Table</text>
+<text top="486" left="147" width="414" height="14" font="2">We end our discussion with a simple and widely applicable concurrent</text>
+<text top="501" left="129" width="432" height="14" font="2">data structure, the hash table. We’ll focus on a simple hash table that does</text>
+<text top="516" left="129" width="432" height="14" font="2">not resize; a little more work is required to handle resizing, which we</text>
+<text top="531" left="129" width="250" height="14" font="2">leave as an exercise for the reader (sorry!).</text>
+<text top="547" left="147" width="414" height="14" font="2">This concurrent hash table (Figure 29.10) is straightforward, is built us-</text>
+<text top="562" left="129" width="432" height="14" font="2">ing the concurrent lists we developed earlier, and works incredibly well.</text>
+<text top="577" left="129" width="432" height="14" font="2">The reason for its good performance is that instead of having a single</text>
+<text top="592" left="129" width="432" height="14" font="2">lock for the entire structure, it uses a lock per hash bucket (each of which</text>
+<text top="607" left="129" width="432" height="14" font="2">is represented by a list). Doing so enables many concurrent operations to</text>
+<text top="622" left="129" width="63" height="14" font="2">take place.</text>
+<text top="638" left="147" width="414" height="14" font="2">Figure 29.11 (page 13) shows the performance of the hash table under</text>
+<text top="653" left="129" width="432" height="14" font="2">concurrent updates (from 10,000 to 50,000 concurrent updates from each</text>
+<text top="667" left="129" width="432" height="14" font="2">of four threads, on the same iMac with four CPUs). Also shown, for the</text>
+<text top="682" left="129" width="432" height="14" font="2">sake of comparison, is the performance of a linked list (with a single lock).</text>
+<text top="697" left="129" width="432" height="14" font="2">As you can see from the graph, this simple concurrent hash table scales</text>
+<text top="712" left="129" width="300" height="14" font="2">magnificently; the linked list, in contrast, does not.</text>
+<text top="750" left="97" width="105" height="17" font="5">29.5 Summary</text>
+<text top="781" left="147" width="414" height="14" font="2">We have introduced a sampling of concurrent data structures, from</text>
+<text top="796" left="129" width="432" height="14" font="2">counters, to lists and queues, and finally to the ubiquitous and heavily-</text>
+<text top="811" left="129" width="432" height="14" font="2">used hash table. We have learned a few important lessons along the way:</text>
+<text top="826" left="129" width="432" height="14" font="2">to be careful with acquisition and release of locks around control flow</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="25" height="11" font="4">OCK</text>
+<text top="96" left="122" width="4" height="14" font="2">-</text>
+<text top="98" left="127" width="38" height="11" font="4">BASED</text>
+<text top="96" left="170" width="10" height="14" font="2">C</text>
+<text top="98" left="180" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="259" width="10" height="14" font="2">D</text>
+<text top="98" left="270" width="23" height="11" font="4">ATA</text>
+<text top="96" left="297" width="7" height="14" font="2">S</text>
+<text top="98" left="305" width="70" height="11" font="4">TRUCTURES</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="373" left="185" width="7" height="13" font="17">0</text>
+<text top="373" left="234" width="15" height="13" font="17">10</text>
+<text top="373" left="286" width="15" height="13" font="17">20</text>
+<text top="373" left="339" width="15" height="13" font="17">30</text>
+<text top="373" left="391" width="15" height="13" font="17">40</text>
+<text top="359" left="172" width="7" height="13" font="17">0</text>
+<text top="295" left="172" width="7" height="13" font="17">5</text>
+<text top="231" left="165" width="15" height="13" font="17">10</text>
+<text top="168" left="165" width="15" height="13" font="17">15</text>
+<text top="390" left="264" width="118" height="13" font="17">Inserts (Thousands)</text>
+<text top="304" left="159" width="0" height="13" font="18">Time (seconds)</text>
+<text top="181" left="211" width="107" height="10" font="19">Simple Concurrent List</text>
+<text top="192" left="211" width="110" height="10" font="19">Concurrent Hash Table</text>
+<text top="419" left="201" width="75" height="14" font="2">Figure 29.11:</text>
+<text top="419" left="281" width="124" height="13" font="3"><b>Scaling Hash Tables</b></text>
+<text top="449" left="87" width="432" height="14" font="2">changes; that enabling more concurrency does not necessarily increase</text>
+<text top="464" left="87" width="432" height="14" font="2">performance; that performance problems should only be remedied once</text>
+<text top="479" left="87" width="233" height="14" font="2">they exist. This last point, of avoiding</text>
+<text top="479" left="325" width="147" height="13" font="3"><b>premature optimization</b></text>
+<text top="479" left="472" width="47" height="14" font="2">, is cen-</text>
+<text top="494" left="87" width="432" height="14" font="2">tral to any performance-minded developer; there is no value in making</text>
+<text top="509" left="87" width="432" height="14" font="2">something faster if doing so will not improve the overall performance of</text>
+<text top="524" left="87" width="92" height="14" font="2">the application.</text>
+<text top="539" left="105" width="414" height="14" font="2">Of course, we have just scratched the surface of high performance</text>
+<text top="554" left="87" width="432" height="14" font="2">structures. See Moir and Shavit’s excellent survey for more information,</text>
+<text top="569" left="87" width="432" height="14" font="2">as well as links to other sources [MS04]. In particular, you might be inter-</text>
+<text top="584" left="87" width="432" height="14" font="2">ested in other structures (such as B-trees); for this knowledge, a database</text>
+<text top="599" left="87" width="432" height="14" font="2">class is your best bet. You also might be curious about techniques that</text>
+<text top="614" left="87" width="227" height="14" font="2">don’t use traditional locks at all; such</text>
+<text top="614" left="319" width="178" height="13" font="3"><b>non-blocking data structures</b></text>
+<text top="614" left="501" width="18" height="14" font="2">are</text>
+<text top="628" left="87" width="432" height="14" font="2">something we’ll get a taste of in the chapter on common concurrency</text>
+<text top="643" left="87" width="432" height="14" font="2">bugs, but frankly this topic is an entire area of knowledge requiring more</text>
+<text top="658" left="87" width="432" height="14" font="2">study than is possible in this humble book. Find out more on your own</text>
+<text top="673" left="87" width="151" height="14" font="2">if you desire (as always!).</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="20" size="13" family="PEGKWP+URWPalladioL-Roma" color="#ffffff"/>
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="273" width="8" height="14" font="2">L</text>
+<text top="98" left="282" width="25" height="11" font="4">OCK</text>
+<text top="96" left="308" width="4" height="14" font="2">-</text>
+<text top="98" left="313" width="38" height="11" font="4">BASED</text>
+<text top="96" left="356" width="10" height="14" font="2">C</text>
+<text top="98" left="366" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="445" width="10" height="14" font="2">D</text>
+<text top="98" left="456" width="23" height="11" font="4">ATA</text>
+<text top="96" left="483" width="7" height="14" font="2">S</text>
+<text top="98" left="491" width="70" height="11" font="4">TRUCTURES</text>
+<text top="148" left="173" width="8" height="14" font="2">T</text>
+<text top="150" left="182" width="11" height="11" font="4">IP</text>
+<text top="148" left="194" width="19" height="14" font="2">: A</text>
+<text top="150" left="212" width="30" height="11" font="4">VOID</text>
+<text top="148" left="246" width="8" height="14" font="2">P</text>
+<text top="150" left="255" width="65" height="11" font="4">REMATURE</text>
+<text top="148" left="323" width="11" height="14" font="2">O</text>
+<text top="150" left="335" width="80" height="11" font="4">PTIMIZATION</text>
+<text top="148" left="418" width="15" height="14" font="2">(K</text>
+<text top="150" left="434" width="35" height="11" font="4">NUTH</text>
+<text top="148" left="469" width="4" height="14" font="2">’</text>
+<text top="150" left="474" width="6" height="11" font="4">S</text>
+<text top="148" left="484" width="8" height="14" font="2">L</text>
+<text top="150" left="492" width="19" height="11" font="4">AW</text>
+<text top="148" left="512" width="4" height="14" font="2">)</text>
+<text top="163" left="129" width="432" height="14" font="2">When building a concurrent data structure, start with the most basic ap-</text>
+<text top="178" left="129" width="432" height="14" font="2">proach, which is to add a single big lock to provide synchronized access.</text>
+<text top="193" left="129" width="222" height="14" font="2">By doing so, you are likely to build a</text>
+<text top="193" left="355" width="37" height="14" font="9">correct</text>
+<text top="193" left="396" width="165" height="14" font="2">lock; if you then find that it</text>
+<text top="208" left="129" width="432" height="14" font="2">suffers from performance problems, you can refine it, thus only making</text>
+<text top="223" left="129" width="120" height="14" font="2">it fast if need be. As</text>
+<text top="223" left="253" width="40" height="13" font="3"><b>Knuth</b></text>
+<text top="223" left="296" width="265" height="14" font="2">famously stated, “Premature optimization is</text>
+<text top="238" left="129" width="115" height="14" font="2">the root of all evil.”</text>
+<text top="258" left="129" width="432" height="14" font="2">Many operating systems utilized a single lock when first transitioning</text>
+<text top="273" left="129" width="432" height="14" font="2">to multiprocessors, including Sun OS and Linux. In the latter, this lock</text>
+<text top="288" left="129" width="130" height="14" font="2">even had a name, the</text>
+<text top="288" left="263" width="95" height="13" font="3"><b>big kernel lock</b></text>
+<text top="288" left="362" width="4" height="14" font="2">(</text>
+<text top="288" left="367" width="28" height="13" font="3"><b>BKL</b></text>
+<text top="288" left="394" width="166" height="14" font="2">). For many years, this sim-</text>
+<text top="303" left="129" width="432" height="14" font="2">ple approach was a good one, but when multi-CPU systems became the</text>
+<text top="318" left="129" width="432" height="14" font="2">norm, only allowing a single active thread in the kernel at a time became</text>
+<text top="333" left="129" width="432" height="14" font="2">a performance bottleneck. Thus, it was finally time to add the optimiza-</text>
+<text top="348" left="129" width="432" height="14" font="2">tion of improved concurrency to these systems. Within Linux, the more</text>
+<text top="363" left="129" width="432" height="14" font="2">straightforward approach was taken: replace one lock with many. Within</text>
+<text top="378" left="129" width="432" height="14" font="2">Sun, a more radical decision was made: build a brand new operating sys-</text>
+<text top="393" left="129" width="432" height="14" font="2">tem, known as Solaris, that incorporates concurrency more fundamen-</text>
+<text top="408" left="129" width="432" height="14" font="2">tally from day one. Read the Linux and Solaris kernel books for more</text>
+<text top="423" left="129" width="354" height="14" font="2">information about these fascinating systems [BC05, MM00].</text>
+<text top="477" left="147" width="3" height="14" font="20">.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="16" family="BXPNAJ+URWPalladioL" color="#000000"/>
+	<fontspec id="22" size="10" family="CZBOQE+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="23" size="10" family="ULEBBY+URWPalladioL" color="#000000"/>
+	<fontspec id="24" size="10" family="XPJEUP+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">L</text>
+<text top="98" left="96" width="25" height="11" font="4">OCK</text>
+<text top="96" left="122" width="4" height="14" font="2">-</text>
+<text top="98" left="127" width="38" height="11" font="4">BASED</text>
+<text top="96" left="170" width="10" height="14" font="2">C</text>
+<text top="98" left="180" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="259" width="10" height="14" font="2">D</text>
+<text top="98" left="270" width="23" height="11" font="4">ATA</text>
+<text top="96" left="297" width="7" height="14" font="2">S</text>
+<text top="98" left="305" width="70" height="11" font="4">TRUCTURES</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="137" left="87" width="82" height="16" font="21"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="11">[B+10] “An Analysis of Linux Scalability to Many Cores” by Silas Boyd-Wickizer, Austin T.</text>
+<text top="177" left="87" width="432" height="11" font="11">Clements, Yandong Mao, Aleksey Pesterev, M. Frans Kaashoek, Robert Morris, Nickolai Zel-</text>
+<text top="189" left="87" width="252" height="11" font="11">dovich . OSDI ’10, Vancouver, Canada, October 2010.</text>
+<text top="189" left="345" width="174" height="11" font="22">A great study of how Linux performs on</text>
+<text top="201" left="87" width="288" height="11" font="22">multicore machines, as well as some simple solutions. Includes a neat</text>
+<text top="201" left="378" width="69" height="10" font="23"><b>sloppy counter</b></text>
+<text top="201" left="449" width="70" height="11" font="22">to solve one form</text>
+<text top="213" left="87" width="137" height="11" font="22">of the scalable counting problem.</text>
+<text top="229" left="87" width="432" height="11" font="11">[BH73] “Operating System Principles” by Per Brinch Hansen. Prentice-Hall, 1973. Available:</text>
+<text top="242" left="87" width="276" height="9" font="24">http://portal.acm.org/citation.cfm?id=540365</text>
+<text top="241" left="363" width="3" height="11" font="11">.</text>
+<text top="241" left="371" width="148" height="11" font="22">One of the first books on operating</text>
+<text top="253" left="87" width="356" height="11" font="22">systems; certainly ahead of its time. Introduced monitors as a concurrency primitive.</text>
+<text top="270" left="87" width="432" height="11" font="11">[BC05] “Understanding the Linux Kernel (Third Edition)” by Daniel P. Bovet and Marco Cesati.</text>
+<text top="282" left="87" width="151" height="11" font="11">O’Reilly Media, November 2005.</text>
+<text top="282" left="241" width="236" height="11" font="22">The classic book on the Linux kernel. You should read it.</text>
+<text top="298" left="87" width="432" height="11" font="11">[C06] “The Search For Fast, Scalable Counters” by Jonathan Corbet. February 1, 2006. Avail-</text>
+<text top="310" left="87" width="22" height="11" font="11">able:</text>
+<text top="310" left="113" width="195" height="9" font="24">https://lwn.net/Articles/170003</text>
+<text top="310" left="307" width="3" height="11" font="11">.</text>
+<text top="310" left="314" width="205" height="11" font="22">LWN has many wonderful articles about the lat-</text>
+<text top="322" left="87" width="432" height="11" font="22">est in Linux. This article is a short description of scalable approximate counting; read it, and others, to</text>
+<text top="334" left="87" width="154" height="11" font="22">learn more about the latest in Linux.</text>
+<text top="350" left="87" width="432" height="11" font="11">[L+13] “A Study of Linux File System Evolution” by Lanyue Lu, Andrea C. Arpaci-Dusseau,</text>
+<text top="362" left="87" width="361" height="11" font="11">Remzi H. Arpaci-Dusseau, Shan Lu. FAST ’13, San Jose, CA, February 2013.</text>
+<text top="362" left="454" width="65" height="11" font="22">Our paper that</text>
+<text top="374" left="87" width="432" height="11" font="22">studies every patch to Linux file systems over nearly a decade. Lots of fun findings in there; read it to</text>
+<text top="386" left="87" width="432" height="11" font="22">see! The work was painful to do though; the poor graduate student, Lanyue Lu, had to look through</text>
+<text top="398" left="87" width="272" height="11" font="22">every single patch by hand in order to understand what they did.</text>
+<text top="414" left="87" width="432" height="11" font="11">[MS98] “Nonblocking Algorithms and Preemption-safe Locking on Multiprogrammed Shared-</text>
+<text top="426" left="87" width="432" height="11" font="11">memory Multiprocessors” by M. Michael, M. Scott. Journal of Parallel and Distributed Com-</text>
+<text top="438" left="87" width="127" height="11" font="11">puting, Vol. 51, No. 1, 1998.</text>
+<text top="438" left="217" width="302" height="11" font="22">Professor Scott and his students have been at the forefront of concurrent</text>
+<text top="450" left="87" width="432" height="11" font="22">algorithms and data structures for many years; check out his web page, numerous papers, or books to</text>
+<text top="462" left="87" width="59" height="11" font="22">find out more.</text>
+<text top="478" left="87" width="432" height="11" font="11">[MS04] “Concurrent Data Structures” by Mark Moir and Nir Shavit. In Handbook of Data</text>
+<text top="490" left="87" width="432" height="11" font="11">Structures and Applications (Editors D. Metha and S.Sahni). Chapman and Hall/CRC Press,</text>
+<text top="502" left="87" width="73" height="11" font="11">2004. Available:</text>
+<text top="503" left="163" width="239" height="9" font="24">www.ostep.org/Citations/concurrent.pdf</text>
+<text top="502" left="401" width="3" height="11" font="11">.</text>
+<text top="502" left="407" width="112" height="11" font="22">A short but relatively com-</text>
+<text top="514" left="87" width="432" height="11" font="22">prehensive reference on concurrent data structures. Though it is missing some of the latest works in the</text>
+<text top="526" left="87" width="258" height="11" font="22">area (due to its age), it remains an incredibly useful reference.</text>
+<text top="542" left="87" width="432" height="11" font="11">[MM00] “Solaris Internals: Core Kernel Architecture” by Jim Mauro and Richard McDougall.</text>
+<text top="554" left="87" width="129" height="11" font="11">Prentice Hall, October 2000.</text>
+<text top="554" left="221" width="298" height="11" font="22">The Solaris book. You should also read this, if you want to learn about</text>
+<text top="566" left="87" width="120" height="11" font="22">something other than Linux.</text>
+<text top="583" left="87" width="432" height="11" font="11">[S+11] “Making the Common Case the Only Case with Anticipatory Memory Allocation” by</text>
+<text top="594" left="87" width="432" height="11" font="11">Swaminathan Sundararaman, Yupu Zhang, Sriram Subramanian, Andrea C. Arpaci-Dusseau,</text>
+<text top="606" left="87" width="324" height="11" font="11">Remzi H. Arpaci-Dusseau . FAST ’11, San Jose, CA, February 2011.</text>
+<text top="606" left="418" width="101" height="11" font="22">Our work on removing</text>
+<text top="618" left="87" width="432" height="11" font="22">possibly-failing allocation calls from kernel code paths. By allocating all potentially needed memory</text>
+<text top="630" left="87" width="298" height="11" font="22">before doing any work, we avoid failure deep down in the storage stack.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="273" width="8" height="14" font="2">L</text>
+<text top="98" left="282" width="25" height="11" font="4">OCK</text>
+<text top="96" left="308" width="4" height="14" font="2">-</text>
+<text top="98" left="313" width="38" height="11" font="4">BASED</text>
+<text top="96" left="356" width="10" height="14" font="2">C</text>
+<text top="98" left="366" width="75" height="11" font="4">ONCURRENT</text>
+<text top="96" left="445" width="10" height="14" font="2">D</text>
+<text top="98" left="456" width="23" height="11" font="4">ATA</text>
+<text top="96" left="483" width="7" height="14" font="2">S</text>
+<text top="98" left="491" width="70" height="11" font="4">TRUCTURES</text>
+<text top="137" left="129" width="139" height="16" font="21"><b>Homework (Code)</b></text>
+<text top="166" left="147" width="414" height="14" font="2">In this homework, you’ll gain some experience with writing concur-</text>
+<text top="181" left="129" width="432" height="14" font="2">rent code and measuring its performance. Learning to build code that</text>
+<text top="196" left="129" width="432" height="14" font="2">performs well is a critical skill and thus gaining a little experience here</text>
+<text top="211" left="129" width="162" height="14" font="2">with it is quite worthwhile.</text>
+<text top="247" left="129" width="70" height="15" font="6"><b>Questions</b></text>
+<text top="271" left="146" width="414" height="14" font="2">1. We’ll start by redoing the measurements within this chapter. Use</text>
+<text top="286" left="163" width="43" height="14" font="2">the call</text>
+<text top="287" left="211" width="113" height="11" font="8">gettimeofday()</text>
+<text top="286" left="328" width="232" height="14" font="2">to measure time within your program.</text>
+<text top="301" left="163" width="397" height="14" font="2">How accurate is this timer? What is the smallest interval it can mea-</text>
+<text top="316" left="163" width="397" height="14" font="2">sure? Gain confidence in its workings, as we will need it in all sub-</text>
+<text top="331" left="163" width="397" height="14" font="2">sequent questions. You can also look into other timers, such as the</text>
+<text top="346" left="163" width="221" height="14" font="2">cycle counter available on x86 via the</text>
+<text top="347" left="388" width="40" height="11" font="8">rdtsc</text>
+<text top="346" left="432" width="68" height="14" font="2">instruction.</text>
+<text top="371" left="146" width="414" height="14" font="2">2. Now, build a simple concurrent counter and measure how long it</text>
+<text top="386" left="163" width="397" height="14" font="2">takes to increment the counter many times as the number of threads</text>
+<text top="401" left="163" width="397" height="14" font="2">increases. How many CPUs are available on the system you are</text>
+<text top="416" left="163" width="353" height="14" font="2">using? Does this number impact your measurements at all?</text>
+<text top="441" left="146" width="414" height="14" font="2">3. Next, build a version of the approximate counter. Once again, mea-</text>
+<text top="456" left="163" width="397" height="14" font="2">sure its performance as the number of threads varies, as well as the</text>
+<text top="471" left="163" width="373" height="14" font="2">threshold. Do the numbers match what you see in the chapter?</text>
+<text top="496" left="146" width="414" height="14" font="2">4. Build a version of a linked list that uses hand-over-hand locking</text>
+<text top="511" left="163" width="397" height="14" font="2">[MS04], as cited in the chapter. You should read the paper first</text>
+<text top="525" left="163" width="397" height="14" font="2">to understand how it works, and then implement it. Measure its</text>
+<text top="540" left="163" width="397" height="14" font="2">performance. When does a hand-over-hand list work better than a</text>
+<text top="555" left="163" width="224" height="14" font="2">standard list as shown in the chapter?</text>
+<text top="580" left="146" width="414" height="14" font="2">5. Pick your favorite data structure, such as a B-tree or other slightly</text>
+<text top="595" left="163" width="397" height="14" font="2">more interesting structure. Implement it, and start with a simple</text>
+<text top="610" left="163" width="397" height="14" font="2">locking strategy such as a single lock. Measure its performance as</text>
+<text top="625" left="163" width="260" height="14" font="2">the number of concurrent threads increases.</text>
+<text top="650" left="146" width="414" height="14" font="2">6. Finally, think of a more interesting locking strategy for this favorite</text>
+<text top="665" left="163" width="397" height="14" font="2">data structure of yours. Implement it, and measure its performance.</text>
+<text top="680" left="163" width="374" height="14" font="2">How does it compare to the straightforward locking approach?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+</pdf2xml>

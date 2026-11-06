@@ -1,0 +1,1415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="XLRTJE+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="XLRTJE+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="EKFYBA+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="9" family="EKFYBA+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="13" family="COPUSO+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="16" family="EKFYBA+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="7" family="EKFYBA+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="10" family="EKFYBA+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="MABZCE+NimbusMonL-Regu" color="#000000"/>
+<text top="192" left="523" width="34" height="30" font="0">50</text>
+<text top="261" left="223" width="296" height="21" font="1">The Andrew File System (AFS)</text>
+<text top="342" left="87" width="432" height="14" font="2">The Andrew File System was introduced at Carnegie-Mellon University</text>
+<text top="359" left="87" width="42" height="14" font="2">(CMU)</text>
+<text top="356" left="132" width="4" height="9" font="3">1</text>
+<text top="359" left="140" width="379" height="14" font="2">in the 1980’s [H+88]. Led by the well-known Professor M. Satya-</text>
+<text top="374" left="87" width="432" height="14" font="2">narayanan of Carnegie-Mellon University (“Satya” for short), the main</text>
+<text top="389" left="87" width="185" height="14" font="2">goal of this project was simple:</text>
+<text top="389" left="277" width="30" height="13" font="4"><b>scale</b></text>
+<text top="389" left="307" width="212" height="14" font="2">. Specifically, how can one design a</text>
+<text top="404" left="87" width="432" height="14" font="2">distributed file system such that a server can support as many clients as</text>
+<text top="419" left="87" width="55" height="14" font="2">possible?</text>
+<text top="433" left="105" width="414" height="14" font="2">Interestingly, there are numerous aspects of design and implementa-</text>
+<text top="448" left="87" width="357" height="14" font="2">tion that affect scalability. Most important is the design of the</text>
+<text top="448" left="447" width="51" height="13" font="4"><b>protocol</b></text>
+<text top="448" left="501" width="18" height="14" font="2">be-</text>
+<text top="463" left="87" width="432" height="14" font="2">tween clients and servers. In NFS, for example, the protocol forces clients</text>
+<text top="478" left="87" width="432" height="14" font="2">to check with the server periodically to determine if cached contents have</text>
+<text top="493" left="87" width="432" height="14" font="2">changed; because each check uses server resources (including CPU and</text>
+<text top="508" left="87" width="432" height="14" font="2">network bandwidth), frequent checks like this will limit the number of</text>
+<text top="523" left="87" width="332" height="14" font="2">clients a server can respond to and thus limit scalability.</text>
+<text top="538" left="105" width="414" height="14" font="2">AFS also differs from NFS in that from the beginning, reasonable user-</text>
+<text top="553" left="87" width="432" height="14" font="2">visible behavior was a first-class concern. In NFS, cache consistency is</text>
+<text top="568" left="87" width="432" height="14" font="2">hard to describe because it depends directly on low-level implementa-</text>
+<text top="583" left="87" width="432" height="14" font="2">tion details, including client-side cache timeout intervals. In AFS, cache</text>
+<text top="598" left="87" width="432" height="14" font="2">consistency is simple and readily understood: when the file is opened, a</text>
+<text top="613" left="87" width="412" height="14" font="2">client will generally receive the latest consistent copy from the server.</text>
+<text top="650" left="55" width="135" height="17" font="5">50.1 AFS Version 1</text>
+<text top="680" left="105" width="414" height="14" font="2">We will discuss two versions of AFS [H+88, S+85]. The first version</text>
+<text top="695" left="87" width="432" height="14" font="2">(which we will call AFSv1, but actually the original system was called</text>
+<text top="710" left="87" width="432" height="14" font="2">the ITC distributed file system [S+85]) had some of the basic design in</text>
+<text top="724" left="87" width="432" height="14" font="2">place, but didn’t scale as desired, which led to a re-design and the final</text>
+<text top="739" left="87" width="432" height="14" font="2">protocol (which we will call AFSv2, or just AFS) [H+88]. We now discuss</text>
+<text top="754" left="87" width="96" height="14" font="2">the first version.</text>
+<text top="778" left="107" width="4" height="8" font="6">1</text>
+<text top="780" left="112" width="407" height="11" font="7">Though originally referred to as “Carnegie-Mellon University”, CMU later dropped</text>
+<text top="792" left="87" width="432" height="11" font="7">the hyphen, and thus was born the modern form, “Carnegie Mellon University.” As AFS</text>
+<text top="804" left="87" width="432" height="11" font="7">derived from work in the early 80’s, we refer to CMU in its original fully-hyphenated form. See</text>
+<text top="817" left="87" width="433" height="9" font="8">https://www.quora.com/When-did-Carnegie-Mellon-University-remove-the-</text>
+<text top="829" left="87" width="182" height="9" font="8">hyphen-in-the-university-name</text>
+<text top="828" left="271" width="248" height="11" font="7">for more details, if you are into really boring minutiae.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="11" family="EKFYBA+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="13" family="MABZCE+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="11" size="13" family="XZAYCA+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="12" size="12" family="EKFYBA+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="354" width="8" height="14" font="2">T</text>
+<text top="98" left="363" width="16" height="11" font="9">HE</text>
+<text top="96" left="383" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="443" width="7" height="14" font="2">F</text>
+<text top="98" left="451" width="18" height="11" font="9">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="481" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="524" width="37" height="14" font="2">(AFS)</text>
+<text top="135" left="129" width="65" height="11" font="10">TestAuth</text>
+<text top="135" left="242" width="250" height="11" font="10">Test whether a file has changed</text>
+<text top="150" left="242" width="266" height="11" font="10">(used to validate cached entries)</text>
+<text top="165" left="129" width="89" height="11" font="10">GetFileStat</text>
+<text top="165" left="242" width="226" height="11" font="10">Get the stat info for a file</text>
+<text top="180" left="129" width="40" height="11" font="10">Fetch</text>
+<text top="180" left="242" width="210" height="11" font="10">Fetch the contents of file</text>
+<text top="195" left="129" width="40" height="11" font="10">Store</text>
+<text top="195" left="242" width="234" height="11" font="10">Store this file on the server</text>
+<text top="210" left="129" width="89" height="11" font="10">SetFileStat</text>
+<text top="210" left="242" width="226" height="11" font="10">Set the stat info for a file</text>
+<text top="225" left="129" width="57" height="11" font="10">ListDir</text>
+<text top="225" left="242" width="258" height="11" font="10">List the contents of a directory</text>
+<text top="248" left="226" width="69" height="14" font="2">Figure 50.1:</text>
+<text top="248" left="299" width="164" height="13" font="4"><b>AFSv1 Protocol Highlights</b></text>
+<text top="276" left="147" width="279" height="14" font="2">One of the basic tenets of all versions of AFS is</text>
+<text top="276" left="429" width="113" height="13" font="4"><b>whole-file caching</b></text>
+<text top="276" left="546" width="15" height="14" font="2">on</text>
+<text top="291" left="129" width="19" height="14" font="2">the</text>
+<text top="291" left="152" width="61" height="13" font="4"><b>local disk</b></text>
+<text top="291" left="218" width="342" height="14" font="2">of the client machine that is accessing a file. When you</text>
+<text top="307" left="129" width="48" height="11" font="10">open()</text>
+<text top="306" left="182" width="379" height="14" font="2">a file, the entire file (if it exists) is fetched from the server and</text>
+<text top="321" left="129" width="352" height="14" font="2">stored in a file on your local disk. Subsequent application</text>
+<text top="322" left="485" width="48" height="11" font="10">read()</text>
+<text top="321" left="538" width="23" height="14" font="2">and</text>
+<text top="337" left="129" width="57" height="11" font="10">write()</text>
+<text top="336" left="188" width="373" height="14" font="2">operations are redirected to the local file system where the file is</text>
+<text top="351" left="129" width="432" height="14" font="2">stored; thus, these operations require no network communication and are</text>
+<text top="366" left="129" width="110" height="14" font="2">fast. Finally, upon</text>
+<text top="366" left="243" width="57" height="11" font="10">close()</text>
+<text top="366" left="300" width="261" height="14" font="2">, the file (if it has been modified) is flushed</text>
+<text top="381" left="129" width="432" height="14" font="2">back to the server. Note the obvious contrasts with NFS, which caches</text>
+<text top="395" left="129" width="33" height="14" font="11">blocks</text>
+<text top="396" left="165" width="396" height="14" font="2">(not whole files, although NFS could of course cache every block of</text>
+<text top="410" left="129" width="203" height="14" font="2">an entire file) and does so in client</text>
+<text top="410" left="335" width="44" height="14" font="11">memory</text>
+<text top="410" left="383" width="92" height="14" font="2">(not local disk).</text>
+<text top="425" left="147" width="414" height="14" font="2">Let’s get into the details a bit more. When a client application first calls</text>
+<text top="441" left="129" width="48" height="11" font="10">open()</text>
+<text top="440" left="177" width="337" height="14" font="2">, the AFS client-side code (which the AFS designers call</text>
+<text top="440" left="518" width="38" height="13" font="4"><b>Venus</b></text>
+<text top="440" left="556" width="4" height="14" font="2">)</text>
+<text top="455" left="129" width="432" height="14" font="2">would send a Fetch protocol message to the server. The Fetch protocol</text>
+<text top="470" left="129" width="432" height="14" font="2">message would pass the entire pathname of the desired file (for exam-</text>
+<text top="485" left="129" width="22" height="14" font="2">ple,</text>
+<text top="486" left="156" width="170" height="11" font="10">/home/remzi/notes.txt</text>
+<text top="485" left="325" width="236" height="14" font="2">) to the file server (the group of which</text>
+<text top="500" left="129" width="65" height="14" font="2">they called</text>
+<text top="500" left="198" width="27" height="13" font="4"><b>Vice</b></text>
+<text top="500" left="225" width="336" height="14" font="2">), which would then traverse the pathname, find the de-</text>
+<text top="515" left="129" width="432" height="14" font="2">sired file, and ship the entire file back to the client. The client-side code</text>
+<text top="530" left="129" width="432" height="14" font="2">would then cache the file on the local disk of the client (by writing it to</text>
+<text top="545" left="129" width="248" height="14" font="2">local disk). As we said above, subsequent</text>
+<text top="546" left="381" width="48" height="11" font="10">read()</text>
+<text top="545" left="433" width="23" height="14" font="2">and</text>
+<text top="546" left="459" width="57" height="11" font="10">write()</text>
+<text top="545" left="519" width="42" height="14" font="2">system</text>
+<text top="560" left="129" width="93" height="14" font="2">calls are strictly</text>
+<text top="560" left="226" width="25" height="14" font="11">local</text>
+<text top="560" left="255" width="306" height="14" font="2">in AFS (no communication with the server occurs);</text>
+<text top="575" left="129" width="380" height="14" font="2">they are just redirected to the local copy of the file. Because the</text>
+<text top="576" left="512" width="48" height="11" font="10">read()</text>
+<text top="590" left="129" width="23" height="14" font="2">and</text>
+<text top="591" left="156" width="57" height="11" font="10">write()</text>
+<text top="590" left="217" width="344" height="14" font="2">calls act just like calls to a local file system, once a block</text>
+<text top="605" left="129" width="432" height="14" font="2">is accessed, it also may be cached in client memory. Thus, AFS also uses</text>
+<text top="620" left="129" width="432" height="14" font="2">client memory to cache copies of blocks that it has in its local disk. Fi-</text>
+<text top="635" left="129" width="432" height="14" font="2">nally, when finished, the AFS client checks if the file has been modified</text>
+<text top="650" left="129" width="432" height="14" font="2">(i.e., that it has been opened for writing); if so, it flushes the new version</text>
+<text top="665" left="129" width="432" height="14" font="2">back to the server with a Store protocol message, sending the entire file</text>
+<text top="679" left="129" width="302" height="14" font="2">and pathname to the server for permanent storage.</text>
+<text top="694" left="147" width="414" height="14" font="2">The next time the file is accessed, AFSv1 does so much more effi-</text>
+<text top="709" left="129" width="432" height="14" font="2">ciently. Specifically, the client-side code first contacts the server (using</text>
+<text top="724" left="129" width="432" height="14" font="2">the TestAuth protocol message) in order to determine whether the file</text>
+<text top="739" left="129" width="432" height="14" font="2">has changed. If not, the client would use the locally-cached copy, thus</text>
+<text top="754" left="129" width="432" height="14" font="2">improving performance by avoiding a network transfer. The figure above</text>
+<text top="769" left="129" width="432" height="14" font="2">shows some of the protocol messages in AFSv1. Note that this early ver-</text>
+<text top="784" left="129" width="432" height="14" font="2">sion of the protocol only cached file contents; directories, for example,</text>
+<text top="799" left="129" width="168" height="14" font="2">were only kept at the server.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="9">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="9">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="176" width="7" height="14" font="2">F</text>
+<text top="98" left="184" width="18" height="11" font="9">ILE</text>
+<text top="96" left="206" width="7" height="14" font="2">S</text>
+<text top="98" left="214" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="257" width="37" height="14" font="2">(AFS)</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="148" left="155" width="8" height="14" font="2">T</text>
+<text top="150" left="164" width="11" height="11" font="9">IP</text>
+<text top="148" left="176" width="21" height="14" font="2">: M</text>
+<text top="150" left="197" width="46" height="11" font="9">EASURE</text>
+<text top="148" left="247" width="8" height="14" font="2">T</text>
+<text top="150" left="256" width="26" height="11" font="9">HEN</text>
+<text top="148" left="286" width="8" height="14" font="2">B</text>
+<text top="150" left="295" width="29" height="11" font="9">UILD</text>
+<text top="148" left="328" width="13" height="14" font="2">(P</text>
+<text top="150" left="341" width="62" height="11" font="9">ATTERSON</text>
+<text top="148" left="404" width="4" height="14" font="2">’</text>
+<text top="150" left="408" width="6" height="11" font="9">S</text>
+<text top="148" left="418" width="8" height="14" font="2">L</text>
+<text top="150" left="427" width="19" height="11" font="9">AW</text>
+<text top="148" left="446" width="4" height="14" font="2">)</text>
+<text top="163" left="87" width="432" height="14" font="2">One of our advisors, David Patterson (of RISC and RAID fame), used to</text>
+<text top="178" left="87" width="432" height="14" font="2">always encourage us to measure a system and demonstrate a problem</text>
+<text top="193" left="87" width="31" height="14" font="11">before</text>
+<text top="193" left="123" width="396" height="14" font="2">building a new system to fix said problem. By using experimen-</text>
+<text top="208" left="87" width="432" height="14" font="2">tal evidence, rather than gut instinct, you can turn the process of system</text>
+<text top="223" left="87" width="432" height="14" font="2">building into a more scientific endeavor. Doing so also has the fringe ben-</text>
+<text top="238" left="87" width="432" height="14" font="2">efit of making you think about how exactly to measure the system before</text>
+<text top="253" left="87" width="432" height="14" font="2">your improved version is developed. When you do finally get around to</text>
+<text top="268" left="87" width="432" height="14" font="2">building the new system, two things are better as a result: first, you have</text>
+<text top="283" left="87" width="432" height="14" font="2">evidence that shows you are solving a real problem; second, you now</text>
+<text top="298" left="87" width="432" height="14" font="2">have a way to measure your new system in place, to show that it actually</text>
+<text top="313" left="87" width="330" height="14" font="2">improves upon the state of the art. And thus we call this</text>
+<text top="313" left="420" width="96" height="13" font="4"><b>Patterson’s Law</b></text>
+<text top="313" left="516" width="3" height="14" font="2">.</text>
+<text top="366" left="55" width="210" height="17" font="5">50.2 Problems with Version 1</text>
+<text top="396" left="105" width="414" height="14" font="2">A few key problems with this first version of AFS motivated the de-</text>
+<text top="411" left="87" width="432" height="14" font="2">signers to rethink their file system. To study the problems in detail, the</text>
+<text top="426" left="87" width="432" height="14" font="2">designers of AFS spent a great deal of time measuring their existing pro-</text>
+<text top="441" left="87" width="432" height="14" font="2">totype to find what was wrong. Such experimentation is a good thing,</text>
+<text top="456" left="87" width="47" height="14" font="2">because</text>
+<text top="456" left="139" width="83" height="13" font="4"><b>measurement</b></text>
+<text top="456" left="227" width="292" height="14" font="2">is the key to understanding how systems work</text>
+<text top="471" left="87" width="432" height="14" font="2">and how to improve them; obtaining concrete, good data is thus a neces-</text>
+<text top="486" left="87" width="432" height="14" font="2">sary part of systems construction. In their study, the authors found two</text>
+<text top="501" left="87" width="166" height="14" font="2">main problems with AFSv1:</text>
+<text top="531" left="107" width="8" height="14" font="2">•</text>
+<text top="531" left="122" width="192" height="13" font="4"><b>Path-traversal costs are too high</b></text>
+<text top="531" left="314" width="205" height="14" font="2">: When performing a Fetch or Store</text>
+<text top="546" left="122" width="348" height="14" font="2">protocol request, the client passes the entire pathname (e.g.,</text>
+<text top="546" left="472" width="48" height="11" font="10">/home/</text>
+<text top="561" left="122" width="121" height="11" font="10">remzi/notes.txt</text>
+<text top="561" left="243" width="276" height="14" font="2">) to the server. The server, in order to access the</text>
+<text top="575" left="122" width="397" height="14" font="2">file, must perform a full pathname traversal, first looking in the root</text>
+<text top="590" left="122" width="99" height="14" font="2">directory to find</text>
+<text top="591" left="225" width="32" height="11" font="10">home</text>
+<text top="590" left="257" width="51" height="14" font="2">, then in</text>
+<text top="591" left="312" width="32" height="11" font="10">home</text>
+<text top="590" left="349" width="40" height="14" font="2">to find</text>
+<text top="591" left="393" width="40" height="11" font="10">remzi</text>
+<text top="590" left="434" width="85" height="14" font="2">, and so forth,</text>
+<text top="605" left="122" width="397" height="14" font="2">all the way down the path until finally the desired file is located.</text>
+<text top="620" left="122" width="397" height="14" font="2">With many clients accessing the server at once, the designers of AFS</text>
+<text top="635" left="122" width="397" height="14" font="2">found that the server was spending much of its CPU time simply</text>
+<text top="650" left="122" width="183" height="14" font="2">walking down directory paths.</text>
+<text top="676" left="107" width="8" height="14" font="2">•</text>
+<text top="677" left="122" width="351" height="13" font="4"><b>The client issues too many TestAuth protocol messages</b></text>
+<text top="676" left="473" width="46" height="14" font="2">: Much</text>
+<text top="691" left="122" width="397" height="14" font="2">like NFS and its overabundance of GETATTR protocol messages,</text>
+<text top="706" left="122" width="397" height="14" font="2">AFSv1 generated a large amount of traffic to check whether a lo-</text>
+<text top="721" left="122" width="397" height="14" font="2">cal file (or its stat information) was valid with the TestAuth proto-</text>
+<text top="736" left="122" width="397" height="14" font="2">col message. Thus, servers spent much of their time telling clients</text>
+<text top="751" left="122" width="397" height="14" font="2">whether it was OK to use their cached copies of a file. Most of the</text>
+<text top="766" left="122" width="302" height="14" font="2">time, the answer was that the file had not changed.</text>
+<text top="796" left="105" width="414" height="14" font="2">There were actually two other problems with AFSv1: load was not</text>
+<text top="811" left="87" width="432" height="14" font="2">balanced across servers, and the server used a single distinct process per</text>
+<text top="826" left="87" width="432" height="14" font="2">client thus inducing context switching and other overheads. The load</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="9">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="9">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="354" width="8" height="14" font="2">T</text>
+<text top="98" left="363" width="16" height="11" font="9">HE</text>
+<text top="96" left="383" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="443" width="7" height="14" font="2">F</text>
+<text top="98" left="451" width="18" height="11" font="9">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="481" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="524" width="37" height="14" font="2">(AFS)</text>
+<text top="139" left="129" width="285" height="14" font="2">imbalance problem was solved by introducing</text>
+<text top="139" left="419" width="52" height="13" font="4"><b>volumes</b></text>
+<text top="139" left="471" width="90" height="14" font="2">, which an ad-</text>
+<text top="154" left="129" width="432" height="14" font="2">ministrator could move across servers to balance load; the context-switch</text>
+<text top="169" left="129" width="432" height="14" font="2">problem was solved in AFSv2 by building the server with threads instead</text>
+<text top="183" left="129" width="432" height="14" font="2">of processes. However, for the sake of space, we focus here on the main</text>
+<text top="198" left="129" width="386" height="14" font="2">two protocol problems above that limited the scale of the system.</text>
+<text top="236" left="97" width="203" height="17" font="5">50.3 Improving the Protocol</text>
+<text top="267" left="147" width="414" height="14" font="2">The two problems above limited the scalability of AFS; the server CPU</text>
+<text top="282" left="129" width="432" height="14" font="2">became the bottleneck of the system, and each server could only ser-</text>
+<text top="297" left="129" width="432" height="14" font="2">vice 20 clients without becoming overloaded. Servers were receiving too</text>
+<text top="312" left="129" width="432" height="14" font="2">many TestAuth messages, and when they received Fetch or Store mes-</text>
+<text top="327" left="129" width="432" height="14" font="2">sages, were spending too much time traversing the directory hierarchy.</text>
+<text top="342" left="129" width="309" height="14" font="2">Thus, the AFS designers were faced with a problem:</text>
+<text top="383" left="166" width="8" height="14" font="2">T</text>
+<text top="385" left="175" width="16" height="11" font="9">HE</text>
+<text top="383" left="195" width="10" height="14" font="2">C</text>
+<text top="385" left="206" width="24" height="11" font="9">RUX</text>
+<text top="383" left="230" width="19" height="14" font="2">: H</text>
+<text top="385" left="250" width="20" height="11" font="9">OW</text>
+<text top="383" left="274" width="8" height="14" font="2">T</text>
+<text top="385" left="283" width="8" height="11" font="9">O</text>
+<text top="383" left="296" width="10" height="14" font="2">D</text>
+<text top="385" left="307" width="36" height="11" font="9">ESIGN</text>
+<text top="383" left="346" width="22" height="14" font="2">A S</text>
+<text top="385" left="369" width="55" height="11" font="9">CALABLE</text>
+<text top="383" left="427" width="7" height="14" font="2">F</text>
+<text top="385" left="435" width="18" height="11" font="9">ILE</text>
+<text top="383" left="457" width="8" height="14" font="2">P</text>
+<text top="385" left="466" width="57" height="11" font="9">ROTOCOL</text>
+<text top="398" left="147" width="414" height="14" font="2">How should one redesign the protocol to minimize the number of</text>
+<text top="413" left="129" width="432" height="14" font="2">server interactions, i.e., how could they reduce the number of TestAuth</text>
+<text top="428" left="129" width="432" height="14" font="2">messages? Further, how could they design the protocol to make these</text>
+<text top="443" left="129" width="432" height="14" font="2">server interactions efficient? By attacking both of these issues, a new pro-</text>
+<text top="458" left="129" width="334" height="14" font="2">tocol would result in a much more scalable version AFS.</text>
+<text top="510" left="97" width="135" height="17" font="5">50.4 AFS Version 2</text>
+<text top="540" left="147" width="205" height="14" font="2">AFSv2 introduced the notion of a</text>
+<text top="540" left="356" width="51" height="13" font="4"><b>callback</b></text>
+<text top="540" left="412" width="149" height="14" font="2">to reduce the number of</text>
+<text top="555" left="129" width="432" height="14" font="2">client/server interactions. A callback is simply a promise from the server</text>
+<text top="570" left="129" width="432" height="14" font="2">to the client that the server will inform the client when a file that the</text>
+<text top="585" left="129" width="311" height="14" font="2">client is caching has been modified. By adding this</text>
+<text top="585" left="444" width="28" height="13" font="4"><b>state</b></text>
+<text top="585" left="477" width="84" height="14" font="2">to the system,</text>
+<text top="600" left="129" width="432" height="14" font="2">the client no longer needs to contact the server to find out if a cached file</text>
+<text top="615" left="129" width="432" height="14" font="2">is still valid. Rather, it assumes that the file is valid until the server tells it</text>
+<text top="630" left="129" width="189" height="14" font="2">otherwise; notice the analogy to</text>
+<text top="630" left="321" width="45" height="13" font="4"><b>polling</b></text>
+<text top="630" left="370" width="39" height="14" font="2">versus</text>
+<text top="630" left="412" width="61" height="13" font="4"><b>interrupts</b></text>
+<text top="630" left="473" width="3" height="14" font="2">.</text>
+<text top="646" left="147" width="228" height="14" font="2">AFSv2 also introduced the notion of a</text>
+<text top="646" left="379" width="80" height="13" font="4"><b>file identifier</b></text>
+<text top="646" left="463" width="4" height="14" font="2">(</text>
+<text top="646" left="467" width="24" height="13" font="4"><b>FID</b></text>
+<text top="646" left="491" width="70" height="14" font="2">) (similar to</text>
+<text top="661" left="129" width="49" height="14" font="2">the NFS</text>
+<text top="661" left="182" width="66" height="13" font="4"><b>file handle</b></text>
+<text top="661" left="248" width="312" height="14" font="2">) instead of pathnames to specify which file a client</text>
+<text top="676" left="129" width="432" height="14" font="2">was interested in. An FID in AFS consists of a volume identifier, a file</text>
+<text top="691" left="129" width="432" height="14" font="2">identifier, and a “uniquifier” (to enable reuse of the volume and file IDs</text>
+<text top="706" left="129" width="432" height="14" font="2">when a file is deleted). Thus, instead of sending whole pathnames to</text>
+<text top="721" left="129" width="432" height="14" font="2">the server and letting the server walk the pathname to find the desired</text>
+<text top="736" left="129" width="432" height="14" font="2">file, the client would walk the pathname, one piece at a time, caching the</text>
+<text top="750" left="129" width="347" height="14" font="2">results and thus hopefully reducing the load on the server.</text>
+<text top="766" left="147" width="237" height="14" font="2">For example, if a client accessed the file</text>
+<text top="767" left="388" width="170" height="11" font="10">/home/remzi/notes.txt</text>
+<text top="766" left="558" width="3" height="14" font="2">,</text>
+<text top="781" left="129" width="23" height="14" font="2">and</text>
+<text top="782" left="154" width="32" height="11" font="10">home</text>
+<text top="781" left="190" width="216" height="14" font="2">was the AFS directory mounted onto</text>
+<text top="782" left="409" width="8" height="11" font="10">/</text>
+<text top="781" left="420" width="25" height="14" font="2">(i.e.,</text>
+<text top="782" left="447" width="8" height="11" font="10">/</text>
+<text top="781" left="458" width="103" height="14" font="2">was the local root</text>
+<text top="796" left="129" width="80" height="14" font="2">directory, but</text>
+<text top="797" left="213" width="32" height="11" font="10">home</text>
+<text top="796" left="250" width="311" height="14" font="2">and its children were in AFS), the client would first</text>
+<text top="811" left="129" width="186" height="14" font="2">Fetch the directory contents of</text>
+<text top="812" left="320" width="32" height="11" font="10">home</text>
+<text top="811" left="352" width="209" height="14" font="2">, put them in the local-disk cache,</text>
+<text top="826" left="129" width="141" height="14" font="2">and set up a callback on</text>
+<text top="827" left="273" width="32" height="11" font="10">home</text>
+<text top="826" left="306" width="255" height="14" font="2">. Then, the client would Fetch the directory</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="9">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="9" family="YNVVIB+CMR6" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="9">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="176" width="7" height="14" font="2">F</text>
+<text top="98" left="184" width="18" height="11" font="9">ILE</text>
+<text top="96" left="206" width="7" height="14" font="2">S</text>
+<text top="98" left="214" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="257" width="37" height="14" font="2">(AFS)</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="137" left="96" width="56" height="13" font="4"><b>Client (C</b></text>
+<text top="142" left="152" width="5" height="6" font="13">1</text>
+<text top="137" left="158" width="4" height="13" font="4"><b>)</b></text>
+<text top="137" left="370" width="40" height="13" font="4"><b>Server</b></text>
+<text top="153" left="96" width="235" height="13" font="4"><b>fd = open(“/home/remzi/notes.txt”, ...);</b></text>
+<text top="168" left="103" width="191" height="14" font="2">Send Fetch (home FID, “remzi”)</text>
+<text top="183" left="370" width="128" height="14" font="2">Receive Fetch request</text>
+<text top="198" left="377" width="157" height="14" font="2">look for remzi in home dir</text>
+<text top="212" left="377" width="98" height="14" font="2">setup callback(C</text>
+<text top="218" left="475" width="5" height="6" font="13">1</text>
+<text top="212" left="481" width="60" height="14" font="2">) on remzi</text>
+<text top="227" left="377" width="162" height="14" font="2">return remzi’s content/FID</text>
+<text top="242" left="100" width="116" height="14" font="2">Receive Fetch reply</text>
+<text top="257" left="107" width="180" height="14" font="2">write remzi to local disk cache</text>
+<text top="272" left="107" width="181" height="14" font="2">record callback status of remzi</text>
+<text top="287" left="103" width="208" height="14" font="2">Send Fetch (remzi FID, “notes.txt”)</text>
+<text top="302" left="370" width="128" height="14" font="2">Receive Fetch request</text>
+<text top="317" left="377" width="174" height="14" font="2">look for notes.txt in remzi dir</text>
+<text top="332" left="377" width="98" height="14" font="2">setup callback(C</text>
+<text top="337" left="475" width="5" height="6" font="13">1</text>
+<text top="332" left="481" width="77" height="14" font="2">) on notes.txt</text>
+<text top="347" left="377" width="179" height="14" font="2">return notes.txt’s content/FID</text>
+<text top="362" left="100" width="116" height="14" font="2">Receive Fetch reply</text>
+<text top="377" left="107" width="197" height="14" font="2">write notes.txt to local disk cache</text>
+<text top="392" left="107" width="197" height="14" font="2">record callback status of notes.txt</text>
+<text top="407" left="107" width="28" height="14" font="2">local</text>
+<text top="408" left="138" width="48" height="11" font="10">open()</text>
+<text top="407" left="190" width="110" height="14" font="2">of cached notes.txt</text>
+<text top="422" left="107" width="208" height="14" font="2">return file descriptor to application</text>
+<text top="452" left="96" width="137" height="13" font="4"><b>read(fd, buffer, MAX);</b></text>
+<text top="467" left="107" width="80" height="14" font="2">perform local</text>
+<text top="468" left="191" width="48" height="11" font="10">read()</text>
+<text top="467" left="242" width="92" height="14" font="2">on cached copy</text>
+<text top="498" left="96" width="56" height="13" font="4"><b>close(fd);</b></text>
+<text top="513" left="107" width="47" height="14" font="2">do local</text>
+<text top="513" left="157" width="57" height="11" font="10">close()</text>
+<text top="513" left="217" width="92" height="14" font="2">on cached copy</text>
+<text top="527" left="107" width="200" height="14" font="2">if file has changed, flush to server</text>
+<text top="558" left="96" width="235" height="13" font="4"><b>fd = open(“/home/remzi/notes.txt”, ...);</b></text>
+<text top="573" left="103" width="154" height="14" font="2">Foreach dir (home, remzi)</text>
+<text top="588" left="110" width="160" height="14" font="2">if (callback(dir) == VALID)</text>
+<text top="603" left="118" width="176" height="14" font="2">use local copy for lookup(dir)</text>
+<text top="618" left="110" width="22" height="14" font="2">else</text>
+<text top="633" left="118" width="96" height="14" font="2">Fetch (as above)</text>
+<text top="648" left="103" width="193" height="14" font="2">if (callback(notes.txt) == VALID)</text>
+<text top="663" left="110" width="138" height="14" font="2">open local cached copy</text>
+<text top="678" left="110" width="150" height="14" font="2">return file descriptor to it</text>
+<text top="692" left="103" width="22" height="14" font="2">else</text>
+<text top="707" left="110" width="241" height="14" font="2">Fetch (as above) then open and return fd</text>
+<text top="731" left="108" width="69" height="14" font="2">Figure 50.2:</text>
+<text top="731" left="181" width="318" height="13" font="4"><b>Reading A File: Client-side And File Server Actions</b></text>
+<text top="752" left="87" width="40" height="11" font="10">remzi</text>
+<text top="751" left="127" width="343" height="14" font="2">, put it in the local-disk cache, and set up a callback on</text>
+<text top="752" left="475" width="40" height="11" font="10">remzi</text>
+<text top="751" left="516" width="3" height="14" font="2">.</text>
+<text top="766" left="87" width="181" height="14" font="2">Finally, the client would Fetch</text>
+<text top="766" left="272" width="73" height="11" font="10">notes.txt</text>
+<text top="766" left="345" width="174" height="14" font="2">, cache this regular file in the</text>
+<text top="781" left="87" width="432" height="14" font="2">local disk, set up a callback, and finally return a file descriptor to the</text>
+<text top="796" left="87" width="299" height="14" font="2">calling application. See Figure 50.2 for a summary.</text>
+<text top="811" left="105" width="414" height="14" font="2">The key difference, however, from NFS, is that with each fetch of a</text>
+<text top="826" left="87" width="432" height="14" font="2">directory or file, the AFS client would establish a callback with the server,</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="9">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="9">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="354" width="8" height="14" font="2">T</text>
+<text top="98" left="363" width="16" height="11" font="9">HE</text>
+<text top="96" left="383" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="443" width="7" height="14" font="2">F</text>
+<text top="98" left="451" width="18" height="11" font="9">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="481" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="524" width="37" height="14" font="2">(AFS)</text>
+<text top="148" left="193" width="10" height="14" font="2">A</text>
+<text top="150" left="204" width="26" height="11" font="9">SIDE</text>
+<text top="148" left="231" width="18" height="14" font="2">: C</text>
+<text top="150" left="249" width="34" height="11" font="9">ACHE</text>
+<text top="148" left="287" width="10" height="14" font="2">C</text>
+<text top="150" left="297" width="75" height="11" font="9">ONSISTENCY</text>
+<text top="148" left="376" width="5" height="14" font="2">I</text>
+<text top="150" left="382" width="6" height="11" font="9">S</text>
+<text top="148" left="391" width="11" height="14" font="2">N</text>
+<text top="150" left="403" width="16" height="11" font="9">OT</text>
+<text top="148" left="423" width="23" height="14" font="2">A P</text>
+<text top="150" left="445" width="52" height="11" font="9">ANACEA</text>
+<text top="163" left="129" width="432" height="14" font="2">When discussing distributed file systems, much is made of the cache con-</text>
+<text top="178" left="129" width="432" height="14" font="2">sistency the file systems provide. However, this baseline consistency does</text>
+<text top="193" left="129" width="432" height="14" font="2">not solve all problems with regards to file access from multiple clients.</text>
+<text top="208" left="129" width="432" height="14" font="2">For example, if you are building a code repository, with multiple clients</text>
+<text top="223" left="129" width="432" height="14" font="2">performing check-ins and check-outs of code, you can’t simply rely on</text>
+<text top="238" left="129" width="432" height="14" font="2">the underlying file system to do all of the work for you; rather, you have</text>
+<text top="253" left="129" width="83" height="14" font="2">to use explicit</text>
+<text top="253" left="216" width="104" height="13" font="4"><b>file-level locking</b></text>
+<text top="253" left="323" width="237" height="14" font="2">in order to ensure that the “right” thing</text>
+<text top="268" left="129" width="432" height="14" font="2">happens when such concurrent accesses take place. Indeed, any applica-</text>
+<text top="283" left="129" width="432" height="14" font="2">tion that truly cares about concurrent updates will add extra machinery</text>
+<text top="298" left="129" width="432" height="14" font="2">to handle conflicts. The baseline consistency described in this chapter and</text>
+<text top="313" left="129" width="432" height="14" font="2">the previous one are useful primarily for casual usage, i.e., when a user</text>
+<text top="327" left="129" width="432" height="14" font="2">logs into a different client, they expect some reasonable version of their</text>
+<text top="342" left="129" width="432" height="14" font="2">files to show up there. Expecting more from these protocols is setting</text>
+<text top="357" left="129" width="393" height="14" font="2">yourself up for failure, disappointment, and tear-filled frustration.</text>
+<text top="397" left="129" width="432" height="14" font="2">thus ensuring that the server would notify the client of a change in its</text>
+<text top="412" left="129" width="298" height="14" font="2">cached state. The benefit is obvious: although the</text>
+<text top="412" left="431" width="22" height="14" font="11">first</text>
+<text top="412" left="456" width="52" height="14" font="2">access to</text>
+<text top="413" left="512" width="48" height="11" font="10">/home/</text>
+<text top="428" left="129" width="121" height="11" font="10">remzi/notes.txt</text>
+<text top="427" left="253" width="308" height="14" font="2">generates many client-server messages (as described</text>
+<text top="442" left="129" width="432" height="14" font="2">above), it also establishes callbacks for all the directories as well as the</text>
+<text top="457" left="129" width="432" height="14" font="2">file notes.txt, and thus subsequent accesses are entirely local and require</text>
+<text top="472" left="129" width="432" height="14" font="2">no server interaction at all. Thus, in the common case where a file is</text>
+<text top="487" left="129" width="432" height="14" font="2">cached at the client, AFS behaves nearly identically to a local disk-based</text>
+<text top="502" left="129" width="432" height="14" font="2">file system. If one accesses a file more than once, the second access should</text>
+<text top="517" left="129" width="230" height="14" font="2">be just as fast as accessing a file locally.</text>
+<text top="555" left="97" width="170" height="17" font="5">50.5 Cache Consistency</text>
+<text top="585" left="147" width="414" height="14" font="2">When we discussed NFS, there were two aspects of cache consistency</text>
+<text top="600" left="129" width="90" height="14" font="2">we considered:</text>
+<text top="600" left="224" width="102" height="13" font="4"><b>update visibility</b></text>
+<text top="600" left="330" width="23" height="14" font="2">and</text>
+<text top="600" left="356" width="93" height="13" font="4"><b>cache staleness</b></text>
+<text top="600" left="449" width="112" height="14" font="2">. With update visi-</text>
+<text top="615" left="129" width="432" height="14" font="2">bility, the question is: when will the server be updated with a new version</text>
+<text top="630" left="129" width="432" height="14" font="2">of a file? With cache staleness, the question is: once the server has a new</text>
+<text top="645" left="129" width="432" height="14" font="2">version, how long before clients see the new version instead of an older</text>
+<text top="660" left="129" width="79" height="14" font="2">cached copy?</text>
+<text top="676" left="147" width="414" height="14" font="2">Because of callbacks and whole-file caching, the cache consistency pro-</text>
+<text top="691" left="129" width="432" height="14" font="2">vided by AFS is easy to describe and understand. There are two im-</text>
+<text top="706" left="129" width="356" height="14" font="2">portant cases to consider: consistency between processes on</text>
+<text top="706" left="489" width="45" height="14" font="11">different</text>
+<text top="706" left="538" width="23" height="14" font="2">ma-</text>
+<text top="721" left="129" width="293" height="14" font="2">chines, and consistency between processes on the</text>
+<text top="721" left="425" width="27" height="14" font="11">same</text>
+<text top="721" left="456" width="54" height="14" font="2">machine.</text>
+<text top="736" left="147" width="414" height="14" font="2">Between different machines, AFS makes updates visible at the server</text>
+<text top="751" left="129" width="432" height="14" font="2">and invalidates cached copies at the exact same time, which is when the</text>
+<text top="766" left="129" width="432" height="14" font="2">updated file is closed. A client opens a file, and then writes to it (perhaps</text>
+<text top="781" left="129" width="432" height="14" font="2">repeatedly). When it is finally closed, the new file is flushed to the server</text>
+<text top="796" left="129" width="432" height="14" font="2">(and thus visible). At this point, the server then “breaks” callbacks for</text>
+<text top="811" left="129" width="432" height="14" font="2">any clients with cached copies; the break is accomplished by contacting</text>
+<text top="826" left="129" width="432" height="14" font="2">each client and informing it that the callback it has on the file is no longer</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="9">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="12" family="COPUSO+URWPalladioL" color="#000000"/>
+	<fontspec id="15" size="12" family="XZAYCA+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="16" size="12" family="RAIRGL+CMSY8" color="#000000"/>
+	<fontspec id="17" size="15" family="NADWBN+LINE10" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="9">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="176" width="7" height="14" font="2">F</text>
+<text top="98" left="184" width="18" height="11" font="9">ILE</text>
+<text top="96" left="206" width="7" height="14" font="2">S</text>
+<text top="98" left="214" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="257" width="37" height="14" font="2">(AFS)</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="138" left="144" width="34" height="12" font="14"><b>Client</b></text>
+<text top="142" left="177" width="5" height="6" font="13">1</text>
+<text top="138" left="274" width="34" height="12" font="14"><b>Client</b></text>
+<text top="142" left="308" width="5" height="6" font="13">2</text>
+<text top="138" left="356" width="35" height="12" font="14"><b>Server</b></text>
+<text top="138" left="440" width="52" height="12" font="15">Comments</text>
+<text top="152" left="96" width="7" height="12" font="14"><b>P</b></text>
+<text top="156" left="103" width="5" height="6" font="13">1</text>
+<text top="152" left="143" width="7" height="12" font="14"><b>P</b></text>
+<text top="156" left="151" width="5" height="6" font="13">2</text>
+<text top="152" left="205" width="52" height="12" font="14"><b>Cache P</b></text>
+<text top="156" left="257" width="5" height="6" font="13">3</text>
+<text top="152" left="311" width="33" height="12" font="14"><b>Cache</b></text>
+<text top="152" left="361" width="27" height="12" font="14"><b>Disk</b></text>
+<text top="167" left="96" width="41" height="12" font="12">open(F)</text>
+<text top="167" left="219" width="4" height="12" font="12">-</text>
+<text top="167" left="326" width="4" height="12" font="12">-</text>
+<text top="167" left="372" width="4" height="12" font="12">-</text>
+<text top="167" left="435" width="61" height="12" font="12">File created</text>
+<text top="181" left="96" width="45" height="12" font="12">write(A)</text>
+<text top="181" left="217" width="9" height="12" font="12">A</text>
+<text top="181" left="326" width="4" height="12" font="12">-</text>
+<text top="181" left="372" width="4" height="12" font="12">-</text>
+<text top="195" left="96" width="34" height="12" font="12">close()</text>
+<text top="195" left="217" width="9" height="12" font="12">A</text>
+<text top="195" left="326" width="4" height="12" font="12">-</text>
+<text top="195" left="369" width="9" height="12" font="12">A</text>
+<text top="209" left="143" width="41" height="12" font="12">open(F)</text>
+<text top="209" left="217" width="9" height="12" font="12">A</text>
+<text top="209" left="326" width="4" height="12" font="12">-</text>
+<text top="209" left="369" width="9" height="12" font="12">A</text>
+<text top="224" left="143" width="31" height="12" font="12">read()</text>
+<text top="226" left="178" width="13" height="6" font="16">→</text>
+<text top="224" left="193" width="9" height="12" font="12">A</text>
+<text top="224" left="217" width="9" height="12" font="12">A</text>
+<text top="224" left="326" width="4" height="12" font="12">-</text>
+<text top="224" left="369" width="9" height="12" font="12">A</text>
+<text top="238" left="143" width="34" height="12" font="12">close()</text>
+<text top="238" left="217" width="9" height="12" font="12">A</text>
+<text top="238" left="326" width="4" height="12" font="12">-</text>
+<text top="238" left="369" width="9" height="12" font="12">A</text>
+<text top="252" left="96" width="41" height="12" font="12">open(F)</text>
+<text top="252" left="217" width="9" height="12" font="12">A</text>
+<text top="252" left="326" width="4" height="12" font="12">-</text>
+<text top="252" left="369" width="9" height="12" font="12">A</text>
+<text top="266" left="96" width="43" height="12" font="12">write(B)</text>
+<text top="266" left="218" width="7" height="12" font="12">B</text>
+<text top="266" left="326" width="4" height="12" font="12">-</text>
+<text top="266" left="369" width="9" height="12" font="12">A</text>
+<text top="280" left="143" width="41" height="12" font="12">open(F)</text>
+<text top="280" left="218" width="7" height="12" font="12">B</text>
+<text top="280" left="326" width="4" height="12" font="12">-</text>
+<text top="280" left="369" width="9" height="12" font="12">A</text>
+<text top="280" left="425" width="82" height="12" font="12">Local processes</text>
+<text top="294" left="143" width="31" height="12" font="12">read()</text>
+<text top="297" left="178" width="13" height="6" font="16">→</text>
+<text top="294" left="193" width="7" height="12" font="12">B</text>
+<text top="294" left="218" width="7" height="12" font="12">B</text>
+<text top="294" left="326" width="4" height="12" font="12">-</text>
+<text top="294" left="369" width="9" height="12" font="12">A</text>
+<text top="294" left="404" width="122" height="12" font="12">see writes immediately</text>
+<text top="309" left="143" width="34" height="12" font="12">close()</text>
+<text top="309" left="218" width="7" height="12" font="12">B</text>
+<text top="309" left="326" width="4" height="12" font="12">-</text>
+<text top="309" left="369" width="9" height="12" font="12">A</text>
+<text top="323" left="218" width="7" height="12" font="12">B</text>
+<text top="323" left="250" width="41" height="12" font="12">open(F)</text>
+<text top="323" left="323" width="9" height="12" font="12">A</text>
+<text top="323" left="369" width="9" height="12" font="12">A</text>
+<text top="323" left="419" width="94" height="12" font="12">Remote processes</text>
+<text top="337" left="218" width="7" height="12" font="12">B</text>
+<text top="337" left="250" width="31" height="12" font="12">read()</text>
+<text top="340" left="284" width="13" height="6" font="16">→</text>
+<text top="337" left="300" width="9" height="12" font="12">A</text>
+<text top="337" left="323" width="9" height="12" font="12">A</text>
+<text top="337" left="369" width="9" height="12" font="12">A</text>
+<text top="337" left="416" width="99" height="12" font="12">do not see writes...</text>
+<text top="351" left="218" width="7" height="12" font="12">B</text>
+<text top="351" left="250" width="34" height="12" font="12">close()</text>
+<text top="351" left="323" width="9" height="12" font="12">A</text>
+<text top="351" left="369" width="9" height="12" font="12">A</text>
+<text top="365" left="96" width="34" height="12" font="12">close()</text>
+<text top="365" left="218" width="7" height="12" font="12">B</text>
+<text top="360" left="321" width="15" height="16" font="17">✚</text>
+<text top="365" left="323" width="9" height="12" font="12">A</text>
+<text top="365" left="370" width="7" height="12" font="12">B</text>
+<text top="365" left="428" width="75" height="12" font="12">... until close()</text>
+<text top="380" left="218" width="7" height="12" font="12">B</text>
+<text top="380" left="250" width="41" height="12" font="12">open(F)</text>
+<text top="380" left="324" width="7" height="12" font="12">B</text>
+<text top="380" left="370" width="7" height="12" font="12">B</text>
+<text top="380" left="425" width="81" height="12" font="12">has taken place</text>
+<text top="394" left="218" width="7" height="12" font="12">B</text>
+<text top="394" left="250" width="31" height="12" font="12">read()</text>
+<text top="396" left="284" width="13" height="6" font="16">→</text>
+<text top="394" left="300" width="7" height="12" font="12">B</text>
+<text top="394" left="324" width="7" height="12" font="12">B</text>
+<text top="394" left="370" width="7" height="12" font="12">B</text>
+<text top="408" left="218" width="7" height="12" font="12">B</text>
+<text top="408" left="250" width="34" height="12" font="12">close()</text>
+<text top="408" left="324" width="7" height="12" font="12">B</text>
+<text top="408" left="370" width="7" height="12" font="12">B</text>
+<text top="422" left="218" width="7" height="12" font="12">B</text>
+<text top="422" left="250" width="41" height="12" font="12">open(F)</text>
+<text top="422" left="324" width="7" height="12" font="12">B</text>
+<text top="422" left="370" width="7" height="12" font="12">B</text>
+<text top="436" left="96" width="41" height="12" font="12">open(F)</text>
+<text top="436" left="218" width="7" height="12" font="12">B</text>
+<text top="436" left="324" width="7" height="12" font="12">B</text>
+<text top="436" left="370" width="7" height="12" font="12">B</text>
+<text top="451" left="96" width="45" height="12" font="12">write(D)</text>
+<text top="451" left="217" width="9" height="12" font="12">D</text>
+<text top="451" left="324" width="7" height="12" font="12">B</text>
+<text top="451" left="370" width="7" height="12" font="12">B</text>
+<text top="465" left="217" width="9" height="12" font="12">D</text>
+<text top="465" left="250" width="44" height="12" font="12">write(C)</text>
+<text top="465" left="324" width="8" height="12" font="12">C</text>
+<text top="465" left="370" width="7" height="12" font="12">B</text>
+<text top="479" left="217" width="9" height="12" font="12">D</text>
+<text top="479" left="250" width="34" height="12" font="12">close()</text>
+<text top="479" left="324" width="8" height="12" font="12">C</text>
+<text top="479" left="370" width="8" height="12" font="12">C</text>
+<text top="495" left="96" width="34" height="12" font="12">close()</text>
+<text top="495" left="217" width="9" height="12" font="12">D</text>
+<text top="492" left="324" width="7" height="16" font="17">✁</text>
+<text top="495" left="324" width="8" height="12" font="12">C</text>
+<text top="495" left="369" width="9" height="12" font="12">D</text>
+<text top="509" left="217" width="9" height="12" font="12">D</text>
+<text top="509" left="250" width="41" height="12" font="12">open(F)</text>
+<text top="509" left="323" width="9" height="12" font="12">D</text>
+<text top="509" left="369" width="9" height="12" font="12">D</text>
+<text top="509" left="410" width="104" height="12" font="12">Unfortunately for P</text>
+<text top="514" left="514" width="5" height="6" font="13">3</text>
+<text top="523" left="217" width="9" height="12" font="12">D</text>
+<text top="523" left="250" width="31" height="12" font="12">read()</text>
+<text top="526" left="284" width="13" height="6" font="16">→</text>
+<text top="523" left="300" width="9" height="12" font="12">D</text>
+<text top="523" left="323" width="9" height="12" font="12">D</text>
+<text top="523" left="369" width="9" height="12" font="12">D</text>
+<text top="523" left="414" width="102" height="12" font="12">the last writer wins</text>
+<text top="538" left="217" width="9" height="12" font="12">D</text>
+<text top="538" left="250" width="34" height="12" font="12">close()</text>
+<text top="538" left="323" width="9" height="12" font="12">D</text>
+<text top="538" left="369" width="9" height="12" font="12">D</text>
+<text top="565" left="180" width="69" height="14" font="2">Figure 50.3:</text>
+<text top="565" left="252" width="174" height="13" font="4"><b>Cache Consistency Timeline</b></text>
+<text top="585" left="87" width="432" height="14" font="2">valid. This step ensures that clients will no longer read stale copies of</text>
+<text top="600" left="87" width="432" height="14" font="2">the file; subsequent opens on those clients will require a re-fetch of the</text>
+<text top="615" left="87" width="432" height="14" font="2">new version of the file from the server (and will also serve to reestablish</text>
+<text top="630" left="87" width="242" height="14" font="2">a callback on the new version of the file).</text>
+<text top="646" left="105" width="414" height="14" font="2">AFS makes an exception to this simple model between processes on</text>
+<text top="661" left="87" width="432" height="14" font="2">the same machine. In this case, writes to a file are immediately visible to</text>
+<text top="676" left="87" width="432" height="14" font="2">other local processes (i.e., a process does not have to wait until a file is</text>
+<text top="691" left="87" width="432" height="14" font="2">closed to see its latest updates). This makes using a single machine be-</text>
+<text top="706" left="87" width="432" height="14" font="2">have exactly as you would expect, as this behavior is based upon typical</text>
+<text top="721" left="87" width="10" height="14" font="2">U</text>
+<text top="723" left="99" width="21" height="11" font="9">NIX</text>
+<text top="721" left="123" width="396" height="14" font="2">semantics. Only when switching to a different machine would you</text>
+<text top="736" left="87" width="375" height="14" font="2">be able to detect the more general AFS consistency mechanism.</text>
+<text top="751" left="105" width="414" height="14" font="2">There is one interesting cross-machine case that is worthy of further</text>
+<text top="766" left="87" width="432" height="14" font="2">discussion. Specifically, in the rare case that processes on different ma-</text>
+<text top="781" left="87" width="432" height="14" font="2">chines are modifying a file at the same time, AFS naturally employs what</text>
+<text top="796" left="87" width="80" height="14" font="2">is known as a</text>
+<text top="796" left="170" width="95" height="13" font="4"><b>last writer wins</b></text>
+<text top="796" left="268" width="251" height="14" font="2">approach (which perhaps should be called</text>
+<text top="811" left="87" width="97" height="13" font="4"><b>last closer wins</b></text>
+<text top="811" left="184" width="221" height="14" font="2">). Specifically, whichever client calls</text>
+<text top="812" left="409" width="57" height="11" font="10">close()</text>
+<text top="811" left="471" width="48" height="14" font="2">last will</text>
+<text top="826" left="87" width="432" height="14" font="2">update the entire file on the server last and thus will be the “winning”</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="9">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="9">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="354" width="8" height="14" font="2">T</text>
+<text top="98" left="363" width="16" height="11" font="9">HE</text>
+<text top="96" left="383" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="443" width="7" height="14" font="2">F</text>
+<text top="98" left="451" width="18" height="11" font="9">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="481" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="524" width="37" height="14" font="2">(AFS)</text>
+<text top="139" left="129" width="432" height="14" font="2">file, i.e., the file that remains on the server for others to see. The result is</text>
+<text top="154" left="129" width="432" height="14" font="2">a file that was generated in its entirety either by one client or the other.</text>
+<text top="169" left="129" width="432" height="14" font="2">Note the difference from a block-based protocol like NFS: in NFS, writes</text>
+<text top="183" left="129" width="432" height="14" font="2">of individual blocks may be flushed out to the server as each client is up-</text>
+<text top="198" left="129" width="432" height="14" font="2">dating the file, and thus the final file on the server could end up as a mix</text>
+<text top="213" left="129" width="432" height="14" font="2">of updates from both clients. In many cases, such a mixed file output</text>
+<text top="228" left="129" width="432" height="14" font="2">would not make much sense, i.e., imagine a JPEG image getting modi-</text>
+<text top="243" left="129" width="432" height="14" font="2">fied by two clients in pieces; the resulting mix of writes would not likely</text>
+<text top="258" left="129" width="140" height="14" font="2">constitute a valid JPEG.</text>
+<text top="275" left="147" width="414" height="14" font="2">A timeline showing a few of these different scenarios can be seen in</text>
+<text top="290" left="129" width="378" height="14" font="2">Figure 50.3. The columns show the behavior of two processes (P</text>
+<text top="296" left="507" width="5" height="6" font="13">1</text>
+<text top="290" left="516" width="34" height="14" font="2">and P</text>
+<text top="296" left="550" width="5" height="6" font="13">2</text>
+<text top="290" left="556" width="4" height="14" font="2">)</text>
+<text top="305" left="129" width="56" height="14" font="2">on Client</text>
+<text top="311" left="185" width="5" height="6" font="13">1</text>
+<text top="305" left="195" width="206" height="14" font="2">and its cache state, one process (P</text>
+<text top="311" left="401" width="5" height="6" font="13">3</text>
+<text top="305" left="407" width="64" height="14" font="2">) on Client</text>
+<text top="311" left="472" width="5" height="6" font="13">2</text>
+<text top="305" left="482" width="78" height="14" font="2">and its cache</text>
+<text top="320" left="129" width="432" height="14" font="2">state, and the server (Server), all operating on a single file called, imag-</text>
+<text top="335" left="129" width="54" height="14" font="2">inatively,</text>
+<text top="336" left="188" width="8" height="11" font="10">F</text>
+<text top="335" left="196" width="365" height="14" font="2">. For the server, the figure simply shows the contents of the</text>
+<text top="350" left="129" width="432" height="14" font="2">file after the operation on the left has completed. Read through it and see</text>
+<text top="365" left="129" width="432" height="14" font="2">if you can understand why each read returns the results that it does. A</text>
+<text top="380" left="129" width="358" height="14" font="2">commentary field on the right will help you if you get stuck.</text>
+<text top="409" left="97" width="148" height="17" font="5">50.6 Crash Recovery</text>
+<text top="435" left="147" width="414" height="14" font="2">From the description above, you might sense that crash recovery is</text>
+<text top="450" left="129" width="432" height="14" font="2">more involved than with NFS. You would be right. For example, imagine</text>
+<text top="465" left="129" width="432" height="14" font="2">there is a short period of time where a server (S) is not able to contact</text>
+<text top="480" left="129" width="432" height="14" font="2">a client (C1), for example, while the client C1 is rebooting. While C1</text>
+<text top="495" left="129" width="432" height="14" font="2">is not available, S may have tried to send it one or more callback recall</text>
+<text top="510" left="129" width="432" height="14" font="2">messages; for example, imagine C1 had file F cached on its local disk, and</text>
+<text top="525" left="129" width="432" height="14" font="2">then C2 (another client) updated F, thus causing S to send messages to all</text>
+<text top="540" left="129" width="432" height="14" font="2">clients caching the file to remove it from their local caches. Because C1</text>
+<text top="555" left="129" width="432" height="14" font="2">may miss those critical messages when it is rebooting, upon rejoining the</text>
+<text top="570" left="129" width="432" height="14" font="2">system, C1 should treat all of its cache contents as suspect. Thus, upon</text>
+<text top="585" left="129" width="432" height="14" font="2">the next access to file F, C1 should first ask the server (with a TestAuth</text>
+<text top="600" left="129" width="432" height="14" font="2">protocol message) whether its cached copy of file F is still valid; if so, C1</text>
+<text top="615" left="129" width="401" height="14" font="2">can use it; if not, C1 should fetch the newer version from the server.</text>
+<text top="632" left="147" width="414" height="14" font="2">Server recovery after a crash is also more complicated. The problem</text>
+<text top="647" left="129" width="432" height="14" font="2">that arises is that callbacks are kept in memory; thus, when a server re-</text>
+<text top="662" left="129" width="432" height="14" font="2">boots, it has no idea which client machine has which files. Thus, upon</text>
+<text top="677" left="129" width="432" height="14" font="2">server restart, each client of the server must realize that the server has</text>
+<text top="692" left="129" width="432" height="14" font="2">crashed and treat all of their cache contents as suspect, and (as above)</text>
+<text top="707" left="129" width="432" height="14" font="2">reestablish the validity of a file before using it. Thus, a server crash is a</text>
+<text top="721" left="129" width="432" height="14" font="2">big event, as one must ensure that each client is aware of the crash in a</text>
+<text top="736" left="129" width="432" height="14" font="2">timely manner, or risk a client accessing a stale file. There are many ways</text>
+<text top="751" left="129" width="432" height="14" font="2">to implement such recovery; for example, by having the server send a</text>
+<text top="766" left="129" width="432" height="14" font="2">message (saying “don’t trust your cache contents!”) to each client when</text>
+<text top="781" left="129" width="432" height="14" font="2">it is up and running again, or by having clients check that the server is</text>
+<text top="796" left="129" width="150" height="14" font="2">alive periodically (with a</text>
+<text top="796" left="283" width="58" height="13" font="4"><b>heartbeat</b></text>
+<text top="796" left="344" width="216" height="14" font="2">message, as it is called). As you can</text>
+<text top="811" left="129" width="432" height="14" font="2">see, there is a cost to building a more scalable and sensible caching model;</text>
+<text top="826" left="129" width="280" height="14" font="2">with NFS, clients hardly noticed a server crash.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="9">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="13" family="MHFJUN+CMMI9" color="#000000"/>
+	<fontspec id="19" size="9" family="MIIXEU+CMMI6" color="#000000"/>
+	<fontspec id="20" size="13" family="ARTRLC+CMSY9" color="#000000"/>
+	<fontspec id="21" size="13" family="XSBTOK+CMR9" color="#000000"/>
+	<fontspec id="22" size="7" family="KWIGFZ+CMMI5" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="9">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="176" width="7" height="14" font="2">F</text>
+<text top="98" left="184" width="18" height="11" font="9">ILE</text>
+<text top="96" left="206" width="7" height="14" font="2">S</text>
+<text top="98" left="214" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="257" width="37" height="14" font="2">(AFS)</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="137" left="500" width="26" height="13" font="4"><b>AFS</b></text>
+<text top="152" left="96" width="60" height="13" font="4"><b>Workload</b></text>
+<text top="152" left="340" width="27" height="13" font="4"><b>NFS</b></text>
+<text top="152" left="428" width="26" height="13" font="4"><b>AFS</b></text>
+<text top="152" left="500" width="27" height="13" font="4"><b>NFS</b></text>
+<text top="168" left="96" width="167" height="14" font="2">1. Small file, sequential read</text>
+<text top="168" left="326" width="11" height="10" font="18">N</text>
+<text top="173" left="337" width="5" height="6" font="19">s</text>
+<text top="173" left="346" width="4" height="9" font="20">·</text>
+<text top="168" left="353" width="9" height="10" font="18">L</text>
+<text top="173" left="363" width="16" height="6" font="19">net</text>
+<text top="168" left="414" width="11" height="10" font="18">N</text>
+<text top="173" left="425" width="5" height="6" font="19">s</text>
+<text top="173" left="434" width="4" height="9" font="20">·</text>
+<text top="168" left="441" width="9" height="10" font="18">L</text>
+<text top="173" left="450" width="16" height="6" font="19">net</text>
+<text top="168" left="510" width="7" height="14" font="21">1</text>
+<text top="183" left="96" width="183" height="14" font="2">2. Small file, sequential re-read</text>
+<text top="183" left="322" width="11" height="10" font="18">N</text>
+<text top="188" left="333" width="5" height="6" font="19">s</text>
+<text top="188" left="342" width="4" height="9" font="20">·</text>
+<text top="183" left="349" width="9" height="10" font="18">L</text>
+<text top="188" left="359" width="25" height="6" font="19">mem</text>
+<text top="183" left="410" width="11" height="10" font="18">N</text>
+<text top="188" left="421" width="5" height="6" font="19">s</text>
+<text top="188" left="430" width="4" height="9" font="20">·</text>
+<text top="183" left="437" width="9" height="10" font="18">L</text>
+<text top="188" left="446" width="25" height="6" font="19">mem</text>
+<text top="183" left="510" width="7" height="14" font="21">1</text>
+<text top="198" left="96" width="185" height="14" font="2">3. Medium file, sequential read</text>
+<text top="198" left="324" width="11" height="10" font="18">N</text>
+<text top="203" left="335" width="10" height="6" font="19">m</text>
+<text top="203" left="349" width="4" height="9" font="20">·</text>
+<text top="198" left="356" width="9" height="10" font="18">L</text>
+<text top="203" left="365" width="16" height="6" font="19">net</text>
+<text top="198" left="412" width="11" height="10" font="18">N</text>
+<text top="203" left="423" width="10" height="6" font="19">m</text>
+<text top="203" left="436" width="4" height="9" font="20">·</text>
+<text top="198" left="443" width="9" height="10" font="18">L</text>
+<text top="203" left="453" width="16" height="6" font="19">net</text>
+<text top="198" left="510" width="7" height="14" font="21">1</text>
+<text top="212" left="96" width="201" height="14" font="2">4. Medium file, sequential re-read</text>
+<text top="213" left="320" width="11" height="10" font="18">N</text>
+<text top="218" left="331" width="10" height="6" font="19">m</text>
+<text top="218" left="344" width="4" height="9" font="20">·</text>
+<text top="213" left="351" width="9" height="10" font="18">L</text>
+<text top="218" left="361" width="25" height="6" font="19">mem</text>
+<text top="213" left="407" width="11" height="10" font="18">N</text>
+<text top="218" left="419" width="10" height="6" font="19">m</text>
+<text top="218" left="432" width="4" height="9" font="20">·</text>
+<text top="213" left="439" width="9" height="10" font="18">L</text>
+<text top="218" left="448" width="25" height="6" font="19">mem</text>
+<text top="213" left="510" width="7" height="14" font="21">1</text>
+<text top="227" left="96" width="168" height="14" font="2">5. Large file, sequential read</text>
+<text top="228" left="325" width="11" height="10" font="18">N</text>
+<text top="232" left="336" width="8" height="6" font="19">L</text>
+<text top="233" left="348" width="4" height="9" font="20">·</text>
+<text top="228" left="354" width="9" height="10" font="18">L</text>
+<text top="232" left="364" width="16" height="6" font="19">net</text>
+<text top="228" left="413" width="11" height="10" font="18">N</text>
+<text top="232" left="424" width="8" height="6" font="19">L</text>
+<text top="233" left="435" width="4" height="9" font="20">·</text>
+<text top="228" left="442" width="9" height="10" font="18">L</text>
+<text top="232" left="452" width="16" height="6" font="19">net</text>
+<text top="228" left="510" width="7" height="14" font="21">1</text>
+<text top="244" left="96" width="184" height="14" font="2">6. Large file, sequential re-read</text>
+<text top="245" left="325" width="11" height="10" font="18">N</text>
+<text top="249" left="336" width="8" height="6" font="19">L</text>
+<text top="250" left="348" width="4" height="9" font="20">·</text>
+<text top="245" left="354" width="9" height="10" font="18">L</text>
+<text top="249" left="364" width="16" height="6" font="19">net</text>
+<text top="245" left="410" width="11" height="10" font="18">N</text>
+<text top="249" left="422" width="8" height="6" font="19">L</text>
+<text top="250" left="433" width="4" height="9" font="20">·</text>
+<text top="245" left="440" width="9" height="10" font="18">L</text>
+<text top="250" left="449" width="21" height="6" font="19">disk</text>
+<text top="242" left="499" width="8" height="6" font="19">L</text>
+<text top="245" left="507" width="20" height="5" font="22">disk</text>
+<text top="253" left="501" width="8" height="6" font="19">L</text>
+<text top="255" left="509" width="16" height="5" font="22">net</text>
+<text top="261" left="96" width="142" height="14" font="2">7. Large file, single read</text>
+<text top="262" left="340" width="9" height="10" font="18">L</text>
+<text top="266" left="349" width="16" height="6" font="19">net</text>
+<text top="262" left="413" width="11" height="10" font="18">N</text>
+<text top="266" left="424" width="8" height="6" font="19">L</text>
+<text top="267" left="435" width="4" height="9" font="20">·</text>
+<text top="262" left="442" width="9" height="10" font="18">L</text>
+<text top="266" left="452" width="16" height="6" font="19">net</text>
+<text top="262" left="504" width="11" height="10" font="18">N</text>
+<text top="266" left="515" width="8" height="6" font="19">L</text>
+<text top="276" left="96" width="172" height="14" font="2">8. Small file, sequential write</text>
+<text top="276" left="326" width="11" height="10" font="18">N</text>
+<text top="281" left="337" width="5" height="6" font="19">s</text>
+<text top="282" left="346" width="4" height="9" font="20">·</text>
+<text top="276" left="353" width="9" height="10" font="18">L</text>
+<text top="281" left="363" width="16" height="6" font="19">net</text>
+<text top="276" left="414" width="11" height="10" font="18">N</text>
+<text top="281" left="425" width="5" height="6" font="19">s</text>
+<text top="282" left="434" width="4" height="9" font="20">·</text>
+<text top="276" left="441" width="9" height="10" font="18">L</text>
+<text top="281" left="450" width="16" height="6" font="19">net</text>
+<text top="277" left="510" width="7" height="14" font="21">1</text>
+<text top="291" left="96" width="172" height="14" font="2">9. Large file, sequential write</text>
+<text top="291" left="325" width="11" height="10" font="18">N</text>
+<text top="296" left="336" width="8" height="6" font="19">L</text>
+<text top="297" left="348" width="4" height="9" font="20">·</text>
+<text top="291" left="354" width="9" height="10" font="18">L</text>
+<text top="296" left="364" width="16" height="6" font="19">net</text>
+<text top="291" left="413" width="11" height="10" font="18">N</text>
+<text top="296" left="424" width="8" height="6" font="19">L</text>
+<text top="297" left="435" width="4" height="9" font="20">·</text>
+<text top="291" left="442" width="9" height="10" font="18">L</text>
+<text top="296" left="452" width="16" height="6" font="19">net</text>
+<text top="292" left="510" width="7" height="14" font="21">1</text>
+<text top="306" left="96" width="206" height="14" font="2">10. Large file, sequential overwrite</text>
+<text top="306" left="325" width="11" height="10" font="18">N</text>
+<text top="311" left="336" width="8" height="6" font="19">L</text>
+<text top="311" left="348" width="4" height="9" font="20">·</text>
+<text top="306" left="354" width="9" height="10" font="18">L</text>
+<text top="311" left="364" width="16" height="6" font="19">net</text>
+<text top="307" left="404" width="7" height="14" font="21">2</text>
+<text top="311" left="414" width="4" height="9" font="20">·</text>
+<text top="306" left="421" width="11" height="10" font="18">N</text>
+<text top="311" left="432" width="8" height="6" font="19">L</text>
+<text top="311" left="444" width="4" height="9" font="20">·</text>
+<text top="306" left="451" width="9" height="10" font="18">L</text>
+<text top="311" left="460" width="16" height="6" font="19">net</text>
+<text top="307" left="510" width="7" height="14" font="21">2</text>
+<text top="321" left="96" width="153" height="14" font="2">11. Large file, single write</text>
+<text top="321" left="340" width="9" height="10" font="18">L</text>
+<text top="326" left="349" width="16" height="6" font="19">net</text>
+<text top="322" left="404" width="7" height="14" font="21">2</text>
+<text top="326" left="414" width="4" height="9" font="20">·</text>
+<text top="321" left="421" width="11" height="10" font="18">N</text>
+<text top="326" left="432" width="8" height="6" font="19">L</text>
+<text top="326" left="444" width="4" height="9" font="20">·</text>
+<text top="321" left="451" width="9" height="10" font="18">L</text>
+<text top="326" left="460" width="16" height="6" font="19">net</text>
+<text top="322" left="495" width="7" height="14" font="21">2</text>
+<text top="326" left="505" width="4" height="9" font="20">·</text>
+<text top="321" left="512" width="11" height="10" font="18">N</text>
+<text top="326" left="523" width="8" height="6" font="19">L</text>
+<text top="349" left="186" width="69" height="14" font="2">Figure 50.4:</text>
+<text top="349" left="259" width="160" height="13" font="4"><b>Comparison: AFS vs. NFS</b></text>
+<text top="377" left="55" width="278" height="17" font="5">50.7 Scale And Performance Of AFSv2</text>
+<text top="407" left="105" width="414" height="14" font="2">With the new protocol in place, AFSv2 was measured and found to</text>
+<text top="422" left="87" width="432" height="14" font="2">be much more scalable than the original version. Indeed, each server</text>
+<text top="437" left="87" width="432" height="14" font="2">could support about 50 clients (instead of just 20). A further benefit was</text>
+<text top="452" left="87" width="432" height="14" font="2">that client-side performance often came quite close to local performance,</text>
+<text top="467" left="87" width="432" height="14" font="2">because in the common case, all file accesses were local; file reads usually</text>
+<text top="482" left="87" width="432" height="14" font="2">went to the local disk cache (and potentially, local memory). Only when a</text>
+<text top="496" left="87" width="432" height="14" font="2">client created a new file or wrote to an existing one was there need to send</text>
+<text top="511" left="87" width="432" height="14" font="2">a Store message to the server and thus update the file with new contents.</text>
+<text top="527" left="105" width="414" height="14" font="2">Let us also gain some perspective on AFS performance by compar-</text>
+<text top="541" left="87" width="432" height="14" font="2">ing common file-system access scenarios with NFS. Figure 50.4 (page 9)</text>
+<text top="556" left="87" width="286" height="14" font="2">shows the results of our qualitative comparison.</text>
+<text top="571" left="105" width="414" height="14" font="2">In the figure, we examine typical read and write patterns analytically,</text>
+<text top="586" left="87" width="257" height="14" font="2">for files of different sizes. Small files have</text>
+<text top="587" left="349" width="11" height="10" font="18">N</text>
+<text top="591" left="360" width="5" height="6" font="19">s</text>
+<text top="586" left="371" width="148" height="14" font="2">blocks in them; medium</text>
+<text top="601" left="87" width="57" height="14" font="2">files have</text>
+<text top="602" left="148" width="11" height="10" font="18">N</text>
+<text top="606" left="160" width="10" height="6" font="19">m</text>
+<text top="601" left="174" width="137" height="14" font="2">blocks; large files have</text>
+<text top="602" left="316" width="11" height="10" font="18">N</text>
+<text top="606" left="327" width="8" height="6" font="19">L</text>
+<text top="601" left="339" width="180" height="14" font="2">blocks. We assume that small</text>
+<text top="616" left="87" width="432" height="14" font="2">and medium files fit into the memory of a client; large files fit on a local</text>
+<text top="631" left="87" width="178" height="14" font="2">disk but not in client memory.</text>
+<text top="646" left="105" width="414" height="14" font="2">We also assume, for the sake of analysis, that an access across the net-</text>
+<text top="661" left="87" width="285" height="14" font="2">work to the remote server for a file block takes</text>
+<text top="662" left="376" width="9" height="10" font="18">L</text>
+<text top="666" left="386" width="16" height="6" font="19">net</text>
+<text top="661" left="407" width="112" height="14" font="2">time units. Access</text>
+<text top="676" left="87" width="135" height="14" font="2">to local memory takes</text>
+<text top="677" left="227" width="9" height="10" font="18">L</text>
+<text top="681" left="236" width="25" height="6" font="19">mem</text>
+<text top="676" left="262" width="187" height="14" font="2">, and access to local disk takes</text>
+<text top="677" left="454" width="9" height="10" font="18">L</text>
+<text top="681" left="463" width="21" height="6" font="19">disk</text>
+<text top="676" left="485" width="34" height="14" font="2">. The</text>
+<text top="691" left="87" width="157" height="14" font="2">general assumption is that</text>
+<text top="692" left="247" width="9" height="10" font="18">L</text>
+<text top="696" left="257" width="16" height="6" font="19">net</text>
+<text top="692" left="278" width="24" height="10" font="18">&gt; L</text>
+<text top="696" left="302" width="21" height="6" font="19">disk</text>
+<text top="692" left="327" width="24" height="10" font="18">&gt; L</text>
+<text top="696" left="351" width="25" height="6" font="19">mem</text>
+<text top="691" left="377" width="3" height="14" font="2">.</text>
+<text top="706" left="105" width="414" height="14" font="2">Finally, we assume that the first access to a file does not hit in any</text>
+<text top="721" left="87" width="432" height="14" font="2">caches. Subsequent file accesses (i.e., “re-reads”) we assume will hit in</text>
+<text top="736" left="87" width="381" height="14" font="2">caches, if the relevant cache has enough capacity to hold the file.</text>
+<text top="751" left="105" width="414" height="14" font="2">The columns of the figure show the time a particular operation (e.g., a</text>
+<text top="766" left="87" width="432" height="14" font="2">small file sequential read) roughly takes on either NFS or AFS. The right-</text>
+<text top="781" left="87" width="275" height="14" font="2">most column displays the ratio of AFS to NFS.</text>
+<text top="796" left="105" width="414" height="14" font="2">We make the following observations. First, in many cases, the per-</text>
+<text top="811" left="87" width="432" height="14" font="2">formance of each system is roughly equivalent. For example, when first</text>
+<text top="826" left="87" width="432" height="14" font="2">reading a file (e.g., Workloads 1, 3, 5), the time to fetch the file from the re-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="9">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="9">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="23" size="10" family="XZAYCA+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="354" width="8" height="14" font="2">T</text>
+<text top="98" left="363" width="16" height="11" font="9">HE</text>
+<text top="96" left="383" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="443" width="7" height="14" font="2">F</text>
+<text top="98" left="451" width="18" height="11" font="9">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="481" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="524" width="37" height="14" font="2">(AFS)</text>
+<text top="139" left="129" width="432" height="14" font="2">mote server dominates, and is similar on both systems. You might think</text>
+<text top="154" left="129" width="432" height="14" font="2">AFS would be slower in this case, as it has to write the file to local disk;</text>
+<text top="169" left="129" width="432" height="14" font="2">however, those writes are buffered by the local (client-side) file system</text>
+<text top="183" left="129" width="432" height="14" font="2">cache and thus said costs are likely hidden. Similarly, you might think</text>
+<text top="198" left="129" width="432" height="14" font="2">that AFS reads from the local cached copy would be slower, again be-</text>
+<text top="213" left="129" width="432" height="14" font="2">cause AFS stores the cached copy on disk. However, AFS again benefits</text>
+<text top="228" left="129" width="432" height="14" font="2">here from local file system caching; reads on AFS would likely hit in the</text>
+<text top="243" left="129" width="412" height="14" font="2">client-side memory cache, and performance would be similar to NFS.</text>
+<text top="261" left="147" width="414" height="14" font="2">Second, an interesting difference arises during a large-file sequential</text>
+<text top="276" left="129" width="432" height="14" font="2">re-read (Workload 6). Because AFS has a large local disk cache, it will</text>
+<text top="291" left="129" width="432" height="14" font="2">access the file from there when the file is accessed again. NFS, in contrast,</text>
+<text top="306" left="129" width="432" height="14" font="2">only can cache blocks in client memory; as a result, if a large file (i.e., a file</text>
+<text top="321" left="129" width="432" height="14" font="2">bigger than local memory) is re-read, the NFS client will have to re-fetch</text>
+<text top="336" left="129" width="432" height="14" font="2">the entire file from the remote server. Thus, AFS is faster than NFS in this</text>
+<text top="351" left="129" width="111" height="14" font="2">case by a factor of</text>
+<text top="348" left="248" width="8" height="6" font="19">L</text>
+<text top="351" left="256" width="16" height="5" font="22">net</text>
+<text top="359" left="246" width="8" height="6" font="19">L</text>
+<text top="362" left="253" width="20" height="5" font="22">disk</text>
+<text top="351" left="276" width="285" height="14" font="2">, assuming that remote access is indeed slower</text>
+<text top="368" left="129" width="432" height="14" font="2">than local disk. We also note that NFS in this case increases server load,</text>
+<text top="383" left="129" width="221" height="14" font="2">which has an impact on scale as well.</text>
+<text top="401" left="147" width="414" height="14" font="2">Third, we note that sequential writes (of new files) should perform</text>
+<text top="416" left="129" width="432" height="14" font="2">similarly on both systems (Workloads 8, 9). AFS, in this case, will write</text>
+<text top="431" left="129" width="432" height="14" font="2">the file to the local cached copy; when the file is closed, the AFS client</text>
+<text top="446" left="129" width="432" height="14" font="2">will force the writes to the server, as per the protocol. NFS will buffer</text>
+<text top="461" left="129" width="432" height="14" font="2">writes in client memory, perhaps forcing some blocks to the server due</text>
+<text top="476" left="129" width="432" height="14" font="2">to client-side memory pressure, but definitely writing them to the server</text>
+<text top="491" left="129" width="432" height="14" font="2">when the file is closed, to preserve NFS flush-on-close consistency. You</text>
+<text top="506" left="129" width="432" height="14" font="2">might think AFS would be slower here, because it writes all data to local</text>
+<text top="521" left="129" width="432" height="14" font="2">disk. However, realize that it is writing to a local file system; those writes</text>
+<text top="535" left="129" width="432" height="14" font="2">are first committed to the page cache, and only later (in the background)</text>
+<text top="550" left="129" width="432" height="14" font="2">to disk, and thus AFS reaps the benefits of the client-side OS memory</text>
+<text top="565" left="129" width="282" height="14" font="2">caching infrastructure to improve performance.</text>
+<text top="583" left="147" width="414" height="14" font="2">Fourth, we note that AFS performs worse on a sequential file over-</text>
+<text top="598" left="129" width="432" height="14" font="2">write (Workload 10). Thus far, we have assumed that the workloads that</text>
+<text top="613" left="129" width="432" height="14" font="2">write are also creating a new file; in this case, the file exists, and is then</text>
+<text top="628" left="129" width="432" height="14" font="2">over-written. Overwrite can be a particularly bad case for AFS, because</text>
+<text top="643" left="129" width="432" height="14" font="2">the client first fetches the old file in its entirety, only to subsequently over-</text>
+<text top="658" left="129" width="432" height="14" font="2">write it. NFS, in contrast, will simply overwrite blocks and thus avoid the</text>
+<text top="675" left="129" width="119" height="14" font="2">initial (useless) read</text>
+<text top="672" left="248" width="4" height="9" font="3">2</text>
+<text top="675" left="253" width="3" height="14" font="2">.</text>
+<text top="692" left="147" width="414" height="14" font="2">Finally, workloads that access a small subset of data within large files</text>
+<text top="707" left="129" width="432" height="14" font="2">perform much better on NFS than AFS (Workloads 7, 11). In these cases,</text>
+<text top="722" left="129" width="432" height="14" font="2">the AFS protocol fetches the entire file when the file is opened; unfortu-</text>
+<text top="737" left="129" width="432" height="14" font="2">nately, only a small read or write is performed. Even worse, if the file is</text>
+<text top="752" left="129" width="432" height="14" font="2">modified, the entire file is written back to the server, doubling the per-</text>
+<text top="790" left="149" width="4" height="8" font="6">2</text>
+<text top="792" left="154" width="407" height="11" font="7">We assume here that NFS writes are block-sized and block-aligned; if they were not, the</text>
+<text top="804" left="129" width="376" height="11" font="7">NFS client would also have to read the block first. We also assume the file was</text>
+<text top="804" left="509" width="14" height="11" font="23">not</text>
+<text top="804" left="526" width="34" height="11" font="7">opened</text>
+<text top="816" left="129" width="432" height="11" font="7">with the O TRUNC flag; if it had been, the initial open in AFS would not fetch the soon to be</text>
+<text top="828" left="129" width="113" height="11" font="7">truncated file’s contents.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="9">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="9">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="176" width="7" height="14" font="2">F</text>
+<text top="98" left="184" width="18" height="11" font="9">ILE</text>
+<text top="96" left="206" width="7" height="14" font="2">S</text>
+<text top="98" left="214" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="257" width="37" height="14" font="2">(AFS)</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="148" left="176" width="10" height="14" font="2">A</text>
+<text top="150" left="187" width="26" height="11" font="9">SIDE</text>
+<text top="148" left="214" width="16" height="14" font="2">: T</text>
+<text top="150" left="231" width="16" height="11" font="9">HE</text>
+<text top="148" left="252" width="5" height="14" font="2">I</text>
+<text top="150" left="257" width="75" height="11" font="9">MPORTANCE</text>
+<text top="148" left="335" width="11" height="14" font="2">O</text>
+<text top="150" left="347" width="6" height="11" font="9">F</text>
+<text top="148" left="357" width="13" height="14" font="2">W</text>
+<text top="150" left="371" width="59" height="11" font="9">ORKLOAD</text>
+<text top="163" left="87" width="338" height="14" font="2">One challenge of evaluating any system is the choice of</text>
+<text top="163" left="430" width="59" height="13" font="4"><b>workload</b></text>
+<text top="163" left="489" width="30" height="14" font="2">. Be-</text>
+<text top="178" left="87" width="432" height="14" font="2">cause computer systems are used in so many different ways, there are a</text>
+<text top="193" left="87" width="432" height="14" font="2">large variety of workloads to choose from. How should the storage sys-</text>
+<text top="208" left="87" width="432" height="14" font="2">tem designer decide which workloads are important, in order to make</text>
+<text top="223" left="87" width="171" height="14" font="2">reasonable design decisions?</text>
+<text top="238" left="87" width="432" height="14" font="2">The designers of AFS, given their experience in measuring how file sys-</text>
+<text top="253" left="87" width="432" height="14" font="2">tems were used, made certain workload assumptions; in particular, they</text>
+<text top="268" left="87" width="432" height="14" font="2">assumed that most files were not frequently shared, and accessed sequen-</text>
+<text top="283" left="87" width="432" height="14" font="2">tially in their entirety. Given those assumptions, the AFS design makes</text>
+<text top="298" left="87" width="80" height="14" font="2">perfect sense.</text>
+<text top="313" left="87" width="432" height="14" font="2">However, these assumptions are not always correct. For example, imag-</text>
+<text top="327" left="87" width="432" height="14" font="2">ine an application that appends information, periodically, to a log. These</text>
+<text top="342" left="87" width="432" height="14" font="2">little log writes, which add small amounts of data to an existing large file,</text>
+<text top="357" left="87" width="432" height="14" font="2">are quite problematic for AFS. Many other difficult workloads exist as</text>
+<text top="372" left="87" width="312" height="14" font="2">well, e.g., random updates in a transaction database.</text>
+<text top="387" left="87" width="432" height="14" font="2">One place to get some information about what types of workloads are</text>
+<text top="402" left="87" width="432" height="14" font="2">common are through various research studies that have been performed.</text>
+<text top="417" left="87" width="432" height="14" font="2">See any of these studies for good examples of workload analysis [B+91,</text>
+<text top="432" left="87" width="347" height="14" font="2">H+11, R+00, V99], including the AFS retrospective [H+88].</text>
+<text top="488" left="87" width="432" height="14" font="2">formance impact. NFS, as a block-based protocol, performs I/O that is</text>
+<text top="502" left="87" width="260" height="14" font="2">proportional to the size of the read or write.</text>
+<text top="518" left="105" width="414" height="14" font="2">Overall, we see that NFS and AFS make different assumptions and not</text>
+<text top="533" left="87" width="432" height="14" font="2">surprisingly realize different performance outcomes as a result. Whether</text>
+<text top="548" left="87" width="366" height="14" font="2">these differences matter is, as always, a question of workload.</text>
+<text top="586" left="55" width="225" height="17" font="5">50.8 AFS: Other Improvements</text>
+<text top="616" left="105" width="414" height="14" font="2">Like we saw with the introduction of Berkeley FFS (which added sym-</text>
+<text top="631" left="87" width="432" height="14" font="2">bolic links and a number of other features), the designers of AFS took the</text>
+<text top="646" left="87" width="432" height="14" font="2">opportunity when building their system to add a number of features that</text>
+<text top="661" left="87" width="432" height="14" font="2">made the system easier to use and manage. For example, AFS provides a</text>
+<text top="676" left="87" width="432" height="14" font="2">true global namespace to clients, thus ensuring that all files were named</text>
+<text top="690" left="87" width="432" height="14" font="2">the same way on all client machines. NFS, in contrast, allows each client</text>
+<text top="705" left="87" width="432" height="14" font="2">to mount NFS servers in any way that they please, and thus only by con-</text>
+<text top="720" left="87" width="432" height="14" font="2">vention (and great administrative effort) would files be named similarly</text>
+<text top="735" left="87" width="81" height="14" font="2">across clients.</text>
+<text top="751" left="105" width="414" height="14" font="2">AFS also takes security seriously, and incorporates mechanisms to au-</text>
+<text top="766" left="87" width="432" height="14" font="2">thenticate users and ensure that a set of files could be kept private if a</text>
+<text top="781" left="87" width="432" height="14" font="2">user so desired. NFS, in contrast, had quite primitive support for security</text>
+<text top="796" left="87" width="93" height="14" font="2">for many years.</text>
+<text top="811" left="105" width="414" height="14" font="2">AFS also includes facilities for flexible user-managed access control.</text>
+<text top="826" left="87" width="432" height="14" font="2">Thus, when using AFS, a user has a great deal of control over who exactly</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="9">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="9">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="354" width="8" height="14" font="2">T</text>
+<text top="98" left="363" width="16" height="11" font="9">HE</text>
+<text top="96" left="383" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="443" width="7" height="14" font="2">F</text>
+<text top="98" left="451" width="18" height="11" font="9">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="481" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="524" width="37" height="14" font="2">(AFS)</text>
+<text top="139" left="129" width="244" height="14" font="2">can access which files. NFS, like most U</text>
+<text top="141" left="373" width="21" height="11" font="9">NIX</text>
+<text top="139" left="399" width="162" height="14" font="2">file systems, has much less</text>
+<text top="154" left="129" width="189" height="14" font="2">support for this type of sharing.</text>
+<text top="169" left="147" width="414" height="14" font="2">Finally, as mentioned before, AFS adds tools to enable simpler man-</text>
+<text top="183" left="129" width="432" height="14" font="2">agement of servers for the administrators of the system. In thinking about</text>
+<text top="198" left="129" width="357" height="14" font="2">system management, AFS was light years ahead of the field.</text>
+<text top="236" left="97" width="105" height="17" font="5">50.9 Summary</text>
+<text top="265" left="147" width="414" height="14" font="2">AFS shows us how distributed file systems can be built quite differ-</text>
+<text top="280" left="129" width="432" height="14" font="2">ently than what we saw with NFS. The protocol design of AFS is partic-</text>
+<text top="295" left="129" width="432" height="14" font="2">ularly important; by minimizing server interactions (through whole-file</text>
+<text top="310" left="129" width="432" height="14" font="2">caching and callbacks), each server can support many clients and thus</text>
+<text top="325" left="129" width="432" height="14" font="2">reduce the number of servers needed to manage a particular site. Many</text>
+<text top="340" left="129" width="438" height="14" font="2">other features, including the single namespace, security, and access-control</text>
+<text top="355" left="129" width="432" height="14" font="2">lists, make AFS quite nice to use. The consistency model provided by AFS</text>
+<text top="370" left="129" width="432" height="14" font="2">is simple to understand and reason about, and does not lead to the occa-</text>
+<text top="385" left="129" width="340" height="14" font="2">sional weird behavior as one sometimes observes in NFS.</text>
+<text top="400" left="147" width="414" height="14" font="2">Perhaps unfortunately, AFS is likely on the decline. Because NFS be-</text>
+<text top="415" left="129" width="432" height="14" font="2">came an open standard, many different vendors supported it, and, along</text>
+<text top="430" left="129" width="432" height="14" font="2">with CIFS (the Windows-based distributed file system protocol), NFS</text>
+<text top="445" left="129" width="432" height="14" font="2">dominates the marketplace. Although one still sees AFS installations</text>
+<text top="460" left="129" width="432" height="14" font="2">from time to time (such as in various educational institutions, including</text>
+<text top="474" left="129" width="432" height="14" font="2">Wisconsin), the only lasting influence will likely be from the ideas of AFS</text>
+<text top="489" left="129" width="432" height="14" font="2">rather than the actual system itself. Indeed, NFSv4 now adds server state</text>
+<text top="504" left="129" width="432" height="14" font="2">(e.g., an “open” protocol message), and thus bears an increasing similar-</text>
+<text top="519" left="129" width="171" height="14" font="2">ity to the basic AFS protocol.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="9">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="9">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="24" size="16" family="COPUSO+URWPalladioL" color="#000000"/>
+	<fontspec id="25" size="8" family="EKFYBA+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="9">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="176" width="7" height="14" font="2">F</text>
+<text top="98" left="184" width="18" height="11" font="9">ILE</text>
+<text top="96" left="206" width="7" height="14" font="2">S</text>
+<text top="98" left="214" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="257" width="37" height="14" font="2">(AFS)</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="137" left="87" width="82" height="16" font="24"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="7">[B+91] “Measurements of a Distributed File System” by Mary Baker, John Hartman, Martin</text>
+<text top="177" left="87" width="414" height="11" font="7">Kupfer, Ken Shirriff, John Ousterhout. SOSP ’91, Pacific Grove, California, October 1991.</text>
+<text top="177" left="506" width="13" height="11" font="23">An</text>
+<text top="189" left="87" width="432" height="11" font="23">early paper measuring how people use distributed file systems. Matches much of the intuition found in</text>
+<text top="201" left="87" width="22" height="11" font="23">AFS.</text>
+<text top="218" left="87" width="432" height="11" font="7">[H+11] “A File is Not a File: Understanding the I/O Behavior of Apple Desktop Applications”</text>
+<text top="229" left="87" width="432" height="11" font="7">by Tyler Harter, Chris Dragga, Michael Vaughn, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-</text>
+<text top="241" left="87" width="260" height="11" font="7">Dusseau. SOSP ’11, New York, New York, October 2011.</text>
+<text top="241" left="350" width="169" height="11" font="23">Our own paper studying the behavior of</text>
+<text top="253" left="87" width="432" height="11" font="23">Apple Desktop workloads; turns out they are a bit different than many of the server-based workloads the</text>
+<text top="265" left="87" width="432" height="11" font="23">systems research community usually focuses upon. Also a good recent reference which points to a lot of</text>
+<text top="277" left="87" width="54" height="11" font="23">related work.</text>
+<text top="294" left="87" width="432" height="11" font="7">[H+88] “Scale and Performance in a Distributed File System” by John H. Howard, Michael</text>
+<text top="306" left="87" width="432" height="11" font="7">L. Kazar, Sherri G. Menees, David A. Nichols, M. Satyanarayanan, Robert N. Sidebotham,</text>
+<text top="318" left="87" width="432" height="11" font="7">Michael J. West. ACM Transactions on Computing Systems (ACM TOCS), Volume 6:1, Febru-</text>
+<text top="329" left="87" width="43" height="11" font="7">ary 1988.</text>
+<text top="329" left="138" width="381" height="11" font="23">The long journal version of the famous AFS system, still in use in a number of places</text>
+<text top="341" left="87" width="432" height="11" font="23">throughout the world, and also probably the earliest clear thinking on how to build distributed file</text>
+<text top="353" left="87" width="392" height="11" font="23">systems. A wonderful combination of the science of measurement and principled engineering.</text>
+<text top="370" left="87" width="432" height="11" font="7">[R+00] “A Comparison of File System Workloads” by Drew Roselli, Jacob R. Lorch, Thomas E.</text>
+<text top="382" left="87" width="264" height="11" font="7">Anderson. USENIX ’00, San Diego, California, June 2000.</text>
+<text top="382" left="354" width="165" height="11" font="23">A more recent set of traces as compared</text>
+<text top="393" left="87" width="236" height="11" font="23">to the Baker paper [B+91], with some interesting twists.</text>
+<text top="410" left="87" width="432" height="11" font="7">[S+85] “The ITC Distributed File System: Principles and Design” by M. Satyanarayanan, J.H.</text>
+<text top="422" left="87" width="432" height="11" font="7">Howard, D.A. Nichols, R.N. Sidebotham, A. Spector, M.J. West. SOSP ’85, Orcas Island, Wash-</text>
+<text top="434" left="87" width="109" height="11" font="7">ington, December 1985.</text>
+<text top="434" left="200" width="319" height="11" font="23">The older paper about a distributed file system. Much of the basic design of</text>
+<text top="446" left="87" width="432" height="11" font="23">AFS is in place in this older system, but not the improvements for scale. The name change to “Andrew”</text>
+<text top="458" left="87" width="432" height="11" font="23">is an homage to two people both named Andrew, Andrew Carnegie and Andrew Mellon. These two</text>
+<text top="470" left="87" width="432" height="11" font="23">rich dudes started the Carnegie Institute of Technology and the Mellon Institute of Industrial Research,</text>
+<text top="482" left="87" width="423" height="11" font="23">respectively, which eventually merged to become what is now known as Carnegie Mellon University.</text>
+<text top="498" left="87" width="432" height="11" font="7">[V99] “File system usage in Windows NT 4.0” by Werner Vogels. SOSP ’99, Kiawah Island</text>
+<text top="510" left="87" width="184" height="11" font="7">Resort, South Carolina, December 1999.</text>
+<text top="510" left="275" width="244" height="11" font="23">A cool study of Windows workloads, which are inherently</text>
+<text top="522" left="87" width="109" height="11" font="23">different than many of the</text>
+<text top="522" left="199" width="8" height="11" font="7">U</text>
+<text top="523" left="208" width="16" height="8" font="25">NIX</text>
+<text top="522" left="224" width="189" height="11" font="23">-based studies that had previously been done.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="9">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="9">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="9">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="9">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="9">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="26" size="15" family="COPUSO+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="354" width="8" height="14" font="2">T</text>
+<text top="98" left="363" width="16" height="11" font="9">HE</text>
+<text top="96" left="383" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="44" height="11" font="9">NDREW</text>
+<text top="96" left="443" width="7" height="14" font="2">F</text>
+<text top="98" left="451" width="18" height="11" font="9">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="481" width="39" height="11" font="9">YSTEM</text>
+<text top="96" left="524" width="37" height="14" font="2">(AFS)</text>
+<text top="137" left="129" width="183" height="16" font="24"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="138" height="14" font="2">This section introduces</text>
+<text top="167" left="289" width="48" height="11" font="10">afs.py</text>
+<text top="166" left="337" width="224" height="14" font="2">, a simple AFS simulator you can use</text>
+<text top="181" left="129" width="432" height="14" font="2">to shore up your knowledge of how the Andrew File System works. Read</text>
+<text top="196" left="129" width="203" height="14" font="2">the README file for more details.</text>
+<text top="232" left="129" width="70" height="15" font="26"><b>Questions</b></text>
+<text top="256" left="146" width="414" height="14" font="2">1. Run a few simple cases to make sure you can predict what values</text>
+<text top="271" left="163" width="325" height="14" font="2">will be read by clients. Vary the random seed flag (</text>
+<text top="272" left="488" width="16" height="11" font="10">-s</text>
+<text top="271" left="504" width="56" height="14" font="2">) and see</text>
+<text top="286" left="163" width="397" height="14" font="2">if you can trace through and predict both intermediate values as</text>
+<text top="301" left="163" width="397" height="14" font="2">well as the final values stored in the files. Also vary the number of</text>
+<text top="316" left="163" width="33" height="14" font="2">files (</text>
+<text top="317" left="196" width="16" height="11" font="10">-f</text>
+<text top="316" left="213" width="150" height="14" font="2">), the number of clients (</text>
+<text top="317" left="362" width="16" height="11" font="10">-C</text>
+<text top="316" left="379" width="129" height="14" font="2">), and the read ratio (</text>
+<text top="317" left="508" width="16" height="11" font="10">-r</text>
+<text top="316" left="524" width="37" height="14" font="2">, from</text>
+<text top="331" left="163" width="397" height="14" font="2">between 0 to 1) to make it a bit more challenging. You might also</text>
+<text top="346" left="163" width="397" height="14" font="2">want to generate slightly longer traces to make for more interesting</text>
+<text top="361" left="163" width="108" height="14" font="2">interactions, e.g., (</text>
+<text top="362" left="272" width="32" height="11" font="10">-n 2</text>
+<text top="361" left="307" width="63" height="14" font="2">or higher).</text>
+<text top="376" left="146" width="414" height="14" font="2">2. Now do the same thing and see if you can predict each callback that</text>
+<text top="391" left="163" width="397" height="14" font="2">the AFS server initiates. Try different random seeds, and make sure</text>
+<text top="406" left="163" width="258" height="14" font="2">to use a high level of detailed feedback (e.g.,</text>
+<text top="407" left="424" width="32" height="11" font="10">-d 3</text>
+<text top="406" left="457" width="104" height="14" font="2">) to see when call-</text>
+<text top="421" left="163" width="397" height="14" font="2">backs occur when you have the program compute the answers for</text>
+<text top="436" left="163" width="59" height="14" font="2">you (with</text>
+<text top="437" left="226" width="16" height="11" font="10">-c</text>
+<text top="436" left="243" width="318" height="14" font="2">). Can you guess exactly when each callback occurs?</text>
+<text top="451" left="163" width="302" height="14" font="2">What is the precise condition for one to take place?</text>
+<text top="466" left="146" width="414" height="14" font="2">3. Similar to above, run with some different random seeds and see if</text>
+<text top="481" left="163" width="397" height="14" font="2">you can predict the exact cache state at each step. Cache state can</text>
+<text top="496" left="163" width="172" height="14" font="2">be observed by running with</text>
+<text top="496" left="339" width="16" height="11" font="10">-c</text>
+<text top="496" left="359" width="23" height="14" font="2">and</text>
+<text top="496" left="385" width="32" height="11" font="10">-d 7</text>
+<text top="496" left="417" width="3" height="14" font="2">.</text>
+<text top="511" left="146" width="414" height="14" font="2">4. Now let’s construct some specific workloads. Run the simulation</text>
+<text top="525" left="163" width="27" height="14" font="2">with</text>
+<text top="526" left="195" width="178" height="11" font="10">-A oa1:w1:c1,oa1:r1:c1</text>
+<text top="525" left="377" width="184" height="14" font="2">flag. What are different possi-</text>
+<text top="540" left="163" width="315" height="14" font="2">ble values observed by client 1 when it reads the file</text>
+<text top="541" left="482" width="8" height="11" font="10">a</text>
+<text top="540" left="491" width="70" height="14" font="2">, when run-</text>
+<text top="555" left="163" width="397" height="14" font="2">ning with the random scheduler? (try different random seeds to</text>
+<text top="570" left="163" width="397" height="14" font="2">see different outcomes)? Of all the possible schedule interleavings</text>
+<text top="585" left="163" width="397" height="14" font="2">of the two clients’ operations, how many of them lead to client 1</text>
+<text top="600" left="163" width="334" height="14" font="2">reading the value 1, and how many reading the value 0?</text>
+<text top="615" left="146" width="414" height="14" font="2">5. Now let’s construct some specific schedules. When running with</text>
+<text top="630" left="163" width="19" height="14" font="2">the</text>
+<text top="631" left="186" width="178" height="11" font="10">-A oa1:w1:c1,oa1:r1:c1</text>
+<text top="630" left="367" width="193" height="14" font="2">flag, also run with the following</text>
+<text top="645" left="163" width="62" height="14" font="2">schedules:</text>
+<text top="646" left="231" width="40" height="11" font="10">-S 01</text>
+<text top="645" left="271" width="3" height="14" font="2">,</text>
+<text top="646" left="279" width="73" height="11" font="10">-S 100011</text>
+<text top="645" left="352" width="3" height="14" font="2">,</text>
+<text top="646" left="359" width="73" height="11" font="10">-S 011100</text>
+<text top="645" left="432" width="129" height="14" font="2">, and others of which</text>
+<text top="660" left="163" width="266" height="14" font="2">you can think. What value will client 1 read?</text>
+<text top="675" left="146" width="198" height="14" font="2">6. Now run with this workload:</text>
+<text top="676" left="352" width="178" height="11" font="10">-A oa1:w1:c1,oa1:w1:c1</text>
+<text top="675" left="529" width="31" height="14" font="2">, and</text>
+<text top="690" left="163" width="378" height="14" font="2">vary the schedules as above. What happens when you run with</text>
+<text top="691" left="545" width="16" height="11" font="10">-S</text>
+<text top="706" left="163" width="48" height="11" font="10">011100</text>
+<text top="705" left="212" width="210" height="14" font="2">? What about when you run with</text>
+<text top="706" left="427" width="73" height="11" font="10">-S 010011</text>
+<text top="705" left="499" width="61" height="14" font="2">? What is</text>
+<text top="720" left="163" width="305" height="14" font="2">important in determining the final value of the file?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="9">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="9">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="9">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="9">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="9">ORG</text>
+</page>
+</pdf2xml>

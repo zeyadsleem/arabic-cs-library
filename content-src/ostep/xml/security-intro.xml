@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="PMBKDG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="PMBKDG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="15" family="ERRQTW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="15" family="SCSSCV+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="16" family="ERRQTW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="13" family="ERRQTW+URWPalladioL-Roma" color="#000000"/>
+<text top="202" left="523" width="34" height="30" font="0">53</text>
+<text top="274" left="121" width="398" height="21" font="1">Introduction to Operating System Security</text>
+<text top="315" left="300" width="74" height="15" font="2">Chapter by</text>
+<text top="315" left="378" width="141" height="15" font="3"><b>Peter Reiher (UCLA)</b></text>
+<text top="355" left="55" width="125" height="17" font="4">53.1 Introduction</text>
+<text top="387" left="105" width="414" height="14" font="5">Security of computing systems is a vital topic whose importance only</text>
+<text top="401" left="87" width="432" height="14" font="5">keeps increasing. Much money has been lost and many people’s lives</text>
+<text top="416" left="87" width="432" height="14" font="5">have been harmed when computer security has failed. Attacks on com-</text>
+<text top="431" left="87" width="432" height="14" font="5">puter systems are so common as to be inevitable in almost any scenario</text>
+<text top="446" left="87" width="432" height="14" font="5">where you perform computing. Generally, all elements of a computer sys-</text>
+<text top="461" left="87" width="432" height="14" font="5">tem can be subject to attack, and flaws in any of them can give an attacker</text>
+<text top="476" left="87" width="432" height="14" font="5">an opportunity to do something you want to prevent. But operating sys-</text>
+<text top="491" left="87" width="393" height="14" font="5">tems are particularly important from a security perspective. Why?</text>
+<text top="508" left="105" width="414" height="14" font="5">To begin with, pretty much everything runs on top of an operating</text>
+<text top="523" left="87" width="432" height="14" font="5">system. As a rule, if the software you are running on top of, whether it</text>
+<text top="538" left="87" width="432" height="14" font="5">be an operating system, a piece of middleware, or something else, is in-</text>
+<text top="553" left="87" width="432" height="14" font="5">secure, what’s above it is going to also be insecure. It’s like building a</text>
+<text top="568" left="87" width="432" height="14" font="5">house on sand. You may build a nice solid structure, but a flood can still</text>
+<text top="583" left="87" width="432" height="14" font="5">wash away the base underneath your home, totally destroying it despite</text>
+<text top="598" left="87" width="432" height="14" font="5">the care you took in its construction. Similarly, your application might</text>
+<text top="613" left="87" width="432" height="14" font="5">perhaps have no security flaws of its own, but if the attacker can misuse</text>
+<text top="628" left="87" width="432" height="14" font="5">the software underneath you to steal your information, crash your pro-</text>
+<text top="643" left="87" width="432" height="14" font="5">gram, or otherwise cause you harm, your own efforts to secure your code</text>
+<text top="658" left="87" width="122" height="14" font="5">might be for naught.</text>
+<text top="675" left="105" width="414" height="14" font="5">This point is especially important for operating systems. You might</text>
+<text top="690" left="87" width="432" height="14" font="5">not care about the security of a particular web server or database system</text>
+<text top="704" left="87" width="432" height="14" font="5">if you don’t run that software, and you might not care about the security</text>
+<text top="719" left="87" width="432" height="14" font="5">of some middleware platform that you don’t use, but everyone runs an</text>
+<text top="734" left="87" width="432" height="14" font="5">operating system, and there are relatively few choices of which to run.</text>
+<text top="749" left="87" width="432" height="14" font="5">Thus, security flaws in an operating system, especially a widely used one,</text>
+<text top="764" left="87" width="415" height="14" font="5">have an immense impact on many users and many pieces of software.</text>
+<text top="781" left="105" width="414" height="14" font="5">Another reason that operating system security is so important is that</text>
+<text top="796" left="87" width="432" height="14" font="5">ultimately all of our software relies on proper behavior of the underlying</text>
+<text top="811" left="87" width="432" height="14" font="5">hardware: the processor, the memory, and the peripheral devices. What</text>
+<text top="826" left="87" width="431" height="14" font="5">has ultimate control of those hardware resources? The operating system.</text>
+<text top="862" left="300" width="7" height="14" font="5">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="11" family="ERRQTW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="9" family="ERRQTW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="7" family="ERRQTW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="ERRQTW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="12" family="ERRQTW+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="5">2</text>
+<text top="96" left="257" width="5" height="14" font="5">I</text>
+<text top="98" left="262" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="376" width="11" height="14" font="5">O</text>
+<text top="98" left="387" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="139" left="147" width="414" height="14" font="5">Thinking about what you have already studied concerning memory</text>
+<text top="154" left="129" width="438" height="14" font="5">management, scheduling, file systems, synchronization, and so forth, what</text>
+<text top="169" left="129" width="432" height="14" font="5">would happen with each of these components of your operating system</text>
+<text top="183" left="129" width="432" height="14" font="5">if an adversary could force it to behave in some arbitrarily bad way? If</text>
+<text top="198" left="129" width="432" height="14" font="5">you understand what you’ve learned so far, you should find this prospect</text>
+<text top="216" left="129" width="107" height="14" font="5">deeply disturbing</text>
+<text top="213" left="236" width="4" height="9" font="7">1</text>
+<text top="216" left="241" width="319" height="14" font="5">. Our computing lives depend on our operating sys-</text>
+<text top="231" left="129" width="432" height="14" font="5">tems behaving as they have been defined to behave, and particularly on</text>
+<text top="246" left="129" width="421" height="14" font="5">them not behaving in ways that benefit our adversaries, rather than us.</text>
+<text top="261" left="147" width="414" height="14" font="5">The task of securing an operating system is not an easy one, since mod-</text>
+<text top="275" left="129" width="432" height="14" font="5">ern operating systems are large and complex. Your experience in writing</text>
+<text top="290" left="129" width="432" height="14" font="5">code should have already pointed out to you that the more code you’ve</text>
+<text top="305" left="129" width="432" height="14" font="5">got, and the more complex the algorithms are, the more likely your code</text>
+<text top="320" left="129" width="432" height="14" font="5">is to contain flaws. Failures in software security generally arise from these</text>
+<text top="335" left="129" width="432" height="14" font="5">kinds of flaws. Large, complex programs are likely to be harder to secure</text>
+<text top="350" left="129" width="432" height="14" font="5">than small, simple programs. Not many other programs are as large and</text>
+<text top="365" left="129" width="236" height="14" font="5">complex as a modern operating system.</text>
+<text top="380" left="147" width="414" height="14" font="5">Another challenge in securing operating systems is that they are, for</text>
+<text top="395" left="129" width="432" height="14" font="5">the most part, meant to support multiple processes simultaneously. As</text>
+<text top="410" left="129" width="433" height="14" font="5">you’ve learned, there are many mechanisms in an operating system meant</text>
+<text top="425" left="129" width="432" height="14" font="5">to segregate processes from each other, and to protect shared pieces of</text>
+<text top="440" left="129" width="432" height="14" font="5">hardware from being used in ways that interfere with other processes. If</text>
+<text top="455" left="129" width="432" height="14" font="5">every process could be trusted to do anything it wants with any hard-</text>
+<text top="470" left="129" width="432" height="14" font="5">ware resource and any piece of data on the machine without harming</text>
+<text top="485" left="129" width="432" height="14" font="5">any other process, securing the system would be a lot easier. However,</text>
+<text top="500" left="129" width="432" height="14" font="5">we typically don’t trust everything equally. When you download and run</text>
+<text top="515" left="129" width="432" height="14" font="5">a script from a web site you haven’t visited before, do you really want it</text>
+<text top="530" left="129" width="432" height="14" font="5">to be able to wipe every file from your disk, kill all your other processes,</text>
+<text top="544" left="129" width="432" height="14" font="5">and start using your network interface to send spam email to other ma-</text>
+<text top="559" left="129" width="432" height="14" font="5">chines? Probably not, but if you are the owner of your computer, you</text>
+<text top="574" left="129" width="432" height="14" font="5">have the right to do all those things, if that’s what you want to do. And</text>
+<text top="589" left="129" width="432" height="14" font="5">unless the operating system is careful, any process it runs, including the</text>
+<text top="604" left="129" width="417" height="14" font="5">one running that script you downloaded, can do anything you can do.</text>
+<text top="619" left="147" width="414" height="14" font="5">Consider the issue of operating system security from a different per-</text>
+<text top="634" left="129" width="432" height="14" font="5">spective. One role of an operating system is to provide useful abstractions</text>
+<text top="649" left="129" width="432" height="14" font="5">for application programs to build on. These applications must rely on the</text>
+<text top="664" left="129" width="432" height="14" font="5">OS implementations of the abstractions to work as they are defined. Of-</text>
+<text top="679" left="129" width="432" height="14" font="5">ten, one part of the definition of such abstractions is their security behav-</text>
+<text top="694" left="129" width="432" height="14" font="5">ior. For example, we expect that the operating system’s file system will</text>
+<text top="709" left="129" width="432" height="14" font="5">enforce the access restrictions it is supposed to enforce. Applications can</text>
+<text top="724" left="129" width="432" height="14" font="5">then build on this expectation to achieve the security goals they require,</text>
+<text top="739" left="129" width="432" height="14" font="5">such as counting on the file system access guarantees to ensure that a file</text>
+<text top="754" left="129" width="432" height="14" font="5">they have specified as unwriteable does not get altered. If the applica-</text>
+<text top="769" left="129" width="432" height="14" font="5">tions cannot rely on proper implementation of security guarantees for OS</text>
+<text top="784" left="129" width="432" height="14" font="5">abstractions, then they cannot use these abstractions to achieve their own</text>
+<text top="799" left="129" width="432" height="14" font="5">security goals. At the minimum, that implies a great deal more work on</text>
+<text top="826" left="149" width="4" height="8" font="8">1</text>
+<text top="828" left="154" width="311" height="11" font="9">If you don’t understand it, you have a lot of re-reading to do. A lot.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="5">I</text>
+<text top="98" left="93" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="5">O</text>
+<text top="98" left="217" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="5">S</text>
+<text top="98" left="289" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="332" width="7" height="14" font="5">S</text>
+<text top="98" left="339" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="512" width="7" height="14" font="5">3</text>
+<text top="139" left="87" width="432" height="14" font="5">the part of the application developers, since they will need to take extra</text>
+<text top="154" left="87" width="432" height="14" font="5">measures to achieve their desired security goals. Taking into account our</text>
+<text top="169" left="87" width="432" height="14" font="5">earlier discussion, they will often be unable to achieve these goals if the</text>
+<text top="183" left="87" width="432" height="14" font="5">abstractions they must rely on (such as virtual memory or a well-defined</text>
+<text top="198" left="87" width="220" height="14" font="5">scheduling policy) cannot be trusted.</text>
+<text top="213" left="105" width="414" height="14" font="5">Obviously, operating system security is vital, yet hard to achieve. So</text>
+<text top="228" left="87" width="432" height="14" font="5">what do we do to secure our operating system? Addressing that question</text>
+<text top="243" left="87" width="432" height="14" font="5">has been a challenge for generations of computer scientists, and there is</text>
+<text top="258" left="87" width="432" height="14" font="5">as yet no complete answer. But there are some important principles and</text>
+<text top="273" left="87" width="432" height="14" font="5">tools we can use to secure operating systems. These are generally built</text>
+<text top="288" left="87" width="432" height="14" font="5">into any general-purpose operating system you are likely to work with,</text>
+<text top="303" left="87" width="432" height="14" font="5">and they alter what can be done with that system and how you go about</text>
+<text top="318" left="87" width="432" height="14" font="5">doing it. So you might not think you’re interested in security, but you</text>
+<text top="333" left="87" width="432" height="14" font="5">need to understand what your OS does to secure itself to also understand</text>
+<text top="348" left="87" width="261" height="14" font="5">how to get the system to do what you want.</text>
+<text top="386" left="181" width="10" height="14" font="5">C</text>
+<text top="388" left="191" width="24" height="11" font="6">RUX</text>
+<text top="386" left="216" width="19" height="14" font="5">: H</text>
+<text top="388" left="236" width="20" height="11" font="6">OW</text>
+<text top="386" left="260" width="8" height="14" font="5">T</text>
+<text top="388" left="269" width="8" height="11" font="6">O</text>
+<text top="386" left="281" width="7" height="14" font="5">S</text>
+<text top="388" left="289" width="39" height="11" font="6">ECURE</text>
+<text top="386" left="332" width="31" height="14" font="5">OS R</text>
+<text top="388" left="364" width="61" height="11" font="6">ESOURCES</text>
+<text top="401" left="105" width="414" height="14" font="5">In the face of multiple possibly concurrent and interacting processes</text>
+<text top="415" left="87" width="432" height="14" font="5">running on the same machine, how can we ensure that the resources each</text>
+<text top="430" left="87" width="432" height="14" font="5">process is permitted to access are exactly those it should access, in exactly</text>
+<text top="445" left="87" width="432" height="14" font="5">the ways we desire? What primitives are needed from the OS? What</text>
+<text top="460" left="87" width="432" height="14" font="5">mechanisms should be provided by the hardware? How can we use them</text>
+<text top="475" left="87" width="199" height="14" font="5">to solve the problems of security?</text>
+<text top="519" left="55" width="217" height="17" font="4">53.2 What Are We Protecting?</text>
+<text top="543" left="105" width="414" height="14" font="5">We aren’t likely to achieve good protection unless we have a fairly</text>
+<text top="558" left="87" width="432" height="14" font="5">comprehensive view of what we’re trying to protect when we say our</text>
+<text top="573" left="87" width="432" height="14" font="5">operating system should be secure. Fortunately, that question is easy to</text>
+<text top="588" left="87" width="432" height="14" font="5">answer for an operating system, at least at the high level: everything.</text>
+<text top="603" left="87" width="432" height="14" font="5">That answer isn’t very comforting, but it is best to have a realistic under-</text>
+<text top="618" left="87" width="378" height="14" font="5">standing of the broad implications of operating system security.</text>
+<text top="633" left="105" width="414" height="14" font="5">A typical commodity operating system has complete control of all (or</text>
+<text top="648" left="87" width="432" height="14" font="5">almost all) hardware on the machine and is able to do literally anything</text>
+<text top="663" left="87" width="432" height="14" font="5">the hardware permits. That means it can control the processor, read and</text>
+<text top="678" left="87" width="432" height="14" font="5">write all registers, examine any main memory location, and perform any</text>
+<text top="693" left="87" width="432" height="14" font="5">operation one of its peripherals supports. As a result, among the things</text>
+<text top="707" left="87" width="107" height="14" font="5">the OS can do are:</text>
+<text top="730" left="107" width="248" height="14" font="5">• examine or alter any process’s memory</text>
+<text top="747" left="107" width="412" height="14" font="5">• read, write, delete or corrupt any file on any writeable persistent</text>
+<text top="762" left="122" width="325" height="14" font="5">storage medium, including hard disks and flash drives</text>
+<text top="778" left="107" width="371" height="14" font="5">• change the scheduling or even halt execution of any process</text>
+<text top="795" left="107" width="412" height="14" font="5">• send any message to anywhere, including altered versions of those</text>
+<text top="810" left="122" width="148" height="14" font="5">a process wished to send</text>
+<text top="826" left="107" width="248" height="14" font="5">• enable or disable any peripheral device</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="SCSSCV+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="5">4</text>
+<text top="96" left="257" width="5" height="14" font="5">I</text>
+<text top="98" left="262" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="376" width="11" height="14" font="5">O</text>
+<text top="98" left="387" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="148" left="259" width="10" height="14" font="5">A</text>
+<text top="150" left="270" width="26" height="11" font="6">SIDE</text>
+<text top="148" left="297" width="15" height="14" font="5">: S</text>
+<text top="150" left="313" width="51" height="11" font="6">ECURITY</text>
+<text top="148" left="368" width="8" height="14" font="5">E</text>
+<text top="150" left="377" width="54" height="11" font="6">NCLAVES</text>
+<text top="163" left="129" width="432" height="14" font="5">A little bit back, we said the operating system controls “almost all” the</text>
+<text top="178" left="129" width="432" height="14" font="5">hardware on the machine. That kind of caveat should have gotten you</text>
+<text top="193" left="129" width="432" height="14" font="5">asking, “well, what parts of the hardware doesn’t it control?” Originally,</text>
+<text top="208" left="129" width="432" height="14" font="5">it really was all the hardware. But starting in the 1990s, hardware de-</text>
+<text top="223" left="129" width="432" height="14" font="5">veloper began to see a need to keep some hardware isolated, to a de-</text>
+<text top="238" left="129" width="432" height="14" font="5">gree, from the operating system. The first such hardware was primar-</text>
+<text top="253" left="129" width="390" height="14" font="5">ily intended to protect the boot process of the operating system.</text>
+<text top="253" left="527" width="31" height="13" font="11"><b>TPM</b></text>
+<text top="253" left="557" width="3" height="14" font="5">,</text>
+<text top="268" left="129" width="13" height="14" font="5">or</text>
+<text top="268" left="145" width="156" height="13" font="11"><b>Trusted Platform Module</b></text>
+<text top="268" left="301" width="260" height="14" font="5">, provided assurance that you were booting</text>
+<text top="283" left="129" width="432" height="14" font="5">the version of the operating system you intended to, protecting you from</text>
+<text top="298" left="129" width="432" height="14" font="5">attacks that tried to boot compromised versions of the system. More re-</text>
+<text top="313" left="129" width="432" height="14" font="5">cently, more general hardware elements have tried to control what can</text>
+<text top="327" left="129" width="432" height="14" font="5">be done on the machine, typically with some particularly important data,</text>
+<text top="342" left="129" width="432" height="14" font="5">often data that is related to cryptography. Such hardware elements are</text>
+<text top="357" left="129" width="432" height="14" font="5">called security enclaves, since they are meant to allow only safe use of</text>
+<text top="372" left="129" width="432" height="14" font="5">this data, even by the most powerful, trusted code in the system – the</text>
+<text top="387" left="129" width="432" height="14" font="5">operating system itself. They are often used to support operations in a</text>
+<text top="402" left="129" width="432" height="14" font="5">cloud computing environment, where multiple operating systems might</text>
+<text top="417" left="129" width="429" height="14" font="5">be running under virtual machines sharing the same physical hardware.</text>
+<text top="435" left="129" width="432" height="14" font="5">This turns out to be a harder trick than anyone expected. Security tricks</text>
+<text top="450" left="129" width="432" height="14" font="5">usually are. Security enclaves often prove not to provide quite as much</text>
+<text top="465" left="129" width="432" height="14" font="5">isolation as their designers hoped. But the attacks on them tend to be so-</text>
+<text top="480" left="129" width="432" height="14" font="5">phisticated and difficult, and usually require the ability to run privileged</text>
+<text top="495" left="129" width="432" height="14" font="5">code on the system already. So even if they don’t achieve their full goals,</text>
+<text top="510" left="129" width="432" height="14" font="5">they do put an extra protective barrier against compromised operating</text>
+<text top="525" left="129" width="76" height="14" font="5">system code.</text>
+<text top="578" left="148" width="345" height="14" font="5">• give any process access to any other process’s resources</text>
+<text top="594" left="148" width="327" height="14" font="5">• arbitrarily take away any resource a process controls</text>
+<text top="610" left="148" width="350" height="14" font="5">• respond to any system call with a maximally harmful lie</text>
+<text top="634" left="147" width="414" height="14" font="5">In essence, processes are at the mercy of the operating system. It is</text>
+<text top="649" left="129" width="432" height="14" font="5">nearly impossible for a process to ’protect’ any part of itself from a mali-</text>
+<text top="664" left="129" width="432" height="14" font="5">cious operating system. We typically assume our operating system is not</text>
+<text top="681" left="129" width="107" height="14" font="5">actually malicious</text>
+<text top="678" left="236" width="4" height="9" font="7">2</text>
+<text top="681" left="241" width="319" height="14" font="5">, but a flaw that allows a malicious process to cause the</text>
+<text top="696" left="129" width="432" height="14" font="5">operating system to misbehave is nearly as bad, since it could potentially</text>
+<text top="711" left="129" width="432" height="14" font="5">allow that process to gain any of the powers of the operating system itself.</text>
+<text top="726" left="129" width="432" height="14" font="5">This point should make you think very seriously about the importance of</text>
+<text top="741" left="129" width="432" height="14" font="5">designing secure operating systems and, more commonly, applying secu-</text>
+<text top="755" left="129" width="432" height="14" font="5">rity patches to any operating system you are running. Security flaws in</text>
+<text top="770" left="129" width="432" height="14" font="5">your operating system can completely compromise everything about the</text>
+<text top="785" left="129" width="432" height="14" font="5">machine the system runs on, so preventing them and patching any that</text>
+<text top="800" left="129" width="178" height="14" font="5">are found is vitally important.</text>
+<text top="826" left="149" width="4" height="8" font="8">2</text>
+<text top="828" left="154" width="407" height="11" font="9">If you suspect your operating system is malicious, it’s time to get a new operating system.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="5">I</text>
+<text top="98" left="93" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="5">O</text>
+<text top="98" left="217" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="5">S</text>
+<text top="98" left="289" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="332" width="7" height="14" font="5">S</text>
+<text top="98" left="339" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="512" width="7" height="14" font="5">5</text>
+<text top="137" left="55" width="230" height="17" font="4">53.3 Security Goals and Policies</text>
+<text top="167" left="105" width="414" height="14" font="5">What do we mean when we say we want an operating system, or any</text>
+<text top="182" left="87" width="432" height="14" font="5">system, to be secure? That’s a rather vague statement. What we really</text>
+<text top="197" left="87" width="432" height="14" font="5">mean is that there are things we would like to happen in the system and</text>
+<text top="211" left="87" width="432" height="14" font="5">things we don’t want to happen, and we’d like a high degree of assurance</text>
+<text top="226" left="87" width="432" height="14" font="5">that we get what we want. As in most other aspects of life, we usually end</text>
+<text top="241" left="87" width="432" height="14" font="5">up paying for what we get, so it’s worthwhile to think about exactly what</text>
+<text top="256" left="87" width="432" height="14" font="5">security properties and effects we actually need and then pay only for</text>
+<text top="271" left="87" width="432" height="14" font="5">those, not for other things we don’t need. What this boils down to is that</text>
+<text top="286" left="87" width="432" height="14" font="5">we want to specify the goals we have for the security-relevant behavior of</text>
+<text top="301" left="87" width="432" height="14" font="5">our system and choose defense approaches likely to achieve those goals</text>
+<text top="316" left="87" width="118" height="14" font="5">at a reasonable cost.</text>
+<text top="331" left="105" width="414" height="14" font="5">Researchers in security have thought about this issue in broad terms</text>
+<text top="346" left="87" width="432" height="14" font="5">for a long time. At a high conceptual level, they have defined three big</text>
+<text top="361" left="87" width="432" height="14" font="5">security-related goals that are common to many systems, including oper-</text>
+<text top="376" left="87" width="143" height="14" font="5">ating systems. They are:</text>
+<text top="403" left="107" width="8" height="14" font="5">•</text>
+<text top="403" left="122" width="93" height="13" font="11"><b>Confidentiality</b></text>
+<text top="403" left="220" width="299" height="14" font="5">– If some piece of information is supposed to be</text>
+<text top="418" left="122" width="397" height="14" font="5">hidden from others, don’t allow them to find it out. For example,</text>
+<text top="433" left="122" width="397" height="14" font="5">you don’t want someone to learn what your credit card number is</text>
+<text top="448" left="122" width="251" height="14" font="5">– you want that number kept confidential.</text>
+<text top="474" left="107" width="8" height="14" font="5">•</text>
+<text top="474" left="122" width="54" height="13" font="11"><b>Integrity</b></text>
+<text top="474" left="179" width="340" height="14" font="5">– If some piece of information or component of a system</text>
+<text top="489" left="122" width="397" height="14" font="5">is supposed to be in a particular state, don’t allow an adversary to</text>
+<text top="504" left="122" width="397" height="14" font="5">change it. For example, if you’ve placed an online order for delivery</text>
+<text top="519" left="122" width="397" height="14" font="5">of one pepperoni pizza, you don’t want a malicious prankster to</text>
+<text top="534" left="122" width="397" height="14" font="5">change your order to 1000 anchovy pizzas. One important aspect of</text>
+<text top="549" left="122" width="397" height="14" font="5">integrity is authenticity. It’s often important to be sure not only that</text>
+<text top="564" left="122" width="397" height="14" font="5">information has not changed, but that it was created by a particular</text>
+<text top="579" left="122" width="182" height="14" font="5">party and not by an adversary.</text>
+<text top="605" left="107" width="8" height="14" font="5">•</text>
+<text top="605" left="122" width="73" height="13" font="11"><b>Availability</b></text>
+<text top="605" left="197" width="324" height="14" font="5">– If some information or service is supposed to be avail-</text>
+<text top="620" left="122" width="397" height="14" font="5">able for your own or others’ use, make sure an attacker cannot pre-</text>
+<text top="635" left="122" width="397" height="14" font="5">vent its use. For example, if your business is having a big sale,</text>
+<text top="650" left="122" width="397" height="14" font="5">you don’t want your competitors to be able to block off the streets</text>
+<text top="665" left="122" width="391" height="14" font="5">around your store, preventing your customers from reaching you.</text>
+<text top="691" left="105" width="414" height="14" font="5">An important extra dimension of all three of these goals is that we</text>
+<text top="706" left="87" width="432" height="14" font="5">want controlled sharing in our systems. We share our secrets with some</text>
+<text top="721" left="87" width="432" height="14" font="5">people and not with others. We allow some people to change our enter-</text>
+<text top="736" left="87" width="432" height="14" font="5">prise’s databases, but not just anyone. Some systems need to be made</text>
+<text top="751" left="87" width="432" height="14" font="5">available to a particular set of preferred users (such as those who have</text>
+<text top="766" left="87" width="432" height="14" font="5">paid to play your on-line game) and not to others (who have not). Who’s</text>
+<text top="781" left="87" width="377" height="14" font="5">doing the asking matters a lot, in computers as in everyday life.</text>
+<text top="796" left="105" width="414" height="14" font="5">Another important aspect of security for computer systems is we often</text>
+<text top="811" left="87" width="432" height="14" font="5">want to be sure that when someone told us something, they cannot later</text>
+<text top="826" left="87" width="294" height="14" font="5">deny that they did so. This aspect is often called</text>
+<text top="826" left="386" width="101" height="13" font="11"><b>non-repudiation</b></text>
+<text top="826" left="487" width="32" height="14" font="5">. The</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="5">6</text>
+<text top="96" left="257" width="5" height="14" font="5">I</text>
+<text top="98" left="262" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="376" width="11" height="14" font="5">O</text>
+<text top="98" left="387" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="139" left="129" width="432" height="14" font="5">harder and more expensive it is for someone to repudiate their actions,</text>
+<text top="154" left="129" width="432" height="14" font="5">the easier it is to hold them to account for those actions, and thus the less</text>
+<text top="169" left="129" width="432" height="14" font="5">likely people are to perform malicious actions. After all, they might well</text>
+<text top="183" left="129" width="313" height="14" font="5">get caught and will have trouble denying they did it.</text>
+<text top="198" left="147" width="414" height="14" font="5">These are big, general goals. For a real system, you need to drill down</text>
+<text top="213" left="129" width="432" height="14" font="5">to more detailed, specific goals. In a typical operating system, for exam-</text>
+<text top="228" left="129" width="432" height="14" font="5">ple, we might have a confidentiality goal stating that a process’s memory</text>
+<text top="243" left="129" width="432" height="14" font="5">space cannot be arbitrarily read by another process. We might have an</text>
+<text top="258" left="129" width="432" height="14" font="5">integrity goal stating that if a user writes a record to a particular file,</text>
+<text top="273" left="129" width="432" height="14" font="5">another user who should not be able to write that file can’t change the</text>
+<text top="288" left="129" width="432" height="14" font="5">record. We might have an availability goal stating that one process run-</text>
+<text top="303" left="129" width="432" height="14" font="5">ning on the system cannot hog the CPU and prevent other processes from</text>
+<text top="318" left="129" width="432" height="14" font="5">getting their share of the CPU. If you think back on what you’ve learned</text>
+<text top="333" left="129" width="432" height="14" font="5">about the process abstraction, memory management, scheduling, file sys-</text>
+<text top="348" left="129" width="432" height="14" font="5">tems, IPC, and other topics from this class, you should be able to think</text>
+<text top="363" left="129" width="432" height="14" font="5">of some other obvious confidentiality, integrity, and availability goals we</text>
+<text top="378" left="129" width="257" height="14" font="5">are likely to want in our operating systems.</text>
+<text top="393" left="147" width="414" height="14" font="5">For any particular system, even goals at this level are not sufficiently</text>
+<text top="408" left="129" width="432" height="14" font="5">specific. The integrity goal alluded to above, where a user’s file should</text>
+<text top="423" left="129" width="432" height="14" font="5">not be overwritten by another user not permitted to do so, gives you a</text>
+<text top="438" left="129" width="432" height="14" font="5">hint about the extra specificity we need in our security goals for a partic-</text>
+<text top="452" left="129" width="432" height="14" font="5">ular system. Maybe there is some user who should be able to overwrite</text>
+<text top="467" left="129" width="432" height="14" font="5">the file, as might be the case when two people are collaborating on writ-</text>
+<text top="482" left="129" width="432" height="14" font="5">ing a report. But that doesn’t mean an unrelated third user should be able</text>
+<text top="497" left="129" width="432" height="14" font="5">to write that file, if he is not collaborating on the report stored there. We</text>
+<text top="512" left="129" width="432" height="14" font="5">need to be able to specify such detail in our security goals. Operating</text>
+<text top="527" left="129" width="432" height="14" font="5">systems are written to be used by many different people with many dif-</text>
+<text top="542" left="129" width="432" height="14" font="5">ferent needs, and operating system security should reflect that generality.</text>
+<text top="557" left="129" width="432" height="14" font="5">What we want in security mechanisms for operating systems is flexibility</text>
+<text top="572" left="129" width="242" height="14" font="5">in describing our detailed security goals.</text>
+<text top="587" left="147" width="414" height="14" font="5">Ultimately, of course, the operating system software must do its best to</text>
+<text top="602" left="129" width="432" height="14" font="5">enforce those flexible security goals, which implies we’ll need to encode</text>
+<text top="617" left="129" width="432" height="14" font="5">those goals in forms that software can understand. We typically must</text>
+<text top="632" left="129" width="432" height="14" font="5">convert our vague understandings of our security goals into highly spe-</text>
+<text top="647" left="129" width="24" height="14" font="5">cific</text>
+<text top="647" left="156" width="99" height="13" font="11"><b>security policies</b></text>
+<text top="647" left="255" width="306" height="14" font="5">. For example, in the case of the file described above,</text>
+<text top="662" left="129" width="432" height="14" font="5">we might want to specify a policy like ’users A and B may write to file X,</text>
+<text top="677" left="129" width="432" height="14" font="5">but no other user can write it.’ With that degree of specificity, backed</text>
+<text top="692" left="129" width="432" height="14" font="5">by carefully designed and implemented mechanisms, we can hope to</text>
+<text top="707" left="129" width="158" height="14" font="5">achieve our security goals.</text>
+<text top="721" left="147" width="414" height="14" font="5">Note an important implication for operating system security: in many</text>
+<text top="736" left="129" width="432" height="14" font="5">cases, an operating system will have the mechanisms necessary to im-</text>
+<text top="751" left="129" width="432" height="14" font="5">plement a desired security policy with a high degree of assurance in its</text>
+<text top="766" left="129" width="432" height="14" font="5">proper application, but only if someone tells the operating system pre-</text>
+<text top="781" left="129" width="432" height="14" font="5">cisely what that policy is. With some important exceptions (like main-</text>
+<text top="796" left="129" width="432" height="14" font="5">taining a process’s address space private unless specifically directed oth-</text>
+<text top="811" left="129" width="432" height="14" font="5">erwise), the operating system merely supplies general mechanisms that</text>
+<text top="826" left="129" width="432" height="14" font="5">can implement many specific policies. Without intelligent design of poli-</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="13" family="BWDDUM+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="5" height="14" font="5">I</text>
+<text top="98" left="93" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="5">O</text>
+<text top="98" left="217" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="5">S</text>
+<text top="98" left="289" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="332" width="7" height="14" font="5">S</text>
+<text top="98" left="339" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="512" width="7" height="14" font="5">7</text>
+<text top="148" left="178" width="10" height="14" font="5">A</text>
+<text top="150" left="189" width="26" height="11" font="6">SIDE</text>
+<text top="148" left="216" width="15" height="14" font="5">: S</text>
+<text top="150" left="232" width="51" height="11" font="6">ECURITY</text>
+<text top="148" left="287" width="10" height="14" font="5">V</text>
+<text top="150" left="297" width="6" height="11" font="6">S</text>
+<text top="148" left="304" width="16" height="14" font="5">. F</text>
+<text top="150" left="319" width="31" height="11" font="6">AULT</text>
+<text top="148" left="354" width="8" height="14" font="5">T</text>
+<text top="150" left="363" width="65" height="11" font="6">OLERANCE</text>
+<text top="163" left="87" width="432" height="14" font="5">When discussing the process abstraction, we talked about how virtual-</text>
+<text top="178" left="87" width="432" height="14" font="5">ization protected a process from actions of other processes. For instance,</text>
+<text top="193" left="87" width="432" height="14" font="5">we did not want our process’s memory to be accidentally overwritten by</text>
+<text top="208" left="87" width="432" height="14" font="5">another process, so our virtualization mechanisms had to prevent such</text>
+<text top="223" left="87" width="432" height="14" font="5">behavior. Then we were talking primarily about flaws or mistakes in</text>
+<text top="238" left="87" width="432" height="14" font="5">processes. Is this actually any different than worrying about malicious</text>
+<text top="253" left="87" width="432" height="14" font="5">behavior, which is more commonly the context in which we discuss se-</text>
+<text top="268" left="87" width="432" height="14" font="5">curity? Have we already solved all our problems by virtualizing our re-</text>
+<text top="283" left="87" width="50" height="14" font="5">sources?</text>
+<text top="298" left="87" width="432" height="14" font="5">Yes and no. (Isn’t that a helpful phrase?) Yes, if we perfectly virtual-</text>
+<text top="313" left="87" width="432" height="14" font="5">ized everything and allowed no interactions between anything, we very</text>
+<text top="327" left="87" width="432" height="14" font="5">likely would have solved most problems of malice. However, most virtu-</text>
+<text top="342" left="87" width="432" height="14" font="5">alization mechanisms are not totally bulletproof. They work well when</text>
+<text top="357" left="87" width="432" height="14" font="5">no one tries to subvert them, but may not be perfect against all possible</text>
+<text top="372" left="87" width="432" height="14" font="5">forms of misbehavior. Second, and perhaps more important, we don’t</text>
+<text top="387" left="87" width="432" height="14" font="5">really want to totally isolate processes from each other. Processes share</text>
+<text top="402" left="87" width="432" height="14" font="5">some OS resources by default (such as file systems) and can optionally</text>
+<text top="417" left="87" width="432" height="14" font="5">choose to share others. These intentional relaxations of virtualization are</text>
+<text top="432" left="87" width="432" height="14" font="5">not problematic when used properly, but the possibilities of legitimate</text>
+<text top="447" left="87" width="432" height="14" font="5">sharing they open are also potential channels for malicious attacks. Fi-</text>
+<text top="462" left="87" width="417" height="14" font="5">nally, the OS does not always have complete control of the hardware...</text>
+<text top="526" left="87" width="432" height="14" font="5">cies and careful application of the mechanisms, however, what the oper-</text>
+<text top="541" left="87" width="76" height="14" font="5">ating system</text>
+<text top="541" left="167" width="36" height="14" font="12">should</text>
+<text top="541" left="207" width="13" height="14" font="5">or</text>
+<text top="541" left="224" width="29" height="14" font="12">could</text>
+<text top="541" left="258" width="261" height="14" font="5">do may not be what your operating system</text>
+<text top="556" left="87" width="21" height="14" font="12">will</text>
+<text top="556" left="111" width="19" height="14" font="5">do.</text>
+<text top="597" left="55" width="223" height="17" font="4">53.4 Designing Secure Systems</text>
+<text top="632" left="105" width="414" height="14" font="5">Few of you will ever build your own operating system, nor even make</text>
+<text top="647" left="87" width="432" height="14" font="5">serious changes to any existing operating system, but we expect many of</text>
+<text top="662" left="87" width="432" height="14" font="5">you will build large software systems of some kind. Experience of many</text>
+<text top="677" left="87" width="432" height="14" font="5">computer scientists with system design has shown that there are certain</text>
+<text top="692" left="87" width="432" height="14" font="5">design principles that are helpful in building systems with security re-</text>
+<text top="707" left="87" width="432" height="14" font="5">quirements. These principles were originally laid out by Jerome Saltzer</text>
+<text top="721" left="87" width="432" height="14" font="5">and Michael Schroeder in an influential paper [SS75], though some of</text>
+<text top="736" left="87" width="432" height="14" font="5">them come from earlier observations by others. While neither the origi-</text>
+<text top="751" left="87" width="432" height="14" font="5">nal authors nor later commentators would claim that following them will</text>
+<text top="766" left="87" width="432" height="14" font="5">guarantee that your system is secure, paying attention to them has proven</text>
+<text top="781" left="87" width="432" height="14" font="5">to lead to more secure systems, while you ignore them at your own peril.</text>
+<text top="796" left="87" width="432" height="14" font="5">We’ll discuss them briefly here. If you are actually building a large soft-</text>
+<text top="811" left="87" width="432" height="14" font="5">ware system, it would be worth your while to look up this paper (or more</text>
+<text top="826" left="87" width="368" height="14" font="5">detailed commentaries on it) and study the concepts carefully.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="5">8</text>
+<text top="96" left="257" width="5" height="14" font="5">I</text>
+<text top="98" left="262" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="376" width="11" height="14" font="5">O</text>
+<text top="98" left="387" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="139" left="146" width="10" height="14" font="5">1.</text>
+<text top="139" left="163" width="148" height="13" font="11"><b>Economy of mechanism</b></text>
+<text top="139" left="315" width="245" height="14" font="5">– This basically means keep your system</text>
+<text top="154" left="163" width="397" height="14" font="5">as small and simple as possible. Simple systems have fewer bugs</text>
+<text top="169" left="163" width="397" height="14" font="5">and it’s easier to understand their behavior. If you don’t under-</text>
+<text top="183" left="163" width="399" height="14" font="5">stand your system’s behavior, you’re not likely to know if it achieves</text>
+<text top="198" left="163" width="103" height="14" font="5">its security goals.</text>
+<text top="227" left="146" width="10" height="14" font="5">2.</text>
+<text top="227" left="163" width="107" height="13" font="11"><b>Fail-safe defaults</b></text>
+<text top="227" left="276" width="285" height="14" font="5">– Default to security, not insecurity. If policies</text>
+<text top="242" left="163" width="397" height="14" font="5">can be set to determine the behavior of a system, have the default</text>
+<text top="257" left="163" width="248" height="14" font="5">for those policies be more secure, not less.</text>
+<text top="285" left="146" width="10" height="14" font="5">3.</text>
+<text top="285" left="163" width="128" height="13" font="11"><b>Complete mediation</b></text>
+<text top="285" left="296" width="264" height="14" font="5">– This is a security term meaning that you</text>
+<text top="300" left="163" width="397" height="14" font="5">should check if an action to be performed meets security policies</text>
+<text top="317" left="163" width="213" height="14" font="5">every single time the action is taken</text>
+<text top="315" left="376" width="4" height="9" font="7">3</text>
+<text top="317" left="381" width="3" height="14" font="5">.</text>
+<text top="346" left="146" width="10" height="14" font="5">4.</text>
+<text top="346" left="163" width="79" height="13" font="11"><b>Open design</b></text>
+<text top="346" left="245" width="315" height="14" font="5">– Assume your adversary knows every detail of your</text>
+<text top="361" left="163" width="397" height="14" font="5">design. If the system can achieve its security goals anyway, you’re</text>
+<text top="376" left="163" width="397" height="14" font="5">in good shape. This principle does not necessarily mean that you</text>
+<text top="391" left="163" width="397" height="14" font="5">actually tell everyone all the details, but base your security on the</text>
+<text top="406" left="163" width="397" height="14" font="5">assumption that the attacker has learned everything. He often has,</text>
+<text top="420" left="163" width="65" height="14" font="5">in practice.</text>
+<text top="449" left="146" width="10" height="14" font="5">5.</text>
+<text top="449" left="163" width="145" height="13" font="11"><b>Separation of privilege</b></text>
+<text top="449" left="314" width="247" height="14" font="5">– Require separate parties or credentials</text>
+<text top="464" left="163" width="397" height="14" font="5">to perform critical actions. For example, two-factor authentication,</text>
+<text top="479" left="163" width="397" height="14" font="5">where you use both a password and possession of a piece of hard-</text>
+<text top="494" left="163" width="397" height="14" font="5">ware to determine identity, is more secure than using either one of</text>
+<text top="509" left="163" width="126" height="14" font="5">those methods alone.</text>
+<text top="537" left="146" width="10" height="14" font="5">6.</text>
+<text top="537" left="163" width="91" height="13" font="11"><b>Least privilege</b></text>
+<text top="537" left="259" width="302" height="14" font="5">– Give a user or a process the minimum privileges</text>
+<text top="552" left="163" width="397" height="14" font="5">required to perform the actions you wish to allow. The more privi-</text>
+<text top="567" left="163" width="397" height="14" font="5">leges you give to a party, the greater the danger that they will abuse</text>
+<text top="582" left="163" width="397" height="14" font="5">those privileges. Even if you are confident that the party is not mali-</text>
+<text top="597" left="163" width="397" height="14" font="5">cious, if they make a mistake, an adversary can leverage their error</text>
+<text top="612" left="163" width="308" height="14" font="5">to use their superfluous privileges in harmful ways.</text>
+<text top="640" left="146" width="10" height="14" font="5">7.</text>
+<text top="640" left="163" width="164" height="13" font="11"><b>Least common mechanism</b></text>
+<text top="640" left="332" width="229" height="14" font="5">– For different users or processes, use</text>
+<text top="655" left="163" width="397" height="14" font="5">separate data structures or mechanisms to handle them. For ex-</text>
+<text top="670" left="163" width="397" height="14" font="5">ample, each process gets its own page table in a virtual memory</text>
+<text top="685" left="163" width="384" height="14" font="5">system, ensuring that one process cannot access another’s pages.</text>
+<text top="714" left="146" width="10" height="14" font="5">8.</text>
+<text top="714" left="163" width="82" height="13" font="11"><b>Acceptability</b></text>
+<text top="714" left="250" width="311" height="14" font="5">– A critical property not dear to the hearts of many</text>
+<text top="729" left="163" width="397" height="14" font="5">programmers. If your users won’t use it, your system is worthless.</text>
+<text top="743" left="163" width="397" height="14" font="5">Far too many promising secure systems have been abandoned be-</text>
+<text top="758" left="163" width="244" height="14" font="5">cause they asked too much of their users.</text>
+<text top="790" left="149" width="4" height="8" font="8">3</text>
+<text top="792" left="154" width="407" height="11" font="9">This particular principle is often ignored in many systems, in favor of lower overhead or</text>
+<text top="804" left="129" width="432" height="11" font="9">usability. An overriding characteristic of all engineering design is that you often must balance</text>
+<text top="816" left="129" width="432" height="11" font="9">conflicting goals, as we saw earlier in the course, such as in the scheduling chapters. We’ll say</text>
+<text top="828" left="129" width="215" height="11" font="9">more about that in the context of security later.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="5">I</text>
+<text top="98" left="93" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="5">O</text>
+<text top="98" left="217" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="5">S</text>
+<text top="98" left="289" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="332" width="7" height="14" font="5">S</text>
+<text top="98" left="339" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="512" width="7" height="14" font="5">9</text>
+<text top="139" left="105" width="414" height="14" font="5">These are not the only useful pieces of advice on designing secure sys-</text>
+<text top="154" left="87" width="432" height="14" font="5">tems out there. There is also lots of good material on taking the next</text>
+<text top="169" left="87" width="432" height="14" font="5">step, converting a good design into code that achieves the security you</text>
+<text top="183" left="87" width="432" height="14" font="5">intended, and other material on how to evaluate whether the system you</text>
+<text top="198" left="87" width="432" height="14" font="5">have built does indeed meet those goals. These issues are beyond the</text>
+<text top="213" left="87" width="432" height="14" font="5">scope of this course, but are extremely important when the time comes for</text>
+<text top="228" left="87" width="432" height="14" font="5">you to build large, complex systems. For discussion of approaches to se-</text>
+<text top="243" left="87" width="432" height="14" font="5">cure programming, you might start with Seacord [SE13], if you are work-</text>
+<text top="258" left="87" width="432" height="14" font="5">ing in C. If you are working in another language, you should seek out a</text>
+<text top="273" left="87" width="432" height="14" font="5">similar text specific to that language, since many secure coding problem</text>
+<text top="288" left="87" width="432" height="14" font="5">are related to details of the language. For a comprehensive treatment on</text>
+<text top="303" left="87" width="432" height="14" font="5">how to evaluate if your system is secure, start with Dowd et al.’s work</text>
+<text top="318" left="87" width="44" height="14" font="5">[D+07].</text>
+<text top="357" left="55" width="217" height="17" font="4">53.5 The Basics of OS Security</text>
+<text top="389" left="105" width="414" height="14" font="5">In a typical operating system, then, we have some set of security goals,</text>
+<text top="404" left="87" width="432" height="14" font="5">centered around various aspects of confidentiality, integrity, and avail-</text>
+<text top="419" left="87" width="432" height="14" font="5">ability. Some of these goals tend to be built in to the operating system</text>
+<text top="434" left="87" width="432" height="14" font="5">model, while others are controlled by the owners or users of the system.</text>
+<text top="449" left="87" width="432" height="14" font="5">The built-in goals are those that are extremely common, or must be en-</text>
+<text top="463" left="87" width="432" height="14" font="5">sured to make the more specific goals achievable. Most of these built-in</text>
+<text top="478" left="87" width="432" height="14" font="5">goals relate to controlling process access to pieces of the hardware. That’s</text>
+<text top="493" left="87" width="432" height="14" font="5">because the hardware is shared by all the processes on a system, and un-</text>
+<text top="508" left="87" width="432" height="14" font="5">less the sharing is carefully controlled, one process can interfere with the</text>
+<text top="523" left="87" width="432" height="14" font="5">security goals of another process. Other built-in goals relate to services</text>
+<text top="538" left="87" width="432" height="14" font="5">that the operating system offers, such as file systems, memory manage-</text>
+<text top="553" left="87" width="432" height="14" font="5">ment, and interprocess communications. If these services are not care-</text>
+<text top="568" left="87" width="392" height="14" font="5">fully controlled, processes can subvert the system’s security goals.</text>
+<text top="585" left="105" width="414" height="14" font="5">Clearly, a lot of system security is going to be related to process han-</text>
+<text top="600" left="87" width="432" height="14" font="5">dling. If the operating system can maintain a clean separation of pro-</text>
+<text top="615" left="87" width="432" height="14" font="5">cesses that can only be broken with the operating system’s help, then</text>
+<text top="630" left="87" width="432" height="14" font="5">neither shared hardware nor operating system services can be used to</text>
+<text top="645" left="87" width="432" height="14" font="5">subvert our security goals. That requirement implies that the operating</text>
+<text top="660" left="87" width="432" height="14" font="5">system needs to be careful about allowing use of hardware and of its ser-</text>
+<text top="675" left="87" width="432" height="14" font="5">vices. In many cases, the operating system has good opportunities to</text>
+<text top="690" left="87" width="432" height="14" font="5">apply such caution. For example, the operating system controls virtual</text>
+<text top="705" left="87" width="432" height="14" font="5">memory, which in turn completely controls which physical memory ad-</text>
+<text top="719" left="87" width="432" height="14" font="5">dresses each process can access. Hardware support prevents a process</text>
+<text top="734" left="87" width="432" height="14" font="5">from even naming a physical memory address that is not mapped into its</text>
+<text top="749" left="87" width="432" height="14" font="5">virtual memory space. (The software folks among us should remember</text>
+<text top="764" left="87" width="432" height="14" font="5">to regularly thank the hardware folks for all the great stuff they’ve given</text>
+<text top="779" left="87" width="102" height="14" font="5">us to work with.)</text>
+<text top="796" left="105" width="414" height="14" font="5">System calls offer the operating system another opportunity to pro-</text>
+<text top="811" left="87" width="432" height="14" font="5">vide protection. In most operating systems, processes access system ser-</text>
+<text top="826" left="87" width="432" height="14" font="5">vices by making an explicit system call, as was discussed in earlier chap-</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="5">10</text>
+<text top="96" left="257" width="5" height="14" font="5">I</text>
+<text top="98" left="262" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="376" width="11" height="14" font="5">O</text>
+<text top="98" left="387" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="148" left="219" width="8" height="14" font="5">T</text>
+<text top="150" left="227" width="11" height="11" font="6">IP</text>
+<text top="148" left="239" width="16" height="14" font="5">: B</text>
+<text top="150" left="256" width="7" height="11" font="6">E</text>
+<text top="148" left="267" width="10" height="14" font="5">C</text>
+<text top="150" left="277" width="46" height="11" font="6">AREFUL</text>
+<text top="148" left="327" width="11" height="14" font="5">O</text>
+<text top="150" left="338" width="6" height="11" font="6">F</text>
+<text top="148" left="348" width="8" height="14" font="5">T</text>
+<text top="150" left="357" width="16" height="11" font="6">HE</text>
+<text top="148" left="378" width="13" height="14" font="5">W</text>
+<text top="150" left="392" width="45" height="11" font="6">EAKEST</text>
+<text top="148" left="441" width="8" height="14" font="5">L</text>
+<text top="150" left="450" width="22" height="11" font="6">INK</text>
+<text top="163" left="129" width="432" height="14" font="5">It’s worthwhile to remember that the people attacking your systems share</text>
+<text top="178" left="129" width="432" height="14" font="5">many characteristics with you. In particular, they’re probably pretty</text>
+<text top="193" left="129" width="432" height="14" font="5">smart and they probably are kind of lazy, in the positive sense that they</text>
+<text top="208" left="129" width="432" height="14" font="5">don’t do work that they don’t need to do. That implies that attackers</text>
+<text top="223" left="129" width="432" height="14" font="5">tend to go for the easiest possible way to overcome your system’s secu-</text>
+<text top="238" left="129" width="432" height="14" font="5">rity. They’re not going to search for a zero-day buffer overflow if you’ve</text>
+<text top="253" left="129" width="350" height="14" font="5">chosen “password” as your password to access the system.</text>
+<text top="271" left="129" width="432" height="14" font="5">The practical implication for you is that you should spend most of the</text>
+<text top="286" left="129" width="432" height="14" font="5">time you devote to securing your system to identifying and strengthen-</text>
+<text top="301" left="129" width="432" height="14" font="5">ing your weakest link. Your weakest link is the least protected part of</text>
+<text top="316" left="129" width="432" height="14" font="5">your system, the one that’s easiest to attack, the one you can’t hide away</text>
+<text top="331" left="129" width="432" height="14" font="5">or augment with some external security system. Often, a running sys-</text>
+<text top="346" left="129" width="432" height="14" font="5">tem’s weakest link is actually its human users, not its software. You will</text>
+<text top="361" left="129" width="432" height="14" font="5">have a hard time changing the behavior of people, but you can design</text>
+<text top="376" left="129" width="432" height="14" font="5">the software bearing in mind that attackers may try to fool the legitimate</text>
+<text top="390" left="129" width="432" height="14" font="5">users into misusing it. Remember that principle of least privilege? If an</text>
+<text top="405" left="129" width="432" height="14" font="5">attacker can fool a user who has complete privileges into misusing the</text>
+<text top="420" left="129" width="432" height="14" font="5">system, it will be a lot worse than fooling a user who can only damage</text>
+<text top="435" left="129" width="89" height="14" font="5">his own assets.</text>
+<text top="453" left="129" width="432" height="14" font="5">Generally, thinking about security is a bit different than thinking about</text>
+<text top="468" left="129" width="432" height="14" font="5">many other system design issues. It’s more adversarial. If you want to</text>
+<text top="483" left="129" width="432" height="14" font="5">learn more about good ways to think about security of the systems you</text>
+<text top="498" left="129" width="350" height="14" font="5">build, check out Schneier’s book “Secrets and Lies” [SC00].</text>
+<text top="555" left="129" width="432" height="14" font="5">ters. As you have learned, system calls switch the execution mode from</text>
+<text top="570" left="129" width="432" height="14" font="5">the processor’s user mode to its supervisor mode, invoking an appropri-</text>
+<text top="585" left="129" width="432" height="14" font="5">ate piece of operating system code as they do so. That code can deter-</text>
+<text top="600" left="129" width="432" height="14" font="5">mine which process made the system call and what service the process</text>
+<text top="615" left="129" width="432" height="14" font="5">requested. Earlier, we only talked about how this could allow the operat-</text>
+<text top="630" left="129" width="432" height="14" font="5">ing system to call the proper piece of system code to perform the service,</text>
+<text top="645" left="129" width="432" height="14" font="5">and to keep track of who to return control to when the service had been</text>
+<text top="660" left="129" width="432" height="14" font="5">completed. But the same mechanism gives the operating system the op-</text>
+<text top="675" left="129" width="432" height="14" font="5">portunity to check if the requested service should be allowed under the</text>
+<text top="690" left="129" width="432" height="14" font="5">system’s security policy. Since access to peripheral devices is through de-</text>
+<text top="705" left="129" width="432" height="14" font="5">vice drivers, which are usually also accessed via system call, the same</text>
+<text top="720" left="129" width="432" height="14" font="5">mechanism can ensure proper application of security policies for hard-</text>
+<text top="734" left="129" width="73" height="14" font="5">ware access.</text>
+<text top="751" left="147" width="414" height="14" font="5">When a process performs a system call, then, the operating system will</text>
+<text top="766" left="129" width="432" height="14" font="5">use the process identifier in the process control block or similar structure</text>
+<text top="781" left="129" width="362" height="14" font="5">to determine the identity of the process. The OS can then use</text>
+<text top="781" left="494" width="67" height="13" font="11"><b>access con-</b></text>
+<text top="796" left="129" width="102" height="13" font="11"><b>trol mechanisms</b></text>
+<text top="796" left="234" width="212" height="14" font="5">to decide if the identified process is</text>
+<text top="796" left="451" width="67" height="13" font="11"><b>authorized</b></text>
+<text top="796" left="521" width="40" height="14" font="5">to per-</text>
+<text top="811" left="129" width="432" height="14" font="5">form the requested action. If so, the OS either performs the action itself</text>
+<text top="826" left="129" width="432" height="14" font="5">on behalf of the process or arranges for the process to perform it without</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="5" height="14" font="5">I</text>
+<text top="98" left="93" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="206" width="11" height="14" font="5">O</text>
+<text top="98" left="217" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="281" width="7" height="14" font="5">S</text>
+<text top="98" left="289" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="332" width="7" height="14" font="5">S</text>
+<text top="98" left="339" width="51" height="11" font="6">ECURITY</text>
+<text top="96" left="506" width="13" height="14" font="5">11</text>
+<text top="139" left="87" width="432" height="14" font="5">further system intervention. If the process is not authorized, the OS can</text>
+<text top="154" left="87" width="432" height="14" font="5">simply generate an error code for the system call and return control to the</text>
+<text top="169" left="87" width="265" height="14" font="5">process, if the scheduling algorithm permits.</text>
+<text top="206" left="55" width="105" height="17" font="4">53.6 Summary</text>
+<text top="235" left="105" width="414" height="14" font="5">The security of the operating system is vital for both its own and its</text>
+<text top="250" left="87" width="432" height="14" font="5">applications’ sakes. Security failures in this software allow essentially</text>
+<text top="265" left="87" width="432" height="14" font="5">limitless bad consequences. While achieving system security is challeng-</text>
+<text top="280" left="87" width="432" height="14" font="5">ing, there are known design principles that can help. These principles</text>
+<text top="295" left="87" width="432" height="14" font="5">are useful not only in designing operating systems, but in designing any</text>
+<text top="310" left="87" width="133" height="14" font="5">large software system.</text>
+<text top="325" left="105" width="414" height="14" font="5">Achieving security in operating systems depends on the security goals</text>
+<text top="340" left="87" width="432" height="14" font="5">one has. These goals will typically include goals related to confidentiality,</text>
+<text top="355" left="87" width="432" height="14" font="5">integrity, and availability. In any given system, the more detailed particu-</text>
+<text top="370" left="87" width="432" height="14" font="5">lars of these security goals vary, which implies that different systems will</text>
+<text top="385" left="87" width="432" height="14" font="5">have different security policies intended to help them meet their specific</text>
+<text top="400" left="87" width="432" height="14" font="5">security goals. As in other areas of operating system design, we handle</text>
+<text top="415" left="87" width="432" height="14" font="5">these varying needs by separating the specific policies used by any partic-</text>
+<text top="430" left="87" width="432" height="14" font="5">ular system from the general mechanisms used to implement the policies</text>
+<text top="445" left="87" width="89" height="14" font="5">for all systems.</text>
+<text top="460" left="105" width="414" height="14" font="5">The next question to address is, what mechanisms should our oper-</text>
+<text top="474" left="87" width="432" height="14" font="5">ating system provide to help us support general security policies? The</text>
+<text top="489" left="87" width="432" height="14" font="5">virtualization of processes and memory is one helpful mechanism, since</text>
+<text top="504" left="87" width="432" height="14" font="5">it allows us to control the behavior of processes to a large extent. We will</text>
+<text top="519" left="87" width="432" height="14" font="5">describe several other useful operating system security mechanisms in</text>
+<text top="534" left="87" width="140" height="14" font="5">the upcoming chapters.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="6">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="6">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="6">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="6">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="6">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="16" family="SCSSCV+URWPalladioL" color="#000000"/>
+	<fontspec id="14" size="10" family="BWDDUM+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">12</text>
+<text top="96" left="257" width="5" height="14" font="5">I</text>
+<text top="98" left="262" width="109" height="11" font="6">NTRODUCTION TO</text>
+<text top="96" left="376" width="11" height="14" font="5">O</text>
+<text top="98" left="387" width="60" height="11" font="6">PERATING</text>
+<text top="96" left="451" width="7" height="14" font="5">S</text>
+<text top="98" left="459" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="502" width="7" height="14" font="5">S</text>
+<text top="98" left="509" width="51" height="11" font="6">ECURITY</text>
+<text top="137" left="129" width="82" height="16" font="13"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="9">[D+07] “The Art of Software Security Assessment” by Mark Dowd, John McDonald, and Justin</text>
+<text top="177" left="129" width="138" height="11" font="9">Schuh. Addison-Wesley, 2007.</text>
+<text top="177" left="270" width="290" height="11" font="14">A long, comprehensive treatment of how to determine if your software</text>
+<text top="189" left="129" width="430" height="11" font="14">system meets its security goals. It also contains useful advice on avoiding security problems in coding.</text>
+<text top="206" left="129" width="372" height="11" font="9">[SC00] “Secrets and Lies” by Bruce Schneier. Wiley Computer Publishing, 2000.</text>
+<text top="206" left="505" width="56" height="11" font="14">A good high-</text>
+<text top="217" left="129" width="432" height="11" font="14">level perspective of the challenges of computer security, developed at book length. Intended for an au-</text>
+<text top="229" left="129" width="432" height="11" font="14">dience of moderately technically sophisticated readers, and well regarded in the security community. A</text>
+<text top="241" left="129" width="188" height="11" font="14">must-read if you intend to work in that field.</text>
+<text top="258" left="129" width="383" height="11" font="9">[SE13] “Secure Coding in C and C++” by Robert Seacord. Addison-Wesley, 2013.</text>
+<text top="258" left="517" width="43" height="11" font="14">A well re-</text>
+<text top="270" left="129" width="287" height="11" font="14">garded book on how to avoid major security mistakes in coding in C.</text>
+<text top="286" left="129" width="432" height="11" font="9">[SS75] “The Protection of Information in Computer Systems” by Jerome Saltzer and Michael</text>
+<text top="298" left="129" width="315" height="11" font="9">Schroeder. Proceedings of the IEEE, Vol. 63, No. 9, September 1975.</text>
+<text top="298" left="449" width="112" height="11" font="14">A highly influential paper,</text>
+<text top="310" left="129" width="285" height="11" font="14">particularly their codification of principles for secure system design.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+</pdf2xml>

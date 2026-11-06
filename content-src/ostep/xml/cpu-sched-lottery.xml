@@ -1,0 +1,1246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="PSKMSD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="PSKMSD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="RFKZBF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="OLOHNA+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="RFKZBF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="16" family="RFKZBF+URWPalladioL-Roma" color="#000000"/>
+<text top="198" left="540" width="17" height="30" font="0">9</text>
+<text top="269" left="219" width="300" height="21" font="1">Scheduling: Proportional Share</text>
+<text top="351" left="105" width="414" height="14" font="2">In this chapter, we’ll examine a different type of scheduler known as a</text>
+<text top="366" left="87" width="115" height="13" font="3"><b>proportional-share</b></text>
+<text top="366" left="206" width="250" height="14" font="2">scheduler, also sometimes referred to as a</text>
+<text top="366" left="460" width="59" height="13" font="3"><b>fair-share</b></text>
+<text top="381" left="87" width="432" height="14" font="2">scheduler. Proportional-share is based around a simple concept: instead</text>
+<text top="395" left="87" width="432" height="14" font="2">of optimizing for turnaround or response time, a scheduler might instead</text>
+<text top="410" left="87" width="417" height="14" font="2">try to guarantee that each job obtain a certain percentage of CPU time.</text>
+<text top="426" left="105" width="414" height="14" font="2">An excellent early example of proportional-share scheduling is found</text>
+<text top="441" left="87" width="388" height="14" font="2">in research by Waldspurger and Weihl [WW94], and is known as</text>
+<text top="441" left="479" width="40" height="13" font="3"><b>lottery</b></text>
+<text top="456" left="87" width="68" height="13" font="3"><b>scheduling</b></text>
+<text top="456" left="155" width="364" height="14" font="2">; however, the idea is certainly older [KL88]. The basic idea</text>
+<text top="471" left="87" width="432" height="14" font="2">is quite simple: every so often, hold a lottery to determine which process</text>
+<text top="486" left="87" width="432" height="14" font="2">should get to run next; processes that should run more often should be</text>
+<text top="501" left="87" width="432" height="14" font="2">given more chances to win the lottery. Easy, no? Now, onto the details!</text>
+<text top="516" left="87" width="141" height="14" font="2">But not before our crux:</text>
+<text top="558" left="144" width="10" height="14" font="2">C</text>
+<text top="560" left="155" width="24" height="11" font="4">RUX</text>
+<text top="558" left="179" width="19" height="14" font="2">: H</text>
+<text top="560" left="200" width="20" height="11" font="4">OW</text>
+<text top="558" left="223" width="8" height="14" font="2">T</text>
+<text top="560" left="232" width="8" height="11" font="4">O</text>
+<text top="558" left="245" width="7" height="14" font="2">S</text>
+<text top="560" left="252" width="33" height="11" font="4">HARE</text>
+<text top="558" left="289" width="8" height="14" font="2">T</text>
+<text top="560" left="298" width="16" height="11" font="4">HE</text>
+<text top="558" left="319" width="42" height="14" font="2">CPU P</text>
+<text top="560" left="361" width="101" height="11" font="4">ROPORTIONALLY</text>
+<text top="573" left="105" width="414" height="14" font="2">How can we design a scheduler to share the CPU proportionally?</text>
+<text top="588" left="87" width="403" height="14" font="2">What are the key mechanisms for doing so? How effective are they?</text>
+<text top="644" left="55" width="346" height="17" font="5">9.1 Basic Concept: Tickets Represent Your Share</text>
+<text top="675" left="105" width="329" height="14" font="2">Underlying lottery scheduling is one very basic concept:</text>
+<text top="675" left="437" width="40" height="13" font="3"><b>tickets</b></text>
+<text top="675" left="478" width="43" height="14" font="2">, which</text>
+<text top="689" left="87" width="432" height="14" font="2">are used to represent the share of a resource that a process (or user or</text>
+<text top="704" left="87" width="432" height="14" font="2">whatever) should receive. The percent of tickets that a process has repre-</text>
+<text top="719" left="87" width="291" height="14" font="2">sents its share of the system resource in question.</text>
+<text top="735" left="105" width="414" height="14" font="2">Let’s look at an example. Imagine two processes, A and B, and further</text>
+<text top="750" left="87" width="432" height="14" font="2">that A has 75 tickets while B has only 25. Thus, what we would like is for</text>
+<text top="765" left="87" width="323" height="14" font="2">A to receive 75% of the CPU and B the remaining 25%.</text>
+<text top="781" left="105" width="414" height="14" font="2">Lottery scheduling achieves this probabilistically (but not determinis-</text>
+<text top="796" left="87" width="432" height="14" font="2">tically) by holding a lottery every so often (say, every time slice). Holding</text>
+<text top="811" left="87" width="432" height="14" font="2">a lottery is straightforward: the scheduler must know how many total</text>
+<text top="826" left="87" width="432" height="14" font="2">tickets there are (in our example, there are 100). The scheduler then picks</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="9" family="RFKZBF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="12" family="FOLFZV+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="8" size="7" family="RFKZBF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="RFKZBF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="12" family="RFKZBF+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="331" width="7" height="14" font="2">S</text>
+<text top="98" left="339" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="412" width="16" height="14" font="2">: P</text>
+<text top="98" left="429" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="520" width="7" height="14" font="2">S</text>
+<text top="98" left="527" width="33" height="11" font="4">HARE</text>
+<text top="148" left="274" width="8" height="14" font="2">T</text>
+<text top="150" left="282" width="11" height="11" font="4">IP</text>
+<text top="148" left="294" width="19" height="14" font="2">: U</text>
+<text top="150" left="313" width="13" height="11" font="4">SE</text>
+<text top="148" left="330" width="9" height="14" font="2">R</text>
+<text top="150" left="340" width="76" height="11" font="4">ANDOMNESS</text>
+<text top="163" left="129" width="403" height="14" font="2">One of the most beautiful aspects of lottery scheduling is its use of</text>
+<text top="163" left="536" width="25" height="13" font="3"><b>ran-</b></text>
+<text top="178" left="129" width="55" height="13" font="3"><b>domness</b></text>
+<text top="178" left="183" width="377" height="14" font="2">. When you have to make a decision, using such a randomized</text>
+<text top="193" left="129" width="325" height="14" font="2">approach is often a robust and simple way of doing so.</text>
+<text top="219" left="129" width="432" height="14" font="2">Random approaches have at least three advantages over more traditional</text>
+<text top="233" left="129" width="432" height="14" font="2">decisions. First, random often avoids strange corner-case behaviors that</text>
+<text top="248" left="129" width="432" height="14" font="2">a more traditional algorithm may have trouble handling. For example,</text>
+<text top="263" left="129" width="432" height="14" font="2">consider the LRU replacement policy (studied in more detail in a future</text>
+<text top="278" left="129" width="432" height="14" font="2">chapter on virtual memory); while often a good replacement algorithm,</text>
+<text top="293" left="129" width="432" height="14" font="2">LRU attains worst-case performance for some cyclic-sequential work-</text>
+<text top="308" left="129" width="348" height="14" font="2">loads. Random, on the other hand, has no such worst case.</text>
+<text top="334" left="129" width="432" height="14" font="2">Second, random also is lightweight, requiring little state to track alter-</text>
+<text top="349" left="129" width="432" height="14" font="2">natives. In a traditional fair-share scheduling algorithm, tracking how</text>
+<text top="364" left="129" width="432" height="14" font="2">much CPU each process has received requires per-process accounting,</text>
+<text top="379" left="129" width="432" height="14" font="2">which must be updated after running each process. Doing so randomly</text>
+<text top="394" left="129" width="432" height="14" font="2">necessitates only the most minimal of per-process state (e.g., the number</text>
+<text top="409" left="129" width="115" height="14" font="2">of tickets each has).</text>
+<text top="434" left="129" width="432" height="14" font="2">Finally, random can be quite fast. As long as generating a random num-</text>
+<text top="449" left="129" width="432" height="14" font="2">ber is quick, making the decision is also, and thus random can be used</text>
+<text top="464" left="129" width="432" height="14" font="2">in a number of places where speed is required. Of course, the faster the</text>
+<text top="479" left="129" width="329" height="14" font="2">need, the more random tends towards pseudo-random.</text>
+<text top="530" left="129" width="301" height="14" font="2">a winning ticket, which is a number from 0 to 99</text>
+<text top="527" left="430" width="4" height="9" font="6">1</text>
+<text top="530" left="435" width="126" height="14" font="2">. Assuming A holds</text>
+<text top="545" left="129" width="432" height="14" font="2">tickets 0 through 74 and B 75 through 99, the winning ticket simply de-</text>
+<text top="560" left="129" width="432" height="14" font="2">termines whether A or B runs. The scheduler then loads the state of that</text>
+<text top="575" left="129" width="169" height="14" font="2">winning process and runs it.</text>
+<text top="590" left="147" width="396" height="14" font="2">Here is an example output of a lottery scheduler’s winning tickets:</text>
+<text top="606" left="129" width="359" height="10" font="7">63 85 70 39 76 17 29 41 36 39 10 99 68 83 63 62 43</text>
+<text top="606" left="502" width="50" height="10" font="7">0 49 12</text>
+<text top="629" left="147" width="180" height="14" font="2">Here is the resulting schedule:</text>
+<text top="655" left="136" width="7" height="10" font="7">A</text>
+<text top="655" left="179" width="7" height="10" font="7">A</text>
+<text top="655" left="201" width="7" height="10" font="7">A</text>
+<text top="655" left="244" width="7" height="10" font="7">A</text>
+<text top="655" left="265" width="7" height="10" font="7">A</text>
+<text top="655" left="287" width="7" height="10" font="7">A</text>
+<text top="655" left="308" width="7" height="10" font="7">A</text>
+<text top="655" left="330" width="7" height="10" font="7">A</text>
+<text top="655" left="351" width="7" height="10" font="7">A</text>
+<text top="655" left="394" width="7" height="10" font="7">A</text>
+<text top="655" left="437" width="7" height="10" font="7">A</text>
+<text top="655" left="459" width="7" height="10" font="7">A</text>
+<text top="655" left="480" width="7" height="10" font="7">A</text>
+<text top="655" left="502" width="7" height="10" font="7">A</text>
+<text top="655" left="523" width="7" height="10" font="7">A</text>
+<text top="655" left="545" width="7" height="10" font="7">A</text>
+<text top="669" left="158" width="7" height="10" font="7">B</text>
+<text top="669" left="222" width="7" height="10" font="7">B</text>
+<text top="669" left="373" width="7" height="10" font="7">B</text>
+<text top="669" left="416" width="7" height="10" font="7">B</text>
+<text top="693" left="147" width="414" height="14" font="2">As you can see from the example, the use of randomness in lottery</text>
+<text top="708" left="129" width="432" height="14" font="2">scheduling leads to a probabilistic correctness in meeting the desired pro-</text>
+<text top="723" left="129" width="432" height="14" font="2">portion, but no guarantee. In our example above, B only gets to run 4 out</text>
+<text top="738" left="129" width="432" height="14" font="2">of 20 time slices (20%), instead of the desired 25% allocation. However,</text>
+<text top="752" left="129" width="432" height="14" font="2">the longer these two jobs compete, the more likely they are to achieve the</text>
+<text top="767" left="129" width="121" height="14" font="2">desired percentages.</text>
+<text top="814" left="149" width="4" height="8" font="8">1</text>
+<text top="816" left="154" width="407" height="11" font="9">Computer Scientists always start counting at 0. It is so odd to non-computer-types that</text>
+<text top="828" left="129" width="352" height="11" font="9">famous people have felt obliged to write about why we do it this way [D82].</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="16" height="14" font="2">: P</text>
+<text top="98" left="185" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="33" height="11" font="4">HARE</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="148" left="177" width="8" height="14" font="2">T</text>
+<text top="150" left="186" width="11" height="11" font="4">IP</text>
+<text top="148" left="197" width="19" height="14" font="2">: U</text>
+<text top="150" left="217" width="13" height="11" font="4">SE</text>
+<text top="148" left="234" width="8" height="14" font="2">T</text>
+<text top="150" left="243" width="41" height="11" font="4">ICKETS</text>
+<text top="148" left="288" width="8" height="14" font="2">T</text>
+<text top="150" left="296" width="8" height="11" font="4">O</text>
+<text top="148" left="309" width="9" height="14" font="2">R</text>
+<text top="150" left="319" width="59" height="11" font="4">EPRESENT</text>
+<text top="148" left="382" width="7" height="14" font="2">S</text>
+<text top="150" left="390" width="39" height="11" font="4">HARES</text>
+<text top="163" left="87" width="432" height="14" font="2">One of the most powerful (and basic) mechanisms in the design of lottery</text>
+<text top="178" left="87" width="212" height="14" font="2">(and stride) scheduling is that of the</text>
+<text top="178" left="302" width="34" height="13" font="3"><b>ticket</b></text>
+<text top="178" left="337" width="182" height="14" font="2">. The ticket is used to represent</text>
+<text top="193" left="87" width="432" height="14" font="2">a process’s share of the CPU in these examples, but can be applied much</text>
+<text top="208" left="87" width="432" height="14" font="2">more broadly. For example, in more recent work on virtual memory man-</text>
+<text top="223" left="87" width="432" height="14" font="2">agement for hypervisors, Waldspurger shows how tickets can be used to</text>
+<text top="238" left="87" width="432" height="14" font="2">represent a guest operating system’s share of memory [W02]. Thus, if you</text>
+<text top="253" left="87" width="432" height="14" font="2">are ever in need of a mechanism to represent a proportion of ownership,</text>
+<text top="268" left="87" width="313" height="14" font="2">this concept just might be ... (wait for it) ... the ticket.</text>
+<text top="309" left="55" width="164" height="17" font="5">9.2 Ticket Mechanisms</text>
+<text top="334" left="105" width="414" height="14" font="2">Lottery scheduling also provides a number of mechanisms to manip-</text>
+<text top="349" left="87" width="432" height="14" font="2">ulate tickets in different and sometimes useful ways. One way is with</text>
+<text top="364" left="87" width="84" height="14" font="2">the concept of</text>
+<text top="364" left="175" width="91" height="13" font="3"><b>ticket currency</b></text>
+<text top="364" left="266" width="253" height="14" font="2">. Currency allows a user with a set of tick-</text>
+<text top="379" left="87" width="432" height="14" font="2">ets to allocate tickets among their own jobs in whatever currency they</text>
+<text top="393" left="87" width="432" height="14" font="2">would like; the system then automatically converts said currency into the</text>
+<text top="408" left="87" width="120" height="14" font="2">correct global value.</text>
+<text top="423" left="105" width="414" height="14" font="2">For example, assume users A and B have each been given 100 tickets.</text>
+<text top="438" left="87" width="432" height="14" font="2">User A is running two jobs, A1 and A2, and gives them each 500 tickets</text>
+<text top="453" left="87" width="432" height="14" font="2">(out of 1000 total) in A’s currency. User B is running only 1 job and gives</text>
+<text top="468" left="87" width="432" height="14" font="2">it 10 tickets (out of 10 total). The system converts A1’s and A2’s allocation</text>
+<text top="483" left="87" width="432" height="14" font="2">from 500 each in A’s currency to 50 each in the global currency; similarly,</text>
+<text top="498" left="87" width="432" height="14" font="2">B1’s 10 tickets is converted to 100 tickets. The lottery is then held over the</text>
+<text top="513" left="87" width="365" height="14" font="2">global ticket currency (200 total) to determine which job runs.</text>
+<text top="537" left="87" width="265" height="10" font="7">User A -&gt; 500 (A’s currency) to A1 -&gt;</text>
+<text top="537" left="367" width="143" height="10" font="7">50 (global currency)</text>
+<text top="551" left="137" width="215" height="10" font="7">-&gt; 500 (A’s currency) to A2 -&gt;</text>
+<text top="551" left="367" width="143" height="10" font="7">50 (global currency)</text>
+<text top="566" left="87" width="65" height="10" font="7">User B -&gt;</text>
+<text top="566" left="166" width="344" height="10" font="7">10 (B’s currency) to B1 -&gt; 100 (global currency)</text>
+<text top="587" left="105" width="174" height="14" font="2">Another useful mechanism is</text>
+<text top="587" left="282" width="85" height="13" font="3"><b>ticket transfer</b></text>
+<text top="587" left="367" width="152" height="14" font="2">. With transfers, a process</text>
+<text top="602" left="87" width="432" height="14" font="2">can temporarily hand off its tickets to another process. This ability is</text>
+<text top="617" left="87" width="432" height="14" font="2">especially useful in a client/server setting, where a client process sends</text>
+<text top="632" left="87" width="432" height="14" font="2">a message to a server asking it to do some work on the client’s behalf.</text>
+<text top="647" left="87" width="432" height="14" font="2">To speed up the work, the client can pass the tickets to the server and</text>
+<text top="662" left="87" width="432" height="14" font="2">thus try to maximize the performance of the server while the server is</text>
+<text top="677" left="87" width="432" height="14" font="2">handling the client’s request. When ﬁnished, the server then transfers the</text>
+<text top="691" left="87" width="259" height="14" font="2">tickets back to the client and all is as before.</text>
+<text top="707" left="105" width="43" height="14" font="2">Finally,</text>
+<text top="707" left="154" width="92" height="13" font="3"><b>ticket inﬂation</b></text>
+<text top="707" left="251" width="268" height="14" font="2">can sometimes be a useful technique. With</text>
+<text top="721" left="87" width="432" height="14" font="2">inﬂation, a process can temporarily raise or lower the number of tickets</text>
+<text top="736" left="87" width="432" height="14" font="2">it owns. Of course, in a competitive scenario with processes that do not</text>
+<text top="751" left="87" width="432" height="14" font="2">trust one another, this makes little sense; one greedy process could give</text>
+<text top="766" left="87" width="432" height="14" font="2">itself a vast number of tickets and take over the machine. Rather, inﬂation</text>
+<text top="781" left="87" width="432" height="14" font="2">can be applied in an environment where a group of processes trust one</text>
+<text top="796" left="87" width="432" height="14" font="2">another; in such a case, if any one process knows it needs more CPU time,</text>
+<text top="811" left="87" width="432" height="14" font="2">it can boost its ticket value as a way to reﬂect that need to the system, all</text>
+<text top="826" left="87" width="298" height="14" font="2">without communicating with any other processes.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="FOLFZV+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="12" size="12" family="PSKMSD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="13" size="10" family="FOLFZV+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="331" width="7" height="14" font="2">S</text>
+<text top="98" left="339" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="412" width="16" height="14" font="2">: P</text>
+<text top="98" left="429" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="520" width="7" height="14" font="2">S</text>
+<text top="98" left="527" width="33" height="11" font="4">HARE</text>
+<text top="138" left="107" width="4" height="8" font="8">1</text>
+<text top="135" left="129" width="444" height="11" font="11">// counter: used to track if we’ve found the winner yet</text>
+<text top="153" left="107" width="4" height="8" font="8">2</text>
+<text top="150" left="129" width="129" height="11" font="11">int counter = 0;</text>
+<text top="168" left="107" width="4" height="8" font="8">3</text>
+<text top="183" left="107" width="4" height="8" font="8">4</text>
+<text top="180" left="129" width="379" height="11" font="11">// winner: call some random number generator to</text>
+<text top="198" left="107" width="4" height="8" font="8">5</text>
+<text top="195" left="129" width="16" height="11" font="11">//</text>
+<text top="195" left="218" width="339" height="11" font="11">get a value &gt;= 0 and &lt;= (totaltickets - 1)</text>
+<text top="213" left="107" width="4" height="8" font="8">6</text>
+<text top="210" left="129" width="323" height="11" font="11">int winner = getrandom(0, totaltickets);</text>
+<text top="228" left="107" width="4" height="8" font="8">7</text>
+<text top="243" left="107" width="4" height="8" font="8">8</text>
+<text top="240" left="129" width="428" height="11" font="11">// current: use this to walk through the list of jobs</text>
+<text top="258" left="107" width="4" height="8" font="8">9</text>
+<text top="254" left="129" width="186" height="14" font="11">node_t *current = head;</text>
+<text top="273" left="104" width="7" height="8" font="8">10</text>
+<text top="269" left="129" width="137" height="11" font="11">while (current) {</text>
+<text top="288" left="104" width="7" height="8" font="8">11</text>
+<text top="284" left="161" width="299" height="11" font="11">counter = counter + current-&gt;tickets;</text>
+<text top="303" left="104" width="7" height="8" font="8">12</text>
+<text top="299" left="161" width="169" height="11" font="11">if (counter &gt; winner)</text>
+<text top="318" left="104" width="7" height="8" font="8">13</text>
+<text top="314" left="193" width="210" height="11" font="11">break; // found the winner</text>
+<text top="333" left="104" width="7" height="8" font="8">14</text>
+<text top="329" left="161" width="194" height="11" font="11">current = current-&gt;next;</text>
+<text top="348" left="104" width="7" height="8" font="8">15</text>
+<text top="344" left="129" width="8" height="11" font="11">}</text>
+<text top="363" left="104" width="7" height="8" font="8">16</text>
+<text top="359" left="129" width="339" height="11" font="11">// ’current’ is the winner: schedule it...</text>
+<text top="383" left="206" width="62" height="14" font="2">Figure 9.1:</text>
+<text top="383" left="272" width="211" height="13" font="3"><b>Lottery Scheduling Decision Code</b></text>
+<text top="407" left="97" width="142" height="17" font="5">9.3 Implementation</text>
+<text top="428" left="147" width="414" height="14" font="2">Probably the most amazing thing about lottery scheduling is the sim-</text>
+<text top="443" left="129" width="432" height="14" font="2">plicity of its implementation. All you need is a good random number</text>
+<text top="458" left="129" width="432" height="14" font="2">generator to pick the winning ticket, a data structure to track the pro-</text>
+<text top="473" left="129" width="378" height="14" font="2">cesses of the system (e.g., a list), and the total number of tickets.</text>
+<text top="488" left="147" width="414" height="14" font="2">Let’s assume we keep the processes in a list. Here is an example com-</text>
+<text top="503" left="129" width="430" height="14" font="2">prised of three processes, A, B, and C, each with some number of tickets.</text>
+<text top="550" left="134" width="26" height="11" font="12">head</text>
+<text top="543" left="205" width="30" height="11" font="12">Job:A</text>
+<text top="556" left="201" width="38" height="11" font="12">Tix:100</text>
+<text top="543" left="284" width="30" height="11" font="12">Job:B</text>
+<text top="556" left="283" width="32" height="11" font="12">Tix:50</text>
+<text top="543" left="362" width="31" height="11" font="12">Job:C</text>
+<text top="556" left="359" width="38" height="11" font="12">Tix:250</text>
+<text top="550" left="437" width="30" height="11" font="12">NULL</text>
+<text top="595" left="147" width="414" height="14" font="2">To make a scheduling decision, we ﬁrst have to pick a random number</text>
+<text top="612" left="129" width="299" height="14" font="2">(the winner) from the total number of tickets (400)</text>
+<text top="609" left="428" width="4" height="9" font="6">2</text>
+<text top="612" left="437" width="124" height="14" font="2">Let’s say we pick the</text>
+<text top="627" left="129" width="432" height="14" font="2">number 300. Then, we simply traverse the list, with a simple counter</text>
+<text top="642" left="129" width="260" height="14" font="2">used to help us ﬁnd the winner (Figure 9.1).</text>
+<text top="657" left="147" width="354" height="14" font="2">The code walks the process list, adding each ticket value to</text>
+<text top="657" left="504" width="57" height="11" font="11">counter</text>
+<text top="672" left="129" width="137" height="14" font="2">until the value exceeds</text>
+<text top="672" left="269" width="48" height="11" font="11">winner</text>
+<text top="672" left="318" width="243" height="14" font="2">. Once that is the case, the current list el-</text>
+<text top="686" left="129" width="432" height="14" font="2">ement is the winner. With our example of the winning ticket being 300,</text>
+<text top="701" left="129" width="195" height="14" font="2">the following takes place. First,</text>
+<text top="702" left="330" width="57" height="11" font="11">counter</text>
+<text top="701" left="391" width="170" height="14" font="2">is incremented to 100 to ac-</text>
+<text top="716" left="129" width="432" height="14" font="2">count for A’s tickets; because 100 is less than 300, the loop continues.</text>
+<text top="731" left="129" width="30" height="14" font="2">Then</text>
+<text top="732" left="164" width="57" height="11" font="11">counter</text>
+<text top="731" left="224" width="336" height="14" font="2">would be updated to 150 (B’s tickets), still less than 300</text>
+<text top="746" left="129" width="217" height="14" font="2">and thus again we continue. Finally,</text>
+<text top="747" left="350" width="57" height="11" font="11">counter</text>
+<text top="746" left="410" width="151" height="14" font="2">is updated to 400 (clearly</text>
+<text top="761" left="129" width="333" height="14" font="2">greater than 300), and thus we break out of the loop with</text>
+<text top="762" left="465" width="57" height="11" font="11">current</text>
+<text top="761" left="525" width="36" height="14" font="2">point-</text>
+<text top="776" left="129" width="127" height="14" font="2">ing at C (the winner).</text>
+<text top="802" left="149" width="4" height="8" font="8">2</text>
+<text top="804" left="154" width="407" height="11" font="9">Surprisingly, as pointed out by Bj ¨orn Lindberg, this can be challenging to do cor-</text>
+<text top="816" left="129" width="132" height="11" font="9">rectly; for more details, see</text>
+<text top="817" left="265" width="295" height="9" font="13">http://stackoverflow.com/questions/2509679/how-</text>
+<text top="829" left="129" width="301" height="9" font="13">to-generate-a-random-number-from-within-a-range</text>
+<text top="828" left="430" width="3" height="11" font="9">.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="13" family="PSKMSD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="15" size="13" family="PSKMSD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="16" size="13" family="AOIUCD+CMMI9" color="#000000"/>
+	<fontspec id="17" size="13" family="ESLAAU+CMR9" color="#000000"/>
+	<fontspec id="18" size="9" family="OHMZYM+CMR6" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="16" height="14" font="2">: P</text>
+<text top="98" left="185" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="33" height="11" font="4">HARE</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="359" left="218" width="7" height="12" font="14">1</text>
+<text top="359" left="279" width="14" height="12" font="14">10</text>
+<text top="359" left="339" width="21" height="12" font="14">100</text>
+<text top="359" left="400" width="29" height="12" font="14">1000</text>
+<text top="347" left="196" width="18" height="12" font="14">0.0</text>
+<text top="308" left="196" width="18" height="12" font="14">0.2</text>
+<text top="269" left="196" width="18" height="12" font="14">0.4</text>
+<text top="231" left="196" width="18" height="12" font="14">0.6</text>
+<text top="192" left="196" width="18" height="12" font="14">0.8</text>
+<text top="154" left="196" width="18" height="12" font="14">1.0</text>
+<text top="375" left="286" width="64" height="12" font="14">Job Length</text>
+<text top="276" left="190" width="0" height="12" font="15">Fairness</text>
+<text top="388" left="201" width="62" height="14" font="2">Figure 9.2:</text>
+<text top="389" left="267" width="138" height="13" font="3"><b>Lottery Fairness Study</b></text>
+<text top="410" left="105" width="414" height="14" font="2">To make this process most efﬁcient, it might generally be best to or-</text>
+<text top="425" left="87" width="432" height="14" font="2">ganize the list in sorted order, from the highest number of tickets to the</text>
+<text top="440" left="87" width="432" height="14" font="2">lowest. The ordering does not affect the correctness of the algorithm;</text>
+<text top="455" left="87" width="432" height="14" font="2">however, it does ensure in general that the fewest number of list itera-</text>
+<text top="470" left="87" width="432" height="14" font="2">tions are taken, especially if there are a few processes that possess most</text>
+<text top="485" left="87" width="79" height="14" font="2">of the tickets.</text>
+<text top="523" left="55" width="116" height="17" font="5">9.4 An Example</text>
+<text top="553" left="105" width="414" height="14" font="2">To make the dynamics of lottery scheduling more understandable, we</text>
+<text top="568" left="87" width="432" height="14" font="2">now perform a brief study of the completion time of two jobs competing</text>
+<text top="583" left="87" width="432" height="14" font="2">against one another, each with the same number of tickets (100) and same</text>
+<text top="598" left="87" width="59" height="14" font="2">run time (</text>
+<text top="599" left="146" width="10" height="10" font="16">R</text>
+<text top="598" left="157" width="129" height="14" font="2">, which we will vary).</text>
+<text top="614" left="105" width="414" height="14" font="2">In this scenario, we’d like for each job to ﬁnish at roughly the same</text>
+<text top="629" left="87" width="432" height="14" font="2">time, but due to the randomness of lottery scheduling, sometimes one job</text>
+<text top="644" left="87" width="432" height="14" font="2">ﬁnishes before the other. To quantify this difference, we deﬁne a simple</text>
+<text top="659" left="87" width="90" height="13" font="3"><b>fairness metric</b></text>
+<text top="659" left="177" width="3" height="14" font="2">,</text>
+<text top="659" left="183" width="9" height="10" font="16">F</text>
+<text top="659" left="196" width="323" height="14" font="2">which is simply the time the ﬁrst job completes divided</text>
+<text top="674" left="87" width="351" height="14" font="2">by the time that the second job completes. For example, if</text>
+<text top="674" left="443" width="10" height="10" font="16">R</text>
+<text top="674" left="459" width="30" height="13" font="17">= 10</text>
+<text top="674" left="488" width="30" height="14" font="2">, and</text>
+<text top="691" left="87" width="341" height="14" font="2">the ﬁrst job ﬁnishes at time 10 (and the second job at 20),</text>
+<text top="691" left="432" width="9" height="10" font="16">F</text>
+<text top="690" left="448" width="11" height="13" font="17">=</text>
+<text top="689" left="465" width="11" height="6" font="18">10</text>
+<text top="699" left="465" width="11" height="6" font="18">20</text>
+<text top="690" left="482" width="22" height="13" font="17">= 0</text>
+<text top="691" left="505" width="4" height="10" font="16">.</text>
+<text top="690" left="509" width="7" height="13" font="17">5</text>
+<text top="691" left="516" width="3" height="14" font="2">.</text>
+<text top="706" left="87" width="277" height="14" font="2">When both jobs ﬁnish at nearly the same time,</text>
+<text top="706" left="368" width="9" height="10" font="16">F</text>
+<text top="706" left="382" width="137" height="14" font="2">will be quite close to 1.</text>
+<text top="720" left="87" width="432" height="14" font="2">In this scenario, that is our goal: a perfectly fair scheduler would achieve</text>
+<text top="736" left="87" width="9" height="10" font="16">F</text>
+<text top="735" left="102" width="21" height="13" font="17">= 1</text>
+<text top="735" left="123" width="3" height="14" font="2">.</text>
+<text top="751" left="105" width="399" height="14" font="2">Figure 9.2 plots the average fairness as the length of the two jobs (</text>
+<text top="752" left="504" width="10" height="10" font="16">R</text>
+<text top="751" left="514" width="4" height="14" font="2">)</text>
+<text top="766" left="87" width="432" height="14" font="2">is varied from 1 to 1000 over thirty trials (results are generated via the</text>
+<text top="781" left="87" width="432" height="14" font="2">simulator provided at the end of the chapter). As you can see from the</text>
+<text top="796" left="87" width="432" height="14" font="2">graph, when the job length is not very long, average fairness can be quite</text>
+<text top="811" left="87" width="432" height="14" font="2">low. Only as the jobs run for a signiﬁcant number of time slices does the</text>
+<text top="826" left="87" width="311" height="14" font="2">lottery scheduler approach the desired fair outcome.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="331" width="7" height="14" font="2">S</text>
+<text top="98" left="339" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="412" width="16" height="14" font="2">: P</text>
+<text top="98" left="429" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="520" width="7" height="14" font="2">S</text>
+<text top="98" left="527" width="33" height="11" font="4">HARE</text>
+<text top="137" left="97" width="199" height="17" font="5">9.5 How To Assign Tickets?</text>
+<text top="166" left="147" width="414" height="14" font="2">One problem we have not addressed with lottery scheduling is: how</text>
+<text top="181" left="129" width="432" height="14" font="2">to assign tickets to jobs? This problem is a tough one, because of course</text>
+<text top="196" left="129" width="432" height="14" font="2">how the system behaves is strongly dependent on how tickets are allo-</text>
+<text top="211" left="129" width="432" height="14" font="2">cated. One approach is to assume that the users know best; in such a</text>
+<text top="226" left="129" width="432" height="14" font="2">case, each user is handed some number of tickets, and a user can allocate</text>
+<text top="241" left="129" width="432" height="14" font="2">tickets to any jobs they run as desired. However, this solution is a non-</text>
+<text top="256" left="129" width="432" height="14" font="2">solution: it really doesn’t tell you what to do. Thus, given a set of jobs,</text>
+<text top="271" left="129" width="281" height="14" font="2">the “ticket-assignment problem” remains open.</text>
+<text top="308" left="97" width="154" height="17" font="5">9.6 Stride Scheduling</text>
+<text top="338" left="147" width="414" height="14" font="2">You might also be wondering: why use randomness at all? As we saw</text>
+<text top="353" left="129" width="432" height="14" font="2">above, while randomness gets us a simple (and approximately correct)</text>
+<text top="368" left="129" width="432" height="14" font="2">scheduler, it occasionally will not deliver the exact right proportions, es-</text>
+<text top="382" left="129" width="432" height="14" font="2">pecially over short time scales. For this reason, Waldspurger invented</text>
+<text top="397" left="129" width="106" height="13" font="3"><b>stride scheduling</b></text>
+<text top="397" left="235" width="259" height="14" font="2">, a deterministic fair-share scheduler [W95].</text>
+<text top="412" left="147" width="414" height="14" font="2">Stride scheduling is also straightforward. Each job in the system has</text>
+<text top="427" left="129" width="432" height="14" font="2">a stride, which is inverse in proportion to the number of tickets it has. In</text>
+<text top="442" left="129" width="432" height="14" font="2">our example above, with jobs A, B, and C, with 100, 50, and 250 tickets,</text>
+<text top="457" left="129" width="432" height="14" font="2">respectively, we can compute the stride of each by dividing some large</text>
+<text top="472" left="129" width="432" height="14" font="2">number by the number of tickets each process has been assigned. For</text>
+<text top="487" left="129" width="432" height="14" font="2">example, if we divide 10,000 by each of those ticket values, we obtain</text>
+<text top="502" left="129" width="432" height="14" font="2">the following stride values for A, B, and C: 100, 200, and 40. We call</text>
+<text top="517" left="129" width="82" height="14" font="2">this value the</text>
+<text top="517" left="215" width="35" height="13" font="3"><b>stride</b></text>
+<text top="517" left="254" width="307" height="14" font="2">of each process; every time a process runs, we will</text>
+<text top="532" left="129" width="216" height="14" font="2">increment a counter for it (called its</text>
+<text top="532" left="349" width="27" height="13" font="3"><b>pass</b></text>
+<text top="532" left="380" width="181" height="14" font="2">value) by its stride to track its</text>
+<text top="547" left="129" width="94" height="14" font="2">global progress.</text>
+<text top="562" left="147" width="414" height="14" font="2">The scheduler then uses the stride and pass to determine which pro-</text>
+<text top="577" left="129" width="432" height="14" font="2">cess should run next. The basic idea is simple: at any given time, pick</text>
+<text top="592" left="129" width="432" height="14" font="2">the process to run that has the lowest pass value so far; when you run</text>
+<text top="607" left="129" width="432" height="14" font="2">a process, increment its pass counter by its stride. A pseudocode imple-</text>
+<text top="622" left="129" width="273" height="14" font="2">mentation is provided by Waldspurger [W95]:</text>
+<text top="644" left="129" width="179" height="10" font="7">curr = remove_min(queue);</text>
+<text top="644" left="330" width="201" height="10" font="7">// pick client with min pass</text>
+<text top="658" left="129" width="108" height="10" font="7">schedule(curr);</text>
+<text top="658" left="330" width="129" height="10" font="7">// run for quantum</text>
+<text top="673" left="129" width="394" height="10" font="7">curr-&gt;pass += curr-&gt;stride; // update pass using stride</text>
+<text top="687" left="129" width="143" height="10" font="7">insert(queue, curr);</text>
+<text top="687" left="330" width="165" height="10" font="7">// return curr to queue</text>
+<text top="707" left="147" width="414" height="14" font="2">In our example, we start with three processes (A, B, and C), with stride</text>
+<text top="721" left="129" width="432" height="14" font="2">values of 100, 200, and 40, and all with pass values initially at 0. Thus, at</text>
+<text top="736" left="129" width="432" height="14" font="2">ﬁrst, any of the processes might run, as their pass values are equally low.</text>
+<text top="751" left="129" width="432" height="14" font="2">Assume we pick A (arbitrarily; any of the processes with equal low pass</text>
+<text top="766" left="129" width="432" height="14" font="2">values can be chosen). A runs; when ﬁnished with the time slice, we</text>
+<text top="781" left="129" width="432" height="14" font="2">update its pass value to 100. Then we run B, whose pass value is then</text>
+<text top="796" left="129" width="432" height="14" font="2">set to 200. Finally, we run C, whose pass value is incremented to 40. At</text>
+<text top="811" left="129" width="432" height="14" font="2">this point, the algorithm will pick the lowest pass value, which is C’s, and</text>
+<text top="826" left="129" width="432" height="14" font="2">run it, updating its pass to 80 (C’s stride is 40, as you recall). Then C will</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="16" height="14" font="2">: P</text>
+<text top="98" left="185" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="33" height="11" font="4">HARE</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="136" left="148" width="46" height="13" font="3"><b>Pass(A)</b></text>
+<text top="136" left="239" width="45" height="13" font="3"><b>Pass(B)</b></text>
+<text top="136" left="326" width="46" height="13" font="3"><b>Pass(C)</b></text>
+<text top="136" left="400" width="71" height="13" font="3"><b>Who Runs?</b></text>
+<text top="151" left="135" width="72" height="13" font="3"><b>(stride=100)</b></text>
+<text top="151" left="226" width="72" height="13" font="3"><b>(stride=200)</b></text>
+<text top="151" left="316" width="66" height="13" font="3"><b>(stride=40)</b></text>
+<text top="166" left="168" width="7" height="14" font="2">0</text>
+<text top="166" left="258" width="7" height="14" font="2">0</text>
+<text top="166" left="345" width="7" height="14" font="2">0</text>
+<text top="166" left="430" width="10" height="14" font="2">A</text>
+<text top="181" left="161" width="20" height="14" font="2">100</text>
+<text top="181" left="258" width="7" height="14" font="2">0</text>
+<text top="181" left="345" width="7" height="14" font="2">0</text>
+<text top="181" left="431" width="8" height="14" font="2">B</text>
+<text top="196" left="161" width="20" height="14" font="2">100</text>
+<text top="196" left="252" width="20" height="14" font="2">200</text>
+<text top="196" left="345" width="7" height="14" font="2">0</text>
+<text top="196" left="431" width="10" height="14" font="2">C</text>
+<text top="211" left="161" width="20" height="14" font="2">100</text>
+<text top="211" left="252" width="20" height="14" font="2">200</text>
+<text top="211" left="342" width="13" height="14" font="2">40</text>
+<text top="211" left="431" width="10" height="14" font="2">C</text>
+<text top="226" left="161" width="20" height="14" font="2">100</text>
+<text top="226" left="252" width="20" height="14" font="2">200</text>
+<text top="226" left="342" width="13" height="14" font="2">80</text>
+<text top="226" left="431" width="10" height="14" font="2">C</text>
+<text top="241" left="161" width="20" height="14" font="2">100</text>
+<text top="241" left="252" width="20" height="14" font="2">200</text>
+<text top="241" left="339" width="20" height="14" font="2">120</text>
+<text top="241" left="430" width="10" height="14" font="2">A</text>
+<text top="256" left="161" width="20" height="14" font="2">200</text>
+<text top="256" left="252" width="20" height="14" font="2">200</text>
+<text top="256" left="339" width="20" height="14" font="2">120</text>
+<text top="256" left="431" width="10" height="14" font="2">C</text>
+<text top="271" left="161" width="20" height="14" font="2">200</text>
+<text top="271" left="252" width="20" height="14" font="2">200</text>
+<text top="271" left="339" width="20" height="14" font="2">160</text>
+<text top="271" left="431" width="10" height="14" font="2">C</text>
+<text top="286" left="161" width="20" height="14" font="2">200</text>
+<text top="286" left="252" width="20" height="14" font="2">200</text>
+<text top="286" left="339" width="20" height="14" font="2">200</text>
+<text top="286" left="430" width="10" height="14" font="2">...</text>
+<text top="309" left="188" width="62" height="14" font="2">Figure 9.3:</text>
+<text top="309" left="254" width="164" height="13" font="3"><b>Stride Scheduling: A Trace</b></text>
+<text top="339" left="87" width="432" height="14" font="2">run again (still the lowest pass value), raising its pass to 120. A will run</text>
+<text top="354" left="87" width="432" height="14" font="2">now, updating its pass to 200 (now equal to B’s). Then C will run twice</text>
+<text top="369" left="87" width="432" height="14" font="2">more, updating its pass to 160 then 200. At this point, all pass values are</text>
+<text top="384" left="87" width="432" height="14" font="2">equal again, and the process will repeat, ad inﬁnitum. Figure 9.3 traces</text>
+<text top="399" left="87" width="237" height="14" font="2">the behavior of the scheduler over time.</text>
+<text top="414" left="105" width="414" height="14" font="2">As we can see from the ﬁgure, C ran ﬁve times, A twice, and B just</text>
+<text top="429" left="87" width="432" height="14" font="2">once, exactly in proportion to their ticket values of 250, 100, and 50. Lot-</text>
+<text top="444" left="87" width="436" height="14" font="2">tery scheduling achieves the proportions probabilistically over time; stride</text>
+<text top="459" left="87" width="417" height="14" font="2">scheduling gets them exactly right at the end of each scheduling cycle.</text>
+<text top="474" left="105" width="414" height="14" font="2">So you might be wondering: given the precision of stride scheduling,</text>
+<text top="489" left="87" width="432" height="14" font="2">why use lottery scheduling at all? Well, lottery scheduling has one nice</text>
+<text top="504" left="87" width="432" height="14" font="2">property that stride scheduling does not: no global state. Imagine a new</text>
+<text top="519" left="87" width="432" height="14" font="2">job enters in the middle of our stride scheduling example above; what</text>
+<text top="534" left="87" width="432" height="14" font="2">should its pass value be? Should it be set to 0? If so, it will monopolize</text>
+<text top="549" left="87" width="432" height="14" font="2">the CPU. With lottery scheduling, there is no global state per process;</text>
+<text top="564" left="87" width="432" height="14" font="2">we simply add a new process with whatever tickets it has, update the</text>
+<text top="578" left="87" width="432" height="14" font="2">single global variable to track how many total tickets we have, and go</text>
+<text top="593" left="87" width="432" height="14" font="2">from there. In this way, lottery makes it much easier to incorporate new</text>
+<text top="608" left="87" width="184" height="14" font="2">processes in a sensible manner.</text>
+<text top="637" left="55" width="342" height="17" font="5">9.7 The Linux Completely Fair Scheduler (CFS)</text>
+<text top="661" left="105" width="414" height="14" font="2">Despite these earlier works in fair-share scheduling, one (older) Linux</text>
+<text top="676" left="87" width="432" height="14" font="2">approach achieves similar goals in an alternate manner. The scheduler,</text>
+<text top="691" left="87" width="68" height="14" font="2">entitled the</text>
+<text top="691" left="160" width="166" height="13" font="3"><b>Completely Fair Scheduler</b></text>
+<text top="691" left="330" width="17" height="14" font="2">(or</text>
+<text top="691" left="351" width="25" height="13" font="3"><b>CFS</b></text>
+<text top="691" left="376" width="143" height="14" font="2">) [J09], implements fair-</text>
+<text top="706" left="87" width="420" height="14" font="2">share scheduling, but does so in a highly efﬁcient and scalable manner.</text>
+<text top="721" left="105" width="414" height="14" font="2">To achieve its efﬁciency goals, CFS aims to spend very little time mak-</text>
+<text top="736" left="87" width="432" height="14" font="2">ing scheduling decisions, through both its inherent design and its clever</text>
+<text top="751" left="87" width="432" height="14" font="2">use of data structures well-suited to the task. Recent studies have shown</text>
+<text top="766" left="87" width="432" height="14" font="2">that scheduler efﬁciency is surprisingly important; speciﬁcally, in a study</text>
+<text top="781" left="87" width="432" height="14" font="2">of Google datacenters, Kanev et al. show that even after aggressive opti-</text>
+<text top="796" left="87" width="439" height="14" font="2">mization, scheduling uses about 5% of overall datacenter CPU time [K+15].</text>
+<text top="811" left="87" width="432" height="14" font="2">Reducing that overhead as much as possible is thus a key goal in modern</text>
+<text top="826" left="87" width="135" height="14" font="2">scheduler architecture.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="11" family="PSKMSD+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="20" size="15" family="OLOHNA+URWPalladioL" color="#000000"/>
+	<fontspec id="21" size="13" family="OXWSTE+NimbusMonL" color="#000000"/>
+	<fontspec id="22" size="13" family="HJDZHZ+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="331" width="7" height="14" font="2">S</text>
+<text top="98" left="339" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="412" width="16" height="14" font="2">: P</text>
+<text top="98" left="429" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="520" width="7" height="14" font="2">S</text>
+<text top="98" left="527" width="33" height="11" font="4">HARE</text>
+<text top="213" left="223" width="6" height="10" font="19">0</text>
+<text top="213" left="271" width="12" height="10" font="19">50</text>
+<text top="213" left="319" width="18" height="10" font="19">100</text>
+<text top="213" left="369" width="18" height="10" font="19">150</text>
+<text top="213" left="420" width="18" height="10" font="19">200</text>
+<text top="213" left="471" width="18" height="10" font="19">250</text>
+<text top="227" left="341" width="24" height="10" font="19">Time</text>
+<text top="142" left="229" width="93" height="10" font="19">A B C D A B C D</text>
+<text top="142" left="332" width="7" height="10" font="19">A</text>
+<text top="142" left="356" width="7" height="10" font="19">B</text>
+<text top="142" left="381" width="7" height="10" font="19">A</text>
+<text top="142" left="405" width="7" height="10" font="19">B</text>
+<text top="142" left="430" width="7" height="10" font="19">A</text>
+<text top="142" left="454" width="7" height="10" font="19">B</text>
+<text top="245" left="247" width="62" height="14" font="2">Figure 9.4:</text>
+<text top="245" left="313" width="129" height="13" font="3"><b>CFS Simple Example</b></text>
+<text top="273" left="129" width="109" height="15" font="20"><b>Basic Operation</b></text>
+<text top="298" left="129" width="432" height="14" font="2">Whereas most schedulers are based around the concept of a ﬁxed time</text>
+<text top="313" left="129" width="432" height="14" font="2">slice, CFS operates a bit differently. Its goal is simple: to fairly divide a</text>
+<text top="328" left="129" width="432" height="14" font="2">CPU evenly among all competing processes. It does so through a simple</text>
+<text top="343" left="129" width="215" height="14" font="2">counting-based technique known as</text>
+<text top="343" left="347" width="94" height="13" font="3"><b>virtual runtime</b></text>
+<text top="343" left="444" width="4" height="14" font="2">(</text>
+<text top="345" left="448" width="65" height="11" font="21"><b>vruntime</b></text>
+<text top="343" left="513" width="8" height="14" font="2">).</text>
+<text top="359" left="147" width="226" height="14" font="2">As each process runs, it accumulates</text>
+<text top="360" left="378" width="65" height="11" font="11">vruntime</text>
+<text top="359" left="443" width="118" height="14" font="2">. In the most basic</text>
+<text top="374" left="129" width="117" height="14" font="2">case, each process’s</text>
+<text top="375" left="250" width="65" height="11" font="11">vruntime</text>
+<text top="374" left="319" width="242" height="14" font="2">increases at the same rate, in proportion</text>
+<text top="389" left="129" width="432" height="14" font="2">with physical (real) time. When a scheduling decision occurs, CFS will</text>
+<text top="404" left="129" width="148" height="14" font="2">pick the process with the</text>
+<text top="404" left="280" width="34" height="14" font="22"><i>lowest</i></text>
+<text top="405" left="318" width="65" height="11" font="11">vruntime</text>
+<text top="404" left="386" width="69" height="14" font="2">to run next.</text>
+<text top="420" left="147" width="414" height="14" font="2">This raises a question: how does the scheduler know when to stop</text>
+<text top="435" left="129" width="432" height="14" font="2">the currently running process, and run the next one? The tension here is</text>
+<text top="449" left="129" width="432" height="14" font="2">clear: if CFS switches too often, fairness is increased, as CFS will ensure</text>
+<text top="464" left="129" width="432" height="14" font="2">that each process receives its share of CPU even over miniscule time win-</text>
+<text top="479" left="129" width="432" height="14" font="2">dows, but at the cost of performance (too much context switching); if CFS</text>
+<text top="494" left="129" width="432" height="14" font="2">switches less often, performance is increased (reduced context switching),</text>
+<text top="509" left="129" width="213" height="14" font="2">but at the cost of near-term fairness.</text>
+<text top="525" left="147" width="414" height="14" font="2">CFS manages this tension through various control parameters. The</text>
+<text top="540" left="129" width="37" height="14" font="2">ﬁrst is</text>
+<text top="541" left="169" width="105" height="11" font="21"><b>sched_latency</b></text>
+<text top="540" left="274" width="287" height="14" font="2">. CFS uses this value to determine how long one</text>
+<text top="555" left="129" width="432" height="14" font="2">process should run before considering a switch (effectively determining</text>
+<text top="570" left="129" width="288" height="14" font="2">its time slice but in a dynamic fashion). A typical</text>
+<text top="571" left="420" width="105" height="11" font="11">sched_latency</text>
+<text top="570" left="528" width="33" height="14" font="2">value</text>
+<text top="585" left="129" width="345" height="14" font="2">is 48 (milliseconds); CFS divides this value by the number (</text>
+<text top="585" left="474" width="8" height="10" font="16">n</text>
+<text top="585" left="483" width="78" height="14" font="2">) of processes</text>
+<text top="600" left="129" width="432" height="14" font="2">running on the CPU to determine the time slice for a process, and thus</text>
+<text top="615" left="129" width="385" height="14" font="2">ensures that over this period of time, CFS will be completely fair.</text>
+<text top="630" left="147" width="150" height="14" font="2">For example, if there are</text>
+<text top="631" left="302" width="8" height="10" font="16">n</text>
+<text top="630" left="317" width="24" height="13" font="17">= 4</text>
+<text top="630" left="346" width="214" height="14" font="2">processes running, CFS divides the</text>
+<text top="645" left="129" width="48" height="14" font="2">value of</text>
+<text top="646" left="181" width="105" height="11" font="11">sched_latency</text>
+<text top="645" left="290" width="15" height="14" font="2">by</text>
+<text top="646" left="308" width="8" height="10" font="16">n</text>
+<text top="645" left="320" width="241" height="14" font="2">to arrive at a per-process time slice of 12</text>
+<text top="660" left="129" width="432" height="14" font="2">ms. CFS then schedules the ﬁrst job and runs it until it has used 12 ms</text>
+<text top="675" left="129" width="432" height="14" font="2">of (virtual) runtime, and then checks to see if there is a job with lower</text>
+<text top="691" left="129" width="65" height="11" font="11">vruntime</text>
+<text top="690" left="198" width="363" height="14" font="2">to run instead. In this case, there is, and CFS would switch</text>
+<text top="705" left="129" width="432" height="14" font="2">to one of the three other jobs, and so forth. Figure 9.4 shows an example</text>
+<text top="720" left="129" width="432" height="14" font="2">where the four jobs (A, B, C, D) each run for two time slices in this fashion;</text>
+<text top="735" left="129" width="432" height="14" font="2">two of them (C, D) then complete, leaving just two remaining, which then</text>
+<text top="750" left="129" width="251" height="14" font="2">each run for 24 ms in round-robin fashion.</text>
+<text top="766" left="147" width="414" height="14" font="2">But what if there are “too many” processes running? Wouldn’t that</text>
+<text top="780" left="129" width="432" height="14" font="2">lead to too small of a time slice, and thus too many context switches?</text>
+<text top="795" left="129" width="230" height="14" font="2">Good question! And the answer is yes.</text>
+<text top="811" left="147" width="296" height="14" font="2">To address this issue, CFS adds another parameter,</text>
+<text top="813" left="446" width="121" height="11" font="21"><b>min_granularity</b></text>
+<text top="811" left="567" width="3" height="14" font="2">,</text>
+<text top="826" left="129" width="432" height="14" font="2">which is usually set to a value like 6 ms. CFS will never set the time slice</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="23" size="9" family="CRXJEY+CMMI6" color="#000000"/>
+	<fontspec id="24" size="15" family="ESZLQQ+CMEX10" color="#000000"/>
+	<fontspec id="25" size="9" family="CRCVOB+CMSY6" color="#000000"/>
+	<fontspec id="26" size="13" family="ARTRLC+CMSY9" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="16" height="14" font="2">: P</text>
+<text top="98" left="185" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="33" height="11" font="4">HARE</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="139" left="87" width="432" height="14" font="2">of a process to less than this value, ensuring that not too much time is</text>
+<text top="154" left="87" width="179" height="14" font="2">spent in scheduling overhead.</text>
+<text top="170" left="105" width="414" height="14" font="2">For example, if there are ten processes running, our original calcula-</text>
+<text top="185" left="87" width="110" height="14" font="2">tion would divide</text>
+<text top="185" left="202" width="105" height="11" font="11">sched_latency</text>
+<text top="185" left="312" width="207" height="14" font="2">by ten to determine the time slice</text>
+<text top="199" left="87" width="226" height="14" font="2">(result: 4.8 ms). However, because of</text>
+<text top="200" left="318" width="121" height="11" font="11">min_granularity</text>
+<text top="199" left="439" width="80" height="14" font="2">, CFS will set</text>
+<text top="214" left="87" width="432" height="14" font="2">the time slice of each process to 6 ms instead. Although CFS won’t (quite)</text>
+<text top="229" left="87" width="307" height="14" font="2">be perfectly fair over the target scheduling latency (</text>
+<text top="230" left="394" width="105" height="11" font="11">sched_latency</text>
+<text top="229" left="499" width="20" height="14" font="2">) of</text>
+<text top="244" left="87" width="376" height="14" font="2">48 ms, it will be close, while still achieving high CPU efﬁciency.</text>
+<text top="260" left="105" width="414" height="14" font="2">Note that CFS utilizes a periodic timer interrupt, which means it can</text>
+<text top="275" left="87" width="432" height="14" font="2">only make decisions at ﬁxed time intervals. This interrupt goes off fre-</text>
+<text top="290" left="87" width="432" height="14" font="2">quently (e.g., every 1 ms), giving CFS a chance to wake up and determine</text>
+<text top="305" left="87" width="432" height="14" font="2">if the current job has reached the end of its run. If a job has a time slice</text>
+<text top="320" left="87" width="432" height="14" font="2">that is not a perfect multiple of the timer interrupt interval, that is OK;</text>
+<text top="335" left="87" width="64" height="14" font="2">CFS tracks</text>
+<text top="336" left="155" width="65" height="11" font="11">vruntime</text>
+<text top="335" left="223" width="296" height="14" font="2">precisely, which means that over the long haul, it</text>
+<text top="350" left="87" width="321" height="14" font="2">will eventually approximate ideal sharing of the CPU.</text>
+<text top="373" left="87" width="146" height="15" font="20"><b>Weighting (Niceness)</b></text>
+<text top="396" left="87" width="432" height="14" font="2">CFS also enables controls over process priority, enabling users or admin-</text>
+<text top="411" left="87" width="432" height="14" font="2">istrators to give some processes a higher share of the CPU. It does this</text>
+<text top="425" left="87" width="248" height="14" font="2">not with tickets, but through a classic U</text>
+<text top="427" left="336" width="21" height="11" font="4">NIX</text>
+<text top="425" left="363" width="156" height="14" font="2">mechanism known as the</text>
+<text top="440" left="87" width="25" height="13" font="3"><b>nice</b></text>
+<text top="440" left="116" width="403" height="14" font="2">level of a process. The nice parameter can be set anywhere from -20</text>
+<text top="455" left="87" width="398" height="14" font="2">to +19 for a process, with a default of 0. Positive nice values imply</text>
+<text top="455" left="489" width="30" height="14" font="22"><i>lower</i></text>
+<text top="470" left="87" width="208" height="14" font="2">priority and negative values imply</text>
+<text top="470" left="299" width="34" height="14" font="22"><i>higher</i></text>
+<text top="470" left="337" width="182" height="14" font="2">priority; when you’re too nice,</text>
+<text top="485" left="87" width="325" height="14" font="2">you just don’t get as much (scheduling) attention, alas.</text>
+<text top="501" left="105" width="264" height="14" font="2">CFS maps the nice value of each process to a</text>
+<text top="502" left="372" width="48" height="11" font="11">weight</text>
+<text top="501" left="421" width="95" height="14" font="2">, as shown here:</text>
+<text top="536" left="87" width="315" height="11" font="11">static const int prio_to_weight[40] = {</text>
+<text top="551" left="119" width="355" height="14" font="11">/* -20 */ 88761, 71755, 56483, 46273, 36291,</text>
+<text top="566" left="119" width="355" height="14" font="11">/* -15 */ 29154, 23254, 18705, 14949, 11916,</text>
+<text top="581" left="119" width="73" height="14" font="11">/* -10 */</text>
+<text top="581" left="208" width="40" height="11" font="11">9548,</text>
+<text top="581" left="265" width="40" height="11" font="11">7620,</text>
+<text top="581" left="321" width="40" height="11" font="11">6100,</text>
+<text top="581" left="378" width="40" height="11" font="11">4904,</text>
+<text top="581" left="434" width="40" height="11" font="11">3906,</text>
+<text top="596" left="119" width="16" height="14" font="11">/*</text>
+<text top="596" left="152" width="40" height="14" font="11">-5 */</text>
+<text top="596" left="208" width="40" height="11" font="11">3121,</text>
+<text top="596" left="265" width="40" height="11" font="11">2501,</text>
+<text top="596" left="321" width="40" height="11" font="11">1991,</text>
+<text top="596" left="378" width="40" height="11" font="11">1586,</text>
+<text top="596" left="434" width="40" height="11" font="11">1277,</text>
+<text top="611" left="119" width="16" height="14" font="11">/*</text>
+<text top="611" left="160" width="32" height="14" font="11">0 */</text>
+<text top="611" left="208" width="40" height="11" font="11">1024,</text>
+<text top="611" left="273" width="32" height="11" font="11">820,</text>
+<text top="611" left="329" width="32" height="11" font="11">655,</text>
+<text top="611" left="386" width="32" height="11" font="11">526,</text>
+<text top="611" left="442" width="32" height="11" font="11">423,</text>
+<text top="626" left="119" width="16" height="14" font="11">/*</text>
+<text top="626" left="160" width="32" height="14" font="11">5 */</text>
+<text top="626" left="216" width="32" height="11" font="11">335,</text>
+<text top="626" left="273" width="32" height="11" font="11">272,</text>
+<text top="626" left="329" width="32" height="11" font="11">215,</text>
+<text top="626" left="386" width="32" height="11" font="11">172,</text>
+<text top="626" left="442" width="32" height="11" font="11">137,</text>
+<text top="641" left="119" width="16" height="14" font="11">/*</text>
+<text top="641" left="152" width="40" height="14" font="11">10 */</text>
+<text top="641" left="216" width="32" height="11" font="11">110,</text>
+<text top="641" left="281" width="24" height="11" font="11">87,</text>
+<text top="641" left="337" width="24" height="11" font="11">70,</text>
+<text top="641" left="394" width="24" height="11" font="11">56,</text>
+<text top="641" left="450" width="24" height="11" font="11">45,</text>
+<text top="656" left="119" width="16" height="14" font="11">/*</text>
+<text top="656" left="152" width="40" height="14" font="11">15 */</text>
+<text top="656" left="224" width="24" height="11" font="11">36,</text>
+<text top="656" left="281" width="24" height="11" font="11">29,</text>
+<text top="656" left="337" width="24" height="11" font="11">23,</text>
+<text top="656" left="394" width="24" height="11" font="11">18,</text>
+<text top="656" left="450" width="24" height="11" font="11">15,</text>
+<text top="671" left="87" width="16" height="11" font="11">};</text>
+<text top="703" left="105" width="414" height="14" font="2">These weights allow us to compute the effective time slice of each pro-</text>
+<text top="718" left="87" width="432" height="14" font="2">cess (as we did before), but now accounting for their priority differences.</text>
+<text top="733" left="87" width="296" height="14" font="2">The formula used to do so is as follows, assuming</text>
+<text top="734" left="386" width="8" height="10" font="16">n</text>
+<text top="733" left="398" width="60" height="14" font="2">processes:</text>
+<text top="772" left="144" width="81" height="11" font="11">time_slice</text>
+<text top="777" left="225" width="6" height="6" font="23">k</text>
+<text top="771" left="236" width="11" height="13" font="17">=</text>
+<text top="764" left="271" width="48" height="11" font="11">weight</text>
+<text top="769" left="319" width="6" height="6" font="23">k</text>
+<text top="768" left="252" width="16" height="20" font="24">P</text>
+<text top="779" left="268" width="7" height="6" font="23">n</text>
+<text top="783" left="275" width="9" height="6" font="25">−</text>
+<text top="780" left="283" width="5" height="6" font="18">1</text>
+<text top="791" left="268" width="4" height="6" font="23">i</text>
+<text top="792" left="272" width="14" height="6" font="18">=0</text>
+<text top="784" left="292" width="48" height="11" font="11">weight</text>
+<text top="789" left="340" width="4" height="6" font="23">i</text>
+<text top="777" left="350" width="4" height="9" font="26">·</text>
+<text top="772" left="357" width="105" height="11" font="11">sched_latency</text>
+<text top="772" left="493" width="26" height="14" font="2">(9.1)</text>
+<text top="811" left="105" width="414" height="14" font="2">Let’s do an example to see how this works. Assume there are two jobs,</text>
+<text top="826" left="87" width="432" height="14" font="2">A and B. A, because it’s our most precious job, is given a higher priority</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="331" width="7" height="14" font="2">S</text>
+<text top="98" left="339" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="412" width="16" height="14" font="2">: P</text>
+<text top="98" left="429" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="520" width="7" height="14" font="2">S</text>
+<text top="98" left="527" width="33" height="11" font="4">HARE</text>
+<text top="139" left="129" width="347" height="14" font="2">by assigning it a nice value of -5; B, because we hates it</text>
+<text top="136" left="476" width="4" height="9" font="6">3</text>
+<text top="139" left="481" width="79" height="14" font="2">, just has the</text>
+<text top="154" left="129" width="300" height="14" font="2">default priority (nice value equal to 0). This means</text>
+<text top="154" left="433" width="48" height="11" font="11">weight</text>
+<text top="158" left="481" width="8" height="6" font="23">A</text>
+<text top="169" left="147" width="191" height="14" font="2">(from the table) is 3121, whereas</text>
+<text top="170" left="342" width="48" height="11" font="11">weight</text>
+<text top="174" left="390" width="8" height="6" font="23">B</text>
+<text top="185" left="147" width="414" height="14" font="2">is 1024. If you then compute the time slice of each job, you’ll ﬁnd that</text>
+<text top="202" left="129" width="126" height="14" font="2">A’s time slice is about</text>
+<text top="200" left="259" width="5" height="6" font="18">3</text>
+<text top="210" left="259" width="5" height="6" font="18">4</text>
+<text top="202" left="269" width="12" height="14" font="2">of</text>
+<text top="202" left="284" width="105" height="11" font="11">sched_latency</text>
+<text top="202" left="391" width="169" height="14" font="2">(hence, 36 ms), and B’s about</text>
+<text top="217" left="131" width="5" height="6" font="18">1</text>
+<text top="227" left="131" width="5" height="6" font="18">4</text>
+<text top="219" left="141" width="88" height="14" font="2">(hence, 12 ms).</text>
+<text top="235" left="147" width="414" height="14" font="2">In addition to generalizing the time slice calculation, the way CFS cal-</text>
+<text top="249" left="129" width="41" height="14" font="2">culates</text>
+<text top="250" left="173" width="65" height="11" font="11">vruntime</text>
+<text top="249" left="241" width="320" height="14" font="2">must also be adapted. Here is the new formula, which</text>
+<text top="264" left="129" width="221" height="14" font="2">takes the actual run time that process</text>
+<text top="265" left="353" width="5" height="10" font="16">i</text>
+<text top="264" left="361" width="78" height="14" font="2">has accrued (</text>
+<text top="265" left="439" width="57" height="11" font="11">runtime</text>
+<text top="269" left="496" width="4" height="6" font="23">i</text>
+<text top="264" left="500" width="4" height="14" font="2">)</text>
+<text top="280" left="147" width="414" height="14" font="2">and scales it inversely by the weight of the process, by dividing the</text>
+<text top="295" left="129" width="140" height="14" font="2">default weight of 1024 (</text>
+<text top="296" left="269" width="48" height="11" font="11">weight</text>
+<text top="300" left="318" width="5" height="6" font="18">0</text>
+<text top="295" left="324" width="4" height="14" font="2">)</text>
+<text top="311" left="147" width="80" height="14" font="2">by its weight,</text>
+<text top="312" left="230" width="48" height="11" font="11">weight</text>
+<text top="316" left="279" width="4" height="6" font="23">i</text>
+<text top="311" left="284" width="3" height="14" font="2">.</text>
+<text top="326" left="147" width="171" height="14" font="2">In our running example, A’s</text>
+<text top="327" left="322" width="65" height="11" font="11">vruntime</text>
+<text top="326" left="391" width="170" height="14" font="2">will accumulate at one-third</text>
+<text top="341" left="129" width="84" height="14" font="2">the rate of B’s.</text>
+<text top="379" left="193" width="65" height="11" font="11">vruntime</text>
+<text top="383" left="258" width="4" height="6" font="23">i</text>
+<text top="378" left="266" width="11" height="13" font="17">=</text>
+<text top="379" left="281" width="65" height="11" font="11">vruntime</text>
+<text top="383" left="345" width="4" height="6" font="23">i</text>
+<text top="378" left="353" width="11" height="13" font="17">+</text>
+<text top="370" left="369" width="48" height="11" font="11">weight</text>
+<text top="376" left="417" width="5" height="6" font="18">0</text>
+<text top="388" left="370" width="48" height="11" font="11">weight</text>
+<text top="394" left="418" width="4" height="6" font="23">i</text>
+<text top="384" left="428" width="4" height="9" font="26">·</text>
+<text top="379" left="435" width="57" height="11" font="11">runtime</text>
+<text top="383" left="492" width="4" height="6" font="23">i</text>
+<text top="378" left="535" width="26" height="14" font="2">(9.2)</text>
+<text top="412" left="147" width="414" height="14" font="2">One smart aspect of the construction of the table of weights above is</text>
+<text top="427" left="129" width="432" height="14" font="2">that the table preserves CPU proportionality ratios when the difference in</text>
+<text top="442" left="129" width="432" height="14" font="2">nice values is constant. For example, if process A instead had a nice value</text>
+<text top="457" left="129" width="432" height="14" font="2">of 5 (not -5), and process B had a nice value of 10 (not 0), CFS would</text>
+<text top="472" left="129" width="432" height="14" font="2">schedule them in exactly the same manner as before. Run through the</text>
+<text top="487" left="129" width="152" height="14" font="2">math yourself to see why.</text>
+<text top="521" left="129" width="154" height="15" font="20"><b>Using Red-Black Trees</b></text>
+<text top="546" left="129" width="432" height="14" font="2">One major focus of CFS is efﬁciency, as stated above. For a scheduler,</text>
+<text top="561" left="129" width="432" height="14" font="2">there are many facets of efﬁciency, but one of them is as simple as this:</text>
+<text top="576" left="129" width="432" height="14" font="2">when the scheduler has to ﬁnd the next job to run, it should do so as</text>
+<text top="591" left="129" width="432" height="14" font="2">quickly as possible. Simple data structures like lists don’t scale: modern</text>
+<text top="606" left="129" width="432" height="14" font="2">systems sometimes are comprised of 1000s of processes, and thus search-</text>
+<text top="621" left="129" width="372" height="14" font="2">ing through a long-list every so many milliseconds is wasteful.</text>
+<text top="636" left="147" width="270" height="14" font="2">CFS addresses this by keeping processes in a</text>
+<text top="637" left="421" width="85" height="13" font="3"><b>red-black tree</b></text>
+<text top="636" left="510" width="51" height="14" font="2">[B72]. A</text>
+<text top="651" left="129" width="432" height="14" font="2">red-black tree is one of many types of balanced trees; in contrast to a</text>
+<text top="666" left="129" width="432" height="14" font="2">simple binary tree (which can degenerate to list-like performance un-</text>
+<text top="681" left="129" width="432" height="14" font="2">der worst-case insertion patterns), balanced trees do a little extra work</text>
+<text top="696" left="129" width="432" height="14" font="2">to maintain low depths, and thus ensure that operations are logarithmic</text>
+<text top="711" left="129" width="141" height="14" font="2">(and not linear) in time.</text>
+<text top="727" left="147" width="111" height="14" font="2">CFS does not keep</text>
+<text top="727" left="261" width="13" height="14" font="22"><i>all</i></text>
+<text top="727" left="279" width="282" height="14" font="2">processes in this structure; rather, only running</text>
+<text top="742" left="129" width="432" height="14" font="2">(or runnable) processes are kept therein. If a process goes to sleep (say,</text>
+<text top="757" left="129" width="432" height="14" font="2">waiting on an I/O to complete, or for a network packet to arrive), it is</text>
+<text top="772" left="129" width="303" height="14" font="2">removed from the tree and kept track of elsewhere.</text>
+<text top="802" left="149" width="4" height="8" font="8">3</text>
+<text top="804" left="154" width="407" height="11" font="9">Yes, yes, we are using bad grammar here on purpose, please don’t send in a bug ﬁx.</text>
+<text top="816" left="129" width="432" height="11" font="9">Why? Well, just a most mild of references to the Lord of the Rings, and our favorite anti-hero</text>
+<text top="828" left="129" width="190" height="11" font="9">Gollum, nothing to get too excited about.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="16" height="14" font="2">: P</text>
+<text top="98" left="185" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="33" height="11" font="4">HARE</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="263" left="160" width="7" height="12" font="14">1</text>
+<text top="313" left="193" width="7" height="12" font="14">5</text>
+<text top="213" left="209" width="7" height="12" font="14">9</text>
+<text top="263" left="255" width="14" height="12" font="14">10</text>
+<text top="163" left="288" width="14" height="12" font="14">14</text>
+<text top="213" left="370" width="14" height="12" font="14">18</text>
+<text top="263" left="320" width="14" height="12" font="14">17</text>
+<text top="263" left="419" width="14" height="12" font="14">22</text>
+<text top="313" left="386" width="14" height="12" font="14">21</text>
+<text top="313" left="452" width="14" height="12" font="14">24</text>
+<text top="350" left="209" width="62" height="14" font="2">Figure 9.5:</text>
+<text top="350" left="275" width="122" height="13" font="3"><b>CFS Red-Black Tree</b></text>
+<text top="370" left="105" width="414" height="14" font="2">Let’s look at an example to make this more clear. Assume there are ten</text>
+<text top="385" left="87" width="280" height="14" font="2">jobs, and that they have the following values of</text>
+<text top="385" left="370" width="65" height="11" font="11">vruntime</text>
+<text top="385" left="435" width="84" height="14" font="2">: 1, 5, 9, 10, 14,</text>
+<text top="400" left="87" width="432" height="14" font="2">18, 17, 21, 22, and 24. If we kept these jobs in an ordered list, ﬁnding the</text>
+<text top="415" left="87" width="432" height="14" font="2">next job to run would be simple: just remove the ﬁrst element. However,</text>
+<text top="429" left="87" width="432" height="14" font="2">when placing that job back into the list (in order), we would have to scan</text>
+<text top="444" left="87" width="297" height="14" font="2">the list, looking for the right spot to insert it, an</text>
+<text top="445" left="389" width="11" height="10" font="16">O</text>
+<text top="444" left="400" width="5" height="13" font="17">(</text>
+<text top="445" left="405" width="8" height="10" font="16">n</text>
+<text top="444" left="413" width="5" height="13" font="17">)</text>
+<text top="444" left="424" width="95" height="14" font="2">operation. Any</text>
+<text top="459" left="87" width="385" height="14" font="2">search is also quite inefﬁcient, also taking linear time on average.</text>
+<text top="475" left="105" width="414" height="14" font="2">Keeping the same values in a red-black tree makes most operations</text>
+<text top="490" left="87" width="432" height="14" font="2">more efﬁcient, as depicted in Figure 9.5. Processes are ordered in the tree</text>
+<text top="505" left="87" width="15" height="14" font="2">by</text>
+<text top="505" left="106" width="65" height="11" font="11">vruntime</text>
+<text top="505" left="171" width="348" height="14" font="2">, and most operations (such as insertion and deletion) are</text>
+<text top="520" left="87" width="143" height="14" font="2">logarithmic in time, i.e.,</text>
+<text top="520" left="234" width="11" height="10" font="16">O</text>
+<text top="519" left="245" width="23" height="13" font="17">(log</text>
+<text top="520" left="271" width="8" height="10" font="16">n</text>
+<text top="519" left="279" width="5" height="13" font="17">)</text>
+<text top="520" left="285" width="45" height="14" font="2">. When</text>
+<text top="520" left="334" width="8" height="10" font="16">n</text>
+<text top="520" left="346" width="173" height="14" font="2">is in the thousands, logarith-</text>
+<text top="534" left="87" width="254" height="14" font="2">mic is noticeably more efﬁcient than linear.</text>
+<text top="556" left="87" width="285" height="15" font="20"><b>Dealing With I/O And Sleeping Processes</b></text>
+<text top="575" left="87" width="224" height="14" font="2">One problem with picking the lowest</text>
+<text top="576" left="315" width="65" height="11" font="11">vruntime</text>
+<text top="575" left="384" width="135" height="14" font="2">to run next arises with</text>
+<text top="590" left="87" width="432" height="14" font="2">jobs that have gone to sleep for a long period of time. Imagine two pro-</text>
+<text top="605" left="87" width="432" height="14" font="2">cesses, A and B, one of which (A) runs continuously, and the other (B)</text>
+<text top="620" left="87" width="432" height="14" font="2">which has gone to sleep for a long period of time (say, 10 seconds). When</text>
+<text top="635" left="87" width="95" height="14" font="2">B wakes up, its</text>
+<text top="636" left="187" width="65" height="11" font="11">vruntime</text>
+<text top="635" left="256" width="263" height="14" font="2">will be 10 seconds behind A’s, and thus (if</text>
+<text top="650" left="87" width="432" height="14" font="2">we’re not careful), B will now monopolize the CPU for the next 10 sec-</text>
+<text top="665" left="87" width="281" height="14" font="2">onds while it catches up, effectively starving A.</text>
+<text top="680" left="105" width="214" height="14" font="2">CFS handles this case by altering the</text>
+<text top="681" left="322" width="65" height="11" font="11">vruntime</text>
+<text top="680" left="389" width="130" height="14" font="2">of a job when it wakes</text>
+<text top="695" left="87" width="167" height="14" font="2">up. Speciﬁcally, CFS sets the</text>
+<text top="696" left="257" width="65" height="11" font="11">vruntime</text>
+<text top="695" left="325" width="194" height="14" font="2">of that job to the minimum value</text>
+<text top="710" left="87" width="432" height="14" font="2">found in the tree (remember, the tree only contains running jobs) [B+18].</text>
+<text top="725" left="87" width="432" height="14" font="2">CFS thus avoids starvation but with a cost: jobs that sleep for short peri-</text>
+<text top="740" left="87" width="363" height="14" font="2">ods of time frequently do not ever get their fair share [AC97].</text>
+<text top="762" left="87" width="102" height="15" font="20"><b>Other CFS Fun</b></text>
+<text top="781" left="87" width="432" height="14" font="2">CFS has many other features, too many to discuss at this point in the</text>
+<text top="796" left="87" width="432" height="14" font="2">book. It includes numerous heuristics to improve cache performance, has</text>
+<text top="811" left="87" width="432" height="14" font="2">strategies for handling multiple CPUs effectively (as discussed later in the</text>
+<text top="826" left="87" width="432" height="14" font="2">book), can schedule across large groups of processes (instead of treating</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="331" width="7" height="14" font="2">S</text>
+<text top="98" left="339" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="412" width="16" height="14" font="2">: P</text>
+<text top="98" left="429" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="520" width="7" height="14" font="2">S</text>
+<text top="98" left="527" width="33" height="11" font="4">HARE</text>
+<text top="148" left="160" width="8" height="14" font="2">T</text>
+<text top="150" left="169" width="11" height="11" font="4">IP</text>
+<text top="148" left="181" width="19" height="14" font="2">: U</text>
+<text top="150" left="200" width="13" height="11" font="4">SE</text>
+<text top="148" left="217" width="8" height="14" font="2">E</text>
+<text top="150" left="226" width="52" height="11" font="4">FFICIENT</text>
+<text top="148" left="282" width="10" height="14" font="2">D</text>
+<text top="150" left="293" width="23" height="11" font="4">ATA</text>
+<text top="148" left="320" width="7" height="14" font="2">S</text>
+<text top="150" left="328" width="70" height="11" font="4">TRUCTURES</text>
+<text top="148" left="402" width="13" height="14" font="2">W</text>
+<text top="150" left="416" width="26" height="11" font="4">HEN</text>
+<text top="148" left="446" width="10" height="14" font="2">A</text>
+<text top="150" left="457" width="73" height="11" font="4">PPROPRIATE</text>
+<text top="163" left="129" width="432" height="14" font="2">In many cases, a list will do. In many cases, it will not. Knowing which</text>
+<text top="178" left="129" width="432" height="14" font="2">data structure to use when is a hallmark of good engineering. In the case</text>
+<text top="193" left="129" width="432" height="14" font="2">discussed herein, simple lists found in earlier schedulers simply do not</text>
+<text top="208" left="129" width="432" height="14" font="2">work well on modern systems, particular in the heavily loaded servers</text>
+<text top="223" left="129" width="432" height="14" font="2">found in datacenters. Such systems contain thousands of active pro-</text>
+<text top="238" left="129" width="432" height="14" font="2">cesses; searching through a long list to ﬁnd the next job to run on each</text>
+<text top="253" left="129" width="432" height="14" font="2">core every few milliseconds would waste precious CPU cycles. A better</text>
+<text top="268" left="129" width="432" height="14" font="2">structure was needed, and CFS provided one by adding an excellent im-</text>
+<text top="283" left="129" width="432" height="14" font="2">plementation of a red-black tree. More generally, when picking a data</text>
+<text top="298" left="129" width="432" height="14" font="2">structure for a system you are building, carefully consider its access pat-</text>
+<text top="313" left="129" width="432" height="14" font="2">terns and its frequency of usage; by understanding these, you will be able</text>
+<text top="327" left="129" width="313" height="14" font="2">to implement the right structure for the task at hand.</text>
+<text top="366" left="129" width="432" height="14" font="2">each process as an independent entity), and many other interesting fea-</text>
+<text top="381" left="129" width="422" height="14" font="2">tures. Read recent research, starting with Bouron [B+18], to learn more.</text>
+<text top="401" left="97" width="97" height="17" font="5">9.8 Summary</text>
+<text top="426" left="147" width="414" height="14" font="2">We have introduced the concept of proportional-share scheduling and</text>
+<text top="441" left="129" width="432" height="14" font="2">brieﬂy discussed three approaches: lottery scheduling, stride scheduling,</text>
+<text top="456" left="129" width="432" height="14" font="2">and CFS. Lottery uses randomness in a clever way to achieve propor-</text>
+<text top="471" left="129" width="432" height="14" font="2">tional share; stride does so deterministically. CFS, the only “real” sched-</text>
+<text top="486" left="129" width="432" height="14" font="2">uler discussed in this chapter, is a bit like weighted round-robin with dy-</text>
+<text top="500" left="129" width="432" height="14" font="2">namic time slices, but built to scale and perform well under load; for</text>
+<text top="515" left="129" width="365" height="14" font="2">many years, it was the most widely used fair-share scheduler.</text>
+<text top="530" left="147" width="414" height="14" font="2">No scheduler is a panacea, and fair-share schedulers have their fair</text>
+<text top="545" left="129" width="432" height="14" font="2">share of problems. One issue is that such approaches do not particularly</text>
+<text top="560" left="129" width="432" height="14" font="2">mesh well with I/O [AC97]; as mentioned above, jobs that perform I/O</text>
+<text top="575" left="129" width="432" height="14" font="2">occasionally may not get their fair share of CPU. Another issue is that</text>
+<text top="590" left="129" width="432" height="14" font="2">they leave open the hard problem of ticket or priority assignment, i.e.,</text>
+<text top="605" left="129" width="432" height="14" font="2">how do you know how many tickets your browser should be allocated, or</text>
+<text top="620" left="129" width="432" height="14" font="2">to what nice value to set your text editor? Other general-purpose sched-</text>
+<text top="635" left="129" width="432" height="14" font="2">ulers (such as the MLFQ we discussed previously) handle these issues</text>
+<text top="650" left="129" width="318" height="14" font="2">automatically and thus may be more easily deployed.</text>
+<text top="665" left="147" width="414" height="14" font="2">The good news is that there are many domains in which these prob-</text>
+<text top="680" left="129" width="432" height="14" font="2">lems are not the dominant concern, and proportional-share schedulers</text>
+<text top="695" left="129" width="264" height="14" font="2">are used to great effect. For example, in a</text>
+<text top="695" left="398" width="67" height="13" font="3"><b>virtualized</b></text>
+<text top="695" left="471" width="90" height="14" font="2">data center (or</text>
+<text top="710" left="129" width="34" height="13" font="3"><b>cloud</b></text>
+<text top="710" left="163" width="397" height="14" font="2">), where you might like to assign one-quarter of your CPU cycles</text>
+<text top="725" left="129" width="432" height="14" font="2">to the Windows VM and the rest to your base Linux installation, propor-</text>
+<text top="740" left="129" width="432" height="14" font="2">tional sharing can be simple and effective. The idea can also be extended</text>
+<text top="755" left="129" width="363" height="14" font="2">to other resources; see Waldspurger [W02] for further details.</text>
+<text top="769" left="147" width="414" height="14" font="2">Finally, the world of Linux is always changing. As of Linux 6.6, the</text>
+<text top="784" left="129" width="432" height="14" font="2">Earliest Eligible Virtual Deadline First (EEVDF) scheduler (another fair-</text>
+<text top="799" left="129" width="432" height="14" font="2">sharing approach) became the default. Go read more about EEVDF [Z23,</text>
+<text top="814" left="129" width="404" height="14" font="2">SA95] for more information. Just when you thought you were done!</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="27" size="16" family="OLOHNA+URWPalladioL" color="#000000"/>
+	<fontspec id="28" size="10" family="HJDZHZ+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="16" height="14" font="2">: P</text>
+<text top="98" left="185" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="276" width="7" height="14" font="2">S</text>
+<text top="98" left="284" width="33" height="11" font="4">HARE</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="137" left="87" width="82" height="16" font="27"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="9">[AC97] “Extending Proportional-Share Scheduling to a Network of Workstations” by Andrea</text>
+<text top="177" left="87" width="289" height="11" font="9">C. Arpaci-Dusseau and David E. Culler. PDPTA’97, June 1997.</text>
+<text top="177" left="381" width="138" height="11" font="28"><i>A paper by one of the authors on</i></text>
+<text top="189" left="87" width="366" height="11" font="28"><i>how to extend proportional-share scheduling to work better in a clustered environment.</i></text>
+<text top="206" left="87" width="432" height="11" font="9">[B+18] “The Battle of the Schedulers: FreeBSD ULE vs. Linux CFS” by J. Bouron, S. Chevalley,</text>
+<text top="218" left="87" width="432" height="11" font="9">B. Lepers, W. Zwaenepoel, R. Gouicem, J. Lawall, G. Muller, J. Sopena. USENIX ATC ’18,</text>
+<text top="229" left="87" width="155" height="11" font="9">July 2018, Boston, Massachusetts.</text>
+<text top="229" left="247" width="272" height="11" font="28"><i>A recent, detailed work comparing Linux CFS and the FreeBSD</i></text>
+<text top="241" left="87" width="432" height="11" font="28"><i>schedulers. An excellent overview of each scheduler is also provided. The result of the comparison:</i></text>
+<text top="253" left="87" width="432" height="11" font="28"><i>inconclusive. In some cases CFS was better, and in others, ULE (the BSD scheduler), was. Sometimes</i></text>
+<text top="265" left="87" width="136" height="11" font="28"><i>in life there are no easy answers.</i></text>
+<text top="282" left="87" width="432" height="11" font="9">[B72] “Symmetric binary B-Trees: Data Structure And Maintenance Algorithms” by Rudolf</text>
+<text top="294" left="87" width="294" height="11" font="9">Bayer. Acta Informatica, Volume 1, Number 4, December 1972.</text>
+<text top="294" left="385" width="134" height="11" font="28"><i>A cool balanced tree introduced</i></text>
+<text top="305" left="87" width="432" height="11" font="28"><i>before you were born (most likely). One of many balanced trees out there; study your algorithms book</i></text>
+<text top="317" left="87" width="90" height="11" font="28"><i>for more alternatives!</i></text>
+<text top="334" left="87" width="432" height="11" font="9">[D82] “Why Numbering Should Start At Zero” by Edsger Dijkstra, August 1982. Available:</text>
+<text top="346" left="87" width="333" height="9" font="13">http://www.cs.utexas.edu/users/EWD/ewd08xx/EWD831.PDF</text>
+<text top="346" left="420" width="3" height="11" font="9">.</text>
+<text top="346" left="429" width="90" height="11" font="28"><i>A short note from E.</i></text>
+<text top="358" left="87" width="432" height="11" font="28"><i>Dijkstra, one of the pioneers of computer science. We’ll be hearing much more on this guy in the section</i></text>
+<text top="370" left="87" width="432" height="11" font="28"><i>on Concurrency. In the meanwhile, enjoy this note, which includes this motivating quote: “One of</i></text>
+<text top="382" left="87" width="432" height="11" font="28"><i>my colleagues — not a computing scientist — accused a number of younger computing scientists of</i></text>
+<text top="393" left="87" width="396" height="11" font="28"><i>’pedantry’ because they started numbering at zero.” The note explains why doing so is logical.</i></text>
+<text top="410" left="87" width="432" height="11" font="9">[K+15] “Proﬁling A Warehouse-scale Computer” by S. Kanev, P. Ranganathan, J. P. Darago,</text>
+<text top="422" left="87" width="417" height="11" font="9">K. Hazelwood, T. Moseley, G. Wei, D. Brooks. ISCA ’15, June, 2015, Portland, Oregon.</text>
+<text top="422" left="511" width="8" height="11" font="28"><i>A</i></text>
+<text top="434" left="87" width="432" height="11" font="28"><i>fascinating study of where the cycles go in modern data centers, which are increasingly where most of</i></text>
+<text top="446" left="87" width="432" height="11" font="28"><i>computing happens. Almost 20% of CPU time is spent in the operating system, 5% in the scheduler</i></text>
+<text top="458" left="87" width="26" height="11" font="28"><i>alone!</i></text>
+<text top="474" left="87" width="432" height="11" font="9">[J09] “Inside The Linux 2.6 Completely Fair Scheduler” by M. Tim Jones. December 15, 2009.</text>
+<text top="487" left="87" width="409" height="9" font="13">https://pages.cs.wisc.edu/%7Eremzi/OSTEP/Citations/inside-cfs.pdf</text>
+<text top="486" left="496" width="3" height="11" font="9">.</text>
+<text top="486" left="501" width="19" height="11" font="28"><i>This</i></text>
+<text top="498" left="87" width="432" height="11" font="28"><i>is a simple overview of CFS from its earlier days. CFS was created by Ingo Molnar in a short burst of</i></text>
+<text top="510" left="87" width="276" height="11" font="28"><i>creativity which led to a 100K kernel patch developed in 62 hours.</i></text>
+<text top="526" left="87" width="432" height="11" font="9">[KL88] “A Fair Share Scheduler” by J. Kay and P. Lauder. CACM, Volume 31 Issue 1, January</text>
+<text top="538" left="87" width="24" height="11" font="9">1988.</text>
+<text top="538" left="114" width="181" height="11" font="28"><i>An early reference to a fair-share scheduler.</i></text>
+<text top="554" left="87" width="432" height="11" font="9">[SA95] “Earliest Eligible Virtual Deadline First: A Flexible and Accurate Mechanism for Pro-</text>
+<text top="566" left="87" width="432" height="11" font="9">portional Share Resource Allocation” by Ion Stoica and Hussein M. Abdel-Wahab. Technical</text>
+<text top="578" left="87" width="277" height="11" font="9">report, CS Department, Old Dominion University, TR-95-22.</text>
+<text top="578" left="368" width="151" height="11" font="28"><i>The technical report that introduced</i></text>
+<text top="590" left="87" width="432" height="11" font="28"><i>EEVDF. Ion Stoica has since gone on to having great impact in systems, including with Apache Spark,</i></text>
+<text top="602" left="87" width="185" height="11" font="28"><i>the founding of Databricks, and much more.</i></text>
+<text top="618" left="87" width="432" height="11" font="9">[WW94] “Lottery Scheduling: Flexible Proportional-Share Resource Management” by Carl A.</text>
+<text top="630" left="87" width="296" height="11" font="9">Waldspurger and William E. Weihl. OSDI ’94, November 1994.</text>
+<text top="630" left="388" width="131" height="11" font="28"><i>The landmark paper on lottery</i></text>
+<text top="642" left="87" width="432" height="11" font="28"><i>scheduling that got the systems community re-energized about scheduling, fair sharing, and the power</i></text>
+<text top="654" left="87" width="140" height="11" font="28"><i>of simple randomized algorithms.</i></text>
+<text top="671" left="87" width="432" height="11" font="9">[W95] “Lottery and Stride Scheduling: Flexible Proportional-Share Resource Management” by</text>
+<text top="682" left="87" width="218" height="11" font="9">Carl A. Waldspurger. Ph.D. Thesis, MIT, 1995.</text>
+<text top="682" left="311" width="208" height="11" font="28"><i>The award-winning thesis of Waldspurger’s that</i></text>
+<text top="694" left="87" width="432" height="11" font="28"><i>outlines lottery and stride scheduling. If you’re thinking of writing a Ph.D. dissertation at some point,</i></text>
+<text top="706" left="87" width="432" height="11" font="28"><i>you should always have a good example around, to give you something to strive for: this is such a good</i></text>
+<text top="718" left="87" width="17" height="11" font="28"><i>one.</i></text>
+<text top="735" left="87" width="432" height="11" font="9">[W02] “Memory Resource Management in VMware ESX Server” by Carl A. Waldspurger.</text>
+<text top="747" left="87" width="155" height="11" font="9">OSDI ’02, Boston, Massachusetts.</text>
+<text top="747" left="247" width="272" height="11" font="28"><i>The paper to read about memory management in VMMs (a.k.a.,</i></text>
+<text top="758" left="87" width="432" height="11" font="28"><i>hypervisors). In addition to being relatively easy to read, the paper contains numerous cool ideas about</i></text>
+<text top="770" left="87" width="215" height="11" font="28"><i>this new type of VMM-level memory management.</i></text>
+<text top="787" left="87" width="425" height="11" font="9">[Z23] “The EEVDF Scheduler” by Peter Zijlstra. Please go to this URL for details on EEVDF:</text>
+<text top="799" left="87" width="315" height="9" font="13">https://docs.kernel.org/scheduler/sched-eevdf.html</text>
+<text top="799" left="402" width="3" height="11" font="9">.</text>
+<text top="799" left="407" width="118" height="11" font="28"><i>Linux is always a’changing!</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–26, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="331" width="7" height="14" font="2">S</text>
+<text top="98" left="339" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="412" width="16" height="14" font="2">: P</text>
+<text top="98" left="429" width="87" height="11" font="4">ROPORTIONAL</text>
+<text top="96" left="520" width="7" height="14" font="2">S</text>
+<text top="98" left="527" width="33" height="11" font="4">HARE</text>
+<text top="137" left="129" width="183" height="16" font="27"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="84" height="14" font="2">This program,</text>
+<text top="167" left="233" width="81" height="11" font="11">lottery.py</text>
+<text top="166" left="314" width="247" height="14" font="2">, allows you to see how a lottery scheduler</text>
+<text top="181" left="129" width="215" height="14" font="2">works. See the README for details.</text>
+<text top="217" left="129" width="70" height="15" font="20"><b>Questions</b></text>
+<text top="242" left="146" width="418" height="14" font="2">1. Compute the solutions for simulations with 3 jobs and random seeds</text>
+<text top="256" left="163" width="78" height="14" font="2">of 1, 2, and 3.</text>
+<text top="281" left="146" width="414" height="14" font="2">2. Now run with two speciﬁc jobs: each of length 10, but one (job 0)</text>
+<text top="296" left="163" width="275" height="14" font="2">with 1 ticket and the other (job 1) with 100 (e.g.,</text>
+<text top="297" left="441" width="113" height="11" font="11">-l 10:1,10:100</text>
+<text top="296" left="554" width="8" height="14" font="2">).</text>
+<text top="311" left="163" width="397" height="14" font="2">What happens when the number of tickets is so imbalanced? Will</text>
+<text top="326" left="163" width="397" height="14" font="2">job 0 ever run before job 1 completes? How often? In general, what</text>
+<text top="341" left="163" width="397" height="14" font="2">does such a ticket imbalance do to the behavior of lottery schedul-</text>
+<text top="356" left="163" width="25" height="14" font="2">ing?</text>
+<text top="381" left="146" width="414" height="14" font="2">3. When running with two jobs of length 100 and equal ticket alloca-</text>
+<text top="396" left="163" width="74" height="14" font="2">tions of 100 (</text>
+<text top="397" left="238" width="145" height="11" font="11">-l 100:100,100:100</text>
+<text top="396" left="383" width="178" height="14" font="2">), how unfair is the scheduler?</text>
+<text top="411" left="163" width="397" height="14" font="2">Run with some different random seeds to determine the (probabilis-</text>
+<text top="426" left="163" width="397" height="14" font="2">tic) answer; let unfairness be determined by how much earlier one</text>
+<text top="441" left="163" width="156" height="14" font="2">job ﬁnishes than the other.</text>
+<text top="466" left="146" width="416" height="14" font="2">4. How does your answer to the previous question change as the quan-</text>
+<text top="481" left="163" width="58" height="14" font="2">tum size (</text>
+<text top="481" left="222" width="16" height="11" font="11">-q</text>
+<text top="481" left="238" width="76" height="14" font="2">) gets larger?</text>
+<text top="506" left="146" width="414" height="14" font="2">5. Can you make a version of the graph that is found in the chapter?</text>
+<text top="520" left="163" width="397" height="14" font="2">What else would be worth exploring? How would the graph look</text>
+<text top="535" left="163" width="142" height="14" font="2">with a stride scheduler?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="10">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="10">1.20]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+</pdf2xml>

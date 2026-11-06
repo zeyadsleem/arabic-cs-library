@@ -1,0 +1,1001 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="KUCICM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="KUCICM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="NWUXKH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="WPZXDV+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="NWUXKH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="16" family="NWUXKH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="13" family="MPAMUY+URWPalladioL-Ital" color="#000000"/>
+<text top="194" left="540" width="17" height="30" font="0">7</text>
+<text top="263" left="287" width="232" height="21" font="1">Scheduling: Introduction</text>
+<text top="344" left="87" width="103" height="14" font="2">By now low-level</text>
+<text top="344" left="193" width="76" height="13" font="3"><b>mechanisms</b></text>
+<text top="344" left="272" width="247" height="14" font="2">of running processes (e.g., context switch-</text>
+<text top="359" left="87" width="432" height="14" font="2">ing) should be clear; if they are not, go back a chapter or two, and read the</text>
+<text top="374" left="87" width="432" height="14" font="2">description of how that stuff works again. However, we have yet to un-</text>
+<text top="389" left="87" width="140" height="14" font="2">derstand the high-level</text>
+<text top="389" left="231" width="48" height="13" font="3"><b>policies</b></text>
+<text top="389" left="283" width="236" height="14" font="2">that an OS scheduler employs. We will</text>
+<text top="404" left="87" width="235" height="14" font="2">now do just that, presenting a series of</text>
+<text top="404" left="327" width="120" height="13" font="3"><b>scheduling policies</b></text>
+<text top="404" left="451" width="68" height="14" font="2">(sometimes</text>
+<text top="419" left="87" width="35" height="14" font="2">called</text>
+<text top="419" left="126" width="67" height="13" font="3"><b>disciplines</b></text>
+<text top="419" left="193" width="326" height="14" font="2">) that various smart and hard-working people have de-</text>
+<text top="434" left="87" width="138" height="14" font="2">veloped over the years.</text>
+<text top="449" left="105" width="414" height="14" font="2">The origins of scheduling, in fact, predate computer systems; early</text>
+<text top="464" left="87" width="432" height="14" font="2">approaches were taken from the field of operations management and ap-</text>
+<text top="479" left="87" width="432" height="14" font="2">plied to computers. This reality should be no surprise: assembly lines</text>
+<text top="494" left="87" width="432" height="14" font="2">and many other human endeavors also require scheduling, and many of</text>
+<text top="509" left="87" width="432" height="14" font="2">the same concerns exist therein, including a laser-like desire for efficiency.</text>
+<text top="524" left="87" width="140" height="14" font="2">And thus, our problem:</text>
+<text top="563" left="143" width="8" height="14" font="2">T</text>
+<text top="564" left="152" width="16" height="11" font="4">HE</text>
+<text top="563" left="173" width="10" height="14" font="2">C</text>
+<text top="564" left="183" width="24" height="11" font="4">RUX</text>
+<text top="563" left="207" width="19" height="14" font="2">: H</text>
+<text top="564" left="228" width="20" height="11" font="4">OW</text>
+<text top="563" left="251" width="8" height="14" font="2">T</text>
+<text top="564" left="260" width="8" height="11" font="4">O</text>
+<text top="563" left="273" width="10" height="14" font="2">D</text>
+<text top="564" left="284" width="46" height="11" font="4">EVELOP</text>
+<text top="563" left="333" width="7" height="14" font="2">S</text>
+<text top="564" left="341" width="73" height="11" font="4">CHEDULING</text>
+<text top="563" left="418" width="8" height="14" font="2">P</text>
+<text top="564" left="427" width="36" height="11" font="4">OLICY</text>
+<text top="577" left="105" width="414" height="14" font="2">How should we develop a basic framework for thinking about</text>
+<text top="592" left="87" width="432" height="14" font="2">scheduling policies? What are the key assumptions? What metrics are</text>
+<text top="607" left="87" width="432" height="14" font="2">important? What basic approaches have been used in the earliest of com-</text>
+<text top="622" left="87" width="89" height="14" font="2">puter systems?</text>
+<text top="677" left="55" width="197" height="17" font="5">7.1 Workload Assumptions</text>
+<text top="706" left="105" width="414" height="14" font="2">Before getting into the range of possible policies, let us first make a</text>
+<text top="721" left="87" width="432" height="14" font="2">number of simplifying assumptions about the processes running in the</text>
+<text top="736" left="87" width="253" height="14" font="2">system, sometimes collectively called the</text>
+<text top="736" left="346" width="59" height="13" font="3"><b>workload</b></text>
+<text top="736" left="405" width="114" height="14" font="2">. Determining the</text>
+<text top="751" left="87" width="432" height="14" font="2">workload is a critical part of building policies, and the more you know</text>
+<text top="766" left="87" width="336" height="14" font="2">about workload, the more fine-tuned your policy can be.</text>
+<text top="781" left="105" width="414" height="14" font="2">The workload assumptions we make here are mostly unrealistic, but</text>
+<text top="796" left="87" width="432" height="14" font="2">that is alright (for now), because we will relax them as we go, and even-</text>
+<text top="811" left="87" width="242" height="14" font="2">tually develop what we will refer to as ...</text>
+<text top="811" left="333" width="104" height="14" font="6">(dramatic pause) ...</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="9" family="NWUXKH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="13" family="DQXYST+CMMI9" color="#000000"/>
+	<fontspec id="9" size="9" family="QVEPOL+CMMI6" color="#000000"/>
+	<fontspec id="10" size="13" family="ZBHXWX+CMR9" color="#000000"/>
+	<fontspec id="11" size="13" family="HZQYSD+CMSY9" color="#000000"/>
+	<fontspec id="12" size="7" family="NWUXKH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="13" size="10" family="NWUXKH+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="14" size="12" family="NWUXKH+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="376" width="7" height="14" font="2">S</text>
+<text top="98" left="384" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="139" left="129" width="7" height="14" font="2">a</text>
+<text top="139" left="139" width="241" height="13" font="3"><b>fully-operational scheduling discipline</b></text>
+<text top="136" left="380" width="4" height="9" font="7">1</text>
+<text top="139" left="385" width="3" height="14" font="2">.</text>
+<text top="154" left="147" width="414" height="14" font="2">We will make the following assumptions about the processes, some-</text>
+<text top="169" left="129" width="71" height="14" font="2">times called</text>
+<text top="169" left="203" width="26" height="13" font="3"><b>jobs</b></text>
+<text top="169" left="229" width="189" height="14" font="2">, that are running in the system:</text>
+<text top="196" left="146" width="272" height="14" font="2">1. Each job runs for the same amount of time.</text>
+<text top="211" left="146" width="205" height="14" font="2">2. All jobs arrive at the same time.</text>
+<text top="226" left="146" width="266" height="14" font="2">3. Once started, each job runs to completion.</text>
+<text top="241" left="146" width="329" height="14" font="2">4. All jobs only use the CPU (i.e., they perform no I/O)</text>
+<text top="255" left="146" width="223" height="14" font="2">5. The run-time of each job is known.</text>
+<text top="282" left="147" width="414" height="14" font="2">We said many of these assumptions were unrealistic, but just as some</text>
+<text top="297" left="129" width="280" height="14" font="2">animals are more equal than others in Orwell’s</text>
+<text top="297" left="412" width="74" height="14" font="6">Animal Farm</text>
+<text top="297" left="489" width="71" height="14" font="2">[O45], some</text>
+<text top="312" left="129" width="432" height="14" font="2">assumptions are more unrealistic than others in this chapter. In particu-</text>
+<text top="327" left="129" width="432" height="14" font="2">lar, it might bother you that the run-time of each job is known: this would</text>
+<text top="342" left="129" width="432" height="14" font="2">make the scheduler omniscient, which, although it would be great (prob-</text>
+<text top="357" left="129" width="256" height="14" font="2">ably), is not likely to happen anytime soon.</text>
+<text top="394" left="97" width="165" height="17" font="5">7.2 Scheduling Metrics</text>
+<text top="425" left="147" width="414" height="14" font="2">Beyond making workload assumptions, we also need one more thing</text>
+<text top="439" left="129" width="329" height="14" font="2">to enable us to compare different scheduling policies: a</text>
+<text top="440" left="462" width="99" height="13" font="3"><b>scheduling met-</b></text>
+<text top="454" left="129" width="16" height="13" font="3"><b>ric</b></text>
+<text top="454" left="145" width="267" height="14" font="2">. A metric is just something that we use to</text>
+<text top="454" left="417" width="45" height="14" font="6">measure</text>
+<text top="454" left="466" width="94" height="14" font="2">something, and</text>
+<text top="469" left="129" width="414" height="14" font="2">there are a number of different metrics that make sense in scheduling.</text>
+<text top="485" left="147" width="414" height="14" font="2">For now, however, let us also simplify our life by simply having a sin-</text>
+<text top="500" left="129" width="64" height="14" font="2">gle metric:</text>
+<text top="500" left="201" width="103" height="13" font="3"><b>turnaround time</b></text>
+<text top="500" left="304" width="257" height="14" font="2">. The turnaround time of a job is defined</text>
+<text top="515" left="129" width="432" height="14" font="2">as the time at which the job completes minus the time at which the job</text>
+<text top="530" left="129" width="344" height="14" font="2">arrived in the system. More formally, the turnaround time</text>
+<text top="530" left="476" width="8" height="9" font="8">T</text>
+<text top="535" left="484" width="60" height="8" font="9">turnaround</text>
+<text top="530" left="548" width="13" height="14" font="2">is:</text>
+<text top="558" left="238" width="8" height="9" font="8">T</text>
+<text top="563" left="246" width="60" height="8" font="9">turnaround</text>
+<text top="559" left="310" width="11" height="9" font="10">=</text>
+<text top="558" left="325" width="8" height="9" font="8">T</text>
+<text top="563" left="333" width="56" height="8" font="9">completion</text>
+<text top="564" left="392" width="11" height="8" font="11">−</text>
+<text top="558" left="406" width="8" height="9" font="8">T</text>
+<text top="563" left="414" width="37" height="8" font="9">arrival</text>
+<text top="558" left="535" width="26" height="14" font="2">(7.1)</text>
+<text top="579" left="147" width="414" height="14" font="2">Because we have assumed that all jobs arrive at the same time, for now</text>
+<text top="595" left="129" width="8" height="9" font="8">T</text>
+<text top="599" left="137" width="37" height="8" font="9">arrival</text>
+<text top="595" left="180" width="23" height="9" font="10">= 0</text>
+<text top="594" left="207" width="61" height="14" font="2">and hence</text>
+<text top="595" left="272" width="8" height="9" font="8">T</text>
+<text top="599" left="280" width="60" height="8" font="9">turnaround</text>
+<text top="595" left="346" width="11" height="9" font="10">=</text>
+<text top="595" left="362" width="8" height="9" font="8">T</text>
+<text top="599" left="370" width="56" height="8" font="9">completion</text>
+<text top="594" left="426" width="135" height="14" font="2">. This fact will change</text>
+<text top="609" left="129" width="268" height="14" font="2">as we relax the aforementioned assumptions.</text>
+<text top="625" left="147" width="248" height="14" font="2">You should note that turnaround time is a</text>
+<text top="625" left="399" width="78" height="13" font="3"><b>performance</b></text>
+<text top="625" left="479" width="81" height="14" font="2">metric, which</text>
+<text top="639" left="129" width="402" height="14" font="2">will be our primary focus this chapter. Another metric of interest is</text>
+<text top="640" left="535" width="26" height="13" font="3"><b>fair-</b></text>
+<text top="654" left="129" width="27" height="13" font="3"><b>ness</b></text>
+<text top="654" left="156" width="188" height="14" font="2">, as measured (for example) by</text>
+<text top="654" left="349" width="129" height="13" font="3"><b>Jain’s Fairness Index</b></text>
+<text top="654" left="482" width="79" height="14" font="2">[J91]. Perfor-</text>
+<text top="669" left="129" width="432" height="14" font="2">mance and fairness are often at odds in scheduling; a scheduler, for ex-</text>
+<text top="684" left="129" width="432" height="14" font="2">ample, may optimize performance but at the cost of preventing a few jobs</text>
+<text top="699" left="129" width="432" height="14" font="2">from running, thus decreasing fairness. This conundrum shows us that</text>
+<text top="714" left="129" width="141" height="14" font="2">life isn’t always perfect.</text>
+<text top="752" left="97" width="202" height="17" font="5">7.3 First In, First Out (FIFO)</text>
+<text top="782" left="147" width="333" height="14" font="2">The most basic algorithm we can implement is known as</text>
+<text top="782" left="483" width="78" height="13" font="3"><b>First In, First</b></text>
+<text top="797" left="129" width="24" height="13" font="3"><b>Out</b></text>
+<text top="797" left="158" width="4" height="14" font="2">(</text>
+<text top="797" left="162" width="31" height="13" font="3"><b>FIFO</b></text>
+<text top="797" left="194" width="161" height="14" font="2">) scheduling or sometimes</text>
+<text top="797" left="359" width="152" height="13" font="3"><b>First Come, First Served</b></text>
+<text top="797" left="516" width="4" height="14" font="2">(</text>
+<text top="797" left="520" width="33" height="13" font="3"><b>FCFS</b></text>
+<text top="797" left="553" width="8" height="14" font="2">).</text>
+<text top="826" left="149" width="4" height="8" font="12">1</text>
+<text top="828" left="154" width="324" height="11" font="13">Said in the same way you would say “A fully-operational Death Star.”</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="13" family="KUCICM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="16" size="9" family="RNSGSN+CMR6" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="13" height="14" font="2">: I</text>
+<text top="98" left="182" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="87" width="432" height="14" font="2">FIFO has a number of positive properties: it is clearly simple and thus</text>
+<text top="154" left="87" width="413" height="14" font="2">easy to implement. And, given our assumptions, it works pretty well.</text>
+<text top="169" left="105" width="414" height="14" font="2">Let’s do a quick example together. Imagine three jobs arrive in the</text>
+<text top="183" left="87" width="292" height="14" font="2">system, A, B, and C, at roughly the same time (</text>
+<text top="184" left="379" width="8" height="9" font="8">T</text>
+<text top="189" left="387" width="37" height="8" font="9">arrival</text>
+<text top="184" left="431" width="24" height="9" font="10">= 0</text>
+<text top="183" left="455" width="64" height="14" font="2">). Because</text>
+<text top="198" left="87" width="432" height="14" font="2">FIFO has to put some job first, let’s assume that while they all arrived</text>
+<text top="213" left="87" width="432" height="14" font="2">simultaneously, A arrived just a hair before B which arrived just a hair</text>
+<text top="228" left="87" width="432" height="14" font="2">before C. Assume also that each job runs for 10 seconds. What will the</text>
+<text top="243" left="87" width="152" height="13" font="3"><b>average turnaround time</b></text>
+<text top="243" left="242" width="101" height="14" font="2">be for these jobs?</text>
+<text top="351" left="157" width="7" height="12" font="15">0</text>
+<text top="351" left="200" width="14" height="12" font="15">20</text>
+<text top="351" left="247" width="14" height="12" font="15">40</text>
+<text top="351" left="293" width="14" height="12" font="15">60</text>
+<text top="351" left="340" width="14" height="12" font="15">80</text>
+<text top="351" left="383" width="22" height="12" font="15">100</text>
+<text top="351" left="430" width="22" height="12" font="15">120</text>
+<text top="367" left="286" width="29" height="12" font="15">Time</text>
+<text top="268" left="168" width="9" height="12" font="15">A</text>
+<text top="268" left="191" width="9" height="12" font="15">B</text>
+<text top="268" left="214" width="9" height="12" font="15">C</text>
+<text top="400" left="202" width="62" height="14" font="2">Figure 7.1:</text>
+<text top="400" left="269" width="135" height="13" font="3"><b>FIFO Simple Example</b></text>
+<text top="423" left="105" width="414" height="14" font="2">From Figure 7.1, you can see that A finished at 10, B at 20, and C at 30.</text>
+<text top="440" left="87" width="361" height="14" font="2">Thus, the average turnaround time for the three jobs is simply</text>
+<text top="437" left="453" width="50" height="9" font="16">10+20+30</text>
+<text top="447" left="475" width="5" height="9" font="16">3</text>
+<text top="441" left="508" width="11" height="9" font="10">=</text>
+<text top="455" left="87" width="14" height="9" font="10">20</text>
+<text top="455" left="101" width="283" height="14" font="2">. Computing turnaround time is as easy as that.</text>
+<text top="470" left="105" width="414" height="14" font="2">Now let’s relax one of our assumptions. In particular, let’s relax as-</text>
+<text top="485" left="87" width="432" height="14" font="2">sumption 1, and thus no longer assume that each job runs for the same</text>
+<text top="499" left="87" width="432" height="14" font="2">amount of time. How does FIFO perform now? What kind of workload</text>
+<text top="514" left="87" width="304" height="14" font="2">could you construct to make FIFO perform poorly?</text>
+<text top="529" left="105" width="338" height="14" font="6">(think about this before reading on ... keep thinking ... got it?!)</text>
+<text top="544" left="105" width="414" height="14" font="2">Presumably you’ve figured this out by now, but just in case, let’s do</text>
+<text top="559" left="87" width="432" height="14" font="2">an example to show how jobs of different lengths can lead to trouble for</text>
+<text top="574" left="87" width="432" height="14" font="2">FIFO scheduling. In particular, let’s again assume three jobs (A, B, and</text>
+<text top="589" left="87" width="417" height="14" font="2">C), but this time A runs for 100 seconds while B and C run for 10 each.</text>
+<text top="696" left="157" width="7" height="12" font="15">0</text>
+<text top="696" left="200" width="14" height="12" font="15">20</text>
+<text top="696" left="247" width="14" height="12" font="15">40</text>
+<text top="696" left="293" width="14" height="12" font="15">60</text>
+<text top="696" left="340" width="14" height="12" font="15">80</text>
+<text top="696" left="383" width="22" height="12" font="15">100</text>
+<text top="696" left="430" width="22" height="12" font="15">120</text>
+<text top="712" left="286" width="29" height="12" font="15">Time</text>
+<text top="613" left="273" width="9" height="12" font="15">A</text>
+<text top="613" left="401" width="9" height="12" font="15">B</text>
+<text top="613" left="424" width="9" height="12" font="15">C</text>
+<text top="745" left="183" width="62" height="14" font="2">Figure 7.2:</text>
+<text top="745" left="249" width="174" height="13" font="3"><b>Why FIFO Is Not That Great</b></text>
+<text top="765" left="105" width="414" height="14" font="2">As you can see in Figure 7.2, Job A runs first for the full 100 seconds</text>
+<text top="780" left="87" width="432" height="14" font="2">before B or C even get a chance to run. Thus, the average turnaround</text>
+<text top="796" left="87" width="300" height="14" font="2">time for the system is high: a painful 110 seconds (</text>
+<text top="794" left="389" width="66" height="9" font="16">100+110+120</text>
+<text top="804" left="419" width="5" height="9" font="16">3</text>
+<text top="797" left="461" width="35" height="9" font="10">= 110</text>
+<text top="796" left="496" width="8" height="14" font="2">).</text>
+<text top="811" left="105" width="249" height="14" font="2">This problem is generally referred to as the</text>
+<text top="811" left="357" width="81" height="13" font="3"><b>convoy effect</b></text>
+<text top="811" left="440" width="82" height="14" font="2">[B+79], where</text>
+<text top="826" left="87" width="432" height="14" font="2">a number of relatively-short potential consumers of a resource get queued</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="376" width="7" height="14" font="2">S</text>
+<text top="98" left="384" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="148" left="262" width="8" height="14" font="2">T</text>
+<text top="150" left="271" width="11" height="11" font="4">IP</text>
+<text top="148" left="283" width="16" height="14" font="2">: T</text>
+<text top="150" left="300" width="16" height="11" font="4">HE</text>
+<text top="148" left="320" width="8" height="14" font="2">P</text>
+<text top="150" left="329" width="74" height="11" font="4">RINCIPLE OF</text>
+<text top="148" left="407" width="20" height="14" font="2">SJF</text>
+<text top="163" left="129" width="432" height="14" font="2">Shortest Job First represents a general scheduling principle that can be</text>
+<text top="178" left="129" width="432" height="14" font="2">applied to any system where the perceived turnaround time per customer</text>
+<text top="193" left="129" width="432" height="14" font="2">(or, in our case, a job) matters. Think of any line you have waited in: if</text>
+<text top="208" left="129" width="432" height="14" font="2">the establishment in question cares about customer satisfaction, it is likely</text>
+<text top="223" left="129" width="432" height="14" font="2">they have taken SJF into account. For example, grocery stores commonly</text>
+<text top="238" left="129" width="432" height="14" font="2">have a “ten-items-or-less” line to ensure that shoppers with only a few</text>
+<text top="253" left="129" width="432" height="14" font="2">things to purchase don’t get stuck behind the family preparing for some</text>
+<text top="268" left="129" width="153" height="14" font="2">upcoming nuclear winter.</text>
+<text top="301" left="129" width="434" height="14" font="2">behind a heavyweight resource consumer. This scheduling scenario might</text>
+<text top="316" left="129" width="432" height="14" font="2">remind you of a single line at a grocery store and what you feel like when</text>
+<text top="331" left="129" width="432" height="14" font="2">you see the person in front of you with three carts full of provisions and</text>
+<text top="348" left="129" width="238" height="14" font="2">a checkbook out; it’s going to be a while</text>
+<text top="345" left="366" width="4" height="9" font="7">2</text>
+<text top="348" left="372" width="3" height="14" font="2">.</text>
+<text top="363" left="147" width="414" height="14" font="2">So what should we do? How can we develop a better algorithm to</text>
+<text top="378" left="129" width="432" height="14" font="2">deal with our new reality of jobs that run for different amounts of time?</text>
+<text top="393" left="129" width="196" height="14" font="2">Think about it first; then read on.</text>
+<text top="430" left="97" width="187" height="17" font="5">7.4 Shortest Job First (SJF)</text>
+<text top="460" left="147" width="414" height="14" font="2">It turns out that a very simple approach solves this problem; in fact</text>
+<text top="475" left="129" width="432" height="14" font="2">it is an idea stolen from operations research [C54,PV56] and applied to</text>
+<text top="490" left="129" width="432" height="14" font="2">scheduling of jobs in computer systems. This new scheduling discipline</text>
+<text top="505" left="129" width="74" height="14" font="2">is known as</text>
+<text top="505" left="208" width="145" height="13" font="3"><b>Shortest Job First (SJF)</b></text>
+<text top="505" left="353" width="207" height="14" font="2">, and the name should be easy to</text>
+<text top="520" left="129" width="432" height="14" font="2">remember because it describes the policy quite completely: it runs the</text>
+<text top="535" left="129" width="298" height="14" font="2">shortest job first, then the next shortest, and so on.</text>
+<text top="644" left="199" width="7" height="12" font="15">0</text>
+<text top="644" left="242" width="14" height="12" font="15">20</text>
+<text top="644" left="288" width="14" height="12" font="15">40</text>
+<text top="644" left="335" width="14" height="12" font="15">60</text>
+<text top="644" left="382" width="14" height="12" font="15">80</text>
+<text top="644" left="425" width="22" height="12" font="15">100</text>
+<text top="644" left="471" width="22" height="12" font="15">120</text>
+<text top="661" left="328" width="29" height="12" font="15">Time</text>
+<text top="561" left="210" width="9" height="12" font="15">B</text>
+<text top="561" left="233" width="9" height="12" font="15">C</text>
+<text top="561" left="361" width="9" height="12" font="15">A</text>
+<text top="682" left="249" width="62" height="14" font="2">Figure 7.3:</text>
+<text top="682" left="316" width="125" height="13" font="3"><b>SJF Simple Example</b></text>
+<text top="709" left="147" width="414" height="14" font="2">Let’s take our example above but with SJF as our scheduling policy.</text>
+<text top="724" left="129" width="432" height="14" font="2">Figure 7.3 shows the results of running A, B, and C. Hopefully the dia-</text>
+<text top="739" left="129" width="432" height="14" font="2">gram makes it clear why SJF performs much better with regards to aver-</text>
+<text top="754" left="129" width="432" height="14" font="2">age turnaround time. Simply by running B and C before A, SJF reduces</text>
+<text top="771" left="129" width="267" height="14" font="2">average turnaround from 110 seconds to 50 (</text>
+<text top="768" left="398" width="55" height="9" font="16">10+20+120</text>
+<text top="778" left="423" width="5" height="9" font="16">3</text>
+<text top="772" left="459" width="29" height="9" font="10">= 50</text>
+<text top="771" left="488" width="73" height="14" font="2">), more than</text>
+<text top="786" left="129" width="173" height="14" font="2">a factor of two improvement.</text>
+<text top="814" left="149" width="4" height="8" font="12">2</text>
+<text top="816" left="154" width="407" height="11" font="13">Recommended action in this case: either quickly switch to a different line, or take a long,</text>
+<text top="828" left="129" width="414" height="11" font="13">deep, and relaxing breath. That’s right, breathe in, breathe out. It will be OK, don’t worry.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="10" family="KUCICM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="18" size="9" family="CRCVOB+CMSY6" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="13" height="14" font="2">: I</text>
+<text top="98" left="182" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="148" left="201" width="10" height="14" font="2">A</text>
+<text top="150" left="212" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="239" width="16" height="14" font="2">: P</text>
+<text top="150" left="256" width="67" height="11" font="4">REEMPTIVE</text>
+<text top="148" left="327" width="7" height="14" font="2">S</text>
+<text top="150" left="334" width="71" height="11" font="4">CHEDULERS</text>
+<text top="163" left="87" width="288" height="14" font="2">In the old days of batch computing, a number of</text>
+<text top="163" left="378" width="99" height="13" font="3"><b>non-preemptive</b></text>
+<text top="163" left="480" width="39" height="14" font="2">sched-</text>
+<text top="178" left="87" width="432" height="14" font="2">ulers were developed; such systems would run each job to completion</text>
+<text top="193" left="87" width="432" height="14" font="2">before considering whether to run a new job. Virtually all modern sched-</text>
+<text top="208" left="87" width="53" height="14" font="2">ulers are</text>
+<text top="208" left="145" width="70" height="13" font="3"><b>preemptive</b></text>
+<text top="208" left="215" width="304" height="14" font="2">, and quite willing to stop one process from run-</text>
+<text top="223" left="87" width="432" height="14" font="2">ning in order to run another. This implies that the scheduler employs the</text>
+<text top="238" left="87" width="432" height="14" font="2">mechanisms we learned about previously; in particular, the scheduler can</text>
+<text top="253" left="87" width="59" height="14" font="2">perform a</text>
+<text top="253" left="149" width="88" height="13" font="3"><b>context switch</b></text>
+<text top="253" left="236" width="283" height="14" font="2">, stopping one running process temporarily and</text>
+<text top="268" left="87" width="182" height="14" font="2">resuming (or starting) another.</text>
+<text top="313" left="105" width="414" height="14" font="2">In fact, given our assumptions about jobs all arriving at the same time,</text>
+<text top="328" left="87" width="211" height="14" font="2">we could prove that SJF is indeed an</text>
+<text top="328" left="301" width="48" height="13" font="3"><b>optimal</b></text>
+<text top="328" left="351" width="168" height="14" font="2">scheduling algorithm. How-</text>
+<text top="342" left="87" width="432" height="14" font="2">ever, you are in a systems class, not theory or operations research; no</text>
+<text top="357" left="87" width="114" height="14" font="2">proofs are allowed.</text>
+<text top="373" left="105" width="414" height="14" font="2">Thus we arrive upon a good approach to scheduling with SJF, but our</text>
+<text top="388" left="87" width="432" height="14" font="2">assumptions are still fairly unrealistic. Let’s relax another. In particular,</text>
+<text top="403" left="87" width="432" height="14" font="2">we can target assumption 2, and now assume that jobs can arrive at any</text>
+<text top="418" left="87" width="357" height="14" font="2">time instead of all at once. What problems does this lead to?</text>
+<text top="433" left="105" width="376" height="14" font="6">(Another pause to think ... are you thinking? Come on, you can do it)</text>
+<text top="449" left="105" width="414" height="14" font="2">Here we can illustrate the problem again with an example. This time,</text>
+<text top="464" left="87" width="120" height="14" font="2">assume A arrives at</text>
+<text top="465" left="211" width="5" height="9" font="8">t</text>
+<text top="465" left="222" width="23" height="9" font="10">= 0</text>
+<text top="464" left="249" width="270" height="14" font="2">and needs to run for 100 seconds, whereas B</text>
+<text top="479" left="87" width="92" height="14" font="2">and C arrive at</text>
+<text top="480" left="183" width="5" height="9" font="8">t</text>
+<text top="480" left="194" width="30" height="9" font="10">= 10</text>
+<text top="479" left="228" width="291" height="14" font="2">and each need to run for 10 seconds. With pure</text>
+<text top="494" left="87" width="264" height="14" font="2">SJF, we’d get the schedule seen in Figure 7.4.</text>
+<text top="604" left="157" width="7" height="12" font="15">0</text>
+<text top="604" left="200" width="14" height="12" font="15">20</text>
+<text top="604" left="247" width="14" height="12" font="15">40</text>
+<text top="604" left="293" width="14" height="12" font="15">60</text>
+<text top="604" left="340" width="14" height="12" font="15">80</text>
+<text top="604" left="383" width="22" height="12" font="15">100</text>
+<text top="604" left="430" width="22" height="12" font="15">120</text>
+<text top="621" left="286" width="29" height="12" font="15">Time</text>
+<text top="521" left="273" width="9" height="12" font="15">A</text>
+<text top="521" left="401" width="9" height="12" font="15">B</text>
+<text top="521" left="424" width="9" height="12" font="15">C</text>
+<text top="511" left="158" width="52" height="10" font="17">[B,C arrive]</text>
+<text top="642" left="158" width="62" height="14" font="2">Figure 7.4:</text>
+<text top="642" left="224" width="225" height="13" font="3"><b>SJF With Late Arrivals From B and C</b></text>
+<text top="665" left="105" width="414" height="14" font="2">As you can see from the figure, even though B and C arrived shortly</text>
+<text top="680" left="87" width="432" height="14" font="2">after A, they still are forced to wait until A has completed, and thus suffer</text>
+<text top="695" left="87" width="432" height="14" font="2">the same convoy problem. Average turnaround time for these three jobs</text>
+<text top="713" left="87" width="108" height="14" font="2">is 103.33 seconds (</text>
+<text top="710" left="197" width="46" height="9" font="16">100+(110</text>
+<text top="714" left="243" width="9" height="6" font="18">−</text>
+<text top="710" left="251" width="44" height="9" font="16">10)+(120</text>
+<text top="714" left="296" width="9" height="6" font="18">−</text>
+<text top="710" left="305" width="15" height="9" font="16">10)</text>
+<text top="721" left="256" width="5" height="9" font="16">3</text>
+<text top="713" left="322" width="165" height="14" font="2">). What can a scheduler do?</text>
+<text top="751" left="55" width="327" height="17" font="5">7.5 Shortest Time-to-Completion First (STCF)</text>
+<text top="781" left="105" width="414" height="14" font="2">To address this concern, we need to relax assumption 3 (that jobs must</text>
+<text top="796" left="87" width="432" height="14" font="2">run to completion), so let’s do that. We also need some machinery within</text>
+<text top="811" left="87" width="432" height="14" font="2">the scheduler itself. As you might have guessed, given our previous dis-</text>
+<text top="826" left="87" width="432" height="14" font="2">cussion about timer interrupts and context switching, the scheduler can</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="376" width="7" height="14" font="2">S</text>
+<text top="98" left="384" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="228" left="199" width="7" height="12" font="15">0</text>
+<text top="228" left="242" width="14" height="12" font="15">20</text>
+<text top="228" left="288" width="14" height="12" font="15">40</text>
+<text top="228" left="335" width="14" height="12" font="15">60</text>
+<text top="228" left="382" width="14" height="12" font="15">80</text>
+<text top="228" left="425" width="22" height="12" font="15">100</text>
+<text top="228" left="471" width="22" height="12" font="15">120</text>
+<text top="245" left="328" width="29" height="12" font="15">Time</text>
+<text top="145" left="210" width="9" height="12" font="15">A</text>
+<text top="145" left="233" width="9" height="12" font="15">B</text>
+<text top="145" left="256" width="9" height="12" font="15">C</text>
+<text top="145" left="373" width="9" height="12" font="15">A</text>
+<text top="136" left="200" width="52" height="10" font="17">[B,C arrive]</text>
+<text top="266" left="243" width="62" height="14" font="2">Figure 7.5:</text>
+<text top="266" left="309" width="138" height="13" font="3"><b>STCF Simple Example</b></text>
+<text top="297" left="129" width="339" height="14" font="2">certainly do something else when B and C arrive: it can</text>
+<text top="297" left="472" width="52" height="13" font="3"><b>preempt</b></text>
+<text top="297" left="528" width="33" height="14" font="2">job A</text>
+<text top="312" left="129" width="432" height="14" font="2">and decide to run another job, perhaps continuing A later. SJF by our defi-</text>
+<text top="327" left="129" width="57" height="14" font="2">nition is a</text>
+<text top="327" left="189" width="99" height="13" font="3"><b>non-preemptive</b></text>
+<text top="327" left="291" width="270" height="14" font="2">scheduler, and thus suffers from the problems</text>
+<text top="342" left="129" width="100" height="14" font="2">described above.</text>
+<text top="357" left="147" width="414" height="14" font="2">Fortunately, there is a scheduler which does exactly that: add preemp-</text>
+<text top="372" left="129" width="151" height="14" font="2">tion to SJF, known as the</text>
+<text top="372" left="284" width="213" height="13" font="3"><b>Shortest Time-to-Completion First</b></text>
+<text top="372" left="501" width="4" height="14" font="2">(</text>
+<text top="372" left="505" width="34" height="13" font="3"><b>STCF</b></text>
+<text top="372" left="539" width="21" height="14" font="2">) or</text>
+<text top="387" left="129" width="180" height="13" font="3"><b>Preemptive Shortest Job First</b></text>
+<text top="387" left="313" width="4" height="14" font="2">(</text>
+<text top="387" left="317" width="29" height="13" font="3"><b>PSJF</b></text>
+<text top="387" left="346" width="214" height="14" font="2">) scheduler [CK68]. Any time a new</text>
+<text top="401" left="129" width="432" height="14" font="2">job enters the system, the STCF scheduler determines which of the re-</text>
+<text top="416" left="129" width="432" height="14" font="2">maining jobs (including the new job) has the least time left, and schedules</text>
+<text top="431" left="129" width="432" height="14" font="2">that one. Thus, in our example, STCF would preempt A and run B and C</text>
+<text top="446" left="129" width="432" height="14" font="2">to completion; only when they are finished would A’s remaining time be</text>
+<text top="461" left="129" width="243" height="14" font="2">scheduled. Figure 7.5 shows an example.</text>
+<text top="476" left="147" width="414" height="14" font="2">The result is a much-improved average turnaround time: 50 seconds</text>
+<text top="495" left="129" width="4" height="14" font="2">(</text>
+<text top="491" left="135" width="21" height="9" font="16">(120</text>
+<text top="496" left="156" width="9" height="6" font="18">−</text>
+<text top="491" left="165" width="33" height="9" font="16">0)+(20</text>
+<text top="496" left="198" width="9" height="6" font="18">−</text>
+<text top="491" left="207" width="39" height="9" font="16">10)+(30</text>
+<text top="496" left="246" width="9" height="6" font="18">−</text>
+<text top="491" left="254" width="15" height="9" font="16">10)</text>
+<text top="502" left="200" width="5" height="9" font="16">3</text>
+<text top="495" left="271" width="289" height="14" font="2">). And as before, given our new assumptions,</text>
+<text top="510" left="129" width="432" height="14" font="2">STCF is provably optimal; given that SJF is optimal if all jobs arrive at</text>
+<text top="525" left="129" width="432" height="14" font="2">the same time, you should probably be able to see the intuition behind</text>
+<text top="540" left="129" width="137" height="14" font="2">the optimality of STCF.</text>
+<text top="577" left="97" width="247" height="17" font="5">7.6 A New Metric: Response Time</text>
+<text top="607" left="147" width="414" height="14" font="2">Thus, if we knew job lengths, and that jobs only used the CPU, and our</text>
+<text top="622" left="129" width="432" height="14" font="2">only metric was turnaround time, STCF would be a great policy. In fact,</text>
+<text top="637" left="129" width="432" height="14" font="2">for a number of early batch computing systems, these types of scheduling</text>
+<text top="652" left="129" width="432" height="14" font="2">algorithms made some sense. However, the introduction of time-shared</text>
+<text top="666" left="129" width="432" height="14" font="2">machines changed all that. Now users would sit at a terminal and de-</text>
+<text top="681" left="129" width="432" height="14" font="2">mand interactive performance from the system as well. And thus, a new</text>
+<text top="696" left="129" width="100" height="14" font="2">metric was born:</text>
+<text top="696" left="233" width="86" height="13" font="3"><b>response time</b></text>
+<text top="696" left="318" width="3" height="14" font="2">.</text>
+<text top="711" left="147" width="414" height="14" font="2">We define response time as the time from when the job arrives in a</text>
+<text top="729" left="129" width="224" height="14" font="2">system to the first time it is scheduled</text>
+<text top="726" left="353" width="4" height="9" font="7">3</text>
+<text top="729" left="359" width="97" height="14" font="2">. More formally:</text>
+<text top="758" left="251" width="8" height="9" font="8">T</text>
+<text top="762" left="259" width="45" height="8" font="9">response</text>
+<text top="758" left="308" width="11" height="9" font="10">=</text>
+<text top="758" left="323" width="8" height="9" font="8">T</text>
+<text top="762" left="331" width="44" height="8" font="9">f irstrun</text>
+<text top="763" left="379" width="11" height="8" font="11">−</text>
+<text top="758" left="393" width="8" height="9" font="8">T</text>
+<text top="762" left="401" width="37" height="8" font="9">arrival</text>
+<text top="757" left="535" width="26" height="14" font="2">(7.2)</text>
+<text top="802" left="149" width="4" height="8" font="12">3</text>
+<text top="804" left="154" width="407" height="11" font="13">Some define it slightly differently, e.g., to also include the time until the job produces</text>
+<text top="816" left="129" width="432" height="11" font="13">some kind of “response”; our definition is the best-case version of this, essentially assuming</text>
+<text top="828" left="129" width="226" height="11" font="13">that the job produces a response instantaneously.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="13" height="14" font="2">: I</text>
+<text top="98" left="182" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="228" left="157" width="7" height="12" font="15">0</text>
+<text top="228" left="204" width="7" height="12" font="15">5</text>
+<text top="228" left="247" width="14" height="12" font="15">10</text>
+<text top="228" left="293" width="14" height="12" font="15">15</text>
+<text top="228" left="340" width="14" height="12" font="15">20</text>
+<text top="228" left="387" width="14" height="12" font="15">25</text>
+<text top="228" left="433" width="14" height="12" font="15">30</text>
+<text top="245" left="286" width="29" height="12" font="15">Time</text>
+<text top="145" left="179" width="9" height="12" font="15">A</text>
+<text top="145" left="226" width="9" height="12" font="15">B</text>
+<text top="145" left="272" width="9" height="12" font="15">C</text>
+<text top="264" left="162" width="62" height="14" font="2">Figure 7.6:</text>
+<text top="264" left="228" width="216" height="13" font="3"><b>SJF Again (Bad for Response Time)</b></text>
+<text top="376" left="157" width="7" height="12" font="15">0</text>
+<text top="376" left="204" width="7" height="12" font="15">5</text>
+<text top="376" left="247" width="14" height="12" font="15">10</text>
+<text top="376" left="293" width="14" height="12" font="15">15</text>
+<text top="376" left="340" width="14" height="12" font="15">20</text>
+<text top="376" left="387" width="14" height="12" font="15">25</text>
+<text top="376" left="433" width="14" height="12" font="15">30</text>
+<text top="393" left="286" width="29" height="12" font="15">Time</text>
+<text top="294" left="161" width="140" height="12" font="15">ABCABCABCABCABC</text>
+<text top="412" left="145" width="62" height="14" font="2">Figure 7.7:</text>
+<text top="412" left="211" width="251" height="13" font="3"><b>Round Robin (Good For Response Time)</b></text>
+<text top="436" left="105" width="414" height="14" font="2">For example, if we had the schedule from Figure 7.5 (with A arriving</text>
+<text top="451" left="87" width="432" height="14" font="2">at time 0, and B and C at time 10), the response time of each job is as</text>
+<text top="466" left="87" width="332" height="14" font="2">follows: 0 for job A, 0 for B, and 10 for C (average: 3.33).</text>
+<text top="482" left="105" width="414" height="14" font="2">As you might be thinking, STCF and related disciplines are not par-</text>
+<text top="497" left="87" width="432" height="14" font="2">ticularly good for response time. If three jobs arrive at the same time,</text>
+<text top="512" left="87" width="417" height="14" font="2">for example, the third job has to wait for the previous two jobs to run</text>
+<text top="512" left="508" width="11" height="14" font="6">in</text>
+<text top="527" left="87" width="71" height="14" font="6">their entirety</text>
+<text top="527" left="160" width="359" height="14" font="2">before being scheduled just once. While great for turnaround</text>
+<text top="542" left="87" width="432" height="14" font="2">time, this approach is quite bad for response time and interactivity. In-</text>
+<text top="557" left="87" width="432" height="14" font="2">deed, imagine sitting at a terminal, typing, and having to wait 10 seconds</text>
+<text top="572" left="87" width="432" height="14" font="2">to see a response from the system just because some other job got sched-</text>
+<text top="586" left="87" width="233" height="14" font="2">uled in front of yours: not too pleasant.</text>
+<text top="602" left="105" width="414" height="14" font="2">Thus, we are left with another problem: how can we build a scheduler</text>
+<text top="617" left="87" width="199" height="14" font="2">that is sensitive to response time?</text>
+<text top="651" left="55" width="122" height="17" font="5">7.7 Round Robin</text>
+<text top="676" left="105" width="414" height="14" font="2">To solve this problem, we will introduce a new scheduling algorithm,</text>
+<text top="691" left="87" width="143" height="14" font="2">classically referred to as</text>
+<text top="691" left="233" width="116" height="13" font="3"><b>Round-Robin (RR)</b></text>
+<text top="691" left="353" width="166" height="14" font="2">scheduling [K64]. The basic</text>
+<text top="705" left="87" width="432" height="14" font="2">idea is simple: instead of running jobs to completion, RR runs a job for a</text>
+<text top="720" left="87" width="59" height="13" font="3"><b>time slice</b></text>
+<text top="720" left="151" width="118" height="14" font="2">(sometimes called a</text>
+<text top="720" left="273" width="128" height="13" font="3"><b>scheduling quantum</b></text>
+<text top="720" left="402" width="117" height="14" font="2">) and then switches</text>
+<text top="735" left="87" width="432" height="14" font="2">to the next job in the run queue. It repeatedly does so until the jobs are</text>
+<text top="750" left="87" width="290" height="14" font="2">finished. For this reason, RR is sometimes called</text>
+<text top="750" left="381" width="73" height="13" font="3"><b>time-slicing</b></text>
+<text top="750" left="454" width="65" height="14" font="2">. Note that</text>
+<text top="765" left="87" width="432" height="14" font="2">the length of a time slice must be a multiple of the timer-interrupt period;</text>
+<text top="780" left="87" width="432" height="14" font="2">thus if the timer interrupts every 10 milliseconds, the time slice could be</text>
+<text top="795" left="87" width="223" height="14" font="2">10, 20, or any other multiple of 10 ms.</text>
+<text top="811" left="105" width="414" height="14" font="2">To understand RR in more detail, let’s look at an example. Assume</text>
+<text top="826" left="87" width="432" height="14" font="2">three jobs A, B, and C arrive at the same time in the system, and that</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="376" width="7" height="14" font="2">S</text>
+<text top="98" left="384" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="148" left="218" width="8" height="14" font="2">T</text>
+<text top="150" left="227" width="11" height="11" font="4">IP</text>
+<text top="148" left="239" width="19" height="14" font="2">: A</text>
+<text top="150" left="258" width="85" height="11" font="4">MORTIZATION</text>
+<text top="148" left="347" width="10" height="14" font="2">C</text>
+<text top="150" left="357" width="18" height="11" font="4">AN</text>
+<text top="148" left="379" width="9" height="14" font="2">R</text>
+<text top="150" left="389" width="40" height="11" font="4">EDUCE</text>
+<text top="148" left="433" width="10" height="14" font="2">C</text>
+<text top="150" left="443" width="28" height="11" font="4">OSTS</text>
+<text top="163" left="129" width="156" height="14" font="2">The general technique of</text>
+<text top="163" left="291" width="78" height="13" font="3"><b>amortization</b></text>
+<text top="163" left="375" width="186" height="14" font="2">is commonly used in systems</text>
+<text top="178" left="129" width="432" height="14" font="2">when there is a fixed cost to some operation. By incurring that cost less</text>
+<text top="193" left="129" width="432" height="14" font="2">often (i.e., by performing the operation fewer times), the total cost to the</text>
+<text top="208" left="129" width="432" height="14" font="2">system is reduced. For example, if the time slice is set to 10 ms, and the</text>
+<text top="223" left="129" width="432" height="14" font="2">context-switch cost is 1 ms, roughly 10% of time is spent context switch-</text>
+<text top="238" left="129" width="226" height="14" font="2">ing and is thus wasted. If we want to</text>
+<text top="238" left="359" width="47" height="14" font="6">amortize</text>
+<text top="238" left="410" width="151" height="14" font="2">this cost, we can increase</text>
+<text top="253" left="129" width="432" height="14" font="2">the time slice, e.g., to 100 ms. In this case, less than 1% of time is spent</text>
+<text top="268" left="129" width="424" height="14" font="2">context switching, and thus the cost of time-slicing has been amortized.</text>
+<text top="309" left="129" width="432" height="14" font="2">they each wish to run for 5 seconds. An SJF scheduler runs each job to</text>
+<text top="324" left="129" width="432" height="14" font="2">completion before running another (Figure 7.6). In contrast, RR with a</text>
+<text top="339" left="129" width="425" height="14" font="2">time-slice of 1 second would cycle through the jobs quickly (Figure 7.7).</text>
+<text top="356" left="147" width="218" height="14" font="2">The average response time of RR is:</text>
+<text top="354" left="373" width="33" height="9" font="16">0+1+2</text>
+<text top="364" left="387" width="5" height="9" font="16">3</text>
+<text top="357" left="414" width="24" height="9" font="10">= 1</text>
+<text top="356" left="438" width="123" height="14" font="2">; for SJF, average re-</text>
+<text top="373" left="129" width="87" height="14" font="2">sponse time is:</text>
+<text top="371" left="222" width="39" height="9" font="16">0+5+10</text>
+<text top="381" left="239" width="5" height="9" font="16">3</text>
+<text top="374" left="267" width="21" height="9" font="10">= 5</text>
+<text top="373" left="288" width="3" height="14" font="2">.</text>
+<text top="389" left="147" width="414" height="14" font="2">As you can see, the length of the time slice is critical for RR. The shorter</text>
+<text top="404" left="129" width="432" height="14" font="2">it is, the better the performance of RR under the response-time metric.</text>
+<text top="419" left="129" width="432" height="14" font="2">However, making the time slice too short is problematic: suddenly the</text>
+<text top="434" left="129" width="432" height="14" font="2">cost of context switching will dominate overall performance. Thus, de-</text>
+<text top="449" left="129" width="432" height="14" font="2">ciding on the length of the time slice presents a trade-off to a system de-</text>
+<text top="464" left="129" width="195" height="14" font="2">signer, making it long enough to</text>
+<text top="464" left="328" width="54" height="13" font="3"><b>amortize</b></text>
+<text top="464" left="386" width="175" height="14" font="2">the cost of switching without</text>
+<text top="479" left="129" width="341" height="14" font="2">making it so long that the system is no longer responsive.</text>
+<text top="495" left="147" width="414" height="14" font="2">Note that the cost of context switching does not arise solely from the</text>
+<text top="510" left="129" width="432" height="14" font="2">OS actions of saving and restoring a few registers. When programs run,</text>
+<text top="525" left="129" width="432" height="14" font="2">they build up a great deal of state in CPU caches, TLBs, branch predictors,</text>
+<text top="540" left="129" width="432" height="14" font="2">and other on-chip hardware. Switching to another job causes this state</text>
+<text top="554" left="129" width="432" height="14" font="2">to be flushed and new state relevant to the currently-running job to be</text>
+<text top="569" left="129" width="399" height="14" font="2">brought in, which may exact a noticeable performance cost [MB91].</text>
+<text top="585" left="147" width="414" height="14" font="2">RR, with a reasonable time slice, is thus an excellent scheduler if re-</text>
+<text top="600" left="129" width="432" height="14" font="2">sponse time is our only metric. But what about our old friend turnaround</text>
+<text top="615" left="129" width="432" height="14" font="2">time? Let’s look at our example above again. A, B, and C, each with run-</text>
+<text top="630" left="129" width="432" height="14" font="2">ning times of 5 seconds, arrive at the same time, and RR is the scheduler</text>
+<text top="645" left="129" width="432" height="14" font="2">with a (long) 1-second time slice. We can see from the picture above that</text>
+<text top="660" left="129" width="419" height="14" font="2">A finishes at 13, B at 14, and C at 15, for an average of 14. Pretty awful!</text>
+<text top="676" left="147" width="318" height="14" font="2">It is not surprising, then, that RR is indeed one of the</text>
+<text top="676" left="469" width="31" height="14" font="6">worst</text>
+<text top="676" left="503" width="57" height="14" font="2">policies if</text>
+<text top="691" left="129" width="432" height="14" font="2">turnaround time is our metric. Intuitively, this should make sense: what</text>
+<text top="706" left="129" width="432" height="14" font="2">RR is doing is stretching out each job as long as it can, by only running</text>
+<text top="721" left="129" width="432" height="14" font="2">each job for a short bit before moving to the next. Because turnaround</text>
+<text top="736" left="129" width="432" height="14" font="2">time only cares about when jobs finish, RR is nearly pessimal, even worse</text>
+<text top="750" left="129" width="193" height="14" font="2">than simple FIFO in many cases.</text>
+<text top="766" left="147" width="273" height="14" font="2">More generally, any policy (such as RR) that is</text>
+<text top="766" left="423" width="22" height="13" font="3"><b>fair</b></text>
+<text top="766" left="445" width="116" height="14" font="2">, i.e., that evenly di-</text>
+<text top="781" left="129" width="432" height="14" font="2">vides the CPU among active processes on a small time scale, will perform</text>
+<text top="796" left="129" width="432" height="14" font="2">poorly on metrics such as turnaround time. Indeed, this is an inherent</text>
+<text top="811" left="129" width="432" height="14" font="2">trade-off: if you are willing to be unfair, you can run shorter jobs to com-</text>
+<text top="826" left="129" width="432" height="14" font="2">pletion, but at the cost of response time; if you instead value fairness,</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="10" family="MPAMUY+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="13" height="14" font="2">: I</text>
+<text top="98" left="182" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="162" width="8" height="14" font="2">T</text>
+<text top="150" left="171" width="11" height="11" font="4">IP</text>
+<text top="148" left="182" width="19" height="14" font="2">: O</text>
+<text top="150" left="202" width="46" height="11" font="4">VERLAP</text>
+<text top="148" left="252" width="8" height="14" font="2">E</text>
+<text top="150" left="261" width="46" height="11" font="4">NABLES</text>
+<text top="148" left="311" width="11" height="14" font="2">H</text>
+<text top="150" left="323" width="37" height="11" font="4">IGHER</text>
+<text top="148" left="364" width="10" height="14" font="2">U</text>
+<text top="150" left="375" width="69" height="11" font="4">TILIZATION</text>
+<text top="163" left="87" width="93" height="14" font="2">When possible,</text>
+<text top="163" left="186" width="46" height="13" font="3"><b>overlap</b></text>
+<text top="163" left="238" width="281" height="14" font="2">operations to maximize the utilization of sys-</text>
+<text top="178" left="87" width="432" height="14" font="2">tems. Overlap is useful in many different domains, including when per-</text>
+<text top="193" left="87" width="432" height="14" font="2">forming disk I/O or sending messages to remote machines; in either case,</text>
+<text top="208" left="87" width="432" height="14" font="2">starting the operation and then switching to other work is a good idea,</text>
+<text top="223" left="87" width="385" height="14" font="2">and improves the overall utilization and efficiency of the system.</text>
+<text top="268" left="87" width="432" height="14" font="2">response time is lowered, but at the cost of turnaround time. This type of</text>
+<text top="285" left="87" width="54" height="13" font="3"><b>trade-off</b></text>
+<text top="285" left="144" width="366" height="14" font="2">is common in systems; you can’t have your cake and eat it too</text>
+<text top="283" left="510" width="4" height="9" font="7">4</text>
+<text top="285" left="516" width="3" height="14" font="2">.</text>
+<text top="301" left="105" width="414" height="14" font="2">We have developed two types of schedulers. The first type (SJF, STCF)</text>
+<text top="316" left="87" width="432" height="14" font="2">optimizes turnaround time, but is bad for response time. The second type</text>
+<text top="330" left="87" width="432" height="14" font="2">(RR) optimizes response time but is bad for turnaround. And we still</text>
+<text top="345" left="87" width="432" height="14" font="2">have two assumptions which need to be relaxed: assumption 4 (that jobs</text>
+<text top="360" left="87" width="432" height="14" font="2">do no I/O), and assumption 5 (that the run-time of each job is known).</text>
+<text top="375" left="87" width="213" height="14" font="2">Let’s tackle those assumptions next.</text>
+<text top="413" left="55" width="158" height="17" font="5">7.8 Incorporating I/O</text>
+<text top="443" left="105" width="414" height="14" font="2">First we will relax assumption 4 — of course all programs perform</text>
+<text top="458" left="87" width="432" height="14" font="2">I/O. Imagine a program that didn’t take any input: it would produce the</text>
+<text top="473" left="87" width="432" height="14" font="2">same output each time. Imagine one without output: it is the proverbial</text>
+<text top="488" left="87" width="432" height="14" font="2">tree falling in the forest, with no one to see it; it doesn’t matter that it ran.</text>
+<text top="504" left="105" width="414" height="14" font="2">A scheduler clearly has a decision to make when a job initiates an I/O</text>
+<text top="519" left="87" width="432" height="14" font="2">request, because the currently-running job won’t be using the CPU dur-</text>
+<text top="534" left="87" width="95" height="14" font="2">ing the I/O; it is</text>
+<text top="534" left="185" width="49" height="13" font="3"><b>blocked</b></text>
+<text top="534" left="237" width="282" height="14" font="2">waiting for I/O completion. If the I/O is sent to</text>
+<text top="549" left="87" width="432" height="14" font="2">a hard disk drive, the process might be blocked for a few milliseconds or</text>
+<text top="564" left="87" width="432" height="14" font="2">longer, depending on the current I/O load of the drive. Thus, the sched-</text>
+<text top="579" left="87" width="398" height="14" font="2">uler should probably schedule another job on the CPU at that time.</text>
+<text top="594" left="105" width="414" height="14" font="2">The scheduler also has to make a decision when the I/O completes.</text>
+<text top="609" left="87" width="432" height="14" font="2">When that occurs, an interrupt is raised, and the OS runs and moves</text>
+<text top="624" left="87" width="432" height="14" font="2">the process that issued the I/O from blocked back to the ready state. Of</text>
+<text top="639" left="87" width="432" height="14" font="2">course, it could even decide to run the job at that point. How should the</text>
+<text top="654" left="87" width="106" height="14" font="2">OS treat each job?</text>
+<text top="670" left="105" width="414" height="14" font="2">To understand this issue better, let us assume we have two jobs, A and</text>
+<text top="685" left="87" width="432" height="14" font="2">B, which each need 50 ms of CPU time. However, there is one obvious</text>
+<text top="699" left="87" width="432" height="14" font="2">difference: A runs for 10 ms and then issues an I/O request (assume here</text>
+<text top="714" left="87" width="432" height="14" font="2">that I/Os each take 10 ms), whereas B simply uses the CPU for 50 ms and</text>
+<text top="729" left="87" width="411" height="14" font="2">performs no I/O. The scheduler runs A first, then B after (Figure 7.8).</text>
+<text top="745" left="105" width="414" height="14" font="2">Assume we are trying to build a STCF scheduler. How should such a</text>
+<text top="760" left="87" width="432" height="14" font="2">scheduler account for the fact that A is broken up into 5 10-ms sub-jobs,</text>
+<text top="790" left="107" width="4" height="8" font="12">4</text>
+<text top="792" left="112" width="291" height="11" font="13">A saying that confuses people, because it should be “You can’t</text>
+<text top="792" left="406" width="18" height="11" font="19">keep</text>
+<text top="792" left="427" width="92" height="11" font="13">your cake and eat it</text>
+<text top="804" left="87" width="432" height="11" font="13">too” (which is kind of obvious, no?). Amazingly, there is a wikipedia page about this saying;</text>
+<text top="816" left="87" width="394" height="11" font="13">even more amazingly, it is kind of fun to read [W15]. As they say in Italian, you can’t</text>
+<text top="816" left="484" width="35" height="11" font="19">Avere la</text>
+<text top="828" left="87" width="130" height="11" font="19">botte piena e la moglie ubriaca.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="20" size="11" family="KUCICM+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="376" width="7" height="14" font="2">S</text>
+<text top="98" left="384" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="234" left="223" width="6" height="10" font="20">0</text>
+<text top="234" left="251" width="12" height="10" font="20">20</text>
+<text top="234" left="282" width="12" height="10" font="20">40</text>
+<text top="234" left="313" width="12" height="10" font="20">60</text>
+<text top="234" left="344" width="12" height="10" font="20">80</text>
+<text top="234" left="373" width="18" height="10" font="20">100</text>
+<text top="234" left="404" width="18" height="10" font="20">120</text>
+<text top="234" left="435" width="18" height="10" font="20">140</text>
+<text top="248" left="331" width="24" height="10" font="20">Time</text>
+<text top="148" left="230" width="7" height="10" font="20">A</text>
+<text top="148" left="261" width="7" height="10" font="20">A</text>
+<text top="148" left="292" width="7" height="10" font="20">A</text>
+<text top="148" left="324" width="7" height="10" font="20">A</text>
+<text top="148" left="355" width="85" height="10" font="20">A B B B B B</text>
+<text top="172" left="200" width="23" height="10" font="20">CPU</text>
+<text top="206" left="202" width="21" height="10" font="20">Disk</text>
+<text top="266" left="242" width="62" height="14" font="2">Figure 7.8:</text>
+<text top="266" left="308" width="140" height="13" font="3"><b>Poor Use Of Resources</b></text>
+<text top="381" left="223" width="6" height="10" font="20">0</text>
+<text top="381" left="251" width="12" height="10" font="20">20</text>
+<text top="381" left="282" width="12" height="10" font="20">40</text>
+<text top="381" left="313" width="12" height="10" font="20">60</text>
+<text top="381" left="344" width="12" height="10" font="20">80</text>
+<text top="381" left="373" width="18" height="10" font="20">100</text>
+<text top="381" left="404" width="18" height="10" font="20">120</text>
+<text top="381" left="435" width="18" height="10" font="20">140</text>
+<text top="395" left="331" width="24" height="10" font="20">Time</text>
+<text top="294" left="230" width="7" height="10" font="20">A</text>
+<text top="294" left="261" width="7" height="10" font="20">A</text>
+<text top="294" left="292" width="7" height="10" font="20">A</text>
+<text top="294" left="324" width="7" height="10" font="20">A</text>
+<text top="294" left="355" width="7" height="10" font="20">A</text>
+<text top="294" left="246" width="7" height="10" font="20">B</text>
+<text top="294" left="277" width="7" height="10" font="20">B</text>
+<text top="294" left="308" width="7" height="10" font="20">B</text>
+<text top="294" left="339" width="7" height="10" font="20">B</text>
+<text top="294" left="370" width="7" height="10" font="20">B</text>
+<text top="319" left="200" width="23" height="10" font="20">CPU</text>
+<text top="353" left="202" width="21" height="10" font="20">Disk</text>
+<text top="413" left="187" width="62" height="14" font="2">Figure 7.9:</text>
+<text top="413" left="253" width="249" height="13" font="3"><b>Overlap Allows Better Use Of Resources</b></text>
+<text top="444" left="129" width="432" height="14" font="2">whereas B is just a single 50-ms CPU demand? Clearly, just running one</text>
+<text top="459" left="129" width="432" height="14" font="2">job and then the other without considering how to take I/O into account</text>
+<text top="474" left="129" width="107" height="14" font="2">makes little sense.</text>
+<text top="489" left="147" width="414" height="14" font="2">A common approach is to treat each 10-ms sub-job of A as an indepen-</text>
+<text top="504" left="129" width="432" height="14" font="2">dent job. Thus, when the system starts, its choice is whether to schedule</text>
+<text top="519" left="129" width="432" height="14" font="2">a 10-ms A or a 50-ms B. With STCF, the choice is clear: choose the shorter</text>
+<text top="534" left="129" width="432" height="14" font="2">one, in this case A. Then, when the first sub-job of A has completed, only</text>
+<text top="549" left="129" width="432" height="14" font="2">B is left, and it begins running. Then a new sub-job of A is submitted,</text>
+<text top="564" left="129" width="347" height="14" font="2">and it preempts B and runs for 10 ms. Doing so allows for</text>
+<text top="564" left="480" width="46" height="13" font="3"><b>overlap</b></text>
+<text top="564" left="526" width="34" height="14" font="2">, with</text>
+<text top="579" left="129" width="432" height="14" font="2">the CPU being used by one process while waiting for the I/O of another</text>
+<text top="594" left="129" width="413" height="14" font="2">process to complete; the system is thus better utilized (see Figure 7.9).</text>
+<text top="609" left="147" width="414" height="14" font="2">And thus we see how a scheduler might incorporate I/O. By treating</text>
+<text top="624" left="129" width="432" height="14" font="2">each CPU burst as a job, the scheduler makes sure processes that are “in-</text>
+<text top="639" left="129" width="432" height="14" font="2">teractive” get run frequently. While those interactive jobs are performing</text>
+<text top="654" left="129" width="412" height="14" font="2">I/O, other CPU-intensive jobs run, thus better utilizing the processor.</text>
+<text top="691" left="97" width="142" height="17" font="5">7.9 No More Oracle</text>
+<text top="721" left="147" width="414" height="14" font="2">With a basic approach to I/O in place, we come to our final assump-</text>
+<text top="736" left="129" width="432" height="14" font="2">tion: that the scheduler knows the length of each job. As we said before,</text>
+<text top="751" left="129" width="432" height="14" font="2">this is likely the worst assumption we could make. In fact, in a general-</text>
+<text top="766" left="129" width="432" height="14" font="2">purpose OS (like the ones we care about), the OS usually knows very little</text>
+<text top="781" left="129" width="432" height="14" font="2">about the length of each job. Thus, how can we build an approach that be-</text>
+<text top="796" left="129" width="205" height="14" font="2">haves like SJF/STCF without such</text>
+<text top="796" left="338" width="40" height="14" font="6">a priori</text>
+<text top="796" left="382" width="179" height="14" font="2">knowledge? Further, how can</text>
+<text top="811" left="129" width="432" height="14" font="2">we incorporate some of the ideas we have seen with the RR scheduler so</text>
+<text top="826" left="129" width="223" height="14" font="2">that response time is also quite good?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="13" height="14" font="2">: I</text>
+<text top="98" left="182" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="137" left="55" width="105" height="17" font="5">7.10 Summary</text>
+<text top="166" left="105" width="414" height="14" font="2">We have introduced the basic ideas behind scheduling and developed</text>
+<text top="181" left="87" width="432" height="14" font="2">two families of approaches. The first runs the shortest job remaining and</text>
+<text top="196" left="87" width="432" height="14" font="2">thus optimizes turnaround time; the second alternates between all jobs</text>
+<text top="211" left="87" width="432" height="14" font="2">and thus optimizes response time. Both are bad where the other is good,</text>
+<text top="226" left="87" width="432" height="14" font="2">alas, an inherent trade-off common in systems. We have also seen how we</text>
+<text top="241" left="87" width="432" height="14" font="2">might incorporate I/O into the picture, but have still not solved the prob-</text>
+<text top="256" left="87" width="432" height="14" font="2">lem of the fundamental inability of the OS to see into the future. Shortly,</text>
+<text top="271" left="87" width="432" height="14" font="2">we will see how to overcome this problem, by building a scheduler that</text>
+<text top="286" left="87" width="432" height="14" font="2">uses the recent past to predict the future. This scheduler is known as the</text>
+<text top="301" left="87" width="169" height="13" font="3"><b>multi-level feedback queue</b></text>
+<text top="301" left="256" width="226" height="14" font="2">, and it is the topic of the next chapter.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="16" family="WPZXDV+URWPalladioL" color="#000000"/>
+	<fontspec id="22" size="10" family="FNSILU+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="376" width="7" height="14" font="2">S</text>
+<text top="98" left="384" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="457" width="13" height="14" font="2">: I</text>
+<text top="98" left="471" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="137" left="129" width="82" height="16" font="21"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="13">[B+79] “The Convoy Phenomenon” by M. Blasgen, J. Gray, M. Mitoma, T. Price. ACM Op-</text>
+<text top="177" left="129" width="193" height="11" font="13">erating Systems Review, 13:2, April 1979.</text>
+<text top="177" left="328" width="233" height="11" font="19">Perhaps the first reference to convoys, which occurs in</text>
+<text top="189" left="129" width="117" height="11" font="19">databases as well as the OS.</text>
+<text top="206" left="129" width="432" height="11" font="13">[C54] “Priority Assignment in Waiting Line Problems” by A. Cobham. Journal of Operations</text>
+<text top="218" left="129" width="154" height="11" font="13">Research, 2:70, pages 70–76, 1954.</text>
+<text top="217" left="287" width="274" height="11" font="19">The pioneering paper on using an SJF approach in scheduling the</text>
+<text top="229" left="129" width="79" height="11" font="19">repair of machines.</text>
+<text top="246" left="129" width="432" height="11" font="13">[K64] “Analysis of a Time-Shared Processor” by Leonard Kleinrock. Naval Research Logistics</text>
+<text top="258" left="129" width="191" height="11" font="13">Quarterly, 11:1, pages 59–73, March 1964.</text>
+<text top="258" left="324" width="236" height="11" font="19">May be the first reference to the round-robin scheduling</text>
+<text top="270" left="129" width="407" height="11" font="19">algorithm; certainly one of the first analyses of said approach to scheduling a time-shared system.</text>
+<text top="286" left="129" width="432" height="11" font="13">[CK68] “Computer Scheduling Methods and their Countermeasures” by Edward G. Coffman</text>
+<text top="298" left="129" width="261" height="11" font="13">and Leonard Kleinrock. AFIPS ’68 (Spring), April 1968.</text>
+<text top="298" left="396" width="165" height="11" font="19">An excellent early introduction to and</text>
+<text top="310" left="129" width="218" height="11" font="19">analysis of a number of basic scheduling disciplines.</text>
+<text top="326" left="129" width="432" height="11" font="13">[J91] “The Art of Computer Systems Performance Analysis: Techniques for Experimental De-</text>
+<text top="338" left="129" width="432" height="11" font="13">sign, Measurement, Simulation, and Modeling” by R. Jain. Interscience, New York, April 1991.</text>
+<text top="350" left="129" width="409" height="11" font="19">The standard text on computer systems measurement. A great reference for your library, for sure.</text>
+<text top="366" left="129" width="374" height="11" font="13">[O45] “Animal Farm” by George Orwell. Secker and Warburg (London), 1945.</text>
+<text top="366" left="510" width="51" height="11" font="19">A great but</text>
+<text top="378" left="129" width="432" height="11" font="19">depressing allegorical book about power and its corruptions. Some say it is a critique of Stalin and the</text>
+<text top="390" left="129" width="275" height="11" font="19">pre-WWII Stalin era in the U.S.S.R; we say it’s a critique of pigs.</text>
+<text top="407" left="129" width="432" height="11" font="13">[PV56] “Machine Repair as a Priority Waiting-Line Problem” by Thomas E. Phipps Jr., W. R.</text>
+<text top="418" left="129" width="318" height="11" font="13">Van Voorhis. Operations Research, 4:1, pages 76–86, February 1956.</text>
+<text top="418" left="452" width="109" height="11" font="19">Follow-on work that gen-</text>
+<text top="430" left="129" width="432" height="11" font="19">eralizes the SJF approach to machine repair from Cobham’s original work; also postulates the utility of</text>
+<text top="442" left="129" width="432" height="11" font="19">an STCF approach in such an environment. Specifically, “There are certain types of repair work, ...</text>
+<text top="454" left="129" width="432" height="11" font="19">involving much dismantling and covering the floor with nuts and bolts, which certainly should not be</text>
+<text top="466" left="129" width="432" height="11" font="19">interrupted once undertaken; in other cases it would be inadvisable to continue work on a long job if one</text>
+<text top="478" left="129" width="185" height="11" font="19">or more short ones became available (p.81).”</text>
+<text top="495" left="129" width="432" height="11" font="13">[MB91] “The effect of context switches on cache performance” by Jeffrey C. Mogul, Anita Borg.</text>
+<text top="506" left="129" width="69" height="11" font="13">ASPLOS, 1991.</text>
+<text top="506" left="201" width="360" height="11" font="19">A nice study on how cache performance can be affected by context switching; less of an</text>
+<text top="518" left="129" width="432" height="11" font="19">issue in today’s systems where processors issue billions of instructions per second but context-switches</text>
+<text top="530" left="129" width="177" height="11" font="19">still happen in the millisecond time range.</text>
+<text top="547" left="129" width="432" height="11" font="13">[W15] “You can’t have your cake and eat it” by Authors: Unknown.. Wikipedia (as of Decem-</text>
+<text top="559" left="129" width="44" height="11" font="13">ber 2015).</text>
+<text top="559" left="176" width="384" height="9" font="22">http://en.wikipedia.org/wiki/You can’t have your cake and eat it</text>
+<text top="559" left="560" width="3" height="11" font="13">.</text>
+<text top="570" left="129" width="432" height="11" font="19">The best part of this page is reading all the similar idioms from other languages. In Tamil, you can’t</text>
+<text top="582" left="129" width="197" height="11" font="19">“have both the moustache and drink the soup.”</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="14">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="14">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="23" size="13" family="FNSILU+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="24" size="15" family="WPZXDV+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="73" height="11" font="4">CHEDULING</text>
+<text top="96" left="168" width="13" height="14" font="2">: I</text>
+<text top="98" left="182" width="90" height="11" font="4">NTRODUCTION</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="137" left="87" width="183" height="16" font="21"><b>Homework (Simulation)</b></text>
+<text top="166" left="105" width="84" height="14" font="2">This program,</text>
+<text top="167" left="192" width="97" height="11" font="23">scheduler.py</text>
+<text top="166" left="288" width="231" height="14" font="2">, allows you to see how different sched-</text>
+<text top="181" left="87" width="438" height="14" font="2">ulers perform under scheduling metrics such as response time, turnaround</text>
+<text top="196" left="87" width="324" height="14" font="2">time, and total wait time. See the README for details.</text>
+<text top="232" left="87" width="70" height="15" font="24"><b>Questions</b></text>
+<text top="256" left="105" width="414" height="14" font="2">1. Compute the response time and turnaround time when running</text>
+<text top="271" left="122" width="342" height="14" font="2">three jobs of length 200 with the SJF and FIFO schedulers.</text>
+<text top="286" left="105" width="414" height="14" font="2">2. Now do the same but with jobs of different lengths: 100, 200, and</text>
+<text top="301" left="122" width="24" height="14" font="2">300.</text>
+<text top="316" left="105" width="414" height="14" font="2">3. Now do the same, but also with the RR scheduler and a time-slice</text>
+<text top="331" left="122" width="25" height="14" font="2">of 1.</text>
+<text top="346" left="105" width="414" height="14" font="2">4. For what types of workloads does SJF deliver the same turnaround</text>
+<text top="361" left="122" width="88" height="14" font="2">times as FIFO?</text>
+<text top="376" left="105" width="414" height="14" font="2">5. For what types of workloads and quantum lengths does SJF deliver</text>
+<text top="391" left="122" width="188" height="14" font="2">the same response times as RR?</text>
+<text top="406" left="105" width="414" height="14" font="2">6. What happens to response time with SJF as job lengths increase?</text>
+<text top="421" left="122" width="313" height="14" font="2">Can you use the simulator to demonstrate the trend?</text>
+<text top="436" left="105" width="414" height="14" font="2">7. What happens to response time with RR as quantum lengths in-</text>
+<text top="451" left="122" width="397" height="14" font="2">crease? Can you write an equation that gives the worst-case re-</text>
+<text top="466" left="122" width="111" height="14" font="2">sponse time, given</text>
+<text top="466" left="236" width="11" height="9" font="8">N</text>
+<text top="466" left="252" width="30" height="14" font="2">jobs?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+</pdf2xml>

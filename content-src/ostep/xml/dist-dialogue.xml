@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="ROHGON+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="ROHGON+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="ASYUVP+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="IWTPCG+URWPalladioL-Roma" color="#000000"/>
+<text top="195" left="523" width="34" height="30" font="0">51</text>
+<text top="265" left="192" width="327" height="21" font="1">Summary Dialogue on Distribution</text>
+<text top="352" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="352" left="143" width="256" height="14" font="3"><i>Well, that was quick. Too quick, in my opinion!</i></text>
+<text top="373" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="373" left="155" width="364" height="14" font="3"><i>Yes, distributed systems are complicated and cool and well worth</i></text>
+<text top="388" left="87" width="239" height="14" font="3"><i>your study; just not in this book (or course).</i></text>
+<text top="408" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="408" left="143" width="365" height="14" font="3"><i>That’s too bad; I wanted to learn more! But I did learn a few things.</i></text>
+<text top="429" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="429" left="152" width="59" height="14" font="3"><i>Like what?</i></text>
+<text top="450" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="450" left="143" width="136" height="14" font="3"><i>Well, everything can fail.</i></text>
+<text top="471" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="470" left="152" width="61" height="14" font="3"><i>Good start.</i></text>
+<text top="491" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="491" left="144" width="375" height="14" font="3"><i>But by having lots of these things (whether disks, machines, or what-</i></text>
+<text top="506" left="87" width="269" height="14" font="3"><i>ever), you can hide much of the failure that arises.</i></text>
+<text top="527" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="527" left="152" width="65" height="14" font="3"><i>Keep going!</i></text>
+<text top="548" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="548" left="143" width="283" height="14" font="3"><i>Some basic techniques like retrying are really useful.</i></text>
+<text top="568" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="568" left="152" width="63" height="14" font="3"><i>That’s true.</i></text>
+<text top="589" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="589" left="145" width="374" height="14" font="3"><i>And you have to think carefully about protocols: the exact bits that</i></text>
+<text top="604" left="87" width="432" height="14" font="3"><i>are exchanged between machines. Protocols can affect everything, including how</i></text>
+<text top="619" left="87" width="284" height="14" font="3"><i>systems respond to failure and how scalable they are.</i></text>
+<text top="640" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="640" left="152" width="268" height="14" font="3"><i>You really are getting better at this learning stuff.</i></text>
+<text top="660" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="660" left="143" width="255" height="14" font="3"><i>Thanks! And you’re not a bad teacher yourself!</i></text>
+<text top="681" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="681" left="152" width="167" height="14" font="3"><i>Well thank you very much too.</i></text>
+<text top="702" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="702" left="143" width="159" height="14" font="3"><i>So is this the end of the book?</i></text>
+<text top="723" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="722" left="152" width="228" height="14" font="3"><i>I’m not sure. They don’t tell me anything.</i></text>
+<text top="743" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="743" left="143" width="174" height="14" font="3"><i>Me neither. Let’s get out of here.</i></text>
+<text top="764" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="764" left="152" width="23" height="14" font="3"><i>OK.</i></text>
+<text top="785" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="785" left="143" width="53" height="14" font="3"><i>Go ahead.</i></text>
+<text top="805" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="805" left="152" width="75" height="14" font="3"><i>No, after you.</i></text>
+<text top="826" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="826" left="143" width="123" height="14" font="3"><i>Please, professors first.</i></text>
+<text top="862" left="300" width="7" height="12" font="4">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="11" family="IWTPCG+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="12" family="IWTPCG+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="10" family="IWTPCG+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="12" font="4">2</text>
+<text top="96" left="316" width="7" height="12" font="4">S</text>
+<text top="98" left="324" width="54" height="10" font="5">UMMARY</text>
+<text top="96" left="382" width="10" height="12" font="4">D</text>
+<text top="98" left="393" width="76" height="10" font="5">IALOGUE ON</text>
+<text top="96" left="473" width="10" height="12" font="4">D</text>
+<text top="98" left="485" width="76" height="10" font="5">ISTRIBUTION</text>
+<text top="139" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="139" left="194" width="114" height="14" font="3"><i>No, please, after you.</i></text>
+<text top="159" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="159" left="185" width="103" height="14" font="3"><i>(exasperated) Fine!</i></text>
+<text top="179" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="179" left="194" width="200" height="14" font="3"><i>(waiting) ... so why haven’t you left?</i></text>
+<text top="200" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="200" left="185" width="375" height="14" font="3"><i>I don’t know how. Turns out, the only thing I can do is participate in</i></text>
+<text top="215" left="129" width="84" height="14" font="3"><i>these dialogues.</i></text>
+<text top="235" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="235" left="194" width="274" height="14" font="3"><i>Me too. And now you’ve learned our final lesson...</i></text>
+<text top="881" left="129" width="11" height="12" font="4">O</text>
+<text top="883" left="141" width="60" height="10" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="12" font="4">S</text>
+<text top="898" left="137" width="45" height="10" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="11" font="6">[V</text>
+<text top="914" left="143" width="39" height="9" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="11" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="10" font="5">WWW</text>
+<text top="896" left="327" width="3" height="12" font="4">.</text>
+<text top="898" left="331" width="36" height="10" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="12" font="4">.</text>
+<text top="898" left="371" width="25" height="10" font="5">ORG</text>
+</page>
+</pdf2xml>

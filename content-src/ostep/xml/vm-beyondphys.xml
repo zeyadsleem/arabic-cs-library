@@ -1,0 +1,957 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="BNNYEC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="BNNYEC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="ASKIGD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="YTTZFI+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="GAGCBC+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="11" family="ASKIGD+URWPalladioL-Roma" color="#000000"/>
+<text top="197" left="523" width="34" height="30" font="0">21</text>
+<text top="268" left="143" width="376" height="21" font="1">Beyond Physical Memory: Mechanisms</text>
+<text top="349" left="87" width="432" height="14" font="2">Thus far, we’ve assumed that an address space is unrealistically small</text>
+<text top="364" left="87" width="398" height="14" font="2">and fits into physical memory. In fact, we’ve been assuming that</text>
+<text top="364" left="490" width="29" height="14" font="3"><i>every</i></text>
+<text top="379" left="87" width="432" height="14" font="2">address space of every running process fits into memory. We will now</text>
+<text top="394" left="87" width="432" height="14" font="2">relax these big assumptions, and assume that we wish to support many</text>
+<text top="409" left="87" width="256" height="14" font="2">concurrently-running large address spaces.</text>
+<text top="425" left="105" width="291" height="14" font="2">To do so, we require an additional level in the</text>
+<text top="425" left="401" width="115" height="13" font="4"><b>memory hierarchy</b></text>
+<text top="425" left="516" width="3" height="14" font="2">.</text>
+<text top="440" left="87" width="432" height="14" font="2">Thus far, we have assumed that all pages reside in physical memory.</text>
+<text top="455" left="87" width="432" height="14" font="2">However, to support large address spaces, the OS will need a place to</text>
+<text top="470" left="87" width="432" height="14" font="2">stash away portions of address spaces that currently aren’t in great de-</text>
+<text top="485" left="87" width="432" height="14" font="2">mand. In general, the characteristics of such a location are that it should</text>
+<text top="500" left="87" width="432" height="14" font="2">have more capacity than memory; as a result, it is generally slower (if it</text>
+<text top="515" left="87" width="432" height="14" font="2">were faster, we would just use it as memory, no?). In modern systems,</text>
+<text top="530" left="87" width="188" height="14" font="2">this role is usually served by a</text>
+<text top="530" left="280" width="97" height="13" font="4"><b>hard disk drive</b></text>
+<text top="530" left="377" width="142" height="14" font="2">. Thus, in our memory</text>
+<text top="545" left="87" width="432" height="14" font="2">hierarchy, big and slow hard drives sit at the bottom, with memory just</text>
+<text top="560" left="87" width="319" height="14" font="2">above. And thus we arrive at the crux of the problem:</text>
+<text top="590" left="139" width="8" height="14" font="2">T</text>
+<text top="592" left="148" width="16" height="11" font="5">HE</text>
+<text top="590" left="168" width="10" height="14" font="2">C</text>
+<text top="592" left="178" width="24" height="11" font="5">RUX</text>
+<text top="590" left="203" width="19" height="14" font="2">: H</text>
+<text top="592" left="223" width="20" height="11" font="5">OW</text>
+<text top="590" left="247" width="8" height="14" font="2">T</text>
+<text top="592" left="256" width="8" height="11" font="5">O</text>
+<text top="590" left="268" width="10" height="14" font="2">G</text>
+<text top="592" left="279" width="8" height="11" font="5">O</text>
+<text top="590" left="292" width="8" height="14" font="2">B</text>
+<text top="592" left="301" width="42" height="11" font="5">EYOND</text>
+<text top="590" left="347" width="8" height="14" font="2">P</text>
+<text top="592" left="356" width="52" height="11" font="5">HYSICAL</text>
+<text top="590" left="412" width="13" height="14" font="2">M</text>
+<text top="592" left="425" width="42" height="11" font="5">EMORY</text>
+<text top="605" left="87" width="432" height="14" font="2">How can the OS make use of a larger, slower device to transparently pro-</text>
+<text top="620" left="87" width="289" height="14" font="2">vide the illusion of a large virtual address space?</text>
+<text top="662" left="105" width="414" height="14" font="2">One question you might have: why do we want to support a single</text>
+<text top="677" left="87" width="432" height="14" font="2">large address space for a process? Once again, the answer is convenience</text>
+<text top="692" left="87" width="432" height="14" font="2">and ease of use. With a large address space, you don’t have to worry</text>
+<text top="707" left="87" width="432" height="14" font="2">about if there is enough room in memory for your program’s data struc-</text>
+<text top="721" left="87" width="432" height="14" font="2">tures; rather, you just write the program naturally, allocating memory as</text>
+<text top="736" left="87" width="432" height="14" font="2">needed. It is a powerful illusion that the OS provides, and makes your</text>
+<text top="751" left="87" width="432" height="14" font="2">life vastly simpler. You’re welcome! A contrast is found in older systems</text>
+<text top="766" left="87" width="56" height="14" font="2">that used</text>
+<text top="766" left="148" width="107" height="13" font="4"><b>memory overlays</b></text>
+<text top="766" left="255" width="264" height="14" font="2">, which required programmers to manually</text>
+<text top="781" left="87" width="432" height="14" font="2">move pieces of code or data in and out of memory as they were needed</text>
+<text top="796" left="87" width="432" height="14" font="2">[D97]. Try imagining what this would be like: before calling a function or</text>
+<text top="811" left="87" width="432" height="14" font="2">accessing some data, you need to first arrange for the code or data to be</text>
+<text top="826" left="87" width="105" height="14" font="2">in memory; yuck!</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="16" family="ASKIGD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="13" family="JHORLO+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="8" size="12" family="ASKIGD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="ASKIGD+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="293" width="8" height="14" font="2">B</text>
+<text top="98" left="302" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="348" width="8" height="14" font="2">P</text>
+<text top="98" left="357" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="413" width="13" height="14" font="2">M</text>
+<text top="98" left="426" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="468" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="71" height="11" font="5">ECHANISMS</text>
+<text top="148" left="244" width="10" height="14" font="2">A</text>
+<text top="150" left="255" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="282" width="15" height="14" font="2">: S</text>
+<text top="150" left="298" width="49" height="11" font="5">TORAGE</text>
+<text top="148" left="351" width="8" height="14" font="2">T</text>
+<text top="150" left="359" width="86" height="11" font="5">ECHNOLOGIES</text>
+<text top="163" left="129" width="432" height="14" font="2">We’ll delve much more deeply into how I/O devices actually work later</text>
+<text top="178" left="129" width="432" height="14" font="2">(see the chapter on I/O devices). So be patient! And of course the slower</text>
+<text top="193" left="129" width="432" height="14" font="2">device need not be a hard disk, but could be something more modern</text>
+<text top="208" left="129" width="432" height="14" font="2">such as a Flash-based SSD. We’ll talk about those things too. For now,</text>
+<text top="223" left="129" width="432" height="14" font="2">just assume we have a big and relatively-slow device which we can use</text>
+<text top="238" left="129" width="432" height="14" font="2">to help us build the illusion of a very large virtual memory, even bigger</text>
+<text top="253" left="129" width="169" height="14" font="2">than physical memory itself.</text>
+<text top="308" left="147" width="414" height="14" font="2">Beyond just a single process, the addition of swap space allows the OS</text>
+<text top="323" left="129" width="437" height="14" font="2">to support the illusion of a large virtual memory for multiple concurrently-</text>
+<text top="338" left="129" width="432" height="14" font="2">running processes. The invention of multiprogramming (running multi-</text>
+<text top="353" left="129" width="432" height="14" font="2">ple programs “at once”, to better utilize the machine) almost demanded</text>
+<text top="368" left="129" width="432" height="14" font="2">the ability to swap out some pages, as early machines clearly could not</text>
+<text top="383" left="129" width="432" height="14" font="2">hold all the pages needed by all processes at once. Thus, the combina-</text>
+<text top="398" left="129" width="432" height="14" font="2">tion of multiprogramming and ease-of-use leads us to want to support</text>
+<text top="413" left="129" width="432" height="14" font="2">using more memory than is physically available. It is something that all</text>
+<text top="428" left="129" width="422" height="14" font="2">modern VM systems do; it is now something we will learn more about.</text>
+<text top="465" left="97" width="120" height="17" font="6">21.1 Swap Space</text>
+<text top="496" left="147" width="414" height="14" font="2">The first thing we will need to do is to reserve some space on the disk</text>
+<text top="511" left="129" width="432" height="14" font="2">for moving pages back and forth. In operating systems, we generally refer</text>
+<text top="526" left="129" width="95" height="14" font="2">to such space as</text>
+<text top="526" left="228" width="69" height="13" font="4"><b>swap space</b></text>
+<text top="526" left="297" width="75" height="14" font="2">, because we</text>
+<text top="525" left="376" width="28" height="14" font="3"><i>swap</i></text>
+<text top="526" left="407" width="154" height="14" font="2">pages out of memory to it</text>
+<text top="540" left="129" width="23" height="14" font="2">and</text>
+<text top="540" left="156" width="28" height="14" font="3"><i>swap</i></text>
+<text top="540" left="187" width="373" height="14" font="2">pages into memory from it. Thus, we will simply assume that</text>
+<text top="555" left="129" width="432" height="14" font="2">the OS can read from and write to the swap space, in page-sized units. To</text>
+<text top="570" left="129" width="238" height="14" font="2">do so, the OS will need to remember the</text>
+<text top="570" left="371" width="77" height="13" font="4"><b>disk address</b></text>
+<text top="570" left="451" width="94" height="14" font="2">of a given page.</text>
+<text top="586" left="147" width="414" height="14" font="2">The size of the swap space is important, as ultimately it determines</text>
+<text top="601" left="129" width="432" height="14" font="2">the maximum number of memory pages that can be in use by a system at</text>
+<text top="616" left="129" width="299" height="14" font="2">a given time. Let us assume for simplicity that it is</text>
+<text top="616" left="432" width="24" height="14" font="3"><i>very</i></text>
+<text top="616" left="459" width="82" height="14" font="2">large for now.</text>
+<text top="631" left="147" width="414" height="14" font="2">In the tiny example (Figure 21.1), you can see a little example of a 4-</text>
+<text top="646" left="129" width="432" height="14" font="2">page physical memory and an 8-page swap space. In the example, three</text>
+<text top="661" left="129" width="432" height="14" font="2">processes (Proc 0, Proc 1, and Proc 2) are actively sharing physical mem-</text>
+<text top="676" left="129" width="432" height="14" font="2">ory; each of the three, however, only have some of their valid pages in</text>
+<text top="691" left="129" width="432" height="14" font="2">memory, with the rest located in swap space on disk. A fourth process</text>
+<text top="706" left="129" width="432" height="14" font="2">(Proc 3) has all of its pages swapped out to disk, and thus clearly isn’t</text>
+<text top="721" left="129" width="432" height="14" font="2">currently running. One block of swap remains free. Even from this tiny</text>
+<text top="736" left="129" width="432" height="14" font="2">example, hopefully you can see how using swap space allows the system</text>
+<text top="751" left="129" width="302" height="14" font="2">to pretend that memory is larger than it actually is.</text>
+<text top="766" left="147" width="414" height="14" font="2">We should note that swap space is not the only on-disk location for</text>
+<text top="781" left="129" width="432" height="14" font="2">swapping traffic. For example, assume you are running a program binary</text>
+<text top="796" left="129" width="28" height="14" font="2">(e.g.,</text>
+<text top="797" left="160" width="16" height="11" font="7">ls</text>
+<text top="796" left="176" width="137" height="14" font="2">, or your own compiled</text>
+<text top="797" left="316" width="32" height="11" font="7">main</text>
+<text top="796" left="351" width="210" height="14" font="2">program). The code pages from this</text>
+<text top="811" left="129" width="432" height="14" font="2">binary are initially found on disk, and when the program runs, they are</text>
+<text top="826" left="129" width="432" height="14" font="2">loaded into memory (either all at once when the program starts execution,</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="13" family="BNNYEC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="11" size="13" family="BNNYEC+NimbusSanL-Regu" color="#ffffff"/>
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="262" width="21" height="14" font="2">: M</text>
+<text top="98" left="284" width="71" height="11" font="5">ECHANISMS</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="164" left="57" width="47" height="12" font="10">Physical</text>
+<text top="177" left="58" width="46" height="12" font="10">Memory</text>
+<text top="142" left="120" width="36" height="12" font="10">PFN 0</text>
+<text top="164" left="120" width="37" height="12" font="10">Proc 0</text>
+<text top="177" left="116" width="44" height="12" font="10">[VPN 0]</text>
+<text top="142" left="171" width="36" height="12" font="10">PFN 1</text>
+<text top="164" left="170" width="37" height="12" font="10">Proc 1</text>
+<text top="177" left="167" width="44" height="12" font="10">[VPN 2]</text>
+<text top="142" left="222" width="36" height="12" font="10">PFN 2</text>
+<text top="164" left="221" width="37" height="12" font="10">Proc 1</text>
+<text top="177" left="218" width="44" height="12" font="10">[VPN 3]</text>
+<text top="142" left="272" width="36" height="12" font="10">PFN 3</text>
+<text top="164" left="272" width="37" height="12" font="10">Proc 2</text>
+<text top="177" left="268" width="44" height="12" font="10">[VPN 0]</text>
+<text top="241" left="65" width="32" height="12" font="10">Swap</text>
+<text top="253" left="63" width="36" height="12" font="10">Space</text>
+<text top="241" left="120" width="37" height="12" font="10">Proc 0</text>
+<text top="253" left="116" width="44" height="12" font="10">[VPN 1]</text>
+<text top="218" left="117" width="42" height="12" font="10">Block 0</text>
+<text top="241" left="170" width="37" height="12" font="10">Proc 0</text>
+<text top="253" left="167" width="44" height="12" font="10">[VPN 2]</text>
+<text top="218" left="168" width="42" height="12" font="10">Block 1</text>
+<text top="251" left="223" width="33" height="12" font="10">[Free]</text>
+<text top="218" left="219" width="42" height="12" font="10">Block 2</text>
+<text top="241" left="272" width="37" height="12" font="10">Proc 1</text>
+<text top="253" left="268" width="44" height="12" font="10">[VPN 0]</text>
+<text top="218" left="270" width="42" height="12" font="10">Block 3</text>
+<text top="241" left="323" width="37" height="12" font="10">Proc 1</text>
+<text top="253" left="319" width="44" height="12" font="10">[VPN 1]</text>
+<text top="218" left="320" width="42" height="12" font="10">Block 4</text>
+<text top="241" left="374" width="37" height="12" font="11">Proc 3</text>
+<text top="253" left="370" width="44" height="12" font="11">[VPN 0]</text>
+<text top="218" left="371" width="42" height="12" font="10">Block 5</text>
+<text top="241" left="424" width="37" height="12" font="10">Proc 2</text>
+<text top="253" left="421" width="44" height="12" font="10">[VPN 1]</text>
+<text top="218" left="422" width="42" height="12" font="10">Block 6</text>
+<text top="241" left="475" width="37" height="12" font="11">Proc 3</text>
+<text top="253" left="472" width="44" height="12" font="11">[VPN 1]</text>
+<text top="218" left="473" width="42" height="12" font="10">Block 7</text>
+<text top="313" left="161" width="69" height="14" font="2">Figure 21.1:</text>
+<text top="313" left="234" width="211" height="13" font="4"><b>Physical Memory and Swap Space</b></text>
+<text top="332" left="87" width="432" height="14" font="2">or, as in modern systems, one page at a time when needed). However, if</text>
+<text top="347" left="87" width="432" height="14" font="2">the system needs to make room in physical memory for other needs, it</text>
+<text top="362" left="87" width="432" height="14" font="2">can safely re-use the memory space for these code pages, knowing that it</text>
+<text top="377" left="87" width="423" height="14" font="2">can later swap them in again from the on-disk binary in the file system.</text>
+<text top="416" left="55" width="143" height="17" font="6">21.2 The Present Bit</text>
+<text top="447" left="105" width="414" height="14" font="2">Now that we have some space on the disk, we need to add some ma-</text>
+<text top="462" left="87" width="432" height="14" font="2">chinery higher up in the system in order to support swapping pages to</text>
+<text top="477" left="87" width="432" height="14" font="2">and from the disk. Let us assume, for simplicity, that we have a system</text>
+<text top="492" left="87" width="189" height="14" font="2">with a hardware-managed TLB.</text>
+<text top="508" left="105" width="414" height="14" font="2">Recall first what happens on a memory reference. The running pro-</text>
+<text top="523" left="87" width="432" height="14" font="2">cess generates virtual memory references (for instruction fetches, or data</text>
+<text top="538" left="87" width="432" height="14" font="2">accesses), and, in this case, the hardware translates them into physical</text>
+<text top="553" left="87" width="337" height="14" font="2">addresses before fetching the desired data from memory.</text>
+<text top="569" left="105" width="414" height="14" font="2">Remember that the hardware first extracts the VPN from the virtual</text>
+<text top="584" left="87" width="225" height="14" font="2">address, checks the TLB for a match (a</text>
+<text top="584" left="315" width="46" height="13" font="4"><b>TLB hit</b></text>
+<text top="584" left="362" width="157" height="14" font="2">), and if a hit, produces the</text>
+<text top="599" left="87" width="432" height="14" font="2">resulting physical address and fetches it from memory. This is hopefully</text>
+<text top="614" left="87" width="431" height="14" font="2">the common case, as it is fast (requiring no additional memory accesses).</text>
+<text top="630" left="105" width="256" height="14" font="2">If the VPN is not found in the TLB (i.e., a</text>
+<text top="630" left="366" width="59" height="13" font="4"><b>TLB miss</b></text>
+<text top="630" left="425" width="94" height="14" font="2">), the hardware</text>
+<text top="645" left="87" width="272" height="14" font="2">locates the page table in memory (using the</text>
+<text top="645" left="365" width="150" height="13" font="4"><b>page table base register</b></text>
+<text top="645" left="514" width="4" height="14" font="2">)</text>
+<text top="660" left="87" width="105" height="14" font="2">and looks up the</text>
+<text top="660" left="197" width="142" height="13" font="4"><b>page table entry (PTE)</b></text>
+<text top="660" left="344" width="174" height="14" font="2">for this page using the VPN</text>
+<text top="675" left="87" width="432" height="14" font="2">as an index. If the page is valid and present in physical memory, the</text>
+<text top="690" left="87" width="432" height="14" font="2">hardware extracts the PFN from the PTE, installs it in the TLB, and retries</text>
+<text top="705" left="87" width="365" height="14" font="2">the instruction, this time generating a TLB hit; so far, so good.</text>
+<text top="721" left="105" width="414" height="14" font="2">If we wish to allow pages to be swapped to disk, however, we must</text>
+<text top="736" left="87" width="432" height="14" font="2">add even more machinery. Specifically, when the hardware looks in the</text>
+<text top="751" left="87" width="190" height="14" font="2">PTE, it may find that the page is</text>
+<text top="751" left="280" width="61" height="14" font="3"><i>not present</i></text>
+<text top="751" left="344" width="175" height="14" font="2">in physical memory. The way</text>
+<text top="766" left="87" width="432" height="14" font="2">the hardware (or the OS, in a software-managed TLB approach) deter-</text>
+<text top="781" left="87" width="432" height="14" font="2">mines this is through a new piece of information in each page-table entry,</text>
+<text top="796" left="87" width="83" height="14" font="2">known as the</text>
+<text top="796" left="174" width="68" height="13" font="4"><b>present bit</b></text>
+<text top="796" left="242" width="277" height="14" font="2">. If the present bit is set to one, it means the</text>
+<text top="811" left="87" width="432" height="14" font="2">page is present in physical memory and everything proceeds as above; if</text>
+<text top="826" left="87" width="156" height="14" font="2">it is set to zero, the page is</text>
+<text top="826" left="247" width="18" height="14" font="3"><i>not</i></text>
+<text top="826" left="268" width="251" height="14" font="2">in memory but rather on disk somewhere.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="293" width="8" height="14" font="2">B</text>
+<text top="98" left="302" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="348" width="8" height="14" font="2">P</text>
+<text top="98" left="357" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="413" width="13" height="14" font="2">M</text>
+<text top="98" left="426" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="468" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="71" height="11" font="5">ECHANISMS</text>
+<text top="148" left="177" width="10" height="14" font="2">A</text>
+<text top="150" left="189" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="215" width="15" height="14" font="2">: S</text>
+<text top="150" left="231" width="56" height="11" font="5">WAPPING</text>
+<text top="148" left="291" width="8" height="14" font="2">T</text>
+<text top="150" left="300" width="81" height="11" font="5">ERMINOLOGY</text>
+<text top="148" left="386" width="10" height="14" font="2">A</text>
+<text top="150" left="397" width="18" height="11" font="5">ND</text>
+<text top="148" left="419" width="11" height="14" font="2">O</text>
+<text top="150" left="430" width="31" height="11" font="5">THER</text>
+<text top="148" left="465" width="8" height="14" font="2">T</text>
+<text top="150" left="474" width="38" height="11" font="5">HINGS</text>
+<text top="163" left="129" width="432" height="14" font="2">Terminology in virtual memory systems can be a little confusing and vari-</text>
+<text top="178" left="129" width="365" height="14" font="2">able across machines and operating systems. For example, a</text>
+<text top="178" left="498" width="62" height="13" font="4"><b>page fault</b></text>
+<text top="193" left="129" width="432" height="14" font="2">more generally could refer to any reference to a page table that generates</text>
+<text top="208" left="129" width="432" height="14" font="2">a fault of some kind: this could include the type of fault we are discussing</text>
+<text top="223" left="129" width="432" height="14" font="2">here, i.e., a page-not-present fault, but sometimes can refer to illegal mem-</text>
+<text top="238" left="129" width="432" height="14" font="2">ory accesses. Indeed, it is odd that we call what is definitely a legal access</text>
+<text top="253" left="129" width="432" height="14" font="2">(to a page mapped into the virtual address space of a process, but simply</text>
+<text top="268" left="129" width="432" height="14" font="2">not in physical memory at the time) a “fault” at all; really, it should be</text>
+<text top="283" left="129" width="45" height="14" font="2">called a</text>
+<text top="283" left="178" width="61" height="13" font="4"><b>page miss</b></text>
+<text top="283" left="239" width="322" height="14" font="2">. But often, when people say a program is “page fault-</text>
+<text top="298" left="129" width="432" height="14" font="2">ing”, they mean that it is accessing parts of its virtual address space that</text>
+<text top="313" left="129" width="191" height="14" font="2">the OS has swapped out to disk.</text>
+<text top="331" left="129" width="432" height="14" font="2">We suspect the reason that this behavior became known as a “fault” re-</text>
+<text top="346" left="129" width="432" height="14" font="2">lates to the machinery in the operating system to handle it. When some-</text>
+<text top="361" left="129" width="432" height="14" font="2">thing unusual happens, i.e., when something the hardware doesn’t know</text>
+<text top="376" left="129" width="432" height="14" font="2">how to handle occurs, the hardware simply transfers control to the OS,</text>
+<text top="390" left="129" width="432" height="14" font="2">hoping it can make things better. In this case, a page that a process wants</text>
+<text top="405" left="129" width="432" height="14" font="2">to access is missing from memory; the hardware does the only thing it</text>
+<text top="420" left="129" width="432" height="14" font="2">can, which is raise an exception, and the OS takes over from there. As</text>
+<text top="435" left="129" width="432" height="14" font="2">this is identical to what happens when a process does something illegal,</text>
+<text top="450" left="129" width="367" height="14" font="2">it is perhaps not surprising that we term the activity a “fault.”</text>
+<text top="505" left="129" width="432" height="14" font="2">The act of accessing a page that is not in physical memory is commonly</text>
+<text top="520" left="129" width="88" height="14" font="2">referred to as a</text>
+<text top="520" left="221" width="62" height="13" font="4"><b>page fault</b></text>
+<text top="520" left="282" width="3" height="14" font="2">.</text>
+<text top="535" left="147" width="414" height="14" font="2">Upon a page fault, the OS is invoked to service the page fault. A partic-</text>
+<text top="550" left="129" width="176" height="14" font="2">ular piece of code, known as a</text>
+<text top="550" left="308" width="113" height="13" font="4"><b>page-fault handler</b></text>
+<text top="550" left="421" width="139" height="14" font="2">, runs, and must service</text>
+<text top="565" left="129" width="208" height="14" font="2">the page fault, as we now describe.</text>
+<text top="602" left="97" width="142" height="17" font="6">21.3 The Page Fault</text>
+<text top="632" left="147" width="414" height="14" font="2">Recall that with TLB misses, we have two types of systems: hardware-</text>
+<text top="647" left="129" width="432" height="14" font="2">managed TLBs (where the hardware looks in the page table to find the</text>
+<text top="662" left="129" width="432" height="14" font="2">desired translation) and software-managed TLBs (where the OS does). In</text>
+<text top="677" left="129" width="432" height="14" font="2">either type of system, if a page is not present, the OS is put in charge to</text>
+<text top="691" left="129" width="313" height="14" font="2">handle the page fault. The appropriately-named OS</text>
+<text top="692" left="446" width="115" height="13" font="4"><b>page-fault handler</b></text>
+<text top="706" left="129" width="432" height="14" font="2">runs to determine what to do. Virtually all systems handle page faults in</text>
+<text top="721" left="129" width="432" height="14" font="2">software; even with a hardware-managed TLB, the hardware trusts the</text>
+<text top="736" left="129" width="205" height="14" font="2">OS to manage this important duty.</text>
+<text top="751" left="147" width="414" height="14" font="2">If a page is not present and has been swapped to disk, the OS will need</text>
+<text top="766" left="129" width="432" height="14" font="2">to swap the page into memory in order to service the page fault. Thus, a</text>
+<text top="781" left="129" width="432" height="14" font="2">question arises: how will the OS know where to find the desired page? In</text>
+<text top="796" left="129" width="432" height="14" font="2">many systems, the page table is a natural place to store such information.</text>
+<text top="811" left="129" width="432" height="14" font="2">Thus, the OS could use the bits in the PTE normally used for data such as</text>
+<text top="826" left="129" width="432" height="14" font="2">the PFN of the page for a disk address. When the OS receives a page fault</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="262" width="21" height="14" font="2">: M</text>
+<text top="98" left="284" width="71" height="11" font="5">ECHANISMS</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="148" left="126" width="10" height="14" font="2">A</text>
+<text top="150" left="137" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="164" width="22" height="14" font="2">: W</text>
+<text top="150" left="187" width="17" height="11" font="5">HY</text>
+<text top="148" left="207" width="11" height="14" font="2">H</text>
+<text top="150" left="219" width="60" height="11" font="5">ARDWARE</text>
+<text top="148" left="283" width="10" height="14" font="2">D</text>
+<text top="150" left="294" width="32" height="11" font="5">OESN</text>
+<text top="148" left="326" width="4" height="14" font="2">’</text>
+<text top="150" left="331" width="7" height="11" font="5">T</text>
+<text top="148" left="342" width="11" height="14" font="2">H</text>
+<text top="150" left="353" width="41" height="11" font="5">ANDLE</text>
+<text top="148" left="399" width="8" height="14" font="2">P</text>
+<text top="150" left="407" width="25" height="11" font="5">AGE</text>
+<text top="148" left="435" width="7" height="14" font="2">F</text>
+<text top="150" left="442" width="37" height="11" font="5">AULTS</text>
+<text top="163" left="87" width="432" height="14" font="2">We know from our experience with the TLB that hardware designers are</text>
+<text top="178" left="87" width="432" height="14" font="2">loath to trust the OS to do much of anything. So why do they trust the OS</text>
+<text top="193" left="87" width="432" height="14" font="2">to handle a page fault? There are a few main reasons. First, page faults</text>
+<text top="208" left="87" width="62" height="14" font="2">to disk are</text>
+<text top="208" left="152" width="25" height="14" font="3"><i>slow</i></text>
+<text top="208" left="177" width="342" height="14" font="2">; even if the OS takes a long time to handle a fault, execut-</text>
+<text top="223" left="87" width="432" height="14" font="2">ing tons of instructions, the disk operation itself is traditionally so slow</text>
+<text top="238" left="87" width="432" height="14" font="2">that the extra overheads of running software are minimal. Second, to be</text>
+<text top="253" left="87" width="432" height="14" font="2">able to handle a page fault, the hardware would have to understand swap</text>
+<text top="268" left="87" width="432" height="14" font="2">space, how to issue I/Os to the disk, and a lot of other details which it cur-</text>
+<text top="283" left="87" width="432" height="14" font="2">rently doesn’t know much about. Thus, for both reasons of performance</text>
+<text top="298" left="87" width="432" height="14" font="2">and simplicity, the OS handles page faults, and even hardware types can</text>
+<text top="313" left="87" width="57" height="14" font="2">be happy.</text>
+<text top="360" left="87" width="432" height="14" font="2">for a page, it looks in the PTE to find the address, and issues the request</text>
+<text top="375" left="87" width="224" height="14" font="2">to disk to fetch the page into memory.</text>
+<text top="392" left="105" width="414" height="14" font="2">When the disk I/O completes, the OS will then update the page table</text>
+<text top="407" left="87" width="432" height="14" font="2">to mark the page as present, update the PFN field of the page-table entry</text>
+<text top="422" left="87" width="432" height="14" font="2">(PTE) to record the in-memory location of the newly-fetched page, and</text>
+<text top="437" left="87" width="432" height="14" font="2">retry the instruction. This next attempt may generate a TLB miss, which</text>
+<text top="452" left="87" width="432" height="14" font="2">would then be serviced and update the TLB with the translation (one</text>
+<text top="467" left="87" width="432" height="14" font="2">could alternately update the TLB when servicing the page fault to avoid</text>
+<text top="482" left="87" width="432" height="14" font="2">this step). Finally, a last restart would find the translation in the TLB and</text>
+<text top="497" left="87" width="432" height="14" font="2">thus proceed to fetch the desired data or instruction from memory at the</text>
+<text top="512" left="87" width="165" height="14" font="2">translated physical address.</text>
+<text top="529" left="105" width="361" height="14" font="2">Note that while the I/O is in flight, the process will be in the</text>
+<text top="529" left="470" width="49" height="13" font="4"><b>blocked</b></text>
+<text top="544" left="87" width="432" height="14" font="2">state. Thus, the OS will be free to run other ready processes while the</text>
+<text top="559" left="87" width="364" height="14" font="2">page fault is being serviced. Because I/O is expensive, this</text>
+<text top="559" left="456" width="46" height="13" font="4"><b>overlap</b></text>
+<text top="559" left="507" width="12" height="14" font="2">of</text>
+<text top="574" left="87" width="432" height="14" font="2">the I/O (page fault) of one process and the execution of another is yet</text>
+<text top="589" left="87" width="432" height="14" font="2">another way a multiprogrammed system can make the most effective use</text>
+<text top="604" left="87" width="93" height="14" font="2">of its hardware.</text>
+<text top="643" left="55" width="211" height="17" font="6">21.4 What If Memory Is Full?</text>
+<text top="675" left="105" width="414" height="14" font="2">In the process described above, you may notice that we assumed there</text>
+<text top="689" left="87" width="225" height="14" font="2">is plenty of free memory in which to</text>
+<text top="690" left="317" width="47" height="13" font="4"><b>page in</b></text>
+<text top="689" left="368" width="151" height="14" font="2">a page from swap space.</text>
+<text top="704" left="87" width="432" height="14" font="2">Of course, this may not be the case; memory may be full (or close to it).</text>
+<text top="719" left="87" width="180" height="14" font="2">Thus, the OS might like to first</text>
+<text top="719" left="270" width="52" height="13" font="4"><b>page out</b></text>
+<text top="719" left="326" width="193" height="14" font="2">one or more pages to make room</text>
+<text top="734" left="87" width="432" height="14" font="2">for the new page(s) the OS is about to bring in. The process of picking a</text>
+<text top="749" left="87" width="115" height="14" font="2">page to kick out, or</text>
+<text top="749" left="205" width="44" height="13" font="4"><b>replace</b></text>
+<text top="749" left="252" width="92" height="14" font="2">is known as the</text>
+<text top="749" left="348" width="151" height="13" font="4"><b>page-replacement policy</b></text>
+<text top="749" left="499" width="3" height="14" font="2">.</text>
+<text top="766" left="105" width="414" height="14" font="2">As it turns out, a lot of thought has been put into creating a good page-</text>
+<text top="781" left="87" width="432" height="14" font="2">replacement policy, as kicking out the wrong page can exact a great cost</text>
+<text top="796" left="87" width="432" height="14" font="2">on program performance. Making the wrong decision can cause a pro-</text>
+<text top="811" left="87" width="432" height="14" font="2">gram to run at disk-like speeds instead of memory-like speeds; in cur-</text>
+<text top="826" left="87" width="432" height="14" font="2">rent technology that means a program could run 10,000 or 100,000 times</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="7" family="ASKIGD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="13" size="13" family="SAHOBF+NimbusMonL" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="293" width="8" height="14" font="2">B</text>
+<text top="98" left="302" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="348" width="8" height="14" font="2">P</text>
+<text top="98" left="357" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="413" width="13" height="14" font="2">M</text>
+<text top="98" left="426" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="468" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="71" height="11" font="5">ECHANISMS</text>
+<text top="138" left="107" width="4" height="8" font="12">1</text>
+<text top="135" left="129" width="339" height="11" font="7">VPN = (VirtualAddress &amp; VPN_MASK) &gt;&gt; SHIFT</text>
+<text top="153" left="107" width="4" height="8" font="12">2</text>
+<text top="150" left="129" width="299" height="11" font="7">(Success, TlbEntry) = TLB_Lookup(VPN)</text>
+<text top="168" left="107" width="4" height="8" font="12">3</text>
+<text top="165" left="129" width="161" height="11" font="7">if (Success == True)</text>
+<text top="165" left="315" width="81" height="11" font="7">// TLB Hit</text>
+<text top="183" left="107" width="4" height="8" font="12">4</text>
+<text top="180" left="161" width="355" height="11" font="7">if (CanAccess(TlbEntry.ProtectBits) == True)</text>
+<text top="198" left="107" width="4" height="8" font="12">5</text>
+<text top="195" left="193" width="48" height="11" font="7">Offset</text>
+<text top="195" left="266" width="242" height="11" font="7">= VirtualAddress &amp; OFFSET_MASK</text>
+<text top="213" left="107" width="4" height="8" font="12">6</text>
+<text top="210" left="193" width="347" height="11" font="7">PhysAddr = (TlbEntry.PFN &lt;&lt; SHIFT) | Offset</text>
+<text top="228" left="107" width="4" height="8" font="12">7</text>
+<text top="225" left="193" width="81" height="11" font="7">Register =</text>
+<text top="225" left="282" width="178" height="11" font="13"><b>AccessMemory(PhysAddr)</b></text>
+<text top="243" left="107" width="4" height="8" font="12">8</text>
+<text top="240" left="161" width="32" height="11" font="7">else</text>
+<text top="258" left="107" width="4" height="8" font="12">9</text>
+<text top="254" left="193" width="258" height="11" font="7">RaiseException(PROTECTION_FAULT)</text>
+<text top="273" left="104" width="7" height="8" font="12">10</text>
+<text top="269" left="129" width="32" height="11" font="7">else</text>
+<text top="269" left="306" width="89" height="11" font="7">// TLB Miss</text>
+<text top="288" left="104" width="7" height="8" font="12">11</text>
+<text top="284" left="161" width="291" height="14" font="7">PTEAddr = PTBR + (VPN * sizeof(PTE))</text>
+<text top="303" left="104" width="7" height="8" font="12">12</text>
+<text top="299" left="161" width="40" height="11" font="7">PTE =</text>
+<text top="300" left="210" width="170" height="11" font="13"><b>AccessMemory(PTEAddr)</b></text>
+<text top="318" left="104" width="7" height="8" font="12">13</text>
+<text top="314" left="161" width="186" height="11" font="7">if (PTE.Valid == False)</text>
+<text top="333" left="104" width="7" height="8" font="12">14</text>
+<text top="329" left="193" width="274" height="11" font="7">RaiseException(SEGMENTATION_FAULT)</text>
+<text top="348" left="104" width="7" height="8" font="12">15</text>
+<text top="344" left="161" width="32" height="11" font="7">else</text>
+<text top="363" left="104" width="7" height="8" font="12">16</text>
+<text top="359" left="193" width="323" height="11" font="7">if (CanAccess(PTE.ProtectBits) == False)</text>
+<text top="378" left="104" width="7" height="8" font="12">17</text>
+<text top="374" left="226" width="258" height="11" font="7">RaiseException(PROTECTION_FAULT)</text>
+<text top="393" left="104" width="7" height="8" font="12">18</text>
+<text top="389" left="193" width="234" height="11" font="7">else if (PTE.Present == True)</text>
+<text top="407" left="104" width="7" height="8" font="12">19</text>
+<text top="404" left="226" width="258" height="11" font="7">// assuming hardware-managed TLB</text>
+<text top="422" left="104" width="7" height="8" font="12">20</text>
+<text top="419" left="226" width="331" height="11" font="7">TLB_Insert(VPN, PTE.PFN, PTE.ProtectBits)</text>
+<text top="437" left="104" width="7" height="8" font="12">21</text>
+<text top="434" left="226" width="145" height="11" font="7">RetryInstruction()</text>
+<text top="452" left="104" width="7" height="8" font="12">22</text>
+<text top="449" left="193" width="242" height="11" font="7">else if (PTE.Present == False)</text>
+<text top="467" left="104" width="7" height="8" font="12">23</text>
+<text top="464" left="226" width="210" height="11" font="7">RaiseException(PAGE_FAULT)</text>
+<text top="487" left="163" width="69" height="14" font="2">Figure 21.2:</text>
+<text top="488" left="236" width="291" height="13" font="4"><b>Page-Fault Control Flow Algorithm (Hardware)</b></text>
+<text top="514" left="129" width="432" height="14" font="2">slower. Thus, such a policy is something we should study in some detail;</text>
+<text top="529" left="129" width="432" height="14" font="2">indeed, that is exactly what we will do in the next chapter. For now, it is</text>
+<text top="544" left="129" width="432" height="14" font="2">good enough to understand that such a policy exists, built on top of the</text>
+<text top="559" left="129" width="167" height="14" font="2">mechanisms described here.</text>
+<text top="598" left="97" width="210" height="17" font="6">21.5 Page Fault Control Flow</text>
+<text top="630" left="147" width="414" height="14" font="2">With all of this knowledge in place, we can now roughly sketch the</text>
+<text top="645" left="129" width="432" height="14" font="2">complete control flow of memory access. In other words, when some-</text>
+<text top="660" left="129" width="432" height="14" font="2">body asks you “what happens when a program fetches some data from</text>
+<text top="675" left="129" width="432" height="14" font="2">memory?”, you should have a pretty good idea of all the different pos-</text>
+<text top="689" left="129" width="432" height="14" font="2">sibilities. See the control flow in Figures 21.2 and 21.3 for more details;</text>
+<text top="704" left="129" width="432" height="14" font="2">the first figure shows what the hardware does during translation, and the</text>
+<text top="719" left="129" width="260" height="14" font="2">second what the OS does upon a page fault.</text>
+<text top="736" left="147" width="414" height="14" font="2">From the hardware control flow diagram in Figure 21.2, notice that</text>
+<text top="751" left="129" width="432" height="14" font="2">there are now three important cases to understand when a TLB miss oc-</text>
+<text top="766" left="129" width="213" height="14" font="2">curs. First, that the page was both</text>
+<text top="766" left="347" width="46" height="13" font="4"><b>present</b></text>
+<text top="766" left="397" width="23" height="14" font="2">and</text>
+<text top="766" left="425" width="31" height="13" font="4"><b>valid</b></text>
+<text top="766" left="461" width="100" height="14" font="2">(Lines 18–21); in</text>
+<text top="781" left="129" width="432" height="14" font="2">this case, the TLB miss handler can simply grab the PFN from the PTE,</text>
+<text top="796" left="129" width="432" height="14" font="2">retry the instruction (this time resulting in a TLB hit), and thus continue</text>
+<text top="811" left="129" width="432" height="14" font="2">as described (many times) before. In the second case (Lines 22–23), the</text>
+<text top="826" left="129" width="432" height="14" font="2">page fault handler must be run; although this was a legitimate page for</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="13" family="IXCTYM+CMMI9" color="#000000"/>
+	<fontspec id="15" size="9" family="ASKIGD+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="262" width="21" height="14" font="2">: M</text>
+<text top="98" left="284" width="71" height="11" font="5">ECHANISMS</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="138" left="65" width="4" height="8" font="12">1</text>
+<text top="135" left="87" width="226" height="11" font="7">PFN = FindFreePhysicalPage()</text>
+<text top="153" left="65" width="4" height="8" font="12">2</text>
+<text top="150" left="87" width="113" height="11" font="7">if (PFN == -1)</text>
+<text top="150" left="313" width="169" height="11" font="7">// no free page found</text>
+<text top="168" left="65" width="4" height="8" font="12">3</text>
+<text top="165" left="119" width="137" height="11" font="7">PFN = EvictPage()</text>
+<text top="165" left="313" width="194" height="11" font="7">// replacement algorithm</text>
+<text top="183" left="65" width="4" height="8" font="12">4</text>
+<text top="180" left="87" width="218" height="11" font="13"><b>DiskRead(PTE.DiskAddr, PFN)</b></text>
+<text top="180" left="313" width="186" height="11" font="7">// sleep (wait for I/O)</text>
+<text top="198" left="65" width="4" height="8" font="12">5</text>
+<text top="195" left="87" width="145" height="11" font="7">PTE.present = True</text>
+<text top="195" left="313" width="169" height="11" font="7">// update page table:</text>
+<text top="213" left="65" width="4" height="8" font="12">6</text>
+<text top="210" left="87" width="57" height="11" font="7">PTE.PFN</text>
+<text top="210" left="184" width="40" height="11" font="7">= PFN</text>
+<text top="210" left="313" width="194" height="11" font="7">// (present/translation)</text>
+<text top="228" left="65" width="4" height="8" font="12">7</text>
+<text top="225" left="87" width="145" height="11" font="7">RetryInstruction()</text>
+<text top="225" left="313" width="161" height="11" font="7">// retry instruction</text>
+<text top="243" left="124" width="69" height="14" font="2">Figure 21.3:</text>
+<text top="243" left="197" width="285" height="13" font="4"><b>Page-Fault Control Flow Algorithm (Software)</b></text>
+<text top="266" left="87" width="432" height="14" font="2">the process to access (it is valid, after all), it is not present in physical</text>
+<text top="280" left="87" width="432" height="14" font="2">memory. Third (and finally), the access could be to an invalid page, due</text>
+<text top="295" left="87" width="432" height="14" font="2">for example to a bug in the program (Lines 13–14). In this case, no other</text>
+<text top="310" left="87" width="432" height="14" font="2">bits in the PTE really matter; the hardware traps this invalid access, and</text>
+<text top="325" left="87" width="395" height="14" font="2">the OS trap handler runs, likely terminating the offending process.</text>
+<text top="341" left="105" width="414" height="14" font="2">From the software control flow in Figure 21.3, we can see what the OS</text>
+<text top="356" left="87" width="432" height="14" font="2">roughly must do in order to service the page fault. First, the OS must find</text>
+<text top="371" left="87" width="432" height="14" font="2">a physical frame for the soon-to-be-faulted-in page to reside within; if</text>
+<text top="386" left="87" width="432" height="14" font="2">there is no such page, we’ll have to wait for the replacement algorithm to</text>
+<text top="401" left="87" width="432" height="14" font="2">run and kick some pages out of memory, thus freeing them for use here.</text>
+<text top="416" left="87" width="432" height="14" font="2">With a physical frame in hand, the handler then issues the I/O request</text>
+<text top="431" left="87" width="432" height="14" font="2">to read in the page from swap space. Finally, when that slow operation</text>
+<text top="446" left="87" width="432" height="14" font="2">completes, the OS updates the page table and retries the instruction. The</text>
+<text top="461" left="87" width="432" height="14" font="2">retry will result in a TLB miss, and then, upon another retry, a TLB hit, at</text>
+<text top="475" left="87" width="383" height="14" font="2">which point the hardware will be able to access the desired item.</text>
+<text top="513" left="55" width="280" height="17" font="6">21.6 When Replacements Really Occur</text>
+<text top="544" left="105" width="414" height="14" font="2">Thus far, the way we’ve described how replacements occur assumes</text>
+<text top="559" left="87" width="432" height="14" font="2">that the OS waits until memory is entirely full, and only then replaces</text>
+<text top="574" left="87" width="432" height="14" font="2">(evicts) a page to make room for some other page. As you can imagine,</text>
+<text top="589" left="87" width="432" height="14" font="2">this is a little bit unrealistic, and there are many reasons for the OS to keep</text>
+<text top="603" left="87" width="291" height="14" font="2">a small portion of memory free more proactively.</text>
+<text top="619" left="105" width="414" height="14" font="2">To keep a small amount of memory free, most operating systems thus</text>
+<text top="634" left="87" width="111" height="14" font="2">have some kind of</text>
+<text top="634" left="202" width="99" height="13" font="4"><b>high watermark</b></text>
+<text top="634" left="305" width="4" height="14" font="2">(</text>
+<text top="635" left="310" width="26" height="9" font="14">H W</text>
+<text top="634" left="337" width="31" height="14" font="2">) and</text>
+<text top="634" left="372" width="94" height="13" font="4"><b>low watermark</b></text>
+<text top="634" left="470" width="4" height="14" font="2">(</text>
+<text top="635" left="474" width="22" height="9" font="14">LW</text>
+<text top="634" left="499" width="20" height="14" font="2">) to</text>
+<text top="649" left="87" width="432" height="14" font="2">help decide when to start evicting pages from memory. How this works is</text>
+<text top="664" left="87" width="332" height="14" font="2">as follows: when the OS notices that there are fewer than</text>
+<text top="665" left="421" width="22" height="9" font="14">LW</text>
+<text top="664" left="448" width="71" height="14" font="2">pages avail-</text>
+<text top="679" left="87" width="432" height="14" font="2">able, a background thread that is responsible for freeing memory runs.</text>
+<text top="694" left="87" width="233" height="14" font="2">The thread evicts pages until there are</text>
+<text top="694" left="325" width="26" height="9" font="14">H W</text>
+<text top="694" left="357" width="162" height="14" font="2">pages available. The back-</text>
+<text top="711" left="87" width="225" height="14" font="2">ground thread, sometimes called the</text>
+<text top="711" left="317" width="87" height="13" font="4"><b>swap daemon</b></text>
+<text top="711" left="409" width="13" height="14" font="2">or</text>
+<text top="711" left="427" width="84" height="13" font="4"><b>page daemon</b></text>
+<text top="709" left="510" width="4" height="9" font="15">1</text>
+<text top="711" left="516" width="3" height="14" font="2">,</text>
+<text top="726" left="87" width="432" height="14" font="2">then goes to sleep, happy that it has freed some memory for running pro-</text>
+<text top="741" left="87" width="147" height="14" font="2">cesses and the OS to use.</text>
+<text top="757" left="105" width="414" height="14" font="2">By performing a number of replacements at once, new performance</text>
+<text top="772" left="87" width="387" height="14" font="2">optimizations become possible. For example, many systems will</text>
+<text top="772" left="478" width="41" height="13" font="4"><b>cluster</b></text>
+<text top="802" left="107" width="4" height="8" font="12">1</text>
+<text top="804" left="112" width="407" height="11" font="9">The word “daemon”, usually pronounced “demon”, is an old term for a background</text>
+<text top="816" left="87" width="432" height="11" font="9">thread or process that does something useful. Turns out (once again!) that the source of the</text>
+<text top="828" left="87" width="105" height="11" font="9">term is Multics [CS94].</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="293" width="8" height="14" font="2">B</text>
+<text top="98" left="302" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="348" width="8" height="14" font="2">P</text>
+<text top="98" left="357" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="413" width="13" height="14" font="2">M</text>
+<text top="98" left="426" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="468" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="71" height="11" font="5">ECHANISMS</text>
+<text top="148" left="230" width="8" height="14" font="2">T</text>
+<text top="150" left="239" width="11" height="11" font="5">IP</text>
+<text top="148" left="250" width="19" height="14" font="2">: D</text>
+<text top="150" left="270" width="8" height="11" font="5">O</text>
+<text top="148" left="282" width="13" height="14" font="2">W</text>
+<text top="150" left="296" width="25" height="11" font="5">ORK</text>
+<text top="148" left="325" width="5" height="14" font="2">I</text>
+<text top="150" left="330" width="9" height="11" font="5">N</text>
+<text top="148" left="343" width="8" height="14" font="2">T</text>
+<text top="150" left="352" width="16" height="11" font="5">HE</text>
+<text top="148" left="372" width="8" height="14" font="2">B</text>
+<text top="150" left="381" width="79" height="11" font="5">ACKGROUND</text>
+<text top="163" left="129" width="432" height="14" font="2">When you have some work to do, it is often a good idea to do it in the</text>
+<text top="178" left="129" width="74" height="13" font="4"><b>background</b></text>
+<text top="178" left="208" width="353" height="14" font="2">to increase efficiency and to allow for grouping of opera-</text>
+<text top="193" left="129" width="432" height="14" font="2">tions. Operating systems often do work in the background; for example,</text>
+<text top="208" left="129" width="432" height="14" font="2">many systems buffer file writes in memory before actually writing the</text>
+<text top="223" left="129" width="432" height="14" font="2">data to disk. Doing so has many possible benefits: increased disk effi-</text>
+<text top="238" left="129" width="432" height="14" font="2">ciency, as the disk may now receive many writes at once and thus better</text>
+<text top="253" left="129" width="432" height="14" font="2">be able to schedule them; improved latency of writes, as the application</text>
+<text top="268" left="129" width="432" height="14" font="2">thinks the writes completed quite quickly; the possibility of work reduc-</text>
+<text top="283" left="129" width="432" height="14" font="2">tion, as the writes may need never to go to disk (i.e., if the file is deleted);</text>
+<text top="298" left="129" width="105" height="14" font="2">and better use of</text>
+<text top="298" left="239" width="57" height="13" font="4"><b>idle time</b></text>
+<text top="298" left="296" width="265" height="14" font="2">, as the background work may possibly be</text>
+<text top="313" left="129" width="432" height="14" font="2">done when the system is otherwise idle, thus better utilizing the hard-</text>
+<text top="327" left="129" width="77" height="14" font="2">ware [G+95].</text>
+<text top="380" left="129" width="13" height="14" font="2">or</text>
+<text top="380" left="145" width="37" height="13" font="4"><b>group</b></text>
+<text top="380" left="184" width="377" height="14" font="2">a number of pages and write them out at once to the swap parti-</text>
+<text top="395" left="129" width="432" height="14" font="2">tion, thus increasing the efficiency of the disk [LL82]; as we will see later</text>
+<text top="410" left="129" width="432" height="14" font="2">when we discuss disks in more detail, such clustering reduces seek and</text>
+<text top="425" left="129" width="432" height="14" font="2">rotational overheads of a disk and thus increases performance noticeably.</text>
+<text top="440" left="147" width="414" height="14" font="2">To work with the background paging thread, the control flow in Figure</text>
+<text top="455" left="129" width="432" height="14" font="2">21.3 should be modified slightly; instead of performing a replacement</text>
+<text top="470" left="129" width="432" height="14" font="2">directly, the algorithm would instead simply check if there are any free</text>
+<text top="485" left="129" width="432" height="14" font="2">pages available. If not, it would inform the background paging thread</text>
+<text top="500" left="129" width="432" height="14" font="2">that free pages are needed; when the thread frees up some pages, it would</text>
+<text top="515" left="129" width="432" height="14" font="2">re-awaken the original thread, which could then page in the desired page</text>
+<text top="530" left="129" width="134" height="14" font="2">and go about its work.</text>
+<text top="562" left="97" width="105" height="17" font="6">21.7 Summary</text>
+<text top="586" left="147" width="414" height="14" font="2">In this brief chapter, we have introduced the notion of accessing more</text>
+<text top="601" left="129" width="432" height="14" font="2">memory than is physically present within a system. To do so requires</text>
+<text top="616" left="129" width="273" height="14" font="2">more complexity in page-table structures, as a</text>
+<text top="616" left="405" width="66" height="13" font="4"><b>present bit</b></text>
+<text top="616" left="474" width="86" height="14" font="2">(of some kind)</text>
+<text top="631" left="129" width="432" height="14" font="2">must be included to tell us whether the page is present in memory or not.</text>
+<text top="646" left="129" width="195" height="14" font="2">When not, the operating system</text>
+<text top="646" left="329" width="115" height="13" font="4"><b>page-fault handler</b></text>
+<text top="646" left="448" width="112" height="14" font="2">runs to service the</text>
+<text top="661" left="129" width="63" height="13" font="4"><b>page fault</b></text>
+<text top="661" left="192" width="369" height="14" font="2">, and thus arranges for the transfer of the desired page from</text>
+<text top="676" left="129" width="432" height="14" font="2">disk to memory, perhaps first replacing some pages in memory to make</text>
+<text top="690" left="129" width="227" height="14" font="2">room for those soon to be swapped in.</text>
+<text top="705" left="147" width="414" height="14" font="2">Recall, importantly (and amazingly!), that these actions all take place</text>
+<text top="720" left="129" width="82" height="13" font="4"><b>transparently</b></text>
+<text top="720" left="215" width="346" height="14" font="2">to the process. As far as the process is concerned, it is just</text>
+<text top="735" left="129" width="432" height="14" font="2">accessing its own private, contiguous virtual memory. Behind the scenes,</text>
+<text top="750" left="129" width="432" height="14" font="2">pages are placed in arbitrary (non-contiguous) locations in physical mem-</text>
+<text top="765" left="129" width="432" height="14" font="2">ory, and sometimes they are not even present in memory, requiring a fetch</text>
+<text top="780" left="129" width="432" height="14" font="2">from disk. While we hope that in the common case a memory access is</text>
+<text top="795" left="129" width="432" height="14" font="2">fast, in some cases it will take multiple disk operations to service it; some-</text>
+<text top="810" left="129" width="432" height="14" font="2">thing as simple as performing a single instruction can, in the worst case,</text>
+<text top="825" left="129" width="217" height="14" font="2">take many milliseconds to complete.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="16" family="GAGCBC+URWPalladioL" color="#000000"/>
+	<fontspec id="17" size="10" family="JHORLO+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="18" size="10" family="YTTZFI+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="262" width="21" height="14" font="2">: M</text>
+<text top="98" left="284" width="71" height="11" font="5">ECHANISMS</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="137" left="87" width="82" height="16" font="16"><b>References</b></text>
+<text top="165" left="87" width="266" height="11" font="9">[CS94] “Take Our Word For It” by F. Corbato, R. Steinberg.</text>
+<text top="166" left="356" width="163" height="9" font="17">www.takeourword.com/TOW146</text>
+<text top="177" left="87" width="40" height="11" font="9">(Page 4).</text>
+<text top="177" left="130" width="389" height="11" font="18"><i>Richard Steinberg writes: “Someone has asked me the origin of the word daemon as it applies</i></text>
+<text top="189" left="87" width="432" height="11" font="18"><i>to computing. Best I can tell based on my research, the word was first used by people on your team at</i></text>
+<text top="201" left="87" width="432" height="11" font="18"><i>Project MAC using the IBM 7094 in 1963.” Professor Corbato replies: “Our use of the word daemon</i></text>
+<text top="213" left="87" width="432" height="11" font="18"><i>was inspired by the Maxwell’s daemon of physics and thermodynamics (my background is in physics).</i></text>
+<text top="225" left="87" width="432" height="11" font="18"><i>Maxwell’s daemon was an imaginary agent which helped sort molecules of different speeds and worked</i></text>
+<text top="237" left="87" width="432" height="11" font="18"><i>tirelessly in the background. We fancifully began to use the word daemon to describe background pro-</i></text>
+<text top="249" left="87" width="240" height="11" font="18"><i>cesses which worked tirelessly to perform system chores.”</i></text>
+<text top="265" left="87" width="432" height="11" font="9">[D97] “Before Memory Was Virtual” by Peter Denning. In the Beginning: Recollections of</text>
+<text top="277" left="87" width="199" height="11" font="9">Software Pioneers, Wiley, November 1997.</text>
+<text top="277" left="291" width="228" height="11" font="18"><i>An excellent historical piece by one of the pioneers of</i></text>
+<text top="289" left="87" width="143" height="11" font="18"><i>virtual memory and working sets.</i></text>
+<text top="306" left="87" width="432" height="11" font="9">[G+95] “Idleness is not sloth” by Richard Golding, Peter Bosch, Carl Staelin, Tim Sullivan, John</text>
+<text top="318" left="87" width="237" height="11" font="9">Wilkes. USENIX ATC ’95, New Orleans, Louisiana.</text>
+<text top="317" left="327" width="192" height="11" font="18"><i>A fun and easy-to-read discussion of how idle</i></text>
+<text top="329" left="87" width="261" height="11" font="18"><i>time can be better used in systems, with lots of good examples.</i></text>
+<text top="346" left="87" width="432" height="11" font="9">[LL82] “Virtual Memory Management in the VAX/VMS Operating System” by Hank Levy, P.</text>
+<text top="358" left="87" width="242" height="11" font="9">Lipman. IEEE Computer, Vol. 15, No. 3, March 1982.</text>
+<text top="358" left="332" width="187" height="11" font="18"><i>Not the first place where page clustering was</i></text>
+<text top="370" left="87" width="432" height="11" font="18"><i>used, but a clear and simple explanation of how such a mechanism works. We sure cite this paper a lot!</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="15" family="GAGCBC+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="293" width="8" height="14" font="2">B</text>
+<text top="98" left="302" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="348" width="8" height="14" font="2">P</text>
+<text top="98" left="357" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="413" width="13" height="14" font="2">M</text>
+<text top="98" left="426" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="468" width="21" height="14" font="2">: M</text>
+<text top="98" left="490" width="71" height="11" font="5">ECHANISMS</text>
+<text top="137" left="129" width="202" height="16" font="16"><b>Homework (Measurement)</b></text>
+<text top="166" left="147" width="273" height="14" font="2">This homework introduces you to a new tool,</text>
+<text top="166" left="423" width="41" height="13" font="4"><b>vmstat</b></text>
+<text top="166" left="465" width="96" height="14" font="2">, and how it can</text>
+<text top="181" left="129" width="432" height="14" font="2">be used to understand memory, CPU, and I/O usage. Read the associ-</text>
+<text top="196" left="129" width="238" height="14" font="2">ated README and examine the code in</text>
+<text top="197" left="371" width="40" height="11" font="7">mem.c</text>
+<text top="196" left="415" width="146" height="14" font="2">before proceeding to the</text>
+<text top="211" left="129" width="181" height="14" font="2">exercises and questions below.</text>
+<text top="237" left="129" width="70" height="15" font="19"><b>Questions</b></text>
+<text top="261" left="146" width="326" height="14" font="2">1. First, open two separate terminal connections to the</text>
+<text top="261" left="476" width="27" height="14" font="3"><i>same</i></text>
+<text top="261" left="507" width="54" height="14" font="2">machine,</text>
+<text top="276" left="163" width="396" height="14" font="2">so that you can easily run something in one window and the other.</text>
+<text top="296" left="163" width="152" height="14" font="2">Now, in one window, run</text>
+<text top="296" left="319" width="65" height="11" font="7">vmstat 1</text>
+<text top="296" left="384" width="177" height="14" font="2">, which shows statistics about</text>
+<text top="311" left="163" width="397" height="14" font="2">machine usage every second. Read the man page, the associated</text>
+<text top="326" left="163" width="397" height="14" font="2">README, and any other information you need so that you can un-</text>
+<text top="340" left="163" width="299" height="14" font="2">derstand its output. Leave this window running</text>
+<text top="341" left="467" width="48" height="11" font="7">vmstat</text>
+<text top="340" left="520" width="41" height="14" font="2">for the</text>
+<text top="355" left="163" width="157" height="14" font="2">rest of the exercises below.</text>
+<text top="375" left="163" width="183" height="14" font="2">Now, we will run the program</text>
+<text top="376" left="350" width="40" height="11" font="7">mem.c</text>
+<text top="375" left="394" width="166" height="14" font="2">but with very little memory</text>
+<text top="390" left="163" width="261" height="14" font="2">usage. This can be accomplished by typing</text>
+<text top="391" left="429" width="56" height="11" font="7">./mem 1</text>
+<text top="390" left="489" width="71" height="14" font="2">(which uses</text>
+<text top="405" left="163" width="397" height="14" font="2">only 1 MB of memory). How do the CPU usage statistics change</text>
+<text top="420" left="163" width="86" height="14" font="2">when running</text>
+<text top="420" left="255" width="24" height="11" font="7">mem</text>
+<text top="420" left="279" width="154" height="14" font="2">? Do the numbers in the</text>
+<text top="420" left="438" width="73" height="11" font="7">user time</text>
+<text top="420" left="516" width="45" height="14" font="2">column</text>
+<text top="435" left="163" width="397" height="14" font="2">make sense? How does this change when running more than one</text>
+<text top="450" left="163" width="64" height="14" font="2">instance of</text>
+<text top="450" left="231" width="24" height="11" font="7">mem</text>
+<text top="450" left="258" width="48" height="14" font="2">at once?</text>
+<text top="473" left="146" width="414" height="14" font="2">2. Let’s now start looking at some of the memory statistics while run-</text>
+<text top="488" left="163" width="27" height="14" font="2">ning</text>
+<text top="489" left="195" width="24" height="11" font="7">mem</text>
+<text top="488" left="219" width="183" height="14" font="2">. We’ll focus on two columns:</text>
+<text top="489" left="408" width="32" height="11" font="7">swpd</text>
+<text top="488" left="445" width="116" height="14" font="2">(the amount of vir-</text>
+<text top="503" left="163" width="143" height="14" font="2">tual memory used) and</text>
+<text top="504" left="311" width="32" height="11" font="7">free</text>
+<text top="503" left="348" width="213" height="14" font="2">(the amount of idle memory). Run</text>
+<text top="519" left="163" width="81" height="11" font="7">./mem 1024</text>
+<text top="518" left="248" width="313" height="14" font="2">(which allocates 1024 MB) and watch how these val-</text>
+<text top="533" left="163" width="397" height="14" font="2">ues change. Then kill the running program (by typing control-c)</text>
+<text top="548" left="163" width="397" height="14" font="2">and watch again how the values change. What do you notice about</text>
+<text top="563" left="163" width="231" height="14" font="2">the values? In particular, how does the</text>
+<text top="564" left="398" width="32" height="11" font="7">free</text>
+<text top="563" left="433" width="128" height="14" font="2">column change when</text>
+<text top="578" left="163" width="397" height="14" font="2">the program exits? Does the amount of free memory increase by the</text>
+<text top="593" left="163" width="139" height="14" font="2">expected amount when</text>
+<text top="594" left="306" width="24" height="11" font="7">mem</text>
+<text top="593" left="334" width="33" height="14" font="2">exits?</text>
+<text top="617" left="146" width="147" height="14" font="2">3. We’ll next look at the</text>
+<text top="618" left="298" width="32" height="11" font="7">swap</text>
+<text top="617" left="335" width="60" height="14" font="2">columns (</text>
+<text top="618" left="395" width="16" height="11" font="7">si</text>
+<text top="617" left="416" width="23" height="14" font="2">and</text>
+<text top="618" left="443" width="16" height="11" font="7">so</text>
+<text top="617" left="459" width="102" height="14" font="2">), which indicate</text>
+<text top="632" left="163" width="398" height="14" font="2">how much swapping is taking place to and from the disk. Of course,</text>
+<text top="647" left="163" width="224" height="14" font="2">to activate these, you’ll need to run</text>
+<text top="648" left="393" width="24" height="11" font="7">mem</text>
+<text top="647" left="423" width="138" height="14" font="2">with large amounts of</text>
+<text top="662" left="163" width="397" height="14" font="2">memory. First, examine how much free memory is on your Linux</text>
+<text top="677" left="163" width="191" height="14" font="2">system (for example, by typing</text>
+<text top="677" left="359" width="137" height="11" font="7">cat /proc/meminfo</text>
+<text top="677" left="496" width="35" height="14" font="2">; type</text>
+<text top="677" left="537" width="24" height="11" font="7">man</text>
+<text top="692" left="163" width="32" height="11" font="7">proc</text>
+<text top="692" left="199" width="100" height="14" font="2">for details on the</text>
+<text top="692" left="301" width="40" height="11" font="7">/proc</text>
+<text top="692" left="345" width="216" height="14" font="2">file system and the types of informa-</text>
+<text top="707" left="163" width="290" height="14" font="2">tion you can find there). One of the first entries in</text>
+<text top="707" left="456" width="105" height="11" font="7">/proc/meminfo</text>
+<text top="721" left="163" width="397" height="14" font="2">is the total amount of memory in your system. Let’s assume it’s</text>
+<text top="736" left="163" width="329" height="14" font="2">something like 8 GB of memory; if so, start by running</text>
+<text top="737" left="496" width="65" height="11" font="7">mem 4000</text>
+<text top="751" left="163" width="397" height="14" font="2">(about 4 GB) and watching the swap in/out columns. Do they ever</text>
+<text top="766" left="163" width="224" height="14" font="2">give non-zero values? Then, try with</text>
+<text top="767" left="391" width="32" height="11" font="7">5000</text>
+<text top="766" left="424" width="3" height="14" font="2">,</text>
+<text top="767" left="431" width="32" height="11" font="7">6000</text>
+<text top="766" left="463" width="97" height="14" font="2">, etc. What hap-</text>
+<text top="781" left="163" width="397" height="14" font="2">pens to these values as the program enters the second loop (and</text>
+<text top="796" left="163" width="397" height="14" font="2">beyond), as compared to the first loop? How much data (total)</text>
+<text top="811" left="163" width="397" height="14" font="2">are swapped in and out during the second, third, and subsequent</text>
+<text top="826" left="163" width="222" height="14" font="2">loops? (do the numbers make sense?)</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="5">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="5">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="5">EMORY</text>
+<text top="96" left="262" width="21" height="14" font="2">: M</text>
+<text top="98" left="284" width="71" height="11" font="5">ECHANISMS</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="139" left="105" width="414" height="14" font="2">4. Do the same experiments as above, but now watch the other statis-</text>
+<text top="154" left="122" width="397" height="14" font="2">tics (such as CPU utilization, and block I/O statistics). How do they</text>
+<text top="169" left="122" width="79" height="14" font="2">change when</text>
+<text top="169" left="204" width="24" height="11" font="7">mem</text>
+<text top="169" left="232" width="67" height="14" font="2">is running?</text>
+<text top="193" left="105" width="324" height="14" font="2">5. Now let’s examine performance. Pick an input for</text>
+<text top="194" left="433" width="24" height="11" font="7">mem</text>
+<text top="193" left="462" width="57" height="14" font="2">that com-</text>
+<text top="208" left="122" width="166" height="14" font="2">fortably fits in memory (say</text>
+<text top="209" left="292" width="32" height="11" font="7">4000</text>
+<text top="208" left="328" width="191" height="14" font="2">if the amount of memory on the</text>
+<text top="223" left="122" width="397" height="14" font="2">system is 8 GB). How long does loop 0 take (and subsequent loops</text>
+<text top="238" left="122" width="397" height="14" font="2">1, 2, etc.)? Now pick a size comfortably beyond the size of memory</text>
+<text top="253" left="122" width="24" height="14" font="2">(say</text>
+<text top="254" left="151" width="40" height="11" font="7">12000</text>
+<text top="253" left="196" width="323" height="14" font="2">again assuming 8 GB of memory). How long do the</text>
+<text top="268" left="122" width="397" height="14" font="2">loops take here? How do the bandwidth numbers compare? How</text>
+<text top="283" left="122" width="397" height="14" font="2">different is performance when constantly swapping versus fitting</text>
+<text top="298" left="122" width="397" height="14" font="2">everything comfortably in memory? Can you make a graph, with</text>
+<text top="313" left="122" width="160" height="14" font="2">the size of memory used by</text>
+<text top="314" left="285" width="24" height="11" font="7">mem</text>
+<text top="313" left="312" width="207" height="14" font="2">on the x-axis, and the bandwidth of</text>
+<text top="328" left="122" width="397" height="14" font="2">accessing said memory on the y-axis? Finally, how does the perfor-</text>
+<text top="343" left="122" width="397" height="14" font="2">mance of the first loop compare to that of subsequent loops, for both</text>
+<text top="358" left="122" width="377" height="14" font="2">the case where everything fits in memory and where it doesn’t?</text>
+<text top="383" left="105" width="290" height="14" font="2">6. Swap space isn’t infinite. You can use the tool</text>
+<text top="384" left="398" width="48" height="11" font="7">swapon</text>
+<text top="383" left="450" width="50" height="14" font="2">with the</text>
+<text top="384" left="503" width="16" height="11" font="7">-s</text>
+<text top="398" left="122" width="397" height="14" font="2">flag to see how much swap space is available. What happens if you</text>
+<text top="413" left="122" width="58" height="14" font="2">try to run</text>
+<text top="413" left="184" width="24" height="11" font="7">mem</text>
+<text top="413" left="212" width="307" height="14" font="2">with increasingly large values, beyond what seems</text>
+<text top="428" left="122" width="397" height="14" font="2">to be available in swap? At what point does the memory allocation</text>
+<text top="443" left="122" width="25" height="14" font="2">fail?</text>
+<text top="467" left="105" width="414" height="14" font="2">7. Finally, if you’re advanced, you can configure your system to use</text>
+<text top="482" left="122" width="170" height="14" font="2">different swap devices using</text>
+<text top="483" left="295" width="48" height="11" font="7">swapon</text>
+<text top="482" left="347" width="23" height="14" font="2">and</text>
+<text top="483" left="373" width="57" height="11" font="7">swapoff</text>
+<text top="482" left="429" width="90" height="14" font="2">. Read the man</text>
+<text top="497" left="122" width="397" height="14" font="2">pages for details. If you have access to different hardware, see how</text>
+<text top="512" left="122" width="397" height="14" font="2">the performance of swapping changes when swapping to a classic</text>
+<text top="527" left="122" width="397" height="14" font="2">hard drive, a flash-based SSD, and even a RAID array. How much</text>
+<text top="542" left="122" width="397" height="14" font="2">can swapping performance be improved via newer devices? How</text>
+<text top="557" left="122" width="271" height="14" font="2">close can you get to in-memory performance?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+</pdf2xml>

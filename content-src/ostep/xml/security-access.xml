@@ -1,0 +1,1401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="ZHFUZB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="ZHFUZB+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="15" family="RISNSL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="15" family="OBFIMS+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="16" family="RISNSL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="13" family="RISNSL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="13" family="OBFIMS+URWPalladioL" color="#000000"/>
+	<fontspec id="7" size="13" family="LNBAIT+NimbusMonL-Regu" color="#000000"/>
+<text top="199" left="523" width="34" height="24" font="0">55</text>
+<text top="270" left="374" width="145" height="16" font="1">Access Control</text>
+<text top="307" left="300" width="74" height="15" font="2">Chapter by</text>
+<text top="308" left="378" width="141" height="15" font="3"><b>Peter Reiher (UCLA)</b></text>
+<text top="347" left="55" width="125" height="17" font="4">55.1 Introduction</text>
+<text top="378" left="105" width="414" height="14" font="5">So we know what our security goals are, we have at least a general</text>
+<text top="393" left="87" width="432" height="14" font="5">sense of the security policies we’d like to enforce, and we have some ev-</text>
+<text top="408" left="87" width="432" height="14" font="5">idence about who is requesting various system services that might (or</text>
+<text top="423" left="87" width="432" height="14" font="5">might not) violate our policies. Now we need to take that information</text>
+<text top="438" left="87" width="432" height="14" font="5">and turn it into something actionable, something that a piece of software</text>
+<text top="453" left="87" width="114" height="14" font="5">can perform for us.</text>
+<text top="469" left="105" width="211" height="14" font="5">There are two important steps here:</text>
+<text top="499" left="105" width="340" height="14" font="5">1. Figure out if the request fits within our security policy.</text>
+<text top="516" left="105" width="392" height="14" font="5">2. If it does, perform the operation. If not, make sure it isn’t done.</text>
+<text top="546" left="105" width="233" height="14" font="5">The first step is generally referred to as</text>
+<text top="546" left="342" width="84" height="13" font="6"><b>access control</b></text>
+<text top="546" left="426" width="93" height="14" font="5">. We will deter-</text>
+<text top="561" left="87" width="432" height="14" font="5">mine which system resources or services can be accessed by which par-</text>
+<text top="576" left="87" width="432" height="14" font="5">ties in which ways under which circumstances. Basically, it boils down</text>
+<text top="591" left="87" width="432" height="14" font="5">to another of those binary decisions that fit so well into our computing</text>
+<text top="606" left="87" width="432" height="14" font="5">paradigms: yes or no. But how to make that decision? To make the prob-</text>
+<text top="621" left="87" width="432" height="14" font="5">lem more concrete, consider this case. User X wishes to read and write</text>
+<text top="635" left="87" width="432" height="14" font="5">file /var/foo. Under the covers, this case probably implies that a process</text>
+<text top="650" left="87" width="398" height="14" font="5">being run under the identity of User X issued a system call such as:</text>
+<text top="670" left="105" width="190" height="15" font="2">open(”/var/foo”, O RDWR)</text>
+<text top="690" left="105" width="293" height="14" font="5">Note here that we’re not talking about the Linux</text>
+<text top="691" left="402" width="48" height="11" font="7">open()</text>
+<text top="690" left="454" width="65" height="14" font="5">call, which</text>
+<text top="705" left="87" width="432" height="14" font="5">is a specific implementation that handles access control a specific way.</text>
+<text top="720" left="87" width="432" height="14" font="5">We’re talking about the general idea of how you might be able to control</text>
+<text top="735" left="87" width="429" height="14" font="5">access to a file open system call. Hence the different font, to remind you.</text>
+<text top="751" left="105" width="414" height="14" font="5">How should the system handle this request from the process, making</text>
+<text top="766" left="87" width="432" height="14" font="5">sure that the file is not opened if the security policy to be enforced forbids</text>
+<text top="781" left="87" width="432" height="14" font="5">it, but equally making sure that the file is opened if the policy allows it?</text>
+<text top="796" left="87" width="432" height="14" font="5">We know that the system call will trap to the operating system, giving</text>
+<text top="811" left="87" width="432" height="14" font="5">it the opportunity to do something to make this decision. Mechanically</text>
+<text top="826" left="87" width="265" height="14" font="5">speaking, what should that “something” be?</text>
+<text top="862" left="300" width="7" height="14" font="5">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="8" size="11" family="RISNSL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="9" family="RISNSL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="7" family="RISNSL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="11" size="10" family="RISNSL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="12" size="12" family="RISNSL+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="5">2</text>
+<text top="96" left="450" width="10" height="14" font="5">A</text>
+<text top="98" left="461" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="501" width="10" height="14" font="5">C</text>
+<text top="98" left="511" width="50" height="11" font="8">ONTROL</text>
+<text top="153" left="255" width="8" height="14" font="5">T</text>
+<text top="155" left="264" width="16" height="11" font="8">HE</text>
+<text top="153" left="284" width="10" height="14" font="5">C</text>
+<text top="155" left="294" width="24" height="11" font="8">RUX</text>
+<text top="153" left="323" width="11" height="14" font="5">O</text>
+<text top="155" left="334" width="6" height="11" font="8">F</text>
+<text top="153" left="344" width="8" height="14" font="5">T</text>
+<text top="155" left="353" width="16" height="11" font="8">HE</text>
+<text top="153" left="373" width="8" height="14" font="5">P</text>
+<text top="155" left="382" width="49" height="11" font="8">ROBLEM</text>
+<text top="153" left="431" width="3" height="14" font="5">:</text>
+<text top="168" left="133" width="11" height="14" font="5">H</text>
+<text top="170" left="145" width="20" height="11" font="8">OW</text>
+<text top="168" left="169" width="8" height="14" font="5">T</text>
+<text top="170" left="177" width="8" height="11" font="8">O</text>
+<text top="168" left="190" width="10" height="14" font="5">D</text>
+<text top="170" left="201" width="61" height="11" font="8">ETERMINE</text>
+<text top="168" left="266" width="5" height="14" font="5">I</text>
+<text top="170" left="271" width="6" height="11" font="8">F</text>
+<text top="168" left="281" width="10" height="14" font="5">A</text>
+<text top="170" left="292" width="9" height="11" font="8">N</text>
+<text top="168" left="305" width="10" height="14" font="5">A</text>
+<text top="170" left="316" width="36" height="11" font="8">CCESS</text>
+<text top="168" left="356" width="9" height="14" font="5">R</text>
+<text top="170" left="366" width="46" height="11" font="8">EQUEST</text>
+<text top="168" left="415" width="7" height="14" font="5">S</text>
+<text top="170" left="423" width="43" height="11" font="8">HOULD</text>
+<text top="168" left="470" width="8" height="14" font="5">B</text>
+<text top="170" left="479" width="7" height="11" font="8">E</text>
+<text top="168" left="490" width="10" height="14" font="5">G</text>
+<text top="170" left="501" width="49" height="11" font="8">RANTED</text>
+<text top="168" left="551" width="6" height="14" font="5">?</text>
+<text top="183" left="147" width="414" height="14" font="5">How can the operating system decide if a particular request made by</text>
+<text top="197" left="129" width="432" height="14" font="5">a particular process belonging to a particular user at some given moment</text>
+<text top="212" left="129" width="432" height="14" font="5">should or should not be granted? What information will be used to make</text>
+<text top="227" left="129" width="432" height="14" font="5">this decision? How can we set this information to encode the security</text>
+<text top="242" left="129" width="257" height="14" font="5">policies we want to enforce for our system?</text>
+<text top="298" left="97" width="400" height="17" font="4">55.2 Important Aspects Of The Access Control Problem</text>
+<text top="328" left="147" width="414" height="14" font="5">As usual, the system will run some kind of algorithm to make this</text>
+<text top="343" left="129" width="432" height="14" font="5">decision. It will take certain inputs and produce a binary output, a yes-or-</text>
+<text top="358" left="129" width="432" height="14" font="5">no decision on granting access. At the high level, access control is usually</text>
+<text top="373" left="129" width="125" height="14" font="5">spoken of in terms of</text>
+<text top="373" left="257" width="50" height="13" font="6"><b>subjects</b></text>
+<text top="373" left="307" width="3" height="14" font="5">,</text>
+<text top="373" left="313" width="43" height="13" font="6"><b>objects</b></text>
+<text top="373" left="357" width="29" height="14" font="5">, and</text>
+<text top="373" left="389" width="37" height="13" font="6"><b>access</b></text>
+<text top="373" left="426" width="134" height="14" font="5">. A subject is the entity</text>
+<text top="388" left="129" width="432" height="14" font="5">that wants to perform the access, perhaps a user or a process. An object</text>
+<text top="403" left="129" width="432" height="14" font="5">is the thing the subject wants to access, perhaps a file or a device. Access</text>
+<text top="418" left="129" width="432" height="14" font="5">is some particular mode of dealing with the object, such as reading it or</text>
+<text top="433" left="129" width="432" height="14" font="5">writing it. So an access control decision is about whether a particular</text>
+<text top="448" left="129" width="432" height="14" font="5">subject is allowed to perform a particular mode of access on a particular</text>
+<text top="463" left="129" width="432" height="14" font="5">object. We sometimes refer to the process of determining if a particular</text>
+<text top="480" left="129" width="427" height="14" font="5">subject is allowed to perform a particular form of access on a particular</text>
+<text top="478" left="556" width="4" height="9" font="9">1</text>
+<text top="495" left="129" width="51" height="14" font="5">object as</text>
+<text top="495" left="183" width="83" height="13" font="6"><b>authorization</b></text>
+<text top="495" left="266" width="3" height="14" font="5">.</text>
+<text top="511" left="147" width="414" height="14" font="5">One relevant issue is when will access control decisions be made? The</text>
+<text top="526" left="129" width="432" height="14" font="5">system must run whatever algorithm it uses every time it makes such a</text>
+<text top="541" left="129" width="371" height="14" font="5">decision. The code that implements this algorithm is called a</text>
+<text top="541" left="504" width="57" height="13" font="6"><b>reference</b></text>
+<text top="556" left="129" width="49" height="13" font="6"><b>monitor</b></text>
+<text top="556" left="178" width="383" height="14" font="5">, and there is an obvious incentive to make sure it is implemented</text>
+<text top="571" left="129" width="432" height="14" font="5">both correctly and efficiently. If it’s not correct, you make the wrong ac-</text>
+<text top="586" left="129" width="432" height="14" font="5">cess decisions – obviously bad. Its efficiency is important because it will</text>
+<text top="601" left="129" width="432" height="14" font="5">inject some overhead whenever it is used. Perhaps we wish to minimize</text>
+<text top="616" left="129" width="432" height="14" font="5">these overheads by not checking access control on every possible oppor-</text>
+<text top="631" left="129" width="432" height="14" font="5">tunity. On the other hand, remember that principle of complete medi-</text>
+<text top="646" left="129" width="432" height="14" font="5">ation we introduced a couple of chapters back? That principle said we</text>
+<text top="661" left="129" width="432" height="14" font="5">should check security conditions every time someone asked for some-</text>
+<text top="676" left="129" width="35" height="14" font="5">thing.</text>
+<text top="692" left="147" width="414" height="14" font="5">Clearly, we’ll need to balance costs against security benefits. But if</text>
+<text top="706" left="129" width="432" height="14" font="5">we can find some beneficial special cases where we can achieve low cost</text>
+<text top="721" left="129" width="432" height="14" font="5">without compromising security, we can possibly manage to avoid trading</text>
+<text top="736" left="129" width="253" height="14" font="5">off one for the other, at least in those cases.</text>
+<text top="752" left="147" width="414" height="14" font="5">One way to do so is to give subjects objects that belong only to them.</text>
+<text top="767" left="129" width="432" height="14" font="5">If the object is inherently theirs, by its very nature and unchangeably so,</text>
+<text top="782" left="129" width="432" height="14" font="5">the system can let the subject (a process, in the operating system case) ac-</text>
+<text top="814" left="149" width="4" height="8" font="10">1</text>
+<text top="816" left="154" width="407" height="11" font="11">Wow. You know how hard it is to get so many instances of the word “particular” to line</text>
+<text top="828" left="129" width="380" height="11" font="11">up like this? It’s a column of particulars! But, perhaps, not particularly interesting.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="8">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="8">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">A</text>
+<text top="98" left="99" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="138" width="10" height="14" font="5">C</text>
+<text top="98" left="149" width="50" height="11" font="8">ONTROL</text>
+<text top="96" left="512" width="7" height="14" font="5">3</text>
+<text top="139" left="87" width="432" height="14" font="5">cess it freely. Virtualization allows us to create virtual objects of this kind.</text>
+<text top="154" left="87" width="432" height="14" font="5">Virtual memory is an excellent example. A process is allowed to access its</text>
+<text top="171" left="87" width="133" height="14" font="5">virtual memory freely</text>
+<text top="168" left="220" width="4" height="9" font="9">2</text>
+<text top="171" left="225" width="294" height="14" font="5">, with no special operating system access control</text>
+<text top="186" left="87" width="432" height="14" font="5">check at the moment the process tries to use it. A good thing, too, since</text>
+<text top="201" left="87" width="432" height="14" font="5">otherwise we would need to run our access control algorithm on every</text>
+<text top="216" left="87" width="432" height="14" font="5">process memory reference, which would lead to a ridiculously slow sys-</text>
+<text top="231" left="87" width="432" height="14" font="5">tem. We can play similar virtualization tricks with peripheral devices. If</text>
+<text top="245" left="87" width="432" height="14" font="5">a process is given access to some virtual device, which is actually backed</text>
+<text top="260" left="87" width="432" height="14" font="5">up by a real physical device controlled by the OS, and if no other process</text>
+<text top="275" left="87" width="432" height="14" font="5">is allowed to use that device, the operating system need not check for</text>
+<text top="290" left="87" width="432" height="14" font="5">access control every time the process wants to use it. For example, a pro-</text>
+<text top="305" left="87" width="432" height="14" font="5">cess might be granted control of a GPU based on an initial access control</text>
+<text top="320" left="87" width="432" height="14" font="5">decision, after which the process can write to the GPU’s memory or issue</text>
+<text top="335" left="87" width="383" height="14" font="5">instructions directly to it without further intervention by the OS.</text>
+<text top="352" left="105" width="414" height="14" font="5">Of course, as discussed earlier, virtualization is mostly an operating-</text>
+<text top="367" left="87" width="432" height="14" font="5">system provided illusion. Processes share memory, devices, and other</text>
+<text top="382" left="87" width="432" height="14" font="5">computing resources. What appears to be theirs alone is actually shared,</text>
+<text top="397" left="87" width="432" height="14" font="5">with the operating system running around behind the scenes to keep the</text>
+<text top="412" left="87" width="432" height="14" font="5">illusion going, sometimes assisted by special hardware. That means the</text>
+<text top="426" left="87" width="432" height="14" font="5">operating system, without the direct knowledge and participation of the</text>
+<text top="441" left="87" width="432" height="14" font="5">applications using the virtualized resource, still has to make sure that</text>
+<text top="456" left="87" width="432" height="14" font="5">only proper forms of access to it are allowed. So merely relying on vir-</text>
+<text top="471" left="87" width="432" height="14" font="5">tualization to ensure proper access just pushes the problem down to pro-</text>
+<text top="486" left="87" width="432" height="14" font="5">tecting the virtualization functionality of the OS. Even if we leave that</text>
+<text top="501" left="87" width="432" height="14" font="5">issue aside, sooner or later we have to move past cheap special cases and</text>
+<text top="516" left="87" width="432" height="14" font="5">deal with the general problem. Subject X wants to read and write object</text>
+<text top="532" left="87" width="65" height="11" font="7">/tmp/foo</text>
+<text top="531" left="152" width="294" height="14" font="5">. Maybe it’s allowable, maybe it isn’t. Now what?</text>
+<text top="548" left="105" width="414" height="14" font="5">Computer scientists have come up with two basic approaches to solv-</text>
+<text top="563" left="87" width="432" height="14" font="5">ing this question, relying on different data structures and different meth-</text>
+<text top="578" left="87" width="259" height="14" font="5">ods of making the decision. One is called</text>
+<text top="578" left="351" width="116" height="13" font="6"><b>access control lists</b></text>
+<text top="578" left="472" width="46" height="14" font="5">and the</text>
+<text top="592" left="87" width="85" height="14" font="5">other is called</text>
+<text top="593" left="177" width="71" height="13" font="6"><b>capabilities</b></text>
+<text top="592" left="248" width="271" height="14" font="5">. It’s actually a little inaccurate to claim that</text>
+<text top="607" left="87" width="432" height="14" font="5">computer scientists came up with these approaches, since they’ve been in</text>
+<text top="622" left="87" width="432" height="14" font="5">use in non-computer contexts for millennia. Let’s look at them in a more</text>
+<text top="637" left="87" width="432" height="14" font="5">general perspective before we consider operating system implementa-</text>
+<text top="652" left="87" width="33" height="14" font="5">tions.</text>
+<text top="669" left="105" width="414" height="14" font="5">Let’s say we want to start an exclusive nightclub (called, perhaps,</text>
+<text top="686" left="87" width="80" height="14" font="5">Chez Andrea</text>
+<text top="684" left="167" width="4" height="9" font="9">3</text>
+<text top="686" left="173" width="346" height="14" font="5">) restricted to only the best operating system researchers</text>
+<text top="701" left="87" width="432" height="14" font="5">and developers. We don’t want to let any of those database or program-</text>
+<text top="716" left="87" width="432" height="14" font="5">ming language people slip in, so we’ll need to make sure only our ap-</text>
+<text top="731" left="87" width="432" height="14" font="5">proved customers get through the door. How might we do that? One</text>
+<text top="765" left="107" width="4" height="8" font="10">2</text>
+<text top="767" left="112" width="407" height="11" font="11">Almost. Remember the bits in the page table that determine whether a particular page</text>
+<text top="779" left="87" width="432" height="11" font="11">can be read, written, or executed? But it’s not the operating system doing the runtime check</text>
+<text top="791" left="87" width="181" height="11" font="11">here, it’s the virtual memory hardware.</text>
+<text top="802" left="107" width="4" height="8" font="10">3</text>
+<text top="804" left="112" width="407" height="11" font="11">The authors Arpaci-Dusseau would like to note that author Reiher is in charge of these</text>
+<text top="816" left="87" width="432" height="11" font="11">name choices for the security chapters, and did not strong-arm him into using their names</text>
+<text top="828" left="87" width="380" height="11" font="11">throughout this and other examples. We now return you to your regular reading...</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="8">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="8">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="8">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="8">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="8">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="8">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="8">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="5">4</text>
+<text top="96" left="450" width="10" height="14" font="5">A</text>
+<text top="98" left="461" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="501" width="10" height="14" font="5">C</text>
+<text top="98" left="511" width="50" height="11" font="8">ONTROL</text>
+<text top="139" left="129" width="432" height="14" font="5">way would be to hire a massive intimidating bouncer who has a list of</text>
+<text top="154" left="129" width="432" height="14" font="5">all the approved members. When someone wants to enter the club, they</text>
+<text top="169" left="129" width="432" height="14" font="5">would prove their identity to the bouncer, and the bouncer would see</text>
+<text top="183" left="129" width="432" height="14" font="5">if they were on the list. If it was Linus Torvalds or Barbara Liskov, the</text>
+<text top="198" left="129" width="432" height="14" font="5">bouncer would let them in, but would keep out the hoi polloi networking</text>
+<text top="213" left="129" width="407" height="14" font="5">folks who had failed to distinguish themselves in operating systems.</text>
+<text top="228" left="147" width="414" height="14" font="5">Another approach would be to put a really great lock on the door of</text>
+<text top="243" left="129" width="432" height="14" font="5">the club and hand out keys to that lock to all of our OS buddies. If Jerome</text>
+<text top="258" left="129" width="432" height="14" font="5">Saltzer wanted to get in to Chez Andrea, he’d merely pull out his key and</text>
+<text top="273" left="129" width="432" height="14" font="5">unlock the door. If some computer architects with no OS chops wanted</text>
+<text top="288" left="129" width="432" height="14" font="5">to get in, they wouldn’t have a key and thus would be stuck outside.</text>
+<text top="303" left="129" width="432" height="14" font="5">Compared to the other approach, we’d save on the salary of the bouncer,</text>
+<text top="320" left="129" width="308" height="14" font="5">though we would have to pay for the locks and keys</text>
+<text top="318" left="437" width="4" height="9" font="9">4</text>
+<text top="320" left="442" width="119" height="14" font="5">. As new luminaries</text>
+<text top="335" left="129" width="432" height="14" font="5">in the OS field emerge who we want to admit, we’ll need new keys for</text>
+<text top="350" left="129" width="432" height="14" font="5">them, and once in a while we may make a mistake and hand out a key to</text>
+<text top="365" left="129" width="432" height="14" font="5">someone who doesn’t deserve it, or a member might lose a key, in which</text>
+<text top="380" left="129" width="393" height="14" font="5">case we need to make sure that key no longer opens the club door.</text>
+<text top="395" left="147" width="414" height="14" font="5">The same ideas can be used in computer systems. Early computer sci-</text>
+<text top="410" left="129" width="432" height="14" font="5">entists decided to call the approach that’s kind of like locks and keys a</text>
+<text top="425" left="129" width="148" height="13" font="6"><b>capability-based system</b></text>
+<text top="425" left="277" width="284" height="14" font="5">, while the approach based on the bouncer and</text>
+<text top="440" left="129" width="238" height="14" font="5">the list of those to admit was called an</text>
+<text top="440" left="372" width="157" height="13" font="6"><b>access control list system</b></text>
+<text top="440" left="528" width="32" height="14" font="5">. Ca-</text>
+<text top="455" left="129" width="432" height="14" font="5">pabilities are thus like keys, or tickets to a movie, or tokens that let you</text>
+<text top="470" left="129" width="432" height="14" font="5">ride a subway. Access control lists are thus like, well, lists. How does this</text>
+<text top="485" left="129" width="432" height="14" font="5">work in an operating system? If you’re using capabilities, when a pro-</text>
+<text top="500" left="129" width="309" height="14" font="5">cess belonging to user X wants to read and write file</text>
+<text top="500" left="442" width="65" height="11" font="7">/tmp/foo</text>
+<text top="500" left="506" width="55" height="14" font="5">, it hands</text>
+<text top="515" left="129" width="432" height="14" font="5">a capability specific to that file to the system. (And precisely what, you</text>
+<text top="530" left="129" width="432" height="14" font="5">may ask, is a capability in this context? Good question! We’ll get to that.)</text>
+<text top="544" left="129" width="208" height="14" font="5">If you’re using access control lists (</text>
+<text top="545" left="337" width="34" height="13" font="6"><b>ACLs</b></text>
+<text top="544" left="372" width="189" height="14" font="5">, for short), the system looks up</text>
+<text top="559" left="129" width="201" height="14" font="5">user X on an ACL associated with</text>
+<text top="560" left="334" width="65" height="11" font="7">/tmp/foo</text>
+<text top="559" left="398" width="163" height="14" font="5">, only allowing the access if</text>
+<text top="574" left="129" width="432" height="14" font="5">the user is on the list. In either case, the check can be made at the moment</text>
+<text top="589" left="129" width="84" height="14" font="5">the access (an</text>
+<text top="590" left="217" width="48" height="11" font="7">open()</text>
+<text top="589" left="271" width="290" height="14" font="5">call, in our example) is requested. The check is</text>
+<text top="604" left="129" width="432" height="14" font="5">made after trapping to the operating system, but before the access is ac-</text>
+<text top="619" left="129" width="432" height="14" font="5">tually permitted, with an early exit and error code returned if the access</text>
+<text top="634" left="129" width="110" height="14" font="5">control check fails.</text>
+<text top="649" left="147" width="414" height="14" font="5">At a high level, these two options may not sound very different, but</text>
+<text top="664" left="129" width="432" height="14" font="5">when you start thinking about the algorithm you’ll need to run and the</text>
+<text top="679" left="129" width="432" height="14" font="5">data structures required to support that algorithm, you’ll quickly see that</text>
+<text top="694" left="129" width="356" height="14" font="5">there are major differences. Let’s walk through each in turn.</text>
+<text top="766" left="149" width="4" height="8" font="10">4</text>
+<text top="768" left="154" width="407" height="11" font="11">Note that for both access control lists and capabilities, we are assuming we’ve already</text>
+<text top="780" left="129" width="432" height="11" font="11">authenticated the person trying to enter the club. If some nobody wearing a Linus Torvalds or</text>
+<text top="792" left="129" width="432" height="11" font="11">Barbara Liskov mask gets past our bouncer, or if we aren’t careful to determine that it really</text>
+<text top="804" left="129" width="432" height="11" font="11">is Jerome Saltzer before handing a random person the key, we’re not going to keep the riffraff</text>
+<text top="816" left="129" width="432" height="11" font="11">out. Abandoning the cute analogy, absolutely the same issue applies in real computer systems,</text>
+<text top="828" left="129" width="320" height="11" font="11">which is why the previous chapter discussed authentication in detail.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="8">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="8">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">A</text>
+<text top="98" left="99" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="138" width="10" height="14" font="5">C</text>
+<text top="98" left="149" width="50" height="11" font="8">ONTROL</text>
+<text top="96" left="512" width="7" height="14" font="5">5</text>
+<text top="137" left="55" width="263" height="17" font="4">55.3 Using ACLs For Access Control</text>
+<text top="167" left="105" width="414" height="14" font="5">What if, in the tradition of old British clubs, Chez Andrea gives each</text>
+<text top="182" left="87" width="432" height="14" font="5">member his own private room, in addition to access to the library, the</text>
+<text top="197" left="87" width="432" height="14" font="5">dining room, the billiard parlor, and other shared spaces? In this case,</text>
+<text top="212" left="87" width="432" height="14" font="5">we need to ensure not just that only members get into the club at all, but</text>
+<text top="226" left="87" width="432" height="14" font="5">that Ken Thompson (known to be a bit of a scamp [T84]) can’t slip into</text>
+<text top="241" left="87" width="432" height="14" font="5">Whitfield Diffie’s room and short-sheet his bed. We could have one big</text>
+<text top="256" left="87" width="432" height="14" font="5">access control list that specifies allowable access to every room, but that</text>
+<text top="271" left="87" width="432" height="14" font="5">would get unmanageable. Instead, why not have one ACL for each room</text>
+<text top="286" left="87" width="69" height="14" font="5">in the club?</text>
+<text top="302" left="105" width="414" height="14" font="5">We do the same thing with files in a typical OS that relies on ACLs</text>
+<text top="317" left="87" width="432" height="14" font="5">for access control. Each file has its own access control list, resulting in</text>
+<text top="332" left="87" width="379" height="14" font="5">simpler, shorter lists and quicker access control checks. So our</text>
+<text top="332" left="471" width="48" height="11" font="7">open()</text>
+<text top="346" left="87" width="280" height="14" font="5">call in an ACL system will examine a list for</text>
+<text top="347" left="372" width="65" height="11" font="7">/tmp/foo</text>
+<text top="346" left="437" width="82" height="14" font="5">, not an ACL</text>
+<text top="361" left="87" width="289" height="14" font="5">encoding all accesses for every file in the system.</text>
+<text top="377" left="105" width="61" height="14" font="5">When this</text>
+<text top="378" left="170" width="48" height="11" font="7">open()</text>
+<text top="377" left="222" width="297" height="14" font="5">call traps to the operating system, the OS consults</text>
+<text top="392" left="87" width="432" height="14" font="5">the running process’s PCB to determine who owns the process. That data</text>
+<text top="407" left="87" width="432" height="14" font="5">structure indicates that user X owns the process. The system then must</text>
+<text top="422" left="87" width="221" height="14" font="5">get hold of the access control list for</text>
+<text top="422" left="313" width="65" height="11" font="7">/tmp/foo</text>
+<text top="422" left="377" width="142" height="14" font="5">. This ACL is more file</text>
+<text top="437" left="87" width="432" height="14" font="5">metadata, akin to the things we discussed in the chapter titled ”Files and</text>
+<text top="452" left="87" width="432" height="14" font="5">Directories.” So it’s likely to be stored with or near the rest of the metadata</text>
+<text top="466" left="87" width="432" height="14" font="5">for this file. Somehow, we obtain that list from persistent storage. We now</text>
+<text top="481" left="87" width="432" height="14" font="5">look up X on the list. Either X is there or isn’t. If not, no access for X. If</text>
+<text top="496" left="87" width="432" height="14" font="5">yes, we’ll typically go a step further to determine if the ACL entry for X</text>
+<text top="511" left="87" width="432" height="14" font="5">allows the type of access being requested. In our example, X wanted to</text>
+<text top="526" left="87" width="30" height="14" font="5">open</text>
+<text top="527" left="121" width="65" height="11" font="7">/tmp/foo</text>
+<text top="526" left="190" width="329" height="14" font="5">for read and write. Perhaps the ACL allows X to open</text>
+<text top="541" left="87" width="432" height="14" font="5">that file for read, but not for write. In that case, the system will deny the</text>
+<text top="556" left="87" width="242" height="14" font="5">access and return an error to the process.</text>
+<text top="572" left="105" width="414" height="14" font="5">In principle, this isn’t too complicated, but remember the devil being</text>
+<text top="587" left="87" width="432" height="14" font="5">in the details? He’s still there. Consider some of those details. For ex-</text>
+<text top="601" left="87" width="432" height="14" font="5">ample, where exactly is the ACL persistently stored? It really does need</text>
+<text top="616" left="87" width="432" height="14" font="5">to be persistent for most resources, since the ACLs effectively encode our</text>
+<text top="631" left="87" width="432" height="14" font="5">chosen security policy, which is probably not changing very often. So it’s</text>
+<text top="646" left="87" width="432" height="14" font="5">somewhere on the flash drive or disk. Unless it’s cached, we’ll need to</text>
+<text top="661" left="87" width="432" height="14" font="5">read it off that device every time someone tries to open the file. In most</text>
+<text top="676" left="87" width="432" height="14" font="5">file systems, as was discussed in the sections on persistence, you already</text>
+<text top="691" left="87" width="432" height="14" font="5">need to perform several device reads to actually obtain any information</text>
+<text top="706" left="87" width="432" height="14" font="5">from a file. Are we going to require another read to also get the ACL for</text>
+<text top="721" left="87" width="432" height="14" font="5">the file? If so, where on the device do we put the ACL to ensure that it’s</text>
+<text top="736" left="87" width="432" height="14" font="5">quick to access? It would be best if it was close to, or even part of, some-</text>
+<text top="751" left="87" width="432" height="14" font="5">thing we’re already reading, which suggests a few possible locations: the</text>
+<text top="766" left="87" width="432" height="14" font="5">file’s directory entry, the file’s inode, or perhaps the first data block of the</text>
+<text top="781" left="87" width="432" height="14" font="5">file. At the minimum, we want to have the ACL close to one of those</text>
+<text top="796" left="87" width="432" height="14" font="5">locations, and it might be better if it was actually in one of them, such as</text>
+<text top="811" left="87" width="59" height="14" font="5">the inode.</text>
+<text top="826" left="105" width="414" height="14" font="5">That leads to another vexing detail: how big is this list? If we do the</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="8">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="8">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="8">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="8">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="8">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="8">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="8">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="5">6</text>
+<text top="96" left="450" width="10" height="14" font="5">A</text>
+<text top="98" left="461" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="501" width="10" height="14" font="5">C</text>
+<text top="98" left="511" width="50" height="11" font="8">ONTROL</text>
+<text top="139" left="129" width="432" height="14" font="5">obvious thing and create a list of actual user IDs and access modes, in</text>
+<text top="154" left="129" width="432" height="14" font="5">principle the list could be of arbitrary size, up to the number of users</text>
+<text top="169" left="129" width="432" height="14" font="5">known to the system. For some systems, that could be thousands of en-</text>
+<text top="183" left="129" width="432" height="14" font="5">tries. But typically files belong to one user and are often available only to</text>
+<text top="198" left="129" width="432" height="14" font="5">that user and perhaps a couple friends. So we wouldn’t want to reserve</text>
+<text top="213" left="129" width="432" height="14" font="5">enough space in every ACL for every possible user to be listed, since most</text>
+<text top="228" left="129" width="432" height="14" font="5">users wouldn’t appear in most ACLs. With some exceptions, of course:</text>
+<text top="243" left="129" width="432" height="14" font="5">a lot of files should be available in some mode (perhaps read or execute)</text>
+<text top="258" left="129" width="336" height="14" font="5">to all users. After all, commonly used executables (like</text>
+<text top="259" left="470" width="16" height="11" font="7">ls</text>
+<text top="258" left="490" width="23" height="14" font="5">and</text>
+<text top="259" left="517" width="16" height="11" font="7">mv</text>
+<text top="258" left="534" width="27" height="14" font="5">) are</text>
+<text top="273" left="129" width="432" height="14" font="5">stored in files, and we’ll be applying access control to them, just like any</text>
+<text top="288" left="129" width="432" height="14" font="5">other file. Our users will share the same font files, configuration files for</text>
+<text top="303" left="129" width="432" height="14" font="5">networking, and so forth. We have to allow all users to access these files</text>
+<text top="318" left="129" width="357" height="14" font="5">or they won’t be able to do much of anything on the system.</text>
+<text top="333" left="147" width="414" height="14" font="5">So the obvious implementation would reserve a big per-file list that</text>
+<text top="348" left="129" width="432" height="14" font="5">would be totally filled for some files and nearly empty for others. That’s</text>
+<text top="363" left="129" width="432" height="14" font="5">clearly wasteful. For the totally filled lists, there’s another worrying de-</text>
+<text top="378" left="129" width="432" height="14" font="5">tail: every time we want to check access in the list, we’ll need to search it.</text>
+<text top="393" left="129" width="432" height="14" font="5">Modern computers can search a list of a thousand entries rather quickly,</text>
+<text top="408" left="129" width="432" height="14" font="5">but if we need to perform such searches all the time, we’ll add a lot of</text>
+<text top="423" left="129" width="432" height="14" font="5">undesirable overhead to our system. We could solve the problem with</text>
+<text top="438" left="129" width="432" height="14" font="5">variable-sized access control lists, only allocating the space required for</text>
+<text top="452" left="129" width="432" height="14" font="5">each list. Spend a few moments thinking about how you would fit that</text>
+<text top="467" left="129" width="432" height="14" font="5">kind of metadata into the types of file systems we’ve studied, and the</text>
+<text top="482" left="129" width="177" height="14" font="5">implications for performance.</text>
+<text top="497" left="147" width="414" height="14" font="5">Fortunately, in most circumstances we can benefit from a bit of legacy</text>
+<text top="512" left="129" width="432" height="14" font="5">handed down to us from the original Bell Labs Unix system. Back in</text>
+<text top="527" left="129" width="432" height="14" font="5">those primeval days when computer science giants roamed the Earth (or</text>
+<text top="542" left="129" width="432" height="14" font="5">at least certain parts of New Jersey), persistent storage was in short sup-</text>
+<text top="557" left="129" width="432" height="14" font="5">ply and pretty expensive. There was simply no way they could afford to</text>
+<text top="572" left="129" width="432" height="14" font="5">store large ACLs for each file. In fact, when they worked it out, they fig-</text>
+<text top="587" left="129" width="432" height="14" font="5">ured they could afford about nine bits for each file’s ACL. Nine bits don’t</text>
+<text top="602" left="129" width="432" height="14" font="5">go far, but fortunately those early Unix designers had plenty of clever-</text>
+<text top="617" left="129" width="432" height="14" font="5">ness to make up for their lack of hardware. They thought about their</text>
+<text top="632" left="129" width="432" height="14" font="5">problem and figured out that there were effectively three modes of access</text>
+<text top="647" left="129" width="432" height="14" font="5">they cared about (read, write, and execute, for most files), and they could</text>
+<text top="662" left="129" width="432" height="14" font="5">handle most security policies with only three entries on each access con-</text>
+<text top="677" left="129" width="432" height="14" font="5">trol list. Of course, if they were going to use one bit per access mode per</text>
+<text top="692" left="129" width="432" height="14" font="5">entry, they would have already used up their nine bits, leaving no bits</text>
+<text top="707" left="129" width="432" height="14" font="5">to specify who the entry pertained to. So they cleverly partitioned the</text>
+<text top="721" left="129" width="432" height="14" font="5">entries on their access control list into three groups. One is the owner of</text>
+<text top="736" left="129" width="432" height="14" font="5">the file, whose identity they had already stored in the inode. One is the</text>
+<text top="751" left="129" width="432" height="14" font="5">members of a particular group or users; this group ID was also stored in</text>
+<text top="766" left="129" width="432" height="14" font="5">the inode. The final one is everybody else, i.e., everybody who wasn’t the</text>
+<text top="781" left="129" width="432" height="14" font="5">owner or a member of his group. No need to use any bits to store that,</text>
+<text top="796" left="129" width="328" height="14" font="5">since it was just the complement of the user and group.</text>
+<text top="811" left="147" width="414" height="14" font="5">This solution not only solved the problem of the amount of storage</text>
+<text top="826" left="129" width="432" height="14" font="5">eaten up by ACLs, but also solved the problem of the cost of accessing</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="8">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="8">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">A</text>
+<text top="98" left="99" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="138" width="10" height="14" font="5">C</text>
+<text top="98" left="149" width="50" height="11" font="8">ONTROL</text>
+<text top="96" left="512" width="7" height="14" font="5">7</text>
+<text top="139" left="87" width="432" height="14" font="5">and checking them. You already needed to access a file’s inode to do</text>
+<text top="154" left="87" width="432" height="14" font="5">almost anything with it, so if the ACL was embedded in the inode, there</text>
+<text top="169" left="87" width="432" height="14" font="5">would be no extra seeks and reads to obtain it. And instead of a search</text>
+<text top="183" left="87" width="432" height="14" font="5">of an arbitrary sized list, a little simple logic on a few bits would provide</text>
+<text top="198" left="87" width="432" height="14" font="5">the answer to the access control question. And that logic is still providing</text>
+<text top="213" left="87" width="432" height="14" font="5">the answer in most systems that use Posix-compliant file systems to this</text>
+<text top="228" left="87" width="432" height="14" font="5">very day. Of course, the approach has limitations, since it cannot express</text>
+<text top="243" left="87" width="432" height="14" font="5">complex access modes and sharing relationships. For that reason, some</text>
+<text top="258" left="87" width="432" height="14" font="5">modern systems (such as Windows) allow extensions that permit the use</text>
+<text top="273" left="87" width="432" height="14" font="5">of more general ACLs, but many rely on the tried-and-true Unix-style</text>
+<text top="290" left="87" width="84" height="14" font="5">nine-bit ACLs</text>
+<text top="288" left="171" width="4" height="9" font="9">5</text>
+<text top="290" left="176" width="3" height="14" font="5">.</text>
+<text top="305" left="105" width="414" height="14" font="5">There are some good features of ACLs and some limiting features.</text>
+<text top="320" left="87" width="432" height="14" font="5">Good points first. First, what if you want to figure out who is allowed</text>
+<text top="335" left="87" width="432" height="14" font="5">to access a resource? If you’re using ACLs, that’s an easy question to an-</text>
+<text top="350" left="87" width="432" height="14" font="5">swer, since you can simply look at the ACL itself. Second, if you want to</text>
+<text top="365" left="87" width="432" height="14" font="5">change the set of subjects who can access an object, you merely need to</text>
+<text top="380" left="87" width="432" height="14" font="5">change the ACL, since nothing else can give the user access. Third, since</text>
+<text top="395" left="87" width="432" height="14" font="5">the ACL is typically kept either with or near the file itself, if you can get</text>
+<text top="410" left="87" width="432" height="14" font="5">to the file, you can get to all relevant access control information. This is</text>
+<text top="425" left="87" width="432" height="14" font="5">particularly important in distributed systems, but it also has good perfor-</text>
+<text top="440" left="87" width="432" height="14" font="5">mance implications for all systems, as long as your design keeps the ACL</text>
+<text top="455" left="87" width="144" height="14" font="5">near the file or its inode.</text>
+<text top="470" left="105" width="414" height="14" font="5">Now for the less desirable features. First, ACLs require you to solve</text>
+<text top="485" left="87" width="432" height="14" font="5">problems we mentioned earlier: having to store the access control infor-</text>
+<text top="499" left="87" width="432" height="14" font="5">mation somewhere near the file and dealing with potentially expensive</text>
+<text top="514" left="87" width="432" height="14" font="5">searches of long lists. We described some practical solutions that work</text>
+<text top="529" left="87" width="432" height="14" font="5">pretty well in most systems, but these solutions limit what ACLs can do.</text>
+<text top="544" left="87" width="432" height="14" font="5">Second, what if you want to figure out the entire set of resources some</text>
+<text top="559" left="87" width="432" height="14" font="5">principal (a process or a user) is permitted to access? You’ll need to check</text>
+<text top="574" left="87" width="432" height="14" font="5">every single ACL in the system, since that principal might be on any of</text>
+<text top="589" left="87" width="432" height="14" font="5">them. Third, in a distributed environment, you need to have a common</text>
+<text top="604" left="87" width="432" height="14" font="5">view of identity across all the machines for ACLs to be effective. If a user</text>
+<text top="619" left="87" width="15" height="14" font="5">on</text>
+<text top="620" left="106" width="89" height="11" font="7">cs.ucla.edu</text>
+<text top="619" left="199" width="184" height="14" font="5">wants to access a file stored on</text>
+<text top="620" left="386" width="129" height="11" font="7">cs.wisconsin.edu</text>
+<text top="619" left="516" width="3" height="14" font="5">,</text>
+<text top="634" left="87" width="434" height="14" font="5">the Wisconsin machine is going to check some identity provided by UCLA</text>
+<text top="649" left="87" width="370" height="14" font="5">against an access control list stored at Wisconsin. Does user</text>
+<text top="650" left="463" width="40" height="11" font="7">remzi</text>
+<text top="649" left="508" width="11" height="14" font="5">at</text>
+<text top="664" left="87" width="301" height="14" font="5">UCLA actually refer to the same principal as user</text>
+<text top="665" left="392" width="40" height="11" font="7">remzi</text>
+<text top="664" left="437" width="82" height="14" font="5">at Wisconsin?</text>
+<text top="679" left="87" width="432" height="14" font="5">If not, you may allow a remote user to access something he shouldn’t.</text>
+<text top="694" left="87" width="432" height="14" font="5">But trying to maintain a consistent name space of users across multiple</text>
+<text top="709" left="87" width="263" height="14" font="5">different computing domains is challenging.</text>
+<text top="790" left="107" width="4" height="8" font="10">5</text>
+<text top="792" left="112" width="407" height="11" font="11">The history is a bit more complicated than this. The CTSS system offered a more limited</text>
+<text top="804" left="87" width="432" height="11" font="11">form of condensed ACL than Unix did [C+63], and the Multics system included the concept of</text>
+<text top="816" left="87" width="432" height="11" font="11">groups in a more general access control list consisting of character string names of users and</text>
+<text top="828" left="87" width="415" height="11" font="11">groups [S74]. Thus, the Unix approach was a cross-breeding of these even earlier systems.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="8">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="8">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="8">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="8">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="8">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="8">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="8">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="5">8</text>
+<text top="96" left="450" width="10" height="14" font="5">A</text>
+<text top="98" left="461" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="501" width="10" height="14" font="5">C</text>
+<text top="98" left="511" width="50" height="11" font="8">ONTROL</text>
+<text top="148" left="279" width="10" height="14" font="5">A</text>
+<text top="150" left="290" width="26" height="11" font="8">SIDE</text>
+<text top="148" left="317" width="19" height="14" font="5">: N</text>
+<text top="150" left="337" width="26" height="11" font="8">AME</text>
+<text top="148" left="367" width="7" height="14" font="5">S</text>
+<text top="150" left="375" width="36" height="11" font="8">PACES</text>
+<text top="163" left="129" width="432" height="14" font="5">We just encountered one of the interesting and difficult problems in dis-</text>
+<text top="178" left="129" width="396" height="14" font="5">tributed systems: what do names mean on different machines? This</text>
+<text top="178" left="527" width="34" height="13" font="6"><b>name</b></text>
+<text top="193" left="129" width="34" height="13" font="6"><b>space</b></text>
+<text top="193" left="166" width="395" height="14" font="5">problem is relatively easy on a single computer. If the name chosen</text>
+<text top="208" left="129" width="432" height="14" font="5">for a new thing is already in use, don’t allow it to be assigned. So when a</text>
+<text top="223" left="129" width="432" height="14" font="5">particular name is issued on that system by any user or process, it means</text>
+<text top="238" left="129" width="92" height="14" font="5">the same thing.</text>
+<text top="239" left="227" width="105" height="11" font="7">/etc/password</text>
+<text top="238" left="335" width="225" height="14" font="5">is the same file for you and for all the</text>
+<text top="253" left="129" width="179" height="14" font="5">other users on your computer.</text>
+<text top="271" left="129" width="432" height="14" font="5">But what about distributed systems composed of multiple computers?</text>
+<text top="286" left="129" width="432" height="14" font="5">If you want the same guarantee about unique names understood by all,</text>
+<text top="301" left="129" width="432" height="14" font="5">you need to make sure someone on a machine at UCLA does not create a</text>
+<text top="316" left="129" width="432" height="14" font="5">name already being used at the University of Wisconsin. How to do that?</text>
+<text top="334" left="129" width="432" height="14" font="5">Different answers have different pluses and minuses. One approach is</text>
+<text top="349" left="129" width="432" height="14" font="5">not to bother and to understand that the namespaces are different – that’s</text>
+<text top="364" left="129" width="432" height="14" font="5">what we do with process IDs, for example. Another approach is to require</text>
+<text top="379" left="129" width="432" height="14" font="5">an authority to approve name selection – that’s more or less how AFS</text>
+<text top="394" left="129" width="432" height="14" font="5">handles file name creation. Another approach is to hand out portions of</text>
+<text top="409" left="129" width="432" height="14" font="5">the name space to each participant and allow them to assign any name</text>
+<text top="424" left="129" width="432" height="14" font="5">from that portion, but not any other name – that’s how the World Wide</text>
+<text top="439" left="129" width="432" height="14" font="5">Web and the IPv4 address space handle the issue. None of these answers</text>
+<text top="453" left="129" width="432" height="14" font="5">are universally right or wrong. Design your name space for your needs,</text>
+<text top="468" left="129" width="194" height="14" font="5">but understand the implications.</text>
+<text top="524" left="97" width="308" height="17" font="4">55.4 Using Capabilities For Access Control</text>
+<text top="555" left="147" width="414" height="14" font="5">Access control lists are not your only option for controlling access in</text>
+<text top="570" left="129" width="432" height="14" font="5">computer systems. Almost, but not quite. You can also use capabilities,</text>
+<text top="585" left="129" width="432" height="14" font="5">the option that’s more like keys or tickets. Chez Andrea could give keys</text>
+<text top="600" left="129" width="432" height="14" font="5">to its members to allow admission. Different rooms could have different</text>
+<text top="615" left="129" width="432" height="14" font="5">keys, preventing the more mischievous members from leaving little sur-</text>
+<text top="630" left="129" width="432" height="14" font="5">prises in other members’ rooms. Each member would carry around a set</text>
+<text top="645" left="129" width="432" height="14" font="5">of keys that would admit him or her to the particular areas of the club</text>
+<text top="660" left="129" width="432" height="14" font="5">she should have access to. Like ACLs, capabilities have a long history of</text>
+<text top="675" left="129" width="432" height="14" font="5">use in computer systems, with Dennis and van Horn [DV64] being per-</text>
+<text top="690" left="129" width="432" height="14" font="5">haps the earliest example. Wulf et al. [W+74] describe the Hydra Operat-</text>
+<text top="705" left="129" width="432" height="14" font="5">ing System, which used capabilities as a fundamental control mechanism.</text>
+<text top="720" left="129" width="432" height="14" font="5">Levy [L84] gives a book-length summary of the use of capabilities in early</text>
+<text top="735" left="129" width="432" height="14" font="5">hardware and software systems. In capability systems, a running process</text>
+<text top="750" left="129" width="432" height="14" font="5">has some set of capabilities that specify its access permissions. If you’re</text>
+<text top="765" left="129" width="432" height="14" font="5">using a pure capability system, there is no ACL anywhere, and this set</text>
+<text top="780" left="129" width="432" height="14" font="5">is the entire encoding of the access permissions for this process. That’s</text>
+<text top="795" left="129" width="432" height="14" font="5">not how Linux or Windows work, but other operating systems, such as</text>
+<text top="809" left="129" width="349" height="14" font="5">Hydra, examined this approach to handling access control.</text>
+<text top="826" left="147" width="171" height="14" font="5">How would we perform that</text>
+<text top="827" left="321" width="48" height="11" font="7">open()</text>
+<text top="826" left="373" width="188" height="14" font="5">call in this kind of pure capabil-</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="8">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="8">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="10" family="OBFIMS+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="5">A</text>
+<text top="98" left="99" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="138" width="10" height="14" font="5">C</text>
+<text top="98" left="149" width="50" height="11" font="8">ONTROL</text>
+<text top="96" left="512" width="7" height="14" font="5">9</text>
+<text top="139" left="87" width="432" height="14" font="5">ity system? When the call is made, either your application would provide</text>
+<text top="154" left="87" width="432" height="14" font="5">a capability permitting your process to open the file in question as a pa-</text>
+<text top="169" left="87" width="432" height="14" font="5">rameter, or the operating system would find the capability for you. In</text>
+<text top="183" left="87" width="432" height="14" font="5">either case, the operating system would check that the capability does or</text>
+<text top="198" left="87" width="343" height="14" font="5">does not allow you to perform a read/write open on file</text>
+<text top="199" left="435" width="65" height="11" font="7">/tmp/foo</text>
+<text top="198" left="499" width="20" height="14" font="5">. If</text>
+<text top="213" left="87" width="432" height="14" font="5">it does, the OS opens it for you. If not, back comes an error to your pro-</text>
+<text top="228" left="87" width="432" height="14" font="5">cess, chiding it for trying to open a file it does not have a capability for.</text>
+<text top="243" left="87" width="432" height="14" font="5">(Remember, we’re not talking about Linux here. Linux uses ACLs, not</text>
+<text top="258" left="87" width="179" height="14" font="5">capabilities, to determine if an</text>
+<text top="259" left="270" width="48" height="11" font="7">open()</text>
+<text top="258" left="322" width="141" height="14" font="5">call should be allowed.)</text>
+<text top="274" left="105" width="414" height="14" font="5">There are some obvious questions here. What, precisely, is a capabil-</text>
+<text top="289" left="87" width="432" height="14" font="5">ity? Clearly we’re not talking about metal keys or paper tickets. Also,</text>
+<text top="304" left="87" width="432" height="14" font="5">how does the OS check the validity of capability? And where do capa-</text>
+<text top="319" left="87" width="432" height="14" font="5">bilities come from, in the first place? Just like all other information in</text>
+<text top="334" left="87" width="432" height="14" font="5">a computer, capabilities are bunches of bits. They are data. Given that</text>
+<text top="349" left="87" width="432" height="14" font="5">there are probably lots of resources to protect, and capabilities must be</text>
+<text top="364" left="87" width="432" height="14" font="5">specific to a resource, capabilities are likely to be fairly long, and perhaps</text>
+<text top="379" left="87" width="432" height="14" font="5">fairly complex. But, ultimately, they’re just bits. Anything composed of a</text>
+<text top="394" left="87" width="432" height="14" font="5">bunch of bits has certain properties we must bear in mind. For example,</text>
+<text top="409" left="87" width="432" height="14" font="5">anyone can create any bunch of bits they want. There are no proprietary</text>
+<text top="423" left="87" width="432" height="14" font="5">or reserved bit patterns that processes cannot create. Also, if a process</text>
+<text top="438" left="87" width="432" height="14" font="5">has one copy of a particular set of bits, it’s trivial to create more copies of</text>
+<text top="453" left="87" width="432" height="14" font="5">it. The first characteristic implies that it’s possible for anyone at all to cre-</text>
+<text top="468" left="87" width="432" height="14" font="5">ate any capability they want. The second characteristic implies that once</text>
+<text top="483" left="87" width="432" height="14" font="5">someone has a working capability, they can make as many copies of it as</text>
+<text top="498" left="87" width="432" height="14" font="5">they want, and can potentially store them anywhere they want, including</text>
+<text top="513" left="87" width="194" height="14" font="5">on an entirely different machine.</text>
+<text top="529" left="105" width="414" height="14" font="5">That doesn’t sound so good from a security perspective. If a process</text>
+<text top="544" left="87" width="316" height="14" font="5">needs a capability with a particular bit pattern to open</text>
+<text top="545" left="406" width="65" height="11" font="7">/tmp/foo</text>
+<text top="544" left="473" width="46" height="14" font="5">for read</text>
+<text top="559" left="87" width="432" height="14" font="5">and write, maybe it can just generate that bit pattern and successfully</text>
+<text top="574" left="87" width="432" height="14" font="5">give itself the desired access to the file. That’s not what we’re looking for</text>
+<text top="589" left="87" width="432" height="14" font="5">in an access control mechanism. We want capabilities to be unforgeable.</text>
+<text top="604" left="87" width="432" height="14" font="5">Even if we can get around that problem, the ability to copy a capability</text>
+<text top="619" left="87" width="432" height="14" font="5">would suggest we can’t take access permission away, once granted, since</text>
+<text top="636" left="87" width="423" height="14" font="5">the process might have copies of the capability stashed away elsewhere</text>
+<text top="633" left="510" width="4" height="9" font="9">6</text>
+<text top="636" left="516" width="3" height="14" font="5">.</text>
+<text top="651" left="87" width="432" height="14" font="5">Further, perhaps the process can grant access to another process merely</text>
+<text top="666" left="87" width="410" height="14" font="5">by using IPC to transfer a copy of the capability to that other process.</text>
+<text top="681" left="105" width="414" height="14" font="5">We typically deal with these issues when using capabilities for access</text>
+<text top="696" left="87" width="432" height="14" font="5">control by never letting a process get its metaphoric hands on any ca-</text>
+<text top="711" left="87" width="432" height="14" font="5">pability. The operating system controls and maintains capabilities, stor-</text>
+<text top="726" left="87" width="432" height="14" font="5">ing them somewhere in its protected memory space. Processes can per-</text>
+<text top="741" left="87" width="432" height="14" font="5">form various operations on capabilities, but only with the mediation of</text>
+<text top="756" left="87" width="432" height="14" font="5">the operating system. If, for example, process A wishes to give process</text>
+<text top="771" left="87" width="158" height="14" font="5">B read/write access to file</text>
+<text top="772" left="249" width="65" height="11" font="7">/tmp/foo</text>
+<text top="771" left="318" width="201" height="14" font="5">using capabilities, A can’t merely</text>
+<text top="802" left="107" width="4" height="8" font="10">6</text>
+<text top="804" left="112" width="149" height="11" font="11">This ability is commonly called</text>
+<text top="804" left="265" width="50" height="10" font="13"><b>revocation</b></text>
+<text top="804" left="315" width="204" height="11" font="11">. Revocation is easy with ACLs, since you</text>
+<text top="816" left="87" width="432" height="11" font="11">just go to the ACL and change it. Depending on implementation, it can be easy or hard for</text>
+<text top="828" left="87" width="55" height="11" font="11">capabilities.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="8">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="8">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="8">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="8">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="8">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="8">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="8">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="5">10</text>
+<text top="96" left="450" width="10" height="14" font="5">A</text>
+<text top="98" left="461" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="501" width="10" height="14" font="5">C</text>
+<text top="98" left="511" width="50" height="11" font="8">ONTROL</text>
+<text top="139" left="129" width="432" height="14" font="5">send B the appropriate bit pattern. Instead, A must make a system call</text>
+<text top="154" left="129" width="432" height="14" font="5">requesting the operating system to give the appropriate capability to B.</text>
+<text top="169" left="129" width="432" height="14" font="5">That gives the OS a chance to decide whether its security policy permits</text>
+<text top="183" left="129" width="63" height="14" font="5">B to access</text>
+<text top="184" left="195" width="65" height="11" font="7">/tmp/foo</text>
+<text top="183" left="263" width="270" height="14" font="5">and deny the capability transfer if it does not.</text>
+<text top="198" left="147" width="414" height="14" font="5">So if we want to rely on capabilities for access control, the operating</text>
+<text top="213" left="129" width="432" height="14" font="5">system will need to maintain its own protected capability list for each pro-</text>
+<text top="228" left="129" width="432" height="14" font="5">cess. That’s simple enough, since the OS already has a per-process pro-</text>
+<text top="243" left="129" width="432" height="14" font="5">tected data structure, the PCB. Slap a pointer to the capability list (stored</text>
+<text top="258" left="129" width="432" height="14" font="5">in kernel memory) into the process’ PCB and you’re all set. Now when</text>
+<text top="273" left="129" width="172" height="14" font="5">the process attempts to open</text>
+<text top="274" left="305" width="65" height="11" font="7">/tmp/foo</text>
+<text top="273" left="373" width="187" height="14" font="5">for read/write, the call traps to</text>
+<text top="288" left="129" width="432" height="14" font="5">the OS, the OS consults the capability list for that process to see if there is a</text>
+<text top="303" left="129" width="432" height="14" font="5">relevant capability for the operation on the list and proceeds accordingly.</text>
+<text top="318" left="147" width="414" height="14" font="5">In a general system, keeping an on-line capability list of literally every-</text>
+<text top="333" left="129" width="432" height="14" font="5">thing some principal is permitted to access would incur high overheads.</text>
+<text top="348" left="129" width="432" height="14" font="5">If we used capabilities for file-based access control, a user might have</text>
+<text top="363" left="129" width="432" height="14" font="5">thousands of capabilities, one for each file the user was allowed to access</text>
+<text top="378" left="129" width="432" height="14" font="5">in any way. Generally, if one is using capabilities, the system persistently</text>
+<text top="393" left="129" width="432" height="14" font="5">stores the capabilities somewhere safe, and imports them as needed. So a</text>
+<text top="408" left="129" width="432" height="14" font="5">capability list attached to a process is not necessarily very long, but there</text>
+<text top="423" left="129" width="432" height="14" font="5">is an issue of deciding which capabilities of the immense set users have</text>
+<text top="438" left="129" width="299" height="14" font="5">at their discretion to give to each process they run.</text>
+<text top="452" left="147" width="414" height="14" font="5">There is another option. Capabilities need not be stored in the oper-</text>
+<text top="467" left="129" width="432" height="14" font="5">ating system. Instead, they can be cryptographically protected. If capa-</text>
+<text top="482" left="129" width="432" height="14" font="5">bilities are relatively long and are created with strong cryptography, they</text>
+<text top="497" left="129" width="432" height="14" font="5">cannot be guessed in a practical way and can be left in the user’s hands.</text>
+<text top="512" left="129" width="432" height="14" font="5">Cryptographic capabilities make most sense in a distributed system, so</text>
+<text top="527" left="129" width="397" height="14" font="5">we’ll talk about them in the chapter on distributed system security.</text>
+<text top="542" left="147" width="414" height="14" font="5">There are good and bad points about capabilities, just as there were for</text>
+<text top="557" left="129" width="432" height="14" font="5">access control lists. With capabilities, it’s easy to determine which system</text>
+<text top="572" left="129" width="432" height="14" font="5">resources a given principal can access. Just look through the principal’s</text>
+<text top="587" left="129" width="432" height="14" font="5">capability list. Revoking access merely requires removing the capability</text>
+<text top="602" left="129" width="432" height="14" font="5">from the list, which is easy enough if the OS has exclusive access to the ca-</text>
+<text top="617" left="129" width="432" height="14" font="5">pability (but much more difficult if it does not). If you have the capability</text>
+<text top="632" left="129" width="432" height="14" font="5">readily available in memory, it can be quite cheap to check it, particularly</text>
+<text top="647" left="129" width="432" height="14" font="5">since the capability can itself contain a pointer to the data or software</text>
+<text top="662" left="129" width="432" height="14" font="5">associated with the resource it protects. Perhaps merely having such a</text>
+<text top="677" left="129" width="348" height="14" font="5">pointer is the system’s core implementation of capabilities.</text>
+<text top="692" left="147" width="414" height="14" font="5">On the other hand, determining the entire set of principals who can</text>
+<text top="707" left="129" width="432" height="14" font="5">access a resource becomes more expensive. Any principal might have a</text>
+<text top="721" left="129" width="432" height="14" font="5">capability for the resource, so you must check all principals’ capability</text>
+<text top="736" left="129" width="432" height="14" font="5">lists to tell. Simple methods for making capability lists short and man-</text>
+<text top="751" left="129" width="432" height="14" font="5">ageable have not been as well developed as the Unix method of providing</text>
+<text top="766" left="129" width="432" height="14" font="5">short ACLs. Also, the system must be able to create, store, and retrieve</text>
+<text top="781" left="129" width="432" height="14" font="5">capabilities in a way that overcomes the forgery problem, which can be</text>
+<text top="796" left="129" width="73" height="14" font="5">challenging.</text>
+<text top="811" left="147" width="414" height="14" font="5">One neat aspect of capabilities is that they offer a good way to create</text>
+<text top="826" left="129" width="432" height="14" font="5">processes with limited privileges. With access control lists, a process in-</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="8">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="8">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">A</text>
+<text top="98" left="99" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="138" width="10" height="14" font="5">C</text>
+<text top="98" left="149" width="50" height="11" font="8">ONTROL</text>
+<text top="96" left="506" width="13" height="14" font="5">11</text>
+<text top="139" left="87" width="432" height="14" font="5">herits the identity of its parent process, also inheriting all of the privileges</text>
+<text top="154" left="87" width="432" height="14" font="5">of that principal. It’s hard to give the process just a subset of the parent’s</text>
+<text top="169" left="87" width="432" height="14" font="5">privileges. Either you need to create a new principal with those limited</text>
+<text top="183" left="87" width="432" height="14" font="5">privileges, change a bunch of access control lists, and set the new pro-</text>
+<text top="198" left="87" width="432" height="14" font="5">cess’s identity to that new principal, or you need some extension to your</text>
+<text top="213" left="87" width="432" height="14" font="5">access control model that doesn’t behave quite the way access control lists</text>
+<text top="228" left="87" width="432" height="14" font="5">ordinarily do. With capabilities, it’s easy. If the parent has capabilities for</text>
+<text top="243" left="87" width="432" height="14" font="5">X, Y, and Z, but only wants the child process to have the X and Y capabil-</text>
+<text top="258" left="87" width="393" height="14" font="5">ities, when the child is created, the parent transfers X and Y, not Z.</text>
+<text top="276" left="105" width="414" height="14" font="5">In practice, user-visible access control mechanisms tend to use access</text>
+<text top="291" left="87" width="432" height="14" font="5">control lists, not capabilities, for a number of reasons. However, under</text>
+<text top="306" left="87" width="432" height="14" font="5">the covers operating systems make extensive use of capabilities. For ex-</text>
+<text top="321" left="87" width="231" height="14" font="5">ample, in a typical Linux system, that</text>
+<text top="321" left="322" width="48" height="11" font="7">open()</text>
+<text top="321" left="375" width="144" height="14" font="5">call we were discussing</text>
+<text top="336" left="87" width="354" height="14" font="5">uses ACLs for access control. However, assuming the Linux</text>
+<text top="336" left="444" width="48" height="11" font="7">open()</text>
+<text top="336" left="495" width="24" height="14" font="5">was</text>
+<text top="351" left="87" width="432" height="14" font="5">successful, as long as the process keeps the file open, the ACL is not ex-</text>
+<text top="365" left="87" width="432" height="14" font="5">amined on subsequent reads and writes. Instead, Linux creates a data</text>
+<text top="380" left="87" width="432" height="14" font="5">structure that amounts to a capability indicating that the process has read</text>
+<text top="395" left="87" width="432" height="14" font="5">and write privileges for that file. This structure is attached to the process’s</text>
+<text top="410" left="87" width="432" height="14" font="5">PCB. On each read or write operation, the OS can simply consult this data</text>
+<text top="425" left="87" width="432" height="14" font="5">structure to determine if reading and writing are allowed, without hav-</text>
+<text top="440" left="87" width="432" height="14" font="5">ing to find the file’s access control list. If the file is closed, this capability-</text>
+<text top="455" left="87" width="432" height="14" font="5">like structure is deleted from the PCB and the process can no longer access</text>
+<text top="470" left="87" width="210" height="14" font="5">the file without performing another</text>
+<text top="471" left="300" width="48" height="11" font="7">open()</text>
+<text top="470" left="351" width="168" height="14" font="5">which goes back to the ACL.</text>
+<text top="485" left="87" width="432" height="14" font="5">Similar techniques can be used to control access to hardware devices and</text>
+<text top="500" left="87" width="192" height="14" font="5">IPC channels, especially since U</text>
+<text top="502" left="280" width="21" height="11" font="8">NIX</text>
+<text top="500" left="301" width="218" height="14" font="5">-like systems treat these resources as</text>
+<text top="515" left="87" width="432" height="14" font="5">if they were files. This combined use of ACLs and capabilities allows the</text>
+<text top="530" left="87" width="432" height="14" font="5">system to avoid some of the problems associated with each mechanism.</text>
+<text top="545" left="87" width="432" height="14" font="5">The cost of checking an access control list on every operation is saved be-</text>
+<text top="560" left="87" width="432" height="14" font="5">cause this form of capability is easy to check, being merely the presence</text>
+<text top="575" left="87" width="432" height="14" font="5">or absence of a pointer in an operating system data structure. The cost of</text>
+<text top="590" left="87" width="432" height="14" font="5">managing capabilities for all accessible objects is avoided because the ca-</text>
+<text top="605" left="87" width="432" height="14" font="5">pability is only set up after a successful ACL check. If the object is never</text>
+<text top="619" left="87" width="432" height="14" font="5">accessed by a process, the ACL is never checked and no capability is re-</text>
+<text top="634" left="87" width="432" height="14" font="5">quired. Since any given process typically opens only a tiny fraction of all</text>
+<text top="649" left="87" width="414" height="14" font="5">the files it is permitted to open, the scaling issue doesn’t usually arise.</text>
+<text top="689" left="55" width="366" height="17" font="4">55.5 Mandatory And Discretionary Access Control</text>
+<text top="721" left="105" width="414" height="14" font="5">Who gets to decide what the access control on a computer resource</text>
+<text top="736" left="87" width="432" height="14" font="5">should be? For most people, the answer seems obvious: whoever owns</text>
+<text top="751" left="87" width="432" height="14" font="5">the resource. In the case of a user’s file, the user should determine access</text>
+<text top="766" left="87" width="432" height="14" font="5">control settings. In the case of a system resource, the system administra-</text>
+<text top="781" left="87" width="432" height="14" font="5">tor, or perhaps the owner of the computer, should determine them. How-</text>
+<text top="796" left="87" width="432" height="14" font="5">ever, for some systems and some security policies, that’s not the right an-</text>
+<text top="811" left="87" width="432" height="14" font="5">swer. In particular, the parties who care most about information security</text>
+<text top="826" left="87" width="251" height="14" font="5">sometimes want tighter controls than that.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="8">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="8">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="8">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="8">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="8">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="8">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="8">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="13" family="JZVPFS+NimbusMonL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">12</text>
+<text top="96" left="450" width="10" height="14" font="5">A</text>
+<text top="98" left="461" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="501" width="10" height="14" font="5">C</text>
+<text top="98" left="511" width="50" height="11" font="8">ONTROL</text>
+<text top="139" left="147" width="414" height="14" font="5">The military is the most obvious example. We’ve all heard of Top Se-</text>
+<text top="154" left="129" width="432" height="14" font="5">cret information, and probably all understand that even if you are al-</text>
+<text top="169" left="129" width="432" height="14" font="5">lowed to see Top Secret information, you’re not supposed to let other</text>
+<text top="183" left="129" width="432" height="14" font="5">people see it, too. And that’s true even if the information in question is in</text>
+<text top="198" left="129" width="432" height="14" font="5">a file that you created yourself, such as a report that contains statistics or</text>
+<text top="213" left="129" width="432" height="14" font="5">quotations from some other Top Secret document. In these cases, the sim-</text>
+<text top="228" left="129" width="432" height="14" font="5">ple answer of the creator controlling access permissions isn’t right. Who-</text>
+<text top="243" left="129" width="432" height="14" font="5">ever is in overall charge of information security in the organization needs</text>
+<text top="258" left="129" width="432" height="14" font="5">to make those decisions, which implies that principal has the power to</text>
+<text top="273" left="129" width="432" height="14" font="5">set the access controls for information created by and belonging to other</text>
+<text top="288" left="129" width="432" height="14" font="5">users, and that those users can’t override his decisions. The more com-</text>
+<text top="303" left="129" width="108" height="14" font="5">mon case is called</text>
+<text top="303" left="241" width="169" height="13" font="6"><b>discretionary access control</b></text>
+<text top="303" left="409" width="151" height="14" font="5">. Whether almost anyone</text>
+<text top="318" left="129" width="432" height="14" font="5">or almost no one is given access to a resource is at the discretion of the</text>
+<text top="333" left="129" width="289" height="14" font="5">owning user. The more restrictive case is called</text>
+<text top="333" left="422" width="139" height="13" font="6"><b>mandatory access con-</b></text>
+<text top="348" left="129" width="22" height="13" font="6"><b>trol</b></text>
+<text top="348" left="151" width="410" height="14" font="5">. At least some elements of the access control decisions in such sys-</text>
+<text top="363" left="129" width="432" height="14" font="5">tems are mandated by an authority, who can override the desires of the</text>
+<text top="378" left="129" width="432" height="14" font="5">owner of the information. The choice of discretionary or mandatory ac-</text>
+<text top="393" left="129" width="432" height="14" font="5">cess control is orthogonal to whether you use ACLs or capabilities, and</text>
+<text top="408" left="129" width="432" height="14" font="5">is often independent of other aspects of the access control mechanism,</text>
+<text top="423" left="129" width="432" height="14" font="5">such as how access information is stored and handled. A mandatory ac-</text>
+<text top="438" left="129" width="432" height="14" font="5">cess control system can also include discretionary elements, which allow</text>
+<text top="452" left="129" width="361" height="14" font="5">further restriction (but not loosening) of mandatory controls.</text>
+<text top="468" left="147" width="414" height="14" font="5">Many people will never work with a system running mandatory ac-</text>
+<text top="483" left="129" width="432" height="14" font="5">cess controls, so we won’t go further into how they work, beyond ob-</text>
+<text top="498" left="129" width="432" height="14" font="5">serving that clearly the operating system is going to be involved in en-</text>
+<text top="513" left="129" width="432" height="14" font="5">forcing them. Should you ever need to work in an environment where</text>
+<text top="528" left="129" width="432" height="14" font="5">mandatory access control is important, you can be sure you will hear</text>
+<text top="543" left="129" width="432" height="14" font="5">about it. You should learn more about it at that point, since when some-</text>
+<text top="558" left="129" width="432" height="14" font="5">one cares enough to use mandatory access control mechanisms, they also</text>
+<text top="573" left="129" width="432" height="14" font="5">care enough to punish users who don’t follow the rules. Loscocco [L01]</text>
+<text top="588" left="129" width="432" height="14" font="5">describes a special version of Linux that incorporates mandatory access</text>
+<text top="603" left="129" width="432" height="14" font="5">control. This is a good paper to start with if you want to learn more about</text>
+<text top="618" left="129" width="206" height="14" font="5">the characteristics of such systems.</text>
+<text top="651" left="97" width="356" height="17" font="4">55.6 Practicalities Of Access Control Mechanisms</text>
+<text top="677" left="147" width="414" height="14" font="5">Most systems expose either a simple or more powerful access control</text>
+<text top="692" left="129" width="432" height="14" font="5">list mechanism to their users, and most of them use discretionary access</text>
+<text top="707" left="129" width="432" height="14" font="5">control. However, given that a modern computer can easily have hun-</text>
+<text top="721" left="129" width="432" height="14" font="5">dreds of thousands, or even millions of files, having human users indi-</text>
+<text top="736" left="129" width="432" height="14" font="5">vidually set access control permissions on them is infeasible. Generally,</text>
+<text top="751" left="129" width="432" height="14" font="5">the system allows each user to establish a default access permission that</text>
+<text top="766" left="129" width="315" height="14" font="5">is used for every file he creates. If one uses the Linux</text>
+<text top="767" left="448" width="48" height="11" font="7">open()</text>
+<text top="766" left="500" width="61" height="14" font="5">call to cre-</text>
+<text top="781" left="129" width="432" height="14" font="5">ate a file, one can specify which access permissions to initially assign to</text>
+<text top="796" left="129" width="432" height="14" font="5">that file. Access permissions on newly created files in Unix/Linux sys-</text>
+<text top="811" left="129" width="222" height="14" font="5">tems can be further controlled by the</text>
+<text top="812" left="355" width="57" height="11" font="14"><b>umask()</b></text>
+<text top="811" left="415" width="146" height="14" font="5">call, which applies to all</text>
+<text top="826" left="129" width="301" height="14" font="5">new file creations by the process that performed it.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="8">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="8">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="12" family="OBFIMS+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="5">A</text>
+<text top="98" left="99" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="138" width="10" height="14" font="5">C</text>
+<text top="98" left="149" width="50" height="11" font="8">ONTROL</text>
+<text top="96" left="506" width="13" height="14" font="5">13</text>
+<text top="148" left="154" width="10" height="14" font="5">A</text>
+<text top="150" left="165" width="26" height="11" font="8">SIDE</text>
+<text top="148" left="192" width="16" height="14" font="5">: T</text>
+<text top="150" left="209" width="16" height="11" font="8">HE</text>
+<text top="148" left="229" width="10" height="14" font="5">A</text>
+<text top="150" left="240" width="48" height="11" font="8">NDROID</text>
+<text top="148" left="292" width="10" height="14" font="5">A</text>
+<text top="150" left="303" width="36" height="11" font="8">CCESS</text>
+<text top="148" left="343" width="10" height="14" font="5">C</text>
+<text top="150" left="354" width="50" height="11" font="8">ONTROL</text>
+<text top="148" left="407" width="13" height="14" font="5">M</text>
+<text top="150" left="420" width="32" height="11" font="8">ODEL</text>
+<text top="163" left="87" width="432" height="12" font="12">The Android system is one of the leading software platforms for today’s mobile</text>
+<text top="178" left="87" width="432" height="12" font="12">computing devices, especially smart phones. These devices pose different access</text>
+<text top="192" left="87" width="432" height="12" font="12">control challenges than classic server computers, or even personal desktop com-</text>
+<text top="206" left="87" width="432" height="12" font="12">puters or laptops. Their functionality is based on the use of many relatively small</text>
+<text top="220" left="87" width="432" height="12" font="12">independent applications, commonly called apps, that are downloaded, installed,</text>
+<text top="234" left="87" width="432" height="12" font="12">and run on a device belonging to only a single user. Thus, there is no issue of</text>
+<text top="249" left="87" width="432" height="12" font="12">protecting multiple users on one machine from each other. If one used a standard</text>
+<text top="263" left="87" width="432" height="12" font="12">access control model, these apps would run under that user’s identity. But apps</text>
+<text top="277" left="87" width="432" height="12" font="12">are developed by many entities, and some may be malicious. Further, most apps</text>
+<text top="291" left="87" width="432" height="12" font="12">have no legitimate need for most of the resources on the device. If they are granted</text>
+<text top="305" left="87" width="432" height="12" font="12">too many privileges, a malicious app can access the phone owner’s contacts, make</text>
+<text top="320" left="87" width="432" height="12" font="12">phone calls, or buy things over the network, among many other undesirable be-</text>
+<text top="334" left="87" width="432" height="12" font="12">haviors. The principle of least privilege implies that we should not give apps the</text>
+<text top="348" left="87" width="432" height="12" font="12">full privileges belonging to owner, but they must have some privileges if they are</text>
+<text top="362" left="87" width="140" height="12" font="12">to do anything interesting.</text>
+<text top="380" left="87" width="432" height="12" font="12">Android runs on top of a version of Linux, and an application’s access limitations</text>
+<text top="394" left="87" width="432" height="12" font="12">are achieved in part by generating a new user ID for each installed app. The app</text>
+<text top="408" left="87" width="432" height="12" font="12">runs under that ID and its accesses can be controlled on that basis. However, the</text>
+<text top="422" left="87" width="432" height="12" font="12">Android middleware offers additional facilities for controlling access. Application</text>
+<text top="436" left="87" width="432" height="12" font="12">developers define accesses required by their app. When a user considers installing</text>
+<text top="451" left="87" width="432" height="12" font="12">an app on their device, they are shown what permissions it requires. The user can</text>
+<text top="465" left="87" width="432" height="12" font="12">either grant the app those permissions, not install the app, or limit its permissions,</text>
+<text top="479" left="87" width="432" height="12" font="12">though the latter choice may also limit app utility. Also, the developer specifies</text>
+<text top="493" left="87" width="432" height="12" font="12">ways in which other apps can communicate with the new app. The data structure</text>
+<text top="507" left="87" width="272" height="12" font="12">used to encode this access information is called a</text>
+<text top="507" left="364" width="93" height="12" font="15"><b>permission label</b></text>
+<text top="507" left="457" width="62" height="12" font="12">. An app’s</text>
+<text top="522" left="87" width="432" height="12" font="12">permission labels (both what it can access and what it provides to others) are set</text>
+<text top="536" left="87" width="432" height="12" font="12">at app design time, and encoded into a particular Android system at the moment</text>
+<text top="550" left="87" width="191" height="12" font="12">the app is installed on that machine.</text>
+<text top="567" left="87" width="432" height="12" font="12">Permission labels are thus like capabilities, since possession of them by the app</text>
+<text top="582" left="87" width="432" height="12" font="12">allows the app to do something, while lacking a label prevents the app from doing</text>
+<text top="596" left="87" width="432" height="12" font="12">that thing. An app’s set of permission labels is set statically at install time. The user</text>
+<text top="610" left="87" width="432" height="12" font="12">can subsequently change those permissions, although limiting them may damage</text>
+<text top="624" left="87" width="432" height="12" font="12">app functionality. Permission labels are a form of mandatory access control. The</text>
+<text top="638" left="87" width="354" height="12" font="12">Android security model is discussed in detail by Enck et al. [E+09].</text>
+<text top="657" left="87" width="432" height="12" font="12">The Android security approach is interesting, but not perfect. In particular, users</text>
+<text top="672" left="87" width="432" height="12" font="12">are not always aware of the implications of granting an application access to some-</text>
+<text top="686" left="87" width="432" height="12" font="12">thing, and, faced with the choice of granting the access or not being able to effec-</text>
+<text top="701" left="87" width="432" height="12" font="12">tively use the app, they will often grant it. This behavior can be problematic, if the</text>
+<text top="716" left="87" width="89" height="12" font="12">app is malicious.</text>
+<text top="766" left="105" width="414" height="14" font="5">If desired, the owner can alter that initial ACL, but experience shows</text>
+<text top="781" left="87" width="432" height="14" font="5">that users rarely do. This tendency demonstrates the importance of prop-</text>
+<text top="796" left="87" width="432" height="14" font="5">erly chosen defaults. Here, as in many other places in an operating sys-</text>
+<text top="811" left="87" width="432" height="14" font="5">tem, a theoretically changeable or tunable setting will, in practice, be used</text>
+<text top="826" left="87" width="269" height="14" font="5">unaltered by almost everyone almost always.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="8">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="8">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="8">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="8">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="8">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="8">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="8">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="13" family="XQOFDE+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">14</text>
+<text top="96" left="450" width="10" height="14" font="5">A</text>
+<text top="98" left="461" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="501" width="10" height="14" font="5">C</text>
+<text top="98" left="511" width="50" height="11" font="8">ONTROL</text>
+<text top="139" left="147" width="414" height="14" font="5">However, while many will never touch access controls on their re-</text>
+<text top="154" left="129" width="432" height="14" font="5">sources, for an important set of users and systems these controls are of</text>
+<text top="169" left="129" width="432" height="14" font="5">vital importance to achieve their security goals. Even if you mostly rely</text>
+<text top="183" left="129" width="432" height="14" font="5">on defaults, many software installation packages use some degree of care</text>
+<text top="198" left="129" width="432" height="14" font="5">in setting access controls on executables and configuration files they cre-</text>
+<text top="213" left="129" width="432" height="14" font="5">ate. Generally, you should exercise caution in fiddling around with access</text>
+<text top="228" left="129" width="432" height="14" font="5">controls in your system. If you don’t know what you’re doing, you might</text>
+<text top="243" left="129" width="432" height="14" font="5">expose sensitive information or allow attackers to alter critical system set-</text>
+<text top="258" left="129" width="432" height="14" font="5">tings. If you tighten existing access controls, you might suddenly cause a</text>
+<text top="273" left="129" width="430" height="14" font="5">bunch of daemon programs running in the background to stop working.</text>
+<text top="289" left="147" width="414" height="14" font="5">One practical issue that many large institutions discovered when try-</text>
+<text top="303" left="129" width="432" height="14" font="5">ing to use standard access control methods to implement their security</text>
+<text top="318" left="129" width="432" height="14" font="5">policies is that people performing different roles within the organization</text>
+<text top="333" left="129" width="432" height="14" font="5">require different privileges. For example, in a hospital, all doctors might</text>
+<text top="348" left="129" width="432" height="14" font="5">have a set of privileges not given to all pharmacists, who themselves have</text>
+<text top="363" left="129" width="432" height="14" font="5">privileges not given to the doctors. Organizing access control on the ba-</text>
+<text top="378" left="129" width="432" height="14" font="5">sis of such roles and then assigning particular users to the roles they are</text>
+<text top="393" left="129" width="432" height="14" font="5">allowed to perform makes implementation of many security policies eas-</text>
+<text top="408" left="129" width="432" height="14" font="5">ier. This approach is particularly valuable if certain users are permitted to</text>
+<text top="423" left="129" width="432" height="14" font="5">switch roles depending on the task they are currently performing, since</text>
+<text top="438" left="129" width="432" height="14" font="5">then one need not worry about setting or changing the individual’s access</text>
+<text top="453" left="129" width="432" height="14" font="5">permissions on the fly, but simply switch their role from one to another.</text>
+<text top="468" left="129" width="432" height="14" font="5">Usually they will hold the role’s permission only as long as they maintain</text>
+<text top="483" left="129" width="432" height="14" font="5">that role. Once they exit the particular role (perhaps to enter a different</text>
+<text top="498" left="129" width="432" height="14" font="5">role with different privileges), they lose the privileges of the role they exit.</text>
+<text top="513" left="147" width="261" height="14" font="5">This observation led to the development of</text>
+<text top="513" left="412" width="149" height="13" font="6"><b>Role-Based Access Con-</b></text>
+<text top="528" left="129" width="22" height="13" font="6"><b>trol</b></text>
+<text top="528" left="151" width="22" height="14" font="5">, or</text>
+<text top="528" left="178" width="39" height="13" font="6"><b>RBAC</b></text>
+<text top="528" left="217" width="344" height="14" font="5">. The core ideas had been around for some time before</text>
+<text top="543" left="129" width="432" height="14" font="5">they were more formally laid out in a research paper by Ferraiolo and</text>
+<text top="558" left="129" width="432" height="14" font="5">Kuhn [FK92]. Now RBAC is in common use in many organizations, par-</text>
+<text top="573" left="129" width="432" height="14" font="5">ticularly large ones. Large organizations face more serious management</text>
+<text top="588" left="129" width="432" height="14" font="5">challenges than small ones, so approaches like RBAC that allow groups of</text>
+<text top="603" left="129" width="432" height="14" font="5">users to be dealt with in one operation can significantly ease the manage-</text>
+<text top="618" left="129" width="432" height="14" font="5">ment task. For example, if a company determines that all programmers</text>
+<text top="633" left="129" width="432" height="14" font="5">should be granted access to a new library that has been developed, but</text>
+<text top="648" left="129" width="432" height="14" font="5">accountants should not, RBAC would achieve this effect with a single op-</text>
+<text top="663" left="129" width="300" height="14" font="5">eration that assigns the necessary privilege to the</text>
+<text top="663" left="434" width="69" height="14" font="16">Programmer</text>
+<text top="663" left="507" width="54" height="14" font="5">role. If a</text>
+<text top="678" left="129" width="432" height="14" font="5">programmer is promoted to a management position for which access to</text>
+<text top="692" left="129" width="376" height="14" font="5">the library is unnecessary, the company can merely remove the</text>
+<text top="692" left="509" width="52" height="14" font="16">Program-</text>
+<text top="707" left="129" width="21" height="14" font="16">mer</text>
+<text top="707" left="153" width="309" height="14" font="5">role from the set of roles the manager could take on.</text>
+<text top="723" left="147" width="414" height="14" font="5">Such restrictions do not necessarily imply that you suspect your ac-</text>
+<text top="738" left="129" width="432" height="14" font="5">countants of being dishonest and prone to selling your secret library code</text>
+<text top="755" left="129" width="88" height="14" font="5">to competitors</text>
+<text top="752" left="216" width="4" height="9" font="9">7</text>
+<text top="755" left="222" width="339" height="14" font="5">. Remember the principle of least privilege: when you</text>
+<text top="770" left="129" width="432" height="14" font="5">give someone access to something, you are relying not just on their hon-</text>
+<text top="785" left="129" width="432" height="14" font="5">esty, but on their caution. If accountants can’t access the library at all,</text>
+<text top="814" left="149" width="4" height="8" font="10">7</text>
+<text top="816" left="154" width="407" height="11" font="11">Dishonest accountants are generally good to avoid, so you probably did your best to hire</text>
+<text top="828" left="129" width="314" height="11" font="11">honest ones, after all. Unless you’re Bernie Madoff [W20], perhaps...</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="8">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="8">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">A</text>
+<text top="98" left="99" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="138" width="10" height="14" font="5">C</text>
+<text top="98" left="149" width="50" height="11" font="8">ONTROL</text>
+<text top="96" left="506" width="13" height="14" font="5">15</text>
+<text top="139" left="87" width="432" height="14" font="5">then neither malice nor carelessness on their part can lead to an accoun-</text>
+<text top="154" left="87" width="432" height="14" font="5">tant’s privileges leaking your library code. Least privilege is not just a</text>
+<text top="169" left="87" width="432" height="14" font="5">theoretically good idea, but a vital part of building secure systems in the</text>
+<text top="183" left="87" width="65" height="14" font="5">real world.</text>
+<text top="198" left="105" width="414" height="14" font="5">RBAC sounds a bit like using groups in access control lists, and there</text>
+<text top="213" left="87" width="432" height="14" font="5">is some similarity, but RBAC systems are a good deal more powerful than</text>
+<text top="228" left="87" width="432" height="14" font="5">mere group access permissions; RBAC systems allow a particular user to</text>
+<text top="243" left="87" width="432" height="14" font="5">take on multiple disjoint roles. Perhaps our programmer was promoted</text>
+<text top="258" left="87" width="432" height="14" font="5">to a management position, but still needs access to the library, for exam-</text>
+<text top="273" left="87" width="432" height="14" font="5">ple when another team member’s code needs to be tested. An RBAC sys-</text>
+<text top="288" left="87" width="432" height="14" font="5">tem would allow our programmer to switch between the role of manager</text>
+<text top="303" left="87" width="432" height="14" font="5">and programmer, temporarily leaving behind rights associated with the</text>
+<text top="318" left="87" width="432" height="14" font="5">manager and gaining rights associated with the programmer role. When</text>
+<text top="333" left="87" width="432" height="14" font="5">the manager tested someone else’s new code, the manager would have</text>
+<text top="348" left="87" width="265" height="14" font="5">permission to access the library, but would</text>
+<text top="348" left="357" width="18" height="14" font="16">not</text>
+<text top="348" left="380" width="139" height="14" font="5">have permission to ac-</text>
+<text top="363" left="87" width="432" height="14" font="5">cess team member performance reviews. Thus, if a sneaky programmer</text>
+<text top="378" left="87" width="432" height="14" font="5">slipped malicious code into the library (e.g., that tried to read other team</text>
+<text top="393" left="87" width="432" height="14" font="5">members’ performance reviews, or learn their salaries), the manager run-</text>
+<text top="408" left="87" width="432" height="14" font="5">ning that code would not unintentionally leak that information; using the</text>
+<text top="423" left="87" width="247" height="14" font="5">proper role at the proper time prevents it.</text>
+<text top="438" left="105" width="414" height="14" font="5">These systems often require a new authentication step to take on an</text>
+<text top="452" left="87" width="432" height="14" font="5">RBAC role, and usually taking on Role A requires relinquishing priv-</text>
+<text top="467" left="87" width="432" height="14" font="5">ileges associated with one’s previous role, say Role B. The manager’s</text>
+<text top="482" left="87" width="432" height="14" font="5">switch to the code testing role would result in temporarily relinquish-</text>
+<text top="497" left="87" width="432" height="14" font="5">ing privileges to examine the performance reviews. On completing the</text>
+<text top="512" left="87" width="432" height="14" font="5">testing, the manager would switch back to the role allowing access to the</text>
+<text top="527" left="87" width="432" height="14" font="5">reviews, losing privilege to access the library. RBAC systems may also</text>
+<text top="542" left="87" width="432" height="14" font="5">offer finer granularity than merely being able to read or write a file. A</text>
+<text top="557" left="87" width="92" height="14" font="5">particular role (</text>
+<text top="557" left="179" width="64" height="14" font="16">Salesperson</text>
+<text top="557" left="242" width="277" height="14" font="5">, for instance) might be permitted to add a pur-</text>
+<text top="572" left="87" width="432" height="14" font="5">chase record for a particular product to a file, but would not be permitted</text>
+<text top="587" left="87" width="432" height="14" font="5">to add a re-stocking record for the same product to the same file, since</text>
+<text top="602" left="87" width="432" height="14" font="5">salespeople don’t do re-stocking. This degree of control is sometimes</text>
+<text top="617" left="87" width="35" height="14" font="5">called</text>
+<text top="617" left="126" width="108" height="13" font="6"><b>type enforcement</b></text>
+<text top="617" left="234" width="285" height="14" font="5">. It associates detailed access rules to particular</text>
+<text top="632" left="87" width="242" height="14" font="5">objects using what is commonly called a</text>
+<text top="632" left="333" width="96" height="13" font="6"><b>security context</b></text>
+<text top="632" left="433" width="86" height="14" font="5">for that object.</text>
+<text top="647" left="87" width="432" height="14" font="5">How exactly this is done has implications for performance, storage of the</text>
+<text top="662" left="87" width="290" height="14" font="5">security context information, and authentication.</text>
+<text top="677" left="105" width="414" height="14" font="5">One can build a very minimal RBAC system under Linux and similar</text>
+<text top="692" left="87" width="432" height="14" font="5">OSes using ACLs and groups. These systems have a feature in their ac-</text>
+<text top="707" left="87" width="181" height="14" font="5">cess control mechanism called</text>
+<text top="707" left="272" width="121" height="13" font="6"><b>privilege escalation</b></text>
+<text top="707" left="393" width="126" height="14" font="5">. Privilege escalation</text>
+<text top="721" left="87" width="432" height="14" font="5">allows careful extension of privileges, typically by allowing a particular</text>
+<text top="736" left="87" width="432" height="14" font="5">program to run with a set of privileges beyond those of the user who in-</text>
+<text top="751" left="87" width="376" height="14" font="5">vokes them. In Unix and Linux systems, this feature is called</text>
+<text top="753" left="467" width="48" height="11" font="14"><b>setuid</b></text>
+<text top="751" left="516" width="3" height="14" font="5">,</text>
+<text top="766" left="87" width="432" height="14" font="5">and it allows a program to run with privileges associated with a different</text>
+<text top="781" left="87" width="432" height="14" font="5">user, generally a user who has privileges not normally available to the</text>
+<text top="796" left="87" width="432" height="14" font="5">user who runs the program. However, those privileges are only granted</text>
+<text top="811" left="87" width="432" height="14" font="5">during the run of that program and are lost when the program exits. A</text>
+<text top="826" left="87" width="98" height="14" font="5">carefully written</text>
+<text top="827" left="188" width="48" height="11" font="7">setuid</text>
+<text top="826" left="239" width="280" height="14" font="5">program will only perform a limited set of oper-</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="8">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="8">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="8">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="8">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="8">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="8">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="8">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="10" family="LNBAIT+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">16</text>
+<text top="96" left="450" width="10" height="14" font="5">A</text>
+<text top="98" left="461" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="501" width="10" height="14" font="5">C</text>
+<text top="98" left="511" width="50" height="11" font="8">ONTROL</text>
+<text top="148" left="176" width="8" height="14" font="5">T</text>
+<text top="150" left="185" width="11" height="11" font="8">IP</text>
+<text top="148" left="196" width="16" height="14" font="5">: P</text>
+<text top="150" left="213" width="55" height="11" font="8">RIVILEGE</text>
+<text top="148" left="272" width="8" height="14" font="5">E</text>
+<text top="150" left="281" width="69" height="11" font="8">SCALATION</text>
+<text top="148" left="353" width="10" height="14" font="5">C</text>
+<text top="150" left="364" width="69" height="11" font="8">ONSIDERED</text>
+<text top="148" left="437" width="10" height="14" font="5">D</text>
+<text top="150" left="448" width="66" height="11" font="8">ANGEROUS</text>
+<text top="163" left="129" width="432" height="14" font="5">We just finished talking about how we could use privilege escalation to</text>
+<text top="178" left="129" width="432" height="14" font="5">temporarily change what one of our users can do, and how this offers us</text>
+<text top="193" left="129" width="432" height="14" font="5">new security options. But there’s a dangerous side to privilege escalation.</text>
+<text top="208" left="129" width="432" height="14" font="5">An attacker who breaks into your system frequently compromises a pro-</text>
+<text top="223" left="129" width="432" height="14" font="5">gram running under an identity with very limited privileges. Perhaps all</text>
+<text top="238" left="129" width="432" height="14" font="5">it’s supposed to be able to do is work with a few simple informational</text>
+<text top="253" left="129" width="432" height="14" font="5">files and provide remote users with their content, and maybe run stan-</text>
+<text top="268" left="129" width="432" height="14" font="5">dard utilities on those files. It might not even have write access to its files.</text>
+<text top="283" left="129" width="432" height="14" font="5">You might think that this type of compromise has done little harm to the</text>
+<text top="298" left="129" width="385" height="14" font="5">system, since the attacker cannot use the access to do very much.</text>
+<text top="316" left="129" width="432" height="14" font="5">This is where the danger of privilege escalation comes into play. Attack-</text>
+<text top="331" left="129" width="432" height="14" font="5">ers who have gained any kind of a foothold on a system will then look</text>
+<text top="346" left="129" width="432" height="14" font="5">around for ways to escalate their privileges. Even a fairly unprivileged</text>
+<text top="361" left="129" width="432" height="14" font="5">application can do a lot of things that an outsider cannot directly do, so at-</text>
+<text top="376" left="129" width="432" height="14" font="5">tackers look for flaws in the code or configuration that the compromised</text>
+<text top="390" left="129" width="432" height="14" font="5">application can access. Such attempts to escalate privilege are usually an</text>
+<text top="405" left="129" width="432" height="14" font="5">attacker’s first order of business upon successful compromise of a system.</text>
+<text top="424" left="129" width="348" height="14" font="5">In many systems, there is a special user, often called the</text>
+<text top="424" left="483" width="61" height="13" font="6"><b>superuser</b></text>
+<text top="424" left="548" width="13" height="14" font="5">or</text>
+<text top="439" left="129" width="25" height="13" font="6"><b>root</b></text>
+<text top="439" left="158" width="403" height="14" font="5">user. This user has a lot more privilege than any other user on the</text>
+<text top="453" left="129" width="432" height="14" font="5">system, since its purpose is to allow for the most vital and far-reaching</text>
+<text top="468" left="129" width="432" height="14" font="5">system administration changes on that system. The paramount goal of</text>
+<text top="483" left="129" width="432" height="14" font="5">an attacker with a foothold on your system is to use privilege escalation</text>
+<text top="498" left="129" width="432" height="14" font="5">to become the root user. An attacker who can do that will effectively</text>
+<text top="513" left="129" width="432" height="14" font="5">have total control of your system. Such an attacker can look at any file,</text>
+<text top="528" left="129" width="432" height="14" font="5">alter any program, change any configuration, and perhaps even install a</text>
+<text top="543" left="129" width="432" height="14" font="5">different operating system. This danger should point out how critical it</text>
+<text top="558" left="129" width="432" height="14" font="5">is to be careful in allowing any path that permits privilege escalation up</text>
+<text top="573" left="129" width="134" height="14" font="5">to superuser privilege.</text>
+<text top="617" left="129" width="423" height="14" font="5">ations using those privileges, ensuring that privileges cannot be abused</text>
+<text top="614" left="552" width="4" height="9" font="9">8</text>
+<text top="617" left="557" width="3" height="14" font="5">.</text>
+<text top="632" left="129" width="432" height="14" font="5">One could create a simple RBAC system by defining an artificial user for</text>
+<text top="647" left="129" width="432" height="14" font="5">each role and associating desired privileges with that user. Programs us-</text>
+<text top="662" left="129" width="255" height="14" font="5">ing those privileges could be designated as</text>
+<text top="663" left="387" width="48" height="11" font="7">setuid</text>
+<text top="662" left="439" width="70" height="14" font="5">to that user.</text>
+<text top="677" left="147" width="61" height="14" font="5">The Linux</text>
+<text top="678" left="212" width="32" height="11" font="7">sudo</text>
+<text top="677" left="248" width="312" height="14" font="5">command, which we encountered in the authentica-</text>
+<text top="692" left="129" width="432" height="14" font="5">tion chapter, offers this kind of functionality, allowing some designated</text>
+<text top="707" left="129" width="397" height="14" font="5">users to run certain programs under another identity. For example,</text>
+<text top="725" left="129" width="299" height="11" font="7">sudo -u Programmer install newprogram</text>
+<text top="741" left="147" width="340" height="14" font="5">would run this install command under the identity of user</text>
+<text top="742" left="489" width="81" height="11" font="7">Programmer</text>
+<text top="741" left="570" width="3" height="14" font="5">,</text>
+<text top="756" left="129" width="432" height="14" font="5">rather than the identity of the user who ran the command, assuming that</text>
+<text top="771" left="129" width="432" height="14" font="5">user was on a system-maintained list of users allowed to take on the iden-</text>
+<text top="786" left="129" width="20" height="14" font="5">tity</text>
+<text top="787" left="152" width="81" height="11" font="7">Programmer</text>
+<text top="786" left="233" width="328" height="14" font="5">. Secure use of this approach requires careful configura-</text>
+<text top="814" left="149" width="4" height="8" font="10">8</text>
+<text top="816" left="154" width="204" height="11" font="11">Unfortunately, not all programs run with the</text>
+<text top="817" left="360" width="38" height="9" font="17">setuid</text>
+<text top="816" left="400" width="161" height="11" font="11">feature are carefully written, which</text>
+<text top="828" left="129" width="428" height="11" font="11">has led to many security problems over the years. Perhaps true for all security features, alas?</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="8">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="8">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="5">A</text>
+<text top="98" left="99" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="138" width="10" height="14" font="5">C</text>
+<text top="98" left="149" width="50" height="11" font="8">ONTROL</text>
+<text top="96" left="506" width="13" height="14" font="5">17</text>
+<text top="139" left="87" width="432" height="14" font="5">tion of system files controlling who is allowed to execute which programs</text>
+<text top="154" left="87" width="215" height="14" font="5">under which identities. Usually the</text>
+<text top="154" left="306" width="32" height="11" font="7">sudo</text>
+<text top="154" left="343" width="176" height="14" font="5">command requires a new au-</text>
+<text top="169" left="87" width="278" height="14" font="5">thentication step, as with other RBAC systems.</text>
+<text top="183" left="105" width="414" height="14" font="5">For more advanced purposes, RBAC systems typically support finer</text>
+<text top="198" left="87" width="379" height="14" font="5">granularity and more careful tracking of role assignment than</text>
+<text top="199" left="471" width="48" height="11" font="7">setuid</text>
+<text top="213" left="87" width="23" height="14" font="5">and</text>
+<text top="214" left="114" width="32" height="11" font="7">sudo</text>
+<text top="213" left="150" width="369" height="14" font="5">operations allow. Such an RBAC system might be part of the</text>
+<text top="228" left="87" width="432" height="14" font="5">operating system or might be some form of add-on to the system, or per-</text>
+<text top="243" left="87" width="432" height="14" font="5">haps a programming environment. Often, if you’re using RBAC, you</text>
+<text top="258" left="87" width="432" height="14" font="5">also run some degree of mandatory access control. If not, in the example</text>
+<text top="273" left="87" width="12" height="14" font="5">of</text>
+<text top="274" left="103" width="32" height="11" font="7">sudo</text>
+<text top="273" left="139" width="207" height="14" font="5">above, the user running under the</text>
+<text top="274" left="350" width="81" height="11" font="7">Programmer</text>
+<text top="273" left="435" width="84" height="14" font="5">identity could</text>
+<text top="288" left="87" width="432" height="14" font="5">run a command to change the access permissions on files, making the</text>
+<text top="304" left="87" width="57" height="11" font="7">install</text>
+<text top="303" left="147" width="372" height="14" font="5">command available to non- programmers. With mandatory ac-</text>
+<text top="318" left="87" width="267" height="14" font="5">cess control, a user could take on the role of</text>
+<text top="319" left="359" width="81" height="11" font="7">Programmer</text>
+<text top="318" left="444" width="75" height="14" font="5">to do the in-</text>
+<text top="333" left="87" width="432" height="14" font="5">stallation, but could not use that role to allow salespeople or accountants</text>
+<text top="348" left="87" width="159" height="14" font="5">to perform the installation.</text>
+<text top="385" left="55" width="105" height="17" font="4">55.7 Summary</text>
+<text top="415" left="105" width="414" height="14" font="5">Implementing most security policies requires controlling which users</text>
+<text top="430" left="87" width="432" height="14" font="5">can access which resources in which ways. Access control mechanisms</text>
+<text top="445" left="87" width="432" height="14" font="5">built in to the operating system provide the necessary functionality. A</text>
+<text top="460" left="87" width="432" height="14" font="5">good access control mechanism will provide complete mediation (or close</text>
+<text top="474" left="87" width="432" height="14" font="5">to it) of security-relevant accesses through use of a carefully designed and</text>
+<text top="489" left="87" width="191" height="14" font="5">implemented reference monitor.</text>
+<text top="504" left="105" width="414" height="14" font="5">Access control lists and capabilities are the two fundamental mecha-</text>
+<text top="519" left="87" width="432" height="14" font="5">nisms used by most access control systems. Access control lists specify</text>
+<text top="534" left="87" width="432" height="14" font="5">precisely which subjects can access which objects in which ways. Pres-</text>
+<text top="549" left="87" width="432" height="14" font="5">ence or absence on the relevant list determines if access is granted. Ca-</text>
+<text top="564" left="87" width="432" height="14" font="5">pabilities work more like keys in a lock. Possession of the correct ca-</text>
+<text top="579" left="87" width="432" height="14" font="5">pability is sufficient proof that access to a resource should be permitted.</text>
+<text top="594" left="87" width="432" height="14" font="5">User-visible access control is more commonly achieved with a form of</text>
+<text top="609" left="87" width="432" height="14" font="5">access control list, but capabilities are often built in to the operating sys-</text>
+<text top="624" left="87" width="432" height="14" font="5">tem at a level below what the user sees. Neither of these access control</text>
+<text top="639" left="87" width="432" height="14" font="5">mechanisms is inherently better or worse than the other. Rather, like so</text>
+<text top="654" left="87" width="432" height="14" font="5">many options in system design, they have properties that are well suited</text>
+<text top="669" left="87" width="432" height="14" font="5">to some situations and uses and poorly suited to others. You need to</text>
+<text top="684" left="87" width="401" height="14" font="5">understand how to choose which one to use in which circumstance.</text>
+<text top="699" left="105" width="414" height="14" font="5">Access control mechanisms can be discretionary or mandatory. Some</text>
+<text top="714" left="87" width="432" height="14" font="5">systems include both. Enhancements like type enforcement and role-</text>
+<text top="729" left="87" width="432" height="14" font="5">based access control can make it easier to achieve the security policy you</text>
+<text top="743" left="87" width="46" height="14" font="5">require.</text>
+<text top="758" left="105" width="414" height="14" font="5">Even if the access control mechanism is completely correct and ex-</text>
+<text top="773" left="87" width="432" height="14" font="5">tremely efficient, it can do no more than implement the security policies</text>
+<text top="788" left="87" width="432" height="14" font="5">that it is given. Security failures due to faulty access control mechanisms</text>
+<text top="803" left="87" width="432" height="14" font="5">are rare. Security failures due to poorly designed policies implemented</text>
+<text top="818" left="87" width="175" height="14" font="5">by those mechanisms are not.</text>
+<text top="896" left="182" width="83" height="14" font="5">© 2008–23, A</text>
+<text top="898" left="266" width="35" height="11" font="8">RPACI</text>
+<text top="896" left="302" width="16" height="14" font="5">-D</text>
+<text top="898" left="318" width="46" height="11" font="8">USSEAU</text>
+<text top="896" left="368" width="55" height="14" font="5">(OSTEP)</text>
+<text top="911" left="207" width="82" height="14" font="5">© 2019–23, R</text>
+<text top="913" left="290" width="36" height="11" font="8">EIHER</text>
+<text top="911" left="329" width="12" height="14" font="5">(S</text>
+<text top="913" left="342" width="51" height="11" font="8">ECURITY</text>
+<text top="911" left="394" width="4" height="14" font="5">)</text>
+<text top="903" left="469" width="8" height="14" font="5">T</text>
+<text top="905" left="478" width="31" height="11" font="8">HREE</text>
+<text top="918" left="478" width="8" height="14" font="5">E</text>
+<text top="920" left="487" width="23" height="11" font="8">ASY</text>
+<text top="933" left="468" width="8" height="14" font="5">P</text>
+<text top="935" left="477" width="33" height="11" font="8">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="16" family="OBFIMS+URWPalladioL" color="#000000"/>
+	<fontspec id="19" size="10" family="XQOFDE+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="5">18</text>
+<text top="96" left="450" width="10" height="14" font="5">A</text>
+<text top="98" left="461" width="36" height="11" font="8">CCESS</text>
+<text top="96" left="501" width="10" height="14" font="5">C</text>
+<text top="98" left="511" width="50" height="11" font="8">ONTROL</text>
+<text top="137" left="129" width="82" height="16" font="18"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="11">[C+63] “The Compatible Time Sharing System: A Programmer’s Guide” by F. J. Corbato, M.</text>
+<text top="177" left="129" width="432" height="11" font="11">M. Daggett, R. C. Daley, R. J. Creasy, J. D. Hellwig, R. H. Orenstein, and L. K. Korn. M.I.T. Press,</text>
+<text top="189" left="129" width="24" height="11" font="11">1963.</text>
+<text top="189" left="156" width="405" height="11" font="19">The programmer’s guide for the early and influential CTSS time sharing system. Referenced here</text>
+<text top="201" left="129" width="413" height="11" font="19">because it used an early version of an access control list approach to protecting data stored on disk.</text>
+<text top="218" left="129" width="432" height="11" font="11">[DV64] “Programming Semantics for Multiprogrammed Computations” by Jack B. Dennis and</text>
+<text top="229" left="129" width="348" height="11" font="11">Earl. C. van Horn. Communications of the ACM, Vol. 9, No. 3, March 1966.</text>
+<text top="229" left="480" width="81" height="11" font="19">The earliest discus-</text>
+<text top="241" left="129" width="432" height="11" font="19">sion of the use of capabilities to perform access control in a computer. Though the authors themselves</text>
+<text top="253" left="129" width="432" height="11" font="19">point to the “program reference table” used in the Burroughs B5000 system as an inspiration for this</text>
+<text top="265" left="129" width="30" height="11" font="19">notion.</text>
+<text top="282" left="129" width="432" height="11" font="11">[E+09] “Understanding Android Security” by William Enck, Machigar Ongtang, and Patrick</text>
+<text top="294" left="129" width="363" height="11" font="11">McDaniel. IEEE Security and Privacy, Vol. 7, No. 1, January/February 1999.</text>
+<text top="294" left="498" width="63" height="11" font="19">An interesting</text>
+<text top="305" left="129" width="432" height="11" font="19">approach to providing access control in a particular and important kind of machine. The approach has</text>
+<text top="317" left="129" width="432" height="11" font="19">not been uniformly successful, but it is worth understanding in more detail than we discuss in this</text>
+<text top="329" left="129" width="33" height="11" font="19">chapter.</text>
+<text top="346" left="129" width="432" height="11" font="11">[FK92] “Role-Based Access Controls” by David Ferraiolo and D. Richard Kuhn. 15th National</text>
+<text top="358" left="129" width="215" height="11" font="11">Computer Security Conference, October 1992.</text>
+<text top="358" left="350" width="211" height="11" font="19">The concepts behind RBAC were floating around</text>
+<text top="370" left="129" width="432" height="11" font="19">since at least the 70s, but this paper is commonly regarded as the first discussion of RBAC as a formal</text>
+<text top="382" left="129" width="145" height="11" font="19">concept with particular properties.</text>
+<text top="398" left="129" width="379" height="11" font="11">[L84] “Capability-Based Computer Systems” by Henry Levy. Digital Press, 1984.</text>
+<text top="398" left="513" width="48" height="11" font="19">A full book</text>
+<text top="410" left="129" width="432" height="11" font="19">on the use of capabilities in computer systems, as of 1984. It includes coverage of both hardware using</text>
+<text top="422" left="129" width="263" height="11" font="19">capabilities and operating systems, like Hydra, that used them.</text>
+<text top="438" left="129" width="432" height="11" font="11">[L01] “Integrating Flexible Support for Security Policies Into the Linux Operating System” by</text>
+<text top="450" left="129" width="432" height="11" font="11">Peter Loscocco. Proceedings of the FREENIX Track at the USENIX Annual Technical Confer-</text>
+<text top="462" left="129" width="47" height="11" font="11">ence 2001.</text>
+<text top="462" left="180" width="381" height="11" font="19">The NSA built this version of Linux that incorporates mandatory access control and other</text>
+<text top="474" left="129" width="432" height="11" font="19">security features into Linux. A good place to dive into the world of mandatory access control, if either</text>
+<text top="486" left="129" width="182" height="11" font="19">necessity or interest motivates you to do so.</text>
+<text top="502" left="129" width="432" height="11" font="11">[S74] “Protection and Control of Information Sharing in Multics” by Jerome Saltzer. Commu-</text>
+<text top="514" left="129" width="227" height="11" font="11">nications of the ACM, Vol. 17, No. 7, July 1974.</text>
+<text top="514" left="361" width="199" height="11" font="19">Sometimes it seems that every system idea not</text>
+<text top="526" left="129" width="432" height="11" font="19">introduced in CTSS was added in Multics. In this case, it’s the general use of groups in access control</text>
+<text top="538" left="129" width="20" height="11" font="19">lists.</text>
+<text top="554" left="129" width="432" height="11" font="11">[T84] “Reflections on Trusting Trust” by Ken Thompson. Communications of the ACM, Vol.</text>
+<text top="566" left="129" width="113" height="11" font="11">27, No. 8, August 1984.</text>
+<text top="566" left="248" width="313" height="11" font="19">Ken Thompson’s Turing Award lecture, in which he pointed out how sly</text>
+<text top="578" left="129" width="432" height="11" font="19">systems developers can slip in backdoors without anyone being aware of it. People have wondered ever</text>
+<text top="590" left="129" width="191" height="11" font="19">since if he actually did what he talked about...</text>
+<text top="606" left="129" width="173" height="11" font="11">[W20] “Bernie Madoff” by Wikipedia.</text>
+<text top="607" left="304" width="267" height="9" font="17">https://en.wikipedia.org/wiki/Bernie Madoff</text>
+<text top="606" left="572" width="3" height="11" font="11">.</text>
+<text top="618" left="129" width="432" height="11" font="19">Bernie Madoff (painfully, pronounced “made off”, as in “made off with your money”) built a sophisti-</text>
+<text top="630" left="129" width="432" height="11" font="19">cated Ponzi scheme, a fraud of unimaginable proportions (nearly 100 billion dollars). He is, as Wikipedia</text>
+<text top="642" left="129" width="432" height="11" font="19">says, an “American charlatan”. As relevant here, he probably hired dishonest accountants, or was one</text>
+<text top="654" left="129" width="33" height="11" font="19">himself.</text>
+<text top="671" left="129" width="432" height="11" font="11">[W+74] “Hydra: The Kernel of a Multiprocessor Operating System” by W. Wulf, E. Cohen, W.</text>
+<text top="682" left="129" width="432" height="11" font="11">Corwin, A. Jones, R. Levin, C. Pearson, and F. Pollack. Communications of the ACM, Vol. 17,</text>
+<text top="694" left="129" width="80" height="11" font="11">No. 6, June 1974.</text>
+<text top="694" left="214" width="347" height="11" font="19">A paper on a well-known operating system that made extensive and sophisticated</text>
+<text top="706" left="129" width="178" height="11" font="19">use of capabilities to handle access control.</text>
+<text top="881" left="129" width="11" height="14" font="5">O</text>
+<text top="883" left="141" width="60" height="11" font="8">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="5">S</text>
+<text top="898" left="137" width="45" height="11" font="8">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="11">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="8">WWW</text>
+<text top="896" left="327" width="3" height="14" font="5">.</text>
+<text top="898" left="331" width="36" height="11" font="8">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="5">.</text>
+<text top="898" left="371" width="25" height="11" font="8">ORG</text>
+</page>
+</pdf2xml>

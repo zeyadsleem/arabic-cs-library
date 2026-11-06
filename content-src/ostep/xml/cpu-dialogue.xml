@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="QLREPC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="QLREPC+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="YPFXAR+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="UKJOAS+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="13" family="AUPKRF+URWPalladioL-Roma" color="#000000"/>
+<text top="197" left="523" width="34" height="30" font="0">11</text>
+<text top="267" left="124" width="395" height="21" font="1">Summary Dialogue on CPU Virtualization</text>
+<text top="355" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="354" left="152" width="201" height="14" font="3"><i>So, Student, did you learn anything?</i></text>
+<text top="376" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="376" left="146" width="373" height="14" font="3"><i>Well, Professor, that seems like a loaded question. I think you only</i></text>
+<text top="390" left="87" width="119" height="14" font="3"><i>want me to say “yes.”</i></text>
+<text top="412" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="412" left="154" width="365" height="14" font="3"><i>That’s true. But it’s also still an honest question. Come on, give a</i></text>
+<text top="427" left="87" width="147" height="14" font="3"><i>professor a break, will you?</i></text>
+<text top="448" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="448" left="143" width="376" height="14" font="3"><i>OK, OK. I think I did learn a few things. First, I learned a little about</i></text>
+<text top="463" left="87" width="355" height="14" font="3"><i>how the OS virtualizes the CPU. There are a bunch of important</i></text>
+<text top="463" left="446" width="73" height="10" font="4"><b>mechanisms</b></text>
+<text top="478" left="87" width="432" height="14" font="3"><i>that I had to understand to make sense of this: traps and trap handlers, timer</i></text>
+<text top="493" left="87" width="432" height="14" font="3"><i>interrupts, and how the OS and the hardware have to carefully save and restore</i></text>
+<text top="507" left="87" width="218" height="14" font="3"><i>state when switching between processes.</i></text>
+<text top="529" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="529" left="152" width="65" height="14" font="3"><i>Good, good!</i></text>
+<text top="550" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="550" left="144" width="375" height="14" font="3"><i>All those interactions do seem a little complicated though; how can I</i></text>
+<text top="565" left="87" width="64" height="14" font="3"><i>learn more?</i></text>
+<text top="586" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="586" left="152" width="367" height="14" font="3"><i>Well, that’s a good question. I think there is no substitute for doing;</i></text>
+<text top="601" left="87" width="432" height="14" font="3"><i>just reading about these things doesn’t quite give you the proper sense. Do the</i></text>
+<text top="616" left="87" width="340" height="14" font="3"><i>class projects and I bet by the end it will all kind of make sense.</i></text>
+<text top="637" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="637" left="143" width="210" height="14" font="3"><i>Sounds good. What else can I tell you?</i></text>
+<text top="658" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="658" left="155" width="364" height="14" font="3"><i>Well, did you get some sense of the philosophy of the OS in your</i></text>
+<text top="673" left="87" width="222" height="14" font="3"><i>quest to understand its basic machinery?</i></text>
+<text top="694" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="694" left="145" width="374" height="14" font="3"><i>Hmm... I think so. It seems like the OS is fairly paranoid. It wants</i></text>
+<text top="709" left="87" width="432" height="14" font="3"><i>to make sure it stays in charge of the machine. While it wants a program to run</i></text>
+<text top="724" left="87" width="346" height="14" font="3"><i>as efficiently as possible (and hence the whole reasoning behind</i></text>
+<text top="724" left="437" width="82" height="10" font="4"><b>limited direct</b></text>
+<text top="739" left="87" width="57" height="10" font="4"><b>execution</b></text>
+<text top="739" left="144" width="375" height="14" font="3"><i>), the OS also wants to be able to say “Ah! Not so fast my friend”</i></text>
+<text top="754" left="87" width="432" height="14" font="3"><i>in case of an errant or malicious process. Paranoia rules the day, and certainly</i></text>
+<text top="769" left="87" width="432" height="14" font="3"><i>keeps the OS in charge of the machine. Perhaps that is why we think of the OS</i></text>
+<text top="784" left="87" width="121" height="14" font="3"><i>as a resource manager.</i></text>
+<text top="805" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="805" left="152" width="358" height="14" font="3"><i>Yes indeed — sounds like you are starting to put it together! Nice.</i></text>
+<text top="826" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="826" left="143" width="43" height="14" font="3"><i>Thanks.</i></text>
+<text top="862" left="300" width="7" height="12" font="5">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="11" family="AUPKRF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="12" family="AUPKRF+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="AUPKRF+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="12" font="5">2</text>
+<text top="96" left="265" width="7" height="12" font="5">S</text>
+<text top="98" left="272" width="54" height="10" font="6">UMMARY</text>
+<text top="96" left="331" width="10" height="12" font="5">D</text>
+<text top="98" left="342" width="76" height="10" font="6">IALOGUE ON</text>
+<text top="96" left="422" width="43" height="12" font="5">CPU V</text>
+<text top="98" left="466" width="94" height="10" font="6">IRTUALIZATION</text>
+<text top="139" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="139" left="198" width="363" height="14" font="3"><i>And what about the policies on top of those mechanisms — any</i></text>
+<text top="154" left="129" width="137" height="14" font="3"><i>interesting lessons there?</i></text>
+<text top="174" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="174" left="185" width="376" height="14" font="3"><i>Some lessons to be learned there for sure. Perhaps a little obvious, but</i></text>
+<text top="189" left="129" width="432" height="14" font="3"><i>obvious can be good. Like the notion of bumping short jobs to the front of the</i></text>
+<text top="204" left="129" width="432" height="14" font="3"><i>queue — I knew that was a good idea ever since the one time I was buying some</i></text>
+<text top="219" left="129" width="432" height="14" font="3"><i>gum at the store, and the guy in front of me had a credit card that wouldn’t work.</i></text>
+<text top="234" left="129" width="194" height="14" font="3"><i>He was no short job, let me tell you.</i></text>
+<text top="254" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="254" left="194" width="296" height="14" font="3"><i>That sounds oddly rude to that poor fellow. What else?</i></text>
+<text top="275" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="274" left="188" width="373" height="14" font="3"><i>Well, that you can build a smart scheduler that tries to be like SJF</i></text>
+<text top="289" left="129" width="432" height="14" font="3"><i>and RR all at once — that MLFQ was pretty neat. Building up a real scheduler</i></text>
+<text top="304" left="129" width="81" height="14" font="3"><i>seems difficult.</i></text>
+<text top="325" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="325" left="196" width="364" height="14" font="3"><i>Indeed it is. That’s why there is still controversy to this day over</i></text>
+<text top="340" left="129" width="432" height="14" font="3"><i>which scheduler to use; see the Linux battles between CFS, BFS, and the O(1)</i></text>
+<text top="354" left="129" width="391" height="14" font="3"><i>scheduler, for example. And no, I will not spell out the full name of BFS.</i></text>
+<text top="375" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="375" left="185" width="376" height="14" font="3"><i>And I won’t ask you to! These policy battles seem like they could rage</i></text>
+<text top="390" left="129" width="205" height="14" font="3"><i>forever; is there really a right answer?</i></text>
+<text top="410" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="410" left="196" width="365" height="14" font="3"><i>Probably not. After all, even our own metrics are at odds: if your</i></text>
+<text top="425" left="129" width="432" height="14" font="3"><i>scheduler is good at turnaround time, it’s bad at response time, and vice versa.</i></text>
+<text top="440" left="129" width="432" height="14" font="3"><i>As Lampson said, perhaps the goal isn’t to find the best solution, but rather to</i></text>
+<text top="455" left="129" width="77" height="14" font="3"><i>avoid disaster.</i></text>
+<text top="475" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="475" left="185" width="136" height="14" font="3"><i>That’s a little depressing.</i></text>
+<text top="496" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="496" left="197" width="364" height="14" font="3"><i>Good engineering can be that way. And it can also be uplifting!</i></text>
+<text top="511" left="129" width="432" height="14" font="3"><i>It’s just your perspective on it, really. I personally think being pragmatic is a</i></text>
+<text top="526" left="129" width="432" height="14" font="3"><i>good thing, and pragmatists realize that not all problems have clean and easy</i></text>
+<text top="540" left="129" width="266" height="14" font="3"><i>solutions. Anything else that caught your fancy?</i></text>
+<text top="561" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="561" left="188" width="373" height="14" font="3"><i>I really liked the notion of gaming the scheduler; it seems like that</i></text>
+<text top="576" left="129" width="432" height="14" font="3"><i>might be something to look into when I’m next running a job on Amazon’s EC2</i></text>
+<text top="591" left="129" width="432" height="14" font="3"><i>service. Maybe I can steal some cycles from some other unsuspecting (and more</i></text>
+<text top="606" left="129" width="203" height="14" font="3"><i>importantly, OS-ignorant) customer!</i></text>
+<text top="626" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="626" left="194" width="366" height="14" font="3"><i>It looks like I might have created a monster! Professor Frankenstein</i></text>
+<text top="641" left="129" width="226" height="14" font="3"><i>is not what I’d like to be called, you know.</i></text>
+<text top="661" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="661" left="185" width="376" height="14" font="3"><i>But isn’t that the idea? To get us excited about something, so much so</i></text>
+<text top="676" left="129" width="323" height="14" font="3"><i>that we look into it on our own? Lighting fires and all that?</i></text>
+<text top="697" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="697" left="194" width="239" height="14" font="3"><i>I guess so. But I didn’t think it would work!</i></text>
+<text top="881" left="129" width="11" height="12" font="5">O</text>
+<text top="883" left="141" width="60" height="10" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="12" font="5">S</text>
+<text top="898" left="137" width="45" height="10" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="11" font="7">[V</text>
+<text top="914" left="143" width="39" height="9" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="11" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="10" font="6">WWW</text>
+<text top="896" left="327" width="3" height="12" font="5">.</text>
+<text top="898" left="331" width="36" height="10" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="12" font="5">.</text>
+<text top="898" left="371" width="25" height="10" font="6">ORG</text>
+</page>
+</pdf2xml>

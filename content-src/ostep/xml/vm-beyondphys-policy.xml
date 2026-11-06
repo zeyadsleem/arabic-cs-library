@@ -1,0 +1,1619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="XITNNK+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="XITNNK+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="GGKEXX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="RKJUBH+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="GGKEXX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="16" family="GGKEXX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="13" family="ONRNUM+CMMI9" color="#000000"/>
+	<fontspec id="7" size="13" family="JHVTJC+CMR9" color="#000000"/>
+	<fontspec id="8" size="9" family="THOQAN+CMMI6" color="#000000"/>
+	<fontspec id="9" size="13" family="GYAAWA+CMSY9" color="#000000"/>
+<text top="196" left="523" width="34" height="30" font="0">22</text>
+<text top="267" left="191" width="328" height="21" font="1">Beyond Physical Memory: Policies</text>
+<text top="316" left="105" width="414" height="14" font="2">In a virtual memory manager, life is easy when you have a lot of free</text>
+<text top="331" left="87" width="432" height="14" font="2">memory. A page fault occurs, you ﬁnd a free page on the free-page list,</text>
+<text top="346" left="87" width="432" height="14" font="2">and assign it to the faulting page. Hey, Operating System, congratula-</text>
+<text top="361" left="87" width="135" height="14" font="2">tions! You did it again.</text>
+<text top="376" left="105" width="414" height="14" font="2">Unfortunately, things get a little more interesting when little memory</text>
+<text top="391" left="87" width="152" height="14" font="2">is free. In such a case, this</text>
+<text top="391" left="242" width="106" height="13" font="3"><b>memory pressure</b></text>
+<text top="391" left="351" width="122" height="14" font="2">forces the OS to start</text>
+<text top="391" left="476" width="43" height="13" font="3"><b>paging</b></text>
+<text top="406" left="87" width="20" height="13" font="3"><b>out</b></text>
+<text top="406" left="112" width="407" height="14" font="2">pages to make room for actively-used pages. Deciding which page</text>
+<text top="421" left="87" width="76" height="14" font="2">(or pages) to</text>
+<text top="421" left="167" width="29" height="13" font="3"><b>evict</b></text>
+<text top="421" left="200" width="158" height="14" font="2">is encapsulated within the</text>
+<text top="421" left="363" width="118" height="13" font="3"><b>replacement policy</b></text>
+<text top="421" left="484" width="35" height="14" font="2">of the</text>
+<text top="436" left="87" width="432" height="14" font="2">OS; historically, it was one of the most important decisions the early vir-</text>
+<text top="451" left="87" width="432" height="14" font="2">tual memory systems made, as older systems had little physical memory.</text>
+<text top="466" left="87" width="432" height="14" font="2">Minimally, it is an interesting set of policies worth knowing a little more</text>
+<text top="481" left="87" width="178" height="14" font="2">about. And thus our problem:</text>
+<text top="516" left="142" width="8" height="14" font="2">T</text>
+<text top="518" left="150" width="16" height="11" font="4">HE</text>
+<text top="516" left="171" width="10" height="14" font="2">C</text>
+<text top="518" left="181" width="24" height="11" font="4">RUX</text>
+<text top="516" left="206" width="19" height="14" font="2">: H</text>
+<text top="518" left="226" width="20" height="11" font="4">OW</text>
+<text top="516" left="250" width="8" height="14" font="2">T</text>
+<text top="518" left="258" width="8" height="11" font="4">O</text>
+<text top="516" left="271" width="10" height="14" font="2">D</text>
+<text top="518" left="282" width="35" height="11" font="4">ECIDE</text>
+<text top="516" left="321" width="13" height="14" font="2">W</text>
+<text top="518" left="335" width="31" height="11" font="4">HICH</text>
+<text top="516" left="371" width="8" height="14" font="2">P</text>
+<text top="518" left="378" width="25" height="11" font="4">AGE</text>
+<text top="516" left="407" width="8" height="14" font="2">T</text>
+<text top="518" left="416" width="8" height="11" font="4">O</text>
+<text top="516" left="428" width="8" height="14" font="2">E</text>
+<text top="518" left="437" width="28" height="11" font="4">VICT</text>
+<text top="531" left="87" width="432" height="14" font="2">How can the OS decide which page (or pages) to evict from memory?</text>
+<text top="546" left="87" width="432" height="14" font="2">This decision is made by the replacement policy of the system, which usu-</text>
+<text top="561" left="87" width="432" height="14" font="2">ally follows some general principles (discussed below) but also includes</text>
+<text top="576" left="87" width="274" height="14" font="2">certain tweaks to avoid corner-case behaviors.</text>
+<text top="614" left="55" width="178" height="17" font="5">22.1 Cache Management</text>
+<text top="634" left="105" width="414" height="14" font="2">Before diving into policies, we ﬁrst describe the problem we are trying</text>
+<text top="649" left="87" width="432" height="14" font="2">to solve in more detail. Given that main memory holds some subset of</text>
+<text top="664" left="87" width="331" height="14" font="2">all the pages in the system, it can rightly be viewed as a</text>
+<text top="664" left="421" width="34" height="13" font="3"><b>cache</b></text>
+<text top="664" left="458" width="61" height="14" font="2">for virtual</text>
+<text top="679" left="87" width="432" height="14" font="2">memory pages in the system. Thus, our goal in picking a replacement</text>
+<text top="694" left="87" width="304" height="14" font="2">policy for this cache is to minimize the number of</text>
+<text top="694" left="395" width="79" height="13" font="3"><b>cache misses</b></text>
+<text top="694" left="474" width="45" height="14" font="2">, i.e., to</text>
+<text top="709" left="87" width="432" height="14" font="2">minimize the number of times that we have to fetch a page from disk.</text>
+<text top="723" left="87" width="394" height="14" font="2">Alternately, one can view our goal as maximizing the number of</text>
+<text top="724" left="485" width="34" height="13" font="3"><b>cache</b></text>
+<text top="738" left="87" width="23" height="13" font="3"><b>hits</b></text>
+<text top="738" left="110" width="409" height="14" font="2">, i.e., the number of times a page that is accessed is found in memory.</text>
+<text top="754" left="105" width="391" height="14" font="2">Knowing the number of cache hits and misses let us calculate the</text>
+<text top="754" left="500" width="19" height="13" font="3"><b>av-</b></text>
+<text top="769" left="87" width="164" height="13" font="3"><b>erage memory access time</b></text>
+<text top="769" left="256" width="4" height="14" font="2">(</text>
+<text top="769" left="260" width="42" height="13" font="3"><b>AMAT</b></text>
+<text top="769" left="302" width="217" height="14" font="2">) for a program (a metric computer</text>
+<text top="784" left="87" width="432" height="14" font="2">architects compute for hardware caches [HP06]). Speciﬁcally, given these</text>
+<text top="799" left="87" width="356" height="14" font="2">values, we can compute the AMAT of a program as follows:</text>
+<text top="826" left="212" width="44" height="10" font="6">AM AT</text>
+<text top="826" left="265" width="11" height="13" font="7">=</text>
+<text top="826" left="283" width="8" height="10" font="6">T</text>
+<text top="831" left="291" width="10" height="6" font="8">M</text>
+<text top="826" left="306" width="19" height="13" font="7">+ (</text>
+<text top="826" left="326" width="9" height="10" font="6">P</text>
+<text top="831" left="334" width="26" height="6" font="8">M iss</text>
+<text top="829" left="364" width="4" height="7" font="9">·</text>
+<text top="826" left="371" width="8" height="10" font="6">T</text>
+<text top="831" left="379" width="9" height="6" font="8">D</text>
+<text top="826" left="389" width="5" height="13" font="7">)</text>
+<text top="826" left="486" width="32" height="14" font="2">(22.1)</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="9" family="YWXKNN+CMR6" color="#000000"/>
+	<fontspec id="11" size="13" family="WPDVPG+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="12" size="12" family="GGKEXX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="13" size="10" family="GGKEXX+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="322" width="8" height="14" font="2">B</text>
+<text top="98" left="331" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="378" width="8" height="14" font="2">P</text>
+<text top="98" left="386" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="442" width="13" height="14" font="2">M</text>
+<text top="98" left="456" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="497" width="16" height="14" font="2">: P</text>
+<text top="98" left="514" width="46" height="11" font="4">OLICIES</text>
+<text top="139" left="129" width="37" height="14" font="2">where</text>
+<text top="139" left="171" width="8" height="10" font="6">T</text>
+<text top="144" left="179" width="10" height="6" font="8">M</text>
+<text top="139" left="196" width="249" height="14" font="2">represents the cost of accessing memory,</text>
+<text top="139" left="451" width="8" height="10" font="6">T</text>
+<text top="144" left="459" width="9" height="6" font="8">D</text>
+<text top="139" left="474" width="87" height="14" font="2">the cost of ac-</text>
+<text top="154" left="129" width="106" height="14" font="2">cessing disk, and</text>
+<text top="154" left="241" width="9" height="10" font="6">P</text>
+<text top="159" left="250" width="26" height="6" font="8">M iss</text>
+<text top="154" left="282" width="279" height="14" font="2">the probability of not ﬁnding the data in the</text>
+<text top="169" left="129" width="88" height="14" font="2">cache (a miss);</text>
+<text top="169" left="222" width="9" height="10" font="6">P</text>
+<text top="174" left="231" width="26" height="6" font="8">M iss</text>
+<text top="169" left="262" width="298" height="14" font="2">varies from 0.0 to 1.0, and sometimes we refer to</text>
+<text top="183" left="129" width="432" height="14" font="2">a percent miss rate instead of a probability (e.g., a 10% miss rate means</text>
+<text top="199" left="129" width="9" height="10" font="6">P</text>
+<text top="204" left="138" width="26" height="6" font="8">M iss</text>
+<text top="198" left="171" width="24" height="13" font="7">= 0</text>
+<text top="199" left="195" width="4" height="10" font="6">.</text>
+<text top="198" left="199" width="14" height="13" font="7">10</text>
+<text top="198" left="213" width="348" height="14" font="2">). Note you always pay the cost of accessing the data in</text>
+<text top="213" left="129" width="432" height="14" font="2">memory; when you miss, however, you must additionally pay the cost of</text>
+<text top="228" left="129" width="164" height="14" font="2">fetching the data from disk.</text>
+<text top="246" left="147" width="414" height="14" font="2">For example, let us imagine a machine with a (tiny) address space:</text>
+<text top="260" left="129" width="432" height="14" font="2">4KB, with 256-byte pages. Thus, a virtual address has two components: a</text>
+<text top="275" left="129" width="440" height="14" font="2">4-bit VPN (the most-signiﬁcant bits) and an 8-bit offset (the least-signiﬁcant</text>
+<text top="292" left="129" width="300" height="14" font="2">bits). Thus, a process in this example can access</text>
+<text top="292" left="434" width="7" height="13" font="7">2</text>
+<text top="290" left="441" width="5" height="7" font="10">4</text>
+<text top="292" left="453" width="108" height="14" font="2">or 16 total virtual</text>
+<text top="307" left="129" width="432" height="14" font="2">pages. In this example, the process generates the following memory ref-</text>
+<text top="322" left="129" width="432" height="14" font="2">erences (i.e., virtual addresses): 0x000, 0x100, 0x200, 0x300, 0x400, 0x500,</text>
+<text top="337" left="129" width="432" height="14" font="2">0x600, 0x700, 0x800, 0x900. These virtual addresses refer to the ﬁrst byte</text>
+<text top="352" left="129" width="432" height="14" font="2">of each of the ﬁrst ten pages of the address space (the page number being</text>
+<text top="367" left="129" width="248" height="14" font="2">the ﬁrst hex digit of each virtual address).</text>
+<text top="384" left="147" width="414" height="14" font="2">Let us further assume that every page except virtual page 3 is already</text>
+<text top="399" left="129" width="432" height="14" font="2">in memory. Thus, our sequence of memory references will encounter the</text>
+<text top="414" left="129" width="432" height="14" font="2">following behavior: hit, hit, hit, miss, hit, hit, hit, hit, hit, hit. We can</text>
+<text top="429" left="129" width="74" height="14" font="2">compute the</text>
+<text top="429" left="205" width="43" height="13" font="3"><b>hit rate</b></text>
+<text top="429" left="251" width="309" height="14" font="2">(the percent of references found in memory): 90%, as</text>
+<text top="444" left="129" width="245" height="14" font="2">9 out of 10 references are in memory. The</text>
+<text top="444" left="377" width="55" height="13" font="3"><b>miss rate</b></text>
+<text top="444" left="436" width="75" height="14" font="2">is thus 10% (</text>
+<text top="444" left="511" width="9" height="10" font="6">P</text>
+<text top="449" left="519" width="26" height="6" font="8">M iss</text>
+<text top="444" left="550" width="11" height="13" font="7">=</text>
+<text top="459" left="129" width="7" height="13" font="7">0</text>
+<text top="459" left="136" width="4" height="10" font="6">.</text>
+<text top="459" left="140" width="7" height="13" font="7">1</text>
+<text top="459" left="147" width="75" height="14" font="2">). In general,</text>
+<text top="459" left="225" width="9" height="10" font="6">P</text>
+<text top="464" left="234" width="18" height="6" font="8">H it</text>
+<text top="459" left="256" width="11" height="13" font="7">+</text>
+<text top="459" left="270" width="9" height="10" font="6">P</text>
+<text top="464" left="278" width="26" height="6" font="8">M iss</text>
+<text top="459" left="309" width="21" height="13" font="7">= 1</text>
+<text top="459" left="330" width="4" height="10" font="6">.</text>
+<text top="459" left="334" width="7" height="13" font="7">0</text>
+<text top="459" left="341" width="217" height="14" font="2">; hit rate plus miss rate sum to 100%.</text>
+<text top="476" left="147" width="414" height="14" font="2">To calculate AMAT, we need to know the cost of accessing memory</text>
+<text top="491" left="129" width="432" height="14" font="2">and the cost of accessing disk. Assuming the cost of accessing memory</text>
+<text top="506" left="129" width="4" height="14" font="2">(</text>
+<text top="506" left="133" width="8" height="10" font="6">T</text>
+<text top="511" left="141" width="10" height="6" font="8">M</text>
+<text top="506" left="154" width="371" height="14" font="2">) is around 100 nanoseconds, and the cost of accessing disk (</text>
+<text top="506" left="524" width="8" height="10" font="6">T</text>
+<text top="511" left="532" width="9" height="6" font="8">D</text>
+<text top="506" left="542" width="19" height="14" font="2">) is</text>
+<text top="521" left="129" width="314" height="14" font="2">about 10 milliseconds, we have the following AMAT:</text>
+<text top="521" left="446" width="21" height="13" font="7">100</text>
+<text top="521" left="467" width="15" height="10" font="6">ns</text>
+<text top="521" left="485" width="20" height="13" font="7">+ 0</text>
+<text top="521" left="505" width="4" height="10" font="6">.</text>
+<text top="521" left="509" width="7" height="13" font="7">1</text>
+<text top="524" left="518" width="4" height="7" font="9">·</text>
+<text top="521" left="525" width="14" height="13" font="7">10</text>
+<text top="521" left="539" width="19" height="10" font="6">ms</text>
+<text top="521" left="557" width="3" height="14" font="2">,</text>
+<text top="536" left="129" width="51" height="14" font="2">which is</text>
+<text top="536" left="185" width="21" height="13" font="7">100</text>
+<text top="536" left="205" width="15" height="10" font="6">ns</text>
+<text top="536" left="224" width="22" height="13" font="7">+ 1</text>
+<text top="536" left="246" width="19" height="10" font="6">ms</text>
+<text top="536" left="265" width="296" height="14" font="2">, or 1.0001 ms, or about 1 millisecond. If our hit</text>
+<text top="551" left="129" width="174" height="14" font="2">rate had instead been 99.9% (</text>
+<text top="551" left="303" width="9" height="10" font="6">P</text>
+<text top="556" left="312" width="24" height="6" font="8">miss</text>
+<text top="551" left="342" width="22" height="13" font="7">= 0</text>
+<text top="551" left="364" width="4" height="10" font="6">.</text>
+<text top="551" left="367" width="21" height="13" font="7">001</text>
+<text top="551" left="388" width="173" height="14" font="2">), the result is quite different:</text>
+<text top="566" left="129" width="432" height="14" font="2">AMAT is 10.1 microseconds, or roughly 100 times faster. As the hit rate</text>
+<text top="581" left="129" width="329" height="14" font="2">approaches 100%, AMAT approaches 100 nanoseconds.</text>
+<text top="598" left="147" width="414" height="14" font="2">Unfortunately, as you can see in this example, the cost of disk access</text>
+<text top="613" left="129" width="432" height="14" font="2">is so high in modern systems that even a tiny miss rate will quickly dom-</text>
+<text top="628" left="129" width="432" height="14" font="2">inate the overall AMAT of running programs. Clearly, we need to avoid</text>
+<text top="643" left="129" width="432" height="14" font="2">as many misses as possible or run slowly, at the rate of the disk. One way</text>
+<text top="658" left="129" width="410" height="14" font="2">to help with this is to carefully develop a smart policy, as we now do.</text>
+<text top="695" left="97" width="272" height="17" font="5">22.2 The Optimal Replacement Policy</text>
+<text top="721" left="147" width="414" height="14" font="2">To better understand how a particular replacement policy works, it</text>
+<text top="736" left="129" width="432" height="14" font="2">would be nice to compare it to the best possible replacement policy. As it</text>
+<text top="751" left="129" width="108" height="14" font="2">turns out, such an</text>
+<text top="751" left="241" width="48" height="13" font="3"><b>optimal</b></text>
+<text top="751" left="293" width="268" height="14" font="2">policy was developed by Belady many years</text>
+<text top="766" left="129" width="432" height="14" font="2">ago [B66] (he originally called it MIN). The optimal replacement policy</text>
+<text top="781" left="129" width="432" height="14" font="2">leads to the fewest number of misses overall. Belady showed that a sim-</text>
+<text top="796" left="129" width="432" height="14" font="2">ple (but, unfortunately, difﬁcult to implement!) approach that replaces</text>
+<text top="811" left="129" width="180" height="14" font="2">the page that will be accessed</text>
+<text top="811" left="314" width="117" height="14" font="11"><i>furthest in the future</i></text>
+<text top="811" left="435" width="126" height="14" font="2">is the optimal policy,</text>
+<text top="826" left="129" width="267" height="14" font="2">resulting in the fewest-possible cache misses.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="262" width="16" height="14" font="2">: P</text>
+<text top="98" left="279" width="46" height="11" font="4">OLICIES</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="148" left="158" width="8" height="14" font="2">T</text>
+<text top="150" left="167" width="11" height="11" font="4">IP</text>
+<text top="148" left="178" width="18" height="14" font="2">: C</text>
+<text top="150" left="197" width="65" height="11" font="4">OMPARING</text>
+<text top="148" left="266" width="10" height="14" font="2">A</text>
+<text top="150" left="277" width="45" height="11" font="4">GAINST</text>
+<text top="148" left="326" width="11" height="14" font="2">O</text>
+<text top="150" left="337" width="45" height="11" font="4">PTIMAL</text>
+<text top="148" left="386" width="5" height="14" font="2">I</text>
+<text top="150" left="391" width="6" height="11" font="4">S</text>
+<text top="148" left="401" width="10" height="14" font="2">U</text>
+<text top="150" left="412" width="36" height="11" font="4">SEFUL</text>
+<text top="163" left="87" width="432" height="14" font="2">Although optimal is not very practical as a real policy, it is incredibly</text>
+<text top="178" left="87" width="432" height="14" font="2">useful as a comparison point in simulation or other studies. Saying that</text>
+<text top="193" left="87" width="432" height="14" font="2">your fancy new algorithm has a 80% hit rate isn’t meaningful in isolation;</text>
+<text top="208" left="87" width="432" height="14" font="2">saying that optimal achieves an 82% hit rate (and thus your new approach</text>
+<text top="223" left="87" width="432" height="14" font="2">is quite close to optimal) makes the result more meaningful and gives it</text>
+<text top="238" left="87" width="432" height="14" font="2">context. Thus, in any study you perform, knowing what the optimal is</text>
+<text top="253" left="87" width="432" height="14" font="2">lets you perform a better comparison, showing how much improvement</text>
+<text top="268" left="87" width="239" height="14" font="2">is still possible, and also when you can</text>
+<text top="268" left="331" width="22" height="14" font="11"><i>stop</i></text>
+<text top="268" left="358" width="161" height="14" font="2">making your policy better,</text>
+<text top="283" left="87" width="272" height="14" font="2">because it is close enough to the ideal [AD03].</text>
+<text top="319" left="105" width="414" height="14" font="2">Hopefully, the intuition behind the optimal policy makes sense. Think</text>
+<text top="333" left="87" width="432" height="14" font="2">about it like this: if you have to throw out some page, why not throw</text>
+<text top="348" left="87" width="432" height="14" font="2">out the one that is needed the furthest from now? By doing so, you are</text>
+<text top="363" left="87" width="432" height="14" font="2">essentially saying that all the other pages in the cache are more important</text>
+<text top="378" left="87" width="432" height="14" font="2">than the one furthest out. The reason this is true is simple: you will refer</text>
+<text top="393" left="87" width="343" height="14" font="2">to the other pages before you refer to the one furthest out.</text>
+<text top="410" left="105" width="414" height="14" font="2">Let’s trace through a simple example to understand the decisions the</text>
+<text top="425" left="87" width="432" height="14" font="2">optimal policy makes. Assume a program accesses the following stream</text>
+<text top="440" left="87" width="432" height="14" font="2">of virtual pages: 0, 1, 2, 0, 1, 3, 0, 3, 1, 2, 1. Figure 22.1 shows the behavior</text>
+<text top="455" left="87" width="295" height="14" font="2">of optimal, assuming a cache that ﬁts three pages.</text>
+<text top="471" left="105" width="414" height="14" font="2">In the ﬁgure, you can see the following actions. Not surprisingly, the</text>
+<text top="486" left="87" width="432" height="14" font="2">ﬁrst three accesses are misses, as the cache begins in an empty state; such</text>
+<text top="501" left="87" width="206" height="14" font="2">a miss is sometimes referred to as a</text>
+<text top="501" left="296" width="89" height="13" font="3"><b>cold-start miss</b></text>
+<text top="501" left="387" width="17" height="14" font="2">(or</text>
+<text top="501" left="407" width="104" height="13" font="3"><b>compulsory miss</b></text>
+<text top="501" left="511" width="8" height="14" font="2">).</text>
+<text top="516" left="87" width="432" height="14" font="2">Then we refer again to pages 0 and 1, which both hit in the cache. Finally,</text>
+<text top="531" left="87" width="432" height="14" font="2">we reach another miss (to page 3), but this time the cache is full; a re-</text>
+<text top="546" left="87" width="432" height="14" font="2">placement must take place! Which begs the question: which page should</text>
+<text top="561" left="87" width="432" height="14" font="2">we replace? With the optimal policy, we examine the future for each page</text>
+<text top="576" left="87" width="432" height="14" font="2">currently in the cache (0, 1, and 2), and see that 0 is accessed almost imme-</text>
+<text top="591" left="87" width="432" height="14" font="2">diately, 1 is accessed a little later, and 2 is accessed furthest in the future.</text>
+<text top="606" left="87" width="432" height="14" font="2">Thus the optimal policy has an easy choice: evict page 2, resulting in</text>
+<text top="631" left="366" width="60" height="13" font="3"><b>Resulting</b></text>
+<text top="646" left="175" width="41" height="13" font="3"><b>Access</b></text>
+<text top="646" left="234" width="60" height="13" font="3"><b>Hit/Miss?</b></text>
+<text top="646" left="312" width="31" height="13" font="3"><b>Evict</b></text>
+<text top="646" left="360" width="71" height="13" font="3"><b>Cache State</b></text>
+<text top="662" left="192" width="7" height="14" font="2">0</text>
+<text top="662" left="250" width="28" height="14" font="2">Miss</text>
+<text top="662" left="425" width="7" height="14" font="2">0</text>
+<text top="677" left="192" width="7" height="14" font="2">1</text>
+<text top="677" left="250" width="28" height="14" font="2">Miss</text>
+<text top="677" left="411" width="20" height="14" font="2">0, 1</text>
+<text top="692" left="192" width="7" height="14" font="2">2</text>
+<text top="692" left="250" width="28" height="14" font="2">Miss</text>
+<text top="692" left="398" width="34" height="14" font="2">0, 1, 2</text>
+<text top="707" left="192" width="7" height="14" font="2">0</text>
+<text top="707" left="254" width="19" height="14" font="2">Hit</text>
+<text top="707" left="398" width="34" height="14" font="2">0, 1, 2</text>
+<text top="721" left="192" width="7" height="14" font="2">1</text>
+<text top="721" left="254" width="19" height="14" font="2">Hit</text>
+<text top="721" left="398" width="34" height="14" font="2">0, 1, 2</text>
+<text top="736" left="192" width="7" height="14" font="2">3</text>
+<text top="736" left="250" width="28" height="14" font="2">Miss</text>
+<text top="736" left="323" width="7" height="14" font="2">2</text>
+<text top="736" left="398" width="34" height="14" font="2">0, 1, 3</text>
+<text top="751" left="192" width="7" height="14" font="2">0</text>
+<text top="751" left="254" width="19" height="14" font="2">Hit</text>
+<text top="751" left="398" width="34" height="14" font="2">0, 1, 3</text>
+<text top="766" left="192" width="7" height="14" font="2">3</text>
+<text top="766" left="254" width="19" height="14" font="2">Hit</text>
+<text top="766" left="398" width="34" height="14" font="2">0, 1, 3</text>
+<text top="781" left="192" width="7" height="14" font="2">1</text>
+<text top="781" left="254" width="19" height="14" font="2">Hit</text>
+<text top="781" left="398" width="34" height="14" font="2">0, 1, 3</text>
+<text top="796" left="192" width="7" height="14" font="2">2</text>
+<text top="796" left="250" width="28" height="14" font="2">Miss</text>
+<text top="796" left="323" width="7" height="14" font="2">3</text>
+<text top="796" left="398" width="34" height="14" font="2">0, 1, 2</text>
+<text top="811" left="192" width="7" height="14" font="2">1</text>
+<text top="811" left="254" width="19" height="14" font="2">Hit</text>
+<text top="811" left="398" width="34" height="14" font="2">0, 1, 2</text>
+<text top="834" left="182" width="69" height="14" font="2">Figure 22.1:</text>
+<text top="834" left="255" width="169" height="13" font="3"><b>Tracing The Optimal Policy</b></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="9" family="GGKEXX+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="15" size="7" family="GGKEXX+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="322" width="8" height="14" font="2">B</text>
+<text top="98" left="331" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="378" width="8" height="14" font="2">P</text>
+<text top="98" left="386" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="442" width="13" height="14" font="2">M</text>
+<text top="98" left="456" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="497" width="16" height="14" font="2">: P</text>
+<text top="98" left="514" width="46" height="11" font="4">OLICIES</text>
+<text top="148" left="246" width="10" height="14" font="2">A</text>
+<text top="150" left="257" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="284" width="16" height="14" font="2">: T</text>
+<text top="150" left="301" width="47" height="11" font="4">YPES OF</text>
+<text top="148" left="352" width="10" height="14" font="2">C</text>
+<text top="150" left="363" width="34" height="11" font="4">ACHE</text>
+<text top="148" left="400" width="13" height="14" font="2">M</text>
+<text top="150" left="414" width="30" height="11" font="4">ISSES</text>
+<text top="163" left="129" width="432" height="14" font="2">In the computer architecture world, architects sometimes ﬁnd it useful</text>
+<text top="178" left="129" width="432" height="14" font="2">to characterize misses by type, into one of three categories: compulsory,</text>
+<text top="193" left="129" width="307" height="14" font="2">capacity, and conﬂict misses, sometimes called the</text>
+<text top="193" left="441" width="59" height="13" font="3"><b>Three C’s</b></text>
+<text top="193" left="505" width="56" height="14" font="2">[H87]. A</text>
+<text top="208" left="129" width="105" height="13" font="3"><b>compulsory miss</b></text>
+<text top="208" left="238" width="17" height="14" font="2">(or</text>
+<text top="208" left="259" width="90" height="13" font="3"><b>cold-start miss</b></text>
+<text top="208" left="352" width="209" height="14" font="2">[EF78]) occurs because the cache is</text>
+<text top="223" left="129" width="432" height="14" font="2">empty to begin with and this is the ﬁrst reference to the item; in con-</text>
+<text top="238" left="129" width="41" height="14" font="2">trast, a</text>
+<text top="238" left="173" width="82" height="13" font="3"><b>capacity miss</b></text>
+<text top="238" left="259" width="301" height="14" font="2">occurs because the cache ran out of space and had</text>
+<text top="253" left="129" width="432" height="14" font="2">to evict an item to bring a new item into the cache. The third type of</text>
+<text top="268" left="129" width="43" height="14" font="2">miss (a</text>
+<text top="268" left="176" width="78" height="13" font="3"><b>conﬂict miss</b></text>
+<text top="268" left="254" width="307" height="14" font="2">) arises in hardware because of limits on where an</text>
+<text top="283" left="129" width="407" height="14" font="2">item can be placed in a hardware cache, due to something known as</text>
+<text top="283" left="539" width="22" height="13" font="3"><b>set-</b></text>
+<text top="298" left="129" width="76" height="13" font="3"><b>associativity</b></text>
+<text top="298" left="205" width="356" height="14" font="2">; it does not arise in the OS page cache because such caches</text>
+<text top="313" left="129" width="65" height="14" font="2">are always</text>
+<text top="313" left="199" width="101" height="13" font="3"><b>fully-associative</b></text>
+<text top="313" left="300" width="260" height="14" font="2">, i.e., there are no restrictions on where in</text>
+<text top="327" left="129" width="349" height="14" font="2">memory a page can be placed. See H&amp;P for details [HP06].</text>
+<text top="373" left="129" width="432" height="14" font="2">pages 0, 1, and 3 in the cache. The next three references are hits, but then</text>
+<text top="388" left="129" width="432" height="14" font="2">we get to page 2, which we evicted long ago, and suffer another miss.</text>
+<text top="403" left="129" width="432" height="14" font="2">Here the optimal policy again examines the future for each page in the</text>
+<text top="418" left="129" width="432" height="14" font="2">cache (0, 1, and 3), and sees that as long as it doesn’t evict page 1 (which</text>
+<text top="433" left="129" width="432" height="14" font="2">is about to be accessed), we’ll be OK. The example shows page 3 getting</text>
+<text top="448" left="129" width="432" height="14" font="2">evicted, although 0 would have been a ﬁne choice too. Finally, we hit on</text>
+<text top="463" left="129" width="186" height="14" font="2">page 1 and the trace completes.</text>
+<text top="479" left="147" width="414" height="14" font="2">We can also calculate the hit rate for the cache: with 6 hits and 5 misses,</text>
+<text top="494" left="129" width="79" height="14" font="2">the hit rate is</text>
+<text top="492" left="236" width="23" height="6" font="8">H its</text>
+<text top="502" left="214" width="23" height="6" font="8">H its</text>
+<text top="503" left="237" width="8" height="7" font="10">+</text>
+<text top="502" left="245" width="36" height="6" font="8">M isses</text>
+<text top="494" left="287" width="50" height="14" font="2">which is</text>
+<text top="492" left="350" width="5" height="7" font="10">6</text>
+<text top="503" left="344" width="19" height="7" font="10">6+5</text>
+<text top="494" left="369" width="192" height="14" font="2">or 54.5%. You can also compute</text>
+<text top="511" left="129" width="64" height="14" font="2">the hit rate</text>
+<text top="511" left="196" width="40" height="14" font="11"><i>modulo</i></text>
+<text top="511" left="239" width="205" height="14" font="2">compulsory misses (i.e., ignore the</text>
+<text top="511" left="447" width="22" height="14" font="11"><i>ﬁrst</i></text>
+<text top="511" left="472" width="88" height="14" font="2">miss to a given</text>
+<text top="526" left="129" width="205" height="14" font="2">page), resulting in a 85.7% hit rate.</text>
+<text top="542" left="147" width="414" height="14" font="2">Unfortunately, as we saw before in the development of scheduling</text>
+<text top="557" left="129" width="432" height="14" font="2">policies, the future is not generally known; you can’t build the optimal</text>
+<text top="575" left="129" width="281" height="14" font="2">policy for a general-purpose operating system</text>
+<text top="572" left="410" width="4" height="9" font="14">1</text>
+<text top="575" left="415" width="145" height="14" font="2">. Thus, in developing a</text>
+<text top="590" left="129" width="432" height="14" font="2">real, deployable policy, we will focus on approaches that ﬁnd some other</text>
+<text top="605" left="129" width="432" height="14" font="2">way to decide which page to evict. The optimal policy will thus serve</text>
+<text top="619" left="129" width="398" height="14" font="2">only as a comparison point, to know how close we are to “perfect”.</text>
+<text top="649" left="97" width="196" height="17" font="5">22.3 A Simple Policy: FIFO</text>
+<text top="676" left="147" width="414" height="14" font="2">Many early systems avoided the complexity of trying to approach</text>
+<text top="691" left="129" width="432" height="14" font="2">optimal and employed very simple replacement policies. For example,</text>
+<text top="706" left="129" width="118" height="14" font="2">some systems used</text>
+<text top="706" left="253" width="31" height="13" font="3"><b>FIFO</b></text>
+<text top="706" left="290" width="271" height="14" font="2">(ﬁrst-in, ﬁrst-out) replacement, where pages</text>
+<text top="721" left="129" width="432" height="14" font="2">were simply placed in a queue when they enter the system; when a re-</text>
+<text top="736" left="129" width="432" height="14" font="2">placement occurs, the page on the tail of the queue (the “ﬁrst-in” page) is</text>
+<text top="751" left="129" width="408" height="14" font="2">evicted. FIFO has one great strength: it is quite simple to implement.</text>
+<text top="767" left="147" width="414" height="14" font="2">Let’s examine how FIFO does on our example reference stream (Figure</text>
+<text top="782" left="129" width="432" height="14" font="2">22.2, page 5). We again begin our trace with three compulsory misses to</text>
+<text top="814" left="149" width="4" height="8" font="15">1</text>
+<text top="816" left="154" width="407" height="11" font="13">If you can, let us know! We can become rich together. Or, like the scientists who “discov-</text>
+<text top="828" left="129" width="251" height="11" font="13">ered” cold fusion, widely scorned and mocked [FP89].</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="262" width="16" height="14" font="2">: P</text>
+<text top="98" left="279" width="46" height="11" font="4">OLICIES</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="136" left="366" width="60" height="13" font="3"><b>Resulting</b></text>
+<text top="151" left="156" width="41" height="13" font="3"><b>Access</b></text>
+<text top="151" left="215" width="60" height="13" font="3"><b>Hit/Miss?</b></text>
+<text top="151" left="293" width="31" height="13" font="3"><b>Evict</b></text>
+<text top="151" left="360" width="71" height="13" font="3"><b>Cache State</b></text>
+<text top="166" left="173" width="7" height="14" font="2">0</text>
+<text top="166" left="231" width="28" height="14" font="2">Miss</text>
+<text top="166" left="342" width="43" height="14" font="2">First-in</text>
+<text top="169" left="385" width="14" height="7" font="9">→</text>
+<text top="166" left="443" width="7" height="14" font="2">0</text>
+<text top="181" left="173" width="7" height="14" font="2">1</text>
+<text top="181" left="231" width="28" height="14" font="2">Miss</text>
+<text top="181" left="342" width="43" height="14" font="2">First-in</text>
+<text top="184" left="385" width="14" height="7" font="9">→</text>
+<text top="181" left="430" width="20" height="14" font="2">0, 1</text>
+<text top="196" left="173" width="7" height="14" font="2">2</text>
+<text top="196" left="231" width="28" height="14" font="2">Miss</text>
+<text top="196" left="342" width="43" height="14" font="2">First-in</text>
+<text top="199" left="385" width="14" height="7" font="9">→</text>
+<text top="196" left="416" width="34" height="14" font="2">0, 1, 2</text>
+<text top="211" left="173" width="7" height="14" font="2">0</text>
+<text top="211" left="235" width="19" height="14" font="2">Hit</text>
+<text top="211" left="342" width="43" height="14" font="2">First-in</text>
+<text top="214" left="385" width="14" height="7" font="9">→</text>
+<text top="211" left="416" width="34" height="14" font="2">0, 1, 2</text>
+<text top="226" left="173" width="7" height="14" font="2">1</text>
+<text top="226" left="235" width="19" height="14" font="2">Hit</text>
+<text top="226" left="342" width="43" height="14" font="2">First-in</text>
+<text top="229" left="385" width="14" height="7" font="9">→</text>
+<text top="226" left="416" width="34" height="14" font="2">0, 1, 2</text>
+<text top="241" left="173" width="7" height="14" font="2">3</text>
+<text top="241" left="231" width="28" height="14" font="2">Miss</text>
+<text top="241" left="305" width="7" height="14" font="2">0</text>
+<text top="241" left="342" width="43" height="14" font="2">First-in</text>
+<text top="244" left="385" width="14" height="7" font="9">→</text>
+<text top="241" left="416" width="34" height="14" font="2">1, 2, 3</text>
+<text top="256" left="173" width="7" height="14" font="2">0</text>
+<text top="256" left="231" width="28" height="14" font="2">Miss</text>
+<text top="256" left="305" width="7" height="14" font="2">1</text>
+<text top="256" left="342" width="43" height="14" font="2">First-in</text>
+<text top="259" left="385" width="14" height="7" font="9">→</text>
+<text top="256" left="416" width="34" height="14" font="2">2, 3, 0</text>
+<text top="271" left="173" width="7" height="14" font="2">3</text>
+<text top="271" left="235" width="19" height="14" font="2">Hit</text>
+<text top="271" left="342" width="43" height="14" font="2">First-in</text>
+<text top="274" left="385" width="14" height="7" font="9">→</text>
+<text top="271" left="416" width="34" height="14" font="2">2, 3, 0</text>
+<text top="286" left="173" width="7" height="14" font="2">1</text>
+<text top="286" left="231" width="28" height="14" font="2">Miss</text>
+<text top="286" left="305" width="7" height="14" font="2">2</text>
+<text top="286" left="342" width="43" height="14" font="2">First-in</text>
+<text top="289" left="385" width="14" height="7" font="9">→</text>
+<text top="286" left="416" width="34" height="14" font="2">3, 0, 1</text>
+<text top="301" left="173" width="7" height="14" font="2">2</text>
+<text top="301" left="231" width="28" height="14" font="2">Miss</text>
+<text top="301" left="305" width="7" height="14" font="2">3</text>
+<text top="301" left="342" width="43" height="14" font="2">First-in</text>
+<text top="304" left="385" width="14" height="7" font="9">→</text>
+<text top="301" left="416" width="34" height="14" font="2">0, 1, 2</text>
+<text top="316" left="173" width="7" height="14" font="2">1</text>
+<text top="316" left="235" width="19" height="14" font="2">Hit</text>
+<text top="316" left="342" width="43" height="14" font="2">First-in</text>
+<text top="318" left="385" width="14" height="7" font="9">→</text>
+<text top="316" left="416" width="34" height="14" font="2">0, 1, 2</text>
+<text top="339" left="192" width="69" height="14" font="2">Figure 22.2:</text>
+<text top="339" left="265" width="149" height="13" font="3"><b>Tracing The FIFO Policy</b></text>
+<text top="358" left="87" width="432" height="14" font="2">pages 0, 1, and 2, and then hit on both 0 and 1. Next, page 3 is referenced,</text>
+<text top="373" left="87" width="432" height="14" font="2">causing a miss; the replacement decision is easy with FIFO: pick the page</text>
+<text top="388" left="87" width="432" height="14" font="2">that was the “ﬁrst one” in (the cache state in the ﬁgure is kept in FIFO</text>
+<text top="402" left="87" width="432" height="14" font="2">order, with the ﬁrst-in page on the left), which is page 0. Unfortunately,</text>
+<text top="417" left="87" width="432" height="14" font="2">our next access is to page 0, causing another miss and replacement (of</text>
+<text top="432" left="87" width="424" height="14" font="2">page 1). We then hit on page 3, but miss on 1 and 2, and ﬁnally hit on 1.</text>
+<text top="447" left="105" width="414" height="14" font="2">Comparing FIFO to optimal, FIFO does notably worse: a 36.4% hit</text>
+<text top="462" left="87" width="432" height="14" font="2">rate (or 57.1% excluding compulsory misses). FIFO simply can’t deter-</text>
+<text top="477" left="87" width="432" height="14" font="2">mine the importance of blocks: even though page 0 had been accessed</text>
+<text top="492" left="87" width="432" height="14" font="2">a number of times, FIFO still kicks it out, simply because it was the ﬁrst</text>
+<text top="507" left="87" width="155" height="14" font="2">one brought into memory.</text>
+<text top="549" left="217" width="10" height="14" font="2">A</text>
+<text top="551" left="228" width="26" height="11" font="4">SIDE</text>
+<text top="549" left="255" width="16" height="14" font="2">: B</text>
+<text top="551" left="272" width="40" height="11" font="4">ELADY</text>
+<text top="549" left="312" width="4" height="14" font="2">’</text>
+<text top="551" left="317" width="6" height="11" font="4">S</text>
+<text top="549" left="326" width="10" height="14" font="2">A</text>
+<text top="551" left="337" width="52" height="11" font="4">NOMALY</text>
+<text top="564" left="87" width="432" height="14" font="2">Belady (of the optimal policy) and colleagues found an interesting refer-</text>
+<text top="579" left="87" width="432" height="14" font="2">ence stream that behaved a little unexpectedly [BNS69]. The memory-</text>
+<text top="594" left="87" width="432" height="14" font="2">reference stream: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5. The replacement policy</text>
+<text top="609" left="87" width="432" height="14" font="2">they were studying was FIFO. The interesting part: how the cache hit</text>
+<text top="624" left="87" width="359" height="14" font="2">rate changed when moving from a cache size of 3 to 4 pages.</text>
+<text top="644" left="87" width="311" height="14" font="2">In general, you would expect the cache hit rate to</text>
+<text top="644" left="403" width="43" height="14" font="11"><i>increase</i></text>
+<text top="644" left="452" width="67" height="14" font="2">(get better)</text>
+<text top="659" left="87" width="432" height="14" font="2">when the cache gets larger. But in this case, with FIFO, it gets worse! Cal-</text>
+<text top="674" left="87" width="432" height="14" font="2">culate the hits and misses yourself and see. This odd behavior is generally</text>
+<text top="689" left="87" width="78" height="14" font="2">referred to as</text>
+<text top="689" left="169" width="112" height="13" font="3"><b>Belady’s Anomaly</b></text>
+<text top="689" left="284" width="197" height="14" font="2">(to the chagrin of his co-authors).</text>
+<text top="709" left="87" width="432" height="14" font="2">Some other policies, such as LRU, don’t suffer from this problem. Can</text>
+<text top="724" left="87" width="360" height="14" font="2">you guess why? As it turns out, LRU has what is known as a</text>
+<text top="724" left="451" width="68" height="13" font="3"><b>stack prop-</b></text>
+<text top="739" left="87" width="24" height="13" font="3"><b>erty</b></text>
+<text top="739" left="116" width="359" height="14" font="2">[M+70]. For algorithms with this property, a cache of size</text>
+<text top="739" left="480" width="11" height="10" font="6">N</text>
+<text top="739" left="497" width="22" height="13" font="7">+ 1</text>
+<text top="754" left="87" width="288" height="14" font="2">naturally includes the contents of a cache of size</text>
+<text top="754" left="378" width="11" height="10" font="6">N</text>
+<text top="754" left="391" width="128" height="14" font="2">. Thus, when increas-</text>
+<text top="769" left="87" width="432" height="14" font="2">ing the cache size, hit rate will either stay the same or improve. FIFO and</text>
+<text top="784" left="87" width="432" height="14" font="2">Random (among others) clearly do not obey the stack property, and thus</text>
+<text top="799" left="87" width="230" height="14" font="2">are susceptible to anomalous behavior.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="10" family="XITNNK+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="17" size="12" family="XITNNK+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="18" size="12" family="XITNNK+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="322" width="8" height="14" font="2">B</text>
+<text top="98" left="331" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="378" width="8" height="14" font="2">P</text>
+<text top="98" left="386" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="442" width="13" height="14" font="2">M</text>
+<text top="98" left="456" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="497" width="16" height="14" font="2">: P</text>
+<text top="98" left="514" width="46" height="11" font="4">OLICIES</text>
+<text top="136" left="408" width="60" height="13" font="3"><b>Resulting</b></text>
+<text top="151" left="216" width="41" height="13" font="3"><b>Access</b></text>
+<text top="151" left="275" width="60" height="13" font="3"><b>Hit/Miss?</b></text>
+<text top="151" left="353" width="31" height="13" font="3"><b>Evict</b></text>
+<text top="151" left="402" width="71" height="13" font="3"><b>Cache State</b></text>
+<text top="166" left="234" width="7" height="14" font="2">0</text>
+<text top="166" left="291" width="28" height="14" font="2">Miss</text>
+<text top="166" left="467" width="7" height="14" font="2">0</text>
+<text top="181" left="234" width="7" height="14" font="2">1</text>
+<text top="181" left="291" width="28" height="14" font="2">Miss</text>
+<text top="181" left="453" width="20" height="14" font="2">0, 1</text>
+<text top="196" left="234" width="7" height="14" font="2">2</text>
+<text top="196" left="291" width="28" height="14" font="2">Miss</text>
+<text top="196" left="440" width="34" height="14" font="2">0, 1, 2</text>
+<text top="211" left="234" width="7" height="14" font="2">0</text>
+<text top="211" left="296" width="19" height="14" font="2">Hit</text>
+<text top="211" left="440" width="34" height="14" font="2">0, 1, 2</text>
+<text top="226" left="234" width="7" height="14" font="2">1</text>
+<text top="226" left="296" width="19" height="14" font="2">Hit</text>
+<text top="226" left="440" width="34" height="14" font="2">0, 1, 2</text>
+<text top="241" left="234" width="7" height="14" font="2">3</text>
+<text top="241" left="291" width="28" height="14" font="2">Miss</text>
+<text top="241" left="365" width="7" height="14" font="2">0</text>
+<text top="241" left="440" width="34" height="14" font="2">1, 2, 3</text>
+<text top="256" left="234" width="7" height="14" font="2">0</text>
+<text top="256" left="291" width="28" height="14" font="2">Miss</text>
+<text top="256" left="365" width="7" height="14" font="2">1</text>
+<text top="256" left="440" width="34" height="14" font="2">2, 3, 0</text>
+<text top="271" left="234" width="7" height="14" font="2">3</text>
+<text top="271" left="296" width="19" height="14" font="2">Hit</text>
+<text top="271" left="440" width="34" height="14" font="2">2, 3, 0</text>
+<text top="286" left="234" width="7" height="14" font="2">1</text>
+<text top="286" left="291" width="28" height="14" font="2">Miss</text>
+<text top="286" left="365" width="7" height="14" font="2">3</text>
+<text top="286" left="440" width="34" height="14" font="2">2, 0, 1</text>
+<text top="301" left="234" width="7" height="14" font="2">2</text>
+<text top="301" left="296" width="19" height="14" font="2">Hit</text>
+<text top="301" left="440" width="34" height="14" font="2">2, 0, 1</text>
+<text top="316" left="234" width="7" height="14" font="2">1</text>
+<text top="316" left="296" width="19" height="14" font="2">Hit</text>
+<text top="316" left="440" width="34" height="14" font="2">2, 0, 1</text>
+<text top="339" left="223" width="69" height="14" font="2">Figure 22.3:</text>
+<text top="339" left="296" width="170" height="13" font="3"><b>Tracing The Random Policy</b></text>
+<text top="366" left="97" width="269" height="17" font="5">22.4 Another Simple Policy: Random</text>
+<text top="396" left="147" width="414" height="14" font="2">Another similar replacement policy is Random, which simply picks a</text>
+<text top="411" left="129" width="432" height="14" font="2">random page to replace under memory pressure. Random has properties</text>
+<text top="426" left="129" width="432" height="14" font="2">similar to FIFO; it is simple to implement, but it doesn’t really try to be</text>
+<text top="441" left="129" width="432" height="14" font="2">too intelligent in picking which blocks to evict. Let’s look at how Random</text>
+<text top="456" left="129" width="376" height="14" font="2">does on our famous example reference stream (see Figure 22.3).</text>
+<text top="471" left="147" width="414" height="14" font="2">Of course, how Random does depends entirely upon how lucky (or</text>
+<text top="486" left="129" width="432" height="14" font="2">unlucky) Random gets in its choices. In the example above, Random does</text>
+<text top="501" left="129" width="432" height="14" font="2">a little better than FIFO, and a little worse than optimal. In fact, we can</text>
+<text top="516" left="129" width="432" height="14" font="2">run the Random experiment thousands of times and determine how it</text>
+<text top="531" left="129" width="432" height="14" font="2">does in general. Figure 22.4 shows how many hits Random achieves over</text>
+<text top="545" left="129" width="432" height="14" font="2">10,000 trials, each with a different random seed. As you can see, some-</text>
+<text top="560" left="129" width="432" height="14" font="2">times (just over 40% of the time), Random is as good as optimal, achieving</text>
+<text top="575" left="129" width="432" height="14" font="2">6 hits on the example trace; sometimes it does much worse, achieving 2</text>
+<text top="590" left="129" width="395" height="14" font="2">hits or fewer. How Random does depends on the luck of the draw.</text>
+<text top="772" left="241" width="6" height="10" font="16">0</text>
+<text top="772" left="276" width="6" height="10" font="16">1</text>
+<text top="772" left="310" width="6" height="10" font="16">2</text>
+<text top="772" left="345" width="6" height="10" font="16">3</text>
+<text top="772" left="379" width="6" height="10" font="16">4</text>
+<text top="772" left="414" width="6" height="10" font="16">5</text>
+<text top="772" left="449" width="6" height="10" font="16">6</text>
+<text top="772" left="483" width="6" height="10" font="16">7</text>
+<text top="762" left="231" width="6" height="10" font="16">0</text>
+<text top="738" left="226" width="11" height="10" font="16">10</text>
+<text top="713" left="226" width="11" height="10" font="16">20</text>
+<text top="689" left="226" width="11" height="10" font="16">30</text>
+<text top="665" left="226" width="11" height="10" font="16">40</text>
+<text top="641" left="226" width="11" height="10" font="16">50</text>
+<text top="786" left="325" width="81" height="12" font="17">Number of Hits</text>
+<text top="725" left="220" width="0" height="12" font="18">Frequency</text>
+<text top="815" left="186" width="69" height="14" font="2">Figure 22.4:</text>
+<text top="815" left="259" width="245" height="13" font="3"><b>Random Performance Over 10,000 Trials</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="262" width="16" height="14" font="2">: P</text>
+<text top="98" left="279" width="46" height="11" font="4">OLICIES</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="136" left="366" width="60" height="13" font="3"><b>Resulting</b></text>
+<text top="151" left="164" width="41" height="13" font="3"><b>Access</b></text>
+<text top="151" left="223" width="60" height="13" font="3"><b>Hit/Miss?</b></text>
+<text top="151" left="301" width="31" height="13" font="3"><b>Evict</b></text>
+<text top="151" left="360" width="71" height="13" font="3"><b>Cache State</b></text>
+<text top="166" left="181" width="7" height="14" font="2">0</text>
+<text top="166" left="239" width="28" height="14" font="2">Miss</text>
+<text top="166" left="349" width="28" height="14" font="2">LRU</text>
+<text top="169" left="377" width="14" height="7" font="9">→</text>
+<text top="166" left="436" width="7" height="14" font="2">0</text>
+<text top="181" left="181" width="7" height="14" font="2">1</text>
+<text top="181" left="239" width="28" height="14" font="2">Miss</text>
+<text top="181" left="349" width="28" height="14" font="2">LRU</text>
+<text top="184" left="377" width="14" height="7" font="9">→</text>
+<text top="181" left="422" width="20" height="14" font="2">0, 1</text>
+<text top="196" left="181" width="7" height="14" font="2">2</text>
+<text top="196" left="239" width="28" height="14" font="2">Miss</text>
+<text top="196" left="349" width="28" height="14" font="2">LRU</text>
+<text top="199" left="377" width="14" height="7" font="9">→</text>
+<text top="196" left="409" width="34" height="14" font="2">0, 1, 2</text>
+<text top="211" left="181" width="7" height="14" font="2">0</text>
+<text top="211" left="243" width="19" height="14" font="2">Hit</text>
+<text top="211" left="349" width="28" height="14" font="2">LRU</text>
+<text top="214" left="377" width="14" height="7" font="9">→</text>
+<text top="211" left="409" width="34" height="14" font="2">1, 2, 0</text>
+<text top="226" left="181" width="7" height="14" font="2">1</text>
+<text top="226" left="243" width="19" height="14" font="2">Hit</text>
+<text top="226" left="349" width="28" height="14" font="2">LRU</text>
+<text top="229" left="377" width="14" height="7" font="9">→</text>
+<text top="226" left="409" width="34" height="14" font="2">2, 0, 1</text>
+<text top="241" left="181" width="7" height="14" font="2">3</text>
+<text top="241" left="239" width="28" height="14" font="2">Miss</text>
+<text top="241" left="313" width="7" height="14" font="2">2</text>
+<text top="241" left="349" width="28" height="14" font="2">LRU</text>
+<text top="244" left="377" width="14" height="7" font="9">→</text>
+<text top="241" left="409" width="34" height="14" font="2">0, 1, 3</text>
+<text top="256" left="181" width="7" height="14" font="2">0</text>
+<text top="256" left="243" width="19" height="14" font="2">Hit</text>
+<text top="256" left="349" width="28" height="14" font="2">LRU</text>
+<text top="259" left="377" width="14" height="7" font="9">→</text>
+<text top="256" left="409" width="34" height="14" font="2">1, 3, 0</text>
+<text top="271" left="181" width="7" height="14" font="2">3</text>
+<text top="271" left="243" width="19" height="14" font="2">Hit</text>
+<text top="271" left="349" width="28" height="14" font="2">LRU</text>
+<text top="274" left="377" width="14" height="7" font="9">→</text>
+<text top="271" left="409" width="34" height="14" font="2">1, 0, 3</text>
+<text top="286" left="181" width="7" height="14" font="2">1</text>
+<text top="286" left="243" width="19" height="14" font="2">Hit</text>
+<text top="286" left="349" width="28" height="14" font="2">LRU</text>
+<text top="289" left="377" width="14" height="7" font="9">→</text>
+<text top="286" left="409" width="34" height="14" font="2">0, 3, 1</text>
+<text top="301" left="181" width="7" height="14" font="2">2</text>
+<text top="301" left="239" width="28" height="14" font="2">Miss</text>
+<text top="301" left="313" width="7" height="14" font="2">0</text>
+<text top="301" left="349" width="28" height="14" font="2">LRU</text>
+<text top="304" left="377" width="14" height="7" font="9">→</text>
+<text top="301" left="409" width="34" height="14" font="2">3, 1, 2</text>
+<text top="316" left="181" width="7" height="14" font="2">1</text>
+<text top="316" left="243" width="19" height="14" font="2">Hit</text>
+<text top="316" left="349" width="28" height="14" font="2">LRU</text>
+<text top="318" left="377" width="14" height="7" font="9">→</text>
+<text top="316" left="409" width="34" height="14" font="2">3, 2, 1</text>
+<text top="339" left="194" width="69" height="14" font="2">Figure 22.5:</text>
+<text top="339" left="266" width="146" height="13" font="3"><b>Tracing The LRU Policy</b></text>
+<text top="360" left="55" width="179" height="17" font="5">22.5 Using History: LRU</text>
+<text top="390" left="105" width="414" height="14" font="2">Unfortunately, any policy as simple as FIFO or Random is likely to</text>
+<text top="405" left="87" width="432" height="14" font="2">have a common problem: it might kick out an important page, one that</text>
+<text top="420" left="87" width="432" height="14" font="2">is about to be referenced again. FIFO kicks out the page that was ﬁrst</text>
+<text top="435" left="87" width="432" height="14" font="2">brought in; if this happens to be a page with important code or data</text>
+<text top="450" left="87" width="432" height="14" font="2">structures upon it, it gets thrown out anyhow, even though it will soon be</text>
+<text top="465" left="87" width="432" height="14" font="2">paged back in. Thus, FIFO, Random, and similar policies are not likely to</text>
+<text top="480" left="87" width="287" height="14" font="2">approach optimal; something smarter is needed.</text>
+<text top="495" left="105" width="414" height="14" font="2">As we did with scheduling policy, to improve our guess at the future,</text>
+<text top="510" left="87" width="229" height="14" font="2">we once again lean on the past and use</text>
+<text top="510" left="320" width="38" height="14" font="11"><i>history</i></text>
+<text top="510" left="361" width="158" height="14" font="2">as our guide. For example,</text>
+<text top="525" left="87" width="432" height="14" font="2">if a program has accessed a page in the near past, it is likely to access it</text>
+<text top="540" left="87" width="143" height="14" font="2">again in the near future.</text>
+<text top="555" left="105" width="414" height="14" font="2">One type of historical information a page-replacement policy could</text>
+<text top="570" left="87" width="35" height="14" font="2">use is</text>
+<text top="571" left="128" width="62" height="13" font="3"><b>frequency</b></text>
+<text top="570" left="190" width="329" height="14" font="2">; if a page has been accessed many times, perhaps it</text>
+<text top="585" left="87" width="432" height="14" font="2">should not be replaced as it clearly has some value. A more commonly-</text>
+<text top="600" left="87" width="173" height="14" font="2">used property of a page is its</text>
+<text top="600" left="264" width="46" height="13" font="3"><b>recency</b></text>
+<text top="600" left="313" width="206" height="14" font="2">of access; the more recently a page</text>
+<text top="615" left="87" width="403" height="14" font="2">has been accessed, perhaps the more likely it will be accessed again.</text>
+<text top="631" left="105" width="379" height="14" font="2">This family of policies is based on what people refer to as the</text>
+<text top="631" left="488" width="31" height="13" font="3"><b>prin-</b></text>
+<text top="646" left="87" width="96" height="13" font="3"><b>ciple of locality</b></text>
+<text top="646" left="187" width="332" height="14" font="2">[D70], which basically is just an observation about pro-</text>
+<text top="661" left="87" width="432" height="14" font="2">grams and their behavior. What this principle says, quite simply, is that</text>
+<text top="676" left="87" width="432" height="14" font="2">programs tend to access certain code sequences (e.g., in a loop) and data</text>
+<text top="691" left="87" width="432" height="14" font="2">structures (e.g., an array accessed by the loop) quite frequently; we should</text>
+<text top="705" left="87" width="432" height="14" font="2">thus try to use history to ﬁgure out which pages are important, and keep</text>
+<text top="720" left="87" width="327" height="14" font="2">those pages in memory when it comes to eviction time.</text>
+<text top="736" left="105" width="414" height="14" font="2">And thus, a family of simple historically-based algorithms are born.</text>
+<text top="751" left="87" width="23" height="14" font="2">The</text>
+<text top="751" left="115" width="140" height="13" font="3"><b>Least-Frequently-Used</b></text>
+<text top="751" left="260" width="4" height="14" font="2">(</text>
+<text top="751" left="265" width="26" height="13" font="3"><b>LFU</b></text>
+<text top="751" left="291" width="228" height="14" font="2">) policy replaces the least-frequently-</text>
+<text top="766" left="87" width="341" height="14" font="2">used page when an eviction must take place. Similarly, the</text>
+<text top="766" left="431" width="95" height="13" font="3"><b>Least-Recently-</b></text>
+<text top="781" left="87" width="31" height="13" font="3"><b>Used</b></text>
+<text top="781" left="124" width="4" height="14" font="2">(</text>
+<text top="781" left="129" width="28" height="13" font="3"><b>LRU</b></text>
+<text top="781" left="157" width="362" height="14" font="2">) policy replaces the least-recently-used page. These algo-</text>
+<text top="796" left="87" width="432" height="14" font="2">rithms are easy to remember: once you know the name, you know exactly</text>
+<text top="811" left="87" width="329" height="14" font="2">what it does, which is an excellent property for a name.</text>
+<text top="826" left="105" width="414" height="14" font="2">To better understand LRU, let’s examine how LRU does on our exam-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="322" width="8" height="14" font="2">B</text>
+<text top="98" left="331" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="378" width="8" height="14" font="2">P</text>
+<text top="98" left="386" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="442" width="13" height="14" font="2">M</text>
+<text top="98" left="456" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="497" width="16" height="14" font="2">: P</text>
+<text top="98" left="514" width="46" height="11" font="4">OLICIES</text>
+<text top="148" left="261" width="10" height="14" font="2">A</text>
+<text top="150" left="272" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="299" width="16" height="14" font="2">: T</text>
+<text top="150" left="316" width="47" height="11" font="4">YPES OF</text>
+<text top="148" left="367" width="8" height="14" font="2">L</text>
+<text top="150" left="376" width="52" height="11" font="4">OCALITY</text>
+<text top="163" left="129" width="432" height="14" font="2">There are two types of locality that programs tend to exhibit. The ﬁrst</text>
+<text top="178" left="129" width="74" height="14" font="2">is known as</text>
+<text top="178" left="208" width="92" height="13" font="3"><b>spatial locality</b></text>
+<text top="178" left="299" width="171" height="14" font="2">, which states that if a page</text>
+<text top="178" left="476" width="9" height="10" font="6">P</text>
+<text top="178" left="492" width="69" height="14" font="2">is accessed,</text>
+<text top="193" left="129" width="214" height="14" font="2">it is likely the pages around it (say</text>
+<text top="193" left="348" width="9" height="10" font="6">P</text>
+<text top="196" left="363" width="11" height="7" font="9">−</text>
+<text top="193" left="377" width="7" height="13" font="7">1</text>
+<text top="193" left="389" width="13" height="14" font="2">or</text>
+<text top="193" left="407" width="9" height="10" font="6">P</text>
+<text top="193" left="422" width="22" height="13" font="7">+ 1</text>
+<text top="193" left="443" width="117" height="14" font="2">) will also likely be</text>
+<text top="208" left="129" width="145" height="14" font="2">accessed. The second is</text>
+<text top="208" left="278" width="105" height="13" font="3"><b>temporal locality</b></text>
+<text top="208" left="384" width="177" height="14" font="2">, which states that pages that</text>
+<text top="223" left="129" width="432" height="14" font="2">have been accessed in the near past are likely to be accessed again in the</text>
+<text top="238" left="129" width="432" height="14" font="2">near future. The assumption of the presence of these types of locality</text>
+<text top="253" left="129" width="432" height="14" font="2">plays a large role in the caching hierarchies of hardware systems, which</text>
+<text top="268" left="129" width="432" height="14" font="2">deploy many levels of instruction, data, and address-translation caching</text>
+<text top="283" left="129" width="306" height="14" font="2">to help programs run fast when such locality exists.</text>
+<text top="301" left="129" width="84" height="14" font="2">Of course, the</text>
+<text top="301" left="218" width="123" height="13" font="3"><b>principle of locality</b></text>
+<text top="301" left="340" width="221" height="14" font="2">, as it is often called, is no hard-and-</text>
+<text top="316" left="129" width="432" height="14" font="2">fast rule that all programs must obey. Indeed, some programs access</text>
+<text top="331" left="129" width="432" height="14" font="2">memory (or disk) in rather random fashion and don’t exhibit much or</text>
+<text top="346" left="129" width="432" height="14" font="2">any locality in their access streams. Thus, while locality is a good thing to</text>
+<text top="361" left="129" width="432" height="14" font="2">keep in mind while designing caches of any kind (hardware or software),</text>
+<text top="376" left="129" width="65" height="14" font="2">it does not</text>
+<text top="375" left="199" width="54" height="14" font="11"><i>guarantee</i></text>
+<text top="376" left="258" width="303" height="14" font="2">success. Rather, it is a heuristic that often proves</text>
+<text top="390" left="129" width="247" height="14" font="2">useful in the design of computer systems.</text>
+<text top="424" left="129" width="432" height="14" font="2">ple reference stream. Figure 22.5 (page 7) shows the results. From the</text>
+<text top="439" left="129" width="432" height="14" font="2">ﬁgure, you can see how LRU can use history to do better than stateless</text>
+<text top="454" left="129" width="432" height="14" font="2">policies such as Random or FIFO. In the example, LRU evicts page 2 when</text>
+<text top="469" left="129" width="432" height="14" font="2">it ﬁrst has to replace a page, because 0 and 1 have been accessed more re-</text>
+<text top="484" left="129" width="432" height="14" font="2">cently. It then replaces page 0 because 1 and 3 have been accessed more</text>
+<text top="499" left="129" width="432" height="14" font="2">recently. In both cases, LRU’s decision, based on history, turns out to be</text>
+<text top="514" left="129" width="432" height="14" font="2">correct, and the next references are thus hits. Thus, in our example, LRU</text>
+<text top="531" left="129" width="364" height="14" font="2">does as well as possible, matching optimal in its performance</text>
+<text top="528" left="493" width="4" height="9" font="14">2</text>
+<text top="531" left="498" width="3" height="14" font="2">.</text>
+<text top="546" left="147" width="374" height="14" font="2">We should also note that the opposites of these algorithms exist:</text>
+<text top="546" left="525" width="36" height="13" font="3"><b>Most-</b></text>
+<text top="561" left="129" width="103" height="13" font="3"><b>Frequently-Used</b></text>
+<text top="561" left="235" width="4" height="14" font="2">(</text>
+<text top="561" left="240" width="31" height="13" font="3"><b>MFU</b></text>
+<text top="561" left="271" width="30" height="14" font="2">) and</text>
+<text top="561" left="305" width="125" height="13" font="3"><b>Most-Recently-Used</b></text>
+<text top="561" left="433" width="4" height="14" font="2">(</text>
+<text top="561" left="438" width="34" height="13" font="3"><b>MRU</b></text>
+<text top="561" left="471" width="89" height="14" font="2">). In most cases</text>
+<text top="576" left="129" width="432" height="14" font="2">(not all!), these policies do not work well, as they ignore the locality most</text>
+<text top="591" left="129" width="245" height="14" font="2">programs exhibit instead of embracing it.</text>
+<text top="623" left="97" width="180" height="17" font="5">22.6 Workload Examples</text>
+<text top="647" left="147" width="414" height="14" font="2">Let’s look at a few more examples in order to better understand how</text>
+<text top="662" left="129" width="392" height="14" font="2">some of these policies behave. Here, we’ll examine more complex</text>
+<text top="662" left="524" width="37" height="13" font="3"><b>work-</b></text>
+<text top="677" left="129" width="33" height="13" font="3"><b>loads</b></text>
+<text top="677" left="165" width="396" height="14" font="2">instead of small traces. However, even these workloads are greatly</text>
+<text top="692" left="129" width="350" height="14" font="2">simpliﬁed; a better study would include application traces.</text>
+<text top="708" left="147" width="414" height="14" font="2">Our ﬁrst workload has no locality, which means that each reference</text>
+<text top="722" left="129" width="432" height="14" font="2">is to a random page within the set of accessed pages. In this simple ex-</text>
+<text top="737" left="129" width="432" height="14" font="2">ample, the workload accesses 100 unique pages over time, choosing the</text>
+<text top="752" left="129" width="432" height="14" font="2">next page to refer to at random; overall, 10,000 pages are accessed. In the</text>
+<text top="767" left="129" width="432" height="14" font="2">experiment, we vary the cache size from very small (1 page) to enough</text>
+<text top="782" left="129" width="432" height="14" font="2">to hold all the unique pages (100 pages), in order to see how each policy</text>
+<text top="797" left="129" width="224" height="14" font="2">behaves over the range of cache sizes.</text>
+<text top="826" left="149" width="4" height="8" font="15">2</text>
+<text top="828" left="154" width="371" height="11" font="13">OK, we cooked the results. But sometimes cooking is necessary to prove a point.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="14" family="XITNNK+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="20" size="14" family="XITNNK+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="262" width="16" height="14" font="2">: P</text>
+<text top="98" left="279" width="46" height="11" font="4">OLICIES</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="414" left="189" width="7" height="12" font="17">0</text>
+<text top="414" left="236" width="13" height="12" font="17">20</text>
+<text top="414" left="286" width="13" height="12" font="17">40</text>
+<text top="414" left="337" width="13" height="12" font="17">60</text>
+<text top="414" left="387" width="13" height="12" font="17">80</text>
+<text top="414" left="434" width="20" height="12" font="17">100</text>
+<text top="403" left="168" width="17" height="12" font="17">0%</text>
+<text top="352" left="161" width="24" height="12" font="17">20%</text>
+<text top="302" left="161" width="24" height="12" font="17">40%</text>
+<text top="251" left="161" width="24" height="12" font="17">60%</text>
+<text top="201" left="161" width="24" height="12" font="17">80%</text>
+<text top="151" left="154" width="31" height="12" font="17">100%</text>
+<text top="137" left="237" width="162" height="14" font="19">The No-Locality Workload</text>
+<text top="429" left="255" width="127" height="14" font="19">Cache Size (Blocks)</text>
+<text top="296" left="151" width="0" height="14" font="20">Hit Rate</text>
+<text top="340" left="408" width="25" height="12" font="17">OPT</text>
+<text top="353" left="408" width="24" height="12" font="17">LRU</text>
+<text top="366" left="408" width="28" height="12" font="17">FIFO</text>
+<text top="379" left="408" width="34" height="12" font="17">RAND</text>
+<text top="458" left="185" width="69" height="14" font="2">Figure 22.6:</text>
+<text top="458" left="258" width="163" height="13" font="3"><b>The No-Locality Workload</b></text>
+<text top="479" left="105" width="414" height="14" font="2">Figure 22.6 plots the results of the experiment for optimal, LRU, Ran-</text>
+<text top="494" left="87" width="432" height="14" font="2">dom, and FIFO. The y-axis of the ﬁgure shows the hit rate that each policy</text>
+<text top="509" left="87" width="357" height="14" font="2">achieves; the x-axis varies the cache size as described above.</text>
+<text top="525" left="105" width="414" height="14" font="2">We can draw a number of conclusions from the graph. First, when</text>
+<text top="540" left="87" width="432" height="14" font="2">there is no locality in the workload, it doesn’t matter much which realistic</text>
+<text top="555" left="87" width="432" height="14" font="2">policy you are using; LRU, FIFO, and Random all perform the same, with</text>
+<text top="570" left="87" width="432" height="14" font="2">the hit rate exactly determined by the size of the cache. Second, when</text>
+<text top="585" left="87" width="432" height="14" font="2">the cache is large enough to ﬁt the entire workload, it also doesn’t matter</text>
+<text top="600" left="87" width="432" height="14" font="2">which policy you use; all policies (even Random) converge to a 100% hit</text>
+<text top="615" left="87" width="432" height="14" font="2">rate when all the referenced blocks ﬁt in cache. Finally, you can see that</text>
+<text top="630" left="87" width="432" height="14" font="2">optimal performs noticeably better than the realistic policies; peeking into</text>
+<text top="645" left="87" width="406" height="14" font="2">the future, if it were possible, does a much better job of replacement.</text>
+<text top="661" left="105" width="414" height="14" font="2">The next workload we examine is called the “80-20” workload, which</text>
+<text top="676" left="87" width="432" height="14" font="2">exhibits locality: 80% of the references are made to 20% of the pages (the</text>
+<text top="691" left="87" width="432" height="14" font="2">“hot” pages); the remaining 20% of the references are made to the re-</text>
+<text top="705" left="87" width="432" height="14" font="2">maining 80% of the pages (the “cold” pages). In our workload, there are</text>
+<text top="720" left="87" width="432" height="14" font="2">a total 100 unique pages again; thus, “hot” pages are referred to most of</text>
+<text top="735" left="87" width="432" height="14" font="2">the time, and “cold” pages the remainder. Figure 22.7 (page 10) shows</text>
+<text top="750" left="87" width="269" height="14" font="2">how the policies perform with this workload.</text>
+<text top="766" left="105" width="414" height="14" font="2">As you can see from the ﬁgure, while both random and FIFO do rea-</text>
+<text top="781" left="87" width="432" height="14" font="2">sonably well, LRU does better, as it is more likely to hold onto the hot</text>
+<text top="796" left="87" width="432" height="14" font="2">pages; as those pages have been referred to frequently in the past, they</text>
+<text top="811" left="87" width="432" height="14" font="2">are likely to be referred to again in the near future. Optimal once again</text>
+<text top="826" left="87" width="406" height="14" font="2">does better, showing that LRU’s historical information is not perfect.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="322" width="8" height="14" font="2">B</text>
+<text top="98" left="331" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="378" width="8" height="14" font="2">P</text>
+<text top="98" left="386" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="442" width="13" height="14" font="2">M</text>
+<text top="98" left="456" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="497" width="16" height="14" font="2">: P</text>
+<text top="98" left="514" width="46" height="11" font="4">OLICIES</text>
+<text top="414" left="231" width="7" height="12" font="17">0</text>
+<text top="414" left="278" width="13" height="12" font="17">20</text>
+<text top="414" left="328" width="13" height="12" font="17">40</text>
+<text top="414" left="378" width="13" height="12" font="17">60</text>
+<text top="414" left="429" width="13" height="12" font="17">80</text>
+<text top="414" left="476" width="20" height="12" font="17">100</text>
+<text top="403" left="209" width="17" height="12" font="17">0%</text>
+<text top="352" left="203" width="24" height="12" font="17">20%</text>
+<text top="302" left="203" width="24" height="12" font="17">40%</text>
+<text top="251" left="203" width="24" height="12" font="17">60%</text>
+<text top="201" left="203" width="24" height="12" font="17">80%</text>
+<text top="151" left="196" width="31" height="12" font="17">100%</text>
+<text top="137" left="296" width="128" height="14" font="19">The 80-20 Workload</text>
+<text top="429" left="296" width="127" height="14" font="19">Cache Size (Blocks)</text>
+<text top="296" left="193" width="0" height="14" font="20">Hit Rate</text>
+<text top="340" left="450" width="25" height="12" font="17">OPT</text>
+<text top="353" left="450" width="24" height="12" font="17">LRU</text>
+<text top="366" left="450" width="28" height="12" font="17">FIFO</text>
+<text top="379" left="450" width="34" height="12" font="17">RAND</text>
+<text top="456" left="247" width="69" height="14" font="2">Figure 22.7:</text>
+<text top="456" left="320" width="122" height="13" font="3"><b>The 80-20 Workload</b></text>
+<text top="510" left="147" width="414" height="14" font="2">You might now be wondering: is LRU’s improvement over Random</text>
+<text top="525" left="129" width="432" height="14" font="2">and FIFO really that big of a deal? The answer, as usual, is “it depends.” If</text>
+<text top="540" left="129" width="432" height="14" font="2">each miss is very costly (not uncommon), then even a small increase in hit</text>
+<text top="555" left="129" width="432" height="14" font="2">rate (reduction in miss rate) can make a huge difference on performance.</text>
+<text top="570" left="129" width="432" height="14" font="2">If misses are not so costly, then of course the beneﬁts possible with LRU</text>
+<text top="585" left="129" width="165" height="14" font="2">are not nearly as important.</text>
+<text top="601" left="147" width="414" height="14" font="2">Let’s look at one ﬁnal workload. We call this one the “looping sequen-</text>
+<text top="616" left="129" width="432" height="14" font="2">tial” workload, as in it, we refer to 50 pages in sequence, starting at 0,</text>
+<text top="631" left="129" width="432" height="14" font="2">then 1, ..., up to page 49, and then we loop, repeating those accesses, for a</text>
+<text top="646" left="129" width="432" height="14" font="2">total of 10,000 accesses to 50 unique pages. The last graph in Figure 22.8</text>
+<text top="660" left="129" width="330" height="14" font="2">shows the behavior of the policies under this workload.</text>
+<text top="677" left="147" width="414" height="14" font="2">This workload, common in many applications (including important</text>
+<text top="692" left="129" width="432" height="14" font="2">commercial applications such as databases [CD85]), represents a worst-</text>
+<text top="707" left="129" width="435" height="14" font="2">case for both LRU and FIFO. These algorithms, under a looping-sequential</text>
+<text top="721" left="129" width="432" height="14" font="2">workload, kick out older pages; unfortunately, due to the looping nature</text>
+<text top="736" left="129" width="432" height="14" font="2">of the workload, these older pages are going to be accessed sooner than</text>
+<text top="751" left="129" width="432" height="14" font="2">the pages that the policies prefer to keep in cache. Indeed, even with</text>
+<text top="766" left="129" width="432" height="14" font="2">a cache of size 49, a looping-sequential workload of 50 pages results in</text>
+<text top="781" left="129" width="432" height="14" font="2">a 0% hit rate. Interestingly, Random fares notably better, not quite ap-</text>
+<text top="796" left="129" width="432" height="14" font="2">proaching optimal, but at least achieving a non-zero hit rate. Turns out</text>
+<text top="811" left="129" width="432" height="14" font="2">that random has some nice properties; one such property is not having</text>
+<text top="826" left="129" width="171" height="14" font="2">weird corner-case behaviors.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="262" width="16" height="14" font="2">: P</text>
+<text top="98" left="279" width="46" height="11" font="4">OLICIES</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="414" left="189" width="7" height="12" font="17">0</text>
+<text top="414" left="236" width="13" height="12" font="17">20</text>
+<text top="414" left="286" width="13" height="12" font="17">40</text>
+<text top="414" left="337" width="13" height="12" font="17">60</text>
+<text top="414" left="387" width="13" height="12" font="17">80</text>
+<text top="414" left="434" width="20" height="12" font="17">100</text>
+<text top="403" left="168" width="17" height="12" font="17">0%</text>
+<text top="352" left="161" width="24" height="12" font="17">20%</text>
+<text top="302" left="161" width="24" height="12" font="17">40%</text>
+<text top="251" left="161" width="24" height="12" font="17">60%</text>
+<text top="201" left="161" width="24" height="12" font="17">80%</text>
+<text top="151" left="154" width="31" height="12" font="17">100%</text>
+<text top="137" left="211" width="213" height="14" font="19">The Looping-Sequential Workload</text>
+<text top="429" left="255" width="127" height="14" font="19">Cache Size (Blocks)</text>
+<text top="296" left="151" width="0" height="14" font="20">Hit Rate</text>
+<text top="340" left="408" width="25" height="12" font="17">OPT</text>
+<text top="353" left="408" width="24" height="12" font="17">LRU</text>
+<text top="366" left="408" width="28" height="12" font="17">FIFO</text>
+<text top="379" left="408" width="34" height="12" font="17">RAND</text>
+<text top="456" left="195" width="69" height="14" font="2">Figure 22.8:</text>
+<text top="456" left="268" width="142" height="13" font="3"><b>The Looping Workload</b></text>
+<text top="482" left="55" width="299" height="17" font="5">22.7 Implementing Historical Algorithms</text>
+<text top="508" left="105" width="414" height="14" font="2">As you can see, an algorithm such as LRU can generally do a better</text>
+<text top="523" left="87" width="432" height="14" font="2">job than simpler policies like FIFO or Random, which may throw out</text>
+<text top="538" left="87" width="432" height="14" font="2">important pages. Unfortunately, historical policies present us with a new</text>
+<text top="553" left="87" width="238" height="14" font="2">challenge: how do we implement them?</text>
+<text top="570" left="105" width="414" height="14" font="2">Let’s take, for example, LRU. To implement it perfectly, we need to</text>
+<text top="585" left="87" width="249" height="14" font="2">do a lot of work. Speciﬁcally, upon each</text>
+<text top="585" left="340" width="62" height="14" font="11"><i>page access</i></text>
+<text top="585" left="407" width="112" height="14" font="2">(i.e., each memory</text>
+<text top="600" left="87" width="432" height="14" font="2">access, whether an instruction fetch or a load or store), we must update</text>
+<text top="615" left="87" width="432" height="14" font="2">some data structure to move this page to the front of the list (i.e., the</text>
+<text top="630" left="87" width="432" height="14" font="2">MRU side). Contrast this to FIFO, where the FIFO list of pages is only</text>
+<text top="645" left="87" width="143" height="14" font="2">accessed when a page is</text>
+<text top="645" left="233" width="38" height="14" font="11"><i>evicted</i></text>
+<text top="645" left="274" width="245" height="14" font="2">(by removing the ﬁrst-in page) or when a</text>
+<text top="660" left="87" width="432" height="14" font="2">new page is added to the list (to the last-in side). To keep track of which</text>
+<text top="675" left="87" width="432" height="14" font="2">pages have been least- and most-recently used, the system has to do some</text>
+<text top="690" left="87" width="102" height="14" font="2">accounting work</text>
+<text top="690" left="194" width="152" height="14" font="11"><i>on every memory reference.</i></text>
+<text top="690" left="354" width="165" height="14" font="2">Clearly, without great care,</text>
+<text top="705" left="87" width="304" height="14" font="2">such accounting could greatly reduce performance.</text>
+<text top="721" left="105" width="414" height="14" font="2">One method that could help speed this up is to add a little bit of hard-</text>
+<text top="736" left="87" width="432" height="14" font="2">ware support. For example, a machine could update, on each page access,</text>
+<text top="751" left="87" width="432" height="14" font="2">a time ﬁeld in memory (for example, this could be in the per-process page</text>
+<text top="766" left="87" width="432" height="14" font="2">table, or just in some separate array in memory, with one entry per phys-</text>
+<text top="781" left="87" width="432" height="14" font="2">ical page of the system). Thus, when a page is accessed, the time ﬁeld</text>
+<text top="796" left="87" width="432" height="14" font="2">would be set, by hardware, to the current time. Then, when replacing a</text>
+<text top="811" left="87" width="432" height="14" font="2">page, the OS could simply scan all the time ﬁelds in the system to ﬁnd the</text>
+<text top="826" left="87" width="148" height="14" font="2">least-recently-used page.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="322" width="8" height="14" font="2">B</text>
+<text top="98" left="331" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="378" width="8" height="14" font="2">P</text>
+<text top="98" left="386" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="442" width="13" height="14" font="2">M</text>
+<text top="98" left="456" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="497" width="16" height="14" font="2">: P</text>
+<text top="98" left="514" width="46" height="11" font="4">OLICIES</text>
+<text top="139" left="147" width="414" height="14" font="2">Unfortunately, as the number of pages in a system grows, scanning a</text>
+<text top="154" left="129" width="432" height="14" font="2">huge array of times just to ﬁnd the absolute least-recently-used page is</text>
+<text top="169" left="129" width="432" height="14" font="2">prohibitively expensive. Imagine a modern machine with 4GB of mem-</text>
+<text top="183" left="129" width="432" height="14" font="2">ory, chopped into 4KB pages. This machine has 1 million pages, and thus</text>
+<text top="198" left="129" width="432" height="14" font="2">ﬁnding the LRU page will take a long time, even at modern CPU speeds.</text>
+<text top="213" left="129" width="432" height="14" font="2">Which begs the question: do we really need to ﬁnd the absolute oldest</text>
+<text top="228" left="129" width="386" height="14" font="2">page to replace? Can we instead survive with an approximation?</text>
+<text top="272" left="159" width="10" height="14" font="2">C</text>
+<text top="274" left="169" width="24" height="11" font="4">RUX</text>
+<text top="272" left="194" width="19" height="14" font="2">: H</text>
+<text top="274" left="214" width="20" height="11" font="4">OW</text>
+<text top="272" left="238" width="8" height="14" font="2">T</text>
+<text top="274" left="246" width="8" height="11" font="4">O</text>
+<text top="272" left="259" width="5" height="14" font="2">I</text>
+<text top="274" left="264" width="67" height="11" font="4">MPLEMENT</text>
+<text top="272" left="335" width="10" height="14" font="2">A</text>
+<text top="274" left="346" width="9" height="11" font="4">N</text>
+<text top="272" left="359" width="42" height="14" font="2">LRU R</text>
+<text top="274" left="402" width="81" height="11" font="4">EPLACEMENT</text>
+<text top="272" left="486" width="8" height="14" font="2">P</text>
+<text top="274" left="495" width="36" height="11" font="4">OLICY</text>
+<text top="287" left="147" width="414" height="14" font="2">Given that it will be expensive to implement perfect LRU, can we ap-</text>
+<text top="302" left="129" width="377" height="14" font="2">proximate it in some way, and still obtain the desired behavior?</text>
+<text top="358" left="97" width="184" height="17" font="5">22.8 Approximating LRU</text>
+<text top="390" left="147" width="414" height="14" font="2">As it turns out, the answer is yes: approximating LRU is more fea-</text>
+<text top="404" left="129" width="432" height="14" font="2">sible from a computational-overhead standpoint, and indeed it is what</text>
+<text top="419" left="129" width="432" height="14" font="2">many modern systems do. The idea requires some hardware support,</text>
+<text top="434" left="129" width="94" height="14" font="2">in the form of a</text>
+<text top="434" left="228" width="42" height="13" font="3"><b>use bit</b></text>
+<text top="434" left="274" width="130" height="14" font="2">(sometimes called the</text>
+<text top="434" left="408" width="78" height="13" font="3"><b>reference bit</b></text>
+<text top="434" left="486" width="74" height="14" font="2">), the ﬁrst of</text>
+<text top="449" left="129" width="432" height="14" font="2">which was implemented in the ﬁrst system with paging, the Atlas one-</text>
+<text top="464" left="129" width="432" height="14" font="2">level store [KE+62]. There is one use bit per page of the system, and the</text>
+<text top="479" left="129" width="432" height="14" font="2">use bits live in memory somewhere (they could be in the per-process page</text>
+<text top="494" left="129" width="432" height="14" font="2">tables, for example, or just in an array somewhere). Whenever a page is</text>
+<text top="509" left="129" width="432" height="14" font="2">referenced (i.e., read or written), the use bit is set by hardware to 1. The</text>
+<text top="524" left="129" width="432" height="14" font="2">hardware never clears the bit, though (i.e., sets it to 0); that is the respon-</text>
+<text top="539" left="129" width="102" height="14" font="2">sibility of the OS.</text>
+<text top="556" left="147" width="414" height="14" font="2">How does the OS employ the use bit to approximate LRU? Well, there</text>
+<text top="570" left="129" width="219" height="14" font="2">could be a lot of ways, but with the</text>
+<text top="571" left="353" width="97" height="13" font="3"><b>clock algorithm</b></text>
+<text top="570" left="454" width="106" height="14" font="2">[C69], one simple</text>
+<text top="585" left="129" width="432" height="14" font="2">approach was suggested. Imagine all the pages of the system arranged in</text>
+<text top="600" left="129" width="95" height="14" font="2">a circular list. A</text>
+<text top="600" left="227" width="67" height="13" font="3"><b>clock hand</b></text>
+<text top="600" left="297" width="264" height="14" font="2">points to some particular page to begin with</text>
+<text top="615" left="129" width="432" height="14" font="2">(it doesn’t really matter which). When a replacement must occur, the OS</text>
+<text top="630" left="129" width="230" height="14" font="2">checks if the currently-pointed to page</text>
+<text top="630" left="363" width="9" height="10" font="6">P</text>
+<text top="630" left="377" width="183" height="14" font="2">has a use bit of 1 or 0. If 1, this</text>
+<text top="645" left="129" width="104" height="14" font="2">implies that page</text>
+<text top="645" left="237" width="9" height="10" font="6">P</text>
+<text top="645" left="252" width="179" height="14" font="2">was recently used and thus is</text>
+<text top="645" left="435" width="18" height="14" font="11"><i>not</i></text>
+<text top="645" left="457" width="104" height="14" font="2">a good candidate</text>
+<text top="660" left="129" width="219" height="14" font="2">for replacement. Thus, the use bit for</text>
+<text top="660" left="352" width="9" height="10" font="6">P</text>
+<text top="660" left="366" width="195" height="14" font="2">is set to 0 (cleared), and the clock</text>
+<text top="675" left="129" width="234" height="14" font="2">hand is incremented to the next page (</text>
+<text top="675" left="363" width="9" height="10" font="6">P</text>
+<text top="675" left="377" width="21" height="13" font="7">+ 1</text>
+<text top="675" left="399" width="162" height="14" font="2">). The algorithm continues</text>
+<text top="690" left="129" width="432" height="14" font="2">until it ﬁnds a use bit that is set to 0, implying this page has not been</text>
+<text top="705" left="129" width="432" height="14" font="2">recently used (or, in the worst case, that all pages have been and that we</text>
+<text top="720" left="129" width="425" height="14" font="2">have now searched through the entire set of pages, clearing all the bits).</text>
+<text top="736" left="147" width="414" height="14" font="2">Note that this approach is not the only way to employ a use bit to</text>
+<text top="751" left="129" width="432" height="14" font="2">approximate LRU. Indeed, any approach which periodically clears the</text>
+<text top="766" left="129" width="432" height="14" font="2">use bits and then differentiates between which pages have use bits of 1</text>
+<text top="781" left="129" width="432" height="14" font="2">versus 0 to decide which to replace would be ﬁne. The clock algorithm of</text>
+<text top="796" left="129" width="432" height="14" font="2">Corbato’s was just one early approach which met with some success, and</text>
+<text top="811" left="129" width="432" height="14" font="2">had the nice property of not repeatedly scanning through all of memory</text>
+<text top="826" left="129" width="167" height="14" font="2">looking for an unused page.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="262" width="16" height="14" font="2">: P</text>
+<text top="98" left="279" width="46" height="11" font="4">OLICIES</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="414" left="189" width="7" height="12" font="17">0</text>
+<text top="414" left="236" width="13" height="12" font="17">20</text>
+<text top="414" left="286" width="13" height="12" font="17">40</text>
+<text top="414" left="337" width="13" height="12" font="17">60</text>
+<text top="414" left="387" width="13" height="12" font="17">80</text>
+<text top="414" left="434" width="20" height="12" font="17">100</text>
+<text top="403" left="168" width="17" height="12" font="17">0%</text>
+<text top="352" left="161" width="24" height="12" font="17">20%</text>
+<text top="302" left="161" width="24" height="12" font="17">40%</text>
+<text top="251" left="161" width="24" height="12" font="17">60%</text>
+<text top="201" left="161" width="24" height="12" font="17">80%</text>
+<text top="151" left="154" width="31" height="12" font="17">100%</text>
+<text top="137" left="254" width="128" height="14" font="19">The 80-20 Workload</text>
+<text top="429" left="255" width="127" height="14" font="19">Cache Size (Blocks)</text>
+<text top="296" left="151" width="0" height="14" font="20">Hit Rate</text>
+<text top="340" left="408" width="25" height="12" font="17">OPT</text>
+<text top="353" left="408" width="24" height="12" font="17">LRU</text>
+<text top="366" left="408" width="28" height="12" font="17">FIFO</text>
+<text top="379" left="408" width="34" height="12" font="17">RAND</text>
+<text top="392" left="408" width="30" height="12" font="17">Clock</text>
+<text top="456" left="169" width="69" height="14" font="2">Figure 22.9:</text>
+<text top="456" left="242" width="195" height="13" font="3"><b>The 80-20 Workload With Clock</b></text>
+<text top="487" left="105" width="414" height="14" font="2">The behavior of a clock algorithm variant is shown in Figure 22.9. This</text>
+<text top="502" left="87" width="432" height="14" font="2">variant randomly scans pages when doing a replacement; when it en-</text>
+<text top="517" left="87" width="432" height="14" font="2">counters a page with a reference bit set to 1, it clears the bit (i.e., sets it</text>
+<text top="532" left="87" width="432" height="14" font="2">to 0); when it ﬁnds a page with the reference bit set to 0, it chooses it as</text>
+<text top="547" left="87" width="432" height="14" font="2">its victim. As you can see, although it doesn’t do quite as well as perfect</text>
+<text top="562" left="87" width="410" height="14" font="2">LRU, it does better than approaches that don’t consider history at all.</text>
+<text top="589" left="55" width="212" height="17" font="5">22.9 Considering Dirty Pages</text>
+<text top="619" left="105" width="414" height="14" font="2">One small modiﬁcation to the clock algorithm (also originally sug-</text>
+<text top="634" left="87" width="432" height="14" font="2">gested by Corbato [C69]) that is commonly made is the additional con-</text>
+<text top="649" left="87" width="432" height="14" font="2">sideration of whether a page has been modiﬁed or not while in memory.</text>
+<text top="664" left="87" width="223" height="14" font="2">The reason for this: if a page has been</text>
+<text top="664" left="314" width="55" height="13" font="3"><b>modiﬁed</b></text>
+<text top="664" left="372" width="65" height="14" font="2">and is thus</text>
+<text top="664" left="441" width="30" height="13" font="3"><b>dirty</b></text>
+<text top="664" left="471" width="48" height="14" font="2">, it must</text>
+<text top="679" left="87" width="432" height="14" font="2">be written back to disk to evict it, which is expensive. If it has not been</text>
+<text top="694" left="87" width="129" height="14" font="2">modiﬁed (and is thus</text>
+<text top="694" left="221" width="32" height="13" font="3"><b>clean</b></text>
+<text top="694" left="253" width="266" height="14" font="2">), the eviction is free; the physical frame can</text>
+<text top="709" left="87" width="432" height="14" font="2">simply be reused for other purposes without additional I/O. Thus, some</text>
+<text top="724" left="87" width="335" height="14" font="2">VM systems prefer to evict clean pages over dirty pages.</text>
+<text top="739" left="105" width="334" height="14" font="2">To support this behavior, the hardware should include a</text>
+<text top="740" left="443" width="76" height="13" font="3"><b>modiﬁed bit</b></text>
+<text top="754" left="87" width="35" height="14" font="2">(a.k.a.</text>
+<text top="754" left="127" width="50" height="13" font="3"><b>dirty bit</b></text>
+<text top="754" left="177" width="342" height="14" font="2">). This bit is set any time a page is written, and thus can be</text>
+<text top="769" left="87" width="432" height="14" font="2">incorporated into the page-replacement algorithm. The clock algorithm,</text>
+<text top="784" left="87" width="432" height="14" font="2">for example, could be changed to scan for pages that are both unused</text>
+<text top="799" left="87" width="432" height="14" font="2">and clean to evict ﬁrst; failing to ﬁnd those, then for unused pages that</text>
+<text top="814" left="87" width="131" height="14" font="2">are dirty, and so forth.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="322" width="8" height="14" font="2">B</text>
+<text top="98" left="331" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="378" width="8" height="14" font="2">P</text>
+<text top="98" left="386" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="442" width="13" height="14" font="2">M</text>
+<text top="98" left="456" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="497" width="16" height="14" font="2">: P</text>
+<text top="98" left="514" width="46" height="11" font="4">OLICIES</text>
+<text top="137" left="97" width="175" height="17" font="5">22.10 Other VM Policies</text>
+<text top="168" left="147" width="414" height="14" font="2">Page replacement is not the only policy the VM subsystem employs</text>
+<text top="183" left="129" width="432" height="14" font="2">(though it may be the most important). For example, the OS also has to</text>
+<text top="198" left="129" width="39" height="14" font="2">decide</text>
+<text top="198" left="172" width="29" height="14" font="11"><i>when</i></text>
+<text top="198" left="205" width="356" height="14" font="2">to bring a page into memory. This policy, sometimes called</text>
+<text top="213" left="129" width="19" height="14" font="2">the</text>
+<text top="213" left="152" width="88" height="13" font="3"><b>page selection</b></text>
+<text top="213" left="245" width="316" height="14" font="2">policy (as it was called by Denning [D70]), presents</text>
+<text top="227" left="129" width="211" height="14" font="2">the OS with some different options.</text>
+<text top="244" left="147" width="209" height="14" font="2">For most pages, the OS simply uses</text>
+<text top="244" left="359" width="96" height="13" font="3"><b>demand paging</b></text>
+<text top="244" left="454" width="107" height="14" font="2">, which means the</text>
+<text top="259" left="129" width="432" height="14" font="2">OS brings the page into memory when it is accessed, “on demand” as</text>
+<text top="274" left="129" width="432" height="14" font="2">it were. Of course, the OS could guess that a page is about to be used,</text>
+<text top="289" left="129" width="357" height="14" font="2">and thus bring it in ahead of time; this behavior is known as</text>
+<text top="289" left="490" width="71" height="13" font="3"><b>prefetching</b></text>
+<text top="304" left="129" width="432" height="14" font="2">and should only be done when there is reasonable chance of success. For</text>
+<text top="319" left="129" width="326" height="14" font="2">example, some systems will assume that if a code page</text>
+<text top="319" left="459" width="9" height="10" font="6">P</text>
+<text top="319" left="473" width="88" height="14" font="2">is brought into</text>
+<text top="334" left="129" width="140" height="14" font="2">memory, that code page</text>
+<text top="334" left="272" width="9" height="10" font="6">P</text>
+<text top="333" left="283" width="18" height="13" font="7">+1</text>
+<text top="334" left="303" width="258" height="14" font="2">will likely soon be accessed and thus should</text>
+<text top="348" left="129" width="171" height="14" font="2">be brought into memory too.</text>
+<text top="365" left="147" width="414" height="14" font="2">Another policy determines how the OS writes pages out to disk. Of</text>
+<text top="380" left="129" width="432" height="14" font="2">course, they could simply be written out one at a time; however, many</text>
+<text top="395" left="129" width="432" height="14" font="2">systems instead collect a number of pending writes together in memory</text>
+<text top="410" left="129" width="432" height="14" font="2">and write them to disk in one (more efﬁcient) write. This behavior is</text>
+<text top="425" left="129" width="84" height="14" font="2">usually called</text>
+<text top="425" left="217" width="61" height="13" font="3"><b>clustering</b></text>
+<text top="425" left="283" width="58" height="14" font="2">or simply</text>
+<text top="425" left="346" width="57" height="13" font="3"><b>grouping</b></text>
+<text top="425" left="408" width="153" height="14" font="2">of writes, and is effective</text>
+<text top="440" left="129" width="432" height="14" font="2">because of the nature of disk drives, which perform a single large write</text>
+<text top="455" left="129" width="230" height="14" font="2">more efﬁciently than many small ones.</text>
+<text top="493" left="97" width="116" height="17" font="5">22.11 Thrashing</text>
+<text top="524" left="147" width="414" height="14" font="2">Before closing, we address one ﬁnal question: what should the OS do</text>
+<text top="539" left="129" width="432" height="14" font="2">when memory is simply oversubscribed, and the memory demands of the</text>
+<text top="554" left="129" width="432" height="14" font="2">set of running processes simply exceeds the available physical memory?</text>
+<text top="569" left="129" width="432" height="14" font="2">In this case, the system will constantly be paging, a condition sometimes</text>
+<text top="584" left="129" width="78" height="14" font="2">referred to as</text>
+<text top="584" left="211" width="59" height="13" font="3"><b>thrashing</b></text>
+<text top="584" left="273" width="36" height="14" font="2">[D70].</text>
+<text top="600" left="147" width="414" height="14" font="2">Some earlier operating systems had a fairly sophisticated set of mech-</text>
+<text top="615" left="129" width="432" height="14" font="2">anisms to both detect and cope with thrashing when it took place. For</text>
+<text top="630" left="129" width="432" height="14" font="2">example, given a set of processes, a system could decide not to run a sub-</text>
+<text top="645" left="129" width="376" height="14" font="2">set of processes, with the hope that the reduced set of processes’</text>
+<text top="645" left="508" width="52" height="13" font="3"><b>working</b></text>
+<text top="660" left="129" width="23" height="13" font="3"><b>sets</b></text>
+<text top="660" left="156" width="404" height="14" font="2">(the pages that they are using actively) ﬁt in memory and thus can</text>
+<text top="675" left="129" width="312" height="14" font="2">make progress. This approach, generally known as</text>
+<text top="675" left="446" width="111" height="13" font="3"><b>admission control</b></text>
+<text top="675" left="557" width="3" height="14" font="2">,</text>
+<text top="690" left="129" width="432" height="14" font="2">states that it is sometimes better to do less work well than to try to do</text>
+<text top="705" left="129" width="432" height="14" font="2">everything at once poorly, a situation we often encounter in real life as</text>
+<text top="720" left="129" width="266" height="14" font="2">well as in modern computer systems (sadly).</text>
+<text top="736" left="147" width="414" height="14" font="2">Some current systems take more a draconian approach to memory</text>
+<text top="751" left="129" width="335" height="14" font="2">overload. For example, some versions of Linux run an</text>
+<text top="751" left="468" width="93" height="13" font="3"><b>out-of-memory</b></text>
+<text top="766" left="129" width="34" height="13" font="3"><b>killer</b></text>
+<text top="766" left="166" width="395" height="14" font="2">when memory is oversubscribed; this daemon chooses a memory-</text>
+<text top="781" left="129" width="432" height="14" font="2">intensive process and kills it, thus reducing memory in a none-too-subtle</text>
+<text top="796" left="129" width="432" height="14" font="2">manner. While successful at reducing memory pressure, this approach</text>
+<text top="811" left="129" width="432" height="14" font="2">can have problems, if, for example, it kills the X server and thus renders</text>
+<text top="826" left="129" width="287" height="14" font="2">any applications requiring the display unusable.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="262" width="16" height="14" font="2">: P</text>
+<text top="98" left="279" width="46" height="11" font="4">OLICIES</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="137" left="55" width="113" height="17" font="5">22.12 Summary</text>
+<text top="166" left="105" width="414" height="14" font="2">We have seen the introduction of a number of page-replacement (and</text>
+<text top="181" left="87" width="432" height="14" font="2">other) policies, which are part of the VM subsystem of all modern operat-</text>
+<text top="196" left="87" width="432" height="14" font="2">ing systems. Modern systems add some tweaks to straightforward LRU</text>
+<text top="211" left="87" width="239" height="14" font="2">approximations like clock; for example,</text>
+<text top="211" left="330" width="92" height="13" font="3"><b>scan resistance</b></text>
+<text top="211" left="426" width="93" height="14" font="2">is an important</text>
+<text top="226" left="87" width="432" height="14" font="2">part of many modern algorithms, such as ARC [MM03]. Scan-resistant al-</text>
+<text top="241" left="87" width="432" height="14" font="2">gorithms are usually LRU-like but also try to avoid the worst-case behav-</text>
+<text top="256" left="87" width="432" height="14" font="2">ior of LRU, which we saw with the looping-sequential workload. Thus,</text>
+<text top="271" left="87" width="336" height="14" font="2">the evolution of page-replacement algorithms continues.</text>
+<text top="286" left="105" width="414" height="14" font="2">For many years, the importance of replacement algorithms had de-</text>
+<text top="301" left="87" width="434" height="14" font="2">creased, as the discrepancy between memory-access and disk-access times</text>
+<text top="316" left="87" width="432" height="14" font="2">was so large. Speciﬁcally, because paging to disk was so expensive, the</text>
+<text top="331" left="87" width="432" height="14" font="2">cost of frequent paging was prohibitive; simply put, no matter how good</text>
+<text top="346" left="87" width="432" height="14" font="2">your replacement algorithm was, if you were performing frequent re-</text>
+<text top="360" left="87" width="432" height="14" font="2">placements, your system became unbearably slow. Thus, the best solu-</text>
+<text top="375" left="87" width="427" height="14" font="2">tion was a simple (if intellectually unsatisfying) one: buy more memory.</text>
+<text top="390" left="105" width="419" height="14" font="2">However, recent innovations in much faster storage devices (e.g., Flash-</text>
+<text top="405" left="87" width="432" height="14" font="2">based SSDs) have changed these performance ratios yet again, leading to</text>
+<text top="420" left="87" width="432" height="14" font="2">a renaissance in page replacement algorithms. See [SS10,W+21] for recent</text>
+<text top="435" left="87" width="111" height="14" font="2">work in this space.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="16" family="RKJUBH+URWPalladioL" color="#000000"/>
+	<fontspec id="22" size="10" family="WPDVPG+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="322" width="8" height="14" font="2">B</text>
+<text top="98" left="331" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="378" width="8" height="14" font="2">P</text>
+<text top="98" left="386" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="442" width="13" height="14" font="2">M</text>
+<text top="98" left="456" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="497" width="16" height="14" font="2">: P</text>
+<text top="98" left="514" width="46" height="11" font="4">OLICIES</text>
+<text top="137" left="129" width="82" height="16" font="21"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="13">[AD03] “Run-Time Adaptation in River” by Remzi H. Arpaci-Dusseau. ACM TOCS, 21:1,</text>
+<text top="177" left="129" width="69" height="11" font="13">February 2003.</text>
+<text top="177" left="202" width="359" height="11" font="22"><i>A summary of one of the authors’ dissertation work on a system named River, where</i></text>
+<text top="189" left="129" width="386" height="11" font="22"><i>he learned that comparison against the ideal is an important technique for system designers.</i></text>
+<text top="206" left="129" width="432" height="11" font="13">[B66] “A Study of Replacement Algorithms for Virtual-Storage Computer” by Laszlo A. Be-</text>
+<text top="218" left="129" width="206" height="11" font="13">lady. IBM Systems Journal 5(2): 78-101, 1966.</text>
+<text top="217" left="339" width="222" height="11" font="22"><i>The paper that introduces the simple way to compute</i></text>
+<text top="229" left="129" width="224" height="11" font="22"><i>the optimal behavior of a policy (the MIN algorithm).</i></text>
+<text top="246" left="129" width="432" height="11" font="13">[BNS69] “An Anomaly in Space-time Characteristics of Certain Programs Running in a Paging</text>
+<text top="258" left="129" width="432" height="11" font="13">Machine” by L. A. Belady, R. A. Nelson, G. S. Shedler. Communications of the ACM, 12:6, June</text>
+<text top="270" left="129" width="24" height="11" font="13">1969.</text>
+<text top="270" left="158" width="403" height="11" font="22"><i>Introduction of the little sequence of memory references known as Belady’s Anomaly. How do</i></text>
+<text top="282" left="129" width="224" height="11" font="22"><i>Nelson and Shedler feel about this name, we wonder?</i></text>
+<text top="298" left="129" width="432" height="11" font="13">[CD85] “An Evaluation of Buffer Management Strategies for Relational Database Systems”</text>
+<text top="310" left="129" width="386" height="11" font="13">by Hong-Tai Chou, David J. DeWitt. VLDB ’85, Stockholm, Sweden, August 1985.</text>
+<text top="310" left="520" width="41" height="11" font="22"><i>A famous</i></text>
+<text top="322" left="129" width="432" height="11" font="22"><i>database paper on the different buffering strategies you should use under a number of common database</i></text>
+<text top="334" left="129" width="432" height="11" font="22"><i>access patterns. The more general lesson: if you know something about a workload, you can tailor</i></text>
+<text top="346" left="129" width="316" height="11" font="22"><i>policies to do better than the general-purpose ones usually found in the OS.</i></text>
+<text top="362" left="129" width="432" height="11" font="13">[C69] “A Paging Experiment with the Multics System” by F.J. Corbato. Included in a Festschrift</text>
+<text top="374" left="129" width="352" height="11" font="13">published in honor of Prof. P.M. Morse. MIT Press, Cambridge, MA, 1969.</text>
+<text top="374" left="486" width="75" height="11" font="22"><i>The original (and</i></text>
+<text top="386" left="129" width="432" height="11" font="22"><i>hard to ﬁnd!) reference to the clock algorithm, though not the ﬁrst usage of a use bit. Thanks to H.</i></text>
+<text top="398" left="129" width="225" height="11" font="22"><i>Balakrishnan of MIT for digging up this paper for us.</i></text>
+<text top="414" left="129" width="432" height="11" font="13">[D70] “Virtual Memory” by Peter J. Denning. Computing Surveys, Vol. 2, No. 3, September</text>
+<text top="426" left="129" width="24" height="11" font="13">1970.</text>
+<text top="426" left="156" width="270" height="11" font="22"><i>Denning’s early and famous survey on virtual memory systems.</i></text>
+<text top="442" left="129" width="432" height="11" font="13">[EF78] “Cold-start vs. Warm-start Miss Ratios” by Malcolm C. Easton, Ronald Fagin. Commu-</text>
+<text top="454" left="129" width="196" height="11" font="13">nications of the ACM, 21:10, October 1978.</text>
+<text top="454" left="328" width="208" height="11" font="22"><i>A good discussion of cold- vs. warm-start misses.</i></text>
+<text top="471" left="129" width="432" height="11" font="13">[FP89] “Electrochemically Induced Nuclear Fusion of Deuterium” by Martin Fleischmann,</text>
+<text top="483" left="129" width="432" height="11" font="13">Stanley Pons. Journal of Electroanalytical Chemistry, Volume 26, Number 2, Part 1, April,</text>
+<text top="495" left="129" width="24" height="11" font="13">1989.</text>
+<text top="494" left="156" width="405" height="11" font="22"><i>The famous paper that would have revolutionized the world in providing an easy way to generate</i></text>
+<text top="506" left="129" width="432" height="11" font="22"><i>nearly-inﬁnite power from jars of water with a little metal in them. Unfortunately, the results pub-</i></text>
+<text top="518" left="129" width="432" height="11" font="22"><i>lished (and widely publicized) by Pons and Fleischmann were impossible to reproduce, and thus these</i></text>
+<text top="530" left="129" width="432" height="11" font="22"><i>two well-meaning scientists were discredited (and certainly, mocked). The only guy really happy about</i></text>
+<text top="542" left="129" width="432" height="11" font="22"><i>this result was Marvin Hawkins, whose name was left off this paper even though he participated in the</i></text>
+<text top="554" left="129" width="379" height="11" font="22"><i>work, thus avoiding association with one of the biggest scientiﬁc goofs of the 20th century.</i></text>
+<text top="571" left="129" width="432" height="11" font="13">[HP06] “Computer Architecture: A Quantitative Approach” by John Hennessy and David</text>
+<text top="583" left="129" width="168" height="11" font="13">Patterson. Morgan-Kaufmann, 2006.</text>
+<text top="582" left="300" width="235" height="11" font="22"><i>A marvelous book about computer architecture. Read it!</i></text>
+<text top="599" left="129" width="432" height="11" font="13">[H87] “Aspects of Cache Memory and Instruction Buffer Performance” by Mark D. Hill. Ph.D.</text>
+<text top="611" left="129" width="156" height="11" font="13">Dissertation, U.C. Berkeley, 1987.</text>
+<text top="611" left="292" width="269" height="11" font="22"><i>Mark Hill, in his dissertation work, introduced the Three C’s,</i></text>
+<text top="623" left="129" width="432" height="11" font="22"><i>which later gained wide popularity with its inclusion in H&amp;P [HP06]. The quote from therein: “I have</i></text>
+<text top="635" left="129" width="432" height="11" font="22"><i>found it useful to partition misses ... into three components intuitively based on the cause of the misses</i></text>
+<text top="647" left="129" width="47" height="11" font="22"><i>(page 49).”</i></text>
+<text top="663" left="129" width="432" height="11" font="13">[KE+62] “One-level Storage System” by T. Kilburn, D.B.G. Edwards, M.J. Lanigan, F.H. Sum-</text>
+<text top="675" left="129" width="135" height="11" font="13">ner. IRE Trans. EC-11:2, 1962.</text>
+<text top="675" left="267" width="294" height="11" font="22"><i>Although Atlas had a use bit, it only had a very small number of pages,</i></text>
+<text top="687" left="129" width="391" height="11" font="22"><i>and thus the scanning of the use bits in large memories was not a problem the authors solved.</i></text>
+<text top="703" left="129" width="432" height="11" font="13">[M+70] “Evaluation Techniques for Storage Hierarchies” by R. L. Mattson, J. Gecsei, D. R.</text>
+<text top="715" left="129" width="274" height="11" font="13">Slutz, I. L. Traiger. IBM Systems Journal, Volume 9:2, 1970.</text>
+<text top="715" left="408" width="153" height="11" font="22"><i>A paper that is mostly about how to</i></text>
+<text top="727" left="129" width="432" height="11" font="22"><i>simulate cache hierarchies efﬁciently; certainly a classic in that regard, as well for its excellent discussion</i></text>
+<text top="739" left="129" width="432" height="11" font="22"><i>of some of the properties of various replacement algorithms. Can you ﬁgure out why the stack property</i></text>
+<text top="751" left="129" width="287" height="11" font="22"><i>might be useful for simulating a lot of different-sized caches at once?</i></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="23" size="10" family="FRMLMA+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">B</text>
+<text top="98" left="96" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="142" width="8" height="14" font="2">P</text>
+<text top="98" left="151" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="207" width="13" height="14" font="2">M</text>
+<text top="98" left="221" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="262" width="16" height="14" font="2">: P</text>
+<text top="98" left="279" width="46" height="11" font="4">OLICIES</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="141" left="87" width="432" height="11" font="13">[MM03] “ARC: A Self-Tuning, Low Overhead Replacement Cache” by Nimrod Megiddo and</text>
+<text top="153" left="87" width="338" height="11" font="13">Dharmendra S. Modha. FAST 2003, February 2003, San Jose, California.</text>
+<text top="153" left="430" width="89" height="11" font="22"><i>An excellent modern</i></text>
+<text top="165" left="87" width="432" height="11" font="22"><i>paper about replacement algorithms, which includes a new policy, ARC, that is now used in some</i></text>
+<text top="177" left="87" width="432" height="11" font="22"><i>systems. Recognized in 2014 as a “Test of Time” award winner by the storage systems community at</i></text>
+<text top="189" left="87" width="105" height="11" font="22"><i>the FAST ’14 conference.</i></text>
+<text top="205" left="87" width="432" height="11" font="13">[SS10] “FlashVM: Virtual Memory Management on Flash” by Mohit Saxena, Michael M. Swift.</text>
+<text top="217" left="87" width="198" height="11" font="13">USENIX ATC ’10, June, 2010, Boston, MA.</text>
+<text top="217" left="288" width="231" height="11" font="22"><i>An early, excellent paper by our colleagues at U. Wis-</i></text>
+<text top="229" left="87" width="388" height="11" font="22"><i>consin about how to use Flash for paging. One interesting twist is how the system has to take</i></text>
+<text top="230" left="478" width="39" height="7" font="23"><b>wearout</b></text>
+<text top="229" left="516" width="3" height="11" font="22"><i>,</i></text>
+<text top="241" left="87" width="432" height="11" font="22"><i>an intrinsic property of Flash-based devices, into account. Read more about Flash-based SSDs later in</i></text>
+<text top="253" left="87" width="125" height="11" font="22"><i>this book if you are interested.</i></text>
+<text top="269" left="87" width="432" height="11" font="13">[W+21] “The Storage Hierarchy is Not a Hierarchy: Optimizing Caching on Modern Stor-</text>
+<text top="281" left="87" width="432" height="11" font="13">age Devices with Orthus” by Kan Wu, Zhihan Guo, Guanzhou Hu, Kaiwei Tu, Ramnatthan</text>
+<text top="293" left="87" width="432" height="11" font="13">Alagappan, Rathijit Sen, Kwanghyun Park, Andrea Arpaci-Dusseau, Remzi Arpaci-Dusseau.</text>
+<text top="305" left="87" width="213" height="11" font="13">FAST ’21, held virtually – thanks, COVID-19.</text>
+<text top="305" left="306" width="213" height="11" font="22"><i>Our own work on a caching approach on modern</i></text>
+<text top="317" left="87" width="353" height="11" font="22"><i>devices; is it directly related to page replacement? Perhaps not. But it is a fun paper.</i></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="24" size="13" family="EIRTTJ+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="25" size="15" family="RKJUBH+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">18</text>
+<text top="96" left="322" width="8" height="14" font="2">B</text>
+<text top="98" left="331" width="42" height="11" font="4">EYOND</text>
+<text top="96" left="378" width="8" height="14" font="2">P</text>
+<text top="98" left="386" width="52" height="11" font="4">HYSICAL</text>
+<text top="96" left="442" width="13" height="14" font="2">M</text>
+<text top="98" left="456" width="42" height="11" font="4">EMORY</text>
+<text top="96" left="497" width="16" height="14" font="2">: P</text>
+<text top="98" left="514" width="46" height="11" font="4">OLICIES</text>
+<text top="137" left="129" width="183" height="16" font="21"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="89" height="14" font="2">This simulator,</text>
+<text top="168" left="239" width="129" height="11" font="24">paging-policy.py</text>
+<text top="166" left="368" width="193" height="14" font="2">, allows you to play around with</text>
+<text top="181" left="129" width="388" height="14" font="2">different page-replacement policies. See the README for details.</text>
+<text top="217" left="129" width="70" height="15" font="25"><b>Questions</b></text>
+<text top="242" left="146" width="375" height="14" font="2">1. Generate random addresses with the following arguments:</text>
+<text top="243" left="529" width="32" height="11" font="24">-s 0</text>
+<text top="258" left="163" width="40" height="11" font="24">-n 10</text>
+<text top="256" left="204" width="3" height="14" font="2">,</text>
+<text top="258" left="212" width="81" height="11" font="24">-s 1 -n 10</text>
+<text top="256" left="292" width="31" height="14" font="2">, and</text>
+<text top="258" left="327" width="81" height="11" font="24">-s 2 -n 10</text>
+<text top="256" left="408" width="153" height="14" font="2">. Change the policy from</text>
+<text top="271" left="163" width="397" height="14" font="2">FIFO, to LRU, to OPT. Compute whether each access in said address</text>
+<text top="286" left="163" width="143" height="14" font="2">traces are hits or misses.</text>
+<text top="311" left="146" width="414" height="14" font="2">2. For a cache of size 5, generate worst-case address reference streams</text>
+<text top="326" left="163" width="397" height="14" font="2">for each of the following policies: FIFO, LRU, and MRU (worst-case</text>
+<text top="341" left="163" width="397" height="14" font="2">reference streams cause the most misses possible. For the worst case</text>
+<text top="356" left="163" width="397" height="14" font="2">reference streams, how much bigger of a cache is needed to improve</text>
+<text top="371" left="163" width="276" height="14" font="2">performance dramatically and approach OPT?</text>
+<text top="396" left="146" width="414" height="14" font="2">3. Generate a random trace (i.e., use python and write a script that</text>
+<text top="411" left="163" width="397" height="14" font="2">outputs random addresses, which you can then feed into the simu-</text>
+<text top="426" left="163" width="397" height="14" font="2">lator). How would you expect the different policies to perform on</text>
+<text top="441" left="163" width="76" height="14" font="2">such a trace?</text>
+<text top="466" left="146" width="414" height="14" font="2">4. Now generate a trace with some locality. How can you generate</text>
+<text top="481" left="163" width="397" height="14" font="2">such a trace? How does LRU perform on it? How much better than</text>
+<text top="496" left="163" width="397" height="14" font="2">RAND is LRU? How does CLOCK do? How about CLOCK with</text>
+<text top="511" left="163" width="187" height="14" font="2">different numbers of clock bits?</text>
+<text top="535" left="146" width="130" height="14" font="2">5. Use a program like</text>
+<text top="537" left="280" width="65" height="11" font="24">valgrind</text>
+<text top="535" left="348" width="213" height="14" font="2">to instrument a real application and</text>
+<text top="550" left="163" width="397" height="14" font="2">generate a virtual page reference stream. For example, running</text>
+<text top="567" left="163" width="331" height="11" font="24">valgrind --tool=lackey --trace-mem=yes ls</text>
+<text top="565" left="497" width="66" height="14" font="2">will output</text>
+<text top="580" left="163" width="397" height="14" font="2">a nearly-complete reference trace of every instruction and data ref-</text>
+<text top="595" left="163" width="174" height="14" font="2">erence made by the program</text>
+<text top="597" left="342" width="16" height="11" font="24">ls</text>
+<text top="595" left="358" width="203" height="14" font="2">. To make this useful for the sim-</text>
+<text top="610" left="163" width="397" height="14" font="2">ulator above, you’ll have to ﬁrst transform each virtual memory</text>
+<text top="625" left="163" width="397" height="14" font="2">reference into a virtual page-number reference (done by masking</text>
+<text top="640" left="163" width="397" height="14" font="2">off the offset and shifting the resulting bits downward). How big</text>
+<text top="655" left="163" width="397" height="14" font="2">of a cache is needed for your application trace in order to satisfy a</text>
+<text top="670" left="163" width="397" height="14" font="2">large fraction of requests? Plot a graph of its working set as the size</text>
+<text top="685" left="163" width="131" height="14" font="2">of the cache increases.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="12">[V</text>
+<text top="914" left="143" width="39" height="10" font="13">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="12">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+</pdf2xml>

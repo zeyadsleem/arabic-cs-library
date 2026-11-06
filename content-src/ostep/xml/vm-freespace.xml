@@ -1,0 +1,1235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="NPYFIG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="NPYFIG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="CTRAPO+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="BYZTLH+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="ZXOQKY+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="5" size="14" family="NPYFIG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="6" size="11" family="NPYFIG+NimbusSanL-Regu" color="#000000"/>
+<text top="194" left="523" width="34" height="30" font="0">17</text>
+<text top="263" left="276" width="243" height="21" font="1">Free-Space Management</text>
+<text top="344" left="87" width="432" height="14" font="2">In this chapter, we take a small detour from our discussion of virtual-</text>
+<text top="359" left="87" width="432" height="14" font="2">izing memory to discuss a fundamental aspect of any memory manage-</text>
+<text top="374" left="87" width="432" height="14" font="2">ment system, whether it be a malloc library (managing pages of a pro-</text>
+<text top="389" left="87" width="432" height="14" font="2">cess’s heap) or the OS itself (managing portions of the address space of a</text>
+<text top="404" left="87" width="366" height="14" font="2">process). Specifically, we will discuss the issues surrounding</text>
+<text top="404" left="457" width="62" height="13" font="3"><b>free-space</b></text>
+<text top="419" left="87" width="79" height="13" font="3"><b>management</b></text>
+<text top="419" left="166" width="3" height="14" font="2">.</text>
+<text top="434" left="105" width="414" height="14" font="2">Let us make the problem more specific. Managing free space can cer-</text>
+<text top="449" left="87" width="357" height="14" font="2">tainly be easy, as we will see when we discuss the concept of</text>
+<text top="449" left="447" width="43" height="13" font="3"><b>paging</b></text>
+<text top="449" left="490" width="29" height="14" font="2">. It is</text>
+<text top="464" left="87" width="432" height="14" font="2">easy when the space you are managing is divided into fixed-sized units;</text>
+<text top="479" left="87" width="432" height="14" font="2">in such a case, you just keep a list of these fixed-sized units; when a client</text>
+<text top="494" left="87" width="253" height="14" font="2">requests one of them, return the first entry.</text>
+<text top="509" left="105" width="414" height="14" font="2">Where free-space management becomes more difficult (and interest-</text>
+<text top="524" left="87" width="432" height="14" font="2">ing) is when the free space you are managing consists of variable-sized</text>
+<text top="539" left="87" width="370" height="14" font="2">units; this arises in a user-level memory-allocation library (as in</text>
+<text top="539" left="460" width="65" height="11" font="4">malloc()</text>
+<text top="554" left="87" width="23" height="14" font="2">and</text>
+<text top="554" left="113" width="48" height="11" font="4">free()</text>
+<text top="554" left="162" width="329" height="14" font="2">) and in an OS managing physical memory when using</text>
+<text top="554" left="494" width="25" height="13" font="3"><b>seg-</b></text>
+<text top="569" left="87" width="63" height="13" font="3"><b>mentation</b></text>
+<text top="568" left="153" width="366" height="14" font="2">to implement virtual memory. In either case, the problem that</text>
+<text top="583" left="87" width="110" height="14" font="2">exists is known as</text>
+<text top="583" left="201" width="141" height="13" font="3"><b>external fragmentation</b></text>
+<text top="583" left="342" width="177" height="14" font="2">: the free space gets chopped</text>
+<text top="598" left="87" width="432" height="14" font="2">into little pieces of different sizes and is thus fragmented; subsequent re-</text>
+<text top="613" left="87" width="432" height="14" font="2">quests may fail because there is no single contiguous space that can sat-</text>
+<text top="628" left="87" width="432" height="14" font="2">isfy the request, even though the total amount of free space exceeds the</text>
+<text top="643" left="87" width="110" height="14" font="2">size of the request.</text>
+<text top="684" left="209" width="25" height="14" font="5">free</text>
+<text top="684" left="288" width="31" height="14" font="5">used</text>
+<text top="684" left="373" width="25" height="14" font="5">free</text>
+<text top="700" left="177" width="6" height="11" font="6">0</text>
+<text top="700" left="256" width="13" height="11" font="6">10</text>
+<text top="700" left="338" width="13" height="11" font="6">20</text>
+<text top="700" left="420" width="13" height="11" font="6">30</text>
+<text top="731" left="105" width="414" height="14" font="2">The figure shows an example of this problem. In this case, the total</text>
+<text top="746" left="87" width="432" height="14" font="2">free space available is 20 bytes; unfortunately, it is fragmented into two</text>
+<text top="761" left="87" width="432" height="14" font="2">chunks of size 10 each. As a result, a request for 15 bytes will fail even</text>
+<text top="776" left="87" width="432" height="14" font="2">though there are 20 bytes free. And thus we arrive at the problem ad-</text>
+<text top="791" left="87" width="137" height="14" font="2">dressed in this chapter.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="7" size="11" family="CTRAPO+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="16" family="CTRAPO+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="9" family="CTRAPO+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="13" family="PUATTO+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="11" size="7" family="CTRAPO+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="12" size="10" family="CTRAPO+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="13" size="12" family="CTRAPO+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="392" width="7" height="14" font="2">F</text>
+<text top="98" left="400" width="22" height="11" font="7">REE</text>
+<text top="96" left="422" width="12" height="14" font="2">-S</text>
+<text top="98" left="435" width="30" height="11" font="7">PACE</text>
+<text top="96" left="469" width="13" height="14" font="2">M</text>
+<text top="98" left="482" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="148" left="229" width="10" height="14" font="2">C</text>
+<text top="150" left="239" width="24" height="11" font="7">RUX</text>
+<text top="148" left="264" width="19" height="14" font="2">: H</text>
+<text top="150" left="284" width="20" height="11" font="7">OW</text>
+<text top="148" left="308" width="8" height="14" font="2">T</text>
+<text top="150" left="316" width="8" height="11" font="7">O</text>
+<text top="148" left="329" width="13" height="14" font="2">M</text>
+<text top="150" left="342" width="43" height="11" font="7">ANAGE</text>
+<text top="148" left="389" width="7" height="14" font="2">F</text>
+<text top="150" left="398" width="22" height="11" font="7">REE</text>
+<text top="148" left="423" width="7" height="14" font="2">S</text>
+<text top="150" left="431" width="30" height="11" font="7">PACE</text>
+<text top="163" left="129" width="432" height="14" font="2">How should free space be managed, when satisfying variable-sized re-</text>
+<text top="178" left="129" width="432" height="14" font="2">quests? What strategies can be used to minimize fragmentation? What</text>
+<text top="193" left="129" width="345" height="14" font="2">are the time and space overheads of alternate approaches?</text>
+<text top="248" left="97" width="130" height="17" font="8">17.1 Assumptions</text>
+<text top="278" left="147" width="414" height="14" font="2">Most of this discussion will focus on the great history of allocators</text>
+<text top="293" left="129" width="432" height="14" font="2">found in user-level memory-allocation libraries. We draw on Wilson’s</text>
+<text top="308" left="129" width="432" height="14" font="2">excellent survey [W+95] but encourage interested readers to go to the</text>
+<text top="326" left="129" width="232" height="14" font="2">source document itself for more details</text>
+<text top="323" left="361" width="4" height="9" font="9">1</text>
+<text top="326" left="366" width="3" height="14" font="2">.</text>
+<text top="342" left="147" width="319" height="14" font="2">We assume a basic interface such as that provided by</text>
+<text top="343" left="470" width="65" height="11" font="4">malloc()</text>
+<text top="342" left="538" width="23" height="14" font="2">and</text>
+<text top="357" left="129" width="48" height="11" font="4">free()</text>
+<text top="357" left="177" width="77" height="14" font="2">. Specifically,</text>
+<text top="357" left="258" width="199" height="14" font="4">void *malloc(size t size)</text>
+<text top="357" left="459" width="102" height="14" font="2">takes a single pa-</text>
+<text top="372" left="129" width="49" height="14" font="2">rameter,</text>
+<text top="372" left="183" width="32" height="11" font="4">size</text>
+<text top="372" left="215" width="346" height="14" font="2">, which is the number of bytes requested by the applica-</text>
+<text top="387" left="129" width="335" height="14" font="2">tion; it hands back a pointer (of no particular type, or a</text>
+<text top="387" left="468" width="77" height="13" font="3"><b>void pointer</b></text>
+<text top="387" left="549" width="12" height="14" font="2">in</text>
+<text top="402" left="129" width="432" height="14" font="2">C lingo) to a region of that size (or greater). The complementary routine</text>
+<text top="417" left="129" width="161" height="14" font="4">void free(void *ptr)</text>
+<text top="416" left="295" width="266" height="14" font="2">takes a pointer and frees the corresponding</text>
+<text top="431" left="129" width="432" height="14" font="2">chunk. Note the implication of the interface: the user, when freeing the</text>
+<text top="446" left="129" width="432" height="14" font="2">space, does not inform the library of its size; thus, the library must be able</text>
+<text top="461" left="129" width="432" height="14" font="2">to figure out how big a chunk of memory is when handed just a pointer</text>
+<text top="476" left="129" width="362" height="14" font="2">to it. We’ll discuss how to do this a bit later on in the chapter.</text>
+<text top="492" left="147" width="375" height="14" font="2">The space that this library manages is known historically as the</text>
+<text top="493" left="525" width="32" height="11" font="4">heap</text>
+<text top="492" left="557" width="3" height="14" font="2">,</text>
+<text top="507" left="129" width="432" height="14" font="2">and the generic data structure used to manage free space in the heap is</text>
+<text top="522" left="129" width="78" height="14" font="2">some kind of</text>
+<text top="522" left="210" width="47" height="13" font="3"><b>free list</b></text>
+<text top="522" left="257" width="304" height="14" font="2">. This structure contains references to all of the free</text>
+<text top="537" left="129" width="432" height="14" font="2">chunks of space in the managed region of memory. Of course, this data</text>
+<text top="552" left="129" width="159" height="14" font="2">structure need not be a list</text>
+<text top="552" left="292" width="31" height="14" font="10"><i>per se</i></text>
+<text top="552" left="324" width="237" height="14" font="2">, but just some kind of data structure to</text>
+<text top="567" left="129" width="95" height="14" font="2">track free space.</text>
+<text top="583" left="147" width="330" height="14" font="2">We further assume that primarily we are concerned with</text>
+<text top="583" left="480" width="81" height="13" font="3"><b>external frag-</b></text>
+<text top="598" left="129" width="63" height="13" font="3"><b>mentation</b></text>
+<text top="598" left="192" width="369" height="14" font="2">, as described above. Allocators could of course also have the</text>
+<text top="613" left="129" width="66" height="14" font="2">problem of</text>
+<text top="613" left="200" width="140" height="13" font="3"><b>internal fragmentation</b></text>
+<text top="613" left="340" width="221" height="14" font="2">; if an allocator hands out chunks of</text>
+<text top="628" left="129" width="432" height="14" font="2">memory bigger than that requested, any unasked for (and thus unused)</text>
+<text top="643" left="129" width="217" height="14" font="2">space in such a chunk is considered</text>
+<text top="643" left="350" width="43" height="14" font="10"><i>internal</i></text>
+<text top="643" left="398" width="163" height="14" font="2">fragmentation (because the</text>
+<text top="658" left="129" width="432" height="14" font="2">waste occurs inside the allocated unit) and is another example of space</text>
+<text top="673" left="129" width="432" height="14" font="2">waste. However, for the sake of simplicity, and because it is the more in-</text>
+<text top="688" left="129" width="432" height="14" font="2">teresting of the two types of fragmentation, we’ll mostly focus on external</text>
+<text top="703" left="129" width="88" height="14" font="2">fragmentation.</text>
+<text top="719" left="147" width="414" height="14" font="2">We’ll also assume that once memory is handed out to a client, it cannot</text>
+<text top="734" left="129" width="432" height="14" font="2">be relocated to another location in memory. For example, if a program</text>
+<text top="749" left="129" width="26" height="14" font="2">calls</text>
+<text top="750" left="160" width="65" height="11" font="4">malloc()</text>
+<text top="749" left="230" width="331" height="14" font="2">and is given a pointer to some space within the heap,</text>
+<text top="764" left="129" width="432" height="14" font="2">that memory region is essentially “owned” by the program (and cannot</text>
+<text top="779" left="129" width="432" height="14" font="2">be moved by the library) until the program returns it via a correspond-</text>
+<text top="794" left="129" width="59" height="14" font="2">ing call to</text>
+<text top="794" left="191" width="48" height="11" font="4">free()</text>
+<text top="794" left="239" width="60" height="14" font="2">. Thus, no</text>
+<text top="794" left="303" width="71" height="13" font="3"><b>compaction</b></text>
+<text top="794" left="378" width="183" height="14" font="2">of free space is possible, which</text>
+<text top="826" left="149" width="4" height="8" font="11">1</text>
+<text top="828" left="154" width="293" height="11" font="12">It is nearly 80 pages long; thus, you really have to be interested!</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="13">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="13">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="15" family="BYZTLH+URWPalladioL" color="#000000"/>
+	<fontspec id="15" size="13" family="NPYFIG+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="16" size="12" family="NPYFIG+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="22" height="11" font="7">REE</text>
+<text top="96" left="118" width="12" height="14" font="2">-S</text>
+<text top="98" left="131" width="30" height="11" font="7">PACE</text>
+<text top="96" left="165" width="13" height="14" font="2">M</text>
+<text top="98" left="178" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="87" width="247" height="14" font="2">would be useful to combat fragmentation</text>
+<text top="136" left="334" width="4" height="9" font="9">2</text>
+<text top="139" left="339" width="179" height="14" font="2">. Compaction could, however,</text>
+<text top="154" left="87" width="403" height="14" font="2">be used in the OS to deal with fragmentation when implementing</text>
+<text top="154" left="494" width="25" height="13" font="3"><b>seg-</b></text>
+<text top="169" left="87" width="63" height="13" font="3"><b>mentation</b></text>
+<text top="169" left="153" width="279" height="14" font="2">(as discussed in said chapter on segmentation).</text>
+<text top="184" left="105" width="414" height="14" font="2">Finally, we’ll assume that the allocator manages a contiguous region</text>
+<text top="199" left="87" width="432" height="14" font="2">of bytes. In some cases, an allocator could ask for that region to grow;</text>
+<text top="213" left="87" width="432" height="14" font="2">for example, a user-level memory-allocation library might call into the</text>
+<text top="228" left="87" width="291" height="14" font="2">kernel to grow the heap (via a system call such as</text>
+<text top="229" left="381" width="32" height="11" font="4">sbrk</text>
+<text top="228" left="414" width="105" height="14" font="2">) when it runs out</text>
+<text top="243" left="87" width="432" height="14" font="2">of space. However, for simplicity, we’ll just assume that the region is a</text>
+<text top="258" left="87" width="209" height="14" font="2">single fixed size throughout its life.</text>
+<text top="295" left="55" width="202" height="17" font="8">17.2 Low-level Mechanisms</text>
+<text top="325" left="105" width="414" height="14" font="2">Before delving into some policy details, we’ll first cover some com-</text>
+<text top="340" left="87" width="432" height="14" font="2">mon mechanisms used in most allocators. First, we’ll discuss the basics of</text>
+<text top="355" left="87" width="432" height="14" font="2">splitting and coalescing, common techniques in most any allocator. Sec-</text>
+<text top="370" left="87" width="432" height="14" font="2">ond, we’ll show how one can track the size of allocated regions quickly</text>
+<text top="385" left="87" width="432" height="14" font="2">and with relative ease. Finally, we’ll discuss how to build a simple list</text>
+<text top="400" left="87" width="380" height="14" font="2">inside the free space to keep track of what is free and what isn’t.</text>
+<text top="436" left="87" width="168" height="15" font="14"><b>Splitting and Coalescing</b></text>
+<text top="461" left="87" width="432" height="14" font="2">A free list contains a set of elements that describe the free space still re-</text>
+<text top="476" left="87" width="373" height="14" font="2">maining in the heap. Thus, assume the following 30-byte heap:</text>
+<text top="506" left="209" width="25" height="14" font="5">free</text>
+<text top="506" left="288" width="31" height="14" font="5">used</text>
+<text top="506" left="373" width="25" height="14" font="5">free</text>
+<text top="522" left="177" width="6" height="11" font="6">0</text>
+<text top="522" left="256" width="13" height="11" font="6">10</text>
+<text top="522" left="338" width="13" height="11" font="6">20</text>
+<text top="522" left="420" width="13" height="11" font="6">30</text>
+<text top="542" left="105" width="414" height="14" font="2">The free list for this heap would have two elements on it. One entry de-</text>
+<text top="557" left="87" width="432" height="14" font="2">scribes the first 10-byte free segment (bytes 0-9), and one entry describes</text>
+<text top="572" left="87" width="215" height="14" font="2">the other free segment (bytes 20-29):</text>
+<text top="617" left="114" width="29" height="13" font="15">head</text>
+<text top="612" left="179" width="33" height="11" font="16">addr:0</text>
+<text top="624" left="179" width="32" height="11" font="16">len:10</text>
+<text top="612" left="246" width="40" height="11" font="16">addr:20</text>
+<text top="624" left="250" width="32" height="11" font="16">len:10</text>
+<text top="617" left="320" width="34" height="13" font="15">NULL</text>
+<text top="661" left="105" width="414" height="14" font="2">As described above, a request for anything greater than 10 bytes will</text>
+<text top="676" left="87" width="432" height="14" font="2">fail (returning NULL); there just isn’t a single contiguous chunk of mem-</text>
+<text top="691" left="87" width="432" height="14" font="2">ory of that size available. A request for exactly that size (10 bytes) could</text>
+<text top="706" left="87" width="432" height="14" font="2">be satisfied easily by either of the free chunks. But what happens if the</text>
+<text top="720" left="87" width="143" height="14" font="2">request is for something</text>
+<text top="720" left="234" width="40" height="14" font="10"><i>smaller</i></text>
+<text top="720" left="277" width="84" height="14" font="2">than 10 bytes?</text>
+<text top="735" left="105" width="414" height="14" font="2">Assume we have a request for just a single byte of memory. In this</text>
+<text top="750" left="87" width="305" height="14" font="2">case, the allocator will perform an action known as</text>
+<text top="750" left="396" width="52" height="13" font="3"><b>splitting</b></text>
+<text top="750" left="448" width="71" height="14" font="2">: it will find</text>
+<text top="778" left="107" width="4" height="8" font="11">2</text>
+<text top="780" left="112" width="407" height="11" font="12">Once you hand a pointer to a chunk of memory to a C program, it is generally difficult</text>
+<text top="792" left="87" width="432" height="11" font="12">to determine all references (pointers) to that region, which may be stored in other variables</text>
+<text top="804" left="87" width="432" height="11" font="12">or even in registers at a given point in execution. This may not be the case in more strongly-</text>
+<text top="816" left="87" width="432" height="11" font="12">typed, garbage-collected languages, which would thus enable compaction as a technique to</text>
+<text top="828" left="87" width="105" height="11" font="12">combat fragmentation.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="392" width="7" height="14" font="2">F</text>
+<text top="98" left="400" width="22" height="11" font="7">REE</text>
+<text top="96" left="422" width="12" height="14" font="2">-S</text>
+<text top="98" left="435" width="30" height="11" font="7">PACE</text>
+<text top="96" left="469" width="13" height="14" font="2">M</text>
+<text top="98" left="482" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="139" left="129" width="432" height="14" font="2">a free chunk of memory that can satisfy the request and split it into two.</text>
+<text top="154" left="129" width="432" height="14" font="2">The first chunk it will return to the caller; the second chunk will remain</text>
+<text top="169" left="129" width="432" height="14" font="2">on the list. Thus, in our example above, if a request for 1 byte were made,</text>
+<text top="183" left="129" width="432" height="14" font="2">and the allocator decided to use the second of the two elements on the list</text>
+<text top="198" left="129" width="432" height="14" font="2">to satisfy the request, the call to malloc() would return 20 (the address of</text>
+<text top="213" left="129" width="421" height="14" font="2">the 1-byte allocated region) and the list would end up looking like this:</text>
+<text top="258" left="156" width="29" height="13" font="15">head</text>
+<text top="253" left="221" width="33" height="11" font="16">addr:0</text>
+<text top="264" left="221" width="32" height="11" font="16">len:10</text>
+<text top="253" left="288" width="40" height="11" font="16">addr:21</text>
+<text top="264" left="295" width="26" height="11" font="16">len:9</text>
+<text top="258" left="361" width="34" height="13" font="15">NULL</text>
+<text top="301" left="147" width="414" height="14" font="2">In the picture, you can see the list basically stays intact; the only change</text>
+<text top="316" left="129" width="432" height="14" font="2">is that the free region now starts at 21 instead of 20, and the length of that</text>
+<text top="333" left="129" width="143" height="14" font="2">free region is now just 9</text>
+<text top="331" left="272" width="4" height="9" font="9">3</text>
+<text top="333" left="277" width="283" height="14" font="2">. Thus, the split is commonly used in allocators</text>
+<text top="348" left="129" width="405" height="14" font="2">when requests are smaller than the size of any particular free chunk.</text>
+<text top="363" left="147" width="363" height="14" font="2">A corollary mechanism found in many allocators is known as</text>
+<text top="363" left="513" width="48" height="13" font="3"><b>coalesc-</b></text>
+<text top="378" left="129" width="20" height="13" font="3"><b>ing</b></text>
+<text top="378" left="152" width="408" height="14" font="2">of free space. Take our example from above once more (free 10 bytes,</text>
+<text top="393" left="129" width="244" height="14" font="2">used 10 bytes, and another free 10 bytes).</text>
+<text top="408" left="147" width="419" height="14" font="2">Given this (tiny) heap, what happens when an application calls free(10),</text>
+<text top="423" left="129" width="432" height="14" font="2">thus returning the space in the middle of the heap? If we simply add this</text>
+<text top="438" left="129" width="432" height="14" font="2">free space back into our list without too much thinking, we might end up</text>
+<text top="453" left="129" width="174" height="14" font="2">with a list that looks like this:</text>
+<text top="494" left="156" width="29" height="13" font="15">head</text>
+<text top="489" left="217" width="40" height="11" font="16">addr:10</text>
+<text top="500" left="221" width="32" height="11" font="16">len:10</text>
+<text top="489" left="291" width="33" height="11" font="16">addr:0</text>
+<text top="500" left="292" width="32" height="11" font="16">len:10</text>
+<text top="489" left="359" width="40" height="11" font="16">addr:20</text>
+<text top="500" left="363" width="32" height="11" font="16">len:10</text>
+<text top="494" left="432" width="34" height="13" font="15">NULL</text>
+<text top="530" left="147" width="414" height="14" font="2">Note the problem: while the entire heap is now free, it is seemingly</text>
+<text top="545" left="129" width="432" height="14" font="2">divided into three chunks of 10 bytes each. Thus, if a user requests 20</text>
+<text top="560" left="129" width="432" height="14" font="2">bytes, a simple list traversal will not find such a free chunk, and return</text>
+<text top="575" left="129" width="42" height="14" font="2">failure.</text>
+<text top="590" left="147" width="414" height="14" font="2">What allocators do in order to avoid this problem is coalesce free space</text>
+<text top="605" left="129" width="432" height="14" font="2">when a chunk of memory is freed. The idea is simple: when returning a</text>
+<text top="620" left="129" width="432" height="14" font="2">free chunk in memory, look carefully at the addresses of the chunk you</text>
+<text top="635" left="129" width="432" height="14" font="2">are returning as well as the nearby chunks of free space; if the newly-</text>
+<text top="650" left="129" width="432" height="14" font="2">freed space sits right next to one (or two, as in this example) existing free</text>
+<text top="665" left="129" width="432" height="14" font="2">chunks, merge them into a single larger free chunk. Thus, with coalesc-</text>
+<text top="680" left="129" width="226" height="14" font="2">ing, our final list should look like this:</text>
+<text top="724" left="156" width="29" height="13" font="15">head</text>
+<text top="719" left="221" width="33" height="11" font="16">addr:0</text>
+<text top="731" left="221" width="32" height="11" font="16">len:30</text>
+<text top="724" left="291" width="34" height="13" font="15">NULL</text>
+<text top="757" left="147" width="414" height="14" font="2">Indeed, this is what the heap list looked like at first, before any allo-</text>
+<text top="772" left="129" width="432" height="14" font="2">cations were made. With coalescing, an allocator can better ensure that</text>
+<text top="787" left="129" width="295" height="14" font="2">large free extents are available for the application.</text>
+<text top="814" left="149" width="4" height="8" font="11">3</text>
+<text top="816" left="154" width="407" height="11" font="12">This discussion assumes that there are no headers, an unrealistic but simplifying assump-</text>
+<text top="828" left="129" width="103" height="11" font="12">tion we make for now.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="13">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="13">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="22" height="11" font="7">REE</text>
+<text top="96" left="118" width="12" height="14" font="2">-S</text>
+<text top="98" left="131" width="30" height="11" font="7">PACE</text>
+<text top="96" left="165" width="13" height="14" font="2">M</text>
+<text top="98" left="178" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="181" left="121" width="15" height="12" font="15">ptr</text>
+<text top="155" left="303" width="191" height="12" font="15">The header used by malloc library</text>
+<text top="219" left="303" width="172" height="12" font="15">The 20 bytes returned to caller</text>
+<text top="275" left="163" width="69" height="14" font="2">Figure 17.1:</text>
+<text top="275" left="236" width="207" height="13" font="3"><b>An Allocated Region Plus Header</b></text>
+<text top="330" left="187" width="26" height="12" font="15">size:</text>
+<text top="330" left="264" width="14" height="12" font="15">20</text>
+<text top="355" left="187" width="91" height="12" font="15">magic: 1234567</text>
+<text top="317" left="114" width="22" height="12" font="15">hptr</text>
+<text top="368" left="121" width="15" height="12" font="15">ptr</text>
+<text top="406" left="303" width="172" height="12" font="15">The 20 bytes returned to caller</text>
+<text top="462" left="166" width="69" height="14" font="2">Figure 17.2:</text>
+<text top="462" left="239" width="202" height="13" font="3"><b>Specific Contents Of The Header</b></text>
+<text top="513" left="87" width="274" height="15" font="14"><b>Tracking The Size Of Allocated Regions</b></text>
+<text top="539" left="87" width="273" height="14" font="2">You might have noticed that the interface to</text>
+<text top="539" left="365" width="121" height="14" font="4">free(void *ptr)</text>
+<text top="539" left="491" width="28" height="14" font="2">does</text>
+<text top="554" left="87" width="432" height="14" font="2">not take a size parameter; thus it is assumed that given a pointer, the</text>
+<text top="569" left="87" width="432" height="14" font="2">malloc library can quickly determine the size of the region of memory</text>
+<text top="583" left="87" width="383" height="14" font="2">being freed and thus incorporate the space back into the free list.</text>
+<text top="600" left="105" width="414" height="14" font="2">To accomplish this task, most allocators store a little bit of extra infor-</text>
+<text top="615" left="87" width="70" height="14" font="2">mation in a</text>
+<text top="615" left="162" width="42" height="13" font="3"><b>header</b></text>
+<text top="615" left="209" width="310" height="14" font="2">block which is kept in memory, usually just before</text>
+<text top="630" left="87" width="432" height="14" font="2">the handed-out chunk of memory. Let’s look at an example again (Fig-</text>
+<text top="645" left="87" width="432" height="14" font="2">ure 17.1). In this example, we are examining an allocated block of size 20</text>
+<text top="659" left="87" width="120" height="14" font="2">bytes, pointed to by</text>
+<text top="660" left="211" width="24" height="11" font="4">ptr</text>
+<text top="659" left="235" width="147" height="14" font="2">; imagine the user called</text>
+<text top="660" left="386" width="65" height="11" font="4">malloc()</text>
+<text top="659" left="455" width="64" height="14" font="2">and stored</text>
+<text top="674" left="87" width="76" height="14" font="2">the results in</text>
+<text top="675" left="167" width="24" height="11" font="4">ptr</text>
+<text top="674" left="191" width="31" height="14" font="2">, e.g.,</text>
+<text top="675" left="225" width="137" height="11" font="4">ptr = malloc(20);</text>
+<text top="674" left="362" width="3" height="14" font="2">.</text>
+<text top="691" left="105" width="414" height="14" font="2">The header minimally contains the size of the allocated region (in this</text>
+<text top="706" left="87" width="432" height="14" font="2">case, 20); it may also contain additional pointers to speed up dealloca-</text>
+<text top="721" left="87" width="432" height="14" font="2">tion, a magic number to provide additional integrity checking, and other</text>
+<text top="736" left="87" width="432" height="14" font="2">information. Let’s assume a simple header which contains the size of the</text>
+<text top="750" left="87" width="220" height="14" font="2">region and a magic number, like this:</text>
+<text top="782" left="87" width="129" height="11" font="4">typedef struct {</text>
+<text top="797" left="119" width="73" height="11" font="4">int size;</text>
+<text top="812" left="119" width="81" height="11" font="4">int magic;</text>
+<text top="827" left="87" width="89" height="11" font="4">} header_t;</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="17" size="13" family="AXRWRM+CMMI9" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="392" width="7" height="14" font="2">F</text>
+<text top="98" left="400" width="22" height="11" font="7">REE</text>
+<text top="96" left="422" width="12" height="14" font="2">-S</text>
+<text top="98" left="435" width="30" height="11" font="7">PACE</text>
+<text top="96" left="469" width="13" height="14" font="2">M</text>
+<text top="98" left="482" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="139" left="147" width="414" height="14" font="2">The example above would look like what you see in Figure 17.2. When</text>
+<text top="154" left="129" width="76" height="14" font="2">the user calls</text>
+<text top="154" left="208" width="73" height="11" font="4">free(ptr)</text>
+<text top="154" left="281" width="280" height="14" font="2">, the library then uses simple pointer arithmetic</text>
+<text top="169" left="129" width="226" height="14" font="2">to figure out where the header begins:</text>
+<text top="190" left="129" width="178" height="14" font="4">void free(void *ptr) {</text>
+<text top="205" left="161" width="307" height="14" font="4">header_t *hptr = (header_t *) ptr - 1;</text>
+<text top="220" left="161" width="24" height="11" font="4">...</text>
+<text top="245" left="147" width="414" height="14" font="2">After obtaining such a pointer to the header, the library can easily de-</text>
+<text top="260" left="129" width="432" height="14" font="2">termine whether the magic number matches the expected value as a san-</text>
+<text top="275" left="129" width="61" height="14" font="2">ity check (</text>
+<text top="276" left="190" width="242" height="11" font="4">assert(hptr-&gt;magic == 1234567)</text>
+<text top="275" left="432" width="129" height="14" font="2">) and calculate the to-</text>
+<text top="290" left="129" width="432" height="14" font="2">tal size of the newly-freed region via simple math (i.e., adding the size of</text>
+<text top="305" left="129" width="432" height="14" font="2">the header to size of the region). Note the small but critical detail in the</text>
+<text top="320" left="129" width="432" height="14" font="2">last sentence: the size of the free region is the size of the header plus the</text>
+<text top="335" left="129" width="382" height="14" font="2">size of the space allocated to the user. Thus, when a user requests</text>
+<text top="335" left="514" width="11" height="14" font="17">N</text>
+<text top="335" left="529" width="31" height="14" font="2">bytes</text>
+<text top="350" left="129" width="370" height="14" font="2">of memory, the library does not search for a free chunk of size</text>
+<text top="350" left="503" width="11" height="14" font="17">N</text>
+<text top="350" left="515" width="46" height="14" font="2">; rather,</text>
+<text top="365" left="129" width="200" height="14" font="2">it searches for a free chunk of size</text>
+<text top="365" left="332" width="11" height="14" font="17">N</text>
+<text top="365" left="348" width="158" height="14" font="2">plus the size of the header.</text>
+<text top="395" left="129" width="157" height="15" font="14"><b>Embedding A Free List</b></text>
+<text top="419" left="129" width="432" height="14" font="2">Thus far we have treated our simple free list as a conceptual entity; it is</text>
+<text top="434" left="129" width="432" height="14" font="2">just a list describing the free chunks of memory in the heap. But how do</text>
+<text top="449" left="129" width="277" height="14" font="2">we build such a list inside the free space itself?</text>
+<text top="464" left="147" width="414" height="14" font="2">In a more typical list, when allocating a new node, you would just call</text>
+<text top="480" left="129" width="65" height="11" font="4">malloc()</text>
+<text top="479" left="197" width="364" height="14" font="2">when you need space for the node. Unfortunately, within the</text>
+<text top="494" left="129" width="432" height="14" font="2">memory-allocation library, you can’t do this! Instead, you need to build</text>
+<text top="509" left="129" width="39" height="14" font="2">the list</text>
+<text top="509" left="171" width="32" height="14" font="10"><i>inside</i></text>
+<text top="509" left="206" width="355" height="14" font="2">the free space itself. Don’t worry if this sounds a little weird;</text>
+<text top="524" left="129" width="245" height="14" font="2">it is, but not so weird that you can’t do it!</text>
+<text top="539" left="147" width="414" height="14" font="2">Assume we have a 4096-byte chunk of memory to manage (i.e., the</text>
+<text top="554" left="129" width="432" height="14" font="2">heap is 4KB). To manage this as a free list, we first have to initialize said</text>
+<text top="569" left="129" width="432" height="14" font="2">list; initially, the list should have one entry, of size 4096 (minus the header</text>
+<text top="584" left="129" width="290" height="14" font="2">size). Here is the description of a node of the list:</text>
+<text top="610" left="129" width="202" height="11" font="4">typedef struct __node_t {</text>
+<text top="625" left="161" width="24" height="11" font="4">int</text>
+<text top="625" left="298" width="40" height="11" font="4">size;</text>
+<text top="640" left="161" width="178" height="14" font="4">struct __node_t *next;</text>
+<text top="655" left="129" width="73" height="11" font="4">} node_t;</text>
+<text top="680" left="147" width="414" height="14" font="2">Now let’s look at some code that initializes the heap and puts the first</text>
+<text top="695" left="129" width="432" height="14" font="2">element of the free list inside that space. We are assuming that the heap is</text>
+<text top="710" left="129" width="377" height="14" font="2">built within some free space acquired via a call to the system call</text>
+<text top="711" left="509" width="48" height="11" font="4">mmap()</text>
+<text top="710" left="557" width="3" height="14" font="2">;</text>
+<text top="725" left="129" width="432" height="14" font="2">this is not the only way to build such a heap but serves us well in this</text>
+<text top="740" left="129" width="157" height="14" font="2">example. Here is the code:</text>
+<text top="767" left="129" width="420" height="11" font="4">// mmap() returns a pointer to a chunk of free space</text>
+<text top="782" left="129" width="428" height="14" font="4">node_t *head = mmap(NULL, 4096, PROT_READ|PROT_WRITE,</text>
+<text top="797" left="290" width="234" height="11" font="4">MAP_ANON|MAP_PRIVATE, -1, 0);</text>
+<text top="812" left="129" width="81" height="11" font="4">head-&gt;size</text>
+<text top="812" left="234" width="194" height="11" font="4">= 4096 - sizeof(node_t);</text>
+<text top="827" left="129" width="81" height="11" font="4">head-&gt;next</text>
+<text top="827" left="234" width="56" height="11" font="4">= NULL;</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="13">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="13">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="28" family="NPYFIG+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="22" height="11" font="7">REE</text>
+<text top="96" left="118" width="12" height="14" font="2">-S</text>
+<text top="98" left="131" width="30" height="11" font="7">PACE</text>
+<text top="96" left="165" width="13" height="14" font="2">M</text>
+<text top="98" left="178" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="143" left="187" width="26" height="12" font="15">size:</text>
+<text top="143" left="250" width="28" height="12" font="15">4088</text>
+<text top="168" left="187" width="27" height="12" font="15">next:</text>
+<text top="168" left="271" width="7" height="12" font="15">0</text>
+<text top="203" left="220" width="23" height="27" font="18">...</text>
+<text top="130" left="108" width="28" height="12" font="15">head</text>
+<text top="130" left="303" width="127" height="12" font="15">[virtual address: 16KB]</text>
+<text top="143" left="303" width="96" height="12" font="15">header: size field</text>
+<text top="168" left="303" width="165" height="12" font="15">header: next field (NULL is 0)</text>
+<text top="219" left="303" width="142" height="12" font="15">the rest of the 4KB chunk</text>
+<text top="275" left="174" width="69" height="14" font="2">Figure 17.3:</text>
+<text top="275" left="247" width="185" height="13" font="3"><b>A Heap With One Free Chunk</b></text>
+<text top="328" left="187" width="26" height="12" font="15">size:</text>
+<text top="328" left="257" width="21" height="12" font="15">100</text>
+<text top="353" left="187" width="91" height="12" font="15">magic: 1234567</text>
+<text top="388" left="213" width="39" height="27" font="18">. . .</text>
+<text top="455" left="187" width="26" height="12" font="15">size:</text>
+<text top="455" left="250" width="28" height="12" font="15">3980</text>
+<text top="480" left="187" width="27" height="12" font="15">next:</text>
+<text top="480" left="271" width="7" height="12" font="15">0</text>
+<text top="514" left="213" width="39" height="27" font="18">. . .</text>
+<text top="366" left="121" width="15" height="12" font="15">ptr</text>
+<text top="315" left="303" width="127" height="12" font="15">[virtual address: 16KB]</text>
+<text top="442" left="108" width="28" height="12" font="15">head</text>
+<text top="404" left="303" width="161" height="12" font="15">The 100 bytes now allocated</text>
+<text top="530" left="303" width="144" height="12" font="15">The free 3980 byte chunk</text>
+<text top="592" left="175" width="69" height="14" font="2">Figure 17.4:</text>
+<text top="592" left="248" width="183" height="13" font="3"><b>A Heap: After One Allocation</b></text>
+<text top="631" left="105" width="414" height="14" font="2">After running this code, the status of the list is that it has a single entry,</text>
+<text top="646" left="87" width="432" height="14" font="2">of size 4088. Yes, this is a tiny heap, but it serves as a fine example for us</text>
+<text top="661" left="87" width="56" height="14" font="2">here. The</text>
+<text top="662" left="146" width="32" height="11" font="4">head</text>
+<text top="661" left="181" width="338" height="14" font="2">pointer contains the beginning address of this range; let’s</text>
+<text top="676" left="87" width="432" height="14" font="2">assume it is 16KB (though any virtual address would be fine). Visually,</text>
+<text top="691" left="87" width="310" height="14" font="2">the heap thus looks like what you see in Figure 17.3.</text>
+<text top="706" left="105" width="414" height="14" font="2">Now, let’s imagine that a chunk of memory is requested, say of size</text>
+<text top="721" left="87" width="432" height="14" font="2">100 bytes. To service this request, the library will first find a chunk that is</text>
+<text top="736" left="87" width="432" height="14" font="2">large enough to accommodate the request; because there is only one free</text>
+<text top="751" left="87" width="432" height="14" font="2">chunk (size: 4088), this chunk will be chosen. Then, the chunk will be</text>
+<text top="766" left="87" width="28" height="13" font="3"><b>split</b></text>
+<text top="766" left="118" width="401" height="14" font="2">into two: one chunk big enough to service the request (and header,</text>
+<text top="781" left="87" width="432" height="14" font="2">as described above), and the remaining free chunk. Assuming an 8-byte</text>
+<text top="796" left="87" width="432" height="14" font="2">header (an integer size and an integer magic number), the space in the</text>
+<text top="811" left="87" width="288" height="14" font="2">heap now looks like what you see in Figure 17.4.</text>
+<text top="826" left="105" width="414" height="14" font="2">Thus, upon the request for 100 bytes, the library allocated 108 bytes</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="392" width="7" height="14" font="2">F</text>
+<text top="98" left="400" width="22" height="11" font="7">REE</text>
+<text top="96" left="422" width="12" height="14" font="2">-S</text>
+<text top="98" left="435" width="30" height="11" font="7">PACE</text>
+<text top="96" left="469" width="13" height="14" font="2">M</text>
+<text top="98" left="482" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="143" left="228" width="26" height="12" font="15">size:</text>
+<text top="143" left="298" width="21" height="12" font="15">100</text>
+<text top="168" left="228" width="91" height="12" font="15">magic: 1234567</text>
+<text top="203" left="254" width="39" height="27" font="18">. . .</text>
+<text top="269" left="228" width="26" height="12" font="15">size:</text>
+<text top="269" left="298" width="21" height="12" font="15">100</text>
+<text top="295" left="228" width="91" height="12" font="15">magic: 1234567</text>
+<text top="329" left="254" width="39" height="27" font="18">. . .</text>
+<text top="396" left="228" width="26" height="12" font="15">size:</text>
+<text top="396" left="298" width="21" height="12" font="15">100</text>
+<text top="421" left="228" width="91" height="12" font="15">magic: 1234567</text>
+<text top="456" left="254" width="39" height="27" font="18">. . .</text>
+<text top="523" left="228" width="26" height="12" font="15">size:</text>
+<text top="523" left="291" width="28" height="12" font="15">3764</text>
+<text top="548" left="228" width="27" height="12" font="15">next:</text>
+<text top="548" left="313" width="7" height="12" font="15">0</text>
+<text top="582" left="254" width="39" height="27" font="18">. . .</text>
+<text top="307" left="157" width="21" height="12" font="15">sptr</text>
+<text top="130" left="345" width="127" height="12" font="15">[virtual address: 16KB]</text>
+<text top="510" left="150" width="28" height="12" font="15">head</text>
+<text top="219" left="345" width="131" height="12" font="15">100 bytes still allocated</text>
+<text top="345" left="345" width="131" height="12" font="15">100 bytes still allocated</text>
+<text top="358" left="345" width="129" height="12" font="15"> (but about to be freed)</text>
+<text top="472" left="345" width="132" height="12" font="15">100-bytes still allocated</text>
+<text top="598" left="345" width="144" height="12" font="15">The free 3764-byte chunk</text>
+<text top="655" left="182" width="69" height="14" font="2">Figure 17.5:</text>
+<text top="655" left="255" width="252" height="13" font="3"><b>Free Space With Three Chunks Allocated</b></text>
+<text top="674" left="129" width="365" height="14" font="2">out of the existing one free chunk, returns a pointer (marked</text>
+<text top="675" left="498" width="24" height="11" font="4">ptr</text>
+<text top="674" left="526" width="34" height="14" font="2">in the</text>
+<text top="689" left="129" width="432" height="14" font="2">figure above) to it, stashes the header information immediately before the</text>
+<text top="704" left="129" width="198" height="14" font="2">allocated space for later use upon</text>
+<text top="705" left="330" width="48" height="11" font="4">free()</text>
+<text top="704" left="379" width="182" height="14" font="2">, and shrinks the one free node</text>
+<text top="719" left="129" width="242" height="14" font="2">in the list to 3980 bytes (4088 minus 108).</text>
+<text top="735" left="147" width="414" height="14" font="2">Now let’s look at the heap when there are three allocated regions, each</text>
+<text top="750" left="129" width="432" height="14" font="2">of 100 bytes (or 108 including the header). A visualization of this heap is</text>
+<text top="765" left="129" width="127" height="14" font="2">shown in Figure 17.5.</text>
+<text top="781" left="147" width="414" height="14" font="2">As you can see therein, the first 324 bytes of the heap are now allo-</text>
+<text top="796" left="129" width="432" height="14" font="2">cated, and thus we see three headers in that space as well as three 100-</text>
+<text top="811" left="129" width="432" height="14" font="2">byte regions being used by the calling program. The free list remains</text>
+<text top="826" left="129" width="276" height="14" font="2">uninteresting: just a single node (pointed to by</text>
+<text top="827" left="408" width="32" height="11" font="4">head</text>
+<text top="826" left="441" width="120" height="14" font="2">), but now only 3764</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="13">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="13">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="22" height="11" font="7">REE</text>
+<text top="96" left="118" width="12" height="14" font="2">-S</text>
+<text top="98" left="131" width="30" height="11" font="7">PACE</text>
+<text top="96" left="165" width="13" height="14" font="2">M</text>
+<text top="98" left="178" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="143" left="187" width="26" height="12" font="15">size:</text>
+<text top="143" left="257" width="21" height="12" font="15">100</text>
+<text top="168" left="187" width="91" height="12" font="15">magic: 1234567</text>
+<text top="203" left="213" width="39" height="27" font="18">. . .</text>
+<text top="269" left="187" width="26" height="12" font="15">size:</text>
+<text top="269" left="257" width="21" height="12" font="15">100</text>
+<text top="295" left="187" width="27" height="12" font="15">next:</text>
+<text top="295" left="243" width="35" height="12" font="15">16708</text>
+<text top="329" left="213" width="39" height="27" font="18">. . .</text>
+<text top="396" left="187" width="26" height="12" font="15">size:</text>
+<text top="396" left="257" width="21" height="12" font="15">100</text>
+<text top="421" left="187" width="91" height="12" font="15">magic: 1234567</text>
+<text top="456" left="213" width="39" height="27" font="18">. . .</text>
+<text top="523" left="187" width="26" height="12" font="15">size:</text>
+<text top="523" left="250" width="28" height="12" font="15">3764</text>
+<text top="548" left="187" width="27" height="12" font="15">next:</text>
+<text top="548" left="271" width="7" height="12" font="15">0</text>
+<text top="582" left="213" width="39" height="27" font="18">. . .</text>
+<text top="130" left="303" width="127" height="12" font="15">[virtual address: 16KB]</text>
+<text top="257" left="108" width="28" height="12" font="15">head</text>
+<text top="307" left="115" width="21" height="12" font="15">sptr</text>
+<text top="219" left="303" width="131" height="12" font="15">100 bytes still allocated</text>
+<text top="345" left="303" width="168" height="12" font="15">(now a free chunk of memory)</text>
+<text top="472" left="303" width="132" height="12" font="15">100-bytes still allocated</text>
+<text top="598" left="303" width="144" height="12" font="15">The free 3764-byte chunk</text>
+<text top="660" left="145" width="69" height="14" font="2">Figure 17.6:</text>
+<text top="660" left="218" width="243" height="13" font="3"><b>Free Space With Two Chunks Allocated</b></text>
+<text top="684" left="87" width="432" height="14" font="2">bytes in size after the three splits. But what happens when the calling</text>
+<text top="699" left="87" width="208" height="14" font="2">program returns some memory via</text>
+<text top="700" left="299" width="48" height="11" font="4">free()</text>
+<text top="699" left="347" width="6" height="14" font="2">?</text>
+<text top="718" left="105" width="414" height="14" font="2">In this example, the application returns the middle chunk of allocated</text>
+<text top="733" left="87" width="117" height="14" font="2">memory, by calling</text>
+<text top="734" left="208" width="89" height="11" font="4">free(16500)</text>
+<text top="733" left="302" width="217" height="14" font="2">(the value 16500 is arrived upon by</text>
+<text top="748" left="87" width="432" height="14" font="2">adding the start of the memory region, 16384, to the 108 of the previous</text>
+<text top="763" left="87" width="432" height="14" font="2">chunk and the 8 bytes of the header for this chunk). This value is shown</text>
+<text top="778" left="87" width="230" height="14" font="2">in the previous diagram by the pointer</text>
+<text top="778" left="320" width="32" height="11" font="4">sptr</text>
+<text top="778" left="353" width="3" height="14" font="2">.</text>
+<text top="796" left="105" width="414" height="14" font="2">The library immediately figures out the size of the free region, and</text>
+<text top="811" left="87" width="432" height="14" font="2">then adds the free chunk back onto the free list. Assuming we insert at</text>
+<text top="826" left="87" width="393" height="14" font="2">the head of the free list, the space now looks like this (Figure 17.6).</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="392" width="7" height="14" font="2">F</text>
+<text top="98" left="400" width="22" height="11" font="7">REE</text>
+<text top="96" left="422" width="12" height="14" font="2">-S</text>
+<text top="98" left="435" width="30" height="11" font="7">PACE</text>
+<text top="96" left="469" width="13" height="14" font="2">M</text>
+<text top="98" left="482" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="143" left="228" width="26" height="12" font="15">size:</text>
+<text top="143" left="298" width="21" height="12" font="15">100</text>
+<text top="168" left="228" width="27" height="12" font="15">next:</text>
+<text top="168" left="284" width="35" height="12" font="15">16492</text>
+<text top="203" left="254" width="39" height="27" font="18">. . .</text>
+<text top="269" left="228" width="26" height="12" font="15">size:</text>
+<text top="269" left="298" width="21" height="12" font="15">100</text>
+<text top="295" left="228" width="27" height="12" font="15">next:</text>
+<text top="295" left="284" width="35" height="12" font="15">16708</text>
+<text top="329" left="254" width="39" height="27" font="18">. . .</text>
+<text top="396" left="228" width="26" height="12" font="15">size:</text>
+<text top="396" left="298" width="21" height="12" font="15">100</text>
+<text top="421" left="228" width="27" height="12" font="15">next:</text>
+<text top="421" left="284" width="35" height="12" font="15">16384</text>
+<text top="456" left="254" width="39" height="27" font="18">. . .</text>
+<text top="523" left="228" width="26" height="12" font="15">size:</text>
+<text top="523" left="291" width="28" height="12" font="15">3764</text>
+<text top="548" left="228" width="27" height="12" font="15">next:</text>
+<text top="548" left="313" width="7" height="12" font="15">0</text>
+<text top="582" left="254" width="39" height="27" font="18">. . .</text>
+<text top="130" left="345" width="127" height="12" font="15">[virtual address: 16KB]</text>
+<text top="383" left="150" width="28" height="12" font="15">head</text>
+<text top="219" left="345" width="57" height="12" font="15">(now free)</text>
+<text top="345" left="345" width="57" height="12" font="15">(now free)</text>
+<text top="472" left="345" width="57" height="12" font="15">(now free)</text>
+<text top="598" left="345" width="144" height="12" font="15">The free 3764-byte chunk</text>
+<text top="655" left="227" width="69" height="14" font="2">Figure 17.7:</text>
+<text top="655" left="300" width="163" height="13" font="3"><b>A Non-Coalesced Free List</b></text>
+<text top="674" left="147" width="414" height="14" font="2">Now we have a list that starts with a small free chunk (100 bytes,</text>
+<text top="689" left="129" width="432" height="14" font="2">pointed to by the head of the list) and a large free chunk (3764 bytes).</text>
+<text top="704" left="129" width="432" height="14" font="2">Our list finally has more than one element on it! And yes, the free space</text>
+<text top="719" left="129" width="328" height="14" font="2">is fragmented, an unfortunate but common occurrence.</text>
+<text top="735" left="147" width="414" height="14" font="2">One last example: let’s assume now that the last two in-use chunks are</text>
+<text top="750" left="129" width="426" height="14" font="2">freed. Without coalescing, you end up with fragmentation (Figure 17.7).</text>
+<text top="766" left="147" width="414" height="14" font="2">As you can see from the figure, we now have a big mess! Why? Simple,</text>
+<text top="781" left="129" width="75" height="14" font="2">we forgot to</text>
+<text top="781" left="209" width="50" height="13" font="3"><b>coalesce</b></text>
+<text top="781" left="263" width="297" height="14" font="2">the list. Although all of the memory is free, it is</text>
+<text top="796" left="129" width="432" height="14" font="2">chopped up into pieces, thus appearing as a fragmented memory despite</text>
+<text top="811" left="129" width="389" height="14" font="2">not being one. The solution is simple: go through the list and</text>
+<text top="811" left="523" width="38" height="13" font="3"><b>merge</b></text>
+<text top="826" left="129" width="391" height="14" font="2">neighboring chunks; when finished, the heap will be whole again.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="13">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="13">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="22" height="11" font="7">REE</text>
+<text top="96" left="118" width="12" height="14" font="2">-S</text>
+<text top="98" left="131" width="30" height="11" font="7">PACE</text>
+<text top="96" left="165" width="13" height="14" font="2">M</text>
+<text top="98" left="178" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="138" left="87" width="132" height="15" font="14"><b>Growing The Heap</b></text>
+<text top="163" left="87" width="432" height="14" font="2">We should discuss one last mechanism found within many allocation li-</text>
+<text top="178" left="87" width="432" height="14" font="2">braries. Specifically, what should you do if the heap runs out of space?</text>
+<text top="192" left="87" width="432" height="14" font="2">The simplest approach is just to fail. In some cases this is the only option,</text>
+<text top="207" left="87" width="432" height="14" font="2">and thus returning NULL is an honorable approach. Don’t feel bad! You</text>
+<text top="222" left="87" width="330" height="14" font="2">tried, and though you failed, you fought the good fight.</text>
+<text top="238" left="105" width="414" height="14" font="2">Most traditional allocators start with a small-sized heap and then re-</text>
+<text top="253" left="87" width="432" height="14" font="2">quest more memory from the OS when they run out. Typically, this means</text>
+<text top="268" left="87" width="243" height="14" font="2">they make some kind of system call (e.g.,</text>
+<text top="268" left="333" width="32" height="11" font="4">sbrk</text>
+<text top="268" left="369" width="58" height="14" font="2">in most U</text>
+<text top="270" left="428" width="21" height="11" font="7">NIX</text>
+<text top="268" left="452" width="67" height="14" font="2">systems) to</text>
+<text top="283" left="87" width="432" height="14" font="2">grow the heap, and then allocate the new chunks from there. To service</text>
+<text top="297" left="87" width="19" height="14" font="2">the</text>
+<text top="298" left="110" width="32" height="11" font="4">sbrk</text>
+<text top="297" left="147" width="372" height="14" font="2">request, the OS finds free physical pages, maps them into the</text>
+<text top="312" left="87" width="432" height="14" font="2">address space of the requesting process, and then returns the value of</text>
+<text top="327" left="87" width="432" height="14" font="2">the end of the new heap; at that point, a larger heap is available, and the</text>
+<text top="342" left="87" width="216" height="14" font="2">request can be successfully serviced.</text>
+<text top="380" left="55" width="146" height="17" font="8">17.3 Basic Strategies</text>
+<text top="410" left="105" width="414" height="14" font="2">Now that we have some machinery under our belt, let’s go over some</text>
+<text top="425" left="87" width="432" height="14" font="2">basic strategies for managing free space. These approaches are mostly</text>
+<text top="440" left="87" width="432" height="14" font="2">based on pretty simple policies that you could think up yourself; try it</text>
+<text top="455" left="87" width="432" height="14" font="2">before reading and see if you come up with all of the alternatives (or</text>
+<text top="470" left="87" width="146" height="14" font="2">maybe some new ones!).</text>
+<text top="485" left="105" width="414" height="14" font="2">The ideal allocator is both fast and minimizes fragmentation. Unfortu-</text>
+<text top="500" left="87" width="432" height="14" font="2">nately, because the stream of allocation and free requests can be arbitrary</text>
+<text top="515" left="87" width="432" height="14" font="2">(after all, they are determined by the programmer), any particular strat-</text>
+<text top="530" left="87" width="432" height="14" font="2">egy can do quite badly given the wrong set of inputs. Thus, we will not</text>
+<text top="545" left="87" width="432" height="14" font="2">describe a “best” approach, but rather talk about some basics and discuss</text>
+<text top="560" left="87" width="117" height="14" font="2">their pros and cons.</text>
+<text top="593" left="87" width="51" height="15" font="14"><b>Best Fit</b></text>
+<text top="618" left="87" width="23" height="14" font="2">The</text>
+<text top="618" left="113" width="42" height="13" font="3"><b>best fit</b></text>
+<text top="618" left="158" width="361" height="14" font="2">strategy is quite simple: first, search through the free list and</text>
+<text top="633" left="87" width="432" height="14" font="2">find chunks of free memory that are as big or bigger than the requested</text>
+<text top="648" left="87" width="432" height="14" font="2">size. Then, return the one that is the smallest in that group of candidates;</text>
+<text top="663" left="87" width="432" height="14" font="2">this is the so called best-fit chunk (it could be called smallest fit too). One</text>
+<text top="678" left="87" width="411" height="14" font="2">pass through the free list is enough to find the correct block to return.</text>
+<text top="693" left="105" width="414" height="14" font="2">The intuition behind best fit is simple: by returning a block that is close</text>
+<text top="708" left="87" width="432" height="14" font="2">to what the user asks, best fit tries to reduce wasted space. However, there</text>
+<text top="723" left="87" width="432" height="14" font="2">is a cost; naive implementations pay a heavy performance penalty when</text>
+<text top="738" left="87" width="346" height="14" font="2">performing an exhaustive search for the correct free block.</text>
+<text top="771" left="87" width="62" height="15" font="14"><b>Worst Fit</b></text>
+<text top="796" left="87" width="23" height="14" font="2">The</text>
+<text top="796" left="114" width="51" height="13" font="3"><b>worst fit</b></text>
+<text top="796" left="169" width="350" height="14" font="2">approach is the opposite of best fit; find the largest chunk</text>
+<text top="811" left="87" width="432" height="14" font="2">and return the requested amount; keep the remaining (large) chunk on</text>
+<text top="826" left="87" width="432" height="14" font="2">the free list. Worst fit tries to thus leave big chunks free instead of lots of</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="392" width="7" height="14" font="2">F</text>
+<text top="98" left="400" width="22" height="11" font="7">REE</text>
+<text top="96" left="422" width="12" height="14" font="2">-S</text>
+<text top="98" left="435" width="30" height="11" font="7">PACE</text>
+<text top="96" left="469" width="13" height="14" font="2">M</text>
+<text top="98" left="482" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="139" left="129" width="432" height="14" font="2">small chunks that can arise from a best-fit approach. Once again, how-</text>
+<text top="154" left="129" width="432" height="14" font="2">ever, a full search of free space is required, and thus this approach can be</text>
+<text top="169" left="129" width="432" height="14" font="2">costly. Worse, most studies show that it performs badly, leading to excess</text>
+<text top="183" left="129" width="290" height="14" font="2">fragmentation while still having high overheads.</text>
+<text top="216" left="129" width="53" height="15" font="14"><b>First Fit</b></text>
+<text top="240" left="129" width="23" height="14" font="2">The</text>
+<text top="240" left="156" width="41" height="13" font="3"><b>first fit</b></text>
+<text top="240" left="202" width="358" height="14" font="2">method simply finds the first block that is big enough and</text>
+<text top="255" left="129" width="432" height="14" font="2">returns the requested amount to the user. As before, the remaining free</text>
+<text top="270" left="129" width="249" height="14" font="2">space is kept free for subsequent requests.</text>
+<text top="285" left="147" width="414" height="14" font="2">First fit has the advantage of speed — no exhaustive search of all the</text>
+<text top="300" left="129" width="432" height="14" font="2">free spaces are necessary — but sometimes pollutes the beginning of the</text>
+<text top="315" left="129" width="432" height="14" font="2">free list with small objects. Thus, how the allocator manages the free list’s</text>
+<text top="330" left="129" width="281" height="14" font="2">order becomes an issue. One approach is to use</text>
+<text top="330" left="414" width="144" height="13" font="3"><b>address-based ordering</b></text>
+<text top="330" left="557" width="3" height="14" font="2">;</text>
+<text top="345" left="129" width="432" height="14" font="2">by keeping the list ordered by the address of the free space, coalescing</text>
+<text top="360" left="129" width="329" height="14" font="2">becomes easier, and fragmentation tends to be reduced.</text>
+<text top="392" left="129" width="54" height="15" font="14"><b>Next Fit</b></text>
+<text top="417" left="129" width="432" height="14" font="2">Instead of always beginning the first-fit search at the beginning of the list,</text>
+<text top="432" left="129" width="19" height="14" font="2">the</text>
+<text top="432" left="152" width="44" height="13" font="3"><b>next fit</b></text>
+<text top="432" left="201" width="360" height="14" font="2">algorithm keeps an extra pointer to the location within the</text>
+<text top="447" left="129" width="432" height="14" font="2">list where one was looking last. The idea is to spread the searches for</text>
+<text top="462" left="129" width="432" height="14" font="2">free space throughout the list more uniformly, thus avoiding splintering</text>
+<text top="477" left="129" width="432" height="14" font="2">of the beginning of the list. The performance of such an approach is quite</text>
+<text top="492" left="129" width="380" height="14" font="2">similar to first fit, as an exhaustive search is once again avoided.</text>
+<text top="524" left="129" width="66" height="15" font="14"><b>Examples</b></text>
+<text top="548" left="129" width="432" height="14" font="2">Here are a few examples of the above strategies. Envision a free list with</text>
+<text top="563" left="129" width="432" height="14" font="2">three elements on it, of sizes 10, 30, and 20 (we’ll ignore headers and other</text>
+<text top="578" left="129" width="361" height="14" font="2">details here, instead just focusing on how strategies operate):</text>
+<text top="612" left="156" width="29" height="13" font="15">head</text>
+<text top="612" left="231" width="15" height="13" font="15">10</text>
+<text top="612" left="302" width="15" height="13" font="15">30</text>
+<text top="612" left="373" width="15" height="13" font="15">20</text>
+<text top="612" left="433" width="34" height="13" font="15">NULL</text>
+<text top="645" left="147" width="414" height="14" font="2">Assume an allocation request of size 15. A best-fit approach would</text>
+<text top="660" left="129" width="432" height="14" font="2">search the entire list and find that 20 was the best fit, as it is the smallest</text>
+<text top="675" left="129" width="401" height="14" font="2">free space that can accommodate the request. The resulting free list:</text>
+<text top="709" left="156" width="29" height="13" font="15">head</text>
+<text top="709" left="231" width="15" height="13" font="15">10</text>
+<text top="709" left="302" width="15" height="13" font="15">30</text>
+<text top="709" left="377" width="7" height="13" font="15">5</text>
+<text top="709" left="433" width="34" height="13" font="15">NULL</text>
+<text top="742" left="147" width="414" height="14" font="2">As happens in this example, and often happens with a best-fit ap-</text>
+<text top="757" left="129" width="432" height="14" font="2">proach, a small free chunk is now left over. A worst-fit approach is similar</text>
+<text top="772" left="129" width="431" height="14" font="2">but instead finds the largest chunk, in this example 30. The resulting list:</text>
+<text top="806" left="156" width="29" height="13" font="15">head</text>
+<text top="806" left="231" width="15" height="13" font="15">10</text>
+<text top="806" left="302" width="15" height="13" font="15">15</text>
+<text top="806" left="373" width="15" height="13" font="15">20</text>
+<text top="806" left="433" width="34" height="13" font="15">NULL</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="13">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="13">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="22" height="11" font="7">REE</text>
+<text top="96" left="118" width="12" height="14" font="2">-S</text>
+<text top="98" left="131" width="30" height="11" font="7">PACE</text>
+<text top="96" left="165" width="13" height="14" font="2">M</text>
+<text top="98" left="178" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="139" left="105" width="414" height="14" font="2">The first-fit strategy, in this example, does the same thing as worst-fit,</text>
+<text top="154" left="87" width="432" height="14" font="2">also finding the first free block that can satisfy the request. The difference</text>
+<text top="169" left="87" width="432" height="14" font="2">is in the search cost; both best-fit and worst-fit look through the entire list;</text>
+<text top="183" left="87" width="432" height="14" font="2">first-fit only examines free chunks until it finds one that fits, thus reducing</text>
+<text top="198" left="87" width="68" height="14" font="2">search cost.</text>
+<text top="214" left="105" width="414" height="14" font="2">These examples just scratch the surface of allocation policies. More</text>
+<text top="229" left="87" width="432" height="14" font="2">detailed analysis with real workloads and more complex allocator behav-</text>
+<text top="244" left="87" width="432" height="14" font="2">iors (e.g., coalescing) are required for a deeper understanding. Perhaps</text>
+<text top="259" left="87" width="265" height="14" font="2">something for a homework section, you say?</text>
+<text top="297" left="55" width="167" height="17" font="8">17.4 Other Approaches</text>
+<text top="327" left="105" width="414" height="14" font="2">Beyond the basic approaches described above, there have been a host</text>
+<text top="342" left="87" width="432" height="14" font="2">of suggested techniques and algorithms to improve memory allocation in</text>
+<text top="357" left="87" width="432" height="14" font="2">some way. We list a few of them here for your consideration (i.e., to make</text>
+<text top="372" left="87" width="338" height="14" font="2">you think about a little more than just best-fit allocation).</text>
+<text top="411" left="87" width="112" height="15" font="14"><b>Segregated Lists</b></text>
+<text top="436" left="87" width="432" height="14" font="2">One interesting approach that has been around for some time is the use</text>
+<text top="451" left="87" width="12" height="14" font="2">of</text>
+<text top="451" left="103" width="96" height="13" font="3"><b>segregated lists</b></text>
+<text top="451" left="199" width="320" height="14" font="2">. The basic idea is simple: if a particular application</text>
+<text top="466" left="87" width="432" height="14" font="2">has one (or a few) popular-sized request that it makes, keep a separate</text>
+<text top="480" left="87" width="432" height="14" font="2">list just to manage objects of that size; all other requests are forwarded to</text>
+<text top="495" left="87" width="199" height="14" font="2">a more general memory allocator.</text>
+<text top="511" left="105" width="414" height="14" font="2">The benefits of such an approach are obvious. By having a chunk of</text>
+<text top="526" left="87" width="432" height="14" font="2">memory dedicated for one particular size of requests, fragmentation is</text>
+<text top="541" left="87" width="432" height="14" font="2">much less of a concern; moreover, allocation and free requests can be</text>
+<text top="556" left="87" width="432" height="14" font="2">served quite quickly when they are of the right size, as no complicated</text>
+<text top="571" left="87" width="155" height="14" font="2">search of a list is required.</text>
+<text top="586" left="105" width="414" height="14" font="2">Just like any good idea, this approach introduces new complications</text>
+<text top="601" left="87" width="432" height="14" font="2">into a system as well. For example, how much memory should one ded-</text>
+<text top="616" left="87" width="432" height="14" font="2">icate to the pool of memory that serves specialized requests of a given</text>
+<text top="631" left="87" width="402" height="14" font="2">size, as opposed to the general pool? One particular allocator, the</text>
+<text top="631" left="494" width="25" height="13" font="3"><b>slab</b></text>
+<text top="646" left="87" width="53" height="13" font="3"><b>allocator</b></text>
+<text top="646" left="144" width="375" height="14" font="2">by uber-engineer Jeff Bonwick (which was designed for use in</text>
+<text top="661" left="87" width="377" height="14" font="2">the Solaris kernel), handles this issue in a rather nice way [B94].</text>
+<text top="677" left="105" width="373" height="14" font="2">Specifically, when the kernel boots up, it allocates a number of</text>
+<text top="677" left="482" width="37" height="13" font="3"><b>object</b></text>
+<text top="692" left="87" width="40" height="13" font="3"><b>caches</b></text>
+<text top="692" left="129" width="390" height="14" font="2">for kernel objects that are likely to be requested frequently (such as</text>
+<text top="707" left="87" width="432" height="14" font="2">locks, file-system inodes, etc.); the object caches thus are each segregated</text>
+<text top="721" left="87" width="432" height="14" font="2">free lists of a given size and serve memory allocation and free requests</text>
+<text top="736" left="87" width="432" height="14" font="2">quickly. When a given cache is running low on free space, it requests</text>
+<text top="751" left="87" width="31" height="14" font="2">some</text>
+<text top="751" left="123" width="31" height="13" font="3"><b>slabs</b></text>
+<text top="751" left="160" width="359" height="14" font="2">of memory from a more general memory allocator (the to-</text>
+<text top="766" left="87" width="432" height="14" font="2">tal amount requested being a multiple of the page size and the object in</text>
+<text top="781" left="87" width="432" height="14" font="2">question). Conversely, when the reference counts of the objects within</text>
+<text top="796" left="87" width="432" height="14" font="2">a given slab all go to zero, the general allocator can reclaim them from</text>
+<text top="811" left="87" width="432" height="14" font="2">the specialized allocator, which is often done when the VM system needs</text>
+<text top="826" left="87" width="86" height="14" font="2">more memory.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="13" family="XMVMIF+CMR9" color="#000000"/>
+	<fontspec id="20" size="9" family="JHROTV+CMMI6" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="392" width="7" height="14" font="2">F</text>
+<text top="98" left="400" width="22" height="11" font="7">REE</text>
+<text top="96" left="422" width="12" height="14" font="2">-S</text>
+<text top="98" left="435" width="30" height="11" font="7">PACE</text>
+<text top="96" left="469" width="13" height="14" font="2">M</text>
+<text top="98" left="482" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="148" left="202" width="10" height="14" font="2">A</text>
+<text top="150" left="213" width="26" height="11" font="7">SIDE</text>
+<text top="148" left="240" width="18" height="14" font="2">: G</text>
+<text top="150" left="259" width="30" height="11" font="7">REAT</text>
+<text top="148" left="293" width="8" height="14" font="2">E</text>
+<text top="150" left="302" width="60" height="11" font="7">NGINEERS</text>
+<text top="148" left="366" width="10" height="14" font="2">A</text>
+<text top="150" left="378" width="14" height="11" font="7">RE</text>
+<text top="148" left="396" width="9" height="14" font="2">R</text>
+<text top="150" left="406" width="37" height="11" font="7">EALLY</text>
+<text top="148" left="447" width="10" height="14" font="2">G</text>
+<text top="150" left="458" width="30" height="11" font="7">REAT</text>
+<text top="163" left="129" width="432" height="14" font="2">Engineers like Jeff Bonwick (who not only wrote the slab allocator men-</text>
+<text top="178" left="129" width="432" height="14" font="2">tioned herein but also was the lead of an amazing file system, ZFS) are</text>
+<text top="193" left="129" width="432" height="14" font="2">the heart of Silicon Valley. Behind almost any great product or technol-</text>
+<text top="208" left="129" width="432" height="14" font="2">ogy is a human (or small group of humans) who are way above average</text>
+<text top="223" left="129" width="432" height="14" font="2">in their talents, abilities, and dedication. As Mark Zuckerberg (of Face-</text>
+<text top="238" left="129" width="432" height="14" font="2">book) says: “Someone who is exceptional in their role is not just a little</text>
+<text top="253" left="129" width="432" height="14" font="2">better than someone who is pretty good. They are 100 times better.” This</text>
+<text top="268" left="129" width="432" height="14" font="2">is why, still today, one or two people can start a company that changes</text>
+<text top="283" left="129" width="432" height="14" font="2">the face of the world forever (think Google, Apple, or Facebook). Work</text>
+<text top="298" left="129" width="432" height="14" font="2">hard and you might become such a “100x” person as well! Failing that,</text>
+<text top="313" left="129" width="117" height="14" font="2">find a way to work</text>
+<text top="312" left="250" width="25" height="14" font="10"><i>with</i></text>
+<text top="313" left="279" width="281" height="14" font="2">such a person; you’ll learn more in a day than</text>
+<text top="327" left="129" width="134" height="14" font="2">most learn in a month.</text>
+<text top="380" left="147" width="414" height="14" font="2">The slab allocator also goes beyond most segregated list approaches</text>
+<text top="395" left="129" width="432" height="14" font="2">by keeping free objects on the lists in a pre-initialized state. Bonwick</text>
+<text top="410" left="129" width="432" height="14" font="2">shows that initialization and destruction of data structures is costly [B94];</text>
+<text top="425" left="129" width="432" height="14" font="2">by keeping freed objects in a particular list in their initialized state, the</text>
+<text top="440" left="129" width="432" height="14" font="2">slab allocator thus avoids frequent initialization and destruction cycles</text>
+<text top="455" left="129" width="288" height="14" font="2">per object and thus lowers overheads noticeably.</text>
+<text top="496" left="129" width="121" height="15" font="14"><b>Buddy Allocation</b></text>
+<text top="522" left="129" width="432" height="14" font="2">Because coalescing is critical for an allocator, some approaches have been</text>
+<text top="537" left="129" width="432" height="14" font="2">designed around making coalescing simple. One good example is found</text>
+<text top="552" left="129" width="34" height="14" font="2">in the</text>
+<text top="552" left="166" width="140" height="13" font="3"><b>binary buddy allocator</b></text>
+<text top="552" left="310" width="36" height="14" font="2">[K65].</text>
+<text top="568" left="147" width="414" height="14" font="2">In such a system, free memory is first conceptually thought of as one</text>
+<text top="585" left="129" width="97" height="14" font="2">big space of size</text>
+<text top="586" left="230" width="7" height="14" font="19">2</text>
+<text top="583" left="237" width="9" height="9" font="20">N</text>
+<text top="585" left="247" width="314" height="14" font="2">. When a request for memory is made, the search for</text>
+<text top="600" left="129" width="432" height="14" font="2">free space recursively divides free space by two until a block that is big</text>
+<text top="615" left="129" width="432" height="14" font="2">enough to accommodate the request is found (and a further split into two</text>
+<text top="630" left="129" width="432" height="14" font="2">would result in a space that is too small). At this point, the requested</text>
+<text top="645" left="129" width="432" height="14" font="2">block is returned to the user. Here is an example of a 64KB free space</text>
+<text top="659" left="129" width="398" height="14" font="2">getting divided in the search for a 7KB block (Figure 17.8, page 15).</text>
+<text top="676" left="147" width="414" height="14" font="2">In the example, the leftmost 8KB block is allocated (as indicated by the</text>
+<text top="690" left="129" width="432" height="14" font="2">darker shade of gray) and returned to the user; note that this scheme can</text>
+<text top="705" left="129" width="67" height="14" font="2">suffer from</text>
+<text top="705" left="200" width="140" height="13" font="3"><b>internal fragmentation</b></text>
+<text top="705" left="340" width="221" height="14" font="2">, as you are only allowed to give out</text>
+<text top="720" left="129" width="162" height="14" font="2">power-of-two-sized blocks.</text>
+<text top="736" left="147" width="414" height="14" font="2">The beauty of buddy allocation is found in what happens when that</text>
+<text top="751" left="129" width="432" height="14" font="2">block is freed. When returning the 8KB block to the free list, the allocator</text>
+<text top="766" left="129" width="432" height="14" font="2">checks whether the “buddy” 8KB is free; if so, it coalesces the two blocks</text>
+<text top="781" left="129" width="432" height="14" font="2">into a 16KB block. The allocator then checks if the buddy of the 16KB</text>
+<text top="796" left="129" width="432" height="14" font="2">block is still free; if so, it coalesces those two blocks. This recursive coa-</text>
+<text top="811" left="129" width="432" height="14" font="2">lescing process continues up the tree, either restoring the entire free space</text>
+<text top="826" left="129" width="285" height="14" font="2">or stopping when a buddy is found to be in use.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="13">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="13">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="22" height="11" font="7">REE</text>
+<text top="96" left="118" width="12" height="14" font="2">-S</text>
+<text top="98" left="131" width="30" height="11" font="7">PACE</text>
+<text top="96" left="165" width="13" height="14" font="2">M</text>
+<text top="98" left="178" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="157" left="285" width="35" height="12" font="15">64 KB</text>
+<text top="211" left="210" width="35" height="12" font="15">32 KB</text>
+<text top="211" left="361" width="35" height="12" font="15">32 KB</text>
+<text top="265" left="172" width="35" height="12" font="15">16 KB</text>
+<text top="265" left="248" width="35" height="12" font="15">16 KB</text>
+<text top="319" left="157" width="66" height="12" font="15">8 KB 8 KB</text>
+<text top="359" left="169" width="69" height="14" font="2">Figure 17.8:</text>
+<text top="359" left="242" width="194" height="13" font="3"><b>Example Buddy-managed Heap</b></text>
+<text top="376" left="105" width="414" height="14" font="2">The reason buddy allocation works so well is that it is simple to de-</text>
+<text top="391" left="87" width="432" height="14" font="2">termine the buddy of a particular block. How, you ask? Think about the</text>
+<text top="406" left="87" width="432" height="14" font="2">addresses of the blocks in the free space above. If you think carefully</text>
+<text top="421" left="87" width="432" height="14" font="2">enough, you’ll see that the address of each buddy pair only differs by</text>
+<text top="436" left="87" width="432" height="14" font="2">a single bit; which bit is determined by the level in the buddy tree. And</text>
+<text top="451" left="87" width="432" height="14" font="2">thus you have a basic idea of how binary buddy allocation schemes work.</text>
+<text top="466" left="87" width="342" height="14" font="2">For more detail, as always, see the Wilson survey [W+95].</text>
+<text top="496" left="87" width="80" height="15" font="14"><b>Other Ideas</b></text>
+<text top="516" left="87" width="432" height="14" font="2">One major problem with many of the approaches described above is their</text>
+<text top="531" left="87" width="42" height="14" font="2">lack of</text>
+<text top="531" left="135" width="43" height="13" font="3"><b>scaling</b></text>
+<text top="531" left="178" width="341" height="14" font="2">. Specifically, searching lists can be quite slow. Thus,</text>
+<text top="546" left="87" width="432" height="14" font="2">advanced allocators use more complex data structures to address these</text>
+<text top="561" left="87" width="432" height="14" font="2">costs, trading simplicity for performance. Examples include balanced bi-</text>
+<text top="576" left="87" width="335" height="14" font="2">nary trees, splay trees, or partially-ordered trees [W+95].</text>
+<text top="591" left="105" width="414" height="14" font="2">Given that modern systems often have multiple processors and run</text>
+<text top="605" left="87" width="432" height="14" font="2">multi-threaded workloads (something you’ll learn about in great detail</text>
+<text top="620" left="87" width="432" height="14" font="2">in the section of the book on Concurrency), it is not surprising that a lot</text>
+<text top="635" left="87" width="432" height="14" font="2">of effort has been spent making allocators work well on multiprocessor-</text>
+<text top="650" left="87" width="432" height="14" font="2">based systems. Two wonderful examples are found in Berger et al. [B+00]</text>
+<text top="665" left="87" width="282" height="14" font="2">and Evans [E06]; check them out for the details.</text>
+<text top="680" left="105" width="414" height="14" font="2">These are but two of the thousands of ideas people have had over time</text>
+<text top="695" left="87" width="432" height="14" font="2">about memory allocators; read on your own if you are curious. Failing</text>
+<text top="710" left="87" width="432" height="14" font="2">that, read about how the glibc allocator works [S15], to give you a sense</text>
+<text top="725" left="87" width="174" height="14" font="2">of what the real world is like.</text>
+<text top="757" left="55" width="105" height="17" font="8">17.5 Summary</text>
+<text top="781" left="105" width="414" height="14" font="2">In this chapter, we’ve discussed the most rudimentary forms of mem-</text>
+<text top="796" left="87" width="432" height="14" font="2">ory allocators. Such allocators exist everywhere, linked into every C pro-</text>
+<text top="811" left="87" width="432" height="14" font="2">gram you write, as well as in the underlying OS which is managing mem-</text>
+<text top="826" left="87" width="432" height="14" font="2">ory for its own data structures. As with many systems, there are many</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="392" width="7" height="14" font="2">F</text>
+<text top="98" left="400" width="22" height="11" font="7">REE</text>
+<text top="96" left="422" width="12" height="14" font="2">-S</text>
+<text top="98" left="435" width="30" height="11" font="7">PACE</text>
+<text top="96" left="469" width="13" height="14" font="2">M</text>
+<text top="98" left="482" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="139" left="129" width="432" height="14" font="2">trade-offs to be made in building such a system, and the more you know</text>
+<text top="154" left="129" width="432" height="14" font="2">about the exact workload presented to an allocator, the more you could do</text>
+<text top="169" left="129" width="432" height="14" font="2">to tune it to work better for that workload. Making a fast, space-efficient,</text>
+<text top="183" left="129" width="432" height="14" font="2">scalable allocator that works well for a broad range of workloads remains</text>
+<text top="198" left="129" width="312" height="14" font="2">an on-going challenge in modern computer systems.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="13">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="13">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="16" family="BYZTLH+URWPalladioL" color="#000000"/>
+	<fontspec id="22" size="10" family="PUATTO+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">F</text>
+<text top="98" left="96" width="22" height="11" font="7">REE</text>
+<text top="96" left="118" width="12" height="14" font="2">-S</text>
+<text top="98" left="131" width="30" height="11" font="7">PACE</text>
+<text top="96" left="165" width="13" height="14" font="2">M</text>
+<text top="98" left="178" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="137" left="87" width="82" height="16" font="21"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="12">[B+00] “Hoard: A Scalable Memory Allocator for Multithreaded Applications” by Emery D.</text>
+<text top="177" left="87" width="432" height="11" font="12">Berger, Kathryn S. McKinley, Robert D. Blumofe, Paul R. Wilson. ASPLOS-IX, November 2000.</text>
+<text top="189" left="87" width="432" height="11" font="22"><i>Berger and company’s excellent allocator for multiprocessor systems. Beyond just being a fun paper, also</i></text>
+<text top="201" left="87" width="70" height="11" font="22"><i>used in practice!</i></text>
+<text top="218" left="87" width="432" height="11" font="12">[B94] “The Slab Allocator: An Object-Caching Kernel Memory Allocator” by Jeff Bonwick.</text>
+<text top="229" left="87" width="58" height="11" font="12">USENIX ’94.</text>
+<text top="229" left="149" width="370" height="11" font="22"><i>A cool paper about how to build an allocator for an operating system kernel, and a great</i></text>
+<text top="241" left="87" width="267" height="11" font="22"><i>example of how to specialize for particular common object sizes.</i></text>
+<text top="258" left="87" width="432" height="11" font="12">[E06] “A Scalable Concurrent malloc(3) Implementation for FreeBSD” by Jason Evans. April,</text>
+<text top="270" left="87" width="357" height="11" font="12">2006. http://people.freebsd.org/˜jasone/jemalloc/bsdcan2006/jemalloc.pdf.</text>
+<text top="270" left="447" width="72" height="11" font="22"><i>A detailed look at</i></text>
+<text top="282" left="87" width="432" height="11" font="22"><i>how to build a real modern allocator for use in multiprocessors. The “jemalloc” allocator is in widespread</i></text>
+<text top="294" left="87" width="319" height="11" font="22"><i>use today, within FreeBSD, NetBSD, Mozilla Firefox, and within Facebook.</i></text>
+<text top="310" left="87" width="432" height="11" font="12">[K65] “A Fast Storage Allocator” by Kenneth C. Knowlton. Communications of the ACM,</text>
+<text top="322" left="87" width="124" height="11" font="12">Volume 8:10, October 1965.</text>
+<text top="322" left="214" width="305" height="11" font="22"><i>The common reference for buddy allocation. Random strange fact: Knuth</i></text>
+<text top="334" left="87" width="432" height="11" font="22"><i>gives credit for the idea not to Knowlton but to Harry Markowitz, a Nobel-prize winning economist.</i></text>
+<text top="346" left="87" width="432" height="11" font="22"><i>Another strange fact: Knuth communicates all of his emails via a secretary; he doesn’t send email</i></text>
+<text top="358" left="87" width="432" height="11" font="22"><i>himself, rather he tells his secretary what email to send and then the secretary does the work of emailing.</i></text>
+<text top="372" left="87" width="419" height="11" font="22"><i>Last Knuth fact: he created TeX, the tool used to typeset this book. It is an amazing piece of software</i></text>
+<text top="369" left="506" width="4" height="8" font="11">4</text>
+<text top="372" left="510" width="3" height="11" font="22"><i>.</i></text>
+<text top="388" left="87" width="432" height="11" font="12">[S15] “Understanding glibc malloc” by Sploitfun. February, 2015. sploitfun.wordpress.com/</text>
+<text top="400" left="87" width="198" height="11" font="12">2015/02/10/understanding-glibc-malloc/.</text>
+<text top="400" left="291" width="228" height="11" font="22"><i>A deep dive into how glibc malloc works. Amazingly</i></text>
+<text top="412" left="87" width="121" height="11" font="22"><i>detailed and a very cool read.</i></text>
+<text top="428" left="87" width="432" height="11" font="12">[W+95] “Dynamic Storage Allocation: A Survey and Critical Review” by Paul R. Wilson, Mark</text>
+<text top="440" left="87" width="432" height="11" font="12">S. Johnstone, Michael Neely, David Boles. International Workshop on Memory Management,</text>
+<text top="452" left="87" width="146" height="11" font="12">Scotland, UK, September 1995.</text>
+<text top="452" left="241" width="278" height="11" font="22"><i>An excellent and far-reaching survey of many facets of memory</i></text>
+<text top="464" left="87" width="258" height="11" font="22"><i>allocation. Far too much detail to go into in this tiny chapter!</i></text>
+<text top="826" left="107" width="4" height="8" font="11">4</text>
+<text top="828" left="112" width="407" height="11" font="12">Actually we use LaTeX, which is based on Lamport’s additions to TeX, but close enough.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="7">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="7">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="7">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="7">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="7">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">18</text>
+<text top="96" left="392" width="7" height="14" font="2">F</text>
+<text top="98" left="400" width="22" height="11" font="7">REE</text>
+<text top="96" left="422" width="12" height="14" font="2">-S</text>
+<text top="98" left="435" width="30" height="11" font="7">PACE</text>
+<text top="96" left="469" width="13" height="14" font="2">M</text>
+<text top="98" left="482" width="78" height="11" font="7">ANAGEMENT</text>
+<text top="137" left="129" width="183" height="16" font="21"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="82" height="14" font="2">The program,</text>
+<text top="167" left="233" width="73" height="11" font="4">malloc.py</text>
+<text top="166" left="306" width="255" height="14" font="2">, lets you explore the behavior of a simple</text>
+<text top="181" left="129" width="432" height="14" font="2">free-space allocator as described in the chapter. See the README for</text>
+<text top="196" left="129" width="169" height="14" font="2">details of its basic operation.</text>
+<text top="232" left="129" width="70" height="15" font="14"><b>Questions</b></text>
+<text top="256" left="146" width="162" height="14" font="2">1. First run with the flags</text>
+<text top="257" left="314" width="186" height="11" font="4">-n 10 -H 0 -p BEST -s 0</text>
+<text top="256" left="506" width="55" height="14" font="2">to gener-</text>
+<text top="271" left="163" width="397" height="14" font="2">ate a few random allocations and frees. Can you predict what al-</text>
+<text top="286" left="163" width="397" height="14" font="2">loc()/free() will return? Can you guess the state of the free list after</text>
+<text top="301" left="163" width="373" height="14" font="2">each request? What do you notice about the free list over time?</text>
+<text top="316" left="146" width="414" height="14" font="2">2. How are the results different when using a WORST fit policy to</text>
+<text top="331" left="163" width="115" height="14" font="2">search the free list (</text>
+<text top="332" left="278" width="65" height="11" font="4">-p WORST</text>
+<text top="331" left="343" width="103" height="14" font="2">)? What changes?</text>
+<text top="346" left="146" width="234" height="14" font="2">3. What about when using FIRST fit (</text>
+<text top="347" left="381" width="65" height="11" font="4">-p FIRST</text>
+<text top="346" left="445" width="115" height="14" font="2">)? What speeds up</text>
+<text top="361" left="163" width="132" height="14" font="2">when you use first fit?</text>
+<text top="376" left="146" width="414" height="14" font="2">4. For the above questions, how the list is kept ordered can affect the</text>
+<text top="391" left="163" width="397" height="14" font="2">time it takes to find a free location for some of the policies. Use</text>
+<text top="406" left="163" width="199" height="14" font="2">the different free list orderings (</text>
+<text top="407" left="363" width="89" height="11" font="4">-l ADDRSORT</text>
+<text top="406" left="452" width="3" height="14" font="2">,</text>
+<text top="407" left="461" width="97" height="11" font="4">-l SIZESORT+</text>
+<text top="406" left="557" width="3" height="14" font="2">,</text>
+<text top="422" left="163" width="97" height="11" font="4">-l SIZESORT-</text>
+<text top="421" left="260" width="300" height="14" font="2">) to see how the policies and the list orderings in-</text>
+<text top="436" left="163" width="37" height="14" font="2">teract.</text>
+<text top="451" left="146" width="414" height="14" font="2">5. Coalescing of a free list can be quite important. Increase the number</text>
+<text top="466" left="163" width="177" height="14" font="2">of random allocations (say to</text>
+<text top="467" left="345" width="57" height="11" font="4">-n 1000</text>
+<text top="466" left="402" width="159" height="14" font="2">). What happens to larger</text>
+<text top="481" left="163" width="397" height="14" font="2">allocation requests over time? Run with and without coalescing</text>
+<text top="496" left="163" width="153" height="14" font="2">(i.e., without and with the</text>
+<text top="496" left="319" width="16" height="11" font="4">-C</text>
+<text top="496" left="339" width="222" height="14" font="2">flag). What differences in outcome do</text>
+<text top="511" left="163" width="397" height="14" font="2">you see? How big is the free list over time in each case? Does the</text>
+<text top="525" left="163" width="227" height="14" font="2">ordering of the list matter in this case?</text>
+<text top="540" left="146" width="394" height="14" font="2">6. What happens when you change the percent allocated fraction</text>
+<text top="541" left="545" width="16" height="11" font="4">-P</text>
+<text top="555" left="163" width="397" height="14" font="2">to higher than 50? What happens to allocations as it nears 100?</text>
+<text top="570" left="163" width="207" height="14" font="2">What about as the percent nears 0?</text>
+<text top="585" left="146" width="414" height="14" font="2">7. What kind of specific requests can you make to generate a highly-</text>
+<text top="600" left="163" width="193" height="14" font="2">fragmented free space? Use the</text>
+<text top="601" left="361" width="16" height="11" font="4">-A</text>
+<text top="600" left="382" width="179" height="14" font="2">flag to create fragmented free</text>
+<text top="615" left="163" width="397" height="14" font="2">lists, and see how different policies and options change the organi-</text>
+<text top="630" left="163" width="125" height="14" font="2">zation of the free list.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="7">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="7">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="13">[V</text>
+<text top="914" left="143" width="39" height="10" font="12">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="13">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="7">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="7">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="7">ORG</text>
+</page>
+</pdf2xml>

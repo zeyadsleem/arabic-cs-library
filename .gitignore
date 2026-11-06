@@ -18,6 +18,10 @@ content-src/mcs/
 # pages under content/algorithms-unplugged/ are the tracked artefact.
 content-src/algorithms-unplugged/
 
+# The OSTEP source PDFs are kept out of the repository; the imported pages under
+# content/ostep/ and the per-chapter XML under content-src/ostep/xml are the tracked artefacts.
+content-src/ostep/pdf/
+
 # The Learn Programming with OCaml EPUB is cached; its unpacked tree is derived.
 content-src/learn-ocaml/OEBPS/
 

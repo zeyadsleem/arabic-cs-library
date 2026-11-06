@@ -1,0 +1,1205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="KXVDGQ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="KXVDGQ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="BCBGWD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="OEWPMC+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="VGGAPX+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="5" size="11" family="BCBGWD+URWPalladioL-Roma" color="#000000"/>
+<text top="196" left="523" width="34" height="30" font="0">10</text>
+<text top="266" left="151" width="368" height="21" font="1">Multiprocessor Scheduling (Advanced)</text>
+<text top="337" left="105" width="242" height="14" font="2">This chapter will introduce the basics of</text>
+<text top="337" left="351" width="164" height="13" font="3"><b>multiprocessor scheduling</b></text>
+<text top="337" left="516" width="3" height="14" font="2">.</text>
+<text top="352" left="87" width="375" height="14" font="2">As this topic is relatively advanced, it may be best to cover it</text>
+<text top="352" left="467" width="25" height="14" font="4">after</text>
+<text top="352" left="496" width="23" height="14" font="2">you</text>
+<text top="367" left="87" width="432" height="14" font="2">have studied the topic of concurrency in some detail (i.e., the second ma-</text>
+<text top="382" left="87" width="171" height="14" font="2">jor “easy piece” of the book).</text>
+<text top="397" left="105" width="414" height="14" font="2">After years of existence only in the high-end of the computing spec-</text>
+<text top="412" left="87" width="33" height="14" font="2">trum,</text>
+<text top="412" left="125" width="92" height="13" font="3"><b>multiprocessor</b></text>
+<text top="412" left="221" width="298" height="14" font="2">systems are increasingly commonplace, and have</text>
+<text top="427" left="87" width="432" height="14" font="2">found their way into desktop machines, laptops, and even mobile de-</text>
+<text top="442" left="87" width="126" height="14" font="2">vices. The rise of the</text>
+<text top="442" left="218" width="59" height="13" font="3"><b>multicore</b></text>
+<text top="442" left="281" width="238" height="14" font="2">processor, in which multiple CPU cores</text>
+<text top="457" left="87" width="432" height="14" font="2">are packed onto a single chip, is the source of this proliferation; these</text>
+<text top="472" left="87" width="432" height="14" font="2">chips have become popular as computer architects have had a difﬁcult</text>
+<text top="487" left="87" width="432" height="14" font="2">time making a single CPU much faster without using (way) too much</text>
+<text top="502" left="87" width="432" height="14" font="2">power. And thus we all now have a few CPUs available to us, which is a</text>
+<text top="517" left="87" width="107" height="14" font="2">good thing, right?</text>
+<text top="532" left="105" width="414" height="14" font="2">Of course, there are many difﬁculties that arise with the arrival of more</text>
+<text top="547" left="87" width="432" height="14" font="2">than a single CPU. A primary one is that a typical application (i.e., some C</text>
+<text top="562" left="87" width="432" height="14" font="2">program you wrote) only uses a single CPU; adding more CPUs does not</text>
+<text top="577" left="87" width="432" height="14" font="2">make that single application run faster. To remedy this problem, you’ll</text>
+<text top="592" left="87" width="243" height="14" font="2">have to rewrite your application to run in</text>
+<text top="592" left="333" width="47" height="13" font="3"><b>parallel</b></text>
+<text top="592" left="380" width="90" height="14" font="2">, perhaps using</text>
+<text top="592" left="473" width="46" height="13" font="3"><b>threads</b></text>
+<text top="607" left="87" width="432" height="14" font="2">(as discussed in great detail in the second piece of this book). Multi-</text>
+<text top="622" left="87" width="432" height="14" font="2">threaded applications can spread work across multiple CPUs and thus</text>
+<text top="637" left="87" width="259" height="14" font="2">run faster when given more CPU resources.</text>
+<text top="677" left="211" width="10" height="14" font="2">A</text>
+<text top="679" left="222" width="26" height="11" font="5">SIDE</text>
+<text top="677" left="249" width="19" height="14" font="2">: A</text>
+<text top="679" left="268" width="59" height="11" font="5">DVANCED</text>
+<text top="677" left="331" width="10" height="14" font="2">C</text>
+<text top="679" left="341" width="54" height="11" font="5">HAPTERS</text>
+<text top="692" left="87" width="432" height="14" font="2">Advanced chapters require material from a broad swath of the book to</text>
+<text top="707" left="87" width="432" height="14" font="2">truly understand, while logically ﬁtting into a section that is earlier than</text>
+<text top="722" left="87" width="432" height="14" font="2">said set of prerequisite materials. For example, this chapter on multipro-</text>
+<text top="737" left="87" width="432" height="14" font="2">cessor scheduling makes much more sense if you’ve ﬁrst read the middle</text>
+<text top="752" left="87" width="432" height="14" font="2">piece on concurrency; however, it logically ﬁts into the part of the book</text>
+<text top="767" left="87" width="432" height="14" font="2">on virtualization (generally) and CPU scheduling (speciﬁcally). Thus, it</text>
+<text top="782" left="87" width="432" height="14" font="2">is recommended such chapters be covered out of order; in this case, after</text>
+<text top="797" left="87" width="171" height="14" font="2">the second piece of the book.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="17" family="KXVDGQ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="7" size="16" family="BCBGWD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="12" family="BCBGWD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="BCBGWD+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="283" width="13" height="14" font="2">M</text>
+<text top="98" left="296" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="396" width="7" height="14" font="2">S</text>
+<text top="98" left="404" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="480" width="16" height="14" font="2">(A</text>
+<text top="98" left="497" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="290" left="314" width="62" height="17" font="6">Memory</text>
+<text top="182" left="327" width="36" height="17" font="6">CPU</text>
+<text top="215" left="320" width="50" height="17" font="6">Cache</text>
+<text top="370" left="236" width="69" height="14" font="2">Figure 10.1:</text>
+<text top="370" left="309" width="146" height="13" font="3"><b>Single CPU With Cache</b></text>
+<text top="411" left="147" width="414" height="14" font="2">Beyond applications, a new problem that arises for the operating sys-</text>
+<text top="426" left="129" width="200" height="14" font="2">tem is (not surprisingly!) that of</text>
+<text top="426" left="333" width="165" height="13" font="3"><b>multiprocessor scheduling</b></text>
+<text top="426" left="498" width="63" height="14" font="2">. Thus far</text>
+<text top="441" left="129" width="432" height="14" font="2">we’ve discussed a number of principles behind single-processor schedul-</text>
+<text top="456" left="129" width="432" height="14" font="2">ing; how can we extend those ideas to work on multiple CPUs? What</text>
+<text top="471" left="129" width="351" height="14" font="2">new problems must we overcome? And thus, our problem:</text>
+<text top="514" left="182" width="10" height="14" font="2">C</text>
+<text top="516" left="192" width="24" height="11" font="5">RUX</text>
+<text top="514" left="217" width="19" height="14" font="2">: H</text>
+<text top="516" left="237" width="20" height="11" font="5">OW</text>
+<text top="514" left="261" width="8" height="14" font="2">T</text>
+<text top="516" left="270" width="8" height="11" font="5">O</text>
+<text top="514" left="282" width="7" height="14" font="2">S</text>
+<text top="516" left="290" width="57" height="11" font="5">CHEDULE</text>
+<text top="514" left="351" width="4" height="14" font="2">J</text>
+<text top="516" left="356" width="22" height="11" font="5">OBS</text>
+<text top="514" left="382" width="11" height="14" font="2">O</text>
+<text top="516" left="393" width="9" height="11" font="5">N</text>
+<text top="514" left="406" width="13" height="14" font="2">M</text>
+<text top="516" left="420" width="48" height="11" font="5">ULTIPLE</text>
+<text top="514" left="472" width="29" height="14" font="2">CPU</text>
+<text top="516" left="502" width="6" height="11" font="5">S</text>
+<text top="529" left="147" width="414" height="14" font="2">How should the OS schedule jobs on multiple CPUs? What new prob-</text>
+<text top="544" left="129" width="432" height="14" font="2">lems arise? Do the same old techniques work, or are new ideas required?</text>
+<text top="600" left="97" width="335" height="17" font="7">10.1 Background: Multiprocessor Architecture</text>
+<text top="631" left="147" width="414" height="14" font="2">To understand the new issues surrounding multiprocessor schedul-</text>
+<text top="645" left="129" width="432" height="14" font="2">ing, we have to understand a new and fundamental difference between</text>
+<text top="660" left="129" width="432" height="14" font="2">single-CPU hardware and multi-CPU hardware. This difference centers</text>
+<text top="675" left="129" width="170" height="14" font="2">around the use of hardware</text>
+<text top="675" left="303" width="40" height="13" font="3"><b>caches</b></text>
+<text top="675" left="348" width="213" height="14" font="2">(e.g., Figure 10.1), and exactly how</text>
+<text top="690" left="129" width="432" height="14" font="2">data is shared across multiple processors. We now discuss this issue fur-</text>
+<text top="705" left="129" width="432" height="14" font="2">ther, at a high level. Details are available elsewhere [CSG99], in particular</text>
+<text top="720" left="129" width="406" height="14" font="2">in an upper-level or perhaps graduate computer architecture course.</text>
+<text top="736" left="147" width="350" height="14" font="2">In a system with a single CPU, there are a hierarchy of</text>
+<text top="736" left="503" width="58" height="13" font="3"><b>hardware</b></text>
+<text top="751" left="129" width="40" height="13" font="3"><b>caches</b></text>
+<text top="751" left="174" width="387" height="14" font="2">that in general help the processor run programs faster. Caches</text>
+<text top="766" left="129" width="330" height="14" font="2">are small, fast memories that (in general) hold copies of</text>
+<text top="766" left="463" width="42" height="14" font="4">popular</text>
+<text top="766" left="508" width="53" height="14" font="2">data that</text>
+<text top="781" left="129" width="432" height="14" font="2">is found in the main memory of the system. Main memory, in contrast,</text>
+<text top="796" left="129" width="33" height="14" font="2">holds</text>
+<text top="796" left="165" width="13" height="14" font="4">all</text>
+<text top="796" left="182" width="378" height="14" font="2">of the data, but access to this larger memory is slower. By keep-</text>
+<text top="811" left="129" width="432" height="14" font="2">ing frequently accessed data in a cache, the system can make the large,</text>
+<text top="826" left="129" width="222" height="14" font="2">slow memory appear to be a fast one.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="13" family="KXVDGQ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="11" size="13" family="NLGIFS+CMMI9" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="201" width="7" height="14" font="2">S</text>
+<text top="98" left="208" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="285" width="16" height="14" font="2">(A</text>
+<text top="98" left="301" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="361" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="290" left="272" width="62" height="17" font="6">Memory</text>
+<text top="182" left="231" width="36" height="17" font="6">CPU</text>
+<text top="182" left="339" width="36" height="17" font="6">CPU</text>
+<text top="215" left="224" width="50" height="17" font="6">Cache</text>
+<text top="215" left="332" width="50" height="17" font="6">Cache</text>
+<text top="243" left="362" width="22" height="12" font="10">Bus</text>
+<text top="370" left="141" width="69" height="14" font="2">Figure 10.2:</text>
+<text top="370" left="214" width="252" height="13" font="3"><b>Two CPUs With Caches Sharing Memory</b></text>
+<text top="414" left="105" width="414" height="14" font="2">As an example, consider a program that issues an explicit load instruc-</text>
+<text top="429" left="87" width="432" height="14" font="2">tion to fetch a value from memory, and a simple system with only a single</text>
+<text top="444" left="87" width="432" height="14" font="2">CPU; the CPU has a small cache (say 64 KB) and a large main memory.</text>
+<text top="459" left="87" width="432" height="14" font="2">The ﬁrst time a program issues this load, the data resides in main mem-</text>
+<text top="474" left="87" width="432" height="14" font="2">ory, and thus takes a long time to fetch (perhaps in the tens of nanosec-</text>
+<text top="489" left="87" width="432" height="14" font="2">onds, or even hundreds). The processor, anticipating that the data may be</text>
+<text top="504" left="87" width="432" height="14" font="2">reused, puts a copy of the loaded data into the CPU cache. If the program</text>
+<text top="519" left="87" width="432" height="14" font="2">later fetches this same data item again, the CPU ﬁrst checks for it in the</text>
+<text top="534" left="87" width="432" height="14" font="2">cache; if it ﬁnds it there, the data is fetched much more quickly (say, just</text>
+<text top="549" left="87" width="322" height="14" font="2">a few nanoseconds), and thus the program runs faster.</text>
+<text top="566" left="105" width="242" height="14" font="2">Caches are thus based on the notion of</text>
+<text top="566" left="352" width="46" height="13" font="3"><b>locality</b></text>
+<text top="566" left="397" width="122" height="14" font="2">, of which there are</text>
+<text top="581" left="87" width="63" height="14" font="2">two kinds:</text>
+<text top="581" left="156" width="105" height="13" font="3"><b>temporal locality</b></text>
+<text top="581" left="264" width="23" height="14" font="2">and</text>
+<text top="581" left="291" width="91" height="13" font="3"><b>spatial locality</b></text>
+<text top="581" left="381" width="137" height="14" font="2">. The idea behind tem-</text>
+<text top="596" left="87" width="432" height="14" font="2">poral locality is that when a piece of data is accessed, it is likely to be</text>
+<text top="611" left="87" width="432" height="14" font="2">accessed again in the near future; imagine variables or even instructions</text>
+<text top="626" left="87" width="432" height="14" font="2">themselves being accessed over and over again in a loop. The idea be-</text>
+<text top="641" left="87" width="432" height="14" font="2">hind spatial locality is that if a program accesses a data item at address</text>
+<text top="656" left="87" width="8" height="10" font="11">x</text>
+<text top="656" left="95" width="216" height="14" font="2">, it is likely to access data items near</text>
+<text top="656" left="314" width="8" height="10" font="11">x</text>
+<text top="656" left="325" width="194" height="14" font="2">as well; here, think of a program</text>
+<text top="671" left="87" width="432" height="14" font="2">streaming through an array, or instructions being executed one after the</text>
+<text top="686" left="87" width="432" height="14" font="2">other. Because locality of these types exist in many programs, hardware</text>
+<text top="701" left="87" width="432" height="14" font="2">systems can make good guesses about which data to put in a cache and</text>
+<text top="716" left="87" width="93" height="14" font="2">thus work well.</text>
+<text top="734" left="105" width="414" height="14" font="2">Now for the tricky part: what happens when you have multiple pro-</text>
+<text top="749" left="87" width="432" height="14" font="2">cessors in a single system, with a single shared main memory, as we see</text>
+<text top="763" left="87" width="86" height="14" font="2">in Figure 10.2?</text>
+<text top="781" left="105" width="414" height="14" font="2">As it turns out, caching with multiple CPUs is much more compli-</text>
+<text top="796" left="87" width="432" height="14" font="2">cated. Imagine, for example, that a program running on CPU 1 reads</text>
+<text top="811" left="87" width="142" height="14" font="2">a data item (with value</text>
+<text top="811" left="234" width="11" height="10" font="11">D</text>
+<text top="811" left="246" width="71" height="14" font="2">) at address</text>
+<text top="811" left="321" width="10" height="10" font="11">A</text>
+<text top="811" left="332" width="187" height="14" font="2">; because the data is not in the</text>
+<text top="826" left="87" width="432" height="14" font="2">cache on CPU 1, the system fetches it from main memory, and gets the</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="9" family="SBCRBP+CMSY6" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="283" width="13" height="14" font="2">M</text>
+<text top="98" left="296" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="396" width="7" height="14" font="2">S</text>
+<text top="98" left="404" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="480" width="16" height="14" font="2">(A</text>
+<text top="98" left="497" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="129" width="33" height="14" font="2">value</text>
+<text top="139" left="166" width="11" height="10" font="11">D</text>
+<text top="139" left="177" width="297" height="14" font="2">. The program then modiﬁes the value at address</text>
+<text top="139" left="478" width="10" height="10" font="11">A</text>
+<text top="139" left="488" width="72" height="14" font="2">, just updat-</text>
+<text top="154" left="129" width="191" height="14" font="2">ing its cache with the new value</text>
+<text top="154" left="323" width="11" height="10" font="11">D</text>
+<text top="153" left="335" width="3" height="8" font="12">′</text>
+<text top="154" left="339" width="222" height="14" font="2">; writing the data through all the way</text>
+<text top="169" left="129" width="432" height="14" font="2">to main memory is slow, so the system will (usually) do that later. Then</text>
+<text top="183" left="129" width="432" height="14" font="2">assume the OS decides to stop running the program and move it to CPU</text>
+<text top="198" left="129" width="311" height="14" font="2">2. The program then re-reads the value at address</text>
+<text top="199" left="444" width="10" height="10" font="11">A</text>
+<text top="198" left="455" width="106" height="14" font="2">; there is no such</text>
+<text top="213" left="129" width="432" height="14" font="2">data in CPU 2’s cache, and thus the system fetches the value from main</text>
+<text top="228" left="129" width="187" height="14" font="2">memory, and gets the old value</text>
+<text top="228" left="319" width="11" height="10" font="11">D</text>
+<text top="228" left="334" width="160" height="14" font="2">instead of the correct value</text>
+<text top="228" left="498" width="11" height="10" font="11">D</text>
+<text top="227" left="510" width="3" height="8" font="12">′</text>
+<text top="228" left="514" width="43" height="14" font="2">. Oops!</text>
+<text top="245" left="147" width="278" height="14" font="2">This general problem is called the problem of</text>
+<text top="245" left="430" width="100" height="13" font="3"><b>cache coherence</b></text>
+<text top="245" left="530" width="31" height="14" font="2">, and</text>
+<text top="260" left="129" width="432" height="14" font="2">there is a vast research literature that describes many different subtleties</text>
+<text top="274" left="129" width="432" height="14" font="2">involved with solving the problem [SHW11]. Here, we will skip all of the</text>
+<text top="289" left="129" width="432" height="14" font="2">nuance and make some major points; take a computer architecture class</text>
+<text top="304" left="129" width="141" height="14" font="2">(or three) to learn more.</text>
+<text top="321" left="147" width="414" height="14" font="2">The basic solution is provided by the hardware: by monitoring mem-</text>
+<text top="336" left="129" width="432" height="14" font="2">ory accesses, hardware can ensure that basically the “right thing” hap-</text>
+<text top="351" left="129" width="432" height="14" font="2">pens and that the view of a single shared memory is preserved. One way</text>
+<text top="365" left="129" width="432" height="14" font="2">to do this on a bus-based system (as described above) is to use an old</text>
+<text top="380" left="129" width="123" height="14" font="2">technique known as</text>
+<text top="380" left="256" width="85" height="13" font="3"><b>bus snooping</b></text>
+<text top="380" left="346" width="215" height="14" font="2">[G83]; each cache pays attention to</text>
+<text top="395" left="129" width="432" height="14" font="2">memory updates by observing the bus that connects them to main mem-</text>
+<text top="410" left="129" width="432" height="14" font="2">ory. When a CPU then sees an update for a data item it holds in its cache,</text>
+<text top="425" left="129" width="217" height="14" font="2">it will notice the change and either</text>
+<text top="425" left="351" width="62" height="13" font="3"><b>invalidate</b></text>
+<text top="425" left="418" width="142" height="14" font="2">its copy (i.e., remove it</text>
+<text top="440" left="129" width="139" height="14" font="2">from its own cache) or</text>
+<text top="440" left="273" width="43" height="13" font="3"><b>update</b></text>
+<text top="440" left="320" width="241" height="14" font="2">it (i.e., put the new value into its cache</text>
+<text top="455" left="129" width="432" height="14" font="2">too). Write-back caches, as hinted at above, make this more complicated</text>
+<text top="470" left="129" width="432" height="14" font="2">(because the write to main memory isn’t visible until later), but you can</text>
+<text top="485" left="129" width="258" height="14" font="2">imagine how the basic scheme might work.</text>
+<text top="523" left="97" width="248" height="17" font="7">10.2 Don’t Forget Synchronization</text>
+<text top="554" left="147" width="414" height="14" font="2">Given that the caches do all of this work to provide coherence, do pro-</text>
+<text top="569" left="129" width="432" height="14" font="2">grams (or the OS itself) have to worry about anything when they access</text>
+<text top="584" left="129" width="432" height="14" font="2">shared data? The answer, unfortunately, is yes, and is documented in</text>
+<text top="599" left="129" width="432" height="14" font="2">great detail in the second piece of this book on the topic of concurrency.</text>
+<text top="614" left="129" width="432" height="14" font="2">While we won’t get into the details here, we’ll sketch/review some of the</text>
+<text top="629" left="129" width="365" height="14" font="2">basic ideas here (assuming you’re familiar with concurrency).</text>
+<text top="645" left="147" width="414" height="14" font="2">When accessing (and in particular, updating) shared data items or</text>
+<text top="660" left="129" width="437" height="14" font="2">structures across CPUs, mutual exclusion primitives (such as locks) should</text>
+<text top="675" left="129" width="432" height="14" font="2">likely be used to guarantee correctness (other approaches, such as build-</text>
+<text top="690" left="129" width="19" height="14" font="2">ing</text>
+<text top="690" left="153" width="55" height="13" font="3"><b>lock-free</b></text>
+<text top="690" left="213" width="347" height="14" font="2">data structures, are complex and only used on occasion;</text>
+<text top="705" left="129" width="432" height="14" font="2">see the chapter on deadlock in the piece on concurrency for details). For</text>
+<text top="720" left="129" width="432" height="14" font="2">example, assume we have a shared queue being accessed on multiple</text>
+<text top="735" left="129" width="432" height="14" font="2">CPUs concurrently. Without locks, adding or removing elements from</text>
+<text top="750" left="129" width="432" height="14" font="2">the queue concurrently will not work as expected, even with the under-</text>
+<text top="765" left="129" width="432" height="14" font="2">lying coherence protocols; one needs locks to atomically update the data</text>
+<text top="780" left="129" width="149" height="14" font="2">structure to its new state.</text>
+<text top="796" left="147" width="414" height="14" font="2">To make this more concrete, imagine this code sequence, which is used</text>
+<text top="811" left="129" width="432" height="14" font="2">to remove an element from a shared linked list, as we see in Figure 10.3.</text>
+<text top="826" left="129" width="432" height="14" font="2">Imagine if threads on two CPUs enter this routine at the same time. If</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="7" family="BCBGWD+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="14" size="13" family="OBPZGD+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="201" width="7" height="14" font="2">S</text>
+<text top="98" left="208" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="285" width="16" height="14" font="2">(A</text>
+<text top="98" left="301" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="361" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="138" left="65" width="4" height="8" font="13">1</text>
+<text top="135" left="87" width="202" height="11" font="14">typedef struct __Node_t {</text>
+<text top="153" left="65" width="4" height="8" font="13">2</text>
+<text top="149" left="119" width="24" height="11" font="14">int</text>
+<text top="149" left="257" width="48" height="11" font="14">value;</text>
+<text top="168" left="65" width="4" height="8" font="13">3</text>
+<text top="164" left="119" width="178" height="14" font="14">struct __Node_t *next;</text>
+<text top="183" left="65" width="4" height="8" font="13">4</text>
+<text top="179" left="87" width="73" height="11" font="14">} Node_t;</text>
+<text top="198" left="65" width="4" height="8" font="13">5</text>
+<text top="213" left="65" width="4" height="8" font="13">6</text>
+<text top="209" left="87" width="129" height="11" font="14">int List_Pop() {</text>
+<text top="228" left="65" width="4" height="8" font="13">7</text>
+<text top="224" left="119" width="153" height="14" font="14">Node_t *tmp = head;</text>
+<text top="224" left="345" width="161" height="11" font="14">// remember old head</text>
+<text top="243" left="65" width="4" height="8" font="13">8</text>
+<text top="239" left="119" width="73" height="11" font="14">int value</text>
+<text top="239" left="216" width="113" height="11" font="14">= head-&gt;value;</text>
+<text top="239" left="345" width="161" height="11" font="14">// ... and its value</text>
+<text top="258" left="65" width="4" height="8" font="13">9</text>
+<text top="254" left="119" width="32" height="11" font="14">head</text>
+<text top="254" left="216" width="105" height="11" font="14">= head-&gt;next;</text>
+<text top="254" left="345" width="145" height="11" font="14">// advance to next</text>
+<text top="273" left="62" width="7" height="8" font="13">10</text>
+<text top="269" left="119" width="81" height="11" font="14">free(tmp);</text>
+<text top="269" left="345" width="129" height="11" font="14">// free old head</text>
+<text top="288" left="62" width="7" height="8" font="13">11</text>
+<text top="284" left="119" width="105" height="11" font="14">return value;</text>
+<text top="284" left="345" width="169" height="11" font="14">// return value @head</text>
+<text top="302" left="62" width="7" height="8" font="13">12</text>
+<text top="299" left="87" width="8" height="11" font="14">}</text>
+<text top="312" left="192" width="69" height="14" font="2">Figure 10.3:</text>
+<text top="312" left="265" width="150" height="13" font="3"><b>Simple List Delete Code</b></text>
+<text top="352" left="87" width="395" height="14" font="2">Thread 1 executes the ﬁrst line, it will have the current value of</text>
+<text top="353" left="487" width="32" height="11" font="14">head</text>
+<text top="367" left="87" width="70" height="14" font="2">stored in its</text>
+<text top="368" left="161" width="24" height="11" font="14">tmp</text>
+<text top="367" left="189" width="330" height="14" font="2">variable; if Thread 2 then executes the ﬁrst line as well,</text>
+<text top="382" left="87" width="211" height="14" font="2">it also will have the same value of</text>
+<text top="383" left="302" width="32" height="11" font="14">head</text>
+<text top="382" left="339" width="151" height="14" font="2">stored in its own private</text>
+<text top="383" left="495" width="24" height="11" font="14">tmp</text>
+<text top="397" left="87" width="57" height="14" font="2">variable (</text>
+<text top="398" left="144" width="24" height="11" font="14">tmp</text>
+<text top="397" left="174" width="345" height="14" font="2">is allocated on the stack, and thus each thread will have</text>
+<text top="412" left="87" width="432" height="14" font="2">its own private storage for it). Thus, instead of each thread removing</text>
+<text top="427" left="87" width="432" height="14" font="2">an element from the head of the list, each thread will try to remove the</text>
+<text top="442" left="87" width="432" height="14" font="2">same head element, leading to all sorts of problems (such as an attempted</text>
+<text top="457" left="87" width="432" height="14" font="2">double free of the head element at Line 10, as well as potentially returning</text>
+<text top="472" left="87" width="161" height="14" font="2">the same data value twice).</text>
+<text top="488" left="105" width="377" height="14" font="2">The solution, of course, is to make such routines correct via</text>
+<text top="488" left="488" width="31" height="13" font="3"><b>lock-</b></text>
+<text top="503" left="87" width="20" height="13" font="3"><b>ing</b></text>
+<text top="503" left="107" width="285" height="14" font="2">. In this case, allocating a simple mutex (e.g.,</text>
+<text top="504" left="398" width="121" height="11" font="14">pthread_mutex_t</text>
+<text top="519" left="87" width="16" height="11" font="14">m;</text>
+<text top="518" left="103" width="124" height="14" font="2">) and then adding a</text>
+<text top="519" left="232" width="65" height="11" font="14">lock(&amp;m)</text>
+<text top="518" left="302" width="217" height="14" font="2">at the beginning of the routine and</text>
+<text top="533" left="87" width="15" height="14" font="2">an</text>
+<text top="534" left="105" width="81" height="11" font="14">unlock(&amp;m)</text>
+<text top="533" left="188" width="331" height="14" font="2">at the end will solve the problem, ensuring that the code</text>
+<text top="548" left="87" width="432" height="14" font="2">will execute as desired. Unfortunately, as we will see, such an approach is</text>
+<text top="563" left="87" width="432" height="14" font="2">not without problems, in particular with regards to performance. Speciﬁ-</text>
+<text top="578" left="87" width="432" height="14" font="2">cally, as the number of CPUs grows, access to a synchronized shared data</text>
+<text top="593" left="87" width="175" height="14" font="2">structure becomes quite slow.</text>
+<text top="631" left="55" width="260" height="17" font="7">10.3 One Final Issue: Cache Afﬁnity</text>
+<text top="662" left="105" width="414" height="14" font="2">One ﬁnal issue arises in building a multiprocessor cache scheduler,</text>
+<text top="677" left="87" width="58" height="14" font="2">known as</text>
+<text top="677" left="148" width="82" height="13" font="3"><b>cache afﬁnity</b></text>
+<text top="677" left="234" width="285" height="14" font="2">[TTG95]. This notion is simple: a process, when</text>
+<text top="692" left="87" width="432" height="14" font="2">run on a particular CPU, builds up a fair bit of state in the caches (and</text>
+<text top="707" left="87" width="432" height="14" font="2">TLBs) of the CPU. The next time the process runs, it is often advanta-</text>
+<text top="721" left="87" width="432" height="14" font="2">geous to run it on the same CPU, as it will run faster if some of its state</text>
+<text top="736" left="87" width="432" height="14" font="2">is already present in the caches on that CPU. If, instead, one runs a pro-</text>
+<text top="751" left="87" width="432" height="14" font="2">cess on a different CPU each time, the performance of the process will be</text>
+<text top="766" left="87" width="432" height="14" font="2">worse, as it will have to reload the state each time it runs (note it will run</text>
+<text top="781" left="87" width="432" height="14" font="2">correctly on a different CPU thanks to the cache coherence protocols of</text>
+<text top="796" left="87" width="432" height="14" font="2">the hardware). Thus, a multiprocessor scheduler should consider cache</text>
+<text top="811" left="87" width="432" height="14" font="2">afﬁnity when making its scheduling decisions, perhaps preferring to keep</text>
+<text top="826" left="87" width="260" height="14" font="2">a process on the same CPU if at all possible.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="11" family="KXVDGQ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="16" size="8" family="KXVDGQ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="17" size="14" family="KXVDGQ+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="18" size="14" family="KXVDGQ+NimbusSanL-Regu" color="#ffffff"/>
+	<fontspec id="19" size="12" family="KXVDGQ+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="283" width="13" height="14" font="2">M</text>
+<text top="98" left="296" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="396" width="7" height="14" font="2">S</text>
+<text top="98" left="404" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="480" width="16" height="14" font="2">(A</text>
+<text top="98" left="497" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="137" left="97" width="218" height="17" font="7">10.4 Single-Queue Scheduling</text>
+<text top="166" left="147" width="414" height="14" font="2">With this background in place, we now discuss how to build a sched-</text>
+<text top="181" left="129" width="432" height="14" font="2">uler for a multiprocessor system. The most basic approach is to simply</text>
+<text top="196" left="129" width="432" height="14" font="2">reuse the basic framework for single processor scheduling, by putting all</text>
+<text top="211" left="129" width="385" height="14" font="2">jobs that need to be scheduled into a single queue; we call this</text>
+<text top="211" left="519" width="42" height="13" font="3"><b>single-</b></text>
+<text top="226" left="129" width="209" height="13" font="3"><b>queue multiprocessor scheduling</b></text>
+<text top="226" left="343" width="13" height="14" font="2">or</text>
+<text top="226" left="361" width="41" height="13" font="3"><b>SQMS</b></text>
+<text top="226" left="407" width="153" height="14" font="2">for short. This approach</text>
+<text top="241" left="129" width="432" height="14" font="2">has the advantage of simplicity; it does not require much work to take an</text>
+<text top="256" left="129" width="432" height="14" font="2">existing policy that picks the best job to run next and adapt it to work on</text>
+<text top="271" left="129" width="432" height="14" font="2">more than one CPU (where it might pick the best two jobs to run, if there</text>
+<text top="286" left="129" width="167" height="14" font="2">are two CPUs, for example).</text>
+<text top="301" left="147" width="414" height="14" font="2">However, SQMS has obvious shortcomings. The ﬁrst problem is a lack</text>
+<text top="316" left="129" width="12" height="14" font="2">of</text>
+<text top="316" left="144" width="63" height="13" font="3"><b>scalability</b></text>
+<text top="316" left="207" width="354" height="14" font="2">. To ensure the scheduler works correctly on multiple CPUs,</text>
+<text top="331" left="129" width="281" height="14" font="2">the developers will have inserted some form of</text>
+<text top="331" left="414" width="46" height="13" font="3"><b>locking</b></text>
+<text top="331" left="464" width="97" height="14" font="2">into the code, as</text>
+<text top="346" left="129" width="432" height="14" font="2">described above. Locks ensure that when SQMS code accesses the single</text>
+<text top="361" left="129" width="390" height="14" font="2">queue (say, to ﬁnd the next job to run), the proper outcome arises.</text>
+<text top="376" left="147" width="414" height="14" font="2">Locks, unfortunately, can greatly reduce performance, particularly as</text>
+<text top="391" left="129" width="432" height="14" font="2">the number of CPUs in the systems grows [A90]. As contention for such</text>
+<text top="406" left="129" width="432" height="14" font="2">a single lock increases, the system spends more and more time in lock</text>
+<text top="421" left="129" width="432" height="14" font="2">overhead and less time doing the work the system should be doing (note:</text>
+<text top="436" left="129" width="432" height="14" font="2">it would be great to include a real measurement of this in here someday).</text>
+<text top="451" left="147" width="414" height="14" font="2">The second main problem with SQMS is cache afﬁnity. For example,</text>
+<text top="466" left="129" width="226" height="14" font="2">let us assume we have ﬁve jobs to run (</text>
+<text top="466" left="355" width="10" height="10" font="11">A</text>
+<text top="466" left="365" width="3" height="14" font="2">,</text>
+<text top="466" left="371" width="10" height="10" font="11">B</text>
+<text top="466" left="383" width="3" height="14" font="2">,</text>
+<text top="466" left="389" width="10" height="10" font="11">C</text>
+<text top="466" left="399" width="3" height="14" font="2">,</text>
+<text top="466" left="406" width="11" height="10" font="11">D</text>
+<text top="466" left="417" width="3" height="14" font="2">,</text>
+<text top="466" left="424" width="10" height="10" font="11">E</text>
+<text top="466" left="434" width="126" height="14" font="2">) and four processors.</text>
+<text top="481" left="129" width="251" height="14" font="2">Our scheduling queue thus looks like this:</text>
+<text top="522" left="194" width="32" height="10" font="15">Queue</text>
+<text top="521" left="254" width="8" height="12" font="10">A</text>
+<text top="521" left="299" width="8" height="12" font="10">B</text>
+<text top="521" left="344" width="9" height="12" font="10">C</text>
+<text top="521" left="389" width="9" height="12" font="10">D</text>
+<text top="521" left="435" width="8" height="12" font="10">E</text>
+<text top="523" left="473" width="21" height="8" font="16">NULL</text>
+<text top="560" left="147" width="414" height="14" font="2">Over time, assuming each job runs for a time slice and then another</text>
+<text top="575" left="129" width="341" height="14" font="2">job is chosen, here is a possible job schedule across CPUs:</text>
+<text top="708" left="194" width="42" height="14" font="17">CPU 3</text>
+<text top="676" left="194" width="42" height="14" font="17">CPU 2</text>
+<text top="645" left="194" width="42" height="14" font="17">CPU 1</text>
+<text top="613" left="194" width="42" height="14" font="17">CPU 0</text>
+<text top="708" left="260" width="10" height="14" font="18">D</text>
+<text top="708" left="289" width="10" height="14" font="17">C</text>
+<text top="708" left="318" width="10" height="14" font="18">B</text>
+<text top="708" left="347" width="10" height="14" font="17">A</text>
+<text top="708" left="376" width="10" height="14" font="17">E</text>
+<text top="676" left="260" width="10" height="14" font="17">C</text>
+<text top="676" left="290" width="10" height="14" font="18">B</text>
+<text top="676" left="318" width="10" height="14" font="17">A</text>
+<text top="676" left="347" width="10" height="14" font="17">E</text>
+<text top="676" left="376" width="10" height="14" font="18">D</text>
+<text top="645" left="261" width="10" height="14" font="18">B</text>
+<text top="645" left="290" width="10" height="14" font="17">A</text>
+<text top="645" left="318" width="10" height="14" font="17">E</text>
+<text top="645" left="347" width="10" height="14" font="18">D</text>
+<text top="645" left="376" width="10" height="14" font="17">C</text>
+<text top="613" left="261" width="10" height="14" font="17">A</text>
+<text top="613" left="290" width="10" height="14" font="17">E</text>
+<text top="613" left="318" width="10" height="14" font="18">D</text>
+<text top="613" left="347" width="10" height="14" font="17">C</text>
+<text top="613" left="376" width="10" height="14" font="18">B</text>
+<text top="709" left="417" width="69" height="11" font="19"> ... (repeat) ...</text>
+<text top="677" left="417" width="69" height="11" font="19"> ... (repeat) ...</text>
+<text top="646" left="417" width="69" height="11" font="19"> ... (repeat) ...</text>
+<text top="614" left="417" width="69" height="11" font="19"> ... (repeat) ...</text>
+<text top="751" left="147" width="414" height="14" font="2">Because each CPU simply picks the next job to run from the globally-</text>
+<text top="766" left="129" width="432" height="14" font="2">shared queue, each job ends up bouncing around from CPU to CPU, thus</text>
+<text top="781" left="129" width="432" height="14" font="2">doing exactly the opposite of what would make sense from the stand-</text>
+<text top="796" left="129" width="131" height="14" font="2">point of cache afﬁnity.</text>
+<text top="811" left="147" width="414" height="14" font="2">To handle this problem, most SQMS schedulers include some kind of</text>
+<text top="826" left="129" width="432" height="14" font="2">afﬁnity mechanism to try to make it more likely that process will continue</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="201" width="7" height="14" font="2">S</text>
+<text top="98" left="208" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="285" width="16" height="14" font="2">(A</text>
+<text top="98" left="301" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="361" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="139" left="87" width="432" height="14" font="2">to run on the same CPU if possible. Speciﬁcally, one might provide afﬁn-</text>
+<text top="154" left="87" width="432" height="14" font="2">ity for some jobs, but move others around to balance load. For example,</text>
+<text top="169" left="87" width="287" height="14" font="2">imagine the same ﬁve jobs scheduled as follows:</text>
+<text top="300" left="153" width="42" height="14" font="17">CPU 3</text>
+<text top="269" left="153" width="42" height="14" font="17">CPU 2</text>
+<text top="237" left="153" width="42" height="14" font="17">CPU 1</text>
+<text top="205" left="153" width="42" height="14" font="17">CPU 0</text>
+<text top="300" left="219" width="10" height="14" font="18">D</text>
+<text top="300" left="247" width="10" height="14" font="18">D</text>
+<text top="300" left="276" width="10" height="14" font="18">D</text>
+<text top="300" left="305" width="10" height="14" font="18">D</text>
+<text top="300" left="334" width="10" height="14" font="17">E</text>
+<text top="269" left="219" width="10" height="14" font="17">C</text>
+<text top="269" left="247" width="10" height="14" font="17">C</text>
+<text top="269" left="276" width="10" height="14" font="17">C</text>
+<text top="269" left="305" width="10" height="14" font="17">E</text>
+<text top="269" left="334" width="10" height="14" font="17">C</text>
+<text top="237" left="219" width="10" height="14" font="18">B</text>
+<text top="237" left="248" width="10" height="14" font="18">B</text>
+<text top="237" left="277" width="10" height="14" font="17">E</text>
+<text top="237" left="305" width="10" height="14" font="18">B</text>
+<text top="237" left="334" width="10" height="14" font="18">B</text>
+<text top="205" left="219" width="10" height="14" font="17">A</text>
+<text top="205" left="248" width="10" height="14" font="17">E</text>
+<text top="205" left="277" width="10" height="14" font="17">A</text>
+<text top="205" left="305" width="10" height="14" font="17">A</text>
+<text top="205" left="334" width="10" height="14" font="17">A</text>
+<text top="301" left="375" width="69" height="11" font="19"> ... (repeat) ...</text>
+<text top="270" left="375" width="69" height="11" font="19"> ... (repeat) ...</text>
+<text top="238" left="375" width="69" height="11" font="19"> ... (repeat) ...</text>
+<text top="206" left="375" width="69" height="11" font="19"> ... (repeat) ...</text>
+<text top="337" left="105" width="151" height="14" font="2">In this arrangement, jobs</text>
+<text top="337" left="260" width="10" height="10" font="11">A</text>
+<text top="337" left="275" width="48" height="14" font="2">through</text>
+<text top="337" left="327" width="11" height="10" font="11">D</text>
+<text top="337" left="343" width="176" height="14" font="2">are not moved across proces-</text>
+<text top="351" left="87" width="109" height="14" font="2">sors, with only job</text>
+<text top="352" left="200" width="10" height="10" font="11">E</text>
+<text top="352" left="214" width="61" height="13" font="3"><b>migrating</b></text>
+<text top="351" left="278" width="241" height="14" font="2">from CPU to CPU, thus preserving afﬁn-</text>
+<text top="366" left="87" width="432" height="14" font="2">ity for most. You could then decide to migrate a different job the next</text>
+<text top="381" left="87" width="432" height="14" font="2">time through, thus achieving some kind of afﬁnity fairness as well. Im-</text>
+<text top="396" left="87" width="317" height="14" font="2">plementing such a scheme, however, can be complex.</text>
+<text top="413" left="105" width="414" height="14" font="2">Thus, we can see the SQMS approach has its strengths and weak-</text>
+<text top="428" left="87" width="432" height="14" font="2">nesses. It is straightforward to implement given an existing single-CPU</text>
+<text top="443" left="87" width="432" height="14" font="2">scheduler, which by deﬁnition has only a single queue. However, it does</text>
+<text top="458" left="87" width="432" height="14" font="2">not scale well (due to synchronization overheads), and it does not readily</text>
+<text top="473" left="87" width="135" height="14" font="2">preserve cache afﬁnity.</text>
+<text top="512" left="55" width="213" height="17" font="7">10.5 Multi-Queue Scheduling</text>
+<text top="544" left="105" width="414" height="14" font="2">Because of the problems caused in single-queue schedulers, some sys-</text>
+<text top="559" left="87" width="432" height="14" font="2">tems opt for multiple queues, e.g., one per CPU. We call this approach</text>
+<text top="574" left="87" width="243" height="13" font="3"><b>multi-queue multiprocessor scheduling</b></text>
+<text top="574" left="333" width="17" height="14" font="2">(or</text>
+<text top="574" left="354" width="46" height="13" font="3"><b>MQMS</b></text>
+<text top="574" left="400" width="8" height="14" font="2">).</text>
+<text top="591" left="105" width="424" height="14" font="2">In MQMS, our basic scheduling framework consists of multiple schedul-</text>
+<text top="606" left="87" width="432" height="14" font="2">ing queues. Each queue will likely follow a particular scheduling disci-</text>
+<text top="621" left="87" width="432" height="14" font="2">pline, such as round robin, though of course any algorithm can be used.</text>
+<text top="636" left="87" width="432" height="14" font="2">When a job enters the system, it is placed on exactly one scheduling</text>
+<text top="651" left="87" width="432" height="14" font="2">queue, according to some heuristic (e.g., random, or picking one with</text>
+<text top="666" left="87" width="432" height="14" font="2">fewer jobs than others). Then it is scheduled essentially independently,</text>
+<text top="681" left="87" width="432" height="14" font="2">thus avoiding the problems of information sharing and synchronization</text>
+<text top="696" left="87" width="215" height="14" font="2">found in the single-queue approach.</text>
+<text top="713" left="105" width="414" height="14" font="2">For example, assume we have a system where there are just two CPUs</text>
+<text top="727" left="87" width="432" height="14" font="2">(labeled CPU 0 and CPU 1), and some number of jobs enter the system:</text>
+<text top="743" left="87" width="10" height="10" font="11">A</text>
+<text top="742" left="97" width="3" height="14" font="2">,</text>
+<text top="743" left="104" width="10" height="10" font="11">B</text>
+<text top="742" left="115" width="3" height="14" font="2">,</text>
+<text top="743" left="121" width="10" height="10" font="11">C</text>
+<text top="742" left="132" width="29" height="14" font="2">, and</text>
+<text top="743" left="164" width="11" height="10" font="11">D</text>
+<text top="742" left="178" width="341" height="14" font="2">for example. Given that each CPU has a scheduling queue</text>
+<text top="757" left="87" width="432" height="14" font="2">now, the OS has to decide into which queue to place each job. It might do</text>
+<text top="772" left="87" width="116" height="14" font="2">something like this:</text>
+<text top="807" left="182" width="14" height="10" font="15">Q0</text>
+<text top="806" left="227" width="8" height="12" font="10">A</text>
+<text top="806" left="272" width="9" height="12" font="10">C</text>
+<text top="807" left="322" width="14" height="10" font="15">Q1</text>
+<text top="806" left="367" width="8" height="12" font="10">B</text>
+<text top="806" left="412" width="9" height="12" font="10">D</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="283" width="13" height="14" font="2">M</text>
+<text top="98" left="296" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="396" width="7" height="14" font="2">S</text>
+<text top="98" left="404" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="480" width="16" height="14" font="2">(A</text>
+<text top="98" left="497" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="147" width="414" height="14" font="2">Depending on the queue scheduling policy, each CPU now has two</text>
+<text top="154" left="129" width="432" height="14" font="2">jobs to choose from when deciding what should run. For example, with</text>
+<text top="169" left="129" width="74" height="13" font="3"><b>round robin</b></text>
+<text top="169" left="203" width="343" height="14" font="2">, the system might produce a schedule that looks like this:</text>
+<text top="237" left="127" width="41" height="14" font="17">CPU 1</text>
+<text top="206" left="127" width="41" height="14" font="17">CPU 0</text>
+<text top="206" left="192" width="9" height="14" font="17">A</text>
+<text top="206" left="220" width="9" height="14" font="17">A</text>
+<text top="206" left="248" width="10" height="14" font="17">C</text>
+<text top="206" left="276" width="10" height="14" font="17">C</text>
+<text top="206" left="305" width="9" height="14" font="17">A</text>
+<text top="206" left="333" width="9" height="14" font="17">A</text>
+<text top="206" left="361" width="10" height="14" font="17">C</text>
+<text top="206" left="389" width="10" height="14" font="17">C</text>
+<text top="206" left="418" width="9" height="14" font="17">A</text>
+<text top="206" left="446" width="9" height="14" font="17">A</text>
+<text top="206" left="474" width="10" height="14" font="17">C</text>
+<text top="206" left="502" width="10" height="14" font="17">C</text>
+<text top="237" left="192" width="9" height="14" font="18">B</text>
+<text top="237" left="220" width="9" height="14" font="18">B</text>
+<text top="237" left="248" width="10" height="14" font="18">D</text>
+<text top="237" left="276" width="10" height="14" font="18">D</text>
+<text top="237" left="305" width="9" height="14" font="18">B</text>
+<text top="237" left="333" width="9" height="14" font="18">B</text>
+<text top="237" left="361" width="10" height="14" font="18">D</text>
+<text top="237" left="389" width="10" height="14" font="18">D</text>
+<text top="237" left="418" width="9" height="14" font="18">B</text>
+<text top="237" left="446" width="9" height="14" font="18">B</text>
+<text top="237" left="474" width="10" height="14" font="18">D</text>
+<text top="237" left="502" width="10" height="14" font="18">D</text>
+<text top="238" left="528" width="16" height="11" font="15"> ... </text>
+<text top="207" left="528" width="16" height="11" font="15"> ... </text>
+<text top="280" left="147" width="414" height="14" font="2">MQMS has a distinct advantage over SQMS in that it should be inher-</text>
+<text top="295" left="129" width="432" height="14" font="2">ently more scalable. As the number of CPUs grows, so too does the num-</text>
+<text top="310" left="129" width="432" height="14" font="2">ber of queues, and thus lock and cache contention should not become a</text>
+<text top="324" left="129" width="432" height="14" font="2">central problem. In addition, MQMS intrinsically provides cache afﬁnity;</text>
+<text top="339" left="129" width="432" height="14" font="2">jobs stay on the same CPU and thus reap the advantage of reusing cached</text>
+<text top="354" left="129" width="99" height="14" font="2">contents therein.</text>
+<text top="369" left="147" width="414" height="14" font="2">But, if you’ve been paying attention, you might see that we have a new</text>
+<text top="384" left="129" width="401" height="14" font="2">problem, which is fundamental in the multi-queue based approach:</text>
+<text top="384" left="534" width="27" height="13" font="3"><b>load</b></text>
+<text top="399" left="129" width="64" height="13" font="3"><b>imbalance</b></text>
+<text top="399" left="192" width="368" height="14" font="2">. Let’s assume we have the same set up as above (four jobs,</text>
+<text top="414" left="129" width="246" height="14" font="2">two CPUs), but then one of the jobs (say</text>
+<text top="414" left="380" width="10" height="10" font="11">C</text>
+<text top="414" left="390" width="170" height="14" font="2">) ﬁnishes. We now have the</text>
+<text top="429" left="129" width="175" height="14" font="2">following scheduling queues:</text>
+<text top="465" left="224" width="14" height="10" font="15">Q0</text>
+<text top="464" left="269" width="8" height="12" font="10">A</text>
+<text top="465" left="364" width="14" height="10" font="15">Q1</text>
+<text top="464" left="409" width="8" height="12" font="10">B</text>
+<text top="464" left="454" width="9" height="12" font="10">D</text>
+<text top="497" left="129" width="432" height="14" font="2">If we then run our round-robin policy on each queue of the system, we</text>
+<text top="512" left="129" width="186" height="14" font="2">will see this resulting schedule:</text>
+<text top="581" left="127" width="41" height="14" font="17">CPU 1</text>
+<text top="550" left="127" width="41" height="14" font="17">CPU 0</text>
+<text top="550" left="192" width="9" height="14" font="17">A</text>
+<text top="550" left="220" width="9" height="14" font="17">A</text>
+<text top="550" left="249" width="9" height="14" font="17">A</text>
+<text top="550" left="277" width="9" height="14" font="17">A</text>
+<text top="550" left="305" width="9" height="14" font="17">A</text>
+<text top="550" left="333" width="9" height="14" font="17">A</text>
+<text top="550" left="361" width="9" height="14" font="17">A</text>
+<text top="550" left="389" width="9" height="14" font="17">A</text>
+<text top="550" left="418" width="9" height="14" font="17">A</text>
+<text top="550" left="446" width="9" height="14" font="17">A</text>
+<text top="550" left="474" width="9" height="14" font="17">A</text>
+<text top="550" left="502" width="9" height="14" font="17">A</text>
+<text top="581" left="192" width="9" height="14" font="18">B</text>
+<text top="581" left="220" width="9" height="14" font="18">B</text>
+<text top="581" left="248" width="10" height="14" font="18">D</text>
+<text top="581" left="276" width="10" height="14" font="18">D</text>
+<text top="581" left="305" width="9" height="14" font="18">B</text>
+<text top="581" left="333" width="9" height="14" font="18">B</text>
+<text top="581" left="361" width="10" height="14" font="18">D</text>
+<text top="581" left="389" width="10" height="14" font="18">D</text>
+<text top="581" left="418" width="9" height="14" font="18">B</text>
+<text top="581" left="446" width="9" height="14" font="18">B</text>
+<text top="581" left="474" width="10" height="14" font="18">D</text>
+<text top="581" left="502" width="10" height="14" font="18">D</text>
+<text top="582" left="528" width="16" height="11" font="15"> ... </text>
+<text top="551" left="528" width="16" height="11" font="15"> ... </text>
+<text top="623" left="147" width="211" height="14" font="2">As you can see from this diagram,</text>
+<text top="623" left="363" width="10" height="10" font="11">A</text>
+<text top="623" left="378" width="167" height="14" font="2">gets twice as much CPU as</text>
+<text top="623" left="550" width="10" height="10" font="11">B</text>
+<text top="638" left="129" width="23" height="14" font="2">and</text>
+<text top="638" left="155" width="11" height="10" font="11">D</text>
+<text top="638" left="167" width="394" height="14" font="2">, which is not the desired outcome. Even worse, let’s imagine that</text>
+<text top="653" left="129" width="27" height="14" font="2">both</text>
+<text top="653" left="160" width="10" height="10" font="11">A</text>
+<text top="653" left="175" width="23" height="14" font="2">and</text>
+<text top="653" left="202" width="10" height="10" font="11">C</text>
+<text top="653" left="217" width="139" height="14" font="2">ﬁnish, leaving just jobs</text>
+<text top="653" left="361" width="10" height="10" font="11">B</text>
+<text top="653" left="376" width="23" height="14" font="2">and</text>
+<text top="653" left="403" width="11" height="10" font="11">D</text>
+<text top="653" left="420" width="141" height="14" font="2">in the system. The two</text>
+<text top="668" left="129" width="362" height="14" font="2">scheduling queues, and resulting timeline, will look like this:</text>
+<text top="698" left="224" width="14" height="10" font="15">Q0</text>
+<text top="698" left="368" width="14" height="10" font="15">Q1</text>
+<text top="697" left="412" width="8" height="12" font="10">B</text>
+<text top="697" left="457" width="9" height="12" font="10">D</text>
+<text top="734" left="127" width="41" height="14" font="17">CPU 0</text>
+<text top="765" left="127" width="41" height="14" font="17">CPU 1</text>
+<text top="765" left="192" width="9" height="14" font="18">B</text>
+<text top="765" left="220" width="9" height="14" font="18">B</text>
+<text top="765" left="248" width="10" height="14" font="18">D</text>
+<text top="765" left="276" width="10" height="14" font="18">D</text>
+<text top="765" left="305" width="9" height="14" font="18">B</text>
+<text top="765" left="333" width="9" height="14" font="18">B</text>
+<text top="765" left="361" width="10" height="14" font="18">D</text>
+<text top="765" left="389" width="10" height="14" font="18">D</text>
+<text top="765" left="418" width="9" height="14" font="18">B</text>
+<text top="765" left="446" width="9" height="14" font="18">B</text>
+<text top="765" left="474" width="10" height="14" font="18">D</text>
+<text top="765" left="502" width="10" height="14" font="18">D</text>
+<text top="766" left="528" width="16" height="11" font="15"> ... </text>
+<text top="807" left="129" width="171" height="14" font="2">How terrible – CPU 0 is idle!</text>
+<text top="807" left="304" width="220" height="14" font="4">(insert dramatic and sinister music here)</text>
+<text top="822" left="129" width="298" height="14" font="2">And thus our CPU usage timeline looks quite sad.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="20" size="9" family="BCBGWD+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="201" width="7" height="14" font="2">S</text>
+<text top="98" left="208" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="285" width="16" height="14" font="2">(A</text>
+<text top="98" left="301" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="361" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="139" left="105" width="417" height="14" font="2">So what should a poor multi-queue multiprocessor scheduler do? How</text>
+<text top="154" left="87" width="432" height="14" font="2">can we overcome the insidious problem of load imbalance and defeat the</text>
+<text top="171" left="87" width="188" height="14" font="2">evil forces of ... the Decepticons</text>
+<text top="168" left="275" width="4" height="9" font="20">1</text>
+<text top="171" left="280" width="239" height="14" font="2">? How do we stop asking questions that</text>
+<text top="186" left="87" width="320" height="14" font="2">are hardly relevant to this otherwise wonderful book?</text>
+<text top="224" left="158" width="10" height="14" font="2">C</text>
+<text top="226" left="169" width="24" height="11" font="5">RUX</text>
+<text top="224" left="193" width="19" height="14" font="2">: H</text>
+<text top="226" left="213" width="20" height="11" font="5">OW</text>
+<text top="224" left="237" width="8" height="14" font="2">T</text>
+<text top="226" left="246" width="8" height="11" font="5">O</text>
+<text top="224" left="259" width="10" height="14" font="2">D</text>
+<text top="226" left="270" width="23" height="11" font="5">EAL</text>
+<text top="224" left="296" width="13" height="14" font="2">W</text>
+<text top="226" left="311" width="21" height="11" font="5">ITH</text>
+<text top="224" left="335" width="8" height="14" font="2">L</text>
+<text top="226" left="344" width="26" height="11" font="5">OAD</text>
+<text top="224" left="375" width="5" height="14" font="2">I</text>
+<text top="226" left="380" width="68" height="11" font="5">MBALANCE</text>
+<text top="239" left="105" width="414" height="14" font="2">How should a multi-queue multiprocessor scheduler handle load im-</text>
+<text top="254" left="87" width="356" height="14" font="2">balance, so as to better achieve its desired scheduling goals?</text>
+<text top="296" left="105" width="414" height="14" font="2">The obvious answer to this query is to move jobs around, a technique</text>
+<text top="311" left="87" width="195" height="14" font="2">which we (once again) refer to as</text>
+<text top="311" left="285" width="61" height="13" font="3"><b>migration</b></text>
+<text top="311" left="346" width="173" height="14" font="2">. By migrating a job from one</text>
+<text top="326" left="87" width="301" height="14" font="2">CPU to another, true load balance can be achieved.</text>
+<text top="341" left="105" width="414" height="14" font="2">Let’s look at a couple of examples to add some clarity. Once again, we</text>
+<text top="356" left="87" width="402" height="14" font="2">have a situation where one CPU is idle and the other has some jobs.</text>
+<text top="396" left="182" width="14" height="10" font="15">Q0</text>
+<text top="396" left="326" width="14" height="10" font="15">Q1</text>
+<text top="395" left="371" width="8" height="12" font="10">B</text>
+<text top="395" left="416" width="9" height="12" font="10">D</text>
+<text top="439" left="105" width="414" height="14" font="2">In this case, the desired migration is easy to understand: the OS should</text>
+<text top="454" left="87" width="118" height="14" font="2">simply move one of</text>
+<text top="454" left="208" width="10" height="10" font="11">B</text>
+<text top="454" left="223" width="13" height="14" font="2">or</text>
+<text top="454" left="239" width="11" height="10" font="11">D</text>
+<text top="454" left="254" width="265" height="14" font="2">to CPU 0. The result of this single job migra-</text>
+<text top="469" left="87" width="306" height="14" font="2">tion is evenly balanced load and everyone is happy.</text>
+<text top="484" left="105" width="345" height="14" font="2">A more tricky case arises in our earlier example, where</text>
+<text top="484" left="455" width="10" height="10" font="11">A</text>
+<text top="484" left="471" width="48" height="14" font="2">was left</text>
+<text top="499" left="87" width="118" height="14" font="2">alone on CPU 0 and</text>
+<text top="499" left="209" width="10" height="10" font="11">B</text>
+<text top="499" left="223" width="23" height="14" font="2">and</text>
+<text top="499" left="250" width="11" height="10" font="11">D</text>
+<text top="499" left="265" width="161" height="14" font="2">were alternating on CPU 1:</text>
+<text top="539" left="182" width="14" height="10" font="15">Q0</text>
+<text top="539" left="227" width="8" height="12" font="10">A</text>
+<text top="539" left="322" width="14" height="10" font="15">Q1</text>
+<text top="539" left="367" width="8" height="12" font="10">B</text>
+<text top="539" left="412" width="9" height="12" font="10">D</text>
+<text top="571" left="105" width="414" height="14" font="2">In this case, a single migration does not solve the problem. What</text>
+<text top="586" left="87" width="432" height="14" font="2">would you do in this case? The answer, alas, is continuous migration</text>
+<text top="601" left="87" width="432" height="14" font="2">of one or more jobs. One possible solution is to keep switching jobs, as</text>
+<text top="616" left="87" width="304" height="14" font="2">we see in the following timeline. In the ﬁgure, ﬁrst</text>
+<text top="616" left="395" width="10" height="10" font="11">A</text>
+<text top="616" left="409" width="110" height="14" font="2">is alone on CPU 0,</text>
+<text top="631" left="87" width="23" height="14" font="2">and</text>
+<text top="631" left="114" width="10" height="10" font="11">B</text>
+<text top="631" left="129" width="23" height="14" font="2">and</text>
+<text top="631" left="155" width="11" height="10" font="11">D</text>
+<text top="631" left="171" width="259" height="14" font="2">alternate on CPU 1. After a few time slices,</text>
+<text top="631" left="434" width="10" height="10" font="11">B</text>
+<text top="631" left="449" width="70" height="14" font="2">is moved to</text>
+<text top="646" left="87" width="81" height="14" font="2">compete with</text>
+<text top="646" left="171" width="10" height="10" font="11">A</text>
+<text top="646" left="184" width="96" height="14" font="2">on CPU 0, while</text>
+<text top="646" left="283" width="11" height="10" font="11">D</text>
+<text top="646" left="298" width="221" height="14" font="2">enjoys a few time slices alone on CPU</text>
+<text top="661" left="87" width="173" height="14" font="2">1. And thus load is balanced:</text>
+<text top="695" left="85" width="41" height="14" font="17">CPU 0</text>
+<text top="726" left="85" width="41" height="14" font="17">CPU 1</text>
+<text top="695" left="150" width="9" height="14" font="17">A</text>
+<text top="695" left="179" width="9" height="14" font="17">A</text>
+<text top="695" left="207" width="9" height="14" font="17">A</text>
+<text top="695" left="235" width="9" height="14" font="17">A</text>
+<text top="695" left="263" width="9" height="14" font="18">B</text>
+<text top="695" left="291" width="9" height="14" font="17">A</text>
+<text top="695" left="319" width="9" height="14" font="18">B</text>
+<text top="695" left="348" width="9" height="14" font="17">A</text>
+<text top="695" left="376" width="9" height="14" font="18">B</text>
+<text top="695" left="404" width="9" height="14" font="18">B</text>
+<text top="695" left="432" width="9" height="14" font="18">B</text>
+<text top="695" left="460" width="9" height="14" font="18">B</text>
+<text top="726" left="150" width="9" height="14" font="18">B</text>
+<text top="726" left="178" width="10" height="14" font="18">D</text>
+<text top="726" left="207" width="9" height="14" font="18">B</text>
+<text top="726" left="235" width="10" height="14" font="18">D</text>
+<text top="726" left="263" width="10" height="14" font="18">D</text>
+<text top="726" left="291" width="10" height="14" font="18">D</text>
+<text top="726" left="319" width="10" height="14" font="18">D</text>
+<text top="726" left="347" width="10" height="14" font="18">D</text>
+<text top="726" left="376" width="9" height="14" font="17">A</text>
+<text top="726" left="404" width="10" height="14" font="18">D</text>
+<text top="726" left="432" width="9" height="14" font="17">A</text>
+<text top="726" left="460" width="10" height="14" font="18">D</text>
+<text top="727" left="486" width="16" height="11" font="15"> ... </text>
+<text top="696" left="486" width="16" height="11" font="15"> ... </text>
+<text top="760" left="105" width="414" height="14" font="2">Of course, many other possible migration patterns exist. But now for</text>
+<text top="775" left="87" width="431" height="14" font="2">the tricky part: how should the system decide to enact such a migration?</text>
+<text top="802" left="107" width="4" height="8" font="13">1</text>
+<text top="804" left="112" width="407" height="11" font="9">Little known fact is that the home planet of Cybertron was destroyed by bad CPU</text>
+<text top="816" left="87" width="432" height="11" font="9">scheduling decisions. And now let that be the ﬁrst and last reference to Transformers in this</text>
+<text top="828" left="87" width="183" height="11" font="9">book, for which we sincerely apologize.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="283" width="13" height="14" font="2">M</text>
+<text top="98" left="296" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="396" width="7" height="14" font="2">S</text>
+<text top="98" left="404" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="480" width="16" height="14" font="2">(A</text>
+<text top="98" left="497" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="147" width="322" height="14" font="2">One basic approach is to use a technique known as</text>
+<text top="139" left="474" width="86" height="13" font="3"><b>work stealing</b></text>
+<text top="154" left="129" width="432" height="14" font="2">[FLR98]. With a work-stealing approach, a (source) queue that is low</text>
+<text top="169" left="129" width="432" height="14" font="2">on jobs will occasionally peek at another (target) queue, to see how full</text>
+<text top="183" left="129" width="432" height="14" font="2">it is. If the target queue is (notably) more full than the source queue, the</text>
+<text top="198" left="129" width="429" height="14" font="2">source will “steal” one or more jobs from the target to help balance load.</text>
+<text top="213" left="147" width="414" height="14" font="2">Of course, there is a natural tension in such an approach. If you look</text>
+<text top="228" left="129" width="432" height="14" font="2">around at other queues too often, you will suffer from high overhead</text>
+<text top="243" left="129" width="432" height="14" font="2">and have trouble scaling, which was the entire purpose of implementing</text>
+<text top="258" left="129" width="432" height="14" font="2">the multiple queue scheduling in the ﬁrst place! If, on the other hand,</text>
+<text top="273" left="129" width="432" height="14" font="2">you don’t look at other queues very often, you are in danger of suffering</text>
+<text top="288" left="129" width="432" height="14" font="2">from severe load imbalances. Finding the right threshold remains, as is</text>
+<text top="303" left="129" width="267" height="14" font="2">common in system policy design, a black art.</text>
+<text top="327" left="97" width="273" height="17" font="7">10.6 Linux Multiprocessor Schedulers</text>
+<text top="348" left="147" width="425" height="14" font="2">Interestingly, in the Linux community, no common solution has emerged</text>
+<text top="363" left="129" width="432" height="14" font="2">to building a multiprocessor scheduler. Over time, three different sched-</text>
+<text top="378" left="129" width="432" height="14" font="2">ulers arose: the O(1) scheduler, the Completely Fair Scheduler (CFS),</text>
+<text top="395" left="129" width="163" height="14" font="2">and the BF Scheduler (BFS)</text>
+<text top="393" left="292" width="4" height="9" font="20">2</text>
+<text top="395" left="297" width="264" height="14" font="2">. See Meehean’s dissertation for an excellent</text>
+<text top="410" left="129" width="432" height="14" font="2">overview of the strengths and weaknesses of said schedulers [M11]; here</text>
+<text top="425" left="129" width="227" height="14" font="2">we just summarize a few of the basics.</text>
+<text top="440" left="147" width="414" height="14" font="2">Both O(1) and CFS use multiple queues, whereas BFS uses a single</text>
+<text top="455" left="129" width="432" height="14" font="2">queue, showing that both approaches can be successful. Of course, there</text>
+<text top="470" left="129" width="432" height="14" font="2">are many other details which separate these schedulers. For example, the</text>
+<text top="485" left="129" width="432" height="14" font="2">O(1) scheduler is a priority-based scheduler (similar to the MLFQ dis-</text>
+<text top="500" left="129" width="432" height="14" font="2">cussed before), changing a process’s priority over time and then schedul-</text>
+<text top="515" left="129" width="432" height="14" font="2">ing those with highest priority in order to meet various scheduling objec-</text>
+<text top="530" left="129" width="432" height="14" font="2">tives; interactivity is a particular focus. CFS, in contrast, is a deterministic</text>
+<text top="545" left="129" width="432" height="14" font="2">proportional-share approach (more like Stride scheduling, as discussed</text>
+<text top="560" left="129" width="432" height="14" font="2">earlier). BFS, the only single-queue approach among the three, is also</text>
+<text top="575" left="129" width="432" height="14" font="2">proportional-share, but based on a more complicated scheme known as</text>
+<text top="590" left="129" width="432" height="14" font="2">Earliest Eligible Virtual Deadline First (EEVDF) [SA96]. Read more about</text>
+<text top="604" left="129" width="432" height="14" font="2">these modern algorithms on your own; you should be able to understand</text>
+<text top="619" left="129" width="124" height="14" font="2">how they work now!</text>
+<text top="644" left="97" width="105" height="17" font="7">10.7 Summary</text>
+<text top="665" left="147" width="414" height="14" font="2">We have seen various approaches to multiprocessor scheduling. The</text>
+<text top="680" left="129" width="432" height="14" font="2">single-queue approach (SQMS) is rather straightforward to build and bal-</text>
+<text top="695" left="129" width="432" height="14" font="2">ances load well but inherently has difﬁculty with scaling to many pro-</text>
+<text top="709" left="129" width="432" height="14" font="2">cessors and cache afﬁnity. The multiple-queue approach (MQMS) scales</text>
+<text top="724" left="129" width="432" height="14" font="2">better and handles cache afﬁnity well, but has trouble with load imbal-</text>
+<text top="739" left="129" width="432" height="14" font="2">ance and is more complicated. Whichever approach you take, there is no</text>
+<text top="754" left="129" width="432" height="14" font="2">simple answer: building a general purpose scheduler remains a daunting</text>
+<text top="769" left="129" width="432" height="14" font="2">task, as small code changes can lead to large behavioral differences. Only</text>
+<text top="784" left="129" width="432" height="14" font="2">undertake such an exercise if you know exactly what you are doing, or,</text>
+<text top="799" left="129" width="348" height="14" font="2">at least, are getting paid a large amount of money to do so.</text>
+<text top="826" left="149" width="4" height="8" font="13">2</text>
+<text top="828" left="154" width="400" height="11" font="9">Look up what BF stands for on your own; be forewarned, it is not for the faint of heart.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="16" family="OEWPMC+URWPalladioL" color="#000000"/>
+	<fontspec id="22" size="10" family="VGGAPX+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="201" width="7" height="14" font="2">S</text>
+<text top="98" left="208" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="285" width="16" height="14" font="2">(A</text>
+<text top="98" left="301" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="361" width="4" height="14" font="2">)</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="137" left="87" width="82" height="16" font="21"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="9">[A90] “The Performance of Spin Lock Alternatives for Shared-Memory Multiprocessors” by</text>
+<text top="177" left="87" width="287" height="11" font="9">Thomas E. Anderson. IEEE TPDS Volume 1:1, January 1990.</text>
+<text top="177" left="380" width="139" height="11" font="22">A classic paper on how different</text>
+<text top="189" left="87" width="432" height="11" font="22">locking alternatives do and don’t scale. By Tom Anderson, very well known researcher in both systems</text>
+<text top="201" left="87" width="292" height="11" font="22">and networking. And author of a very ﬁne OS textbook, we must say.</text>
+<text top="218" left="87" width="432" height="11" font="9">[B+10] “An Analysis of Linux Scalability to Many Cores Abstract” by Silas Boyd-Wickizer,</text>
+<text top="229" left="87" width="432" height="11" font="9">Austin T. Clements, Yandong Mao, Aleksey Pesterev, M. Frans Kaashoek, Robert Morris, Nick-</text>
+<text top="241" left="87" width="290" height="11" font="9">olai Zeldovich. OSDI ’10, Vancouver, Canada, October 2010.</text>
+<text top="241" left="385" width="134" height="11" font="22">A terriﬁc modern paper on the</text>
+<text top="253" left="87" width="178" height="11" font="22">difﬁculties of scaling Linux to many cores.</text>
+<text top="270" left="87" width="432" height="11" font="9">[CSG99] “Parallel Computer Architecture: A Hardware/Software Approach” by David E.</text>
+<text top="282" left="87" width="355" height="11" font="9">Culler, Jaswinder Pal Singh, and Anoop Gupta. Morgan Kaufmann, 1999.</text>
+<text top="282" left="449" width="70" height="11" font="22">A treasure ﬁlled</text>
+<text top="294" left="87" width="432" height="11" font="22">with details about parallel machines and algorithms. As Mark Hill humorously observes on the jacket,</text>
+<text top="305" left="87" width="262" height="11" font="22">the book contains more information than most research papers.</text>
+<text top="322" left="87" width="432" height="11" font="9">[FLR98] “The Implementation of the Cilk-5 Multithreaded Language” by Matteo Frigo, Charles</text>
+<text top="334" left="87" width="333" height="11" font="9">E. Leiserson, Keith Randall. PLDI ’98, Montreal, Canada, June 1998.</text>
+<text top="334" left="429" width="90" height="11" font="22">Cilk is a lightweight</text>
+<text top="346" left="87" width="432" height="11" font="22">language and runtime for writing parallel programs, and an excellent example of the work-stealing</text>
+<text top="358" left="87" width="43" height="11" font="22">paradigm.</text>
+<text top="374" left="87" width="432" height="11" font="9">[G83] “Using Cache Memory To Reduce Processor-Memory Trafﬁc” by James R. Goodman.</text>
+<text top="386" left="87" width="193" height="11" font="9">ISCA ’83, Stockholm, Sweden, June 1983.</text>
+<text top="386" left="285" width="234" height="11" font="22">The pioneering paper on how to use bus snooping, i.e.,</text>
+<text top="398" left="87" width="432" height="11" font="22">paying attention to requests you see on the bus, to build a cache coherence protocol. Goodman’s research</text>
+<text top="410" left="87" width="329" height="11" font="22">over many years at Wisconsin is full of cleverness, this being but one example.</text>
+<text top="426" left="87" width="432" height="11" font="9">[M11] “Towards Transparent CPU Scheduling” by Joseph T. Meehean. Doctoral Dissertation</text>
+<text top="438" left="87" width="205" height="11" font="9">at University of Wisconsin—Madison, 2011.</text>
+<text top="438" left="297" width="222" height="11" font="22">A dissertation that covers a lot of the details of how</text>
+<text top="450" left="87" width="432" height="11" font="22">modern Linux multiprocessor scheduling works. Pretty awesome! But, as co-advisors of Joe’s, we may</text>
+<text top="462" left="87" width="81" height="11" font="22">be a bit biased here.</text>
+<text top="478" left="87" width="432" height="11" font="9">[SHW11] “A Primer on Memory Consistency and Cache Coherence” by Daniel J. Sorin, Mark</text>
+<text top="490" left="87" width="432" height="11" font="9">D. Hill, and David A. Wood. Synthesis Lectures in Computer Architecture. Morgan and Clay-</text>
+<text top="502" left="87" width="123" height="11" font="9">pool Publishers, May 2011.</text>
+<text top="502" left="213" width="306" height="11" font="22">A deﬁnitive overview of memory consistency and multiprocessor caching.</text>
+<text top="514" left="87" width="343" height="11" font="22">Required reading for anyone who likes to know way too much about a given topic.</text>
+<text top="530" left="87" width="432" height="11" font="9">[SA96] “Earliest Eligible Virtual Deadline First: A Flexible and Accurate Mechanism for Pro-</text>
+<text top="542" left="87" width="432" height="11" font="9">portional Share Resource Allocation” by Ion Stoica and Hussein Abdel-Wahab. Technical Re-</text>
+<text top="554" left="87" width="220" height="11" font="9">port TR-95-22, Old Dominion University, 1996.</text>
+<text top="554" left="313" width="206" height="11" font="22">A tech report on this cool scheduling idea, from</text>
+<text top="566" left="87" width="432" height="11" font="22">Ion Stoica, now a professor at U.C. Berkeley and world expert in networking, distributed systems, and</text>
+<text top="578" left="87" width="80" height="11" font="22">many other things.</text>
+<text top="594" left="87" width="432" height="11" font="9">[TTG95] “Evaluating the Performance of Cache-Afﬁnity Scheduling in Shared-Memory Mul-</text>
+<text top="606" left="87" width="432" height="11" font="9">tiprocessors” by Josep Torrellas, Andrew Tucker, Anoop Gupta. Journal of Parallel and Dis-</text>
+<text top="618" left="87" width="228" height="11" font="9">tributed Computing, Volume 24:2, February 1995.</text>
+<text top="618" left="318" width="201" height="11" font="22">This is not the ﬁrst paper on the topic, but it has</text>
+<text top="630" left="87" width="432" height="11" font="22">citations to earlier work, and is a more readable and practical paper than some of the earlier queuing-</text>
+<text top="642" left="87" width="92" height="11" font="22">based analysis papers.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="23" size="15" family="OEWPMC+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="283" width="13" height="14" font="2">M</text>
+<text top="98" left="296" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="396" width="7" height="14" font="2">S</text>
+<text top="98" left="404" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="480" width="16" height="14" font="2">(A</text>
+<text top="98" left="497" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="137" left="129" width="183" height="16" font="21"><b>Homework (Simulation)</b></text>
+<text top="167" left="147" width="167" height="14" font="2">In this homework, we’ll use</text>
+<text top="167" left="318" width="65" height="11" font="14">multi.py</text>
+<text top="167" left="386" width="175" height="14" font="2">to simulate a multi-processor</text>
+<text top="182" left="129" width="432" height="14" font="2">CPU scheduler, and learn about some of its details. Read the related</text>
+<text top="196" left="129" width="403" height="14" font="2">README for more information about the simulator and its options.</text>
+<text top="234" left="129" width="70" height="15" font="23"><b>Questions</b></text>
+<text top="259" left="146" width="414" height="14" font="2">1. To start things off, let’s learn how to use the simulator to study how</text>
+<text top="274" left="163" width="397" height="14" font="2">to build an effective multi-processor scheduler. The ﬁrst simulation</text>
+<text top="289" left="163" width="397" height="14" font="2">will run just one job, which has a run-time of 30, and a working-set</text>
+<text top="304" left="163" width="397" height="14" font="2">size of 200. Run this job (called job ’a’ here) on one simulated CPU</text>
+<text top="319" left="163" width="64" height="14" font="2">as follows:</text>
+<text top="319" left="233" width="218" height="11" font="14">./multi.py -n 1 -L a:30:200</text>
+<text top="319" left="451" width="110" height="14" font="2">. How long will it</text>
+<text top="333" left="163" width="177" height="14" font="2">take to complete? Turn on the</text>
+<text top="334" left="344" width="16" height="11" font="14">-c</text>
+<text top="333" left="364" width="197" height="14" font="2">ﬂag to see a ﬁnal answer, and the</text>
+<text top="349" left="163" width="16" height="11" font="14">-t</text>
+<text top="348" left="183" width="378" height="14" font="2">ﬂag to see a tick-by-tick trace of the job and how it is scheduled.</text>
+<text top="374" left="146" width="414" height="14" font="2">2. Now increase the cache size so as to make the job’s working set</text>
+<text top="389" left="163" width="397" height="14" font="2">(size=200) ﬁt into the cache (which, by default, is size=100); for</text>
+<text top="404" left="163" width="81" height="14" font="2">example, run</text>
+<text top="405" left="249" width="274" height="11" font="14">./multi.py -n 1 -L a:30:200 -M 300</text>
+<text top="404" left="524" width="37" height="14" font="2">. Can</text>
+<text top="419" left="163" width="397" height="14" font="2">you predict how fast the job will run once it ﬁts in cache? (hint:</text>
+<text top="434" left="163" width="397" height="14" font="2">remember the key parameter of the warm rate, which is set by the</text>
+<text top="449" left="163" width="354" height="14" font="2">-r ﬂag) Check your answer by running with the solve ﬂag (</text>
+<text top="450" left="518" width="16" height="11" font="14">-c</text>
+<text top="449" left="534" width="27" height="14" font="2">) en-</text>
+<text top="464" left="163" width="36" height="14" font="2">abled.</text>
+<text top="490" left="146" width="148" height="14" font="2">3. One cool thing about</text>
+<text top="491" left="300" width="65" height="11" font="14">multi.py</text>
+<text top="490" left="370" width="191" height="14" font="2">is that you can see more detail</text>
+<text top="505" left="163" width="397" height="14" font="2">about what is going on with different tracing ﬂags. Run the same</text>
+<text top="520" left="163" width="397" height="14" font="2">simulation as above, but this time with time left tracing enabled</text>
+<text top="535" left="163" width="4" height="14" font="2">(</text>
+<text top="536" left="168" width="16" height="11" font="14">-T</text>
+<text top="535" left="184" width="377" height="14" font="2">). This ﬂag shows both the job that was scheduled on a CPU</text>
+<text top="550" left="163" width="397" height="14" font="2">at each time step, as well as how much run-time that job has left</text>
+<text top="565" left="163" width="397" height="14" font="2">after each tick has run. What do you notice about how that second</text>
+<text top="580" left="163" width="111" height="14" font="2">column decreases?</text>
+<text top="606" left="146" width="414" height="14" font="2">4. Now add one more bit of tracing, to show the status of each CPU</text>
+<text top="621" left="163" width="166" height="14" font="2">cache for each job, with the</text>
+<text top="622" left="334" width="16" height="11" font="14">-C</text>
+<text top="621" left="355" width="206" height="14" font="2">ﬂag. For each job, each cache will</text>
+<text top="636" left="163" width="397" height="14" font="2">either show a blank space (if the cache is cold for that job) or a ’w’</text>
+<text top="651" left="163" width="397" height="14" font="2">(if the cache is warm for that job). At what point does the cache</text>
+<text top="666" left="163" width="397" height="14" font="2">become warm for job ’a’ in this simple example? What happens</text>
+<text top="681" left="163" width="265" height="14" font="2">as you change the warmup time parameter (</text>
+<text top="681" left="429" width="16" height="11" font="14">-w</text>
+<text top="681" left="445" width="116" height="14" font="2">) to lower or higher</text>
+<text top="695" left="163" width="142" height="14" font="2">values than the default?</text>
+<text top="721" left="146" width="414" height="14" font="2">5. At this point, you should have a good idea of how the simula-</text>
+<text top="736" left="163" width="397" height="14" font="2">tor works for a single job running on a single CPU. But hey, isn’t</text>
+<text top="751" left="163" width="397" height="14" font="2">this a multi-processor CPU scheduling chapter? Oh yeah! So let’s</text>
+<text top="766" left="163" width="397" height="14" font="2">start working with multiple jobs. Speciﬁcally, let’s run the follow-</text>
+<text top="781" left="163" width="287" height="14" font="2">ing three jobs on a two-CPU system (i.e., type</text>
+<text top="782" left="456" width="105" height="11" font="14">./multi.py -n</text>
+<text top="797" left="163" width="258" height="11" font="14">2 -L a:100:100,b:100:50,c:100:50</text>
+<text top="796" left="422" width="139" height="14" font="2">) Can you predict how</text>
+<text top="811" left="163" width="397" height="14" font="2">long this will take, given a round-robin centralized scheduler? Use</text>
+<text top="827" left="163" width="16" height="11" font="14">-c</text>
+<text top="826" left="183" width="359" height="14" font="2">to see if you were right, and then dive down into details with</text>
+<text top="827" left="545" width="16" height="11" font="14">-t</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="96" height="11" font="5">ULTIPROCESSOR</text>
+<text top="96" left="201" width="7" height="14" font="2">S</text>
+<text top="98" left="208" width="73" height="11" font="5">CHEDULING</text>
+<text top="96" left="285" width="16" height="14" font="2">(A</text>
+<text top="98" left="301" width="59" height="11" font="5">DVANCED</text>
+<text top="96" left="361" width="4" height="14" font="2">)</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="139" left="122" width="174" height="14" font="2">to see a step-by-step and then</text>
+<text top="139" left="298" width="16" height="11" font="14">-C</text>
+<text top="139" left="317" width="202" height="14" font="2">to see whether caches got warmed</text>
+<text top="154" left="122" width="273" height="14" font="2">effectively for these jobs. What do you notice?</text>
+<text top="179" left="105" width="308" height="14" font="2">6. Now we’ll apply some explicit controls to study</text>
+<text top="179" left="416" width="82" height="13" font="3"><b>cache afﬁnity</b></text>
+<text top="179" left="499" width="20" height="14" font="2">, as</text>
+<text top="193" left="122" width="314" height="14" font="2">described in the chapter. To do this, you’ll need the</text>
+<text top="194" left="440" width="16" height="11" font="14">-A</text>
+<text top="193" left="461" width="58" height="14" font="2">ﬂag. This</text>
+<text top="208" left="122" width="397" height="14" font="2">ﬂag can be used to limit which CPUs the scheduler can place a par-</text>
+<text top="223" left="122" width="397" height="14" font="2">ticular job upon. In this case, let’s use it to place jobs ’b’ and ’c’ on</text>
+<text top="238" left="122" width="397" height="14" font="2">CPU 1, while restricting ’a’ to CPU 0. This magic is accomplished</text>
+<text top="253" left="122" width="86" height="14" font="2">by typing this</text>
+<text top="254" left="212" width="307" height="11" font="14">./multi.py -n 2 -L a:100:100,b:100:50,</text>
+<text top="269" left="122" width="186" height="11" font="14">c:100:50 -A a:0,b:1,c:1</text>
+<text top="268" left="310" width="212" height="14" font="2">; don’t forget to turn on various trac-</text>
+<text top="283" left="122" width="397" height="14" font="2">ing options to see what is really happening! Can you predict how</text>
+<text top="298" left="122" width="397" height="14" font="2">fast this version will run? Why does it do better? Will other com-</text>
+<text top="313" left="122" width="397" height="14" font="2">binations of ’a’, ’b’, and ’c’ onto the two processors run faster or</text>
+<text top="328" left="122" width="46" height="14" font="2">slower?</text>
+<text top="353" left="105" width="414" height="14" font="2">7. One interesting aspect of caching multiprocessors is the opportu-</text>
+<text top="368" left="122" width="397" height="14" font="2">nity for better-than-expected speed up of jobs when using multi-</text>
+<text top="383" left="122" width="397" height="14" font="2">ple CPUs (and their caches) as compared to running jobs on a sin-</text>
+<text top="398" left="122" width="270" height="14" font="2">gle processor. Speciﬁcally, when you run on</text>
+<text top="398" left="396" width="11" height="10" font="11">N</text>
+<text top="398" left="413" width="106" height="14" font="2">CPUs, sometimes</text>
+<text top="413" left="122" width="259" height="14" font="2">you can speed up by more than a factor of</text>
+<text top="413" left="385" width="11" height="10" font="11">N</text>
+<text top="413" left="398" width="121" height="14" font="2">, a situation entitled</text>
+<text top="428" left="122" width="130" height="13" font="3"><b>super-linear speedup</b></text>
+<text top="428" left="251" width="268" height="14" font="2">. To experiment with this, use the job descrip-</text>
+<text top="443" left="122" width="60" height="14" font="2">tion here (</text>
+<text top="443" left="181" width="258" height="11" font="14">-L a:100:100,b:100:100,c:100:100</text>
+<text top="443" left="440" width="79" height="14" font="2">) with a small</text>
+<text top="457" left="122" width="42" height="14" font="2">cache (</text>
+<text top="458" left="163" width="40" height="11" font="14">-M 50</text>
+<text top="457" left="204" width="315" height="14" font="2">) to create three jobs. Run this on systems with 1, 2,</text>
+<text top="472" left="122" width="82" height="14" font="2">and 3 CPUs (</text>
+<text top="473" left="204" width="32" height="11" font="14">-n 1</text>
+<text top="472" left="236" width="3" height="14" font="2">,</text>
+<text top="473" left="245" width="32" height="11" font="14">-n 2</text>
+<text top="472" left="277" width="3" height="14" font="2">,</text>
+<text top="473" left="286" width="32" height="11" font="14">-n 3</text>
+<text top="472" left="318" width="201" height="14" font="2">). Now, do the same, but with a</text>
+<text top="487" left="122" width="397" height="14" font="2">larger per-CPU cache of size 100. What do you notice about per-</text>
+<text top="502" left="122" width="277" height="14" font="2">formance as the number of CPUs scales? Use</text>
+<text top="503" left="403" width="16" height="11" font="14">-c</text>
+<text top="502" left="424" width="95" height="14" font="2">to conﬁrm your</text>
+<text top="517" left="122" width="309" height="14" font="2">guesses, and other tracing ﬂags to dive even deeper.</text>
+<text top="542" left="105" width="414" height="14" font="2">8. One other aspect of the simulator worth studying is the per-CPU</text>
+<text top="557" left="122" width="133" height="14" font="2">scheduling option, the</text>
+<text top="558" left="258" width="16" height="11" font="14">-p</text>
+<text top="557" left="278" width="241" height="14" font="2">ﬂag. Run with two CPUs again, and this</text>
+<text top="572" left="122" width="147" height="14" font="2">three job conﬁguration (</text>
+<text top="573" left="269" width="242" height="11" font="14">-L a:100:100,b:100:50,c:100:50</text>
+<text top="572" left="511" width="8" height="14" font="2">).</text>
+<text top="587" left="122" width="397" height="14" font="2">How does this option do, as opposed to the hand-controlled afﬁnity</text>
+<text top="602" left="122" width="397" height="14" font="2">limits you put in place above? How does performance change as</text>
+<text top="617" left="122" width="176" height="14" font="2">you alter the ’peek interval’ (</text>
+<text top="618" left="298" width="16" height="11" font="14">-P</text>
+<text top="617" left="314" width="205" height="14" font="2">) to lower or higher values? How</text>
+<text top="632" left="122" width="387" height="14" font="2">does this per-CPU approach work as the number of CPUs scales?</text>
+<text top="657" left="105" width="414" height="14" font="2">9. Finally, feel free to just generate random workloads and see if you</text>
+<text top="672" left="122" width="397" height="14" font="2">can predict their performance on different numbers of processors,</text>
+<text top="687" left="122" width="397" height="14" font="2">cache sizes, and scheduling options. If you do this, you’ll soon be</text>
+<text top="702" left="122" width="7" height="14" font="2">a</text>
+<text top="702" left="133" width="215" height="13" font="3"><b>multi-processor scheduling master</b></text>
+<text top="702" left="348" width="171" height="14" font="2">, which is a pretty awesome</text>
+<text top="716" left="122" width="137" height="14" font="2">thing to be. Good luck!</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+</pdf2xml>

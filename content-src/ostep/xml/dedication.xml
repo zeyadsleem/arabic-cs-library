@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="13" family="AAAAAB+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="1" size="13" family="AAAAAC+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="2" size="11" family="AAAAAB+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="566" width="4" height="14" font="0">i</text>
+<text top="490" left="243" width="221" height="14" font="1">To Vedat S. Arpaci, a lifelong inspiration</text>
+<text top="896" left="263" width="83" height="14" font="0">© 2008–26, A</text>
+<text top="898" left="347" width="35" height="11" font="2">RPACI</text>
+<text top="896" left="382" width="16" height="14" font="0">-D</text>
+<text top="898" left="399" width="46" height="11" font="2">USSEAU</text>
+<text top="888" left="520" width="8" height="14" font="0">T</text>
+<text top="890" left="529" width="31" height="11" font="2">HREE</text>
+<text top="903" left="529" width="8" height="14" font="0">E</text>
+<text top="905" left="538" width="23" height="11" font="2">ASY</text>
+<text top="918" left="519" width="8" height="14" font="0">P</text>
+<text top="920" left="528" width="33" height="11" font="2">IECES</text>
+</page>
+</pdf2xml>

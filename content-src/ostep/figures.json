@@ -1,0 +1,2262 @@
+[
+ {
+  "key": "cpu-intro",
+  "n": 1,
+  "page": 4,
+  "x": 50,
+  "y": 191,
+  "w": 548,
+  "h": 346,
+  "caption": "Loading: From Program To Process"
+ },
+ {
+  "key": "cpu-intro",
+  "n": 2,
+  "page": 6,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 196,
+  "caption": "Process: State Transitions"
+ },
+ {
+  "key": "cpu-intro",
+  "n": 3,
+  "page": 6,
+  "x": 50,
+  "y": 648,
+  "w": 548,
+  "h": 150,
+  "caption": "Tracing Process State: CPU Only"
+ },
+ {
+  "key": "cpu-intro",
+  "n": 4,
+  "page": 7,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 208,
+  "caption": "Tracing Process State: CPU and I/O"
+ },
+ {
+  "key": "cpu-intro",
+  "n": 5,
+  "page": 8,
+  "x": 50,
+  "y": 426,
+  "w": 548,
+  "h": 238,
+  "caption": "The xv6 Proc Structure"
+ },
+ {
+  "key": "cpu-mechanisms",
+  "n": 1,
+  "page": 2,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 208,
+  "caption": "Direct Execution Protocol (Without Limits)"
+ },
+ {
+  "key": "cpu-mechanisms",
+  "n": 2,
+  "page": 5,
+  "x": 50,
+  "y": 342,
+  "w": 548,
+  "h": 346,
+  "caption": "Limited Direct Execution Protocol"
+ },
+ {
+  "key": "cpu-mechanisms",
+  "n": 3,
+  "page": 11,
+  "x": 50,
+  "y": 218,
+  "w": 548,
+  "h": 346,
+  "caption": "Limited Direct Execution Protocol (Timer Interrupt)"
+ },
+ {
+  "key": "cpu-mechanisms",
+  "n": 4,
+  "page": 12,
+  "x": 50,
+  "y": 208,
+  "w": 548,
+  "h": 346,
+  "caption": "The xv6 Context Switch Code"
+ },
+ {
+  "key": "cpu-sched",
+  "n": 1,
+  "page": 3,
+  "x": 50,
+  "y": 265,
+  "w": 548,
+  "h": 121,
+  "caption": "FIFO Simple Example"
+ },
+ {
+  "key": "cpu-sched",
+  "n": 2,
+  "page": 3,
+  "x": 50,
+  "y": 611,
+  "w": 548,
+  "h": 120,
+  "caption": "Why FIFO Is Not That Great"
+ },
+ {
+  "key": "cpu-sched",
+  "n": 3,
+  "page": 4,
+  "x": 50,
+  "y": 557,
+  "w": 548,
+  "h": 111,
+  "caption": "SJF Simple Example"
+ },
+ {
+  "key": "cpu-sched",
+  "n": 4,
+  "page": 5,
+  "x": 50,
+  "y": 516,
+  "w": 548,
+  "h": 112,
+  "caption": "SJF With Late Arrivals From B and C"
+ },
+ {
+  "key": "cpu-sched",
+  "n": 5,
+  "page": 6,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 152,
+  "caption": "STCF Simple Example"
+ },
+ {
+  "key": "cpu-sched",
+  "n": 6,
+  "page": 7,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 150,
+  "caption": "SJF Again (Bad for Response Time)"
+ },
+ {
+  "key": "cpu-sched",
+  "n": 7,
+  "page": 7,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 298,
+  "caption": "Round Robin (Good For Response Time)"
+ },
+ {
+  "key": "cpu-sched",
+  "n": 8,
+  "page": 10,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 152,
+  "caption": "Poor Use Of Resources"
+ },
+ {
+  "key": "cpu-sched",
+  "n": 9,
+  "page": 10,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 299,
+  "caption": "Overlap Allows Better Use Of Resources"
+ },
+ {
+  "key": "cpu-sched-mlfq",
+  "n": 1,
+  "page": 3,
+  "x": 168,
+  "y": 152,
+  "w": 234,
+  "h": 222,
+  "caption": "MLFQ Example"
+ },
+ {
+  "key": "cpu-sched-mlfq",
+  "n": 2,
+  "page": 4,
+  "x": 229,
+  "y": 133,
+  "w": 229,
+  "h": 197,
+  "caption": "Long-running Job Over Time"
+ },
+ {
+  "key": "cpu-sched-mlfq",
+  "n": 3,
+  "page": 5,
+  "x": 90,
+  "y": 133,
+  "w": 429,
+  "h": 197,
+  "caption": "Along Came An Interactive Job: Two Examples"
+ },
+ {
+  "key": "cpu-sched-mlfq",
+  "n": 4,
+  "page": 7,
+  "x": 97,
+  "y": 133,
+  "w": 410,
+  "h": 197,
+  "caption": "Without (Left) and With (Right) Priority Boost"
+ },
+ {
+  "key": "cpu-sched-mlfq",
+  "n": 5,
+  "page": 8,
+  "x": 145,
+  "y": 133,
+  "w": 405,
+  "h": 197,
+  "caption": "Without (Left) and With (Right) Gaming Tolerance"
+ },
+ {
+  "key": "cpu-sched-mlfq",
+  "n": 6,
+  "page": 9,
+  "x": 160,
+  "y": 133,
+  "w": 300,
+  "h": 197,
+  "caption": "Lower Priority, Longer Quanta"
+ },
+ {
+  "key": "cpu-sched-lottery",
+  "n": 1,
+  "page": 4,
+  "x": 95,
+  "y": 126,
+  "w": 490,
+  "h": 244,
+  "caption": "Lottery Scheduling Decision Code"
+ },
+ {
+  "key": "cpu-sched-lottery",
+  "n": 2,
+  "page": 5,
+  "x": 180,
+  "y": 145,
+  "w": 300,
+  "h": 240,
+  "caption": "Lottery Fairness Study"
+ },
+ {
+  "key": "cpu-sched-lottery",
+  "n": 3,
+  "page": 7,
+  "x": 128,
+  "y": 128,
+  "w": 352,
+  "h": 172,
+  "caption": "Stride Scheduling: A Trace"
+ },
+ {
+  "key": "cpu-sched-lottery",
+  "n": 4,
+  "page": 8,
+  "x": 215,
+  "y": 135,
+  "w": 290,
+  "h": 102,
+  "caption": "CFS Simple Example"
+ },
+ {
+  "key": "cpu-sched-lottery",
+  "n": 5,
+  "page": 11,
+  "x": 130,
+  "y": 136,
+  "w": 362,
+  "h": 212,
+  "caption": "CFS Red-Black Tree"
+ },
+ {
+  "key": "cpu-sched-multi",
+  "n": 1,
+  "page": 2,
+  "x": 274,
+  "y": 140,
+  "w": 158,
+  "h": 195,
+  "caption": "Single CPU With Cache"
+ },
+ {
+  "key": "cpu-sched-multi",
+  "n": 2,
+  "page": 3,
+  "x": 194,
+  "y": 148,
+  "w": 223,
+  "h": 191,
+  "caption": "Two CPUs With Caches Sharing Memory"
+ },
+ {
+  "key": "vm-mechanism",
+  "n": 1,
+  "page": 4,
+  "x": 240,
+  "y": 132,
+  "w": 202,
+  "h": 678,
+  "caption": "A Process And Its Address Space"
+ },
+ {
+  "key": "vm-mechanism",
+  "n": 2,
+  "page": 5,
+  "x": 202,
+  "y": 135,
+  "w": 224,
+  "h": 315,
+  "caption": "Physical Memory with a Single Relocated Process"
+ },
+ {
+  "key": "vm-mechanism",
+  "n": 3,
+  "page": 9,
+  "x": 91,
+  "y": 130,
+  "w": 423,
+  "h": 198,
+  "caption": "Dynamic Relocation: Hardware Requirements"
+ },
+ {
+  "key": "vm-mechanism",
+  "n": 4,
+  "page": 10,
+  "x": 134,
+  "y": 130,
+  "w": 421,
+  "h": 111,
+  "caption": "Dynamic Relocation: Operating System Responsibilities"
+ },
+ {
+  "key": "vm-mechanism",
+  "n": 5,
+  "page": 11,
+  "x": 90,
+  "y": 132,
+  "w": 430,
+  "h": 180,
+  "caption": "Limited Direct Execution (Dynamic Relocation) @ Boot"
+ },
+ {
+  "key": "vm-mechanism",
+  "n": 6,
+  "page": 12,
+  "x": 132,
+  "y": 130,
+  "w": 426,
+  "h": 678,
+  "caption": "Limited Direct Execution (Dynamic Relocation) @ Runtime"
+ },
+ {
+  "key": "vm-segmentation",
+  "n": 1,
+  "page": 2,
+  "x": 262,
+  "y": 130,
+  "w": 196,
+  "h": 525,
+  "caption": "An Address Space (Again)"
+ },
+ {
+  "key": "vm-segmentation",
+  "n": 2,
+  "page": 3,
+  "x": 215,
+  "y": 133,
+  "w": 185,
+  "h": 280,
+  "caption": "Placing Segments In Physical Memory"
+ },
+ {
+  "key": "vm-segmentation",
+  "n": 3,
+  "page": 3,
+  "x": 225,
+  "y": 588,
+  "w": 160,
+  "h": 73,
+  "caption": "Segment Register Values"
+ },
+ {
+  "key": "vm-segmentation",
+  "n": 4,
+  "page": 6,
+  "x": 182,
+  "y": 435,
+  "w": 326,
+  "h": 75,
+  "caption": "Segment Registers (With Negative-Growth Support)"
+ },
+ {
+  "key": "vm-segmentation",
+  "n": 5,
+  "page": 7,
+  "x": 90,
+  "y": 426,
+  "w": 430,
+  "h": 76,
+  "caption": "Segment Register Values (with Protection)"
+ },
+ {
+  "key": "vm-segmentation",
+  "n": 6,
+  "page": 8,
+  "x": 142,
+  "y": 133,
+  "w": 380,
+  "h": 313,
+  "caption": "Non-compacted and Compacted Memory"
+ },
+ {
+  "key": "vm-freespace",
+  "n": 1,
+  "page": 5,
+  "x": 75,
+  "y": 120,
+  "w": 510,
+  "h": 147,
+  "caption": "An Allocated Region Plus Header"
+ },
+ {
+  "key": "vm-freespace",
+  "n": 2,
+  "page": 5,
+  "x": 75,
+  "y": 297,
+  "w": 510,
+  "h": 157,
+  "caption": "Specific Contents Of The Header"
+ },
+ {
+  "key": "vm-freespace",
+  "n": 3,
+  "page": 7,
+  "x": 75,
+  "y": 120,
+  "w": 510,
+  "h": 147,
+  "caption": "A Heap With One Free Chunk"
+ },
+ {
+  "key": "vm-freespace",
+  "n": 4,
+  "page": 7,
+  "x": 75,
+  "y": 295,
+  "w": 510,
+  "h": 286,
+  "caption": "A Heap: After One Allocation"
+ },
+ {
+  "key": "vm-freespace",
+  "n": 5,
+  "page": 8,
+  "x": 75,
+  "y": 120,
+  "w": 510,
+  "h": 525,
+  "caption": "Free Space With Three Chunks Allocated"
+ },
+ {
+  "key": "vm-freespace",
+  "n": 6,
+  "page": 9,
+  "x": 75,
+  "y": 120,
+  "w": 510,
+  "h": 529,
+  "caption": "Free Space With Two Chunks Allocated"
+ },
+ {
+  "key": "vm-freespace",
+  "n": 7,
+  "page": 10,
+  "x": 75,
+  "y": 120,
+  "w": 510,
+  "h": 525,
+  "caption": "A Non-Coalesced Free List"
+ },
+ {
+  "key": "vm-freespace",
+  "n": 8,
+  "page": 15,
+  "x": 75,
+  "y": 120,
+  "w": 510,
+  "h": 228,
+  "caption": "Example Buddy-managed Heap"
+ },
+ {
+  "key": "vm-paging",
+  "n": 1,
+  "page": 2,
+  "x": 183,
+  "y": 135,
+  "w": 318,
+  "h": 153,
+  "caption": "A Simple 64-byte Address Space"
+ },
+ {
+  "key": "vm-paging",
+  "n": 2,
+  "page": 2,
+  "x": 169,
+  "y": 516,
+  "w": 338,
+  "h": 288,
+  "caption": "A 64-Byte Address Space In A 128-Byte Physical Memory"
+ },
+ {
+  "key": "vm-paging",
+  "n": 3,
+  "page": 4,
+  "x": 193,
+  "y": 555,
+  "w": 269,
+  "h": 243,
+  "caption": "The Address Translation Process"
+ },
+ {
+  "key": "vm-paging",
+  "n": 4,
+  "page": 5,
+  "x": 132,
+  "y": 133,
+  "w": 330,
+  "h": 282,
+  "caption": "Example: Page Table in Kernel Physical Memory"
+ },
+ {
+  "key": "vm-paging",
+  "n": 5,
+  "page": 7,
+  "x": 87,
+  "y": 126,
+  "w": 435,
+  "h": 51,
+  "caption": "An x86 Page Table Entry (PTE)"
+ },
+ {
+  "key": "vm-paging",
+  "n": 6,
+  "page": 9,
+  "x": 57,
+  "y": 127,
+  "w": 461,
+  "h": 293,
+  "caption": "Accessing Memory With Paging"
+ },
+ {
+  "key": "vm-paging",
+  "n": 7,
+  "page": 11,
+  "x": 67,
+  "y": 129,
+  "w": 458,
+  "h": 374,
+  "caption": "A Virtual (And Physical) Memory Trace"
+ },
+ {
+  "key": "vm-tlbs",
+  "n": 1,
+  "page": 2,
+  "x": 90,
+  "y": 123,
+  "w": 490,
+  "h": 291,
+  "caption": "TLB Control Flow Algorithm"
+ },
+ {
+  "key": "vm-tlbs",
+  "n": 2,
+  "page": 4,
+  "x": 204,
+  "y": 126,
+  "w": 258,
+  "h": 333,
+  "caption": "Example: An Array In A Tiny Address Space"
+ },
+ {
+  "key": "vm-tlbs",
+  "n": 3,
+  "page": 6,
+  "x": 90,
+  "y": 123,
+  "w": 490,
+  "h": 174,
+  "caption": "TLB Control Flow Algorithm (OS Handled)"
+ },
+ {
+  "key": "vm-tlbs",
+  "n": 4,
+  "page": 11,
+  "x": 172,
+  "y": 750,
+  "w": 345,
+  "h": 60,
+  "caption": "A MIPS TLB Entry"
+ },
+ {
+  "key": "vm-tlbs",
+  "n": 5,
+  "page": 15,
+  "x": 132,
+  "y": 558,
+  "w": 363,
+  "h": 276,
+  "caption": "Discovering TLB Sizes and Miss Costs"
+ },
+ {
+  "key": "vm-smalltables",
+  "n": 1,
+  "page": 3,
+  "x": 122,
+  "y": 134,
+  "w": 345,
+  "h": 330,
+  "caption": "A 16KB Address Space With 1KB Pages"
+ },
+ {
+  "key": "vm-smalltables",
+  "n": 2,
+  "page": 3,
+  "x": 177,
+  "y": 501,
+  "w": 252,
+  "h": 260,
+  "caption": "A Page Table For 16KB Address Space"
+ },
+ {
+  "key": "vm-smalltables",
+  "n": 3,
+  "page": 6,
+  "x": 100,
+  "y": 137,
+  "w": 485,
+  "h": 239,
+  "caption": "Linear (Left) And Multi-Level (Right) Page Tables"
+ },
+ {
+  "key": "vm-smalltables",
+  "n": 4,
+  "page": 8,
+  "x": 239,
+  "y": 142,
+  "w": 182,
+  "h": 236,
+  "caption": "A 16KB Address Space With 64-byte Pages"
+ },
+ {
+  "key": "vm-smalltables",
+  "n": 5,
+  "page": 9,
+  "x": 109,
+  "y": 545,
+  "w": 387,
+  "h": 258,
+  "caption": "A Page Directory, And Pieces Of Page Table"
+ },
+ {
+  "key": "vm-smalltables",
+  "n": 6,
+  "page": 12,
+  "x": 99,
+  "y": 127,
+  "w": 465,
+  "h": 431,
+  "caption": "Multi-level Page Table Control Flow"
+ },
+ {
+  "key": "vm-beyondphys",
+  "n": 1,
+  "page": 3,
+  "x": 58,
+  "y": 141,
+  "w": 463,
+  "h": 135,
+  "caption": "Physical Memory and Swap Space"
+ },
+ {
+  "key": "vm-beyondphys",
+  "n": 2,
+  "page": 6,
+  "x": 101,
+  "y": 132,
+  "w": 455,
+  "h": 347,
+  "caption": "Page-Fault Control Flow Algorithm (Hardware)"
+ },
+ {
+  "key": "vm-beyondphys",
+  "n": 3,
+  "page": 7,
+  "x": 60,
+  "y": 132,
+  "w": 448,
+  "h": 107,
+  "caption": "Page-Fault Control Flow Algorithm (Software)"
+ },
+ {
+  "key": "vm-beyondphys-policy",
+  "n": 1,
+  "page": 3,
+  "x": 166,
+  "y": 631,
+  "w": 275,
+  "h": 192,
+  "caption": "Tracing The Optimal Policy"
+ },
+ {
+  "key": "vm-beyondphys-policy",
+  "n": 2,
+  "page": 5,
+  "x": 147,
+  "y": 135,
+  "w": 312,
+  "h": 191,
+  "caption": "Tracing The FIFO Policy"
+ },
+ {
+  "key": "vm-beyondphys-policy",
+  "n": 3,
+  "page": 6,
+  "x": 207,
+  "y": 135,
+  "w": 275,
+  "h": 191,
+  "caption": "Tracing The Random Policy"
+ },
+ {
+  "key": "vm-beyondphys-policy",
+  "n": 4,
+  "page": 6,
+  "x": 211,
+  "y": 641,
+  "w": 278,
+  "h": 154,
+  "caption": "Random Performance Over 10,000 Trials"
+ },
+ {
+  "key": "vm-beyondphys-policy",
+  "n": 5,
+  "page": 7,
+  "x": 155,
+  "y": 135,
+  "w": 297,
+  "h": 191,
+  "caption": "Tracing The LRU Policy"
+ },
+ {
+  "key": "vm-beyondphys-policy",
+  "n": 6,
+  "page": 9,
+  "x": 140,
+  "y": 137,
+  "w": 313,
+  "h": 306,
+  "caption": "The No-Locality Workload"
+ },
+ {
+  "key": "vm-beyondphys-policy",
+  "n": 7,
+  "page": 10,
+  "x": 182,
+  "y": 137,
+  "w": 313,
+  "h": 306,
+  "caption": "The 80-20 Workload"
+ },
+ {
+  "key": "vm-beyondphys-policy",
+  "n": 8,
+  "page": 11,
+  "x": 140,
+  "y": 137,
+  "w": 313,
+  "h": 306,
+  "caption": "The Looping Workload"
+ },
+ {
+  "key": "vm-beyondphys-policy",
+  "n": 9,
+  "page": 13,
+  "x": 140,
+  "y": 137,
+  "w": 313,
+  "h": 306,
+  "caption": "The 80-20 Workload With Clock"
+ },
+ {
+  "key": "vm-complete",
+  "n": 1,
+  "page": 4,
+  "x": 261,
+  "y": 143,
+  "w": 250,
+  "h": 546,
+  "caption": "The VAX/VMS Address Space"
+ },
+ {
+  "key": "vm-complete",
+  "n": 2,
+  "page": 9,
+  "x": 168,
+  "y": 144,
+  "w": 273,
+  "h": 273,
+  "caption": "The Linux Address Space"
+ },
+ {
+  "key": "threads-intro",
+  "n": 1,
+  "page": 2,
+  "x": 96,
+  "y": 141,
+  "w": 451,
+  "h": 274,
+  "caption": "Single-Threaded And Multi-Threaded Address Spaces"
+ },
+ {
+  "key": "threads-intro",
+  "n": 2,
+  "page": 4,
+  "x": 104,
+  "y": 135,
+  "w": 385,
+  "h": 355,
+  "caption": "Simple Thread Creation Code (t0.c)"
+ },
+ {
+  "key": "threads-intro",
+  "n": 3,
+  "page": 5,
+  "x": 154,
+  "y": 136,
+  "w": 298,
+  "h": 197,
+  "caption": "Thread Trace (1)"
+ },
+ {
+  "key": "threads-intro",
+  "n": 4,
+  "page": 5,
+  "x": 149,
+  "y": 388,
+  "w": 308,
+  "h": 226,
+  "caption": "Thread Trace (2)"
+ },
+ {
+  "key": "threads-intro",
+  "n": 5,
+  "page": 6,
+  "x": 184,
+  "y": 136,
+  "w": 323,
+  "h": 212,
+  "caption": "Thread Trace (3)"
+ },
+ {
+  "key": "threads-intro",
+  "n": 6,
+  "page": 7,
+  "x": 61,
+  "y": 135,
+  "w": 442,
+  "h": 609,
+  "caption": "Sharing Data: Uh Oh (t1.c)"
+ },
+ {
+  "key": "threads-intro",
+  "n": 7,
+  "page": 10,
+  "x": 129,
+  "y": 137,
+  "w": 467,
+  "h": 222,
+  "caption": "The Problem: Up Close and Personal"
+ },
+ {
+  "key": "threads-api",
+  "n": 1,
+  "page": 3,
+  "x": 61,
+  "y": 135,
+  "w": 467,
+  "h": 312,
+  "caption": "Creating a Thread"
+ },
+ {
+  "key": "threads-api",
+  "n": 2,
+  "page": 4,
+  "x": 104,
+  "y": 135,
+  "w": 433,
+  "h": 295,
+  "caption": "Waiting for Thread Completion"
+ },
+ {
+  "key": "threads-api",
+  "n": 3,
+  "page": 5,
+  "x": 87,
+  "y": 135,
+  "w": 425,
+  "h": 205,
+  "caption": "Simpler Argument Passing to a Thread"
+ },
+ {
+  "key": "threads-api",
+  "n": 4,
+  "page": 7,
+  "x": 87,
+  "y": 134,
+  "w": 443,
+  "h": 71,
+  "caption": "An Example Wrapper"
+ },
+ {
+  "key": "threads-locks",
+  "n": 1,
+  "page": 5,
+  "x": 62,
+  "y": 135,
+  "w": 396,
+  "h": 233,
+  "caption": "First Attempt: A Simple Flag"
+ },
+ {
+  "key": "threads-locks",
+  "n": 2,
+  "page": 6,
+  "x": 150,
+  "y": 135,
+  "w": 388,
+  "h": 134,
+  "caption": "Trace: No Mutual Exclusion"
+ },
+ {
+  "key": "threads-locks",
+  "n": 3,
+  "page": 8,
+  "x": 104,
+  "y": 135,
+  "w": 380,
+  "h": 246,
+  "caption": "A Simple Spin Lock Using Test-and-set"
+ },
+ {
+  "key": "threads-locks",
+  "n": 4,
+  "page": 10,
+  "x": 107,
+  "y": 135,
+  "w": 430,
+  "h": 83,
+  "caption": "Compare-and-swap"
+ },
+ {
+  "key": "threads-locks",
+  "n": 5,
+  "page": 11,
+  "x": 62,
+  "y": 648,
+  "w": 426,
+  "h": 172,
+  "caption": "Load-linked And Store-conditional"
+ },
+ {
+  "key": "threads-locks",
+  "n": 6,
+  "page": 12,
+  "x": 104,
+  "y": 135,
+  "w": 438,
+  "h": 186,
+  "caption": "Using LL/SC To Build A Lock"
+ },
+ {
+  "key": "threads-locks",
+  "n": 7,
+  "page": 14,
+  "x": 104,
+  "y": 135,
+  "w": 377,
+  "h": 276,
+  "caption": "Ticket Locks"
+ },
+ {
+  "key": "threads-locks",
+  "n": 8,
+  "page": 15,
+  "x": 62,
+  "y": 135,
+  "w": 320,
+  "h": 171,
+  "caption": "Lock With Test-and-set And Yield"
+ },
+ {
+  "key": "threads-locks",
+  "n": 9,
+  "page": 16,
+  "x": 104,
+  "y": 135,
+  "w": 438,
+  "h": 515,
+  "caption": "Lock With Queues, Test-and-set, Yield, And Wakeup"
+ },
+ {
+  "key": "threads-locks",
+  "n": 10,
+  "page": 19,
+  "x": 61,
+  "y": 135,
+  "w": 454,
+  "h": 444,
+  "caption": "Linux-based Futex Locks"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 1,
+  "page": 2,
+  "x": 104,
+  "y": 135,
+  "w": 265,
+  "h": 279,
+  "caption": "A Counter Without Locks"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 2,
+  "page": 3,
+  "x": 61,
+  "y": 135,
+  "w": 338,
+  "h": 414,
+  "caption": "A Counter With Locks"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 3,
+  "page": 4,
+  "x": 189,
+  "y": 135,
+  "w": 311,
+  "h": 135,
+  "caption": "Tracing the Approximate Counters"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 4,
+  "page": 5,
+  "x": 61,
+  "y": 135,
+  "w": 444,
+  "h": 668,
+  "caption": "Approximate Counter Implementation"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 5,
+  "page": 6,
+  "x": 191,
+  "y": 167,
+  "w": 308,
+  "h": 233,
+  "caption": "Performance of Traditional vs. Approximate Counters"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 6,
+  "page": 6,
+  "x": 156,
+  "y": 421,
+  "w": 358,
+  "h": 250,
+  "caption": "Scaling Approximate Counters"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 7,
+  "page": 8,
+  "x": 103,
+  "y": 134,
+  "w": 370,
+  "h": 670,
+  "caption": "Concurrent Linked List"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 8,
+  "page": 9,
+  "x": 61,
+  "y": 135,
+  "w": 396,
+  "h": 519,
+  "caption": "Concurrent Linked List: Rewritten"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 9,
+  "page": 11,
+  "x": 61,
+  "y": 135,
+  "w": 386,
+  "h": 668,
+  "caption": "Michael and Scott Concurrent Queue"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 10,
+  "page": 12,
+  "x": 104,
+  "y": 135,
+  "w": 438,
+  "h": 280,
+  "caption": "A Concurrent Hash Table"
+ },
+ {
+  "key": "threads-locks-usage",
+  "n": 11,
+  "page": 13,
+  "x": 149,
+  "y": 167,
+  "w": 308,
+  "h": 235,
+  "caption": "Scaling Hash Tables"
+ },
+ {
+  "key": "threads-cv",
+  "n": 1,
+  "page": 1,
+  "x": 62,
+  "y": 474,
+  "w": 436,
+  "h": 219,
+  "caption": "A Parent Waiting For Its Child"
+ },
+ {
+  "key": "threads-cv",
+  "n": 2,
+  "page": 2,
+  "x": 104,
+  "y": 135,
+  "w": 436,
+  "h": 250,
+  "caption": "Parent Waiting For Child: Spin-based Approach"
+ },
+ {
+  "key": "threads-cv",
+  "n": 3,
+  "page": 3,
+  "x": 61,
+  "y": 135,
+  "w": 394,
+  "h": 474,
+  "caption": "Parent Waiting For Child: Use A Condition Variable"
+ },
+ {
+  "key": "threads-cv",
+  "n": 4,
+  "page": 4,
+  "x": 104,
+  "y": 636,
+  "w": 264,
+  "h": 160,
+  "caption": "Parent Waiting: No State Variable"
+ },
+ {
+  "key": "threads-cv",
+  "n": 5,
+  "page": 5,
+  "x": 65,
+  "y": 135,
+  "w": 261,
+  "h": 130,
+  "caption": "Parent Waiting: No Lock"
+ },
+ {
+  "key": "threads-cv",
+  "n": 6,
+  "page": 6,
+  "x": 104,
+  "y": 135,
+  "w": 299,
+  "h": 205,
+  "caption": "The Put And Get Routines (v1)"
+ },
+ {
+  "key": "threads-cv",
+  "n": 7,
+  "page": 7,
+  "x": 62,
+  "y": 135,
+  "w": 289,
+  "h": 205,
+  "caption": "Producer/Consumer Threads (v1)"
+ },
+ {
+  "key": "threads-cv",
+  "n": 8,
+  "page": 8,
+  "x": 104,
+  "y": 134,
+  "w": 436,
+  "h": 415,
+  "caption": "Producer/Consumer: Single CV And If Statement"
+ },
+ {
+  "key": "threads-cv",
+  "n": 9,
+  "page": 9,
+  "x": 90,
+  "y": 135,
+  "w": 426,
+  "h": 297,
+  "caption": "Thread Trace: Broken Solution (v1)"
+ },
+ {
+  "key": "threads-cv",
+  "n": 10,
+  "page": 10,
+  "x": 104,
+  "y": 134,
+  "w": 436,
+  "h": 415,
+  "caption": "Producer/Consumer: Single CV And While"
+ },
+ {
+  "key": "threads-cv",
+  "n": 11,
+  "page": 11,
+  "x": 87,
+  "y": 136,
+  "w": 432,
+  "h": 387,
+  "caption": "Thread Trace: Broken Solution (v2)"
+ },
+ {
+  "key": "threads-cv",
+  "n": 12,
+  "page": 12,
+  "x": 104,
+  "y": 134,
+  "w": 393,
+  "h": 400,
+  "caption": "Producer/Consumer: Two CVs And While"
+ },
+ {
+  "key": "threads-cv",
+  "n": 13,
+  "page": 13,
+  "x": 62,
+  "y": 135,
+  "w": 312,
+  "h": 235,
+  "caption": "The Correct Put And Get Routines"
+ },
+ {
+  "key": "threads-cv",
+  "n": 14,
+  "page": 13,
+  "x": 61,
+  "y": 382,
+  "w": 444,
+  "h": 424,
+  "caption": "The Correct Producer/Consumer Synchronization"
+ },
+ {
+  "key": "threads-cv",
+  "n": 15,
+  "page": 15,
+  "x": 61,
+  "y": 134,
+  "w": 412,
+  "h": 370,
+  "caption": "Covering Conditions: An Example"
+ },
+ {
+  "key": "threads-sema",
+  "n": 1,
+  "page": 2,
+  "x": 107,
+  "y": 173,
+  "w": 198,
+  "h": 41,
+  "caption": "Initializing A Semaphore"
+ },
+ {
+  "key": "threads-sema",
+  "n": 2,
+  "page": 2,
+  "x": 107,
+  "y": 667,
+  "w": 457,
+  "h": 144,
+  "caption": "Semaphore: Definitions Of Wait And Post"
+ },
+ {
+  "key": "threads-sema",
+  "n": 3,
+  "page": 3,
+  "x": 65,
+  "y": 135,
+  "w": 433,
+  "h": 85,
+  "caption": "A Binary Semaphore (That Is, A Lock)"
+ },
+ {
+  "key": "threads-sema",
+  "n": 4,
+  "page": 3,
+  "x": 123,
+  "y": 682,
+  "w": 394,
+  "h": 120,
+  "caption": "Thread Trace: Single Thread Using A Semaphore"
+ },
+ {
+  "key": "threads-sema",
+  "n": 5,
+  "page": 4,
+  "x": 129,
+  "y": 137,
+  "w": 451,
+  "h": 300,
+  "caption": "Thread Trace: Two Threads Using A Semaphore"
+ },
+ {
+  "key": "threads-sema",
+  "n": 6,
+  "page": 5,
+  "x": 62,
+  "y": 135,
+  "w": 404,
+  "h": 249,
+  "caption": "A Parent Waiting For Its Child"
+ },
+ {
+  "key": "threads-sema",
+  "n": 7,
+  "page": 6,
+  "x": 129,
+  "y": 137,
+  "w": 441,
+  "h": 180,
+  "caption": "Thread Trace: Parent Waiting For Child (Case 1)"
+ },
+ {
+  "key": "threads-sema",
+  "n": 8,
+  "page": 6,
+  "x": 129,
+  "y": 356,
+  "w": 441,
+  "h": 180,
+  "caption": "Thread Trace: Parent Waiting For Child (Case 2)"
+ },
+ {
+  "key": "threads-sema",
+  "n": 9,
+  "page": 7,
+  "x": 62,
+  "y": 608,
+  "w": 338,
+  "h": 203,
+  "caption": "The Put And Get Routines"
+ },
+ {
+  "key": "threads-sema",
+  "n": 10,
+  "page": 8,
+  "x": 104,
+  "y": 135,
+  "w": 396,
+  "h": 413,
+  "caption": "Adding The Full And Empty Conditions"
+ },
+ {
+  "key": "threads-sema",
+  "n": 11,
+  "page": 9,
+  "x": 61,
+  "y": 135,
+  "w": 450,
+  "h": 324,
+  "caption": "Adding Mutual Exclusion (Incorrectly)"
+ },
+ {
+  "key": "threads-sema",
+  "n": 12,
+  "page": 10,
+  "x": 104,
+  "y": 135,
+  "w": 449,
+  "h": 324,
+  "caption": "Adding Mutual Exclusion (Correctly)"
+ },
+ {
+  "key": "threads-sema",
+  "n": 13,
+  "page": 12,
+  "x": 104,
+  "y": 135,
+  "w": 460,
+  "h": 519,
+  "caption": "A Simple Reader-Writer Lock"
+ },
+ {
+  "key": "threads-sema",
+  "n": 14,
+  "page": 14,
+  "x": 218,
+  "y": 150,
+  "w": 264,
+  "h": 262,
+  "caption": "The Dining Philosophers"
+ },
+ {
+  "key": "threads-sema",
+  "n": 15,
+  "page": 15,
+  "x": 65,
+  "y": 135,
+  "w": 269,
+  "h": 130,
+  "caption": "The get_forks() And put_forks() Routines"
+ },
+ {
+  "key": "threads-sema",
+  "n": 16,
+  "page": 15,
+  "x": 65,
+  "y": 284,
+  "w": 426,
+  "h": 151,
+  "caption": "Breaking The Dependency In get_forks()"
+ },
+ {
+  "key": "threads-sema",
+  "n": 17,
+  "page": 17,
+  "x": 61,
+  "y": 135,
+  "w": 329,
+  "h": 399,
+  "caption": "Implementing Zemaphores With Locks And CVs"
+ },
+ {
+  "key": "threads-bugs",
+  "n": 1,
+  "page": 2,
+  "x": 153,
+  "y": 135,
+  "w": 382,
+  "h": 86,
+  "caption": "Bugs In Modern Applications"
+ },
+ {
+  "key": "threads-bugs",
+  "n": 2,
+  "page": 2,
+  "x": 107,
+  "y": 565,
+  "w": 323,
+  "h": 111,
+  "caption": "Atomicity Violation (atomicity.c)"
+ },
+ {
+  "key": "threads-bugs",
+  "n": 3,
+  "page": 3,
+  "x": 62,
+  "y": 347,
+  "w": 329,
+  "h": 206,
+  "caption": "Atomicity Violation Fixed (atomicity_fixed.c)"
+ },
+ {
+  "key": "threads-bugs",
+  "n": 4,
+  "page": 3,
+  "x": 65,
+  "y": 673,
+  "w": 350,
+  "h": 130,
+  "caption": "Ordering Bug (ordering.c)"
+ },
+ {
+  "key": "threads-bugs",
+  "n": 5,
+  "page": 4,
+  "x": 104,
+  "y": 135,
+  "w": 433,
+  "h": 429,
+  "caption": "Fixing The Ordering Violation (ordering_fixed.c)"
+ },
+ {
+  "key": "threads-bugs",
+  "n": 6,
+  "page": 5,
+  "x": 103,
+  "y": 649,
+  "w": 409,
+  "h": 42,
+  "caption": "Simple Deadlock (deadlock.c)"
+ },
+ {
+  "key": "threads-bugs",
+  "n": 7,
+  "page": 6,
+  "x": 247,
+  "y": 145,
+  "w": 196,
+  "h": 197,
+  "caption": "The Deadlock Dependency Graph"
+ },
+ {
+  "key": "threads-events",
+  "n": 1,
+  "page": 4,
+  "x": 104,
+  "y": 135,
+  "w": 482,
+  "h": 459,
+  "caption": "Simple Code Using select()"
+ },
+ {
+  "key": "file-devices",
+  "n": 1,
+  "page": 2,
+  "x": 161,
+  "y": 163,
+  "w": 386,
+  "h": 330,
+  "caption": "Prototypical System Architecture"
+ },
+ {
+  "key": "file-devices",
+  "n": 2,
+  "page": 3,
+  "x": 131,
+  "y": 152,
+  "w": 343,
+  "h": 284,
+  "caption": "Modern System Architecture"
+ },
+ {
+  "key": "file-devices",
+  "n": 3,
+  "page": 4,
+  "x": 170,
+  "y": 150,
+  "w": 343,
+  "h": 103,
+  "caption": "A Canonical Device"
+ },
+ {
+  "key": "file-devices",
+  "n": 4,
+  "page": 9,
+  "x": 106,
+  "y": 146,
+  "w": 403,
+  "h": 162,
+  "caption": "The File System Stack"
+ },
+ {
+  "key": "file-devices",
+  "n": 5,
+  "page": 10,
+  "x": 129,
+  "y": 135,
+  "w": 424,
+  "h": 443,
+  "caption": "The IDE Interface"
+ },
+ {
+  "key": "file-devices",
+  "n": 6,
+  "page": 12,
+  "x": 129,
+  "y": 135,
+  "w": 449,
+  "h": 648,
+  "caption": "The xv6 IDE Disk Driver (Simplified)"
+ },
+ {
+  "key": "file-disks",
+  "n": 1,
+  "page": 2,
+  "x": 292,
+  "y": 137,
+  "w": 117,
+  "h": 117,
+  "caption": "A Disk With Just A Single Track"
+ },
+ {
+  "key": "file-disks",
+  "n": 2,
+  "page": 3,
+  "x": 224,
+  "y": 152,
+  "w": 144,
+  "h": 149,
+  "caption": "A Single Track Plus A Head"
+ },
+ {
+  "key": "file-disks",
+  "n": 3,
+  "page": 4,
+  "x": 155,
+  "y": 138,
+  "w": 391,
+  "h": 204,
+  "caption": "Three Tracks Plus A Head (Right: With Seek)"
+ },
+ {
+  "key": "file-disks",
+  "n": 4,
+  "page": 5,
+  "x": 220,
+  "y": 138,
+  "w": 177,
+  "h": 210,
+  "caption": "Three Tracks: Track Skew Of 2"
+ },
+ {
+  "key": "file-disks",
+  "n": 5,
+  "page": 7,
+  "x": 162,
+  "y": 135,
+  "w": 282,
+  "h": 116,
+  "caption": "Disk Drive Specs: SCSI Versus SATA"
+ },
+ {
+  "key": "file-disks",
+  "n": 6,
+  "page": 8,
+  "x": 207,
+  "y": 588,
+  "w": 274,
+  "h": 45,
+  "caption": "Disk Drive Performance: SCSI Versus SATA"
+ },
+ {
+  "key": "file-disks",
+  "n": 7,
+  "page": 10,
+  "x": 262,
+  "y": 138,
+  "w": 177,
+  "h": 210,
+  "caption": "SSTF: Scheduling Requests 21 And 2"
+ },
+ {
+  "key": "file-disks",
+  "n": 8,
+  "page": 12,
+  "x": 262,
+  "y": 594,
+  "w": 177,
+  "h": 210,
+  "caption": "SSTF: Sometimes Not Good Enough"
+ },
+ {
+  "key": "file-raid",
+  "n": 1,
+  "page": 4,
+  "x": 234,
+  "y": 408,
+  "w": 222,
+  "h": 71,
+  "caption": "RAID-0: Simple Striping"
+ },
+ {
+  "key": "file-raid",
+  "n": 2,
+  "page": 4,
+  "x": 194,
+  "y": 664,
+  "w": 308,
+  "h": 91,
+  "caption": "Striping With A Bigger Chunk Size"
+ },
+ {
+  "key": "file-raid",
+  "n": 3,
+  "page": 8,
+  "x": 234,
+  "y": 165,
+  "w": 222,
+  "h": 83,
+  "caption": "Simple RAID-1: Mirroring"
+ },
+ {
+  "key": "file-raid",
+  "n": 4,
+  "page": 10,
+  "x": 206,
+  "y": 550,
+  "w": 278,
+  "h": 90,
+  "caption": "RAID-4 With Parity"
+ },
+ {
+  "key": "file-raid",
+  "n": 5,
+  "page": 12,
+  "x": 206,
+  "y": 135,
+  "w": 278,
+  "h": 74,
+  "caption": "Full-stripe Writes In RAID-4"
+ },
+ {
+  "key": "file-raid",
+  "n": 6,
+  "page": 13,
+  "x": 164,
+  "y": 584,
+  "w": 278,
+  "h": 86,
+  "caption": "Example: Writes To 4, 13, And Respective Parity Blocks"
+ },
+ {
+  "key": "file-raid",
+  "n": 7,
+  "page": 14,
+  "x": 206,
+  "y": 487,
+  "w": 278,
+  "h": 108,
+  "caption": "RAID-5 With Rotated Parity"
+ },
+ {
+  "key": "file-raid",
+  "n": 8,
+  "page": 15,
+  "x": 87,
+  "y": 137,
+  "w": 436,
+  "h": 181,
+  "caption": "RAID Capacity, Reliability, and Performance"
+ },
+ {
+  "key": "file-intro",
+  "n": 1,
+  "page": 2,
+  "x": 215,
+  "y": 166,
+  "w": 261,
+  "h": 207,
+  "caption": "An Example Directory Tree"
+ },
+ {
+  "key": "file-intro",
+  "n": 2,
+  "page": 10,
+  "x": 130,
+  "y": 135,
+  "w": 359,
+  "h": 205,
+  "caption": "Shared Parent/Child File Table Entries (fork-seek.c)"
+ },
+ {
+  "key": "file-intro",
+  "n": 3,
+  "page": 11,
+  "x": 120,
+  "y": 145,
+  "w": 376,
+  "h": 346,
+  "caption": "Processes Sharing An Open File Table Entry"
+ },
+ {
+  "key": "file-intro",
+  "n": 4,
+  "page": 11,
+  "x": 88,
+  "y": 697,
+  "w": 394,
+  "h": 115,
+  "caption": "Shared File Table Entry With dup() (dup.c)"
+ },
+ {
+  "key": "file-intro",
+  "n": 5,
+  "page": 15,
+  "x": 88,
+  "y": 134,
+  "w": 443,
+  "h": 220,
+  "caption": "The stat structure."
+ },
+ {
+  "key": "file-implementation",
+  "n": 1,
+  "page": 6,
+  "x": 129,
+  "y": 135,
+  "w": 441,
+  "h": 250,
+  "caption": "Simplified Ext2 Inode"
+ },
+ {
+  "key": "file-implementation",
+  "n": 2,
+  "page": 8,
+  "x": 129,
+  "y": 137,
+  "w": 439,
+  "h": 118,
+  "caption": "File System Measurement Summary"
+ },
+ {
+  "key": "file-implementation",
+  "n": 3,
+  "page": 11,
+  "x": 87,
+  "y": 135,
+  "w": 418,
+  "h": 244,
+  "caption": "File Read Timeline (Time Increasing Downward)"
+ },
+ {
+  "key": "file-implementation",
+  "n": 4,
+  "page": 13,
+  "x": 87,
+  "y": 135,
+  "w": 441,
+  "h": 400,
+  "caption": "File Creation Timeline (Time Increasing Downward)"
+ },
+ {
+  "key": "file-ffs",
+  "n": 1,
+  "page": 7,
+  "x": 148,
+  "y": 138,
+  "w": 289,
+  "h": 285,
+  "caption": "FFS Locality For SEER Traces"
+ },
+ {
+  "key": "file-ffs",
+  "n": 2,
+  "page": 10,
+  "x": 207,
+  "y": 142,
+  "w": 271,
+  "h": 263,
+  "caption": "Amortization: How Big Do Chunks Have To Be?"
+ },
+ {
+  "key": "file-ffs",
+  "n": 3,
+  "page": 11,
+  "x": 166,
+  "y": 149,
+  "w": 274,
+  "h": 123,
+  "caption": "FFS: Standard Versus Parameterized Placement"
+ },
+ {
+  "key": "file-journaling",
+  "n": 1,
+  "page": 16,
+  "x": 151,
+  "y": 135,
+  "w": 387,
+  "h": 181,
+  "caption": "Data Journaling Timeline"
+ },
+ {
+  "key": "file-journaling",
+  "n": 2,
+  "page": 17,
+  "x": 150,
+  "y": 135,
+  "w": 315,
+  "h": 167,
+  "caption": "Metadata Journaling Timeline"
+ },
+ {
+  "key": "file-ssd",
+  "n": 1,
+  "page": 2,
+  "x": 159,
+  "y": 733,
+  "w": 316,
+  "h": 63,
+  "caption": "A Simple Flash Chip: Pages Within Blocks"
+ },
+ {
+  "key": "file-ssd",
+  "n": 2,
+  "page": 5,
+  "x": 173,
+  "y": 135,
+  "w": 261,
+  "h": 76,
+  "caption": "Raw Flash Performance Characteristics"
+ },
+ {
+  "key": "file-ssd",
+  "n": 3,
+  "page": 7,
+  "x": 120,
+  "y": 135,
+  "w": 346,
+  "h": 109,
+  "caption": "A Flash-based SSD: Logical Diagram"
+ },
+ {
+  "key": "file-ssd",
+  "n": 4,
+  "page": 18,
+  "x": 137,
+  "y": 135,
+  "w": 416,
+  "h": 107,
+  "caption": "SSDs And Hard Drives: Performance Comparison"
+ },
+ {
+  "key": "file-integrity",
+  "n": 1,
+  "page": 2,
+  "x": 246,
+  "y": 135,
+  "w": 198,
+  "h": 45,
+  "caption": "Frequency Of LSEs And Block Corruption"
+ },
+ {
+  "key": "dist-intro",
+  "n": 1,
+  "page": 3,
+  "x": 88,
+  "y": 134,
+  "w": 480,
+  "h": 431,
+  "caption": "Example UDP Code (client.c, server.c)"
+ },
+ {
+  "key": "dist-intro",
+  "n": 2,
+  "page": 4,
+  "x": 130,
+  "y": 135,
+  "w": 443,
+  "h": 654,
+  "caption": "A Simple UDP Library (udp.c)"
+ },
+ {
+  "key": "dist-intro",
+  "n": 3,
+  "page": 6,
+  "x": 148,
+  "y": 157,
+  "w": 385,
+  "h": 76,
+  "caption": "Message Plus Acknowledgment"
+ },
+ {
+  "key": "dist-intro",
+  "n": 4,
+  "page": 6,
+  "x": 148,
+  "y": 287,
+  "w": 385,
+  "h": 199,
+  "caption": "Message Plus Acknowledgment: Dropped Request"
+ },
+ {
+  "key": "dist-intro",
+  "n": 5,
+  "page": 7,
+  "x": 107,
+  "y": 143,
+  "w": 385,
+  "h": 227,
+  "caption": "Message Plus Acknowledgment: Dropped Reply"
+ },
+ {
+  "key": "dist-nfs",
+  "n": 1,
+  "page": 1,
+  "x": 50,
+  "y": 408,
+  "w": 548,
+  "h": 220,
+  "caption": "A Generic Client/Server System"
+ },
+ {
+  "key": "dist-nfs",
+  "n": 2,
+  "page": 2,
+  "x": 50,
+  "y": 637,
+  "w": 548,
+  "h": 74,
+  "caption": "Distributed File System Architecture"
+ },
+ {
+  "key": "dist-nfs",
+  "n": 3,
+  "page": 4,
+  "x": 50,
+  "y": 453,
+  "w": 548,
+  "h": 58,
+  "caption": "Client Code: Reading From A File"
+ },
+ {
+  "key": "dist-nfs",
+  "n": 4,
+  "page": 6,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 332,
+  "caption": "The NFS Protocol: Examples"
+ },
+ {
+  "key": "dist-nfs",
+  "n": 5,
+  "page": 8,
+  "x": 50,
+  "y": 673,
+  "w": 548,
+  "h": 77,
+  "caption": "Reading A File: Client-side And File Server Actions"
+ },
+ {
+  "key": "dist-nfs",
+  "n": 6,
+  "page": 10,
+  "x": 50,
+  "y": 129,
+  "w": 548,
+  "h": 346,
+  "caption": "The Three Types Of Loss"
+ },
+ {
+  "key": "dist-nfs",
+  "n": 7,
+  "page": 12,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 190,
+  "caption": "The Cache Consistency Problem"
+ },
+ {
+  "key": "dist-afs",
+  "n": 1,
+  "page": 2,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 134,
+  "caption": "AFSv1 Protocol Highlights"
+ },
+ {
+  "key": "dist-afs",
+  "n": 2,
+  "page": 5,
+  "x": 50,
+  "y": 371,
+  "w": 548,
+  "h": 346,
+  "caption": "Reading A File: Client-side And File Server Actions"
+ },
+ {
+  "key": "dist-afs",
+  "n": 3,
+  "page": 7,
+  "x": 50,
+  "y": 205,
+  "w": 548,
+  "h": 346,
+  "caption": "Cache Consistency Timeline"
+ },
+ {
+  "key": "dist-afs",
+  "n": 4,
+  "page": 9,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 235,
+  "caption": "Comparison: AFS vs. NFS"
+ },
+ {
+  "key": "security-authentication",
+  "n": 1,
+  "page": 14,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 271,
+  "caption": "Crossover Error Rate"
+ },
+ {
+  "key": "vm-intro",
+  "n": 1,
+  "page": 2,
+  "x": 246,
+  "y": 129,
+  "w": 187,
+  "h": 296,
+  "caption": "Operating Systems: The Early Days"
+ },
+ {
+  "key": "vm-intro",
+  "n": 2,
+  "page": 3,
+  "x": 205,
+  "y": 129,
+  "w": 187,
+  "h": 333,
+  "caption": "Three Processes: Sharing Memory"
+ },
+ {
+  "key": "vm-intro",
+  "n": 3,
+  "page": 4,
+  "x": 188,
+  "y": 129,
+  "w": 331,
+  "h": 346,
+  "caption": "An Example Address Space"
+ },
+ {
+  "key": "intro",
+  "n": 1,
+  "page": 3,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 339,
+  "caption": "Simple Example: Code That Loops And Prints (cpu.c)"
+ },
+ {
+  "key": "intro",
+  "n": 2,
+  "page": 4,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 248,
+  "caption": "Running Many Programs At Once"
+ },
+ {
+  "key": "intro",
+  "n": 3,
+  "page": 5,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 318,
+  "caption": "A Program That Accesses Memory (mem.c)"
+ },
+ {
+  "key": "intro",
+  "n": 4,
+  "page": 6,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 233,
+  "caption": "Running The Memory Program Multiple Times"
+ },
+ {
+  "key": "intro",
+  "n": 5,
+  "page": 7,
+  "x": 50,
+  "y": 286,
+  "w": 548,
+  "h": 346,
+  "caption": "A Multi-threaded Program (threads.c)"
+ },
+ {
+  "key": "intro",
+  "n": 6,
+  "page": 10,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 263,
+  "caption": "A Program That Does I/O (io.c)"
+ },
+ {
+  "key": "cpu-api",
+  "n": 1,
+  "page": 2,
+  "x": 50,
+  "y": 102,
+  "w": 548,
+  "h": 346,
+  "caption": "Calling fork() (p1.c)"
+ },
+ {
+  "key": "cpu-api",
+  "n": 2,
+  "page": 3,
+  "x": 50,
+  "y": 100,
+  "w": 548,
+  "h": 333,
+  "caption": "Calling fork() And wait() (p2.c)"
+ },
+ {
+  "key": "cpu-api",
+  "n": 3,
+  "page": 5,
+  "x": 50,
+  "y": 191,
+  "w": 548,
+  "h": 346,
+  "caption": "Calling fork(), wait(), And exec() (p3.c)"
+ },
+ {
+  "key": "cpu-api",
+  "n": 4,
+  "page": 8,
+  "x": 50,
+  "y": 236,
+  "w": 548,
+  "h": 346,
+  "caption": "All Of The Above With Redirection (p4.c)"
+ }
+]

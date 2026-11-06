@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="FHAGUU+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="FHAGUU+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="SUDCJY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="16" family="SUDCJY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="13" family="SXURMR+URWPalladioL" color="#000000"/>
+<text top="194" left="523" width="34" height="30" font="0">13</text>
+<text top="263" left="198" width="321" height="21" font="1">The Abstraction: Address Spaces</text>
+<text top="344" left="87" width="432" height="14" font="2">In the early days, building computer systems was easy. Why, you ask?</text>
+<text top="359" left="87" width="432" height="14" font="2">Because users didn’t expect much. It is those darned users with their</text>
+<text top="374" left="87" width="432" height="14" font="2">expectations of “ease of use”, “high performance”, “reliability”, etc., that</text>
+<text top="389" left="87" width="432" height="14" font="2">really have led to all these headaches. Next time you meet one of those</text>
+<text top="404" left="87" width="396" height="14" font="2">computer users, thank them for all the problems they have caused.</text>
+<text top="441" left="55" width="136" height="17" font="3">13.1 Early Systems</text>
+<text top="471" left="105" width="414" height="14" font="2">From the perspective of memory, early machines didn’t provide much</text>
+<text top="486" left="87" width="432" height="14" font="2">of an abstraction to users. Basically, the physical memory of the machine</text>
+<text top="501" left="87" width="352" height="14" font="2">looked something like what you see in Figure 13.1 (page 2).</text>
+<text top="516" left="105" width="414" height="14" font="2">The OS was a set of routines (a library, really) that sat in memory (start-</text>
+<text top="531" left="87" width="432" height="14" font="2">ing at physical address 0 in this example), and there would be one run-</text>
+<text top="546" left="87" width="432" height="14" font="2">ning program (a process) that currently sat in physical memory (starting</text>
+<text top="561" left="87" width="432" height="14" font="2">at physical address 64k in this example) and used the rest of memory.</text>
+<text top="576" left="87" width="432" height="14" font="2">There were few illusions here, and the user didn’t expect much from the</text>
+<text top="591" left="87" width="389" height="14" font="2">OS. Life was sure easy for OS developers in those days, wasn’t it?</text>
+<text top="628" left="55" width="307" height="17" font="3">13.2 Multiprogramming and Time Sharing</text>
+<text top="657" left="105" width="414" height="14" font="2">After a time, because machines were expensive, people began to share</text>
+<text top="672" left="87" width="252" height="14" font="2">machines more effectively. Thus the era of</text>
+<text top="672" left="342" width="118" height="13" font="4"><b>multiprogramming</b></text>
+<text top="672" left="464" width="55" height="14" font="2">was born</text>
+<text top="687" left="87" width="432" height="14" font="2">[DV66], in which multiple processes were ready to run at a given time,</text>
+<text top="702" left="87" width="432" height="14" font="2">and the OS would switch between them, for example when one decided</text>
+<text top="717" left="87" width="321" height="14" font="2">to perform an I/O. Doing so increased the effective</text>
+<text top="717" left="413" width="64" height="13" font="4"><b>utilization</b></text>
+<text top="717" left="483" width="36" height="14" font="2">of the</text>
+<text top="732" left="87" width="141" height="14" font="2">CPU. Such increases in</text>
+<text top="732" left="233" width="59" height="13" font="4"><b>efficiency</b></text>
+<text top="732" left="297" width="222" height="14" font="2">were particularly important in those</text>
+<text top="747" left="87" width="432" height="14" font="2">days where each machine cost hundreds of thousands or even millions of</text>
+<text top="762" left="87" width="310" height="14" font="2">dollars (and you thought your Mac was expensive!).</text>
+<text top="781" left="105" width="414" height="14" font="2">Soon enough, however, people began demanding more of machines,</text>
+<text top="796" left="87" width="83" height="14" font="2">and the era of</text>
+<text top="796" left="174" width="78" height="13" font="4"><b>time sharing</b></text>
+<text top="796" left="256" width="263" height="14" font="2">was born [S59, L60, M62, M83]. Specifically,</text>
+<text top="811" left="87" width="432" height="14" font="2">many realized the limitations of batch computing, particularly on pro-</text>
+<text top="826" left="87" width="432" height="14" font="2">grammers themselves [CV65], who were tired of long (and hence ineffec-</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="11" family="SUDCJY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="12" family="FHAGUU+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="7" size="12" family="SUDCJY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="SUDCJY+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="331" width="8" height="14" font="2">T</text>
+<text top="98" left="340" width="16" height="11" font="5">HE</text>
+<text top="96" left="360" width="10" height="14" font="2">A</text>
+<text top="98" left="372" width="76" height="11" font="5">BSTRACTION</text>
+<text top="96" left="448" width="19" height="14" font="2">: A</text>
+<text top="98" left="467" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="516" width="7" height="14" font="2">S</text>
+<text top="98" left="524" width="36" height="11" font="5">PACES</text>
+<text top="400" left="260" width="23" height="12" font="6">max</text>
+<text top="216" left="260" width="30" height="12" font="6">64KB</text>
+<text top="143" left="260" width="23" height="12" font="6">0KB</text>
+<text top="310" left="325" width="91" height="12" font="6">Current Program</text>
+<text top="322" left="324" width="92" height="12" font="6">(code, data, etc.)</text>
+<text top="163" left="321" width="98" height="12" font="6">Operating System</text>
+<text top="175" left="324" width="92" height="12" font="6">(code, data, etc.)</text>
+<text top="430" left="199" width="69" height="14" font="2">Figure 13.1:</text>
+<text top="430" left="272" width="219" height="13" font="4"><b>Operating Systems: The Early Days</b></text>
+<text top="459" left="129" width="258" height="14" font="2">tive) program-debug cycles. The notion of</text>
+<text top="459" left="392" width="75" height="13" font="4"><b>interactivity</b></text>
+<text top="459" left="471" width="90" height="14" font="2">became impor-</text>
+<text top="474" left="129" width="432" height="14" font="2">tant, as many users might be concurrently using a machine, each waiting</text>
+<text top="489" left="129" width="432" height="14" font="2">for (or hoping for) a timely response from their currently-executing tasks.</text>
+<text top="504" left="147" width="414" height="14" font="2">One way to implement time sharing would be to run one process for a</text>
+<text top="519" left="129" width="432" height="14" font="2">short while, giving it full access to all memory (Figure 13.1), then stop it,</text>
+<text top="534" left="129" width="432" height="14" font="2">save all of its state to some kind of disk (including all of physical mem-</text>
+<text top="549" left="129" width="432" height="14" font="2">ory), load some other process’s state, run it for a while, and thus imple-</text>
+<text top="564" left="129" width="338" height="14" font="2">ment some kind of crude sharing of the machine [M+63].</text>
+<text top="579" left="147" width="414" height="14" font="2">Unfortunately, this approach has a big problem: it is way too slow,</text>
+<text top="594" left="129" width="432" height="14" font="2">particularly as memory grows. While saving and restoring register-level</text>
+<text top="609" left="129" width="432" height="14" font="2">state (the PC, general-purpose registers, etc.) is relatively fast, saving the</text>
+<text top="624" left="129" width="432" height="14" font="2">entire contents of memory to disk is brutally non-performant. Thus, what</text>
+<text top="639" left="129" width="432" height="14" font="2">we’d rather do is leave processes in memory while switching between</text>
+<text top="654" left="129" width="432" height="14" font="2">them, allowing the OS to implement time sharing efficiently (as shown in</text>
+<text top="669" left="129" width="119" height="14" font="2">Figure 13.2, page 3).</text>
+<text top="684" left="147" width="414" height="14" font="2">In the diagram, there are three processes (A, B, and C) and each of</text>
+<text top="699" left="129" width="432" height="14" font="2">them have a small part of the 512KB physical memory carved out for</text>
+<text top="714" left="129" width="432" height="14" font="2">them. Assuming a single CPU, the OS chooses to run one of the processes</text>
+<text top="729" left="129" width="428" height="14" font="2">(say A), while the others (B and C) sit in the ready queue waiting to run.</text>
+<text top="744" left="147" width="414" height="14" font="2">As time sharing became more popular, you can probably guess that</text>
+<text top="759" left="129" width="432" height="14" font="2">new demands were placed on the operating system. In particular, allow-</text>
+<text top="773" left="129" width="385" height="14" font="2">ing multiple programs to reside concurrently in memory makes</text>
+<text top="774" left="518" width="43" height="13" font="4"><b>protec-</b></text>
+<text top="788" left="129" width="25" height="13" font="4"><b>tion</b></text>
+<text top="788" left="158" width="403" height="14" font="2">an important issue; you don’t want a process to be able to read, or</text>
+<text top="803" left="129" width="256" height="14" font="2">worse, write some other process’s memory.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="13" family="FTDTYW+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="10" size="9" family="SUDCJY+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="11" size="7" family="SUDCJY+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="5">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="5">BSTRACTION</text>
+<text top="96" left="204" width="19" height="14" font="2">: A</text>
+<text top="98" left="223" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="272" width="7" height="14" font="2">S</text>
+<text top="98" left="280" width="36" height="11" font="5">PACES</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="437" left="218" width="37" height="12" font="6">512KB</text>
+<text top="400" left="218" width="37" height="12" font="6">448KB</text>
+<text top="364" left="218" width="37" height="12" font="6">384KB</text>
+<text top="327" left="218" width="37" height="12" font="6">320KB</text>
+<text top="290" left="218" width="37" height="12" font="6">256KB</text>
+<text top="253" left="218" width="37" height="12" font="6">192KB</text>
+<text top="216" left="218" width="37" height="12" font="6">128KB</text>
+<text top="179" left="218" width="30" height="12" font="6">64KB</text>
+<text top="143" left="218" width="23" height="12" font="6">0KB</text>
+<text top="419" left="314" width="29" height="12" font="6">(free)</text>
+<text top="382" left="314" width="29" height="12" font="6">(free)</text>
+<text top="308" left="314" width="29" height="12" font="6">(free)</text>
+<text top="198" left="314" width="29" height="12" font="6">(free)</text>
+<text top="155" left="279" width="98" height="12" font="6">Operating System</text>
+<text top="167" left="283" width="92" height="12" font="6">(code, data, etc.)</text>
+<text top="339" left="301" width="56" height="12" font="6">Process A</text>
+<text top="351" left="283" width="92" height="12" font="6">(code, data, etc.)</text>
+<text top="265" left="301" width="56" height="12" font="6">Process B</text>
+<text top="278" left="283" width="92" height="12" font="6">(code, data, etc.)</text>
+<text top="229" left="300" width="57" height="12" font="6">Process C</text>
+<text top="241" left="283" width="92" height="12" font="6">(code, data, etc.)</text>
+<text top="473" left="162" width="69" height="14" font="2">Figure 13.2:</text>
+<text top="473" left="235" width="209" height="13" font="4"><b>Three Processes: Sharing Memory</b></text>
+<text top="499" left="55" width="172" height="17" font="3">13.3 The Address Space</text>
+<text top="529" left="105" width="414" height="14" font="2">However, we have to keep those pesky users in mind, and doing so</text>
+<text top="544" left="87" width="165" height="14" font="2">requires the OS to create an</text>
+<text top="544" left="256" width="68" height="13" font="4"><b>easy to use</b></text>
+<text top="544" left="328" width="191" height="14" font="2">abstraction of physical memory.</text>
+<text top="559" left="87" width="157" height="14" font="2">We call this abstraction the</text>
+<text top="559" left="246" width="83" height="13" font="4"><b>address space</b></text>
+<text top="559" left="330" width="189" height="14" font="2">, and it is the running program’s</text>
+<text top="574" left="87" width="432" height="14" font="2">view of memory in the system. Understanding this fundamental OS ab-</text>
+<text top="589" left="87" width="432" height="14" font="2">straction of memory is key to understanding how memory is virtualized.</text>
+<text top="604" left="105" width="414" height="14" font="2">The address space of a process contains all of the memory state of the</text>
+<text top="619" left="87" width="221" height="14" font="2">running program. For example, the</text>
+<text top="619" left="314" width="28" height="13" font="4"><b>code</b></text>
+<text top="619" left="347" width="172" height="14" font="2">of the program (the instruc-</text>
+<text top="634" left="87" width="432" height="14" font="2">tions) have to live in memory somewhere, and thus they are in the ad-</text>
+<text top="649" left="87" width="316" height="14" font="2">dress space. The program, while it is running, uses a</text>
+<text top="649" left="406" width="31" height="13" font="4"><b>stack</b></text>
+<text top="649" left="442" width="77" height="14" font="2">to keep track</text>
+<text top="664" left="87" width="432" height="14" font="2">of where it is in the function call chain as well as to allocate local variables</text>
+<text top="678" left="87" width="432" height="14" font="2">and pass parameters and return values to and from routines. Finally, the</text>
+<text top="693" left="87" width="30" height="13" font="4"><b>heap</b></text>
+<text top="693" left="121" width="398" height="14" font="2">is used for dynamically-allocated, user-managed memory, such as</text>
+<text top="708" left="87" width="216" height="14" font="2">that you might receive from a call to</text>
+<text top="709" left="306" width="65" height="11" font="9">malloc()</text>
+<text top="708" left="374" width="41" height="14" font="2">in C or</text>
+<text top="709" left="419" width="24" height="11" font="9">new</text>
+<text top="708" left="446" width="72" height="14" font="2">in an object-</text>
+<text top="723" left="87" width="432" height="14" font="2">oriented language such as C++ or Java. Of course, there are other things</text>
+<text top="738" left="87" width="432" height="14" font="2">in there too (e.g., statically-initialized variables), but for now let us just</text>
+<text top="753" left="87" width="327" height="14" font="2">assume those three components: code, stack, and heap.</text>
+<text top="768" left="105" width="414" height="14" font="2">In the example in Figure 13.3 (page 4), we have a tiny address space</text>
+<text top="786" left="87" width="73" height="14" font="2">(only 16KB)</text>
+<text top="783" left="160" width="4" height="9" font="10">1</text>
+<text top="786" left="165" width="354" height="14" font="2">. The program code lives at the top of the address space</text>
+<text top="814" left="107" width="4" height="8" font="11">1</text>
+<text top="816" left="112" width="407" height="11" font="8">We will often use small examples like this because (a) it is a pain to represent a 32-bit</text>
+<text top="828" left="87" width="289" height="11" font="8">address space and (b) the math is harder. We like simple math.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="13" family="FHAGUU+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="331" width="8" height="14" font="2">T</text>
+<text top="98" left="340" width="16" height="11" font="5">HE</text>
+<text top="96" left="360" width="10" height="14" font="2">A</text>
+<text top="98" left="372" width="76" height="11" font="5">BSTRACTION</text>
+<text top="96" left="448" width="19" height="14" font="2">: A</text>
+<text top="98" left="467" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="516" width="7" height="14" font="2">S</text>
+<text top="98" left="524" width="36" height="11" font="5">PACES</text>
+<text top="450" left="201" width="31" height="12" font="12">16KB</text>
+<text top="412" left="201" width="31" height="12" font="12">15KB</text>
+<text top="220" left="201" width="24" height="12" font="12">2KB</text>
+<text top="181" left="201" width="24" height="12" font="12">1KB</text>
+<text top="143" left="201" width="24" height="12" font="12">0KB</text>
+<text top="431" left="300" width="32" height="12" font="12">Stack</text>
+<text top="316" left="301" width="31" height="12" font="12">(free)</text>
+<text top="201" left="301" width="31" height="12" font="12">Heap</text>
+<text top="162" left="275" width="83" height="12" font="12">Program Code</text>
+<text top="157" left="397" width="95" height="11" font="6">the code segment:</text>
+<text top="168" left="388" width="113" height="11" font="6">where instructions live</text>
+<text top="193" left="396" width="95" height="11" font="6">the heap segment:</text>
+<text top="204" left="387" width="114" height="11" font="6">contains malloc’d data</text>
+<text top="215" left="383" width="122" height="11" font="6">dynamic data structures</text>
+<text top="226" left="395" width="98" height="11" font="6">(it grows positively)</text>
+<text top="392" left="393" width="102" height="11" font="6">(it grows negatively)</text>
+<text top="403" left="396" width="97" height="11" font="6">the stack segment:</text>
+<text top="414" left="385" width="119" height="11" font="6">contains local variables</text>
+<text top="425" left="385" width="118" height="11" font="6">arguments to routines, </text>
+<text top="436" left="398" width="92" height="11" font="6">return values, etc.</text>
+<text top="480" left="224" width="69" height="14" font="2">Figure 13.3:</text>
+<text top="480" left="297" width="168" height="13" font="4"><b>An Example Address Space</b></text>
+<text top="510" left="129" width="432" height="14" font="2">(starting at 0 in this example, and is packed into the first 1K of the ad-</text>
+<text top="525" left="129" width="432" height="14" font="2">dress space). Code is static (and thus easy to place in memory), so we can</text>
+<text top="540" left="129" width="432" height="14" font="2">place it at the top of the address space and know that it won’t need any</text>
+<text top="555" left="129" width="194" height="14" font="2">more space as the program runs.</text>
+<text top="571" left="147" width="414" height="14" font="2">Next, we have the two regions of the address space that may grow</text>
+<text top="586" left="129" width="432" height="14" font="2">(and shrink) while the program runs. Those are the heap (at the top) and</text>
+<text top="601" left="129" width="432" height="14" font="2">the stack (at the bottom). We place them like this because each wishes to</text>
+<text top="616" left="129" width="432" height="14" font="2">be able to grow, and by putting them at opposite ends of the address</text>
+<text top="631" left="129" width="432" height="14" font="2">space, we can allow such growth: they just have to grow in opposite</text>
+<text top="646" left="129" width="432" height="14" font="2">directions. The heap thus starts just after the code (at 1KB) and grows</text>
+<text top="661" left="129" width="333" height="14" font="2">downward (say when a user requests more memory via</text>
+<text top="661" left="466" width="65" height="11" font="9">malloc()</text>
+<text top="661" left="531" width="30" height="14" font="2">); the</text>
+<text top="676" left="129" width="432" height="14" font="2">stack starts at 16KB and grows upward (say when a user makes a proce-</text>
+<text top="690" left="129" width="432" height="14" font="2">dure call). However, this placement of stack and heap is just a convention;</text>
+<text top="705" left="129" width="432" height="14" font="2">you could arrange the address space in a different way if you’d like (as</text>
+<text top="720" left="129" width="182" height="14" font="2">we’ll see later, when multiple</text>
+<text top="720" left="316" width="46" height="13" font="4"><b>threads</b></text>
+<text top="720" left="366" width="195" height="14" font="2">co-exist in an address space, no</text>
+<text top="735" left="129" width="402" height="14" font="2">nice way to divide the address space like this works anymore, alas).</text>
+<text top="751" left="147" width="414" height="14" font="2">Of course, when we describe the address space, what we are describ-</text>
+<text top="766" left="129" width="56" height="14" font="2">ing is the</text>
+<text top="766" left="190" width="68" height="13" font="4"><b>abstraction</b></text>
+<text top="766" left="262" width="298" height="14" font="2">that the OS is providing to the running program.</text>
+<text top="781" left="129" width="432" height="14" font="2">The program really isn’t in memory at physical addresses 0 through 16KB;</text>
+<text top="796" left="129" width="432" height="14" font="2">rather it is loaded at some arbitrary physical address(es). Examine pro-</text>
+<text top="811" left="129" width="432" height="14" font="2">cesses A, B, and C in Figure 13.2; there you can see how each process is</text>
+<text top="826" left="129" width="401" height="14" font="2">loaded into memory at a different address. And hence the problem:</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="5">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="5">BSTRACTION</text>
+<text top="96" left="204" width="19" height="14" font="2">: A</text>
+<text top="98" left="223" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="272" width="7" height="14" font="2">S</text>
+<text top="98" left="280" width="36" height="11" font="5">PACES</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="153" left="172" width="8" height="14" font="2">T</text>
+<text top="155" left="181" width="16" height="11" font="5">HE</text>
+<text top="153" left="201" width="10" height="14" font="2">C</text>
+<text top="155" left="211" width="24" height="11" font="5">RUX</text>
+<text top="153" left="236" width="19" height="14" font="2">: H</text>
+<text top="155" left="256" width="20" height="11" font="5">OW</text>
+<text top="153" left="280" width="8" height="14" font="2">T</text>
+<text top="155" left="289" width="8" height="11" font="5">O</text>
+<text top="153" left="301" width="10" height="14" font="2">V</text>
+<text top="155" left="312" width="63" height="11" font="5">IRTUALIZE</text>
+<text top="153" left="379" width="13" height="14" font="2">M</text>
+<text top="155" left="392" width="42" height="11" font="5">EMORY</text>
+<text top="168" left="105" width="414" height="14" font="2">How can the OS build this abstraction of a private, potentially large</text>
+<text top="183" left="87" width="432" height="14" font="2">address space for multiple running processes (all sharing memory) on</text>
+<text top="197" left="87" width="200" height="14" font="2">top of a single, physical memory?</text>
+<text top="242" left="105" width="232" height="14" font="2">When the OS does this, we say the OS is</text>
+<text top="242" left="340" width="126" height="13" font="4"><b>virtualizing memory</b></text>
+<text top="242" left="466" width="53" height="14" font="2">, because</text>
+<text top="257" left="87" width="432" height="14" font="2">the running program thinks it is loaded into memory at a particular ad-</text>
+<text top="272" left="87" width="432" height="14" font="2">dress (say 0) and has a potentially very large address space (say 32-bits or</text>
+<text top="287" left="87" width="215" height="14" font="2">64-bits); the reality is quite different.</text>
+<text top="303" left="105" width="414" height="14" font="2">When, for example, process A in Figure 13.2 tries to perform a load</text>
+<text top="318" left="87" width="202" height="14" font="2">at address 0 (which we will call a</text>
+<text top="318" left="293" width="92" height="13" font="4"><b>virtual address</b></text>
+<text top="318" left="385" width="134" height="14" font="2">), somehow the OS, in</text>
+<text top="333" left="87" width="432" height="14" font="2">tandem with some hardware support, will have to make sure the load</text>
+<text top="347" left="87" width="432" height="14" font="2">doesn’t actually go to physical address 0 but rather to physical address</text>
+<text top="362" left="87" width="432" height="14" font="2">320KB (where A is loaded into memory). This is the key to virtualization</text>
+<text top="377" left="87" width="432" height="14" font="2">of memory, which underlies every modern computer system in the world.</text>
+<text top="415" left="55" width="75" height="17" font="3">13.4 Goals</text>
+<text top="445" left="105" width="414" height="14" font="2">Thus we arrive at the job of the OS in this set of notes: to virtualize</text>
+<text top="460" left="87" width="432" height="14" font="2">memory. The OS will not only virtualize memory, though; it will do so</text>
+<text top="475" left="87" width="432" height="14" font="2">with style. To make sure the OS does so, we need some goals to guide us.</text>
+<text top="490" left="87" width="432" height="14" font="2">We have seen these goals before (think of the Introduction), and we’ll see</text>
+<text top="505" left="87" width="302" height="14" font="2">them again, but they are certainly worth repeating.</text>
+<text top="523" left="105" width="321" height="14" font="2">One major goal of a virtual memory (VM) system is</text>
+<text top="523" left="431" width="79" height="13" font="4"><b>transparency</b></text>
+<text top="520" left="510" width="4" height="9" font="10">2</text>
+<text top="523" left="516" width="3" height="14" font="2">.</text>
+<text top="538" left="87" width="432" height="14" font="2">The OS should implement virtual memory in a way that is invisible to</text>
+<text top="553" left="87" width="432" height="14" font="2">the running program. Thus, the program shouldn’t be aware of the fact</text>
+<text top="568" left="87" width="432" height="14" font="2">that memory is virtualized; rather, the program behaves as if it has its</text>
+<text top="583" left="87" width="432" height="14" font="2">own private physical memory. Behind the scenes, the OS (and hardware)</text>
+<text top="598" left="87" width="432" height="14" font="2">does all the work to multiplex memory among many different jobs, and</text>
+<text top="613" left="87" width="182" height="14" font="2">hence implements the illusion.</text>
+<text top="628" left="105" width="136" height="14" font="2">Another goal of VM is</text>
+<text top="628" left="246" width="59" height="13" font="4"><b>efficiency</b></text>
+<text top="628" left="305" width="214" height="14" font="2">. The OS should strive to make the</text>
+<text top="643" left="87" width="96" height="14" font="2">virtualization as</text>
+<text top="643" left="187" width="50" height="13" font="4"><b>efficient</b></text>
+<text top="643" left="240" width="279" height="14" font="2">as possible, both in terms of time (i.e., not mak-</text>
+<text top="658" left="87" width="432" height="14" font="2">ing programs run much more slowly) and space (i.e., not using too much</text>
+<text top="673" left="87" width="432" height="14" font="2">memory for structures needed to support virtualization). In implement-</text>
+<text top="688" left="87" width="432" height="14" font="2">ing time-efficient virtualization, the OS will have to rely on hardware</text>
+<text top="703" left="87" width="432" height="14" font="2">support, including hardware features such as TLBs (which we will learn</text>
+<text top="718" left="87" width="125" height="14" font="2">about in due course).</text>
+<text top="733" left="105" width="161" height="14" font="2">Finally, a third VM goal is</text>
+<text top="733" left="270" width="63" height="13" font="4"><b>protection</b></text>
+<text top="733" left="333" width="186" height="14" font="2">. The OS should make sure to</text>
+<text top="748" left="87" width="43" height="13" font="4"><b>protect</b></text>
+<text top="748" left="135" width="384" height="14" font="2">processes from one another as well as the OS itself from pro-</text>
+<text top="778" left="107" width="4" height="8" font="11">2</text>
+<text top="780" left="112" width="407" height="11" font="8">This usage of transparency is sometimes confusing; some students think that “being</text>
+<text top="792" left="87" width="432" height="11" font="8">transparent” means keeping everything out in the open, i.e., what government should be like.</text>
+<text top="804" left="87" width="432" height="11" font="8">Here, it means the opposite: that the illusion provided by the OS should not be visible to ap-</text>
+<text top="816" left="87" width="432" height="11" font="8">plications. Thus, in common usage, a transparent system is one that is hard to notice, not one</text>
+<text top="828" left="87" width="344" height="11" font="8">that responds to requests as stipulated by the Freedom of Information Act.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="13" family="QBKCRH+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="331" width="8" height="14" font="2">T</text>
+<text top="98" left="340" width="16" height="11" font="5">HE</text>
+<text top="96" left="360" width="10" height="14" font="2">A</text>
+<text top="98" left="372" width="76" height="11" font="5">BSTRACTION</text>
+<text top="96" left="448" width="19" height="14" font="2">: A</text>
+<text top="98" left="467" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="516" width="7" height="14" font="2">S</text>
+<text top="98" left="524" width="36" height="11" font="5">PACES</text>
+<text top="148" left="238" width="8" height="14" font="2">T</text>
+<text top="150" left="247" width="11" height="11" font="5">IP</text>
+<text top="148" left="259" width="16" height="14" font="2">: T</text>
+<text top="150" left="276" width="16" height="11" font="5">HE</text>
+<text top="148" left="296" width="8" height="14" font="2">P</text>
+<text top="150" left="305" width="55" height="11" font="5">RINCIPLE</text>
+<text top="148" left="364" width="11" height="14" font="2">O</text>
+<text top="150" left="376" width="6" height="11" font="5">F</text>
+<text top="148" left="386" width="5" height="14" font="2">I</text>
+<text top="150" left="391" width="61" height="11" font="5">SOLATION</text>
+<text top="163" left="129" width="432" height="14" font="2">Isolation is a key principle in building reliable systems. If two entities are</text>
+<text top="178" left="129" width="432" height="14" font="2">properly isolated from one another, this implies that one can fail with-</text>
+<text top="193" left="129" width="432" height="14" font="2">out affecting the other. Operating systems strive to isolate processes from</text>
+<text top="208" left="129" width="432" height="14" font="2">each other and in this way prevent one from harming the other. By using</text>
+<text top="223" left="129" width="432" height="14" font="2">memory isolation, the OS further ensures that running programs cannot</text>
+<text top="238" left="129" width="432" height="14" font="2">affect the operation of the underlying OS. Some modern OS’s take iso-</text>
+<text top="253" left="129" width="432" height="14" font="2">lation even further, by walling off pieces of the OS from other pieces of</text>
+<text top="268" left="129" width="75" height="14" font="2">the OS. Such</text>
+<text top="268" left="208" width="81" height="13" font="4"><b>microkernels</b></text>
+<text top="268" left="292" width="269" height="14" font="2">[BH70, R+89, S+03] thus may provide greater</text>
+<text top="283" left="129" width="292" height="14" font="2">reliability than typical monolithic kernel designs.</text>
+<text top="326" left="129" width="432" height="14" font="2">cesses. When one process performs a load, a store, or an instruction fetch,</text>
+<text top="341" left="129" width="432" height="14" font="2">it should not be able to access or affect in any way the memory contents</text>
+<text top="356" left="129" width="321" height="14" font="2">of any other process or the OS itself (that is, anything</text>
+<text top="356" left="454" width="39" height="14" font="13"><i>outside</i></text>
+<text top="356" left="497" width="64" height="14" font="2">its address</text>
+<text top="371" left="129" width="373" height="14" font="2">space). Protection thus enables us to deliver the property of</text>
+<text top="371" left="507" width="54" height="13" font="4"><b>isolation</b></text>
+<text top="386" left="129" width="432" height="14" font="2">among processes; each process should be running in its own isolated co-</text>
+<text top="401" left="129" width="422" height="14" font="2">coon, safe from the ravages of other faulty or even malicious processes.</text>
+<text top="416" left="147" width="366" height="14" font="2">In the next chapters, we’ll focus our exploration on the basic</text>
+<text top="416" left="517" width="44" height="13" font="4"><b>mecha-</b></text>
+<text top="431" left="129" width="37" height="13" font="4"><b>nisms</b></text>
+<text top="431" left="170" width="391" height="14" font="2">needed to virtualize memory, including hardware and operating</text>
+<text top="446" left="129" width="398" height="14" font="2">systems support. We’ll also investigate some of the more relevant</text>
+<text top="446" left="532" width="29" height="13" font="4"><b>poli-</b></text>
+<text top="461" left="129" width="23" height="13" font="4"><b>cies</b></text>
+<text top="461" left="155" width="406" height="14" font="2">that you’ll encounter in operating systems, including how to manage</text>
+<text top="476" left="129" width="432" height="14" font="2">free space and which pages to kick out of memory when you run low on</text>
+<text top="491" left="129" width="432" height="14" font="2">space. In doing so, we’ll build up your understanding of how a modern</text>
+<text top="508" left="129" width="216" height="14" font="2">virtual memory system really works</text>
+<text top="505" left="345" width="4" height="9" font="10">3</text>
+<text top="508" left="350" width="3" height="14" font="2">.</text>
+<text top="545" left="97" width="105" height="17" font="3">13.5 Summary</text>
+<text top="574" left="147" width="414" height="14" font="2">We have seen the introduction of a major OS subsystem: virtual mem-</text>
+<text top="589" left="129" width="432" height="14" font="2">ory. The VM system is responsible for providing the illusion of a large,</text>
+<text top="604" left="129" width="432" height="14" font="2">sparse, private address space to each running program; each virtual ad-</text>
+<text top="619" left="129" width="432" height="14" font="2">dress space contains all of a program’s instructions and data, which can</text>
+<text top="634" left="129" width="432" height="14" font="2">be referenced by the program via virtual addresses. The OS, with some</text>
+<text top="649" left="129" width="432" height="14" font="2">serious hardware help, will take each of these virtual memory references</text>
+<text top="664" left="129" width="432" height="14" font="2">and turn them into physical addresses, which can be presented to the</text>
+<text top="679" left="129" width="432" height="14" font="2">physical memory in order to fetch or update the desired information. The</text>
+<text top="694" left="129" width="432" height="14" font="2">OS will provide this service for many processes at once, making sure to</text>
+<text top="709" left="129" width="432" height="14" font="2">protect programs from one another, as well as protect the OS. The en-</text>
+<text top="724" left="129" width="432" height="14" font="2">tire approach requires a great deal of mechanism (i.e., lots of low-level</text>
+<text top="739" left="129" width="432" height="14" font="2">machinery) as well as some critical policies to work; we’ll start from the</text>
+<text top="754" left="129" width="432" height="14" font="2">bottom up, describing the critical mechanisms first. And thus we pro-</text>
+<text top="769" left="129" width="31" height="14" font="2">ceed!</text>
+<text top="814" left="149" width="4" height="8" font="11">3</text>
+<text top="816" left="154" width="407" height="11" font="8">Or, we’ll convince you to drop the course. But hold on; if you make it through VM, you’ll</text>
+<text top="828" left="129" width="119" height="11" font="8">likely make it all the way!</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="13" family="SUDCJY+URWPalladioL-Roma" color="#ffffff"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="5">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="5">BSTRACTION</text>
+<text top="96" left="204" width="19" height="14" font="2">: A</text>
+<text top="98" left="223" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="272" width="7" height="14" font="2">S</text>
+<text top="98" left="280" width="36" height="11" font="5">PACES</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="148" left="165" width="10" height="14" font="2">A</text>
+<text top="150" left="177" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="203" width="16" height="14" font="2">: E</text>
+<text top="150" left="220" width="30" height="11" font="5">VERY</text>
+<text top="148" left="255" width="10" height="14" font="2">A</text>
+<text top="150" left="266" width="45" height="11" font="5">DDRESS</text>
+<text top="148" left="315" width="9" height="14" font="2">Y</text>
+<text top="150" left="325" width="17" height="11" font="5">OU</text>
+<text top="148" left="346" width="7" height="14" font="2">S</text>
+<text top="150" left="354" width="14" height="11" font="5">EE</text>
+<text top="148" left="372" width="5" height="14" font="2">I</text>
+<text top="150" left="377" width="6" height="11" font="5">S</text>
+<text top="148" left="387" width="10" height="14" font="2">V</text>
+<text top="150" left="397" width="44" height="11" font="5">IRTUAL</text>
+<text top="163" left="87" width="432" height="14" font="2">Ever write a C program that prints out a pointer? The value you see</text>
+<text top="178" left="87" width="332" height="14" font="2">(some large number, often printed in hexadecimal), is a</text>
+<text top="178" left="423" width="92" height="13" font="4"><b>virtual address</b></text>
+<text top="178" left="516" width="3" height="14" font="2">.</text>
+<text top="193" left="87" width="432" height="14" font="2">Ever wonder where the code of your program is found? You can print</text>
+<text top="208" left="87" width="432" height="14" font="2">that out too, and yes, if you can print it, it also is a virtual address. In</text>
+<text top="223" left="87" width="432" height="14" font="2">fact, any address you can see as a programmer of a user-level program</text>
+<text top="238" left="87" width="432" height="14" font="2">is a virtual address. It’s only the OS, through its tricky techniques of</text>
+<text top="253" left="87" width="432" height="14" font="2">virtualizing memory, that knows where in the physical memory of the</text>
+<text top="268" left="87" width="432" height="14" font="2">machine these instructions and data values lie. So never forget: if you</text>
+<text top="283" left="87" width="432" height="14" font="2">print out an address in a program, it’s a virtual one, an illusion of how</text>
+<text top="298" left="87" width="432" height="14" font="2">things are laid out in memory; only the OS (and the hardware) knows the</text>
+<text top="313" left="87" width="59" height="14" font="2">real truth.</text>
+<text top="331" left="87" width="141" height="14" font="2">Here’s a little program (</text>
+<text top="332" left="228" width="32" height="11" font="9">va.c</text>
+<text top="331" left="260" width="207" height="14" font="2">) that prints out the locations of the</text>
+<text top="332" left="471" width="48" height="11" font="9">main()</text>
+<text top="346" left="87" width="432" height="14" font="2">routine (where code lives), the value of a heap-allocated value returned</text>
+<text top="361" left="87" width="29" height="14" font="2">from</text>
+<text top="361" left="119" width="65" height="11" font="9">malloc()</text>
+<text top="361" left="184" width="258" height="14" font="2">, and the location of an integer on the stack:</text>
+<text top="396" left="65" width="4" height="8" font="11">1</text>
+<text top="393" left="87" width="145" height="11" font="9">#include &lt;stdio.h&gt;</text>
+<text top="411" left="65" width="4" height="8" font="11">2</text>
+<text top="407" left="87" width="153" height="11" font="9">#include &lt;stdlib.h&gt;</text>
+<text top="426" left="65" width="4" height="8" font="11">3</text>
+<text top="422" left="87" width="274" height="14" font="9">int main(int argc, char *argv[]) {</text>
+<text top="441" left="65" width="4" height="8" font="11">4</text>
+<text top="437" left="103" width="323" height="11" font="9">printf(&#34;location of code : %p\n&#34;, main);</text>
+<text top="456" left="65" width="4" height="8" font="11">5</text>
+<text top="452" left="103" width="395" height="11" font="9">printf(&#34;location of heap : %p\n&#34;, malloc(100e6));</text>
+<text top="471" left="65" width="4" height="8" font="11">6</text>
+<text top="467" left="103" width="81" height="11" font="9">int x = 3;</text>
+<text top="486" left="65" width="4" height="8" font="11">7</text>
+<text top="482" left="103" width="307" height="11" font="9">printf(&#34;location of stack: %p\n&#34;, &amp;x);</text>
+<text top="501" left="65" width="4" height="8" font="11">8</text>
+<text top="497" left="103" width="73" height="11" font="9">return x;</text>
+<text top="516" left="65" width="4" height="8" font="11">9</text>
+<text top="512" left="87" width="8" height="11" font="9">}</text>
+<text top="542" left="87" width="330" height="14" font="2">When run on a 64-bit Mac, we get the following output:</text>
+<text top="568" left="87" width="242" height="11" font="9">location of code : 0x1095afe50</text>
+<text top="583" left="87" width="242" height="11" font="9">location of heap : 0x1096008c0</text>
+<text top="598" left="87" width="266" height="11" font="9">location of stack: 0x7fff691aea64</text>
+<text top="625" left="87" width="432" height="14" font="2">From this, you can see that code comes first in the address space, then</text>
+<text top="640" left="87" width="432" height="14" font="2">the heap, and the stack is all the way at the other end of this large virtual</text>
+<text top="655" left="87" width="432" height="14" font="2">space. All of these addresses are virtual, and will be translated by the OS</text>
+<text top="670" left="87" width="427" height="14" font="2">and hardware in order to fetch values from their true physical locations.</text>
+<text top="725" left="105" width="3" height="14" font="14">.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="16" family="SXURMR+URWPalladioL" color="#000000"/>
+	<fontspec id="16" size="10" family="QBKCRH+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="17" size="10" family="BZNRSK+NimbusMonL-ReguObli" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="331" width="8" height="14" font="2">T</text>
+<text top="98" left="340" width="16" height="11" font="5">HE</text>
+<text top="96" left="360" width="10" height="14" font="2">A</text>
+<text top="98" left="372" width="76" height="11" font="5">BSTRACTION</text>
+<text top="96" left="448" width="19" height="14" font="2">: A</text>
+<text top="98" left="467" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="516" width="7" height="14" font="2">S</text>
+<text top="98" left="524" width="36" height="11" font="5">PACES</text>
+<text top="137" left="129" width="82" height="16" font="15"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="8">[BH70] “The Nucleus of a Multiprogramming System” by Per Brinch Hansen. Communica-</text>
+<text top="177" left="129" width="167" height="11" font="8">tions of the ACM, 13:4, April 1970.</text>
+<text top="177" left="302" width="258" height="11" font="16"><i>The first paper to suggest that the OS, or kernel, should be</i></text>
+<text top="189" left="129" width="432" height="11" font="16"><i>a minimal and flexible substrate for building customized operating systems; this theme is revisited</i></text>
+<text top="201" left="129" width="135" height="11" font="16"><i>throughout OS research history.</i></text>
+<text top="218" left="129" width="432" height="11" font="8">[CV65] “Introduction and Overview of the Multics System” by F. J. Corbato, V. A. Vyssotsky.</text>
+<text top="229" left="129" width="178" height="11" font="8">Fall Joint Computer Conference, 1965.</text>
+<text top="229" left="312" width="249" height="11" font="16"><i>A great early Multics paper. Here is the great quote about</i></text>
+<text top="241" left="129" width="432" height="11" font="16"><i>time sharing: “The impetus for time-sharing first arose from professional programmers because of their</i></text>
+<text top="253" left="129" width="432" height="11" font="16"><i>constant frustration in debugging programs at batch processing installations. Thus, the original goal</i></text>
+<text top="265" left="129" width="432" height="11" font="16"><i>was to time-share computers to allow simultaneous access by several persons while giving to each of</i></text>
+<text top="277" left="129" width="263" height="11" font="16"><i>them the illusion of having the whole machine at his disposal.”</i></text>
+<text top="294" left="129" width="432" height="11" font="8">[DV66] “Programming Semantics for Multiprogrammed Computations” by Jack B. Dennis,</text>
+<text top="306" left="129" width="390" height="11" font="8">Earl C. Van Horn. Communications of the ACM, Volume 9, Number 3, March 1966.</text>
+<text top="305" left="523" width="37" height="11" font="16"><i>An early</i></text>
+<text top="317" left="129" width="198" height="11" font="16"><i>paper (but not the first) on multiprogramming.</i></text>
+<text top="334" left="129" width="432" height="11" font="8">[L60] “Man-Computer Symbiosis” by J. C. R. Licklider. IRE Transactions on Human Factors in</text>
+<text top="346" left="129" width="154" height="11" font="8">Electronics, HFE-1:1, March 1960.</text>
+<text top="346" left="286" width="275" height="11" font="16"><i>A funky paper about how computers and people are going to enter</i></text>
+<text top="358" left="129" width="355" height="11" font="16"><i>into a symbiotic age; clearly well ahead of its time but a fascinating read nonetheless.</i></text>
+<text top="374" left="129" width="432" height="11" font="8">[M62] “Time-Sharing Computer Systems” by J. McCarthy. Management and the Computer</text>
+<text top="386" left="129" width="232" height="11" font="8">of the Future, MIT Press, Cambridge, MA, 1962.</text>
+<text top="386" left="368" width="193" height="11" font="16"><i>Probably McCarthy’s earliest recorded paper</i></text>
+<text top="398" left="129" width="432" height="11" font="16"><i>on time sharing. In another paper [M83], he claims to have been thinking of the idea since 1957.</i></text>
+<text top="410" left="129" width="432" height="11" font="16"><i>McCarthy left the systems area and went on to become a giant in Artificial Intelligence at Stanford,</i></text>
+<text top="422" left="129" width="432" height="11" font="16"><i>including the creation of the LISP programming language. See McCarthy’s home page for more info:</i></text>
+<text top="434" left="129" width="220" height="9" font="17"><i>http://www-formal.stanford.edu/jmc/</i></text>
+<text top="450" left="129" width="432" height="11" font="8">[M+63] “A Time-Sharing Debugging System for a Small Computer” by J. McCarthy, S. Boilen,</text>
+<text top="462" left="129" width="338" height="11" font="8">E. Fredkin, J. C. R. Licklider. AFIPS ’63 (Spring), New York, NY, May 1963.</text>
+<text top="462" left="470" width="91" height="11" font="16"><i>A great early example</i></text>
+<text top="474" left="129" width="432" height="11" font="16"><i>of a system that swapped program memory to the “drum” when the program wasn’t running, and then</i></text>
+<text top="486" left="129" width="227" height="11" font="16"><i>back into “core” memory when it was about to be run.</i></text>
+<text top="502" left="129" width="432" height="11" font="8">[M83] “Reminiscences on the History of Time Sharing” by John McCarthy. 1983. Available:</text>
+<text top="514" left="129" width="369" height="11" font="8">http://www-formal.stanford.edu/jmc/history/timesharing/timesharing.html.</text>
+<text top="514" left="503" width="58" height="11" font="16"><i>A terrific his-</i></text>
+<text top="526" left="129" width="432" height="11" font="16"><i>torical note on where the idea of time-sharing might have come from including some doubts towards</i></text>
+<text top="538" left="129" width="304" height="11" font="16"><i>those who cite Strachey’s work [S59] as the pioneering work in this area.</i></text>
+<text top="554" left="129" width="432" height="11" font="8">[NS07] “Valgrind: A Framework for Heavyweight Dynamic Binary Instrumentation” by N.</text>
+<text top="566" left="129" width="315" height="11" font="8">Nethercote, J. Seward. PLDI 2007, San Diego, California, June 2007.</text>
+<text top="566" left="449" width="112" height="11" font="16"><i>Valgrind is a lifesaver of a</i></text>
+<text top="578" left="129" width="432" height="11" font="16"><i>program for those who use unsafe languages like C. Read this paper to learn about its very cool binary</i></text>
+<text top="590" left="129" width="239" height="11" font="16"><i>instrumentation techniques – it’s really quite impressive.</i></text>
+<text top="606" left="129" width="432" height="11" font="8">[R+89] “Mach: A System Software kernel” by R. Rashid, D. Julin, D. Orr, R. Sanzi, R. Baron,</text>
+<text top="618" left="129" width="288" height="11" font="8">A. Forin, D. Golub, M. Jones. COMPCON ’89, February 1989.</text>
+<text top="618" left="422" width="139" height="11" font="16"><i>Although not the first project on</i></text>
+<text top="630" left="129" width="432" height="11" font="16"><i>microkernels per se, the Mach project at CMU was well-known and influential; it still lives today deep</i></text>
+<text top="642" left="129" width="116" height="11" font="16"><i>in the bowels of Mac OS X.</i></text>
+<text top="659" left="129" width="432" height="11" font="8">[S59] “Time Sharing in Large Fast Computers” by C. Strachey. Proceedings of the International</text>
+<text top="671" left="129" width="277" height="11" font="8">Conference on Information Processing, UNESCO, June 1959.</text>
+<text top="670" left="409" width="152" height="11" font="16"><i>One of the earliest references on time</i></text>
+<text top="682" left="129" width="35" height="11" font="16"><i>sharing.</i></text>
+<text top="699" left="129" width="432" height="11" font="8">[S+03] “Improving the Reliability of Commodity Operating Systems” by M. M. Swift, B. N.</text>
+<text top="711" left="129" width="146" height="11" font="8">Bershad, H. M. Levy. SOSP ’03.</text>
+<text top="711" left="279" width="282" height="11" font="16"><i>The first paper to show how microkernel-like thinking can improve</i></text>
+<text top="723" left="129" width="117" height="11" font="16"><i>operating system reliability.</i></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="15" family="SXURMR+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="5">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="5">BSTRACTION</text>
+<text top="96" left="204" width="19" height="14" font="2">: A</text>
+<text top="98" left="223" width="45" height="11" font="5">DDRESS</text>
+<text top="96" left="272" width="7" height="14" font="2">S</text>
+<text top="98" left="280" width="36" height="11" font="5">PACES</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="137" left="87" width="139" height="16" font="15"><b>Homework (Code)</b></text>
+<text top="166" left="105" width="414" height="14" font="2">In this homework, we’ll just learn about a few useful tools to examine</text>
+<text top="181" left="87" width="432" height="14" font="2">virtual memory usage on Linux-based systems. This will only be a brief</text>
+<text top="196" left="87" width="432" height="14" font="2">hint at what is possible; you’ll have to dive deeper on your own to truly</text>
+<text top="211" left="87" width="181" height="14" font="2">become an expert (as always!).</text>
+<text top="247" left="87" width="70" height="15" font="18"><b>Questions</b></text>
+<text top="271" left="105" width="414" height="14" font="2">1. The first Linux tool you should check out is the very simple tool</text>
+<text top="287" left="122" width="32" height="11" font="9">free</text>
+<text top="286" left="154" width="72" height="14" font="2">. First, type</text>
+<text top="287" left="230" width="65" height="11" font="9">man free</text>
+<text top="286" left="299" width="220" height="14" font="2">and read its entire manual page; it’s</text>
+<text top="301" left="122" width="113" height="14" font="2">short, don’t worry!</text>
+<text top="316" left="105" width="75" height="14" font="2">2. Now, run</text>
+<text top="317" left="183" width="32" height="11" font="9">free</text>
+<text top="316" left="216" width="303" height="14" font="2">, perhaps using some of the arguments that might</text>
+<text top="331" left="122" width="88" height="14" font="2">be useful (e.g.,</text>
+<text top="332" left="214" width="16" height="11" font="9">-m</text>
+<text top="331" left="230" width="289" height="14" font="2">, to display memory totals in megabytes). How</text>
+<text top="346" left="122" width="397" height="14" font="2">much memory is in your system? How much is free? Do these</text>
+<text top="361" left="122" width="185" height="14" font="2">numbers match your intuition?</text>
+<text top="376" left="105" width="414" height="14" font="2">3. Next, create a little program that uses a certain amount of memory,</text>
+<text top="391" left="122" width="35" height="14" font="2">called</text>
+<text top="392" left="160" width="105" height="11" font="9">memory-user.c</text>
+<text top="391" left="265" width="254" height="14" font="2">. This program should take one command-</text>
+<text top="406" left="122" width="397" height="14" font="2">line argument: the number of megabytes of memory it will use.</text>
+<text top="421" left="122" width="401" height="14" font="2">When run, it should allocate an array, and constantly stream through</text>
+<text top="436" left="122" width="397" height="14" font="2">the array, touching each entry. The program should do this indefi-</text>
+<text top="451" left="122" width="397" height="14" font="2">nitely, or, perhaps, for a certain amount of time also specified at the</text>
+<text top="466" left="122" width="89" height="14" font="2">command line.</text>
+<text top="481" left="105" width="173" height="14" font="2">4. Now, while running your</text>
+<text top="481" left="283" width="89" height="11" font="9">memory-user</text>
+<text top="481" left="376" width="143" height="14" font="2">program, also (in a dif-</text>
+<text top="496" left="122" width="360" height="14" font="2">ferent terminal window, but on the same machine) run the</text>
+<text top="496" left="487" width="32" height="11" font="9">free</text>
+<text top="511" left="122" width="397" height="14" font="2">tool. How do the memory usage totals change when your program</text>
+<text top="525" left="122" width="244" height="14" font="2">is running? How about when you kill the</text>
+<text top="526" left="369" width="89" height="11" font="9">memory-user</text>
+<text top="525" left="461" width="58" height="14" font="2">program?</text>
+<text top="540" left="122" width="397" height="14" font="2">Do the numbers match your expectations? Try this for different</text>
+<text top="555" left="122" width="397" height="14" font="2">amounts of memory usage. What happens when you use really</text>
+<text top="570" left="122" width="160" height="14" font="2">large amounts of memory?</text>
+<text top="585" left="105" width="212" height="14" font="2">5. Let’s try one more tool, known as</text>
+<text top="586" left="320" width="32" height="11" font="9">pmap</text>
+<text top="585" left="352" width="167" height="14" font="2">. Spend some time, and read</text>
+<text top="600" left="122" width="19" height="14" font="2">the</text>
+<text top="601" left="144" width="32" height="11" font="9">pmap</text>
+<text top="600" left="179" width="133" height="14" font="2">manual page in detail.</text>
+<text top="615" left="105" width="54" height="14" font="2">6. To use</text>
+<text top="616" left="162" width="32" height="11" font="9">pmap</text>
+<text top="615" left="194" width="133" height="14" font="2">, you have to know the</text>
+<text top="615" left="330" width="65" height="13" font="4"><b>process ID</b></text>
+<text top="615" left="398" width="121" height="14" font="2">of the process you’re</text>
+<text top="630" left="122" width="169" height="14" font="2">interested in. Thus, first run</text>
+<text top="631" left="295" width="57" height="11" font="9">ps auxw</text>
+<text top="630" left="355" width="164" height="14" font="2">to see a list of all processes;</text>
+<text top="645" left="122" width="397" height="14" font="2">then, pick an interesting one, such as a browser. You can also use</text>
+<text top="660" left="122" width="28" height="14" font="2">your</text>
+<text top="661" left="155" width="89" height="11" font="9">memory-user</text>
+<text top="660" left="249" width="269" height="14" font="2">program in this case (indeed, you can even</text>
+<text top="675" left="122" width="139" height="14" font="2">have that program call</text>
+<text top="676" left="266" width="65" height="11" font="9">getpid()</text>
+<text top="675" left="335" width="184" height="14" font="2">and print out its PID for your</text>
+<text top="690" left="122" width="81" height="14" font="2">convenience).</text>
+<text top="705" left="105" width="71" height="14" font="2">7. Now run</text>
+<text top="706" left="179" width="32" height="11" font="9">pmap</text>
+<text top="705" left="214" width="305" height="14" font="2">on some of these processes, using various flags (like</text>
+<text top="721" left="122" width="16" height="11" font="9">-X</text>
+<text top="720" left="138" width="381" height="14" font="2">) to reveal many details about the process. What do you see?</text>
+<text top="735" left="122" width="397" height="14" font="2">How many different entities make up a modern address space, as</text>
+<text top="750" left="122" width="330" height="14" font="2">opposed to our simple conception of code/stack/heap?</text>
+<text top="765" left="105" width="115" height="14" font="2">8. Finally, let’s run</text>
+<text top="765" left="224" width="32" height="11" font="9">pmap</text>
+<text top="765" left="260" width="48" height="14" font="2">on your</text>
+<text top="765" left="313" width="89" height="11" font="9">memory-user</text>
+<text top="765" left="406" width="113" height="14" font="2">program, with dif-</text>
+<text top="780" left="122" width="397" height="14" font="2">ferent amounts of used memory. What do you see here? Does the</text>
+<text top="794" left="122" width="73" height="14" font="2">output from</text>
+<text top="795" left="198" width="32" height="11" font="9">pmap</text>
+<text top="794" left="233" width="152" height="14" font="2">match your expectations?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+</pdf2xml>

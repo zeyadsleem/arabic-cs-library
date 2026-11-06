@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="VMXPSX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="VMXPSX+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="BMIYNN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="AVAKGB+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="AFUIUP+NimbusMonL-Regu" color="#000000"/>
+<text top="199" left="535" width="22" height="29" font="0">D</text>
+<text top="270" left="305" width="214" height="20" font="1">Monitors (Deprecated)</text>
+<text top="352" left="87" width="441" height="14" font="2">Around the time concurrent programming was becoming a big deal, object-</text>
+<text top="367" left="87" width="432" height="14" font="2">oriented programming was also gaining ground. Not surprisingly, peo-</text>
+<text top="382" left="87" width="432" height="14" font="2">ple started to think about ways to merge synchronization into a more</text>
+<text top="397" left="87" width="231" height="14" font="2">structured programming environment.</text>
+<text top="413" left="105" width="247" height="14" font="2">One such approach that emerged was the</text>
+<text top="413" left="355" width="49" height="13" font="3"><b>monitor</b></text>
+<text top="413" left="405" width="114" height="14" font="2">. First described by</text>
+<text top="428" left="87" width="432" height="14" font="2">Per Brinch Hansen [BH73] and later refined by Tony Hoare [H74], the</text>
+<text top="443" left="87" width="432" height="14" font="2">idea behind a monitor is quite simple. Consider the following pretend</text>
+<text top="458" left="87" width="196" height="14" font="2">monitor written in C++ notation:</text>
+<text top="483" left="87" width="186" height="11" font="4">monitor class account {</text>
+<text top="498" left="87" width="65" height="11" font="4">private:</text>
+<text top="513" left="119" width="129" height="11" font="4">int balance = 0;</text>
+<text top="542" left="87" width="57" height="11" font="4">public:</text>
+<text top="557" left="119" width="210" height="11" font="4">void deposit(int amount) {</text>
+<text top="572" left="152" width="218" height="11" font="4">balance = balance + amount;</text>
+<text top="587" left="119" width="8" height="11" font="4">}</text>
+<text top="602" left="119" width="218" height="11" font="4">void withdraw(int amount) {</text>
+<text top="617" left="152" width="218" height="11" font="4">balance = balance - amount;</text>
+<text top="632" left="119" width="8" height="11" font="4">}</text>
+<text top="647" left="87" width="16" height="11" font="4">};</text>
+<text top="660" left="192" width="66" height="14" font="2">Figure D.1:</text>
+<text top="660" left="262" width="152" height="13" font="3"><b>A Pretend Monitor Class</b></text>
+<text top="690" left="105" width="414" height="14" font="2">Note: this is a “pretend” class because C++ does not support moni-</text>
+<text top="705" left="87" width="112" height="14" font="2">tors, and hence the</text>
+<text top="705" left="203" width="49" height="13" font="3"><b>monitor</b></text>
+<text top="705" left="255" width="264" height="14" font="2">keyword does not exist. However, Java does</text>
+<text top="720" left="87" width="238" height="14" font="2">support monitors, with what are called</text>
+<text top="720" left="329" width="83" height="13" font="3"><b>synchronized</b></text>
+<text top="720" left="417" width="102" height="14" font="2">methods. Below,</text>
+<text top="735" left="87" width="432" height="14" font="2">we will examine both how to make something quite like a monitor in</text>
+<text top="750" left="87" width="347" height="14" font="2">C/C++, as well as how to use Java synchronized methods.</text>
+<text top="766" left="105" width="414" height="14" font="2">In this example, you may notice we have our old friend the account</text>
+<text top="781" left="87" width="432" height="14" font="2">and some routines to deposit and withdraw an amount from the balance.</text>
+<text top="796" left="87" width="204" height="14" font="2">As you also may notice, these are</text>
+<text top="796" left="295" width="95" height="13" font="3"><b>critical sections</b></text>
+<text top="796" left="390" width="129" height="14" font="2">; if they are called by</text>
+<text top="811" left="87" width="432" height="14" font="2">multiple threads concurrently, you have a race condition and the poten-</text>
+<text top="826" left="87" width="171" height="14" font="2">tial for an incorrect outcome.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="11" family="BMIYNN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="16" family="BMIYNN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="12" family="BMIYNN+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="BMIYNN+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="400" width="13" height="14" font="2">M</text>
+<text top="98" left="413" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="470" width="16" height="14" font="2">(D</text>
+<text top="98" left="486" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="147" width="414" height="14" font="2">In a monitor class, you don’t get into trouble, though, because the</text>
+<text top="154" left="129" width="144" height="14" font="2">monitor guarantees that</text>
+<text top="154" left="277" width="284" height="13" font="3"><b>only one thread can be active within the mon-</b></text>
+<text top="169" left="129" width="80" height="13" font="3"><b>itor at a time</b></text>
+<text top="169" left="208" width="352" height="14" font="2">. Thus, our above example is a perfectly safe and working</text>
+<text top="183" left="129" width="432" height="14" font="2">piece of code; multiple threads can call deposit() or withdraw() and know</text>
+<text top="198" left="129" width="208" height="14" font="2">that mutual exclusion is preserved.</text>
+<text top="214" left="147" width="414" height="14" font="2">How does the monitor do this? Simple: with a lock. Whenever a</text>
+<text top="229" left="129" width="432" height="14" font="2">thread tries to call a monitor routine, it implicitly tries to acquire the mon-</text>
+<text top="244" left="129" width="432" height="14" font="2">itor lock. If it succeeds, then it will be able to call into the routine and run</text>
+<text top="259" left="129" width="432" height="14" font="2">the method’s code. If it does not, it will block until the thread that is in</text>
+<text top="274" left="129" width="432" height="14" font="2">the monitor finishes what it is doing. Thus, if we wrote a C++ class that</text>
+<text top="289" left="129" width="432" height="14" font="2">looked like the following, it would accomplish the exact same goal as the</text>
+<text top="304" left="129" width="122" height="14" font="2">monitor class above:</text>
+<text top="327" left="129" width="121" height="11" font="4">class account {</text>
+<text top="342" left="129" width="65" height="11" font="4">private:</text>
+<text top="357" left="161" width="129" height="11" font="4">int balance = 0;</text>
+<text top="371" left="161" width="194" height="11" font="4">pthread_mutex_t monitor;</text>
+<text top="401" left="129" width="57" height="11" font="4">public:</text>
+<text top="416" left="161" width="210" height="11" font="4">void deposit(int amount) {</text>
+<text top="431" left="193" width="234" height="11" font="4">pthread_mutex_lock(&amp;monitor);</text>
+<text top="446" left="193" width="218" height="11" font="4">balance = balance + amount;</text>
+<text top="461" left="193" width="250" height="11" font="4">pthread_mutex_unlock(&amp;monitor);</text>
+<text top="476" left="161" width="8" height="11" font="4">}</text>
+<text top="491" left="161" width="218" height="11" font="4">void withdraw(int amount) {</text>
+<text top="506" left="193" width="234" height="11" font="4">pthread_mutex_lock(&amp;monitor);</text>
+<text top="521" left="193" width="218" height="11" font="4">balance = balance - amount;</text>
+<text top="536" left="193" width="250" height="11" font="4">pthread_mutex_unlock(&amp;monitor);</text>
+<text top="551" left="161" width="8" height="11" font="4">}</text>
+<text top="566" left="129" width="16" height="11" font="4">};</text>
+<text top="579" left="199" width="66" height="14" font="2">Figure D.2:</text>
+<text top="579" left="269" width="221" height="13" font="3"><b>A C++ Class that acts like a Monitor</b></text>
+<text top="597" left="147" width="414" height="14" font="2">Thus, as you can see from this example, the monitor isn’t doing too</text>
+<text top="612" left="129" width="432" height="14" font="2">much for you automatically. Basically, it is just acquiring a lock and re-</text>
+<text top="627" left="129" width="432" height="14" font="2">leasing it. By doing so, we achieve what the monitor requires: only one</text>
+<text top="641" left="129" width="377" height="14" font="2">thread will be active within deposit() or withdraw(), as desired.</text>
+<text top="679" left="97" width="233" height="17" font="6">D.1 Why Bother with Monitors?</text>
+<text top="709" left="147" width="414" height="14" font="2">You might wonder why monitors were invented at all, instead of just</text>
+<text top="724" left="129" width="432" height="14" font="2">using explicit locking. At the time, object-oriented programming was</text>
+<text top="739" left="129" width="432" height="14" font="2">just coming into fashion. Thus, the idea was to gracefully blend some</text>
+<text top="754" left="129" width="432" height="14" font="2">of the key concepts in concurrent programming with some of the basic</text>
+<text top="769" left="129" width="342" height="14" font="2">approaches of object orientation. Nothing more than that.</text>
+<text top="807" left="97" width="343" height="17" font="6">D.2 Do We Get More Than Automatic Locking?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="158" width="16" height="14" font="2">(D</text>
+<text top="98" left="174" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="243" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="135" left="87" width="234" height="11" font="4">monitor class BoundedBuffer {</text>
+<text top="150" left="103" width="65" height="11" font="4">private:</text>
+<text top="165" left="119" width="129" height="11" font="4">int buffer[MAX];</text>
+<text top="180" left="119" width="113" height="11" font="4">int fill, use;</text>
+<text top="195" left="119" width="161" height="11" font="4">int fullEntries = 0;</text>
+<text top="210" left="119" width="105" height="11" font="4">cond_t empty;</text>
+<text top="225" left="119" width="97" height="11" font="4">cond_t full;</text>
+<text top="254" left="103" width="57" height="11" font="4">public:</text>
+<text top="269" left="119" width="218" height="11" font="4">void produce(int element) {</text>
+<text top="284" left="152" width="186" height="11" font="4">if (fullEntries == MAX)</text>
+<text top="284" left="370" width="81" height="11" font="4">// line P0</text>
+<text top="299" left="184" width="105" height="11" font="4">wait(&amp;empty);</text>
+<text top="299" left="370" width="81" height="11" font="4">// line P1</text>
+<text top="314" left="152" width="186" height="11" font="4">buffer[fill] = element;</text>
+<text top="314" left="370" width="81" height="11" font="4">// line P2</text>
+<text top="329" left="152" width="194" height="11" font="4">fill = (fill + 1) % MAX;</text>
+<text top="329" left="370" width="81" height="11" font="4">// line P3</text>
+<text top="344" left="152" width="113" height="11" font="4">fullEntries++;</text>
+<text top="344" left="370" width="81" height="11" font="4">// line P4</text>
+<text top="359" left="152" width="113" height="11" font="4">signal(&amp;full);</text>
+<text top="359" left="370" width="81" height="11" font="4">// line P5</text>
+<text top="374" left="119" width="8" height="11" font="4">}</text>
+<text top="404" left="119" width="121" height="11" font="4">int consume() {</text>
+<text top="419" left="152" width="169" height="11" font="4">if (fullEntries == 0)</text>
+<text top="419" left="370" width="81" height="11" font="4">// line C0</text>
+<text top="434" left="184" width="97" height="11" font="4">wait(&amp;full);</text>
+<text top="434" left="370" width="81" height="11" font="4">// line C1</text>
+<text top="449" left="152" width="178" height="11" font="4">int tmp = buffer[use];</text>
+<text top="449" left="370" width="81" height="11" font="4">// line C2</text>
+<text top="464" left="152" width="178" height="11" font="4">use = (use + 1) % MAX;</text>
+<text top="464" left="370" width="81" height="11" font="4">// line C3</text>
+<text top="479" left="152" width="113" height="11" font="4">fullEntries--;</text>
+<text top="479" left="370" width="81" height="11" font="4">// line C4</text>
+<text top="494" left="152" width="121" height="11" font="4">signal(&amp;empty);</text>
+<text top="494" left="370" width="81" height="11" font="4">// line C5</text>
+<text top="509" left="152" width="89" height="11" font="4">return tmp;</text>
+<text top="509" left="370" width="81" height="11" font="4">// line C6</text>
+<text top="523" left="119" width="8" height="11" font="4">}</text>
+<text top="538" left="87" width="8" height="11" font="4">}</text>
+<text top="573" left="94" width="66" height="14" font="2">Figure D.3:</text>
+<text top="573" left="164" width="348" height="13" font="3"><b>Producer/Consumer with Monitors and Hoare Semantics</b></text>
+<text top="595" left="105" width="414" height="14" font="2">Back to business. As we know from our discussion of semaphores,</text>
+<text top="610" left="87" width="432" height="14" font="2">just having locks is not quite enough; for example, to implement the pro-</text>
+<text top="625" left="87" width="432" height="14" font="2">ducer/consumer solution, we previously used semaphores to both put</text>
+<text top="639" left="87" width="432" height="14" font="2">threads to sleep when waiting for a condition to change (e.g., a producer</text>
+<text top="654" left="87" width="432" height="14" font="2">waiting for a buffer to be emptied), as well as to wake up a thread when</text>
+<text top="669" left="87" width="432" height="14" font="2">a particular condition has changed (e.g., a consumer signaling that it has</text>
+<text top="684" left="87" width="151" height="14" font="2">indeed emptied a buffer).</text>
+<text top="702" left="105" width="429" height="14" font="2">Monitors support such functionality through an explicit construct known</text>
+<text top="717" left="87" width="23" height="14" font="2">as a</text>
+<text top="717" left="114" width="113" height="13" font="3"><b>condition variable</b></text>
+<text top="717" left="227" width="292" height="14" font="2">. Let’s take a look at the producer/consumer so-</text>
+<text top="732" left="87" width="349" height="14" font="2">lution, here written with monitors and condition variables.</text>
+<text top="749" left="105" width="414" height="14" font="2">In this monitor class, we have two routines, produce() and consume().</text>
+<text top="764" left="87" width="432" height="14" font="2">A producer thread would repeatedly call produce() to put data into the</text>
+<text top="779" left="87" width="432" height="14" font="2">bounded buffer, while a consumer() would repeatedly call consume().</text>
+<text top="794" left="87" width="377" height="14" font="2">The example is a modern paraphrase of Hoare’s solution [H74].</text>
+<text top="811" left="105" width="434" height="14" font="2">You should notice some similarities between this code and the semaphore-</text>
+<text top="826" left="87" width="432" height="14" font="2">based solution in the previous note. One major difference is how condi-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="400" width="13" height="14" font="2">M</text>
+<text top="98" left="413" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="470" width="16" height="14" font="2">(D</text>
+<text top="98" left="486" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="139" left="129" width="326" height="14" font="2">tion variables must be used in concert with an explicit</text>
+<text top="139" left="459" width="82" height="13" font="3"><b>state variable</b></text>
+<text top="139" left="541" width="19" height="14" font="2">; in</text>
+<text top="154" left="129" width="125" height="14" font="2">this case, the integer</text>
+<text top="154" left="259" width="89" height="11" font="4">fullEntries</text>
+<text top="154" left="352" width="209" height="14" font="2">determines whether a producer or</text>
+<text top="169" left="129" width="432" height="14" font="2">consumer must wait, depending on its state. Semaphores, in contrast,</text>
+<text top="183" left="129" width="432" height="14" font="2">have an internal numeric value which serves this same purpose. Thus,</text>
+<text top="198" left="129" width="432" height="14" font="2">condition variables must be paired with some kind of external state value</text>
+<text top="213" left="129" width="196" height="14" font="2">in order to achieve the same end.</text>
+<text top="231" left="147" width="414" height="14" font="2">The most important aspect of this code, however, is the use of the</text>
+<text top="246" left="129" width="353" height="14" font="2">two condition variables, empty and full, and the respective</text>
+<text top="247" left="486" width="48" height="11" font="4">wait()</text>
+<text top="246" left="538" width="23" height="14" font="2">and</text>
+<text top="262" left="129" width="65" height="11" font="4">signal()</text>
+<text top="261" left="199" width="362" height="14" font="2">calls that employ them. These operations do exactly what</text>
+<text top="276" left="129" width="432" height="14" font="2">you might think: wait() blocks the calling thread on a given condition;</text>
+<text top="292" left="129" width="65" height="11" font="4">signal()</text>
+<text top="291" left="197" width="346" height="14" font="2">wakes one waiting thread that is waiting on the condition.</text>
+<text top="309" left="147" width="414" height="14" font="2">However, there are some subtleties in how these calls operate; under-</text>
+<text top="324" left="129" width="432" height="14" font="2">standing the semantics of these calls is critically important to understand-</text>
+<text top="339" left="129" width="432" height="14" font="2">ing why this code works. In what researchers in operating systems call</text>
+<text top="354" left="129" width="103" height="13" font="3"><b>Hoare semantics</b></text>
+<text top="354" left="237" width="254" height="14" font="2">(yes, a somewhat unfortunate name), the</text>
+<text top="355" left="496" width="65" height="11" font="4">signal()</text>
+<text top="369" left="129" width="432" height="14" font="2">immediately wakes one waiting thread and runs it; thus, the monitor</text>
+<text top="384" left="129" width="432" height="14" font="2">lock, which is implicitly held by the running thread, immediately is trans-</text>
+<text top="399" left="129" width="432" height="14" font="2">ferred to the woken thread which then runs until it either blocks or ex-</text>
+<text top="414" left="129" width="432" height="14" font="2">its the monitor. Note that there may be more than one thread waiting;</text>
+<text top="430" left="129" width="65" height="11" font="4">signal()</text>
+<text top="429" left="198" width="363" height="14" font="2">only wakes one waiting thread and runs it, while the others</text>
+<text top="444" left="129" width="204" height="14" font="2">must wait for a subsequent signal.</text>
+<text top="462" left="147" width="414" height="14" font="2">A simple example will help us understand this code better. Imagine</text>
+<text top="477" left="129" width="432" height="14" font="2">there are two threads, one a producer and the other a consumer. The con-</text>
+<text top="492" left="129" width="189" height="14" font="2">sumer gets to run first, and calls</text>
+<text top="493" left="321" width="73" height="11" font="4">consume()</text>
+<text top="492" left="394" width="167" height="14" font="2">, only to find that fullEntries</text>
+<text top="507" left="129" width="17" height="14" font="2">= 0</text>
+<text top="507" left="149" width="32" height="11" font="4">(C0)</text>
+<text top="507" left="181" width="288" height="14" font="2">, as there is nothing in the buffer yet. Thus, it calls</text>
+<text top="507" left="472" width="89" height="11" font="4">wait(&amp;full)</text>
+<text top="522" left="129" width="32" height="11" font="4">(C1)</text>
+<text top="522" left="161" width="400" height="14" font="2">, and waits for a buffer to be filled. The producer then runs, finds</text>
+<text top="537" left="129" width="137" height="14" font="2">it doesn’t have to wait</text>
+<text top="537" left="270" width="32" height="11" font="4">(P0)</text>
+<text top="537" left="302" width="197" height="14" font="2">, puts an element into the buffer</text>
+<text top="537" left="504" width="32" height="11" font="4">(P2)</text>
+<text top="537" left="536" width="24" height="14" font="2">, in-</text>
+<text top="551" left="129" width="137" height="14" font="2">crements the fill index</text>
+<text top="552" left="271" width="32" height="11" font="4">(P3)</text>
+<text top="551" left="308" width="152" height="14" font="2">and the fullEntries count</text>
+<text top="552" left="466" width="32" height="11" font="4">(P4)</text>
+<text top="551" left="498" width="63" height="14" font="2">, and calls</text>
+<text top="567" left="129" width="141" height="11" font="4">signal(&amp;full) (P5)</text>
+<text top="566" left="270" width="291" height="14" font="2">. In Hoare semantics, the producer does not con-</text>
+<text top="581" left="129" width="432" height="14" font="2">tinue running after the signal; rather, the signal immediately transfers</text>
+<text top="596" left="129" width="316" height="14" font="2">control to the waiting consumer, which returns from</text>
+<text top="597" left="449" width="85" height="11" font="4">wait() (C1)</text>
+<text top="596" left="538" width="23" height="14" font="2">and</text>
+<text top="611" left="129" width="370" height="14" font="2">immediately consumes the element produced by the producer</text>
+<text top="612" left="502" width="32" height="11" font="4">(C2)</text>
+<text top="611" left="538" width="23" height="14" font="2">and</text>
+<text top="626" left="129" width="432" height="14" font="2">so on. Only after the consumer returns will the producer get to run again</text>
+<text top="641" left="129" width="229" height="14" font="2">and return from the produce() routine.</text>
+<text top="681" left="97" width="243" height="17" font="6">D.3 Where Theory Meets Practice</text>
+<text top="714" left="147" width="414" height="14" font="2">Tony Hoare, who wrote the solution above and came up with the ex-</text>
+<text top="729" left="129" width="101" height="14" font="2">act semantics for</text>
+<text top="730" left="235" width="65" height="11" font="4">signal()</text>
+<text top="729" left="303" width="23" height="14" font="2">and</text>
+<text top="730" left="331" width="48" height="11" font="4">wait()</text>
+<text top="729" left="379" width="182" height="14" font="2">, was a theoretician. Clearly a</text>
+<text top="744" left="129" width="432" height="14" font="2">smart guy, too; he came up with quicksort after all [H61]. However, the</text>
+<text top="759" left="129" width="432" height="14" font="2">semantics of signaling and waiting, as it turns out, were not ideal for a</text>
+<text top="774" left="129" width="432" height="14" font="2">real implementation. As the old saying goes, in theory, there is no differ-</text>
+<text top="789" left="129" width="344" height="14" font="2">ence between theory and practice, but in practice, there is.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="13" family="XLYGGY+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="158" width="16" height="14" font="2">(D</text>
+<text top="98" left="174" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="243" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="153" left="192" width="11" height="14" font="2">O</text>
+<text top="155" left="203" width="16" height="11" font="5">LD</text>
+<text top="153" left="223" width="7" height="14" font="2">S</text>
+<text top="155" left="231" width="38" height="11" font="5">AYING</text>
+<text top="153" left="269" width="16" height="14" font="2">: T</text>
+<text top="155" left="286" width="59" height="11" font="5">HEORY VS</text>
+<text top="153" left="345" width="16" height="14" font="2">. P</text>
+<text top="155" left="362" width="52" height="11" font="5">RACTICE</text>
+<text top="168" left="105" width="414" height="14" font="2">The old saying is “in theory, there is no difference between theory and</text>
+<text top="183" left="87" width="432" height="14" font="2">practice, but in practice, there is.” Of course, only practitioners tell you</text>
+<text top="197" left="87" width="382" height="14" font="2">this; a theory person could undoubtedly prove that it is not true.</text>
+<text top="240" left="105" width="414" height="14" font="2">A few years later, Butler Lampson and David Redell of Xerox PARC</text>
+<text top="255" left="87" width="278" height="14" font="2">were building a concurrent language known as</text>
+<text top="255" left="368" width="33" height="13" font="3"><b>Mesa</b></text>
+<text top="255" left="401" width="118" height="14" font="2">, and decided to use</text>
+<text top="270" left="87" width="432" height="14" font="2">monitors as their basic concurrency primitive [LR80]. They were well-</text>
+<text top="285" left="87" width="432" height="14" font="2">known systems researchers, and they soon found that Hoare semantics,</text>
+<text top="300" left="87" width="432" height="14" font="2">while more amenable to proofs, were hard to realize in a real system</text>
+<text top="315" left="87" width="430" height="14" font="2">(there are a lot of reasons for this, perhaps too many to go through here).</text>
+<text top="330" left="105" width="414" height="14" font="2">In particular, to build a working monitor implementation, Lampson</text>
+<text top="345" left="87" width="432" height="14" font="2">and Redell decided to change the meaning of signal() in a subtle but crit-</text>
+<text top="360" left="87" width="349" height="14" font="2">ical way. The signal() routine now was just considered a</text>
+<text top="360" left="441" width="25" height="13" font="3"><b>hint</b></text>
+<text top="360" left="471" width="48" height="14" font="2">[L83]; it</text>
+<text top="375" left="87" width="432" height="14" font="2">would move a single waiting thread from the blocked state to a runnable</text>
+<text top="389" left="87" width="432" height="14" font="2">state, but it would not run it immediately. Rather, the signaling thread</text>
+<text top="404" left="87" width="413" height="14" font="2">would retain control until it exited the monitor and was descheduled.</text>
+<text top="442" left="55" width="138" height="17" font="6">D.4 Oh Oh, A Race</text>
+<text top="471" left="105" width="103" height="14" font="2">Given these new</text>
+<text top="471" left="214" width="99" height="13" font="3"><b>Mesa semantics</b></text>
+<text top="471" left="313" width="206" height="14" font="2">, let us again reexamine the code</text>
+<text top="486" left="87" width="432" height="14" font="2">above. Imagine again a consumer (consumer 1) who enters the moni-</text>
+<text top="501" left="87" width="275" height="14" font="2">tor and finds the buffer empty and thus waits</text>
+<text top="502" left="366" width="32" height="11" font="4">(C1)</text>
+<text top="501" left="399" width="120" height="14" font="2">. Now the producer</text>
+<text top="516" left="87" width="432" height="14" font="2">comes along and fills the buffer and signals that a buffer has been filled,</text>
+<text top="531" left="87" width="432" height="14" font="2">moving the waiting consumer from blocked on the full condition variable</text>
+<text top="546" left="87" width="432" height="14" font="2">to ready. The producer keeps running for a while, and eventually gives</text>
+<text top="561" left="87" width="73" height="14" font="2">up the CPU.</text>
+<text top="576" left="105" width="414" height="14" font="2">But Houston, we have a problem. Can you see it? Imagine a differ-</text>
+<text top="591" left="87" width="432" height="14" font="2">ent consumer (consumer 2) now calls into the consume() routine; it will</text>
+<text top="606" left="87" width="432" height="14" font="2">find a full buffer, consume it, and return, setting fullEntries to 0 in the</text>
+<text top="621" left="87" width="432" height="14" font="2">meanwhile. Can you see the problem yet? Well, here it comes. Our old</text>
+<text top="636" left="87" width="432" height="14" font="2">friend consumer 1 now finally gets to run, and returns from wait(), ex-</text>
+<text top="651" left="87" width="151" height="14" font="2">pecting a buffer to be full</text>
+<text top="652" left="241" width="57" height="11" font="4">(C1...)</text>
+<text top="651" left="298" width="221" height="14" font="2">; unfortunately, this is no longer true,</text>
+<text top="666" left="87" width="432" height="14" font="2">as consumer 2 snuck in and consumed the buffer before consumer 1 had</text>
+<text top="681" left="87" width="432" height="14" font="2">a chance to consume it. Thus, the code doesn’t work, because in the time</text>
+<text top="696" left="87" width="432" height="14" font="2">between the signal() by the producer and the return from wait() by con-</text>
+<text top="711" left="87" width="432" height="14" font="2">sumer 1, the condition has changed. This timeline illustrates the problem:</text>
+<text top="736" left="105" width="414" height="14" font="2">Fortunately, the switch from Hoare semantics to Mesa semantics re-</text>
+<text top="751" left="87" width="432" height="14" font="2">quires only a small change by the programmer to realize a working so-</text>
+<text top="766" left="87" width="303" height="14" font="2">lution. Specifically, when woken, a thread should</text>
+<text top="766" left="395" width="39" height="14" font="9">recheck</text>
+<text top="766" left="439" width="80" height="14" font="2">the condition</text>
+<text top="781" left="87" width="432" height="14" font="2">it was waiting on; because signal() is only a hint, it is possible that the</text>
+<text top="796" left="87" width="432" height="14" font="2">condition has changed (even multiple times) and thus may not be in the</text>
+<text top="811" left="87" width="432" height="14" font="2">desired state when the waiting thread runs. In our example, two lines of</text>
+<text top="826" left="87" width="209" height="14" font="2">code must change, lines P0 and C0:</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="400" width="13" height="14" font="2">M</text>
+<text top="98" left="413" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="470" width="16" height="14" font="2">(D</text>
+<text top="98" left="486" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="135" left="169" width="65" height="11" font="4">Producer</text>
+<text top="135" left="323" width="73" height="11" font="4">Consumer1</text>
+<text top="135" left="484" width="73" height="11" font="4">Consumer2</text>
+<text top="149" left="282" width="113" height="11" font="4">C0 (fullEnt=0)</text>
+<text top="164" left="282" width="145" height="11" font="4">C1 (Con1: blocked)</text>
+<text top="179" left="129" width="113" height="11" font="4">P0 (fullEnt=0)</text>
+<text top="194" left="129" width="16" height="11" font="4">P2</text>
+<text top="209" left="129" width="16" height="11" font="4">P3</text>
+<text top="224" left="129" width="113" height="11" font="4">P4 (fullEnt=1)</text>
+<text top="239" left="129" width="129" height="11" font="4">P5 (Con1: ready)</text>
+<text top="254" left="444" width="113" height="11" font="4">C0 (fullEnt=1)</text>
+<text top="269" left="444" width="16" height="11" font="4">C2</text>
+<text top="284" left="444" width="16" height="11" font="4">C3</text>
+<text top="299" left="444" width="113" height="11" font="4">C4 (fullEnt=0)</text>
+<text top="314" left="444" width="16" height="11" font="4">C5</text>
+<text top="329" left="444" width="16" height="11" font="4">C6</text>
+<text top="344" left="282" width="153" height="11" font="4">C2 (using a buffer,</text>
+<text top="359" left="315" width="89" height="11" font="4">fullEnt=0!)</text>
+<text top="393" left="155" width="66" height="14" font="2">Figure D.4:</text>
+<text top="393" left="225" width="309" height="13" font="3"><b>Why the Code doesn’t work with Hoare Semantics</b></text>
+<text top="416" left="129" width="57" height="11" font="4">public:</text>
+<text top="431" left="145" width="218" height="11" font="4">void produce(int element) {</text>
+<text top="446" left="161" width="460" height="11" font="4">while (fullEntries == MAX) // line P0 (CHANGED IF-&gt;WHILE)</text>
+<text top="461" left="177" width="105" height="11" font="4">wait(&amp;empty);</text>
+<text top="461" left="363" width="81" height="11" font="4">// line P1</text>
+<text top="476" left="161" width="186" height="11" font="4">buffer[fill] = element;</text>
+<text top="476" left="379" width="81" height="11" font="4">// line P2</text>
+<text top="491" left="161" width="194" height="11" font="4">fill = (fill + 1) % MAX;</text>
+<text top="491" left="379" width="81" height="11" font="4">// line P3</text>
+<text top="506" left="161" width="113" height="11" font="4">fullEntries++;</text>
+<text top="506" left="379" width="81" height="11" font="4">// line P4</text>
+<text top="521" left="161" width="113" height="11" font="4">signal(&amp;full);</text>
+<text top="521" left="379" width="81" height="11" font="4">// line P5</text>
+<text top="536" left="145" width="8" height="11" font="4">}</text>
+<text top="565" left="145" width="121" height="11" font="4">int consume() {</text>
+<text top="580" left="161" width="194" height="11" font="4">while (fullEntries == 0)</text>
+<text top="580" left="379" width="242" height="11" font="4">// line C0 (CHANGED IF-&gt;WHILE)</text>
+<text top="595" left="177" width="97" height="11" font="4">wait(&amp;full);</text>
+<text top="595" left="363" width="81" height="11" font="4">// line C1</text>
+<text top="610" left="161" width="178" height="11" font="4">int tmp = buffer[use];</text>
+<text top="610" left="379" width="81" height="11" font="4">// line C2</text>
+<text top="625" left="161" width="178" height="11" font="4">use = (use + 1) % MAX;</text>
+<text top="625" left="379" width="81" height="11" font="4">// line C3</text>
+<text top="640" left="161" width="113" height="11" font="4">fullEntries--;</text>
+<text top="640" left="379" width="81" height="11" font="4">// line C4</text>
+<text top="655" left="161" width="121" height="11" font="4">signal(&amp;empty);</text>
+<text top="655" left="379" width="81" height="11" font="4">// line C5</text>
+<text top="670" left="161" width="89" height="11" font="4">return tmp;</text>
+<text top="670" left="379" width="81" height="11" font="4">// line C6</text>
+<text top="685" left="145" width="8" height="11" font="4">}</text>
+<text top="720" left="138" width="66" height="14" font="2">Figure D.5:</text>
+<text top="720" left="208" width="344" height="13" font="3"><b>Producer/Consumer with Monitors and Mesa Semantics</b></text>
+<text top="736" left="147" width="414" height="14" font="2">Not too hard after all. Because of the ease of this implementation,</text>
+<text top="751" left="129" width="432" height="14" font="2">virtually any system today that uses condition variables with signaling</text>
+<text top="766" left="129" width="432" height="14" font="2">and waiting uses Mesa semantics. Thus, if you remember nothing else at</text>
+<text top="781" left="129" width="249" height="14" font="2">all from this class, you can just remember:</text>
+<text top="781" left="383" width="178" height="13" font="3"><b>always recheck the condition</b></text>
+<text top="796" left="129" width="117" height="13" font="3"><b>after being woken!</b></text>
+<text top="796" left="251" width="158" height="14" font="2">Put in even simpler terms,</text>
+<text top="796" left="414" width="97" height="13" font="3"><b>use while loops</b></text>
+<text top="796" left="515" width="46" height="14" font="2">and not</text>
+<text top="811" left="129" width="432" height="14" font="2">if statements when checking conditions. Note that this is always correct,</text>
+<text top="826" left="129" width="432" height="14" font="2">even if somehow you are running on a system with Hoare semantics; in</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="10" family="AFUIUP+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="158" width="16" height="14" font="2">(D</text>
+<text top="98" left="174" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="243" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="136" left="93" width="339" height="9" font="10">t | Con1 Con2 Prod | Mon | Empty | Full | FE | Comment</text>
+<text top="148" left="87" width="452" height="9" font="10">------------------------------------------------------------------------</text>
+<text top="160" left="93" width="6" height="9" font="10">0</text>
+<text top="160" left="112" width="13" height="9" font="10">C0</text>
+<text top="160" left="357" width="6" height="9" font="10">0</text>
+<text top="172" left="93" width="6" height="9" font="10">1</text>
+<text top="172" left="112" width="13" height="9" font="10">C1</text>
+<text top="172" left="313" width="25" height="9" font="10">Con1</text>
+<text top="172" left="357" width="6" height="9" font="10">0</text>
+<text top="172" left="382" width="126" height="9" font="10">Con1 waiting on full</text>
+<text top="184" left="93" width="113" height="9" font="10">2 &lt;Context switch&gt;</text>
+<text top="184" left="313" width="25" height="9" font="10">Con1</text>
+<text top="184" left="357" width="6" height="9" font="10">0</text>
+<text top="184" left="382" width="126" height="9" font="10">switch: Con1 to Prod</text>
+<text top="196" left="93" width="6" height="9" font="10">3</text>
+<text top="196" left="175" width="13" height="9" font="10">P0</text>
+<text top="196" left="313" width="25" height="9" font="10">Con1</text>
+<text top="196" left="357" width="6" height="9" font="10">0</text>
+<text top="208" left="93" width="6" height="9" font="10">4</text>
+<text top="208" left="175" width="13" height="9" font="10">P2</text>
+<text top="208" left="313" width="25" height="9" font="10">Con1</text>
+<text top="208" left="357" width="6" height="9" font="10">0</text>
+<text top="208" left="382" width="151" height="9" font="10">Prod doesn’t wait (FE=0)</text>
+<text top="220" left="93" width="6" height="9" font="10">5</text>
+<text top="220" left="175" width="13" height="9" font="10">P3</text>
+<text top="220" left="313" width="25" height="9" font="10">Con1</text>
+<text top="220" left="357" width="6" height="9" font="10">0</text>
+<text top="232" left="93" width="6" height="9" font="10">6</text>
+<text top="232" left="175" width="13" height="9" font="10">P4</text>
+<text top="232" left="313" width="25" height="9" font="10">Con1</text>
+<text top="232" left="357" width="6" height="9" font="10">1</text>
+<text top="232" left="382" width="151" height="9" font="10">Prod updates fullEntries</text>
+<text top="243" left="93" width="6" height="9" font="10">7</text>
+<text top="243" left="175" width="13" height="9" font="10">P5</text>
+<text top="243" left="357" width="6" height="9" font="10">1</text>
+<text top="243" left="382" width="176" height="9" font="10">Prod signals: Con1 now ready</text>
+<text top="255" left="93" width="113" height="9" font="10">8 &lt;Context switch&gt;</text>
+<text top="255" left="357" width="6" height="9" font="10">1</text>
+<text top="255" left="382" width="126" height="9" font="10">switch: Prod to Con2</text>
+<text top="267" left="93" width="6" height="9" font="10">9</text>
+<text top="267" left="150" width="13" height="9" font="10">C0</text>
+<text top="267" left="357" width="6" height="9" font="10">1</text>
+<text top="267" left="382" width="88" height="9" font="10">switch to Con2</text>
+<text top="279" left="87" width="13" height="9" font="10">10</text>
+<text top="279" left="150" width="13" height="9" font="10">C2</text>
+<text top="279" left="357" width="6" height="9" font="10">1</text>
+<text top="279" left="382" width="151" height="9" font="10">Con2 doesn’t wait (FE=1)</text>
+<text top="291" left="87" width="13" height="9" font="10">11</text>
+<text top="291" left="150" width="13" height="9" font="10">C3</text>
+<text top="291" left="357" width="6" height="9" font="10">1</text>
+<text top="303" left="87" width="13" height="9" font="10">12</text>
+<text top="303" left="150" width="13" height="9" font="10">C4</text>
+<text top="303" left="357" width="6" height="9" font="10">0</text>
+<text top="303" left="382" width="151" height="9" font="10">Con2 changes fullEntries</text>
+<text top="315" left="87" width="13" height="9" font="10">13</text>
+<text top="315" left="150" width="13" height="9" font="10">C5</text>
+<text top="315" left="357" width="6" height="9" font="10">0</text>
+<text top="315" left="382" width="188" height="9" font="10">Con2 signals empty (no waiter)</text>
+<text top="327" left="87" width="13" height="9" font="10">14</text>
+<text top="327" left="150" width="13" height="9" font="10">C6</text>
+<text top="327" left="357" width="6" height="9" font="10">0</text>
+<text top="327" left="382" width="56" height="9" font="10">Con2 done</text>
+<text top="339" left="87" width="119" height="9" font="10">15 &lt;Context switch&gt;</text>
+<text top="339" left="357" width="6" height="9" font="10">0</text>
+<text top="339" left="382" width="126" height="9" font="10">switch: Con2 to Con1</text>
+<text top="351" left="87" width="13" height="9" font="10">16</text>
+<text top="351" left="118" width="13" height="9" font="10">C0</text>
+<text top="351" left="357" width="6" height="9" font="10">0</text>
+<text top="351" left="382" width="144" height="9" font="10">recheck fullEntries: 0!</text>
+<text top="363" left="87" width="13" height="9" font="10">17</text>
+<text top="363" left="118" width="13" height="9" font="10">C1</text>
+<text top="363" left="307" width="25" height="9" font="10">Con1</text>
+<text top="363" left="357" width="6" height="9" font="10">0</text>
+<text top="363" left="382" width="113" height="9" font="10">wait on full again</text>
+<text top="396" left="115" width="66" height="14" font="2">Figure D.6:</text>
+<text top="396" left="184" width="307" height="13" font="3"><b>Tracing Queues during a Producer/Consumer Run</b></text>
+<text top="413" left="87" width="416" height="14" font="2">that case, you would just needlessly retest the condition an extra time.</text>
+<text top="451" left="55" width="257" height="17" font="6">D.5 Peeking Under The Hood A Bit</text>
+<text top="481" left="105" width="414" height="14" font="2">To understand a bit better why Mesa semantics are easier to imple-</text>
+<text top="496" left="87" width="432" height="14" font="2">ment, let’s understand a little more about the implementation of Mesa</text>
+<text top="511" left="87" width="432" height="14" font="2">monitors. In their work [LR80], Lampson and Redell describe three differ-</text>
+<text top="526" left="87" width="395" height="14" font="2">ent types of queues that a thread can be a part of at a given time: the</text>
+<text top="526" left="485" width="34" height="13" font="3"><b>ready</b></text>
+<text top="541" left="87" width="50" height="14" font="2">queue, a</text>
+<text top="541" left="141" width="79" height="13" font="3"><b>monitor lock</b></text>
+<text top="541" left="223" width="76" height="14" font="2">queue, and a</text>
+<text top="541" left="303" width="112" height="13" font="3"><b>condition variable</b></text>
+<text top="541" left="419" width="100" height="14" font="2">queue. Note that</text>
+<text top="556" left="87" width="432" height="14" font="2">a program might have multiple monitor classes and multiple condition</text>
+<text top="571" left="87" width="363" height="14" font="2">variable instances; there is a queue per instance of said items.</text>
+<text top="586" left="105" width="414" height="14" font="2">With a single bounded buffer monitor, we thus have four queues to</text>
+<text top="601" left="87" width="432" height="14" font="2">consider: the ready queue, a single monitor queue, and two condition</text>
+<text top="616" left="87" width="432" height="14" font="2">variable queues (one for the full condition and one for the empty). To</text>
+<text top="631" left="87" width="432" height="14" font="2">better understand how a thread library manages these queues, what we</text>
+<text top="646" left="87" width="432" height="14" font="2">will do is show how a thread transitions through these queues in the pro-</text>
+<text top="661" left="87" width="158" height="14" font="2">ducer/consumer example.</text>
+<text top="676" left="105" width="414" height="14" font="2">In this example, we walk through a case where a consumer might be</text>
+<text top="691" left="87" width="432" height="14" font="2">woken up but find that there is nothing to consume. Let us consider the</text>
+<text top="706" left="87" width="432" height="14" font="2">following timeline. On the left are two consumers (Con1 and Con2) and a</text>
+<text top="721" left="87" width="432" height="14" font="2">producer (Prod) and which line of code they are executing; on the right is</text>
+<text top="736" left="87" width="432" height="14" font="2">the state of each of the four queues we are following for this example:</text>
+<text top="751" left="87" width="432" height="14" font="2">the ready queue of runnable processes, the monitor lock queue called</text>
+<text top="766" left="87" width="432" height="14" font="2">Monitor, and the empty and full condition variable queues. We also track</text>
+<text top="781" left="87" width="432" height="14" font="2">time (t), the thread that is running (square brackets around the thread on</text>
+<text top="796" left="87" width="391" height="14" font="2">the ready queue that is running), and the value of fullEntries (FE).</text>
+<text top="811" left="105" width="414" height="14" font="2">As you can see from the timeline, consumer 2 (Con2) sneaks in and</text>
+<text top="826" left="87" width="432" height="14" font="2">consumes the available data (t=9..14) before consumer 1 (Con1), who was</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="400" width="13" height="14" font="2">M</text>
+<text top="98" left="413" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="470" width="16" height="14" font="2">(D</text>
+<text top="98" left="486" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="135" left="129" width="202" height="11" font="4">monitor class allocator {</text>
+<text top="150" left="161" width="379" height="11" font="4">int available; // how much memory is available?</text>
+<text top="165" left="161" width="73" height="11" font="4">cond_t c;</text>
+<text top="195" left="161" width="210" height="14" font="4">void *allocate(int size) {</text>
+<text top="210" left="193" width="194" height="11" font="4">while (size &gt; available)</text>
+<text top="225" left="226" width="73" height="11" font="4">wait(&amp;c);</text>
+<text top="240" left="193" width="145" height="11" font="4">available -= size;</text>
+<text top="254" left="193" width="379" height="11" font="4">// and then do whatever the allocator should do</text>
+<text top="269" left="193" width="250" height="11" font="4">// and return a chunk of memory</text>
+<text top="284" left="161" width="8" height="11" font="4">}</text>
+<text top="314" left="161" width="291" height="14" font="4">void free(void *pointer, int size) {</text>
+<text top="329" left="193" width="178" height="11" font="4">// free up some memory</text>
+<text top="344" left="193" width="145" height="11" font="4">available += size;</text>
+<text top="359" left="193" width="89" height="11" font="4">signal(&amp;c);</text>
+<text top="374" left="161" width="8" height="11" font="4">}</text>
+<text top="389" left="129" width="16" height="11" font="4">};</text>
+<text top="402" left="223" width="66" height="14" font="2">Figure D.7:</text>
+<text top="402" left="293" width="174" height="13" font="3"><b>A Simple Memory Allocator</b></text>
+<text top="422" left="129" width="432" height="14" font="2">waiting on the full condition to be signaled (since t=1), gets a chance to</text>
+<text top="437" left="129" width="432" height="14" font="2">do so. However, Con1 does get woken by the producer’s signal (t=7),</text>
+<text top="452" left="129" width="432" height="14" font="2">and thus runs again even though the buffer is empty by the time it does</text>
+<text top="467" left="129" width="432" height="14" font="2">so. If Con1 didn’t recheck the state variable fullEntries (t=16), it would</text>
+<text top="482" left="129" width="432" height="14" font="2">have erroneously tried to consume data when no data was present to</text>
+<text top="497" left="129" width="432" height="14" font="2">consume. Thus, this natural implementation is exactly what leads us to</text>
+<text top="512" left="129" width="195" height="14" font="2">Mesa semantics (and not Hoare).</text>
+<text top="551" left="97" width="204" height="17" font="6">D.6 Other Uses Of Monitors</text>
+<text top="582" left="147" width="414" height="14" font="2">In their paper on Mesa, Lampson and Redell also point out a few</text>
+<text top="597" left="129" width="432" height="14" font="2">places where a different kind of signaling is needed. For example, con-</text>
+<text top="612" left="129" width="299" height="14" font="2">sider the following memory allocator (Figure D.7).</text>
+<text top="628" left="147" width="414" height="14" font="2">Many details are left out of this example, in order to allow us to focus</text>
+<text top="643" left="129" width="432" height="14" font="2">on the conditions for waking and signaling. It turns out the signal/wait</text>
+<text top="658" left="129" width="301" height="14" font="2">code above does not quite work; can you see why?</text>
+<text top="675" left="147" width="414" height="14" font="2">Imagine two threads call allocate. The first calls allocate(20) and the</text>
+<text top="690" left="129" width="432" height="14" font="2">second allocate(10). No memory is available, and thus both threads call</text>
+<text top="705" left="129" width="432" height="14" font="2">wait() and block. Some time later, a different thread comes along and calls</text>
+<text top="720" left="129" width="432" height="14" font="2">free(p, 15), and thus frees up 15 bytes of memory. It then signals that it</text>
+<text top="735" left="129" width="432" height="14" font="2">has done so. Unfortunately, it wakes the thread waiting for 20 bytes; that</text>
+<text top="750" left="129" width="432" height="14" font="2">thread rechecks the condition, finds that only 15 bytes are available, and</text>
+<text top="765" left="129" width="432" height="14" font="2">calls wait() again. The thread that could have benefited from the free of</text>
+<text top="780" left="129" width="362" height="14" font="2">15 bytes, i.e., the thread that called allocate(10), is not woken.</text>
+<text top="796" left="147" width="414" height="14" font="2">Lampson and Redell suggest a simple solution to this problem. In-</text>
+<text top="811" left="129" width="432" height="14" font="2">stead of a signal() which wakes a single waiting thread, they employ a</text>
+<text top="826" left="129" width="68" height="13" font="3"><b>broadcast()</b></text>
+<text top="826" left="200" width="77" height="14" font="2">which wakes</text>
+<text top="826" left="281" width="13" height="14" font="9">all</text>
+<text top="826" left="297" width="264" height="14" font="2">waiting threads. Thus, all threads are woken</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="158" width="16" height="14" font="2">(D</text>
+<text top="98" left="174" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="243" width="4" height="14" font="2">)</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="135" left="87" width="202" height="11" font="4">monitor class Semaphore {</text>
+<text top="150" left="119" width="258" height="11" font="4">int s; // value of the semaphore</text>
+<text top="165" left="119" width="178" height="11" font="4">Semaphore(int value) {</text>
+<text top="180" left="152" width="81" height="11" font="4">s = value;</text>
+<text top="195" left="119" width="8" height="11" font="4">}</text>
+<text top="210" left="119" width="105" height="11" font="4">void wait() {</text>
+<text top="225" left="152" width="113" height="11" font="4">while (s &lt;= 0)</text>
+<text top="240" left="184" width="57" height="11" font="4">wait();</text>
+<text top="254" left="152" width="32" height="11" font="4">s--;</text>
+<text top="269" left="119" width="8" height="11" font="4">}</text>
+<text top="284" left="119" width="105" height="11" font="4">void post() {</text>
+<text top="299" left="152" width="32" height="11" font="4">s++;</text>
+<text top="314" left="152" width="73" height="11" font="4">signal();</text>
+<text top="329" left="119" width="8" height="11" font="4">}</text>
+<text top="344" left="87" width="16" height="11" font="4">};</text>
+<text top="379" left="135" width="66" height="14" font="2">Figure D.8:</text>
+<text top="379" left="204" width="267" height="13" font="3"><b>Implementing a Semaphore with a Monitor</b></text>
+<text top="419" left="87" width="432" height="14" font="2">up, and in the example above, the thread waiting for 10 bytes will find 15</text>
+<text top="434" left="87" width="227" height="14" font="2">available and succeed in its allocation.</text>
+<text top="449" left="105" width="243" height="14" font="2">In Mesa semantics, using a broadcast() is</text>
+<text top="449" left="352" width="37" height="14" font="9">always</text>
+<text top="449" left="393" width="126" height="14" font="2">correct, as all threads</text>
+<text top="464" left="87" width="432" height="14" font="2">should recheck the condition of interest upon waking anyhow. However,</text>
+<text top="479" left="87" width="432" height="14" font="2">it may be a performance problem, and thus should only be used when</text>
+<text top="494" left="87" width="432" height="14" font="2">needed. In this example, a broadcast() might wake hundreds of waiting</text>
+<text top="509" left="87" width="432" height="14" font="2">threads, only to have one successfully continue while the rest immedi-</text>
+<text top="524" left="87" width="324" height="14" font="2">ately block again; this problem, sometimes known as a</text>
+<text top="524" left="414" width="101" height="13" font="3"><b>thundering herd</b></text>
+<text top="524" left="516" width="3" height="14" font="2">,</text>
+<text top="539" left="87" width="330" height="14" font="2">is costly, due to all the extra context switches that occur.</text>
+<text top="577" left="55" width="341" height="17" font="6">D.7 Using Monitors To Implement Semaphores</text>
+<text top="607" left="105" width="445" height="14" font="2">You can probably see a lot of similarities between monitors and semaphores.</text>
+<text top="622" left="87" width="432" height="14" font="2">Not surprisingly, you can use one to implement the other. Here, we show</text>
+<text top="637" left="87" width="432" height="14" font="2">how you might implement a semaphore class using a monitor (Figure</text>
+<text top="652" left="87" width="28" height="14" font="2">D.8).</text>
+<text top="668" left="105" width="414" height="14" font="2">As you can see, wait() simply waits for the value of the semaphore to</text>
+<text top="683" left="87" width="432" height="14" font="2">be greater than 0, and then decrements its value, whereas post() incre-</text>
+<text top="698" left="87" width="432" height="14" font="2">ments the value and wakes one waiting thread (if there is one). It’s as</text>
+<text top="713" left="87" width="86" height="14" font="2">simple as that.</text>
+<text top="728" left="105" width="414" height="14" font="2">To use this class as a binary semaphore (i.e., a lock), you just initialize</text>
+<text top="743" left="87" width="432" height="14" font="2">the semaphore to 1, and then put wait()/post() pairs around critical sec-</text>
+<text top="758" left="87" width="432" height="14" font="2">tions. And thus we have shown that monitors can be used to implement</text>
+<text top="773" left="87" width="75" height="14" font="2">semaphores.</text>
+<text top="811" left="55" width="227" height="17" font="6">D.8 Monitors in the Real World</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="15" family="AVAKGB+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="400" width="13" height="14" font="2">M</text>
+<text top="98" left="413" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="470" width="16" height="14" font="2">(D</text>
+<text top="98" left="486" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="135" left="129" width="169" height="11" font="4">class BoundedBuffer {</text>
+<text top="149" left="145" width="65" height="11" font="4">private:</text>
+<text top="164" left="161" width="129" height="11" font="4">int buffer[MAX];</text>
+<text top="179" left="161" width="113" height="11" font="4">int fill, use;</text>
+<text top="194" left="161" width="129" height="11" font="4">int fullEntries;</text>
+<text top="209" left="161" width="323" height="11" font="4">pthread_mutex_t monitor; // monitor lock</text>
+<text top="224" left="161" width="169" height="11" font="4">pthread_cond_t empty;</text>
+<text top="239" left="161" width="161" height="11" font="4">pthread_cond_t full;</text>
+<text top="269" left="145" width="57" height="11" font="4">public:</text>
+<text top="284" left="161" width="137" height="11" font="4">BoundedBuffer() {</text>
+<text top="299" left="193" width="234" height="11" font="4">use = fill = fullEntries = 0;</text>
+<text top="314" left="161" width="8" height="11" font="4">}</text>
+<text top="329" left="161" width="218" height="11" font="4">void produce(int element) {</text>
+<text top="344" left="193" width="234" height="11" font="4">pthread_mutex_lock(&amp;monitor);</text>
+<text top="359" left="193" width="210" height="11" font="4">while (fullEntries == MAX)</text>
+<text top="374" left="226" width="291" height="11" font="4">pthread_cond_wait(&amp;empty, &amp;monitor);</text>
+<text top="389" left="193" width="186" height="11" font="4">buffer[fill] = element;</text>
+<text top="404" left="193" width="194" height="11" font="4">fill = (fill + 1) % MAX;</text>
+<text top="418" left="193" width="113" height="11" font="4">fullEntries++;</text>
+<text top="433" left="193" width="218" height="11" font="4">pthread_cond_signal(&amp;full);</text>
+<text top="448" left="193" width="250" height="11" font="4">pthread_mutex_unlock(&amp;monitor);</text>
+<text top="463" left="161" width="8" height="11" font="4">}</text>
+<text top="493" left="161" width="121" height="11" font="4">int consume() {</text>
+<text top="508" left="193" width="234" height="11" font="4">pthread_mutex_lock(&amp;monitor);</text>
+<text top="523" left="193" width="194" height="11" font="4">while (fullEntries == 0)</text>
+<text top="538" left="226" width="282" height="11" font="4">pthread_cond_wait(&amp;full, &amp;monitor);</text>
+<text top="553" left="193" width="178" height="11" font="4">int tmp = buffer[use];</text>
+<text top="568" left="193" width="178" height="11" font="4">use = (use + 1) % MAX;</text>
+<text top="583" left="193" width="113" height="11" font="4">fullEntries--;</text>
+<text top="598" left="193" width="226" height="11" font="4">pthread_cond_signal(&amp;empty);</text>
+<text top="613" left="193" width="250" height="11" font="4">pthread_mutex_unlock(&amp;monitor);</text>
+<text top="628" left="193" width="89" height="11" font="4">return tmp;</text>
+<text top="643" left="161" width="8" height="11" font="4">}</text>
+<text top="658" left="129" width="8" height="11" font="4">}</text>
+<text top="692" left="179" width="66" height="14" font="2">Figure D.9:</text>
+<text top="692" left="249" width="262" height="13" font="3"><b>C++ Producer/Consumer with a “Monitor”</b></text>
+<text top="732" left="147" width="414" height="14" font="2">We already mentioned above that we were using “pretend” monitors;</text>
+<text top="747" left="129" width="432" height="14" font="2">C++ has no such concept. We now show how to make a monitor-like C++</text>
+<text top="762" left="129" width="432" height="14" font="2">class, and how Java uses synchronized methods to achieve a similar end.</text>
+<text top="791" left="129" width="161" height="15" font="11"><b>A C++ Monitor of Sorts</b></text>
+<text top="811" left="129" width="432" height="14" font="2">Here is the producer/consumer code written in C++ with locks and con-</text>
+<text top="826" left="129" width="432" height="14" font="2">dition variables (Figure D.9). You can see in this code example that there</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="158" width="16" height="14" font="2">(D</text>
+<text top="98" left="174" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="243" width="4" height="14" font="2">)</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="139" left="87" width="432" height="14" font="2">is little difference between the pretend monitor code and the working</text>
+<text top="154" left="87" width="432" height="14" font="2">C++ class we have above. Of course, one obvious difference is the explicit</text>
+<text top="169" left="87" width="432" height="14" font="2">use of a lock ”monitor”. More subtle is the switch to the POSIX standard</text>
+<text top="184" left="87" width="163" height="11" font="4">pthread cond signal()</text>
+<text top="183" left="254" width="23" height="14" font="2">and</text>
+<text top="184" left="280" width="147" height="11" font="4">pthread cond wait()</text>
+<text top="183" left="430" width="89" height="14" font="2">calls. In partic-</text>
+<text top="198" left="87" width="178" height="14" font="2">ular, notice that when calling</text>
+<text top="199" left="270" width="147" height="11" font="4">pthread cond wait()</text>
+<text top="198" left="417" width="102" height="14" font="2">, one also passes</text>
+<text top="213" left="87" width="432" height="14" font="2">in the lock that is held at the time of waiting. The lock is needed inside</text>
+<text top="229" left="87" width="147" height="11" font="4">pthread cond wait()</text>
+<text top="228" left="238" width="281" height="14" font="2">because it must be released when this thread is</text>
+<text top="243" left="87" width="432" height="14" font="2">put to sleep and re-acquired before it returns to the caller (the same be-</text>
+<text top="258" left="87" width="337" height="14" font="2">havior as within a monitor but again with explicit locks).</text>
+<text top="295" left="87" width="105" height="15" font="11"><b>A Java Monitor</b></text>
+<text top="315" left="87" width="438" height="14" font="2">Interestingly, the designers of Java decided to use monitors as they thought</text>
+<text top="330" left="87" width="432" height="14" font="2">they were a graceful way to add synchronization primitives into a lan-</text>
+<text top="345" left="87" width="306" height="14" font="2">guage. To use them, you just use add the keyword</text>
+<text top="345" left="398" width="83" height="13" font="3"><b>synchronized</b></text>
+<text top="345" left="485" width="34" height="14" font="2">to the</text>
+<text top="360" left="87" width="432" height="14" font="2">method or set of methods that you wish to use as a monitor (here is an</text>
+<text top="375" left="87" width="344" height="14" font="2">example from Sun’s own documentation site [S12a,S12b]):</text>
+<text top="390" left="105" width="414" height="14" font="2">This code does exactly what you think it should: provide a counter</text>
+<text top="405" left="87" width="432" height="14" font="2">that is thread safe. Because only one thread is allowed into the monitor</text>
+<text top="420" left="87" width="432" height="14" font="2">at a time, only one thread can update the value of ”c”, and thus a race</text>
+<text top="435" left="87" width="122" height="14" font="2">condition is averted.</text>
+<text top="472" left="87" width="266" height="15" font="11"><b>Java and the Single Condition Variable</b></text>
+<text top="496" left="87" width="432" height="14" font="2">In the original version of Java, a condition variable was also supplied with</text>
+<text top="511" left="87" width="328" height="14" font="2">each synchronized class. To use it, you would call either</text>
+<text top="511" left="418" width="36" height="13" font="3"><b>wait()</b></text>
+<text top="511" left="457" width="13" height="14" font="2">or</text>
+<text top="511" left="473" width="46" height="13" font="3"><b>notify()</b></text>
+<text top="526" left="87" width="432" height="14" font="2">(sometimes the term notify is used instead of signal, but they mean the</text>
+<text top="541" left="87" width="432" height="14" font="2">same thing). Oddly enough, in this original implementation, there was no</text>
+<text top="556" left="87" width="432" height="14" font="2">way to have two (or more) condition variables. You may have noticed in</text>
+<text top="571" left="87" width="432" height="14" font="2">the producer/consumer solution, we always use two: one for signaling a</text>
+<text top="586" left="87" width="432" height="14" font="2">buffer has been emptied, and another for signaling that a buffer has been</text>
+<text top="601" left="87" width="34" height="14" font="2">filled.</text>
+<text top="616" left="105" width="414" height="14" font="2">To understand the limitations of only providing a single condition</text>
+<text top="631" left="87" width="432" height="14" font="2">variable, let’s imagine the producer/consumer solution with only a sin-</text>
+<text top="646" left="87" width="432" height="14" font="2">gle condition variable. Imagine two consumers run first, and both get</text>
+<text top="661" left="87" width="432" height="14" font="2">stuck waiting. Then, a producer runs, fills a single buffer, wakes a single</text>
+<text top="676" left="87" width="432" height="14" font="2">consumer, and then tries to fill again but finds the buffer full (MAX=1).</text>
+<text top="691" left="87" width="432" height="14" font="2">Thus, we have a producer waiting for an empty buffer, a consumer wait-</text>
+<text top="706" left="87" width="432" height="14" font="2">ing for a full buffer, and a consumer who had been waiting about to run</text>
+<text top="721" left="87" width="161" height="14" font="2">because it has been woken.</text>
+<text top="736" left="105" width="414" height="14" font="2">The consumer then runs and consumes the buffer. When it calls no-</text>
+<text top="751" left="87" width="432" height="14" font="2">tify(), though, it wakes a single thread that is waiting on the condition.</text>
+<text top="766" left="87" width="432" height="14" font="2">Because there is only a single condition variable, the consumer might</text>
+<text top="781" left="87" width="104" height="14" font="2">wake the waiting</text>
+<text top="781" left="196" width="62" height="13" font="3"><b>consumer,</b></text>
+<text top="781" left="263" width="256" height="14" font="2">instead of the waiting producer. Thus, the</text>
+<text top="796" left="87" width="141" height="14" font="2">solution does not work.</text>
+<text top="811" left="105" width="414" height="14" font="2">To remedy this problem, one can again use the broadcast solution. In</text>
+<text top="826" left="87" width="86" height="14" font="2">Java, one calls</text>
+<text top="826" left="177" width="66" height="13" font="3"><b>notifyAll()</b></text>
+<text top="826" left="248" width="271" height="14" font="2">to wake all waiting threads. In this case, the</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="400" width="13" height="14" font="2">M</text>
+<text top="98" left="413" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="470" width="16" height="14" font="2">(D</text>
+<text top="98" left="486" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="556" width="4" height="14" font="2">)</text>
+<text top="135" left="129" width="274" height="11" font="4">public class SynchronizedCounter {</text>
+<text top="150" left="161" width="145" height="11" font="4">private int c = 0;</text>
+<text top="165" left="161" width="307" height="11" font="4">public synchronized void increment() {</text>
+<text top="180" left="193" width="32" height="11" font="4">c++;</text>
+<text top="195" left="161" width="8" height="11" font="4">}</text>
+<text top="210" left="161" width="307" height="11" font="4">public synchronized void decrement() {</text>
+<text top="225" left="193" width="32" height="11" font="4">c--;</text>
+<text top="240" left="161" width="8" height="11" font="4">}</text>
+<text top="254" left="161" width="266" height="11" font="4">public synchronized int value() {</text>
+<text top="269" left="193" width="73" height="11" font="4">return c;</text>
+<text top="284" left="161" width="8" height="11" font="4">}</text>
+<text top="299" left="129" width="8" height="11" font="4">}</text>
+<text top="334" left="156" width="72" height="14" font="2">Figure D.10:</text>
+<text top="334" left="232" width="302" height="13" font="3"><b>A Simple Java Class with Synchronized Methods</b></text>
+<text top="372" left="129" width="432" height="14" font="2">consumer would wake a producer and a consumer, but the consumer</text>
+<text top="387" left="129" width="432" height="14" font="2">would find that fullEntries is equal to 0 and go back to sleep, while the</text>
+<text top="402" left="129" width="432" height="14" font="2">producer would continue. As usual, waking all waiters can lead to the</text>
+<text top="417" left="129" width="155" height="14" font="2">thundering herd problem.</text>
+<text top="432" left="147" width="414" height="14" font="2">Because of this deficiency, Java later added an explicit Condition class,</text>
+<text top="447" left="129" width="432" height="14" font="2">thus allowing for a more efficient solution to this and other similar con-</text>
+<text top="462" left="129" width="115" height="14" font="2">currency problems.</text>
+<text top="499" left="97" width="101" height="17" font="6">D.9 Summary</text>
+<text top="529" left="147" width="414" height="14" font="2">We have seen the introduction of monitors, a structuring concept de-</text>
+<text top="544" left="129" width="432" height="14" font="2">veloped by Brinch Hansen and and subsequently Hoare in the early sev-</text>
+<text top="559" left="129" width="432" height="14" font="2">enties. When running inside the monitor, a thread implicitly holds a mon-</text>
+<text top="574" left="129" width="432" height="14" font="2">itor lock, and thus prevents other threads from entering the monitor, al-</text>
+<text top="589" left="129" width="303" height="14" font="2">lowing the ready construction of mutual exclusion.</text>
+<text top="603" left="147" width="422" height="14" font="2">We also have seen the introduction of explicit condition variables, which</text>
+<text top="618" left="129" width="432" height="14" font="2">allow threads to signal() and wait() much like we saw with semaphores</text>
+<text top="633" left="129" width="432" height="14" font="2">in the previous note. The semantics of signal() and wait() are critical; be-</text>
+<text top="648" left="129" width="226" height="14" font="2">cause all modern systems implement</text>
+<text top="648" left="359" width="33" height="13" font="3"><b>Mesa</b></text>
+<text top="648" left="397" width="164" height="14" font="2">semantics, a recheck of the</text>
+<text top="663" left="129" width="432" height="14" font="2">condition that the thread went to sleep on is required for correct execu-</text>
+<text top="678" left="129" width="170" height="14" font="2">tion. Thus, signal() is just a</text>
+<text top="678" left="304" width="25" height="13" font="3"><b>hint</b></text>
+<text top="678" left="334" width="226" height="14" font="2">that something has changed; it is the</text>
+<text top="693" left="129" width="432" height="14" font="2">responsibility of the woken thread to make sure the conditions are right</text>
+<text top="708" left="129" width="162" height="14" font="2">for its continued execution.</text>
+<text top="723" left="147" width="414" height="14" font="2">Finally, because C++ has no monitor support, we saw how to emulate</text>
+<text top="738" left="129" width="432" height="14" font="2">monitors with explicit pthread locks and condition variables. We also saw</text>
+<text top="753" left="129" width="432" height="14" font="2">how Java supports monitors with its synchronized routines, and some of</text>
+<text top="768" left="129" width="432" height="14" font="2">the limitations of only providing a single condition variable in such an</text>
+<text top="783" left="129" width="80" height="14" font="2">environment.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="16" family="AVAKGB+URWPalladioL" color="#000000"/>
+	<fontspec id="13" size="10" family="XLYGGY+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="13" height="14" font="2">M</text>
+<text top="98" left="101" width="53" height="11" font="5">ONITORS</text>
+<text top="96" left="158" width="16" height="14" font="2">(D</text>
+<text top="98" left="174" width="69" height="11" font="5">EPRECATED</text>
+<text top="96" left="243" width="4" height="14" font="2">)</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="137" left="87" width="82" height="16" font="12"><b>References</b></text>
+<text top="165" left="87" width="178" height="11" font="8">[BH73] “Operating System Principles”</text>
+<text top="177" left="87" width="179" height="11" font="8">Per Brinch Hansen, Prentice-Hall, 1973</text>
+<text top="189" left="87" width="264" height="11" font="8">Available: http://portal.acm.org/citation.cfm?id=540365</text>
+<text top="201" left="87" width="432" height="11" font="13">One of the first books on operating systems; certainly ahead of its time. Introduced monitors as a</text>
+<text top="213" left="87" width="96" height="11" font="13">concurrency primitive.</text>
+<text top="236" left="87" width="284" height="11" font="8">[H74] “Monitors: An Operating System Structuring Concept”</text>
+<text top="248" left="87" width="62" height="11" font="8">C.A.R. Hoare</text>
+<text top="260" left="87" width="237" height="11" font="8">CACM, Volume 17:10, pages 549–557, October 1974</text>
+<text top="272" left="87" width="370" height="11" font="13">An early reference to monitors; however, Brinch Hansen probably was the true inventor.</text>
+<text top="295" left="87" width="152" height="11" font="8">[H61] “Quicksort: Algorithm 64”</text>
+<text top="307" left="87" width="62" height="11" font="8">C.A.R. Hoare</text>
+<text top="319" left="87" width="137" height="11" font="8">CACM, Volume 4:7, July 1961</text>
+<text top="330" left="87" width="136" height="11" font="13">The famous quicksort algorithm.</text>
+<text top="353" left="87" width="270" height="11" font="8">[LR80] “Experience with Processes and Monitors in Mesa”</text>
+<text top="365" left="87" width="142" height="11" font="8">B.W. Lampson and D.R. Redell</text>
+<text top="377" left="87" width="237" height="11" font="8">CACM, Volume 23:2, pages 105–117, February 1980</text>
+<text top="389" left="87" width="366" height="11" font="13">An early and important paper highlighting the differences between theory and practice.</text>
+<text top="412" left="87" width="204" height="11" font="8">[L83] “Hints for Computer Systems Design”</text>
+<text top="424" left="87" width="74" height="11" font="8">Butler Lampson</text>
+<text top="436" left="87" width="241" height="11" font="8">ACM Operating Systems Review, 15:5, October 1983</text>
+<text top="448" left="87" width="432" height="11" font="13">Lampson, a famous systems researcher, loved using hints in the design of computer systems. A hint is</text>
+<text top="460" left="87" width="432" height="11" font="13">something that is often correct but can be wrong; in this use, a signal() is telling a waiting thread that it</text>
+<text top="472" left="87" width="432" height="11" font="13">changed the condition that the waiter was waiting on, but not to trust that the condition will be in the</text>
+<text top="484" left="87" width="432" height="11" font="13">desired state when the waiting thread wakes up. In this paper about hints for designing systems, one of</text>
+<text top="495" left="87" width="370" height="11" font="13">Lampson’s general hints is that you should use hints. It is not as confusing as it sounds.</text>
+<text top="518" left="87" width="148" height="11" font="8">[S12a] “Synchronized Methods”</text>
+<text top="530" left="87" width="91" height="11" font="8">Sun documentation</text>
+<text top="542" left="87" width="382" height="11" font="8">http://java.sun.com/docs/books/tutorial/essential/concurrency/syncmeth.html</text>
+<text top="565" left="87" width="132" height="11" font="8">[S12b] “Condition Interface”</text>
+<text top="577" left="87" width="91" height="11" font="8">Sun documentation</text>
+<text top="589" left="87" width="405" height="11" font="8">http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/locks/Condition.html</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+</pdf2xml>

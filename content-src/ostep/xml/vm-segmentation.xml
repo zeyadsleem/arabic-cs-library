@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="ZFDRCS+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="ZFDRCS+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="HWLKRL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="11" family="HWLKRL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="4" size="16" family="HWLKRL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="5" size="13" family="VSDLUN+URWPalladioL" color="#000000"/>
+<text top="195" left="523" width="34" height="30" font="0">16</text>
+<text top="265" left="386" width="133" height="21" font="1">Segmentation</text>
+<text top="346" left="105" width="414" height="14" font="2">So far we have been putting the entire address space of each process in</text>
+<text top="361" left="87" width="432" height="14" font="2">memory. With the base and bounds registers, the OS can easily relocate</text>
+<text top="376" left="87" width="432" height="14" font="2">processes to different parts of physical memory. However, you might</text>
+<text top="391" left="87" width="432" height="14" font="2">have noticed something interesting about these address spaces of ours:</text>
+<text top="406" left="87" width="432" height="14" font="2">there is a big chunk of “free” space right in the middle, between the stack</text>
+<text top="421" left="87" width="81" height="14" font="2">and the heap.</text>
+<text top="436" left="105" width="414" height="14" font="2">As you can imagine from Figure 16.1, although the space between the</text>
+<text top="451" left="87" width="432" height="14" font="2">stack and heap is not being used by the process, it is still taking up phys-</text>
+<text top="466" left="87" width="432" height="14" font="2">ical memory when we relocate the entire address space somewhere in</text>
+<text top="481" left="87" width="432" height="14" font="2">physical memory; thus, the simple approach of using a base and bounds</text>
+<text top="496" left="87" width="432" height="14" font="2">register pair to virtualize memory is wasteful. It also makes it quite hard</text>
+<text top="511" left="87" width="432" height="14" font="2">to run a program when the entire address space doesn’t ﬁt into memory;</text>
+<text top="526" left="87" width="402" height="14" font="2">thus, base and bounds is not as ﬂexible as we would like. And thus:</text>
+<text top="566" left="130" width="8" height="14" font="2">T</text>
+<text top="568" left="139" width="16" height="11" font="3">HE</text>
+<text top="566" left="159" width="10" height="14" font="2">C</text>
+<text top="568" left="170" width="24" height="11" font="3">RUX</text>
+<text top="566" left="194" width="19" height="14" font="2">: H</text>
+<text top="568" left="214" width="20" height="11" font="3">OW</text>
+<text top="566" left="238" width="8" height="14" font="2">T</text>
+<text top="568" left="247" width="8" height="11" font="3">O</text>
+<text top="566" left="260" width="7" height="14" font="2">S</text>
+<text top="568" left="267" width="47" height="11" font="3">UPPORT</text>
+<text top="566" left="318" width="23" height="14" font="2">A L</text>
+<text top="568" left="341" width="32" height="11" font="3">ARGE</text>
+<text top="566" left="378" width="10" height="14" font="2">A</text>
+<text top="568" left="389" width="45" height="11" font="3">DDRESS</text>
+<text top="566" left="438" width="7" height="14" font="2">S</text>
+<text top="568" left="446" width="30" height="11" font="3">PACE</text>
+<text top="581" left="105" width="414" height="14" font="2">How do we support a large address space with (potentially) a lot of</text>
+<text top="596" left="87" width="432" height="14" font="2">free space between the stack and the heap? Note that in our examples,</text>
+<text top="611" left="87" width="432" height="14" font="2">with tiny (pretend) address spaces, the waste doesn’t seem too bad. Imag-</text>
+<text top="626" left="87" width="432" height="14" font="2">ine, however, a 32-bit address space (4 GB in size); a typical program will</text>
+<text top="641" left="87" width="432" height="14" font="2">only use megabytes of memory, but still would demand that the entire</text>
+<text top="656" left="87" width="222" height="14" font="2">address space be resident in memory.</text>
+<text top="721" left="55" width="333" height="17" font="4">16.1 Segmentation: Generalized Base/Bounds</text>
+<text top="751" left="105" width="346" height="14" font="2">To solve this problem, an idea was born, and it is called</text>
+<text top="751" left="456" width="63" height="13" font="5"><b>segmenta-</b></text>
+<text top="766" left="87" width="25" height="13" font="5"><b>tion</b></text>
+<text top="766" left="112" width="407" height="14" font="2">. It is quite an old idea, going at least as far back as the very early</text>
+<text top="781" left="87" width="432" height="14" font="2">1960’s [H61, G62]. The idea is simple: instead of having just one base</text>
+<text top="796" left="87" width="432" height="14" font="2">and bounds pair in our MMU, why not have a base and bounds pair per</text>
+<text top="811" left="87" width="39" height="14" font="2">logical</text>
+<text top="811" left="131" width="52" height="13" font="5"><b>segment</b></text>
+<text top="811" left="188" width="331" height="14" font="2">of the address space? A segment is just a contiguous</text>
+<text top="826" left="87" width="432" height="14" font="2">portion of the address space of a particular length, and in our canonical</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="11" family="ZFDRCS+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="7" size="13" family="XCSSMQ+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="8" size="12" family="HWLKRL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="10" family="HWLKRL+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="465" width="7" height="14" font="2">S</text>
+<text top="98" left="472" width="88" height="11" font="3">EGMENTATION</text>
+<text top="631" left="274" width="28" height="11" font="6">16KB</text>
+<text top="601" left="274" width="28" height="11" font="6">15KB</text>
+<text top="570" left="274" width="28" height="11" font="6">14KB</text>
+<text top="355" left="274" width="21" height="11" font="6">7KB</text>
+<text top="325" left="274" width="21" height="11" font="6">6KB</text>
+<text top="294" left="274" width="21" height="11" font="6">5KB</text>
+<text top="263" left="274" width="21" height="11" font="6">4KB</text>
+<text top="233" left="274" width="21" height="11" font="6">3KB</text>
+<text top="202" left="274" width="21" height="11" font="6">2KB</text>
+<text top="171" left="274" width="21" height="11" font="6">1KB</text>
+<text top="141" left="274" width="21" height="11" font="6">0KB</text>
+<text top="171" left="330" width="73" height="11" font="6">Program Code</text>
+<text top="309" left="353" width="27" height="11" font="6">Heap</text>
+<text top="447" left="353" width="27" height="11" font="6">(free)</text>
+<text top="616" left="352" width="28" height="11" font="6">Stack</text>
+<text top="665" left="228" width="69" height="14" font="2">Figure 16.1:</text>
+<text top="665" left="300" width="162" height="13" font="5"><b>An Address Space (Again)</b></text>
+<text top="702" left="129" width="432" height="14" font="2">address space, we have three logically-different segments: code, stack,</text>
+<text top="717" left="129" width="432" height="14" font="2">and heap. What segmentation allows the OS to do is to place each one</text>
+<text top="732" left="129" width="432" height="14" font="2">of those segments in different parts of physical memory, and thus avoid</text>
+<text top="747" left="129" width="353" height="14" font="2">ﬁlling physical memory with unused virtual address space.</text>
+<text top="766" left="147" width="414" height="14" font="2">Let’s look at an example. Assume we want to place the address space</text>
+<text top="781" left="129" width="432" height="14" font="2">from Figure 16.1 into physical memory. With a base and bounds pair</text>
+<text top="796" left="129" width="243" height="14" font="2">per segment, we can place each segment</text>
+<text top="796" left="376" width="77" height="14" font="7">independently</text>
+<text top="796" left="457" width="104" height="14" font="2">in physical mem-</text>
+<text top="811" left="129" width="432" height="14" font="2">ory. For example, see Figure 16.2 (page 3); there you see a 64KB physical</text>
+<text top="826" left="129" width="427" height="14" font="2">memory with those three segments in it (and 16KB reserved for the OS).</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="10" size="12" family="ZFDRCS+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="11" size="10" family="ZFDRCS+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="88" height="11" font="3">EGMENTATION</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="396" left="222" width="29" height="11" font="10">64KB</text>
+<text top="332" left="222" width="29" height="11" font="10">48KB</text>
+<text top="268" left="222" width="29" height="11" font="10">32KB</text>
+<text top="205" left="222" width="29" height="11" font="10">16KB</text>
+<text top="141" left="222" width="25" height="11" font="10"> 0KB</text>
+<text top="340" left="288" width="58" height="11" font="10">(not in use)</text>
+<text top="228" left="288" width="58" height="11" font="10">(not in use)</text>
+<text top="260" left="288" width="58" height="11" font="10">(not in use)</text>
+<text top="173" left="271" width="94" height="11" font="10">Operating System</text>
+<text top="250" left="306" width="24" height="9" font="11">Stack</text>
+<text top="273" left="306" width="23" height="9" font="11">Code</text>
+<text top="284" left="306" width="23" height="9" font="11">Heap</text>
+<text top="430" left="149" width="69" height="14" font="2">Figure 16.2:</text>
+<text top="430" left="221" width="236" height="13" font="5"><b>Placing Segments In Physical Memory</b></text>
+<text top="458" left="105" width="414" height="14" font="2">As you can see in the diagram, only used memory is allocated space</text>
+<text top="473" left="87" width="432" height="14" font="2">in physical memory, and thus large address spaces with large amounts of</text>
+<text top="488" left="87" width="290" height="14" font="2">unused address space (which we sometimes call</text>
+<text top="488" left="381" width="133" height="13" font="5"><b>sparse address spaces</b></text>
+<text top="488" left="514" width="4" height="14" font="2">)</text>
+<text top="503" left="87" width="136" height="14" font="2">can be accommodated.</text>
+<text top="518" left="105" width="414" height="14" font="2">The hardware structure in our MMU required to support segmenta-</text>
+<text top="533" left="87" width="432" height="14" font="2">tion is just what you’d expect: in this case, a set of three base and bounds</text>
+<text top="548" left="87" width="432" height="14" font="2">register pairs. Figure 16.3 below shows the register values for the exam-</text>
+<text top="563" left="87" width="354" height="14" font="2">ple above; each bounds register holds the size of a segment.</text>
+<text top="596" left="234" width="52" height="14" font="2">Segment</text>
+<text top="596" left="303" width="27" height="14" font="2">Base</text>
+<text top="596" left="348" width="24" height="14" font="2">Size</text>
+<text top="611" left="234" width="32" height="14" font="2">Code</text>
+<text top="611" left="305" width="23" height="14" font="2">32K</text>
+<text top="611" left="352" width="16" height="14" font="2">2K</text>
+<text top="626" left="234" width="32" height="14" font="2">Heap</text>
+<text top="626" left="305" width="23" height="14" font="2">34K</text>
+<text top="626" left="352" width="16" height="14" font="2">3K</text>
+<text top="641" left="234" width="32" height="14" font="2">Stack</text>
+<text top="641" left="305" width="23" height="14" font="2">28K</text>
+<text top="641" left="352" width="16" height="14" font="2">2K</text>
+<text top="664" left="190" width="69" height="14" font="2">Figure 16.3:</text>
+<text top="665" left="263" width="152" height="13" font="5"><b>Segment Register Values</b></text>
+<text top="691" left="105" width="414" height="14" font="2">You can see from the ﬁgure that the code segment is placed at physical</text>
+<text top="706" left="87" width="432" height="14" font="2">address 32KB and has a size of 2KB and the heap segment is placed at</text>
+<text top="721" left="87" width="432" height="14" font="2">34KB and has a size of 3KB. The size register here is exactly the same as</text>
+<text top="736" left="87" width="432" height="14" font="2">the bounds register introduced previously; it tells the hardware exactly</text>
+<text top="751" left="87" width="432" height="14" font="2">how many bytes are valid in this segment (and thus, enables the hard-</text>
+<text top="766" left="87" width="432" height="14" font="2">ware to determine when a program has made an illegal access outside of</text>
+<text top="781" left="87" width="88" height="14" font="2">those bounds).</text>
+<text top="796" left="105" width="414" height="14" font="2">Let’s do an example translation, using the address space in Figure 16.1.</text>
+<text top="811" left="87" width="432" height="14" font="2">Assume a reference is made to virtual address 100 (which is in the code</text>
+<text top="826" left="87" width="432" height="14" font="2">segment, as you can see visually in Figure 16.1, page 2). When the refer-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="12" family="ZFDRCS+NimbusSanL-Regu" color="#7f7f7f"/>
+	<fontspec id="13" size="16" family="ZFDRCS+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="465" width="7" height="14" font="2">S</text>
+<text top="98" left="472" width="88" height="11" font="3">EGMENTATION</text>
+<text top="148" left="238" width="10" height="14" font="2">A</text>
+<text top="150" left="249" width="26" height="11" font="3">SIDE</text>
+<text top="148" left="276" width="16" height="14" font="2">: T</text>
+<text top="150" left="293" width="16" height="11" font="3">HE</text>
+<text top="148" left="313" width="7" height="14" font="2">S</text>
+<text top="150" left="321" width="88" height="11" font="3">EGMENTATION</text>
+<text top="148" left="413" width="7" height="14" font="2">F</text>
+<text top="150" left="421" width="31" height="11" font="3">AULT</text>
+<text top="163" left="129" width="55" height="14" font="2">The term</text>
+<text top="163" left="189" width="117" height="13" font="5"><b>segmentation fault</b></text>
+<text top="163" left="311" width="250" height="14" font="2">or violation arises from a memory access</text>
+<text top="178" left="129" width="432" height="14" font="2">on a segmented machine to an illegal address. Humorously, the term</text>
+<text top="193" left="129" width="432" height="14" font="2">persists, even on machines with no support for segmentation at all. Or</text>
+<text top="208" left="129" width="430" height="14" font="2">not so humorously, if you can’t ﬁgure out why your code keeps faulting.</text>
+<text top="240" left="129" width="432" height="14" font="2">ence takes place (say, on an instruction fetch), the hardware will add the</text>
+<text top="255" left="129" width="100" height="14" font="2">base value to the</text>
+<text top="255" left="233" width="28" height="14" font="7">offset</text>
+<text top="255" left="265" width="296" height="14" font="2">into this segment (100 in this case) to arrive at the</text>
+<text top="270" left="129" width="432" height="14" font="2">desired physical address: 100 + 32KB, or 32868. It will then check that the</text>
+<text top="285" left="129" width="432" height="14" font="2">address is within bounds (100 is less than 2KB), ﬁnd that it is, and issue</text>
+<text top="300" left="129" width="288" height="14" font="2">the reference to physical memory address 32868.</text>
+<text top="315" left="147" width="414" height="14" font="2">Now let’s look at an address in the heap, virtual address 4200 (again</text>
+<text top="330" left="129" width="432" height="14" font="2">refer to Figure 16.1). If we just add the virtual address 4200 to the base</text>
+<text top="344" left="129" width="387" height="14" font="2">of the heap (34KB), we get a physical address of 39016, which is</text>
+<text top="344" left="520" width="18" height="14" font="7">not</text>
+<text top="344" left="542" width="19" height="14" font="2">the</text>
+<text top="359" left="129" width="374" height="14" font="2">correct physical address. What we need to ﬁrst do is extract the</text>
+<text top="359" left="506" width="28" height="14" font="7">offset</text>
+<text top="359" left="537" width="23" height="14" font="2">into</text>
+<text top="374" left="129" width="164" height="14" font="2">the heap, i.e., which byte(s)</text>
+<text top="374" left="296" width="84" height="14" font="7">in this segment</text>
+<text top="374" left="384" width="177" height="14" font="2">the address refers to. Because</text>
+<text top="389" left="129" width="432" height="14" font="2">the heap starts at virtual address 4KB (4096), the offset of 4200 is actually</text>
+<text top="404" left="129" width="432" height="14" font="2">4200 minus 4096, or 104. We then take this offset (104) and add it to the</text>
+<text top="419" left="129" width="400" height="14" font="2">base register physical address (34K) to get the desired result: 34920.</text>
+<text top="434" left="147" width="414" height="14" font="2">What if we tried to refer to an illegal address (i.e., a virtual address of</text>
+<text top="449" left="129" width="432" height="14" font="2">7KB or greater), which is beyond the end of the heap? You can imagine</text>
+<text top="464" left="129" width="432" height="14" font="2">what will happen: the hardware detects that the address is out of bounds,</text>
+<text top="479" left="129" width="432" height="14" font="2">traps into the OS, likely leading to the termination of the offending pro-</text>
+<text top="494" left="129" width="432" height="14" font="2">cess. And now you know the origin of the famous term that all C pro-</text>
+<text top="509" left="129" width="180" height="14" font="2">grammers learn to dread: the</text>
+<text top="509" left="313" width="143" height="13" font="5"><b>segmentation violation</b></text>
+<text top="509" left="461" width="13" height="14" font="2">or</text>
+<text top="509" left="478" width="83" height="13" font="5"><b>segmentation</b></text>
+<text top="524" left="129" width="29" height="13" font="5"><b>fault</b></text>
+<text top="524" left="158" width="3" height="14" font="2">.</text>
+<text top="550" left="97" width="307" height="17" font="4">16.2 Which Segment Are We Referring To?</text>
+<text top="580" left="147" width="414" height="14" font="2">The hardware uses segment registers during translation. How does it</text>
+<text top="595" left="129" width="431" height="14" font="2">know the offset into a segment, and to which segment an address refers?</text>
+<text top="610" left="147" width="304" height="14" font="2">One common approach, sometimes referred to as an</text>
+<text top="610" left="454" width="46" height="13" font="5"><b>explicit</b></text>
+<text top="610" left="502" width="59" height="14" font="2">approach,</text>
+<text top="625" left="129" width="432" height="14" font="2">is to chop up the address space into segments based on the top few bits</text>
+<text top="640" left="129" width="432" height="14" font="2">of the virtual address; this technique was used in the VAX/VMS system</text>
+<text top="655" left="129" width="432" height="14" font="2">[LL82]. In our example above, we have three segments; thus we need two</text>
+<text top="669" left="129" width="432" height="14" font="2">bits to accomplish our task. If we use the top two bits of our 14-bit virtual</text>
+<text top="684" left="129" width="382" height="14" font="2">address to select the segment, our virtual address looks like this:</text>
+<text top="710" left="211" width="88" height="11" font="12">13 12 11 10 9</text>
+<text top="710" left="312" width="7" height="11" font="12">8</text>
+<text top="710" left="332" width="7" height="11" font="12">7</text>
+<text top="710" left="351" width="7" height="11" font="12">6</text>
+<text top="710" left="371" width="7" height="11" font="12">5</text>
+<text top="710" left="391" width="7" height="11" font="12">4</text>
+<text top="710" left="410" width="7" height="11" font="12">3</text>
+<text top="710" left="430" width="7" height="11" font="12">2</text>
+<text top="710" left="449" width="7" height="11" font="12">1</text>
+<text top="710" left="469" width="7" height="11" font="12">0</text>
+<text top="758" left="196" width="63" height="15" font="13">Segment</text>
+<text top="758" left="344" width="42" height="15" font="13">Offset</text>
+<text top="781" left="147" width="414" height="14" font="2">In our example, then, if the top two bits are 00, the hardware knows</text>
+<text top="796" left="129" width="432" height="14" font="2">the virtual address is in the code segment, and thus uses the code base</text>
+<text top="811" left="129" width="432" height="14" font="2">and bounds pair to relocate the address to the correct physical location.</text>
+<text top="826" left="129" width="432" height="14" font="2">If the top two bits are 01, the hardware knows the address is in the heap,</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="7" family="HWLKRL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="15" size="13" family="PCTGEA+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="88" height="11" font="3">EGMENTATION</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="139" left="87" width="432" height="14" font="2">and thus uses the heap base and bounds. Let’s take our example heap</text>
+<text top="154" left="87" width="432" height="14" font="2">virtual address from above (4200) and translate it, just to make sure this</text>
+<text top="169" left="87" width="393" height="14" font="2">is clear. The virtual address 4200, in binary form, can be seen here:</text>
+<text top="195" left="169" width="13" height="11" font="12">13</text>
+<text top="212" left="171" width="9" height="15" font="13">0</text>
+<text top="195" left="189" width="13" height="11" font="12">12</text>
+<text top="212" left="191" width="9" height="15" font="13">1</text>
+<text top="195" left="208" width="13" height="11" font="12">11</text>
+<text top="212" left="211" width="9" height="15" font="13">0</text>
+<text top="195" left="228" width="13" height="11" font="12">10</text>
+<text top="212" left="230" width="9" height="15" font="13">0</text>
+<text top="195" left="251" width="7" height="11" font="12">9</text>
+<text top="212" left="250" width="9" height="15" font="13">0</text>
+<text top="195" left="270" width="7" height="11" font="12">8</text>
+<text top="212" left="269" width="9" height="15" font="13">0</text>
+<text top="195" left="290" width="7" height="11" font="12">7</text>
+<text top="212" left="289" width="9" height="15" font="13">0</text>
+<text top="195" left="310" width="7" height="11" font="12">6</text>
+<text top="212" left="308" width="9" height="15" font="13">1</text>
+<text top="195" left="329" width="7" height="11" font="12">5</text>
+<text top="212" left="328" width="9" height="15" font="13">1</text>
+<text top="195" left="349" width="7" height="11" font="12">4</text>
+<text top="212" left="348" width="9" height="15" font="13">0</text>
+<text top="195" left="368" width="7" height="11" font="12">3</text>
+<text top="212" left="367" width="9" height="15" font="13">1</text>
+<text top="195" left="388" width="7" height="11" font="12">2</text>
+<text top="212" left="387" width="9" height="15" font="13">0</text>
+<text top="195" left="407" width="7" height="11" font="12">1</text>
+<text top="212" left="406" width="9" height="15" font="13">0</text>
+<text top="195" left="427" width="7" height="11" font="12">0</text>
+<text top="212" left="426" width="9" height="15" font="13">0</text>
+<text top="242" left="154" width="63" height="15" font="13">Segment</text>
+<text top="242" left="302" width="42" height="15" font="13">Offset</text>
+<text top="266" left="105" width="414" height="14" font="2">As you can see from the picture, the top two bits (01) tell the hardware</text>
+<text top="281" left="87" width="37" height="14" font="2">which</text>
+<text top="281" left="128" width="45" height="14" font="7">segment</text>
+<text top="281" left="177" width="281" height="14" font="2">we are referring to. The bottom 12 bits are the</text>
+<text top="281" left="463" width="28" height="14" font="7">offset</text>
+<text top="281" left="495" width="23" height="14" font="2">into</text>
+<text top="296" left="87" width="432" height="14" font="2">the segment: 0000 0110 1000, or hex 0x068, or 104 in decimal. Thus, the</text>
+<text top="311" left="87" width="432" height="14" font="2">hardware simply takes the ﬁrst two bits to determine which segment reg-</text>
+<text top="326" left="87" width="432" height="14" font="2">ister to use, and then takes the next 12 bits as the offset into the segment.</text>
+<text top="341" left="87" width="432" height="14" font="2">By adding the base register to the offset, the hardware arrives at the ﬁ-</text>
+<text top="356" left="87" width="432" height="14" font="2">nal physical address. Note the offset eases the bounds check too: we can</text>
+<text top="371" left="87" width="432" height="14" font="2">simply check if the offset is less than the bounds; if not, the address is ille-</text>
+<text top="386" left="87" width="432" height="14" font="2">gal. Thus, if base and bounds were arrays (with one entry per segment),</text>
+<text top="401" left="87" width="432" height="14" font="2">the hardware would be doing something like this to obtain the desired</text>
+<text top="416" left="87" width="102" height="14" font="2">physical address:</text>
+<text top="443" left="65" width="4" height="8" font="14">1</text>
+<text top="440" left="87" width="242" height="11" font="15">// get top 2 bits of 14-bit VA</text>
+<text top="458" left="65" width="4" height="8" font="14">2</text>
+<text top="455" left="87" width="404" height="11" font="15">Segment = (VirtualAddress &amp; SEG_MASK) &gt;&gt; SEG_SHIFT</text>
+<text top="473" left="65" width="4" height="8" font="14">3</text>
+<text top="470" left="87" width="137" height="11" font="15">// now get offset</text>
+<text top="488" left="65" width="4" height="8" font="14">4</text>
+<text top="485" left="87" width="48" height="11" font="15">Offset</text>
+<text top="485" left="152" width="242" height="11" font="15">= VirtualAddress &amp; OFFSET_MASK</text>
+<text top="503" left="65" width="4" height="8" font="14">5</text>
+<text top="500" left="87" width="242" height="11" font="15">if (Offset &gt;= Bounds[Segment])</text>
+<text top="518" left="65" width="4" height="8" font="14">6</text>
+<text top="515" left="119" width="258" height="11" font="15">RaiseException(PROTECTION_FAULT)</text>
+<text top="533" left="65" width="4" height="8" font="14">7</text>
+<text top="530" left="87" width="32" height="11" font="15">else</text>
+<text top="548" left="65" width="4" height="8" font="14">8</text>
+<text top="545" left="119" width="266" height="11" font="15">PhysAddr = Base[Segment] + Offset</text>
+<text top="563" left="65" width="4" height="8" font="14">9</text>
+<text top="559" left="119" width="266" height="11" font="15">Register = AccessMemory(PhysAddr)</text>
+<text top="587" left="105" width="414" height="14" font="2">In our running example, we can ﬁll in values for the constants above.</text>
+<text top="602" left="87" width="69" height="14" font="2">Speciﬁcally,</text>
+<text top="603" left="160" width="65" height="11" font="15">SEG_MASK</text>
+<text top="602" left="229" width="92" height="14" font="2">would be set to</text>
+<text top="603" left="325" width="48" height="11" font="15">0x3000</text>
+<text top="602" left="374" width="3" height="14" font="2">,</text>
+<text top="603" left="381" width="73" height="11" font="15">SEG_SHIFT</text>
+<text top="602" left="457" width="12" height="14" font="2">to</text>
+<text top="603" left="473" width="16" height="11" font="15">12</text>
+<text top="602" left="489" width="30" height="14" font="2">, and</text>
+<text top="617" left="87" width="89" height="11" font="15">OFFSET_MASK</text>
+<text top="617" left="179" width="12" height="14" font="2">to</text>
+<text top="617" left="194" width="40" height="11" font="15">0xFFF</text>
+<text top="617" left="235" width="3" height="14" font="2">.</text>
+<text top="632" left="105" width="414" height="14" font="2">You may also have noticed that when we use the top two bits, and we</text>
+<text top="647" left="87" width="432" height="14" font="2">only have three segments (code, heap, stack), one segment of the address</text>
+<text top="662" left="87" width="432" height="14" font="2">space goes unused. To fully utilize the virtual address space (and avoid</text>
+<text top="676" left="87" width="432" height="14" font="2">an unused segment), some systems put code in the same segment as the</text>
+<text top="691" left="87" width="411" height="14" font="2">heap and thus use only one bit to select which segment to use [LL82].</text>
+<text top="706" left="105" width="414" height="14" font="2">Another issue with using the top so many bits to select a segment is</text>
+<text top="721" left="87" width="432" height="14" font="2">that it limits use of the virtual address space. Speciﬁcally, each segment</text>
+<text top="736" left="87" width="82" height="14" font="2">is limited to a</text>
+<text top="736" left="173" width="79" height="14" font="7">maximum size</text>
+<text top="736" left="252" width="267" height="14" font="2">, which in our example is 4KB (using the top</text>
+<text top="751" left="87" width="432" height="14" font="2">two bits to choose segments implies the 16KB address space gets chopped</text>
+<text top="766" left="87" width="432" height="14" font="2">into four pieces, or 4KB in this example). If a running program wishes to</text>
+<text top="781" left="87" width="432" height="14" font="2">grow a segment (say the heap, or the stack) beyond that maximum, the</text>
+<text top="796" left="87" width="135" height="14" font="2">program is out of luck.</text>
+<text top="811" left="105" width="414" height="14" font="2">There are other ways for the hardware to determine which segment</text>
+<text top="826" left="87" width="193" height="14" font="2">a particular address is in. In the</text>
+<text top="826" left="284" width="49" height="13" font="5"><b>implicit</b></text>
+<text top="826" left="337" width="182" height="14" font="2">approach, the hardware deter-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="9" family="HWLKRL+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="17" size="9" family="VPZZYH+CMR6" color="#000000"/>
+	<fontspec id="18" size="10" family="XCSSMQ+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="465" width="7" height="14" font="2">S</text>
+<text top="98" left="472" width="88" height="11" font="3">EGMENTATION</text>
+<text top="139" left="129" width="432" height="14" font="2">mines the segment by noticing how the address was formed. If, for ex-</text>
+<text top="154" left="129" width="432" height="14" font="2">ample, the address was generated from the program counter (i.e., it was</text>
+<text top="169" left="129" width="432" height="14" font="2">an instruction fetch), then the address is within the code segment; if the</text>
+<text top="183" left="129" width="432" height="14" font="2">address is based off of the stack or base pointer, it must be in the stack</text>
+<text top="198" left="129" width="287" height="14" font="2">segment; any other address must be in the heap.</text>
+<text top="236" left="97" width="205" height="17" font="4">16.3 What About The Stack?</text>
+<text top="265" left="147" width="414" height="14" font="2">Thus far, we’ve left out one important component of the address space:</text>
+<text top="280" left="129" width="432" height="14" font="2">the stack. The stack has been relocated to physical address 28KB in the</text>
+<text top="295" left="129" width="289" height="14" font="2">diagram above, but with one critical difference:</text>
+<text top="295" left="425" width="107" height="14" font="7">it grows backwards</text>
+<text top="295" left="536" width="25" height="14" font="2">(i.e.,</text>
+<text top="312" left="129" width="400" height="14" font="2">towards lower addresses). In physical memory, it “starts” at 28KB</text>
+<text top="310" left="529" width="4" height="9" font="16">1</text>
+<text top="312" left="538" width="23" height="14" font="2">and</text>
+<text top="327" left="129" width="432" height="14" font="2">grows back to 26KB, corresponding to virtual addresses 16KB to 14KB;</text>
+<text top="342" left="129" width="216" height="14" font="2">translation must proceed differently.</text>
+<text top="357" left="147" width="414" height="14" font="2">The ﬁrst thing we need is a little extra hardware support. Instead of</text>
+<text top="372" left="129" width="432" height="14" font="2">just base and bounds values, the hardware also needs to know which way</text>
+<text top="387" left="129" width="432" height="14" font="2">the segment grows (a bit, for example, that is set to 1 when the segment</text>
+<text top="402" left="129" width="432" height="14" font="2">grows in the positive direction, and 0 for negative). Our updated view of</text>
+<text top="417" left="129" width="282" height="14" font="2">what the hardware tracks is seen in Figure 16.4:</text>
+<text top="443" left="190" width="52" height="14" font="2">Segment</text>
+<text top="443" left="259" width="27" height="14" font="2">Base</text>
+<text top="443" left="304" width="82" height="14" font="2">Size (max 4K)</text>
+<text top="443" left="404" width="96" height="14" font="2">Grows Positive?</text>
+<text top="458" left="190" width="32" height="14" font="2">Code</text>
+<text top="464" left="221" width="11" height="6" font="17">00</text>
+<text top="458" left="261" width="23" height="14" font="2">32K</text>
+<text top="458" left="337" width="16" height="14" font="2">2K</text>
+<text top="458" left="449" width="7" height="14" font="2">1</text>
+<text top="473" left="190" width="32" height="14" font="2">Heap</text>
+<text top="479" left="222" width="11" height="6" font="17">01</text>
+<text top="473" left="261" width="23" height="14" font="2">34K</text>
+<text top="473" left="337" width="16" height="14" font="2">3K</text>
+<text top="473" left="449" width="7" height="14" font="2">1</text>
+<text top="488" left="190" width="32" height="14" font="2">Stack</text>
+<text top="494" left="221" width="11" height="6" font="17">11</text>
+<text top="488" left="261" width="23" height="14" font="2">28K</text>
+<text top="488" left="337" width="16" height="14" font="2">2K</text>
+<text top="488" left="449" width="7" height="14" font="2">0</text>
+<text top="511" left="148" width="69" height="14" font="2">Figure 16.4:</text>
+<text top="511" left="221" width="321" height="13" font="5"><b>Segment Registers (With Negative-Growth Support)</b></text>
+<text top="531" left="147" width="414" height="14" font="2">With the hardware understanding that segments can grow in the neg-</text>
+<text top="546" left="129" width="432" height="14" font="2">ative direction, the hardware must now translate such virtual addresses</text>
+<text top="561" left="129" width="432" height="14" font="2">slightly differently. Let’s take an example stack virtual address and trans-</text>
+<text top="576" left="129" width="193" height="14" font="2">late it to understand the process.</text>
+<text top="591" left="147" width="414" height="14" font="2">In this example, assume we wish to access virtual address 15KB, which</text>
+<text top="606" left="129" width="432" height="14" font="2">should map to physical address 27KB. Our virtual address, in binary</text>
+<text top="621" left="129" width="432" height="14" font="2">form, thus looks like this: 11 1100 0000 0000 (hex 0x3C00). The hard-</text>
+<text top="636" left="129" width="432" height="14" font="2">ware uses the top two bits (11) to designate the segment, but then we are</text>
+<text top="651" left="129" width="432" height="14" font="2">left with an offset of 3KB. To obtain the correct negative offset, we must</text>
+<text top="666" left="129" width="432" height="14" font="2">subtract the maximum segment size from 3KB: in this example, a seg-</text>
+<text top="681" left="129" width="432" height="14" font="2">ment can be 4KB, and thus the correct negative offset is 3KB minus 4KB</text>
+<text top="696" left="129" width="432" height="14" font="2">which equals -1KB. We simply add the negative offset (-1KB) to the base</text>
+<text top="711" left="129" width="432" height="14" font="2">(28KB) to arrive at the correct physical address: 27KB. The bounds check</text>
+<text top="726" left="129" width="432" height="14" font="2">can be calculated by ensuring the absolute value of the negative offset is</text>
+<text top="741" left="129" width="389" height="14" font="2">less than or equal to the segment’s current size (in this case, 2KB).</text>
+<text top="778" left="149" width="4" height="8" font="14">1</text>
+<text top="780" left="154" width="407" height="11" font="9">Although we say, for simplicity, that the stack “starts” at 28KB, this value is actually the</text>
+<text top="792" left="129" width="40" height="11" font="9">byte just</text>
+<text top="792" left="173" width="24" height="11" font="18">below</text>
+<text top="792" left="201" width="360" height="11" font="9">the location of the backward growing region; the ﬁrst valid byte is actually</text>
+<text top="804" left="129" width="432" height="11" font="9">28KB minus 1. In contrast, forward-growing regions start at the address of the ﬁrst byte of the</text>
+<text top="816" left="129" width="432" height="11" font="9">segment. We take this approach because it makes the math to compute the physical address</text>
+<text top="828" left="129" width="355" height="11" font="9">straightforward: the physical address is just the base plus the negative offset.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="88" height="11" font="3">EGMENTATION</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="137" left="55" width="178" height="17" font="4">16.4 Support for Sharing</text>
+<text top="167" left="105" width="414" height="14" font="2">As support for segmentation grew, system designers soon realized that</text>
+<text top="182" left="87" width="432" height="14" font="2">they could realize new types of efﬁciencies with a little more hardware</text>
+<text top="197" left="87" width="394" height="14" font="2">support. Speciﬁcally, to save memory, sometimes it is useful to</text>
+<text top="197" left="486" width="33" height="13" font="5"><b>share</b></text>
+<text top="212" left="87" width="398" height="14" font="2">certain memory segments between address spaces. In particular,</text>
+<text top="212" left="491" width="28" height="13" font="5"><b>code</b></text>
+<text top="227" left="87" width="46" height="13" font="5"><b>sharing</b></text>
+<text top="227" left="137" width="260" height="14" font="2">is common and still in use in systems today.</text>
+<text top="243" left="105" width="414" height="14" font="2">To support sharing, we need a little extra support from the hardware,</text>
+<text top="258" left="87" width="81" height="14" font="2">in the form of</text>
+<text top="258" left="171" width="89" height="13" font="5"><b>protection bits</b></text>
+<text top="258" left="260" width="259" height="14" font="2">. Basic support adds a few bits per segment,</text>
+<text top="273" left="87" width="432" height="14" font="2">indicating whether or not a program can read or write a segment, or per-</text>
+<text top="288" left="87" width="432" height="14" font="2">haps execute code that lies within the segment. By setting a code segment</text>
+<text top="303" left="87" width="432" height="14" font="2">to read-only, the same code can be shared across multiple processes, with-</text>
+<text top="318" left="87" width="432" height="14" font="2">out worry of harming isolation; while each process still thinks that it is ac-</text>
+<text top="333" left="87" width="432" height="14" font="2">cessing its own private memory, the OS is secretly sharing memory which</text>
+<text top="348" left="87" width="411" height="14" font="2">cannot be modiﬁed by the process, and thus the illusion is preserved.</text>
+<text top="364" left="105" width="414" height="14" font="2">An example of the additional information tracked by the hardware</text>
+<text top="379" left="87" width="432" height="14" font="2">(and OS) is shown in Figure 16.5. As you can see, the code segment is</text>
+<text top="394" left="87" width="432" height="14" font="2">set to read and execute, and thus the same physical segment in memory</text>
+<text top="408" left="87" width="323" height="14" font="2">could be mapped into multiple virtual address spaces.</text>
+<text top="434" left="98" width="52" height="14" font="2">Segment</text>
+<text top="434" left="168" width="27" height="14" font="2">Base</text>
+<text top="434" left="213" width="82" height="14" font="2">Size (max 4K)</text>
+<text top="434" left="312" width="96" height="14" font="2">Grows Positive?</text>
+<text top="434" left="437" width="61" height="14" font="2">Protection</text>
+<text top="450" left="98" width="32" height="14" font="2">Code</text>
+<text top="455" left="130" width="11" height="6" font="17">00</text>
+<text top="450" left="169" width="23" height="14" font="2">32K</text>
+<text top="450" left="245" width="16" height="14" font="2">2K</text>
+<text top="450" left="357" width="7" height="14" font="2">1</text>
+<text top="450" left="427" width="81" height="14" font="2">Read-Execute</text>
+<text top="465" left="98" width="32" height="14" font="2">Heap</text>
+<text top="470" left="131" width="11" height="6" font="17">01</text>
+<text top="465" left="169" width="23" height="14" font="2">34K</text>
+<text top="465" left="245" width="16" height="14" font="2">3K</text>
+<text top="465" left="357" width="7" height="14" font="2">1</text>
+<text top="465" left="434" width="67" height="14" font="2">Read-Write</text>
+<text top="480" left="98" width="32" height="14" font="2">Stack</text>
+<text top="485" left="130" width="11" height="6" font="17">11</text>
+<text top="480" left="169" width="23" height="14" font="2">28K</text>
+<text top="480" left="245" width="16" height="14" font="2">2K</text>
+<text top="480" left="357" width="7" height="14" font="2">0</text>
+<text top="480" left="434" width="67" height="14" font="2">Read-Write</text>
+<text top="503" left="137" width="69" height="14" font="2">Figure 16.5:</text>
+<text top="503" left="210" width="259" height="13" font="5"><b>Segment Register Values (with Protection)</b></text>
+<text top="531" left="105" width="414" height="14" font="2">With protection bits, the hardware algorithm described earlier would</text>
+<text top="546" left="87" width="432" height="14" font="2">also have to change. In addition to checking whether a virtual address is</text>
+<text top="561" left="87" width="432" height="14" font="2">within bounds, the hardware also has to check whether a particular access</text>
+<text top="576" left="87" width="432" height="14" font="2">is permissible. If a user process tries to write to a read-only segment, or</text>
+<text top="591" left="87" width="432" height="14" font="2">execute from a non-executable segment, the hardware should raise an</text>
+<text top="606" left="87" width="371" height="14" font="2">exception, and thus let the OS deal with the offending process.</text>
+<text top="635" left="55" width="371" height="17" font="4">16.5 Fine-grained vs. Coarse-grained Segmentation</text>
+<text top="661" left="105" width="414" height="14" font="2">Most of our examples thus far have focused on systems with just a</text>
+<text top="676" left="87" width="432" height="14" font="2">few segments (i.e., code, stack, heap); we can think of this segmentation</text>
+<text top="691" left="87" width="12" height="14" font="2">as</text>
+<text top="691" left="104" width="90" height="13" font="5"><b>coarse-grained</b></text>
+<text top="691" left="193" width="326" height="14" font="2">, as it chops up the address space into relatively large,</text>
+<text top="705" left="87" width="432" height="14" font="2">coarse chunks. However, some early systems (e.g., Multics [CV65,DD68])</text>
+<text top="720" left="87" width="432" height="14" font="2">were more ﬂexible and allowed for address spaces to consist of a large</text>
+<text top="735" left="87" width="254" height="14" font="2">number of smaller segments, referred to as</text>
+<text top="735" left="344" width="75" height="13" font="5"><b>ﬁne-grained</b></text>
+<text top="735" left="422" width="84" height="14" font="2">segmentation.</text>
+<text top="751" left="105" width="414" height="14" font="2">Supporting many segments requires even further hardware support,</text>
+<text top="766" left="87" width="38" height="14" font="2">with a</text>
+<text top="766" left="129" width="86" height="13" font="5"><b>segment table</b></text>
+<text top="766" left="219" width="300" height="14" font="2">of some kind stored in memory. Such segment ta-</text>
+<text top="781" left="87" width="432" height="14" font="2">bles usually support the creation of a very large number of segments, and</text>
+<text top="796" left="87" width="432" height="14" font="2">thus enable a system to use segments in more ﬂexible ways than we have</text>
+<text top="811" left="87" width="432" height="14" font="2">thus far discussed. For example, early machines like the Burroughs B5000</text>
+<text top="826" left="87" width="432" height="14" font="2">had support for thousands of segments, and expected a compiler to chop</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="14" family="ZFDRCS+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="465" width="7" height="14" font="2">S</text>
+<text top="98" left="472" width="88" height="11" font="3">EGMENTATION</text>
+<text top="423" left="150" width="28" height="11" font="6">64KB</text>
+<text top="389" left="150" width="28" height="11" font="6">56KB</text>
+<text top="356" left="150" width="28" height="11" font="6">48KB</text>
+<text top="322" left="150" width="28" height="11" font="6">40KB</text>
+<text top="288" left="150" width="28" height="11" font="6">32KB</text>
+<text top="254" left="150" width="28" height="11" font="6">24KB</text>
+<text top="221" left="150" width="28" height="11" font="6">16KB</text>
+<text top="187" left="156" width="21" height="11" font="6">8KB</text>
+<text top="153" left="156" width="21" height="11" font="6">0KB</text>
+<text top="187" left="211" width="90" height="11" font="6">Operating System</text>
+<text top="141" left="209" width="94" height="13" font="19">Not Compacted</text>
+<text top="238" left="228" width="56" height="11" font="6">(not in use)</text>
+<text top="297" left="228" width="56" height="11" font="6">(not in use)</text>
+<text top="364" left="228" width="56" height="11" font="6">(not in use)</text>
+<text top="271" left="233" width="46" height="11" font="6">Allocated</text>
+<text top="316" left="233" width="46" height="11" font="6">Allocated</text>
+<text top="406" left="233" width="46" height="11" font="6">Allocated</text>
+<text top="423" left="358" width="28" height="11" font="6">64KB</text>
+<text top="389" left="358" width="28" height="11" font="6">56KB</text>
+<text top="356" left="358" width="28" height="11" font="6">48KB</text>
+<text top="322" left="358" width="28" height="11" font="6">40KB</text>
+<text top="288" left="358" width="28" height="11" font="6">32KB</text>
+<text top="254" left="358" width="28" height="11" font="6">24KB</text>
+<text top="221" left="358" width="28" height="11" font="6">16KB</text>
+<text top="187" left="364" width="21" height="11" font="6">8KB</text>
+<text top="153" left="364" width="21" height="11" font="6">0KB</text>
+<text top="373" left="436" width="56" height="11" font="6">(not in use)</text>
+<text top="271" left="441" width="46" height="11" font="6">Allocated</text>
+<text top="187" left="419" width="90" height="11" font="6">Operating System</text>
+<text top="141" left="430" width="69" height="13" font="19">Compacted</text>
+<text top="454" left="182" width="69" height="14" font="2">Figure 16.6:</text>
+<text top="454" left="255" width="252" height="13" font="5"><b>Non-compacted and Compacted Memory</b></text>
+<text top="485" left="129" width="432" height="14" font="2">code and data into separate segments which the OS and hardware would</text>
+<text top="500" left="129" width="432" height="14" font="2">then support [RK68]. The thinking at the time was that by having ﬁne-</text>
+<text top="514" left="129" width="432" height="14" font="2">grained segments, the OS could better learn about which segments are in</text>
+<text top="529" left="129" width="415" height="14" font="2">use and which are not and thus utilize main memory more effectively.</text>
+<text top="558" left="97" width="118" height="17" font="4">16.6 OS Support</text>
+<text top="584" left="147" width="414" height="14" font="2">You now should have a basic idea as to how segmentation works.</text>
+<text top="598" left="129" width="432" height="14" font="2">Pieces of the address space are relocated into physical memory as the</text>
+<text top="613" left="129" width="432" height="14" font="2">system runs, and thus a huge savings of physical memory is achieved</text>
+<text top="628" left="129" width="432" height="14" font="2">relative to our simpler approach with just a single base/bounds pair for</text>
+<text top="643" left="129" width="432" height="14" font="2">the entire address space. Speciﬁcally, all the unused space between the</text>
+<text top="658" left="129" width="432" height="14" font="2">stack and the heap need not be allocated in physical memory, allowing</text>
+<text top="673" left="129" width="432" height="14" font="2">us to ﬁt more address spaces into physical memory and support a large</text>
+<text top="688" left="129" width="267" height="14" font="2">and sparse virtual address space per process.</text>
+<text top="705" left="147" width="414" height="14" font="2">However, segmentation raises a number of new issues for the operat-</text>
+<text top="720" left="129" width="432" height="14" font="2">ing system. The ﬁrst is an old one: what should the OS do on a context</text>
+<text top="735" left="129" width="432" height="14" font="2">switch? You should have a good guess by now: the segment registers</text>
+<text top="750" left="129" width="432" height="14" font="2">must be saved and restored. Clearly, each process has its own virtual ad-</text>
+<text top="765" left="129" width="432" height="14" font="2">dress space, and the OS must make sure to set up these registers correctly</text>
+<text top="780" left="129" width="213" height="14" font="2">before letting the process run again.</text>
+<text top="796" left="147" width="414" height="14" font="2">The second is OS interaction when segments grow (or perhaps shrink).</text>
+<text top="811" left="129" width="207" height="14" font="2">For example, a program may call</text>
+<text top="812" left="342" width="65" height="11" font="15">malloc()</text>
+<text top="811" left="412" width="149" height="14" font="2">to allocate an object. In</text>
+<text top="826" left="129" width="432" height="14" font="2">some cases, the existing heap will be able to service the request, and thus</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="88" height="11" font="3">EGMENTATION</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="141" width="8" height="14" font="2">T</text>
+<text top="150" left="150" width="11" height="11" font="3">IP</text>
+<text top="148" left="161" width="13" height="14" font="2">: I</text>
+<text top="150" left="174" width="6" height="11" font="3">F</text>
+<text top="148" left="184" width="40" height="14" font="2">1000 S</text>
+<text top="150" left="225" width="61" height="11" font="3">OLUTIONS</text>
+<text top="148" left="290" width="8" height="14" font="2">E</text>
+<text top="150" left="299" width="25" height="11" font="3">XIST</text>
+<text top="148" left="324" width="19" height="14" font="2">, N</text>
+<text top="150" left="343" width="8" height="11" font="3">O</text>
+<text top="148" left="356" width="10" height="14" font="2">G</text>
+<text top="150" left="367" width="30" height="11" font="3">REAT</text>
+<text top="148" left="401" width="11" height="14" font="2">O</text>
+<text top="150" left="412" width="16" height="11" font="3">NE</text>
+<text top="148" left="432" width="10" height="14" font="2">D</text>
+<text top="150" left="443" width="22" height="11" font="3">OES</text>
+<text top="163" left="87" width="432" height="14" font="2">The fact that so many different algorithms exist to try to minimize exter-</text>
+<text top="178" left="87" width="432" height="14" font="2">nal fragmentation is indicative of a stronger underlying truth: there is no</text>
+<text top="193" left="87" width="432" height="14" font="2">one “best” way to solve the problem. Thus, we settle for something rea-</text>
+<text top="208" left="87" width="432" height="14" font="2">sonable and hope it is good enough. The only real solution (as we will</text>
+<text top="223" left="87" width="432" height="14" font="2">see in forthcoming chapters) is to avoid the problem altogether, by never</text>
+<text top="238" left="87" width="264" height="14" font="2">allocating memory in variable-sized chunks.</text>
+<text top="297" left="87" width="65" height="11" font="15">malloc()</text>
+<text top="296" left="155" width="364" height="14" font="2">will ﬁnd free space for the object and return a pointer to it to</text>
+<text top="311" left="87" width="432" height="14" font="2">the caller. In others, however, the heap segment itself may need to grow.</text>
+<text top="326" left="87" width="432" height="14" font="2">In this case, the memory-allocation library will perform a system call to</text>
+<text top="341" left="87" width="226" height="14" font="2">grow the heap (e.g., the traditional U</text>
+<text top="343" left="314" width="21" height="11" font="3">NIX</text>
+<text top="341" left="340" width="48" height="11" font="15">sbrk()</text>
+<text top="341" left="393" width="126" height="14" font="2">system call). The OS</text>
+<text top="356" left="87" width="432" height="14" font="2">will then (usually) provide more space, updating the segment size reg-</text>
+<text top="370" left="87" width="432" height="14" font="2">ister to the new (bigger) size, and informing the library of success; the</text>
+<text top="385" left="87" width="432" height="14" font="2">library can then allocate space for the new object and return successfully</text>
+<text top="400" left="87" width="432" height="14" font="2">to the calling program. Do note that the OS could reject the request, if no</text>
+<text top="415" left="87" width="432" height="14" font="2">more physical memory is available, or if it decides that the calling process</text>
+<text top="430" left="87" width="131" height="14" font="2">already has too much.</text>
+<text top="447" left="105" width="414" height="14" font="2">The last, and perhaps most important, issue is managing free space in</text>
+<text top="462" left="87" width="432" height="14" font="2">physical memory. When a new address space is created, the OS has to be</text>
+<text top="477" left="87" width="432" height="14" font="2">able to ﬁnd space in physical memory for its segments. Previously, we</text>
+<text top="492" left="87" width="432" height="14" font="2">assumed that each address space was the same size, and thus physical</text>
+<text top="507" left="87" width="432" height="14" font="2">memory could be thought of as a bunch of slots where processes would</text>
+<text top="522" left="87" width="432" height="14" font="2">ﬁt in. Now, we have a number of segments per process, and each segment</text>
+<text top="537" left="87" width="147" height="14" font="2">might be a different size.</text>
+<text top="553" left="105" width="414" height="14" font="2">The general problem that arises is that physical memory quickly be-</text>
+<text top="568" left="87" width="432" height="14" font="2">comes full of little holes of free space, making it difﬁcult to allocate new</text>
+<text top="583" left="87" width="345" height="14" font="2">segments, or to grow existing ones. We call this problem</text>
+<text top="583" left="436" width="83" height="13" font="5"><b>external frag-</b></text>
+<text top="598" left="87" width="63" height="13" font="5"><b>mentation</b></text>
+<text top="598" left="153" width="160" height="14" font="2">[R69]; see Figure 16.6 (left).</text>
+<text top="615" left="105" width="414" height="14" font="2">In the example, a process comes along and wishes to allocate a 20KB</text>
+<text top="630" left="87" width="432" height="14" font="2">segment. In that example, there is 24KB free, but not in one contiguous</text>
+<text top="645" left="87" width="432" height="14" font="2">segment (rather, in three non-contiguous chunks). Thus, the OS cannot</text>
+<text top="660" left="87" width="432" height="14" font="2">satisfy the 20KB request. Similar problems could occur when a request to</text>
+<text top="675" left="87" width="432" height="14" font="2">grow a segment arrives; if the next so many bytes of physical space are</text>
+<text top="690" left="87" width="432" height="14" font="2">not available, the OS will have to reject the request, even though there</text>
+<text top="705" left="87" width="347" height="14" font="2">may be free bytes available elsewhere in physical memory.</text>
+<text top="721" left="105" width="251" height="14" font="2">One solution to this problem would be to</text>
+<text top="722" left="360" width="51" height="13" font="5"><b>compact</b></text>
+<text top="721" left="415" width="104" height="14" font="2">physical memory</text>
+<text top="736" left="87" width="432" height="14" font="2">by rearranging the existing segments. For example, the OS could stop</text>
+<text top="751" left="87" width="432" height="14" font="2">whichever processes are running, copy their data to one contiguous re-</text>
+<text top="766" left="87" width="432" height="14" font="2">gion of memory, change their segment register values to point to the</text>
+<text top="781" left="87" width="432" height="14" font="2">new physical locations, and thus have a large free extent of memory with</text>
+<text top="796" left="87" width="432" height="14" font="2">which to work. By doing so, the OS enables the new allocation request</text>
+<text top="811" left="87" width="432" height="14" font="2">to succeed. However, compaction is expensive, as copying segments is</text>
+<text top="826" left="87" width="432" height="14" font="2">memory-intensive and generally uses a fair amount of processor time; see</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="465" width="7" height="14" font="2">S</text>
+<text top="98" left="472" width="88" height="11" font="3">EGMENTATION</text>
+<text top="139" left="129" width="432" height="14" font="2">Figure 16.6 (right) for a diagram of compacted physical memory. Com-</text>
+<text top="154" left="129" width="432" height="14" font="2">paction also (ironically) makes requests to grow existing segments hard to</text>
+<text top="169" left="129" width="432" height="14" font="2">serve, and may thus cause further rearrangement to accommodate such</text>
+<text top="183" left="129" width="53" height="14" font="2">requests.</text>
+<text top="198" left="147" width="414" height="14" font="2">A simpler approach might instead be to use a free-list management</text>
+<text top="213" left="129" width="432" height="14" font="2">algorithm that tries to keep large extents of memory available for alloca-</text>
+<text top="228" left="129" width="432" height="14" font="2">tion. There are literally hundreds of approaches that people have taken,</text>
+<text top="243" left="129" width="191" height="14" font="2">including classic algorithms like</text>
+<text top="243" left="323" width="43" height="13" font="5"><b>best-ﬁt</b></text>
+<text top="243" left="369" width="192" height="14" font="2">(which keeps a list of free spaces</text>
+<text top="258" left="129" width="432" height="14" font="2">and returns the one closest in size that satisﬁes the desired allocation</text>
+<text top="273" left="129" width="102" height="14" font="2">to the requester),</text>
+<text top="273" left="236" width="52" height="13" font="5"><b>worst-ﬁt</b></text>
+<text top="273" left="287" width="3" height="14" font="2">,</text>
+<text top="273" left="295" width="41" height="13" font="5"><b>ﬁrst-ﬁt</b></text>
+<text top="273" left="337" width="224" height="14" font="2">, and more complex schemes like the</text>
+<text top="288" left="129" width="105" height="13" font="5"><b>buddy algorithm</b></text>
+<text top="288" left="238" width="322" height="14" font="2">[K68]. An excellent survey by Wilson et al. is a good</text>
+<text top="303" left="129" width="432" height="14" font="2">place to start if you want to learn more about such algorithms [W+95], or</text>
+<text top="318" left="129" width="432" height="14" font="2">you can wait until we cover some of the basics in a later chapter. Unfor-</text>
+<text top="333" left="129" width="432" height="14" font="2">tunately, though, no matter how smart the algorithm, external fragmen-</text>
+<text top="348" left="129" width="371" height="14" font="2">tation will still exist; a good algorithm attempts to minimize it.</text>
+<text top="385" left="97" width="105" height="17" font="4">16.7 Summary</text>
+<text top="415" left="147" width="414" height="14" font="2">Segmentation solves a number of problems, and helps us build a more</text>
+<text top="430" left="129" width="432" height="14" font="2">effective virtualization of memory. Beyond just dynamic relocation, seg-</text>
+<text top="445" left="129" width="432" height="14" font="2">mentation can better support sparse address spaces, by avoiding the huge</text>
+<text top="460" left="129" width="433" height="14" font="2">potential waste of memory between logical segments of the address space.</text>
+<text top="474" left="129" width="432" height="14" font="2">It is also fast, as doing the arithmetic segmentation requires is easy and</text>
+<text top="489" left="129" width="432" height="14" font="2">well-suited to hardware; the overheads of translation are minimal. A</text>
+<text top="504" left="129" width="432" height="14" font="2">fringe beneﬁt arises too: code sharing. If code is placed within a sepa-</text>
+<text top="519" left="129" width="432" height="14" font="2">rate segment, such a segment could potentially be shared across multiple</text>
+<text top="534" left="129" width="113" height="14" font="2">running programs.</text>
+<text top="549" left="147" width="414" height="14" font="2">However, as we learned, allocating variable-sized segments in mem-</text>
+<text top="564" left="129" width="432" height="14" font="2">ory leads to some problems that we’d like to overcome. The ﬁrst, as dis-</text>
+<text top="579" left="129" width="432" height="14" font="2">cussed above, is external fragmentation. Because segments are variable-</text>
+<text top="594" left="129" width="432" height="14" font="2">sized, free memory gets chopped up into odd-sized pieces, and thus sat-</text>
+<text top="609" left="129" width="432" height="14" font="2">isfying a memory-allocation request can be difﬁcult. One can try to use</text>
+<text top="624" left="129" width="432" height="14" font="2">smart algorithms [W+95] or periodically compact memory, but the prob-</text>
+<text top="639" left="129" width="228" height="14" font="2">lem is fundamental and hard to avoid.</text>
+<text top="654" left="147" width="414" height="14" font="2">The second and perhaps more important problem is that segmentation</text>
+<text top="669" left="129" width="432" height="14" font="2">still isn’t ﬂexible enough to support our fully generalized, sparse address</text>
+<text top="684" left="129" width="432" height="14" font="2">space. For example, if we have a large but sparsely-used heap all in one</text>
+<text top="699" left="129" width="432" height="14" font="2">logical segment, the entire heap must still reside in memory in order to be</text>
+<text top="714" left="129" width="432" height="14" font="2">accessed. In other words, if our model of how the address space is being</text>
+<text top="729" left="129" width="432" height="14" font="2">used doesn’t exactly match how the underlying segmentation has been</text>
+<text top="743" left="129" width="432" height="14" font="2">designed to support it, segmentation doesn’t work very well. We thus</text>
+<text top="758" left="129" width="321" height="14" font="2">need to ﬁnd some new solutions. Ready to ﬁnd them?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="20" size="16" family="VSDLUN+URWPalladioL" color="#000000"/>
+	<fontspec id="21" size="8" family="HWLKRL+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="88" height="11" font="3">EGMENTATION</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="137" left="87" width="82" height="16" font="20"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="9">[CV65] “Introduction and Overview of the Multics System” by F. J. Corbato, V. A. Vyssotsky.</text>
+<text top="177" left="87" width="180" height="11" font="9">Fall Joint Computer Conference, 1965.</text>
+<text top="177" left="273" width="246" height="11" font="18">One of ﬁve papers presented on Multics at the Fall Joint</text>
+<text top="189" left="87" width="294" height="11" font="18">Computer Conference; oh to be a ﬂy on the wall in that room that day!</text>
+<text top="206" left="87" width="432" height="11" font="9">[DD68] “Virtual Memory, Processes, and Sharing in Multics” by Robert C. Daley and Jack B.</text>
+<text top="218" left="87" width="288" height="11" font="9">Dennis. Communications of the ACM, Volume 11:5, May 1968.</text>
+<text top="217" left="378" width="141" height="11" font="18">An early paper on how to perform</text>
+<text top="229" left="87" width="432" height="11" font="18">dynamic linking in Multics, which was way ahead of its time. Dynamic linking ﬁnally found its way</text>
+<text top="241" left="87" width="432" height="11" font="18">back into systems about 20 years later, as the large X-windows libraries demanded it. Some say that</text>
+<text top="253" left="87" width="432" height="11" font="18">these large X11 libraries were MIT’s revenge for removing support for dynamic linking in early versions</text>
+<text top="265" left="87" width="8" height="11" font="18">of</text>
+<text top="265" left="99" width="8" height="11" font="9">U</text>
+<text top="267" left="108" width="16" height="8" font="21">NIX</text>
+<text top="265" left="124" width="3" height="11" font="18">!</text>
+<text top="282" left="87" width="432" height="11" font="9">[G62] “Fact Segmentation” by M. N. Greenﬁeld. Proceedings of the SJCC, Volume 21, May</text>
+<text top="294" left="87" width="24" height="11" font="9">1962.</text>
+<text top="294" left="114" width="357" height="11" font="18">Another early paper on segmentation; so early that it has no references to other work.</text>
+<text top="310" left="87" width="432" height="11" font="9">[H61] “Program Organization and Record Keeping for Dynamic Storage” by A. W. Holt. Com-</text>
+<text top="322" left="87" width="240" height="11" font="9">munications of the ACM, Volume 4:10, October 1961.</text>
+<text top="322" left="331" width="188" height="11" font="18">An incredibly early and difﬁcult to read paper</text>
+<text top="334" left="87" width="171" height="11" font="18">about segmentation and some of its uses.</text>
+<text top="350" left="87" width="432" height="11" font="9">[I09] “Intel 64 and IA-32 Architectures Software Developer’s Manuals” by Intel. 2009. Avail-</text>
+<text top="362" left="87" width="278" height="11" font="9">able: http://www.intel.com/products/processor/manuals.</text>
+<text top="362" left="371" width="148" height="11" font="18">Try reading about segmentation in</text>
+<text top="374" left="87" width="294" height="11" font="18">here (Chapter 3 in Volume 3a); it’ll hurt your head, at least a little bit.</text>
+<text top="390" left="87" width="432" height="11" font="9">[K68] “The Art of Computer Programming: Volume I” by Donald Knuth. Addison-Wesley,</text>
+<text top="402" left="87" width="24" height="11" font="9">1968.</text>
+<text top="402" left="115" width="403" height="11" font="18">Knuth is famous not only for his early books on the Art of Computer Programming but for his</text>
+<text top="414" left="87" width="432" height="11" font="18">typesetting system TeX which is still a powerhouse typesetting tool used by professionals today, and</text>
+<text top="426" left="87" width="432" height="11" font="18">indeed to typeset this very book. His tomes on algorithms are a great early reference to many of the</text>
+<text top="438" left="87" width="214" height="11" font="18">algorithms that underlie computing systems today.</text>
+<text top="454" left="87" width="432" height="11" font="9">[L83] “Hints for Computer Systems Design” by Butler Lampson. ACM Operating Systems</text>
+<text top="466" left="87" width="126" height="11" font="9">Review, 15:5, October 1983.</text>
+<text top="466" left="216" width="303" height="11" font="18">A treasure-trove of sage advice on how to build systems. Hard to read in</text>
+<text top="478" left="87" width="322" height="11" font="18">one sitting; take it in a little at a time, like a ﬁne wine, or a reference manual.</text>
+<text top="495" left="87" width="432" height="11" font="9">[LL82] “Virtual Memory Management in the VAX/VMS Operating System” by Henry M. Levy,</text>
+<text top="506" left="87" width="290" height="11" font="9">Peter H. Lipman. IEEE Computer, Volume 15:3, March 1982.</text>
+<text top="506" left="384" width="135" height="11" font="18">A classic memory management</text>
+<text top="518" left="87" width="399" height="11" font="18">system, with lots of common sense in its design. We’ll study it in more detail in a later chapter.</text>
+<text top="535" left="87" width="432" height="11" font="9">[RK68] “Dynamic Storage Allocation Systems” by B. Randell and C.J. Kuehner. Communica-</text>
+<text top="547" left="87" width="197" height="11" font="9">tions of the ACM, Volume 11:5, May 1968.</text>
+<text top="547" left="289" width="230" height="11" font="18">A nice overview of the differences between paging and</text>
+<text top="559" left="87" width="281" height="11" font="18">segmentation, with some historical discussion of various machines.</text>
+<text top="575" left="87" width="432" height="11" font="9">[R69] “A note on storage fragmentation and program segmentation” by Brian Randell. Com-</text>
+<text top="587" left="87" width="227" height="11" font="9">munications of the ACM, Volume 12:7, July 1969.</text>
+<text top="587" left="318" width="201" height="11" font="18">One of the earliest papers to discuss fragmenta-</text>
+<text top="599" left="87" width="19" height="11" font="18">tion.</text>
+<text top="615" left="87" width="432" height="11" font="9">[W+95] “Dynamic Storage Allocation: A Survey and Critical Review” by Paul R. Wilson, Mark</text>
+<text top="627" left="87" width="432" height="11" font="9">S. Johnstone, Michael Neely, David Boles. International Workshop on Memory Management,</text>
+<text top="639" left="87" width="142" height="11" font="9">Scotland, UK, September 1995.</text>
+<text top="639" left="232" width="184" height="11" font="18">A great survey paper on memory allocators.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="3">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="3">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="3">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="3">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="3">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="22" size="15" family="VSDLUN+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="465" width="7" height="14" font="2">S</text>
+<text top="98" left="472" width="88" height="11" font="3">EGMENTATION</text>
+<text top="137" left="129" width="183" height="16" font="20"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="419" height="14" font="2">This program allows you to see how address translations are performed</text>
+<text top="181" left="129" width="360" height="14" font="2">in a system with segmentation. See the README for details.</text>
+<text top="217" left="129" width="70" height="15" font="22"><b>Questions</b></text>
+<text top="242" left="146" width="422" height="14" font="2">1. First let’s use a tiny address space to translate some addresses. Here’s</text>
+<text top="256" left="163" width="397" height="14" font="2">a simple set of parameters with a few different random seeds; can</text>
+<text top="271" left="163" width="167" height="14" font="2">you translate the addresses?</text>
+<text top="296" left="179" width="8" height="14" font="2">•</text>
+<text top="297" left="194" width="379" height="11" font="15">segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512</text>
+<text top="312" left="194" width="81" height="11" font="15">-L 20 -s 0</text>
+<text top="331" left="179" width="8" height="14" font="2">•</text>
+<text top="332" left="194" width="379" height="11" font="15">segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512</text>
+<text top="347" left="194" width="81" height="11" font="15">-L 20 -s 1</text>
+<text top="366" left="179" width="8" height="14" font="2">•</text>
+<text top="367" left="194" width="379" height="11" font="15">segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512</text>
+<text top="382" left="194" width="81" height="11" font="15">-L 20 -s 2</text>
+<text top="406" left="146" width="414" height="14" font="2">2. Now, let’s see if we understand this tiny address space we’ve con-</text>
+<text top="421" left="163" width="397" height="14" font="2">structed (using the parameters from the question above). What is</text>
+<text top="436" left="163" width="397" height="14" font="2">the highest legal virtual address in segment 0? What about the low-</text>
+<text top="451" left="163" width="397" height="14" font="2">est legal virtual address in segment 1? What are the lowest and</text>
+<text top="466" left="163" width="44" height="14" font="2">highest</text>
+<text top="466" left="211" width="33" height="14" font="7">illegal</text>
+<text top="466" left="248" width="312" height="14" font="2">addresses in this entire address space? Finally, how</text>
+<text top="481" left="163" width="91" height="14" font="2">would you run</text>
+<text top="481" left="259" width="121" height="11" font="15">segmentation.py</text>
+<text top="481" left="384" width="50" height="14" font="2">with the</text>
+<text top="481" left="438" width="16" height="11" font="15">-A</text>
+<text top="481" left="458" width="103" height="14" font="2">ﬂag to test if you</text>
+<text top="496" left="163" width="57" height="14" font="2">are right?</text>
+<text top="521" left="146" width="414" height="14" font="2">3. Let’s say we have a tiny 16-byte address space in a 128-byte physical</text>
+<text top="535" left="163" width="397" height="14" font="2">memory. What base and bounds would you set up so as to get</text>
+<text top="550" left="163" width="397" height="14" font="2">the simulator to generate the following translation results for the</text>
+<text top="565" left="163" width="397" height="14" font="2">speciﬁed address stream: valid, valid, violation, ..., violation, valid,</text>
+<text top="580" left="163" width="245" height="14" font="2">valid? Assume the following parameters:</text>
+<text top="608" left="179" width="8" height="14" font="2">•</text>
+<text top="609" left="194" width="226" height="11" font="15">segmentation.py -a 16 -p 128</text>
+<text top="624" left="194" width="323" height="11" font="15">-A 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</text>
+<text top="639" left="194" width="48" height="11" font="15">--b0 ?</text>
+<text top="639" left="258" width="48" height="11" font="15">--l0 ?</text>
+<text top="639" left="323" width="48" height="11" font="15">--b1 ?</text>
+<text top="639" left="388" width="48" height="11" font="15">--l1 ?</text>
+<text top="666" left="146" width="414" height="14" font="2">4. Assume we want to generate a problem where roughly 90% of the</text>
+<text top="681" left="163" width="397" height="14" font="2">randomly-generated virtual addresses are valid (not segmentation</text>
+<text top="696" left="163" width="397" height="14" font="2">violations). How should you conﬁgure the simulator to do so?</text>
+<text top="711" left="163" width="341" height="14" font="2">Which parameters are important to getting this outcome?</text>
+<text top="736" left="146" width="414" height="14" font="2">5. Can you run the simulator such that no virtual addresses are valid?</text>
+<text top="751" left="163" width="36" height="14" font="2">How?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="3">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="3">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="8">[V</text>
+<text top="914" left="143" width="39" height="10" font="9">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="8">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="3">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="3">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="3">ORG</text>
+</page>
+</pdf2xml>

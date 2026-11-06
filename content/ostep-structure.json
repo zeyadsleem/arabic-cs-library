@@ -1,0 +1,875 @@
+{
+  "chapters": [
+    {
+      "key": "dedication",
+      "title": "Dedication",
+      "titleAr": "الإهداء",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dedication",
+          "titleAr": "الإهداء",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "preface",
+      "title": "Preface",
+      "titleAr": "تمهيد",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Preface",
+          "titleAr": "تمهيد",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-threeeasy",
+      "title": "Dialogue: The Three Easy Pieces",
+      "titleAr": "حوار: القطع الثلاث السهلة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: The Three Easy Pieces",
+          "titleAr": "حوار: القطع الثلاث السهلة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "intro",
+      "title": "Introduction to Operating Systems",
+      "titleAr": "مقدمة في أنظمة التشغيل",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction to Operating Systems",
+          "titleAr": "مقدمة في أنظمة التشغيل",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-virtualization",
+      "title": "Dialogue: Virtualization",
+      "titleAr": "حوار: المحاكاة الافتراضية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Virtualization",
+          "titleAr": "حوار: المحاكاة الافتراضية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "cpu-intro",
+      "title": "The Abstraction: The Process",
+      "titleAr": "التجريد: العملية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Abstraction: The Process",
+          "titleAr": "التجريد: العملية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "cpu-api",
+      "title": "Interlude: Process API",
+      "titleAr": "استراحة: واجهة برمجة العمليات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Interlude: Process API",
+          "titleAr": "استراحة: واجهة برمجة العمليات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "cpu-mechanisms",
+      "title": "Mechanism: Limited Direct Execution",
+      "titleAr": "الآلية: التنفيذ المباشر المحدود",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Mechanism: Limited Direct Execution",
+          "titleAr": "الآلية: التنفيذ المباشر المحدود",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "cpu-sched",
+      "title": "Scheduling: Introduction",
+      "titleAr": "الجدولة: مقدمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Scheduling: Introduction",
+          "titleAr": "الجدولة: مقدمة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "cpu-sched-mlfq",
+      "title": "Scheduling: The Multi-Level Feedback Queue",
+      "titleAr": "الجدولة: قائمة الانتظار متعددة المستويات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Scheduling: The Multi-Level Feedback Queue",
+          "titleAr": "الجدولة: قائمة الانتظار متعددة المستويات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "cpu-sched-lottery",
+      "title": "Scheduling: Proportional Share",
+      "titleAr": "الجدولة: الحصة التناسبية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Scheduling: Proportional Share",
+          "titleAr": "الجدولة: الحصة التناسبية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "cpu-sched-multi",
+      "title": "Multiprocessor Scheduling (Advanced)",
+      "titleAr": "الجدولة على معالجات متعددة (متقدّم)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Multiprocessor Scheduling (Advanced)",
+          "titleAr": "الجدولة على معالجات متعددة (متقدّم)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "cpu-dialogue",
+      "title": "Dialogue: Scheduling",
+      "titleAr": "حوار: الجدولة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Scheduling",
+          "titleAr": "حوار: الجدولة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-vm",
+      "title": "Dialogue: Virtual Memory",
+      "titleAr": "حوار: الذاكرة الافتراضية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Virtual Memory",
+          "titleAr": "حوار: الذاكرة الافتراضية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-intro",
+      "title": "The Abstraction: Address Spaces",
+      "titleAr": "التجريد: فضاءات العناوين",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Abstraction: Address Spaces",
+          "titleAr": "التجريد: فضاءات العناوين",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-api",
+      "title": "Interlude: Memory API",
+      "titleAr": "استراحة: واجهة برمجة الذاكرة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Interlude: Memory API",
+          "titleAr": "استراحة: واجهة برمجة الذاكرة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-mechanism",
+      "title": "Mechanism: Address Translation",
+      "titleAr": "الآلية: ترجمة العناوين",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Mechanism: Address Translation",
+          "titleAr": "الآلية: ترجمة العناوين",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-segmentation",
+      "title": "Segmentation",
+      "titleAr": "التقطيع",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Segmentation",
+          "titleAr": "التقطيع",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-freespace",
+      "title": "Free Space Management",
+      "titleAr": "إدارة المساحة الحرة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Free Space Management",
+          "titleAr": "إدارة المساحة الحرة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-paging",
+      "title": "Introduction to Paging",
+      "titleAr": "مقدمة في الترقيم الصفحي",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction to Paging",
+          "titleAr": "مقدمة في الترقيم الصفحي",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-tlbs",
+      "title": "Translation Lookaside Buffers",
+      "titleAr": "مخازن الترجمة المؤقتة (TLB)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Translation Lookaside Buffers",
+          "titleAr": "مخازن الترجمة المؤقتة (TLB)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-smalltables",
+      "title": "Advanced Page Tables",
+      "titleAr": "جداول صفحات متقدّمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Advanced Page Tables",
+          "titleAr": "جداول صفحات متقدّمة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-beyondphys",
+      "title": "Swapping: Mechanisms",
+      "titleAr": "التبديل: الآليات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Swapping: Mechanisms",
+          "titleAr": "التبديل: الآليات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-beyondphys-policy",
+      "title": "Swapping: Policies",
+      "titleAr": "التبديل: السياسات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Swapping: Policies",
+          "titleAr": "التبديل: السياسات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-complete",
+      "title": "Complete Virtual Memory Systems",
+      "titleAr": "أنظمة ذاكرة افتراضية كاملة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Complete Virtual Memory Systems",
+          "titleAr": "أنظمة ذاكرة افتراضية كاملة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vm-dialogue",
+      "title": "Dialogue: Virtual Memory (Summary)",
+      "titleAr": "حوار: الذاكرة الافتراضية (خلاصة)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Virtual Memory (Summary)",
+          "titleAr": "حوار: الذاكرة الافتراضية (خلاصة)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-concurrency",
+      "title": "Dialogue: Concurrency",
+      "titleAr": "حوار: التزامن",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Concurrency",
+          "titleAr": "حوار: التزامن",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-intro",
+      "title": "Concurrency: An Introduction",
+      "titleAr": "التزامن: مقدمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Concurrency: An Introduction",
+          "titleAr": "التزامن: مقدمة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-api",
+      "title": "Interlude: Thread API",
+      "titleAr": "استراحة: واجهة برمجة الخيوط",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Interlude: Thread API",
+          "titleAr": "استراحة: واجهة برمجة الخيوط",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-locks",
+      "title": "Locks",
+      "titleAr": "الأقفال",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Locks",
+          "titleAr": "الأقفال",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-locks-usage",
+      "title": "Locked Data Structures",
+      "titleAr": "بنى بيانات مقفلة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Locked Data Structures",
+          "titleAr": "بنى بيانات مقفلة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-cv",
+      "title": "Condition Variables",
+      "titleAr": "المتغيّرات الشرطية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Condition Variables",
+          "titleAr": "المتغيّرات الشرطية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-sema",
+      "title": "Semaphores",
+      "titleAr": "الإشارات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Semaphores",
+          "titleAr": "الإشارات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-bugs",
+      "title": "Common Concurrency Problems",
+      "titleAr": "أخطاء التزامن الشائعة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Common Concurrency Problems",
+          "titleAr": "أخطاء التزامن الشائعة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-events",
+      "title": "Event-based Concurrency (Advanced)",
+      "titleAr": "التزامن القائم على الأحداث (متقدّم)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Event-based Concurrency (Advanced)",
+          "titleAr": "التزامن القائم على الأحداث (متقدّم)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-dialogue",
+      "title": "Dialogue: Concurrency (Summary)",
+      "titleAr": "حوار: التزامن (خلاصة)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Concurrency (Summary)",
+          "titleAr": "حوار: التزامن (خلاصة)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-persistence",
+      "title": "Dialogue: Persistence",
+      "titleAr": "حوار: الاستمرارية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Persistence",
+          "titleAr": "حوار: الاستمرارية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-devices",
+      "title": "I/O Devices",
+      "titleAr": "أجهزة الإدخال والإخراج",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "I/O Devices",
+          "titleAr": "أجهزة الإدخال والإخراج",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-disks",
+      "title": "Hard Disk Drives",
+      "titleAr": "محرّكات الأقراص الصلبة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Hard Disk Drives",
+          "titleAr": "محرّكات الأقراص الصلبة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-raid",
+      "title": "Redundant Arrays of Inexpensive Disks (RAID)",
+      "titleAr": "المصفوفات المتكرّرة من الأقراص الرخيصة (RAID)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Redundant Arrays of Inexpensive Disks (RAID)",
+          "titleAr": "المصفوفات المتكرّرة من الأقراص الرخيصة (RAID)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-intro",
+      "title": "Files and Directories",
+      "titleAr": "الملفات والأدلّة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Files and Directories",
+          "titleAr": "الملفات والأدلّة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-implementation",
+      "title": "File System Implementation",
+      "titleAr": "تنفيذ نظم الملفات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "File System Implementation",
+          "titleAr": "تنفيذ نظم الملفات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-ffs",
+      "title": "Locality and The Fast File System",
+      "titleAr": "المحلّية ونظام الملفات السريع",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Locality and The Fast File System",
+          "titleAr": "المحلّية ونظام الملفات السريع",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-journaling",
+      "title": "Crash Consistency: FSCK and Journaling",
+      "titleAr": "الاتساق بعد الانهيار: FSCK والسجلّات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Crash Consistency: FSCK and Journaling",
+          "titleAr": "الاتساق بعد الانهيار: FSCK والسجلّات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-lfs",
+      "title": "Log-structured File Systems",
+      "titleAr": "نظم الملفات ذات البنية السجلية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Log-structured File Systems",
+          "titleAr": "نظم الملفات ذات البنية السجلية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-ssd",
+      "title": "Flash-based SSDs",
+      "titleAr": "أقراص الحالة الصلبة القائمة على الذاكرة الوميضية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Flash-based SSDs",
+          "titleAr": "أقراص الحالة الصلبة القائمة على الذاكرة الوميضية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-integrity",
+      "title": "Data Integrity and Protection",
+      "titleAr": "سلامة البيانات وحمايتها",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Data Integrity and Protection",
+          "titleAr": "سلامة البيانات وحمايتها",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "file-dialogue",
+      "title": "Dialogue: Persistence (Summary)",
+      "titleAr": "حوار: الاستمرارية (خلاصة)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Persistence (Summary)",
+          "titleAr": "حوار: الاستمرارية (خلاصة)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-distribution",
+      "title": "Dialogue: Distributed Systems",
+      "titleAr": "حوار: الأنظمة الموزّعة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Distributed Systems",
+          "titleAr": "حوار: الأنظمة الموزّعة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dist-intro",
+      "title": "A Dialogue on Distributed Systems",
+      "titleAr": "حوار حول الأنظمة الموزّعة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Dialogue on Distributed Systems",
+          "titleAr": "حوار حول الأنظمة الموزّعة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dist-nfs",
+      "title": "Network File System (NFS)",
+      "titleAr": "نظام ملفات الشبكة (NFS)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Network File System (NFS)",
+          "titleAr": "نظام ملفات الشبكة (NFS)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dist-afs",
+      "title": "The Andrew File System (AFS)",
+      "titleAr": "نظام ملفات أندرو (AFS)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Andrew File System (AFS)",
+          "titleAr": "نظام ملفات أندرو (AFS)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dist-dialogue",
+      "title": "Dialogue: Distributed Systems (Summary)",
+      "titleAr": "حوار: الأنظمة الموزّعة (خلاصة)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Distributed Systems (Summary)",
+          "titleAr": "حوار: الأنظمة الموزّعة (خلاصة)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-security",
+      "title": "Dialogue: Security",
+      "titleAr": "حوار: الأمن",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Security",
+          "titleAr": "حوار: الأمن",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "security-intro",
+      "title": "Introduction to Security",
+      "titleAr": "مقدمة في الأمن",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction to Security",
+          "titleAr": "مقدمة في الأمن",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "security-authentication",
+      "title": "Authentication",
+      "titleAr": "المصادقة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Authentication",
+          "titleAr": "المصادقة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "security-access",
+      "title": "Access Control",
+      "titleAr": "التحكّم في الوصول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Access Control",
+          "titleAr": "التحكّم في الوصول",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "security-crypto",
+      "title": "Cryptography",
+      "titleAr": "التعمية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Cryptography",
+          "titleAr": "التعمية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "security-distributed",
+      "title": "Distributed Systems",
+      "titleAr": "الأنظمة الموزّعة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Distributed Systems",
+          "titleAr": "الأنظمة الموزّعة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-vmm",
+      "title": "Dialogue: Virtual Machine Monitors",
+      "titleAr": "حوار: مراقبات الآلات الافتراضية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Virtual Machine Monitors",
+          "titleAr": "حوار: مراقبات الآلات الافتراضية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "vmm-intro",
+      "title": "Virtual Machine Monitors",
+      "titleAr": "مراقبات الآلات الافتراضية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Virtual Machine Monitors",
+          "titleAr": "مراقبات الآلات الافتراضية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-monitors",
+      "title": "Dialogue: Monitors",
+      "titleAr": "حوار: المراقبات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Monitors",
+          "titleAr": "حوار: المراقبات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "threads-monitors",
+      "title": "Monitors (Deprecated)",
+      "titleAr": "المراقبات (مهجورة)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Monitors (Deprecated)",
+          "titleAr": "المراقبات (مهجورة)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "dialogue-labs",
+      "title": "Dialogue: Labs",
+      "titleAr": "حوار: المعامل",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dialogue: Labs",
+          "titleAr": "حوار: المعامل",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "lab-tutorial",
+      "title": "Laboratory: Tutorial",
+      "titleAr": "المعمل: دليل تمهيدي",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Laboratory: Tutorial",
+          "titleAr": "المعمل: دليل تمهيدي",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "lab-projects-systems",
+      "title": "Laboratory: Projects (Systems)",
+      "titleAr": "المعمل: مشاريع الأنظمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Laboratory: Projects (Systems)",
+          "titleAr": "المعمل: مشاريع الأنظمة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "lab-projects-xv6",
+      "title": "Laboratory: Projects (xv6)",
+      "titleAr": "المعمل: مشاريع xv6",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Laboratory: Projects (xv6)",
+          "titleAr": "المعمل: مشاريع xv6",
+          "order": 0
+        }
+      ]
+    }
+  ]
+}

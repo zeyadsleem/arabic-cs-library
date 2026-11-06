@@ -1,0 +1,1368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="AWGAJO+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="AWGAJO+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="VLCTDJ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="SHKMLM+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="13" family="KUPOXQ+URWPalladioL-Ital" color="#000000"/>
+<text top="202" left="523" width="34" height="30" font="0">26</text>
+<text top="274" left="239" width="280" height="21" font="1">Concurrency: An Introduction</text>
+<text top="357" left="105" width="414" height="14" font="2">Thus far, we have seen the development of the basic abstractions that</text>
+<text top="372" left="87" width="432" height="14" font="2">the OS performs. We have seen how to take a single physical CPU and</text>
+<text top="387" left="87" width="119" height="14" font="2">turn it into multiple</text>
+<text top="387" left="210" width="79" height="13" font="3"><b>virtual CPUs</b></text>
+<text top="387" left="289" width="230" height="14" font="2">, thus enabling the illusion of multiple</text>
+<text top="401" left="87" width="432" height="14" font="2">programs running at the same time. We have also seen how to create the</text>
+<text top="416" left="87" width="154" height="14" font="2">illusion of a large, private</text>
+<text top="416" left="244" width="96" height="13" font="3"><b>virtual memory</b></text>
+<text top="416" left="344" width="175" height="14" font="2">for each process; this abstrac-</text>
+<text top="431" left="87" width="62" height="14" font="2">tion of the</text>
+<text top="431" left="153" width="85" height="13" font="3"><b>address space</b></text>
+<text top="431" left="242" width="277" height="14" font="2">enables each program to behave as if it has its</text>
+<text top="446" left="87" width="432" height="14" font="2">own memory when indeed the OS is secretly multiplexing address spaces</text>
+<text top="461" left="87" width="281" height="14" font="2">across physical memory (and sometimes, disk).</text>
+<text top="478" left="105" width="414" height="14" font="2">In this chapter, we introduce a new abstraction for a single running</text>
+<text top="493" left="87" width="103" height="14" font="2">process: that of a</text>
+<text top="493" left="194" width="40" height="13" font="3"><b>thread</b></text>
+<text top="493" left="233" width="286" height="14" font="2">. Instead of our classic view of a single point of</text>
+<text top="508" left="87" width="432" height="14" font="2">execution within a program (i.e., a single PC where instructions are being</text>
+<text top="523" left="87" width="184" height="14" font="2">fetched from and executed), a</text>
+<text top="523" left="276" width="93" height="13" font="3"><b>multi-threaded</b></text>
+<text top="523" left="374" width="145" height="14" font="2">program has more than</text>
+<text top="538" left="87" width="432" height="14" font="2">one point of execution (i.e., multiple PCs, each of which is being fetched</text>
+<text top="553" left="87" width="432" height="14" font="2">and executed from). Perhaps another way to think of this is that each</text>
+<text top="568" left="87" width="432" height="14" font="2">thread is very much like a separate process, except for one difference:</text>
+<text top="583" left="87" width="26" height="14" font="2">they</text>
+<text top="583" left="117" width="28" height="14" font="4"><i>share</i></text>
+<text top="583" left="148" width="347" height="14" font="2">the same address space and thus can access the same data.</text>
+<text top="600" left="105" width="414" height="14" font="2">The state of a single thread is thus very similar to that of a process.</text>
+<text top="615" left="87" width="432" height="14" font="2">It has a program counter (PC) that tracks where the program is fetch-</text>
+<text top="630" left="87" width="432" height="14" font="2">ing instructions from. Each thread has its own private set of registers it</text>
+<text top="645" left="87" width="432" height="14" font="2">uses for computation; thus, if there are two threads that are running on</text>
+<text top="660" left="87" width="432" height="14" font="2">a single processor, when switching from running one (T1) to running the</text>
+<text top="675" left="87" width="72" height="14" font="2">other (T2), a</text>
+<text top="675" left="162" width="88" height="13" font="3"><b>context switch</b></text>
+<text top="675" left="253" width="265" height="14" font="2">must take place. The context switch between</text>
+<text top="690" left="87" width="432" height="14" font="2">threads is quite similar to the context switch between processes, as the</text>
+<text top="704" left="87" width="432" height="14" font="2">register state of T1 must be saved and the register state of T2 restored</text>
+<text top="719" left="87" width="334" height="14" font="2">before running T2. With processes, we saved state to a</text>
+<text top="719" left="426" width="93" height="13" font="3"><b>process control</b></text>
+<text top="734" left="87" width="74" height="13" font="3"><b>block (PCB)</b></text>
+<text top="734" left="161" width="177" height="14" font="2">; now, we’ll need one or more</text>
+<text top="734" left="342" width="177" height="13" font="3"><b>thread control blocks (TCBs)</b></text>
+<text top="749" left="87" width="432" height="14" font="2">to store the state of each thread of a process. There is one major difference,</text>
+<text top="764" left="87" width="432" height="14" font="2">though, in the context switch we perform between threads as compared</text>
+<text top="779" left="87" width="432" height="14" font="2">to processes: the address space remains the same (i.e., there is no need to</text>
+<text top="794" left="87" width="230" height="14" font="2">switch which page table we are using).</text>
+<text top="811" left="105" width="414" height="14" font="2">One other major difference between threads and processes concerns</text>
+<text top="826" left="87" width="432" height="14" font="2">the stack. In our simple model of the address space of a classic process</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="11" family="VLCTDJ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="10" family="AWGAJO+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="7" size="11" family="AWGAJO+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="8" size="16" family="VLCTDJ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="9" size="12" family="VLCTDJ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="VLCTDJ+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="339" width="10" height="14" font="2">C</text>
+<text top="98" left="349" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="433" width="19" height="14" font="2">: A</text>
+<text top="98" left="453" width="9" height="11" font="5">N</text>
+<text top="96" left="465" width="5" height="14" font="2">I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="408" left="96" width="24" height="10" font="6">16KB</text>
+<text top="378" left="96" width="24" height="10" font="6">15KB</text>
+<text top="228" left="96" width="19" height="10" font="6">2KB</text>
+<text top="198" left="96" width="19" height="10" font="6">1KB</text>
+<text top="168" left="96" width="19" height="10" font="6">0KB</text>
+<text top="393" left="173" width="25" height="10" font="6">Stack</text>
+<text top="303" left="174" width="24" height="10" font="6">(free)</text>
+<text top="213" left="174" width="24" height="10" font="6">Heap</text>
+<text top="183" left="153" width="65" height="10" font="6">Program Code</text>
+<text top="178" left="252" width="82" height="10" font="6">the code segment:</text>
+<text top="187" left="243" width="98" height="10" font="6">where instructions live</text>
+<text top="207" left="251" width="83" height="10" font="6">the heap segment:</text>
+<text top="215" left="243" width="99" height="10" font="6">contains malloc’d data</text>
+<text top="224" left="240" width="106" height="10" font="6">dynamic data structures</text>
+<text top="232" left="250" width="85" height="10" font="6">(it grows positively)</text>
+<text top="362" left="248" width="89" height="10" font="6">(it grows negatively)</text>
+<text top="371" left="251" width="84" height="10" font="6">the stack segment:</text>
+<text top="379" left="241" width="103" height="10" font="6">contains local variables</text>
+<text top="388" left="242" width="102" height="10" font="6">arguments to routines, </text>
+<text top="396" left="253" width="79" height="10" font="6">return values, etc.</text>
+<text top="407" left="392" width="27" height="11" font="7">16KB</text>
+<text top="373" left="392" width="27" height="11" font="7">15KB</text>
+<text top="208" left="392" width="21" height="11" font="7">2KB</text>
+<text top="175" left="392" width="21" height="11" font="7">1KB</text>
+<text top="142" left="392" width="21" height="11" font="7">0KB</text>
+<text top="390" left="469" width="44" height="11" font="7">Stack (1)</text>
+<text top="324" left="469" width="44" height="11" font="7">Stack (2)</text>
+<text top="258" left="478" width="26" height="11" font="7">(free)</text>
+<text top="357" left="478" width="26" height="11" font="7">(free)</text>
+<text top="191" left="478" width="26" height="11" font="7">Heap</text>
+<text top="158" left="455" width="72" height="11" font="7">Program Code</text>
+<text top="434" left="141" width="69" height="14" font="2">Figure 26.1:</text>
+<text top="434" left="214" width="335" height="13" font="3"><b>Single-Threaded And Multi-Threaded Address Spaces</b></text>
+<text top="466" left="129" width="148" height="14" font="2">(which we can now call a</text>
+<text top="466" left="279" width="96" height="13" font="3"><b>single-threaded</b></text>
+<text top="466" left="379" width="182" height="14" font="2">process), there is a single stack,</text>
+<text top="481" left="129" width="408" height="14" font="2">usually residing at the bottom of the address space (Figure 26.1, left).</text>
+<text top="498" left="147" width="414" height="14" font="2">However, in a multi-threaded process, each thread runs independently</text>
+<text top="513" left="129" width="432" height="14" font="2">and of course may call into various routines to do whatever work it is do-</text>
+<text top="527" left="129" width="432" height="14" font="2">ing. Instead of a single stack in the address space, there will be one per</text>
+<text top="542" left="129" width="432" height="14" font="2">thread. Let’s say we have a multi-threaded process that has two threads</text>
+<text top="557" left="129" width="397" height="14" font="2">in it; the resulting address space looks different (Figure 26.1, right).</text>
+<text top="574" left="147" width="414" height="14" font="2">In this ﬁgure, you can see two stacks spread throughout the address</text>
+<text top="589" left="129" width="432" height="14" font="2">space of the process. Thus, any stack-allocated variables, parameters, re-</text>
+<text top="604" left="129" width="432" height="14" font="2">turn values, and other things that we put on the stack will be placed in</text>
+<text top="619" left="129" width="151" height="14" font="2">what is sometimes called</text>
+<text top="619" left="285" width="73" height="13" font="3"><b>thread-local</b></text>
+<text top="619" left="362" width="199" height="14" font="2">storage, i.e., the stack of the rele-</text>
+<text top="634" left="129" width="72" height="14" font="2">vant thread.</text>
+<text top="651" left="147" width="414" height="14" font="2">You might also notice how this ruins our beautiful address space lay-</text>
+<text top="666" left="129" width="432" height="14" font="2">out. Before, the stack and heap could grow independently and trouble</text>
+<text top="681" left="129" width="432" height="14" font="2">only arose when you ran out of room in the address space. Here, we</text>
+<text top="696" left="129" width="432" height="14" font="2">no longer have such a nice situation. Fortunately, this is usually OK, as</text>
+<text top="711" left="129" width="432" height="14" font="2">stacks do not generally have to be very large (the exception being in pro-</text>
+<text top="726" left="129" width="245" height="14" font="2">grams that make heavy use of recursion).</text>
+<text top="765" left="97" width="171" height="17" font="8">26.1 Why Use Threads?</text>
+<text top="796" left="147" width="414" height="14" font="2">Before getting into the details of threads and some of the problems you</text>
+<text top="811" left="129" width="432" height="14" font="2">might have in writing multi-threaded programs, let’s ﬁrst answer a more</text>
+<text top="826" left="129" width="311" height="14" font="2">simple question. Why should you use threads at all?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="DKTBIA+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="182" width="19" height="14" font="2">: A</text>
+<text top="98" left="201" width="9" height="11" font="5">N</text>
+<text top="96" left="214" width="5" height="14" font="2">I</text>
+<text top="98" left="219" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="139" left="105" width="414" height="14" font="2">As it turns out, there are at least two major reasons you should use</text>
+<text top="154" left="87" width="164" height="14" font="2">threads. The ﬁrst is simple:</text>
+<text top="154" left="256" width="69" height="13" font="3"><b>parallelism</b></text>
+<text top="154" left="325" width="194" height="14" font="2">. Imagine you are writing a pro-</text>
+<text top="169" left="87" width="432" height="14" font="2">gram that performs operations on very large arrays, for example, adding</text>
+<text top="183" left="87" width="432" height="14" font="2">two large arrays together, or incrementing the value of each element in</text>
+<text top="198" left="87" width="432" height="14" font="2">the array by some amount. If you are running on just a single proces-</text>
+<text top="213" left="87" width="432" height="14" font="2">sor, the task is straightforward: just perform each operation and be done.</text>
+<text top="228" left="87" width="432" height="14" font="2">However, if you are executing the program on a system with multiple</text>
+<text top="243" left="87" width="432" height="14" font="2">processors, you have the potential of speeding up this process consider-</text>
+<text top="258" left="87" width="432" height="14" font="2">ably by using the processors to each perform a portion of the work. The</text>
+<text top="273" left="87" width="210" height="14" font="2">task of transforming your standard</text>
+<text top="273" left="301" width="96" height="13" font="3"><b>single-threaded</b></text>
+<text top="273" left="401" width="118" height="14" font="2">program into a pro-</text>
+<text top="288" left="87" width="358" height="14" font="2">gram that does this sort of work on multiple CPUs is called</text>
+<text top="288" left="449" width="69" height="13" font="3"><b>paralleliza-</b></text>
+<text top="303" left="87" width="25" height="13" font="3"><b>tion</b></text>
+<text top="303" left="112" width="407" height="14" font="2">, and using a thread per CPU to do this work is a natural and typical</text>
+<text top="318" left="87" width="331" height="14" font="2">way to make programs run faster on modern hardware.</text>
+<text top="335" left="105" width="414" height="14" font="2">The second reason is a bit more subtle: to avoid blocking program</text>
+<text top="349" left="87" width="432" height="14" font="2">progress due to slow I/O. Imagine that you are writing a program that</text>
+<text top="364" left="87" width="432" height="14" font="2">performs different types of I/O: either waiting to send or receive a mes-</text>
+<text top="379" left="87" width="432" height="14" font="2">sage, for an explicit disk I/O to complete, or even (implicitly) for a page</text>
+<text top="394" left="87" width="432" height="14" font="2">fault to ﬁnish. Instead of waiting, your program may wish to do some-</text>
+<text top="409" left="87" width="432" height="14" font="2">thing else, including utilizing the CPU to perform computation, or even</text>
+<text top="424" left="87" width="432" height="14" font="2">issuing further I/O requests. Using threads is a natural way to avoid</text>
+<text top="439" left="87" width="432" height="14" font="2">getting stuck; while one thread in your program waits (i.e., is blocked</text>
+<text top="454" left="87" width="432" height="14" font="2">waiting for I/O), the CPU scheduler can switch to other threads, which</text>
+<text top="469" left="87" width="366" height="14" font="2">are ready to run and do something useful. Threading enables</text>
+<text top="469" left="457" width="46" height="13" font="3"><b>overlap</b></text>
+<text top="469" left="507" width="12" height="14" font="2">of</text>
+<text top="484" left="87" width="150" height="14" font="2">I/O with other activities</text>
+<text top="484" left="242" width="36" height="14" font="4"><i>within</i></text>
+<text top="484" left="282" width="173" height="14" font="2">a single program, much like</text>
+<text top="484" left="460" width="59" height="13" font="3"><b>multipro-</b></text>
+<text top="499" left="87" width="64" height="13" font="3"><b>gramming</b></text>
+<text top="499" left="155" width="102" height="14" font="2">did for processes</text>
+<text top="499" left="262" width="33" height="14" font="4"><i>across</i></text>
+<text top="499" left="299" width="220" height="14" font="2">programs; as a result, many modern</text>
+<text top="514" left="87" width="432" height="14" font="2">server-based applications (web servers, database management systems,</text>
+<text top="529" left="87" width="351" height="14" font="2">and the like) make use of threads in their implementations.</text>
+<text top="545" left="105" width="414" height="14" font="2">Of course, in either of the cases mentioned above, you could use multi-</text>
+<text top="560" left="87" width="18" height="14" font="2">ple</text>
+<text top="560" left="109" width="49" height="14" font="4"><i>processes</i></text>
+<text top="560" left="161" width="358" height="14" font="2">instead of threads. However, threads share an address space</text>
+<text top="575" left="87" width="432" height="14" font="2">and thus make it easy to share data, and hence are a natural choice when</text>
+<text top="590" left="87" width="432" height="14" font="2">constructing these types of programs. Processes are a more sound choice</text>
+<text top="605" left="87" width="432" height="14" font="2">for logically separate tasks where little sharing of data structures in mem-</text>
+<text top="620" left="87" width="83" height="14" font="2">ory is needed.</text>
+<text top="659" left="55" width="251" height="17" font="8">26.2 An Example: Thread Creation</text>
+<text top="690" left="105" width="414" height="14" font="2">Let’s get into some of the details. Say we wanted to run a program</text>
+<text top="705" left="87" width="432" height="14" font="2">that creates two threads, each of which does some independent work, in</text>
+<text top="720" left="87" width="425" height="14" font="2">this case printing “A” or “B”. The code is shown in Figure 26.2 (page 4).</text>
+<text top="736" left="105" width="414" height="14" font="2">The main program creates two threads, each of which will run the</text>
+<text top="751" left="87" width="50" height="14" font="2">function</text>
+<text top="752" left="141" width="81" height="11" font="11">mythread()</text>
+<text top="751" left="221" width="269" height="14" font="2">, though with different arguments (the string</text>
+<text top="752" left="494" width="8" height="11" font="11">A</text>
+<text top="751" left="506" width="13" height="14" font="2">or</text>
+<text top="767" left="87" width="8" height="11" font="11">B</text>
+<text top="766" left="95" width="424" height="14" font="2">). Once a thread is created, it may start running right away (depending</text>
+<text top="781" left="87" width="432" height="14" font="2">on the whims of the scheduler); alternately, it may be put in a “ready” but</text>
+<text top="796" left="87" width="432" height="14" font="2">not “running” state and thus not run yet. Of course, on a multiprocessor,</text>
+<text top="811" left="87" width="432" height="14" font="2">the threads could even be running at the same time, but let’s not worry</text>
+<text top="826" left="87" width="183" height="14" font="2">about this possibility quite yet.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="7" family="VLCTDJ+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="13" size="13" family="ZQBDKJ+NimbusMonL" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="339" width="10" height="14" font="2">C</text>
+<text top="98" left="349" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="433" width="19" height="14" font="2">: A</text>
+<text top="98" left="453" width="9" height="11" font="5">N</text>
+<text top="96" left="465" width="5" height="14" font="2">I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="138" left="107" width="4" height="8" font="12">1</text>
+<text top="135" left="129" width="145" height="11" font="11">#include &lt;stdio.h&gt;</text>
+<text top="153" left="107" width="4" height="8" font="12">2</text>
+<text top="150" left="129" width="153" height="11" font="11">#include &lt;assert.h&gt;</text>
+<text top="168" left="107" width="4" height="8" font="12">3</text>
+<text top="165" left="129" width="161" height="11" font="11">#include &lt;pthread.h&gt;</text>
+<text top="183" left="107" width="4" height="8" font="12">4</text>
+<text top="180" left="129" width="153" height="11" font="11">#include &#34;common.h&#34;</text>
+<text top="198" left="107" width="4" height="8" font="12">5</text>
+<text top="195" left="129" width="218" height="11" font="11">#include &#34;common_threads.h&#34;</text>
+<text top="213" left="107" width="4" height="8" font="12">6</text>
+<text top="228" left="107" width="4" height="8" font="12">7</text>
+<text top="225" left="129" width="218" height="14" font="11">void *mythread(void *arg) {</text>
+<text top="243" left="107" width="4" height="8" font="12">8</text>
+<text top="240" left="161" width="234" height="14" font="11">printf(&#34;%s\n&#34;, (char *) arg);</text>
+<text top="258" left="107" width="4" height="8" font="12">9</text>
+<text top="254" left="161" width="97" height="11" font="11">return NULL;</text>
+<text top="273" left="104" width="7" height="8" font="12">10</text>
+<text top="269" left="129" width="8" height="11" font="11">}</text>
+<text top="288" left="104" width="7" height="8" font="12">11</text>
+<text top="303" left="104" width="7" height="8" font="12">12</text>
+<text top="299" left="129" width="24" height="11" font="11">int</text>
+<text top="318" left="104" width="7" height="8" font="12">13</text>
+<text top="314" left="129" width="242" height="14" font="11">main(int argc, char *argv[]) {</text>
+<text top="333" left="104" width="7" height="8" font="12">14</text>
+<text top="329" left="161" width="137" height="11" font="11">pthread_t p1, p2;</text>
+<text top="348" left="104" width="7" height="8" font="12">15</text>
+<text top="344" left="161" width="56" height="11" font="11">int rc;</text>
+<text top="363" left="104" width="7" height="8" font="12">16</text>
+<text top="359" left="161" width="194" height="11" font="11">printf(&#34;main: begin\n&#34;);</text>
+<text top="378" left="104" width="7" height="8" font="12">17</text>
+<text top="374" left="161" width="331" height="11" font="11">Pthread_create(&amp;p1, NULL, mythread, &#34;A&#34;);</text>
+<text top="393" left="104" width="7" height="8" font="12">18</text>
+<text top="389" left="161" width="331" height="11" font="11">Pthread_create(&amp;p2, NULL, mythread, &#34;B&#34;);</text>
+<text top="407" left="104" width="7" height="8" font="12">19</text>
+<text top="404" left="161" width="315" height="11" font="11">// join waits for the threads to finish</text>
+<text top="422" left="104" width="7" height="8" font="12">20</text>
+<text top="419" left="161" width="186" height="11" font="11">Pthread_join(p1, NULL);</text>
+<text top="437" left="104" width="7" height="8" font="12">21</text>
+<text top="434" left="161" width="186" height="11" font="11">Pthread_join(p2, NULL);</text>
+<text top="452" left="104" width="7" height="8" font="12">22</text>
+<text top="449" left="161" width="178" height="11" font="11">printf(&#34;main: end\n&#34;);</text>
+<text top="467" left="104" width="7" height="8" font="12">23</text>
+<text top="464" left="161" width="73" height="11" font="11">return 0;</text>
+<text top="482" left="104" width="7" height="8" font="12">24</text>
+<text top="479" left="129" width="8" height="11" font="11">}</text>
+<text top="492" left="191" width="69" height="14" font="2">Figure 26.2:</text>
+<text top="492" left="264" width="183" height="13" font="3"><b>Simple Thread Creation Code</b></text>
+<text top="493" left="451" width="48" height="11" font="13"><b>(t0.c)</b></text>
+<text top="518" left="147" width="414" height="14" font="2">After creating the two threads (let’s call them T1 and T2), the main</text>
+<text top="533" left="129" width="70" height="14" font="2">thread calls</text>
+<text top="534" left="205" width="113" height="11" font="11">pthread_join()</text>
+<text top="533" left="318" width="243" height="14" font="2">, which waits for a particular thread to</text>
+<text top="548" left="129" width="432" height="14" font="2">complete. It does so twice, thus ensuring T1 and T2 will run and com-</text>
+<text top="563" left="129" width="432" height="14" font="2">plete before ﬁnally allowing the main thread to run again; when it does,</text>
+<text top="578" left="129" width="432" height="14" font="2">it will print “main: end” and exit. Overall, three threads were employed</text>
+<text top="593" left="129" width="265" height="14" font="2">during this run: the main thread, T1, and T2.</text>
+<text top="610" left="147" width="414" height="14" font="2">Let us examine the possible execution ordering of this little program.</text>
+<text top="625" left="129" width="433" height="14" font="2">In the execution diagram (Figure 26.3, page 5), time increases in the down-</text>
+<text top="640" left="129" width="432" height="14" font="2">wards direction, and each column shows when a different thread (the</text>
+<text top="655" left="129" width="278" height="14" font="2">main one, or Thread 1, or Thread 2) is running.</text>
+<text top="672" left="147" width="414" height="14" font="2">Note, however, that this ordering is not the only possible ordering. In</text>
+<text top="687" left="129" width="432" height="14" font="2">fact, given a sequence of instructions, there are quite a few, depending on</text>
+<text top="702" left="129" width="432" height="14" font="2">which thread the scheduler decides to run at a given point. For example,</text>
+<text top="717" left="129" width="432" height="14" font="2">once a thread is created, it may run immediately, which would lead to the</text>
+<text top="732" left="129" width="239" height="14" font="2">execution shown in Figure 26.4 (page 5).</text>
+<text top="749" left="147" width="414" height="14" font="2">We also could even see “B” printed before “A”, if, say, the scheduler</text>
+<text top="764" left="129" width="432" height="14" font="2">decided to run Thread 2 ﬁrst even though Thread 1 was created earlier;</text>
+<text top="779" left="129" width="432" height="14" font="2">there is no reason to assume that a thread that is created ﬁrst will run ﬁrst.</text>
+<text top="794" left="129" width="432" height="14" font="2">Figure 26.5 (page 6) shows this ﬁnal execution ordering, with Thread 2</text>
+<text top="809" left="129" width="236" height="14" font="2">getting to strut its stuff before Thread 1.</text>
+<text top="826" left="147" width="414" height="14" font="2">As you might be able to see, one way to think about thread creation</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="14" size="12" family="SHKMLM+URWPalladioL" color="#000000"/>
+	<fontspec id="15" size="12" family="KUPOXQ+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="182" width="19" height="14" font="2">: A</text>
+<text top="98" left="201" width="9" height="11" font="5">N</text>
+<text top="96" left="214" width="5" height="14" font="2">I</text>
+<text top="98" left="219" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="136" left="163" width="28" height="12" font="14"><b>main</b></text>
+<text top="136" left="324" width="48" height="12" font="14"><b>Thread 1</b></text>
+<text top="136" left="390" width="45" height="12" font="14"><b>Thread2</b></text>
+<text top="151" left="163" width="74" height="12" font="9">starts running</text>
+<text top="165" left="163" width="109" height="12" font="9">prints “main: begin”</text>
+<text top="179" left="163" width="86" height="12" font="9">creates Thread 1</text>
+<text top="194" left="163" width="86" height="12" font="9">creates Thread 2</text>
+<text top="208" left="163" width="63" height="12" font="9">waits for T1</text>
+<text top="222" left="324" width="24" height="12" font="9">runs</text>
+<text top="236" left="324" width="55" height="12" font="9">prints “A”</text>
+<text top="250" left="324" width="38" height="12" font="9">returns</text>
+<text top="265" left="163" width="63" height="12" font="9">waits for T2</text>
+<text top="279" left="390" width="24" height="12" font="9">runs</text>
+<text top="293" left="390" width="54" height="12" font="9">prints “B”</text>
+<text top="307" left="390" width="38" height="12" font="9">returns</text>
+<text top="321" left="163" width="100" height="12" font="9">prints “main: end”</text>
+<text top="345" left="217" width="69" height="14" font="2">Figure 26.3:</text>
+<text top="345" left="290" width="99" height="13" font="3"><b>Thread Trace (1)</b></text>
+<text top="388" left="158" width="28" height="12" font="14"><b>main</b></text>
+<text top="388" left="329" width="48" height="12" font="14"><b>Thread 1</b></text>
+<text top="388" left="394" width="45" height="12" font="14"><b>Thread2</b></text>
+<text top="403" left="158" width="74" height="12" font="9">starts running</text>
+<text top="417" left="158" width="109" height="12" font="9">prints “main: begin”</text>
+<text top="432" left="158" width="86" height="12" font="9">creates Thread 1</text>
+<text top="446" left="329" width="24" height="12" font="9">runs</text>
+<text top="460" left="329" width="55" height="12" font="9">prints “A”</text>
+<text top="474" left="329" width="38" height="12" font="9">returns</text>
+<text top="488" left="158" width="86" height="12" font="9">creates Thread 2</text>
+<text top="503" left="394" width="24" height="12" font="9">runs</text>
+<text top="517" left="394" width="54" height="12" font="9">prints “B”</text>
+<text top="531" left="394" width="38" height="12" font="9">returns</text>
+<text top="545" left="158" width="63" height="12" font="9">waits for T1</text>
+<text top="559" left="165" width="154" height="12" font="15"><i>returns immediately; T1 is done</i></text>
+<text top="574" left="158" width="63" height="12" font="9">waits for T2</text>
+<text top="588" left="165" width="154" height="12" font="15"><i>returns immediately; T2 is done</i></text>
+<text top="602" left="158" width="100" height="12" font="9">prints “main: end”</text>
+<text top="626" left="217" width="69" height="14" font="2">Figure 26.4:</text>
+<text top="626" left="290" width="99" height="13" font="3"><b>Thread Trace (2)</b></text>
+<text top="673" left="87" width="432" height="14" font="2">is that it is a bit like making a function call; however, instead of ﬁrst ex-</text>
+<text top="687" left="87" width="432" height="14" font="2">ecuting the function and then returning to the caller, the system instead</text>
+<text top="702" left="87" width="432" height="14" font="2">creates a new thread of execution for the routine that is being called, and</text>
+<text top="717" left="87" width="432" height="14" font="2">it runs independently of the caller, perhaps before returning from the cre-</text>
+<text top="732" left="87" width="432" height="14" font="2">ate, but perhaps much later. What runs next is determined by the OS</text>
+<text top="747" left="87" width="60" height="13" font="3"><b>scheduler</b></text>
+<text top="747" left="147" width="372" height="14" font="2">, and although the scheduler likely implements some sensible</text>
+<text top="762" left="87" width="432" height="14" font="2">algorithm, it is hard to know what will run at any given moment in time.</text>
+<text top="781" left="105" width="414" height="14" font="2">As you also might be able to tell from this example, threads make life</text>
+<text top="796" left="87" width="432" height="14" font="2">complicated: it is already hard to tell what will run when! Computers are</text>
+<text top="811" left="87" width="432" height="14" font="2">hard enough to understand without concurrency. Unfortunately, with</text>
+<text top="826" left="87" width="283" height="14" font="2">concurrency, it simply gets worse. Much worse.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="339" width="10" height="14" font="2">C</text>
+<text top="98" left="349" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="433" width="19" height="14" font="2">: A</text>
+<text top="98" left="453" width="9" height="11" font="5">N</text>
+<text top="96" left="465" width="5" height="14" font="2">I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="136" left="193" width="28" height="12" font="14"><b>main</b></text>
+<text top="136" left="371" width="48" height="12" font="14"><b>Thread 1</b></text>
+<text top="136" left="443" width="45" height="12" font="14"><b>Thread2</b></text>
+<text top="151" left="193" width="74" height="12" font="9">starts running</text>
+<text top="165" left="193" width="109" height="12" font="9">prints “main: begin”</text>
+<text top="179" left="193" width="86" height="12" font="9">creates Thread 1</text>
+<text top="194" left="193" width="86" height="12" font="9">creates Thread 2</text>
+<text top="208" left="443" width="24" height="12" font="9">runs</text>
+<text top="222" left="443" width="54" height="12" font="9">prints “B”</text>
+<text top="236" left="443" width="38" height="12" font="9">returns</text>
+<text top="250" left="193" width="63" height="12" font="9">waits for T1</text>
+<text top="265" left="371" width="24" height="12" font="9">runs</text>
+<text top="279" left="371" width="55" height="12" font="9">prints “A”</text>
+<text top="293" left="371" width="38" height="12" font="9">returns</text>
+<text top="307" left="193" width="63" height="12" font="9">waits for T2</text>
+<text top="321" left="199" width="154" height="12" font="15"><i>returns immediately; T2 is done</i></text>
+<text top="336" left="193" width="100" height="12" font="9">prints “main: end”</text>
+<text top="360" left="259" width="69" height="14" font="2">Figure 26.5:</text>
+<text top="360" left="332" width="99" height="13" font="3"><b>Thread Trace (3)</b></text>
+<text top="383" left="97" width="268" height="17" font="8">26.3 Why It Gets Worse: Shared Data</text>
+<text top="407" left="147" width="414" height="14" font="2">The simple thread example we showed above was useful in showing</text>
+<text top="422" left="129" width="432" height="14" font="2">how threads are created and how they can run in different orders depend-</text>
+<text top="437" left="129" width="432" height="14" font="2">ing on how the scheduler decides to run them. What it doesn’t show you,</text>
+<text top="452" left="129" width="367" height="14" font="2">though, is how threads interact when they access shared data.</text>
+<text top="467" left="147" width="414" height="14" font="2">Let us imagine a simple example where two threads wish to update a</text>
+<text top="482" left="129" width="414" height="14" font="2">global shared variable. The code we’ll study is in Figure 26.6 (page 7).</text>
+<text top="497" left="147" width="414" height="14" font="2">Here are a few notes about the code. First, as Stevens suggests [SR05],</text>
+<text top="512" left="129" width="432" height="14" font="2">we wrap the thread creation and join routines to simply exit on failure;</text>
+<text top="527" left="129" width="432" height="14" font="2">for a program as simple as this one, we want to at least notice an error</text>
+<text top="542" left="129" width="432" height="14" font="2">occurred (if it did), but not do anything very smart about it (e.g., just</text>
+<text top="557" left="129" width="67" height="14" font="2">exit). Thus,</text>
+<text top="557" left="199" width="129" height="11" font="11">Pthread_create()</text>
+<text top="557" left="332" width="71" height="14" font="2">simply calls</text>
+<text top="557" left="406" width="129" height="11" font="11">pthread_create()</text>
+<text top="557" left="538" width="23" height="14" font="2">and</text>
+<text top="572" left="129" width="238" height="14" font="2">makes sure the return code is 0; if it isn’t,</text>
+<text top="572" left="370" width="129" height="11" font="11">Pthread_create()</text>
+<text top="572" left="501" width="59" height="14" font="2">just prints</text>
+<text top="586" left="129" width="121" height="14" font="2">a message and exits.</text>
+<text top="601" left="147" width="414" height="14" font="2">Second, instead of using two separate function bodies for the worker</text>
+<text top="616" left="129" width="432" height="14" font="2">threads, we just use a single piece of code, and pass the thread an argu-</text>
+<text top="631" left="129" width="432" height="14" font="2">ment (in this case, a string) so we can have each thread print a different</text>
+<text top="646" left="129" width="152" height="14" font="2">letter before its messages.</text>
+<text top="661" left="147" width="414" height="14" font="2">Finally, and most importantly, we can now look at what each worker is</text>
+<text top="676" left="129" width="291" height="14" font="2">trying to do: add a number to the shared variable</text>
+<text top="677" left="424" width="57" height="11" font="11">counter</text>
+<text top="676" left="480" width="81" height="14" font="2">, and do so 10</text>
+<text top="691" left="129" width="427" height="14" font="2">million times (1e7) in a loop. Thus, the desired ﬁnal result is: 20,000,000.</text>
+<text top="706" left="147" width="414" height="14" font="2">We now compile and run the program, to see how it behaves. Some-</text>
+<text top="721" left="129" width="279" height="14" font="2">times, everything works how we might expect:</text>
+<text top="737" left="129" width="395" height="11" font="11">prompt&gt; gcc -o main main.c -Wall -pthread; ./main</text>
+<text top="752" left="129" width="202" height="11" font="11">main: begin (counter = 0)</text>
+<text top="767" left="129" width="65" height="11" font="11">A: begin</text>
+<text top="782" left="129" width="65" height="11" font="11">B: begin</text>
+<text top="797" left="129" width="56" height="11" font="11">A: done</text>
+<text top="812" left="129" width="56" height="11" font="11">B: done</text>
+<text top="827" left="129" width="331" height="11" font="11">main: done with both (counter = 20000000)</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="182" width="19" height="14" font="2">: A</text>
+<text top="98" left="201" width="9" height="11" font="5">N</text>
+<text top="96" left="214" width="5" height="14" font="2">I</text>
+<text top="98" left="219" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="138" left="65" width="4" height="8" font="12">1</text>
+<text top="135" left="87" width="145" height="11" font="11">#include &lt;stdio.h&gt;</text>
+<text top="153" left="65" width="4" height="8" font="12">2</text>
+<text top="150" left="87" width="161" height="11" font="11">#include &lt;pthread.h&gt;</text>
+<text top="168" left="65" width="4" height="8" font="12">3</text>
+<text top="165" left="87" width="153" height="11" font="11">#include &#34;common.h&#34;</text>
+<text top="183" left="65" width="4" height="8" font="12">4</text>
+<text top="180" left="87" width="218" height="11" font="11">#include &#34;common_threads.h&#34;</text>
+<text top="198" left="65" width="4" height="8" font="12">5</text>
+<text top="213" left="65" width="4" height="8" font="12">6</text>
+<text top="210" left="87" width="258" height="11" font="11">static volatile int counter = 0;</text>
+<text top="228" left="65" width="4" height="8" font="12">7</text>
+<text top="243" left="65" width="4" height="8" font="12">8</text>
+<text top="240" left="87" width="105" height="11" font="11">// mythread()</text>
+<text top="258" left="65" width="4" height="8" font="12">9</text>
+<text top="254" left="87" width="16" height="11" font="11">//</text>
+<text top="273" left="62" width="7" height="8" font="12">10</text>
+<text top="269" left="87" width="395" height="11" font="11">// Simply adds 1 to counter repeatedly, in a loop</text>
+<text top="288" left="62" width="7" height="8" font="12">11</text>
+<text top="284" left="87" width="403" height="11" font="11">// No, this is not how you would add 10,000,000 to</text>
+<text top="303" left="62" width="7" height="8" font="12">12</text>
+<text top="299" left="87" width="371" height="11" font="11">// a counter, but it shows the problem nicely.</text>
+<text top="318" left="62" width="7" height="8" font="12">13</text>
+<text top="314" left="87" width="16" height="11" font="11">//</text>
+<text top="333" left="62" width="7" height="8" font="12">14</text>
+<text top="329" left="87" width="218" height="14" font="11">void *mythread(void *arg) {</text>
+<text top="348" left="62" width="7" height="8" font="12">15</text>
+<text top="344" left="119" width="291" height="14" font="11">printf(&#34;%s: begin\n&#34;, (char *) arg);</text>
+<text top="363" left="62" width="7" height="8" font="12">16</text>
+<text top="359" left="119" width="48" height="11" font="11">int i;</text>
+<text top="378" left="62" width="7" height="8" font="12">17</text>
+<text top="374" left="119" width="218" height="11" font="11">for (i = 0; i &lt; 1e7; i++) {</text>
+<text top="393" left="62" width="7" height="8" font="12">18</text>
+<text top="389" left="152" width="178" height="11" font="11">counter = counter + 1;</text>
+<text top="407" left="62" width="7" height="8" font="12">19</text>
+<text top="404" left="119" width="8" height="11" font="11">}</text>
+<text top="422" left="62" width="7" height="8" font="12">20</text>
+<text top="419" left="119" width="282" height="14" font="11">printf(&#34;%s: done\n&#34;, (char *) arg);</text>
+<text top="437" left="62" width="7" height="8" font="12">21</text>
+<text top="434" left="119" width="97" height="11" font="11">return NULL;</text>
+<text top="452" left="62" width="7" height="8" font="12">22</text>
+<text top="449" left="87" width="8" height="11" font="11">}</text>
+<text top="467" left="62" width="7" height="8" font="12">23</text>
+<text top="482" left="62" width="7" height="8" font="12">24</text>
+<text top="479" left="87" width="73" height="11" font="11">// main()</text>
+<text top="497" left="62" width="7" height="8" font="12">25</text>
+<text top="494" left="87" width="16" height="11" font="11">//</text>
+<text top="512" left="62" width="7" height="8" font="12">26</text>
+<text top="509" left="87" width="363" height="11" font="11">// Just launches two threads (pthread_create)</text>
+<text top="527" left="62" width="7" height="8" font="12">27</text>
+<text top="523" left="87" width="331" height="11" font="11">// and then waits for them (pthread_join)</text>
+<text top="542" left="62" width="7" height="8" font="12">28</text>
+<text top="538" left="87" width="16" height="11" font="11">//</text>
+<text top="557" left="62" width="7" height="8" font="12">29</text>
+<text top="553" left="87" width="274" height="14" font="11">int main(int argc, char *argv[]) {</text>
+<text top="572" left="62" width="7" height="8" font="12">30</text>
+<text top="568" left="119" width="137" height="11" font="11">pthread_t p1, p2;</text>
+<text top="587" left="62" width="7" height="8" font="12">31</text>
+<text top="583" left="119" width="387" height="11" font="11">printf(&#34;main: begin (counter = %d)\n&#34;, counter);</text>
+<text top="602" left="62" width="7" height="8" font="12">32</text>
+<text top="598" left="119" width="331" height="11" font="11">Pthread_create(&amp;p1, NULL, mythread, &#34;A&#34;);</text>
+<text top="617" left="62" width="7" height="8" font="12">33</text>
+<text top="613" left="119" width="331" height="11" font="11">Pthread_create(&amp;p2, NULL, mythread, &#34;B&#34;);</text>
+<text top="632" left="62" width="7" height="8" font="12">34</text>
+<text top="647" left="62" width="7" height="8" font="12">35</text>
+<text top="643" left="119" width="315" height="11" font="11">// join waits for the threads to finish</text>
+<text top="662" left="62" width="7" height="8" font="12">36</text>
+<text top="658" left="119" width="186" height="11" font="11">Pthread_join(p1, NULL);</text>
+<text top="676" left="62" width="7" height="8" font="12">37</text>
+<text top="673" left="119" width="186" height="11" font="11">Pthread_join(p2, NULL);</text>
+<text top="691" left="62" width="7" height="8" font="12">38</text>
+<text top="688" left="119" width="379" height="11" font="11">printf(&#34;main: done with both (counter = %d)\n&#34;,</text>
+<text top="706" left="62" width="7" height="8" font="12">39</text>
+<text top="703" left="184" width="73" height="11" font="11">counter);</text>
+<text top="721" left="62" width="7" height="8" font="12">40</text>
+<text top="718" left="119" width="73" height="11" font="11">return 0;</text>
+<text top="736" left="62" width="7" height="8" font="12">41</text>
+<text top="733" left="87" width="8" height="11" font="11">}</text>
+<text top="767" left="176" width="69" height="14" font="2">Figure 26.6:</text>
+<text top="767" left="249" width="130" height="13" font="3"><b>Sharing Data: Uh Oh</b></text>
+<text top="768" left="382" width="48" height="11" font="13"><b>(t1.c)</b></text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="339" width="10" height="14" font="2">C</text>
+<text top="98" left="349" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="433" width="19" height="14" font="2">: A</text>
+<text top="98" left="453" width="9" height="11" font="5">N</text>
+<text top="96" left="465" width="5" height="14" font="2">I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="139" left="147" width="414" height="14" font="2">Unfortunately, when we run this code, even on a single processor, we</text>
+<text top="154" left="129" width="350" height="14" font="2">don’t necessarily get the desired result. Sometimes, we get:</text>
+<text top="189" left="129" width="113" height="11" font="11">prompt&gt; ./main</text>
+<text top="204" left="129" width="202" height="11" font="11">main: begin (counter = 0)</text>
+<text top="219" left="129" width="65" height="11" font="11">A: begin</text>
+<text top="234" left="129" width="65" height="11" font="11">B: begin</text>
+<text top="249" left="129" width="56" height="11" font="11">A: done</text>
+<text top="264" left="129" width="56" height="11" font="11">B: done</text>
+<text top="279" left="129" width="331" height="11" font="11">main: done with both (counter = 19345221)</text>
+<text top="317" left="147" width="414" height="14" font="2">Let’s try it one more time, just to see if we’ve gone crazy. After all,</text>
+<text top="332" left="129" width="228" height="14" font="2">aren’t computers supposed to produce</text>
+<text top="332" left="360" width="81" height="13" font="3"><b>deterministic</b></text>
+<text top="332" left="445" width="116" height="14" font="2">results, as you have</text>
+<text top="347" left="129" width="373" height="14" font="2">been taught?! Perhaps your professors have been lying to you?</text>
+<text top="347" left="506" width="34" height="14" font="4"><i>(gasp)</i></text>
+<text top="383" left="129" width="113" height="11" font="11">prompt&gt; ./main</text>
+<text top="398" left="129" width="202" height="11" font="11">main: begin (counter = 0)</text>
+<text top="412" left="129" width="65" height="11" font="11">A: begin</text>
+<text top="427" left="129" width="65" height="11" font="11">B: begin</text>
+<text top="442" left="129" width="56" height="11" font="11">A: done</text>
+<text top="457" left="129" width="56" height="11" font="11">B: done</text>
+<text top="472" left="129" width="331" height="11" font="11">main: done with both (counter = 19221041)</text>
+<text top="505" left="147" width="279" height="14" font="2">Not only is each run wrong, but also yields a</text>
+<text top="504" left="431" width="45" height="14" font="4"><i>different</i></text>
+<text top="505" left="481" width="80" height="14" font="2">result! A big</text>
+<text top="519" left="129" width="247" height="14" font="2">question remains: why does this happen?</text>
+<text top="563" left="239" width="8" height="14" font="2">T</text>
+<text top="565" left="248" width="11" height="11" font="5">IP</text>
+<text top="563" left="259" width="18" height="14" font="2">: K</text>
+<text top="565" left="278" width="29" height="11" font="5">NOW</text>
+<text top="563" left="311" width="10" height="14" font="2">A</text>
+<text top="565" left="322" width="18" height="11" font="5">ND</text>
+<text top="563" left="344" width="10" height="14" font="2">U</text>
+<text top="565" left="355" width="13" height="11" font="5">SE</text>
+<text top="563" left="372" width="9" height="14" font="2">Y</text>
+<text top="565" left="382" width="25" height="11" font="5">OUR</text>
+<text top="563" left="411" width="8" height="14" font="2">T</text>
+<text top="565" left="420" width="31" height="11" font="5">OOLS</text>
+<text top="578" left="129" width="432" height="14" font="2">You should always learn new tools that help you write, debug, and un-</text>
+<text top="593" left="129" width="368" height="14" font="2">derstand computer systems. Here, we use a neat tool called a</text>
+<text top="593" left="500" width="60" height="13" font="3"><b>disassem-</b></text>
+<text top="608" left="129" width="27" height="13" font="3"><b>bler.</b></text>
+<text top="608" left="161" width="399" height="14" font="2">When you run a disassembler on an executable, it shows you what</text>
+<text top="622" left="129" width="432" height="14" font="2">assembly instructions make up the program. For example, if we wish to</text>
+<text top="637" left="129" width="432" height="14" font="2">understand the low-level code to update a counter (as in our example),</text>
+<text top="652" left="129" width="42" height="14" font="2">we run</text>
+<text top="653" left="174" width="57" height="11" font="11">objdump</text>
+<text top="652" left="234" width="196" height="14" font="2">(Linux) to see the assembly code:</text>
+<text top="670" left="129" width="186" height="11" font="11">prompt&gt; objdump -d main</text>
+<text top="687" left="129" width="432" height="14" font="2">Doing so produces a long listing of all the instructions in the program,</text>
+<text top="702" left="129" width="316" height="14" font="2">neatly labeled (particularly if you compiled with the</text>
+<text top="702" left="449" width="16" height="11" font="11">-g</text>
+<text top="702" left="469" width="92" height="14" font="2">ﬂag), which in-</text>
+<text top="716" left="129" width="280" height="14" font="2">cludes symbol information in the program. The</text>
+<text top="717" left="412" width="57" height="11" font="11">objdump</text>
+<text top="716" left="472" width="89" height="14" font="2">program is just</text>
+<text top="731" left="129" width="399" height="14" font="2">one of many tools you should learn how to use; a debugger like</text>
+<text top="732" left="533" width="24" height="11" font="11">gdb</text>
+<text top="731" left="557" width="3" height="14" font="2">,</text>
+<text top="746" left="129" width="129" height="14" font="2">memory proﬁlers like</text>
+<text top="747" left="262" width="65" height="11" font="11">valgrind</text>
+<text top="746" left="330" width="13" height="14" font="2">or</text>
+<text top="747" left="346" width="48" height="11" font="11">purify</text>
+<text top="746" left="395" width="166" height="14" font="2">, and of course the compiler</text>
+<text top="761" left="129" width="432" height="14" font="2">itself are others that you should spend time to learn more about; the better</text>
+<text top="776" left="129" width="409" height="14" font="2">you are at using your tools, the better systems you’ll be able to build.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="182" width="19" height="14" font="2">: A</text>
+<text top="98" left="201" width="9" height="11" font="5">N</text>
+<text top="96" left="214" width="5" height="14" font="2">I</text>
+<text top="98" left="219" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="137" left="55" width="416" height="17" font="8">26.4 The Heart Of The Problem: Uncontrolled Scheduling</text>
+<text top="161" left="105" width="414" height="14" font="2">To understand why this happens, we must understand the code se-</text>
+<text top="176" left="87" width="321" height="14" font="2">quence that the compiler generates for the update to</text>
+<text top="177" left="412" width="57" height="11" font="11">counter</text>
+<text top="176" left="469" width="50" height="14" font="2">. In this</text>
+<text top="191" left="87" width="271" height="14" font="2">case, we wish to simply add a number (1) to</text>
+<text top="192" left="363" width="57" height="11" font="11">counter</text>
+<text top="191" left="419" width="100" height="14" font="2">. Thus, the code</text>
+<text top="206" left="87" width="365" height="14" font="2">sequence for doing so might look something like this (in x86);</text>
+<text top="233" left="95" width="153" height="11" font="11">mov 0x8049a1c, %eax</text>
+<text top="248" left="95" width="113" height="11" font="11">add $0x1, %eax</text>
+<text top="263" left="95" width="153" height="11" font="11">mov %eax, 0x8049a1c</text>
+<text top="287" left="105" width="232" height="14" font="2">This example assumes that the variable</text>
+<text top="288" left="340" width="57" height="11" font="11">counter</text>
+<text top="287" left="400" width="119" height="14" font="2">is located at address</text>
+<text top="302" left="87" width="321" height="14" font="2">0x8049a1c. In this three-instruction sequence, the x86</text>
+<text top="303" left="412" width="24" height="11" font="11">mov</text>
+<text top="302" left="441" width="78" height="14" font="2">instruction is</text>
+<text top="317" left="87" width="432" height="14" font="2">used ﬁrst to get the memory value at the address and put it into register</text>
+<text top="333" left="87" width="24" height="11" font="11">eax</text>
+<text top="332" left="111" width="408" height="14" font="2">. Then, the add is performed, adding 1 (0x1) to the contents of the</text>
+<text top="348" left="87" width="24" height="11" font="11">eax</text>
+<text top="347" left="114" width="205" height="14" font="2">register, and ﬁnally, the contents of</text>
+<text top="348" left="323" width="24" height="11" font="11">eax</text>
+<text top="347" left="350" width="169" height="14" font="2">are stored back into memory</text>
+<text top="362" left="87" width="120" height="14" font="2">at the same address.</text>
+<text top="377" left="105" width="414" height="14" font="2">Let us imagine one of our two threads (Thread 1) enters this region of</text>
+<text top="392" left="87" width="217" height="14" font="2">code, and is thus about to increment</text>
+<text top="393" left="308" width="57" height="11" font="11">counter</text>
+<text top="392" left="368" width="151" height="14" font="2">by one. It loads the value</text>
+<text top="407" left="87" width="12" height="14" font="2">of</text>
+<text top="408" left="104" width="57" height="11" font="11">counter</text>
+<text top="407" left="165" width="281" height="14" font="2">(let’s say it’s 50 to begin with) into its register</text>
+<text top="408" left="450" width="24" height="11" font="11">eax</text>
+<text top="407" left="474" width="45" height="14" font="2">. Thus,</text>
+<text top="423" left="87" width="48" height="11" font="11">eax=50</text>
+<text top="422" left="141" width="321" height="14" font="2">for Thread 1. Then it adds one to the register; thus</text>
+<text top="423" left="467" width="48" height="11" font="11">eax=51</text>
+<text top="422" left="516" width="3" height="14" font="2">.</text>
+<text top="437" left="87" width="432" height="14" font="2">Now, something unfortunate happens: a timer interrupt goes off; thus,</text>
+<text top="452" left="87" width="432" height="14" font="2">the OS saves the state of the currently running thread (its PC, its registers</text>
+<text top="467" left="87" width="57" height="14" font="2">including</text>
+<text top="468" left="148" width="24" height="11" font="11">eax</text>
+<text top="467" left="172" width="153" height="14" font="2">, etc.) to the thread’s TCB.</text>
+<text top="482" left="105" width="414" height="14" font="2">Now something worse happens: Thread 2 is chosen to run, and it en-</text>
+<text top="497" left="87" width="432" height="14" font="2">ters this same piece of code. It also executes the ﬁrst instruction, getting</text>
+<text top="512" left="87" width="70" height="14" font="2">the value of</text>
+<text top="513" left="160" width="57" height="11" font="11">counter</text>
+<text top="512" left="220" width="126" height="14" font="2">and putting it into its</text>
+<text top="513" left="350" width="24" height="11" font="11">eax</text>
+<text top="512" left="377" width="142" height="14" font="2">(remember: each thread</text>
+<text top="527" left="87" width="361" height="14" font="2">when running has its own private registers; the registers are</text>
+<text top="527" left="452" width="67" height="13" font="3"><b>virtualized</b></text>
+<text top="542" left="87" width="432" height="14" font="2">by the context-switch code that saves and restores them). The value of</text>
+<text top="558" left="87" width="57" height="11" font="11">counter</text>
+<text top="557" left="148" width="278" height="14" font="2">is still 50 at this point, and thus Thread 2 has</text>
+<text top="558" left="431" width="48" height="11" font="11">eax=50</text>
+<text top="557" left="479" width="40" height="14" font="2">. Let’s</text>
+<text top="572" left="87" width="432" height="14" font="2">then assume that Thread 2 executes the next two instructions, increment-</text>
+<text top="587" left="87" width="19" height="14" font="2">ing</text>
+<text top="588" left="111" width="24" height="11" font="11">eax</text>
+<text top="587" left="140" width="62" height="14" font="2">by 1 (thus</text>
+<text top="588" left="207" width="48" height="11" font="11">eax=51</text>
+<text top="587" left="255" width="206" height="14" font="2">), and then saving the contents of</text>
+<text top="588" left="466" width="24" height="11" font="11">eax</text>
+<text top="587" left="495" width="23" height="14" font="2">into</text>
+<text top="603" left="87" width="57" height="11" font="11">counter</text>
+<text top="602" left="148" width="280" height="14" font="2">(address 0x8049a1c). Thus, the global variable</text>
+<text top="603" left="432" width="57" height="11" font="11">counter</text>
+<text top="602" left="493" width="26" height="14" font="2">now</text>
+<text top="617" left="87" width="99" height="14" font="2">has the value 51.</text>
+<text top="632" left="105" width="414" height="14" font="2">Finally, another context switch occurs, and Thread 1 resumes running.</text>
+<text top="647" left="87" width="213" height="14" font="2">Recall that it had just executed the</text>
+<text top="648" left="305" width="24" height="11" font="11">mov</text>
+<text top="647" left="334" width="23" height="14" font="2">and</text>
+<text top="648" left="362" width="24" height="11" font="11">add</text>
+<text top="647" left="386" width="133" height="14" font="2">, and is now about to</text>
+<text top="662" left="87" width="100" height="14" font="2">perform the ﬁnal</text>
+<text top="663" left="189" width="24" height="11" font="11">mov</text>
+<text top="662" left="216" width="160" height="14" font="2">instruction. Recall also that</text>
+<text top="663" left="379" width="48" height="11" font="11">eax=51</text>
+<text top="662" left="428" width="91" height="14" font="2">. Thus, the ﬁnal</text>
+<text top="678" left="87" width="24" height="11" font="11">mov</text>
+<text top="677" left="115" width="404" height="14" font="2">instruction executes, and saves the value to memory; the counter is</text>
+<text top="692" left="87" width="88" height="14" font="2">set to 51 again.</text>
+<text top="708" left="105" width="355" height="14" font="2">Put simply, what has happened is this: the code to increment</text>
+<text top="708" left="462" width="57" height="11" font="11">counter</text>
+<text top="723" left="87" width="139" height="14" font="2">has been run twice, but</text>
+<text top="723" left="230" width="57" height="11" font="11">counter</text>
+<text top="723" left="286" width="233" height="14" font="2">, which started at 50, is now only equal</text>
+<text top="738" left="87" width="432" height="14" font="2">to 51. A “correct” version of this program should have resulted in the</text>
+<text top="752" left="87" width="48" height="14" font="2">variable</text>
+<text top="753" left="139" width="57" height="11" font="11">counter</text>
+<text top="752" left="198" width="68" height="14" font="2">equal to 52.</text>
+<text top="768" left="105" width="414" height="14" font="2">Let’s look at a detailed execution trace to understand the problem bet-</text>
+<text top="783" left="87" width="432" height="14" font="2">ter. Assume, for this example, that the above code is loaded at address</text>
+<text top="798" left="87" width="432" height="14" font="2">100 in memory, like the following sequence (note for those of you used to</text>
+<text top="813" left="87" width="432" height="14" font="2">nice, RISC-like instruction sets: x86 has variable-length instructions; this</text>
+<text top="829" left="87" width="24" height="11" font="11">mov</text>
+<text top="828" left="115" width="282" height="14" font="2">instruction takes up 5 bytes of memory, and the</text>
+<text top="829" left="400" width="24" height="11" font="11">add</text>
+<text top="828" left="428" width="44" height="14" font="2">only 3):</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="339" width="10" height="14" font="2">C</text>
+<text top="98" left="349" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="433" width="19" height="14" font="2">: A</text>
+<text top="98" left="453" width="9" height="11" font="5">N</text>
+<text top="96" left="465" width="5" height="14" font="2">I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="137" left="483" width="104" height="14" font="2">(after instruction)</text>
+<text top="152" left="138" width="19" height="13" font="3"><b>OS</b></text>
+<text top="152" left="200" width="54" height="13" font="3"><b>Thread 1</b></text>
+<text top="152" left="329" width="54" height="13" font="3"><b>Thread 2</b></text>
+<text top="152" left="480" width="103" height="13" font="3"><b>PC eax counter</b></text>
+<text top="168" left="200" width="114" height="14" font="4"><i>before critical section</i></text>
+<text top="168" left="479" width="20" height="14" font="2">100</text>
+<text top="168" left="517" width="7" height="14" font="2">0</text>
+<text top="168" left="553" width="13" height="14" font="2">50</text>
+<text top="183" left="200" width="129" height="11" font="11">mov 8049a1c,%eax</text>
+<text top="183" left="479" width="20" height="14" font="2">105</text>
+<text top="183" left="514" width="13" height="13" font="3"><b>50</b></text>
+<text top="183" left="553" width="13" height="14" font="2">50</text>
+<text top="198" left="200" width="105" height="11" font="11">add $0x1,%eax</text>
+<text top="198" left="479" width="20" height="14" font="2">108</text>
+<text top="198" left="514" width="13" height="13" font="3"><b>51</b></text>
+<text top="198" left="553" width="13" height="14" font="2">50</text>
+<text top="213" left="138" width="55" height="13" font="3"><b>interrupt</b></text>
+<text top="227" left="145" width="41" height="14" font="4"><i>save T1</i></text>
+<text top="242" left="145" width="54" height="14" font="4"><i>restore T2</i></text>
+<text top="242" left="479" width="20" height="14" font="2">100</text>
+<text top="242" left="517" width="7" height="14" font="2">0</text>
+<text top="242" left="553" width="13" height="14" font="2">50</text>
+<text top="258" left="329" width="129" height="11" font="11">mov 8049a1c,%eax</text>
+<text top="257" left="479" width="20" height="14" font="2">105</text>
+<text top="257" left="514" width="13" height="13" font="3"><b>50</b></text>
+<text top="257" left="553" width="13" height="14" font="2">50</text>
+<text top="273" left="329" width="105" height="11" font="11">add $0x1,%eax</text>
+<text top="272" left="479" width="20" height="14" font="2">108</text>
+<text top="272" left="514" width="13" height="13" font="3"><b>51</b></text>
+<text top="272" left="553" width="13" height="14" font="2">50</text>
+<text top="288" left="329" width="129" height="11" font="11">mov %eax,8049a1c</text>
+<text top="287" left="479" width="20" height="14" font="2">113</text>
+<text top="287" left="514" width="13" height="14" font="2">51</text>
+<text top="287" left="553" width="13" height="13" font="3"><b>51</b></text>
+<text top="302" left="138" width="55" height="13" font="3"><b>interrupt</b></text>
+<text top="317" left="145" width="41" height="14" font="4"><i>save T2</i></text>
+<text top="332" left="145" width="54" height="14" font="4"><i>restore T1</i></text>
+<text top="332" left="479" width="20" height="14" font="2">108</text>
+<text top="332" left="514" width="13" height="14" font="2">51</text>
+<text top="332" left="553" width="13" height="14" font="2">51</text>
+<text top="348" left="200" width="129" height="11" font="11">mov %eax,8049a1c</text>
+<text top="347" left="479" width="20" height="14" font="2">113</text>
+<text top="347" left="514" width="13" height="14" font="2">51</text>
+<text top="347" left="553" width="13" height="13" font="3"><b>51</b></text>
+<text top="372" left="195" width="69" height="14" font="2">Figure 26.7:</text>
+<text top="372" left="268" width="226" height="13" font="3"><b>The Problem: Up Close and Personal</b></text>
+<text top="404" left="137" width="56" height="11" font="11">100 mov</text>
+<text top="404" left="226" width="121" height="11" font="11">0x8049a1c, %eax</text>
+<text top="419" left="137" width="56" height="11" font="11">105 add</text>
+<text top="419" left="226" width="81" height="11" font="11">$0x1, %eax</text>
+<text top="434" left="137" width="56" height="11" font="11">108 mov</text>
+<text top="434" left="226" width="121" height="11" font="11">%eax, 0x8049a1c</text>
+<text top="469" left="147" width="414" height="14" font="2">With these assumptions, what happens is shown in Figure 26.7 (page</text>
+<text top="484" left="129" width="432" height="14" font="2">10). Assume the counter starts at value 50, and trace through this example</text>
+<text top="498" left="129" width="281" height="14" font="2">to make sure you understand what is going on.</text>
+<text top="515" left="147" width="265" height="14" font="2">What we have demonstrated here is called a</text>
+<text top="515" left="416" width="87" height="13" font="3"><b>race condition</b></text>
+<text top="515" left="507" width="54" height="14" font="2">(or, more</text>
+<text top="530" left="129" width="78" height="14" font="2">speciﬁcally, a</text>
+<text top="530" left="209" width="53" height="13" font="3"><b>data race</b></text>
+<text top="530" left="263" width="298" height="14" font="2">): the results depend on the timing of the code’s ex-</text>
+<text top="545" left="129" width="432" height="14" font="2">ecution. With some bad luck (i.e., context switches that occur at untimely</text>
+<text top="560" left="129" width="432" height="14" font="2">points in the execution), we get the wrong result. In fact, we may get a dif-</text>
+<text top="575" left="129" width="268" height="14" font="2">ferent result each time; thus, instead of a nice</text>
+<text top="575" left="400" width="81" height="13" font="3"><b>deterministic</b></text>
+<text top="575" left="485" width="76" height="14" font="2">computation</text>
+<text top="590" left="129" width="339" height="14" font="2">(which we are used to from computers), we call this result</text>
+<text top="590" left="471" width="87" height="13" font="3"><b>indeterminate</b></text>
+<text top="590" left="557" width="3" height="14" font="2">,</text>
+<text top="605" left="129" width="432" height="14" font="2">where it is not known what the output will be and it is indeed likely to be</text>
+<text top="620" left="129" width="124" height="14" font="2">different across runs.</text>
+<text top="636" left="147" width="414" height="14" font="2">Because multiple threads executing this code can result in a race con-</text>
+<text top="651" left="129" width="154" height="14" font="2">dition, we call this code a</text>
+<text top="651" left="287" width="89" height="13" font="3"><b>critical section</b></text>
+<text top="651" left="376" width="185" height="14" font="2">. A critical section is a piece of</text>
+<text top="666" left="129" width="432" height="14" font="2">code that accesses a shared variable (or more generally, a shared resource)</text>
+<text top="681" left="129" width="385" height="14" font="2">and must not be concurrently executed by more than one thread.</text>
+<text top="697" left="147" width="300" height="14" font="2">What we really want for this code is what we call</text>
+<text top="697" left="451" width="106" height="13" font="3"><b>mutual exclusion</b></text>
+<text top="697" left="557" width="3" height="14" font="2">.</text>
+<text top="712" left="129" width="432" height="14" font="2">This property guarantees that if one thread is executing within the critical</text>
+<text top="727" left="129" width="305" height="14" font="2">section, the others will be prevented from doing so.</text>
+<text top="744" left="147" width="414" height="14" font="2">Virtually all of these terms, by the way, were coined by Edsger Dijk-</text>
+<text top="759" left="129" width="432" height="14" font="2">stra, who was a pioneer in the ﬁeld and indeed won the Turing Award</text>
+<text top="773" left="129" width="432" height="14" font="2">because of this and other work; see his 1968 paper on “Cooperating Se-</text>
+<text top="788" left="129" width="432" height="14" font="2">quential Processes” [D68] for an amazingly clear description of the prob-</text>
+<text top="803" left="129" width="407" height="14" font="2">lem. We’ll be hearing more about Dijkstra in this section of the book.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="182" width="19" height="14" font="2">: A</text>
+<text top="98" left="201" width="9" height="11" font="5">N</text>
+<text top="96" left="214" width="5" height="14" font="2">I</text>
+<text top="98" left="219" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="148" left="209" width="8" height="14" font="2">T</text>
+<text top="150" left="218" width="11" height="11" font="5">IP</text>
+<text top="148" left="230" width="19" height="14" font="2">: U</text>
+<text top="150" left="249" width="13" height="11" font="5">SE</text>
+<text top="148" left="266" width="10" height="14" font="2">A</text>
+<text top="150" left="276" width="39" height="11" font="5">TOMIC</text>
+<text top="148" left="319" width="11" height="14" font="2">O</text>
+<text top="150" left="330" width="66" height="11" font="5">PERATIONS</text>
+<text top="163" left="87" width="432" height="14" font="2">Atomic operations are one of the most powerful underlying techniques</text>
+<text top="178" left="87" width="432" height="14" font="2">in building computer systems, from the computer architecture, to concur-</text>
+<text top="193" left="87" width="432" height="14" font="2">rent code (what we are studying here), to ﬁle systems (which we’ll study</text>
+<text top="208" left="87" width="432" height="14" font="2">soon enough), database management systems, and even distributed sys-</text>
+<text top="223" left="87" width="74" height="14" font="2">tems [L+93].</text>
+<text top="241" left="87" width="262" height="14" font="2">The idea behind making a series of actions</text>
+<text top="241" left="354" width="41" height="13" font="3"><b>atomic</b></text>
+<text top="241" left="400" width="119" height="14" font="2">is simply expressed</text>
+<text top="256" left="87" width="432" height="14" font="2">with the phrase “all or nothing”; it should either appear as if all of the ac-</text>
+<text top="271" left="87" width="432" height="14" font="2">tions you wish to group together occurred, or that none of them occurred,</text>
+<text top="286" left="87" width="432" height="14" font="2">with no in-between state visible. Sometimes, the grouping of many ac-</text>
+<text top="301" left="87" width="263" height="14" font="2">tions into a single atomic action is called a</text>
+<text top="301" left="355" width="68" height="13" font="3"><b>transaction</b></text>
+<text top="301" left="423" width="96" height="14" font="2">, an idea devel-</text>
+<text top="316" left="87" width="432" height="14" font="2">oped in great detail in the world of databases and transaction processing</text>
+<text top="331" left="87" width="45" height="14" font="2">[GR92].</text>
+<text top="349" left="87" width="432" height="14" font="2">In our theme of exploring concurrency, we’ll be using synchronization</text>
+<text top="364" left="87" width="432" height="14" font="2">primitives to turn short sequences of instructions into atomic blocks of</text>
+<text top="379" left="87" width="432" height="14" font="2">execution, but the idea of atomicity is much bigger than that, as we will</text>
+<text top="394" left="87" width="432" height="14" font="2">see. For example, ﬁle systems use techniques such as journaling or copy-</text>
+<text top="409" left="87" width="432" height="14" font="2">on-write in order to atomically transition their on-disk state, critical for</text>
+<text top="424" left="87" width="432" height="14" font="2">operating correctly in the face of system failures. If that doesn’t make</text>
+<text top="439" left="87" width="309" height="14" font="2">sense, don’t worry — it will, in some future chapter.</text>
+<text top="493" left="55" width="208" height="17" font="8">26.5 The Wish For Atomicity</text>
+<text top="524" left="105" width="414" height="14" font="2">One way to solve this problem would be to have more powerful in-</text>
+<text top="539" left="87" width="432" height="14" font="2">structions that, in a single step, did exactly whatever we needed done</text>
+<text top="554" left="87" width="432" height="14" font="2">and thus removed the possibility of an untimely interrupt. For example,</text>
+<text top="568" left="87" width="329" height="14" font="2">what if we had a super instruction that looked like this:</text>
+<text top="599" left="95" width="210" height="11" font="11">memory-add 0x8049a1c, $0x1</text>
+<text top="626" left="105" width="414" height="14" font="2">Assume this instruction adds a value to a memory location, and the</text>
+<text top="641" left="87" width="226" height="14" font="2">hardware guarantees that it executes</text>
+<text top="641" left="318" width="64" height="13" font="3"><b>atomically</b></text>
+<text top="641" left="382" width="137" height="14" font="2">; when the instruction</text>
+<text top="656" left="87" width="432" height="14" font="2">executed, it would perform the update as desired. It could not be inter-</text>
+<text top="671" left="87" width="432" height="14" font="2">rupted mid-instruction, because that is precisely the guarantee we receive</text>
+<text top="686" left="87" width="432" height="14" font="2">from the hardware: when an interrupt occurs, either the instruction has</text>
+<text top="701" left="87" width="432" height="14" font="2">not run at all, or it has run to completion; there is no in-between state.</text>
+<text top="716" left="87" width="231" height="14" font="2">Hardware can be a beautiful thing, no?</text>
+<text top="732" left="105" width="414" height="14" font="2">Atomically, in this context, means “as a unit”, which sometimes we</text>
+<text top="747" left="87" width="432" height="14" font="2">take as “all or none.” What we’d like is to execute the three instruction</text>
+<text top="762" left="87" width="123" height="14" font="2">sequence atomically:</text>
+<text top="797" left="95" width="153" height="11" font="11">mov 0x8049a1c, %eax</text>
+<text top="812" left="95" width="113" height="11" font="11">add $0x1, %eax</text>
+<text top="827" left="95" width="153" height="11" font="11">mov %eax, 0x8049a1c</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="339" width="10" height="14" font="2">C</text>
+<text top="98" left="349" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="433" width="19" height="14" font="2">: A</text>
+<text top="98" left="453" width="9" height="11" font="5">N</text>
+<text top="96" left="465" width="5" height="14" font="2">I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="139" left="147" width="414" height="14" font="2">As we said, if we had a single instruction to do this, we could just</text>
+<text top="154" left="129" width="432" height="14" font="2">issue that instruction and be done. But in the general case, we won’t have</text>
+<text top="169" left="129" width="432" height="14" font="2">such an instruction. Imagine we were building a concurrent B-tree, and</text>
+<text top="183" left="129" width="432" height="14" font="2">wished to update it; would we really want the hardware to support an</text>
+<text top="198" left="129" width="432" height="14" font="2">“atomic update of B-tree” instruction? Probably not, at least in a sane</text>
+<text top="213" left="129" width="88" height="14" font="2">instruction set.</text>
+<text top="231" left="147" width="414" height="14" font="2">Thus, what we will instead do is ask the hardware for a few useful</text>
+<text top="246" left="129" width="402" height="14" font="2">instructions upon which we can build a general set of what we call</text>
+<text top="246" left="535" width="26" height="13" font="3"><b>syn-</b></text>
+<text top="261" left="129" width="146" height="13" font="3"><b>chronization primitives</b></text>
+<text top="260" left="275" width="286" height="14" font="2">. By using this hardware support, in combina-</text>
+<text top="275" left="129" width="432" height="14" font="2">tion with some help from the operating system, we will be able to build</text>
+<text top="290" left="129" width="432" height="14" font="2">multi-threaded code that accesses critical sections in a synchronized and</text>
+<text top="305" left="129" width="432" height="14" font="2">controlled manner, and thus reliably produces the correct result despite</text>
+<text top="320" left="129" width="421" height="14" font="2">the challenging nature of concurrent execution. Pretty awesome, right?</text>
+<text top="337" left="147" width="414" height="14" font="2">This is the problem we will study in this section of the book. It is a</text>
+<text top="352" left="129" width="432" height="14" font="2">wonderful and hard problem, and should make your mind hurt (a bit).</text>
+<text top="367" left="129" width="432" height="14" font="2">If it doesn’t, then you don’t understand! Keep working until your head</text>
+<text top="382" left="129" width="432" height="14" font="2">hurts; you then know you’re headed in the right direction. At that point,</text>
+<text top="397" left="129" width="340" height="14" font="2">take a break; we don’t want your head hurting too much.</text>
+<text top="444" left="227" width="11" height="14" font="2">H</text>
+<text top="446" left="239" width="20" height="11" font="5">OW</text>
+<text top="444" left="263" width="8" height="14" font="2">T</text>
+<text top="446" left="272" width="8" height="11" font="5">O</text>
+<text top="444" left="284" width="7" height="14" font="2">S</text>
+<text top="446" left="292" width="47" height="11" font="5">UPPORT</text>
+<text top="444" left="343" width="7" height="14" font="2">S</text>
+<text top="446" left="350" width="112" height="11" font="5">YNCHRONIZATION</text>
+<text top="459" left="147" width="414" height="14" font="2">What support do we need from the hardware in order to build use-</text>
+<text top="473" left="129" width="432" height="14" font="2">ful synchronization primitives? What support do we need from the OS?</text>
+<text top="488" left="129" width="432" height="14" font="2">How can we build these primitives correctly and efﬁciently? How can</text>
+<text top="503" left="129" width="270" height="14" font="2">programs use them to get the desired results?</text>
+<text top="560" left="97" width="331" height="17" font="8">26.6 One More Problem: Waiting For Another</text>
+<text top="592" left="147" width="414" height="14" font="2">This chapter has set up the problem of concurrency as if only one type</text>
+<text top="607" left="129" width="432" height="14" font="2">of interaction occurs between threads, that of accessing shared variables</text>
+<text top="622" left="129" width="432" height="14" font="2">and the need to support atomicity for critical sections. As it turns out,</text>
+<text top="637" left="129" width="432" height="14" font="2">there is another common interaction that arises, where one thread must</text>
+<text top="652" left="129" width="432" height="14" font="2">wait for another to complete some action before it continues. This inter-</text>
+<text top="667" left="129" width="432" height="14" font="2">action arises, for example, when a process performs a disk I/O and is put</text>
+<text top="682" left="129" width="432" height="14" font="2">to sleep; when the I/O completes, the process needs to be roused from its</text>
+<text top="697" left="129" width="159" height="14" font="2">slumber so it can continue.</text>
+<text top="714" left="147" width="414" height="14" font="2">Thus, in the coming chapters, we’ll be not only studying how to build</text>
+<text top="729" left="129" width="432" height="14" font="2">support for synchronization primitives to support atomicity but also for</text>
+<text top="744" left="129" width="432" height="14" font="2">mechanisms to support this type of sleeping/waking interaction that is</text>
+<text top="759" left="129" width="432" height="14" font="2">common in multi-threaded programs. If this doesn’t make sense right</text>
+<text top="773" left="129" width="402" height="14" font="2">now, that is OK! It will soon enough, when you read the chapter on</text>
+<text top="774" left="535" width="26" height="13" font="3"><b>con-</b></text>
+<text top="788" left="129" width="98" height="13" font="3"><b>dition variables</b></text>
+<text top="788" left="227" width="334" height="14" font="2">. If it doesn’t by then, well, then it is less OK, and you</text>
+<text top="803" left="129" width="402" height="14" font="2">should read that chapter again (and again) until it does make sense.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="182" width="19" height="14" font="2">: A</text>
+<text top="98" left="201" width="9" height="11" font="5">N</text>
+<text top="96" left="214" width="5" height="14" font="2">I</text>
+<text top="98" left="219" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="148" left="196" width="10" height="14" font="2">A</text>
+<text top="150" left="207" width="26" height="11" font="5">SIDE</text>
+<text top="148" left="234" width="18" height="14" font="2">: K</text>
+<text top="150" left="253" width="14" height="11" font="5">EY</text>
+<text top="148" left="271" width="10" height="14" font="2">C</text>
+<text top="150" left="281" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="148" left="369" width="8" height="14" font="2">T</text>
+<text top="150" left="378" width="32" height="11" font="5">ERMS</text>
+<text top="163" left="185" width="10" height="14" font="2">C</text>
+<text top="165" left="195" width="48" height="11" font="5">RITICAL</text>
+<text top="163" left="247" width="7" height="14" font="2">S</text>
+<text top="165" left="254" width="45" height="11" font="5">ECTION</text>
+<text top="163" left="300" width="16" height="14" font="2">, R</text>
+<text top="165" left="317" width="24" height="11" font="5">ACE</text>
+<text top="163" left="345" width="10" height="14" font="2">C</text>
+<text top="165" left="355" width="62" height="11" font="5">ONDITION</text>
+<text top="163" left="418" width="3" height="14" font="2">,</text>
+<text top="178" left="185" width="5" height="14" font="2">I</text>
+<text top="180" left="190" width="95" height="11" font="5">NDETERMINATE</text>
+<text top="178" left="286" width="20" height="14" font="2">, M</text>
+<text top="180" left="306" width="41" height="11" font="5">UTUAL</text>
+<text top="178" left="351" width="8" height="14" font="2">E</text>
+<text top="180" left="360" width="61" height="11" font="5">XCLUSION</text>
+<text top="193" left="87" width="432" height="14" font="2">These four terms are so central to concurrent code that we thought it</text>
+<text top="208" left="87" width="432" height="14" font="2">worth while to call them out explicitly. See some of Dijkstra’s early work</text>
+<text top="223" left="87" width="161" height="14" font="2">[D65,D68] for more details.</text>
+<text top="248" left="107" width="26" height="14" font="2">• A</text>
+<text top="248" left="136" width="89" height="13" font="3"><b>critical section</b></text>
+<text top="248" left="229" width="193" height="14" font="2">is a piece of code that accesses a</text>
+<text top="248" left="427" width="35" height="14" font="4"><i>shared</i></text>
+<text top="248" left="465" width="54" height="14" font="2">resource,</text>
+<text top="263" left="122" width="211" height="14" font="2">usually a variable or data structure.</text>
+<text top="288" left="107" width="26" height="14" font="2">• A</text>
+<text top="288" left="135" width="87" height="13" font="3"><b>race condition</b></text>
+<text top="288" left="225" width="17" height="14" font="2">(or</text>
+<text top="288" left="246" width="54" height="13" font="3"><b>data race</b></text>
+<text top="288" left="303" width="216" height="14" font="2">[NM92]) arises if multiple threads of</text>
+<text top="303" left="122" width="397" height="14" font="2">execution enter the critical section at roughly the same time; both</text>
+<text top="318" left="122" width="397" height="14" font="2">attempt to update the shared data structure, leading to a surprising</text>
+<text top="332" left="122" width="215" height="14" font="2">(and perhaps undesirable) outcome.</text>
+<text top="357" left="107" width="33" height="14" font="2">• An</text>
+<text top="357" left="143" width="87" height="13" font="3"><b>indeterminate</b></text>
+<text top="357" left="233" width="286" height="14" font="2">program consists of one or more race conditions;</text>
+<text top="372" left="122" width="397" height="14" font="2">the output of the program varies from run to run, depending on</text>
+<text top="387" left="122" width="308" height="14" font="2">which threads ran when. The outcome is thus not</text>
+<text top="387" left="434" width="81" height="13" font="3"><b>deterministic</b></text>
+<text top="387" left="516" width="3" height="14" font="2">,</text>
+<text top="402" left="122" width="320" height="14" font="2">something we usually expect from computer systems.</text>
+<text top="427" left="107" width="364" height="14" font="2">• To avoid these problems, threads should use some kind of</text>
+<text top="427" left="475" width="44" height="13" font="3"><b>mutual</b></text>
+<text top="442" left="122" width="58" height="13" font="3"><b>exclusion</b></text>
+<text top="442" left="183" width="336" height="14" font="2">primitives; doing so guarantees that only a single thread</text>
+<text top="457" left="122" width="397" height="14" font="2">ever enters a critical section, thus avoiding races, and resulting in</text>
+<text top="472" left="122" width="186" height="14" font="2">deterministic program outputs.</text>
+<text top="520" left="55" width="243" height="17" font="8">26.7 Summary: Why in OS Class?</text>
+<text top="539" left="105" width="414" height="14" font="2">Before wrapping up, one question that you might have is: why are we</text>
+<text top="554" left="87" width="432" height="14" font="2">studying this in OS class? “History” is the one-word answer; the OS was</text>
+<text top="569" left="87" width="432" height="14" font="2">the ﬁrst concurrent program, and many techniques were created for use</text>
+<text top="584" left="87" width="36" height="14" font="4"><i>within</i></text>
+<text top="584" left="126" width="393" height="14" font="2">the OS. Later, with multi-threaded processes, application program-</text>
+<text top="599" left="87" width="227" height="14" font="2">mers also had to consider such things.</text>
+<text top="614" left="105" width="414" height="14" font="2">For example, imagine the case where there are two processes running.</text>
+<text top="629" left="87" width="138" height="14" font="2">Assume they both call</text>
+<text top="629" left="230" width="57" height="11" font="11">write()</text>
+<text top="629" left="292" width="227" height="14" font="2">to write to the ﬁle, and both wish to</text>
+<text top="644" left="87" width="432" height="14" font="2">append the data to the ﬁle (i.e., add the data to the end of the ﬁle, thus</text>
+<text top="658" left="87" width="432" height="14" font="2">increasing its length). To do so, both must allocate a new block, record</text>
+<text top="673" left="87" width="432" height="14" font="2">in the inode of the ﬁle where this block lives, and change the size of the</text>
+<text top="688" left="87" width="432" height="14" font="2">ﬁle to reﬂect the new larger size (among other things; we’ll learn more</text>
+<text top="703" left="87" width="432" height="14" font="2">about ﬁles in the third part of the book). Because an interrupt may occur</text>
+<text top="718" left="87" width="432" height="14" font="2">at any time, the code that updates these shared structures (e.g., a bitmap</text>
+<text top="733" left="87" width="432" height="14" font="2">for allocation, or the ﬁle’s inode) are critical sections; thus, OS design-</text>
+<text top="748" left="87" width="432" height="14" font="2">ers, from the very beginning of the introduction of the interrupt, had to</text>
+<text top="763" left="87" width="432" height="14" font="2">worry about how the OS updates internal structures. An untimely inter-</text>
+<text top="778" left="87" width="432" height="14" font="2">rupt causes all of the problems described above. Not surprisingly, page</text>
+<text top="793" left="87" width="432" height="14" font="2">tables, process lists, ﬁle system structures, and virtually every kernel data</text>
+<text top="808" left="87" width="432" height="14" font="2">structure has to be carefully accessed, with the proper synchronization</text>
+<text top="823" left="87" width="171" height="14" font="2">primitives, to work correctly.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="16" size="16" family="SHKMLM+URWPalladioL" color="#000000"/>
+	<fontspec id="17" size="10" family="KUPOXQ+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="18" size="10" family="DKTBIA+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="19" size="10" family="ZAXKDZ+URWPalladioL" color="#000000"/>
+	<fontspec id="20" size="8" family="VLCTDJ+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="339" width="10" height="14" font="2">C</text>
+<text top="98" left="349" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="433" width="19" height="14" font="2">: A</text>
+<text top="98" left="453" width="9" height="11" font="5">N</text>
+<text top="96" left="465" width="5" height="14" font="2">I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="137" left="129" width="82" height="16" font="16"><b>References</b></text>
+<text top="165" left="129" width="432" height="11" font="10">[D65] “Solution of a problem in concurrent programming control” by E. W. Dijkstra. Commu-</text>
+<text top="177" left="129" width="224" height="11" font="10">nications of the ACM, 8(9):569, September 1965.</text>
+<text top="177" left="359" width="202" height="11" font="17"><i>Pointed to as the ﬁrst paper of Dijkstra’s where</i></text>
+<text top="189" left="129" width="432" height="11" font="17"><i>he outlines the mutual exclusion problem and a solution. The solution, however, is not widely used;</i></text>
+<text top="201" left="129" width="354" height="11" font="17"><i>advanced hardware and OS support is needed, as we will see in the coming chapters.</i></text>
+<text top="218" left="129" width="432" height="11" font="10">[D68] “Cooperating sequential processes” by Edsger W. Dijkstra. 1968. Available at this site:</text>
+<text top="230" left="129" width="333" height="9" font="18">http://www.cs.utexas.edu/users/EWD/ewd01xx/EWD123.PDF</text>
+<text top="229" left="462" width="3" height="11" font="10">.</text>
+<text top="229" left="467" width="94" height="11" font="17"><i>Dijkstra has an amaz-</i></text>
+<text top="241" left="129" width="432" height="11" font="17"><i>ing number of his old papers, notes, and thoughts recorded (for posterity) on this website at the last</i></text>
+<text top="253" left="129" width="432" height="11" font="17"><i>place he worked, the University of Texas. Much of his foundational work, however, was done years</i></text>
+<text top="265" left="129" width="432" height="11" font="17"><i>earlier while he was at the Technische Hogeschool Eindhoven (THE), including this famous paper on</i></text>
+<text top="277" left="129" width="432" height="11" font="17"><i>“cooperating sequential processes”, which basically outlines all of the thinking that has to go into writ-</i></text>
+<text top="289" left="129" width="432" height="11" font="17"><i>ing multi-threaded programs. Dijkstra discovered much of this while working on an operating system</i></text>
+<text top="301" left="129" width="432" height="11" font="17"><i>named after his school: the “THE” operating system (said “T”, “H”, “E”, and not like the word “the”).</i></text>
+<text top="318" left="129" width="432" height="11" font="10">[GR92] “Transaction Processing: Concepts and Techniques” by Jim Gray and Andreas Reuter.</text>
+<text top="329" left="129" width="169" height="11" font="10">Morgan Kaufmann, September 1992.</text>
+<text top="329" left="301" width="260" height="11" font="17"><i>This book is the bible of transaction processing, written by one</i></text>
+<text top="341" left="129" width="432" height="11" font="17"><i>of the legends of the ﬁeld, Jim Gray. It is, for this reason, also considered Jim Gray’s “brain dump”,</i></text>
+<text top="353" left="129" width="432" height="11" font="17"><i>in which he wrote down everything he knows about how database management systems work. Sadly,</i></text>
+<text top="365" left="129" width="432" height="11" font="17"><i>Gray passed away tragically a few years back, and many of us lost a friend and great mentor, including</i></text>
+<text top="377" left="129" width="432" height="11" font="17"><i>the co-authors of said book, who were lucky enough to interact with Gray during their graduate school</i></text>
+<text top="389" left="129" width="25" height="11" font="17"><i>years.</i></text>
+<text top="406" left="129" width="432" height="11" font="10">[L+93] “Atomic Transactions” by Nancy Lynch, Michael Merritt, William Weihl, Alan Fekete.</text>
+<text top="417" left="129" width="155" height="11" font="10">Morgan Kaufmann, August 1993.</text>
+<text top="417" left="288" width="273" height="11" font="17"><i>A nice text on some of the theory and practice of atomic transac-</i></text>
+<text top="429" left="129" width="423" height="11" font="17"><i>tions for distributed systems. Perhaps a bit formal for some, but lots of good material is found herein.</i></text>
+<text top="446" left="129" width="432" height="11" font="10">[NM92] “What Are Race Conditions? Some Issues and Formalizations” by Robert H. B. Netzer</text>
+<text top="458" left="129" width="432" height="11" font="10">and Barton P. Miller. ACM Letters on Programming Languages and Systems, Volume 1:1,</text>
+<text top="470" left="129" width="56" height="11" font="10">March 1992.</text>
+<text top="470" left="190" width="371" height="11" font="17"><i>An excellent discussion of the different types of races found in concurrent programs. In</i></text>
+<text top="482" left="129" width="395" height="11" font="17"><i>this chapter (and the next few), we focus on data races, but later we will broaden to discuss</i></text>
+<text top="482" left="527" width="34" height="10" font="19"><b>general</b></text>
+<text top="494" left="129" width="24" height="10" font="19"><b>races</b></text>
+<text top="493" left="155" width="31" height="11" font="17"><i>as well.</i></text>
+<text top="510" left="129" width="189" height="11" font="10">[SR05] “Advanced Programming in the U</text>
+<text top="511" left="319" width="16" height="8" font="20">NIX</text>
+<text top="510" left="338" width="229" height="11" font="10">Environment” by W. Richard Stevens and Stephen</text>
+<text top="522" left="129" width="153" height="11" font="10">A. Rago. Addison-Wesley, 2005.</text>
+<text top="522" left="289" width="272" height="11" font="17"><i>As we’ve said many times, buy this book, and read it, in little</i></text>
+<text top="534" left="129" width="432" height="11" font="17"><i>chunks, preferably before going to bed. This way, you will actually fall asleep more quickly; more im-</i></text>
+<text top="546" left="129" width="266" height="11" font="17"><i>portantly, you learn a little more about how to become a serious</i></text>
+<text top="546" left="398" width="8" height="11" font="10">U</text>
+<text top="547" left="407" width="16" height="8" font="20">NIX</text>
+<text top="546" left="426" width="54" height="11" font="17"><i>programmer.</i></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="21" size="15" family="SHKMLM+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="10" height="14" font="2">C</text>
+<text top="98" left="98" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="182" width="19" height="14" font="2">: A</text>
+<text top="98" left="201" width="9" height="11" font="5">N</text>
+<text top="96" left="214" width="5" height="14" font="2">I</text>
+<text top="98" left="219" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="137" left="87" width="183" height="16" font="16"><b>Homework (Simulation)</b></text>
+<text top="166" left="105" width="85" height="14" font="2">This program,</text>
+<text top="167" left="194" width="48" height="11" font="11">x86.py</text>
+<text top="166" left="243" width="276" height="14" font="2">, allows you to see how different thread inter-</text>
+<text top="181" left="87" width="432" height="14" font="2">leavings either cause or avoid race conditions. See the README for de-</text>
+<text top="196" left="87" width="395" height="14" font="2">tails on how the program works, then answer the questions below.</text>
+<text top="232" left="87" width="70" height="15" font="21"><b>Questions</b></text>
+<text top="256" left="105" width="414" height="14" font="2">1. Let’s examine a simple program, “loop.s”. First, just read and un-</text>
+<text top="271" left="122" width="292" height="14" font="2">derstand it. Then, run it with these arguments (</text>
+<text top="272" left="414" width="105" height="11" font="11">./x86.py -t 1</text>
+<text top="287" left="122" width="178" height="11" font="11">-p loop.s -i 100 -R dx</text>
+<text top="286" left="299" width="220" height="14" font="2">) This speciﬁes a single thread, an in-</text>
+<text top="301" left="122" width="324" height="14" font="2">terrupt every 100 instructions, and tracing of register</text>
+<text top="302" left="450" width="24" height="11" font="11">%dx</text>
+<text top="301" left="475" width="44" height="14" font="2">. What</text>
+<text top="316" left="122" width="23" height="14" font="2">will</text>
+<text top="317" left="148" width="24" height="11" font="11">%dx</text>
+<text top="316" left="175" width="159" height="14" font="2">be during the run? Use the</text>
+<text top="317" left="338" width="16" height="11" font="11">-c</text>
+<text top="316" left="357" width="162" height="14" font="2">ﬂag to check your answers;</text>
+<text top="331" left="122" width="397" height="14" font="2">the answers, on the left, show the value of the register (or memory</text>
+<text top="346" left="122" width="37" height="14" font="2">value)</text>
+<text top="346" left="162" width="25" height="14" font="4"><i>after</i></text>
+<text top="346" left="190" width="211" height="14" font="2">the instruction on the right has run.</text>
+<text top="371" left="105" width="179" height="14" font="2">2. Same code, different ﬂags: (</text>
+<text top="372" left="284" width="242" height="11" font="11">./x86.py -p loop.s -t 2 -i 100</text>
+<text top="387" left="122" width="145" height="11" font="11">-a dx=3,dx=3 -R dx</text>
+<text top="386" left="267" width="252" height="14" font="2">) This speciﬁes two threads, and initializes</text>
+<text top="401" left="122" width="198" height="14" font="2">each %dx to 3. What values will</text>
+<text top="402" left="324" width="24" height="11" font="11">%dx</text>
+<text top="401" left="353" width="88" height="14" font="2">see? Run with</text>
+<text top="402" left="445" width="16" height="11" font="11">-c</text>
+<text top="401" left="466" width="53" height="14" font="2">to check.</text>
+<text top="416" left="122" width="397" height="14" font="2">Does the presence of multiple threads affect your calculations? Is</text>
+<text top="431" left="122" width="146" height="14" font="2">there a race in this code?</text>
+<text top="456" left="105" width="70" height="14" font="2">3. Run this:</text>
+<text top="457" left="179" width="323" height="11" font="11">./x86.py -p loop.s -t 2 -i 3 -r -R dx -a</text>
+<text top="471" left="122" width="73" height="11" font="11">dx=3,dx=3</text>
+<text top="471" left="199" width="320" height="14" font="2">This makes the interrupt interval small/random; use</text>
+<text top="486" left="122" width="97" height="14" font="2">different seeds (</text>
+<text top="486" left="219" width="16" height="11" font="11">-s</text>
+<text top="486" left="235" width="284" height="14" font="2">) to see different interleavings. Does the inter-</text>
+<text top="501" left="122" width="197" height="14" font="2">rupt frequency change anything?</text>
+<text top="525" left="105" width="175" height="14" font="2">4. Now, a different program,</text>
+<text top="526" left="284" width="170" height="11" font="11">looping-race-nolock.s</text>
+<text top="525" left="453" width="66" height="14" font="2">, which ac-</text>
+<text top="540" left="122" width="397" height="14" font="2">cesses a shared variable located at address 2000; we’ll call this vari-</text>
+<text top="555" left="122" width="25" height="14" font="2">able</text>
+<text top="556" left="151" width="40" height="11" font="11">value</text>
+<text top="555" left="192" width="327" height="14" font="2">. Run it with a single thread to conﬁrm your under-</text>
+<text top="570" left="122" width="55" height="14" font="2">standing:</text>
+<text top="571" left="181" width="331" height="11" font="11">./x86.py -p looping-race-nolock.s -t 1 -M</text>
+<text top="586" left="122" width="32" height="11" font="11">2000</text>
+<text top="585" left="157" width="45" height="14" font="2">What is</text>
+<text top="586" left="206" width="40" height="11" font="11">value</text>
+<text top="585" left="249" width="270" height="14" font="2">(i.e., at memory address 2000) throughout the</text>
+<text top="600" left="122" width="54" height="14" font="2">run? Use</text>
+<text top="601" left="179" width="16" height="11" font="11">-c</text>
+<text top="600" left="198" width="52" height="14" font="2">to check.</text>
+<text top="625" left="105" width="242" height="14" font="2">5. Run with multiple iterations/threads:</text>
+<text top="626" left="351" width="89" height="11" font="11">./x86.py -p</text>
+<text top="641" left="122" width="339" height="11" font="11">looping-race-nolock.s -t 2 -a bx=3 -M 2000</text>
+<text top="640" left="463" width="59" height="14" font="2">Why does</text>
+<text top="655" left="122" width="305" height="14" font="2">each thread loop three times? What is ﬁnal value of</text>
+<text top="656" left="430" width="40" height="11" font="11">value</text>
+<text top="655" left="470" width="6" height="14" font="2">?</text>
+<text top="680" left="105" width="239" height="14" font="2">6. Run with random interrupt intervals:</text>
+<text top="681" left="348" width="89" height="11" font="11">./x86.py -p</text>
+<text top="696" left="122" width="379" height="11" font="11">looping-race-nolock.s -t 2 -M 2000 -i 4 -r -s 0</text>
+<text top="695" left="503" width="27" height="14" font="2">with</text>
+<text top="710" left="122" width="98" height="14" font="2">different seeds (</text>
+<text top="711" left="219" width="32" height="11" font="11">-s 1</text>
+<text top="710" left="252" width="3" height="14" font="2">,</text>
+<text top="711" left="260" width="32" height="11" font="11">-s 2</text>
+<text top="710" left="292" width="227" height="14" font="2">, etc.) Can you tell by looking at the</text>
+<text top="725" left="122" width="249" height="14" font="2">thread interleaving what the ﬁnal value of</text>
+<text top="726" left="374" width="40" height="11" font="11">value</text>
+<text top="725" left="417" width="102" height="14" font="2">will be? Does the</text>
+<text top="740" left="122" width="397" height="14" font="2">timing of the interrupt matter? Where can it safely occur? Where</text>
+<text top="755" left="122" width="336" height="14" font="2">not? In other words, where is the critical section exactly?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="5">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="5">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="5">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="5">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="5">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="339" width="10" height="14" font="2">C</text>
+<text top="98" left="349" width="84" height="11" font="5">ONCURRENCY</text>
+<text top="96" left="433" width="19" height="14" font="2">: A</text>
+<text top="98" left="453" width="9" height="11" font="5">N</text>
+<text top="96" left="465" width="5" height="14" font="2">I</text>
+<text top="98" left="471" width="90" height="11" font="5">NTRODUCTION</text>
+<text top="139" left="146" width="249" height="14" font="2">7. Now examine ﬁxed interrupt intervals:</text>
+<text top="139" left="400" width="89" height="11" font="11">./x86.py -p</text>
+<text top="154" left="163" width="379" height="11" font="11">looping-race-nolock.s -a bx=1 -t 2 -M 2000 -i 1</text>
+<text top="154" left="545" width="32" height="14" font="2">What</text>
+<text top="169" left="163" width="250" height="14" font="2">will the ﬁnal value of the shared variable</text>
+<text top="169" left="418" width="40" height="11" font="11">value</text>
+<text top="169" left="463" width="98" height="14" font="2">be? What about</text>
+<text top="183" left="163" width="107" height="14" font="2">when you change</text>
+<text top="184" left="274" width="32" height="11" font="11">-i 2</text>
+<text top="183" left="306" width="3" height="14" font="2">,</text>
+<text top="184" left="314" width="32" height="11" font="11">-i 3</text>
+<text top="183" left="346" width="215" height="14" font="2">, etc.? For which interrupt intervals</text>
+<text top="198" left="163" width="266" height="14" font="2">does the program give the “correct” answer?</text>
+<text top="223" left="146" width="251" height="14" font="2">8. Run the same for more loops (e.g., set</text>
+<text top="224" left="402" width="73" height="11" font="11">-a bx=100</text>
+<text top="223" left="475" width="86" height="14" font="2">). What inter-</text>
+<text top="238" left="163" width="90" height="14" font="2">rupt intervals (</text>
+<text top="239" left="254" width="16" height="11" font="11">-i</text>
+<text top="238" left="270" width="291" height="14" font="2">) lead to a correct outcome? Which intervals are</text>
+<text top="253" left="163" width="67" height="14" font="2">surprising?</text>
+<text top="278" left="146" width="125" height="14" font="2">9. One last program:</text>
+<text top="279" left="275" width="105" height="11" font="11">wait-for-me.s</text>
+<text top="278" left="380" width="36" height="14" font="2">. Run:</text>
+<text top="279" left="420" width="89" height="11" font="11">./x86.py -p</text>
+<text top="294" left="163" width="323" height="11" font="11">wait-for-me.s -a ax=1,ax=0 -R ax -M 2000</text>
+<text top="293" left="489" width="72" height="14" font="2">This sets the</text>
+<text top="309" left="163" width="24" height="11" font="11">%ax</text>
+<text top="308" left="191" width="341" height="14" font="2">register to 1 for thread 0, and 0 for thread 1, and watches</text>
+<text top="309" left="537" width="24" height="11" font="11">%ax</text>
+<text top="323" left="163" width="397" height="14" font="2">and memory location 2000. How should the code behave? How is</text>
+<text top="338" left="163" width="397" height="14" font="2">the value at location 2000 being used by the threads? What will its</text>
+<text top="353" left="163" width="86" height="14" font="2">ﬁnal value be?</text>
+<text top="378" left="140" width="163" height="14" font="2">10. Now switch the inputs:</text>
+<text top="379" left="307" width="226" height="11" font="11">./x86.py -p wait-for-me.s -a</text>
+<text top="394" left="163" width="186" height="11" font="11">ax=0,ax=1 -R ax -M 2000</text>
+<text top="393" left="353" width="208" height="14" font="2">How do the threads behave? What</text>
+<text top="408" left="163" width="397" height="14" font="2">is thread 0 doing? How would changing the interrupt interval (e.g.,</text>
+<text top="423" left="163" width="56" height="11" font="11">-i 1000</text>
+<text top="423" left="220" width="341" height="14" font="2">, or perhaps to use random intervals) change the trace out-</text>
+<text top="438" left="163" width="287" height="14" font="2">come? Is the program efﬁciently using the CPU?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="5">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="5">ORG</text>
+</page>
+</pdf2xml>

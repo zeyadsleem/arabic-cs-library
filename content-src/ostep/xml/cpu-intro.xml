@@ -1,0 +1,1103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="XVHMDF+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="XVHMDF+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="OGZRLE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="13" family="TZTNKE+URWPalladioL" color="#000000"/>
+	<fontspec id="4" size="11" family="OGZRLE+URWPalladioL-Roma" color="#000000"/>
+<text top="193" left="540" width="17" height="30" font="0">4</text>
+<text top="262" left="234" width="285" height="21" font="1">The Abstraction: The Process</text>
+<text top="343" left="87" width="432" height="14" font="2">In this chapter, we discuss one of the most fundamental abstractions that</text>
+<text top="358" left="87" width="174" height="14" font="2">the OS provides to users: the</text>
+<text top="358" left="265" width="46" height="13" font="3"><b>process</b></text>
+<text top="358" left="311" width="208" height="14" font="2">. The definition of a process, infor-</text>
+<text top="373" left="87" width="161" height="14" font="2">mally, is quite simple: it is a</text>
+<text top="373" left="251" width="105" height="13" font="3"><b>running program</b></text>
+<text top="373" left="358" width="161" height="14" font="2">[V+65,BH70]. The program</text>
+<text top="388" left="87" width="432" height="14" font="2">itself is a lifeless thing: it just sits there on the disk, a bunch of instructions</text>
+<text top="403" left="87" width="432" height="14" font="2">(and maybe some static data), waiting to spring into action. It is the oper-</text>
+<text top="418" left="87" width="432" height="14" font="2">ating system that takes these bytes and gets them running, transforming</text>
+<text top="433" left="87" width="210" height="14" font="2">the program into something useful.</text>
+<text top="448" left="105" width="414" height="14" font="2">It turns out that one often wants to run more than one program at</text>
+<text top="463" left="87" width="432" height="14" font="2">once; for example, consider your desktop or laptop where you might like</text>
+<text top="477" left="87" width="432" height="14" font="2">to run a web browser, mail program, a game, a music player, and so forth.</text>
+<text top="492" left="87" width="432" height="14" font="2">In fact, a typical system may be seemingly running tens or even hundreds</text>
+<text top="507" left="87" width="432" height="14" font="2">of processes at the same time. Doing so makes the system easy to use, as</text>
+<text top="522" left="87" width="432" height="14" font="2">one never need be concerned with whether a CPU is available; one simply</text>
+<text top="537" left="87" width="221" height="14" font="2">runs programs. Hence our challenge:</text>
+<text top="575" left="215" width="8" height="14" font="2">T</text>
+<text top="577" left="224" width="16" height="11" font="4">HE</text>
+<text top="575" left="244" width="10" height="14" font="2">C</text>
+<text top="577" left="255" width="71" height="11" font="4">RUX OF THE</text>
+<text top="575" left="329" width="8" height="14" font="2">P</text>
+<text top="577" left="338" width="49" height="11" font="4">ROBLEM</text>
+<text top="575" left="388" width="3" height="14" font="2">:</text>
+<text top="590" left="147" width="11" height="14" font="2">H</text>
+<text top="592" left="159" width="20" height="11" font="4">OW</text>
+<text top="590" left="183" width="8" height="14" font="2">T</text>
+<text top="592" left="191" width="8" height="11" font="4">O</text>
+<text top="590" left="204" width="8" height="14" font="2">P</text>
+<text top="592" left="213" width="45" height="11" font="4">ROVIDE</text>
+<text top="590" left="262" width="8" height="14" font="2">T</text>
+<text top="592" left="271" width="16" height="11" font="4">HE</text>
+<text top="590" left="291" width="5" height="14" font="2">I</text>
+<text top="592" left="296" width="52" height="11" font="4">LLUSION</text>
+<text top="590" left="352" width="11" height="14" font="2">O</text>
+<text top="592" left="364" width="6" height="11" font="4">F</text>
+<text top="590" left="374" width="13" height="14" font="2">M</text>
+<text top="592" left="387" width="26" height="11" font="4">ANY</text>
+<text top="590" left="417" width="29" height="14" font="2">CPU</text>
+<text top="592" left="447" width="6" height="11" font="4">S</text>
+<text top="590" left="453" width="6" height="14" font="2">?</text>
+<text top="605" left="105" width="414" height="14" font="2">Although there are only a few physical CPUs available, how can the</text>
+<text top="620" left="87" width="384" height="14" font="2">OS provide the illusion of a nearly-endless supply of said CPUs?</text>
+<text top="662" left="105" width="182" height="14" font="2">The OS creates this illusion by</text>
+<text top="662" left="291" width="72" height="13" font="3"><b>virtualizing</b></text>
+<text top="662" left="367" width="151" height="14" font="2">the CPU. By running one</text>
+<text top="677" left="87" width="432" height="14" font="2">process, then stopping it and running another, and so forth, the OS can</text>
+<text top="692" left="87" width="432" height="14" font="2">promote the illusion that many virtual CPUs exist when in fact there is</text>
+<text top="707" left="87" width="400" height="14" font="2">only one physical CPU (or a few). This basic technique, known as</text>
+<text top="707" left="491" width="28" height="13" font="3"><b>time</b></text>
+<text top="722" left="87" width="46" height="13" font="3"><b>sharing</b></text>
+<text top="721" left="137" width="382" height="14" font="2">of the CPU, allows users to run as many concurrent processes as</text>
+<text top="736" left="87" width="432" height="14" font="2">they would like; the potential cost is performance, as each will run more</text>
+<text top="751" left="87" width="217" height="14" font="2">slowly if the CPU(s) must be shared.</text>
+<text top="766" left="105" width="414" height="14" font="2">To implement virtualization of the CPU, and to implement it well, the</text>
+<text top="781" left="87" width="432" height="14" font="2">OS will need both some low-level machinery and some high-level in-</text>
+<text top="796" left="87" width="267" height="14" font="2">telligence. We call the low-level machinery</text>
+<text top="796" left="359" width="76" height="13" font="3"><b>mechanisms</b></text>
+<text top="796" left="436" width="83" height="14" font="2">; mechanisms</text>
+<text top="811" left="87" width="432" height="14" font="2">are low-level methods or protocols that implement a needed piece of</text>
+<text top="826" left="87" width="384" height="14" font="2">functionality. For example, we’ll learn later how to implement a</text>
+<text top="826" left="475" width="44" height="13" font="3"><b>context</b></text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="16" family="OGZRLE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="13" family="GLCPSY+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="7" size="12" family="OGZRLE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="10" family="OGZRLE+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="353" width="8" height="14" font="2">T</text>
+<text top="98" left="362" width="16" height="11" font="4">HE</text>
+<text top="96" left="382" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="470" width="16" height="14" font="2">: T</text>
+<text top="98" left="487" width="16" height="11" font="4">HE</text>
+<text top="96" left="507" width="8" height="14" font="2">P</text>
+<text top="98" left="516" width="45" height="11" font="4">ROCESS</text>
+<text top="148" left="199" width="8" height="14" font="2">T</text>
+<text top="150" left="208" width="11" height="11" font="4">IP</text>
+<text top="148" left="220" width="19" height="14" font="2">: U</text>
+<text top="150" left="239" width="13" height="11" font="4">SE</text>
+<text top="148" left="256" width="8" height="14" font="2">T</text>
+<text top="150" left="265" width="22" height="11" font="4">IME</text>
+<text top="148" left="291" width="7" height="14" font="2">S</text>
+<text top="150" left="298" width="49" height="11" font="4">HARING</text>
+<text top="148" left="351" width="4" height="14" font="2">(</text>
+<text top="150" left="356" width="27" height="11" font="4">AND</text>
+<text top="148" left="387" width="7" height="14" font="2">S</text>
+<text top="150" left="395" width="30" height="11" font="4">PACE</text>
+<text top="148" left="429" width="7" height="14" font="2">S</text>
+<text top="150" left="437" width="49" height="11" font="4">HARING</text>
+<text top="148" left="486" width="4" height="14" font="2">)</text>
+<text top="163" left="129" width="81" height="13" font="3"><b>Time sharing</b></text>
+<text top="163" left="214" width="347" height="14" font="2">is a basic technique used by an OS to share a resource. By</text>
+<text top="178" left="129" width="432" height="14" font="2">allowing the resource to be used for a little while by one entity, and then</text>
+<text top="193" left="129" width="432" height="14" font="2">a little while by another, and so forth, the resource in question (e.g., the</text>
+<text top="208" left="129" width="432" height="14" font="2">CPU, or a network link) can be shared by many. The counterpart of time</text>
+<text top="223" left="129" width="59" height="14" font="2">sharing is</text>
+<text top="223" left="192" width="84" height="13" font="3"><b>space sharing</b></text>
+<text top="223" left="277" width="284" height="14" font="2">, where a resource is divided (in space) among</text>
+<text top="238" left="129" width="432" height="14" font="2">those who wish to use it. For example, disk space is naturally a space-</text>
+<text top="253" left="129" width="432" height="14" font="2">shared resource; once a block is assigned to a file, it is normally not as-</text>
+<text top="268" left="129" width="350" height="14" font="2">signed to another file until the user deletes the original file.</text>
+<text top="307" left="129" width="40" height="13" font="3"><b>switch</b></text>
+<text top="307" left="169" width="392" height="14" font="2">, which gives the OS the ability to stop running one program and</text>
+<text top="322" left="129" width="262" height="14" font="2">start running another on a given CPU; this</text>
+<text top="322" left="395" width="78" height="13" font="3"><b>time-sharing</b></text>
+<text top="322" left="478" width="82" height="14" font="2">mechanism is</text>
+<text top="337" left="129" width="183" height="14" font="2">employed by all modern OSes.</text>
+<text top="353" left="147" width="414" height="14" font="2">On top of these mechanisms resides some of the intelligence in the</text>
+<text top="368" left="129" width="115" height="14" font="2">OS, in the form of</text>
+<text top="368" left="249" width="48" height="13" font="3"><b>policies</b></text>
+<text top="368" left="297" width="264" height="14" font="2">. Policies are algorithms for making some</text>
+<text top="382" left="129" width="432" height="14" font="2">kind of decision within the OS. For example, given a number of possi-</text>
+<text top="397" left="129" width="432" height="14" font="2">ble programs to run on a CPU, which program should the OS run? A</text>
+<text top="412" left="129" width="110" height="13" font="3"><b>scheduling policy</b></text>
+<text top="412" left="242" width="319" height="14" font="2">in the OS will make this decision, likely using histori-</text>
+<text top="427" left="129" width="432" height="14" font="2">cal information (e.g., which program has run more over the last minute?),</text>
+<text top="442" left="129" width="432" height="14" font="2">workload knowledge (e.g., what types of programs are run), and perfor-</text>
+<text top="457" left="129" width="432" height="14" font="2">mance metrics (e.g., is the system optimizing for interactive performance,</text>
+<text top="472" left="129" width="220" height="14" font="2">or throughput?) to make its decision.</text>
+<text top="510" left="97" width="222" height="17" font="5">4.1 The Abstraction: A Process</text>
+<text top="540" left="147" width="414" height="14" font="2">The abstraction provided by the OS of a running program is something</text>
+<text top="555" left="129" width="80" height="14" font="2">we will call a</text>
+<text top="555" left="214" width="46" height="13" font="3"><b>process</b></text>
+<text top="555" left="259" width="302" height="14" font="2">. As we said above, a process is simply a running</text>
+<text top="570" left="129" width="432" height="14" font="2">program; at any instant in time, we can summarize a process by taking an</text>
+<text top="585" left="129" width="432" height="14" font="2">inventory of the different pieces of the system it accesses or affects during</text>
+<text top="600" left="129" width="158" height="14" font="2">the course of its execution.</text>
+<text top="615" left="147" width="414" height="14" font="2">To understand what constitutes a process, we thus have to understand</text>
+<text top="630" left="129" width="14" height="14" font="2">its</text>
+<text top="630" left="146" width="84" height="13" font="3"><b>machine state</b></text>
+<text top="630" left="230" width="331" height="14" font="2">: what a program can read or update when it is running.</text>
+<text top="645" left="129" width="432" height="14" font="2">At any given time, what parts of the machine are important to the execu-</text>
+<text top="660" left="129" width="125" height="14" font="2">tion of this program?</text>
+<text top="676" left="147" width="414" height="14" font="2">One obvious component of machine state that comprises a process is</text>
+<text top="691" left="129" width="14" height="14" font="2">its</text>
+<text top="690" left="148" width="44" height="14" font="6">memory</text>
+<text top="691" left="192" width="369" height="14" font="2">. Instructions lie in memory; the data that the running pro-</text>
+<text top="705" left="129" width="432" height="14" font="2">gram reads and writes sits in memory as well. Thus the memory that the</text>
+<text top="720" left="129" width="178" height="14" font="2">process can address (called its</text>
+<text top="720" left="310" width="84" height="13" font="3"><b>address space</b></text>
+<text top="720" left="394" width="134" height="14" font="2">) is part of the process.</text>
+<text top="736" left="147" width="252" height="14" font="2">Also part of the process’s machine state are</text>
+<text top="736" left="401" width="46" height="14" font="6">registers</text>
+<text top="736" left="448" width="113" height="14" font="2">; many instructions</text>
+<text top="751" left="129" width="432" height="14" font="2">explicitly read or update registers and thus clearly they are important to</text>
+<text top="766" left="129" width="168" height="14" font="2">the execution of the process.</text>
+<text top="781" left="147" width="414" height="14" font="2">Note that there are some particularly special registers that form part</text>
+<text top="796" left="129" width="227" height="14" font="2">of this machine state. For example, the</text>
+<text top="796" left="358" width="102" height="13" font="3"><b>program counter</b></text>
+<text top="796" left="463" width="4" height="14" font="2">(</text>
+<text top="796" left="467" width="18" height="13" font="3"><b>PC</b></text>
+<text top="796" left="485" width="76" height="14" font="2">) (sometimes</text>
+<text top="811" left="129" width="57" height="14" font="2">called the</text>
+<text top="811" left="189" width="115" height="13" font="3"><b>instruction pointer</b></text>
+<text top="811" left="308" width="13" height="14" font="2">or</text>
+<text top="811" left="324" width="13" height="13" font="3"><b>IP</b></text>
+<text top="811" left="338" width="223" height="14" font="2">) tells us which instruction of the pro-</text>
+<text top="826" left="129" width="212" height="14" font="2">gram will execute next; similarly a</text>
+<text top="826" left="346" width="81" height="13" font="3"><b>stack pointer</b></text>
+<text top="826" left="431" width="89" height="14" font="2">and associated</text>
+<text top="826" left="525" width="36" height="13" font="3"><b>frame</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="4">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="204" width="16" height="14" font="2">: T</text>
+<text top="98" left="221" width="16" height="11" font="4">HE</text>
+<text top="96" left="241" width="8" height="14" font="2">P</text>
+<text top="98" left="250" width="45" height="11" font="4">ROCESS</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="148" left="177" width="8" height="14" font="2">T</text>
+<text top="150" left="186" width="11" height="11" font="4">IP</text>
+<text top="148" left="197" width="15" height="14" font="2">: S</text>
+<text top="150" left="213" width="52" height="11" font="4">EPARATE</text>
+<text top="148" left="269" width="8" height="14" font="2">P</text>
+<text top="150" left="278" width="36" height="11" font="4">OLICY</text>
+<text top="148" left="318" width="10" height="14" font="2">A</text>
+<text top="150" left="329" width="18" height="11" font="4">ND</text>
+<text top="148" left="351" width="13" height="14" font="2">M</text>
+<text top="150" left="365" width="65" height="11" font="4">ECHANISM</text>
+<text top="163" left="87" width="432" height="14" font="2">In many operating systems, a common design paradigm is to separate</text>
+<text top="178" left="87" width="432" height="14" font="2">high-level policies from their low-level mechanisms [L+75]. You can</text>
+<text top="193" left="87" width="314" height="14" font="2">think of the mechanism as providing the answer to a</text>
+<text top="193" left="404" width="22" height="14" font="6">how</text>
+<text top="193" left="430" width="89" height="14" font="2">question about</text>
+<text top="208" left="87" width="136" height="14" font="2">a system; for example,</text>
+<text top="208" left="227" width="22" height="14" font="6">how</text>
+<text top="208" left="254" width="265" height="14" font="2">does an operating system perform a context</text>
+<text top="223" left="87" width="261" height="14" font="2">switch? The policy provides the answer to a</text>
+<text top="223" left="351" width="32" height="14" font="6">which</text>
+<text top="223" left="387" width="132" height="14" font="2">question; for example,</text>
+<text top="238" left="87" width="32" height="14" font="6">which</text>
+<text top="238" left="122" width="396" height="14" font="2">process should the operating system run right now? Separating the</text>
+<text top="253" left="87" width="432" height="14" font="2">two allows one easily to change policies without having to rethink the</text>
+<text top="268" left="87" width="198" height="14" font="2">mechanism and is thus a form of</text>
+<text top="268" left="289" width="69" height="13" font="3"><b>modularity</b></text>
+<text top="268" left="358" width="161" height="14" font="2">, a general software design</text>
+<text top="283" left="87" width="57" height="14" font="2">principle.</text>
+<text top="324" left="87" width="45" height="13" font="3"><b>pointer</b></text>
+<text top="323" left="135" width="383" height="14" font="2">are used to manage the stack for function parameters, local vari-</text>
+<text top="338" left="87" width="165" height="14" font="2">ables, and return addresses.</text>
+<text top="355" left="105" width="392" height="14" font="2">Finally, programs often access persistent storage devices too. Such</text>
+<text top="355" left="500" width="19" height="14" font="6">I/O</text>
+<text top="370" left="87" width="64" height="14" font="6">information</text>
+<text top="370" left="154" width="364" height="14" font="2">might include a list of the files the process currently has open.</text>
+<text top="408" left="55" width="112" height="17" font="5">4.2 Process API</text>
+<text top="439" left="105" width="414" height="14" font="2">Though we defer discussion of a real process API until a subsequent</text>
+<text top="454" left="87" width="432" height="14" font="2">chapter, here we first give some idea of what must be included in any</text>
+<text top="469" left="87" width="432" height="14" font="2">interface of an operating system. These APIs, in some form, are available</text>
+<text top="484" left="87" width="200" height="14" font="2">on any modern operating system.</text>
+<text top="519" left="107" width="8" height="14" font="2">•</text>
+<text top="519" left="122" width="43" height="13" font="3"><b>Create:</b></text>
+<text top="519" left="173" width="346" height="14" font="2">An operating system must include some method to cre-</text>
+<text top="534" left="122" width="397" height="14" font="2">ate new processes. When you type a command into the shell, or</text>
+<text top="549" left="122" width="397" height="14" font="2">double-click on an application icon, the OS is invoked to create a</text>
+<text top="564" left="122" width="311" height="14" font="2">new process to run the program you have indicated.</text>
+<text top="579" left="107" width="8" height="14" font="2">•</text>
+<text top="579" left="122" width="52" height="13" font="3"><b>Destroy:</b></text>
+<text top="579" left="179" width="340" height="14" font="2">As there is an interface for process creation, systems also</text>
+<text top="594" left="122" width="400" height="14" font="2">provide an interface to destroy processes forcefully. Of course, many</text>
+<text top="609" left="122" width="398" height="14" font="2">processes will run and just exit by themselves when complete; when</text>
+<text top="624" left="122" width="397" height="14" font="2">they don’t, however, the user may wish to kill them, and thus an in-</text>
+<text top="639" left="122" width="286" height="14" font="2">terface to halt a runaway process is quite useful.</text>
+<text top="654" left="107" width="8" height="14" font="2">•</text>
+<text top="654" left="122" width="31" height="13" font="3"><b>Wait:</b></text>
+<text top="654" left="159" width="360" height="14" font="2">Sometimes it is useful to wait for a process to stop running;</text>
+<text top="669" left="122" width="319" height="14" font="2">thus some kind of waiting interface is often provided.</text>
+<text top="684" left="107" width="8" height="14" font="2">•</text>
+<text top="684" left="122" width="142" height="13" font="3"><b>Miscellaneous Control:</b></text>
+<text top="684" left="268" width="251" height="14" font="2">Other than killing or waiting for a process,</text>
+<text top="698" left="122" width="397" height="14" font="2">there are sometimes other controls that are possible. For example,</text>
+<text top="713" left="122" width="397" height="14" font="2">most operating systems provide some kind of method to suspend a</text>
+<text top="728" left="122" width="397" height="14" font="2">process (stop it from running for a while) and then resume it (con-</text>
+<text top="743" left="122" width="102" height="14" font="2">tinue it running).</text>
+<text top="758" left="107" width="8" height="14" font="2">•</text>
+<text top="758" left="122" width="41" height="13" font="3"><b>Status:</b></text>
+<text top="758" left="168" width="351" height="14" font="2">There are usually interfaces to get some status information</text>
+<text top="773" left="122" width="397" height="14" font="2">about a process as well, such as how long it has run for, or what</text>
+<text top="788" left="122" width="71" height="14" font="2">state it is in.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="9" size="14" family="XVHMDF+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="10" size="12" family="XVHMDF+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="353" width="8" height="14" font="2">T</text>
+<text top="98" left="362" width="16" height="11" font="4">HE</text>
+<text top="96" left="382" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="470" width="16" height="14" font="2">: T</text>
+<text top="98" left="487" width="16" height="11" font="4">HE</text>
+<text top="96" left="507" width="8" height="14" font="2">P</text>
+<text top="98" left="516" width="45" height="11" font="4">ROCESS</text>
+<text top="153" left="398" width="51" height="14" font="9">Memory</text>
+<text top="153" left="244" width="30" height="14" font="9">CPU</text>
+<text top="526" left="327" width="28" height="14" font="9">Disk</text>
+<text top="190" left="385" width="26" height="11" font="10">code</text>
+<text top="202" left="371" width="54" height="11" font="10">static data</text>
+<text top="213" left="385" width="26" height="11" font="10">heap</text>
+<text top="273" left="384" width="28" height="11" font="10">stack</text>
+<text top="296" left="377" width="43" height="11" font="10">Process</text>
+<text top="436" left="326" width="26" height="11" font="10">code</text>
+<text top="448" left="312" width="54" height="11" font="10">static data</text>
+<text top="466" left="316" width="45" height="11" font="10">Program</text>
+<text top="462" left="441" width="45" height="11" font="10">Loading:</text>
+<text top="474" left="403" width="121" height="11" font="10">Takes on-disk program</text>
+<text top="486" left="411" width="104" height="11" font="10">and reads it into the</text>
+<text top="498" left="396" width="135" height="11" font="10">address space of process</text>
+<text top="551" left="205" width="62" height="14" font="2">Figure 4.1:</text>
+<text top="551" left="271" width="213" height="13" font="3"><b>Loading: From Program To Process</b></text>
+<text top="584" left="97" width="300" height="17" font="5">4.3 Process Creation: A Little More Detail</text>
+<text top="612" left="147" width="414" height="14" font="2">One mystery that we should unmask a bit is how programs are trans-</text>
+<text top="627" left="129" width="432" height="14" font="2">formed into processes. Specifically, how does the OS get a program up</text>
+<text top="642" left="129" width="335" height="14" font="2">and running? How does process creation actually work?</text>
+<text top="659" left="147" width="336" height="14" font="2">The first thing that the OS must do to run a program is to</text>
+<text top="659" left="486" width="27" height="13" font="3"><b>load</b></text>
+<text top="659" left="516" width="45" height="14" font="2">its code</text>
+<text top="674" left="129" width="432" height="14" font="2">and any static data (e.g., initialized variables) into memory, into the ad-</text>
+<text top="689" left="129" width="328" height="14" font="2">dress space of the process. Programs initially reside on</text>
+<text top="689" left="460" width="27" height="13" font="3"><b>disk</b></text>
+<text top="689" left="491" width="70" height="14" font="2">(or, in some</text>
+<text top="704" left="129" width="102" height="14" font="2">modern systems,</text>
+<text top="704" left="234" width="107" height="13" font="3"><b>flash-based SSDs</b></text>
+<text top="704" left="341" width="102" height="14" font="2">) in some kind of</text>
+<text top="704" left="447" width="110" height="13" font="3"><b>executable format</b></text>
+<text top="704" left="557" width="3" height="14" font="2">;</text>
+<text top="719" left="129" width="432" height="14" font="2">thus, the process of loading a program and static data into memory re-</text>
+<text top="734" left="129" width="432" height="14" font="2">quires the OS to read those bytes from disk and place them in memory</text>
+<text top="749" left="129" width="217" height="14" font="2">somewhere (as shown in Figure 4.1).</text>
+<text top="766" left="147" width="393" height="14" font="2">In early (or simple) operating systems, the loading process is done</text>
+<text top="766" left="543" width="18" height="13" font="3"><b>ea-</b></text>
+<text top="781" left="129" width="31" height="13" font="3"><b>gerly</b></text>
+<text top="781" left="160" width="400" height="14" font="2">, i.e., all at once before running the program; modern OSes perform</text>
+<text top="796" left="129" width="67" height="14" font="2">the process</text>
+<text top="796" left="199" width="34" height="13" font="3"><b>lazily</b></text>
+<text top="796" left="234" width="327" height="14" font="2">, i.e., by loading pieces of code or data only as they are</text>
+<text top="811" left="129" width="432" height="14" font="2">needed during program execution. To truly understand how lazy loading</text>
+<text top="826" left="129" width="432" height="14" font="2">of pieces of code and data works, you’ll have to understand more about</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="ZOCFWL+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="4">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="204" width="16" height="14" font="2">: T</text>
+<text top="98" left="221" width="16" height="11" font="4">HE</text>
+<text top="96" left="241" width="8" height="14" font="2">P</text>
+<text top="98" left="250" width="45" height="11" font="4">ROCESS</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="139" left="87" width="102" height="14" font="2">the machinery of</text>
+<text top="139" left="193" width="43" height="13" font="3"><b>paging</b></text>
+<text top="139" left="240" width="23" height="14" font="2">and</text>
+<text top="139" left="266" width="61" height="13" font="3"><b>swapping</b></text>
+<text top="139" left="327" width="192" height="14" font="2">, topics we’ll cover in the future</text>
+<text top="154" left="87" width="432" height="14" font="2">when we discuss the virtualization of memory. For now, just remember</text>
+<text top="169" left="87" width="432" height="14" font="2">that before running anything, the OS clearly must do some work to get</text>
+<text top="183" left="87" width="305" height="14" font="2">the important program bits from disk into memory.</text>
+<text top="200" left="105" width="414" height="14" font="2">Once the code and static data are loaded into memory, there are a few</text>
+<text top="215" left="87" width="432" height="14" font="2">other things the OS needs to do before running the process. Some mem-</text>
+<text top="230" left="87" width="244" height="14" font="2">ory must be allocated for the program’s</text>
+<text top="230" left="336" width="90" height="13" font="3"><b>run-time stack</b></text>
+<text top="230" left="431" width="43" height="14" font="2">(or just</text>
+<text top="230" left="480" width="31" height="13" font="3"><b>stack</b></text>
+<text top="230" left="511" width="8" height="14" font="2">).</text>
+<text top="245" left="87" width="432" height="14" font="2">As you should likely already know, C programs use the stack for local</text>
+<text top="259" left="87" width="432" height="14" font="2">variables, function parameters, and return addresses; the OS allocates</text>
+<text top="274" left="87" width="432" height="14" font="2">this memory and gives it to the process. The OS will also likely initial-</text>
+<text top="289" left="87" width="432" height="14" font="2">ize the stack with arguments; specifically, it will fill in the parameters to</text>
+<text top="304" left="87" width="19" height="14" font="2">the</text>
+<text top="305" left="109" width="48" height="11" font="11">main()</text>
+<text top="304" left="161" width="77" height="14" font="2">function, i.e.,</text>
+<text top="305" left="241" width="32" height="11" font="11">argc</text>
+<text top="304" left="277" width="45" height="14" font="2">and the</text>
+<text top="305" left="325" width="32" height="11" font="11">argv</text>
+<text top="304" left="361" width="33" height="14" font="2">array.</text>
+<text top="320" left="105" width="347" height="14" font="2">The OS may also allocate some memory for the program’s</text>
+<text top="321" left="455" width="30" height="13" font="3"><b>heap</b></text>
+<text top="320" left="485" width="34" height="14" font="2">. In C</text>
+<text top="335" left="87" width="432" height="14" font="2">programs, the heap is used for explicitly requested dynamically-allocated</text>
+<text top="350" left="87" width="273" height="14" font="2">data; programs request such space by calling</text>
+<text top="351" left="365" width="65" height="11" font="11">malloc()</text>
+<text top="350" left="434" width="85" height="14" font="2">and free it ex-</text>
+<text top="365" left="87" width="102" height="14" font="2">plicitly by calling</text>
+<text top="366" left="192" width="48" height="11" font="11">free()</text>
+<text top="365" left="241" width="278" height="14" font="2">. The heap is needed for data structures such as</text>
+<text top="380" left="87" width="432" height="14" font="2">linked lists, hash tables, trees, and other interesting data structures. The</text>
+<text top="395" left="87" width="432" height="14" font="2">heap will be small at first; as the program runs, and requests more mem-</text>
+<text top="410" left="87" width="64" height="14" font="2">ory via the</text>
+<text top="411" left="155" width="65" height="11" font="11">malloc()</text>
+<text top="410" left="223" width="296" height="14" font="2">library API, the OS may get involved and allocate</text>
+<text top="425" left="87" width="320" height="14" font="2">more memory to the process to help satisfy such calls.</text>
+<text top="441" left="105" width="414" height="14" font="2">The OS will also do some other initialization tasks, particularly as re-</text>
+<text top="456" left="87" width="278" height="14" font="2">lated to input/output (I/O). For example, in U</text>
+<text top="458" left="366" width="21" height="11" font="4">NIX</text>
+<text top="456" left="390" width="129" height="14" font="2">systems, each process</text>
+<text top="471" left="87" width="149" height="14" font="2">by default has three open</text>
+<text top="471" left="239" width="90" height="13" font="3"><b>file descriptors</b></text>
+<text top="471" left="329" width="190" height="14" font="2">, for standard input, output, and</text>
+<text top="486" left="87" width="432" height="14" font="2">error; these descriptors let programs easily read input from the terminal</text>
+<text top="501" left="87" width="432" height="14" font="2">and print output to the screen. We’ll learn more about I/O, file descrip-</text>
+<text top="516" left="87" width="286" height="14" font="2">tors, and the like in the third part of the book on</text>
+<text top="516" left="376" width="69" height="13" font="3"><b>persistence</b></text>
+<text top="516" left="445" width="3" height="14" font="2">.</text>
+<text top="532" left="105" width="414" height="14" font="2">By loading the code and static data into memory, by creating and ini-</text>
+<text top="547" left="87" width="432" height="14" font="2">tializing a stack, and by doing other work as related to I/O setup, the OS</text>
+<text top="562" left="87" width="432" height="14" font="2">has now (finally) set the stage for program execution. It thus has one last</text>
+<text top="577" left="87" width="357" height="14" font="2">task: to start the program running at the entry point, namely</text>
+<text top="578" left="447" width="48" height="11" font="11">main()</text>
+<text top="577" left="496" width="23" height="14" font="2">. By</text>
+<text top="592" left="87" width="90" height="14" font="2">jumping to the</text>
+<text top="593" left="182" width="48" height="11" font="11">main()</text>
+<text top="592" left="235" width="284" height="14" font="2">routine (through a specialized mechanism that</text>
+<text top="607" left="87" width="432" height="14" font="2">we will discuss next chapter), the OS transfers control of the CPU to the</text>
+<text top="622" left="87" width="392" height="14" font="2">newly-created process, and thus the program begins its execution.</text>
+<text top="660" left="55" width="126" height="17" font="5">4.4 Process States</text>
+<text top="691" left="105" width="414" height="14" font="2">Now that we have some idea of what a process is (though we will</text>
+<text top="706" left="87" width="432" height="14" font="2">continue to refine this notion), and (roughly) how it is created, let us talk</text>
+<text top="721" left="87" width="111" height="14" font="2">about the different</text>
+<text top="721" left="202" width="34" height="13" font="3"><b>states</b></text>
+<text top="721" left="240" width="279" height="14" font="2">a process can be in at a given time. The notion</text>
+<text top="736" left="87" width="432" height="14" font="2">that a process can be in one of these states arose in early computer systems</text>
+<text top="751" left="87" width="432" height="14" font="2">[DV66,V+65]. In a simplified view, a process can be in one of three states:</text>
+<text top="781" left="107" width="8" height="14" font="2">•</text>
+<text top="781" left="122" width="55" height="13" font="3"><b>Running</b></text>
+<text top="781" left="176" width="343" height="14" font="2">: In the running state, a process is running on a processor.</text>
+<text top="796" left="122" width="230" height="14" font="2">This means it is executing instructions.</text>
+<text top="811" left="107" width="8" height="14" font="2">•</text>
+<text top="811" left="122" width="39" height="13" font="3"><b>Ready</b></text>
+<text top="811" left="160" width="358" height="14" font="2">: In the ready state, a process is ready to run but for some</text>
+<text top="826" left="122" width="357" height="14" font="2">reason the OS has chosen not to run it at this given moment.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="9" family="VPZZYH+CMR6" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="353" width="8" height="14" font="2">T</text>
+<text top="98" left="362" width="16" height="11" font="4">HE</text>
+<text top="96" left="382" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="470" width="16" height="14" font="2">: T</text>
+<text top="98" left="487" width="16" height="11" font="4">HE</text>
+<text top="96" left="507" width="8" height="14" font="2">P</text>
+<text top="98" left="516" width="45" height="11" font="4">ROCESS</text>
+<text top="183" left="251" width="45" height="12" font="10">Running</text>
+<text top="183" left="400" width="35" height="12" font="10">Ready</text>
+<text top="267" left="324" width="43" height="12" font="10">Blocked</text>
+<text top="171" left="310" width="70" height="12" font="10">Descheduled</text>
+<text top="195" left="317" width="57" height="12" font="10">Scheduled</text>
+<text top="237" left="239" width="57" height="12" font="10">I/O: initiate</text>
+<text top="237" left="393" width="49" height="12" font="10">I/O: done</text>
+<text top="310" left="234" width="62" height="14" font="2">Figure 4.2:</text>
+<text top="310" left="300" width="156" height="13" font="3"><b>Process: State Transitions</b></text>
+<text top="354" left="148" width="8" height="14" font="2">•</text>
+<text top="354" left="163" width="50" height="13" font="3"><b>Blocked</b></text>
+<text top="354" left="214" width="347" height="14" font="2">: In the blocked state, a process has performed some kind</text>
+<text top="368" left="163" width="397" height="14" font="2">of operation that makes it not ready to run until some other event</text>
+<text top="383" left="163" width="397" height="14" font="2">takes place. A common example: when a process initiates an I/O</text>
+<text top="398" left="163" width="397" height="14" font="2">request to a disk, it becomes blocked and thus some other process</text>
+<text top="413" left="163" width="129" height="14" font="2">can use the processor.</text>
+<text top="445" left="147" width="414" height="14" font="2">If we were to map these states to a graph, we would arrive at the di-</text>
+<text top="460" left="129" width="432" height="14" font="2">agram in Figure 4.2. As you can see in the diagram, a process can be</text>
+<text top="475" left="129" width="432" height="14" font="2">moved between the ready and running states at the discretion of the OS.</text>
+<text top="490" left="129" width="388" height="14" font="2">Being moved from ready to running means the process has been</text>
+<text top="490" left="521" width="40" height="13" font="3"><b>sched-</b></text>
+<text top="505" left="129" width="28" height="13" font="3"><b>uled</b></text>
+<text top="505" left="157" width="404" height="14" font="2">; being moved from running to ready means the process has been</text>
+<text top="520" left="129" width="78" height="13" font="3"><b>descheduled</b></text>
+<text top="519" left="207" width="354" height="14" font="2">. Once a process has become blocked (e.g., by initiating an</text>
+<text top="534" left="129" width="432" height="14" font="2">I/O operation), the OS will keep it as such until some event occurs (e.g.,</text>
+<text top="549" left="129" width="432" height="14" font="2">I/O completion); at that point, the process moves to the ready state again</text>
+<text top="564" left="129" width="407" height="14" font="2">(and potentially immediately to running again, if the OS so decides).</text>
+<text top="581" left="147" width="417" height="14" font="2">Let’s look at an example of how two processes might transition through</text>
+<text top="596" left="129" width="432" height="14" font="2">some of these states. First, imagine two processes running, each of which</text>
+<text top="611" left="129" width="432" height="14" font="2">only use the CPU (they do no I/O). In this case, a trace of the state of each</text>
+<text top="626" left="129" width="237" height="14" font="2">process might look like this (Figure 4.3).</text>
+<text top="655" left="194" width="31" height="13" font="3"><b>Time</b></text>
+<text top="655" left="243" width="46" height="13" font="3"><b>Process</b></text>
+<text top="661" left="289" width="5" height="6" font="12">0</text>
+<text top="655" left="313" width="46" height="13" font="3"><b>Process</b></text>
+<text top="661" left="358" width="5" height="6" font="12">1</text>
+<text top="655" left="421" width="36" height="13" font="3"><b>Notes</b></text>
+<text top="671" left="206" width="7" height="14" font="2">1</text>
+<text top="671" left="243" width="52" height="14" font="2">Running</text>
+<text top="671" left="320" width="38" height="14" font="2">Ready</text>
+<text top="686" left="206" width="7" height="14" font="2">2</text>
+<text top="686" left="243" width="52" height="14" font="2">Running</text>
+<text top="686" left="320" width="38" height="14" font="2">Ready</text>
+<text top="701" left="206" width="7" height="14" font="2">3</text>
+<text top="701" left="243" width="52" height="14" font="2">Running</text>
+<text top="701" left="320" width="38" height="14" font="2">Ready</text>
+<text top="716" left="206" width="7" height="14" font="2">4</text>
+<text top="716" left="243" width="52" height="14" font="2">Running</text>
+<text top="716" left="320" width="38" height="14" font="2">Ready</text>
+<text top="716" left="383" width="44" height="14" font="2">Process</text>
+<text top="721" left="427" width="5" height="6" font="12">0</text>
+<text top="716" left="437" width="60" height="14" font="2">now done</text>
+<text top="731" left="206" width="7" height="14" font="2">5</text>
+<text top="731" left="265" width="7" height="14" font="2">–</text>
+<text top="731" left="313" width="52" height="14" font="2">Running</text>
+<text top="746" left="206" width="7" height="14" font="2">6</text>
+<text top="746" left="265" width="7" height="14" font="2">–</text>
+<text top="746" left="313" width="52" height="14" font="2">Running</text>
+<text top="761" left="206" width="7" height="14" font="2">7</text>
+<text top="761" left="265" width="7" height="14" font="2">–</text>
+<text top="761" left="313" width="52" height="14" font="2">Running</text>
+<text top="776" left="206" width="7" height="14" font="2">8</text>
+<text top="776" left="265" width="7" height="14" font="2">–</text>
+<text top="776" left="313" width="52" height="14" font="2">Running</text>
+<text top="776" left="383" width="44" height="14" font="2">Process</text>
+<text top="781" left="427" width="5" height="6" font="12">1</text>
+<text top="776" left="437" width="60" height="14" font="2">now done</text>
+<text top="812" left="212" width="62" height="14" font="2">Figure 4.3:</text>
+<text top="812" left="278" width="199" height="13" font="3"><b>Tracing Process State: CPU Only</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="4">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="204" width="16" height="14" font="2">: T</text>
+<text top="98" left="221" width="16" height="11" font="4">HE</text>
+<text top="96" left="241" width="8" height="14" font="2">P</text>
+<text top="98" left="250" width="45" height="11" font="4">ROCESS</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="136" left="145" width="31" height="13" font="3"><b>Time</b></text>
+<text top="136" left="194" width="46" height="13" font="3"><b>Process</b></text>
+<text top="141" left="240" width="5" height="6" font="12">0</text>
+<text top="136" left="264" width="46" height="13" font="3"><b>Process</b></text>
+<text top="141" left="309" width="5" height="6" font="12">1</text>
+<text top="136" left="380" width="36" height="13" font="3"><b>Notes</b></text>
+<text top="151" left="157" width="7" height="14" font="2">1</text>
+<text top="151" left="194" width="52" height="14" font="2">Running</text>
+<text top="151" left="271" width="38" height="14" font="2">Ready</text>
+<text top="166" left="157" width="7" height="14" font="2">2</text>
+<text top="166" left="194" width="52" height="14" font="2">Running</text>
+<text top="166" left="271" width="38" height="14" font="2">Ready</text>
+<text top="181" left="157" width="7" height="14" font="2">3</text>
+<text top="181" left="194" width="52" height="14" font="2">Running</text>
+<text top="181" left="271" width="38" height="14" font="2">Ready</text>
+<text top="181" left="334" width="44" height="14" font="2">Process</text>
+<text top="186" left="378" width="5" height="6" font="12">0</text>
+<text top="181" left="388" width="74" height="14" font="2">initiates I/O</text>
+<text top="196" left="157" width="7" height="14" font="2">4</text>
+<text top="196" left="196" width="48" height="14" font="2">Blocked</text>
+<text top="196" left="264" width="52" height="14" font="2">Running</text>
+<text top="196" left="339" width="44" height="14" font="2">Process</text>
+<text top="201" left="383" width="5" height="6" font="12">0</text>
+<text top="196" left="393" width="63" height="14" font="2">is blocked,</text>
+<text top="211" left="157" width="7" height="14" font="2">5</text>
+<text top="211" left="196" width="48" height="14" font="2">Blocked</text>
+<text top="211" left="264" width="52" height="14" font="2">Running</text>
+<text top="211" left="349" width="61" height="14" font="2">so Process</text>
+<text top="216" left="410" width="5" height="6" font="12">1</text>
+<text top="211" left="419" width="27" height="14" font="2">runs</text>
+<text top="226" left="157" width="7" height="14" font="2">6</text>
+<text top="226" left="196" width="48" height="14" font="2">Blocked</text>
+<text top="226" left="264" width="52" height="14" font="2">Running</text>
+<text top="241" left="157" width="7" height="14" font="2">7</text>
+<text top="241" left="201" width="38" height="14" font="2">Ready</text>
+<text top="241" left="264" width="52" height="14" font="2">Running</text>
+<text top="241" left="369" width="56" height="14" font="2">I/O done</text>
+<text top="256" left="157" width="7" height="14" font="2">8</text>
+<text top="256" left="201" width="38" height="14" font="2">Ready</text>
+<text top="256" left="264" width="52" height="14" font="2">Running</text>
+<text top="256" left="341" width="44" height="14" font="2">Process</text>
+<text top="261" left="385" width="5" height="6" font="12">1</text>
+<text top="256" left="395" width="60" height="14" font="2">now done</text>
+<text top="271" left="157" width="7" height="14" font="2">9</text>
+<text top="271" left="194" width="52" height="14" font="2">Running</text>
+<text top="271" left="286" width="7" height="14" font="2">–</text>
+<text top="286" left="154" width="13" height="14" font="2">10</text>
+<text top="286" left="194" width="52" height="14" font="2">Running</text>
+<text top="286" left="286" width="7" height="14" font="2">–</text>
+<text top="286" left="341" width="44" height="14" font="2">Process</text>
+<text top="291" left="385" width="5" height="6" font="12">0</text>
+<text top="286" left="395" width="60" height="14" font="2">now done</text>
+<text top="322" left="163" width="62" height="14" font="2">Figure 4.4:</text>
+<text top="322" left="229" width="215" height="13" font="3"><b>Tracing Process State: CPU and I/O</b></text>
+<text top="351" left="105" width="414" height="14" font="2">In this next example, the first process issues an I/O after running for</text>
+<text top="366" left="87" width="432" height="14" font="2">some time. At that point, the process is blocked, giving the other process</text>
+<text top="381" left="87" width="336" height="14" font="2">a chance to run. Figure 4.4 shows a trace of this scenario.</text>
+<text top="397" left="105" width="150" height="14" font="2">More specifically, Process</text>
+<text top="402" left="255" width="5" height="6" font="12">0</text>
+<text top="397" left="264" width="255" height="14" font="2">initiates an I/O and becomes blocked wait-</text>
+<text top="412" left="87" width="432" height="14" font="2">ing for it to complete; processes become blocked, for example, when read-</text>
+<text top="427" left="87" width="432" height="14" font="2">ing from a disk or waiting for a packet from a network. The OS recog-</text>
+<text top="441" left="87" width="79" height="14" font="2">nizes Process</text>
+<text top="447" left="166" width="5" height="6" font="12">0</text>
+<text top="441" left="177" width="290" height="14" font="2">is not using the CPU and starts running Process</text>
+<text top="447" left="467" width="5" height="6" font="12">1</text>
+<text top="441" left="473" width="46" height="14" font="2">. While</text>
+<text top="456" left="87" width="44" height="14" font="2">Process</text>
+<text top="462" left="131" width="5" height="6" font="12">1</text>
+<text top="456" left="142" width="283" height="14" font="2">is running, the I/O completes, moving Process</text>
+<text top="462" left="425" width="5" height="6" font="12">0</text>
+<text top="456" left="435" width="84" height="14" font="2">back to ready.</text>
+<text top="471" left="87" width="91" height="14" font="2">Finally, Process</text>
+<text top="477" left="178" width="5" height="6" font="12">1</text>
+<text top="471" left="188" width="123" height="14" font="2">finishes, and Process</text>
+<text top="477" left="310" width="5" height="6" font="12">0</text>
+<text top="471" left="320" width="132" height="14" font="2">runs and then is done.</text>
+<text top="487" left="105" width="414" height="14" font="2">Note that there are many decisions the OS must make, even in this</text>
+<text top="502" left="87" width="388" height="14" font="2">simple example. First, the system had to decide to run Process</text>
+<text top="507" left="475" width="5" height="6" font="12">1</text>
+<text top="502" left="486" width="33" height="14" font="2">while</text>
+<text top="517" left="87" width="44" height="14" font="2">Process</text>
+<text top="522" left="131" width="5" height="6" font="12">0</text>
+<text top="517" left="142" width="377" height="14" font="2">issued an I/O; doing so improves resource utilization by keep-</text>
+<text top="532" left="87" width="432" height="14" font="2">ing the CPU busy. Second, the system decided not to switch back to</text>
+<text top="547" left="87" width="44" height="14" font="2">Process</text>
+<text top="552" left="131" width="5" height="6" font="12">0</text>
+<text top="547" left="143" width="376" height="14" font="2">when its I/O completed; it is not clear if this is a good deci-</text>
+<text top="562" left="87" width="432" height="14" font="2">sion or not. What do you think? These types of decisions are made by the</text>
+<text top="577" left="87" width="18" height="14" font="2">OS</text>
+<text top="577" left="108" width="60" height="13" font="3"><b>scheduler</b></text>
+<text top="577" left="168" width="310" height="14" font="2">, a topic we will discuss a few chapters in the future.</text>
+<text top="615" left="55" width="138" height="17" font="5">4.5 Data Structures</text>
+<text top="645" left="105" width="414" height="14" font="2">The OS is a program, and like any program, it has some key data struc-</text>
+<text top="660" left="87" width="432" height="14" font="2">tures that track various relevant pieces of information. To track the state</text>
+<text top="675" left="87" width="402" height="14" font="2">of each process, for example, the OS likely will keep some kind of</text>
+<text top="675" left="494" width="25" height="13" font="3"><b>pro-</b></text>
+<text top="690" left="87" width="49" height="13" font="3"><b>cess list</b></text>
+<text top="690" left="141" width="377" height="14" font="2">for all processes that are ready and some additional informa-</text>
+<text top="705" left="87" width="432" height="14" font="2">tion to track which process is currently running. The OS must also track,</text>
+<text top="720" left="87" width="432" height="14" font="2">in some way, blocked processes; when an I/O event completes, the OS</text>
+<text top="735" left="87" width="424" height="14" font="2">should make sure to wake the correct process and ready it to run again.</text>
+<text top="751" left="105" width="414" height="14" font="2">Figure 4.5 shows what type of information an OS needs to track about</text>
+<text top="765" left="87" width="432" height="14" font="2">each process in the xv6 kernel [CK+08]. Similar process structures exist</text>
+<text top="780" left="87" width="432" height="14" font="2">in “real” operating systems such as Linux, Mac OS X, or Windows; look</text>
+<text top="795" left="87" width="308" height="14" font="2">them up and see how much more complex they are.</text>
+<text top="811" left="105" width="414" height="14" font="2">From the figure, you can see a couple of important pieces of informa-</text>
+<text top="826" left="87" width="238" height="14" font="2">tion the OS tracks about a process. The</text>
+<text top="826" left="330" width="95" height="13" font="3"><b>register context</b></text>
+<text top="826" left="429" width="90" height="14" font="2">will hold, for a</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="353" width="8" height="14" font="2">T</text>
+<text top="98" left="362" width="16" height="11" font="4">HE</text>
+<text top="96" left="382" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="470" width="16" height="14" font="2">: T</text>
+<text top="98" left="487" width="16" height="11" font="4">HE</text>
+<text top="96" left="507" width="8" height="14" font="2">P</text>
+<text top="98" left="516" width="45" height="11" font="4">ROCESS</text>
+<text top="135" left="129" width="339" height="11" font="11">// the registers xv6 will save and restore</text>
+<text top="150" left="129" width="363" height="11" font="11">// to stop and subsequently restart a process</text>
+<text top="165" left="129" width="129" height="11" font="11">struct context {</text>
+<text top="180" left="145" width="65" height="11" font="11">int eip;</text>
+<text top="195" left="145" width="65" height="11" font="11">int esp;</text>
+<text top="210" left="145" width="65" height="11" font="11">int ebx;</text>
+<text top="225" left="145" width="65" height="11" font="11">int ecx;</text>
+<text top="240" left="145" width="65" height="11" font="11">int edx;</text>
+<text top="254" left="145" width="65" height="11" font="11">int esi;</text>
+<text top="269" left="145" width="65" height="11" font="11">int edi;</text>
+<text top="284" left="145" width="65" height="11" font="11">int ebp;</text>
+<text top="299" left="129" width="16" height="11" font="11">};</text>
+<text top="329" left="129" width="347" height="11" font="11">// the different states a process can be in</text>
+<text top="344" left="129" width="347" height="11" font="11">enum proc_state { UNUSED, EMBRYO, SLEEPING,</text>
+<text top="359" left="274" width="226" height="11" font="11">RUNNABLE, RUNNING, ZOMBIE };</text>
+<text top="389" left="129" width="387" height="11" font="11">// the information xv6 tracks about each process</text>
+<text top="404" left="129" width="347" height="11" font="11">// including its register context and state</text>
+<text top="419" left="129" width="105" height="11" font="11">struct proc {</text>
+<text top="434" left="145" width="81" height="14" font="11">char *mem;</text>
+<text top="434" left="339" width="210" height="11" font="11">// Start of process memory</text>
+<text top="449" left="145" width="65" height="11" font="11">uint sz;</text>
+<text top="449" left="339" width="202" height="11" font="11">// Size of process memory</text>
+<text top="464" left="145" width="105" height="14" font="11">char *kstack;</text>
+<text top="464" left="339" width="202" height="11" font="11">// Bottom of kernel stack</text>
+<text top="479" left="339" width="153" height="11" font="11">// for this process</text>
+<text top="494" left="145" width="178" height="11" font="11">enum proc_state state;</text>
+<text top="494" left="339" width="129" height="11" font="11">// Process state</text>
+<text top="509" left="145" width="65" height="11" font="11">int pid;</text>
+<text top="509" left="339" width="105" height="11" font="11">// Process ID</text>
+<text top="523" left="145" width="161" height="14" font="11">struct proc *parent;</text>
+<text top="523" left="339" width="137" height="11" font="11">// Parent process</text>
+<text top="538" left="145" width="89" height="14" font="11">void *chan;</text>
+<text top="538" left="339" width="234" height="11" font="11">// If !zero, sleeping on chan</text>
+<text top="553" left="145" width="89" height="11" font="11">int killed;</text>
+<text top="553" left="339" width="226" height="11" font="11">// If !zero, has been killed</text>
+<text top="568" left="145" width="331" height="14" font="11">struct file *ofile[NOFILE]; // Open files</text>
+<text top="583" left="145" width="145" height="14" font="11">struct inode *cwd;</text>
+<text top="583" left="339" width="161" height="11" font="11">// Current directory</text>
+<text top="598" left="145" width="428" height="11" font="11">struct context context; // Switch here to run process</text>
+<text top="613" left="145" width="169" height="14" font="11">struct trapframe *tf;</text>
+<text top="613" left="339" width="169" height="11" font="11">// Trap frame for the</text>
+<text top="628" left="339" width="161" height="11" font="11">// current interrupt</text>
+<text top="643" left="129" width="16" height="11" font="11">};</text>
+<text top="678" left="242" width="62" height="14" font="2">Figure 4.5:</text>
+<text top="678" left="309" width="139" height="13" font="3"><b>The xv6 Proc Structure</b></text>
+<text top="704" left="129" width="432" height="14" font="2">stopped process, the contents of its registers. When a process is stopped,</text>
+<text top="719" left="129" width="432" height="14" font="2">its registers will be saved to this memory location; by restoring these reg-</text>
+<text top="734" left="129" width="432" height="14" font="2">isters (i.e., placing their values back into the actual physical registers), the</text>
+<text top="749" left="129" width="432" height="14" font="2">OS can resume running the process. We’ll learn more about this technique</text>
+<text top="764" left="129" width="68" height="14" font="2">known as a</text>
+<text top="764" left="200" width="88" height="13" font="3"><b>context switch</b></text>
+<text top="764" left="291" width="109" height="14" font="2">in future chapters.</text>
+<text top="781" left="147" width="414" height="14" font="2">You can also see from the figure that there are some other states a pro-</text>
+<text top="796" left="129" width="432" height="14" font="2">cess can be in, beyond running, ready, and blocked. Sometimes a system</text>
+<text top="811" left="129" width="75" height="14" font="2">will have an</text>
+<text top="811" left="208" width="37" height="13" font="3"><b>initial</b></text>
+<text top="811" left="250" width="311" height="14" font="2">state that the process is in when it is being created.</text>
+<text top="826" left="129" width="221" height="14" font="2">Also, a process could be placed in a</text>
+<text top="826" left="355" width="28" height="13" font="3"><b>final</b></text>
+<text top="826" left="387" width="174" height="14" font="2">state where it has exited but</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="9" family="OGZRLE+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="14" size="7" family="OGZRLE+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="4">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="204" width="16" height="14" font="2">: T</text>
+<text top="98" left="221" width="16" height="11" font="4">HE</text>
+<text top="96" left="241" width="8" height="14" font="2">P</text>
+<text top="98" left="250" width="45" height="11" font="4">ROCESS</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="158" width="10" height="14" font="2">A</text>
+<text top="150" left="169" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="196" width="19" height="14" font="2">: D</text>
+<text top="150" left="216" width="23" height="11" font="4">ATA</text>
+<text top="148" left="243" width="7" height="14" font="2">S</text>
+<text top="150" left="250" width="63" height="11" font="4">TRUCTURE</text>
+<text top="148" left="318" width="26" height="14" font="2">— T</text>
+<text top="150" left="344" width="16" height="11" font="4">HE</text>
+<text top="148" left="364" width="8" height="14" font="2">P</text>
+<text top="150" left="373" width="45" height="11" font="4">ROCESS</text>
+<text top="148" left="422" width="8" height="14" font="2">L</text>
+<text top="150" left="430" width="17" height="11" font="4">IST</text>
+<text top="163" left="87" width="334" height="14" font="2">Operating systems are replete with various important</text>
+<text top="163" left="427" width="92" height="13" font="3"><b>data structures</b></text>
+<text top="178" left="87" width="236" height="14" font="2">that we will discuss in these notes. The</text>
+<text top="178" left="327" width="69" height="13" font="3"><b>process list</b></text>
+<text top="178" left="400" width="90" height="14" font="2">(also called the</text>
+<text top="178" left="494" width="25" height="13" font="3"><b>task</b></text>
+<text top="193" left="87" width="19" height="13" font="3"><b>list</b></text>
+<text top="193" left="106" width="412" height="14" font="2">) is the first such structure. It is one of the simpler ones, but certainly</text>
+<text top="208" left="87" width="432" height="14" font="2">any OS that has the ability to run multiple programs at once will have</text>
+<text top="223" left="87" width="432" height="14" font="2">something akin to this structure in order to keep track of all the running</text>
+<text top="238" left="87" width="432" height="14" font="2">programs in the system. Sometimes people refer to the individual struc-</text>
+<text top="253" left="87" width="291" height="14" font="2">ture that stores information about a process as a</text>
+<text top="253" left="383" width="136" height="13" font="3"><b>Process Control Block</b></text>
+<text top="268" left="87" width="4" height="14" font="2">(</text>
+<text top="268" left="92" width="27" height="13" font="3"><b>PCB</b></text>
+<text top="268" left="118" width="401" height="14" font="2">), a fancy way of talking about a C structure that contains informa-</text>
+<text top="283" left="87" width="286" height="14" font="2">tion about each process (also sometimes called a</text>
+<text top="283" left="376" width="111" height="13" font="3"><b>process descriptor</b></text>
+<text top="283" left="487" width="8" height="14" font="2">).</text>
+<text top="337" left="87" width="432" height="14" font="2">has not yet been cleaned up (in UNIX-based systems, this is called the</text>
+<text top="354" left="87" width="46" height="13" font="3"><b>zombie</b></text>
+<text top="354" left="136" width="28" height="14" font="2">state</text>
+<text top="352" left="164" width="4" height="9" font="13">1</text>
+<text top="354" left="169" width="350" height="14" font="2">). This final state can be useful as it allows other processes</text>
+<text top="369" left="87" width="71" height="14" font="2">(usually the</text>
+<text top="369" left="162" width="40" height="13" font="3"><b>parent</b></text>
+<text top="369" left="206" width="313" height="14" font="2">that created the process) to examine the return code</text>
+<text top="384" left="87" width="432" height="14" font="2">of the process and see if the just-finished process executed successfully</text>
+<text top="399" left="87" width="217" height="14" font="2">(usually, programs return zero in U</text>
+<text top="401" left="305" width="21" height="11" font="4">NIX</text>
+<text top="399" left="326" width="193" height="14" font="2">-based systems when they have</text>
+<text top="414" left="87" width="432" height="14" font="2">accomplished a task successfully, and non-zero otherwise). When fin-</text>
+<text top="429" left="87" width="282" height="14" font="2">ished, the parent will make one final call (e.g.,</text>
+<text top="430" left="374" width="48" height="11" font="11">wait()</text>
+<text top="429" left="423" width="96" height="14" font="2">) to wait for the</text>
+<text top="444" left="87" width="432" height="14" font="2">completion of the child, and to also indicate to the OS that it can clean up</text>
+<text top="459" left="87" width="405" height="14" font="2">any relevant data structures that referred to the now-extinct process.</text>
+<text top="496" left="55" width="97" height="17" font="5">4.6 Summary</text>
+<text top="526" left="105" width="414" height="14" font="2">We have introduced the most basic abstraction of the OS: the process.</text>
+<text top="541" left="87" width="432" height="14" font="2">It is quite simply viewed as a running program. With this conceptual</text>
+<text top="556" left="87" width="432" height="14" font="2">view in mind, we will now move on to the nitty-gritty: the low-level</text>
+<text top="570" left="87" width="432" height="14" font="2">mechanisms needed to implement processes, and the higher-level poli-</text>
+<text top="585" left="87" width="432" height="14" font="2">cies required to schedule them in an intelligent way. By combining mech-</text>
+<text top="600" left="87" width="432" height="14" font="2">anisms and policies, we will build up our understanding of how an oper-</text>
+<text top="615" left="87" width="198" height="14" font="2">ating system virtualizes the CPU.</text>
+<text top="814" left="107" width="4" height="8" font="14">1</text>
+<text top="816" left="112" width="407" height="11" font="8">Yes, the zombie state. Just like real zombies, these zombies are relatively easy to kill.</text>
+<text top="828" left="87" width="265" height="11" font="8">However, different techniques are usually recommended.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="353" width="8" height="14" font="2">T</text>
+<text top="98" left="362" width="16" height="11" font="4">HE</text>
+<text top="96" left="382" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="470" width="16" height="14" font="2">: T</text>
+<text top="98" left="487" width="16" height="11" font="4">HE</text>
+<text top="96" left="507" width="8" height="14" font="2">P</text>
+<text top="98" left="516" width="45" height="11" font="4">ROCESS</text>
+<text top="148" left="258" width="10" height="14" font="2">A</text>
+<text top="150" left="270" width="26" height="11" font="4">SIDE</text>
+<text top="148" left="296" width="18" height="14" font="2">: K</text>
+<text top="150" left="315" width="14" height="11" font="4">EY</text>
+<text top="148" left="333" width="8" height="14" font="2">P</text>
+<text top="150" left="342" width="45" height="11" font="4">ROCESS</text>
+<text top="148" left="391" width="8" height="14" font="2">T</text>
+<text top="150" left="400" width="32" height="11" font="4">ERMS</text>
+<text top="168" left="148" width="38" height="14" font="2">• The</text>
+<text top="168" left="190" width="46" height="13" font="3"><b>process</b></text>
+<text top="168" left="240" width="321" height="14" font="2">is the major OS abstraction of a running program. At</text>
+<text top="183" left="163" width="397" height="14" font="2">any point in time, the process can be described by its state: the con-</text>
+<text top="198" left="163" width="130" height="14" font="2">tents of memory in its</text>
+<text top="198" left="297" width="84" height="13" font="3"><b>address space</b></text>
+<text top="198" left="381" width="179" height="14" font="2">, the contents of CPU registers</text>
+<text top="213" left="163" width="84" height="14" font="2">(including the</text>
+<text top="213" left="251" width="102" height="13" font="3"><b>program counter</b></text>
+<text top="213" left="357" width="23" height="14" font="2">and</text>
+<text top="213" left="384" width="80" height="13" font="3"><b>stack pointer</b></text>
+<text top="213" left="464" width="97" height="14" font="2">, among others),</text>
+<text top="228" left="163" width="397" height="14" font="2">and information about I/O (such as open files which can be read or</text>
+<text top="243" left="163" width="51" height="14" font="2">written).</text>
+<text top="268" left="148" width="38" height="14" font="2">• The</text>
+<text top="268" left="189" width="72" height="13" font="3"><b>process API</b></text>
+<text top="268" left="264" width="297" height="14" font="2">consists of calls programs can make related to pro-</text>
+<text top="283" left="163" width="397" height="14" font="2">cesses. Typically, this includes creation, destruction, and other use-</text>
+<text top="298" left="163" width="49" height="14" font="2">ful calls.</text>
+<text top="322" left="148" width="257" height="14" font="2">• Processes exist in one of many different</text>
+<text top="323" left="411" width="85" height="13" font="3"><b>process states</b></text>
+<text top="322" left="495" width="66" height="14" font="2">, including</text>
+<text top="337" left="163" width="397" height="14" font="2">running, ready to run, and blocked. Different events (e.g., getting</text>
+<text top="352" left="163" width="397" height="14" font="2">scheduled or descheduled, or waiting for an I/O to complete) tran-</text>
+<text top="367" left="163" width="308" height="14" font="2">sition a process from one of these states to the other.</text>
+<text top="392" left="148" width="26" height="14" font="2">• A</text>
+<text top="392" left="178" width="69" height="13" font="3"><b>process list</b></text>
+<text top="392" left="252" width="309" height="14" font="2">contains information about all processes in the sys-</text>
+<text top="407" left="163" width="346" height="14" font="2">tem. Each entry is found in what is sometimes called a</text>
+<text top="407" left="515" width="46" height="13" font="3"><b>process</b></text>
+<text top="422" left="163" width="82" height="13" font="3"><b>control block</b></text>
+<text top="422" left="250" width="4" height="14" font="2">(</text>
+<text top="422" left="255" width="27" height="13" font="3"><b>PCB</b></text>
+<text top="422" left="282" width="279" height="14" font="2">), which is really just a structure that contains</text>
+<text top="437" left="163" width="217" height="14" font="2">information about a specific process.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="16" family="TZTNKE+URWPalladioL" color="#000000"/>
+	<fontspec id="16" size="10" family="GLCPSY+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="17" size="10" family="YDHNLJ+URWPalladioL" color="#000000"/>
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="4">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="204" width="16" height="14" font="2">: T</text>
+<text top="98" left="221" width="16" height="11" font="4">HE</text>
+<text top="96" left="241" width="8" height="14" font="2">P</text>
+<text top="98" left="250" width="45" height="11" font="4">ROCESS</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="137" left="87" width="82" height="16" font="15"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="8">[BH70] “The Nucleus of a Multiprogramming System” by Per Brinch Hansen. Communica-</text>
+<text top="177" left="87" width="199" height="11" font="8">tions of the ACM, Volume 13:4, April 1970.</text>
+<text top="177" left="290" width="155" height="11" font="16">This paper introduces one of the first</text>
+<text top="177" left="448" width="60" height="8" font="17"><b>microkernels</b></text>
+<text top="177" left="510" width="9" height="11" font="16">in</text>
+<text top="189" left="87" width="432" height="11" font="16">operating systems history, called Nucleus. The idea of smaller, more minimal systems is a theme that</text>
+<text top="201" left="87" width="404" height="11" font="16">rears its head repeatedly in OS history; it all began with Brinch Hansen’s work described herein.</text>
+<text top="218" left="87" width="432" height="11" font="8">[CK+08] “The xv6 Operating System” by Russ Cox, Frans Kaashoek, Robert Morris, Nickolai</text>
+<text top="229" left="87" width="281" height="11" font="8">Zeldovich. From: https://github.com/mit-pdos/xv6-public.</text>
+<text top="229" left="371" width="148" height="11" font="16">The coolest real and little OS in the</text>
+<text top="241" left="87" width="432" height="11" font="16">world. Download and play with it to learn more about the details of how operating systems actually</text>
+<text top="253" left="87" width="432" height="11" font="16">work. We have been using an older version (2012-01-30-1-g1c41342) and hence some examples in the</text>
+<text top="265" left="87" width="184" height="11" font="16">book may not match the latest in the source.</text>
+<text top="282" left="87" width="432" height="11" font="8">[DV66] “Programming Semantics for Multiprogrammed Computations” by Jack B. Dennis,</text>
+<text top="294" left="87" width="384" height="11" font="8">Earl C. Van Horn. Communications of the ACM, Volume 9, Number 3, March 1966 .</text>
+<text top="294" left="475" width="44" height="11" font="16">This paper</text>
+<text top="305" left="87" width="377" height="11" font="16">defined many of the early terms and concepts around building multiprogrammed systems.</text>
+<text top="322" left="87" width="432" height="11" font="8">[L+75] “Policy/mechanism separation in Hydra” by R. Levin, E. Cohen, W. Corwin, F. Pollack,</text>
+<text top="334" left="87" width="234" height="11" font="8">W. Wulf. SOSP ’75, Austin, Texas, November 1975.</text>
+<text top="334" left="325" width="194" height="11" font="16">An early paper about how to structure operat-</text>
+<text top="346" left="87" width="432" height="11" font="16">ing systems in a research OS known as Hydra. While Hydra never became a mainstream OS, some of</text>
+<text top="358" left="87" width="142" height="11" font="16">its ideas influenced OS designers.</text>
+<text top="374" left="87" width="432" height="11" font="8">[V+65] “Structure of the Multics Supervisor” by V.A. Vyssotsky, F. J. Corbato, R. M. Graham.</text>
+<text top="386" left="87" width="174" height="11" font="8">Fall Joint Computer Conference, 1965.</text>
+<text top="386" left="264" width="255" height="11" font="16">An early paper on Multics, which described many of the basic</text>
+<text top="398" left="87" width="432" height="11" font="16">ideas and terms that we find in modern systems. Some of the vision behind computing as a utility are</text>
+<text top="410" left="87" width="197" height="11" font="16">finally being realized in modern cloud systems.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="18" size="15" family="TZTNKE+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="353" width="8" height="14" font="2">T</text>
+<text top="98" left="362" width="16" height="11" font="4">HE</text>
+<text top="96" left="382" width="10" height="14" font="2">A</text>
+<text top="98" left="394" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="470" width="16" height="14" font="2">: T</text>
+<text top="98" left="487" width="16" height="11" font="4">HE</text>
+<text top="96" left="507" width="8" height="14" font="2">P</text>
+<text top="98" left="516" width="45" height="11" font="4">ROCESS</text>
+<text top="137" left="129" width="183" height="16" font="15"><b>Homework (Simulation)</b></text>
+<text top="166" left="147" width="84" height="14" font="2">This program,</text>
+<text top="167" left="233" width="113" height="11" font="11">process-run.py</text>
+<text top="166" left="346" width="217" height="14" font="2">, allows you to see how process states</text>
+<text top="181" left="129" width="432" height="14" font="2">change as programs run and either use the CPU (e.g., perform an add</text>
+<text top="196" left="129" width="432" height="14" font="2">instruction) or do I/O (e.g., send a request to a disk and wait for it to</text>
+<text top="211" left="129" width="237" height="14" font="2">complete). See the README for details.</text>
+<text top="246" left="129" width="70" height="15" font="18"><b>Questions</b></text>
+<text top="271" left="146" width="42" height="14" font="2">1. Run</text>
+<text top="271" left="191" width="113" height="11" font="11">process-run.py</text>
+<text top="271" left="306" width="143" height="14" font="2">with the following flags:</text>
+<text top="271" left="453" width="113" height="11" font="11">-l 5:100,5:100</text>
+<text top="271" left="566" width="3" height="14" font="2">.</text>
+<text top="286" left="163" width="397" height="14" font="2">What should the CPU utilization be (e.g., the percent of time the</text>
+<text top="301" left="163" width="286" height="14" font="2">CPU is in use?) Why do you know this? Use the</text>
+<text top="301" left="452" width="16" height="11" font="11">-c</text>
+<text top="301" left="472" width="23" height="14" font="2">and</text>
+<text top="301" left="498" width="16" height="11" font="11">-p</text>
+<text top="301" left="518" width="43" height="14" font="2">flags to</text>
+<text top="315" left="163" width="125" height="14" font="2">see if you were right.</text>
+<text top="338" left="146" width="172" height="14" font="2">2. Now run with these flags:</text>
+<text top="339" left="323" width="234" height="11" font="11">./process-run.py -l 4:100,1:0</text>
+<text top="338" left="557" width="3" height="14" font="2">.</text>
+<text top="353" left="163" width="397" height="14" font="2">These flags specify one process with 4 instructions (all to use the</text>
+<text top="368" left="163" width="397" height="14" font="2">CPU), and one that simply issues an I/O and waits for it to be done.</text>
+<text top="383" left="163" width="331" height="14" font="2">How long does it take to complete both processes? Use</text>
+<text top="384" left="498" width="16" height="11" font="11">-c</text>
+<text top="383" left="518" width="23" height="14" font="2">and</text>
+<text top="384" left="545" width="16" height="11" font="11">-p</text>
+<text top="398" left="163" width="169" height="14" font="2">to find out if you were right.</text>
+<text top="421" left="146" width="217" height="14" font="2">3. Switch the order of the processes:</text>
+<text top="422" left="369" width="97" height="11" font="11">-l 1:0,4:100</text>
+<text top="421" left="465" width="95" height="14" font="2">. What happens</text>
+<text top="436" left="163" width="377" height="14" font="2">now? Does switching the order matter? Why? (As always, use</text>
+<text top="437" left="545" width="16" height="11" font="11">-c</text>
+<text top="451" left="163" width="23" height="14" font="2">and</text>
+<text top="452" left="190" width="16" height="11" font="11">-p</text>
+<text top="451" left="209" width="141" height="14" font="2">to see if you were right)</text>
+<text top="474" left="146" width="414" height="14" font="2">4. We’ll now explore some of the other flags. One important flag is</text>
+<text top="489" left="163" width="16" height="11" font="11">-S</text>
+<text top="489" left="180" width="381" height="14" font="2">, which determines how the system reacts when a process is-</text>
+<text top="504" left="163" width="397" height="14" font="2">sues an I/O. With the flag set to SWITCH ON END, the system</text>
+<text top="518" left="163" width="397" height="14" font="2">will NOT switch to another process while one is doing I/O, in-</text>
+<text top="533" left="163" width="397" height="14" font="2">stead waiting until the process is completely finished. What hap-</text>
+<text top="548" left="163" width="300" height="14" font="2">pens when you run the following two processes (</text>
+<text top="549" left="464" width="97" height="11" font="11">-l 1:0,4:100</text>
+<text top="564" left="163" width="147" height="11" font="11">-c -S SWITCH ON END</text>
+<text top="563" left="310" width="250" height="14" font="2">), one doing I/O and the other doing CPU</text>
+<text top="578" left="163" width="37" height="14" font="2">work?</text>
+<text top="601" left="146" width="414" height="14" font="2">5. Now, run the same processes, but with the switching behavior set</text>
+<text top="616" left="163" width="381" height="14" font="2">to switch to another process whenever one is WAITING for I/O (</text>
+<text top="617" left="545" width="16" height="11" font="11">-l</text>
+<text top="632" left="163" width="219" height="11" font="11">1:0,4:100 -c -S SWITCH ON IO</text>
+<text top="631" left="383" width="159" height="14" font="2">). What happens now? Use</text>
+<text top="632" left="545" width="16" height="11" font="11">-c</text>
+<text top="646" left="163" width="23" height="14" font="2">and</text>
+<text top="647" left="190" width="16" height="11" font="11">-p</text>
+<text top="646" left="209" width="172" height="14" font="2">to confirm that you are right.</text>
+<text top="669" left="146" width="414" height="14" font="2">6. One other important behavior is what to do when an I/O com-</text>
+<text top="684" left="163" width="73" height="14" font="2">pletes. With</text>
+<text top="684" left="241" width="115" height="11" font="11">-I IO RUN LATER</text>
+<text top="684" left="355" width="206" height="14" font="2">, when an I/O completes, the pro-</text>
+<text top="699" left="163" width="397" height="14" font="2">cess that issued it is not necessarily run right away; rather, what-</text>
+<text top="714" left="163" width="397" height="14" font="2">ever was running at the time keeps running. What happens when</text>
+<text top="729" left="163" width="244" height="14" font="2">you run this combination of processes? (</text>
+<text top="729" left="407" width="153" height="11" font="11">./process-run.py -l</text>
+<text top="744" left="163" width="365" height="11" font="11">3:0,5:100,5:100,5:100 -S SWITCH ON IO -c -p -I</text>
+<text top="759" left="163" width="90" height="11" font="11">IO RUN LATER</text>
+<text top="758" left="254" width="290" height="14" font="2">) Are system resources being effectively utilized?</text>
+<text top="781" left="146" width="242" height="14" font="2">7. Now run the same processes, but with</text>
+<text top="782" left="391" width="147" height="11" font="11">-I IO RUN IMMEDIATE</text>
+<text top="781" left="541" width="20" height="14" font="2">set,</text>
+<text top="796" left="163" width="397" height="14" font="2">which immediately runs the process that issued the I/O. How does</text>
+<text top="811" left="163" width="397" height="14" font="2">this behavior differ? Why might running a process that just com-</text>
+<text top="826" left="163" width="214" height="14" font="2">pleted an I/O again be a good idea?</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="4">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="4">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="7">[V</text>
+<text top="914" left="143" width="39" height="10" font="8">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="7">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="4">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="4">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="4">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="8" height="14" font="2">T</text>
+<text top="98" left="96" width="16" height="11" font="4">HE</text>
+<text top="96" left="117" width="10" height="14" font="2">A</text>
+<text top="98" left="128" width="76" height="11" font="4">BSTRACTION</text>
+<text top="96" left="204" width="16" height="14" font="2">: T</text>
+<text top="98" left="221" width="16" height="11" font="4">HE</text>
+<text top="96" left="241" width="8" height="14" font="2">P</text>
+<text top="98" left="250" width="45" height="11" font="4">ROCESS</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="139" left="105" width="394" height="14" font="2">8. Now run with some randomly generated processes using flags</text>
+<text top="139" left="503" width="16" height="11" font="11">-s</text>
+<text top="154" left="122" width="113" height="11" font="11">1 -l 3:50,3:50</text>
+<text top="154" left="239" width="13" height="14" font="2">or</text>
+<text top="154" left="256" width="137" height="11" font="11">-s 2 -l 3:50,3:50</text>
+<text top="154" left="397" width="13" height="14" font="2">or</text>
+<text top="154" left="414" width="105" height="11" font="11">-s 3 -l 3:50,</text>
+<text top="169" left="122" width="32" height="11" font="11">3:50</text>
+<text top="169" left="154" width="365" height="14" font="2">. See if you can predict how the trace will turn out. What hap-</text>
+<text top="183" left="122" width="172" height="14" font="2">pens when you use the flag</text>
+<text top="184" left="299" width="147" height="11" font="11">-I IO RUN IMMEDIATE</text>
+<text top="183" left="451" width="68" height="14" font="2">versus that</text>
+<text top="198" left="122" width="22" height="14" font="2">flag</text>
+<text top="199" left="148" width="115" height="11" font="11">-I IO RUN LATER</text>
+<text top="198" left="263" width="236" height="14" font="2">? What happens when you use the flag</text>
+<text top="199" left="503" width="16" height="11" font="11">-S</text>
+<text top="214" left="122" width="90" height="11" font="11">SWITCH ON IO</text>
+<text top="213" left="215" width="39" height="14" font="2">versus</text>
+<text top="214" left="258" width="123" height="11" font="11">-S SWITCH ON END</text>
+<text top="213" left="380" width="6" height="14" font="2">?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–23, A</text>
+<text top="898" left="296" width="35" height="11" font="4">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="4">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="4">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="4">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="4">IECES</text>
+</page>
+</pdf2xml>

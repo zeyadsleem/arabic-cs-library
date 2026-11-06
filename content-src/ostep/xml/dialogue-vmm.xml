@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="LUICUM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="LUICUM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="VHABRQ+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="GHZYQM+URWPalladioL" color="#000000"/>
+	<fontspec id="5" size="13" family="WXTWZG+URWPalladioL-Roma" color="#000000"/>
+<text top="194" left="537" width="21" height="29" font="0">A</text>
+<text top="263" left="140" width="379" height="20" font="1">A Dialogue on Virtual Machine Monitors</text>
+<text top="349" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="349" left="143" width="229" height="14" font="3"><i>So now we’re stuck in the Appendix, huh?</i></text>
+<text top="370" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="370" left="152" width="315" height="14" font="3"><i>Yes, just when you thought things couldn’t get any worse.</i></text>
+<text top="390" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="390" left="143" width="208" height="14" font="3"><i>Well, what are we going to talk about?</i></text>
+<text top="411" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="410" left="152" width="182" height="14" font="3"><i>An old topic that has been reborn:</i></text>
+<text top="410" left="338" width="153" height="13" font="4"><b>virtual machine monitors</b></text>
+<text top="410" left="491" width="28" height="14" font="3"><i>, also</i></text>
+<text top="425" left="87" width="51" height="14" font="3"><i>known as</i></text>
+<text top="425" left="142" width="70" height="13" font="4"><b>hypervisors</b></text>
+<text top="425" left="212" width="3" height="14" font="3"><i>.</i></text>
+<text top="446" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="446" left="143" width="370" height="14" font="3"><i>Oh, like VMware? That’s cool; I’ve used that kind of software before.</i></text>
+<text top="466" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="466" left="152" width="367" height="14" font="3"><i>Cool indeed. We’ll learn how VMMs add yet another layer of virtu-</i></text>
+<text top="481" left="87" width="432" height="14" font="3"><i>alization into systems, this one beneath the OS itself! Crazy and amazing stuff,</i></text>
+<text top="496" left="87" width="33" height="14" font="3"><i>really.</i></text>
+<text top="516" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="516" left="143" width="376" height="14" font="3"><i>Sounds neat. Why not include this in the earlier part of the book, then,</i></text>
+<text top="531" left="87" width="254" height="14" font="3"><i>on virtualization? Shouldn’t it really go there?</i></text>
+<text top="552" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="552" left="153" width="366" height="14" font="3"><i>That’s above our pay grade, I’m afraid. But my guess is this: there</i></text>
+<text top="566" left="87" width="432" height="14" font="3"><i>is already a lot of material there. By moving this small aside on VMMs into</i></text>
+<text top="581" left="87" width="432" height="14" font="3"><i>the appendix, a particular instructor can choose whether to include it or skip it.</i></text>
+<text top="596" left="87" width="432" height="14" font="3"><i>But I do think it should be included, because if you can understand how VMMs</i></text>
+<text top="611" left="87" width="318" height="14" font="3"><i>work, then you really understand virtualization quite well.</i></text>
+<text top="632" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="632" left="143" width="164" height="14" font="3"><i>Alright then, let’s get to work!</i></text>
+<text top="862" left="300" width="7" height="9" font="5">1</text>
+</page>
+</pdf2xml>

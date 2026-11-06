@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="KMGDAS+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="KMGDAS+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="JUJZMC+URWPalladioL" color="#000000"/>
+	<fontspec id="3" size="13" family="BECYOX+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="4" size="13" family="WCLSGA+URWPalladioL-Roma" color="#000000"/>
+<text top="194" left="523" width="34" height="30" font="0">46</text>
+<text top="263" left="188" width="331" height="21" font="1">Summary Dialogue on Persistence</text>
+<text top="350" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="350" left="143" width="319" height="14" font="3"><i>Wow, file systems seem interesting(!), and yet complicated.</i></text>
+<text top="370" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="370" left="152" width="310" height="14" font="3"><i>That’s why my spouse and I do our research in this space.</i></text>
+<text top="390" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="390" left="143" width="376" height="14" font="3"><i>Hold on. Are you one of the professors who wrote this book? I thought</i></text>
+<text top="405" left="87" width="432" height="14" font="3"><i>we were both just fake constructs, used to summarize some main points, and</i></text>
+<text top="420" left="87" width="322" height="14" font="3"><i>perhaps add a little levity in the study of operating systems.</i></text>
+<text top="441" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="441" left="154" width="365" height="14" font="3"><i>Uh... er... maybe. And none of your business! And who did you</i></text>
+<text top="456" left="87" width="432" height="14" font="3"><i>think was writing these things? (sighs) Anyhow, let’s get on with it: what did</i></text>
+<text top="470" left="87" width="58" height="14" font="3"><i>you learn?</i></text>
+<text top="491" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="491" left="146" width="373" height="14" font="3"><i>Well, I think I got one of the main points, which is that it is much</i></text>
+<text top="506" left="87" width="432" height="14" font="3"><i>harder to manage data for a long time (persistently) than it is to manage data</i></text>
+<text top="521" left="87" width="432" height="14" font="3"><i>that isn’t persistent (like the stuff in memory). After all, if your machines crashes,</i></text>
+<text top="536" left="87" width="432" height="14" font="3"><i>memory contents disappear! But the stuff in the file system needs to live forever.</i></text>
+<text top="556" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="556" left="153" width="365" height="14" font="3"><i>Well, as my friend Kevin Hultquist used to say, “Forever is a long</i></text>
+<text top="571" left="87" width="432" height="14" font="3"><i>time”; while he was talking about plastic golf tees, it’s especially true for the</i></text>
+<text top="586" left="87" width="227" height="14" font="3"><i>garbage that is found in most file systems.</i></text>
+<text top="606" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="606" left="143" width="376" height="14" font="3"><i>Well, you know what I mean! For a long time at least. And even simple</i></text>
+<text top="621" left="87" width="432" height="14" font="3"><i>things, such as updating a persistent storage device, are complicated, because you</i></text>
+<text top="636" left="87" width="432" height="14" font="3"><i>have to care what happens if you crash. Recovery, something I had never even</i></text>
+<text top="651" left="87" width="351" height="14" font="3"><i>thought of when we were virtualizing memory, is now a big deal!</i></text>
+<text top="672" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="671" left="154" width="365" height="14" font="3"><i>Too true. Updates to persistent storage have always been, and re-</i></text>
+<text top="686" left="87" width="202" height="14" font="3"><i>main, a fun and challenging problem.</i></text>
+<text top="707" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="707" left="145" width="374" height="14" font="3"><i>I also learned about cool things like disk scheduling, and about data</i></text>
+<text top="722" left="87" width="388" height="14" font="3"><i>protection techniques like RAID and even checksums. That stuff is cool.</i></text>
+<text top="742" left="87" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="742" left="153" width="366" height="14" font="3"><i>I like those topics too. Though, if you really get into it, they can get</i></text>
+<text top="757" left="87" width="432" height="14" font="3"><i>a little mathematical. Check out some of the latest on erasure codes if you want</i></text>
+<text top="772" left="87" width="102" height="14" font="3"><i>your brain to hurt.</i></text>
+<text top="792" left="87" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="792" left="143" width="111" height="14" font="3"><i>I’ll get right on that.</i></text>
+<text top="862" left="300" width="7" height="12" font="4">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="5" size="11" family="WCLSGA+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="6" size="12" family="WCLSGA+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="10" family="WCLSGA+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="12" font="4">2</text>
+<text top="96" left="323" width="7" height="12" font="4">S</text>
+<text top="98" left="331" width="54" height="10" font="5">UMMARY</text>
+<text top="96" left="389" width="10" height="12" font="4">D</text>
+<text top="98" left="400" width="76" height="10" font="5">IALOGUE ON</text>
+<text top="96" left="481" width="8" height="12" font="4">P</text>
+<text top="98" left="489" width="71" height="10" font="5">ERSISTENCE</text>
+<text top="139" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="139" left="194" width="367" height="14" font="3"><i>(frowns) I think you’re being sarcastic. Well, what else did you like?</i></text>
+<text top="159" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="159" left="185" width="376" height="14" font="3"><i>And I also liked all the thought that has gone into building technology-</i></text>
+<text top="174" left="129" width="432" height="14" font="3"><i>aware systems, like FFS and LFS. Neat stuff! Being disk aware seems cool. But</i></text>
+<text top="189" left="129" width="399" height="14" font="3"><i>will it matter anymore, with Flash and all the newest, latest technologies?</i></text>
+<text top="209" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="209" left="194" width="367" height="14" font="3"><i>Good question! Yes, even with Flash, all of this stuff is still relevant,</i></text>
+<text top="224" left="129" width="432" height="14" font="3"><i>amazingly. For example, Flash Translation Layers (FTLs) use log-structuring</i></text>
+<text top="239" left="129" width="432" height="14" font="3"><i>internally, to improve performance and reliability of Flash-based SSDs. And</i></text>
+<text top="254" left="129" width="432" height="14" font="3"><i>thinking about locality is always useful. So while the technology may be chang-</i></text>
+<text top="269" left="129" width="432" height="14" font="3"><i>ing, many of the ideas we have studied will continue to be useful, for a while at</i></text>
+<text top="284" left="129" width="28" height="14" font="3"><i>least.</i></text>
+<text top="304" left="129" width="52" height="10" font="2"><b>Student:</b></text>
+<text top="304" left="185" width="375" height="14" font="3"><i>That’s good. I just spent all this time learning it, and I didn’t want it</i></text>
+<text top="319" left="129" width="120" height="14" font="3"><i>to all be for no reason!</i></text>
+<text top="340" left="129" width="61" height="10" font="2"><b>Professor:</b></text>
+<text top="340" left="194" width="259" height="14" font="3"><i>Professors wouldn’t do that to you, would they?</i></text>
+<text top="881" left="129" width="11" height="12" font="4">O</text>
+<text top="883" left="141" width="60" height="10" font="5">PERATING</text>
+<text top="896" left="129" width="7" height="12" font="4">S</text>
+<text top="898" left="137" width="45" height="10" font="5">YSTEMS</text>
+<text top="912" left="129" width="13" height="11" font="6">[V</text>
+<text top="914" left="143" width="39" height="9" font="7">ERSION</text>
+<text top="912" left="186" width="27" height="11" font="6">1.10]</text>
+<text top="898" left="294" width="34" height="10" font="5">WWW</text>
+<text top="896" left="327" width="3" height="12" font="4">.</text>
+<text top="898" left="331" width="36" height="10" font="5">OSTEP</text>
+<text top="896" left="367" width="3" height="12" font="4">.</text>
+<text top="898" left="371" width="25" height="10" font="5">ORG</text>
+</page>
+</pdf2xml>

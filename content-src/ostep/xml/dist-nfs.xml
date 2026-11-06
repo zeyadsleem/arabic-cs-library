@@ -1,0 +1,1487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="26.08.0">
+<page number="1" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="0" size="31" family="PHSPCM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="1" size="22" family="PHSPCM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="2" size="13" family="OIGRZW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="3" size="12" family="PHSPCM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="4" size="11" family="PHSPCM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="5" size="13" family="KNLYKJ+URWPalladioL" color="#000000"/>
+<text top="196" left="523" width="34" height="30" font="0">49</text>
+<text top="266" left="199" width="319" height="21" font="1">Sun’s Network File System (NFS)</text>
+<text top="326" left="105" width="414" height="14" font="2">One of the ﬁrst uses of distributed client/server computing was in the</text>
+<text top="341" left="87" width="432" height="14" font="2">realm of distributed ﬁle systems. In such an environment, there are a</text>
+<text top="356" left="87" width="432" height="14" font="2">number of client machines and one server (or a few); the server stores the</text>
+<text top="371" left="87" width="432" height="14" font="2">data on its disks, and clients request data through well-formed protocol</text>
+<text top="386" left="87" width="270" height="14" font="2">messages. Figure 49.1 depicts the basic setup.</text>
+<text top="421" left="256" width="40" height="11" font="3">Client 0</text>
+<text top="481" left="197" width="40" height="11" font="3">Client 1</text>
+<text top="540" left="197" width="40" height="11" font="3">Client 2</text>
+<text top="600" left="256" width="40" height="11" font="3">Client 3</text>
+<text top="511" left="378" width="35" height="11" font="3">Server</text>
+<text top="559" left="382" width="26" height="10" font="4">RAID</text>
+<text top="511" left="284" width="44" height="11" font="3">Network</text>
+<text top="642" left="169" width="69" height="14" font="2">Figure 49.1:</text>
+<text top="642" left="242" width="196" height="13" font="5"><b>A Generic Client/Server System</b></text>
+<text top="662" left="105" width="414" height="14" font="2">As you can see from the picture, the server has the disks, and clients</text>
+<text top="677" left="87" width="432" height="14" font="2">send messages across a network to access their directories and ﬁles on</text>
+<text top="692" left="87" width="432" height="14" font="2">those disks. Why do we bother with this arrangement? (i.e., why don’t</text>
+<text top="707" left="87" width="432" height="14" font="2">we just let clients use their local disks?) Well, primarily this setup allows</text>
+<text top="721" left="87" width="48" height="14" font="2">for easy</text>
+<text top="722" left="139" width="46" height="13" font="5"><b>sharing</b></text>
+<text top="721" left="190" width="329" height="14" font="2">of data across clients. Thus, if you access a ﬁle on one</text>
+<text top="736" left="87" width="432" height="14" font="2">machine (Client 0) and then later use another (Client 2), you will have the</text>
+<text top="751" left="87" width="432" height="14" font="2">same view of the ﬁle system. Your data is naturally shared across these</text>
+<text top="766" left="87" width="260" height="14" font="2">different machines. A secondary beneﬁt is</text>
+<text top="766" left="352" width="164" height="13" font="5"><b>centralized administration</b></text>
+<text top="766" left="516" width="3" height="14" font="2">;</text>
+<text top="781" left="87" width="432" height="14" font="2">for example, backing up ﬁles can be done from the few server machines</text>
+<text top="796" left="87" width="432" height="14" font="2">instead of from the multitude of clients. Another advantage could be</text>
+<text top="811" left="87" width="49" height="13" font="5"><b>security</b></text>
+<text top="811" left="136" width="383" height="14" font="2">; having all servers in a locked machine room prevents certain</text>
+<text top="826" left="87" width="186" height="14" font="2">types of problems from arising.</text>
+<text top="862" left="300" width="7" height="14" font="2">1</text>
+</page>
+<page number="2" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="6" size="11" family="OIGRZW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="7" size="16" family="OIGRZW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="8" size="13" family="MZFJHU+NimbusMonL-Regu" color="#000000"/>
+	<fontspec id="9" size="12" family="OIGRZW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="10" size="10" family="OIGRZW+URWPalladioL-Roma" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">2</text>
+<text top="96" left="335" width="7" height="14" font="2">S</text>
+<text top="98" left="343" width="18" height="11" font="6">UN</text>
+<text top="96" left="362" width="4" height="14" font="2">’</text>
+<text top="98" left="366" width="6" height="11" font="6">S</text>
+<text top="96" left="376" width="11" height="14" font="2">N</text>
+<text top="98" left="388" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="442" width="7" height="14" font="2">F</text>
+<text top="98" left="450" width="18" height="11" font="6">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="480" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="523" width="37" height="14" font="2">(NFS)</text>
+<text top="153" left="186" width="10" height="14" font="2">C</text>
+<text top="155" left="196" width="24" height="11" font="6">RUX</text>
+<text top="153" left="221" width="19" height="14" font="2">: H</text>
+<text top="155" left="241" width="20" height="11" font="6">OW</text>
+<text top="153" left="265" width="8" height="14" font="2">T</text>
+<text top="155" left="274" width="8" height="11" font="6">O</text>
+<text top="153" left="286" width="8" height="14" font="2">B</text>
+<text top="155" left="295" width="29" height="11" font="6">UILD</text>
+<text top="153" left="328" width="25" height="14" font="2">A D</text>
+<text top="155" left="354" width="69" height="11" font="6">ISTRIBUTED</text>
+<text top="153" left="427" width="7" height="14" font="2">F</text>
+<text top="155" left="435" width="18" height="11" font="6">ILE</text>
+<text top="153" left="457" width="7" height="14" font="2">S</text>
+<text top="155" left="465" width="39" height="11" font="6">YSTEM</text>
+<text top="168" left="147" width="414" height="14" font="2">How do you build a distributed ﬁle system? What are the key aspects</text>
+<text top="183" left="129" width="432" height="14" font="2">to think about? What is easy to get wrong? What can we learn from</text>
+<text top="197" left="129" width="103" height="14" font="2">existing systems?</text>
+<text top="253" left="97" width="262" height="17" font="7">49.1 A Basic Distributed File System</text>
+<text top="284" left="147" width="414" height="14" font="2">We now will study the architecture of a simpliﬁed distributed ﬁle sys-</text>
+<text top="299" left="129" width="432" height="14" font="2">tem. A simple client/server distributed ﬁle system has more components</text>
+<text top="314" left="129" width="432" height="14" font="2">than the ﬁle systems we have studied so far. On the client side, there are</text>
+<text top="329" left="129" width="389" height="14" font="2">client applications which access ﬁles and directories through the</text>
+<text top="329" left="522" width="39" height="13" font="5"><b>client-</b></text>
+<text top="344" left="129" width="93" height="13" font="5"><b>side ﬁle system</b></text>
+<text top="344" left="222" width="162" height="14" font="2">. A client application issues</text>
+<text top="344" left="387" width="73" height="13" font="5"><b>system calls</b></text>
+<text top="344" left="463" width="98" height="14" font="2">to the client-side</text>
+<text top="359" left="129" width="120" height="14" font="2">ﬁle system (such as</text>
+<text top="360" left="255" width="48" height="11" font="8">open()</text>
+<text top="359" left="303" width="3" height="14" font="2">,</text>
+<text top="360" left="312" width="48" height="11" font="8">read()</text>
+<text top="359" left="361" width="3" height="14" font="2">,</text>
+<text top="360" left="370" width="57" height="11" font="8">write()</text>
+<text top="359" left="426" width="3" height="14" font="2">,</text>
+<text top="360" left="435" width="57" height="11" font="8">close()</text>
+<text top="359" left="492" width="3" height="14" font="2">,</text>
+<text top="360" left="501" width="57" height="11" font="8">mkdir()</text>
+<text top="359" left="557" width="3" height="14" font="2">,</text>
+<text top="374" left="129" width="432" height="14" font="2">etc.) in order to access ﬁles which are stored on the server. Thus, to client</text>
+<text top="389" left="129" width="432" height="14" font="2">applications, the ﬁle system does not appear to be any different than a lo-</text>
+<text top="404" left="129" width="432" height="14" font="2">cal (disk-based) ﬁle system, except perhaps for performance; in this way,</text>
+<text top="419" left="129" width="193" height="14" font="2">distributed ﬁle systems provide</text>
+<text top="419" left="327" width="70" height="13" font="5"><b>transparent</b></text>
+<text top="419" left="403" width="158" height="14" font="2">access to ﬁles, an obvious</text>
+<text top="434" left="129" width="432" height="14" font="2">goal; after all, who would want to use a ﬁle system that required a differ-</text>
+<text top="449" left="129" width="276" height="14" font="2">ent set of APIs or otherwise was a pain to use?</text>
+<text top="465" left="147" width="414" height="14" font="2">The role of the client-side ﬁle system is to execute the actions needed</text>
+<text top="480" left="129" width="379" height="14" font="2">to service those system calls. For example, if the client issues a</text>
+<text top="481" left="512" width="48" height="11" font="8">read()</text>
+<text top="495" left="129" width="362" height="14" font="2">request, the client-side ﬁle system may send a message to the</text>
+<text top="495" left="494" width="67" height="13" font="5"><b>server-side</b></text>
+<text top="510" left="129" width="66" height="13" font="5"><b>ﬁle system</b></text>
+<text top="510" left="199" width="194" height="14" font="2">(or, as it is commonly called, the</text>
+<text top="510" left="397" width="61" height="13" font="5"><b>ﬁle server</b></text>
+<text top="510" left="457" width="104" height="14" font="2">) to read a partic-</text>
+<text top="525" left="129" width="432" height="14" font="2">ular block; the ﬁle server will then read the block from disk (or its own</text>
+<text top="540" left="129" width="432" height="14" font="2">in-memory cache), and send a message back to the client with the re-</text>
+<text top="555" left="129" width="432" height="14" font="2">quested data. The client-side ﬁle system will then copy the data into the</text>
+<text top="570" left="129" width="159" height="14" font="2">user buffer supplied to the</text>
+<text top="571" left="291" width="48" height="11" font="8">read()</text>
+<text top="570" left="343" width="218" height="14" font="2">system call and thus the request will</text>
+<text top="585" left="129" width="198" height="14" font="2">complete. Note that a subsequent</text>
+<text top="586" left="331" width="48" height="11" font="8">read()</text>
+<text top="585" left="382" width="179" height="14" font="2">of the same block on the client</text>
+<text top="600" left="129" width="44" height="14" font="2">may be</text>
+<text top="600" left="177" width="42" height="13" font="5"><b>cached</b></text>
+<text top="600" left="223" width="338" height="14" font="2">in client memory or on the client’s disk even; in the best</text>
+<text top="615" left="129" width="285" height="14" font="2">such case, no network trafﬁc need be generated.</text>
+<text top="641" left="176" width="94" height="12" font="3">Client Application</text>
+<text top="665" left="161" width="124" height="12" font="3">Client-side File System</text>
+<text top="689" left="176" width="95" height="12" font="3">Networking Layer</text>
+<text top="665" left="376" width="59" height="12" font="3">File Server</text>
+<text top="689" left="358" width="95" height="12" font="3">Networking Layer</text>
+<text top="665" left="500" width="30" height="12" font="3">Disks</text>
+<text top="725" left="195" width="69" height="14" font="2">Figure 49.2:</text>
+<text top="725" left="268" width="226" height="13" font="5"><b>Distributed File System Architecture</b></text>
+<text top="747" left="147" width="414" height="14" font="2">From this simple overview, you should get a sense that there are two</text>
+<text top="762" left="129" width="432" height="14" font="2">important pieces of software in a client/server distributed ﬁle system: the</text>
+<text top="776" left="129" width="432" height="14" font="2">client-side ﬁle system and the ﬁle server. Together their behavior deter-</text>
+<text top="791" left="129" width="432" height="14" font="2">mines the behavior of the distributed ﬁle system. Now it’s time to study</text>
+<text top="806" left="129" width="338" height="14" font="2">one particular system: Sun’s Network File System (NFS).</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="3" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="11" size="13" family="IDOYUV+URWPalladioL-Ital" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="18" height="11" font="6">UN</text>
+<text top="96" left="114" width="4" height="14" font="2">’</text>
+<text top="98" left="118" width="6" height="11" font="6">S</text>
+<text top="96" left="128" width="11" height="14" font="2">N</text>
+<text top="98" left="140" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="194" width="7" height="14" font="2">F</text>
+<text top="98" left="203" width="18" height="11" font="6">ILE</text>
+<text top="96" left="225" width="7" height="14" font="2">S</text>
+<text top="98" left="232" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="275" width="37" height="14" font="2">(NFS)</text>
+<text top="96" left="512" width="7" height="14" font="2">3</text>
+<text top="153" left="214" width="10" height="14" font="2">A</text>
+<text top="155" left="225" width="26" height="11" font="6">SIDE</text>
+<text top="153" left="252" width="22" height="14" font="2">: W</text>
+<text top="155" left="274" width="17" height="11" font="6">HY</text>
+<text top="153" left="295" width="7" height="14" font="2">S</text>
+<text top="155" left="302" width="44" height="11" font="6">ERVERS</text>
+<text top="153" left="350" width="10" height="14" font="2">C</text>
+<text top="155" left="360" width="32" height="11" font="6">RASH</text>
+<text top="168" left="105" width="414" height="14" font="2">Before getting into the details of the NFSv2 protocol, you might be</text>
+<text top="183" left="87" width="432" height="14" font="2">wondering: why do servers crash? Well, as you might guess, there are</text>
+<text top="197" left="87" width="309" height="14" font="2">plenty of reasons. Servers may simply suffer from a</text>
+<text top="198" left="400" width="84" height="13" font="5"><b>power outage</b></text>
+<text top="197" left="487" width="32" height="14" font="2">(tem-</text>
+<text top="212" left="87" width="432" height="14" font="2">porarily); only when power is restored can the machines be restarted.</text>
+<text top="227" left="87" width="432" height="14" font="2">Servers are often comprised of hundreds of thousands or even millions</text>
+<text top="242" left="87" width="201" height="14" font="2">of lines of code; thus, they have</text>
+<text top="242" left="293" width="30" height="13" font="5"><b>bugs</b></text>
+<text top="242" left="328" width="191" height="14" font="2">(even good software has a few</text>
+<text top="257" left="87" width="432" height="14" font="2">bugs per hundred or thousand lines of code), and thus they eventually</text>
+<text top="272" left="87" width="432" height="14" font="2">will trigger a bug that will cause them to crash. They also have memory</text>
+<text top="287" left="87" width="432" height="14" font="2">leaks; even a small memory leak will cause a system to run out of mem-</text>
+<text top="302" left="87" width="432" height="14" font="2">ory and crash. And, ﬁnally, in distributed systems, there is a network</text>
+<text top="317" left="87" width="432" height="14" font="2">between the client and the server; if the network acts strangely (for ex-</text>
+<text top="332" left="87" width="119" height="14" font="2">ample, if it becomes</text>
+<text top="332" left="210" width="69" height="13" font="5"><b>partitioned</b></text>
+<text top="332" left="282" width="237" height="14" font="2">and clients and servers are working but</text>
+<text top="347" left="87" width="432" height="14" font="2">cannot communicate), it may appear as if a remote machine has crashed,</text>
+<text top="362" left="87" width="397" height="14" font="2">but in reality it is just not currently reachable through the network.</text>
+<text top="418" left="55" width="113" height="17" font="7">49.2 On To NFS</text>
+<text top="449" left="105" width="414" height="14" font="2">One of the earliest and quite successful distributed systems was devel-</text>
+<text top="464" left="87" width="432" height="14" font="2">oped by Sun Microsystems, and is known as the Sun Network File Sys-</text>
+<text top="478" left="87" width="432" height="14" font="2">tem (or NFS) [S86]. In deﬁning NFS, Sun took an unusual approach: in-</text>
+<text top="493" left="87" width="432" height="14" font="2">stead of building a proprietary and closed system, Sun instead developed</text>
+<text top="508" left="87" width="15" height="14" font="2">an</text>
+<text top="508" left="105" width="85" height="13" font="5"><b>open protocol</b></text>
+<text top="508" left="194" width="325" height="14" font="2">which simply speciﬁed the exact message formats that</text>
+<text top="523" left="87" width="432" height="14" font="2">clients and servers would use to communicate. Different groups could</text>
+<text top="538" left="87" width="432" height="14" font="2">develop their own NFS servers and thus compete in an NFS marketplace</text>
+<text top="553" left="87" width="432" height="14" font="2">while preserving interoperability. It worked: today there are many com-</text>
+<text top="568" left="87" width="432" height="14" font="2">panies that sell NFS servers (including Oracle/Sun, NetApp [HLM94],</text>
+<text top="583" left="87" width="432" height="14" font="2">EMC, IBM, and others), and the widespread success of NFS is likely at-</text>
+<text top="598" left="87" width="243" height="14" font="2">tributed to this “open market” approach.</text>
+<text top="636" left="55" width="375" height="17" font="7">49.3 Focus: Simple And Fast Server Crash Recovery</text>
+<text top="668" left="105" width="414" height="14" font="2">In this chapter, we will discuss the classic NFS protocol (version 2,</text>
+<text top="682" left="87" width="432" height="14" font="2">a.k.a. NFSv2), which was the standard for many years; small changes</text>
+<text top="697" left="87" width="432" height="14" font="2">were made in moving to NFSv3, and larger-scale protocol changes were</text>
+<text top="712" left="87" width="432" height="14" font="2">made in moving to NFSv4. However, NFSv2 is both wonderful and frus-</text>
+<text top="727" left="87" width="214" height="14" font="2">trating and thus serves as our focus.</text>
+<text top="744" left="105" width="350" height="14" font="2">In NFSv2, the main goal in the design of the protocol was</text>
+<text top="744" left="459" width="60" height="14" font="11">simple and</text>
+<text top="758" left="87" width="139" height="14" font="11">fast server crash recovery</text>
+<text top="759" left="226" width="293" height="14" font="2">. In a multiple-client, single-server environment,</text>
+<text top="773" left="87" width="432" height="14" font="2">this goal makes a great deal of sense; any minute that the server is down</text>
+<text top="788" left="87" width="137" height="14" font="2">(or unavailable) makes</text>
+<text top="788" left="227" width="13" height="14" font="11">all</text>
+<text top="788" left="244" width="275" height="14" font="2">the client machines (and their users) unhappy</text>
+<text top="803" left="87" width="414" height="14" font="2">and unproductive. Thus, as the server goes, so goes the entire system.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="6">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="6">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="6">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="4" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">4</text>
+<text top="96" left="335" width="7" height="14" font="2">S</text>
+<text top="98" left="343" width="18" height="11" font="6">UN</text>
+<text top="96" left="362" width="4" height="14" font="2">’</text>
+<text top="98" left="366" width="6" height="11" font="6">S</text>
+<text top="96" left="376" width="11" height="14" font="2">N</text>
+<text top="98" left="388" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="442" width="7" height="14" font="2">F</text>
+<text top="98" left="450" width="18" height="11" font="6">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="480" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="523" width="37" height="14" font="2">(NFS)</text>
+<text top="137" left="97" width="339" height="17" font="7">49.4 Key To Fast Crash Recovery: Statelessness</text>
+<text top="167" left="147" width="414" height="14" font="2">This simple goal is realized in NFSv2 by designing what we refer to</text>
+<text top="182" left="129" width="23" height="14" font="2">as a</text>
+<text top="183" left="155" width="52" height="13" font="5"><b>stateless</b></text>
+<text top="182" left="210" width="351" height="14" font="2">protocol. The server, by design, does not keep track of any-</text>
+<text top="197" left="129" width="432" height="14" font="2">thing about what is happening at each client. For example, the server</text>
+<text top="212" left="129" width="432" height="14" font="2">does not know which clients are caching which blocks, or which ﬁles are</text>
+<text top="227" left="129" width="432" height="14" font="2">currently open at each client, or the current ﬁle pointer position for a ﬁle,</text>
+<text top="242" left="129" width="432" height="14" font="2">etc. Simply put, the server does not track anything about what clients are</text>
+<text top="257" left="129" width="432" height="14" font="2">doing; rather, the protocol is designed to deliver in each protocol request</text>
+<text top="272" left="129" width="104" height="14" font="11">all the information</text>
+<text top="272" left="238" width="323" height="14" font="2">that is needed in order to complete the request. If it</text>
+<text top="287" left="129" width="432" height="14" font="2">doesn’t now, this stateless approach will make more sense as we discuss</text>
+<text top="302" left="129" width="199" height="14" font="2">the protocol in more detail below.</text>
+<text top="318" left="147" width="114" height="14" font="2">For an example of a</text>
+<text top="318" left="263" width="46" height="13" font="5"><b>stateful</b></text>
+<text top="318" left="312" width="211" height="14" font="2">(not stateless) protocol, consider the</text>
+<text top="319" left="525" width="48" height="11" font="8">open()</text>
+<text top="333" left="129" width="186" height="14" font="2">system call. Given a pathname,</text>
+<text top="334" left="318" width="48" height="11" font="8">open()</text>
+<text top="333" left="369" width="191" height="14" font="2">returns a ﬁle descriptor (an inte-</text>
+<text top="348" left="129" width="253" height="14" font="2">ger). This descriptor is used on subsequent</text>
+<text top="349" left="385" width="48" height="11" font="8">read()</text>
+<text top="348" left="436" width="13" height="14" font="2">or</text>
+<text top="349" left="452" width="57" height="11" font="8">write()</text>
+<text top="348" left="511" width="49" height="14" font="2">requests</text>
+<text top="363" left="129" width="432" height="14" font="2">to access various ﬁle blocks, as in this application code (note that proper</text>
+<text top="378" left="129" width="373" height="14" font="2">error checking of the system calls is omitted for space reasons):</text>
+<text top="401" left="129" width="137" height="11" font="8">char buffer[MAX];</text>
+<text top="416" left="129" width="436" height="11" font="8">int fd = open(&#34;foo&#34;, O_RDONLY); // get descriptor &#34;fd&#34;</text>
+<text top="431" left="129" width="178" height="11" font="8">read(fd, buffer, MAX);</text>
+<text top="431" left="331" width="234" height="11" font="8">// read MAX from foo via &#34;fd&#34;</text>
+<text top="446" left="129" width="178" height="11" font="8">read(fd, buffer, MAX);</text>
+<text top="446" left="331" width="137" height="11" font="8">// read MAX again</text>
+<text top="461" left="129" width="24" height="11" font="8">...</text>
+<text top="475" left="129" width="178" height="11" font="8">read(fd, buffer, MAX);</text>
+<text top="475" left="331" width="137" height="11" font="8">// read MAX again</text>
+<text top="490" left="129" width="81" height="11" font="8">close(fd);</text>
+<text top="490" left="331" width="105" height="11" font="8">// close file</text>
+<text top="525" left="204" width="69" height="14" font="2">Figure 49.3:</text>
+<text top="525" left="277" width="209" height="13" font="5"><b>Client Code: Reading From A File</b></text>
+<text top="541" left="147" width="414" height="14" font="2">Now imagine that the client-side ﬁle system opens the ﬁle by sending</text>
+<text top="556" left="129" width="432" height="14" font="2">a protocol message to the server saying “open the ﬁle ’foo’ and give me</text>
+<text top="571" left="129" width="432" height="14" font="2">back a descriptor”. The ﬁle server then opens the ﬁle locally on its side</text>
+<text top="586" left="129" width="432" height="14" font="2">and sends the descriptor back to the client. On subsequent reads, the</text>
+<text top="601" left="129" width="285" height="14" font="2">client application uses that descriptor to call the</text>
+<text top="601" left="418" width="48" height="11" font="8">read()</text>
+<text top="601" left="469" width="91" height="14" font="2">system call; the</text>
+<text top="616" left="129" width="432" height="14" font="2">client-side ﬁle system then passes the descriptor in a message to the ﬁle</text>
+<text top="631" left="129" width="432" height="14" font="2">server, saying “read some bytes from the ﬁle that is referred to by the</text>
+<text top="645" left="129" width="205" height="14" font="2">descriptor I am passing you here”.</text>
+<text top="662" left="147" width="282" height="14" font="2">In this example, the ﬁle descriptor is a piece of</text>
+<text top="662" left="433" width="74" height="13" font="5"><b>shared state</b></text>
+<text top="662" left="511" width="50" height="14" font="2">between</text>
+<text top="677" left="129" width="281" height="14" font="2">the client and the server (Ousterhout calls this</text>
+<text top="677" left="414" width="102" height="13" font="5"><b>distributed state</b></text>
+<text top="677" left="520" width="41" height="14" font="2">[O91]).</text>
+<text top="692" left="129" width="432" height="14" font="2">Shared state, as we hinted above, complicates crash recovery. Imagine</text>
+<text top="707" left="129" width="432" height="14" font="2">the server crashes after the ﬁrst read completes, but before the client</text>
+<text top="721" left="129" width="432" height="14" font="2">has issued the second one. After the server is up and running again,</text>
+<text top="736" left="129" width="432" height="14" font="2">the client then issues the second read. Unfortunately, the server has no</text>
+<text top="751" left="129" width="106" height="14" font="2">idea to which ﬁle</text>
+<text top="752" left="240" width="16" height="11" font="8">fd</text>
+<text top="751" left="261" width="300" height="14" font="2">is referring; that information was ephemeral (i.e.,</text>
+<text top="766" left="129" width="432" height="14" font="2">in memory) and thus lost when the server crashed. To handle this situa-</text>
+<text top="781" left="129" width="377" height="14" font="2">tion, the client and server would have to engage in some kind of</text>
+<text top="781" left="508" width="52" height="13" font="5"><b>recovery</b></text>
+<text top="796" left="129" width="51" height="13" font="5"><b>protocol</b></text>
+<text top="796" left="180" width="381" height="14" font="2">, where the client would make sure to keep enough information</text>
+<text top="811" left="129" width="432" height="14" font="2">around in its memory to be able to tell the server what it needs to know</text>
+<text top="826" left="129" width="186" height="14" font="2">(in this case, that ﬁle descriptor</text>
+<text top="827" left="318" width="16" height="11" font="8">fd</text>
+<text top="826" left="337" width="70" height="14" font="2">refers to ﬁle</text>
+<text top="827" left="411" width="24" height="11" font="8">foo</text>
+<text top="826" left="435" width="8" height="14" font="2">).</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="5" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="18" height="11" font="6">UN</text>
+<text top="96" left="114" width="4" height="14" font="2">’</text>
+<text top="98" left="118" width="6" height="11" font="6">S</text>
+<text top="96" left="128" width="11" height="14" font="2">N</text>
+<text top="98" left="140" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="194" width="7" height="14" font="2">F</text>
+<text top="98" left="203" width="18" height="11" font="6">ILE</text>
+<text top="96" left="225" width="7" height="14" font="2">S</text>
+<text top="98" left="232" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="275" width="37" height="14" font="2">(NFS)</text>
+<text top="96" left="512" width="7" height="14" font="2">5</text>
+<text top="139" left="105" width="414" height="14" font="2">It gets even worse when you consider the fact that a stateful server has</text>
+<text top="154" left="87" width="432" height="14" font="2">to deal with client crashes. Imagine, for example, a client that opens a ﬁle</text>
+<text top="169" left="87" width="128" height="14" font="2">and then crashes. The</text>
+<text top="169" left="218" width="48" height="11" font="8">open()</text>
+<text top="169" left="269" width="250" height="14" font="2">uses up a ﬁle descriptor on the server; how</text>
+<text top="183" left="87" width="432" height="14" font="2">can the server know it is OK to close a given ﬁle? In normal operation, a</text>
+<text top="198" left="87" width="164" height="14" font="2">client would eventually call</text>
+<text top="199" left="254" width="57" height="11" font="8">close()</text>
+<text top="198" left="314" width="205" height="14" font="2">and thus inform the server that the</text>
+<text top="213" left="87" width="432" height="14" font="2">ﬁle should be closed. However, when a client crashes, the server never</text>
+<text top="228" left="87" width="57" height="14" font="2">receives a</text>
+<text top="229" left="147" width="57" height="11" font="8">close()</text>
+<text top="228" left="204" width="315" height="14" font="2">, and thus has to notice the client has crashed in order</text>
+<text top="243" left="87" width="92" height="14" font="2">to close the ﬁle.</text>
+<text top="260" left="105" width="414" height="14" font="2">For these reasons, the designers of NFS decided to pursue a stateless</text>
+<text top="274" left="87" width="432" height="14" font="2">approach: each client operation contains all the information needed to</text>
+<text top="289" left="87" width="432" height="14" font="2">complete the request. No fancy crash recovery is needed; the server just</text>
+<text top="304" left="87" width="432" height="14" font="2">starts running again, and a client, at worst, might have to retry a request.</text>
+<text top="343" left="55" width="179" height="17" font="7">49.5 The NFSv2 Protocol</text>
+<text top="374" left="105" width="414" height="14" font="2">We thus arrive at the NFSv2 protocol deﬁnition. Our problem state-</text>
+<text top="389" left="87" width="90" height="14" font="2">ment is simple:</text>
+<text top="432" left="125" width="8" height="14" font="2">T</text>
+<text top="434" left="134" width="16" height="11" font="6">HE</text>
+<text top="432" left="154" width="10" height="14" font="2">C</text>
+<text top="434" left="164" width="24" height="11" font="6">RUX</text>
+<text top="432" left="189" width="19" height="14" font="2">: H</text>
+<text top="434" left="209" width="20" height="11" font="6">OW</text>
+<text top="432" left="233" width="8" height="14" font="2">T</text>
+<text top="434" left="242" width="8" height="11" font="6">O</text>
+<text top="432" left="254" width="10" height="14" font="2">D</text>
+<text top="434" left="265" width="34" height="11" font="6">EFINE</text>
+<text top="432" left="303" width="22" height="14" font="2">A S</text>
+<text top="434" left="325" width="56" height="11" font="6">TATELESS</text>
+<text top="432" left="385" width="7" height="14" font="2">F</text>
+<text top="434" left="393" width="18" height="11" font="6">ILE</text>
+<text top="432" left="415" width="8" height="14" font="2">P</text>
+<text top="434" left="424" width="57" height="11" font="6">ROTOCOL</text>
+<text top="447" left="105" width="414" height="14" font="2">How can we deﬁne the network protocol to enable stateless operation?</text>
+<text top="462" left="87" width="150" height="14" font="2">Clearly, stateful calls like</text>
+<text top="463" left="241" width="48" height="11" font="8">open()</text>
+<text top="462" left="294" width="225" height="14" font="2">can’t be a part of the discussion (as it</text>
+<text top="477" left="87" width="432" height="14" font="2">would require the server to track open ﬁles); however, the client appli-</text>
+<text top="492" left="87" width="136" height="14" font="2">cation will want to call</text>
+<text top="493" left="227" width="48" height="11" font="8">open()</text>
+<text top="492" left="275" width="3" height="14" font="2">,</text>
+<text top="493" left="282" width="48" height="11" font="8">read()</text>
+<text top="492" left="331" width="3" height="14" font="2">,</text>
+<text top="493" left="338" width="57" height="11" font="8">write()</text>
+<text top="492" left="394" width="3" height="14" font="2">,</text>
+<text top="493" left="401" width="57" height="11" font="8">close()</text>
+<text top="492" left="461" width="58" height="14" font="2">and other</text>
+<text top="507" left="87" width="432" height="14" font="2">standard API calls to access ﬁles and directories. Thus, as a reﬁned ques-</text>
+<text top="522" left="87" width="334" height="14" font="2">tion, how do we deﬁne the protocol to both be stateless</text>
+<text top="522" left="425" width="20" height="14" font="11">and</text>
+<text top="522" left="449" width="70" height="14" font="2">support the</text>
+<text top="537" left="87" width="139" height="14" font="2">POSIX ﬁle system API?</text>
+<text top="584" left="105" width="414" height="14" font="2">One key to understanding the design of the NFS protocol is under-</text>
+<text top="599" left="87" width="75" height="14" font="2">standing the</text>
+<text top="599" left="166" width="66" height="13" font="5"><b>ﬁle handle</b></text>
+<text top="599" left="232" width="287" height="14" font="2">. File handles are used to uniquely describe the</text>
+<text top="614" left="87" width="432" height="14" font="2">ﬁle or directory a particular operation is going to operate upon; thus,</text>
+<text top="629" left="87" width="304" height="14" font="2">many of the protocol requests include a ﬁle handle.</text>
+<text top="645" left="105" width="414" height="14" font="2">You can think of a ﬁle handle as having three important components: a</text>
+<text top="660" left="87" width="92" height="14" font="11">volume identiﬁer</text>
+<text top="660" left="179" width="21" height="14" font="2">, an</text>
+<text top="660" left="204" width="75" height="14" font="11">inode number</text>
+<text top="660" left="279" width="40" height="14" font="2">, and a</text>
+<text top="660" left="322" width="103" height="14" font="11">generation number</text>
+<text top="660" left="426" width="93" height="14" font="2">; together, these</text>
+<text top="675" left="87" width="432" height="14" font="2">three items comprise a unique identiﬁer for a ﬁle or directory that a client</text>
+<text top="690" left="87" width="432" height="14" font="2">wishes to access. The volume identiﬁer informs the server which ﬁle sys-</text>
+<text top="705" left="87" width="432" height="14" font="2">tem the request refers to (an NFS server can export more than one ﬁle</text>
+<text top="720" left="87" width="432" height="14" font="2">system); the inode number tells the server which ﬁle within that partition</text>
+<text top="735" left="87" width="432" height="14" font="2">the request is accessing. Finally, the generation number is needed when</text>
+<text top="750" left="87" width="432" height="14" font="2">reusing an inode number; by incrementing it whenever an inode num-</text>
+<text top="765" left="87" width="432" height="14" font="2">ber is reused, the server ensures that a client with an old ﬁle handle can’t</text>
+<text top="780" left="87" width="257" height="14" font="2">accidentally access the newly-allocated ﬁle.</text>
+<text top="796" left="105" width="414" height="14" font="2">Here is a summary of some of the important pieces of the protocol; the</text>
+<text top="811" left="87" width="432" height="14" font="2">full protocol is available elsewhere (see Callaghan’s book for an excellent</text>
+<text top="826" left="87" width="221" height="14" font="2">and detailed overview of NFS [C00]).</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="6">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="6">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="6">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="6" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="7" height="14" font="2">6</text>
+<text top="96" left="335" width="7" height="14" font="2">S</text>
+<text top="98" left="343" width="18" height="11" font="6">UN</text>
+<text top="96" left="362" width="4" height="14" font="2">’</text>
+<text top="98" left="366" width="6" height="11" font="6">S</text>
+<text top="96" left="376" width="11" height="14" font="2">N</text>
+<text top="98" left="388" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="442" width="7" height="14" font="2">F</text>
+<text top="98" left="450" width="18" height="11" font="6">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="480" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="523" width="37" height="14" font="2">(NFS)</text>
+<text top="138" left="138" width="121" height="11" font="8">NFSPROC_GETATTR</text>
+<text top="137" left="277" width="63" height="14" font="2">ﬁle handle</text>
+<text top="152" left="277" width="107" height="14" font="2">returns: attributes</text>
+<text top="168" left="138" width="121" height="11" font="8">NFSPROC_SETATTR</text>
+<text top="167" left="277" width="126" height="14" font="2">ﬁle handle, attributes</text>
+<text top="182" left="277" width="107" height="14" font="2">returns: attributes</text>
+<text top="198" left="138" width="113" height="11" font="8">NFSPROC_LOOKUP</text>
+<text top="197" left="277" width="287" height="14" font="2">directory ﬁle handle, name of ﬁle/dir to look up</text>
+<text top="212" left="277" width="177" height="14" font="2">returns: ﬁle handle, attributes</text>
+<text top="228" left="138" width="97" height="11" font="8">NFSPROC_READ</text>
+<text top="227" left="277" width="142" height="14" font="2">ﬁle handle, offset, count</text>
+<text top="242" left="277" width="90" height="14" font="2">data, attributes</text>
+<text top="258" left="138" width="105" height="11" font="8">NFSPROC_WRITE</text>
+<text top="257" left="277" width="175" height="14" font="2">ﬁle handle, offset, count, data</text>
+<text top="272" left="277" width="57" height="14" font="2">attributes</text>
+<text top="287" left="138" width="113" height="11" font="8">NFSPROC_CREATE</text>
+<text top="287" left="277" width="260" height="14" font="2">directory ﬁle handle, name of ﬁle, attributes</text>
+<text top="302" left="277" width="126" height="14" font="2">ﬁle handle, attributes</text>
+<text top="317" left="138" width="113" height="11" font="8">NFSPROC_REMOVE</text>
+<text top="316" left="277" width="286" height="14" font="2">directory ﬁle handle, name of ﬁle to be removed</text>
+<text top="331" left="277" width="7" height="14" font="2">–</text>
+<text top="347" left="138" width="105" height="11" font="8">NFSPROC_MKDIR</text>
+<text top="346" left="277" width="295" height="14" font="2">directory ﬁle handle, name of directory, attributes</text>
+<text top="361" left="277" width="126" height="14" font="2">ﬁle handle, attributes</text>
+<text top="377" left="138" width="105" height="11" font="8">NFSPROC_RMDIR</text>
+<text top="376" left="277" width="321" height="14" font="2">directory ﬁle handle, name of directory to be removed</text>
+<text top="391" left="277" width="7" height="14" font="2">–</text>
+<text top="407" left="138" width="121" height="11" font="8">NFSPROC_READDIR</text>
+<text top="406" left="277" width="279" height="14" font="2">directory handle, count of bytes to read, cookie</text>
+<text top="421" left="277" width="316" height="14" font="2">returns: directory entries, cookie (to get more entries)</text>
+<text top="446" left="221" width="69" height="14" font="2">Figure 49.4:</text>
+<text top="446" left="294" width="175" height="13" font="5"><b>The NFS Protocol: Examples</b></text>
+<text top="465" left="147" width="414" height="14" font="2">We brieﬂy highlight the important components of the protocol. First,</text>
+<text top="480" left="129" width="432" height="14" font="2">the LOOKUP protocol message is used to obtain a ﬁle handle, which is</text>
+<text top="495" left="129" width="432" height="14" font="2">then subsequently used to access ﬁle data. The client passes a directory</text>
+<text top="510" left="129" width="432" height="14" font="2">ﬁle handle and name of a ﬁle to look up, and the handle to that ﬁle (or</text>
+<text top="525" left="129" width="432" height="14" font="2">directory) plus its attributes are passed back to the client from the server.</text>
+<text top="540" left="147" width="414" height="14" font="2">For example, assume the client already has a directory ﬁle handle for</text>
+<text top="555" left="129" width="217" height="14" font="2">the root directory of a ﬁle system (</text>
+<text top="556" left="346" width="8" height="11" font="8">/</text>
+<text top="555" left="354" width="207" height="14" font="2">) (indeed, this would be obtained</text>
+<text top="570" left="129" width="101" height="14" font="2">through the NFS</text>
+<text top="570" left="234" width="95" height="13" font="5"><b>mount protocol</b></text>
+<text top="570" left="329" width="232" height="14" font="2">, which is how clients and servers ﬁrst</text>
+<text top="585" left="129" width="432" height="14" font="2">are connected together; we do not discuss the mount protocol here for</text>
+<text top="600" left="129" width="432" height="14" font="2">sake of brevity). If an application running on the client opens the ﬁle</text>
+<text top="616" left="129" width="65" height="11" font="8">/foo.txt</text>
+<text top="615" left="194" width="368" height="14" font="2">, the client-side ﬁle system sends a lookup request to the server,</text>
+<text top="630" left="129" width="264" height="14" font="2">passing it the root ﬁle handle and the name</text>
+<text top="631" left="397" width="57" height="11" font="8">foo.txt</text>
+<text top="630" left="454" width="107" height="14" font="2">; if successful, the</text>
+<text top="645" left="129" width="179" height="14" font="2">ﬁle handle (and attributes) for</text>
+<text top="646" left="311" width="57" height="11" font="8">foo.txt</text>
+<text top="645" left="371" width="99" height="14" font="2">will be returned.</text>
+<text top="661" left="147" width="414" height="14" font="2">In case you are wondering, attributes are just the metadata that the ﬁle</text>
+<text top="676" left="129" width="432" height="14" font="2">system tracks about each ﬁle, including ﬁelds such as ﬁle creation time,</text>
+<text top="691" left="129" width="432" height="14" font="2">last modiﬁcation time, size, ownership and permissions information, and</text>
+<text top="706" left="129" width="432" height="14" font="2">so forth, i.e., the same type of information that you would get back if you</text>
+<text top="721" left="129" width="35" height="14" font="2">called</text>
+<text top="721" left="167" width="48" height="11" font="8">stat()</text>
+<text top="721" left="219" width="50" height="14" font="2">on a ﬁle.</text>
+<text top="736" left="147" width="414" height="14" font="2">Once a ﬁle handle is available, the client can issue READ and WRITE</text>
+<text top="751" left="129" width="432" height="14" font="2">protocol messages on a ﬁle to read or write the ﬁle, respectively. The</text>
+<text top="766" left="129" width="432" height="14" font="2">READ protocol message requires the protocol to pass along the ﬁle handle</text>
+<text top="781" left="129" width="432" height="14" font="2">of the ﬁle along with the offset within the ﬁle and number of bytes to read.</text>
+<text top="796" left="129" width="432" height="14" font="2">The server then will be able to issue the read (after all, the handle tells the</text>
+<text top="811" left="129" width="432" height="14" font="2">server which volume and which inode to read from, and the offset and</text>
+<text top="826" left="129" width="432" height="14" font="2">count tells it which bytes of the ﬁle to read) and return the data (and up-</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="7" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="18" height="11" font="6">UN</text>
+<text top="96" left="114" width="4" height="14" font="2">’</text>
+<text top="98" left="118" width="6" height="11" font="6">S</text>
+<text top="96" left="128" width="11" height="14" font="2">N</text>
+<text top="98" left="140" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="194" width="7" height="14" font="2">F</text>
+<text top="98" left="203" width="18" height="11" font="6">ILE</text>
+<text top="96" left="225" width="7" height="14" font="2">S</text>
+<text top="98" left="232" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="275" width="37" height="14" font="2">(NFS)</text>
+<text top="96" left="512" width="7" height="14" font="2">7</text>
+<text top="139" left="87" width="432" height="14" font="2">to-date attributes) to the client (or an error if there was a failure). WRITE</text>
+<text top="154" left="87" width="432" height="14" font="2">is handled similarly, except the data is passed from the client to the server,</text>
+<text top="169" left="87" width="369" height="14" font="2">and just a success code (and up-to-date attributes) is returned.</text>
+<text top="183" left="105" width="414" height="14" font="2">One last interesting protocol message is the GETATTR request; given a</text>
+<text top="198" left="87" width="432" height="14" font="2">ﬁle handle, it simply fetches the attributes for that ﬁle, including the last</text>
+<text top="213" left="87" width="432" height="14" font="2">modiﬁed time of the ﬁle. We will see why this protocol request is impor-</text>
+<text top="228" left="87" width="410" height="14" font="2">tant in NFSv2 below when we discuss caching (can you guess why?).</text>
+<text top="265" left="55" width="333" height="17" font="7">49.6 From Protocol To Distributed File System</text>
+<text top="295" left="105" width="414" height="14" font="2">Hopefully you are now getting some sense of how this protocol is</text>
+<text top="310" left="87" width="432" height="14" font="2">turned into a ﬁle system across the client-side ﬁle system and the ﬁle</text>
+<text top="325" left="87" width="432" height="14" font="2">server. The client-side ﬁle system tracks open ﬁles, and generally trans-</text>
+<text top="340" left="87" width="432" height="14" font="2">lates application requests into the relevant set of protocol messages. The</text>
+<text top="355" left="87" width="432" height="14" font="2">server simply responds to protocol messages, each of which contains all</text>
+<text top="370" left="87" width="300" height="14" font="2">of the information needed to complete the request.</text>
+<text top="385" left="105" width="414" height="14" font="2">For example, let us consider a simple application which reads a ﬁle.</text>
+<text top="400" left="87" width="432" height="14" font="2">In the diagram (Figure 49.5), we show what system calls the application</text>
+<text top="415" left="87" width="432" height="14" font="2">makes, and what the client-side ﬁle system and ﬁle server do in respond-</text>
+<text top="430" left="87" width="98" height="14" font="2">ing to such calls.</text>
+<text top="445" left="105" width="414" height="14" font="2">A few comments about the ﬁgure. First, notice how the client tracks all</text>
+<text top="460" left="87" width="48" height="14" font="2">relevant</text>
+<text top="460" left="139" width="28" height="13" font="5"><b>state</b></text>
+<text top="460" left="171" width="348" height="14" font="2">for the ﬁle access, including the mapping of the integer ﬁle</text>
+<text top="474" left="87" width="432" height="14" font="2">descriptor to an NFS ﬁle handle as well as the current ﬁle pointer. This</text>
+<text top="489" left="87" width="432" height="14" font="2">enables the client to turn each read request (which you may have noticed</text>
+<text top="504" left="87" width="16" height="14" font="2">do</text>
+<text top="504" left="106" width="18" height="14" font="11">not</text>
+<text top="504" left="127" width="392" height="14" font="2">specify the offset to read from explicitly) into a properly-formatted</text>
+<text top="519" left="87" width="432" height="14" font="2">read protocol message which tells the server exactly which bytes from</text>
+<text top="534" left="87" width="432" height="14" font="2">the ﬁle to read. Upon a successful read, the client updates the current</text>
+<text top="549" left="87" width="432" height="14" font="2">ﬁle position; subsequent reads are issued with the same ﬁle handle but a</text>
+<text top="564" left="87" width="90" height="14" font="2">different offset.</text>
+<text top="579" left="105" width="414" height="14" font="2">Second, you may notice where server interactions occur. When the ﬁle</text>
+<text top="594" left="87" width="432" height="14" font="2">is opened for the ﬁrst time, the client-side ﬁle system sends a LOOKUP</text>
+<text top="609" left="87" width="432" height="14" font="2">request message. Indeed, if a long pathname must be traversed (e.g.,</text>
+<text top="625" left="87" width="153" height="11" font="8">/home/remzi/foo.txt</text>
+<text top="624" left="240" width="278" height="14" font="2">), the client would send three LOOKUPs: one</text>
+<text top="639" left="87" width="62" height="14" font="2">to look up</text>
+<text top="640" left="154" width="32" height="11" font="8">home</text>
+<text top="639" left="190" width="93" height="14" font="2">in the directory</text>
+<text top="640" left="287" width="8" height="11" font="8">/</text>
+<text top="639" left="295" width="96" height="14" font="2">, one to look up</text>
+<text top="640" left="396" width="40" height="11" font="8">remzi</text>
+<text top="639" left="440" width="12" height="14" font="2">in</text>
+<text top="640" left="456" width="32" height="11" font="8">home</text>
+<text top="639" left="488" width="31" height="14" font="2">, and</text>
+<text top="654" left="87" width="127" height="14" font="2">ﬁnally one to look up</text>
+<text top="655" left="217" width="57" height="11" font="8">foo.txt</text>
+<text top="654" left="277" width="12" height="14" font="2">in</text>
+<text top="655" left="292" width="40" height="11" font="8">remzi</text>
+<text top="654" left="333" width="3" height="14" font="2">.</text>
+<text top="669" left="105" width="414" height="14" font="2">Third, you may notice how each server request has all the information</text>
+<text top="684" left="87" width="432" height="14" font="2">needed to complete the request in its entirety. This design point is critical</text>
+<text top="699" left="87" width="432" height="14" font="2">to be able to gracefully recover from server failure, as we will now discuss</text>
+<text top="714" left="87" width="432" height="14" font="2">in more detail; it ensures that the server does not need state to be able to</text>
+<text top="729" left="87" width="136" height="14" font="2">respond to the request.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="6">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="6">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="6">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="8" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="12" size="12" family="KNLYKJ+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="7" height="14" font="2">8</text>
+<text top="96" left="335" width="7" height="14" font="2">S</text>
+<text top="98" left="343" width="18" height="11" font="6">UN</text>
+<text top="96" left="362" width="4" height="14" font="2">’</text>
+<text top="98" left="366" width="6" height="11" font="6">S</text>
+<text top="96" left="376" width="11" height="14" font="2">N</text>
+<text top="98" left="388" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="442" width="7" height="14" font="2">F</text>
+<text top="98" left="450" width="18" height="11" font="6">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="480" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="523" width="37" height="14" font="2">(NFS)</text>
+<text top="138" left="138" width="34" height="12" font="12"><b>Client</b></text>
+<text top="138" left="370" width="35" height="12" font="12"><b>Server</b></text>
+<text top="167" left="138" width="112" height="12" font="12"><b>fd = open(”/foo”, ...);</b></text>
+<text top="181" left="144" width="183" height="12" font="9">Send LOOKUP (rootdir FH, ”foo”)</text>
+<text top="195" left="370" width="137" height="12" font="9">Receive LOOKUP request</text>
+<text top="209" left="376" width="130" height="12" font="9">look for ”foo” in root dir</text>
+<text top="224" left="376" width="145" height="12" font="9">return foo’s FH + attributes</text>
+<text top="238" left="141" width="126" height="12" font="9">Receive LOOKUP reply</text>
+<text top="252" left="148" width="177" height="12" font="9">allocate ﬁle desc in open ﬁle table</text>
+<text top="266" left="148" width="116" height="12" font="9">store foo’s FH in table</text>
+<text top="280" left="148" width="150" height="12" font="9">store current ﬁle position (0)</text>
+<text top="294" left="148" width="185" height="12" font="9">return ﬁle descriptor to application</text>
+<text top="338" left="138" width="122" height="12" font="12"><b>read(fd, buffer, MAX);</b></text>
+<text top="352" left="141" width="173" height="12" font="9">Index into open ﬁle table with fd</text>
+<text top="366" left="148" width="128" height="12" font="9">get NFS ﬁle handle (FH)</text>
+<text top="380" left="148" width="171" height="12" font="9">use current ﬁle position as offset</text>
+<text top="394" left="141" width="211" height="12" font="9">Send READ (FH, offset=0, count=MAX)</text>
+<text top="409" left="370" width="119" height="12" font="9">Receive READ request</text>
+<text top="423" left="376" width="178" height="12" font="9">use FH to get volume/inode num</text>
+<text top="437" left="376" width="165" height="12" font="9">read inode from disk (or cache)</text>
+<text top="451" left="376" width="195" height="12" font="9">compute block location (using offset)</text>
+<text top="465" left="376" width="158" height="12" font="9">read data from disk (or cache)</text>
+<text top="480" left="376" width="104" height="12" font="9">return data to client</text>
+<text top="494" left="141" width="108" height="12" font="9">Receive READ reply</text>
+<text top="508" left="148" width="175" height="12" font="9">update ﬁle position (+bytes read)</text>
+<text top="522" left="148" width="163" height="12" font="9">set current ﬁle position = MAX</text>
+<text top="536" left="148" width="157" height="12" font="9">return data/error code to app</text>
+<text top="580" left="138" width="122" height="12" font="12"><b>read(fd, buffer, MAX);</b></text>
+<text top="594" left="144" width="334" height="12" font="9">Same except offset=MAX and set current ﬁle position = 2*MAX</text>
+<text top="637" left="138" width="122" height="12" font="12"><b>read(fd, buffer, MAX);</b></text>
+<text top="651" left="144" width="344" height="12" font="9">Same except offset=2*MAX and set current ﬁle position = 3*MAX</text>
+<text top="694" left="138" width="50" height="12" font="12"><b>close(fd);</b></text>
+<text top="709" left="141" width="193" height="12" font="9">Just need to clean up local structures</text>
+<text top="723" left="141" width="197" height="12" font="9">Free descriptor ”fd” in open ﬁle table</text>
+<text top="737" left="141" width="139" height="12" font="9">(No need to talk to server)</text>
+<text top="764" left="150" width="69" height="14" font="2">Figure 49.5:</text>
+<text top="764" left="223" width="318" height="13" font="5"><b>Reading A File: Client-side And File Server Actions</b></text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="9" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="18" height="11" font="6">UN</text>
+<text top="96" left="114" width="4" height="14" font="2">’</text>
+<text top="98" left="118" width="6" height="11" font="6">S</text>
+<text top="96" left="128" width="11" height="14" font="2">N</text>
+<text top="98" left="140" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="194" width="7" height="14" font="2">F</text>
+<text top="98" left="203" width="18" height="11" font="6">ILE</text>
+<text top="96" left="225" width="7" height="14" font="2">S</text>
+<text top="98" left="232" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="275" width="37" height="14" font="2">(NFS)</text>
+<text top="96" left="512" width="7" height="14" font="2">9</text>
+<text top="148" left="202" width="8" height="14" font="2">T</text>
+<text top="150" left="211" width="11" height="11" font="6">IP</text>
+<text top="148" left="222" width="13" height="14" font="2">: I</text>
+<text top="150" left="236" width="83" height="11" font="6">DEMPOTENCY</text>
+<text top="148" left="323" width="5" height="14" font="2">I</text>
+<text top="150" left="328" width="6" height="11" font="6">S</text>
+<text top="148" left="337" width="8" height="14" font="2">P</text>
+<text top="150" left="346" width="58" height="11" font="6">OWERFUL</text>
+<text top="163" left="87" width="81" height="13" font="5"><b>Idempotency</b></text>
+<text top="163" left="171" width="348" height="14" font="2">is a useful property when building reliable systems. When</text>
+<text top="178" left="87" width="432" height="14" font="2">an operation can be issued more than once, it is much easier to handle</text>
+<text top="193" left="87" width="372" height="14" font="2">failure of the operation; you can just retry it. If an operation is</text>
+<text top="193" left="462" width="18" height="14" font="11">not</text>
+<text top="193" left="484" width="35" height="14" font="2">idem-</text>
+<text top="208" left="87" width="206" height="14" font="2">potent, life becomes more difﬁcult.</text>
+<text top="255" left="55" width="421" height="17" font="7">49.7 Handling Server Failure With Idempotent Operations</text>
+<text top="285" left="105" width="414" height="14" font="2">When a client sends a message to the server, it sometimes does not re-</text>
+<text top="300" left="87" width="432" height="14" font="2">ceive a reply. There are many possible reasons for this failure to respond.</text>
+<text top="315" left="87" width="432" height="14" font="2">In some cases, the message may be dropped by the network; networks do</text>
+<text top="330" left="87" width="432" height="14" font="2">lose messages, and thus either the request or the reply could be lost and</text>
+<text top="345" left="87" width="278" height="14" font="2">thus the client would never receive a response.</text>
+<text top="361" left="105" width="414" height="14" font="2">It is also possible that the server has crashed, and thus is not currently</text>
+<text top="376" left="87" width="432" height="14" font="2">responding to messages. After a bit, the server will be rebooted and start</text>
+<text top="391" left="87" width="432" height="14" font="2">running again, but in the meanwhile all requests have been lost. In all of</text>
+<text top="406" left="87" width="432" height="14" font="2">these cases, clients are left with a question: what should they do when</text>
+<text top="421" left="87" width="269" height="14" font="2">the server does not reply in a timely manner?</text>
+<text top="436" left="105" width="414" height="14" font="2">In NFSv2, a client handles all of these failures in a single, uniform, and</text>
+<text top="451" left="87" width="136" height="14" font="2">elegant way: it simply</text>
+<text top="451" left="227" width="34" height="14" font="11">retries</text>
+<text top="451" left="266" width="253" height="14" font="2">the request. Speciﬁcally, after sending the</text>
+<text top="466" left="87" width="432" height="14" font="2">request, the client sets a timer to go off after a speciﬁed time period. If a</text>
+<text top="481" left="87" width="432" height="14" font="2">reply is received before the timer goes off, the timer is canceled and all is</text>
+<text top="496" left="87" width="210" height="14" font="2">well. If, however, the timer goes off</text>
+<text top="496" left="300" width="31" height="14" font="11">before</text>
+<text top="496" left="335" width="184" height="14" font="2">any reply is received, the client</text>
+<text top="511" left="87" width="432" height="14" font="2">assumes the request has not been processed and resends it. If the server</text>
+<text top="526" left="87" width="382" height="14" font="2">replies, all is well and the client has neatly handled the problem.</text>
+<text top="541" left="105" width="414" height="14" font="2">The ability of the client to simply retry the request (regardless of what</text>
+<text top="556" left="87" width="432" height="14" font="2">caused the failure) is due to an important property of most NFS requests:</text>
+<text top="571" left="87" width="48" height="14" font="2">they are</text>
+<text top="571" left="139" width="71" height="13" font="5"><b>idempotent</b></text>
+<text top="571" left="210" width="309" height="14" font="2">. An operation is called idempotent when the effect</text>
+<text top="586" left="87" width="432" height="14" font="2">of performing the operation multiple times is equivalent to the effect of</text>
+<text top="601" left="87" width="432" height="14" font="2">performing the operation a single time. For example, if you store a value</text>
+<text top="616" left="87" width="432" height="14" font="2">to a memory location three times, it is the same as doing so once; thus</text>
+<text top="631" left="87" width="432" height="14" font="2">“store value to memory” is an idempotent operation. If, however, you in-</text>
+<text top="646" left="87" width="432" height="14" font="2">crement a counter three times, it results in a different amount than doing</text>
+<text top="661" left="87" width="432" height="14" font="2">so just once; thus, “increment counter” is not idempotent. More gener-</text>
+<text top="676" left="87" width="432" height="14" font="2">ally, any operation that just reads data is obviously idempotent; an oper-</text>
+<text top="691" left="87" width="432" height="14" font="2">ation that updates data must be more carefully considered to determine</text>
+<text top="706" left="87" width="126" height="14" font="2">if it has this property.</text>
+<text top="721" left="105" width="414" height="14" font="2">The heart of the design of crash recovery in NFS is the idempotency</text>
+<text top="736" left="87" width="432" height="14" font="2">of most common operations. LOOKUP and READ requests are trivially</text>
+<text top="751" left="87" width="432" height="14" font="2">idempotent, as they only read information from the ﬁle server and do not</text>
+<text top="766" left="87" width="432" height="14" font="2">update it. More interestingly, WRITE requests are also idempotent. If,</text>
+<text top="781" left="87" width="432" height="14" font="2">for example, a WRITE fails, the client can simply retry it. The WRITE</text>
+<text top="796" left="87" width="432" height="14" font="2">message contains the data, the count, and (importantly) the exact offset</text>
+<text top="811" left="87" width="432" height="14" font="2">to write the data to. Thus, it can be repeated with the knowledge that the</text>
+<text top="826" left="87" width="415" height="14" font="2">outcome of multiple writes is the same as the outcome of a single one.</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="6">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="6">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="6">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="10" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="13" size="16" family="PHSPCM+NimbusSanL-Regu" color="#000000"/>
+	<fontspec id="14" size="14" family="PHSPCM+NimbusSanL-Regu" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">10</text>
+<text top="96" left="335" width="7" height="14" font="2">S</text>
+<text top="98" left="343" width="18" height="11" font="6">UN</text>
+<text top="96" left="362" width="4" height="14" font="2">’</text>
+<text top="98" left="366" width="6" height="11" font="6">S</text>
+<text top="96" left="376" width="11" height="14" font="2">N</text>
+<text top="98" left="388" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="442" width="7" height="14" font="2">F</text>
+<text top="98" left="450" width="18" height="11" font="6">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="480" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="523" width="37" height="14" font="2">(NFS)</text>
+<text top="142" left="266" width="157" height="16" font="13">Case 1: Request Lost</text>
+<text top="164" left="182" width="35" height="13" font="14">Client</text>
+<text top="179" left="164" width="69" height="10" font="4">[send request]</text>
+<text top="164" left="468" width="40" height="13" font="14">Server</text>
+<text top="192" left="464" width="49" height="10" font="4">(no mesg)</text>
+<text top="245" left="267" width="156" height="16" font="13">Case 2: Server Down</text>
+<text top="266" left="182" width="35" height="13" font="14">Client</text>
+<text top="281" left="164" width="69" height="10" font="4">[send request]</text>
+<text top="266" left="468" width="40" height="13" font="14">Server</text>
+<text top="295" left="472" width="33" height="10" font="4">(down)</text>
+<text top="367" left="186" width="318" height="16" font="13">Case 3: Reply lost on way back from Server</text>
+<text top="389" left="182" width="35" height="13" font="14">Client</text>
+<text top="404" left="164" width="69" height="10" font="4">[send request]</text>
+<text top="389" left="468" width="40" height="13" font="14">Server</text>
+<text top="417" left="451" width="66" height="10" font="4">[recv request]</text>
+<text top="431" left="451" width="78" height="10" font="4">[handle request]</text>
+<text top="445" left="451" width="56" height="10" font="4">[send reply]</text>
+<text top="489" left="232" width="69" height="14" font="2">Figure 49.6:</text>
+<text top="489" left="305" width="153" height="13" font="5"><b>The Three Types Of Loss</b></text>
+<text top="532" left="147" width="414" height="14" font="2">In this way, the client can handle all timeouts in a uniﬁed way. If a</text>
+<text top="547" left="129" width="432" height="14" font="2">WRITE request was simply lost (Case 1 above), the client will retry it, the</text>
+<text top="562" left="129" width="432" height="14" font="2">server will perform the write, and all will be well. The same will happen</text>
+<text top="577" left="129" width="432" height="14" font="2">if the server happened to be down while the request was sent, but back</text>
+<text top="592" left="129" width="432" height="14" font="2">up and running when the second request is sent, and again all works</text>
+<text top="607" left="129" width="432" height="14" font="2">as desired (Case 2). Finally, the server may in fact receive the WRITE</text>
+<text top="622" left="129" width="432" height="14" font="2">request, issue the write to its disk, and send a reply. This reply may get</text>
+<text top="637" left="129" width="432" height="14" font="2">lost (Case 3), again causing the client to re-send the request. When the</text>
+<text top="651" left="129" width="432" height="14" font="2">server receives the request again, it will simply do the exact same thing:</text>
+<text top="666" left="129" width="432" height="14" font="2">write the data to disk and reply that it has done so. If the client this time</text>
+<text top="681" left="129" width="432" height="14" font="2">receives the reply, all is again well, and thus the client has handled both</text>
+<text top="696" left="129" width="350" height="14" font="2">message loss and server failure in a uniform manner. Neat!</text>
+<text top="714" left="147" width="414" height="14" font="2">A small aside: some operations are hard to make idempotent. For</text>
+<text top="729" left="129" width="432" height="14" font="2">example, when you try to make a directory that already exists, you are</text>
+<text top="744" left="129" width="432" height="14" font="2">informed that the mkdir request has failed. Thus, in NFS, if the ﬁle server</text>
+<text top="759" left="129" width="432" height="14" font="2">receives a MKDIR protocol message and executes it successfully but the</text>
+<text top="773" left="129" width="432" height="14" font="2">reply is lost, the client may repeat it and encounter that failure when in</text>
+<text top="788" left="129" width="432" height="14" font="2">fact the operation at ﬁrst succeeded and then only failed on the retry.</text>
+<text top="803" left="129" width="139" height="14" font="2">Thus, life is not perfect.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="11" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="18" height="11" font="6">UN</text>
+<text top="96" left="114" width="4" height="14" font="2">’</text>
+<text top="98" left="118" width="6" height="11" font="6">S</text>
+<text top="96" left="128" width="11" height="14" font="2">N</text>
+<text top="98" left="140" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="194" width="7" height="14" font="2">F</text>
+<text top="98" left="203" width="18" height="11" font="6">ILE</text>
+<text top="96" left="225" width="7" height="14" font="2">S</text>
+<text top="98" left="232" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="275" width="37" height="14" font="2">(NFS)</text>
+<text top="96" left="506" width="13" height="14" font="2">11</text>
+<text top="148" left="112" width="8" height="14" font="2">T</text>
+<text top="150" left="121" width="11" height="11" font="6">IP</text>
+<text top="148" left="132" width="16" height="14" font="2">: P</text>
+<text top="150" left="149" width="44" height="11" font="6">ERFECT</text>
+<text top="148" left="197" width="5" height="14" font="2">I</text>
+<text top="150" left="202" width="6" height="11" font="6">S</text>
+<text top="148" left="212" width="8" height="14" font="2">T</text>
+<text top="150" left="221" width="16" height="11" font="6">HE</text>
+<text top="148" left="241" width="8" height="14" font="2">E</text>
+<text top="150" left="250" width="35" height="11" font="6">NEMY</text>
+<text top="148" left="289" width="11" height="14" font="2">O</text>
+<text top="150" left="300" width="6" height="11" font="6">F</text>
+<text top="148" left="310" width="8" height="14" font="2">T</text>
+<text top="150" left="319" width="16" height="11" font="6">HE</text>
+<text top="148" left="339" width="10" height="14" font="2">G</text>
+<text top="150" left="350" width="27" height="11" font="6">OOD</text>
+<text top="148" left="381" width="15" height="14" font="2">(V</text>
+<text top="150" left="396" width="50" height="11" font="6">OLTAIRE</text>
+<text top="148" left="447" width="4" height="14" font="2">’</text>
+<text top="150" left="451" width="6" height="11" font="6">S</text>
+<text top="148" left="461" width="8" height="14" font="2">L</text>
+<text top="150" left="470" width="19" height="11" font="6">AW</text>
+<text top="148" left="490" width="4" height="14" font="2">)</text>
+<text top="163" left="87" width="432" height="14" font="2">Even when you design a beautiful system, sometimes all the corner cases</text>
+<text top="178" left="87" width="432" height="14" font="2">don’t work out exactly as you might like. Take the mkdir example above;</text>
+<text top="193" left="87" width="432" height="14" font="2">one could redesign mkdir to have different semantics, thus making it</text>
+<text top="208" left="87" width="432" height="14" font="2">idempotent (think about how you might do so); however, why bother?</text>
+<text top="223" left="87" width="432" height="14" font="2">The NFS design philosophy covers most of the important cases, and over-</text>
+<text top="238" left="87" width="432" height="14" font="2">all makes the system design clean and simple with regards to failure.</text>
+<text top="253" left="87" width="432" height="14" font="2">Thus, accepting that life isn’t perfect and still building the system is a sign</text>
+<text top="268" left="87" width="432" height="14" font="2">of good engineering. Apparently, this wisdom is attributed to Voltaire,</text>
+<text top="283" left="87" width="432" height="14" font="2">for saying “... a wise Italian says that the best is the enemy of the good”</text>
+<text top="298" left="87" width="148" height="14" font="2">[V72], and thus we call it</text>
+<text top="298" left="238" width="87" height="13" font="5"><b>Voltaire’s Law</b></text>
+<text top="298" left="325" width="3" height="14" font="2">.</text>
+<text top="351" left="55" width="360" height="17" font="7">49.8 Improving Performance: Client-side Caching</text>
+<text top="381" left="105" width="414" height="14" font="2">Distributed ﬁle systems are good for a number of reasons, but sending</text>
+<text top="396" left="87" width="432" height="14" font="2">all read and write requests across the network can lead to a big perfor-</text>
+<text top="411" left="87" width="432" height="14" font="2">mance problem: the network generally isn’t that fast, especially as com-</text>
+<text top="426" left="87" width="432" height="14" font="2">pared to local memory or disk. Thus, another problem: how can we im-</text>
+<text top="441" left="87" width="303" height="14" font="2">prove the performance of a distributed ﬁle system?</text>
+<text top="457" left="105" width="414" height="14" font="2">The answer, as you might guess from reading the big bold words in</text>
+<text top="472" left="87" width="224" height="14" font="2">the sub-heading above, is client-side</text>
+<text top="472" left="316" width="47" height="13" font="5"><b>caching</b></text>
+<text top="472" left="363" width="156" height="14" font="2">. The NFS client-side ﬁle</text>
+<text top="487" left="87" width="432" height="14" font="2">system caches ﬁle data (and metadata) that it has read from the server in</text>
+<text top="502" left="87" width="432" height="14" font="2">client memory. Thus, while the ﬁrst access is expensive (i.e., it requires</text>
+<text top="517" left="87" width="432" height="14" font="2">network communication), subsequent accesses are serviced quite quickly</text>
+<text top="531" left="87" width="126" height="14" font="2">out of client memory.</text>
+<text top="547" left="105" width="414" height="14" font="2">The cache also serves as a temporary buffer for writes. When a client</text>
+<text top="562" left="87" width="432" height="14" font="2">application ﬁrst writes to a ﬁle, the client buffers the data in client mem-</text>
+<text top="577" left="87" width="432" height="14" font="2">ory (in the same cache as the data it read from the ﬁle server) before writ-</text>
+<text top="592" left="87" width="202" height="14" font="2">ing the data out to the server. Such</text>
+<text top="592" left="292" width="94" height="13" font="5"><b>write buffering</b></text>
+<text top="592" left="388" width="131" height="14" font="2">is useful because it de-</text>
+<text top="607" left="87" width="116" height="14" font="2">couples application</text>
+<text top="608" left="206" width="57" height="11" font="8">write()</text>
+<text top="607" left="265" width="254" height="14" font="2">latency from actual write performance, i.e.,</text>
+<text top="622" left="87" width="142" height="14" font="2">the application’s call to</text>
+<text top="623" left="235" width="57" height="11" font="8">write()</text>
+<text top="622" left="296" width="223" height="14" font="2">succeeds immediately (and just puts</text>
+<text top="637" left="87" width="432" height="14" font="2">the data in the client-side ﬁle system’s cache); only later does the data get</text>
+<text top="652" left="87" width="168" height="14" font="2">written out to the ﬁle server.</text>
+<text top="668" left="105" width="414" height="14" font="2">Thus, NFS clients cache data and performance is usually great and</text>
+<text top="683" left="87" width="432" height="14" font="2">we are done, right? Unfortunately, not quite. Adding caching into any</text>
+<text top="698" left="87" width="432" height="14" font="2">sort of system with multiple client caches introduces a big and interesting</text>
+<text top="713" left="87" width="228" height="14" font="2">challenge which we will refer to as the</text>
+<text top="713" left="318" width="164" height="13" font="5"><b>cache consistency problem</b></text>
+<text top="713" left="482" width="3" height="14" font="2">.</text>
+<text top="751" left="55" width="267" height="17" font="7">49.9 The Cache Consistency Problem</text>
+<text top="781" left="105" width="414" height="14" font="2">The cache consistency problem is best illustrated with three clients and</text>
+<text top="796" left="87" width="432" height="14" font="2">a single server. Imagine client C1 reads a ﬁle F, and keeps a copy of the</text>
+<text top="811" left="87" width="432" height="14" font="2">ﬁle in its local cache. Now imagine a different client, C2, overwrites the</text>
+<text top="826" left="87" width="432" height="14" font="2">ﬁle F, thus changing its contents; let’s call the new version of the ﬁle F</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="6">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="6">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="6">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="12" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">12</text>
+<text top="96" left="335" width="7" height="14" font="2">S</text>
+<text top="98" left="343" width="18" height="11" font="6">UN</text>
+<text top="96" left="362" width="4" height="14" font="2">’</text>
+<text top="98" left="366" width="6" height="11" font="6">S</text>
+<text top="96" left="376" width="11" height="14" font="2">N</text>
+<text top="98" left="388" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="442" width="7" height="14" font="2">F</text>
+<text top="98" left="450" width="18" height="11" font="6">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="480" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="523" width="37" height="14" font="2">(NFS)</text>
+<text top="173" left="197" width="14" height="11" font="4">C1</text>
+<text top="187" left="174" width="61" height="11" font="4">cache: F[v1]</text>
+<text top="173" left="338" width="14" height="11" font="4">C2</text>
+<text top="187" left="314" width="61" height="11" font="4">cache: F[v2]</text>
+<text top="173" left="478" width="14" height="11" font="4">C3</text>
+<text top="187" left="452" width="67" height="11" font="4">cache: empty</text>
+<text top="243" left="323" width="44" height="11" font="4">Server S</text>
+<text top="257" left="302" width="85" height="11" font="4">disk: F[v1] at first</text>
+<text top="271" left="309" width="97" height="11" font="4">      F[v2] eventually</text>
+<text top="304" left="209" width="69" height="14" font="2">Figure 49.7:</text>
+<text top="304" left="282" width="198" height="13" font="5"><b>The Cache Consistency Problem</b></text>
+<text top="332" left="129" width="432" height="14" font="2">(version 2), or F[v2] and the old version F[v1] so we can keep the two</text>
+<text top="347" left="129" width="432" height="14" font="2">distinct (but of course the ﬁle has the same name, just different contents).</text>
+<text top="362" left="129" width="414" height="14" font="2">Finally, there is a third client, C3, which has not yet accessed the ﬁle F.</text>
+<text top="377" left="147" width="414" height="14" font="2">You can probably see the problem that is upcoming (Figure 49.7). In</text>
+<text top="392" left="129" width="432" height="14" font="2">fact, there are two subproblems. The ﬁrst subproblem is that the client C2</text>
+<text top="407" left="129" width="432" height="14" font="2">may buffer its writes in its cache for a time before propagating them to the</text>
+<text top="422" left="129" width="432" height="14" font="2">server; in this case, while F[v2] sits in C2’s memory, any access of F from</text>
+<text top="437" left="129" width="432" height="14" font="2">another client (say C3) will fetch the old version of the ﬁle (F[v1]). Thus,</text>
+<text top="452" left="129" width="432" height="14" font="2">by buffering writes at the client, other clients may get stale versions of the</text>
+<text top="467" left="129" width="432" height="14" font="2">ﬁle, which may be undesirable; indeed, imagine the case where you log</text>
+<text top="482" left="129" width="432" height="14" font="2">into machine C2, update F, and then log into C3 and try to read the ﬁle,</text>
+<text top="497" left="129" width="432" height="14" font="2">only to get the old copy! Certainly this could be frustrating. Thus, let us</text>
+<text top="512" left="129" width="286" height="14" font="2">call this aspect of the cache consistency problem</text>
+<text top="512" left="419" width="102" height="13" font="5"><b>update visibility</b></text>
+<text top="512" left="521" width="40" height="14" font="2">; when</text>
+<text top="527" left="129" width="347" height="14" font="2">do updates from one client become visible at other clients?</text>
+<text top="542" left="147" width="297" height="14" font="2">The second subproblem of cache consistency is a</text>
+<text top="542" left="448" width="66" height="13" font="5"><b>stale cache</b></text>
+<text top="542" left="514" width="46" height="14" font="2">; in this</text>
+<text top="557" left="129" width="432" height="14" font="2">case, C2 has ﬁnally ﬂushed its writes to the ﬁle server, and thus the server</text>
+<text top="572" left="129" width="432" height="14" font="2">has the latest version (F[v2]). However, C1 still has F[v1] in its cache; if a</text>
+<text top="587" left="129" width="432" height="14" font="2">program running on C1 reads ﬁle F, it will get a stale version (F[v1]) and</text>
+<text top="601" left="129" width="365" height="14" font="2">not the most recent copy (F[v2]), which is (often) undesirable.</text>
+<text top="617" left="147" width="415" height="14" font="2">NFSv2 implementations solve these cache consistency problems in two</text>
+<text top="632" left="129" width="432" height="14" font="2">ways. First, to address update visibility, clients implement what is some-</text>
+<text top="647" left="129" width="71" height="14" font="2">times called</text>
+<text top="647" left="204" width="86" height="13" font="5"><b>ﬂush-on-close</b></text>
+<text top="647" left="294" width="39" height="14" font="2">(a.k.a.,</text>
+<text top="647" left="336" width="82" height="13" font="5"><b>close-to-open</b></text>
+<text top="647" left="418" width="142" height="14" font="2">) consistency semantics;</text>
+<text top="661" left="129" width="432" height="14" font="2">speciﬁcally, when a ﬁle is written to and subsequently closed by a client</text>
+<text top="676" left="129" width="432" height="14" font="2">application, the client ﬂushes all updates (i.e., dirty pages in the cache)</text>
+<text top="691" left="129" width="432" height="14" font="2">to the server. With ﬂush-on-close consistency, NFS ensures that a subse-</text>
+<text top="706" left="129" width="360" height="14" font="2">quent open from another node will see the latest ﬁle version.</text>
+<text top="721" left="147" width="414" height="14" font="2">Second, to address the stale-cache problem, NFSv2 clients ﬁrst check</text>
+<text top="736" left="129" width="432" height="14" font="2">to see whether a ﬁle has changed before using its cached contents. Specif-</text>
+<text top="751" left="129" width="432" height="14" font="2">ically, before using a cached block, the client-side ﬁle system will issue a</text>
+<text top="766" left="129" width="432" height="14" font="2">GETATTR request to the server to fetch the ﬁle’s attributes. The attributes,</text>
+<text top="781" left="129" width="432" height="14" font="2">importantly, include information as to when the ﬁle was last modiﬁed on</text>
+<text top="796" left="129" width="432" height="14" font="2">the server; if the time-of-modiﬁcation is more recent than the time that the</text>
+<text top="811" left="129" width="281" height="14" font="2">ﬁle was fetched into the client cache, the client</text>
+<text top="811" left="414" width="68" height="13" font="5"><b>invalidates</b></text>
+<text top="811" left="486" width="75" height="14" font="2">the ﬁle, thus</text>
+<text top="826" left="129" width="432" height="14" font="2">removing it from the client cache and ensuring that subsequent reads will</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="13" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="18" height="11" font="6">UN</text>
+<text top="96" left="114" width="4" height="14" font="2">’</text>
+<text top="98" left="118" width="6" height="11" font="6">S</text>
+<text top="96" left="128" width="11" height="14" font="2">N</text>
+<text top="98" left="140" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="194" width="7" height="14" font="2">F</text>
+<text top="98" left="203" width="18" height="11" font="6">ILE</text>
+<text top="96" left="225" width="7" height="14" font="2">S</text>
+<text top="98" left="232" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="275" width="37" height="14" font="2">(NFS)</text>
+<text top="96" left="506" width="13" height="14" font="2">13</text>
+<text top="139" left="87" width="432" height="14" font="2">go to the server and retrieve the latest version of the ﬁle. If, on the other</text>
+<text top="154" left="87" width="432" height="14" font="2">hand, the client sees that it has the latest version of the ﬁle, it will go</text>
+<text top="169" left="87" width="385" height="14" font="2">ahead and use the cached contents, thus increasing performance.</text>
+<text top="184" left="105" width="414" height="14" font="2">When the original team at Sun implemented this solution to the stale-</text>
+<text top="199" left="87" width="432" height="14" font="2">cache problem, they realized a new problem; suddenly, the NFS server</text>
+<text top="213" left="87" width="432" height="14" font="2">was ﬂooded with GETATTR requests. A good engineering principle to</text>
+<text top="228" left="87" width="153" height="14" font="2">follow is to design for the</text>
+<text top="228" left="244" width="82" height="13" font="5"><b>common case</b></text>
+<text top="228" left="326" width="193" height="14" font="2">, and to make it work well; here,</text>
+<text top="243" left="87" width="432" height="14" font="2">although the common case was that a ﬁle was accessed only from a sin-</text>
+<text top="258" left="87" width="432" height="14" font="2">gle client (perhaps repeatedly), the client always had to send GETATTR</text>
+<text top="273" left="87" width="432" height="14" font="2">requests to the server to make sure no one else had changed the ﬁle. A</text>
+<text top="288" left="87" width="432" height="14" font="2">client thus bombards the server, constantly asking “has anyone changed</text>
+<text top="303" left="87" width="269" height="14" font="2">this ﬁle?”, when most of the time no one had.</text>
+<text top="318" left="105" width="247" height="14" font="2">To remedy this situation (somewhat), an</text>
+<text top="318" left="356" width="91" height="13" font="5"><b>attribute cache</b></text>
+<text top="318" left="453" width="66" height="14" font="2">was added</text>
+<text top="333" left="87" width="432" height="14" font="2">to each client. A client would still validate a ﬁle before accessing it, but</text>
+<text top="348" left="87" width="432" height="14" font="2">most often would just look in the attribute cache to fetch the attributes.</text>
+<text top="363" left="87" width="432" height="14" font="2">The attributes for a particular ﬁle were placed in the cache when the ﬁle</text>
+<text top="378" left="87" width="432" height="14" font="2">was ﬁrst accessed, and then would timeout after a certain amount of time</text>
+<text top="393" left="87" width="432" height="14" font="2">(say 3 seconds). Thus, during those three seconds, all ﬁle accesses would</text>
+<text top="408" left="87" width="432" height="14" font="2">determine that it was OK to use the cached ﬁle and thus do so with no</text>
+<text top="423" left="87" width="242" height="14" font="2">network communication with the server.</text>
+<text top="460" left="55" width="290" height="17" font="7">49.10 Assessing NFS Cache Consistency</text>
+<text top="490" left="105" width="414" height="14" font="2">A few ﬁnal words about NFS cache consistency. The ﬂush-on-close be-</text>
+<text top="505" left="87" width="432" height="14" font="2">havior was added to “make sense”, but introduced a certain performance</text>
+<text top="520" left="87" width="432" height="14" font="2">problem. Speciﬁcally, if a temporary or short-lived ﬁle was created on a</text>
+<text top="535" left="87" width="432" height="14" font="2">client and then soon deleted, it would still be forced to the server. A more</text>
+<text top="550" left="87" width="432" height="14" font="2">ideal implementation might keep such short-lived ﬁles in memory until</text>
+<text top="565" left="87" width="432" height="14" font="2">they are deleted and thus remove the server interaction entirely, perhaps</text>
+<text top="580" left="87" width="143" height="14" font="2">increasing performance.</text>
+<text top="595" left="105" width="414" height="14" font="2">More importantly, the addition of an attribute cache into NFS made</text>
+<text top="610" left="87" width="432" height="14" font="2">it very hard to understand or reason about exactly what version of a ﬁle</text>
+<text top="624" left="87" width="432" height="14" font="2">one was getting. Sometimes you would get the latest version; sometimes</text>
+<text top="639" left="87" width="432" height="14" font="2">you would get an old version simply because your attribute cache hadn’t</text>
+<text top="654" left="87" width="432" height="14" font="2">yet timed out and thus the client was happy to give you what was in</text>
+<text top="669" left="87" width="432" height="14" font="2">client memory. Although this was ﬁne most of the time, it would (and</text>
+<text top="684" left="87" width="267" height="14" font="2">still does!) occasionally lead to odd behavior.</text>
+<text top="699" left="105" width="414" height="14" font="2">And thus we have described the oddity that is NFS client caching.</text>
+<text top="714" left="87" width="432" height="14" font="2">It serves as an interesting example where details of an implementation</text>
+<text top="729" left="87" width="439" height="14" font="2">serve to deﬁne user-observable semantics, instead of the other way around.</text>
+<text top="766" left="55" width="362" height="17" font="7">49.11 Implications On Server-Side Write Buffering</text>
+<text top="796" left="105" width="414" height="14" font="2">Our focus so far has been on client caching, and that is where most</text>
+<text top="811" left="87" width="432" height="14" font="2">of the interesting issues arise. However, NFS servers tend to be well-</text>
+<text top="826" left="87" width="432" height="14" font="2">equipped machines with a lot of memory too, and thus they have caching</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="6">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="6">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="6">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="14" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">14</text>
+<text top="96" left="335" width="7" height="14" font="2">S</text>
+<text top="98" left="343" width="18" height="11" font="6">UN</text>
+<text top="96" left="362" width="4" height="14" font="2">’</text>
+<text top="98" left="366" width="6" height="11" font="6">S</text>
+<text top="96" left="376" width="11" height="14" font="2">N</text>
+<text top="98" left="388" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="442" width="7" height="14" font="2">F</text>
+<text top="98" left="450" width="18" height="11" font="6">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="480" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="523" width="37" height="14" font="2">(NFS)</text>
+<text top="139" left="129" width="432" height="14" font="2">concerns as well. When data (and metadata) is read from disk, NFS</text>
+<text top="154" left="129" width="432" height="14" font="2">servers will keep it in memory, and subsequent reads of said data (and</text>
+<text top="169" left="129" width="419" height="14" font="2">metadata) will not go to disk, a potential (small) boost in performance.</text>
+<text top="184" left="147" width="414" height="14" font="2">More intriguing is the case of write buffering. An NFS server abso-</text>
+<text top="198" left="129" width="63" height="14" font="2">lutely may</text>
+<text top="198" left="195" width="18" height="14" font="11">not</text>
+<text top="198" left="216" width="345" height="14" font="2">return success on a WRITE protocol request until the write</text>
+<text top="213" left="129" width="432" height="14" font="2">has been forced to stable storage (e.g., to disk or some other persistent</text>
+<text top="228" left="129" width="432" height="14" font="2">device). While the server can place a copy of the data in its memory, re-</text>
+<text top="243" left="129" width="432" height="14" font="2">turning success to the client on a WRITE protocol request could result in</text>
+<text top="258" left="129" width="259" height="14" font="2">incorrect behavior; can you ﬁgure out why?</text>
+<text top="273" left="147" width="414" height="14" font="2">The answer lies in our assumptions about how clients handle server</text>
+<text top="288" left="129" width="416" height="14" font="2">failure. Imagine the following sequence of writes as issued by a client:</text>
+<text top="317" left="153" width="428" height="11" font="8">write(fd, a_buffer, size); // fill 1st block with a’s</text>
+<text top="332" left="153" width="428" height="11" font="8">write(fd, b_buffer, size); // fill 2nd block with b’s</text>
+<text top="347" left="153" width="428" height="11" font="8">write(fd, c_buffer, size); // fill 3rd block with c’s</text>
+<text top="374" left="147" width="414" height="14" font="2">These writes overwrite the three blocks of a ﬁle with a block of a’s,</text>
+<text top="389" left="129" width="368" height="14" font="2">then b’s, and then c’s. Thus, if the ﬁle initially looked like this:</text>
+<text top="418" left="153" width="355" height="11" font="8">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</text>
+<text top="433" left="153" width="355" height="11" font="8">yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</text>
+<text top="448" left="153" width="355" height="11" font="8">zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</text>
+<text top="475" left="129" width="432" height="14" font="2">We might expect the ﬁnal result after these writes to be like this, with the</text>
+<text top="490" left="129" width="427" height="14" font="2">x’s, y’s, and z’s, would be overwritten with a’s, b’s, and c’s, respectively.</text>
+<text top="519" left="153" width="355" height="11" font="8">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</text>
+<text top="534" left="153" width="355" height="11" font="8">bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</text>
+<text top="549" left="153" width="355" height="11" font="8">cccccccccccccccccccccccccccccccccccccccccccc</text>
+<text top="576" left="147" width="414" height="14" font="2">Now let’s assume for the sake of the example that these three client</text>
+<text top="591" left="129" width="432" height="14" font="2">writes were issued to the server as three distinct WRITE protocol mes-</text>
+<text top="606" left="129" width="432" height="14" font="2">sages. Assume the ﬁrst WRITE message is received by the server and</text>
+<text top="621" left="129" width="432" height="14" font="2">issued to the disk, and the client informed of its success. Now assume</text>
+<text top="636" left="129" width="432" height="14" font="2">the second write is just buffered in memory, and the server also reports</text>
+<text top="650" left="129" width="133" height="14" font="2">it success to the client</text>
+<text top="650" left="266" width="31" height="14" font="11">before</text>
+<text top="650" left="302" width="259" height="14" font="2">forcing it to disk; unfortunately, the server</text>
+<text top="665" left="129" width="432" height="14" font="2">crashes before writing it to disk. The server quickly restarts and receives</text>
+<text top="680" left="129" width="263" height="14" font="2">the third write request, which also succeeds.</text>
+<text top="695" left="147" width="414" height="14" font="2">Thus, to the client, all the requests succeeded, but we are surprised</text>
+<text top="710" left="129" width="204" height="14" font="2">that the ﬁle contents look like this:</text>
+<text top="739" left="153" width="355" height="11" font="8">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</text>
+<text top="754" left="153" width="436" height="11" font="8">yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy &lt;--- oops</text>
+<text top="769" left="153" width="355" height="11" font="8">cccccccccccccccccccccccccccccccccccccccccccc</text>
+<text top="796" left="147" width="414" height="14" font="2">Yikes! Because the server told the client that the second write was</text>
+<text top="811" left="129" width="432" height="14" font="2">successful before committing it to disk, an old chunk is left in the ﬁle,</text>
+<text top="826" left="129" width="357" height="14" font="2">which, depending on the application, might be catastrophic.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="15" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="18" height="11" font="6">UN</text>
+<text top="96" left="114" width="4" height="14" font="2">’</text>
+<text top="98" left="118" width="6" height="11" font="6">S</text>
+<text top="96" left="128" width="11" height="14" font="2">N</text>
+<text top="98" left="140" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="194" width="7" height="14" font="2">F</text>
+<text top="98" left="203" width="18" height="11" font="6">ILE</text>
+<text top="96" left="225" width="7" height="14" font="2">S</text>
+<text top="98" left="232" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="275" width="37" height="14" font="2">(NFS)</text>
+<text top="96" left="506" width="13" height="14" font="2">15</text>
+<text top="148" left="174" width="10" height="14" font="2">A</text>
+<text top="150" left="185" width="26" height="11" font="6">SIDE</text>
+<text top="148" left="212" width="13" height="14" font="2">: I</text>
+<text top="150" left="226" width="73" height="11" font="6">NNOVATION</text>
+<text top="148" left="303" width="8" height="14" font="2">B</text>
+<text top="150" left="312" width="37" height="11" font="6">REEDS</text>
+<text top="148" left="353" width="5" height="14" font="2">I</text>
+<text top="150" left="358" width="73" height="11" font="6">NNOVATION</text>
+<text top="163" left="87" width="432" height="14" font="2">As with many pioneering technologies, bringing NFS into the world also</text>
+<text top="178" left="87" width="432" height="14" font="2">required other fundamental innovations to enable its success. Probably</text>
+<text top="193" left="87" width="129" height="14" font="2">the most lasting is the</text>
+<text top="193" left="219" width="118" height="13" font="5"><b>Virtual File System</b></text>
+<text top="193" left="339" width="4" height="14" font="2">(</text>
+<text top="193" left="344" width="26" height="13" font="5"><b>VFS</b></text>
+<text top="193" left="370" width="16" height="14" font="2">) /</text>
+<text top="193" left="389" width="80" height="13" font="5"><b>Virtual Node</b></text>
+<text top="193" left="472" width="4" height="14" font="2">(</text>
+<text top="193" left="476" width="38" height="13" font="5"><b>vnode</b></text>
+<text top="193" left="514" width="4" height="14" font="2">)</text>
+<text top="208" left="87" width="432" height="14" font="2">interface, introduced by Sun to allow different ﬁle systems to be readily</text>
+<text top="223" left="87" width="243" height="14" font="2">plugged into the operating system [K86].</text>
+<text top="241" left="87" width="432" height="14" font="2">The VFS layer includes operations that are done to an entire ﬁle system,</text>
+<text top="256" left="87" width="432" height="14" font="2">such as mounting and unmounting, getting ﬁle-system wide statistics,</text>
+<text top="271" left="87" width="432" height="14" font="2">and forcing all dirty (not yet written) writes to disk. The vnode layer</text>
+<text top="286" left="87" width="432" height="14" font="2">consists of all operations one can perform on a ﬁle, such as open, close,</text>
+<text top="301" left="87" width="158" height="14" font="2">reads, writes, and so forth.</text>
+<text top="319" left="87" width="432" height="14" font="2">To build a new ﬁle system, one simply has to deﬁne these “methods”; the</text>
+<text top="334" left="87" width="432" height="14" font="2">framework then handles the rest, connecting system calls to the particular</text>
+<text top="349" left="87" width="432" height="14" font="2">ﬁle system implementation, performing generic functions common to all</text>
+<text top="364" left="87" width="432" height="14" font="2">ﬁle systems (e.g., caching) in a centralized manner, and thus providing a</text>
+<text top="379" left="87" width="432" height="14" font="2">way for multiple ﬁle system implementations to operate simultaneously</text>
+<text top="394" left="87" width="144" height="14" font="2">within the same system.</text>
+<text top="412" left="87" width="432" height="14" font="2">Although some of the details have changed, many modern systems have</text>
+<text top="427" left="87" width="432" height="14" font="2">some form of a VFS/vnode layer, including Linux, BSD variants, macOS,</text>
+<text top="442" left="87" width="432" height="14" font="2">and even Windows (in the form of the Installable File System). Even if</text>
+<text top="457" left="87" width="432" height="14" font="2">NFS becomes less relevant to the world, some of the necessary founda-</text>
+<text top="472" left="87" width="165" height="14" font="2">tions beneath it will live on.</text>
+<text top="526" left="105" width="212" height="14" font="2">To avoid this problem, NFS servers</text>
+<text top="526" left="321" width="28" height="14" font="11">must</text>
+<text top="526" left="353" width="166" height="14" font="2">commit each write to stable</text>
+<text top="541" left="87" width="432" height="14" font="2">(persistent) storage before informing the client of success; doing so en-</text>
+<text top="556" left="87" width="432" height="14" font="2">ables the client to detect server failure during a write, and thus retry until</text>
+<text top="571" left="87" width="432" height="14" font="2">it ﬁnally succeeds. Doing so ensures we will never end up with ﬁle con-</text>
+<text top="586" left="87" width="259" height="14" font="2">tents intermingled as in the above example.</text>
+<text top="602" left="105" width="414" height="14" font="2">The problem that this requirement gives rise to in NFS server im-</text>
+<text top="617" left="87" width="410" height="14" font="2">plementation is that write performance, without great care, can be</text>
+<text top="617" left="503" width="16" height="14" font="11">the</text>
+<text top="632" left="87" width="432" height="14" font="2">major performance bottleneck. Indeed, some companies (e.g., Network</text>
+<text top="647" left="87" width="432" height="14" font="2">Appliance) came into existence with the simple objective of building an</text>
+<text top="662" left="87" width="432" height="14" font="2">NFS server that can perform writes quickly; one trick they use is to ﬁrst</text>
+<text top="677" left="87" width="432" height="14" font="2">put writes in a battery-backed memory, thus enabling to quickly reply</text>
+<text top="692" left="87" width="432" height="14" font="2">to WRITE requests without fear of losing the data and without the cost</text>
+<text top="707" left="87" width="432" height="14" font="2">of having to write to disk right away; the second trick is to use a ﬁle sys-</text>
+<text top="722" left="87" width="432" height="14" font="2">tem design speciﬁcally designed to write to disk quickly when one ﬁnally</text>
+<text top="737" left="87" width="186" height="14" font="2">needs to do so [HLM94, RO91].</text>
+<text top="765" left="55" width="113" height="17" font="7">49.12 Summary</text>
+<text top="796" left="105" width="414" height="14" font="2">We have seen the introduction of the NFS distributed ﬁle system. NFS</text>
+<text top="811" left="87" width="432" height="14" font="2">is centered around the idea of simple and fast recovery in the face of</text>
+<text top="826" left="87" width="440" height="14" font="2">server failure, and achieves this end through careful protocol design. Idem-</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="6">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="6">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="6">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="16" position="absolute" top="0" left="0" height="972" width="648">
+<text top="96" left="129" width="13" height="14" font="2">16</text>
+<text top="96" left="335" width="7" height="14" font="2">S</text>
+<text top="98" left="343" width="18" height="11" font="6">UN</text>
+<text top="96" left="362" width="4" height="14" font="2">’</text>
+<text top="98" left="366" width="6" height="11" font="6">S</text>
+<text top="96" left="376" width="11" height="14" font="2">N</text>
+<text top="98" left="388" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="442" width="7" height="14" font="2">F</text>
+<text top="98" left="450" width="18" height="11" font="6">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="480" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="523" width="37" height="14" font="2">(NFS)</text>
+<text top="148" left="272" width="10" height="14" font="2">A</text>
+<text top="150" left="283" width="26" height="11" font="6">SIDE</text>
+<text top="148" left="310" width="18" height="14" font="2">: K</text>
+<text top="150" left="328" width="14" height="11" font="6">EY</text>
+<text top="148" left="347" width="39" height="14" font="2">NFS T</text>
+<text top="150" left="387" width="32" height="11" font="6">ERMS</text>
+<text top="163" left="148" width="412" height="14" font="2">• The key to realizing the main goal of fast and simple crash recovery</text>
+<text top="178" left="163" width="169" height="14" font="2">in NFS is in the design of a</text>
+<text top="178" left="337" width="52" height="13" font="5"><b>stateless</b></text>
+<text top="178" left="394" width="167" height="14" font="2">protocol. After a crash, the</text>
+<text top="193" left="163" width="397" height="14" font="2">server can quickly restart and begin serving requests again; clients</text>
+<text top="208" left="163" width="21" height="14" font="2">just</text>
+<text top="208" left="188" width="29" height="13" font="5"><b>retry</b></text>
+<text top="208" left="221" width="164" height="14" font="2">requests until they succeed.</text>
+<text top="233" left="148" width="113" height="14" font="2">• Making requests</text>
+<text top="233" left="265" width="71" height="13" font="5"><b>idempotent</b></text>
+<text top="233" left="338" width="223" height="14" font="2">is a central aspect of the NFS protocol.</text>
+<text top="248" left="163" width="397" height="14" font="2">An operation is idempotent when the effect of performing it multi-</text>
+<text top="263" left="163" width="397" height="14" font="2">ple times is equivalent to performing it once. In NFS, idempotency</text>
+<text top="278" left="163" width="397" height="14" font="2">enables client retry without worry, and uniﬁes client lost-message</text>
+<text top="293" left="163" width="342" height="14" font="2">retransmission and how the client handles server crashes.</text>
+<text top="318" left="148" width="334" height="14" font="2">• Performance concerns dictate the need for client-side</text>
+<text top="318" left="487" width="47" height="13" font="5"><b>caching</b></text>
+<text top="318" left="538" width="23" height="14" font="2">and</text>
+<text top="333" left="163" width="94" height="13" font="5"><b>write buffering</b></text>
+<text top="332" left="258" width="103" height="14" font="2">, but introduces a</text>
+<text top="333" left="364" width="164" height="13" font="5"><b>cache consistency problem</b></text>
+<text top="332" left="528" width="3" height="14" font="2">.</text>
+<text top="357" left="148" width="412" height="14" font="2">• NFS implementations provide an engineering solution to cache</text>
+<text top="372" left="163" width="243" height="14" font="2">consistency through multiple means: a</text>
+<text top="372" left="413" width="86" height="13" font="5"><b>ﬂush-on-close</b></text>
+<text top="372" left="505" width="4" height="14" font="2">(</text>
+<text top="372" left="509" width="52" height="13" font="5"><b>close-to-</b></text>
+<text top="387" left="163" width="31" height="13" font="5"><b>open</b></text>
+<text top="387" left="194" width="367" height="14" font="2">) approach ensures that when a ﬁle is closed, its contents are</text>
+<text top="402" left="163" width="397" height="14" font="2">forced to the server, enabling other clients to observe the updates</text>
+<text top="417" left="163" width="397" height="14" font="2">to it. An attribute cache reduces the frequency of checking with the</text>
+<text top="432" left="163" width="350" height="14" font="2">server whether a ﬁle has changed (via GETATTR requests).</text>
+<text top="457" left="148" width="412" height="14" font="2">• NFS servers must commit writes to persistent media before return-</text>
+<text top="472" left="163" width="249" height="14" font="2">ing success; otherwise, data loss can arise.</text>
+<text top="497" left="148" width="412" height="14" font="2">• To support NFS integration into the operating system, Sun intro-</text>
+<text top="512" left="163" width="60" height="14" font="2">duced the</text>
+<text top="512" left="227" width="71" height="13" font="5"><b>VFS/Vnode</b></text>
+<text top="512" left="303" width="258" height="14" font="2">interface, enabling multiple ﬁle system im-</text>
+<text top="527" left="163" width="324" height="14" font="2">plementations to coexist in the same operating system.</text>
+<text top="594" left="129" width="432" height="14" font="2">potency of operations is essential; because a client can safely replay a</text>
+<text top="609" left="129" width="432" height="14" font="2">failed operation, it is OK to do so whether or not the server has executed</text>
+<text top="624" left="129" width="69" height="14" font="2">the request.</text>
+<text top="639" left="147" width="414" height="14" font="2">We also have seen how the introduction of caching into a multiple-</text>
+<text top="654" left="129" width="432" height="14" font="2">client, single-server system can complicate things. In particular, the sys-</text>
+<text top="669" left="129" width="432" height="14" font="2">tem must resolve the cache consistency problem in order to behave rea-</text>
+<text top="684" left="129" width="432" height="14" font="2">sonably; however, NFS does so in a slightly ad hoc fashion which can</text>
+<text top="699" left="129" width="432" height="14" font="2">occasionally result in observably weird behavior. Finally, we saw how</text>
+<text top="714" left="129" width="432" height="14" font="2">server caching can be tricky: writes to the server must be forced to stable</text>
+<text top="728" left="129" width="360" height="14" font="2">storage before returning success (otherwise data can be lost).</text>
+<text top="743" left="147" width="414" height="14" font="2">We haven’t talked about other issues which are certainly relevant, no-</text>
+<text top="758" left="129" width="432" height="14" font="2">tably security. Security in early NFS implementations was remarkably</text>
+<text top="773" left="129" width="432" height="14" font="2">lax; it was rather easy for any user on a client to masquerade as other</text>
+<text top="788" left="129" width="432" height="14" font="2">users and thus gain access to virtually any ﬁle. Subsequent integration</text>
+<text top="803" left="129" width="432" height="14" font="2">with more serious authentication services (e.g., Kerberos [NT94]) have</text>
+<text top="818" left="129" width="221" height="14" font="2">addressed these obvious deﬁciencies.</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+<page number="17" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="15" size="16" family="KNLYKJ+URWPalladioL" color="#000000"/>
+	<fontspec id="16" size="10" family="IDOYUV+URWPalladioL-Ital" color="#000000"/>
+	<fontspec id="17" size="8" family="OIGRZW+URWPalladioL-Roma" color="#000000"/>
+	<fontspec id="18" size="10" family="MZFJHU+NimbusMonL-Regu" color="#000000"/>
+<text top="96" left="87" width="7" height="14" font="2">S</text>
+<text top="98" left="95" width="18" height="11" font="6">UN</text>
+<text top="96" left="114" width="4" height="14" font="2">’</text>
+<text top="98" left="118" width="6" height="11" font="6">S</text>
+<text top="96" left="128" width="11" height="14" font="2">N</text>
+<text top="98" left="140" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="194" width="7" height="14" font="2">F</text>
+<text top="98" left="203" width="18" height="11" font="6">ILE</text>
+<text top="96" left="225" width="7" height="14" font="2">S</text>
+<text top="98" left="232" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="275" width="37" height="14" font="2">(NFS)</text>
+<text top="96" left="506" width="13" height="14" font="2">17</text>
+<text top="137" left="87" width="82" height="16" font="15"><b>References</b></text>
+<text top="165" left="87" width="432" height="11" font="10">[AKW88] “The AWK Programming Language” by Alfred V. Aho, Brian W. Kernighan, Peter</text>
+<text top="177" left="87" width="194" height="11" font="10">J. Weinberger. Pearson, 1988 (1st edition).</text>
+<text top="177" left="285" width="234" height="11" font="16">A concise, wonderful book about awk. We once had the</text>
+<text top="189" left="87" width="432" height="11" font="16">pleasure of meeting Peter Weinberger; when he introduced himself, he said “I’m Peter Weinberger, you</text>
+<text top="201" left="87" width="432" height="11" font="16">know, the ’W’ in awk?” As huge awk fans, this was a moment to savor. One of us (Remzi) then said,</text>
+<text top="213" left="87" width="432" height="11" font="16">“I love awk! I particularly love the book, which makes everything so wonderfully clear.” Weinberger</text>
+<text top="225" left="87" width="226" height="11" font="16">replied (crestfallen), “Oh, Kernighan wrote the book.”</text>
+<text top="241" left="87" width="432" height="11" font="10">[C00] “NFS Illustrated” by Brent Callaghan. Addison-Wesley Professional Computing Series,</text>
+<text top="253" left="87" width="24" height="11" font="10">2000.</text>
+<text top="253" left="114" width="328" height="11" font="16">A great NFS reference; incredibly thorough and detailed per the protocol itself.</text>
+<text top="270" left="87" width="432" height="11" font="10">[ES03] “New NFS Tracing Tools and Techniques for System Analysis” by Daniel Ellard and</text>
+<text top="282" left="87" width="225" height="11" font="10">Margo Seltzer. LISA ’03, San Diego, California.</text>
+<text top="282" left="319" width="200" height="11" font="16">An intricate, careful analysis of NFS done via</text>
+<text top="294" left="87" width="432" height="11" font="16">passive tracing. By simply monitoring network trafﬁc, the authors show how to derive a vast amount</text>
+<text top="305" left="87" width="122" height="11" font="16">of ﬁle system understanding.</text>
+<text top="322" left="87" width="432" height="11" font="10">[HLM94] “File System Design for an NFS File Server Appliance” by Dave Hitz, James Lau,</text>
+<text top="334" left="87" width="332" height="11" font="10">Michael Malcolm. USENIX Winter 1994. San Francisco, California, 1994.</text>
+<text top="334" left="422" width="97" height="11" font="16">Hitz et al. were greatly</text>
+<text top="346" left="87" width="248" height="11" font="16">inﬂuenced by previous work on log-structured ﬁle systems.</text>
+<text top="362" left="87" width="352" height="11" font="10">[K86] “Vnodes: An Architecture for Multiple File System Types in Sun U</text>
+<text top="364" left="439" width="16" height="8" font="17">NIX</text>
+<text top="362" left="456" width="63" height="11" font="10">” by Steve R.</text>
+<text top="374" left="87" width="235" height="11" font="10">Kleiman. USENIX Summer ’86, Atlanta, Georgia.</text>
+<text top="374" left="328" width="191" height="11" font="16">This paper shows how to build a ﬂexible ﬁle</text>
+<text top="386" left="87" width="432" height="11" font="16">system architecture into an operating system, enabling multiple different ﬁle system implementations</text>
+<text top="398" left="87" width="333" height="11" font="16">to coexist. Now used in virtually every modern operating system in some form.</text>
+<text top="414" left="87" width="432" height="11" font="10">[NT94] “Kerberos: An Authentication Service for Computer Networks” by B. Clifford Neu-</text>
+<text top="426" left="87" width="343" height="11" font="10">man, Theodore Ts’o. IEEE Communications, 32(9):33-38, September 1994.</text>
+<text top="426" left="435" width="84" height="11" font="16">Kerberos is an early</text>
+<text top="438" left="87" width="432" height="11" font="16">and hugely inﬂuential authentication service. We probably should write a book chapter about it some-</text>
+<text top="450" left="87" width="26" height="11" font="16">time...</text>
+<text top="466" left="87" width="432" height="11" font="10">[O91] “The Role of Distributed State” by John K. Ousterhout. 1991. Available at this site:</text>
+<text top="479" left="87" width="326" height="9" font="18">ftp://ftp.cs.berkeley.edu/ucb/sprite/papers/state.ps</text>
+<text top="478" left="414" width="3" height="11" font="10">.</text>
+<text top="478" left="420" width="99" height="11" font="16">A rarely referenced dis-</text>
+<text top="490" left="87" width="342" height="11" font="16">cussion of distributed state; a broader perspective on the problems and challenges.</text>
+<text top="506" left="87" width="432" height="11" font="10">[P+94] “NFS Version 3: Design and Implementation” by Brian Pawlowski, Chet Juszczak, Peter</text>
+<text top="518" left="87" width="388" height="11" font="10">Staubach, Carl Smith, Diane Lebel, Dave Hitz. USENIX Summer 1994, pages 137-152.</text>
+<text top="518" left="478" width="40" height="11" font="16">The small</text>
+<text top="530" left="87" width="179" height="11" font="16">modiﬁcations that underlie NFS version 3.</text>
+<text top="547" left="87" width="432" height="11" font="10">[P+00] “The NFS version 4 protocol” by Brian Pawlowski, David Noveck, David Robinson,</text>
+<text top="559" left="87" width="433" height="11" font="10">Robert Thurlow. 2nd International System Administration and Networking Conference (SANE</text>
+<text top="571" left="87" width="27" height="11" font="10">2000).</text>
+<text top="570" left="117" width="246" height="11" font="16">Undoubtedly the most literary paper on NFS ever written.</text>
+<text top="587" left="87" width="432" height="11" font="10">[RO91] “The Design and Implementation of the Log-structured File System” by Mendel Rosen-</text>
+<text top="599" left="87" width="383" height="11" font="10">blum, John Ousterhout. Symposium on Operating Systems Principles (SOSP), 1991.</text>
+<text top="599" left="473" width="46" height="11" font="16">LFS again.</text>
+<text top="611" left="87" width="148" height="11" font="16">No, you can never get enough LFS.</text>
+<text top="627" left="87" width="432" height="11" font="10">[S86] “The Sun Network File System: Design, Implementation and Experience” by Russel</text>
+<text top="639" left="87" width="163" height="11" font="10">Sandberg. USENIX Summer 1986.</text>
+<text top="639" left="258" width="261" height="11" font="16">The original NFS paper; though a bit of a challenging read,</text>
+<text top="651" left="87" width="242" height="11" font="16">it is worthwhile to see the source of these wonderful ideas.</text>
+<text top="667" left="87" width="432" height="11" font="10">[Sun89] “NFS: Network File System Protocol Speciﬁcation” by Sun Microsystems, Inc. Request</text>
+<text top="679" left="87" width="206" height="11" font="10">for Comments: 1094, March 1989. Available:</text>
+<text top="680" left="297" width="220" height="9" font="18">http://www.ietf.org/rfc/rfc1094.txt</text>
+<text top="679" left="516" width="3" height="11" font="10">.</text>
+<text top="691" left="87" width="432" height="11" font="16">The dreaded speciﬁcation; read it if you must, i.e., you are getting paid to read it. Hopefully, paid a lot.</text>
+<text top="703" left="87" width="55" height="11" font="16">Cash money!</text>
+<text top="719" left="87" width="375" height="11" font="10">[V72] “La Begueule” by Francois-Marie Arouet a.k.a. Voltaire. Published in 1772.</text>
+<text top="719" left="466" width="53" height="11" font="16">Voltaire said</text>
+<text top="731" left="87" width="432" height="11" font="16">a number of clever things, this being but one example. For example, Voltaire also said “If you have two</text>
+<text top="743" left="87" width="432" height="11" font="16">religions in your land, the two will cut each other’s throats; but if you have thirty religions, they will</text>
+<text top="755" left="87" width="299" height="11" font="16">dwell in peace.” What do you say to that, Democrats and Republicans?</text>
+<text top="896" left="212" width="83" height="14" font="2">© 2008–25, A</text>
+<text top="898" left="296" width="35" height="11" font="6">RPACI</text>
+<text top="896" left="331" width="16" height="14" font="2">-D</text>
+<text top="898" left="348" width="46" height="11" font="6">USSEAU</text>
+<text top="888" left="469" width="8" height="14" font="2">T</text>
+<text top="890" left="478" width="31" height="11" font="6">HREE</text>
+<text top="903" left="478" width="8" height="14" font="2">E</text>
+<text top="905" left="487" width="23" height="11" font="6">ASY</text>
+<text top="918" left="468" width="8" height="14" font="2">P</text>
+<text top="920" left="477" width="33" height="11" font="6">IECES</text>
+</page>
+<page number="18" position="absolute" top="0" left="0" height="972" width="648">
+	<fontspec id="19" size="15" family="KNLYKJ+URWPalladioL" color="#000000"/>
+<text top="96" left="129" width="13" height="14" font="2">18</text>
+<text top="96" left="335" width="7" height="14" font="2">S</text>
+<text top="98" left="343" width="18" height="11" font="6">UN</text>
+<text top="96" left="362" width="4" height="14" font="2">’</text>
+<text top="98" left="366" width="6" height="11" font="6">S</text>
+<text top="96" left="376" width="11" height="14" font="2">N</text>
+<text top="98" left="388" width="51" height="11" font="6">ETWORK</text>
+<text top="96" left="442" width="7" height="14" font="2">F</text>
+<text top="98" left="450" width="18" height="11" font="6">ILE</text>
+<text top="96" left="473" width="7" height="14" font="2">S</text>
+<text top="98" left="480" width="39" height="11" font="6">YSTEM</text>
+<text top="96" left="523" width="37" height="14" font="2">(NFS)</text>
+<text top="137" left="129" width="202" height="16" font="15"><b>Homework (Measurement)</b></text>
+<text top="166" left="147" width="414" height="14" font="2">In this homework, you’ll do a little bit of NFS trace analysis using real</text>
+<text top="181" left="129" width="432" height="14" font="2">traces. The source of these traces is Ellard and Seltzer’s effort [ES03].</text>
+<text top="196" left="129" width="432" height="14" font="2">Make sure to read the related README and download the relevant tar-</text>
+<text top="211" left="129" width="432" height="14" font="2">ball from the OSTEP homework page (as usual) before starting. One tool</text>
+<text top="226" left="129" width="432" height="14" font="2">that might be fun to use during this analysis is the awk programming</text>
+<text top="241" left="129" width="118" height="14" font="2">language [AKW88].</text>
+<text top="277" left="129" width="70" height="15" font="19"><b>Questions</b></text>
+<text top="301" left="146" width="414" height="14" font="2">1. A ﬁrst question for your trace analysis: using the timestamps found</text>
+<text top="316" left="163" width="397" height="14" font="2">in the ﬁrst column, determine the period of time the traces were</text>
+<text top="331" left="163" width="397" height="14" font="2">taken from. How long is the period? What day/week/month/year</text>
+<text top="346" left="163" width="397" height="14" font="2">was it? (does this match the hint given in the ﬁle name?) Hint: Use</text>
+<text top="361" left="163" width="50" height="14" font="2">the tools</text>
+<text top="362" left="217" width="56" height="11" font="8">head -1</text>
+<text top="361" left="277" width="23" height="14" font="2">and</text>
+<text top="362" left="302" width="56" height="11" font="8">tail -1</text>
+<text top="361" left="362" width="199" height="14" font="2">to extract the ﬁrst and last lines of</text>
+<text top="376" left="163" width="182" height="14" font="2">the ﬁle, and do the calculation.</text>
+<text top="391" left="146" width="414" height="14" font="2">2. Now, let’s do some operation counts. How many of each type of op-</text>
+<text top="406" left="163" width="397" height="14" font="2">eration occur in the trace? Sort these by frequency; which operation</text>
+<text top="421" left="163" width="314" height="14" font="2">is most frequent? Does NFS live up to its reputation?</text>
+<text top="436" left="146" width="414" height="14" font="2">3. Now let’s look at some particular operations in more detail. For</text>
+<text top="451" left="163" width="397" height="14" font="2">example, the GETATTR request returns a lot of information about</text>
+<text top="466" left="163" width="397" height="14" font="2">ﬁles, including which user ID the request is being performed for,</text>
+<text top="481" left="163" width="397" height="14" font="2">the size of the ﬁle, and so forth. Make a distribution of ﬁle sizes</text>
+<text top="496" left="163" width="397" height="14" font="2">accessed within the trace; what is the average ﬁle size? Also, how</text>
+<text top="511" left="163" width="397" height="14" font="2">many different users access ﬁles in the trace? Do a few users dom-</text>
+<text top="525" left="163" width="397" height="14" font="2">inate trafﬁc, or is it more spread out? What other interesting infor-</text>
+<text top="540" left="163" width="250" height="14" font="2">mation is found within GETATTR replies?</text>
+<text top="555" left="146" width="414" height="14" font="2">4. You can also look at requests to a given ﬁle and determine how</text>
+<text top="570" left="163" width="397" height="14" font="2">ﬁles are being accessed. For example, is a given ﬁle being read or</text>
+<text top="585" left="163" width="397" height="14" font="2">written sequentially? Or randomly? Look at the details of READ</text>
+<text top="600" left="163" width="312" height="14" font="2">and WRITE requests/replies to compute the answer.</text>
+<text top="615" left="146" width="414" height="14" font="2">5. Trafﬁc comes from many machines and goes to one server (in this</text>
+<text top="630" left="163" width="397" height="14" font="2">trace). Compute a trafﬁc matrix, which shows how many different</text>
+<text top="645" left="163" width="397" height="14" font="2">clients there are in the trace, and how many requests/replies go to</text>
+<text top="660" left="163" width="391" height="14" font="2">each. Do a few machines dominate, or is it more evenly balanced?</text>
+<text top="675" left="146" width="424" height="14" font="2">6. The timing information, and the per-request/reply unique ID, should</text>
+<text top="690" left="163" width="397" height="14" font="2">allow you to compute the latency for a given request. Compute the</text>
+<text top="705" left="163" width="397" height="14" font="2">latencies of all request/reply pairs, and plot them as a distribution.</text>
+<text top="720" left="163" width="266" height="14" font="2">What is the average? Maximum? Minimum?</text>
+<text top="735" left="146" width="414" height="14" font="2">7. Sometimes requests are retried, as the request or its reply could be</text>
+<text top="750" left="163" width="397" height="14" font="2">lost or dropped. Can you ﬁnd any evidence of such retrying in the</text>
+<text top="765" left="163" width="81" height="14" font="2">trace sample?</text>
+<text top="780" left="146" width="414" height="14" font="2">8. There are many other questions you could answer through more</text>
+<text top="794" left="163" width="397" height="14" font="2">analysis. What questions do you think are important? Suggest</text>
+<text top="809" left="163" width="269" height="14" font="2">them to us, and perhaps we’ll add them here!</text>
+<text top="881" left="129" width="11" height="14" font="2">O</text>
+<text top="883" left="141" width="60" height="11" font="6">PERATING</text>
+<text top="896" left="129" width="7" height="14" font="2">S</text>
+<text top="898" left="137" width="45" height="11" font="6">YSTEMS</text>
+<text top="912" left="129" width="13" height="12" font="9">[V</text>
+<text top="914" left="143" width="39" height="10" font="10">ERSION</text>
+<text top="912" left="186" width="27" height="12" font="9">1.10]</text>
+<text top="898" left="294" width="34" height="11" font="6">WWW</text>
+<text top="896" left="327" width="3" height="14" font="2">.</text>
+<text top="898" left="331" width="36" height="11" font="6">OSTEP</text>
+<text top="896" left="367" width="3" height="14" font="2">.</text>
+<text top="898" left="371" width="25" height="11" font="6">ORG</text>
+</page>
+</pdf2xml>
