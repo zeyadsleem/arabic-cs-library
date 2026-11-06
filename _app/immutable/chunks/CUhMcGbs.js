@@ -1,0 +1,62 @@
+const a="hello-algo",s="chapter_tree",n="Tree",t="binary_tree_traversal",e="اجتياز الشجرة الثنائية",l=[{depth:2,id:"الاجتياز-بالمستويات",text:"الاجتياز بالمستويات"},{depth:3,id:"تنفيذ-الشيفرة",text:"تنفيذ الشيفرة"},{depth:2,id:"الاجتياز-المسبق-والوسطي-واللاحق",text:"الاجتياز المسبق والوسطي واللاحق"},{depth:3,id:"تنفيذ-الشيفرة-1",text:"تنفيذ الشيفرة"},{depth:3,id:"تحليل-التعقيد",text:"تحليل التعقيد"}],p=`<p>من منظور البنية الفيزيائية، الشجرة بنية بيانات قائمة على القوائم المترابطة. ومن ثم فإن أسلوب اجتيازها يتضمن الوصول إلى العقد واحدة تلو الأخرى عبر المؤشرات. غير أن الشجرة بنية بيانات غير خطية، وهذا يجعل اجتياز الشجرة أكثر تعقيداً من اجتياز قائمة مترابطة، ويتطلب الاستعانة بخوارزميات البحث.</p>
+<p>تشمل أساليب الاجتياز الشائعة للأشجار الثنائية: الاجتياز بالمستويات، والاجتياز المسبق، والاجتياز الوسطي، والاجتياز اللاحق.</p>
+<h2 id="الاجتياز-بالمستويات">الاجتياز بالمستويات</h2>
+<p>كما يوضح الشكل أدناه، فإن <u>الاجتياز بالمستويات</u> (level-order traversal) يجتاز الشجرة الثنائية من الأعلى إلى الأسفل، طبقةً طبقة. وفي كل مستوى، يزور العقد من اليسار إلى اليمين.</p>
+<p>الاجتياز بالمستويات هو في جوهره <u>الاجتياز بالعرض أولاً</u> (breadth-first traversal)، ويُعرف أيضاً باسم <u>البحث بالعرض أولاً (BFS)</u>، حيث يتقدم نحو الخارج مستوى تلو الآخر.</p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_tree--binary_tree_bfs.png" alt="الاجتياز بالمستويات لشجرة ثنائية"></p>
+<h3 id="تنفيذ-الشيفرة">تنفيذ الشيفرة</h3>
+<p>يُنفَّذ الاجتياز بالعرض أولاً عادةً بمساعدة «الطابور». فالطابور يتبع قاعدة «أول ما يدخل يخرج أولاً»، بينما يتبع الاجتياز بالعرض أولاً قاعدة «التقدم طبقةً طبقة»؛ والفكرتان الكامنتان وراءهما متطابقتان. وشيفرة التنفيذ كما يلي:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+<pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">level_order</span>(<span class="hljs-params">root: TreeNode | <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
+    <span class="hljs-string">&quot;&quot;&quot;Level-order traversal&quot;&quot;&quot;</span>
+    <span class="hljs-comment"># مهّد طابورًا وأدخل الجذر إليه</span>
+    queue: deque[TreeNode] = deque()
+    queue.append(root)
+    <span class="hljs-comment"># مهّد قائمة لتخزين تتابع الاجتياز</span>
+    res = []
+    <span class="hljs-keyword">while</span> queue:
+        node: TreeNode = queue.popleft()  <span class="hljs-comment"># أخرج من الطابور</span>
+        res.append(node.val)  <span class="hljs-comment"># خزّن قيمة العقدة</span>
+        <span class="hljs-keyword">if</span> node.left <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            queue.append(node.left)  <span class="hljs-comment"># أدخل الابن الأيسر إلى الطابور</span>
+        <span class="hljs-keyword">if</span> node.right <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            queue.append(node.right)  <span class="hljs-comment"># أدخل الابن الأيمن إلى الطابور</span>
+    <span class="hljs-keyword">return</span> res
+</code></pre>
+</div>### تحليل التعقيد
+<ul>
+<li><strong>التعقيد الزمني هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></strong>: تُزار جميع العقد مرة واحدة، مستخدماً زمن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو عدد العقد.</li>
+<li><strong>التعقيد المكاني هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></strong>: في أسوأ الحالات، أي في شجرة ثنائية تامة، وقبل الاجتياز إلى المستوى السفلي، يحتوي الطابور في الوقت نفسه على <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">(n + 1) / 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">/2</span></span></span></span> عقدة على الأكثر، شاغلاً مساحة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>.</li>
+</ul>
+<h2 id="الاجتياز-المسبق-والوسطي-واللاحق">الاجتياز المسبق والوسطي واللاحق</h2>
+<p>وبالمقابل، تنتمي الاجتيازات المسبق والوسطي واللاحق جميعها إلى <u>الاجتياز بالعمق أولاً</u> (depth-first traversal)، ويُعرف أيضاً باسم <u>البحث بالعمق أولاً (DFS)</u>، حيث يتعمق قدر الإمكان ثم يتراجع.</p>
+<p>ويوضح الشكل أدناه كيفية عمل الاجتياز بالعمق أولاً على شجرة ثنائية. <strong>الاجتياز بالعمق أولاً أشبه بـ«المشي» حول محيط الشجرة الثنائية بأكملها</strong>، حيث نصادف عند كل عقدة ثلاثة مواضع تقابل الاجتياز المسبق والوسطي واللاحق.</p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_tree--binary_tree_dfs.png" alt="الاجتياز المسبق والوسطي واللاحق لشجرة ثنائية"></p>
+<h3 id="تنفيذ-الشيفرة-1">تنفيذ الشيفرة</h3>
+<p>يُنفَّذ البحث بالعمق أولاً عادةً استناداً إلى التعاود:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Python</p>
+<pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">post_order</span>(<span class="hljs-params">root: TreeNode | <span class="hljs-literal">None</span></span>):
+    <span class="hljs-string">&quot;&quot;&quot;Postorder traversal&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> root <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">return</span>
+    <span class="hljs-comment"># ترتيب الزيارة: الشجرة الجزئية اليسرى -&gt; اليمنى -&gt; الجذر</span>
+    post_order(root=root.left)
+    post_order(root=root.right)
+    res.append(root.val)
+</code></pre>
+</div><div class="note">
+<p>يمكن أيضاً تنفيذ البحث بالعمق أولاً تكرارياً، ويمكن للقارئ المهتم أن يستكشف ذلك بنفسه.</p>
+</div>
+<p>يوضح الشكل أدناه العملية التعاودية للاجتياز المسبق لشجرة ثنائية، ويمكن تقسيمها إلى مرحلتين متعاكستين: «النزول» و«العودة».</p>
+<ol>
+<li>«النزول» يعني إجراء استدعاء تعاودي جديد، يزور البرنامج خلاله العقدة التالية.</li>
+<li>«العودة» تعني عودة استدعاء الدالة، ما يشير إلى أن العقدة الحالية قد اكتملت معالجتها.</li>
+</ol>
+<h3 id="تحليل-التعقيد">تحليل التعقيد</h3>
+<ul>
+<li><strong>التعقيد الزمني هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></strong>: تُزار جميع العقد مرة واحدة، مستخدماً زمن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>.</li>
+<li><strong>التعقيد المكاني هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></strong>: في أسوأ الحالات، أي عندما تتدهور الشجرة إلى قائمة مترابطة، يبلغ عمق التعاود <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>، ويشغل النظام مساحة إطار مكدس <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>.</li>
+</ul>
+`,m={book:a,chapter:s,chapterTitle:n,slug:t,title:e,headings:l,html:p};export{a as book,s as chapter,n as chapterTitle,m as default,l as headings,p as html,t as slug,e as title};

@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.aAcg_ZL5.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D8dSGYHx.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Bs9Ar8Lr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BfzzbOFf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C5Dj1Jky.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CcT2CfV5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DXyBp_iR.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BTFYVdrI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.Dtm5O0yQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7j8hKfSp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -110,8 +110,7 @@ name: <span class="hljs-built_in">str</span> = hmap[<span class="hljs-number">15
 <span class="hljs-comment"># Delete key-value pair (key, value) from hash table</span>
 hmap.pop(<span class="hljs-number">10583</span>)
 </code></pre>
-</div>
-هناك ثلاث طرق شائعة لاجتياز جدول التجزئة: اجتياز أزواج المفتاح-القيمة، واجتياز المفاتيح، واجتياز القيم. وتظهر الشيفرة المثالية أدناه:
+</div>هناك ثلاث طرق شائعة لاجتياز جدول التجزئة: اجتياز أزواج المفتاح-القيمة، واجتياز المفاتيح، واجتياز القيم. وتظهر الشيفرة المثالية أدناه:
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-python"><span class="hljs-comment"># Traverse hash table</span>
@@ -125,8 +124,7 @@ hmap.pop(<span class="hljs-number">10583</span>)
 <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> hmap.values():
     <span class="hljs-built_in">print</span>(value)
 </code></pre>
-</div>
-## تنفيذ بسيط لجدول التجزئة
+</div>## تنفيذ بسيط لجدول التجزئة
 <p>لنبدأ بأبسط حالة: <strong>تنفيذ جدول تجزئة بمصفوفة فقط</strong>. في جدول التجزئة، تسمى كل خانة فارغة في المصفوفة <u>دلواً</u> (bucket)، ويمكن لكل دلو تخزين زوج مفتاح-قيمة واحد. لذا يتلخّص البحث في إيجاد الدلو الخاص بالمفتاح <code>key</code> وقراءة القيمة <code>value</code> المخزنة فيه.</p>
 <p>فكيف نجد الدلو الصحيح لمفتاح <code>key</code> معطى؟ نفعل ذلك باستخدام <u>دالة التجزئة</u> (hash function). فدالة التجزئة تربط فضاء إدخال أكبر بفضاء إخراج أصغر. وفي جدول التجزئة، يكون فضاء الإدخال هو مجموعة جميع المفاتيح <code>key</code>، وفضاء الإخراج هو مجموعة جميع الدلاء (فهارس المصفوفة). بعبارة أخرى، عند إعطاء <code>key</code>، <strong>تخبرنا دالة التجزئة بمكان تخزين زوج المفتاح-القيمة المقابل في المصفوفة</strong>.</p>
 <p>وبالنسبة إلى <code>key</code> معطى، يتضمن حساب فهرس الدلو الخطوتين التاليتين:</p>
@@ -147,7 +145,7 @@ hmap.pop(<span class="hljs-number">10583</span>)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
-        <span class="hljs-comment"># Initialize an array containing 100 buckets</span>
+        <span class="hljs-comment"># مهّد مصفوفة تحوي 100 سلة</span>
         <span class="hljs-variable language_">self</span>.buckets: <span class="hljs-built_in">list</span>[Pair | <span class="hljs-literal">None</span>] = [<span class="hljs-literal">None</span>] * <span class="hljs-number">100</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">hash_func</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
@@ -172,7 +170,7 @@ hmap.pop(<span class="hljs-number">10583</span>)
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">self, key: <span class="hljs-built_in">int</span></span>):
         <span class="hljs-string">&quot;&quot;&quot;Remove operation&quot;&quot;&quot;</span>
         index: <span class="hljs-built_in">int</span> = <span class="hljs-variable language_">self</span>.hash_func(key)
-        <span class="hljs-comment"># Set to None to mark removal</span>
+        <span class="hljs-comment"># اجعلها None لتمييز الحذف</span>
         <span class="hljs-variable language_">self</span>.buckets[index] = <span class="hljs-literal">None</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">entry_set</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>[Pair]:
@@ -205,8 +203,7 @@ hmap.pop(<span class="hljs-number">10583</span>)
             <span class="hljs-keyword">if</span> pair <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
                 <span class="hljs-built_in">print</span>(pair.key, <span class="hljs-string">&quot;-&gt;&quot;</span>, pair.val)
 </code></pre>
-</div>
-## تصادم التجزئة وإعادة التحجيم
+</div>## تصادم التجزئة وإعادة التحجيم
 <p>في جوهر الأمر، تربط دالة التجزئة فضاء الإدخال المكوّن من جميع المفاتيح <code>key</code> بفضاء الإخراج المكوّن من جميع فهارس المصفوفة، وغالباً ما يكون فضاء الإدخال أكبر بكثير من فضاء الإخراج. لذلك <strong>يجب نظرياً أن تُسند مدخلات مختلفة أحياناً إلى الإخراج نفسه</strong>.</p>
 <p>وبالنسبة إلى دالة التجزئة في المثال أعلاه، عندما يكون للمفاتيح <code>key</code> المدخلة الرقمان الأخيران نفسهما، تنتج دالة التجزئة الإخراج نفسه. على سبيل المثال، عند الاستعلام عن طالبين برقمي هوية 12836 و20336، نحصل على:</p>
 <pre><code class="language-shell">12836 % 100 = 36
@@ -225,7 +222,7 @@ hmap.pop(<span class="hljs-number">10583</span>)
 			
 			<script>
 				{
-					__sveltekit_1x38yda = {
+					__sveltekit_z8h3v6 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -233,8 +230,8 @@ hmap.pop(<span class="hljs-number">10583</span>)
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.aAcg_ZL5.js"),
-						import("../../../../_app/immutable/entry/app.BfzzbOFf.js")
+						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
+						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

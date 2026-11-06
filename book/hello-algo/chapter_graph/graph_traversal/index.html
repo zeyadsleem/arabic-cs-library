@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.aAcg_ZL5.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D8dSGYHx.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Bs9Ar8Lr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BfzzbOFf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C5Dj1Jky.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CcT2CfV5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DXyBp_iR.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BTFYVdrI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.Dtm5O0yQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7j8hKfSp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -66,28 +66,28 @@
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">graph_bfs</span>(<span class="hljs-params">graph: GraphAdjList, start_vet: Vertex</span>) -&gt; <span class="hljs-built_in">list</span>[Vertex]:
     <span class="hljs-string">&quot;&quot;&quot;Breadth-first traversal&quot;&quot;&quot;</span>
-    <span class="hljs-comment"># Represent the graph with an adjacency list to access all neighbors of a given vertex</span>
-    <span class="hljs-comment"># Vertex traversal sequence</span>
+    <span class="hljs-comment"># مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين</span>
+    <span class="hljs-comment"># تتابع اجتياز الرؤوس</span>
     res = []
-    <span class="hljs-comment"># Hash set recording visited vertices</span>
+    <span class="hljs-comment"># مجموعة تجزئة تسجل الرؤوس المزارة</span>
     visited = <span class="hljs-built_in">set</span>[Vertex]([start_vet])
-    <span class="hljs-comment"># Use a queue to implement BFS</span>
+    <span class="hljs-comment"># استخدم طابورًا لتنفيذ BFS</span>
     que = deque[Vertex]([start_vet])
-    <span class="hljs-comment"># Starting from start_vet, loop until all reachable vertices have been visited</span>
+    <span class="hljs-comment"># بدءًا من start_vet، حلّق حتى تُزار جميع الرؤوس القابلة للوصول</span>
     <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(que) &gt; <span class="hljs-number">0</span>:
-        vet = que.popleft()  <span class="hljs-comment"># Dequeue the front vertex</span>
-        res.append(vet)  <span class="hljs-comment"># Record the visited vertex</span>
-        <span class="hljs-comment"># Traverse all neighbors of this vertex</span>
+        vet = que.popleft()  <span class="hljs-comment"># أخرج الرأس الموجود في مقدمة الطابور</span>
+        res.append(vet)  <span class="hljs-comment"># سجّل الرأس المزار</span>
+        <span class="hljs-comment"># اجتز كل أجوار هذا الرأس</span>
         <span class="hljs-keyword">for</span> adj_vet <span class="hljs-keyword">in</span> graph.adj_list[vet]:
             <span class="hljs-keyword">if</span> adj_vet <span class="hljs-keyword">in</span> visited:
-                <span class="hljs-keyword">continue</span>  <span class="hljs-comment"># Skip vertices that have already been visited</span>
-            que.append(adj_vet)  <span class="hljs-comment"># Enqueue only unvisited vertices</span>
-            visited.add(adj_vet)  <span class="hljs-comment"># Mark this vertex as visited</span>
-    <span class="hljs-comment"># Return the vertex traversal sequence</span>
+                <span class="hljs-keyword">continue</span>  <span class="hljs-comment"># تخطَّ الرؤوس التي زُرت سابقًا</span>
+            que.append(adj_vet)  <span class="hljs-comment"># أدخل إلى الطابور الرؤوس غير المزارة فقط</span>
+            visited.add(adj_vet)  <span class="hljs-comment"># علّم هذا الرأس بوصفه مزارًا</span>
+    <span class="hljs-comment"># أعد تتابع اجتياز الرؤوس</span>
     <span class="hljs-keyword">return</span> res
 </code></pre>
 </div>
-<p>الشيفرة مجرّدة نسبياً؛ ويُوصى بالرجوع إلى الشكل أدناه لتعميق الفهم.</p>
+الشيفرة مجرّدة نسبياً؛ ويُوصى بالرجوع إلى الشكل أدناه لتعميق الفهم.
 <div class="note">
 <p class="note__title">هل تسلسل الاجتياز بالعرض أولاً فريد؟</p>
 <p>ليس فريداً. فالبحث بالعرض أولاً يشترط فقط الاجتياز بترتيب «من القريب إلى البعيد»، <strong>ويمكن تبديل ترتيب زيارة الرؤوس الواقعة على المسافة نفسها بشكل اعتباطي</strong>. وبأخذ الشكل أعلاه مثالاً، يمكن تبديل ترتيب زيارة الرأسين <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>، وكذلك ترتيب زيارة الرؤوس <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn></mrow><annotation encoding="application/x-tex">4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn></mrow><annotation encoding="application/x-tex">6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">6</span></span></span></span>.</p>
@@ -104,16 +104,16 @@
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">graph_dfs</span>(<span class="hljs-params">graph: GraphAdjList, start_vet: Vertex</span>) -&gt; <span class="hljs-built_in">list</span>[Vertex]:
     <span class="hljs-string">&quot;&quot;&quot;Depth-first traversal&quot;&quot;&quot;</span>
-    <span class="hljs-comment"># Represent the graph with an adjacency list to access all neighbors of a given vertex</span>
-    <span class="hljs-comment"># Vertex traversal sequence</span>
+    <span class="hljs-comment"># مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين</span>
+    <span class="hljs-comment"># تتابع اجتياز الرؤوس</span>
     res = []
-    <span class="hljs-comment"># Hash set recording visited vertices</span>
+    <span class="hljs-comment"># مجموعة تجزئة تسجل الرؤوس المزارة</span>
     visited = <span class="hljs-built_in">set</span>[Vertex]()
     dfs(graph, visited, res, start_vet)
     <span class="hljs-keyword">return</span> res
 </code></pre>
 </div>
-<p>يوضح الشكل أدناه سير خوارزمية البحث بالعمق أولاً.</p>
+يوضح الشكل أدناه سير خوارزمية البحث بالعمق أولاً.
 <ul>
 <li><strong>تمثّل الخطوط المتقطعة المستقيمة التعاود النازل</strong>، ما يشير إلى بدء دالة تعاودية جديدة لزيارة رأس جديد.</li>
 <li><strong>تمثّل الخطوط المتقطعة المنحنية التراجع الصاعد</strong>، ما يشير إلى أن هذا الاستدعاء التعاودي عاد إلى النقطة التي استُدعي منها.</li>
@@ -133,7 +133,7 @@
 			
 			<script>
 				{
-					__sveltekit_1x38yda = {
+					__sveltekit_z8h3v6 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -141,8 +141,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.aAcg_ZL5.js"),
-						import("../../../../_app/immutable/entry/app.BfzzbOFf.js")
+						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
+						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

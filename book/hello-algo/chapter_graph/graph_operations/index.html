@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.aAcg_ZL5.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D8dSGYHx.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Bs9Ar8Lr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BfzzbOFf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C5Dj1Jky.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CcT2CfV5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DXyBp_iR.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BTFYVdrI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.Dtm5O0yQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7j8hKfSp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -63,15 +63,15 @@
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, vertices: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], edges: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]]</span>):
         <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
-        <span class="hljs-comment"># Vertex list: elements are vertex values, and indices are vertex indices</span>
+        <span class="hljs-comment"># قائمة الرؤوس: العناصر قيم الرؤوس، والفهارس فهارس الرؤوس</span>
         <span class="hljs-variable language_">self</span>.vertices: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>] = []
-        <span class="hljs-comment"># Adjacency matrix: row and column indices correspond to vertex indices</span>
+        <span class="hljs-comment"># مصفوفة التجاور: فهارس الصفوف والأعمدة تقابل فهارس الرؤوس</span>
         <span class="hljs-variable language_">self</span>.adj_mat: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]] = []
-        <span class="hljs-comment"># Add a vertex</span>
+        <span class="hljs-comment"># أضف رأسًا</span>
         <span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> vertices:
             <span class="hljs-variable language_">self</span>.add_vertex(val)
-        <span class="hljs-comment"># Add an edge</span>
-        <span class="hljs-comment"># Note that the entries in edges are vertex indices, corresponding to element indices in vertices</span>
+        <span class="hljs-comment"># أضف ضلعًا</span>
+        <span class="hljs-comment"># لاحظ أن مدخلات edges فهارس رؤوس، تقابل فهارس العناصر في vertices</span>
         <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
             <span class="hljs-variable language_">self</span>.add_edge(e[<span class="hljs-number">0</span>], e[<span class="hljs-number">1</span>])
 
@@ -82,12 +82,12 @@
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_vertex</span>(<span class="hljs-params">self, val: <span class="hljs-built_in">int</span></span>):
         <span class="hljs-string">&quot;&quot;&quot;Add a vertex&quot;&quot;&quot;</span>
         n = <span class="hljs-variable language_">self</span>.size()
-        <span class="hljs-comment"># Append the new vertex value to the vertex list</span>
+        <span class="hljs-comment"># ألحق قيمة الرأس الجديد إلى قائمة الرؤوس</span>
         <span class="hljs-variable language_">self</span>.vertices.append(val)
-        <span class="hljs-comment"># Add a row to the adjacency matrix</span>
+        <span class="hljs-comment"># أضف صفًا إلى مصفوفة التجاور</span>
         new_row = [<span class="hljs-number">0</span>] * n
         <span class="hljs-variable language_">self</span>.adj_mat.append(new_row)
-        <span class="hljs-comment"># Add a column to the adjacency matrix</span>
+        <span class="hljs-comment"># أضف عمودًا إلى مصفوفة التجاور</span>
         <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_mat:
             row.append(<span class="hljs-number">0</span>)
 
@@ -95,28 +95,28 @@
         <span class="hljs-string">&quot;&quot;&quot;Remove a vertex&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> index &gt;= <span class="hljs-variable language_">self</span>.size():
             <span class="hljs-keyword">raise</span> IndexError()
-        <span class="hljs-comment"># Remove the vertex at index `index` from the vertex list</span>
+        <span class="hljs-comment"># احذف الرأس عند الفهرس `index` من قائمة الرؤوس</span>
         <span class="hljs-variable language_">self</span>.vertices.pop(index)
-        <span class="hljs-comment"># Remove row `index` from the adjacency matrix</span>
+        <span class="hljs-comment"># احذف الصف `index` من مصفوفة التجاور</span>
         <span class="hljs-variable language_">self</span>.adj_mat.pop(index)
-        <span class="hljs-comment"># Remove column `index` from the adjacency matrix</span>
+        <span class="hljs-comment"># احذف العمود `index` من مصفوفة التجاور</span>
         <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_mat:
             row.pop(index)
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_edge</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span>, j: <span class="hljs-built_in">int</span></span>):
         <span class="hljs-string">&quot;&quot;&quot;Add an edge&quot;&quot;&quot;</span>
-        <span class="hljs-comment"># Parameters i and j are element indices in vertices</span>
-        <span class="hljs-comment"># Handle out-of-bounds or equal indices</span>
+        <span class="hljs-comment"># المعاملان i و j مفهرسا عناصر في vertices</span>
+        <span class="hljs-comment"># عالِج الفهارس الخارجة عن الحدود أو المتساوية</span>
         <span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> j &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> i &gt;= <span class="hljs-variable language_">self</span>.size() <span class="hljs-keyword">or</span> j &gt;= <span class="hljs-variable language_">self</span>.size() <span class="hljs-keyword">or</span> i == j:
             <span class="hljs-keyword">raise</span> IndexError()
-        <span class="hljs-comment"># For an undirected graph, the adjacency matrix is symmetric about its main diagonal: entries (i, j) and (j, i) are equal</span>
+        <span class="hljs-comment"># في الرسم غير الموجّه تكون مصفوفة التجاور متناظرة حول قطرها الرئيسي: تساوي المدخلات (i, j) و(j, i)</span>
         <span class="hljs-variable language_">self</span>.adj_mat[i][j] = <span class="hljs-number">1</span>
         <span class="hljs-variable language_">self</span>.adj_mat[j][i] = <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove_edge</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span>, j: <span class="hljs-built_in">int</span></span>):
         <span class="hljs-string">&quot;&quot;&quot;Remove an edge&quot;&quot;&quot;</span>
-        <span class="hljs-comment"># Parameters i and j are element indices in vertices</span>
-        <span class="hljs-comment"># Handle out-of-bounds or equal indices</span>
+        <span class="hljs-comment"># المعاملان i و j مفهرسا عناصر في vertices</span>
+        <span class="hljs-comment"># عالِج الفهارس الخارجة عن الحدود أو المتساوية</span>
         <span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> j &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> i &gt;= <span class="hljs-variable language_">self</span>.size() <span class="hljs-keyword">or</span> j &gt;= <span class="hljs-variable language_">self</span>.size() <span class="hljs-keyword">or</span> i == j:
             <span class="hljs-keyword">raise</span> IndexError()
         <span class="hljs-variable language_">self</span>.adj_mat[i][j] = <span class="hljs-number">0</span>
@@ -128,8 +128,7 @@
         <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Adjacency matrix =&quot;</span>)
         print_matrix(<span class="hljs-variable language_">self</span>.adj_mat)
 </code></pre>
-</div>
-## التنفيذ باستخدام قائمة التجاور
+</div>## التنفيذ باستخدام قائمة التجاور
 <p>بمعطى رسم بياني غير موجّه فيه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> من الرؤوس إجمالاً و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> من الأضلاع، يمكن تنفيذ العمليات المختلفة كما يوضح الشكل أدناه.</p>
 <ul>
 <li><strong>إضافة ضلع</strong>: أضف الضلع في نهاية القائمة المترابطة للرأس المقابل، بزمن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>. وبما أن الرسم البياني غير موجّه، يلزم إضافة الضلعين في الاتجاهين معاً.</li>
@@ -151,9 +150,9 @@
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, edges: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[Vertex]]</span>):
         <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
-        <span class="hljs-comment"># Adjacency list: key is a vertex, value is the list of all its neighbors</span>
+        <span class="hljs-comment"># قائمة التجاور: المفتاح رأس، والقيمة قائمة جميع أجواره</span>
         <span class="hljs-variable language_">self</span>.adj_list = <span class="hljs-built_in">dict</span>[Vertex, <span class="hljs-built_in">list</span>[Vertex]]()
-        <span class="hljs-comment"># Add all vertices and edges</span>
+        <span class="hljs-comment"># أضف كل الرؤوس والأضلاع</span>
         <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> edges:
             <span class="hljs-variable language_">self</span>.add_vertex(edge[<span class="hljs-number">0</span>])
             <span class="hljs-variable language_">self</span>.add_vertex(edge[<span class="hljs-number">1</span>])
@@ -167,7 +166,7 @@
         <span class="hljs-string">&quot;&quot;&quot;Add an edge&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> vet1 <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_list <span class="hljs-keyword">or</span> vet2 <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_list <span class="hljs-keyword">or</span> vet1 == vet2:
             <span class="hljs-keyword">raise</span> ValueError()
-        <span class="hljs-comment"># Add edge vet1 - vet2</span>
+        <span class="hljs-comment"># أضف الضلع vet1 - vet2</span>
         <span class="hljs-variable language_">self</span>.adj_list[vet1].append(vet2)
         <span class="hljs-variable language_">self</span>.adj_list[vet2].append(vet1)
 
@@ -175,7 +174,7 @@
         <span class="hljs-string">&quot;&quot;&quot;Remove an edge&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> vet1 <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_list <span class="hljs-keyword">or</span> vet2 <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_list <span class="hljs-keyword">or</span> vet1 == vet2:
             <span class="hljs-keyword">raise</span> ValueError()
-        <span class="hljs-comment"># Remove edge vet1 - vet2</span>
+        <span class="hljs-comment"># احذف الضلع vet1 - vet2</span>
         <span class="hljs-variable language_">self</span>.adj_list[vet1].remove(vet2)
         <span class="hljs-variable language_">self</span>.adj_list[vet2].remove(vet1)
 
@@ -183,16 +182,16 @@
         <span class="hljs-string">&quot;&quot;&quot;Add a vertex&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> vet <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_list:
             <span class="hljs-keyword">return</span>
-        <span class="hljs-comment"># Add a new list to the adjacency list</span>
+        <span class="hljs-comment"># أضف قائمة جديدة إلى قائمة التجاور</span>
         <span class="hljs-variable language_">self</span>.adj_list[vet] = []
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove_vertex</span>(<span class="hljs-params">self, vet: Vertex</span>):
         <span class="hljs-string">&quot;&quot;&quot;Remove a vertex&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> vet <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_list:
             <span class="hljs-keyword">raise</span> ValueError()
-        <span class="hljs-comment"># Remove the list corresponding to vertex vet from the adjacency list</span>
+        <span class="hljs-comment"># احذف من قائمة التجاور القائمة المقابلة للرأس vet</span>
         <span class="hljs-variable language_">self</span>.adj_list.pop(vet)
-        <span class="hljs-comment"># Traverse the lists of the other vertices and remove all edges incident to vet</span>
+        <span class="hljs-comment"># اجتز قوائم باقي الرؤوس واحذف كل الأضلاع الواقعة على vet</span>
         <span class="hljs-keyword">for</span> vertex <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_list:
             <span class="hljs-keyword">if</span> vet <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_list[vertex]:
                 <span class="hljs-variable language_">self</span>.adj_list[vertex].remove(vet)
@@ -204,8 +203,7 @@
             tmp = [v.val <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.adj_list[vertex]]
             <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{vertex.val}</span>: <span class="hljs-subst">{tmp}</span>,&quot;</span>)
 </code></pre>
-</div>
-## مقارنة الكفاءة
+</div>## مقارنة الكفاءة
 <p>بافتراض أن الرسم البياني فيه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> من الرؤوس و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> من الأضلاع، يقارن الجدول أدناه الكفاءة الزمنية والكفاءة المكانية لمصفوفات التجاور وقوائم التجاور. لاحظ أن قائمة التجاور (القائمة المترابطة) تقابل التنفيذ المستخدم في هذا القسم، بينما تشير قائمة التجاور (جدول التجزئة) تحديداً إلى التنفيذ الذي تُستبدل فيه جميع القوائم المترابطة بجداول تجزئة.</p>
 <p align="center"> جدول <id> &nbsp; مقارنة بين مصفوفة التجاور وقائمة التجاور </p>
 <table>
@@ -263,7 +261,7 @@
 			
 			<script>
 				{
-					__sveltekit_1x38yda = {
+					__sveltekit_z8h3v6 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -271,8 +269,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.aAcg_ZL5.js"),
-						import("../../../../_app/immutable/entry/app.BfzzbOFf.js")
+						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
+						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.aAcg_ZL5.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D8dSGYHx.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Bs9Ar8Lr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BfzzbOFf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C5Dj1Jky.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CcT2CfV5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DXyBp_iR.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BTFYVdrI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.Dtm5O0yQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7j8hKfSp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -107,8 +107,7 @@ size: <span class="hljs-built_in">int</span> = <span class="hljs-built_in">len</
 <span class="hljs-comment"># Check if queue is empty</span>
 is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">len</span>(que) == <span class="hljs-number">0</span>
 </code></pre>
-</div>
-## تنفيذ الطابور
+</div>## تنفيذ الطابور
 <p>لتنفيذ طابور، نحتاج إلى بنية بيانات تتيح إضافة العناصر من أحد الطرفين وإزالة العناصر من الطرف الآخر. وتلبي كل من القوائم المترابطة والمصفوفات هذا المطلب.</p>
 <h3 id="التنفيذ-بقائمة-مترابطة">التنفيذ بقائمة مترابطة</h3>
 <p>وكما هو موضح في الشكل أدناه، يمكننا اعتبار «العقدة الرأسية» و«العقدة الذيلية» في القائمة المترابطة مقدمة الطابور ومؤخرته على التوالي، مع قاعدة أنه لا يمكن إضافة العقد إلا في المؤخرة ولا حذفها إلا من المقدمة.</p>
@@ -120,8 +119,8 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
-        <span class="hljs-variable language_">self</span>._front: ListNode | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>  <span class="hljs-comment"># Head node front</span>
-        <span class="hljs-variable language_">self</span>._rear: ListNode | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>  <span class="hljs-comment"># Tail node rear</span>
+        <span class="hljs-variable language_">self</span>._front: ListNode | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>  <span class="hljs-comment"># عقدة الرأس front</span>
+        <span class="hljs-variable language_">self</span>._rear: ListNode | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>  <span class="hljs-comment"># عقدة الذيل rear</span>
         <span class="hljs-variable language_">self</span>._size: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
@@ -134,13 +133,13 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, num: <span class="hljs-built_in">int</span></span>):
         <span class="hljs-string">&quot;&quot;&quot;Enqueue&quot;&quot;&quot;</span>
-        <span class="hljs-comment"># Add num after the tail node</span>
+        <span class="hljs-comment"># أضف num بعد عقدة الذيل</span>
         node = ListNode(num)
-        <span class="hljs-comment"># If the queue is empty, make both the head and tail point to this node</span>
+        <span class="hljs-comment"># إذا كان الطابور فارغًا، اجعل الرأس والذيل يشيران إلى هذه العقدة معًا</span>
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._front <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
             <span class="hljs-variable language_">self</span>._front = node
             <span class="hljs-variable language_">self</span>._rear = node
-        <span class="hljs-comment"># If the queue is not empty, add this node after the tail node</span>
+        <span class="hljs-comment"># إذا لم يكن الطابور فارغًا، أضف هذه العقدة بعد عقدة الذيل</span>
         <span class="hljs-keyword">else</span>:
             <span class="hljs-variable language_">self</span>._rear.<span class="hljs-built_in">next</span> = node
             <span class="hljs-variable language_">self</span>._rear = node
@@ -149,7 +148,7 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
         <span class="hljs-string">&quot;&quot;&quot;Dequeue&quot;&quot;&quot;</span>
         num = <span class="hljs-variable language_">self</span>.peek()
-        <span class="hljs-comment"># Remove the head node</span>
+        <span class="hljs-comment"># احذف العقدة الرأس</span>
         <span class="hljs-variable language_">self</span>._front = <span class="hljs-variable language_">self</span>._front.<span class="hljs-built_in">next</span>
         <span class="hljs-variable language_">self</span>._size -= <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> num
@@ -169,8 +168,7 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
             temp = temp.<span class="hljs-built_in">next</span>
         <span class="hljs-keyword">return</span> queue
 </code></pre>
-</div>
-### التنفيذ بالمصفوفة
+</div>### التنفيذ بالمصفوفة
 <p>حذف العنصر الأول في مصفوفة له تعقيد زمني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، وهو ما يجعل عملية الإخراج من الطابور غير فعّالة. غير أننا يمكننا استخدام الطريقة الذكية التالية لتجنب هذه المشكلة.</p>
 <p>يمكننا استخدام متغير <code>front</code> للإشارة إلى فهرس العنصر الأمامي، والاحتفاظ بمتغير <code>size</code> لتسجيل طول الطابور. ونعرّف <code>rear = front + size</code>، وهو ما يحسب الموضع الذي يلي العنصر الأخير في الطابور مباشرةً.</p>
 <p>واستناداً إلى هذا التصميم، <strong>يكون النطاق الصالح الذي يحتوي على عناصر المصفوفة هو <code>[front, rear - 1]</code></strong>. وتوضح الصورة أدناه طرق تنفيذ العمليات المختلفة:</p>
@@ -188,9 +186,9 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, size: <span class="hljs-built_in">int</span></span>):
         <span class="hljs-string">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
-        <span class="hljs-variable language_">self</span>._nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>] = [<span class="hljs-number">0</span>] * size  <span class="hljs-comment"># Array that stores the queue elements</span>
-        <span class="hljs-variable language_">self</span>._front: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>  <span class="hljs-comment"># Front pointer, pointing to the first element</span>
-        <span class="hljs-variable language_">self</span>._size: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>  <span class="hljs-comment"># Queue size</span>
+        <span class="hljs-variable language_">self</span>._nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>] = [<span class="hljs-number">0</span>] * size  <span class="hljs-comment"># المصفوفة التي تخزن عناصر الطابور</span>
+        <span class="hljs-variable language_">self</span>._front: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>  <span class="hljs-comment"># مؤشر المقدمة، يشير إلى أول عنصر</span>
+        <span class="hljs-variable language_">self</span>._size: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>  <span class="hljs-comment"># حجم الطابور</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">capacity</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
         <span class="hljs-string">&quot;&quot;&quot;Get the queue capacity&quot;&quot;&quot;</span>
@@ -208,17 +206,17 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
         <span class="hljs-string">&quot;&quot;&quot;Enqueue&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._size == <span class="hljs-variable language_">self</span>.capacity():
             <span class="hljs-keyword">raise</span> IndexError(<span class="hljs-string">&quot;Queue is full&quot;</span>)
-        <span class="hljs-comment"># Calculate the rear pointer, which points one position past the last element</span>
-        <span class="hljs-comment"># Use modulo to wrap rear to the beginning when it passes the end of the array</span>
+        <span class="hljs-comment"># احسب مؤشر المؤخرة، وهو يشير إلى موضع واحد بعد آخر عنصر</span>
+        <span class="hljs-comment"># استخدم باقي القسمة لالتفاف rear إلى البداية عندما يتجاوز نهاية المصفوفة</span>
         rear: <span class="hljs-built_in">int</span> = (<span class="hljs-variable language_">self</span>._front + <span class="hljs-variable language_">self</span>._size) % <span class="hljs-variable language_">self</span>.capacity()
-        <span class="hljs-comment"># Add num to the rear</span>
+        <span class="hljs-comment"># أضف num إلى المؤخرة</span>
         <span class="hljs-variable language_">self</span>._nums[rear] = num
         <span class="hljs-variable language_">self</span>._size += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
         <span class="hljs-string">&quot;&quot;&quot;Dequeue&quot;&quot;&quot;</span>
         num: <span class="hljs-built_in">int</span> = <span class="hljs-variable language_">self</span>.peek()
-        <span class="hljs-comment"># Advance the front pointer by one position, wrapping to the beginning if it passes the end</span>
+        <span class="hljs-comment"># ورّر مؤشر المقدمة موضعًا واحدًا، مع الالتفاف إلى البداية إن تجاوز النهاية</span>
         <span class="hljs-variable language_">self</span>._front = (<span class="hljs-variable language_">self</span>._front + <span class="hljs-number">1</span>) % <span class="hljs-variable language_">self</span>.capacity()
         <span class="hljs-variable language_">self</span>._size -= <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> num
@@ -238,8 +236,7 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
             j += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> res
 </code></pre>
-</div>
-لا يزال الطابور المنفّذ أعلاه محدوداً: فطوله غير قابل للتغيير. غير أن هذه المشكلة ليست صعبة الحل، إذ يمكننا استبدال المصفوفة بمصفوفة ديناميكية لإدخال آلية توسّع. ويمكن للقرّاء المهتمين محاولة تنفيذ ذلك بأنفسهم.
+</div>لا يزال الطابور المنفّذ أعلاه محدوداً: فطوله غير قابل للتغيير. غير أن هذه المشكلة ليست صعبة الحل، إذ يمكننا استبدال المصفوفة بمصفوفة ديناميكية لإدخال آلية توسّع. ويمكن للقرّاء المهتمين محاولة تنفيذ ذلك بأنفسهم.
 <p>وتتفق استنتاجات المقارنة بين التنفيذين مع نظيراتها الخاصة بالمكدسات، ولن نعيدها هنا.</p>
 <h2 id="التطبيقات-النموذجية-للطابور">التطبيقات النموذجية للطابور</h2>
 <ul>
@@ -252,7 +249,7 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
 			
 			<script>
 				{
-					__sveltekit_1x38yda = {
+					__sveltekit_z8h3v6 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -260,8 +257,8 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-built_in">
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.aAcg_ZL5.js"),
-						import("../../../../_app/immutable/entry/app.BfzzbOFf.js")
+						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
+						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.aAcg_ZL5.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D8dSGYHx.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Bs9Ar8Lr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BfzzbOFf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C5Dj1Jky.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CcT2CfV5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DXyBp_iR.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BTFYVdrI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.Dtm5O0yQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7j8hKfSp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -62,14 +62,14 @@
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subset_sum_i_naive</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], target: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]]:
     <span class="hljs-string">&quot;&quot;&quot;Solve subset sum I (with duplicate subsets)&quot;&quot;&quot;</span>
-    state = []  <span class="hljs-comment"># State (subset)</span>
-    total = <span class="hljs-number">0</span>  <span class="hljs-comment"># Subset sum</span>
-    res = []  <span class="hljs-comment"># Result list (list of subsets)</span>
+    state = []  <span class="hljs-comment"># الحالة (المجموعة الجزئية)</span>
+    total = <span class="hljs-number">0</span>  <span class="hljs-comment"># مجموع المجموعة الجزئية</span>
+    res = []  <span class="hljs-comment"># قائمة النتائج (قائمة المجموعات الجزئية)</span>
     backtrack(state, target, total, nums, res)
     <span class="hljs-keyword">return</span> res
 </code></pre>
 </div>
-<p>وبتشغيل الشيفرة أعلاه على المصفوفة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>3</mn><mo separator="true">,</mo><mn>4</mn><mo separator="true">,</mo><mn>5</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[3, 4, 5]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">5</span><span class="mclose">]</span></span></span></span> بالقيمة المستهدفة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn></mrow><annotation encoding="application/x-tex">9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">9</span></span></span></span> نحصل على <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>3</mn><mo separator="true">,</mo><mn>3</mn><mo separator="true">,</mo><mn>3</mn><mo stretchy="false">]</mo><mo separator="true">,</mo><mo stretchy="false">[</mo><mn>4</mn><mo separator="true">,</mo><mn>5</mn><mo stretchy="false">]</mo><mo separator="true">,</mo><mo stretchy="false">[</mo><mn>5</mn><mo separator="true">,</mo><mn>4</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[3, 3, 3], [4, 5], [5, 4]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">[</span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">5</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">[</span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mclose">]</span></span></span></span>. <strong>ورغم أننا نجحنا في العثور على جميع المجموعات الجزئية التي يساوي مجموعها <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn></mrow><annotation encoding="application/x-tex">9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">9</span></span></span></span>، فإن هناك مجموعتين جزئيتين مكررتين <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>4</mn><mo separator="true">,</mo><mn>5</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[4, 5]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">5</span><span class="mclose">]</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>5</mn><mo separator="true">,</mo><mn>4</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[5, 4]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mclose">]</span></span></span></span></strong>.</p>
+وبتشغيل الشيفرة أعلاه على المصفوفة $[3, 4, 5]$ بالقيمة المستهدفة $9$ نحصل على $[3, 3, 3], [4, 5], [5, 4]$. **ورغم أننا نجحنا في العثور على جميع المجموعات الجزئية التي يساوي مجموعها $9$، فإن هناك مجموعتين جزئيتين مكررتين $[4, 5]$ و$[5, 4]$**.
 <p>والسبب أن عملية البحث تميّز ترتيب الاختيارات، بينما لا تميّز المجموعات الجزئية ترتيب الاختيار. وكما يوضح الشكل أدناه، فاختيار 4 أولاً ثم 5 يختلف عن اختيار 5 أولاً ثم 4، وهما فرعان مختلفان لكنهما يقابلان المجموعة الجزئية نفسها.</p>
 <p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--subset_sum_i_naive.png" alt="البحث في المجموعات الجزئية والتشذيب عند الحدود"></p>
 <p>لإزالة المجموعات الجزئية المكررة، <strong>تُعَدّ إزالة التكرار من قائمة النتائج فكرة مباشرة</strong>. غير أن هذا النهج غير فعّال للغاية لسببين:</p>
@@ -102,15 +102,15 @@
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subset_sum_i</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], target: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]]:
     <span class="hljs-string">&quot;&quot;&quot;Solve subset sum I&quot;&quot;&quot;</span>
-    state = []  <span class="hljs-comment"># State (subset)</span>
-    nums.sort()  <span class="hljs-comment"># Sort nums</span>
-    start = <span class="hljs-number">0</span>  <span class="hljs-comment"># Starting index for iteration</span>
-    res = []  <span class="hljs-comment"># Result list (list of subsets)</span>
+    state = []  <span class="hljs-comment"># الحالة (المجموعة الجزئية)</span>
+    nums.sort()  <span class="hljs-comment"># رتّب nums</span>
+    start = <span class="hljs-number">0</span>  <span class="hljs-comment"># فهرس البدء للتكرار</span>
+    res = []  <span class="hljs-comment"># قائمة النتائج (قائمة المجموعات الجزئية)</span>
     backtrack(state, target, nums, start, res)
     <span class="hljs-keyword">return</span> res
 </code></pre>
 </div>
-<p>ويوضح الشكل أدناه عملية التتبّع الرجعي الكاملة الناتجة عن تشغيل الشيفرة أعلاه على المصفوفة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>3</mn><mo separator="true">,</mo><mn>4</mn><mo separator="true">,</mo><mn>5</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[3, 4, 5]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">5</span><span class="mclose">]</span></span></span></span> بالقيمة المستهدفة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn></mrow><annotation encoding="application/x-tex">9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">9</span></span></span></span>.</p>
+ويوضح الشكل أدناه عملية التتبّع الرجعي الكاملة الناتجة عن تشغيل الشيفرة أعلاه على المصفوفة $[3, 4, 5]$ بالقيمة المستهدفة $9$.
 <p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--subset_sum_i.png" alt="عملية التتبّع الرجعي لمجموع المجموعات الجزئية I"></p>
 <h2 id="مع-وجود-عناصر-مكررة-في-المصفوفة">مع وجود عناصر مكررة في المصفوفة</h2>
 <div class="note">
@@ -128,22 +128,21 @@
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subset_sum_ii</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], target: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]]:
     <span class="hljs-string">&quot;&quot;&quot;Solve subset sum II&quot;&quot;&quot;</span>
-    state = []  <span class="hljs-comment"># State (subset)</span>
-    nums.sort()  <span class="hljs-comment"># Sort nums</span>
-    start = <span class="hljs-number">0</span>  <span class="hljs-comment"># Starting index for iteration</span>
-    res = []  <span class="hljs-comment"># Result list (list of subsets)</span>
+    state = []  <span class="hljs-comment"># الحالة (المجموعة الجزئية)</span>
+    nums.sort()  <span class="hljs-comment"># رتّب nums</span>
+    start = <span class="hljs-number">0</span>  <span class="hljs-comment"># فهرس البدء للتكرار</span>
+    res = []  <span class="hljs-comment"># قائمة النتائج (قائمة المجموعات الجزئية)</span>
     backtrack(state, target, nums, start, res)
     <span class="hljs-keyword">return</span> res
 </code></pre>
-</div>
-![عملية التتبّع الرجعي لمجموع المجموعات الجزئية II](/images/hello-algo/chapter_backtracking--subset_sum_ii.png)
+</div>![عملية التتبّع الرجعي لمجموع المجموعات الجزئية II](/images/hello-algo/chapter_backtracking--subset_sum_ii.png)
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/hello-algo/chapter_backtracking/permutations_problem"><span class="prev-next__label">السابق</span> <span class="prev-next__title">مسألة التباديل</span></a><!--]--> <!--[0--><a href="../../../../book/hello-algo/chapter_backtracking/n_queens_problem"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مسألة الملكات n</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_1x38yda = {
+					__sveltekit_z8h3v6 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -151,8 +150,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.aAcg_ZL5.js"),
-						import("../../../../_app/immutable/entry/app.BfzzbOFf.js")
+						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
+						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

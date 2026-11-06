@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.aAcg_ZL5.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D8dSGYHx.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Bs9Ar8Lr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BfzzbOFf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C5Dj1Jky.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CcT2CfV5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DXyBp_iR.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BTFYVdrI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.Dtm5O0yQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7j8hKfSp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -61,16 +61,15 @@
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search_left_edge</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], target: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
     <span class="hljs-string">&quot;&quot;&quot;Find the leftmost occurrence of target using binary search&quot;&quot;&quot;</span>
-    <span class="hljs-comment"># This is equivalent to finding the insertion point of target</span>
+    <span class="hljs-comment"># هذا يعادل إيجاد نقطة إدراج target</span>
     i = binary_search_insertion(nums, target)
-    <span class="hljs-comment"># If target was not found, return -1</span>
+    <span class="hljs-comment"># إذا لم يُوجد target فأعد -1</span>
     <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(nums) <span class="hljs-keyword">or</span> nums[i] != target:
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-    <span class="hljs-comment"># Target was found; return index i</span>
+    <span class="hljs-comment"># وُجد الهدف؛ أعد الفهرس i</span>
     <span class="hljs-keyword">return</span> i
 </code></pre>
-</div>
-## إيجاد الحد الأيمن
+</div>## إيجاد الحد الأيمن
 <p>فكيف نجد <code>target</code> الأقرب إلى أقصى اليمين؟ الطريقة الأكثر مباشرة هي تعديل الشيفرة واستبدال عملية تقليص المؤشر في حالة <code>nums[m] == target</code>. ونحذف الشيفرة هنا؛ ويمكن للقارئ المهتم تنفيذها بنفسه.</p>
 <p>نستعرض أدناه طريقتين أكثر براعة.</p>
 <h3 id="إعادة-استخدام-بحث-الحد-الأيسر">إعادة استخدام بحث الحد الأيسر</h3>
@@ -82,18 +81,17 @@
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search_right_edge</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], target: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
     <span class="hljs-string">&quot;&quot;&quot;Find the rightmost occurrence of target using binary search&quot;&quot;&quot;</span>
-    <span class="hljs-comment"># Reduce the problem to finding the leftmost insertion point of target + 1</span>
+    <span class="hljs-comment"># اختزل المسألة إلى إيجاد أقصى يسار نقطة إدراج لـ target + 1</span>
     i = binary_search_insertion(nums, target + <span class="hljs-number">1</span>)
-    <span class="hljs-comment"># j is the candidate rightmost target index; i is the index of the first element greater than target, or len(nums)</span>
+    <span class="hljs-comment"># j هو الفهرس المرشح الأقصى يمينًا للهدف؛ و i هو فهرس أول عنصر أكبر من target أو len(nums)</span>
     j = i - <span class="hljs-number">1</span>
-    <span class="hljs-comment"># If target was not found, return -1</span>
+    <span class="hljs-comment"># إذا لم يُوجد target فأعد -1</span>
     <span class="hljs-keyword">if</span> j == -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> nums[j] != target:
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-    <span class="hljs-comment"># Target was found; return index j</span>
+    <span class="hljs-comment"># وُجد الهدف؛ أعد الفهرس j</span>
     <span class="hljs-keyword">return</span> j
 </code></pre>
-</div>
-### التحويل إلى بحث عنصر
+</div>### التحويل إلى بحث عنصر
 <p>نعلم أنه عندما لا تحتوي المصفوفة على <code>target</code>، سيشير <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> في النهاية إلى أول عنصر أكبر من <code>target</code> والعنصر الأقصى يميناً الأصغر من <code>target</code> على الترتيب.</p>
 <p>لذلك، وكما يوضح الشكل أدناه، يمكننا إنشاء عنصر غير موجود في المصفوفة لإيجاد الحدين الأيسر والأيمن.</p>
 <ul>
@@ -112,7 +110,7 @@
 			
 			<script>
 				{
-					__sveltekit_1x38yda = {
+					__sveltekit_z8h3v6 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -120,8 +118,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.aAcg_ZL5.js"),
-						import("../../../../_app/immutable/entry/app.BfzzbOFf.js")
+						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
+						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.aAcg_ZL5.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D8dSGYHx.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Bs9Ar8Lr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BfzzbOFf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C5Dj1Jky.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CcT2CfV5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DXyBp_iR.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BTFYVdrI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.Dtm5O0yQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7j8hKfSp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -70,22 +70,22 @@
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], target: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
     <span class="hljs-string">&quot;&quot;&quot;Binary search (closed interval)&quot;&quot;&quot;</span>
-    <span class="hljs-comment"># Initialize the closed interval [0, n-1], with i and j pointing to the first and last elements</span>
+    <span class="hljs-comment"># مهّد المجال المغلق [0, n-1]، حيث يشير i و j إلى أول عنصر وآخر عنصر</span>
     i, j = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
-    <span class="hljs-comment"># Loop until the search interval is empty (when i &gt; j)</span>
+    <span class="hljs-comment"># حلّق حتى يصير مجال البحث فارغًا (عندما i &gt; j)</span>
     <span class="hljs-keyword">while</span> i &lt;= j:
-        <span class="hljs-comment"># Python integers can grow arbitrarily large, subject to available memory, so integer overflow is not a concern</span>
-        m = (i + j) // <span class="hljs-number">2</span>  <span class="hljs-comment"># Calculate the midpoint index m</span>
+        <span class="hljs-comment"># يمكن للأعداد الصحيحة في Python النمو بحرية بقدر الذاكرة المتاحة، فلا شأن بفيض العدد الصحيح</span>
+        m = (i + j) // <span class="hljs-number">2</span>  <span class="hljs-comment"># احسب فهرس نقطة المنتصف m</span>
         <span class="hljs-keyword">if</span> nums[m] &lt; target:
-            i = m + <span class="hljs-number">1</span>  <span class="hljs-comment"># In this case, target must be in [m+1, j] if it exists</span>
+            i = m + <span class="hljs-number">1</span>  <span class="hljs-comment"># في هذه الحالة، لا بد أن يكون الهدف في [m+1, j] إن وُجد</span>
         <span class="hljs-keyword">elif</span> nums[m] &gt; target:
-            j = m - <span class="hljs-number">1</span>  <span class="hljs-comment"># In this case, target must be in [i, m-1] if it exists</span>
+            j = m - <span class="hljs-number">1</span>  <span class="hljs-comment"># في هذه الحالة، لا بد أن يكون الهدف في [i, m-1] إن وُجد</span>
         <span class="hljs-keyword">else</span>:
-            <span class="hljs-keyword">return</span> m  <span class="hljs-comment"># The target element was found; return its index</span>
-    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>  <span class="hljs-comment"># The target element was not found; return -1</span>
+            <span class="hljs-keyword">return</span> m  <span class="hljs-comment"># وُجد العنصر الهدف؛ أعد فهرسه</span>
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>  <span class="hljs-comment"># لم يُوجد العنصر الهدف؛ أعد -1</span>
 </code></pre>
 </div>
-<p><strong>التعقيد الزمني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></strong>: في حلقة البحث الثنائي، يُقلَّص المجال إلى النصف في كل جولة، لذا يكون عدد التكرارات <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mi>n</mi></mrow><annotation encoding="application/x-tex">\log_2 n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.9386em;vertical-align:-0.2441em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span></span></span></span>.</p>
+**التعقيد الزمني $O(\log n)$**: في حلقة البحث الثنائي، يُقلَّص المجال إلى النصف في كل جولة، لذا يكون عدد التكرارات $\log_2 n$.
 <p><strong>التعقيد المكاني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></strong>: يستخدم المؤشران <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> مساحة ثابتة الحجم.</p>
 <h2 id="طرق-تمثيل-المجالات">طرق تمثيل المجالات</h2>
 <p>بالإضافة إلى المجال المغلق المذكور أعلاه، ثمة تمثيل شائع آخر للمجال هو «مغلق من اليسار، مفتوح من اليمين»، ويُعرّف بـ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">[0, n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، أي أن الحد الأيسر مغلق بينما الحد الأيمن مفتوح. وفي ظل هذا التمثيل، يكون المجال <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mi>i</mi><mo separator="true">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">[i, j)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mclose">)</span></span></span></span> فارغاً عندما <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i = j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span>.</p>
@@ -94,21 +94,21 @@
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search_lcro</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], target: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
     <span class="hljs-string">&quot;&quot;&quot;Binary search (left-closed, right-open interval)&quot;&quot;&quot;</span>
-    <span class="hljs-comment"># Initialize the left-closed, right-open interval [0, n), with i at the first element and j one past the last</span>
+    <span class="hljs-comment"># مهّد المجال المغلق يسارًا المفتوح يمينًا [0, n)، حيث i عند أول عنصر و j بعد الأخير</span>
     i, j = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums)
-    <span class="hljs-comment"># Loop until the search interval is empty (when i = j)</span>
+    <span class="hljs-comment"># حلّق حتى يصير مجال البحث فارغًا (عندما i = j)</span>
     <span class="hljs-keyword">while</span> i &lt; j:
-        m = (i + j) // <span class="hljs-number">2</span>  <span class="hljs-comment"># Calculate the midpoint index m</span>
+        m = (i + j) // <span class="hljs-number">2</span>  <span class="hljs-comment"># احسب فهرس نقطة المنتصف m</span>
         <span class="hljs-keyword">if</span> nums[m] &lt; target:
-            i = m + <span class="hljs-number">1</span>  <span class="hljs-comment"># In this case, target must be in [m+1, j) if it exists</span>
+            i = m + <span class="hljs-number">1</span>  <span class="hljs-comment"># في هذه الحالة، لا بد أن يكون الهدف في [m+1, j) إن وُجد</span>
         <span class="hljs-keyword">elif</span> nums[m] &gt; target:
-            j = m  <span class="hljs-comment"># In this case, target must be in [i, m) if it exists</span>
+            j = m  <span class="hljs-comment"># في هذه الحالة، لا بد أن يكون الهدف في [i, m) إن وُجد</span>
         <span class="hljs-keyword">else</span>:
-            <span class="hljs-keyword">return</span> m  <span class="hljs-comment"># The target element was found; return its index</span>
-    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>  <span class="hljs-comment"># The target element was not found; return -1</span>
+            <span class="hljs-keyword">return</span> m  <span class="hljs-comment"># وُجد العنصر الهدف؛ أعد فهرسه</span>
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>  <span class="hljs-comment"># لم يُوجد العنصر الهدف؛ أعد -1</span>
 </code></pre>
 </div>
-<p>وكما يوضح الشكل أدناه، تختلف تهيئة خوارزمية البحث الثنائي وشرط الحلقة وعمليات تقليص المجال في ظل تمثيلي المجال كليهما.</p>
+وكما يوضح الشكل أدناه، تختلف تهيئة خوارزمية البحث الثنائي وشرط الحلقة وعمليات تقليص المجال في ظل تمثيلي المجال كليهما.
 <p>وبما أن الحدين الأيسر والأيمن في تمثيل «المجال المغلق» معرّفان كليهما كمغلقين، فإن عمليتي تقليص المجال عبر المؤشرين <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> متماثلتان أيضاً. وهذا يجعل الأخطاء أقل احتمالاً، <strong>لذا يُوصى عموماً بنهج «المجال المغلق»</strong>.</p>
 <p><img src="/arabic-cs-library/images/hello-algo/chapter_searching--binary_search_ranges.png" alt="تعريفا المجال"></p>
 <h2 id="المزايا-والقيود">المزايا والقيود</h2>
@@ -129,7 +129,7 @@
 			
 			<script>
 				{
-					__sveltekit_1x38yda = {
+					__sveltekit_z8h3v6 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -137,8 +137,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.aAcg_ZL5.js"),
-						import("../../../../_app/immutable/entry/app.BfzzbOFf.js")
+						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
+						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

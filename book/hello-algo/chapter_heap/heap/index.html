@@ -19,25 +19,25 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.aAcg_ZL5.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/D8dSGYHx.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.x5No2TuO.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwvBgmiE.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Bs9Ar8Lr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ZxyyWMyl.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BfzzbOFf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.n21GOpPu.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C5Dj1Jky.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DmgylEuV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CcT2CfV5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9aF2SPi.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DXyBp_iR.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BTFYVdrI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.Dtm5O0yQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7j8hKfSp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DqdF1krA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Trbs0zKq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.xCEW-lVV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D72lMY8o.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
@@ -140,8 +140,7 @@ is_empty: <span class="hljs-built_in">bool</span> = <span class="hljs-keyword">n
 min_heap: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>] = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>]
 heapq.heapify(min_heap)
 </code></pre>
-</div>
-## تنفيذ الكومة
+</div>## تنفيذ الكومة
 <p>التنفيذ التالي خاص بالكومة العظمى. ولتحويله إلى كومة صغرى، ما عليك سوى عكس كل منطق المقارنة المتعلق بالترتيب (على سبيل المثال، استبدال <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo></mrow><annotation encoding="application/x-tex">\geq</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span></span></span></span> بـ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≤</mo></mrow><annotation encoding="application/x-tex">\leq</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≤</span></span></span></span>). ونشجّع القرّاء المهتمين على تنفيذ ذلك بأنفسهم.</p>
 <h3 id="تخزين-الكومة-وتمثيلها">تخزين الكومة وتمثيلها</h3>
 <p>كما ذُكر في فصل «الشجرة الثنائية»، تلائم الأشجار الثنائية الكاملة التمثيل بالمصفوفات. ولأن الأكوام نوع من الأشجار الثنائية الكاملة، <strong>فإننا سنستخدم المصفوفات لتخزين الأكوام</strong>.</p>
@@ -153,10 +152,9 @@ heapq.heapify(min_heap)
 <p class="lang-tab__label">Python</p>
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parent</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
         <span class="hljs-string">&quot;&quot;&quot;Get the parent index&quot;&quot;&quot;</span>
-        <span class="hljs-keyword">return</span> (i - <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>  <span class="hljs-comment"># Floor division</span>
+        <span class="hljs-keyword">return</span> (i - <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>  <span class="hljs-comment"># قسمة مقربة نزولًا</span>
 </code></pre>
-</div>
-### الوصول إلى العنصر الأعلى في الكومة
+</div>### الوصول إلى العنصر الأعلى في الكومة
 <p>العنصر الأعلى في الكومة هو العقدة الجذرية للشجرة الثنائية، وهو أيضاً العنصر الأول في القائمة:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -164,8 +162,7 @@ heapq.heapify(min_heap)
         <span class="hljs-string">&quot;&quot;&quot;Access the top element of the heap&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.max_heap[<span class="hljs-number">0</span>]
 </code></pre>
-</div>
-### إدراج عنصر في الكومة
+</div>### إدراج عنصر في الكومة
 <p>بمعطى عنصر <code>val</code>، نضيفه أولاً إلى قاع الكومة. وبعد الإدراج، قد تُنتهك خاصية الكومة لأن <code>val</code> قد يكون أكبر من عناصر أخرى في الكومة. <strong>لذلك نحتاج إلى استعادة خاصية الكومة على طول المسار من العقدة المُدرجة إلى الجذر</strong>. وتسمى هذه العملية <u>تعديل الكومة (heapify)</u>.</p>
 <p>بدءاً من العقدة المُدرجة، <strong>ننفّذ تعديل الكومة من الأسفل إلى الأعلى</strong>. وكما هو موضح في الشكل أدناه، نقارن العقدة المُدرجة بالعقدة الأب، وإذا كانت العقدة المُدرجة أكبر نبادلهما. ونواصل هذه العملية من الأسفل إلى الأعلى حتى نتجاوز الجذر أو نصل إلى عقدة لم تعد بحاجة إلى تبادل.</p>
 <p>بالمجموع <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> من العقد، يكون ارتفاع الشجرة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>. ومن ثم، فإن عدد تكرارات الحلقة في عملية تعديل الكومة لا يزيد عن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، <strong>وهو ما يجعل التعقيد الزمني لعملية إدراج العنصر <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></strong>. والكود كما يلي:</p>
@@ -174,18 +171,17 @@ heapq.heapify(min_heap)
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sift_up</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span></span>):
         <span class="hljs-string">&quot;&quot;&quot;Sift up starting from node i&quot;&quot;&quot;</span>
         <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
-            <span class="hljs-comment"># Get the parent of node i</span>
+            <span class="hljs-comment"># احصل على أصل العقدة i</span>
             p = <span class="hljs-variable language_">self</span>.parent(i)
-            <span class="hljs-comment"># Stop sifting when the root has been passed or the node needs no repair</span>
+            <span class="hljs-comment"># توقف عن الرشّ عند تجاوز الجذر أو عدم حاجة العقدة إلى إصلاح</span>
             <span class="hljs-keyword">if</span> p &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> <span class="hljs-variable language_">self</span>.max_heap[i] &lt;= <span class="hljs-variable language_">self</span>.max_heap[p]:
                 <span class="hljs-keyword">break</span>
-            <span class="hljs-comment"># Swap the two nodes</span>
+            <span class="hljs-comment"># بدّل العقدتين</span>
             <span class="hljs-variable language_">self</span>.swap(i, p)
-            <span class="hljs-comment"># Continue sifting up</span>
+            <span class="hljs-comment"># واصل الرشّ صعودًا</span>
             i = p
 </code></pre>
-</div>
-### حذف العنصر الأعلى في الكومة
+</div>### حذف العنصر الأعلى في الكومة
 <p>العنصر الأعلى في الكومة هو العقدة الجذرية للشجرة الثنائية، وهو العنصر الأول في القائمة. وإذا حذفنا العنصر الأول من القائمة مباشرةً، فستتغير جميع فهارس العقد في الشجرة الثنائية، مما يصعّب الإصلاح اللاحق بتعديل الكومة. ولتقليل تغيّرات فهارس العناصر إلى أدنى حد، نتبع الخطوات التالية.</p>
 <ol>
 <li>بادل العنصر الأعلى في الكومة بعنصر قاع الكومة (بادل العقدة الجذرية بالعقدة الورقية الأقصى يميناً).</li>
@@ -199,22 +195,21 @@ heapq.heapify(min_heap)
 <pre><code class="language-py">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sift_down</span>(<span class="hljs-params">self, i: <span class="hljs-built_in">int</span></span>):
         <span class="hljs-string">&quot;&quot;&quot;Sift down starting from node i&quot;&quot;&quot;</span>
         <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
-            <span class="hljs-comment"># Find the node with the largest value among i, l, and r, and store its index in ma</span>
+            <span class="hljs-comment"># أوجد العقدة ذات القيمة الأكبر بين i و l و r، وخزّن فهرسها في ma</span>
             l, r, ma = <span class="hljs-variable language_">self</span>.left(i), <span class="hljs-variable language_">self</span>.right(i), i
             <span class="hljs-keyword">if</span> l &lt; <span class="hljs-variable language_">self</span>.size() <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.max_heap[l] &gt; <span class="hljs-variable language_">self</span>.max_heap[ma]:
                 ma = l
             <span class="hljs-keyword">if</span> r &lt; <span class="hljs-variable language_">self</span>.size() <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.max_heap[r] &gt; <span class="hljs-variable language_">self</span>.max_heap[ma]:
                 ma = r
-            <span class="hljs-comment"># Stop if node i is largest or both child indices l and r are out of bounds</span>
+            <span class="hljs-comment"># توقف إذا كانت العقدة i هي الأكبر أو خرج فهرسا الابنين l و r كلاهما عن الحدود</span>
             <span class="hljs-keyword">if</span> ma == i:
                 <span class="hljs-keyword">break</span>
-            <span class="hljs-comment"># Swap the two nodes</span>
+            <span class="hljs-comment"># بدّل العقدتين</span>
             <span class="hljs-variable language_">self</span>.swap(i, ma)
-            <span class="hljs-comment"># Continue sifting down</span>
+            <span class="hljs-comment"># واصل الرشّ نزولًا</span>
             i = ma
 </code></pre>
-</div>
-## التطبيقات الشائعة للأكوام
+</div>## التطبيقات الشائعة للأكوام
 <ul>
 <li><strong>طابور الأولوية</strong>: الأكوام عادةً هي بنية البيانات المفضلة لتنفيذ طوابير الأولوية. فالتعقيد الزمني لكل من عمليتي الإدخال والإخراج هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، وبناء الكومة له تعقيد زمني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، مما يجعل هذه العمليات عالية الكفاءة.</li>
 <li><strong>ترتيب الكومة</strong>: بمعطى مجموعة من البيانات، يمكننا بناء كومة منها ثم تنفيذ عمليات حذف العناصر باستمرار للحصول على بيانات مرتبة. غير أننا نستخدم عادةً أسلوباً أكثر أناقة لتنفيذ ترتيب الكومة، كما هو مفصل في فصل «ترتيب الكومة».</li>
@@ -226,7 +221,7 @@ heapq.heapify(min_heap)
 			
 			<script>
 				{
-					__sveltekit_1x38yda = {
+					__sveltekit_z8h3v6 = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -234,8 +229,8 @@ heapq.heapify(min_heap)
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.aAcg_ZL5.js"),
-						import("../../../../_app/immutable/entry/app.BfzzbOFf.js")
+						import("../../../../_app/immutable/entry/start.x5No2TuO.js"),
+						import("../../../../_app/immutable/entry/app.n21GOpPu.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
