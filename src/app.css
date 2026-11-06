@@ -60,6 +60,7 @@ html[data-theme='dark'] {
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1.5rem);
   background: var(--paper);
   caret-color: var(--rubric);
   scrollbar-color: var(--rule-strong) var(--paper);
@@ -71,7 +72,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--ui);
-  font-size: 1rem;
+  font-size: 1.0625rem;
   line-height: 1.75;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

@@ -1,88 +1,239 @@
 {
-  "chapters": [
+ "chapters": [
+  {
+   "key": "c0-frontmatter",
+   "title": "Frontmatter",
+   "sections": [
     {
-      "key": "c0-frontmatter",
-      "title": "Frontmatter",
-      "sections": [
-        {
-          "slug": "index",
-          "title": "Frontmatter",
-          "order": 0
-        }
-      ],
-      "titleAr": "مقدّمة الكتاب"
+     "slug": "index",
+     "title": "مقدّمة الكتاب",
+     "titleAr": "مقدّمة الكتاب",
+     "order": 0
     },
     {
-      "key": "c1-building-abstractions-with-procedures",
-      "title": "Building Abstractions with Procedures",
-      "sections": [
-        {
-          "slug": "index",
-          "title": "Building Abstractions with Procedures",
-          "order": 1
-        }
-      ],
-      "titleAr": "بناء التجريدات بالإجراءات"
+     "slug": "taqdimah",
+     "title": "تقدمة",
+     "titleAr": "تقدمة",
+     "order": 1
     },
     {
-      "key": "c2-building-abstractions-with-data",
-      "title": "Building Abstractions with Data",
-      "sections": [
-        {
-          "slug": "index",
-          "title": "Building Abstractions with Data",
-          "order": 2
-        }
-      ],
-      "titleAr": "بناء التجريدات بالبيانات"
+     "slug": "tamhida-2nd",
+     "title": "تمهيد للطبعة الثانية",
+     "titleAr": "تمهيد للطبعة الثانية",
+     "order": 2
     },
     {
-      "key": "c3-modularity-objects-and-state",
-      "title": "Modularity, Objects, and State",
-      "sections": [
-        {
-          "slug": "index",
-          "title": "Modularity, Objects, and State",
-          "order": 3
-        }
-      ],
-      "titleAr": "الوحدانية والكائنات والحالة"
+     "slug": "tamhida-1st",
+     "title": "تمهيد للطبعة الأولى",
+     "titleAr": "تمهيد للطبعة الأولى",
+     "order": 3
     },
     {
-      "key": "c4-metalinguistic-abstraction",
-      "title": "Metalinguistic Abstraction",
-      "sections": [
-        {
-          "slug": "index",
-          "title": "Metalinguistic Abstraction",
-          "order": 4
-        }
-      ],
-      "titleAr": "التجريد فوق اللغوي"
-    },
-    {
-      "key": "c5-computing-with-register-machines",
-      "title": "Computing with Register Machines",
-      "sections": [
-        {
-          "slug": "index",
-          "title": "Computing with Register Machines",
-          "order": 5
-        }
-      ],
-      "titleAr": "الحوسبة بآلات المسجّلات"
-    },
-    {
-      "key": "c6-backmatter",
-      "title": "Backmatter",
-      "sections": [
-        {
-          "slug": "index",
-          "title": "Backmatter",
-          "order": 6
-        }
-      ],
-      "titleAr": "الملاحق والمصطلحات"
+     "slug": "shukr-taqdir",
+     "title": "شكر وتقدير",
+     "titleAr": "شكر وتقدير",
+     "order": 4
     }
-  ]
+   ],
+   "titleAr": "مقدّمة الكتاب"
+  },
+  {
+   "key": "c1-building-abstractions-with-procedures",
+   "title": "Building Abstractions with Procedures",
+   "sections": [
+    {
+     "slug": "index",
+     "title": "بناء التجريدات بالإجراءات",
+     "titleAr": "بناء التجريدات بالإجراءات",
+     "order": 0
+    },
+    {
+     "slug": "1-2",
+     "title": "1.2 الإجراءات والعمليات التي تولّدها",
+     "titleAr": "1.2 الإجراءات والعمليات التي تولّدها",
+     "order": 1
+    },
+    {
+     "slug": "1-3",
+     "title": "1.3 صياغة التجريدات بإجراءات عليا الرتبة",
+     "titleAr": "1.3 صياغة التجريدات بإجراءات عليا الرتبة",
+     "order": 2
+    }
+   ],
+   "titleAr": "بناء التجريدات بالإجراءات"
+  },
+  {
+   "key": "c2-building-abstractions-with-data",
+   "title": "Building Abstractions with Data",
+   "sections": [
+    {
+     "slug": "index",
+     "title": "بناء التجريدات بالبيانات",
+     "titleAr": "بناء التجريدات بالبيانات",
+     "order": 0
+    },
+    {
+     "slug": "2-2",
+     "title": "2.2 البيانات الهرميّة وخاصّيّة الإغلاق",
+     "titleAr": "2.2 البيانات الهرميّة وخاصّيّة الإغلاق",
+     "order": 1
+    },
+    {
+     "slug": "2-3",
+     "title": "2.3 البيانات الرمزيّة",
+     "titleAr": "2.3 البيانات الرمزيّة",
+     "order": 2
+    },
+    {
+     "slug": "2-4",
+     "title": "2.4 تمثيلات متعدّدة للبيانات المجرّدة",
+     "titleAr": "2.4 تمثيلات متعدّدة للبيانات المجرّدة",
+     "order": 3
+    },
+    {
+     "slug": "2-5",
+     "title": "2.5 أنظمة ذات عمليّات عامّة",
+     "titleAr": "2.5 أنظمة ذات عمليّات عامّة",
+     "order": 4
+    }
+   ],
+   "titleAr": "بناء التجريدات بالبيانات"
+  },
+  {
+   "key": "c3-modularity-objects-and-state",
+   "title": "Modularity, Objects, and State",
+   "sections": [
+    {
+     "slug": "index",
+     "title": "الوحدانية والكائنات والحالة",
+     "titleAr": "الوحدانية والكائنات والحالة",
+     "order": 0
+    },
+    {
+     "slug": "3-2",
+     "title": "3.2 نموذج البيئة للتقييم",
+     "titleAr": "3.2 نموذج البيئة للتقييم",
+     "order": 1
+    },
+    {
+     "slug": "3-3",
+     "title": "3.3 النمذجة بالبيانات القابلة للتغيير",
+     "titleAr": "3.3 النمذجة بالبيانات القابلة للتغيير",
+     "order": 2
+    },
+    {
+     "slug": "3-4",
+     "title": "3.4 التزامن: الزمن أمرٌ جوهريّ",
+     "titleAr": "3.4 التزامن: الزمن أمرٌ جوهريّ",
+     "order": 3
+    },
+    {
+     "slug": "3-5",
+     "title": "3.5 المجاري",
+     "titleAr": "3.5 المجاري",
+     "order": 4
+    }
+   ],
+   "titleAr": "الوحدانية والكائنات والحالة"
+  },
+  {
+   "key": "c4-metalinguistic-abstraction",
+   "title": "Metalinguistic Abstraction",
+   "sections": [
+    {
+     "slug": "index",
+     "title": "التجريد فوق اللغوي",
+     "titleAr": "التجريد فوق اللغوي",
+     "order": 0
+    },
+    {
+     "slug": "4-2",
+     "title": "4.2 تنويعات على Scheme — التقييم المتأخّر",
+     "titleAr": "4.2 تنويعات على Scheme — التقييم المتأخّر",
+     "order": 1
+    },
+    {
+     "slug": "4-3",
+     "title": "4.3 تنويعات على Scheme — الحوسبة غير الحتميّة",
+     "titleAr": "4.3 تنويعات على Scheme — الحوسبة غير الحتميّة",
+     "order": 2
+    },
+    {
+     "slug": "4-4",
+     "title": "4.4 البرمجة المنطقيّة",
+     "titleAr": "4.4 البرمجة المنطقيّة",
+     "order": 3
+    }
+   ],
+   "titleAr": "التجريد فوق اللغوي"
+  },
+  {
+   "key": "c5-computing-with-register-machines",
+   "title": "Computing with Register Machines",
+   "sections": [
+    {
+     "slug": "index",
+     "title": "الاحتساب بآلات المسجّلات",
+     "titleAr": "الاحتساب بآلات المسجّلات",
+     "order": 0
+    },
+    {
+     "slug": "5-2",
+     "title": "5.2 محاكي آلة مسجّلات",
+     "titleAr": "5.2 محاكي آلة مسجّلات",
+     "order": 1
+    },
+    {
+     "slug": "5-3",
+     "title": "5.3 تخصيص التخزين وجمع القمامة",
+     "titleAr": "5.3 تخصيص التخزين وجمع القمامة",
+     "order": 2
+    },
+    {
+     "slug": "5-4",
+     "title": "5.4 المقيّم ذو التحكّم الصريح",
+     "titleAr": "5.4 المقيّم ذو التحكّم الصريح",
+     "order": 3
+    },
+    {
+     "slug": "5-5",
+     "title": "5.5 التصريف",
+     "titleAr": "5.5 التصريف",
+     "order": 4
+    }
+   ],
+   "titleAr": "الحوسبة بآلات المسجّلات"
+  },
+  {
+   "key": "c6-backmatter",
+   "title": "Backmatter",
+   "sections": [
+    {
+     "slug": "index",
+     "title": "الملاحق والمصطلحات",
+     "titleAr": "الملاحق والمصطلحات",
+     "order": 0
+    },
+    {
+     "slug": "lista-tamrin",
+     "title": "قائمة التمارين",
+     "titleAr": "قائمة التمارين",
+     "order": 1
+    },
+    {
+     "slug": "lista-ashkal",
+     "title": "قائمة الأشكال",
+     "titleAr": "قائمة الأشكال",
+     "order": 2
+    },
+    {
+     "slug": "bayanta-nashr",
+     "title": "بيانات النشر",
+     "titleAr": "بيانات النشر",
+     "order": 3
+    }
+   ],
+   "titleAr": "الملاحق والمصطلحات"
+  }
+ ]
 }
