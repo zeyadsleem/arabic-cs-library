@@ -1,0 +1,5 @@
+- generic [active] [ref=e1]:
+  - text: The server is configured with a public base URL of /arabic-cs-library - did you mean to visit
+  - link "/arabic-cs-library/book/ostep/cpu-intro/index" [ref=e2] [cursor=pointer]:
+    - /url: /arabic-cs-library/book/ostep/cpu-intro/index
+  - text: instead?
