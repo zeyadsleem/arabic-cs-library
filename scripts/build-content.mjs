@@ -241,13 +241,27 @@ const wrapExercises = (html) => {
 };
 
 const extractHeadings = (html) => {
+  // A heading whose id is a "suffix" duplicate (e.g. `الأسئلة-1` while another
+  // heading already owns the base id `الأسئلة`) is a renderer-deduped artifact
+  // of the same anchor target, not a distinct TOC entry. Reader sidebars must
+  // not list it twice.
+  const HEAD_REG = /^(.*?)-(\d+)$/;
+  const seenBase = new Set();
+  const seenIds = new Set();
   const headings = [];
   const regex = /<h([23])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h[23]>/gs;
   let match;
   while ((match = regex.exec(html)) !== null) {
+    const depth = Number(match[1]);
+    const id = match[2];
+    if (seenIds.has(id)) continue;
+    seenIds.add(id);
+    seenBase.add(id);
+    const base = HEAD_REG.exec(id);
+    if (depth === 2 && base && seenBase.has(base[1])) continue;
     headings.push({
-      depth: Number(match[1]),
-      id: match[2],
+      depth,
+      id,
       text: match[3].replace(/<[^>]+>/g, '').trim(),
     });
   }
